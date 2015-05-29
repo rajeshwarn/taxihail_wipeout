@@ -38,16 +38,18 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(ValidateOrderRequest request)
         {
-            Func<string> getPickupZone =
-                () => request.TestZone.HasValue() ? request.TestZone : _ibsServiceProvider.StaticData().GetZoneByCoordinate(request.Settings.ProviderId,
-                    request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
+            {
+                request.TestZone = "101";
+            }
 
-            Func<string> getDropoffZone =
-                () =>
-                    request.DropOffAddress != null
-                        ? _ibsServiceProvider.StaticData().GetZoneByCoordinate(request.Settings.ProviderId,
-                            request.DropOffAddress.Latitude, request.DropOffAddress.Longitude)
-                        : null;
+            Func<string> getPickupZone = () => request.TestZone.HasValue() 
+                ? request.TestZone 
+                : _ibsServiceProvider.StaticData().GetZoneByCoordinate(request.Settings.ProviderId, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+
+            Func<string> getDropoffZone = () => request.DropOffAddress != null
+                ? _ibsServiceProvider.StaticData().GetZoneByCoordinate(request.Settings.ProviderId, request.DropOffAddress.Latitude, request.DropOffAddress.Longitude)
+                : null;
 
             string market = null;
 

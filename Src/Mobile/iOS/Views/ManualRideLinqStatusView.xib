@@ -45,19 +45,21 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ts-zN-ahv" customClass="FlatButton">
-                    <rect key="frame" x="10" y="516" width="300" height="42"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="znK-wP-Oab" customClass="FlatButton">
+                    <rect key="frame" x="8" y="464" width="304" height="42"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="42" id="iPE-oI-vCH"/>
+                        <constraint firstAttribute="width" constant="304" id="hMA-mx-plx"/>
+                        <constraint firstAttribute="height" constant="42" id="vQm-3d-MX8"/>
                     </constraints>
                     <state key="normal" title="Button">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="znK-wP-Oab" customClass="FlatButton">
-                    <rect key="frame" x="10" y="464" width="300" height="42"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ts-zN-ahv" customClass="FlatButton">
+                    <rect key="frame" x="8" y="516" width="304" height="42"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="42" id="vQm-3d-MX8"/>
+                        <constraint firstAttribute="height" constant="42" id="iPE-oI-vCH"/>
+                        <constraint firstAttribute="width" constant="304" id="k8q-to-uwx"/>
                     </constraints>
                     <state key="normal" title="Button">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -66,20 +68,18 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="3Ts-zN-ahv" secondAttribute="trailing" constant="10" id="676-bu-QSm"/>
+                <constraint firstAttribute="centerX" secondItem="3Ts-zN-ahv" secondAttribute="centerX" id="114-kb-lp4"/>
                 <constraint firstAttribute="centerX" secondItem="Jvn-Jk-kwM" secondAttribute="leading" constant="-3" id="836-kk-thB"/>
-                <constraint firstItem="znK-wP-Oab" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="8Kj-3Q-yE1"/>
                 <constraint firstAttribute="bottom" secondItem="3Ts-zN-ahv" secondAttribute="bottom" constant="10" id="CjA-94-mrg"/>
-                <constraint firstAttribute="trailing" secondItem="znK-wP-Oab" secondAttribute="trailing" constant="10" id="SxF-7T-xnf"/>
                 <constraint firstAttribute="centerX" secondItem="lYH-KK-iQs" secondAttribute="trailing" constant="3" id="TIW-7e-vnj"/>
                 <constraint firstAttribute="centerX" secondItem="Rz7-tH-zX9" secondAttribute="trailing" constant="3" id="adT-ee-Al4"/>
                 <constraint firstAttribute="centerX" secondItem="raj-hF-F7Y" secondAttribute="leading" constant="-3" id="bPc-xu-WRT"/>
                 <constraint firstItem="3Ts-zN-ahv" firstAttribute="top" secondItem="znK-wP-Oab" secondAttribute="bottom" constant="10" id="bxQ-MF-130"/>
                 <constraint firstItem="Jvn-Jk-kwM" firstAttribute="top" secondItem="raj-hF-F7Y" secondAttribute="bottom" constant="20" id="gOD-BF-JKj"/>
-                <constraint firstItem="3Ts-zN-ahv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="hHR-TP-ouF"/>
                 <constraint firstItem="lYH-KK-iQs" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="40" id="oQ2-8d-YQQ"/>
                 <constraint firstItem="raj-hF-F7Y" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="40" id="oYl-jM-1hu"/>
                 <constraint firstItem="Rz7-tH-zX9" firstAttribute="top" secondItem="lYH-KK-iQs" secondAttribute="bottom" constant="20" id="pXi-Ea-RdE"/>
+                <constraint firstAttribute="centerX" secondItem="znK-wP-Oab" secondAttribute="centerX" id="vOD-al-zbZ"/>
             </constraints>
         </view>
     </objects>

@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             if (@event.IsCancellationFee || @event.IsNoShowFee)
             {
-                SendFeesReceipt(@event.OrderId, @event.Meter, @event.IsCancellationFee, @event.IsNoShowFee);
+                SendFeesReceipt(@event.OrderId, @event.Amount, @event.IsCancellationFee, @event.IsNoShowFee);
             }
             else
             {

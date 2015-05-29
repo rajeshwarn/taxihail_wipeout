@@ -226,8 +226,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 				if (currentSelectionMode == AddressSelectionMode.PickupSelection && !destinationIsValid)
 				{
-					ToggleIsDestinationModeOpened();
-					ToggleBetweenPickupAndDestinationSelectionMode();
+					await ToggleBetweenPickupAndDestinationSelectionMode();
+					await ToggleIsDestinationModeOpened();
 					throw new OrderValidationException("Open the destination selection", OrderValidationError.OpenDestinationSelection);
 				}
 
@@ -587,8 +587,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
 			if (isDestinationModeOpened)
 			{
-				ToggleIsDestinationModeOpened();
-				ToggleBetweenPickupAndDestinationSelectionMode();
+				await ToggleBetweenPickupAndDestinationSelectionMode();
+				await ToggleIsDestinationModeOpened(false);
 			}
 
 			_noteToDriverSubject.OnNext(string.Empty);
@@ -601,6 +601,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 			_orderCanBeConfirmed.OnNext (false);
 			_cvvSubject.OnNext(string.Empty);
+			_orderValidationResultSubject.OnNext(null);
+			_loadingAddressSubject.OnNext(false);
+			_accountPaymentQuestions.OnNext(null);
 		}
 
 		public void BeginCreateOrder()
