@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
+    <Compile Include="ICraftyClicksServiceClient.cs" />
     <Compile Include="IIbsFareClient.cs" />
     <Compile Include="IPairingServiceClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="TaxiHail\BaseServiceClient.cs" />
     <Compile Include="TaxiHail\CompanyServiceClient.cs" />
     <Compile Include="TaxiHail\ConfigurationClientService.cs" />
+    <Compile Include="TaxiHail\CraftyClicksServiceClient.cs" />
     <Compile Include="TaxiHail\IbsFareServiceClient.cs" />
     <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationAdministrationServiceClient.cs" />
