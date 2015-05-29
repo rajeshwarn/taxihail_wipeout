@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             _orderValidationResult = orderValidationResult;
             IsFutureBookingDisabled = Settings.DisableFutureBooking 
-                || orderValidationResult.DisableFutureBooking 
+				|| (orderValidationResult != null && orderValidationResult.DisableFutureBooking) 
                 || Settings.UseSingleButtonForNowAndLaterBooking;
         }
 
@@ -568,35 +568,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(async () =>
                 {
-                    if (Settings.UseSingleButtonForNowAndLaterBooking && !Settings.DisableFutureBooking)
+					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
+						&& !Settings.DisableFutureBooking)
                     {
-                        //We need to show the Book A Taxi popup.
+						//We need to show the Book A Taxi popup.
 						Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
 						await PrevalidatePickupAndDestinationRequired(onValidated);
                     }
                     else
                     {
-                        //Normal classic flow
                         SetPickupDateAndReviewOrder.ExecuteIfPossible();
-                    }
-                });
-            }
-        }
-            
-		public ICommand BookATaxi
-        {
-            get
-            {
-                return this.GetCommand(() =>
-                {
-                    if (Settings.DisableFutureBooking)
-                    {
-                        //Go directly to order details review.
-                        SetPickupDateAndReviewOrder.ExecuteIfPossible();
-                    }
-                    else
-                    {
-                        PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
                     }
                 });
             }
@@ -610,7 +591,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
                     var localize = this.Services().Localize;
 
-                    if (_accountService.CurrentAccount.DefaultCreditCard == null)
+                    if (_accountService.CurrentAccount.DefaultCreditCard == null
+						|| _accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
                     {
                         this.Services().Message.ShowMessage(
                             localize["ErrorCreatingOrderTitle"],
