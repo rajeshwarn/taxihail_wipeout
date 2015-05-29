@@ -276,8 +276,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (result.IsDeclined)
             {
-                // TODO est-ce qu'on a vraiment besoin de reacter a un payment failure dans un preauth?  on pourrait peut-etre mettre un overdueamount de 0$?
-                // ex: preauth 50$ fail, la personne doit pas vraiment 50$, on voudrait juste desactiver sa carte, le commit devrait passer le montant
                 // Deactivate credit card if it was declined
                 _commandBus.Send(new ReactToPaymentFailure
                 {
