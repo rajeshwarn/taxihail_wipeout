@@ -126,6 +126,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
             else
             {
+                // TODO void preauth if order companykey is different than null?
+
                 var feeCharged = _feeService.ChargeCancellationFeeIfNecessary(orderDetail);
                 if (!feeCharged.HasValue)
                 {
