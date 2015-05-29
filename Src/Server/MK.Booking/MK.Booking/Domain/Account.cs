@@ -365,7 +365,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new PayPalAccountUnlinked());
         }
 
-        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, bool isFee)
+        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, bool isNoShowFee, bool isCancellationFee, bool isBookingFee)
         {
             Update(new CreditCardDeactivated());
             Update(new OverduePaymentLogged
@@ -375,7 +375,9 @@ namespace apcurium.MK.Booking.Domain
                 Amount = amount,
                 TransactionId = transactionId,
                 TransactionDate = transactionDate,
-                IsFee = isFee
+                IsNoShowFee = isNoShowFee,
+                IsCancellationFee = isCancellationFee,
+                IsBookingFee = isBookingFee
             });
         }
 

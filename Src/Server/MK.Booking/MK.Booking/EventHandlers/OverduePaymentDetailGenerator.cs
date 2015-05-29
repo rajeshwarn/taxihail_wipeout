@@ -43,12 +43,13 @@ namespace apcurium.MK.Booking.EventHandlers
                         OverdueAmount = @event.Amount,
                         TransactionId = @event.TransactionId,
                         TransactionDate = transactionDate,
-                        ContainFees = @event.IsFee
+                        ContainBookingFees = @event.IsBookingFee,
+                        ContainStandaloneFees = @event.IsCancellationFee || @event.IsNoShowFee
                     });
                 }
                 else
                 {
-                    if (!@event.IsFee)
+                    if (!@event.IsBookingFee)
                     {
                         overduePayment.TransactionId = @event.TransactionId;
                     }
@@ -58,7 +59,8 @@ namespace apcurium.MK.Booking.EventHandlers
                         overduePayment.IBSOrderId = @event.IBSOrderId;
                     }
 
-                    overduePayment.ContainFees = overduePayment.ContainFees || @event.IsFee;
+                    overduePayment.ContainBookingFees = overduePayment.ContainBookingFees || @event.IsBookingFee;
+                    overduePayment.ContainStandaloneFees = overduePayment.ContainStandaloneFees || @event.IsCancellationFee || @event.IsNoShowFee; // possible? I don't think so
                     overduePayment.OverdueAmount += @event.Amount;
                     context.Save(overduePayment);
                 }

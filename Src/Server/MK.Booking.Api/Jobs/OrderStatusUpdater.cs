@@ -657,8 +657,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                             IBSOrderId = orderDetail.IBSOrderId,
                             OverdueAmount = totalOrderAmount,
                             TransactionId = paymentProviderServiceResponse.TransactionId,
-                            TransactionDate = paymentProviderServiceResponse.TransactionDate,
-                            IsBookingFee = false
+                            TransactionDate = paymentProviderServiceResponse.TransactionDate
                         });
                     }
                 }

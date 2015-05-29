@@ -83,11 +83,11 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 // PreAuthorization
-                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, bookingFees);
+                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, bookingFees, FeeType.Booking);
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
-                    var paymentResult = CommitPayment(bookingFees, bookingFees, orderStatusDetail.OrderId, false, false, true);
+                    var paymentResult = CommitPayment(bookingFees, bookingFees, orderStatusDetail.OrderId, FeeType.Booking);
                     if (paymentResult.IsSuccessful)
                     {
                         _logger.LogMessage("No show fee of amount {0} was charged for order {1}.", bookingFees, orderStatusDetail.IBSOrderId);
@@ -148,11 +148,11 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 // PreAuthorization
-                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, noShowFee);
+                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, noShowFee, FeeType.NoShow);
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
-                    var paymentResult = CommitPayment(noShowFee, bookingFees, orderStatusDetail.OrderId, true, false, false);
+                    var paymentResult = CommitPayment(noShowFee, bookingFees, orderStatusDetail.OrderId, FeeType.NoShow);
                     if (paymentResult.IsSuccessful)
                     {
                         _logger.LogMessage("No show fee of amount {0} was charged for order {1}.", noShowFee, orderStatusDetail.IBSOrderId);
@@ -214,11 +214,11 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 // PreAuthorization
-                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, cancellationFee);
+                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, cancellationFee, FeeType.Cancellation);
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
-                    var paymentResult = CommitPayment(cancellationFee, bookingFees, orderStatusDetail.OrderId, false, true, false);
+                    var paymentResult = CommitPayment(cancellationFee, bookingFees, orderStatusDetail.OrderId, FeeType.Cancellation);
                     if (paymentResult.IsSuccessful)
                     {
                         _logger.LogMessage("Cancellation fee of amount {0} was charged for order {1}.", cancellationFee, orderStatusDetail.IBSOrderId);
@@ -235,7 +235,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, decimal totalFeeAmount, string companyKey = null, string cvv = null)
+        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, decimal totalFeeAmount, FeeType feeType, string companyKey = null)
         {
             // Check payment instead of PreAuth setting, because we do not preauth in the cases of future bookings
             var paymentInfo = _paymentDao.FindByOrderId(orderId, companyKey);
@@ -258,7 +258,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var account = _accountDao.FindById(orderDetail.AccountId);
 
             // Fees are collected by the local company
-            var result = _paymentService.PreAuthorize(null, orderId, account, totalFeeAmount, cvv: cvv);
+            var result = _paymentService.PreAuthorize(null, orderId, account, totalFeeAmount);
             if (result.IsSuccessful)
             {
                 // Wait for OrderPaymentDetail to be created
@@ -275,14 +275,16 @@ namespace apcurium.MK.Booking.Services.Impl
                     OverdueAmount = totalFeeAmount,
                     TransactionId = result.TransactionId,
                     TransactionDate = result.TransactionDate,
-                    IsBookingFee = true
+                    IsNoShowFee = feeType == FeeType.NoShow,
+                    IsCancellationFee = feeType == FeeType.Cancellation,
+                    IsBookingFee = feeType == FeeType.Booking
                 });
             }
 
             return result;
         }
 
-        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalFeeAmount, decimal bookingFees, Guid orderId, bool isNoShowFee, bool isCancellationFee, bool isBookingFee)
+        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalFeeAmount, decimal bookingFees, Guid orderId, FeeType feeType)
         {
             var orderDetail = _orderDao.FindById(orderId);
             if (orderDetail == null)
@@ -348,9 +350,9 @@ namespace apcurium.MK.Booking.Services.Impl
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(0),
                         TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
-                        IsNoShowFee = isNoShowFee,
-                        IsCancellationFee = isCancellationFee,
-                        IsBookingFee = isBookingFee,
+                        IsNoShowFee = feeType == FeeType.NoShow,
+                        IsCancellationFee = feeType == FeeType.Cancellation,
+                        IsBookingFee = feeType == FeeType.Booking,
                         AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
                         TransactionId = paymentProviderServiceResponse.TransactionId,
                         BookingFees = bookingFees
@@ -378,9 +380,9 @@ namespace apcurium.MK.Booking.Services.Impl
                             OverdueAmount = totalFeeAmount,
                             TransactionId = paymentProviderServiceResponse.TransactionId,
                             TransactionDate = paymentProviderServiceResponse.TransactionDate,
-                            IsCancellation = isCancellationFee,
-                            IsNoShowFee = isNoShowFee,
-                            IsBookingFee = isBookingFee
+                            IsNoShowFee = feeType == FeeType.NoShow,
+                            IsCancellationFee = feeType == FeeType.Cancellation,
+                            IsBookingFee = feeType == FeeType.Booking,
                         });
                     }
                 }
@@ -405,6 +407,13 @@ namespace apcurium.MK.Booking.Services.Impl
                     Message = e.Message
                 };
             }
+        }
+
+        private enum FeeType
+        {
+            NoShow,
+            Cancellation,
+            Booking
         }
     }
 }

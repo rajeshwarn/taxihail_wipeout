@@ -78,14 +78,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var order = _orderDao.FindById(overduePayment.OrderId);
             var accountDetail = _accountDao.FindById(accountId);
 
-            var bookingFees = 0m;
-            if (overduePayment.ContainFees)
+            // since a preauth at start of ride will never trigger a overdue payment, if we get a noshow/cancel to settle, it will be the only payment to settle
+            // in the case of a succesful ride with another company, the overdue amount will contain the trip amount + booking fee so we have to separate them
+            var fees = 0m;
+            if (overduePayment.ContainBookingFees || overduePayment.ContainStandaloneFees)
             {
-                // this assumes it's a booking fee, otherwise it will not work
-                bookingFees = order.BookingFees;
-                if (bookingFees > 0)
+                fees = overduePayment.ContainBookingFees ? order.BookingFees : overduePayment.OverdueAmount;
+                if (fees > 0)
                 {
-                    var feesSettled = SettleOverduePayment(order.Id, accountDetail, bookingFees, null, false);
+                    var feesSettled = SettleOverduePayment(order.Id, accountDetail, fees, null, false);
                     if (!feesSettled)
                     {
                         return new SettleOverduePaymentResponse
@@ -95,8 +96,17 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     }
                 }
             }
-            
-            var paymentSettled = SettleOverduePayment(order.Id, accountDetail, overduePayment.OverdueAmount - bookingFees, order.CompanyKey, false);
+
+            var remainingToSettle = overduePayment.OverdueAmount - fees;
+            if (remainingToSettle <= 0)
+            {
+                return new SettleOverduePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+                
+            var paymentSettled = SettleOverduePayment(order.Id, accountDetail, remainingToSettle, order.CompanyKey, false);
             return new SettleOverduePaymentResponse
             {
                 IsSuccessful = paymentSettled

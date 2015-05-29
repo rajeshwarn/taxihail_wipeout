@@ -20,6 +20,14 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsPaid { get; set; }
 
-        public bool ContainFees { get; set; }
+        /// <summary>
+        /// When true, it means that the OverdueAmount will contain the trip amount + the booking fees
+        /// </summary>
+        public bool ContainBookingFees { get; set; }
+
+        /// <summary>
+        /// When true, it means that the OverdueAmount only contains a fee
+        /// </summary>
+        public bool ContainStandaloneFees { get; set; }
     }
 }

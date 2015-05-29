@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Commands
 
         public bool IsBookingFee { get; set; }
 
-        public bool IsCancellation { get; set; }
+        public bool IsCancellationFee { get; set; }
 
         public bool IsNoShowFee { get; set; }
     }
