@@ -78,16 +78,25 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var order = _orderDao.FindById(overduePayment.OrderId);
             var accountDetail = _accountDao.FindById(accountId);
 
+            var bookingFees = 0m;
             if (overduePayment.ContainFees)
             {
-                var bookingFees = order.BookingFees;
+                // this assumes it's a booking fee, otherwise it will not work
+                bookingFees = order.BookingFees;
                 if (bookingFees > 0)
                 {
-                    var feesSettled = SettleOverduePayment(order.Id, accountDetail, , order.CompanyKey, false);
+                    var feesSettled = SettleOverduePayment(order.Id, accountDetail, bookingFees, order.CompanyKey, false);
+                    if (!feesSettled)
+                    {
+                        return new SettleOverduePaymentResponse
+                        {
+                            IsSuccessful = false
+                        };
+                    }
                 }
-           }
-
-            var paymentSettled = SettleOverduePayment(order.Id, accountDetail, , order.CompanyKey, false);
+            }
+            
+            var paymentSettled = SettleOverduePayment(order.Id, accountDetail, overduePayment.OverdueAmount - bookingFees, order.CompanyKey, false);
             return new SettleOverduePaymentResponse
             {
                 IsSuccessful = paymentSettled
