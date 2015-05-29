@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 				if(isNumericOnly)
 				{
 					var textField = av.GetTextField(0);
-						textField.KeyboardType = UIKeyboardType.NumberPad;
+					textField.KeyboardType = UIKeyboardType.NumberPad;
 				}
 				av.Dismissed += (sender, e) => 
 				{
