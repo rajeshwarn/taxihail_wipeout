@@ -200,7 +200,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="44dip"
                     android:text="@string/HomeView_BookTaxi"
-                    local:MvxBind="Click BookATaxi" />
+                    local:MvxBind="Click Book" />
                 <ImageView
                     android:id="@+id/imagePromo"
                     android:layout_width="wrap_content"
