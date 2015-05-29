@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 			});
 		}	
 
-		public static Task<string> Prompt (string title, string message, Action cancelAction)
+		public static Task<string> Prompt (string title, string message, Action cancelAction, bool isNumericOnly = false)
 		{
 			var tcs = new TaskCompletionSource<string>();
 
@@ -159,6 +159,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 				LoadingOverlay.StopAnimatingLoading();
 				var av = new UIAlertView(title, message, null, Localize.GetValue("Cancel"), Localize.GetValue("OkButtonText"));
 				av.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
+
+				if(isNumericOnly)
+				{
+					var textField = av.GetTextField(0);
+						textField.KeyboardType = UIKeyboardType.NumberPad;
+				}
 				av.Dismissed += (sender, e) => 
 				{
 					if(e.ButtonIndex == 0)
