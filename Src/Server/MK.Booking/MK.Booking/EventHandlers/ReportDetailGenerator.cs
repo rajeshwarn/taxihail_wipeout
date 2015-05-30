@@ -261,7 +261,10 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
-                orderReport.OrderStatus.OrderIsCancelled = true;
+                if (orderReport != null)
+                { 
+                    orderReport.OrderStatus.OrderIsCancelled = true;
+                }
                 context.Save(orderReport);
             }
         }
