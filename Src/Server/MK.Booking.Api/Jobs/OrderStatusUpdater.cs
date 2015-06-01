@@ -222,9 +222,22 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     if (ibsOrderInfo.Status == VehicleStatuses.Common.NoShow)
                     {
-                        // TODO void preauth if order companykey is different than null?
+                        // Charge No Show fees on company Null
+                        var feeCharged = _feeService.ChargeNoShowFeeIfNecessary(orderStatusDetail);
 
-                        _feeService.ChargeNoShowFeeIfNecessary(orderStatusDetail);
+                        if (orderStatusDetail.CompanyKey != null)
+                        {
+                            // Company not-null will never (so far) perceive no show fees, so we need to void its preauth
+                            _paymentService.VoidPreAuthorization(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId);
+                        }
+                        else
+                        {
+                            if (!feeCharged.HasValue)
+                            {
+                                // No fees were charged on company null, void the preauthorization to prevent misuse fees
+                                _paymentService.VoidPreAuthorization(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId);
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)

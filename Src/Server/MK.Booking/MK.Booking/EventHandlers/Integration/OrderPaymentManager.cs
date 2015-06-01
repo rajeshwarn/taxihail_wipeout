@@ -126,13 +126,20 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
             else
             {
-                // TODO void preauth if order companykey is different than null?
-
                 var feeCharged = _feeService.ChargeCancellationFeeIfNecessary(orderDetail);
-                if (!feeCharged.HasValue)
+
+                if (orderDetail.CompanyKey != null)
                 {
-                    // void the preauthorization to prevent misuse fees
-                    _paymentService.VoidPreAuthorization(orderDetail.CompanyKey, @event.SourceId);
+                    // Company not-null will never (so far) perceive no show fees, so we need to void its preauth
+                    _paymentService.VoidPreAuthorization(orderDetail.CompanyKey, orderDetail.OrderId);
+                }
+                else
+                {
+                    if (!feeCharged.HasValue)
+                    {
+                        // No fees were charged on company null, void the preauthorization to prevent misuse fees
+                        _paymentService.VoidPreAuthorization(orderDetail.CompanyKey, @event.SourceId);
+                    }
                 }
             }
         }
