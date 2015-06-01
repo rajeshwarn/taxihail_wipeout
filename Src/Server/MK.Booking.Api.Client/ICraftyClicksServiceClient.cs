@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
-using MK.Common.Android.Entity;
+using apcurium.MK.Common.Entity;
+
 
 namespace apcurium.MK.Booking.Api.Client
 {

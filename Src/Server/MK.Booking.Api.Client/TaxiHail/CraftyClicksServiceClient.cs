@@ -2,8 +2,8 @@ using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
 using CMTPayment.Extensions;
-using MK.Common.Android.Entity;
 using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail

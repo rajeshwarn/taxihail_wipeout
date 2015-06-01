@@ -1,4 +1,4 @@
-namespace MK.Common.Android.Entity
+namespace apcurium.MK.Common.Entity
 {
     public class CraftyClicksAddress
     {

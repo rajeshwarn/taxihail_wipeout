@@ -1,4 +1,4 @@
-using MK.Common.Android.Entity;
+using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
