@@ -92,15 +92,13 @@ namespace apcurium.MK.Booking.Database
 
         public void Save<T>(T entity) where T : class
         {
-            if (entity != null)
-                {
-                var entry = Entry(entity);
+            var entry = Entry(entity);
 
-                if (entry.State == EntityState.Detached)
-                {
-                    Set<T>().Add(entity);
-                }
+            if (entry.State == EntityState.Detached)
+            {
+                Set<T>().Add(entity);
             }
+
             SaveChanges();
         }
     }
