@@ -54,9 +54,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var accountId = new Guid(session.UserAuthId);
 
             var overduePayment = _overduePaymentDao.FindNotPaidByAccountId(accountId);
-
-            // Client app can crash if this value is null. Make sure that it doesn't happen.
-            overduePayment.IBSOrderId = overduePayment.IBSOrderId ?? 0;
+            if (overduePayment != null)
+            {
+                // Client app can crash if this value is null. Make sure that it doesn't happen.
+                overduePayment.IBSOrderId = overduePayment.IBSOrderId ?? 0;
+            }
 
             return overduePayment;
         }
@@ -87,7 +89,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 fees = overduePayment.ContainBookingFees ? order.BookingFees : overduePayment.OverdueAmount;
                 if (fees > 0)
                 {
-                    var feesSettled = SettleOverduePayment(order.Id, accountDetail, fees, null, false);
+                    var feesSettled = SettleOverduePayment(order.Id, accountDetail, fees, null, true);
                     if (!feesSettled)
                     {
                         return new SettleOverduePaymentResponse
@@ -114,12 +116,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
         }
 
-        private bool SettleOverduePayment(Guid orderId, AccountDetail accountDetail, decimal amount, string companyKey, bool isFee /* TODO: fix*/)
+        private bool SettleOverduePayment(Guid orderId, AccountDetail accountDetail, decimal amount, string companyKey, bool isFee)
         {
             var payment = _orderPaymentDao.FindByOrderId(orderId, companyKey);
             var reAuth = payment != null;
 
-            var preAuthResponse = _paymentService.PreAuthorize(companyKey, orderId, accountDetail, amount, reAuth, true);
+            var preAuthResponse = _paymentService.PreAuthorize(companyKey, orderId, accountDetail, amount, reAuth, isSettlingOverduePayment: true);
             if (preAuthResponse.IsSuccessful)
             {
                 // Wait for payment to be created
@@ -142,10 +144,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     var paymentDetail = _orderPaymentDao.FindByOrderId(orderId, companyKey);
                     var promotion = _promotionDao.FindByOrderId(orderId);
 
-                    var pairingInfo = _orderDao.FindOrderPairingById(orderId);
-                    var tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(amount, pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage);
-                    
-                    var meterAmount = isFee ? amount : amount - tipAmount;
+                    decimal meterAmount = amount;
+                    decimal tipAmount = 0;
+
+                    if (!isFee)
+                    {
+                        var pairingInfo = _orderDao.FindOrderPairingById(orderId);
+                        tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(amount, pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage);
+                        meterAmount = meterAmount - tipAmount;
+                    }
 
                     var fareObject = FareHelper.GetFareFromAmountInclTax(meterAmount,
                         _serverSettings.ServerData.VATIsEnabled
