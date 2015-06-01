@@ -194,11 +194,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
                 var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
 
+                if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt)
+                {
+                    // Since RideLinqCmt payment is processed automatically by CMT, we have to charge booking fees separately
+                    _feeService.ChargeBookingFeesIfNecessary(orderStatus);
+                }
+
                 // If the user has decided not to pair (paying the ride in car instead),
                 // we have to void the amount that was preauthorized
                 if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode != PaymentMethod.RideLinqCmt
-                    && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                        || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+                    && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     && pairingInfo == null
                     && !orderStatus.IsPrepaid) //prepaid order will never have a pairing info
                 {
