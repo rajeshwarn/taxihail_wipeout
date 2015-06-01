@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Configuration;
@@ -18,13 +19,23 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task<CraftyClicksAddress> GetAddressInformation(string postalCode)
         {
-            var client = new JsonServiceClient("http://pcls1.craftyclicks.co.uk/json/");
-
-            return client.GetAsync(new CraftyClicksRequest
+            try
             {
-                PostalCode = postalCode,
-                Key = _settingsService.Data.CraftyClicksApiKey
-            });
+                var client = new JsonServiceClient("http://pcls1.craftyclicks.co.uk/json/");
+
+            
+                return client.PostAsync(new CraftyClicksRequest
+                {
+                    Postcode = postalCode,
+                    Key = _settingsService.Data.CraftyClicksApiKey
+                });
+            }
+            catch (Exception ex)
+            {
+                
+                throw;
+            }
+            
         }
     }
 }

@@ -52,9 +52,18 @@ namespace MK.Booking.MapDataProvider.Foursquare
 		    searchQueryString = string.Format("{0}&query={1}", searchQueryString, name);
 
 		    var client = new JsonServiceClient(ApiUrl);
-            var venues = client.Get<FoursquareVenuesResponse<VenuesResponse>>(searchQueryString);
+		    try
+		    {
+                var venues = client.Get<FoursquareVenuesResponse<VenuesResponse>>(searchQueryString);
 
-            return venues.Response.Venues.Select(ToPlace).ToArray();
+                return venues.Response.Venues.Select(ToPlace).ToArray();
+		    }
+		    catch (Exception ex)
+		    {
+		        
+		        throw;
+		    }
+            
 		}
 
 		private GeoPlace ToPlace(Venue venue)

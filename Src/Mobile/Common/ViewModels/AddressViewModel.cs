@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	{
 		Favorites,
 		Places,
-		History,
+		History
 	}
 }
 

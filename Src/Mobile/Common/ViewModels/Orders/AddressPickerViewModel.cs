@@ -12,6 +12,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -24,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IGeolocService _geolocService;
 		private readonly IAccountService _accountService;
 		private readonly ILocationService _locationService;
+	    private readonly ICraftyClicksService _craftyClicksService;
+	    private readonly IAppSettings _appSettings;
 
 		private bool _isInLocationDetail;
 		private Address _currentAddress;	
@@ -32,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultNearbyPlaces = new AddressViewModel[0];
+
         public AddressViewModel[] FilteredPlaces { get; private set; }
 
 		private AddressLocationType _currentActiveFilter;
@@ -42,16 +46,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			IPlaces placesService,
 			IGeolocService geolocService,
 			IAccountService accountService,
-			ILocationService locationService)
+			ILocationService locationService, ICraftyClicksService craftyClicksService, IAppSettings appSettings)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_geolocService = geolocService;
 			_placesService = placesService;
 			_accountService = accountService;
 			_locationService = locationService;
+		    _craftyClicksService = craftyClicksService;
+		    _appSettings = appSettings;
 
 
-            FilteredPlaces = new AddressViewModel[0];
+		    FilteredPlaces = new AddressViewModel[0];
 		}
 
 		public void Init(string searchCriteria)
@@ -92,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     _currentLanguage
                 )
             );
-
+            
             using (this.Services().Message.ShowProgressNonModal())
             {
                 AllAddresses.Clear();
@@ -229,10 +235,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				var place = _placesService.GetPlaceDetail(value.FriendlyName, value.PlaceId);
 				return place;
 			}
-			else
-			{
-				return value;
-			}
+
+            if ((value != null) && (value.AddressType == "craftyclicks"))
+            {
+                var geoLoc = _geolocService.SearchAddress(value.FullAddress, value.Latitude, value.Longitude);
+
+                if (geoLoc.Any())
+                {
+                    return geoLoc.First();
+                }
+            }
+
+            return value;
 		}
 
 		public ICommand AddressSelected
@@ -313,6 +327,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 return;
             }
 
+            
             if (criteria.HasValue() && criteria != StartingText)
 			{
 				using (this.Services().Message.ShowProgressNonModal())
@@ -323,6 +338,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					var fhAdrs = SearchFavoriteAndHistoryAddresses(criteria);
 					var pAdrs = Task.Run(() => SearchPlaces(criteria));
 					var gAdrs = Task.Run(() => SearchGeocodeAddresses(criteria));
+				    if (_appSettings.Data.CraftyClicksApiKey.HasValue())
+				    {
+                        var ccAdrs = SearchPostalCode(criteria);
+
+                        AllAddresses.AddRangeDistinct(await ccAdrs, (x, y) => x.Equals(y));
+				    }
 
 					AllAddresses.AddRangeDistinct(await fhAdrs, (x, y) => x.Equals(y));
 					AllAddresses.AddRangeDistinct(await pAdrs, (x, y) => x.Equals(y));
@@ -366,6 +387,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			return a1.Concat(a2).ToArray(); 
 		}
+
+	    protected async Task<AddressViewModel[]> SearchPostalCode(string criteria)
+	    {
+	        try
+	        {
+                var postalCodeAddresses = await Task.Run(() => _craftyClicksService.GetCraftyClicksAddressFromPostalCode(criteria));
+
+                return postalCodeAddresses
+                    .Select(adrs => new AddressViewModel(adrs, AddressType.Places))
+                    .ToArray();
+	        }
+	        catch (Exception ex)
+	        {
+	            Logger.LogMessage("Unable to obtain postalcode information from CraftyClicks.");
+                Logger.LogError(ex);
+
+	            return new AddressViewModel[0];
+	        }
+            
+	    }
+
 
 		protected AddressViewModel[] SearchGeocodeAddresses(string criteria)
 		{
