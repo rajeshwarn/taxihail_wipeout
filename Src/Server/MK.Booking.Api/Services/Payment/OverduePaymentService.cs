@@ -7,6 +7,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
@@ -170,7 +171,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         TransactionId = commitResponse.TransactionId,
                         PromotionUsed = promotion != null ? promotion.PromoId : default(Guid?),
                         AmountSavedByPromotion = promotion != null ? promotion.AmountSaved : 0,
-                        IsBookingFee = isFee
+                        FeeType = isFee ? FeeTypes.Booking : FeeTypes.None
                     });
 
                     _commandBus.Send(new SettleOverduePayment

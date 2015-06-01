@@ -90,9 +90,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
-            if (@event.IsNoShowFee
-                || @event.IsCancellationFee
-                || @event.IsBookingFee)
+            @event.MigrateFees();
+
+            if (@event.FeeType != FeeTypes.None)
             {
                 return;
             }

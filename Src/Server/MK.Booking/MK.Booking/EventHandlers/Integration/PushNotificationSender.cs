@@ -77,12 +77,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
+            @event.MigrateFees();
+
             try
             {
-                if (@event.IsNoShowFee
-                    || @event.IsCancellationFee
-                    || @event.IsForPrepaidOrder
-                    || @event.IsBookingFee)
+                if (@event.IsForPrepaidOrder || @event.FeeType != FeeTypes.None)
                 {
                     // Don't message user for now
                     return;

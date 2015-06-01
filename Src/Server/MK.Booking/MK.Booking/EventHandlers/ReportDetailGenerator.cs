@@ -162,11 +162,13 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
+            @event.MigrateFees();
+
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
 
-                if (@event.IsBookingFee || @event.IsCancellationFee || @event.IsNoShowFee)
+                if (@event.FeeType != FeeTypes.None)
                 {
                     orderReport.Payment.TotalAmountCharged += @event.Amount;
                 }
@@ -179,11 +181,16 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.Payment.BookingFees = @event.BookingFees;
                 }
 
+                if (!orderReport.Payment.TotalAmountCharged.HasValue)
+                {
+                    orderReport.Payment.TotalAmountCharged = 0;
+                }
+
                 orderReport.Payment.TotalAmountCharged += @event.Amount;
                 orderReport.Payment.IsCompleted = true;
                 
-                orderReport.Payment.WasChargedNoShowFee = @event.IsNoShowFee;
-                orderReport.Payment.WasChargedCancellationFee = @event.IsCancellationFee;
+                orderReport.Payment.WasChargedNoShowFee = @event.FeeType == FeeTypes.NoShow;
+                orderReport.Payment.WasChargedCancellationFee = @event.FeeType == FeeTypes.Cancellation;
                 orderReport.Payment.WasChargedBookingFee = orderReport.Payment.BookingFees > 0;
                 
                 context.Save(orderReport);

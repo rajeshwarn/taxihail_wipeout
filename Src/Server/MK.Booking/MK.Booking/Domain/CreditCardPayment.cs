@@ -46,8 +46,8 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void Capture(PaymentProvider provider, decimal totalAmount, decimal meterAmount, decimal tipAmount, decimal taxAmount,
-            decimal tollAmount, decimal surchargeAmount, string authorizationCode, string transactionId, bool isNoShowFee, bool isCancellationFee, Guid? promotionUsed,
-            decimal amountSavedByPromotion, string newCardToken, Guid accountId, bool isSettlingOverduePayment, bool isForPrepaidOrder, bool isBookingFee, decimal bookingFees)
+            decimal tollAmount, decimal surchargeAmount, string authorizationCode, string transactionId, Guid? promotionUsed,
+            decimal amountSavedByPromotion, string newCardToken, Guid accountId, bool isSettlingOverduePayment, bool isForPrepaidOrder, FeeTypes feeType, decimal bookingFees)
         {
             if (_isCaptured)
             {
@@ -66,15 +66,13 @@ namespace apcurium.MK.Booking.Domain
                 Toll = tollAmount,
                 Surcharge = surchargeAmount,
                 Provider = provider,
-                IsNoShowFee = isNoShowFee,
-                IsCancellationFee = isCancellationFee,
                 IsSettlingOverduePayment = isSettlingOverduePayment,
                 PromotionUsed = promotionUsed,
                 AmountSavedByPromotion = amountSavedByPromotion,
                 AccountId = accountId,
                 NewCardToken = newCardToken,
                 IsForPrepaidOrder = isForPrepaidOrder,
-                IsBookingFee = isBookingFee,
+                FeeType = feeType,
                 BookingFees = bookingFees
             });
         }

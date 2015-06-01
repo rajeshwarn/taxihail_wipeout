@@ -341,7 +341,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 IBSOrderId = 5544,
                 OverdueAmount = 42.25m,
                 TransactionDate = transactionDate,
-                TransactionId = "1337"
+                TransactionId = "1337",
+                
             });
 
             var @event1 = (OverduePaymentLogged)_sut.ThenHas<OverduePaymentLogged>().First();

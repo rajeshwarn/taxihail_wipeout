@@ -3,6 +3,7 @@ using System.Data.SqlTypes;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
@@ -43,13 +44,13 @@ namespace apcurium.MK.Booking.EventHandlers
                         OverdueAmount = @event.Amount,
                         TransactionId = @event.TransactionId,
                         TransactionDate = transactionDate,
-                        ContainBookingFees = @event.IsBookingFee,
-                        ContainStandaloneFees = @event.IsCancellationFee || @event.IsNoShowFee
+                        ContainBookingFees = @event.FeeType == FeeTypes.Booking,
+                        ContainStandaloneFees = @event.FeeType == FeeTypes.Cancellation || @event.FeeType == FeeTypes.NoShow
                     });
                 }
                 else
                 {
-                    if (!@event.IsBookingFee)
+                    if (@event.FeeType != FeeTypes.Booking)
                     {
                         overduePayment.TransactionId = @event.TransactionId;
                     }
@@ -59,8 +60,12 @@ namespace apcurium.MK.Booking.EventHandlers
                         overduePayment.IBSOrderId = @event.IBSOrderId;
                     }
 
-                    overduePayment.ContainBookingFees = overduePayment.ContainBookingFees || @event.IsBookingFee;
-                    overduePayment.ContainStandaloneFees = overduePayment.ContainStandaloneFees || @event.IsCancellationFee || @event.IsNoShowFee; // possible? I don't think so
+                    overduePayment.ContainBookingFees = overduePayment.ContainBookingFees
+                        || @event.FeeType == FeeTypes.Booking;
+                    overduePayment.ContainStandaloneFees = overduePayment.ContainStandaloneFees
+                        || @event.FeeType == FeeTypes.Cancellation
+                        || @event.FeeType == FeeTypes.NoShow; // is such a thing even possible? I don't think so
+
                     overduePayment.OverdueAmount += @event.Amount;
                     context.Save(overduePayment);
                 }

@@ -57,13 +57,13 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
                 IsForPrepaidOrder = true,
                 IsSettlingOverduePayment = true,
                 NewCardToken = "fjff",
-                IsCancellationFee = true,
-                IsNoShowFee = true,
+                FeeType = FeeTypes.Cancellation,
                 BookingFees = 5m,
                 AmountSavedByPromotion = 1,
                 AuthorizationCode = "authcode",
                 PromotionUsed = _promoId,
                 Provider = PaymentProvider.Braintree
+
             });
 
             var @event = _sut.ThenHasSingle<CreditCardPaymentCaptured_V2>();
@@ -79,13 +79,12 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             Assert.AreEqual("fjff", @event.NewCardToken);
             Assert.AreEqual(true, @event.IsSettlingOverduePayment);
             Assert.AreEqual(true, @event.IsForPrepaidOrder);
-            Assert.AreEqual(true, @event.IsCancellationFee);
-            Assert.AreEqual(true, @event.IsNoShowFee);
             Assert.AreEqual(5, @event.BookingFees);
             Assert.AreEqual(1, @event.AmountSavedByPromotion);
             Assert.AreEqual("authcode", @event.AuthorizationCode);
             Assert.AreEqual(_promoId, @event.PromotionUsed);
             Assert.AreEqual(PaymentProvider.Braintree, @event.Provider);
+            Assert.AreEqual(FeeTypes.Cancellation, @event.FeeType);
         }
 
         [Test]

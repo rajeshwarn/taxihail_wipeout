@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Events
 
         public Guid OrderId { get; set; }
 
+        [Obsolete("Use FeeType enum instead")]
         public bool IsNoShowFee { get; set; }
 
         public Guid? PromotionUsed { get; set; }
