@@ -87,7 +87,7 @@
 
             TaxiHail.parameters.availableVehicleRefreshRate = "<%: AvailableVehicleRefreshRate %>";
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
-            TaxiHail.parameters.craftyclicksapikey = <%: CraftyClicksApiKey %>;
+            TaxiHail.parameters.craftyclicksapikey = "<%: CraftyClicksApiKey %>";
             
             <% if(IsPayBackRegistrationFieldRequired == true) { %>
                 TaxiHail.parameters.isPayBackRegistrationFieldRequired = "true";
