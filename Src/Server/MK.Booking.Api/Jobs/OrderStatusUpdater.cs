@@ -34,7 +34,6 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IOrderDao _orderDao;
         private readonly INotificationService _notificationService;
         private readonly IDirections _directions;
-        private readonly IIbsOrderService _ibsOrderService;
         private readonly IAccountDao _accountDao;
         private readonly IIbsOrderService _ibs;
         private readonly IPromotionDao _promotionDao;
@@ -57,7 +56,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             IOrderDao orderDao,
             INotificationService notificationService,
             IDirections directions,
-            IIbsOrderService ibsOrderService,
             IAccountDao accountDao,
             IIbsOrderService ibs,
             IPromotionDao promotionDao,
@@ -70,7 +68,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             _orderDao = orderDao;
             _notificationService = notificationService;
             _directions = directions;
-            _ibsOrderService = ibsOrderService;
             _serverSettings = serverSettings;
             _accountDao = accountDao;
             _ibs = ibs;
@@ -466,7 +463,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     {
                         if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                         {
-                            _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                            _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
                         }
 
                         // set the payment error message in OrderStatusDetail for reporting purpose
@@ -479,7 +476,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                     {
-                        _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                        _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
                     }
 
                     // set the payment error message in OrderStatusDetail for reporting purpose
@@ -492,7 +489,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                 {
-                    _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                    _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
                 }
 
                 // set the payment error message in OrderStatusDetail for reporting purpose
@@ -833,7 +830,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (eta != null && eta.IsValidEta())
             {
                 var etaMessage = string.Format(_resources.Get("EtaMessageToDriver"), eta.FormattedDistance, eta.Duration);
-                _ibsOrderService.SendMessageToDriver(etaMessage, vehicleNumber);
+                _ibs.SendMessageToDriver(etaMessage, vehicleNumber);
                 Log.Debug(etaMessage);
             }
         }
@@ -841,13 +838,13 @@ namespace apcurium.MK.Booking.Api.Jobs
         private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber)
         {
             var paymentBeingProcessedMessage = _resources.Get("PaymentBeingProcessedMessageToDriver");
-            _ibsOrderService.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber);
+            _ibs.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber);
             Log.Debug(paymentBeingProcessedMessage);
         }
 
         private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip)
         {
-            _ibsOrderService.SendPaymentNotification(amount, meter, tip, null, vehicleNumber);
+            _ibs.SendPaymentNotification(amount, meter, tip, null, vehicleNumber);
         }
 
         private void InitializeCmtServiceClient()
