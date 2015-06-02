@@ -94,7 +94,7 @@
 "CreditCardCCV"="CVV";
 "ApplicationName"="TaxiHail";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
-"PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to have a credit card configured in the app.";
+"PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to enter a credit card as part of your account.";
 "AccountDisabled"="Your account has been disabled, please contact {0} at {1} to activate your account.";
 "CreditCardExpYear"="Exp. Year";
 "HistoryDetailAuthorizationLabel"="Authorization:";
@@ -172,7 +172,7 @@
 "PanelMenuViewAboutUsText"="About Us";
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "PaymentDetails.InvalidDataTitle"="Invalid payment information";
-"PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked in the app.";
+"PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked to your account.";
 "September"="Sep (09)";
 "SaveAddressEmptyFieldTitle"="Friendly name required";
 "Politeness"="Politeness";
@@ -523,7 +523,7 @@
 "ChooseProviderDialogTitle"="Pick a provider";
 "Overdue_Amount"="Amount due:";
 "UpdateBookingSettingsEmptyAccount"="Account and rider numbers cannot be empty when Charge Type is set to Charge Account";
-"PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured in the app.";
+"PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured as part of your account.";
 "CreateAccountPayBackPlaceHolder"="PayBack";
 "WarningPushServiceAction"="Thanks for letting me know";
 "CmtRideLinqConfirmPairView"="Confirm Payment Information";

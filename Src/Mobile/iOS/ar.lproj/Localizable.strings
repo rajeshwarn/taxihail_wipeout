@@ -1,5 +1,5 @@
 "CreateAccountEmailPlaceHolder"="البرید الإلكتروني";
-"PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured in the app.";
+"PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured as part of your account.";
 "CmtCardNumber"="طريقة الدفع:";
 "Edit"="تعديل";
 "RideSettingsName"="الاسم";
@@ -41,7 +41,7 @@
 "PaymentViewTipText"="الإكرامية";
 "ConfirmVehiculeTypeLabel"="نوع السيارة:";
 "View_PaymentPreference"="طرق الدفع المفضلة";
-"PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to have a credit card configured in the app.";
+"PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to enter a credit card as part of your account.";
 "InvalidPassengersNumberTitle"="Invalid Number of Passengers";
 "InvalidAddressMessage"="العنوان الذي أدخلته غير صحيح. يرجى التأكد من المعلومات";
 "CreateAccountErrorTitle"="خطأ";
@@ -431,7 +431,7 @@
 "PanelMenuViewSignOutText"="خروج";
 "DontAsk"="Don't ask";
 "TimeNow"="في أقرب وقت ممكن";
-"PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked in the app.";
+"PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked to your account.";
 "Overdue_Succeed_Message"="Your overdue payment of {0} has been settled and your account is now enabled to pay with your card on file by default.";
 "InvalidLocalContactTitle"="الإسم غير صحيح";
 "RideSettingsPayBack"="PayBack";
