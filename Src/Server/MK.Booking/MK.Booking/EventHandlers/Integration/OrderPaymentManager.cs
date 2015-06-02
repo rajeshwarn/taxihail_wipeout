@@ -1,10 +1,12 @@
 ﻿using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -17,7 +19,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<OrderCancelled>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<OrderStatusChanged>,
-        IEventHandler<OrderCancelledBecauseOfError>
+        IEventHandler<OrderCancelledBecauseOfError>,
+        IEventHandler<ManualRideLinqTripInfoUpdated>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
@@ -209,6 +212,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     // void the preauthorization to prevent misuse fees
                     _paymentService.VoidPreAuthorization(order.CompanyKey, @event.SourceId);
+                }
+            }
+        }
+
+        public void Handle(ManualRideLinqTripInfoUpdated @event)
+        {
+            if (@event.EndTime.HasValue)
+            {
+                var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+                if (orderStatus != null)
+                {
+                    // Since RideLinqCmt payment is processed automatically by CMT, we have to charge booking fees separately
+                    _feeService.ChargeBookingFeesIfNecessary(orderStatus);
                 }
             }
         }
