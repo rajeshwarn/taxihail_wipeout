@@ -28,6 +28,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         public BraintreeServerSettings BraintreeServerSettings { get; set; }
         public PayPalServerSettings PayPalServerSettings { get; set; }
 
+        [Obsolete("This property is deprecated. It is only kept to support older versions.", false)]
         public decimal? NoShowFee { get; set; }
 
         public bool IsPreAuthEnabled { get; set; }

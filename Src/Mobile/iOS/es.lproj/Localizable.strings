@@ -508,7 +508,9 @@
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
 "PromoCodeLabel"="Promo code";
 "PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with your configured payment method.";
-"PromoMustHavePaymentMethodSetMessage"="In order to use a promo code, you need to have a payment method configured in the app.";
+"PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured in the app.";
+"PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked in the app.";
+"PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to have a credit card configured in the app.";
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "WarningPromoCodeDontShow"="No avisar";
 "PanelMenuViewPromotionsText"="Promotions";
@@ -590,7 +592,9 @@
 "InvalidChargeType"="You must select a charge type to be able to book a ride";
 "BookATaxi_Message"="When would you like to book?";
 "InvalidChargeTypeTitle"="Invalid Charge Type";
-"AddPaymentMethod"="Add payment method";
+"AddPaymentMethod_Multiple"="Add payment method";
+"AddPaymentMethod_CreditCard"="Add credit card";
+"AddPaymentMethod_PayPal"="Link PayPal account";
 "CurrentBookingDisabledTitle"="Current Booking Disabled";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "CvvRequiredTitle"="CVV Required";
@@ -602,6 +606,8 @@
 "CallDriverUsingProxyErrorMessage"="Sorry, we weren't able to initiate a call with your driver.";
 "GenericErrorTitle"="Error";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
+"ManualRideLinqStatus_Extra"="Extra:";
 "StatusEditAutoTipButton"="Tip";
+"ManualRideLinqStatus_Toll"="Toll:";
 "View_EditAutoTip"="Edit Tip";
 "Error_EditAutoTipMessage"="An error occurred while trying to update the tip. Please try again.";

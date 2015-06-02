@@ -39,6 +39,39 @@ namespace DatabaseInitializer.Sql
             DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "DROP DATABASE [" + database + "]");
         }
 
+        public void DropSchema(string connString, string databaseName)
+        {
+            string procedureName = "MkDropSchema_" + databaseName;
+            DatabaseHelper.ExecuteNonQuery(connString, "IF OBJECT_ID('" + procedureName + "') IS NOT NULL DROP PROCEDURE " + procedureName);
+            string dropTablesCreateProcSql = @"
+                CREATE PROCEDURE " + procedureName + @" AS
+                BEGIN 
+                    DECLARE @Sql NVARCHAR(500) DECLARE @Cursor CURSOR;
+
+                    SET @Cursor = CURSOR FAST_FORWARD FOR
+                        SELECT DISTINCT sql = 'ALTER TABLE [' + tc2.TABLE_SCHEMA + '].[' + tc2.TABLE_NAME + '] DROP [' + rc1.CONSTRAINT_NAME + ']'
+                        FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc1
+                        LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc2 ON tc2.CONSTRAINT_NAME =rc1.CONSTRAINT_NAME
+                        WHERE rc1.CONSTRAINT_CATALOG = '" + databaseName + @"';
+
+                    OPEN @Cursor FETCH NEXT FROM @Cursor INTO @Sql;
+
+                    WHILE (@@FETCH_STATUS = 0)
+                    BEGIN
+                        Exec SP_EXECUTESQL @Sql
+                        FETCH NEXT FROM @Cursor INTO @Sql
+                    END
+
+                    CLOSE @Cursor DEALLOCATE @Cursor;
+
+                    EXEC sp_MSForEachTable 'DROP TABLE ?';
+                END
+                ";
+            DatabaseHelper.ExecuteNonQuery(connString, dropTablesCreateProcSql);
+            DatabaseHelper.ExecuteNonQuery(connString, "EXEC " + procedureName);
+            DatabaseHelper.ExecuteNonQuery(connString, "DROP PROCEDURE " + procedureName);
+        }
+
 
 
 

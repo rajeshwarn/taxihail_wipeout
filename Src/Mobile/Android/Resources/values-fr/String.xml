@@ -601,7 +601,9 @@
   <string name="InvalidChargeType">Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande</string>
   <string name="BookATaxi_Message">Quand voulez-vous commander votre taxi?</string>
   <string name="InvalidChargeTypeTitle">Type de paiement invalide</string>
-  <string name="AddPaymentMethod">Ajouter une méthode de paiement</string>
+  <string name="AddPaymentMethod_Multiple">Ajouter une méthode de paiement</string>
+  <string name="AddPaymentMethod_CreditCard">Ajouter une carte de crédit</string>
+  <string name="AddPaymentMethod_PayPal">Associer un compte PayPal</string>
   <string name="CurrentBookingDisabledTitle">Réservation Immédiate Non Disponible</string>
   <string name="ManualRideLinqNoCardOnFile">Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</string>
   <string name="CvvRequiredTitle">CVV Requis</string>
@@ -609,10 +611,14 @@
   <string name="Error_InvalidCvvTitle">CVV Invalide</string>
   <string name="Error_InvalidCvvMessage">Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres</string>
   <string name="ManualRideLinqCreditCardDisabled">Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu\'à ce que ce montant soit payé.</string>
-  <string name="PromoMustHavePaymentMethodSetMessage">Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.</string>
   <string name="GenericErrorTitle">Erreur</string>
   <string name="CallDriverUsingProxyPrompt">Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepter, votre chauffeur vous rappellera aussitôt que possible.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">Pour utiliser un code promotionnel, vous devez avoir un compte PayPal associé à votre compte.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.</string>
+  <string name="ManualRideLinqStatus_Extra">Extra:</string>
   <string name="StatusEditAutoTipButton">Pourboire</string>
+  <string name="ManualRideLinqStatus_Toll">Péage:</string>
   <string name="View_EditAutoTip">Modifier Pourboire</string>
   <string name="Error_EditAutoTipMessage">Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</string>
 </resources>

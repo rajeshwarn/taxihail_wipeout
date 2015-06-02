@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1921,8 +1921,14 @@
   <data name="InvalidChargeTypeTitle" xml:space="preserve">
     <value>Type de paiement invalide</value>
   </data>
-  <data name="AddPaymentMethod" xml:space="preserve">
+  <data name="AddPaymentMethod_Multiple" xml:space="preserve">
     <value>Ajouter une méthode de paiement</value>
+  </data>
+  <data name="AddPaymentMethod_CreditCard" xml:space="preserve">
+    <value>Ajouter une carte de crédit</value>
+  </data>
+  <data name="AddPaymentMethod_PayPal" xml:space="preserve">
+    <value>Associer un compte PayPal</value>
   </data>
   <data name="CurrentBookingDisabledTitle" xml:space="preserve">
     <value>Réservation Immédiate Non Disponible</value>
@@ -1945,7 +1951,7 @@
   <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
     <value>Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.</value>
   </data>
-  <data name="PromoMustHavePaymentMethodSetMessage" xml:space="preserve">
+  <data name="PromoMustHavePaymentMethodSetMessage_Multiple" xml:space="preserve">
     <value>Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.</value>
   </data>
   <data name="GenericErrorTitle" xml:space="preserve">
@@ -1954,8 +1960,20 @@
   <data name="CallDriverUsingProxyPrompt" xml:space="preserve">
     <value>Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepter, votre chauffeur vous rappellera aussitôt que possible.</value>
   </data>
+  <data name="PromoMustHavePaymentMethodSetMessage_PayPal" xml:space="preserve">
+    <value>Pour utiliser un code promotionnel, vous devez avoir un compte PayPal associé à votre compte.</value>
+  </data>
+  <data name="PromoMustHavePaymentMethodSetMessage_CreditCard" xml:space="preserve">
+    <value>Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Extra" xml:space="preserve">
+    <value>Extra:</value>
+  </data>
   <data name="StatusEditAutoTipButton" xml:space="preserve">
     <value>Pourboire</value>
+  </data>
+  <data name="ManualRideLinqStatus_Toll" xml:space="preserve">
+    <value>Péage:</value>
   </data>
   <data name="View_EditAutoTip" xml:space="preserve">
     <value>Modifier Pourboire</value>

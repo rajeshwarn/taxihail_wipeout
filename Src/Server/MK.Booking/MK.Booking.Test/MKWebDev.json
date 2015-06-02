@@ -1,7 +1,6 @@
 {
    "DefaultBookingSettings.ChargeTypeId" : "1",
    "DefaultBookingSettings.NbPassenger" : "1",
-   "DefaultBookingSettings.ProviderId" : "13",
    "DefaultBookingSettings.VehicleTypeId" : "1",
    "Direction.FlateRate" : "3.45",
    "Direction.RatePerKm" : "1.70",
@@ -15,12 +14,8 @@
    "GeoLoc.SearchFilter" : "{0},ottawa,on,canada&region=ca",
    "IBS.AutoDispatch" : "true",   
    
-   "IBS.WebServicesUrl.1" : "http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/",     
-   "IBS.WebServicesUrlOldest":"http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/",
-   "IBS.WebServicesUrlOld":" http://apcuriumibs:6928/XDS_IASPI.DLL/soap/",   
-   "IBS.WebServicesUrl":" http://ukdemo.drivelinq.com:11928/IBSCab2/IBSCab.dll/soap/",   
-   "IBS.WebServicesUrl.4" : "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/",
-   "IBS.WebServicesUrl.5" : "http://mkcsales.drivelinq.com:6928/XDS_IASPI.DLL/soap/",             
+   "DefaultBookingSettings.ProviderId" : "1",
+   "IBS.WebServicesUrl": "http://apcurium.drivelinq.com:16928/IBSCab/IBSCab.dll/soap/",             
    
    "IBS.WebServicesUserName" : "taxi",
    "IBS.WebServicesPassword" : "test",

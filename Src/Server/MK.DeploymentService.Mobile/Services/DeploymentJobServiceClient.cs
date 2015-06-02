@@ -4,6 +4,9 @@ using System.Net.Http;
 using System.Net;
 using System.Net.Http.Formatting;
 using log4net;
+using System.Configuration;
+using System.Net.Http.Headers;
+using MK.DeploymentService.Mobile.Helper;
 
 namespace MK.DeploymentService.Service
 {
@@ -18,11 +21,9 @@ namespace MK.DeploymentService.Service
 
         public DeploymentJob GetNext()
         {
-            var url = GetUrl();
-            using (var client = new HttpClient(new HttpClientHandler{ Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")}))
-            {
-                client.BaseAddress = new Uri(url);          
-				var serverName = System.Configuration.ConfigurationManager.AppSettings["ServerName"];      
+            using (var client = CustomerPortalHttpClientProvider.Get())
+            {      
+				var serverName = ConfigurationManager.AppSettings["ServerName"];      
 				var r = client.GetAsync(@"deployments/" + serverName+ @"/next").Result;
                 if (r.IsSuccessStatusCode)
 				{
@@ -36,22 +37,12 @@ namespace MK.DeploymentService.Service
             }            
         }
 
-        private static string GetUrl()
-        {
-			var url = System.Configuration.ConfigurationManager.AppSettings["CustomerPortalUrl"];
-			return url;
-        }
-
         public void UpdateStatus(string jobId, string details, JobStatus? status = null)
         {
             try
             {
-                var url = GetUrl();
-
-                using (var client = new HttpClient(new HttpClientHandler { Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!") }))
+                using (var client = CustomerPortalHttpClientProvider.Get())
                 {
-                    client.BaseAddress = new Uri(url);
-
                     var d = new JobStatusDetails();
                     d.Details = details;
                     d.Status = status;

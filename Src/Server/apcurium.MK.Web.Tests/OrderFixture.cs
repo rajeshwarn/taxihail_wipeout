@@ -60,7 +60,7 @@ namespace apcurium.MK.Web.Tests
                         {
                             ChargeTypeId = 99,
                             VehicleTypeId = 1,
-                            ProviderId = Provider.MobileKnowledgeProviderId,
+                            ProviderId = Provider.ApcuriumIbsProviderId,
                             Phone = "514-555-12129",
                             Passengers = 6,
                             NumberOfTaxi = 1,
@@ -126,7 +126,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     ChargeTypeId = ChargeTypes.Account.Id,
                     VehicleTypeId = 1,
-                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "514-555-12129",
                     Passengers = 6,
                     NumberOfTaxi = 1,
@@ -175,7 +175,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     ChargeTypeId = 99,
                     VehicleTypeId = 1,
-                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "514-555-12129",
                     Passengers = 6,
                     NumberOfTaxi = 1,
@@ -236,7 +236,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                     VehicleTypeId = 1,
-                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "514-555-12129",
                     Passengers = 6,
                     NumberOfTaxi = 1,
@@ -302,7 +302,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     ChargeTypeId = 99,
                     VehicleTypeId = 1,
-                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "514-555-1212",
                     Passengers = 6,
                     NumberOfTaxi = 1,
@@ -437,6 +437,7 @@ namespace apcurium.MK.Web.Tests
                 RatingScores = new List<RatingScore>
                 {
                     new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 1, Name = "Politness"},
+                    new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 2, Name = "Safety"},
                     new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 2, Name = "Safety"}
                 }
             };
@@ -447,7 +448,7 @@ namespace apcurium.MK.Web.Tests
 
             Assert.NotNull(orderRatingDetails);
             Assert.That(orderRatingDetails.Note, Is.EqualTo(orderRatingsRequest.Note));
-            Assert.That(orderRatingDetails.RatingScores.Count, Is.EqualTo(orderRatingsRequest.RatingScores.Count));
+            Assert.That(orderRatingDetails.RatingScores.Count, Is.EqualTo(2));
         }
 
         [Test]

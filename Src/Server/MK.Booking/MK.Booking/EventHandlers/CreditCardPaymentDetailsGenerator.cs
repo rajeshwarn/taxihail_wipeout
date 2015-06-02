@@ -45,7 +45,12 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.Meter = @event.Meter;
                 payment.Tax = @event.Tax;
                 payment.Tip = @event.Tip;
+                payment.Toll = @event.Toll;
+                payment.Surcharge = @event.Surcharge;
+                payment.BookingFees = @event.BookingFees;
                 payment.IsCancelled = false;
+                payment.IsNoShowFee = @event.IsNoShowFee;
+                payment.IsCancellationFee = @event.IsCancellationFee;
                 payment.Error = null;
 
                 // Update payment details after settling an overdue payment
@@ -59,7 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 // Prevents NullReferenceException caused with web prepayed while running database initializer.
                 if (order == null && @event.IsForPrepaidOrder)
                 {
-                    order = new OrderDetail()
+                    order = new OrderDetail
                     {
                         Id = payment.OrderId,
                         //Following values will be set to the correct date and time when that event is played.
@@ -82,6 +87,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (!order.Tax.HasValue || order.Tax == 0)
                 {
                     order.Tax = Convert.ToDouble(@event.Tax);
+                }
+                if (!order.Toll.HasValue || order.Toll == 0)
+                {
+                    order.Toll = Convert.ToDouble(@event.Toll);
+                }
+                if (!order.Surcharge.HasValue || order.Surcharge == 0)
+                {
+                    order.Surcharge = Convert.ToDouble(@event.Surcharge);
                 }
 
                 if (!@event.IsForPrepaidOrder)

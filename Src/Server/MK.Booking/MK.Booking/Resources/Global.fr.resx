@@ -342,8 +342,14 @@
   <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
     <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre carte de crédit se terminant par {1} et en utilisant votre pourboire par défaut de {2}%</value>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>La course #{0} sera payée à la fin du voyage en utilisant votre carte de crédit se terminant par {1}. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
+  </data>
   <data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
-    <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre compte PayPal associé et en utilisant votre pourboire par défaut de {2}%</value>
+    <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre compte PayPal associé et en utilisant votre pourboire par défaut de {1}%</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
+    <value>La course #{0} sera payée à la fin du voyage en utilisant votre compte PayPal. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
   </data>
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
     <value>La course #{0} n'a pas pu être associée automatiquement pour le paiement</value>
@@ -561,12 +567,6 @@
   <data name="PayPalWebPaymentDescription" xml:space="preserve">
     <value>Course d'un montant de {0}</value>
   </data>
-  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
-    <value>La course #{0} sera payée à la fin du voyage en utilisant votre compte PayPal. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
-  </data>
-  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
-    <value>La course #{0} sera payée à la fin du voyage en utilisant votre carte de crédit. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
-  </data>
   <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
     <value>Rappel: Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi pour ne pas être débité du montant de la course</value>
   </data>
@@ -609,10 +609,34 @@
   <data name="ManualRideLinq_CreditCardDisabled" xml:space="preserve">
     <value>Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.</value>
   </data>
+  <data name="Email_Body_Surcharge" xml:space="preserve">
+    <value>Surcharge</value>
+  </data>
   <data name="Email_Body_Extra" xml:space="preserve">
     <value>Extra</value>
   </data>
   <data name="Email_Body_DriverId" xml:space="preserve">
     <value>Driver #</value>
+  </data>
+  <data name="PayPalWebBookingFeeItemDescription" xml:space="preserve">
+    <value>Frais de réservation</value>
+  </data>
+  <data name="Email_Subject_CancellationFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - Frais d'annulation</value>
+  </data>
+  <data name="Email_Subject_NoShowFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - Frais de non présence</value>
+  </data>
+  <data name="Email_Body_CancellationFee" xml:space="preserve">
+    <value>Vous avez été facturé des frais d'un montant de {{FeeAmount}} pour la course #{{IbsOrderId}}, car cette dernière a été annulée.</value>
+  </data>
+  <data name="Email_Body_NoShowFee" xml:space="preserve">
+    <value>Vous avez été facturé des frais d'un montant de {{FeeAmount}} pour la course #{{IbsOrderId}}, car vous n'étiez pas présent lorsque chauffeur a tenté de vous ramassé à {{PickUpAddress}}.</value>
+  </data>
+  <data name="Email_Body_Fee_Conclusion" xml:space="preserve">
+    <value>Ce montant sera automatiquement débité de votre carte de crédit se terminant par {{Last4Digits}}.</value>
+  </data>
+  <data name="Email_Body_BookingFees" xml:space="preserve">
+    <value>Frais de réservation</value>
   </data>
 </root>

@@ -499,7 +499,9 @@
   <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
   <string name="PromoCodeLabel">Promo code</string>
   <string name="PromoMustUseCardOnFileMessage">In order to use a promo code, you need to pay with your configured payment method.</string>
-  <string name="PromoMustHavePaymentMethodSetMessage">In order to use a promo code, you need to have a payment method configured in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to have a credit card configured in the app.</string>
   <string name="PromoMustUseCardOnFileWarningMessage">Please note that the discount will only be applied if the payment is made using the app.</string>
   <string name="WarningPromoCodeDontShow">لا تحذر</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
@@ -581,7 +583,9 @@
   <string name="BookATaxi_Message">When would you like to book?</string>
   <string name="InvalidChargeType">You must select a charge type to be able to book a ride</string>
   <string name="InvalidChargeTypeTitle">Invalid Charge Type</string>
-  <string name="AddPaymentMethod">Add payment method</string>
+  <string name="AddPaymentMethod_Multiple">Add payment method</string>
+  <string name="AddPaymentMethod_CreditCard">Add credit card</string>
+  <string name="AddPaymentMethod_PayPal">Link PayPal account</string>
   <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
   <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
   <string name="CvvRequiredTitle">CVV Required</string>
@@ -593,7 +597,9 @@
   <string name="CallDriverUsingProxyErrorMessage">Sorry, we weren\'t able to initiate a call with your driver.</string>
   <string name="GenericErrorTitle">Error</string>
   <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>
+  <string name="ManualRideLinqStatus_Extra">Extra:</string>
   <string name="StatusEditAutoTipButton">Tip</string>
+  <string name="ManualRideLinqStatus_Toll">Toll:</string>
   <string name="View_EditAutoTip">Edit Tip</string>
   <string name="Error_EditAutoTipMessage">An error occurred while trying to update the tip. Please try again.</string>
 </resources>

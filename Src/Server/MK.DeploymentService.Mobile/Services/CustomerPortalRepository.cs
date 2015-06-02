@@ -11,38 +11,21 @@ using log4net;
 using ServiceStack.Common.Web;
 using System.Linq;
 using System.Threading.Tasks;
+using MK.DeploymentService.Mobile.Helper;
 
 namespace DeploymentServiceTools
 {
 	public class CustomerPortalRepository
     {
-		private HttpClient client;
-
-		public CustomerPortalRepository()
-		{
-
-			client = new HttpClient ();
-			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", 
-				Convert.ToBase64String(
-					System.Text.ASCIIEncoding.ASCII.GetBytes(
-						string.Format("{0}:{1}", 
-							ConfigurationManager.AppSettings["CustomerPortalUsername"], 
-							ConfigurationManager.AppSettings["CustomerPortalPassword"]))));
-			client.BaseAddress = new Uri(ConfigurationManager.AppSettings ["CustomerPortalUrl"]);
-		}
-
 		public string CreateNewVersion(string companyKey, string versionNumber, string websiteUrl, DeployInfo deployment)
 		{
 			versionNumber = versionNumber.Replace("[Bitbucket]", string.Empty).Replace(" ", string.Empty);
 
-
-
-
-			if (websiteUrl.Contains ("staging.taxihail.com")) {
+			if (websiteUrl.Contains ("staging.taxihail.com")) 
+            {
 				versionNumber = versionNumber + ".staging";
 			}
 
-			 
 			var data = new
 			{
 				CompanyKey = companyKey,
@@ -61,13 +44,13 @@ namespace DeploymentServiceTools
 					multipartFormDataContent.Add(ipaContent);
 				}
 
-
 				if (deployment.iOSAppStoreFileExist) {
 					var ipaAppStoreContent = new StreamContent(deployment.GetiOSAppStoreStream());
 					ipaAppStoreContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 					ipaAppStoreContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.iOSAppStoreFileName };
 					multipartFormDataContent.Add(ipaAppStoreContent);
 				}
+
 				if (deployment.AndroidApkFileExist) {
 					var apkContent = new StreamContent(deployment.GetAndroidApkStream());
 					apkContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
@@ -75,16 +58,22 @@ namespace DeploymentServiceTools
 					multipartFormDataContent.Add(apkContent);
 				}
 
-				var result = client.PostAsync("admin/version", multipartFormDataContent).Result;
+                using (var client = CustomerPortalHttpClientProvider.Get())
+                {
+                    var result = client.PostAsync("admin/version", multipartFormDataContent).Result;
 
-				var message = string.Empty;
-				if (result.IsSuccessStatusCode) {
-					message = string.Format ("Version {0} created for company {1}", versionNumber, companyKey);
-				} else {
-					message = string.Format("Version could not be created: HttpError: {0}", result.Content.ReadAsStringAsync ().Result);
-				}
+                    var message = string.Empty;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        message = string.Format("Version {0} created for company {1}", versionNumber, companyKey);
+                    }
+                    else
+                    {
+                        message = string.Format("Version could not be created: HttpError: {0}", result.Content.ReadAsStringAsync().Result);
+                    }
 
-				return message;
+                    return message;
+                }
 			}
 		}
 
@@ -99,43 +88,47 @@ namespace DeploymentServiceTools
 					{"AdHoc", isAdHoc.ToString()}
 				});
 
-			var result = await client.PostAsync("admin/appleDevCenter/downloadProfile", urlEncodedContent);
-			if (result.IsSuccessStatusCode) 
-			{
-				try
-				{
-					var userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-					var filename = GetFilename(result);
-					var savePath = Path.Combine(userPath, "Library/MobileDevice/Provisioning Profiles", filename);
+            using (var client = CustomerPortalHttpClientProvider.Get())
+            {
+                var result = await client.PostAsync("admin/appleDevCenter/downloadProfile", urlEncodedContent);
+                if (result.IsSuccessStatusCode)
+                {
+                    try
+                    {
+                        var userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                        var filename = GetFilename(result);
+                        var savePath = Path.Combine(userPath, "Library/MobileDevice/Provisioning Profiles", filename);
 
-					if(File.Exists(savePath))
-					{
-						return string.Format("Provisioning profile {0} for {1} already exists", filename, appId);
-					}
+                        if (File.Exists(savePath))
+                        {
+                            return string.Format("Provisioning profile {0} for {1} already exists", filename, appId);
+                        }
 
-					using (Stream contentStream = await result.Content.ReadAsStreamAsync(), 
-						stream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None))
-					{
-						await contentStream.CopyToAsync(stream);
-					} 
+                        using (Stream contentStream = await result.Content.ReadAsStreamAsync(),
+                            stream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            await contentStream.CopyToAsync(stream);
+                        }
 
-					return string.Format("Downloaded and installed profile {0} for {1}", filename, appId);
-				}
-				catch(Exception e) 
-				{
-					return string.Format("Could not download/install provisioning profile, continuing...{0}{1}", Environment.NewLine, e);
-				}
-			} 
-			else 
-			{
-				try
-				{
-					return string.Format("Downloading profile: StatusCode:{0} Message:{1}", result.StatusCode, result.Content.ReadAsAsync<HttpError>().Result.Message);
-				}
-				catch {
-					return result.ToString();
-				}
-			}
+                        return string.Format("Downloaded and installed profile {0} for {1}", filename, appId);
+                    }
+                    catch (Exception e)
+                    {
+                        return string.Format("Could not download/install provisioning profile, continuing...{0}{1}", Environment.NewLine, e);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        return string.Format("Downloading profile: StatusCode:{0} Message:{1}", result.StatusCode, result.Content.ReadAsAsync<HttpError>().Result.Message);
+                    }
+                    catch
+                    {
+                        return result.ToString();
+                    }
+                }
+            }
 		}
 
 		private string GetFilename(HttpResponseMessage result)

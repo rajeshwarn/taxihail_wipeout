@@ -15,13 +15,13 @@ namespace apcurium.MK.Booking.Commands
 
         public Guid Id { get; set; }
 
-        public decimal Amount { get; set; }
+        public decimal TotalAmount { get; set; }
 
-        public decimal Meter { get; set; }
+        public decimal MeterAmount { get; set; }
 
-        public decimal Tax { get; set; }
+        public decimal TaxAmount { get; set; }
 
-        public decimal Tip { get; set; }
+        public decimal TipAmount { get; set; }
 
         public string TransactionId { get; set; }
 

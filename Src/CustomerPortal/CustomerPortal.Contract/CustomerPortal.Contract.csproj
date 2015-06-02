@@ -33,6 +33,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Resources\CompanyVehicleType.cs" />
+    <Compile Include="Resources\CompanyPaymentSettings.cs" />
+    <Compile Include="Resources\Payment\BraintreePaymentSettings.cs" />
     <Compile Include="Response\NetworkVehicleResponse.cs" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,7 +48,12 @@
     <Compile Include="Response\NetworkFleetResponse.cs" />
     <Compile Include="Response\CompanyPreferenceResponse.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.csproj">
+      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
+      <Name>MK.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

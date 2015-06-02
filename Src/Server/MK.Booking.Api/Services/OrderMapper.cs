@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Tax = order.Tax,
                 Tip = order.Tip,
                 Toll = order.Toll,
+                Surcharge = order.Surcharge,
                 Status = (OrderStatus) order.Status,
                 IsRated = order.IsRated,
                 TransactionId = order.TransactionId,

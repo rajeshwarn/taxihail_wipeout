@@ -1683,8 +1683,14 @@
   <data name="PromoMustUseCardOnFileMessage" xml:space="preserve">
     <value>In order to use a promo code, you need to pay with your configured payment method.</value>
   </data>
-  <data name="PromoMustHavePaymentMethodSetMessage" xml:space="preserve">
+  <data name="PromoMustHavePaymentMethodSetMessage_Multiple" xml:space="preserve">
     <value>In order to use a promo code, you need to have a payment method configured in the app.</value>
+  </data>
+  <data name="PromoMustHavePaymentMethodSetMessage_PayPal" xml:space="preserve">
+    <value>In order to use a promo code, you need to have a PayPal account linked in the app.</value>
+  </data>
+  <data name="PromoMustHavePaymentMethodSetMessage_CreditCard" xml:space="preserve">
+    <value>In order to use a promo code, you need to have a credit card configured in the app.</value>
   </data>
   <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
     <value>Please note that the discount will only be applied if the payment is made using the app.</value>
@@ -1932,8 +1938,14 @@
   <data name="InvalidChargeTypeTitle" xml:space="preserve">
     <value>Invalid Charge Type</value>
   </data>
-  <data name="AddPaymentMethod" xml:space="preserve">
+  <data name="AddPaymentMethod_Multiple" xml:space="preserve">
     <value>Add payment method</value>
+  </data>
+  <data name="AddPaymentMethod_CreditCard" xml:space="preserve">
+    <value>Add credit card</value>
+  </data>
+  <data name="AddPaymentMethod_PayPal" xml:space="preserve">
+    <value>Link PayPal account</value>
   </data>
   <data name="CurrentBookingDisabledTitle" xml:space="preserve">
     <value>Current Booking Disabled</value>
@@ -1973,5 +1985,11 @@
   </data>
   <data name="Error_EditAutoTipTitle" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="ManualRideLinqStatus_Extra" xml:space="preserve">
+    <value>Extra:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Toll" xml:space="preserve">
+    <value>Toll:</value>
   </data>
 </root>

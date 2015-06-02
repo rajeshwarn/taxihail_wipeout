@@ -206,7 +206,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Context.Activity.StartActivity(i);
         }
 
-		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction)
+		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction, bool isNumericOnly = false)
         {
 			var tcs = new TaskCompletionSource<string> ();
 
@@ -218,6 +218,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			i.PutExtra("PositiveButtonTitle", Context.Activity.GetString(Resource.String.OkButtonText));
 			i.PutExtra("NegativeButtonTitle", Context.Activity.GetString(Resource.String.Cancel));
 			i.PutExtra("OwnerId", ownerId);
+
+		    i.PutExtra("isNumeric", isNumericOnly);
 
 			var messenger = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
 

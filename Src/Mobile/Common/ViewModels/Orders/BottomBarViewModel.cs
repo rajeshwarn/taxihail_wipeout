@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             _orderValidationResult = orderValidationResult;
             IsFutureBookingDisabled = Settings.DisableFutureBooking 
-                || orderValidationResult.DisableFutureBooking 
+				|| (orderValidationResult != null && orderValidationResult.DisableFutureBooking) 
                 || Settings.UseSingleButtonForNowAndLaterBooking;
         }
 
@@ -314,7 +314,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							var cvv = await this.Services().Message.ShowPromptDialog(
 								this.Services().Localize["CvvRequiredTitle"],
                                 string.Format(this.Services().Localize["CvvRequiredMessage"], _accountService.CurrentAccount.DefaultCreditCard.Last4Digits),
-								() => { return; });
+								() => { return; },
+                                true );
 
 							// validate that it's a numeric value with 3 or 4 digits
 							var cvvSetCorrectly = _orderWorkflowService.ValidateAndSetCvv(cvv);
@@ -448,37 +449,43 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(async () =>
                 {
-                    try
-                    {
-                        await _orderWorkflowService.ValidatePickupAndDestination();
-                        PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.PickDate));
-                    }
-                    catch (OrderValidationException e)
-                    {
-                        switch (e.Error)
-                        {
-                            case OrderValidationError.OpenDestinationSelection:
-                                // not really an error, but we stop the command from proceeding at this point
-                                return;
-                            case OrderValidationError.PickupAddressRequired:
-								ResetToInitialState.ExecuteIfPossible();
-                                this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
-                                return;
-                            case OrderValidationError.DestinationAddressRequired:
-								ResetToInitialState.ExecuteIfPossible();
-                                this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
-                                return;
-                        }
-                    }
-					catch(Exception e)
-					{
-						Logger.LogError(e);
-						ResetToInitialState.ExecuteIfPossible();
-						return;
-					}
+					Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.PickDate));
+					await PrevalidatePickupAndDestinationRequired(onValidated);
                 });
             }
         }
+
+		private async Task PrevalidatePickupAndDestinationRequired(Action onValidated)
+		{
+			try
+			{
+				await _orderWorkflowService.ValidatePickupAndDestination();
+				onValidated.Invoke();
+			}
+			catch (OrderValidationException e)
+			{
+				switch (e.Error)
+				{
+					case OrderValidationError.OpenDestinationSelection:
+						// not really an error, but we stop the command from proceeding at this point
+						return;
+					case OrderValidationError.PickupAddressRequired:
+						ResetToInitialState.ExecuteIfPossible();
+						this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
+						return;
+					case OrderValidationError.DestinationAddressRequired:
+						ResetToInitialState.ExecuteIfPossible();
+						this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
+						return;
+				}
+			}
+			catch(Exception e)
+			{
+				Logger.LogError(e);
+				ResetToInitialState.ExecuteIfPossible();
+				return;
+			}
+		}
 
         public ICommand Edit
         {
@@ -560,37 +567,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
-                    if (Settings.UseSingleButtonForNowAndLaterBooking && !Settings.DisableFutureBooking)
+					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
+						&& !Settings.DisableFutureBooking)
                     {
-                        //We need to show the Book A Taxi popup.
-                        PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
+						//We need to show the Book A Taxi popup.
+						Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
+						await PrevalidatePickupAndDestinationRequired(onValidated);
                     }
                     else
                     {
-                        //Normal classic flow
                         SetPickupDateAndReviewOrder.ExecuteIfPossible();
-                    }
-                });
-            }
-        }
-            
-
-        public ICommand BookATaxi
-        {
-            get
-            {
-                return this.GetCommand(() =>
-                {
-                    if (Settings.DisableFutureBooking)
-                    {
-                        //Go directly to order details review.
-                        SetPickupDateAndReviewOrder.ExecuteIfPossible();
-                    }
-                    else
-                    {
-                        PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
                     }
                 });
             }
@@ -604,7 +592,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
                     var localize = this.Services().Localize;
 
-                    if (_accountService.CurrentAccount.DefaultCreditCard == null)
+                    if (_accountService.CurrentAccount.DefaultCreditCard == null
+						|| _accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
                     {
                         this.Services().Message.ShowMessage(
                             localize["ErrorCreatingOrderTitle"],
