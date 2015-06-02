@@ -51,6 +51,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bindingSet.Apply();
 
+			// Set focus on text box
+			PairingCode1.BecomeFirstResponder();
+
             PairingCode1.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 3);
             PairingCode2.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 4);
 
