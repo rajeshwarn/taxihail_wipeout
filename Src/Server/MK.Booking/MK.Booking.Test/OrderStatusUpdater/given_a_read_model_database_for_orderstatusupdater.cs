@@ -81,8 +81,10 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 LoggerMock.Object);
         }
         
-        protected void EnsurePreAuthPaymentForTripWasCalled(OrderStatusDetail status, decimal amount, bool isReAuth = false)
+        protected void EnsurePreAuthPaymentForTripWasCalled(OrderStatusDetail status, decimal amount)
         {
+            var isReAuth = false;
+
             PaymentServiceMock
                 .Setup(x => x.PreAuthorize(
                     It.Is<string>(o => o == status.CompanyKey),
@@ -112,6 +114,62 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                     It.IsAny<string>(),
                     It.IsAny<bool>()))
                 .Returns<string, Guid, AccountDetail, decimal, decimal, decimal, decimal, string, string, bool>(Commit)
+                .Verifiable();
+        }
+
+        protected void EnsureVoidPreAuthWasCalled(OrderStatusDetail status)
+        {
+            PaymentServiceMock
+                .Setup(x => x.VoidPreAuthorization(
+                    It.Is<string>(o => o == status.CompanyKey),
+                    It.Is<Guid>(o => o == status.OrderId),
+                    It.IsAny<bool>()))
+                .Verifiable();
+        }
+
+        protected void EnsurePreAuthForFeeWasCalled(OrderStatusDetail status, decimal feeAmount)
+        {
+            var isReAuth = false;
+
+            PaymentServiceMock
+                .Setup(x => x.PreAuthorize(
+                    It.Is<string>(o => o == null),
+                    It.Is<Guid>(o => o == status.OrderId),
+                    It.Is<AccountDetail>(o => o.Id == status.AccountId),
+                    It.Is<decimal>(o => o == feeAmount),
+                    It.Is<bool>(o => o == isReAuth),
+                    It.IsAny<bool>(),
+                    It.IsAny<bool>(),
+                    It.IsAny<string>()))
+                .Returns<string, Guid, AccountDetail, decimal, bool, bool, bool, string>(PreAuth)
+                .Verifiable();
+        }
+
+        protected void EnsureCommitForFeeWasCalled(OrderStatusDetail status, decimal feeAmount, decimal preAuthAmount)
+        {
+            PaymentServiceMock
+                .Setup(x => x.CommitPayment(
+                    It.Is<string>(o => o == null),
+                    It.Is<Guid>(o => o == status.OrderId),
+                    It.Is<AccountDetail>(o => o.Id == status.AccountId),
+                    It.Is<decimal>(o => o == preAuthAmount),
+                    It.Is<decimal>(o => o == feeAmount),
+                    It.Is<decimal>(o => o == feeAmount),
+                    It.Is<decimal>(o => o == 0),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<bool>()))
+                .Returns<string, Guid, AccountDetail, decimal, decimal, decimal, decimal, string, string, bool>(Commit)
+                .Verifiable();
+        }
+
+        protected void EnsureVoidPreAuthForFeeWasCalled(OrderStatusDetail status)
+        {
+            PaymentServiceMock
+                .Setup(x => x.VoidPreAuthorization(
+                    It.Is<string>(o => o == null),
+                    It.Is<Guid>(o => o == status.OrderId),
+                    It.IsAny<bool>()))
                 .Verifiable();
         }
 

@@ -286,7 +286,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return result;
         }
 
-        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalFeeAmount, decimal bookingFees, Guid orderId, FeeTypes feeType)
+        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalFeeAmount, decimal bookingFees, Guid orderId, FeeTypes feeType, string companyKey = null)
         {
             var orderDetail = _orderDao.FindById(orderId);
             if (orderDetail == null)
@@ -301,7 +301,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var paymentDetail = _paymentDao.FindByOrderId(orderId, orderDetail.CompanyKey);
+            var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
             if (paymentDetail == null)
             {
                 throw new Exception("Payment not found");
@@ -347,7 +347,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
-                        Provider = _paymentService.ProviderType(orderDetail.CompanyKey, orderDetail.Id),
+                        Provider = _paymentService.ProviderType(companyKey, orderDetail.Id),
                         TotalAmount = totalFeeAmount,
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(0),
