@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			var orderManualRideLinq = JsonSerializer.DeserializeFromString<OrderManualRideLinqDetail>(orderManualRideLinqDetail);
 
-			Medallion = orderManualRideLinq.DriverId.ToString();
+			Medallion = orderManualRideLinq.Medallion;
 			OrderId = orderManualRideLinq.OrderId;
 		}
 
@@ -57,6 +57,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private Guid OrderId { get; set; }
 
+        private string _medallion;
+        public string Medallion
+        {
+            get
+            {
+                return _medallion;
+            }
+            set
+            {
+                _medallion = value;
+                RaisePropertyChanged();
+            }
+        }
+
 		public string Email
 		{
 			get
@@ -72,24 +86,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return string.Format(this.Services().Localize["ManualRideLinqStatus_Payment"],
 					_accountService.CurrentAccount.DefaultCreditCard.CreditCardCompany,
 					_accountService.CurrentAccount.DefaultCreditCard.Last4Digits,
-					_accountService.CurrentAccount.DefaultTipPercent);
+                    _accountService.CurrentAccount.DefaultTipPercent ?? Settings.DefaultTipPercentage);
 			}
 		}
 	
-		private string _medallion;
-		public string Medallion
-		{
-			get
-			{
-				return _medallion;
-			}
-			set
-			{
-				_medallion = value;
-				RaisePropertyChanged();
-			}
-		}
-
 		private void ToRideSummary(OrderManualRideLinqDetail orderManualRideLinqDetail)
 		{
             _bookingService.ClearLastOrder();
@@ -118,7 +118,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     try
                     {
-
                         var shouldUnpair = new TaskCompletionSource<bool>();
 
                         this.Services().Message.ShowMessage(
