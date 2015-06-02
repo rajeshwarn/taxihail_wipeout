@@ -18,10 +18,15 @@ namespace apcurium.MK.Booking.Test
     public class TestServerSettings : IServerSettings, IAppSettings
     {
         private readonly Dictionary<string, string> _config;
+        private Dictionary<string, ServerPaymentSettings> _serverPaymentSettings;
 
         public TestServerSettings()
         {
             _config = new Dictionary<string, string>();
+            _serverPaymentSettings = new Dictionary<string, ServerPaymentSettings>
+            {
+                { string.Empty, new ServerPaymentSettings() }
+            };
 
             var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "MKWebDev.json"));
             var objectSettings = JObject.Parse(jsonSettings);
@@ -59,7 +64,7 @@ namespace apcurium.MK.Booking.Test
 
         public ServerPaymentSettings GetPaymentSettings(string companyKey = null)
         {
-            return new ServerPaymentSettings();
+            return _serverPaymentSettings[companyKey ?? string.Empty];
         }
 
         public IDictionary<string, string> GetSettings()
@@ -89,6 +94,19 @@ namespace apcurium.MK.Booking.Test
         public Task ChangeServerUrl(string serverUrl)
         {
             throw new NotImplementedException();
+        }
+
+        public void SetPaymentSettings(string companyKey, ServerPaymentSettings settings)
+        {
+            companyKey = companyKey ?? string.Empty;
+            if (_serverPaymentSettings.ContainsKey(companyKey))
+            {
+                _serverPaymentSettings[companyKey] = settings;
+            }
+            else
+            {
+                _serverPaymentSettings.Add(companyKey, settings);
+            }
         }
     }
 }

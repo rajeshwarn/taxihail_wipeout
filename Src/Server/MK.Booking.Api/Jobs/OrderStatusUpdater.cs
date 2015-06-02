@@ -20,7 +20,6 @@ using apcurium.MK.Common.Resources;
 using CMTPayment;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using log4net;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -45,8 +44,6 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly Resources.Resources _resources;
 
         private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
-
-        private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
 
         private string _languageCode = string.Empty;
 
@@ -121,10 +118,10 @@ namespace apcurium.MK.Booking.Api.Jobs
             var rideLinqDetails = _orderDao.GetManualRideLinqById(orderstatusDetail.OrderId);
             if (rideLinqDetails == null)
             {
-                Log.InfoFormat("No manual RideLinQ details found for order {0}", orderstatusDetail.OrderId);
+                _logger.LogMessage("No manual RideLinQ details found for order {0}", orderstatusDetail.OrderId);
                 return;
             }
-            Log.DebugFormat("Initializing CmdClient for order {0} (RideLinq Pairing Token: {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
+            _logger.LogMessage("Initializing CmdClient for order {0} (RideLinq Pairing Token: {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
 
             InitializeCmtServiceClient();
 
@@ -133,13 +130,12 @@ namespace apcurium.MK.Booking.Api.Jobs
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
             if (tripInfo == null)
             {
-                Log.InfoFormat("No Trip information found for order {0} (pairing token {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
+                _logger.LogMessage("No Trip information found for order {0} (pairing token {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
                 return;
             }
 
-            Log.DebugFormat("Sending Trip update command for trip {0} (order {1}; pairing token {2})", tripInfo.TripId, orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
-
-            Log.DebugFormat("Trip end time is {0}.", tripInfo.EndTime.HasValue ? tripInfo.EndTime.Value.ToString(CultureInfo.CurrentCulture) : "Not set yet");
+            _logger.LogMessage("Sending Trip update command for trip {0} (order {1}; pairing token {2})", tripInfo.TripId, orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
+            _logger.LogMessage("Trip end time is {0}.", tripInfo.EndTime.HasValue ? tripInfo.EndTime.Value.ToString(CultureInfo.CurrentCulture) : "Not set yet");
 
             _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
             {
@@ -196,7 +192,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
                 || (orderStatusDetail.Status == OrderStatus.TimedOut && ibsOrderInfo.IsWaitingToBeAssigned))
             {
-                Log.DebugFormat("Order {1}: Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status, orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {1}: Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status, orderStatusDetail.OrderId);
                 return;
             }
 
@@ -241,18 +237,18 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     orderStatusDetail.PairingError = ex.Message;
                 }
-                
-                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
+
+                _logger.LogMessage("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsTimedOut)
             {
                 orderStatusDetail.Status = OrderStatus.TimedOut;
-                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsComplete)
             {
                 orderStatusDetail.Status = OrderStatus.Completed;
-                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
         }
 
@@ -309,7 +305,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 _orderDao.UpdateVehiclePosition(orderStatus.OrderId, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
                 _notificationService.SendTaxiNearbyPush(orderStatus.OrderId, ibsOrderInfo.Status, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
 
-                Log.DebugFormat("Vehicle position updated. New position: ({0}, {1}).", ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
+                _logger.LogMessage("Vehicle position updated. New position: ({0}, {1}).", ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
             }
         }
 
@@ -334,12 +330,11 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (pairingInfo.AutoTipPercentage.HasValue)
             {
                 ibsOrderInfo.Tip = FareHelper.CalculateTipAmount(ibsOrderInfo.Fare, pairingInfo.AutoTipPercentage.Value);
-                Log.DebugFormat("RideLinqCmt Pairing: Calculated a tip amount of {0}, based on an auto AutoTipPercentage percentage of {1}",
-                    ibsOrderInfo.Tip, pairingInfo.AutoTipPercentage.Value);
+                _logger.LogMessage("RideLinqCmt Pairing: Calculated a tip amount of {0}, based on an auto AutoTipPercentage percentage of {1}", ibsOrderInfo.Tip, pairingInfo.AutoTipPercentage.Value);
             }
             else
             {
-                Log.Debug("RideLinqCmt Pairing: AutoTipPercentage is null, no tip amount was assigned.");
+                _logger.LogMessage("RideLinqCmt Pairing: AutoTipPercentage is null, no tip amount was assigned.");
             }
         }
 
@@ -349,7 +344,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (orderPayment != null && (orderPayment.IsCompleted || orderPayment.IsCancelled))
             {
                 // Payment was already processed
-                Log.DebugFormat("Payment for order {0} was already processed, nothing else to do.", orderStatusDetail.OrderId);
+                _logger.LogMessage("Payment for order {0} was already processed, nothing else to do.", orderStatusDetail.OrderId);
                 return;
             }
 
@@ -367,7 +362,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     // no fare received but order is completed, change status to increase polling speed
                     orderStatusDetail.Status = OrderStatus.WaitingForPayment;
                     orderStatusDetail.PairingTimeOut = DateTime.UtcNow.AddMinutes(30);
-                    Log.DebugFormat("Order {1}: Status updated to: {0} with timeout in 30 minutes", orderStatusDetail.Status, orderStatusDetail.OrderId);
+                    _logger.LogMessage("Order {1}: Status updated to: {0} with timeout in 30 minutes", orderStatusDetail.Status, orderStatusDetail.OrderId);
                 }
 
                 if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
@@ -377,7 +372,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     _paymentService.VoidPreAuthorization(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId);
 
                     orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS.";
-                    Log.ErrorFormat("Order {1}: Pairing error: {0}", orderStatusDetail.PairingError, orderStatusDetail.OrderId);
+                    _logger.LogMessage("Order {1}: Pairing error: {0}", orderStatusDetail.PairingError, orderStatusDetail.OrderId);
                 }
 
                 return;
@@ -398,11 +393,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (feesCharged.HasValue)
                 {
                     bookingFees = feesCharged.Value;
-                    Log.DebugFormat(
-                        "Order {0}: Booking fees of {1} charged to local company", orderStatusDetail.OrderId, feesCharged);
-
-                    Log.DebugFormat(
-                        "Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), for a total of {4}",
+                    _logger.LogMessage("Order {0}: Booking fees of {1} charged to local company", orderStatusDetail.OrderId, feesCharged);
+                    _logger.LogMessage("Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), for a total of {4}",
                             orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, total);
                 }
             }
@@ -412,8 +404,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
                 total += Convert.ToDouble(bookingFees);
 
-                Log.DebugFormat(
-                    "Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), adding booking fees of {4} for a total of {5}",
+                _logger.LogMessage("Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), adding booking fees of {4} for a total of {5}",
                         orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, bookingFees, total);
             }
 
@@ -457,7 +448,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         amountSaved);
                     if (paymentResult.IsSuccessful)
                     {
-                        Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
+                        _logger.LogMessage("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
                     }
                     else
                     {
@@ -469,7 +460,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         // set the payment error message in OrderStatusDetail for reporting purpose
                         orderStatusDetail.PairingError = paymentResult.Message;
 
-                        Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
+                        _logger.LogMessage("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
                     }
                 }
                 else
@@ -482,7 +473,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     // set the payment error message in OrderStatusDetail for reporting purpose
                     orderStatusDetail.PairingError = preAuthResponse.Message;
 
-                    Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, preAuthResponse.Message, preAuthResponse.TransactionId);
+                    _logger.LogMessage("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, preAuthResponse.Message, preAuthResponse.TransactionId);
                 }
             }
             catch (Exception ex)
@@ -495,7 +486,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 // set the payment error message in OrderStatusDetail for reporting purpose
                 orderStatusDetail.PairingError = ex.Message;
 
-                Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, ex.Message, "UNKNOWN");
+                _logger.LogMessage("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, ex.Message, "UNKNOWN");
             }
             
             // whether there's a success or not, we change the status back to Completed since we can't process the payment again
@@ -697,14 +688,14 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             if (orderStatusDetail.IsPrepaid)
             {
-                Log.DebugFormat("Order {0}: No pairing to process as the order has been paid at the time of booking.", orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {0}: No pairing to process as the order has been paid at the time of booking.", orderStatusDetail.OrderId);
                 return;
             }
 
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingInfo == null)
             {
-                Log.DebugFormat("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
                 return;
             }
 
@@ -774,13 +765,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (companyName.HasValue())
                 {
                     description = string.Format(_resources.Get("OrderStatus_wosWAITINGRoaming", _languageCode), companyName);
-                    Log.DebugFormat("Setting Waiting in roaming status description: {0}", description);
+                    _logger.LogMessage("Setting Waiting in roaming status description: {0}", description);
                 }
             }
             else if (ibsOrderInfo.IsAssigned)
             {
                 description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", _languageCode), ibsOrderInfo.VehicleNumber);
-                Log.DebugFormat("Setting Assigned status description: {0}", description);
+                _logger.LogMessage("Setting Assigned status description: {0}", description);
 
                 var sendEtaToDriver = _serverSettings.ServerData.DriverEtaNotificationMode == DriverEtaNotificationModes.Always ||
                                       (_serverSettings.ServerData.DriverEtaNotificationMode == DriverEtaNotificationModes.Once && sendEtaToDriverOnNotifyOnce);
@@ -792,21 +783,22 @@ namespace apcurium.MK.Booking.Api.Jobs
                         SendEtaMessageToDriver((double) ibsOrderInfo.VehicleLatitude, (double) ibsOrderInfo.VehicleLongitude, 
                             orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleNumber);
                     }
-                    catch
+                    catch(Exception ex)
                     {
-                        Log.Error("Cannot Send Eta to Vehicle Number " + ibsOrderInfo.VehicleNumber);
+                        _logger.LogMessage("Cannot Send Eta to Vehicle Number " + ibsOrderInfo.VehicleNumber);
+                        _logger.LogError(ex);
                     }
                 }
             }
             else if (ibsOrderInfo.IsCanceled)
             {
                 description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
-                Log.DebugFormat("Setting Canceled status description: {0}", description);
+                _logger.LogMessage("Setting Canceled status description: {0}", description);
             }
             else if (ibsOrderInfo.IsComplete)
             {
-                description = _resources.Get("OrderStatus_wosDONE", _languageCode);    
-                Log.DebugFormat("Setting Complete status description: {0}", description);
+                description = _resources.Get("OrderStatus_wosDONE", _languageCode);
+                _logger.LogMessage("Setting Complete status description: {0}", description);
             }
             else if (ibsOrderInfo.IsLoaded)
             {
@@ -831,7 +823,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 var etaMessage = string.Format(_resources.Get("EtaMessageToDriver"), eta.FormattedDistance, eta.Duration);
                 _ibs.SendMessageToDriver(etaMessage, vehicleNumber);
-                Log.Debug(etaMessage);
+                _logger.LogMessage(etaMessage);
             }
         }
 
@@ -839,7 +831,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             var paymentBeingProcessedMessage = _resources.Get("PaymentBeingProcessedMessageToDriver");
             _ibs.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber);
-            Log.Debug(paymentBeingProcessedMessage);
+            _logger.LogMessage(paymentBeingProcessedMessage);
         }
 
         private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip)

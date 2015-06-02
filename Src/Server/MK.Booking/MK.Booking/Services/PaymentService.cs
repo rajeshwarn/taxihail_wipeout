@@ -19,18 +19,21 @@ namespace apcurium.MK.Booking.Services
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IServerSettings _serverSettings;
         private readonly IUnityContainer _container;
 
         public PaymentService(IPayPalServiceFactory payPalServiceFactory, 
             IAccountDao accountDao, 
             IOrderDao orderDao, 
             ICreditCardDao creditCardDao, 
+            IServerSettings serverSettings,
             IUnityContainer container)
         {
             _payPalServiceFactory = payPalServiceFactory;
             _accountDao = accountDao;
             _orderDao = orderDao;
             _creditCardDao = creditCardDao;
+            _serverSettings = serverSettings;
             _container = container;
         }
 
@@ -204,23 +207,21 @@ namespace apcurium.MK.Booking.Services
 
         private ServerPaymentSettings GetPaymentSettings(string companyKey)
         {
-            var serverSettings = _container.Resolve<IServerSettings>();
-            return serverSettings.GetPaymentSettings(companyKey);
+            return _serverSettings.GetPaymentSettings(companyKey);
         }
 
         private IPaymentService GetInstance(string companyKey)
         {
-            var serverSettings = _container.Resolve<IServerSettings>();
             var paymentSettings = GetPaymentSettings(companyKey);
             switch (paymentSettings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
-                    return new BraintreePaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<ILogger>(), _container.Resolve<IOrderPaymentDao>(), serverSettings, paymentSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>());
+                    return new BraintreePaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<ILogger>(), _container.Resolve<IOrderPaymentDao>(), _serverSettings, paymentSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>());
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
                     return new CmtPaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<IOrderDao>(), _container.Resolve<ILogger>(), _container.Resolve<IAccountDao>(), _container.Resolve<IOrderPaymentDao>(), paymentSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>());
                 case PaymentMethod.Moneris:
-                    return new MonerisPaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<ILogger>(), _container.Resolve<IOrderPaymentDao>(), serverSettings, paymentSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>(), _container.Resolve<IOrderDao>());
+                    return new MonerisPaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<ILogger>(), _container.Resolve<IOrderPaymentDao>(), _serverSettings, paymentSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>(), _container.Resolve<IOrderDao>());
                 default:
                     return null;
             }
