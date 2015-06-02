@@ -18,9 +18,7 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 				return value;
 			}
 
-			var format = "{0:" + parameter.ToString()  + "}";
-
-			return string.Format(culture, format, value);
+			return string.Format(culture, parameter.ToString(), value);
         }
     }
 }

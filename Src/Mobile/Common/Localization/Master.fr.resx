@@ -1876,9 +1876,6 @@
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Tarif:</value>
   </data>
-  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
-    <value>Véhicule #:</value>
-  </data>
   <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
     <value>Code d'association:</value>
   </data>
@@ -1972,5 +1969,17 @@
   <data name="Error_EditAutoTipMessage" xml:space="preserve">
     <value>Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</value>
     <comment>An error occurred while trying to update the tip. Please try again.</comment>
+  </data>
+  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
+    <value>Vous êtes assis dans le véchicule {0}.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Payment" xml:space="preserve">
+    <value>Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Email" xml:space="preserve">
+    <value>Un reçu vous sera envoyé à {0}.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Greetings" xml:space="preserve">
+    <value>Appréciez la balade!</value>
   </data>
 </root>

@@ -15,21 +15,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class ManualRideLinqStatusViewModel : PageViewModel
     {
         private readonly IBookingService _bookingService;
+		private readonly IAccountService _accountService;
 
 		// In seconds
         private int _refreshInterval = 5;
 
-		public ManualRideLinqStatusViewModel(IBookingService bookingService)
+		public ManualRideLinqStatusViewModel(IBookingService bookingService, IAccountService accountService)
         {
             _bookingService = bookingService;
+			_accountService = accountService;
         }
 
         public void Init(string orderManualRideLinqDetail)
         {
 			var orderManualRideLinq = JsonSerializer.DeserializeFromString<OrderManualRideLinqDetail>(orderManualRideLinqDetail);
-        	
-			DriverId = orderManualRideLinq.DriverId.ToString();
-			PairingCode = orderManualRideLinq.PairingCode;
+
+			Medallion = orderManualRideLinq.DriverId.ToString();
 			OrderId = orderManualRideLinq.OrderId;
 		}
 
@@ -56,30 +57,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private Guid OrderId { get; set; }
 
-		private string _pairingCode;
-		public string PairingCode
+		public string Email
 		{
 			get
 			{
-				return _pairingCode;
-			}
-			set
-			{
-				_pairingCode = value;
-				RaisePropertyChanged();
+				return _accountService.CurrentAccount.Email;
 			}
 		}
 
-		private string _driverId;
-		public string DriverId
+		public string PaymentInfo
 		{
 			get
 			{
-				return _driverId;
+				return string.Format(this.Services().Localize["ManualRideLinqStatus_Payment"],
+					_accountService.CurrentAccount.DefaultCreditCard.CreditCardCompany,
+					_accountService.CurrentAccount.DefaultCreditCard.Last4Digits,
+					_accountService.CurrentAccount.DefaultTipPercent);
+			}
+		}
+	
+		private string _medallion;
+		public string Medallion
+		{
+			get
+			{
+				return _medallion;
 			}
 			set
 			{
-				_driverId = value;
+				_medallion = value;
 				RaisePropertyChanged();
 			}
 		}

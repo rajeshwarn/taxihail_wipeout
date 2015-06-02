@@ -248,6 +248,7 @@
 "InvalidLocalContactMessage"="The address associated to this contact cannot be validated.";
 "ManualRideLinqStatus_Total"="Total cost:";
 "LargeBagsLabel"="Large Bags";
+"ManualRideLinqStatus_Payment"="Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.";
 "SendErrorLogButton"="Send error log";
 "LocationDetailNameLabel"="Nickname";
 "ResetPasswordInvalidDataTitle"="Invalid email";
@@ -315,7 +316,7 @@
 "TabSearch"="Search";
 "PromoDescriptionCode"="Enter code {0} or press the button below";
 "Error_AccountPaymentMessage"="Invalid account or rider number";
-"ManualRideLinqStatus_Medallion"="Vehicule number:";
+"ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "LoginForgotPasswordDetail"="Enter your email and we'll send you a new one.";
 "NoButton"="No";
 "PayInCar"="Pay Cash/Credit Card in Car";
@@ -377,6 +378,7 @@
 "WarningEstimateDontShow"="Don't warn";
 "View_SearchAddress"="Address Search";
 "View_AboutUs"="About Us";
+"ManualRideLinqStatus_Greetings"="Enjoy the ride!";
 "WarningLocationService"="Please turn on location services to have your location show up in the map.";
 "LoginViewPasswordPlaceHolder"="Password";
 "ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
@@ -425,6 +427,7 @@
 "View_History"="History";
 "PassengerNameLabel"="Name";
 "Processing"="Processing your order...";
+"ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
 "ChargeTypeCreditCardFile"="Credit Card on File";
 "ServerInfo"="({0} v{1})";
 "CardExpiredMessage"="Your credit card is expired. Add a new card to your account or update card informations to continue.";
