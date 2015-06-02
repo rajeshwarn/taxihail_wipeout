@@ -142,7 +142,7 @@
     <value>Completed</value>
   </data>
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
-    <value>Passengers are in the taxi</value>
+    <value>Passenger is in the taxi</value>
   </data>
   <data name="OrderStatus_wosNone" xml:space="preserve">
     <value>Invalid order, please call dispatch center</value>

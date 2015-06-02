@@ -292,7 +292,7 @@
     <value>Réalisé</value>
   </data>
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
-    <value>Passagers à bord</value>
+    <value>Passager à bord</value>
   </data>
   <data name="OrderStatus_wosNone" xml:space="preserve">
     <value>Votre commande ne peut pas être prise en compte, merci de joindre le support</value>

@@ -1684,13 +1684,13 @@
     <value>In order to use a promo code, you need to pay with your configured payment method.</value>
   </data>
   <data name="PromoMustHavePaymentMethodSetMessage_Multiple" xml:space="preserve">
-    <value>In order to use a promo code, you need to have a payment method configured in the app.</value>
+    <value>In order to use a promo code, you need to have a payment method configured as part of your account.</value>
   </data>
   <data name="PromoMustHavePaymentMethodSetMessage_PayPal" xml:space="preserve">
-    <value>In order to use a promo code, you need to have a PayPal account linked in the app.</value>
+    <value>In order to use a promo code, you need to have a PayPal account linked to your account.</value>
   </data>
   <data name="PromoMustHavePaymentMethodSetMessage_CreditCard" xml:space="preserve">
-    <value>In order to use a promo code, you need to have a credit card configured in the app.</value>
+    <value>In order to use a promo code, you need to enter a credit card as part of your account.</value>
   </data>
   <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
     <value>Please note that the discount will only be applied if the payment is made using the app.</value>
