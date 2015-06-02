@@ -14,6 +14,9 @@ using RestSharp.Extensions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
+    /// <summary>
+    /// Fees only work with CMT for now
+    /// </summary>
     public class FeeService : IFeeService
     {
         private readonly IPaymentService _paymentService;

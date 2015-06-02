@@ -1,10 +1,12 @@
 ﻿using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -17,7 +19,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<OrderCancelled>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<OrderStatusChanged>,
-        IEventHandler<OrderCancelledBecauseOfError>
+        IEventHandler<OrderCancelledBecauseOfError>,
+        IEventHandler<ManualRideLinqTripInfoUpdated>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
@@ -194,16 +197,34 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
                 var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
 
+                if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt)
+                {
+                    // Since RideLinqCmt payment is processed automatically by CMT, we have to charge booking fees separately
+                    _feeService.ChargeBookingFeesIfNecessary(orderStatus);
+                }
+
                 // If the user has decided not to pair (paying the ride in car instead),
                 // we have to void the amount that was preauthorized
                 if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode != PaymentMethod.RideLinqCmt
-                    && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                        || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+                    && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     && pairingInfo == null
                     && !orderStatus.IsPrepaid) //prepaid order will never have a pairing info
                 {
                     // void the preauthorization to prevent misuse fees
                     _paymentService.VoidPreAuthorization(order.CompanyKey, @event.SourceId);
+                }
+            }
+        }
+
+        public void Handle(ManualRideLinqTripInfoUpdated @event)
+        {
+            if (@event.EndTime.HasValue)
+            {
+                var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+                if (orderStatus != null)
+                {
+                    // Since RideLinqCmt payment is processed automatically by CMT, we have to charge booking fees separately
+                    _feeService.ChargeBookingFeesIfNecessary(orderStatus);
                 }
             }
         }
