@@ -186,22 +186,30 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
         }
 
 		public GeoAddress[] GeocodeAddress(string address, string currentLanguage)
-        {
-            var @params = new Dictionary<string, string>
-            {
-                {"address", address.ToString(CultureInfo.InvariantCulture)},
-                {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)},
-                {"sensor", true.ToString().ToLower()}
-            };
+		{
+		    var resource = GenerateGeocodeRessource(address, currentLanguage);
 
-            var resource = "json" + BuildQueryString(@params);
+		    return Geocode(resource, () => _fallbackGeocoder.GeocodeAddress (address, currentLanguage));
+		}
 
-            return Geocode(resource, () => _fallbackGeocoder.GeocodeAddress (address, currentLanguage));
-        }
+	    private string GenerateGeocodeRessource(string address, string currentLanguage)
+	    {
+	        var @params = new Dictionary<string, string>
+	        {
+	            {"address", address.ToString(CultureInfo.InvariantCulture)},
+	            {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)},
+	            {"sensor", true.ToString().ToLower()}
+	        };
+
+	        var resource = "json" + BuildQueryString(@params);
+	        return resource;
+	    }
 
 	    public Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage)
 	    {
-	        throw new NotSupportedException("GeocodeAddressAsync is not supported in the web platform.");
+            var resource = GenerateGeocodeRessource(address, currentLanguage);
+
+	        return GeocodeAsync(resource, () => _fallbackGeocoder.GeocodeAddressAsync(address, currentLanguage));
 	    }
 
 	    public GeoAddress[] GeocodeLocation(double latitude, double longitude, string currentLanguage)
@@ -227,6 +235,16 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             return HandleGoogleResult(() => client.Get<GeoResult>(signedUrl), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress[0], fallBackAction);
         }
+
+	    private Task<GeoAddress[]> GeocodeAsync(string resource, Func<Task<GeoAddress[]>> fallBackAction)
+	    {
+            var client = new JsonServiceClient();
+
+            var signedUrl = Sign(GeocodeServiceUrl + resource);
+            Console.WriteLine(signedUrl);
+
+            return HandleGoogleResultAsync(() => client.GetAsync<GeoResult>(signedUrl), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress[0], fallBackAction);
+	    }
 
         private string Sign(string url)
         {
@@ -297,6 +315,52 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             return defaultResult;
         }
+
+
+	    private async Task<TResponse> HandleGoogleResultAsync<TResponse, TGoogleResponse>(Func<Task<TGoogleResponse>> apiCall, Func<TGoogleResponse, TResponse> selector, TResponse defaultResult, Func<Task<TResponse>> fallBackAction = null)
+	        where TGoogleResponse : GoogleResult
+	    {
+            try
+            {
+                var result = await apiCall.Invoke();
+
+                if (result.Status == ResultStatus.OVER_QUERY_LIMIT)
+                {
+                    // retry 2 more times
+
+                    var attempts = 1;
+                    var success = false;
+
+                    while (!success && attempts < 3)
+                    {
+                        await Task.Delay(1000);
+                        result = await apiCall.Invoke();
+                        attempts++;
+                        success = result.Status == ResultStatus.OK;
+                    }
+                }
+
+                // if we still have OVER_QUERY_LIMIT or REQUEST_DENIED and a fallback geocoder, we invoke it
+                if ((result.Status == ResultStatus.OVER_QUERY_LIMIT
+                    || result.Status == ResultStatus.REQUEST_DENIED)
+                        && _fallbackGeocoder != null
+                        && fallBackAction != null)
+                {
+                    return await fallBackAction.Invoke();
+                }
+
+                if (result.Status == ResultStatus.OK)
+                {
+                    return selector.Invoke(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+            }
+
+            return defaultResult;
+	    }
 
 		private GeoPlace ConvertPlaceToGeoPlaces(Place place)
 		{            
