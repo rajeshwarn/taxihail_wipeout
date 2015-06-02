@@ -610,6 +610,13 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.CreditCardDeactivated, EmailConstant.Subject.CreditCardDeactivated, templateData, clientLanguageCode);
         }
 
+        public void SendCreditCardDesactivatedPush(AccountDetail account, CreditCardDetails creditCard)
+        {
+            var alert = string.Format(_resources.Get("PushNotification_CreditCardDeclined", account.Language), creditCard.Last4Digits.ToString());
+            var data = new Dictionary<string, object> { { "creditcardcompany", creditCard.CreditCardCompany } };
+            SendPushOrSms(account.Id, alert, data);
+        }
+
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode)
         {
             var orderStatus = _orderDao.FindOrderStatusById(orderId);
