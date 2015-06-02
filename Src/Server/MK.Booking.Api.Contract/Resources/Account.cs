@@ -46,7 +46,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         {
             get
             {
-                return IsPayPalAccountLinked || DefaultCreditCard != null;
+                return IsPayPalAccountLinked
+                    || (DefaultCreditCard != null && !DefaultCreditCard.IsDeactivated);
             }
         }
     }
