@@ -251,7 +251,8 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 IsDeclined = true,
                 ReAuthOrderId = isReAuth ? Guid.NewGuid().ToString() : null,
                 TransactionDate = DateTime.Now,
-                TransactionId = "asdasdnasd"
+                TransactionId = "asdasdnasd",
+                Message = "PROCESSOR DECLINED"
             };
         }
 
@@ -288,7 +289,8 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 IsDeclined = true,
                 TransactionDate = DateTime.Now,
                 TransactionId = "asdasdnasd",
-                AuthorizationCode = "5236346"
+                AuthorizationCode = "5236346",
+                Message = "PROCESSOR DECLINED"
             };
         }
     }

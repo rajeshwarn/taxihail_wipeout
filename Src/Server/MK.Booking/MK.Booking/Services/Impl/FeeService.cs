@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Services.Impl
             catch (Exception ex)
             {
                 _logger.LogMessage("Could not process no show fee for order {0}: {1}.", orderStatusDetail.IBSOrderId, ex.Message);
-                throw ex;
+                return null;
             }
         }
 
@@ -171,7 +171,7 @@ namespace apcurium.MK.Booking.Services.Impl
             catch (Exception ex)
             {
                 _logger.LogMessage("Could not process no show fee for order {0}: {1}.", orderStatusDetail.IBSOrderId, ex.Message);
-                throw ex;
+                return null;
             }
         }
 
@@ -235,7 +235,7 @@ namespace apcurium.MK.Booking.Services.Impl
             catch (Exception ex)
             {
                 _logger.LogMessage("Could not process cancellation fee for order {0}: {1}.", orderStatusDetail.IBSOrderId, ex.Message);
-                throw ex;
+                return null;
             }
         }
 

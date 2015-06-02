@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var tip = FareHelper.CalculateTipAmount(orderAmount, ConfigurationManager.ServerData.DefaultTipPercentage);
 
             var ibsOrder = new IBSOrderInformation { Fare = Convert.ToDouble(orderAmount) };
-            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId };
+            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId, IBSOrderId = 12345 };
 
             ConfigurationManager.SetPaymentSettings(null, new ServerPaymentSettings { PaymentMode = PaymentMethod.Braintree });
 
@@ -120,7 +120,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var tip = FareHelper.CalculateTipAmount(orderAmount, ConfigurationManager.ServerData.DefaultTipPercentage);
 
             var ibsOrder = new IBSOrderInformation { Fare = Convert.ToDouble(orderAmount) };
-            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId };
+            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId, IBSOrderId = 12345 };
 
             ConfigurationManager.SetPaymentSettings(null, new ServerPaymentSettings { PaymentMode = PaymentMethod.Braintree });
 
@@ -180,7 +180,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var tip = FareHelper.CalculateTipAmount(orderAmount, ConfigurationManager.ServerData.DefaultTipPercentage);
 
             var ibsOrder = new IBSOrderInformation { Fare = Convert.ToDouble(orderAmount) };
-            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId };
+            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId, IBSOrderId = 12345 };
 
             ConfigurationManager.SetPaymentSettings(null, new ServerPaymentSettings { PaymentMode = PaymentMethod.Braintree });
 
@@ -252,7 +252,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var tip = FareHelper.CalculateTipAmount(orderAmount, ConfigurationManager.ServerData.DefaultTipPercentage);
 
             var ibsOrder = new IBSOrderInformation { Fare = Convert.ToDouble(orderAmount) };
-            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId };
+            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId, IBSOrderId = 12345 };
 
             ConfigurationManager.SetPaymentSettings(null, new ServerPaymentSettings { PaymentMode = PaymentMethod.Braintree });
 
@@ -324,7 +324,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var tip = FareHelper.CalculateTipAmount(orderAmount, ConfigurationManager.ServerData.DefaultTipPercentage);
 
             var ibsOrder = new IBSOrderInformation { Fare = Convert.ToDouble(orderAmount) };
-            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId };
+            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId, IBSOrderId = 12345 };
 
             ConfigurationManager.SetPaymentSettings(null, new ServerPaymentSettings { PaymentMode = PaymentMethod.Braintree });
 
@@ -397,7 +397,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var tip = FareHelper.CalculateTipAmount(orderAmount, ConfigurationManager.ServerData.DefaultTipPercentage);
 
             var ibsOrder = new IBSOrderInformation { Fare = Convert.ToDouble(orderAmount) };
-            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId };
+            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId, IBSOrderId = 12345 };
 
             ConfigurationManager.SetPaymentSettings(null, new ServerPaymentSettings { PaymentMode = PaymentMethod.Braintree });
 
@@ -462,7 +462,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var tip = FareHelper.CalculateTipAmount(orderAmount, ConfigurationManager.ServerData.DefaultTipPercentage);
 
             var ibsOrder = new IBSOrderInformation { Fare = Convert.ToDouble(orderAmount) };
-            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId };
+            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId, IBSOrderId = 12345 };
 
             ConfigurationManager.SetPaymentSettings(null, new ServerPaymentSettings { PaymentMode = PaymentMethod.Braintree });
 
@@ -540,7 +540,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var tip = FareHelper.CalculateTipAmount(orderAmount, ConfigurationManager.ServerData.DefaultTipPercentage);
 
             var ibsOrder = new IBSOrderInformation { Fare = Convert.ToDouble(orderAmount) };
-            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId };
+            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId, IBSOrderId = 12345 };
 
             ConfigurationManager.SetPaymentSettings(null, new ServerPaymentSettings { PaymentMode = PaymentMethod.Braintree });
             ConfigurationManager.SetPaymentSettings(companyKey, new ServerPaymentSettings { PaymentMode = PaymentMethod.Braintree });
@@ -621,7 +621,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var tip = FareHelper.CalculateTipAmount(orderAmount, ConfigurationManager.ServerData.DefaultTipPercentage);
 
             var ibsOrder = new IBSOrderInformation { Fare = Convert.ToDouble(orderAmount) };
-            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId };
+            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId, IBSOrderId = 12345 };
 
             ConfigurationManager.SetPaymentSettings(null, new ServerPaymentSettings { PaymentMode = PaymentMethod.Cmt });
             ConfigurationManager.SetPaymentSettings(companyKey, new ServerPaymentSettings { PaymentMode = PaymentMethod.Cmt });
@@ -641,6 +641,89 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             Assert.AreEqual(3, Commands.Count);
             Assert.AreEqual(typeof(CaptureCreditCardPayment), Commands.First().GetType());
             Assert.AreEqual(typeof(CaptureCreditCardPayment), Commands.Skip(1).First().GetType());
+            Assert.AreEqual(typeof(ChangeOrderStatus), Commands.Skip(2).First().GetType());
+        }
+
+        [Test]
+        public void when_order_on_external_company_has_booking_fees_configured_with_cmt_and_card_is_declined()
+        {
+            // Prepare
+            var creditCardId = Guid.NewGuid();
+            var accountId = Guid.NewGuid();
+            var orderId = Guid.NewGuid();
+            string companyKey = "ext";
+            var orderAmount = 100.85m;
+            var bookingFees = 40.85m;
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                context.Save(new AccountDetail
+                {
+                    Id = accountId,
+                    CreationDate = DateTime.Now,
+                    IBSAccountId = 123,
+                    DefaultCreditCard = creditCardId
+                });
+
+                context.Save(new AccountIbsDetail
+                {
+                    CompanyKey = companyKey,
+                    AccountId = accountId,
+                    IBSAccountId = 123
+                });
+
+                context.Save(new CreditCardDetails
+                {
+                    AccountId = accountId,
+                    CreditCardId = creditCardId,
+                    Token = "token"
+                });
+
+                context.Save(new OrderDetail
+                {
+                    Id = orderId,
+                    AccountId = accountId,
+                    PickupDate = DateTime.Now,
+                    CreatedDate = DateTime.Now,
+                    IBSOrderId = 12345,
+                    CompanyKey = companyKey,
+                    BookingFees = bookingFees
+                });
+
+                context.Save(new OrderPairingDetail
+                {
+                    OrderId = orderId
+                });
+
+                context.Save(new FeesDetail
+                {
+                    Market = null,
+                    Booking = bookingFees,
+                    Id = Guid.NewGuid()
+                });
+            }
+
+            var tip = FareHelper.CalculateTipAmount(orderAmount, ConfigurationManager.ServerData.DefaultTipPercentage);
+
+            var ibsOrder = new IBSOrderInformation { Fare = Convert.ToDouble(orderAmount) };
+            var status = new OrderStatusDetail { OrderId = orderId, CompanyKey = companyKey, AccountId = accountId, IBSOrderId = 12345 };
+
+            ConfigurationManager.SetPaymentSettings(null, new ServerPaymentSettings { PaymentMode = PaymentMethod.Cmt });
+            ConfigurationManager.SetPaymentSettings(companyKey, new ServerPaymentSettings { PaymentMode = PaymentMethod.Cmt });
+
+            EnsurePreAuthForFeeWasCalled(status, bookingFees);
+
+            EnsurePreAuthPaymentForTripWasCalled(status, orderAmount + tip);
+
+            // Act
+            Sut.Update(ibsOrder, status);
+
+            // Assert
+            PaymentServiceMock.Verify();
+
+            Assert.AreEqual(3, Commands.Count);
+            Assert.AreEqual(typeof(ReactToPaymentFailure), Commands.First().GetType());
+            Assert.AreEqual(typeof(ReactToPaymentFailure), Commands.Skip(1).First().GetType());
             Assert.AreEqual(typeof(ChangeOrderStatus), Commands.Skip(2).First().GetType());
         }
     }
