@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -20,22 +21,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         }
 
         public GeoAddress[] GeocodeAddress (string address, string currentLanguage)
-        {   
-            // Do nothing with currentLanguage parameter since Apple Geocoder
-            // automatically gets the results using the system language
-            try{
-                var geocoder = new CLGeocoder ();
-
-                var result = geocoder.GeocodeAddressAsync (address.Replace ("+", " "));
-                result.Wait ();
-
-                if (result.Exception != null) 
-                {
-                    return new GeoAddress [0];
-                }
-                return result.Result.Select (ConvertPlacemarkToAddress).ToArray ();  
-
-            }catch(Exception ex)
+        {
+            try
+            {
+                return GeocodeAddressAsync(address, currentLanguage).Result;
+            }
+            catch (Exception ex)
             {
                 var inner = ex.InnerException as NSErrorException;
                 if (inner != null)
@@ -43,9 +34,22 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                     Console.WriteLine(inner.Error.GetNSErrorString());
                 }
                 throw;
-            }                   
+            }
         }
 
+        public async Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage)
+        {
+            // Do nothing with currentLanguage parameter since Apple Geocoder
+            // automatically gets the results using the system language
+
+            var geocoder = new CLGeocoder();
+
+            var placemarks = await geocoder.GeocodeAddressAsync(address).ConfigureAwait(false);
+
+            return placemarks
+                .Select(ConvertPlacemarkToAddress)
+                .ToArray();
+        }
 
 
         public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)

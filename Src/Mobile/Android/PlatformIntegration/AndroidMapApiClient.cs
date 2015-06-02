@@ -12,6 +12,7 @@ using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider;
 using System.Text;
+using System.Threading.Tasks;
 using MK.Booking.MapDataProvider.Foursquare;
 using Android.Locations;
 using Cirrious.CrossCore.Droid;
@@ -50,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 else 
                 {
 					var locations = geocoder.GetFromLocationName (address.Replace ("+", " "), 100);				
-					return locations.Select (ConvertAddressToGeoAddress).ToArray ();			
+					return locations.Select (ConvertAddressToGeoAddress).ToArray();		
 				}
 			} 
             catch (Exception ex) 
@@ -60,7 +61,30 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			}
 		}
 
-		public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)
+	    public async Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage)
+	    {
+            // Do nothing with currentLanguage parameter since Android Geocoder
+            // automatically gets the results using the system language
+            var geocoder = new Geocoder (_androidGlobals.ApplicationContext);
+
+	        var locationsTask = SettingsForGeocodingRegionAreSet 
+                ? geocoder.GetFromLocationNameAsync(address.Replace("+", " "), 100,_settings.Data.LowerLeftLatitude.Value, _settings.Data.LowerLeftLongitude.Value,_settings.Data.UpperRightLatitude.Value, _settings.Data.UpperRightLongitude.Value)
+                : geocoder.GetFromLocationNameAsync(address.Replace("+", " "), 100);
+	        try
+	        {
+                var locations = await locationsTask;
+
+                return locations.Select(ConvertAddressToGeoAddress).ToArray();
+	        }
+	        catch (Exception ex)
+	        {
+                _logger.LogError(ex);
+                return new GeoAddress[0];
+	        }
+	        		
+	    }
+
+	    public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)
 		{
 			// Do nothing with currentLanguage parameter since Android Geocoder
 			// automatically gets the results using the system language

@@ -228,7 +228,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private Address UpdateAddressWithPlaceDetail(Address value)
+		private async Task<Address> UpdateAddressWithPlaceDetail(Address value)
 		{
 			if ((value != null) && (value.AddressType == "place"))
 			{
@@ -238,7 +238,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
             if ((value != null) && (value.AddressType == "craftyclicks"))
             {
-                var geoLoc = _geolocService.SearchAddress(value.FullAddress, value.Latitude, value.Longitude);
+                var geoLoc = await _geolocService.SearchAddressAsync(value.FullAddress, value.Latitude, value.Longitude);
 
                 if (geoLoc.Any())
                 {
@@ -261,14 +261,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-	    public void SelectAddress(Address address, bool returnToHome = false)
+	    public async void SelectAddress(Address address, bool returnToHome = false)
 	    {
 	        if (address == null)
 	        {
 	            return;
 	        }
 
-            var detailedAddress = UpdateAddressWithPlaceDetail(address);
+            var detailedAddress = await UpdateAddressWithPlaceDetail(address);
 
 	        if (_isInLocationDetail)
 	        {
@@ -278,7 +278,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        }
 
             ((HomeViewModel)Parent).LocateMe.Cancel();
-            _orderWorkflowService.SetAddress(detailedAddress);
+            await _orderWorkflowService.SetAddress(detailedAddress);
 
 	        if (returnToHome)
 	        {

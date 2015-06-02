@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {         
-				string currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
+				var currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
 				var addresses = _addresses.Search(address, latitude, longitude, currentLanguage);
                 return addresses;
             }
@@ -69,6 +69,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return new Address[0];
             }
         }
+
+        public Task<Address[]> SearchAddressAsync(string address, double? latitude = null, double? longitude = null)
+        {
+            var currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization>().CurrentLanguage;
+            return _addresses.SearchAsync(address, latitude, longitude, currentLanguage);
+        }
+
 
         public Task<DirectionInfo> GetDirectionInfo(Address origin, Address dest, int? vehicleTypeId = null)
         {

@@ -199,7 +199,12 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             return Geocode(resource, () => _fallbackGeocoder.GeocodeAddress (address, currentLanguage));
         }
 
-		public GeoAddress[] GeocodeLocation(double latitude, double longitude, string currentLanguage)
+	    public Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage)
+	    {
+	        throw new NotSupportedException("GeocodeAddressAsync is not supported in the web platform.");
+	    }
+
+	    public GeoAddress[] GeocodeLocation(double latitude, double longitude, string currentLanguage)
         {
             var @params = new Dictionary<string, string>
             {
