@@ -8,11 +8,6 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-			if (value == null)
-			{
-				return null;
-			}
-
 			if (parameter == null)
 			{
 				return value;

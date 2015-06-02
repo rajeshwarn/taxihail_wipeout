@@ -31,7 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			NavigationItem.Title = localize["View_RideLinqStatus"];
 			lblGreetings.Text = localize["ManualRideLinqStatus_Greetings"];
 
-			btnUnpair.SetTitle(localize["ManualRideLinqStatus_Unpair"], UIControlState.Normal);
 			btnTip.SetTitle(localize ["StatusEditAutoTipButton"], UIControlState.Normal);
 
 			FlatButtonStyle.Silver.ApplyTo(btnTip);
@@ -49,10 +48,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			bindingSet.Bind(lblEmail)
 				.To(vm => vm.Email)
 				.WithConversion("StringFormat", localize["ManualRideLinqStatus_Email"]);
-
-			bindingSet.Bind(btnUnpair)
-				.For(v => v.Command)
-				.To(vm => vm.UnpairFromRideLinq);
 
 			bindingSet.Bind (btnTip)
 				.For(v => v.Command)

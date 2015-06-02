@@ -310,7 +310,7 @@
 "PromoDescriptionCode"="Enter code {0} at the time of booking or press the button below";
 "Error_AccountPaymentMessage"="Invalid account or rider number";
 "SaveAddressEmptyFieldTitle"="يجب ادخال اسم المستخدم";
-"ManualRideLinqStatus_Medallion"="Vehicule number:";
+"ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "LoginForgotPasswordDetail"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";
 "ResetPasswordTitleText"="نسيت كلمة المرور؟";
 "PayInCar"="Pay in Car";
@@ -371,6 +371,7 @@
 "WarningEstimateDontShow"="لا تحذر";
 "ChooseProviderDialogTitle"="اختر مورد خدمة";
 "View_AboutUs"="نبذة عنا";
+"ManualRideLinqStatus_Greetings"="Enjoy the ride!";
 "WarningLocationService"="يرجى تشغيل خدمات الموقع ليظهر موقعك على الخريطة";
 "LoginViewPasswordPlaceHolder"="كلمة السر";
 "ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
@@ -417,6 +418,7 @@
 "PassengerNameLabel"="الإسم";
 "View_BookingStatus"="الوضع";
 "ViewRatingBtn"="رؤية التقييمات";
+"ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
 "ChargeTypeCreditCardFile"="بطاقة الائتمان في الملف";
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
 "CardExpiredMessage"="Your credit card is expired. Add a new card to your account or update card informations to continue.";
@@ -452,6 +454,7 @@
 "Tuto05Bottom"="أو انقر زر لاحقا لحجز مشوارك في وقت أو تاريخ لاحق.";
 "Notification_ConfirmPairingPush"="Confirm Pairing";
 "ResetPasswordInvalidDataMessage"="البريد الإلكتروني غير صحيح";
+"ManualRideLinqStatus_Payment"="Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.";
 "StatusDescription"="طلب # {0}";
 "EntryCodeLabel"="رمز الدخول";
 "Overdue_Succeed_Title"="Payment Succeeded";

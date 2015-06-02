@@ -319,7 +319,7 @@
 "PromoDescriptionCode"="Enter le code {0} ou appuyez sur le bouton ci-dessous.";
 "Error_AccountPaymentMessage"="Le numéro de compte ou de client semble invalide";
 "SaveAddressEmptyFieldTitle"="Merci de resaisir le nom";
-"ManualRideLinqStatus_Medallion"="Véhicule #:";
+"ManualRideLinqStatus_Medallion"="Vous êtes assis dans le véchicule {0}.";
 "Modify"="Modifier";
 "LoginForgotPasswordDetail"="Saisissez votre email pour recevoir votre nouveau mot de passe";
 "ResetPasswordTitleText"="Mot de passe oublié?";
@@ -381,6 +381,7 @@
 "WarningEstimateDontShow"="Ne pas signaler";
 "ChooseProviderDialogTitle"="Choisissez un prestataire";
 "View_AboutUs"="À propos";
+"ManualRideLinqStatus_Greetings"="Appréciez la balade!";
 "WarningLocationService"="Merci d'activer la géolocalisation afin de pouvoir utiliser la carte";
 "LoginViewPasswordPlaceHolder"="Mot de passe";
 "ManualPairingForRideLinQ_InvalidCode_Message"="Le code d'association est invalide";
@@ -427,6 +428,7 @@
 "PassengerNameLabel"="Nom";
 "View_BookingStatus"="Statut";
 "ViewRatingBtn"="Voir les notes";
+"ManualRideLinqStatus_Email"="Un reçu vous sera envoyé à {0}.";
 "ChargeTypeCreditCardFile"="Carte de paiement déjà engistrée";
 "InvalidPhoneErrorMessage"="Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.";
 "CardExpiredMessage"="Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.";
@@ -462,6 +464,7 @@
 "Tuto05Bottom"="Afin de convenir d'une date/heure de départ ultéreure, merci de sélectionner 'Plus tard' sur votre écran";
 "Notification_ConfirmPairingPush"="Confirmation de pairing";
 "ResetPasswordInvalidDataMessage"="Désolé, cet email n'est pas valide";
+"ManualRideLinqStatus_Payment"="Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.";
 "StatusDescription"="Commande n°{0}";
 "EntryCodeLabel"="Saisissez un code";
 "Overdue_Succeed_Title"="Compte Approuvé";

@@ -252,6 +252,7 @@
 "ManualRideLinqStatus_Total"="Total cost:";
 "August"="Ago (08)";
 "StreetNumberLabel"="Refine su dirección";
+"ManualRideLinqStatus_Payment"="Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.";
 "CmtConfirmPayment"="Confirmar";
 "LocationDetailNameLabel"="Apodo";
 "ResetPasswordInvalidDataTitle"="Email inválido";
@@ -317,7 +318,7 @@
 "PromoDescriptionCode"="Enter code {0} or press the button below";
 "Error_AccountPaymentMessage"="Invalid account or rider number";
 "SaveAddressEmptyFieldTitle"="Nombre";
-"ManualRideLinqStatus_Medallion"="Vehicule number:";
+"ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "LoginForgotPasswordDetail"="Ingrese su email y le enviaremos una nueva contraseña";
 "NoButton"="No";
 "CreditCardRequiredFields"="Todos los campos requeridos";
@@ -374,6 +375,7 @@
 "WarningEstimateDontShow"="No avisar";
 "ChooseProviderDialogTitle"="Seleccionar proveedor";
 "View_AboutUs"="Acerca de nosotros";
+"ManualRideLinqStatus_Greetings"="Enjoy the ride!";
 "WarningLocationService"="Por favor encienda los servicios de ubicación para poder mostrar su posición en el mapa";
 "LoginViewPasswordPlaceHolder"="Contraseña";
 "BookDestinationLabel"="Ingrese su destino";
@@ -420,6 +422,7 @@
 "apcuriumUrl"="http://www.apcurium.com/";
 "View_BookingStatus"="Estado";
 "ViewRatingBtn"="Ver evaluaciones";
+"ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
 "ChargeTypeCreditCardFile"="Tarjeta de crédito guardada";
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
 "CardExpiredMessage"="Your credit card is expired. Add a new card to your account or update card informations to continue.";
