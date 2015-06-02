@@ -3,7 +3,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("/rapidaddress/", "POST")]
+    [Route("/rapidaddress", "POST")]
     public class CraftyClicksRequest : IReturn<CraftyClicksAddress>
     {
         public CraftyClicksRequest()

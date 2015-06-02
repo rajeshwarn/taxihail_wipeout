@@ -13,25 +13,10 @@
            this.model.set('lastMarketPosition', { Longitude: 0, Latitude: 0 });
 
            this.model.on('change:pickupAddress', function (model, value) {
-               var pickupAddressView = this._pickupAddressView;
-               if (value.addressType == "craftyclicks") {
-                   var coords = TaxiHail.geocoder.search(value.fullAddress, value.longitude, value.latitude)
-                                .done(function (address) {
-                                    pickupAddressView.model.set(address);
-                                }, this);
-               }
-               else {
-                   this._pickupAddressView.model.set(value);
-               }
+               this._pickupAddressView.model.set(value);
            }, this);
 
            this.model.on('change:dropOffAddress', function (model, value) {
-               if (value.addressType == "craftyclicks") {
-                   var coords = TaxiHail.geocoder.search(value.fullAddress, value.longitude, value.latitude);
-
-                   value.longitude = coord.longitude;
-                   value.latitude = coord.latitude;
-               }
                 this._dropOffAddressView.model.set(value);
             }, this);
 
@@ -174,7 +159,7 @@
                 this._pickupAddressView.toggleOff();
             }, this);
 
-            pickupAddress.on('change', function(model){
+            pickupAddress.on('change', function (model) {
                 this.model.set({
                     pickupAddress: model.toJSON()
                 });
