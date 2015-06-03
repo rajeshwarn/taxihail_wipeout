@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.MapDataProvider.CraftyClicks;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;

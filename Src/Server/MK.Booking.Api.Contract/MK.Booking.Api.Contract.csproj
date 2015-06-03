@@ -180,7 +180,6 @@
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />
-    <Compile Include="Resources\CraftyClicksRequest.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />

@@ -1,20 +1,22 @@
-using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.MapDataProvider.CraftyClicks.Resources;
 using ServiceStack.ServiceHost;
 
-namespace apcurium.MK.Booking.Api.Contract.Requests
+namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 {
-    [Route("/rapidaddress/", "Get")]
+    [Route("/rapidaddress", "POST")]
     public class CraftyClicksRequest : IReturn<CraftyClicksAddress>
     {
         public CraftyClicksRequest()
         {
             Response = "data_formatted";
-            Include_Geocode = true;
+            Include_geocode = true;
+            Sort = "asc";
         }
-
         public string Postcode { get; set; }
         public string Key { get; set; }
         public string Response { get; private set; }
-        public bool Include_Geocode { get; private set; }
+        public bool Include_geocode { get; private set; }
+
+        public string Sort { get; private set; }
     }
 }

@@ -32,7 +32,6 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Android" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -62,7 +61,6 @@
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\ClientPopularAddress.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
-    <Compile Include="Requests\CraftyClicksRequest.cs" />
     <Compile Include="Requests\CreateOrder.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />

@@ -1,4 +1,4 @@
-namespace apcurium.MK.Common.Entity
+namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks.Resources
 {
     public class DeliveryPoint
     {
