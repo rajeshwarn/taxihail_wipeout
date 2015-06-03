@@ -1,6 +1,5 @@
 using System;
 using apcurium.MK.Booking.MapDataProvider;
-using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using CoreLocation;
 using System.Linq;
@@ -9,7 +8,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
