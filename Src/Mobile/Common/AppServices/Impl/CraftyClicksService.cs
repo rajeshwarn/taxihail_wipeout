@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
