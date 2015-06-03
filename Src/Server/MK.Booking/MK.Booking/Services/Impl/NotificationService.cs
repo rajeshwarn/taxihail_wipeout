@@ -482,7 +482,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
             double tax, double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
-            DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
+            DateTime pickupDate, DateTime? dropOffDateInUtc, DateTime? localDropOffDate, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
             bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
@@ -550,8 +550,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 : string.Empty;
 
             var timeZoneOfTheOrder = TryToGetOrderTimeZone(orderId);
-            var nullSafeDropOffDate = GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
-            var dropOffTime = dropOffDateInUtc.HasValue
+            var nullSafeDropOffDate = localDropOffDate ?? GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
+            var dropOffTime = dropOffDateInUtc.HasValue || localDropOffDate.HasValue
                 ? nullSafeDropOffDate.ToString("t" /* Short time pattern */)
                 : string.Empty;
 
@@ -577,7 +577,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 DropOffDate = nullSafeDropOffDate.ToString("D", dateFormat),
                 DropOffTime = dropOffTime,
                 ShowDropOffTime = dropOffTime.HasValue(),
-                ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet,
+                ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet && !localDropOffDate.HasValue,
                 Fare = _resources.FormatPrice(fare),
                 Toll = _resources.FormatPrice(toll),        
                 Surcharge = _resources.FormatPrice(surcharge),

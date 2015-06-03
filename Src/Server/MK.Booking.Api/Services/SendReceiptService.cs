@@ -94,6 +94,7 @@ namespace apcurium.MK.Booking.Api.Services
             ReadModel.CreditCardDetails creditCard = null;
 
             var ibsOrderId = orderStatus.IBSOrderId;
+            DateTime? localDropoffDate = null;
 
             if (orderPayment != null && orderPayment.IsCompleted)
             {
@@ -129,6 +130,7 @@ namespace apcurium.MK.Booking.Api.Services
                     surcharge = Math.Round(((double) tripInfo.Surcharge / 100), 2);
                     orderStatus.DriverInfos.DriverId = tripInfo.DriverId.ToString();
                     ibsOrderId = tripInfo.TripId;
+                    localDropoffDate = tripInfo.EndTime;
                 }
                 else
                 {
@@ -173,7 +175,8 @@ namespace apcurium.MK.Booking.Api.Services
                         ? Convert.ToDouble(promotionUsed.AmountSaved)
                         : (double?)null,
                     promotionUsed,
-                    creditCard));
+                    creditCard,
+                    localDropoffDate));
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
