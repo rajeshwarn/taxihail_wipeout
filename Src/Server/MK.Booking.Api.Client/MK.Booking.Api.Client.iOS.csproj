@@ -84,7 +84,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ICraftyClicksServiceClient.cs" />
     <Compile Include="IPairingServiceClient.cs" />
     <Compile Include="Payments\PairingServiceClient.cs" />
     <Compile Include="Payments\PayPal\PayPalServiceClient.cs" />
@@ -94,7 +93,6 @@
     <Compile Include="TaxiHail\AuthServiceClient.cs" />
     <Compile Include="TaxiHail\BaseServiceClient.cs" />
     <Compile Include="TaxiHail\ConfigurationClientService.cs" />
-    <Compile Include="TaxiHail\CraftyClicksServiceClient.cs" />
     <Compile Include="TaxiHail\ManualPairingForRideLinqServiceClient.cs" />
     <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
     <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />

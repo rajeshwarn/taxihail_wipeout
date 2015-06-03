@@ -1,31 +1,37 @@
 using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using CMTPayment.Extensions;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-    public class CraftyClicksService : ICraftyClicksService
+    public class CraftyClicksService : IPostalCodeService
     {
-        private readonly ICraftyClicksServiceClient _craftyClicksServiceClient;
-
-        public CraftyClicksService(ICraftyClicksServiceClient craftyClicksServiceClient)
+        private readonly IAppSettings _settingsService;
+        public CraftyClicksService(IAppSettings settingsService)
         {
-            _craftyClicksServiceClient = craftyClicksServiceClient;
+            _settingsService = settingsService;
         }
 
-        public async Task<Address[]> GetCraftyClicksAddressFromPostalCode(string postalCode)
+        public async Task<Address[]> GetAddressFromPostalCode(string postalCode)
         {
-            var addressInformation = await _craftyClicksServiceClient.GetAddressInformation(postalCode);
+            var client = GetClient();
 
+            var addressInformation = await client.PostAsync(new CraftyClicksRequest
+            {
+                Postcode = postalCode,
+                Key = _settingsService.Data.CraftyClicksApiKey
+            });
 
 			if (addressInformation == null)
 			{
 				return new Address[0];
 			}
-
-            
 
             return addressInformation.Delivery_points
                 .Select(point => new Address()
@@ -42,6 +48,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 .ToArray();
         }
 
+
+        private JsonServiceClient GetClient()
+        {
+            return new JsonServiceClient("http://pcls1.craftyclicks.co.uk/json/");
+        }
 
         private string GenerateFullAddress(string line1, string line2, string town, string postcode)
         {

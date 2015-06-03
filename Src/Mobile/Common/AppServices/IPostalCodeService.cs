@@ -3,8 +3,8 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
-    public interface ICraftyClicksService
+    public interface IPostalCodeService
     {
-        Task<Address[]> GetCraftyClicksAddressFromPostalCode(string postalCode);
+        Task<Address[]> GetAddressFromPostalCode(string postalCode);
     }
 }

@@ -119,7 +119,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppServices\ICraftyClicksService.cs" />
+    <Compile Include="AppServices\IPostalCodeService.cs" />
     <Compile Include="AppServices\IGeolocService.cs" />
     <Compile Include="AppServices\Impl\CraftyClicksService.cs" />
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />

@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IGeolocService _geolocService;
 		private readonly IAccountService _accountService;
 		private readonly ILocationService _locationService;
-	    private readonly ICraftyClicksService _craftyClicksService;
+	    private readonly IPostalCodeService _postalCodeService;
 	    private readonly IAppSettings _appSettings;
 
 		private bool _isInLocationDetail;
@@ -46,14 +46,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			IPlaces placesService,
 			IGeolocService geolocService,
 			IAccountService accountService,
-			ILocationService locationService, ICraftyClicksService craftyClicksService, IAppSettings appSettings)
+			ILocationService locationService, IPostalCodeService postalCodeService, IAppSettings appSettings)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_geolocService = geolocService;
 			_placesService = placesService;
 			_accountService = accountService;
 			_locationService = locationService;
-		    _craftyClicksService = craftyClicksService;
+		    _postalCodeService = postalCodeService;
 		    _appSettings = appSettings;
 
 
@@ -401,7 +401,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	    {
 	        try
 	        {
-                var postalCodeAddresses = await Task.Run(() => _craftyClicksService.GetCraftyClicksAddressFromPostalCode(criteria));
+                var postalCodeAddresses = await Task.Run(() => _postalCodeService.GetAddressFromPostalCode(criteria));
 
                 return postalCodeAddresses
                     .Select(adrs => new AddressViewModel(adrs, AddressType.Places))

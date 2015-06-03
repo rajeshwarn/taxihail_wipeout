@@ -56,7 +56,6 @@
   <ItemGroup>
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
-    <Compile Include="ICraftyClicksServiceClient.cs" />
     <Compile Include="IIbsFareClient.cs" />
     <Compile Include="IPairingServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentClient.cs" />
@@ -70,7 +69,6 @@
     <Compile Include="TaxiHail\BaseServiceClient.cs" />
     <Compile Include="TaxiHail\CompanyServiceClient.cs" />
     <Compile Include="TaxiHail\ConfigurationClientService.cs" />
-    <Compile Include="TaxiHail\CraftyClicksServiceClient.cs" />
     <Compile Include="TaxiHail\ManualPairingForRideLinqServiceClient.cs" />
     <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
     <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
