@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -35,7 +35,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="302" height="300"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kW8-fg-Z4o">
-                            <rect key="frame" x="0.0" y="0.0" width="302" height="347"/>
+                            <rect key="frame" x="0.0" y="0.0" width="302" height="342"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account.png" translatesAutoresizingMaskIntoConstraints="NO" id="u3E-jI-DzQ">
                                     <rect key="frame" x="10" y="10" width="16" height="16"/>
@@ -133,10 +133,10 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dDw-PR-6lQ" customClass="FlatTextView">
-                                    <rect key="frame" x="9" y="237" width="284" height="100"/>
+                                    <rect key="frame" x="9" y="237" width="284" height="95"/>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="JRg-DB-wXz"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="95" id="JRg-DB-wXz"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
@@ -188,7 +188,7 @@
                                 <constraint firstItem="zlW-Ib-cnZ" firstAttribute="top" secondItem="fQc-9F-1lI" secondAttribute="bottom" constant="18" id="Hhw-dn-UdZ"/>
                                 <constraint firstItem="zlW-Ib-cnZ" firstAttribute="left" secondItem="kW8-fg-Z4o" secondAttribute="left" constant="10" id="IA8-Jp-uN2"/>
                                 <constraint firstItem="QPH-Td-ofI" firstAttribute="left" secondItem="w4N-xm-X7k" secondAttribute="right" constant="12" id="Kso-XQ-7Z9"/>
-                                <constraint firstAttribute="height" priority="500" constant="347" id="L34-fX-Tuh"/>
+                                <constraint firstAttribute="height" priority="500" constant="342" id="L34-fX-Tuh"/>
                                 <constraint firstAttribute="bottom" secondItem="dDw-PR-6lQ" secondAttribute="bottom" constant="10" id="Ntf-CY-qt2"/>
                                 <constraint firstAttribute="right" secondItem="nBe-Cq-OVh" secondAttribute="right" constant="10" id="Ny4-jr-7Ce"/>
                                 <constraint firstItem="QPH-Td-ofI" firstAttribute="centerY" secondItem="w4N-xm-X7k" secondAttribute="centerY" id="PAS-ib-jpP"/>
