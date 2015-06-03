@@ -1127,7 +1127,7 @@
     <value>لا يمكننا الحصول على الحالة. رجاء الاتصال بمورد الخدمة.</value>
   </data>
   <data name="StatusConfirmCancelRide" xml:space="preserve">
-    <value>سيؤدي هذا الإختيار لإلغاء طلبك، هل ترغب في الإستمرار؟</value>
+    <value>Are you sure you want to cancel?</value>
   </data>
   <data name="StatusConfirmCancelRideError" xml:space="preserve">
     <value>لا يمكن إلغاء الطلب، الرجاء الإتصال لإلغائه.</value>
@@ -1850,7 +1850,7 @@
     <value>Done</value>
   </data>
   <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
-    <value>Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</value>
+    <value>Are you sure you want to cancel? A cancellation fee may apply.</value>
   </data>
   <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
     <value>You cannot delete your credit card when an order is scheduled or in progress.</value>

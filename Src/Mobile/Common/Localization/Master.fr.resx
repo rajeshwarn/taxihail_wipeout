@@ -1153,7 +1153,7 @@
     <value>Information non disponible. Merci de nous contacter.</value>
   </data>
   <data name="StatusConfirmCancelRide" xml:space="preserve">
-    <value>Cette action annulera votre commande, souhaitez-vous continuer?</value>
+    <value>Etes-vous sûr que vous souhaitez d'annuler?</value>
   </data>
   <data name="StatusConfirmCancelRideError" xml:space="preserve">
     <value>Désolé, vous ne pouvez plus annuler cette demande. Merci de nous contacter</value>

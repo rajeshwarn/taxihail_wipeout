@@ -592,7 +592,7 @@
     <value>Book another taxi</value>
   </data>
   <data name="StatusConfirmCancelRide" xml:space="preserve">
-    <value>This action will cancel your order, do you want to continue ?</value>
+    <value>Are you sure you want to cancel?</value>
   </data>
   <data name="StatusConfirmCancelRideError" xml:space="preserve">
     <value>The order cannot be canceled, please call to cancel this order.</value>
@@ -1924,7 +1924,7 @@
     <value>An error occured when trying to unpair. Please try again.</value>
   </data>
   <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
-    <value>Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</value>
+    <value>Are you sure you want to cancel? A cancellation fee may apply.</value>
   </data>
   <data name="BookATaxi_Message" xml:space="preserve">
     <value>When would you like to book?</value>
