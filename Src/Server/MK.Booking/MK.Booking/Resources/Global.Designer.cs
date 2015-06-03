@@ -1123,7 +1123,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Passengers are in the taxi.
+        ///   Looks up a localized string similar to Passenger is in the taxi.
         /// </summary>
         public static string OrderStatus_wosLOADED {
             get {

@@ -174,80 +174,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         protected virtual void KeyboardWillShowNotification (NSNotification notification)
         {
-            var activeView = KeyboardGetActiveView();
-            if (activeView == null)
-            {
-                return;
-            }
-
-            var scrollView = activeView.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
-            if (scrollView == null)
-            {
-                return;
-            }
-
-            // find the topmost scrollview (fix problem with RootElement)
-            var nextSuperView = scrollView;
-            while(nextSuperView != null)
-            {
-                scrollView = nextSuperView;
-                nextSuperView = scrollView.FindSuperviewOfType(this.View, typeof(UIScrollView)) as UIScrollView;
-            }
-
-            var keyboardBounds = ((NSValue)notification.UserInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey)).RectangleFValue;
-
-            var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardBounds.Size.Height + this.View.Frame.Y, 0.0f);
-            scrollView.ContentInset = contentInsets;
-            scrollView.ScrollIndicatorInsets = contentInsets;
-
-            // If activeField is hidden by keyboard, scroll it so it's visible
-            var viewRectAboveKeyboard = new CGRect(this.View.Frame.Location, new CGSize(this.View.Frame.Width, this.View.Frame.Size.Height - keyboardBounds.Size.Height));
-
-            var activeFieldAbsoluteFrame = activeView.Superview.ConvertRectToView(activeView.Frame, this.View);
-            // activeFieldAbsoluteFrame is relative to this.View so does not include any scrollView.ContentOffset
-            activeFieldAbsoluteFrame.Y = activeFieldAbsoluteFrame.Y + this.View.Frame.Y;
-
-            //change width of control before checking because we only check vertically
-            activeFieldAbsoluteFrame.Width = 10f;
-
-            // Check if the activeField will be partially or entirely covered by the keyboard
-            if (!viewRectAboveKeyboard.Contains(activeFieldAbsoluteFrame))
-            {
-                // Scroll to the activeField Y position + activeField.Height + current scrollView.ContentOffset.Y - the keyboard Height
-                var scrollPoint = new CGPoint(0.0f, activeFieldAbsoluteFrame.Location.Y + activeFieldAbsoluteFrame.Height + scrollView.ContentOffset.Y - viewRectAboveKeyboard.Height);
-                scrollView.SetContentOffset(scrollPoint, true);
-            }
+            UIViewHelper.ReactToKeyboardWillShowNotification(this.View, KeyboardGetActiveView(), false, notification);
         }
 
         protected virtual void KeyboardWillHideNotification (NSNotification notification)
         {
-            var activeView = KeyboardGetActiveView();
-            if (activeView == null)
-            {
-                return;
-            }
-
-            var scrollView = activeView.FindSuperviewOfType (View, typeof(UIScrollView)) as UIScrollView;
-            if (scrollView == null)
-            {
-                return;
-            }
-
-            // find the topmost scrollview (fix problem with RootElement)
-            var nextSuperView = scrollView;
-            while(nextSuperView != null)
-            {
-                scrollView = nextSuperView;
-                nextSuperView = scrollView.FindSuperviewOfType(this.View, typeof(UIScrollView)) as UIScrollView;
-            }
-
-            // Reset the content inset of the scrollView and animate using the current keyboard animation duration
-            var animationDuration = UIKeyboard.AnimationDurationFromNotification(notification);
-            var contentInsets = new UIEdgeInsets(0.0f, 0.0f, 0.0f, 0.0f);
-            UIView.Animate(animationDuration, delegate{
-                scrollView.ContentInset = contentInsets;
-                scrollView.ScrollIndicatorInsets = contentInsets;
-            });
+            UIViewHelper.ReactToKeyboardWillHideNotification(this.View, KeyboardGetActiveView(), false, notification);
         }
 
         protected void ChangeThemeOfBarStyle()
