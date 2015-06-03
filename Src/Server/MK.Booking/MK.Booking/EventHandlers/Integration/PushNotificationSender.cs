@@ -36,15 +36,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly INotificationService _notificationService;
         private readonly IServerSettings _serverSettings;
         private readonly IPromotionDao _promotionDao;
-        private readonly ICreditCardDao _creditCardDao;
         private static readonly ILog Log = LogManager.GetLogger(typeof(PushNotificationSender));
 
-        public PushNotificationSender(INotificationService notificationService, IServerSettings serverSettings, IPromotionDao promotionDao, ICreditCardDao creditCardDao, IAccountDao accountDao)
+        public PushNotificationSender(INotificationService notificationService, IServerSettings serverSettings, IPromotionDao promotionDao, IAccountDao accountDao)
         {
             _notificationService = notificationService;
             _serverSettings = serverSettings;
             _promotionDao = promotionDao;
-            _creditCardDao = creditCardDao;
             _accountDao = accountDao;
         }
 
@@ -145,8 +143,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             try
             {
                 var account = _accountDao.FindById(@event.SourceId);
-                var creditCard = _creditCardDao.FindByAccountId(@event.SourceId).First();
-                _notificationService.SendCreditCardDeactivatedPush(account, creditCard);
+                _notificationService.SendCreditCardDeactivatedPush(account);
             }
             catch (Exception e)
             {
