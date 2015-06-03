@@ -45,8 +45,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             try
             {   
 				var currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
-				var addresses = _geocoding.SearchAsync(latitude, longitude, currentLanguage, geoResult: null, searchPopularAddresses: searchPopularAddresses);
-                return addresses;
+                
+                return await _geocoding.SearchAsync(latitude, longitude, currentLanguage, geoResult: null, searchPopularAddresses: searchPopularAddresses);
             }
             catch (Exception ex)
             {
