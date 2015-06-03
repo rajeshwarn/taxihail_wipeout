@@ -612,7 +612,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendCreditCardDeactivatedPush(AccountDetail account, CreditCardDetails creditCard)
         {
-            var alert = string.Format(_resources.Get("PushNotification_CreditCardDeclined", account.Language), creditCard.Last4Digits);
+            var alert = _resources.Get("PushNotification_CreditCardDeclined", account.Language);
             var data = new Dictionary<string, object>();
             SendPushOrSms(account.Id, alert, data);
         }
