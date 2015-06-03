@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
                 googlePlaces =
 					_client.SearchPlaces(latitude, longitude, name, currentLanguage, false,
-                        radius ?? defaultRadius, /*priceFormat.TwoLetterISORegionName.ToLower()*/ "uk")
+                        radius ?? defaultRadius, priceFormat.TwoLetterISORegionName.ToLower())
                         .Take(15);
             }
 
