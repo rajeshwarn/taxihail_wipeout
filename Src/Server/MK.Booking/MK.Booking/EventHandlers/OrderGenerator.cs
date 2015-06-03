@@ -636,6 +636,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.RateAtTripStart = @event.RateAtTripStart;
                 rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
                 rideLinqDetails.RateChangeTime = @event.RateChangeTime;
+                rideLinqDetails.Medallion = @event.Medallion;
+
                 context.Save(rideLinqDetails);
             }
         }
