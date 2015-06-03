@@ -417,11 +417,11 @@ namespace apcurium.MK.Booking.IBS.Impl
         public bool InitiateCallToDriver(int ibsOrderId, string vehicleNumber)
         {
             var success = false;
-//            UseService(service =>
-//            {
-//                var result = service.SendP2DCall(UserNameApp, PasswordApp, vehicleNumber, ibsOrderId);
-//                success = result == 0;
-//            });
+            UseService(service =>
+            {
+                var result = service.SendP2DCall(UserNameApp, PasswordApp, vehicleNumber, ibsOrderId);
+                success = result == 0;
+            });
             return success;
         }
 
