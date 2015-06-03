@@ -12,7 +12,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -26,9 +25,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IAccountService _accountService;
 		private readonly ILocationService _locationService;
 	    private readonly IPostalCodeService _postalCodeService;
-	    private readonly IAppSettings _appSettings;
 
-		private bool _isInLocationDetail;
+	    private bool _isInLocationDetail;
 		private Address _currentAddress;	
 		private bool _ignoreTextChange;
 		private string _currentLanguage;
@@ -46,7 +44,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			IPlaces placesService,
 			IGeolocService geolocService,
 			IAccountService accountService,
-			ILocationService locationService, IPostalCodeService postalCodeService, IAppSettings appSettings)
+			ILocationService locationService, 
+            IPostalCodeService postalCodeService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_geolocService = geolocService;
@@ -54,7 +53,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_accountService = accountService;
 			_locationService = locationService;
 		    _postalCodeService = postalCodeService;
-		    _appSettings = appSettings;
 
 
 		    FilteredPlaces = new AddressViewModel[0];
@@ -347,7 +345,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					var fhAdrs = SearchFavoriteAndHistoryAddresses(criteria);
 					var pAdrs = Task.Run(() => SearchPlaces(criteria));
 					var gAdrs = Task.Run(() => SearchGeocodeAddresses(criteria));
-				    if (_appSettings.Data.CraftyClicksApiKey.HasValue())
+				    if (this.Services().Settings.CraftyClicksApiKey.HasValue())
 				    {
                         var ccAdrs = SearchPostalCode(criteria);
 
