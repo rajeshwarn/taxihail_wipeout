@@ -116,7 +116,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                 extra: Convert.ToDecimal(extraAmount),
                                 toll: Convert.ToDecimal(tollAmount),
                                 surcharge: Convert.ToDecimal(surchargeAmount),
-                                driverIdOverride: tripInfo.DriverId.ToString());
+                                driverIdOverride: tripInfo.DriverId.ToString(),
+                                localDropOffDate: tripInfo.EndTime);
                         }
                     }
                 } 
@@ -222,7 +223,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         }
 
         private void SendTripReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m,
-            decimal toll = 0m, decimal extra = 0m, decimal surcharge = 0m, decimal bookingFees = 0m, string driverIdOverride = null )
+            decimal toll = 0m, decimal extra = 0m, decimal surcharge = 0m, decimal bookingFees = 0m, string driverIdOverride = null, DateTime? localDropOffDate = null)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -288,7 +289,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         orderPayment,
                         Convert.ToDouble(amountSavedByPromotion),
                         promoUsed,
-                        card);
+                        card,
+                        localDropOffDate);
 
                     _commandBus.Send(command);
                 }
