@@ -36,23 +36,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public GeoAddress[] GeocodeAddress (string address, string currentLanguage)
 		{
-			// Do nothing with currentLanguage parameter since Android Geocoder
-			// automatically gets the results using the system language
-
-			var geocoder = new Geocoder (_androidGlobals.ApplicationContext);
-
-			try 
-            {
-                if (SettingsForGeocodingRegionAreSet)
-                {
-					var locations = geocoder.GetFromLocationName (address.Replace ("+", " "), 100, _settings.Data.LowerLeftLatitude.Value, _settings.Data.LowerLeftLongitude.Value, _settings.Data.UpperRightLatitude.Value, _settings.Data.UpperRightLongitude.Value);				
-					return locations.Select (ConvertAddressToGeoAddress).ToArray ();			
-				} 
-                else 
-                {
-					var locations = geocoder.GetFromLocationName (address.Replace ("+", " "), 100);				
-					return locations.Select (ConvertAddressToGeoAddress).ToArray();		
-				}
+			try
+			{
+			    return GeocodeAddressAsync(address, currentLanguage).Result;
 			} 
             catch (Exception ex) 
             {
