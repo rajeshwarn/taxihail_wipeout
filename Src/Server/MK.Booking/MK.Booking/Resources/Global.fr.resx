@@ -616,6 +616,6 @@
     <value>Driver #</value>
   </data>
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
-    <value>Carte *{0} refusée</value>
+    <value>La carte de crédit a été refusée</value>
   </data>
 </root>

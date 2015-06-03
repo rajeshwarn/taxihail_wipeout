@@ -746,6 +746,6 @@
     <value>Driver #</value>
   </data>
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
-    <value>Card *{0} declined</value>
+    <value>Credit Card was declined</value>
   </data>
 </root>
