@@ -1971,7 +1971,7 @@
     <comment>An error occurred while trying to update the tip. Please try again.</comment>
   </data>
   <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
-    <value>Vous êtes assis dans le véchicule {0}.</value>
+    <value>Vous êtes assis dans le véhicule {0}.</value>
   </data>
   <data name="ManualRideLinqStatus_Payment" xml:space="preserve">
     <value>Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.</value>
