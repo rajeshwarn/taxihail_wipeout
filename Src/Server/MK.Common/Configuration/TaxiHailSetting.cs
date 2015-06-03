@@ -123,7 +123,7 @@ namespace MK.Common.Configuration
 		public string ServiceUrl { get; set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "CraftyClicks Api Key", Description = "CraftyClicks API settings.")]
+        [Display(Name = "CraftyClicks Api Key", Description = "Enables the UK postcode address lookup using the CraftyClicks Api")]
         public string CraftyClicksApiKey { get; set; }
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
