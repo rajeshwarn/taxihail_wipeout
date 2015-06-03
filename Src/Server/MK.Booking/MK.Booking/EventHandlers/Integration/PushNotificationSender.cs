@@ -32,20 +32,20 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IEventHandler<OrderCancelledBecauseOfError>,
             IEventHandler<CreditCardDeactivated>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IAccountDao _accountDao;
         private readonly INotificationService _notificationService;
         private readonly IServerSettings _serverSettings;
         private readonly IPromotionDao _promotionDao;
         private readonly ICreditCardDao _creditCardDao;
         private static readonly ILog Log = LogManager.GetLogger(typeof(PushNotificationSender));
 
-        public PushNotificationSender(Func<BookingDbContext> contextFactory, INotificationService notificationService, IServerSettings serverSettings, IPromotionDao promotionDao, ICreditCardDao creditCardDao)
+        public PushNotificationSender(INotificationService notificationService, IServerSettings serverSettings, IPromotionDao promotionDao, ICreditCardDao creditCardDao, IAccountDao accountDao)
         {
-            _contextFactory = contextFactory;
             _notificationService = notificationService;
             _serverSettings = serverSettings;
             _promotionDao = promotionDao;
             _creditCardDao = creditCardDao;
+            _accountDao = accountDao;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -144,12 +144,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             try
             {
-                using (var context = _contextFactory.Invoke())
-                {
-                    var account = context.Find<AccountDetail>(@event.SourceId);
-                    var creditCard = _creditCardDao.FindByAccountId(@event.SourceId).First();
-                    _notificationService.SendCreditCardDesactivatedPush(account, creditCard);
-                }
+                var account = _accountDao.FindById(@event.SourceId);
+                var creditCard = _creditCardDao.FindByAccountId(@event.SourceId).First();
+                _notificationService.SendCreditCardDeactivatedPush(account, creditCard);
             }
             catch (Exception e)
             {

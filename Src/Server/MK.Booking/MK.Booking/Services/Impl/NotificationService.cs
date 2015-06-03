@@ -610,10 +610,10 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.CreditCardDeactivated, EmailConstant.Subject.CreditCardDeactivated, templateData, clientLanguageCode);
         }
 
-        public void SendCreditCardDesactivatedPush(AccountDetail account, CreditCardDetails creditCard)
+        public void SendCreditCardDeactivatedPush(AccountDetail account, CreditCardDetails creditCard)
         {
-            var alert = string.Format(_resources.Get("PushNotification_CreditCardDeclined", account.Language), creditCard.Last4Digits.ToString());
-            var data = new Dictionary<string, object> { { "creditcardcompany", creditCard.CreditCardCompany } };
+            var alert = string.Format(_resources.Get("PushNotification_CreditCardDeclined", account.Language), creditCard.Last4Digits);
+            var data = new Dictionary<string, object>();
             SendPushOrSms(account.Id, alert, data);
         }
 
