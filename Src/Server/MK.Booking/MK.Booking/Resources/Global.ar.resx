@@ -623,4 +623,7 @@
   <data name="Email_Body_DriverId" xml:space="preserve">
     <value>Driver #</value>
   </data>
+  <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
+    <value>Credit Card was declined</value>
+  </data>
 </root>

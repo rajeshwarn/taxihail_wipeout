@@ -34,5 +34,7 @@ namespace apcurium.MK.Booking.Services
         void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSettings = false);
 
         void SendCreditCardDeactivatedEmail(string creditCardCompany, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
+
+        void SendCreditCardDeactivatedPush(AccountDetail account);
     }
 }
