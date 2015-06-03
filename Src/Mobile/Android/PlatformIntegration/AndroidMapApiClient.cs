@@ -36,15 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public GeoAddress[] GeocodeAddress (string address, string currentLanguage)
 		{
-			try
-			{
-			    return GeocodeAddressAsync(address, currentLanguage).Result;
-			} 
-            catch (Exception ex) 
-            {
-				_logger.LogError (ex);
-				return new GeoAddress [0];
-			}
+			return GeocodeAddressAsync(address, currentLanguage).Result;
 		}
 
 	    public async Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage)
