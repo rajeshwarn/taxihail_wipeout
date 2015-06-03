@@ -122,6 +122,10 @@ namespace MK.Common.Configuration
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
 		public string ServiceUrl { get; set; }
 
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "CraftyClicks Api Key", Description = "Enables the UK postcode address lookup using the CraftyClicks Api")]
+        public string CraftyClicksApiKey { get; set; }
+
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; protected set; }

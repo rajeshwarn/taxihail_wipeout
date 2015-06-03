@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps.Impl.Mappers;
 using apcurium.MK.Common.Configuration;
@@ -63,7 +64,33 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
         }
 
-		public Address[] Search(double latitude, double longitude, string currentLanguage, GeoResult geoResult = null,
+        public async Task<Address[]> SearchAsync(string addressName, string currentLanguage, GeoResult geoResult = null)
+        {
+            var popularPlaces = new Address[0];
+
+            if (addressName.HasValue())
+            {
+                popularPlaces = SearchPopularAddresses(addressName);
+            }
+
+            if (geoResult == null)
+            {
+                var addresses = await SearchUsingNameAsync(addressName, true, currentLanguage);
+                return addresses == null
+                    ? popularPlaces
+                    : popularPlaces.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, true))).ToArray();
+            }
+            else
+            {
+                var addresses = ResourcesExtensions.ConvertGeoResultToAddresses(geoResult);
+
+                return addresses == null
+                    ? popularPlaces
+                    : popularPlaces.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, true))).ToArray();
+            }
+        }
+
+        public Address[] Search(double latitude, double longitude, string currentLanguage, GeoResult geoResult = null,
             bool searchPopularAddress = false)
         {
             var addressesInRange = new Address[0];
@@ -105,6 +132,24 @@ namespace apcurium.MK.Booking.Maps.Impl
 		    results = _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"), currentLanguage);
 
 		    return FilterGeoCodingResults(results);
+        }
+
+        private async Task<GeoAddress[]> SearchUsingNameAsync(string name, bool useFilter, string currentLanguage)
+        {
+            if (name == null)
+            {
+                return null;
+            }
+
+            var filter = _appSettings.Data.GeoLoc.SearchFilter;
+
+            var addressName = filter.HasValue() && useFilter
+                ? string.Format(filter, name.Split(' ').JoinBy("+"))
+                : name.Split(' ').JoinBy("+");
+            
+            var addresses = await _mapApi.GeocodeAddressAsync(addressName, currentLanguage);
+
+            return FilterGeoCodingResults(addresses);
         }
 
         private Address[] SearchPopularAddresses(string name)

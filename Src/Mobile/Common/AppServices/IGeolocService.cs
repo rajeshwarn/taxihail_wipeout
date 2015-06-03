@@ -13,6 +13,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Address[] SearchAddress(string address, double? latitude = null, double? longitude = null);
 
+        Task<Address[]> SearchAddressAsync(string address, double? latitude = null, double? longitude = null);
+
 		Task<DirectionInfo> GetDirectionInfo(double originLat, double originLong, double destLat, double destLong, int? vehicleTypeId = null, DateTime? date= null);
 
         Task<DirectionInfo> GetDirectionInfo(Address origin, Address dest, int? vehicleTypeId = null);

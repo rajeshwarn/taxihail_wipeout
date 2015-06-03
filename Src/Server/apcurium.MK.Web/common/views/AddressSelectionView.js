@@ -76,14 +76,28 @@
                 this.selectTab(this.$('[data-tab=search]'));
                 this.tab.search.call(this);
             }
-            
-            
-            TaxiHail.geocoder.search(query).done(_.bind(function(result) {
-                this._searchResults && this._searchResults.reset(result);
-            }, this));
+            if (TaxiHail.parameters.craftyclicksapikey) {
 
+                TaxiHail.craftyclicks.getCraftyClicksAdresses(query).done(_.bind(function (result) {
+                    if (result.error_code) {
+                        this.searchWithGoogleGeocoder(query);
+                    } else {
+                        this._searchResults && this._searchResults.reset(TaxiHail.craftyclicks.toAddress((result)));
+                    }
+                }, this));
+            }
+            else {
+                this.searchWithGoogleGeocoder(query);
+            }
 
         },
+
+        searchWithGoogleGeocoder: function(query) {
+            TaxiHail.geocoder.search(query).done(_.bind(function (result) {
+                this._searchResults && this._searchResults.reset(result);
+            }, this));
+        },
+
         
         selectTab: function($tab) {
             $tab.addClass('active').siblings().removeClass('active');
