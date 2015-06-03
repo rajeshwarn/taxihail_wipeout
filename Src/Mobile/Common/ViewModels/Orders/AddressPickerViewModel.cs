@@ -263,30 +263,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	    public async void SelectAddress(Address address, bool returnToHome = false)
 	    {
-	        if (address == null)
-	        {
-	            return;
-	        }
+			if (address == null)
+			{
+				return;
+			}
 
-            var detailedAddress = await UpdateAddressWithPlaceDetail(address);
+			try
+			{
+				var detailedAddress = await UpdateAddressWithPlaceDetail(address);
 
-	        if (_isInLocationDetail)
-	        {
-	            this.ReturnResult(detailedAddress);
+				if (_isInLocationDetail)
+				{
+					this.ReturnResult(detailedAddress);
 
-	            return;
-	        }
+					return;
+				}
 
-            ((HomeViewModel)Parent).LocateMe.Cancel();
-            await _orderWorkflowService.SetAddress(detailedAddress);
+				((HomeViewModel)Parent).LocateMe.Cancel();
 
-	        if (returnToHome)
-	        {
-                // This needs to be called if we are displaying the AddressPickerViewModel from the home view.
-                PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
-	        }
+				await _orderWorkflowService.SetAddress(detailedAddress);
 
-            ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+				if (returnToHome)
+				{
+					// This needs to be called if we are displaying the AddressPickerViewModel from the home view.
+					PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+				}
+
+				ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+			}
+			catch(Exception ex)
+			{
+				Logger.LogMessage("An error occurred while selecting address.");
+				Logger.LogError(ex);
+			}
 	    }
 
 	    public ICommand Cancel
