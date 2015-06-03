@@ -109,8 +109,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _pickupAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Pickup, _useThemeColorForPickupAndDestinationMapIcons);
             _destinationAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Destination, _useThemeColorForPickupAndDestinationMapIcons);
 
-            this.GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;
-
             InitializeGesture();
         }
             
@@ -262,6 +260,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (_pickupCenterPin.Superview == null)
             {
                 AddSubviews(_pickupCenterPin, _dropoffCenterPin);
+                GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;
             }
         }
 
