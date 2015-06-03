@@ -63,25 +63,32 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 	    }
 
 	    public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)
-		{
-			// Do nothing with currentLanguage parameter since Android Geocoder
-			// automatically gets the results using the system language
+	    {
+	        return GeocodeLocationAsync(latitude, longitude, currentLanguage).Result;
+	    }
 
-			var geocoder = new Geocoder (_androidGlobals.ApplicationContext);
-            
-			try 
+	    public async Task<GeoAddress[]> GeocodeLocationAsync(double latitude, double longitude, string currentLanguage)
+	    {
+            // Do nothing with currentLanguage parameter since Android Geocoder
+            // automatically gets the results using the system language
+            var geocoder = new Geocoder(_androidGlobals.ApplicationContext);
+
+            try
             {
-                var locations = geocoder.GetFromLocation(latitude, longitude, 25).Where(l => l.HasLatitude && l.HasLongitude);
-				return locations.Select (ConvertAddressToGeoAddress).ToArray ();			
-			} 
-            catch (Exception ex) 
+                var locations = await geocoder.GetFromLocationAsync(latitude, longitude, 25);
+                return locations
+                    .Where(l => l.HasLatitude && l.HasLongitude)
+                    .Select(ConvertAddressToGeoAddress)
+                    .ToArray();
+            }
+            catch (Exception ex)
             {
-				_logger.LogError (ex);
-				return new GeoAddress [0];
-			}
-		}
-        
-		private GeoAddress ConvertAddressToGeoAddress (Address address)
+                _logger.LogError(ex);
+                return new GeoAddress[0];
+            }
+	    }
+
+	    private GeoAddress ConvertAddressToGeoAddress (Address address)
 		{		
             var streetNumber = ConvertStreetNumberRangeToSingle(address.SubThoroughfare, address.PostalCode);
             var fullAddress = GetFormatFullAddress(address);

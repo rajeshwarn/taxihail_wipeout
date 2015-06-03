@@ -98,21 +98,40 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
             }
+           
+            var addresses = geoResult != null
+                ? geoResult.ConvertGeoResultToAddresses()
+                : _mapApi.GeocodeLocation(latitude, longitude, currentLanguage);
 
-            if (geoResult != null)
-            {
-				var addresses = ResourcesExtensions.ConvertGeoResultToAddresses(geoResult);
-                return addressesInRange.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, false))).ToArray();
-            }
-            else
-            {
-				var addresses = _mapApi.GeocodeLocation(latitude, longitude, currentLanguage);
-                var rr = addresses.Select(r => new GeoObjToAddressMapper().ConvertToAddress(r, null, false));
-                return addressesInRange.Concat(rr).ToArray();
-            }
+            return addressesInRange
+                .Concat(addresses.Select(ToAddress))
+                .ToArray();
         }
 
-		private GeoAddress[] SearchUsingName(string name, bool useFilter, string currentLanguage)
+        public async Task<Address[]> SearchAsync(double latitude, double longitude, string currentLanguage, GeoResult geoResult = null, 
+            bool searchPopularAddress = false)
+        {
+            var addressesInRange = new Address[0];
+            if (searchPopularAddress)
+            {
+                addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
+            }
+
+            var addresses = geoResult != null
+                ? geoResult.ConvertGeoResultToAddresses()
+                : await _mapApi.GeocodeLocationAsync(latitude, longitude, currentLanguage);
+
+            return addressesInRange
+                .Concat(addresses.Select(ToAddress))
+                .ToArray();
+        }
+
+        private static Address ToAddress(GeoAddress geoAddress)
+        {
+            return new GeoObjToAddressMapper().ConvertToAddress(geoAddress, null, false);
+        }
+
+        private GeoAddress[] SearchUsingName(string name, bool useFilter, string currentLanguage)
         {
 		    if (name == null)
 		    {

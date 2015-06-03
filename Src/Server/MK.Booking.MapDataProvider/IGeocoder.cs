@@ -11,6 +11,8 @@ namespace apcurium.MK.Booking.MapDataProvider
 	    Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage);
         
 		GeoAddress[]  GeocodeLocation(double latitude, double longitude, string currentLanguage);
+
+	    Task<GeoAddress[]> GeocodeLocationAsync(double latitude, double longitude, string currentLanguage);
 	}
 }
 
