@@ -44,13 +44,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var geocoder = new CLGeocoder();
 
-            var placemarks = await geocoder.GeocodeAddressAsync(address).ConfigureAwait(false);
+            var placemarks = await geocoder.GeocodeAddressAsync(address.Replace("+"," ")).ConfigureAwait(false);
 
             return placemarks
                 .Select(ConvertPlacemarkToAddress)
                 .ToArray();
         }
-
 
         public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)
         {
