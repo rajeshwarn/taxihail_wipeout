@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Domain
     public class Promotion : EventSourced
     {
         private bool _active;
+        private bool _removed;
         private PromotionTriggerSettings _triggerSettings;
 
         private DateTime? _startDate;
@@ -47,6 +48,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<PromotionUnapplied>(OnPromotionUnapplied);
             Handles<PromotionRedeemed>(NoAction);
             Handles<UserAddedToPromotionWhiteList_V2>(OnUserAddedToWhiteList);
+            Handles<PromotionRemoved>(OnPromotionRemoved);
         }
 
         public Promotion(Guid id, IEnumerable<IVersionedEvent> history)
@@ -127,6 +129,11 @@ namespace apcurium.MK.Booking.Domain
         public void Deactivate()
         {
             Update(new PromotionDeactivated());
+        }
+
+        public void Remove()
+        {
+            Update(new PromotionRemoved());
         }
 
         public bool CanApply(Guid accountId, DateTime pickupDate, bool isFutureBooking, out string errorMessage)
@@ -330,6 +337,11 @@ namespace apcurium.MK.Booking.Domain
         private void OnPromotionDeactivated(PromotionDeactivated @event)
         {
             _active = false;
+        }
+
+        private void OnPromotionRemoved(PromotionRemoved @event)
+        {
+            _removed = true;
         }
 
         private void OnPromotionApplied(PromotionApplied @event)

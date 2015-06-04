@@ -16,7 +16,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionApplied>,
         IEventHandler<PromotionUnapplied>,
         IEventHandler<PromotionRedeemed>,
-        IEventHandler<UserAddedToPromotionWhiteList_V2>
+        IEventHandler<UserAddedToPromotionWhiteList_V2>,
+        IEventHandler<PromotionRemoved>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -49,7 +50,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     PublishedStartDate = @event.PublishedStartDate,
                     PublishedEndDate = @event.PublishedEndDate,
                     TriggerSettings = @event.TriggerSettings,
-                    Active = true
+                    Active = true,
+                    Removed = false
                 };
 
                 context.Save(promotionDetail);
@@ -105,6 +107,18 @@ namespace apcurium.MK.Booking.EventHandlers
                 promotionDetail.Active = false;
 
                 context.Save(promotionDetail);
+            }
+        }
+
+        public void Handle(PromotionRemoved @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var promotionDetail = context.Find<PromotionDetail>(@event.SourceId);
+
+                promotionDetail.Removed = true;
+
+                context.SaveChanges();
             }
         }
 
