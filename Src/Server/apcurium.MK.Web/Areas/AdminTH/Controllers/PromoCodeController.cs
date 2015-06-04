@@ -264,27 +264,31 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public ActionResult Remove(Guid id)
         {
-            ICommand[] dr = new ICommand[]
+            var promotion = _promotionDao.FindById(id);
+
+            if (promotion != null)
+            {
+                var promotionName = promotion.Name;
+
+
+                ICommand[] dr = new ICommand[]
             {
                 new DeactivatePromotion() { PromoId = id },
                 new RemovePromotion() { PromoId = id }
             };
+                _commandBus.Send(dr);
 
-            var promotion = _promotionDao.FindById(id);
-            var promotionName = promotion.Name;
-
-            _commandBus.Send(dr);
-
-            // this patch due to absence of status check/wait of ICommand progression otherwise interface response is not correct
-            promotion = _promotionDao.FindById(id);
-            int t = 0;
-            while (promotion != null && (++t) < 30)
-            {
+                // this patch due to absence of status check/wait of ICommand progression otherwise interface response is not correct
                 promotion = _promotionDao.FindById(id);
-                System.Threading.Thread.Sleep(100);
-            }
+                int t = 0;
+                while (promotion != null && (++t) < 30)
+                {
+                    promotion = _promotionDao.FindById(id);
+                    System.Threading.Thread.Sleep(100);
+                }
 
-            TempData["Info"] = string.Format("Promotion \"{0}\" Disabled and Removed", promotionName);
+                TempData["Info"] = string.Format("Promotion \"{0}\" Disabled and Removed", promotionName);
+            }
 
             return RedirectToAction("Index");
         }
