@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using apcurium.MK.Common.Entity;
 
-namespace apcurium.MK.Booking.Mobile.AppServices
+namespace apcurium.MK.Booking.MapDataProvider
 {
     public interface IPostalCodeService
     {

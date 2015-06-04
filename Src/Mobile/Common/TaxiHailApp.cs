@@ -21,6 +21,7 @@ using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.CraftyClicks;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 
 

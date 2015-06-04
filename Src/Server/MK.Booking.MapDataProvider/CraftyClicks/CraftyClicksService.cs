@@ -1,13 +1,12 @@
 using System.Linq;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.MapDataProvider.CraftyClicks;
+using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using CMTPayment.Extensions;
 using ServiceStack.ServiceClient.Web;
 
-namespace apcurium.MK.Booking.Mobile.AppServices.Impl
+namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 {
     public class CraftyClicksService : IPostalCodeService
     {
