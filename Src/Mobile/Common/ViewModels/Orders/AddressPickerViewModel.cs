@@ -399,7 +399,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	    {
 	        try
 	        {
-                var postalCodeAddresses = await Task.Run(() => _postalCodeService.GetAddressFromPostalCode(criteria));
+                var postalCodeAddresses = await Task.Run(() => _postalCodeService.GetAddressFromPostalCodeAsync(criteria));
 
                 return postalCodeAddresses
                     .Select(adrs => new AddressViewModel(adrs, AddressType.Places))

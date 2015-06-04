@@ -5,51 +5,32 @@
     TaxiHail.craftyclicks = {
 
         getCraftyClicksAdresses: function (postcode) {
+            var defer = $.Deferred();
 
-            if (TaxiHail.parameters.craftyclicksapikey)
-            {
-                var defer = $.Deferred();
+            $.ajax({
+                url: TaxiHail.parameters.apiRoot + "/addressFromPostalCode",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({ postalCode: postcode })
+            }).then(function(result) {
+                if (result && result.length) {
+                    _.each(result, function (address) {
+                        // BUGFIX: All addresses have the same empty Guid as id
+                        delete address.id;
+                    });
+                }
+                defer.resolve(result);
+            }, defer.reject);
 
-                $.ajax({
-                    url: "http://pcls1.craftyclicks.co.uk/json/rapidaddress",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    data: JSON.stringify({ postcode: postcode, key: TaxiHail.parameters.craftyclicksapikey, response: "data_formatted", sort: "asc", include_geocode: true })
-                }).then(defer.resolve, defer.reject);
-
-                return defer.promise();
-            }
-
-            return null;
+            return defer.promise();
         },
 
-        toAddress: function (craftyClicksAddress) {
+        isValidPostalCode: function(query) {
+            var value = query.replace(" ", "");
 
-            if (craftyClicksAddress.error_code)
-            {
-                return new Array();
-            }
-
-            var collection = new Array();
-
-            for (var index = 0; index < craftyClicksAddress.delivery_points.length; index++) {
-                var address = craftyClicksAddress.delivery_points[index];
-
-                var addressItem = new TaxiHail.Address({
-                    zipcode: craftyClicksAddress.postcode,
-                    friendlyName: address.line_1,
-                    fullAddress: address.line_1 + ", " + craftyClicksAddress.town + ", " + craftyClicksAddress.postcode,
-                    city: craftyClicksAddress.town,
-                    longitude: craftyClicksAddress.geocode.lng,
-                    latitude: craftyClicksAddress.geocode.lat,
-                    addressType: "craftyclicks"
-                });
-
-                collection.push(addressItem);
-            }
-
-            return collection;
+            return value.length == 7;
         }
+
     };
 }());
