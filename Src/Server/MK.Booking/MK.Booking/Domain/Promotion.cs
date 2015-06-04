@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<PromotionUnapplied>(OnPromotionUnapplied);
             Handles<PromotionRedeemed>(NoAction);
             Handles<UserAddedToPromotionWhiteList_V2>(OnUserAddedToWhiteList);
-            Handles<PromotionRemoved>(OnPromotionRemoved);
+            Handles<PromotionDeleted>(OnPromotionDeleted);
         }
 
         public Promotion(Guid id, IEnumerable<IVersionedEvent> history)
@@ -131,9 +131,9 @@ namespace apcurium.MK.Booking.Domain
             Update(new PromotionDeactivated());
         }
 
-        public void Remove()
+        public void Delete()
         {
-            Update(new PromotionRemoved());
+            Update(new PromotionDeleted());
         }
 
         public bool CanApply(Guid accountId, DateTime pickupDate, bool isFutureBooking, out string errorMessage)
@@ -143,6 +143,12 @@ namespace apcurium.MK.Booking.Domain
             if (!_active)
             {
                 errorMessage = "CannotCreateOrder_PromotionIsNotActive";
+                return false;
+            }
+
+            if (_removed)
+            {
+                errorMessage = "CannotCreateOrder_PromotionIsDeleted";
                 return false;
             }
 
@@ -339,7 +345,7 @@ namespace apcurium.MK.Booking.Domain
             _active = false;
         }
 
-        private void OnPromotionRemoved(PromotionRemoved @event)
+        private void OnPromotionDeleted(PromotionDeleted @event)
         {
             _removed = true;
         }

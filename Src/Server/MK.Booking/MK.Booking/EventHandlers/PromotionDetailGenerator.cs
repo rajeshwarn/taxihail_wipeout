@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionUnapplied>,
         IEventHandler<PromotionRedeemed>,
         IEventHandler<UserAddedToPromotionWhiteList_V2>,
-        IEventHandler<PromotionRemoved>
+        IEventHandler<PromotionDeleted>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(PromotionRemoved @event)
+        public void Handle(PromotionDeleted @event)
         {
             using (var context = _contextFactory.Invoke())
             {

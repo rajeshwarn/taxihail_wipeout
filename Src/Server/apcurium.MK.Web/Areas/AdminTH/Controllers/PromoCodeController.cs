@@ -262,31 +262,27 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Remove(Guid id)
+        public ActionResult Delete(Guid id)
         {
-            var promotion = _promotionDao.FindById(id);
+            var promotions = _promotionDao.GetAll().ToList();
+            var promToDelete = promotions.Find(p => p.Id == id);
 
-            if (promotion != null)
+            if (promToDelete != null)
             {
-                var promotionName = promotion.Name;
+                promotions.Remove(promToDelete);
 
                 ICommand[] dr = new ICommand[]
                 {
                     new DeactivatePromotion() { PromoId = id },
-                    new RemovePromotion() { PromoId = id }
+                    new DeletePromotion() { PromoId = id }
                 };
                 _commandBus.Send(dr);
 
-                // this patch due to absence of status check/wait of ICommand progression otherwise interface response is not correct
-                promotion = _promotionDao.FindById(id);
-                int t = 0;
-                while (promotion != null && (++t) < 30)
-                {
-                    promotion = _promotionDao.FindById(id);
-                    System.Threading.Thread.Sleep(100);
-                }
 
-                TempData["Info"] = string.Format("Promotion \"{0}\" Disabled and Removed", promotionName);
+                var promC = promotions.Select(x => new PromoCode(x)).ToList();
+                TempData["Model"] = promC.OrderBy(p => p.Name);
+
+                TempData["Info"] = string.Format("Promotion \"{0}\" Deleted", promToDelete.Name);
             }
 
             return RedirectToAction("Index");

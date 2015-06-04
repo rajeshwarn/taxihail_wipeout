@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class RemovePromotion : ICommand
+    public class DeletePromotion : ICommand
     {
-        public RemovePromotion()
+        public DeletePromotion()
         {
             Id = Guid.NewGuid();
         }

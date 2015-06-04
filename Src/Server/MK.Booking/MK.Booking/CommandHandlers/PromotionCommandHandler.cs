@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UnapplyPromotion>,
         ICommandHandler<RedeemPromotion>,
         ICommandHandler<AddUserToPromotionWhiteList>,
-        ICommandHandler<RemovePromotion>
+        ICommandHandler<DeletePromotion>
     {
         private readonly IEventSourcedRepository<Promotion> _repository;
 
@@ -62,11 +62,11 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(promotion, command.Id.ToString());
         }
 
-        public void Handle(RemovePromotion command)
+        public void Handle(DeletePromotion command)
         {
             var promotion = _repository.Get(command.PromoId);
 
-            promotion.Remove();
+            promotion.Delete();
 
             _repository.Save(promotion, command.Id.ToString());
         }

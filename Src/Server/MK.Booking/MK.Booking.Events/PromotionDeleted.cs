@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Events
 {
-    public class PromotionRemoved:VersionedEvent
+    public class PromotionDeleted:VersionedEvent
     {
     }
 }
