@@ -271,7 +271,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             {
                 promotions.Remove(promToDelete);
 
-                _commandBus.Send(new ICommand[] { new DeactivatePromotion() { PromoId = id }, new DeletePromotion() { PromoId = id } });
+                _commandBus.Send(new ICommand[]
+                    {
+                        new DeactivatePromotion() { PromoId = id },
+                        new DeletePromotion() { PromoId = id }
+                    });
 
                 TempData["Model"] = promotions.Select(x => new PromoCode(x)).OrderBy(p => p.Name);
 
