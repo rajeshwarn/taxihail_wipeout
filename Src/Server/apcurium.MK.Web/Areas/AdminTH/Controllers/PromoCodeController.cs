@@ -270,12 +270,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             {
                 var promotionName = promotion.Name;
 
-
                 ICommand[] dr = new ICommand[]
-            {
-                new DeactivatePromotion() { PromoId = id },
-                new RemovePromotion() { PromoId = id }
-            };
+                {
+                    new DeactivatePromotion() { PromoId = id },
+                    new RemovePromotion() { PromoId = id }
+                };
                 _commandBus.Send(dr);
 
                 // this patch due to absence of status check/wait of ICommand progression otherwise interface response is not correct
