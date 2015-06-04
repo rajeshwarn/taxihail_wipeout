@@ -364,8 +364,8 @@
   <string name="DriverInfoMake">Make:</string>
   <string name="DriverInfoModel">Model:</string>
   <string name="DriverInfoTaxiType">Taxi Type:</string>
-  <string name="NoPhoneNumberMessage">The phone number is invalid for this driver.</string>
-  <string name="NoPhoneNumberTitle">Invalid phone Number</string>
+  <string name="NoPhoneNumberMessage">Your phone number or the driver\'s phone number is invalid.</string>
+  <string name="NoPhoneNumberTitle">Invalid Phone Number</string>
   <string name="DeleteAddressBt">Clear Address</string>
   <string name="PassengerNameLabel">Name</string>
   <string name="PassengerNumberLabel">Passengers</string>
@@ -500,6 +500,7 @@
   <string name="Safety">Safety</string>
   <string name="Politeness">Politeness</string>
   <string name="CallDriverUsingProxyMessage">Your driver will call you back in a few minutes</string>
+  <string name="CallDriverUsingProxyErrorMessage">Sorry, we weren\'t able to initiate a call with your driver.</string>
   <string name="TaxiHailNetworkTimeOutPopupTitle">Switch company?</string>
   <string name="TaxiHailNetworkTimeOutPopupMessage">Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?</string>
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
@@ -615,6 +616,8 @@
   <string name="Error_InvalidCvvTitle">Invalid CVV</string>
   <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="ManualRideLinqCreditCardDisabled">Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</string>
+  <string name="GenericErrorTitle">Error</string>
+  <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>
   <string name="StatusEditAutoTipButton">Tip</string>
   <string name="View_EditAutoTip">Edit Tip</string>
   <string name="Error_EditAutoTipMessage">An error occurred while trying to update the tip. Please try again.</string>

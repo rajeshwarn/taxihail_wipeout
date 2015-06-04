@@ -237,7 +237,7 @@
 "NoFareText"="Vous devez saisir une destination pour obtenir une estimation du prix du trajet";
 "NoFareTextIfDestinationIsRequired"="Vous devez saisir une destination";
 "NoMailClient"="Il n'y a pas d'adresse email client enregistrée";
-"NoPhoneNumberMessage"="Le numéro de téléphone est indisponible";
+"NoPhoneNumberMessage"="Votre numéro de téléphone ou celui de votre chauffeur est indisponible.";
 "NoPhoneNumberTitle"="Le numéro de téléphone ne semble pas valide";
 "NoPreference"="Pas de préférence";
 "NoRingCodeText"="--";
@@ -292,7 +292,7 @@
 "Register"="Inscription";
 "ReminderDetails"="Rappel: votre taxi arrivera au {0} à {1} le {2}";
 "ReminderTitle"="{0} Enregistré";
-"RemoveCreditCardMessage"="Etes-vous sur de vouloir supprimer cette carte de paiement?";
+"RemoveCreditCardMessage"="Etes-vous sûr de vouloir supprimer cette carte de paiement?";
 "RemoveCreditCardTitle"="Supprimer cette carte de paiement";
 "ReSendConfirmation"="Signaler le paiement";
 "Reset"="Réinitialiser";
@@ -496,6 +496,7 @@
 "Safety"="Conduite sécuritaire";
 "Politeness"="Politesse";
 "CallDriverUsingProxyMessage"="Votre chauffeur vous rappellera dans quelques minutes";
+"CallDriverUsingProxyErrorMessage"="Désolé, nous n'avons pas pu vous mettre en contact avec votre chauffeur.";
 "TaxiHailNetworkTimeOutPopupTitle"="Changer de compagnie?";
 "TaxiHailNetworkTimeOutPopupMessage"="En raison d'un grand nombre de demandes, aucun véhicule n'est disponible présentement. Désirez-vous passer une commande avec {0}?";
 "TaxiHailNetworkTimeOutPopupAccept"="Accepter";
@@ -584,6 +585,7 @@
 "ManualRideLinqStatus_Distance"="Distance:";
 "ManualRideLinqStatus_Driver"="Chauffeur #:";
 "ManualRideLinqStatus_Fare"="Tarif:";
+"ManualRideLinqStatus_Medallion"="Véhicule #:";
 "ManualRideLinqStatus_PairingCode"="Code d'association:";
 "ManualRideLinqStatus_Tax"="Taxes:";
 "ManualRideLinqStatus_Tip"="Pourboire:";
@@ -608,6 +610,8 @@
 "Error_InvalidCvvMessage"="Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres";
 "ManualRideLinqCreditCardDisabled"="Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.";
 "PromoMustHavePaymentMethodSetMessage_Multiple"="Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.";
+"GenericErrorTitle"="Erreur";
+"CallDriverUsingProxyPrompt"="Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepter, votre chauffeur vous rappellera aussitôt que possible.";
 "PromoMustHavePaymentMethodSetMessage_PayPal"="Pour utiliser un code promotionnel, vous devez avoir un compte PayPal associé à votre compte.";
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.";
 "ManualRideLinqStatus_Extra"="Extra:";
@@ -615,7 +619,3 @@
 "ManualRideLinqStatus_Toll"="Péage:";
 "View_EditAutoTip"="Modifier Pourboire";
 "Error_EditAutoTipMessage"="Une erreur est survenue en changeant le pourboire. Veuillez réessayer.";
-"ManualRideLinqStatus_Medallion"="Vous êtes assis dans le véhicule {0}.";
-"ManualRideLinqStatus_Payment"="Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.";
-"ManualRideLinqStatus_Email"="Un reçu vous sera envoyé à {0}.";
-"ManualRideLinqStatus_Greetings"="Appréciez la balade!";

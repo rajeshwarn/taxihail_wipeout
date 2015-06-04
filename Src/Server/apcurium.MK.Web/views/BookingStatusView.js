@@ -5,7 +5,8 @@
         className: 'booking-status-view',
 
         events: {
-            'click [data-action=cancel]': 'cancel'
+            'click [data-action=cancel]': 'cancel',
+            'click #callDriverButton': 'callDriver'
         },
 
         initialize: function() {
@@ -50,8 +51,7 @@
             var status = this.model.getStatus(),
                 data = _.extend(status.toJSON(), {
                     isActive: status.isActive(),
-                    callNumber: TaxiHail.parameters.defaultPhoneNumber,
-                    showCallDriver: TaxiHail.parameters.showCallDriver
+                    callNumber: TaxiHail.parameters.defaultPhoneNumber
                 });
 
             
@@ -68,7 +68,18 @@
             if (TaxiHail.parameters.hideDispatchButton == true) {
                 this.$('#callDispatchButton').addClass('hidden');
             }
+            
             var status = this.model.getStatus();
+
+            if (TaxiHail.parameters.showCallDriver == true) {
+                var driverInfos = status.get('driverInfos');
+                if (driverInfos !== undefined) {
+                    if (driverInfos.mobilePhone) {
+                        this.$('#callDispatchButton').addClass('hidden');
+                        this.$('#callDriverButton').removeClass('hidden');
+                    }
+                }
+            }
 
             if (!status.isActive()) {
                 this.$('[data-action=cancel]').addClass('disabled');
@@ -78,9 +89,9 @@
             }
 
             this.$('[data-action=call]').popover({
-                    title: this.localize("Call us at"),
-                    content: TaxiHail.parameters.defaultPhoneNumber
-                });
+                title: this.localize("Call us at"),
+                content: TaxiHail.parameters.defaultPhoneNumber
+            });
 
             return this;
         },
@@ -122,6 +133,31 @@
                     });
                 }, this);
             }
+        },
+
+        callDriver: function (e) {
+            e.preventDefault();
+            
+            TaxiHail.confirm({
+                title: this.localize('Call Driver'),
+                message: this.localize('modal.callDriver.message'),
+                cancelButton: this.localize('modal.callDriver.cancelButton')
+            }).on('ok', function () {
+                this.model.initiateCallToDriver()
+                    .done(_.bind(function (result) {
+                        if (result) {
+                            TaxiHail.message({
+                                title: this.localize('Call Driver'),
+                                message: this.localize('modal.callDriver.success')
+                            });
+                        } else {
+                            TaxiHail.message({
+                                title: this.localize('Error'),
+                                message: this.localize('modal.callDriver.error')
+                            });
+                        }
+                    }, this));
+            }, this);
         },
         
         onStatusChanged: function (model, status) {
