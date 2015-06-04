@@ -61,7 +61,8 @@ namespace apcurium.MK.Booking.Domain
         public Order(Guid id, Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, Address pickupAddress,
             string userAgent, string clientLanguageCode, string clientVersion, double? distance,
             double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
-            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion, int tripId, int driverId) 
+            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion,
+            int tripId, int driverId, double? accessFee, string lastFour) 
             : this(id)
         {
             Update(new OrderManuallyPairedForRideLinq
@@ -88,7 +89,9 @@ namespace apcurium.MK.Booking.Domain
                 Distance = distance,
                 Medallion = medallion,
                 TripId = tripId,
-                DriverId = driverId
+                DriverId = driverId,
+                AccessFee = accessFee,
+                LastFour = lastFour
             });
         }
 
@@ -135,9 +138,9 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare,double? faireAtAlternateRate, double? tax, double? tip, double? toll,
+        public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
             double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, 
-            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId)
+            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId, double? accessFee, string lastFour)
         {
             Update(new ManualRideLinqTripInfoUpdated
             {
@@ -157,7 +160,9 @@ namespace apcurium.MK.Booking.Domain
                 PairingToken = pairingToken,
                 Medallion = medallion,
                 TripId = tripId,
-                DriverId = driverId
+                DriverId = driverId,
+                AccessFee = accessFee,
+                LastFour = lastFour
             });
         }
 

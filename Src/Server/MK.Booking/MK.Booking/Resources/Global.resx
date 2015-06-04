@@ -249,6 +249,9 @@
   <data name="Email_Body_OrderNo" xml:space="preserve">
     <value>Order&amp;nbsp;#</value>
   </data>
+  <data name="Email_Body_TripId" xml:space="preserve">
+    <value>Trip #</value>
+  </data>
   <data name="Email_Body_PaidWith" xml:space="preserve">
     <value>Paid With</value>
   </data>
@@ -306,6 +309,9 @@
   <data name="Email_Body_TotalFare" xml:space="preserve">
     <value>Total&amp;nbsp;Fare</value>
   </data>
+  <data name="Email_Body_RideLinqLastFour" xml:space="preserve">
+    <value>Credit Card Used (Last 4)</value>
+  </data>
   <data name="Email_Body_TransactionId" xml:space="preserve">
     <value>Transaction Id :</value>
   </data>
@@ -321,6 +327,9 @@
   <data name="Email_Body_Tax" xml:space="preserve">
     <value>Tax</value>
   </data>
+  <data name="Email_Body_MtaTax" xml:space="preserve">
+    <value>MTA Tax</value>
+  </data>
   <data name="Email_Body_VehicleNumber" xml:space="preserve">
     <value>Number</value>
   </data>
@@ -335,6 +344,9 @@
   </data>
   <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>Your Driver</value>
+  </data>
+  <data name="Email_Body_Distance" xml:space="preserve">
+    <value>Distance</value>
   </data>
   <data name="AccountConfirmationSmsBody" xml:space="preserve">
     <value>Your verification code for {0} is {1}</value>
@@ -632,5 +644,8 @@
   </data>
   <data name="Email_Body_BookingFees" xml:space="preserve">
     <value>Booking Fees</value>
+  </data>
+  <data name="Email_Body_RateClass" xml:space="preserve">
+    <value>Rate Code</value>
   </data>
 </root>

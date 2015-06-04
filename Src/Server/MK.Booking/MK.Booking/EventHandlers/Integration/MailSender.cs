@@ -4,11 +4,13 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using apcurium.MK.Booking.CommandBuilder;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -116,8 +118,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                 extra: Convert.ToDecimal(extraAmount),
                                 toll: Convert.ToDecimal(tollAmount),
                                 surcharge: Convert.ToDecimal(surchargeAmount),
-                                driverIdOverride: tripInfo.DriverId.ToString(),
-                                localDropOffDate: tripInfo.EndTime);
+                                cmtRideLinqFields: new SendReceipt.CmtRideLinqReceiptFields
+                                {
+                                    DriverId = tripInfo.DriverId.ToString(),
+                                    DropOffDateTime = tripInfo.EndTime,
+                                    TripId = tripInfo.TripId,
+                                    Distance = tripInfo.Distance,
+                                    LastFour = tripInfo.LastFour,
+                                    AccessFee = tripInfo.AccessFee,
+                                    StateSurcharge = tripInfo.Tax,
+                                    FareAtAlternateRate = tripInfo.FareAtAlternateRate,
+                                    RateAtTripEnd = tripInfo.RateAtTripEnd,
+                                    RateAtTripStart = tripInfo.RateAtTripStart
+                                });
                         }
                     }
                 } 
@@ -171,7 +184,20 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         Convert.ToDecimal(@event.Tax ?? 0),
                         extra: Convert.ToDecimal(@event.Extra ?? 0),
                         toll: Convert.ToDecimal(@event.Toll ?? 0),
-                        surcharge: Convert.ToDecimal(@event.Surcharge ?? 0));
+                        surcharge: Convert.ToDecimal(@event.Surcharge ?? 0),
+                        cmtRideLinqFields: new SendReceipt.CmtRideLinqReceiptFields
+                        {
+                            DriverId = @event.DriverId.ToString(),
+                            DropOffDateTime = @event.EndTime,
+                            TripId = @event.TripId,
+                            Distance = @event.Distance,
+                            LastFour = @event.LastFour,
+                            AccessFee = @event.AccessFee,
+                            FareAtAlternateRate = @event.FareAtAlternateRate,
+                            RateAtTripEnd = @event.RateAtTripEnd.HasValue ? Convert.ToInt32(@event.RateAtTripEnd) : 0,
+                            RateAtTripStart = @event.RateAtTripStart.HasValue ? Convert.ToInt32(@event.RateAtTripStart) : 0,
+                            StateSurcharge = @event.Tax
+                        });
                 }
             }
         }
@@ -223,7 +249,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         }
 
         private void SendTripReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m,
-            decimal toll = 0m, decimal extra = 0m, decimal surcharge = 0m, decimal bookingFees = 0m, string driverIdOverride = null, DateTime? localDropOffDate = null)
+            decimal toll = 0m, decimal extra = 0m, decimal surcharge = 0m, decimal bookingFees = 0m, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields = null)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -268,9 +294,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         fare = orderPayment.SelectOrDefault(payment => payment.Meter - payment.Toll - surcharge, meter - toll - surcharge);
                     }
 
-                    if (driverIdOverride.HasValue())
+                    if (cmtRideLinqFields != null && cmtRideLinqFields.DriverId.HasValue())
                     {
-                        orderStatus.DriverInfos.DriverId = driverIdOverride;
+                        orderStatus.DriverInfos.DriverId = cmtRideLinqFields.DriverId;
                     }
 
                     var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
@@ -290,7 +316,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         Convert.ToDouble(amountSavedByPromotion),
                         promoUsed,
                         card,
-                        localDropOffDate);
+                        cmtRideLinqFields);
 
                     _commandBus.Send(command);
                 }

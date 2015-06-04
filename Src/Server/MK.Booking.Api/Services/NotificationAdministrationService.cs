@@ -134,10 +134,23 @@ namespace apcurium.MK.Booking.Api.Services
 
                         var fare = Convert.ToDouble(fareObject.AmountExclTax);
                         var tax = Convert.ToDouble(fareObject.TaxAmount);
+
                         _notificationService.SendTripReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fare, toll, tip, tax, extra,
                             surcharge, bookingFees, fare + toll + tip + tax + bookingFees + extra - amountSavedByPromo,
-                            _payment, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.UtcNow, null,
-                            request.EmailAddress, "en", amountSavedByPromo, "PROMO10", true);
+                            _payment, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.UtcNow,
+                            request.EmailAddress, "en", amountSavedByPromo, "PROMO10", new SendReceipt.CmtRideLinqReceiptFields
+                            {
+                                Distance = 13,
+                                DriverId = "D1337",
+                                DropOffDateTime = DateTime.Now,
+                                AccessFee = 0.3,
+                                LastFour = "1114",
+                                StateSurcharge = 0.5,
+                                TripId = 9874,
+                                RateAtTripStart = 1,
+                                RateAtTripEnd = 1,
+                                FareAtAlternateRate = 23.45
+                            }, true);
                         break;
                     case NotificationService.EmailConstant.Template.PromotionUnlocked:
                         _notificationService.SendPromotionUnlockedEmail("10% Off your next ride", "PROMO123", DateTime.Now.AddMonths(1), request.EmailAddress, request.Language, true);

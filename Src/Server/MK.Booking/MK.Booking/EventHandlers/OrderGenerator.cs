@@ -552,7 +552,9 @@ namespace apcurium.MK.Booking.EventHandlers
                         RateChangeTime = @event.RateChangeTime,
                         Medallion = @event.Medallion,
                         TripId = @event.TripId,
-                        DriverId = @event.DriverId
+                        DriverId = @event.DriverId,
+                        LastFour = @event.LastFour,
+                        AccessFee = @event.AccessFee
                     });
                 }
             }
@@ -637,6 +639,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
                 rideLinqDetails.RateChangeTime = @event.RateChangeTime;
                 rideLinqDetails.Medallion = @event.Medallion;
+                rideLinqDetails.AccessFee = @event.AccessFee;
+                rideLinqDetails.LastFour = @event.LastFour;
 
                 context.Save(rideLinqDetails);
             }

@@ -520,6 +520,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Distance.
+        /// </summary>
+        public static string Email_Body_Distance {
+            get {
+                return ResourceManager.GetString("Email_Body_Distance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Driver.
         /// </summary>
         public static string Email_Body_Driver {
@@ -606,6 +615,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_LargeBags {
             get {
                 return ResourceManager.GetString("Email_Body_LargeBags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MTA Tax.
+        /// </summary>
+        public static string Email_Body_MtaTax {
+            get {
+                return ResourceManager.GetString("Email_Body_MtaTax", resourceCulture);
             }
         }
         
@@ -763,11 +781,29 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rate Code.
+        /// </summary>
+        public static string Email_Body_RateClass {
+            get {
+                return ResourceManager.GetString("Email_Body_RateClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Receipt.
         /// </summary>
         public static string Email_Body_Receipt {
             get {
                 return ResourceManager.GetString("Email_Body_Receipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit Card Used (Last 4).
+        /// </summary>
+        public static string Email_Body_RideLinqLastFour {
+            get {
+                return ResourceManager.GetString("Email_Body_RideLinqLastFour", resourceCulture);
             }
         }
         
@@ -894,6 +930,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_TransactionTimeValue {
             get {
                 return ResourceManager.GetString("Email_Body_TransactionTimeValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trip #.
+        /// </summary>
+        public static string Email_Body_TripId {
+            get {
+                return ResourceManager.GetString("Email_Body_TripId", resourceCulture);
             }
         }
         
