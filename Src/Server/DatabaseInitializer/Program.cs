@@ -139,8 +139,12 @@ namespace DatabaseInitializer
                         appPool.Stop();
                     }
 
-                    Console.WriteLine("Copy Events Raised Since the Copy...");
                     var lastEventCopyDateTime = creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, param.CompanyName, temporaryDatabaseName);
+
+                    Console.WriteLine("Migrating Events Raised Since the Copy...");
+                    migrator.Do(lastEventCopyDateTime);
+
+                    Console.WriteLine("Replaying Events Raised Since the Copy...");
                     replayService.ReplayAllEvents(lastEventCopyDateTime);
                     creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, param.CompanyName, temporaryDatabaseName);
 
