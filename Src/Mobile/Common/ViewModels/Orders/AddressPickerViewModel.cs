@@ -38,6 +38,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private AddressLocationType _currentActiveFilter;
 
+	    private string _previousPostCode = string.Empty;
+
 		public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
 		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
@@ -335,7 +337,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
 
             
-            if (criteria.HasValue() && criteria != StartingText)
+            if (criteria.HasValue() && criteria != StartingText && criteria != _previousPostCode)
 			{
 				using (this.Services().Message.ShowProgressNonModal())
 				{
@@ -348,7 +350,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     if (this.Services().Settings.CraftyClicksApiKey.HasValue() && _postalCodeService.IsValidPostCode(criteria))
 				    {
                         var ccAdrs = SearchPostalCode(criteria);
-
+				        _previousPostCode = criteria;
+                        
                         AllAddresses.AddRangeDistinct(await ccAdrs, (x, y) => x.Equals(y));
 				    }
 
