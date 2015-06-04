@@ -96,7 +96,7 @@
     "ExpiredCreditCardError": "La date d'expiration n'est pas valide.",
     "Call Driver": "Appeler chauffeur",
     "ConfirmCVVMessage": "Veuillez entrer le code de vérification associé à votre carte de crédit se terminant par {0} pour continuer",
-    "modal.callDriver.message": "Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepter, votre chauffeur vous rappellera aussitôt que possible.",
+    "modal.callDriver.message": "Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.",
     "modal.callDriver.cancelButton": "Annuler",
     "modal.callDriver.error": "Désolé, nous n'avons pas pu vous mettre en contact avec votre chauffeur.",
     "modal.callDriver.success": "Votre chauffeur vous rappellera dans quelques minutes",
