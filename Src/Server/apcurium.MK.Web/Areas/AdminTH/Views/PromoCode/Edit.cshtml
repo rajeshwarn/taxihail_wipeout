@@ -229,6 +229,8 @@
         {
             @Html.ActionLink("Enable", "Activate", new { id = @Model.Id }, new { @class = "btn btn-success span" })
         }
+
+        @Html.ActionLink("Delete", "Delete", new { id = @Model.Id }, new { @class = "btn btn-danger span" })
     </div>
 }
 
