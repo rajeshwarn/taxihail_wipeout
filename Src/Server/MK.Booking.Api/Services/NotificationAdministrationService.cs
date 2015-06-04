@@ -148,7 +148,7 @@ namespace apcurium.MK.Booking.Api.Services
                                 StateSurcharge = 0.5,
                                 TripId = 9874,
                                 RateAtTripStart = 1,
-                                RateAtTripEnd = 1,
+                                RateAtTripEnd = 4,
                                 FareAtAlternateRate = 23.45
                             }, true);
                         break;

@@ -520,7 +520,12 @@ namespace apcurium.MK.Booking.EventHandlers
                         Status = OrderStatus.Created,
                         IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
                         PickupDate = @event.PairingDate,
-                        IsManualRideLinq = true
+                        IsManualRideLinq = true,
+                        VehicleNumber = @event.Medallion,
+                        DriverInfos = new DriverInfos
+                        {
+                            DriverId = @event.DriverId.ToString()
+                        }
                     });
                 }
 
@@ -614,6 +619,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         orderStatusDetails.Status = OrderStatus.Completed;
                     }
+
+                    orderStatusDetails.VehicleNumber = @event.Medallion;
+
                     context.Save(orderStatusDetails);
                 }
 
@@ -624,6 +632,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     return;
                 }
 
+                rideLinqDetails.DriverId = @event.DriverId;
+                rideLinqDetails.TripId = @event.TripId;
                 rideLinqDetails.Distance = @event.Distance;
                 rideLinqDetails.PairingToken = @event.PairingToken;
                 rideLinqDetails.EndTime = @event.EndTime;
