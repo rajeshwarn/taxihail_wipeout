@@ -9,7 +9,6 @@ namespace apcurium.MK.Booking.MapDataProvider
 
         Address[] GetAddressFromPostalCode(string postalCode);
 
-
         bool IsValidPostCode(string postalCode);
     }
 }
