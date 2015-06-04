@@ -639,4 +639,7 @@
   <data name="Email_Body_BookingFees" xml:space="preserve">
     <value>Frais de réservation</value>
   </data>
+  <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
+    <value>La carte de crédit a été refusée</value>
+  </data>
 </root>

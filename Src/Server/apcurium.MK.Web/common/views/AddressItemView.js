@@ -20,8 +20,23 @@
         
         selectAddress: function (e) {
             e.preventDefault();
+            if (this.model.get('addressType') == "craftyclicks") {
+                this.processCraftyClickAddress(this.model);
+            } else {
+                this.model.trigger('selected', this.model, this.model.collection);
+            }
+        },
 
-            this.model.trigger('selected', this.model, this.model.collection);
+        processCraftyClickAddress: function(model) {
+            var address = model.get('fullAddress');
+            var lat = model.get('latitude');
+            var lng = model.get('longitude');
+
+            TaxiHail.geocoder.search(address, lat, lng)
+                .done(function (address) {
+                    model.set(address[0]);
+                    model.trigger('selected', model, model.collection);
+                }, this);
         }
 
     });

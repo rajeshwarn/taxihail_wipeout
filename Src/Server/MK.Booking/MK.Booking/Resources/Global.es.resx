@@ -768,4 +768,7 @@
   <data name="Email_Body_BookingFees" xml:space="preserve">
     <value>Booking Fees</value>
   </data>
+  <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
+    <value>Credit Card was declined</value>
+  </data>
 </root>

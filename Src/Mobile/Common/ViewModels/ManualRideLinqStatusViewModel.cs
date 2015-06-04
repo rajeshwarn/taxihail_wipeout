@@ -15,21 +15,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class ManualRideLinqStatusViewModel : PageViewModel
     {
         private readonly IBookingService _bookingService;
+		private readonly IAccountService _accountService;
 
 		// In seconds
         private int _refreshInterval = 5;
 
-		public ManualRideLinqStatusViewModel(IBookingService bookingService)
+		public ManualRideLinqStatusViewModel(IBookingService bookingService, IAccountService accountService)
         {
             _bookingService = bookingService;
+			_accountService = accountService;
         }
 
         public void Init(string orderManualRideLinqDetail)
         {
 			var orderManualRideLinq = JsonSerializer.DeserializeFromString<OrderManualRideLinqDetail>(orderManualRideLinqDetail);
-        	
-			DriverId = orderManualRideLinq.DriverId.ToString();
-			PairingCode = orderManualRideLinq.PairingCode;
+
+			Medallion = orderManualRideLinq.Medallion;
 			OrderId = orderManualRideLinq.OrderId;
 		}
 
@@ -56,34 +57,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private Guid OrderId { get; set; }
 
-		private string _pairingCode;
-		public string PairingCode
+        private string _medallion;
+        public string Medallion
+        {
+            get
+            {
+                return _medallion;
+            }
+            set
+            {
+                _medallion = value;
+                RaisePropertyChanged();
+            }
+        }
+
+		public string Email
 		{
 			get
 			{
-				return _pairingCode;
-			}
-			set
-			{
-				_pairingCode = value;
-				RaisePropertyChanged();
+				return _accountService.CurrentAccount.Email;
 			}
 		}
 
-		private string _driverId;
-		public string DriverId
+		public string PaymentInfo
 		{
 			get
 			{
-				return _driverId;
-			}
-			set
-			{
-				_driverId = value;
-				RaisePropertyChanged();
+				return string.Format(this.Services().Localize["ManualRideLinqStatus_Payment"],
+					_accountService.CurrentAccount.DefaultCreditCard.CreditCardCompany,
+					_accountService.CurrentAccount.DefaultCreditCard.Last4Digits,
+                    _accountService.CurrentAccount.DefaultTipPercent ?? Settings.DefaultTipPercentage);
 			}
 		}
-
+	
 		private void ToRideSummary(OrderManualRideLinqDetail orderManualRideLinqDetail)
 		{
             _bookingService.ClearLastOrder();
@@ -112,7 +118,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     try
                     {
-
                         var shouldUnpair = new TaskCompletionSource<bool>();
 
                         this.Services().Message.ShowMessage(

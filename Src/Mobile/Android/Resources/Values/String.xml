@@ -521,9 +521,9 @@
   <string name="View_UserTaxiHailNetworkSettings">TaxiHail Network</string>
   <string name="PromoCodeLabel">Promo code</string>
   <string name="PromoMustUseCardOnFileMessage">In order to use a promo code, you need to pay with your configured payment method.</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured in the app.</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked in the app.</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to have a credit card configured in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked to your account.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
   <string name="PromoMustUseCardOnFileWarningMessage">Please note that the discount will only be applied if the payment is made using the app.</string>
   <string name="WarningPromoCodeDontShow">Don\'t warn</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
@@ -588,7 +588,6 @@
   <string name="PaymentLoadError">Unable to load the payment details. Please try again later.</string>
   <string name="ManualPairingForRideLinQ_Instructions">Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</string>
   <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
-  <string name="ManualRideLinqStatus_Medallion">Vehicule number:</string>
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Total">Total cost:</string>
   <string name="ManualRideLinqStatus_Fare">Fare meter:</string>
@@ -612,7 +611,7 @@
   <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
   <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
   <string name="CvvRequiredTitle">CVV Required</string>
-  <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file to continue</string>
+  <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file ending with {0} to continue</string>
   <string name="Error_InvalidCvvTitle">Invalid CVV</string>
   <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="ManualRideLinqCreditCardDisabled">Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</string>
@@ -622,4 +621,8 @@
   <string name="Error_EditAutoTipTitle">Error</string>
   <string name="ManualRideLinqStatus_Extra">Extra:</string>
   <string name="ManualRideLinqStatus_Toll">Toll:</string>
+  <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
+  <string name="ManualRideLinqStatus_Payment">Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</string>
+  <string name="ManualRideLinqStatus_Email">A receipt will be emailed to {0}.</string>
+  <string name="ManualRideLinqStatus_Greetings">Enjoy the ride!</string>
 </resources>

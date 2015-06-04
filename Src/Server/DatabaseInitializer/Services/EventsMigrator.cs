@@ -34,11 +34,15 @@ namespace DatabaseInitializer.Services
             _logger = LogManager.GetLogger("DatabaseInitializer");
         }
 
-        public void Do()
+        public void Do(DateTime? after = null)
         {
             var skip = 0;
             var hasMore = true;
             const int pageSize = 100000;
+            after = after ?? DateTime.MinValue;
+
+            Console.WriteLine("Migrating event since {0}", after);
+
             while (hasMore)
             {
                 using (var context = _contextFactory.Invoke())
@@ -48,6 +52,7 @@ namespace DatabaseInitializer.Services
                     var events = context.Set<Event>()
                         .OrderBy(x => x.EventDate)
                         .ThenBy(x => x.Version)
+                        .Where(x => x.EventDate > after)
                         .Skip(skip)
                         .Take(pageSize)
                         .ToList();

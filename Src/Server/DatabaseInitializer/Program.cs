@@ -109,6 +109,11 @@ namespace DatabaseInitializer
 
                     PerformUpdate(param, creatorDb, param.CompanyName, temporaryDatabaseName);
 
+                    Console.WriteLine("Migrating Events Raised Since the Copy...");
+                    migrator.Do(lastEventCopyDateTime);
+
+                    Console.WriteLine("Replaying Events Raised Since the Copy...");
+
                     if (param.ReuseTemporaryDb)
                     {
                         // the idea behind reuse of temp db is that account doesn't have permission to rename db 

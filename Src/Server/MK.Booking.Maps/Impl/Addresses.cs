@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
@@ -57,16 +57,22 @@ namespace apcurium.MK.Booking.Maps.Impl
                 return new Address[0];
             }
 
-            IEnumerable<Address> addressesGeocode;
-            IEnumerable<Address> addressesPlaces = new Address[0];
-
             var geoCodingService = new Geocoding(_geocoder, _appSettings, _popularAddressProvider, _logger);
 
             var allResults = geoCodingService.Search(name, currentLanguage, geoResult);
 
-// ReSharper disable CompareOfFloatsByEqualityOperator
+            return ProcessAddresses(name, allResults, latitude, longitude, currentLanguage, geoResult);
+        }
+
+
+        private Address[] ProcessAddresses(string name, IEnumerable<Address> allResults, double? latitude, double? longitude,string currentLanguage, GeoResult geoResult = null)
+        {
+            IEnumerable<Address> addressesGeocode;
+            IEnumerable<Address> addressesPlaces = new Address[0];
+
+            // ReSharper disable CompareOfFloatsByEqualityOperator
             if (latitude.HasValue && longitude.HasValue && (latitude.Value != 0 || longitude.Value != 0))
-// ReSharper restore CompareOfFloatsByEqualityOperator
+            // ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 addressesGeocode = allResults
                     .OrderBy(adrs => Position.CalculateDistance(adrs.Latitude, adrs.Longitude, latitude.Value, longitude.Value));
@@ -80,18 +86,28 @@ namespace apcurium.MK.Booking.Maps.Impl
             int n;
             if (!int.TryParse(term + "", out n))
             {
-				var nearbyService = new Places(_placeProvider, _appSettings, _popularAddressProvider);
+                var nearbyService = new Places(_placeProvider, _appSettings, _popularAddressProvider);
 
-				addressesPlaces = nearbyService.SearchPlaces(name, latitude, longitude, null, currentLanguage);
+                addressesPlaces = nearbyService.SearchPlaces(name, latitude, longitude, null, currentLanguage);
             }
 
-//TODO not sure what this code is doing
+            //TODO not sure what this code is doing
 
             return addressesGeocode
                 .Take(20)
                 .Concat(addressesPlaces.Take(20))
                 .OrderBy(p => AddressSortingHelper.GetRelevance(p, name, latitude, longitude))
-                .ToArray(); //todo Take 20!? api's consern
+                .ToArray(); //todo Take 20!? api's consern 
+        }
+
+
+        public async Task<Address[]> SearchAsync(string name, double? latitude, double? longitude, string currentLanguage, GeoResult geoResult = null)
+        {
+            var geoCodingService = new Geocoding(_geocoder, _appSettings, _popularAddressProvider, _logger);
+
+            var allResults = await geoCodingService.SearchAsync(name, currentLanguage, geoResult);
+
+            return ProcessAddresses(name, allResults, latitude, longitude, currentLanguage, geoResult);
         }
     }
 }

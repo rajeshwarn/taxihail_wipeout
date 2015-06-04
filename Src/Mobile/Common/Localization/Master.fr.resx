@@ -1153,7 +1153,7 @@
     <value>Information non disponible. Merci de nous contacter.</value>
   </data>
   <data name="StatusConfirmCancelRide" xml:space="preserve">
-    <value>Cette action annulera votre commande, souhaitez-vous continuer?</value>
+    <value>Êtes-vous sûr de vouloir annuler?</value>
   </data>
   <data name="StatusConfirmCancelRideError" xml:space="preserve">
     <value>Désolé, vous ne pouvez plus annuler cette demande. Merci de nous contacter</value>
@@ -1876,9 +1876,6 @@
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Tarif:</value>
   </data>
-  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
-    <value>Véhicule #:</value>
-  </data>
   <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
     <value>Code d'association:</value>
   </data>
@@ -1901,7 +1898,7 @@
     <value>Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</value>
   </data>
   <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
-    <value>Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.</value>
+    <value>Êtes-vous sûr de vouloir annuler? Des frais d'annulation peuvent être appliqués.</value>
   </data>
   <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
     <value>Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.</value>
@@ -1972,5 +1969,17 @@
   <data name="Error_EditAutoTipMessage" xml:space="preserve">
     <value>Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</value>
     <comment>An error occurred while trying to update the tip. Please try again.</comment>
+  </data>
+  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
+    <value>Vous êtes assis dans le véhicule {0}.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Payment" xml:space="preserve">
+    <value>Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Email" xml:space="preserve">
+    <value>Un reçu vous sera envoyé à {0}.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Greetings" xml:space="preserve">
+    <value>Appréciez la balade!</value>
   </data>
 </root>

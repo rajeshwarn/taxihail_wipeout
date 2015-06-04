@@ -29,18 +29,21 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IEventHandler<CreditCardPaymentCaptured_V2>,
             IEventHandler<OrderPreparedForNextDispatch>,
             IEventHandler<UserAddedToPromotionWhiteList_V2>,
-            IEventHandler<OrderCancelledBecauseOfError>
+            IEventHandler<OrderCancelledBecauseOfError>,
+            IEventHandler<CreditCardDeactivated>
     {
+        private readonly IAccountDao _accountDao;
         private readonly INotificationService _notificationService;
         private readonly IServerSettings _serverSettings;
         private readonly IPromotionDao _promotionDao;
         private static readonly ILog Log = LogManager.GetLogger(typeof(PushNotificationSender));
 
-        public PushNotificationSender(INotificationService notificationService, IServerSettings serverSettings, IPromotionDao promotionDao)
+        public PushNotificationSender(INotificationService notificationService, IServerSettings serverSettings, IPromotionDao promotionDao, IAccountDao accountDao)
         {
             _notificationService = notificationService;
             _serverSettings = serverSettings;
             _promotionDao = promotionDao;
+            _accountDao = accountDao;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -134,6 +137,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 Log.Debug(e);
             }
+        }
+
+        public void Handle(CreditCardDeactivated @event)
+        {
+            try
+            {
+                var account = _accountDao.FindById(@event.SourceId);
+                _notificationService.SendCreditCardDeactivatedPush(account);
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e);
+            }            
         }
     }
 }

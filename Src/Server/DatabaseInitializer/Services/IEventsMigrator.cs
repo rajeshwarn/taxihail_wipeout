@@ -1,7 +1,9 @@
-﻿namespace DatabaseInitializer.Services
+﻿using System;
+
+namespace DatabaseInitializer.Services
 {
     public interface IEventsMigrator
     {
-        void Do();
+        void Do(DateTime? after = null);
     }
 }
