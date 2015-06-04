@@ -5,7 +5,9 @@ namespace apcurium.MK.Booking.MapDataProvider
 {
     public interface IPostalCodeService
     {
-        Task<Address[]> GetAddressFromPostalCode(string postalCode);
+        Task<Address[]> GetAddressFromPostalCodeAsync(string postalCode);
+
+        Address[] GetAddressFromPostalCode(string postalCode);
 
 
         bool IsValidPostCode(string postalCode);
