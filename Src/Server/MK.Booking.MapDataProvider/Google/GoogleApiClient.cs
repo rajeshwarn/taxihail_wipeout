@@ -216,18 +216,31 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 	    }
 
 	    public GeoAddress[] GeocodeLocation(double latitude, double longitude, string currentLanguage)
-        {
-            var @params = new Dictionary<string, string>
-            {
-                {"latlng", string.Format(CultureInfo.InvariantCulture, "{0},{1}", latitude, longitude)},
-                {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)},
-                {"sensor", true.ToString().ToLower()}
-            };
+	    {
+	        var requestParameter = GenerateGeocodeLocationRequestParameter(latitude, longitude, currentLanguage);
 
-            var resource = "json" + BuildQueryString(@params);
+	        return Geocode(requestParameter, () => _fallbackGeocoder.GeocodeLocation (latitude, longitude, currentLanguage));
+	    }
 
-            return Geocode(resource, () => _fallbackGeocoder.GeocodeLocation (latitude, longitude, currentLanguage));
-        }
+	    private string GenerateGeocodeLocationRequestParameter(double latitude, double longitude, string currentLanguage)
+	    {
+	        var @params = new Dictionary<string, string>
+	        {
+	            {"latlng", string.Format(CultureInfo.InvariantCulture, "{0},{1}", latitude, longitude)},
+	            {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)},
+	            {"sensor", true.ToString().ToLower()}
+	        };
+
+	        var requestParameter = "json" + BuildQueryString(@params);
+	        return requestParameter;
+	    }
+
+	    public Task<GeoAddress[]> GeocodeLocationAsync(double latitude, double longitude, string currentLanguage)
+	    {
+            var requestParameter = GenerateGeocodeLocationRequestParameter(latitude, longitude, currentLanguage);
+
+            return GeocodeAsync(requestParameter, () => _fallbackGeocoder.GeocodeLocationAsync(latitude, longitude, currentLanguage));
+	    }
 
         private GeoAddress[] Geocode(string requestParameters, Func<GeoAddress[]> fallBackAction)
         {

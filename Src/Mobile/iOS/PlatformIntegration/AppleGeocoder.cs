@@ -39,7 +39,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             // Do nothing with currentLanguage parameter since Apple Geocoder
             // automatically gets the results using the system language
-
             var geocoder = new CLGeocoder();
 
             var placemarks = await geocoder.GeocodeAddressAsync(address.Replace("+"," ")).ConfigureAwait(false);
@@ -53,20 +52,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             // Do nothing with currentLanguage parameter since Apple Geocoder
             // automatically gets the results using the system language
-
-            try{
-                var geocoder = new CLGeocoder ();
-
-                var result = geocoder.ReverseGeocodeLocationAsync (new CLLocation (latitude, longitude));
-                result.Wait ();
-
-                if (result.Exception != null) 
-                {
-                    return new GeoAddress [0];
-                }
-                return result.Result.Select (ConvertPlacemarkToAddress).ToArray (); 
-
-            }catch(Exception ex)
+            try
+            {
+                return GeocodeLocationAsync(latitude, longitude, currentLanguage).Result;
+            }
+            catch(Exception ex)
             {
                 var inner = ex.InnerException as NSErrorException;
                 if (inner != null)
@@ -75,7 +65,17 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 }
                 throw;
             }
-                 
+        }
+
+        public async Task<GeoAddress[]> GeocodeLocationAsync(double latitude, double longitude, string currentLanguage)
+        {
+            var geocoder = new CLGeocoder();
+
+            var placemarks = await geocoder.ReverseGeocodeLocationAsync(new CLLocation(latitude, longitude));
+
+            return placemarks
+                .Select(ConvertPlacemarkToAddress)
+                .ToArray();
         }
 
         private GeoAddress ConvertPlacemarkToAddress (CLPlacemark placemark)

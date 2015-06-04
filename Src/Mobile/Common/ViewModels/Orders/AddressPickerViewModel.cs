@@ -235,7 +235,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
             if ((value != null) && (value.AddressType == "craftyclicks"))
             {
-                var geoLoc = await _geolocService.SearchAddressAsync(value.FullAddress, value.Latitude, value.Longitude);
+                var geoLoc = await _geolocService.SearchAddress(value.FullAddress, value.Latitude, value.Longitude);
 
                 if (geoLoc.Any())
                 {
@@ -343,7 +343,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 					var fhAdrs = SearchFavoriteAndHistoryAddresses(criteria);
 					var pAdrs = Task.Run(() => SearchPlaces(criteria));
-					var gAdrs = Task.Run(() => SearchGeocodeAddresses(criteria));
+                    var gAdrs = Task.Run(() => SearchGeocodeAddresses(criteria));
 				    if (this.Services().Settings.CraftyClicksApiKey.HasValue())
 				    {
                         var ccAdrs = SearchPostalCode(criteria);
@@ -415,7 +415,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	    }
 
 
-		protected AddressViewModel[] SearchGeocodeAddresses(string criteria)
+		protected async Task<AddressViewModel[]> SearchGeocodeAddresses(string criteria)
 		{
 			Logger.LogMessage("Starting SearchAddresses : " + criteria);
 			var position = _currentAddress;
@@ -425,15 +425,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			if (position == null)
 			{
 				Logger.LogMessage("No Position SearchAddresses : " + criteria);
-				addresses = _geolocService.SearchAddress(criteria);                
+				addresses = await _geolocService.SearchAddress(criteria);                
 			}
 			else
 			{
 				Logger.LogMessage("Position SearchAddresses : " + criteria);
-				addresses = _geolocService.SearchAddress(criteria, position.Latitude, position.Longitude);
+				addresses = await _geolocService.SearchAddress(criteria, position.Latitude, position.Longitude);
 			}
 
-			return addresses.Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true }).ToArray();
+			return addresses
+                .Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true })
+                .ToArray();
 		}
 
 		private async Task<Address> GetCurrentAddressOrUserPosition()
