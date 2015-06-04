@@ -344,7 +344,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					var fhAdrs = SearchFavoriteAndHistoryAddresses(criteria);
 					var pAdrs = Task.Run(() => SearchPlaces(criteria));
                     var gAdrs = Task.Run(() => SearchGeocodeAddresses(criteria));
-				    if (this.Services().Settings.CraftyClicksApiKey.HasValue())
+                    if (this.Services().Settings.CraftyClicksApiKey.HasValue() && _postalCodeService.IsValidPostCode(criteria))
 				    {
                         var ccAdrs = SearchPostalCode(criteria);
 

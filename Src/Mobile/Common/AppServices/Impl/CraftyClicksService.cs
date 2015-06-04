@@ -47,10 +47,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 .ToArray();
         }
 
+        public bool IsValidPostCode(string postalCode)
+        {
+            return postalCode.HasValue() && postalCode.Replace(" ", "").Length == 7;
+        }
+
 
         private JsonServiceClient GetClient()
         {
+#if DEBUG
             return new JsonServiceClient("http://pcls1.craftyclicks.co.uk/json/");
+#else
+            return new JsonServiceClient("https://pcls1.craftyclicks.co.uk/json/");
+#endif
         }
 
         private string GenerateFullAddress(string line1, string line2, string town, string postcode)
