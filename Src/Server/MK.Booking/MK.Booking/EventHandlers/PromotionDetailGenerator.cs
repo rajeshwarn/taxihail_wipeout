@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     PublishedEndDate = @event.PublishedEndDate,
                     TriggerSettings = @event.TriggerSettings,
                     Active = true,
-                    Removed = false
+                    Deleted = false
                 };
 
                 context.Save(promotionDetail);
@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var promotionDetail = context.Find<PromotionDetail>(@event.SourceId);
 
-                promotionDetail.Removed = true;
+                promotionDetail.Deleted = true;
 
                 context.SaveChanges();
             }

@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<PromotionDetail>().Where(x => !x.Removed).OrderBy(x => x.Active).ThenBy(x => x.Name).ToArray();
+                return context.Query<PromotionDetail>().Where(x => !x.Deleted).OrderBy(x => x.Active).ThenBy(x => x.Name).ToArray();
             }
         }
 
@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                var activePromos = context.Query<PromotionDetail>().Where(x => x.Active && !x.Removed);
+                var activePromos = context.Query<PromotionDetail>().Where(x => x.Active && !x.Deleted);
 
                 if (triggerType.HasValue)
                 {
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<PromotionDetail>().Where(x => !x.Removed).SingleOrDefault(c => c.Id == id);
+                return context.Query<PromotionDetail>().Where(x => !x.Deleted).SingleOrDefault(c => c.Id == id);
             }
         }
 
@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<PromotionDetail>().Where(x => !x.Removed).SingleOrDefault(c => c.Code == promoCode);
+                return context.Query<PromotionDetail>().Where(x => !x.Deleted).SingleOrDefault(c => c.Code == promoCode);
             }
         }
 

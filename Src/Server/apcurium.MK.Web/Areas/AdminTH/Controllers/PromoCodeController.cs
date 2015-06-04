@@ -271,16 +271,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             {
                 promotions.Remove(promToDelete);
 
-                ICommand[] dr = new ICommand[]
-                {
-                    new DeactivatePromotion() { PromoId = id },
-                    new DeletePromotion() { PromoId = id }
-                };
-                _commandBus.Send(dr);
+                _commandBus.Send(new ICommand[] { new DeactivatePromotion() { PromoId = id }, new DeletePromotion() { PromoId = id } });
 
-
-                var promC = promotions.Select(x => new PromoCode(x)).ToList();
-                TempData["Model"] = promC.OrderBy(p => p.Name);
+                TempData["Model"] = promotions.Select(x => new PromoCode(x)).OrderBy(p => p.Name);
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" Deleted", promToDelete.Name);
             }

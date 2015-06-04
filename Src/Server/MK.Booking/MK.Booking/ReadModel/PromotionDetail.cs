@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool Active { get; set; }
 
-        public bool Removed { get; set; }
+        public bool Deleted { get; set; }
 
         public PromotionTriggerSettings TriggerSettings { get; set; }
 

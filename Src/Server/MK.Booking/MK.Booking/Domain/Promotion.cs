@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Domain
     public class Promotion : EventSourced
     {
         private bool _active;
-        private bool _removed;
+        private bool _deleted;
         private PromotionTriggerSettings _triggerSettings;
 
         private DateTime? _startDate;
@@ -146,7 +146,7 @@ namespace apcurium.MK.Booking.Domain
                 return false;
             }
 
-            if (_removed)
+            if (_deleted)
             {
                 errorMessage = "CannotCreateOrder_PromotionIsDeleted";
                 return false;
@@ -347,7 +347,7 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnPromotionDeleted(PromotionDeleted @event)
         {
-            _removed = true;
+            _deleted = true;
         }
 
         private void OnPromotionApplied(PromotionApplied @event)
