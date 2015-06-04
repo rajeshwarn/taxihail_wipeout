@@ -12,11 +12,11 @@
         initialize: function () {
            this.model.set('lastMarketPosition', { Longitude: 0, Latitude: 0 });
 
-           this.model.on('change:pickupAddress', function(model, value) {
+           this.model.on('change:pickupAddress', function (model, value) {
                this._pickupAddressView.model.set(value);
            }, this);
 
-            this.model.on('change:dropOffAddress', function(model, value) {
+           this.model.on('change:dropOffAddress', function (model, value) {
                 this._dropOffAddressView.model.set(value);
             }, this);
 
@@ -159,7 +159,7 @@
                 this._pickupAddressView.toggleOff();
             }, this);
 
-            pickupAddress.on('change', function(model){
+            pickupAddress.on('change', function (model) {
                 this.model.set({
                     pickupAddress: model.toJSON()
                 });

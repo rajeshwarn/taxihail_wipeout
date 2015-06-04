@@ -35,11 +35,14 @@
 
         },
 
-        search: function (address) {
+        search: function (address){
+            return this.search(address, this.latitude, this.longitude)
+        },
+
+        search: function (address, defaultLatitude, defaultLongitude) {
 
             var geocodeDefer = $.Deferred(), // Deferred for the geocoding request
-                defaultLatitude = this.latitude,
-                defaultLongitude = this.longitude,
+                
                 // Check if first character is numeric
                 isNumeric = !_.isNaN(parseInt(address.substring(0, 1), 10));
 
