@@ -12,18 +12,18 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     // v3.0.10.2
     public class GoogleAnalyticsService: IAnalyticsService
-	{
+    {
         private IAppSettings _settings;
-		private List<IGAITracker> Trackers { get; set; }
+        private List<IGAITracker> Trackers { get; set; }
 
-		public GoogleAnalyticsService (IAppSettings settings, IPackageInfo packageInfo)
-		{
+        public GoogleAnalyticsService (IAppSettings settings, IPackageInfo packageInfo)
+        {
             _settings = settings;
 
             Trackers = new List<IGAITracker>();
 
-			GAI.SharedInstance.TrackUncaughtExceptions = true;
-			GAI.SharedInstance.DispatchInterval = 20;
+            GAI.SharedInstance.TrackUncaughtExceptions = true;
+            GAI.SharedInstance.DispatchInterval = 20;
 
             // Prevent testing/debugging data from being sent to GA
             #if DEBUG
@@ -45,32 +45,37 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 x.Set(GAIConstants.AppName, appName);
                 x.Set(GAIConstants.AppVersion, version);
             });
-		}
+        }
 
-		public void LogViewModel (string viewModelName)
+        public void LogViewModel (string viewModelName)
         {
             var appView = GAIDictionaryBuilder.CreateScreenView ();
-			appView.Set (viewModelName, GAIConstants.ScreenName);
+            appView.Set (viewModelName, GAIConstants.ScreenName);
             Trackers.ForEach(x => x.Send(appView.Build()));
-		}
+        }
 
-		public void LogEvent(string @event)
-		{
-			var eventGA = GAIDictionaryBuilder.CreateEvent ("Interaction", "Event", @event, 0);
+        public void LogEvent(string @event)
+        {
+            var eventGA = GAIDictionaryBuilder.CreateEvent ("Interaction", "Event", @event, 0);
             Trackers.ForEach(x => x.Send (eventGA.Build()));
-		}
+        }
 
-		public void LogCommand(string commandName, string parameter)
-		{
-		}
+        public void LogException(string className, string methodName, Exception e, bool isFatal = false)
+        {   
+            var exception = GAIDictionaryBuilder.CreateException(
+                className + ":" + methodName + ": " + e.Message, 
+                NSNumber.FromBoolean(isFatal));
 
-		public void LogNavigation(string source, string destination)
-		{
-		}
+            Trackers.ForEach(x => x.Send(exception.Build()));
+        }
 
-		public void LogException(string className, string methodName, Exception e, bool isFatal = false)
-		{   
-		}
+        public void LogCommand(string commandName, string parameter)
+        {
+        }
+
+        public void LogNavigation(string source, string destination)
+        {
+        }
 
         public void ReportConversion()
         {
@@ -79,17 +84,17 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             var label = _settings.Data.GoogleAdWordsConversionLabel;
             if(conversionId.HasValue() && label.HasValue())
             {
-                try
-                {
-                    ACTConversionReporter.ReportWithConversionID((NSString)conversionId, (NSString)label, (NSString)"1.000000", false);
-                }
-                catch (Exception e)
-                {
-                    Logger.LogError (e);
-                }
+            try
+            {
+            ACTConversionReporter.ReportWithConversionID((NSString)conversionId, (NSString)label, (NSString)"1.000000", false);
+            }
+            catch (Exception e)
+            {
+            Logger.LogError (e);
+            }
             }
             #endif
         }
-	}
+    }
 }
 
