@@ -1955,7 +1955,7 @@
     <value>Erreur</value>
   </data>
   <data name="CallDriverUsingProxyPrompt" xml:space="preserve">
-    <value>Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepter, votre chauffeur vous rappellera aussitôt que possible.</value>
+    <value>Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.</value>
   </data>
   <data name="PromoMustHavePaymentMethodSetMessage_PayPal" xml:space="preserve">
     <value>Pour utiliser un code promotionnel, vous devez avoir un compte PayPal associé à votre compte.</value>
