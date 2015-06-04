@@ -78,13 +78,11 @@ namespace DatabaseInitializer.Services
                 }
                 
                 hasMore = events.Count == pageSize;
-                Console.WriteLine("Number of events played: " + (hasMore ? skip : (skip + events.Count)));
+
                 skip += pageSize;
 
-                
                 if (events.Any())
                 {
-                    
                     foreach (var @event in events)
                     {
                         try
@@ -113,10 +111,10 @@ namespace DatabaseInitializer.Services
                             throw;
                         }
                     }
+
+                    Console.WriteLine("Number of events played: " + (hasMore ? skip : (skip + events.Count)));
                 }
-                
             }
-            
         }
 
         private IVersionedEvent Deserialize(Event @event)

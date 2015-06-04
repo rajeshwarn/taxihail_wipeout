@@ -99,6 +99,7 @@ namespace apcurium.MK.Web
                 "~/common/services/GeocodingService.js",
                 "~/common/services/GeolocationService.js",
                 "~/common/services/PlacesService.js",
+                "~/common/services/CraftyClicksService.js",
                 "~/routers/App.js"));
 
             var templateBundle = new Bundle("~/bundles/templates")
@@ -239,6 +240,7 @@ namespace apcurium.MK.Web
                 "~/common/services/GeocodingService.js",
                 "~/common/services/GeolocationService.js",
                 "~/common/services/PlacesService.js",
+                "~/common/services/CraftyClicksService.js",
                 "~/admin/routers/App.js"));
 
             var adminTemplateBundle = new Bundle("~/admin/bundles/templates")

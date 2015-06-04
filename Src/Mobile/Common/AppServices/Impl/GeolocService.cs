@@ -24,12 +24,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_geocoding = geocoding;
 		}
 
-        public Address ValidateAddress(string address)
+        public async Task<Address> ValidateAddress(string address)
         {
             try
             {
-				string currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
-				var addresses = _geocoding.Search(address, currentLanguage);
+				var currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
+				var addresses = await _geocoding.SearchAsync(address, currentLanguage);
                 
 				return addresses.FirstOrDefault();
             }
@@ -40,13 +40,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public Address[] SearchAddress(double latitude, double longitude, bool searchPopularAddresses = false)
+        public async Task<Address[]> SearchAddress(double latitude, double longitude, bool searchPopularAddresses = false)
         {
             try
             {   
-				string currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
-				var addresses = _geocoding.Search(latitude, longitude, currentLanguage, geoResult: null, searchPopularAddresses: searchPopularAddresses);
-                return addresses;
+				var currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
+                
+                return await _geocoding.SearchAsync(latitude, longitude, currentLanguage, geoResult: null, searchPopularAddresses: searchPopularAddresses);
             }
             catch (Exception ex)
             {
@@ -55,20 +55,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public Address[] SearchAddress(string address, double? latitude = null, double? longitude = null)
+        public Task<Address[]> SearchAddress(string address, double? latitude = null, double? longitude = null)
         {
-            try
-            {         
-				string currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;
-				var addresses = _addresses.Search(address, latitude, longitude, currentLanguage);
-                return addresses;
-            }
-            catch( Exception ex )
-            {
-				Logger.LogError (ex);
-                return new Address[0];
-            }
+            var currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization>().CurrentLanguage;
+            return _addresses.SearchAsync(address, latitude, longitude, currentLanguage);
         }
+
 
         public Task<DirectionInfo> GetDirectionInfo(Address origin, Address dest, int? vehicleTypeId = null)
         {

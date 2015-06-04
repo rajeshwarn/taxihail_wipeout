@@ -67,6 +67,8 @@ namespace apcurium.MK.Web
         protected bool AlwaysDisplayCoFOption { get; private set; }
         protected bool AskForCVVAtBooking { get; private set; }
         protected int AvailableVehicleRefreshRate { get; private set; }
+
+        protected string CraftyClicksApiKey { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -111,6 +113,7 @@ namespace apcurium.MK.Web
             WarnForFeesOnCancel = config.ServerData.WarnForFeesOnCancel;
             HideMarketChangeWarning = config.ServerData.Network.HideMarketChangeWarning;
             AutoConfirmFleetChange = config.ServerData.Network.AutoConfirmFleetChange;
+            CraftyClicksApiKey = config.ServerData.CraftyClicksApiKey;
 
             var paymentSettings = config.GetPaymentSettings();
 

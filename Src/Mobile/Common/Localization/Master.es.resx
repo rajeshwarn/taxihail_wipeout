@@ -1661,8 +1661,8 @@
     <comment>Cannot get status. Please call provider.</comment>
   </data>
   <data name="StatusConfirmCancelRide" xml:space="preserve">
-    <value>Esta accion cancelará su reservacion desea continuar?</value>
-    <comment>This action will cancel your order, do you want to continue ?</comment>
+    <value>Are you sure you want to cancel?</value>
+    <comment>Are you sure you want to cancel?</comment>
   </data>
   <data name="StatusConfirmCancelRideError" xml:space="preserve">
     <value>Esta reservación no puede ser cancelada, por favor llame para cancelar esta esta reservación.</value>
@@ -2345,9 +2345,6 @@
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Fare meter:</value>
   </data>
-  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
-    <value>Vehicule number:</value>
-  </data>
   <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
     <value>Pairing Code:</value>
   </data>
@@ -2370,7 +2367,7 @@
     <value>An error occured when trying to unpair. Please try again.</value>
   </data>
   <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
-    <value>Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</value>
+    <value>Are you sure you want to cancel? A cancellation fee may apply.</value>
   </data>
   <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
     <value>You cannot delete your credit card when an order is scheduled or in progress.</value>
@@ -2443,5 +2440,17 @@
   </data>
   <data name="Error_EditAutoTipMessage" xml:space="preserve">
     <value>An error occurred while trying to update the tip. Please try again.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
+    <value>You're checked into taxi #{0}.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Payment" xml:space="preserve">
+    <value>Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Email" xml:space="preserve">
+    <value>A receipt will be emailed to {0}.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Greetings" xml:space="preserve">
+    <value>Enjoy the ride!</value>
   </data>
 </root>

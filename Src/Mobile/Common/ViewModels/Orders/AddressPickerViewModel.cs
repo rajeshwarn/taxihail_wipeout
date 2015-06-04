@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Maps;
-using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
@@ -24,14 +23,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IGeolocService _geolocService;
 		private readonly IAccountService _accountService;
 		private readonly ILocationService _locationService;
+	    private readonly IPostalCodeService _postalCodeService;
 
-		private bool _isInLocationDetail;
+	    private bool _isInLocationDetail;
 		private Address _currentAddress;	
 		private bool _ignoreTextChange;
 		private string _currentLanguage;
 		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultNearbyPlaces = new AddressViewModel[0];
+
         public AddressViewModel[] FilteredPlaces { get; private set; }
 
 		private AddressLocationType _currentActiveFilter;
@@ -42,16 +43,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			IPlaces placesService,
 			IGeolocService geolocService,
 			IAccountService accountService,
-			ILocationService locationService)
+			ILocationService locationService, 
+            IPostalCodeService postalCodeService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_geolocService = geolocService;
 			_placesService = placesService;
 			_accountService = accountService;
 			_locationService = locationService;
+		    _postalCodeService = postalCodeService;
 
 
-            FilteredPlaces = new AddressViewModel[0];
+		    FilteredPlaces = new AddressViewModel[0];
 		}
 
 		public void Init(string searchCriteria)
@@ -92,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     _currentLanguage
                 )
             );
-
+            
             using (this.Services().Message.ShowProgressNonModal())
             {
                 AllAddresses.Clear();
@@ -222,17 +225,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private Address UpdateAddressWithPlaceDetail(Address value)
+		private async Task<Address> UpdateAddressWithPlaceDetail(Address value)
 		{
 			if ((value != null) && (value.AddressType == "place"))
 			{
 				var place = _placesService.GetPlaceDetail(value.FriendlyName, value.PlaceId);
 				return place;
 			}
-			else
-			{
-				return value;
-			}
+
+            if ((value != null) && (value.AddressType == "craftyclicks"))
+            {
+                var geoLoc = await _geolocService.SearchAddress(value.FullAddress, value.Latitude, value.Longitude);
+
+                if (geoLoc.Any())
+                {
+                    return geoLoc.First();
+                }
+            }
+
+            return value;
 		}
 
 		public ICommand AddressSelected
@@ -247,32 +258,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-	    public void SelectAddress(Address address, bool returnToHome = false)
+	    public async void SelectAddress(Address address, bool returnToHome = false)
 	    {
-	        if (address == null)
-	        {
-	            return;
-	        }
+			if (address == null)
+			{
+				return;
+			}
 
-            var detailedAddress = UpdateAddressWithPlaceDetail(address);
+			try
+			{
+				var detailedAddress = await UpdateAddressWithPlaceDetail(address);
 
-	        if (_isInLocationDetail)
-	        {
-	            this.ReturnResult(detailedAddress);
+				if (_isInLocationDetail)
+				{
+					this.ReturnResult(detailedAddress);
 
-	            return;
-	        }
+					return;
+				}
 
-            ((HomeViewModel)Parent).LocateMe.Cancel();
-            _orderWorkflowService.SetAddress(detailedAddress);
+				((HomeViewModel)Parent).LocateMe.Cancel();
 
-	        if (returnToHome)
-	        {
-                // This needs to be called if we are displaying the AddressPickerViewModel from the home view.
-                PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
-	        }
+				await _orderWorkflowService.SetAddress(detailedAddress);
 
-            ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+				if (returnToHome)
+				{
+					// This needs to be called if we are displaying the AddressPickerViewModel from the home view.
+					PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+				}
+
+				ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+			}
+			catch(Exception ex)
+			{
+				Logger.LogMessage("An error occurred while selecting address.");
+				Logger.LogError(ex);
+			}
 	    }
 
 	    public ICommand Cancel
@@ -313,6 +333,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 return;
             }
 
+            
             if (criteria.HasValue() && criteria != StartingText)
 			{
 				using (this.Services().Message.ShowProgressNonModal())
@@ -322,7 +343,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 					var fhAdrs = SearchFavoriteAndHistoryAddresses(criteria);
 					var pAdrs = Task.Run(() => SearchPlaces(criteria));
-					var gAdrs = Task.Run(() => SearchGeocodeAddresses(criteria));
+                    var gAdrs = Task.Run(() => SearchGeocodeAddresses(criteria));
+				    if (this.Services().Settings.CraftyClicksApiKey.HasValue())
+				    {
+                        var ccAdrs = SearchPostalCode(criteria);
+
+                        AllAddresses.AddRangeDistinct(await ccAdrs, (x, y) => x.Equals(y));
+				    }
 
 					AllAddresses.AddRangeDistinct(await fhAdrs, (x, y) => x.Equals(y));
 					AllAddresses.AddRangeDistinct(await pAdrs, (x, y) => x.Equals(y));
@@ -367,7 +394,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			return a1.Concat(a2).ToArray(); 
 		}
 
-		protected AddressViewModel[] SearchGeocodeAddresses(string criteria)
+	    protected async Task<AddressViewModel[]> SearchPostalCode(string criteria)
+	    {
+	        try
+	        {
+                var postalCodeAddresses = await Task.Run(() => _postalCodeService.GetAddressFromPostalCode(criteria));
+
+                return postalCodeAddresses
+                    .Select(adrs => new AddressViewModel(adrs, AddressType.Places))
+                    .ToArray();
+	        }
+	        catch (Exception ex)
+	        {
+	            Logger.LogMessage("Unable to obtain postalcode information from CraftyClicks.");
+                Logger.LogError(ex);
+
+	            return new AddressViewModel[0];
+	        }
+            
+	    }
+
+
+		protected async Task<AddressViewModel[]> SearchGeocodeAddresses(string criteria)
 		{
 			Logger.LogMessage("Starting SearchAddresses : " + criteria);
 			var position = _currentAddress;
@@ -377,15 +425,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			if (position == null)
 			{
 				Logger.LogMessage("No Position SearchAddresses : " + criteria);
-				addresses = _geolocService.SearchAddress(criteria);                
+				addresses = await _geolocService.SearchAddress(criteria);                
 			}
 			else
 			{
 				Logger.LogMessage("Position SearchAddresses : " + criteria);
-				addresses = _geolocService.SearchAddress(criteria, position.Latitude, position.Longitude);
+				addresses = await _geolocService.SearchAddress(criteria, position.Latitude, position.Longitude);
 			}
 
-			return addresses.Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true }).ToArray();
+			return addresses
+                .Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true })
+                .ToArray();
 		}
 
 		private async Task<Address> GetCurrentAddressOrUserPosition()

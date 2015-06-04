@@ -24,6 +24,9 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 		private const string DirectionsServiceUrl = "https://maps.googleapis.com/maps/api/directions/";
 		private const string GeocodeServiceUrl = "https://maps.googleapis.com/maps/api/geocode/";
 
+	    private const int MaxNumberOfAttemps = 3;
+	    private const int RetryDelay = 1000;
+
 		private readonly IAppSettings _settings;
 		private readonly ILogger _logger;
 		private readonly IGeocoder _fallbackGeocoder;
@@ -186,42 +189,78 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
         }
 
 		public GeoAddress[] GeocodeAddress(string address, string currentLanguage)
-        {
-            var @params = new Dictionary<string, string>
-            {
-                {"address", address.ToString(CultureInfo.InvariantCulture)},
-                {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)},
-                {"sensor", true.ToString().ToLower()}
-            };
+		{
+		    var paremeters = GenerateGeocodeRequestParameters(address, currentLanguage);
 
-            var resource = "json" + BuildQueryString(@params);
+		    return Geocode(paremeters, () => _fallbackGeocoder.GeocodeAddress (address, currentLanguage));
+		}
 
-            return Geocode(resource, () => _fallbackGeocoder.GeocodeAddress (address, currentLanguage));
-        }
+	    private string GenerateGeocodeRequestParameters(string address, string currentLanguage)
+	    {
+	        var @params = new Dictionary<string, string>
+	        {
+	            {"address", address.ToString(CultureInfo.InvariantCulture)},
+	            {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)},
+	            {"sensor", true.ToString().ToLower()}
+	        };
 
-		public GeoAddress[] GeocodeLocation(double latitude, double longitude, string currentLanguage)
-        {
-            var @params = new Dictionary<string, string>
-            {
-                {"latlng", string.Format(CultureInfo.InvariantCulture, "{0},{1}", latitude, longitude)},
-                {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)},
-                {"sensor", true.ToString().ToLower()}
-            };
+	        var resource = "json" + BuildQueryString(@params);
+	        return resource;
+	    }
 
-            var resource = "json" + BuildQueryString(@params);
+	    public Task<GeoAddress[]> GeocodeAddressAsync(string address, string currentLanguage)
+	    {
+            var parameters = GenerateGeocodeRequestParameters(address, currentLanguage);
 
-            return Geocode(resource, () => _fallbackGeocoder.GeocodeLocation (latitude, longitude, currentLanguage));
-        }
+	        return GeocodeAsync(parameters, () => _fallbackGeocoder.GeocodeAddressAsync(address, currentLanguage));
+	    }
 
-        private GeoAddress[] Geocode(string resource, Func<GeoAddress[]> fallBackAction)
+	    public GeoAddress[] GeocodeLocation(double latitude, double longitude, string currentLanguage)
+	    {
+	        var requestParameter = GenerateGeocodeLocationRequestParameter(latitude, longitude, currentLanguage);
+
+	        return Geocode(requestParameter, () => _fallbackGeocoder.GeocodeLocation (latitude, longitude, currentLanguage));
+	    }
+
+	    private string GenerateGeocodeLocationRequestParameter(double latitude, double longitude, string currentLanguage)
+	    {
+	        var @params = new Dictionary<string, string>
+	        {
+	            {"latlng", string.Format(CultureInfo.InvariantCulture, "{0},{1}", latitude, longitude)},
+	            {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)},
+	            {"sensor", true.ToString().ToLower()}
+	        };
+
+	        var requestParameter = "json" + BuildQueryString(@params);
+	        return requestParameter;
+	    }
+
+	    public Task<GeoAddress[]> GeocodeLocationAsync(double latitude, double longitude, string currentLanguage)
+	    {
+            var requestParameter = GenerateGeocodeLocationRequestParameter(latitude, longitude, currentLanguage);
+
+            return GeocodeAsync(requestParameter, () => _fallbackGeocoder.GeocodeLocationAsync(latitude, longitude, currentLanguage));
+	    }
+
+        private GeoAddress[] Geocode(string requestParameters, Func<GeoAddress[]> fallBackAction)
         {
             var client = new JsonServiceClient();
 
-            var signedUrl = Sign(GeocodeServiceUrl + resource);
+            var signedUrl = Sign(GeocodeServiceUrl + requestParameters);
             Console.WriteLine(signedUrl);
 
             return HandleGoogleResult(() => client.Get<GeoResult>(signedUrl), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress[0], fallBackAction);
         }
+
+	    private Task<GeoAddress[]> GeocodeAsync(string requestParameters, Func<Task<GeoAddress[]>> fallBackAction)
+	    {
+            var client = new JsonServiceClient();
+
+            var signedUrl = Sign(GeocodeServiceUrl + requestParameters);
+            Console.WriteLine(signedUrl);
+
+            return HandleGoogleResultAsync(() => client.GetAsync<GeoResult>(signedUrl), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress[0], fallBackAction);
+	    }
 
         private string Sign(string url)
         {
@@ -262,9 +301,9 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                     var attempts = 1;
                     var success = false;
 
-                    while(!success && attempts < 3)
+                    while (!success && attempts < MaxNumberOfAttemps)
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(RetryDelay);
                         result = apiCall.Invoke();
                         attempts++;
                         success = result.Status == ResultStatus.OK;
@@ -292,6 +331,52 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             return defaultResult;
         }
+
+
+	    private async Task<TResponse> HandleGoogleResultAsync<TResponse, TGoogleResponse>(Func<Task<TGoogleResponse>> apiCall, Func<TGoogleResponse, TResponse> selector, TResponse defaultResult, Func<Task<TResponse>> fallBackAction = null)
+	        where TGoogleResponse : GoogleResult
+	    {
+            try
+            {
+                var result = await apiCall.Invoke();
+
+                if (result.Status == ResultStatus.OVER_QUERY_LIMIT)
+                {
+                    // retry 2 more times
+
+                    var attempts = 1;
+                    var success = false;
+
+                    while (!success && attempts < MaxNumberOfAttemps)
+                    {
+                        await Task.Delay(RetryDelay);
+                        result = await apiCall.Invoke();
+                        attempts++;
+                        success = result.Status == ResultStatus.OK;
+                    }
+                }
+
+                // if we still have OVER_QUERY_LIMIT or REQUEST_DENIED and a fallback geocoder, we invoke it
+                if ((result.Status == ResultStatus.OVER_QUERY_LIMIT
+                    || result.Status == ResultStatus.REQUEST_DENIED)
+                        && _fallbackGeocoder != null
+                        && fallBackAction != null)
+                {
+                    return await fallBackAction.Invoke();
+                }
+
+                if (result.Status == ResultStatus.OK)
+                {
+                    return selector.Invoke(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+            }
+
+            return defaultResult;
+	    }
 
 		private GeoPlace ConvertPlaceToGeoPlaces(Place place)
 		{            
