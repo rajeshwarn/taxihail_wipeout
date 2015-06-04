@@ -68,7 +68,14 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 
         public bool IsValidPostCode(string postalCode)
         {
-            return postalCode.HasValue() && postalCode.Replace(" ", "").Length == 7;
+            if (!postalCode.HasValue())
+            {
+                return false;
+            }
+
+            var postCodeTrimmed = postalCode.Replace(" ", "");
+
+            return postCodeTrimmed.Length >= 5 && postCodeTrimmed.Length <=7;
         }
 
 

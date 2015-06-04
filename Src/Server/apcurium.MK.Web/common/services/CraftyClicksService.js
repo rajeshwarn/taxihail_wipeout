@@ -24,7 +24,7 @@
         isValidPostalCode: function(query) {
             var value = query.replace(" ", "");
 
-            return value.length == 7;
+            return value.length >= 5 && value.length <= 7;
         }
 
     };
