@@ -30,19 +30,19 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			return MessageHelper.Show(title, message);
 		}
 
-		public void ShowMessage(string title, string message, Action additionalAction)
+		public Task ShowMessage(string title, string message, Action additionalAction)
 		{
-            MessageHelper.Show(title, message, Localize.GetValue("OkButtonText"), additionalAction);
+            return MessageHelper.Show(title, message, Localize.GetValue("OkButtonText"), additionalAction);
 		}
 
-        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
+        public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
         {
-            MessageHelper.Show(title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction);
+            return MessageHelper.Show(title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction);
         }
 
-        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, Action cancelAction)
+        public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, Action cancelAction)
         {
-            MessageHelper.Show(title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction, cancelAction);
+            return MessageHelper.Show(title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction, cancelAction);
         }
 
         public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
@@ -50,9 +50,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             return MessageHelper.Show(title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction, neutralButtonTitle, neutralAction);
         }
 
-        public void ShowMessage(string title, string message, List<KeyValuePair<string,Action>> additionalButton)
+        public Task ShowMessage(string title, string message, List<KeyValuePair<string,Action>> additionalButton)
         {
-            MessageHelper.Show(title, message, additionalButton);
+            return MessageHelper.Show(title, message, additionalButton);
         }
 
 		public void ShowProgress(bool show)

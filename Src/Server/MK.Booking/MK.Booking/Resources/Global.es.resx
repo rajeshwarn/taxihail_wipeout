@@ -547,6 +547,9 @@
     <value>This promotion is not active</value>
     <comment>This promotion is not active</comment>
   </data>
+  <data name="CannotCreateOrder_PromotionIsDeleted" xml:space="preserve">
+    <value>This promotion is deleted</value>
+  </data>
   <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
     <value>Maximum number of uses has been reached for this promotion</value>
     <comment>Maximum number of uses has been reached for this promotion</comment>
@@ -776,5 +779,8 @@
   </data>
   <data name="Email_Body_RateClass" xml:space="preserve">
     <value>Rate Code</value>
+  </data>
+  <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
+    <value>Credit Card was declined</value>
   </data>
 </root>

@@ -229,7 +229,7 @@
 "NoFareText"="اختر وجهة للحصول على سعر تقريبي.";
 "NoFareTextIfDestinationIsRequired"="يجب أن تحدد الوجهة.";
 "NoMailClient"="لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .";
-"NoPhoneNumberMessage"="رقم هاتف هذا السائق خاطئ";
+"NoPhoneNumberMessage"="Your phone number or the driver's phone number is invalid.";
 "NoPhoneNumberTitle"="رقم هاتف خاطئ";
 "NoPreference"="مفضلة - لا يوجد";
 "NoRingCodeText"="الرمز";
@@ -497,9 +497,9 @@
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
 "PromoCodeLabel"="Promo code";
 "PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with your configured payment method.";
-"PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured as part of your account.";
-"PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked to your account.";
-"PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to enter a credit card as part of your account.";
+"PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured in the app.";
+"PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked in the app.";
+"PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to have a credit card configured in the app.";
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "WarningPromoCodeDontShow"="لا تحذر";
 "PanelMenuViewPromotionsText"="Promotions";
@@ -568,6 +568,7 @@
 "ManualRideLinqStatus_Distance"="Distance:";
 "ManualRideLinqStatus_Driver"="Driver id:";
 "ManualRideLinqStatus_Fare"="Fare meter:";
+"ManualRideLinqStatus_Medallion"="Vehicule number:";
 "ManualRideLinqStatus_PairingCode"="Pairing Code:";
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "ManualRideLinqStatus_Tip"="Tip amount:";
@@ -590,12 +591,12 @@
 "Error_InvalidCvvTitle"="Invalid CVV";
 "Error_InvalidCvvMessage"="The CVV must be a number between 3 and 4 digits";
 "ManualRideLinqCreditCardDisabled"="Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ";
+"CallDriverUsingProxyMessage"="Your driver will call you back in a few minutes";
+"CallDriverUsingProxyErrorMessage"="Sorry, we weren't able to initiate a call with your driver.";
+"GenericErrorTitle"="Error";
+"CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
 "ManualRideLinqStatus_Extra"="Extra:";
 "StatusEditAutoTipButton"="Tip";
 "ManualRideLinqStatus_Toll"="Toll:";
 "View_EditAutoTip"="Edit Tip";
 "Error_EditAutoTipMessage"="An error occurred while trying to update the tip. Please try again.";
-"ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
-"ManualRideLinqStatus_Payment"="Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.";
-"ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
-"ManualRideLinqStatus_Greetings"="Enjoy the ride!";

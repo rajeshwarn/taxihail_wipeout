@@ -7,11 +7,11 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
     public interface IMessageService
     {
 		Task ShowMessage(string title, string message);
-		void ShowMessage(string title, string message, Action additionalAction );
-        void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction);
-        void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, Action cancelAction);
+		Task ShowMessage(string title, string message, Action additionalAction );
+		Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction);
+		Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, Action cancelAction);
         Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction);
-        void ShowMessage(string title, string message, List<KeyValuePair<string,Action>> additionalButton);
+		Task ShowMessage(string title, string message, List<KeyValuePair<string,Action>> additionalButton);
 		void ShowProgress(bool show);
 		void ShowProgressNonModal(bool show);
 		IDisposable ShowProgress ();

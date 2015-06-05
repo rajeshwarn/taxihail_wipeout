@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 
@@ -37,14 +38,13 @@ namespace apcurium.MK.Booking.Api.Services
                 && this.GetSession().UserAuthId != null)
             {
                 var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-                if (account != null)
+                if (account != null && account.Language.HasValue())
                 {
                     language = account.Language;
                 }
             }
            
-            return _client.Search(request.Name, request.Lat.GetValueOrDefault(), request.Lng.GetValueOrDefault(), language,
-                request.GeoResult);
+            return _client.Search(request.Name, request.Lat.GetValueOrDefault(), request.Lng.GetValueOrDefault(), language, request.GeoResult);
         }
     }
 }

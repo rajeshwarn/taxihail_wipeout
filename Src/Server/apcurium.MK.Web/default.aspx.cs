@@ -13,6 +13,7 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using ServiceStack.Text;
 
@@ -67,6 +68,8 @@ namespace apcurium.MK.Web
         protected bool AlwaysDisplayCoFOption { get; private set; }
         protected bool AskForCVVAtBooking { get; private set; }
         protected int AvailableVehicleRefreshRate { get; private set; }
+
+        protected bool IsCraftyClicksEnabled { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -111,6 +114,7 @@ namespace apcurium.MK.Web
             WarnForFeesOnCancel = config.ServerData.WarnForFeesOnCancel;
             HideMarketChangeWarning = config.ServerData.Network.HideMarketChangeWarning;
             AutoConfirmFleetChange = config.ServerData.Network.AutoConfirmFleetChange;
+            IsCraftyClicksEnabled = config.ServerData.CraftyClicksApiKey.HasValue();
 
             var paymentSettings = config.GetPaymentSettings();
 

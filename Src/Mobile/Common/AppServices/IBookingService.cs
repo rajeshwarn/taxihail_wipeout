@@ -69,5 +69,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    Task<bool> UpdateAutoTipForManualRideLinq(Guid orderId, int autoTipPercentage);
 
         Task<OrderManualRideLinqDetail> GetTripInfoFromManualRideLinq(Guid orderId);
+
+	    Task<bool> InitiateCallToDriver(Guid orderId);
 	}
 }

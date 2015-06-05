@@ -50,12 +50,10 @@
 	"order.no-result" : "No order was found.",
 	"Cancel Order" : "Cancel Order",
 	"Remove Order" : "Remove order from history",
-	"modal.remove.message" : "Are you sure you want to remove it ?",
-    "modal.cancel.message" : "Are you sure you want to cancel it ?",
     "modal.removeFavorite.message" : "Please confirm that you want to delete this favorite address.",
     "modal.removeOrder.message" : "Please confirm that you want to remove this order from your history.",
-    "modal.cancelOrder.message": "Please confirm that you want to cancel your order.",
-    "modal.cancelOrder.message.warnForFees" :  "Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service",
+    "modal.cancelOrder.message": "Are you sure you want to cancel?",
+    "modal.cancelOrder.message.warnForFees" :  "Are you sure you want to cancel? A cancellation fee may apply.",
     "modal.cancelOrder.confirmButton" : "Cancel my order",
 	"modal.cancelOrder.cancelButton" : "Nevermind",
     "modal.default.confirmButton" : "Confirm",
@@ -97,5 +95,11 @@
     "TokenizeGenericError": "An unexpected error occured. Please try again.",
     "error.CreditCardNotDeleted": "Can't delete credit card when an order is in progress.",
     "ExpiredCreditCardError": "The expiration date is not valid.",
-    "ConfirmCVVMessage" : "Please enter the CVV associated with your card on file ending with {0} to continue"
+    "Call Driver":  "Call Driver",
+    "ConfirmCVVMessage" : "Please enter the CVV associated with your card on file ending with {0} to continue",
+    "modal.callDriver.message":  "Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.",
+    "modal.callDriver.cancelButton":  "Cancel",
+    "modal.callDriver.error":  "Sorry, we weren't able to initiate a call with your driver.",
+    "modal.callDriver.success": "Your driver will call you back in a few minutes",
+    "Error": "Error"
 }

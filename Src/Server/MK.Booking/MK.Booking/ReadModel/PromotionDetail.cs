@@ -44,6 +44,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool Active { get; set; }
 
+        public bool Deleted { get; set; }
+
         public PromotionTriggerSettings TriggerSettings { get; set; }
 
         public DateTime? GetStartDateTime()

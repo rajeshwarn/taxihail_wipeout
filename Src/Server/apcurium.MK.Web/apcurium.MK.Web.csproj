@@ -326,6 +326,7 @@
     <Content Include="collections\CreditCardCollection.js" />
     <Content Include="common\collections\AvailableVehicleCollection.js" />
     <Content Include="common\models\AvailableVehicle.js" />
+    <Content Include="common\services\CraftyClicksService.js" />
     <Content Include="models\CreditCard.js" />
     <Content Include="PayPalExpressCheckout\mobile-cancel.html" />
     <Content Include="PayPalExpressCheckout\mobile-success.html" />
