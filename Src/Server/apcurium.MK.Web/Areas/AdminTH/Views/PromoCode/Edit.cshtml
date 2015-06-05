@@ -223,14 +223,14 @@
         @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
         @if (Model.Active)
         {
-            @Html.ActionLink("Disable", "Deactivate", new { id = @Model.Id }, new { @class = "btn btn-danger span" })
+            @Html.ActionLink("Disable", "Deactivate", new { id = @Model.Id }, new { @class = "btn btn-warning span" })
         }
         else
         {
             @Html.ActionLink("Enable", "Activate", new { id = @Model.Id }, new { @class = "btn btn-success span" })
         }
 
-        @Html.ActionLink("Delete", "Delete", new { id = @Model.Id }, new { @class = "btn btn-danger span" })
+        @Html.ActionLink("Delete", "Delete", new { id = @Model.Id }, new { @class = "btn btn-danger span", @onclick = "return confirm('Are you sure you wish to delete this promotion?');" })
     </div>
 }
 
