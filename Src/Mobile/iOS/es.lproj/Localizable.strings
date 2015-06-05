@@ -58,6 +58,7 @@
 "RateLastRideTitle"="¿Calificar su servicio?";
 "VehicleNumberErrorMessage"="No podemos encontrar el número de vehículo.  Por favor page en el vehículo.";
 "CreditCardAdded"="Su cuenta ha sido activada para pagar por defecto con tarjeta de crédito. Usted puede también pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago";
+"AccountEnabledToPayWithCreditCard"="Su cuenta ha sido activada para pagar con tarjeta de crédito.";
 "PanelMenuViewLocationsText"="Ubicaciones";
 "CreateAccountFullNamePlaceHolder"="Nombre completo";
 "PayInCar"="Pagar en el vehículo";

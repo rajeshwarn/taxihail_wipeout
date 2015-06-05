@@ -60,6 +60,7 @@
   <string name="RateLastRideTitle">¿Calificar su servicio?</string>
   <string name="VehicleNumberErrorMessage">No podemos encontrar el número de vehículo.  Por favor page en el vehículo.</string>
   <string name="CreditCardAdded">Su cuenta ha sido activada para pagar por defecto con tarjeta de crédito. Usted puede también pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
+  <string name="AccountEnabledToPayWithCreditCard">Su cuenta ha sido activada para pagar con tarjeta de crédito.</string>
   <string name="PanelMenuViewLocationsText">Ubicaciones</string>
   <string name="CreateAccountFullNamePlaceHolder">Nombre completo</string>
   <string name="PayInCar">Pagar en el vehículo</string>

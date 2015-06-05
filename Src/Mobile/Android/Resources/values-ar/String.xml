@@ -85,6 +85,7 @@
   <string name="VehicleNumberErrorTitle">خطأ</string>
   <string name="NoConnectionMessage">لا يمكن الإتصال بالسيرفر ، من المحتمل أن تكون خارج الخدمة مؤقتا أو أن تكون غير متصل بالانترنت.</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
+  <string name="AccountEnabledToPayWithCreditCard">Your account is now enabled to pay for rides with this credit card.</string>
   <string name="Notification_PaymentConfirmationPush">Payment Confirmation</string>
   <string name="PromoExpiringSoonMessage">Expires in {0} days</string>
   <string name="PassengerPhoneLabel">الهاتف</string>

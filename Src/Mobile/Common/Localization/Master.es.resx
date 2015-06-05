@@ -549,6 +549,9 @@
     <value>Su cuenta ha sido activada para pagar por defecto con tarjeta de crédito. Usted puede también pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</value>
     <comment>Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</comment>
   </data>
+  <data name="AccountEnabledToPayWithCreditCard" xml:space="preserve">
+    <value>Your account is now enabled to pay for rides with this credit card.</value>
+  </data>
   <data name="CreditCardCCV" xml:space="preserve">
     <value>CVV</value>
     <comment>CVV</comment>
