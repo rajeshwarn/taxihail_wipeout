@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common.Entity;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
@@ -22,7 +23,7 @@ namespace apcurium.MK.Booking.Commands
 
         public double? FareAtAlternateRate { get; set; }
 
-        public double? Toll { get; set; }
+        public double? TollTotal { get; set; }
 
         public double? Extra { get; set; }
 
@@ -51,5 +52,7 @@ namespace apcurium.MK.Booking.Commands
         public double? AccessFee { get; set; }
 
         public string LastFour { get; set; }
+
+        public TollDetail[] Tolls { get; set; }
     }
 }

@@ -79,6 +79,8 @@ namespace apcurium.MK.Booking.Commands
             public int RateAtTripEnd { get; set; }
 
             public double? FareAtAlternateRate { get; set; }
+
+            public TollDetail[] Tolls { get; set; }
         }
 
         public class Payment

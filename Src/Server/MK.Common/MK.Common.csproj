@@ -162,6 +162,7 @@
     <Compile Include="Entity\TariffType.cs" />
     <Compile Include="Entity\RatingScore.cs" />
     <Compile Include="Entity\RatingType.cs" />
+    <Compile Include="Entity\TollDetail.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
     <Compile Include="Enumeration\AvailableVehiclesModes.cs" />

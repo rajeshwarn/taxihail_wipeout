@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using apcurium.MK.Booking.CommandBuilder;
@@ -112,6 +113,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             var extraAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
                             var accessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2);
 
+                            var tolls = new List<TollDetail>();
+
+                            if (tripInfo.TollHistory != null)
+                            {
+                                tolls.AddRange(tripInfo.TollHistory.Select(toll =>
+                                    new TollDetail
+                                    {
+                                        TollName = toll.TollName,
+                                        TollAmount = toll.TollAmount
+                                    }));
+                            }
+    
                             SendTripReceipt(@event.SourceId, 
                                 Convert.ToDecimal(meterAmount),
                                 Convert.ToDecimal(tipAmount),
@@ -130,7 +143,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                     StateSurcharge = tripInfo.Tax,
                                     FareAtAlternateRate = tripInfo.FareAtAlternateRate,
                                     RateAtTripEnd = tripInfo.RateAtTripEnd,
-                                    RateAtTripStart = tripInfo.RateAtTripStart
+                                    RateAtTripStart = tripInfo.RateAtTripStart,
+                                    Tolls = tolls.ToArray()
                                 });
                         }
                     }
@@ -197,7 +211,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             FareAtAlternateRate = @event.FareAtAlternateRate,
                             RateAtTripEnd = @event.RateAtTripEnd.HasValue ? Convert.ToInt32(@event.RateAtTripEnd) : 0,
                             RateAtTripStart = @event.RateAtTripStart.HasValue ? Convert.ToInt32(@event.RateAtTripStart) : 0,
-                            StateSurcharge = @event.Tax
+                            StateSurcharge = @event.Tax,
+                            Tolls = @event.Tolls
                         });
                 }
             }
@@ -291,8 +306,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     }
                     else
                     {
-                        // Meter also contains toll and surcharge, to send an accurate receipt, we need to remove both toll and surcharge.
-                        fare = orderPayment.SelectOrDefault(payment => payment.Meter - payment.Toll - surcharge, meter - toll - surcharge);
+                        if (cmtRideLinqFields != null)
+                        {
+                            fare = meter;
+                        }
+                        else
+                        {
+                            // Meter also contains toll and surcharge, to send an accurate receipt, we need to remove both toll and surcharge.
+                            fare = orderPayment.SelectOrDefault(payment => payment.Meter - payment.Toll - surcharge, meter - toll - surcharge);
+                        }
                     }
 
                     if (cmtRideLinqFields != null && cmtRideLinqFields.DriverId.HasValue())

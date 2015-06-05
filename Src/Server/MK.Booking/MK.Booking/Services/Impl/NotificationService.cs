@@ -519,6 +519,8 @@ namespace apcurium.MK.Booking.Services.Impl
             var paymentAuthorizationCode = string.Empty;
 
             var hasFare = Math.Abs(fare) > double.Epsilon;
+            var hasCmtTollDetails = cmtRideLinqFields != null && cmtRideLinqFields.Tolls != null &&
+                                   cmtRideLinqFields.Tolls.Length > 0;
             var showFareAndPaymentDetails = hasPaymentInfo || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
 
             int? rateClassStart = null;
@@ -618,15 +620,38 @@ namespace apcurium.MK.Booking.Services.Impl
                 RateClassStart = rateClassStart,
                 RateClassEnd = rateClassEnd,
                 FareAtAlternateRate = fareAtAlternateRate,
+
+                TollName1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 ? cmtRideLinqFields.Tolls[0].TollName : string.Empty,
+                TollName2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 ? cmtRideLinqFields.Tolls[1].TollName : string.Empty,
+                TollName3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 ? cmtRideLinqFields.Tolls[2].TollName : string.Empty,
+                TollName4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4 ? cmtRideLinqFields.Tolls[3].TollName : string.Empty,
+
+                TollAmount1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[0].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
+                TollAmount2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[1].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
+                TollAmount3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[2].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
+                TollAmount4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[3].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
                 
                 // TODO: So it begins... Hack for Arro.
+                ShowToll1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1,
+                ShowToll2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2,
+                ShowToll3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3,
+                ShowToll4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4,
+                ShowTollTotal = hasCmtTollDetails || (hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4),
                 ShowRideLinqLastFour = /*cmtRideLinqFields.LastFour.HasValue()*/true,
                 ShowTripId = /*cmtRideLinqFields != null*/true,
                 ShowTax = /*Math.Abs(tax) >= 0.01*/true,
                 ShowMtaTax = true,
                 ShowToll = /*Math.Abs(toll) >= 0.01*/true,
                 ShowSurcharge = /*Math.Abs(surcharge) >= 0.01*/true,
-                ShowBookingFees = /*Math.Abs(bookingFees) >= 0.01*/true,
+                ShowBookingFees = Math.Abs(bookingFees) >= 0.01,
                 ShowExtra = /*Math.Abs(extra) >= 0.01*/true,
                 ShowRateClassStart = /*rateClassStart.HasValue*/true,
                 ShowRateClassEnd = rateClassEnd.HasValue,

@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common.Entity;
 using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
@@ -42,5 +43,7 @@ namespace apcurium.MK.Booking.Events
         public string LastFour { get; set; }
 
         public double? AccessFee { get; set; }
+
+        public TollDetail[] Tolls { get; set; }
     }
 }

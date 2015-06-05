@@ -149,7 +149,20 @@ namespace apcurium.MK.Booking.Api.Services
                                 TripId = 9874,
                                 RateAtTripStart = 1,
                                 RateAtTripEnd = 4,
-                                FareAtAlternateRate = 23.45
+                                FareAtAlternateRate = 23.45,
+                                Tolls = new[]
+                                {
+                                    new TollDetail
+                                    {
+                                        TollName = "Toll 1",
+                                        TollAmount = 95
+                                    },
+                                    new TollDetail
+                                    {
+                                        TollName = "Toll 2",
+                                        TollAmount = 205
+                                    }
+                                }
                             }, true);
                         break;
                     case NotificationService.EmailConstant.Template.PromotionUnlocked:

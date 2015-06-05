@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
             double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, 
-            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId, double? accessFee, string lastFour)
+            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId, double? accessFee, string lastFour, TollDetail[] tolls)
         {
             Update(new ManualRideLinqTripInfoUpdated
             {
@@ -162,7 +162,8 @@ namespace apcurium.MK.Booking.Domain
                 TripId = tripId,
                 DriverId = driverId,
                 AccessFee = accessFee,
-                LastFour = lastFour
+                LastFour = lastFour,
+                Tolls = tolls
             });
         }
 
