@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -36,6 +37,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         public AddressViewModel[] FilteredPlaces { get; private set; }
 
 		private AddressLocationType _currentActiveFilter;
+
+	    private string _previousPostCode = string.Empty;
 
 		public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
@@ -334,7 +337,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
 
             
-            if (criteria.HasValue() && criteria != StartingText)
+            if (criteria.HasValue() && criteria != StartingText && criteria != _previousPostCode)
 			{
 				using (this.Services().Message.ShowProgressNonModal())
 				{
@@ -344,10 +347,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					var fhAdrs = SearchFavoriteAndHistoryAddresses(criteria);
 					var pAdrs = Task.Run(() => SearchPlaces(criteria));
                     var gAdrs = Task.Run(() => SearchGeocodeAddresses(criteria));
-				    if (this.Services().Settings.CraftyClicksApiKey.HasValue())
+                    if (this.Services().Settings.CraftyClicksApiKey.HasValue() && _postalCodeService.IsValidPostCode(criteria))
 				    {
                         var ccAdrs = SearchPostalCode(criteria);
-
+				        _previousPostCode = criteria;
+                        
                         AllAddresses.AddRangeDistinct(await ccAdrs, (x, y) => x.Equals(y));
 				    }
 
@@ -398,7 +402,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	    {
 	        try
 	        {
-                var postalCodeAddresses = await Task.Run(() => _postalCodeService.GetAddressFromPostalCode(criteria));
+                var postalCodeAddresses = await Task.Run(() => _postalCodeService.GetAddressFromPostalCodeAsync(criteria));
 
                 return postalCodeAddresses
                     .Select(adrs => new AddressViewModel(adrs, AddressType.Places))

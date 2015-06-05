@@ -1,8 +1,9 @@
 ﻿(function() {
 
     TaxiHail.AddressSelectionView = TaxiHail.TemplatedView.extend({
-
         className: 'tabs-below',
+
+        previousPostcode: '',
 
         options: {
             showFavorites: true,
@@ -76,13 +77,24 @@
                 this.selectTab(this.$('[data-tab=search]'));
                 this.tab.search.call(this);
             }
-            if (TaxiHail.parameters.craftyclicksapikey) {
+            
+            //Ensures we are not executing the same search again.
+            if (window.previousPostcode == query) {
+                return;
+            } else {
+                window.previousPostcode = '';
+            }
+
+            
+
+            if (TaxiHail.parameters.isCraftyClicksEnabled && TaxiHail.craftyclicks.isValidPostalCode(query)) {
 
                 TaxiHail.craftyclicks.getCraftyClicksAdresses(query).done(_.bind(function (result) {
                     if (result.error_code) {
                         this.searchWithGoogleGeocoder(query);
                     } else {
-                        this._searchResults && this._searchResults.reset(TaxiHail.craftyclicks.toAddress((result)));
+                        this._searchResults && this._searchResults.reset(result);
+                        window.previousPostcode = query;
                     }
                 }, this));
             }

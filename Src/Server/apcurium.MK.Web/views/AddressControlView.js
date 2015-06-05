@@ -49,7 +49,7 @@
 
             this.$("[data-action=toggletarget]").addClass(toggleClass);
 
-            this.$('[name=address]').on('keyup', _.debounce(this.onkeyup, 500));
+            this.$('[name=address]').on('keyup', _.debounce(this.onkeyup, 1500));
 
             this._selector = new TaxiHail.AddressSelectionView({
                 model: this.model

@@ -31,7 +31,7 @@
                 }
             });
 
-            return defer.promise().then(cleanupResult);
+            return defer.promise().then(TaxiHail.cleanupAddressesResult);
 
         },
 
@@ -118,18 +118,8 @@
             }),
             contentType:"application/json; charset=utf-8",
             dataType:"json"
-        }).done(cleanupResult);
+        }).done(TaxiHail.cleanupAddressesResult);
     }
-
-    function cleanupResult(result) {
-        if(result && result.length) {
-            _.each(result, function(address){
-                // BUGFIX: All addresses have the same empty Guid as id
-                delete address.id;
-            });
-        }
-    }
-    
     function getBounds() {
         var bounds = null,
             param = TaxiHail.parameters.geolocSearchBounds,
