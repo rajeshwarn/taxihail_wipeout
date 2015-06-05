@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.MapDataProvider.CraftyClicks.Resources;
 using apcurium.MK.Booking.MapDataProvider.Extensions;
@@ -11,7 +12,10 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 {
     public class CraftyClicksService : IPostalCodeService
     {
+        private const string PostcodeRegex = "[A-Za-z][A-Za-z]?[0-9][0-9]?[A-Za-z]?\\s?[0-9][A-Za-z][A-Za-z]";
         private readonly IAppSettings _settingsService;
+
+
         public CraftyClicksService(IAppSettings settingsService)
         {
             _settingsService = settingsService;
@@ -68,14 +72,7 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 
         public bool IsValidPostCode(string postalCode)
         {
-            if (!postalCode.HasValue())
-            {
-                return false;
-            }
-
-            var postCodeTrimmed = postalCode.Replace(" ", "");
-
-            return postCodeTrimmed.Length >= 5 && postCodeTrimmed.Length <=7;
+            return postalCode.HasValue() && Regex.IsMatch(postalCode, PostcodeRegex);
         }
 
 
