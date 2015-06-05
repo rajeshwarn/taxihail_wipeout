@@ -137,6 +137,7 @@
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="DummyConfigurationManager.cs" />
     <Compile Include="Entity\AccountCharge.cs" />
+    <Compile Include="Entity\AccountQuestionAnswer.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\AddressLocationType.cs" />

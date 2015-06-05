@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountAnswersAddedUpdated.cs" />
     <Compile Include="AccountChargeImported.cs" />
     <Compile Include="AccountChargeDeleted.cs" />
     <Compile Include="AccountConfirmed.cs" />

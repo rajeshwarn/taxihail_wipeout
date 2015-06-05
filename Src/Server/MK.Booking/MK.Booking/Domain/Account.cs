@@ -51,6 +51,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<CreditCardDeactivated>(NoAction);
             Handles<OverduePaymentLogged>(NoAction);
             Handles<OverduePaymentSettled>(NoAction);
+            Handles<AccountAnswersAddedUpdated>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -383,6 +384,15 @@ namespace apcurium.MK.Booking.Domain
             Update(new OverduePaymentSettled
             {
                 OrderId = orderId
+            });
+        }
+
+        public void SaveQuestionAnswer(IEnumerable<AccountQuestionAnswer> answers)
+        {
+            Update(new AccountAnswersAddedUpdated
+            {
+                AccountId = Id,
+                Answers = answers.ToArray()
             });
         }
     }
