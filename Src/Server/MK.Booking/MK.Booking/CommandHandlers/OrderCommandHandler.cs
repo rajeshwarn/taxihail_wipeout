@@ -205,7 +205,8 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = new Order(command.OrderId, command.AccountId, command.PairingDate, command.PairingCode, command.PairingToken,
                 command.PickupAddress, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
                 command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
-                command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.TripId, command.DriverId);
+                command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.TripId,
+                command.DriverId, command.AccessFee, command.LastFour);
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -222,7 +223,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = _repository.Get(command.OrderId);
             order.UpdateRideLinqTripInfo(command.Distance,command.Total, command.Fare, command.FareAtAlternateRate, command.Tax,
                 command.Tip, command.Toll, command.Extra,command.Surcharge,command.RateAtTripStart, command.RateAtTripEnd, 
-                command.RateChangeTime ,command.EndTime, command.PairingToken, command.Medallion, command.TripId, command.DriverId);
+                command.RateChangeTime ,command.EndTime, command.PairingToken, command.Medallion, command.TripId, command.DriverId, command.AccessFee, command.LastFour);
 
             _repository.Save(order, command.Id.ToString());
         }

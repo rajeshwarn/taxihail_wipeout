@@ -94,6 +94,7 @@ namespace apcurium.MK.Booking.Api.Services
             ReadModel.CreditCardDetails creditCard = null;
 
             var ibsOrderId = orderStatus.IBSOrderId;
+            Commands.SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields = null;
 
             if (orderPayment != null && orderPayment.IsCompleted)
             {
@@ -128,7 +129,20 @@ namespace apcurium.MK.Booking.Api.Services
                     taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
                     surcharge = Math.Round(((double) tripInfo.Surcharge / 100), 2);
                     orderStatus.DriverInfos.DriverId = tripInfo.DriverId.ToString();
-                    ibsOrderId = tripInfo.TripId;
+
+                    cmtRideLinqFields = new Commands.SendReceipt.CmtRideLinqReceiptFields
+                    {
+                        TripId = tripInfo.TripId,
+                        DriverId = tripInfo.DriverId.ToString(),
+                        Distance = tripInfo.Distance,
+                        AccessFee = tripInfo.AccessFee,
+                        DropOffDateTime = tripInfo.EndTime,
+                        LastFour = tripInfo.LastFour,
+                        StateSurcharge = tripInfo.Tax,
+                        FareAtAlternateRate = Math.Round(((double) tripInfo.FareAtAlternateRate / 100), 2),
+                        RateAtTripEnd = tripInfo.RateAtTripEnd,
+                        RateAtTripStart = tripInfo.RateAtTripStart
+                    };
                 }
                 else
                 {
@@ -173,7 +187,8 @@ namespace apcurium.MK.Booking.Api.Services
                         ? Convert.ToDouble(promotionUsed.AmountSaved)
                         : (double?)null,
                     promotionUsed,
-                    creditCard));
+                    creditCard,
+                    cmtRideLinqFields));
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }

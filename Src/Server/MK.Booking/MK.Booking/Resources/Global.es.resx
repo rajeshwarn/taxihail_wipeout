@@ -209,6 +209,9 @@
     <value>Reservación&amp;nbsp;#</value>
     <comment>Order&amp;nbsp;#</comment>
   </data>
+  <data name="Email_Body_TripId" xml:space="preserve">
+    <value>Trip #</value>
+  </data>
   <data name="Email_Body_PaidWith" xml:space="preserve">
     <value>Pagado con</value>
     <comment>Paid With</comment>
@@ -521,6 +524,9 @@
     <value>CONDUCTOR / VEHICULO</value>
     <comment>Your Driver</comment>
   </data>
+  <data name="Email_Body_Distance" xml:space="preserve">
+    <value>Distance</value>
+  </data>
   <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
     <value>There is no promotion associated to this code</value>
     <comment>There is no promotion associated to this code</comment>
@@ -770,6 +776,9 @@
   </data>
   <data name="Email_Body_BookingFees" xml:space="preserve">
     <value>Booking Fees</value>
+  </data>
+  <data name="Email_Body_RateClass" xml:space="preserve">
+    <value>Rate Code</value>
   </data>
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
     <value>Credit Card was declined</value>
