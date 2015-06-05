@@ -576,8 +576,8 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-            var subTotalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) + toll + tax + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee);
-            var totalAmount = subTotalAmount + tip + bookingFees + surcharge - amountSavedByPromotion;
+            var subTotalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) + toll + tax;
+            var totalAmount = subTotalAmount + tip + bookingFees + surcharge + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) + extra - amountSavedByPromotion;
 
             var templateData = new
             {
