@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Commands
             public string DriverId { get; set; }
 
             /// <summary>
-            /// Aka: IMSRCH
+            /// Aka: IMSRCH / MTA Tax
             /// </summary>
             public double? AccessFee { get; set; }
 

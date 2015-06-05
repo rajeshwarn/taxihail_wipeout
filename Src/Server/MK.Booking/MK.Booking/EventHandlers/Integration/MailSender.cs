@@ -110,6 +110,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             var taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
                             var surchargeAmount = Math.Round(((double)tripInfo.Surcharge / 100), 2);
                             var extraAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
+                            var accessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2);
 
                             SendTripReceipt(@event.SourceId, 
                                 Convert.ToDecimal(meterAmount),
@@ -125,7 +126,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                     TripId = tripInfo.TripId,
                                     Distance = tripInfo.Distance,
                                     LastFour = tripInfo.LastFour,
-                                    AccessFee = tripInfo.AccessFee,
+                                    AccessFee = accessFee,
                                     StateSurcharge = tripInfo.Tax,
                                     FareAtAlternateRate = tripInfo.FareAtAlternateRate,
                                     RateAtTripEnd = tripInfo.RateAtTripEnd,

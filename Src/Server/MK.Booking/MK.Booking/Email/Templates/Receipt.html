@@ -438,7 +438,7 @@
                                                         {{/ShowStaticMap}}
                                                     </table>
                                                 </div>
-                                                {{#HasDriverInfo}}
+                                                {{#ShowTripSection}}
                                                 <div class="receiptBottomInfo" style="float: left !important;">
                                                     <table width="100%" cellpadding="0" cellspacing="0">
                                                         <tr>
@@ -447,6 +447,7 @@
                                                         <tr>
                                                             <td>
                                                                 <table class="yourdriver" cellpadding="0" cellspacing="0">
+                                                                    {{#HasDriverInfo}}
                                                                     <tr style="color: { {EmailFontColor}}! important">
                                                                         <td class="driver_name" rowspan="3">{{ DriverName }}</td>
                                                                         <td class="driver_list_title" colspan="2">{{ localize "Email_Body_VehicleModel" }}</td>
@@ -456,6 +457,7 @@
                                                                         <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
                                                                         <td class="list_value" colspan="3">{{ VehicleNumber }}</td>
                                                                     </tr>
+                                                                    {{/HasDriverInfo}}
 
                                                                     {{#HasDriverId}}
                                                                     <tr>
@@ -463,24 +465,24 @@
                                                                         <td class="list_value" colspan="3">{{ DriverId }}</td>
                                                                     </tr>
                                                                     {{/HasDriverId}}
+
                                                                     {{#ShowTripId}}
                                                                     <tr>
                                                                         <td class="driver_list_title">{{ localize "Email_Body_TripId" }}</td>
                                                                         <td class="list_value" colspan="4">{{ TripId }}</td>
                                                                     </tr>
                                                                     {{/ShowTripId}}
-                                                                    {{#ShowDistance}}
+
                                                                     <tr>
                                                                         <td class="driver_list_title">{{ localize "Email_Body_Distance" }}</td>
                                                                         <td class="list_value" colspan="4">{{ Distance }}</td>
                                                                     </tr>
-                                                                    {{/ShowDistance}}
                                                                 </table>
                                                             </td>
                                                         </tr>
                                                     </table>
                                                 </div>
-                                                {{/HasDriverInfo}}
+                                                {{/ShowTripSection}}
                                                 {{#ShowFareAndPaymentDetails}}
                                                 <div class="receiptRightInfo" style="float: left !important;">
                                                     <table>
@@ -513,6 +515,12 @@
                                                                     </tr>
                                                                     {{/ShowRateClassEnd}}
 
+                                                                    {{#ShowMtaTax}}
+                                                                    <tr>
+                                                                        <td class="list_title">{{ localize "Email_Body_MtaTax"}}</td>
+                                                                        <td class="list_value">{{ MtaTax }}</td>
+                                                                    </tr>
+                                                                    {{/ShowMtaTax}}
                                                                     {{#ShowTax}}
                                                                     <tr>
                                                                         <td class="list_title">
@@ -522,12 +530,6 @@
                                                                         <td class="list_value">{{ Tax }}</td>
                                                                     </tr>
                                                                     {{/ShowTax}}
-                                                                    {{#ShowMtaTax}}
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_MtaTax"}}</td>
-                                                                        <td class="list_value">{{ MtaTax }}</td>
-                                                                    </tr>
-                                                                    {{/ShowMtaTax}}
 
                                                                     {{#ShowToll}}
                                                                     <tr>
