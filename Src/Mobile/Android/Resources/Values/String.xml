@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">Email</string>
   <string name="EstimateFareCalculating">Calculating...</string>
@@ -57,7 +57,7 @@
   <string name="RateLastRideTitle">Rate last ride?</string>
   <string name="View_RefineAddress">Pickup Details</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</string>
-  <string name="AccountEnabledToPayWithCreditCard">Your account is now enabled to pay for rides with this credit card.</string>
+  <string name="CreditCardAdded_PayInCarDisabled">Your account is now enabled to pay for rides with this credit card.</string>
   <string name="PanelMenuViewLocationsText">Locations</string>
   <string name="CreateAccountFullNamePlaceHolder">Full Name</string>
   <string name="CreateAccountPasswordPlaceHolder">Password</string>

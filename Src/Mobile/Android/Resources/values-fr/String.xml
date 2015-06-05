@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">Email (adresse électronique)</string>
   <string name="EstimateFareCalculating">Calcul du prix de votre course ...</string>
@@ -86,7 +86,7 @@
   <string name="VehicleNumberErrorTitle">Erreur</string>
   <string name="NoConnectionMessage">Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.</string>
   <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement via carte de crédit par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de confirmation.</string>
-  <string name="AccountEnabledToPayWithCreditCard">Votre compte est maintenant configuré pour le paiement par la carte de crédit.</string>
+  <string name="CreditCardAdded_PayInCarDisabled">Votre compte est maintenant configuré pour le paiement par la carte de crédit.</string>
   <string name="Notification_PaymentConfirmationPush">Confirmation de paiement</string>
   <string name="PromoExpiringSoonMessage">Expire dans {0} jours</string>
   <string name="PassengerPhoneLabel">Téléphone</string>

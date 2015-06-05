@@ -1,4 +1,4 @@
-"CreateAccountEmailPlaceHolder"="Email";
+﻿"CreateAccountEmailPlaceHolder"="Email";
 "EstimateFareCalculating"="Calculating...";
 "CmtCardNumber"="Payment Method:";
 "Edit"="Edit";
@@ -55,7 +55,7 @@
 "RateLastRideTitle"="Rate last ride?";
 "View_RefineAddress"="Pickup Details";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen";
-"AccountEnabledToPayWithCreditCard"="Your account is now enabled to pay for rides with this credit card.";
+"CreditCardAdded_PayInCarDisabled"="Your account is now enabled to pay for rides with this credit card.";
 "PanelMenuViewLocationsText"="Locations";
 "CreateAccountFullNamePlaceHolder"="Full Name";
 "CreateAccountPasswordPlaceHolder"="Password";
