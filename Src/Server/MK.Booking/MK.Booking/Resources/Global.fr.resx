@@ -432,6 +432,9 @@
   <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
     <value>Cette promotion n'est pas active</value>
   </data>
+  <data name="CannotCreateOrder_PromotionIsDeleted" xml:space="preserve">
+    <value>Cette promotion est effacée</value>
+  </data>
   <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
     <value>Le nombre maximal d'utilisation a été atteint pour cette promotion</value>
   </data>

@@ -12,6 +12,15 @@
 
     _.extend(TaxiHail, {
 
+        cleanupAddressesResult: function(result) {
+            if(result && result.length) {
+                _.each(result, function(address){
+                    // BUGFIX: All addresses have the same empty Guid as id
+                    delete address.id;
+                });
+            }
+        },
+
         getClientLanguage: function () {
             return (navigator.language) ? navigator.language.split('-')[0] : navigator.userLanguage;
         },
