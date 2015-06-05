@@ -3,6 +3,7 @@
 using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -15,7 +16,7 @@ namespace apcurium.MK.Booking.CommandBuilder
     {
         public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, int? orderId, string vehicleNumber, DriverInfos driverInfos,
             double? fare, double? toll, double? extra, double? surcharge, double? bookingFees, double? tip, double? tax, OrderPaymentDetail orderPayment = null, double? amountSavedByPromotion = null,
-            PromotionUsageDetail promotionUsed = null, CreditCardDetails creditCard = null)
+            PromotionUsageDetail promotionUsed = null, CreditCardDetails creditCard = null, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields = null)
         {
             var command = new SendReceipt
             {
@@ -24,7 +25,7 @@ namespace apcurium.MK.Booking.CommandBuilder
                 EmailAddress = account.Email,
                 IBSOrderId = orderId ?? 0,
                 PickupDate = order.PickupDate,
-                DropOffDate = order.DropOffDate,
+                UtcDropOffDate = order.DropOffDate,
                 VehicleNumber = vehicleNumber,
                 DriverInfos = driverInfos,
                 Fare = fare.GetValueOrDefault(),
@@ -37,6 +38,7 @@ namespace apcurium.MK.Booking.CommandBuilder
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
                 ClientLanguageCode = order.ClientLanguageCode,
+                CmtRideLinqFields = cmtRideLinqFields
             };
 
             if (promotionUsed != null)

@@ -62,5 +62,9 @@ namespace apcurium.MK.Booking.Commands
         public int TripId { get; set; }
 
         public int DriverId { get; set; }
+
+        public double? AccessFee { get; set; }
+
+        public string LastFour { get; set; }
     }
 }

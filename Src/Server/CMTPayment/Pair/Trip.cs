@@ -30,10 +30,11 @@ namespace CMTPayment.Pair
         public int? AutoTipPercentage { get; set; }
         public int? AutoTipAmount { get; set; }
         public Toll[] TollHistory { get; set; }
-
         public bool AutoCompletePayment { get; set; }
         public string CustomerId { get; set; }
         public string CustomerName { get; set; }
+        public string LastFour { get; set; }
+        public int AccessFee { get; set; }
 
         public bool Compare(Trip otherTrip)
         {

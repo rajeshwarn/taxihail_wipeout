@@ -480,10 +480,11 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.NoShowFeesReceipt, EmailConstant.Subject.NoShowFeesReceipt, templateData, clientLanguageCode);
         }
 
+
         public void SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
             double tax, double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
-            DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
-            bool bypassNotificationSetting = false)
+            DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode,
+            SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields, bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
             {
@@ -519,6 +520,22 @@ namespace apcurium.MK.Booking.Services.Impl
             var hasFare = Math.Abs(fare) > double.Epsilon;
             var showFareAndPaymentDetails = hasPaymentInfo || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
 
+            int? rateClassStart = null;
+            int? rateClassEnd = null;
+            double? fareAtAlternateRate = null;
+
+            // RideLinQ Rate class & fare
+            if (cmtRideLinqFields != null)
+            {
+                rateClassStart = cmtRideLinqFields.RateAtTripStart;
+
+                if (cmtRideLinqFields.RateAtTripStart != cmtRideLinqFields.RateAtTripEnd)
+                {
+                    rateClassEnd = cmtRideLinqFields.RateAtTripEnd;
+                    fareAtAlternateRate = cmtRideLinqFields.FareAtAlternateRate ?? fare;
+                }
+            }
+
             if (hasPaymentInfo)
             {
                 paymentAmount = _resources.FormatPrice(Convert.ToDouble(paymentInfo.Amount));
@@ -550,16 +567,17 @@ namespace apcurium.MK.Booking.Services.Impl
                 : string.Empty;
 
             var timeZoneOfTheOrder = TryToGetOrderTimeZone(orderId);
-            var nullSafeDropOffDate = GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
-            var dropOffTime = dropOffDateInUtc.HasValue
+            var localDropOffDate = cmtRideLinqFields.SelectOrDefault(x => x.DropOffDateTime);
+            var nullSafeDropOffDate = localDropOffDate ?? GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
+            var dropOffTime = dropOffDateInUtc.HasValue || localDropOffDate.HasValue
                 ? nullSafeDropOffDate.ToString("t" /* Short time pattern */)
                 : string.Empty;
 
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-            var subTotalAmount = fare + toll + tax;
-            var totalAmount = subTotalAmount + tip + bookingFees + surcharge - amountSavedByPromotion;
+            var subTotalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) + toll + tax;
+            var totalAmount = subTotalAmount + tip + bookingFees + surcharge + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) + extra - amountSavedByPromotion;
 
             var templateData = new
             {
@@ -570,6 +588,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 HasDriverInfo = hasDriverInfo,
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
                 VehicleNumber = vehicleNumber,
+                DriverName = hasDriverInfo ? driverInfos.FullName : string.Empty,
+                VehicleMake = hasDriverInfo ? driverInfos.VehicleMake : string.Empty,
+                VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
                 DriverInfos = driverInfos,
                 DriverId = hasDriverInfo ? driverInfos.DriverId : "",
                 PickupDate = pickupDate.ToString("D", dateFormat),
@@ -577,7 +598,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 DropOffDate = nullSafeDropOffDate.ToString("D", dateFormat),
                 DropOffTime = dropOffTime,
                 ShowDropOffTime = dropOffTime.HasValue(),
-                ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet,
+                ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet && !localDropOffDate.HasValue,
                 Fare = _resources.FormatPrice(fare),
                 Toll = _resources.FormatPrice(toll),        
                 Surcharge = _resources.FormatPrice(surcharge),
@@ -588,11 +609,24 @@ namespace apcurium.MK.Booking.Services.Impl
                 TotalFare = _resources.FormatPrice(totalAmount),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
+                MtaTax = cmtRideLinqFields.SelectOrDefault(x => x.AccessFee),
+                RideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour),
+                Distance = _resources.FormatDistance(cmtRideLinqFields.SelectOrDefault(x => x.Distance)),
+                TripId = cmtRideLinqFields.SelectOrDefault(x => x.TripId),
+                RateClassStart = rateClassStart,
+                RateClassEnd = rateClassEnd,
+                FareAtAlternateRate = fareAtAlternateRate,
+                ShowRideLinqLastFour = cmtRideLinqFields.LastFour.HasValue(),
+                ShowTripId = cmtRideLinqFields.SelectOrDefault(x => x.Distance).HasValue,
+                ShowDistance = cmtRideLinqFields.SelectOrDefault(x => x.Distance).HasValue && cmtRideLinqFields.Distance.Value > 0,
                 ShowTax = Math.Abs(tax) >= 0.01,
+                ShowMtaTax = cmtRideLinqFields.SelectOrDefault(x => x.AccessFee).HasValue &&  Math.Abs(cmtRideLinqFields.AccessFee.Value) > 0.01,
                 ShowToll = Math.Abs(toll) >= 0.01,
                 ShowSurcharge = Math.Abs(surcharge) >= 0.01,
                 ShowBookingFees = Math.Abs(bookingFees) >= 0.01,
                 ShowExtra = Math.Abs(extra) >= 0.01,
+                ShowRateClassStart = rateClassStart.HasValue,
+                ShowRateClassEnd = rateClassEnd.HasValue,
                 vatIsEnabled,
                 HasPaymentInfo = hasPaymentInfo,
                 PaymentAmount = paymentAmount,

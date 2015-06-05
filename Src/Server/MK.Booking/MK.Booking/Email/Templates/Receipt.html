@@ -447,21 +447,34 @@
                                                         <tr>
                                                             <td>
                                                                 <table class="yourdriver" cellpadding="0" cellspacing="0">
-                                                                    <tr style="color: {{ EmailFontColor }}! important">
-                                                                        <td class="driver_name" rowspan="3">{{ DriverInfos.FullName }}</td>
-                                                                        <td class="driver_list_title">{{ localize "Email_Body_VehicleModel" }}</td>
-                                                                        <td class="list_value">{{ DriverInfos.VehicleMake }} {{ DriverInfos.VehicleModel }}</td>
+                                                                    <tr style="color: { {EmailFontColor}}! important">
+                                                                        <td class="driver_name" rowspan="3">{{ DriverName }}</td>
+                                                                        <td class="driver_list_title" colspan="2">{{ localize "Email_Body_VehicleModel" }}</td>
+                                                                        <td class="list_value" colspan="2">{{ VehicleMake }} {{ VehicleModel }}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
-                                                                        <td class="list_value">{{ VehicleNumber }}</td>
+                                                                        <td class="list_value" colspan="3">{{ VehicleNumber }}</td>
                                                                     </tr>
+
                                                                     {{#HasDriverId}}
                                                                     <tr>
                                                                         <td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
-                                                                        <td class="list_value">{{ DriverId }}</td>
+                                                                        <td class="list_value" colspan="3">{{ DriverId }}</td>
                                                                     </tr>
                                                                     {{/HasDriverId}}
+                                                                    {{#ShowTripId}}
+                                                                    <tr>
+                                                                        <td class="driver_list_title">{{ localize "Email_Body_TripId" }}</td>
+                                                                        <td class="list_value" colspan="4">{{ TripId }}</td>
+                                                                    </tr>
+                                                                    {{/ShowTripId}}
+                                                                    {{#ShowDistance}}
+                                                                    <tr>
+                                                                        <td class="driver_list_title">{{ localize "Email_Body_Distance" }}</td>
+                                                                        <td class="list_value" colspan="4">{{ Distance }}</td>
+                                                                    </tr>
+                                                                    {{/ShowDistance}}
                                                                 </table>
                                                             </td>
                                                         </tr>
@@ -477,19 +490,44 @@
                                                         <tr>
                                                             <td>
                                                                 <table class="invoice" cellpadding="0" cellspacing="0">
+                                                                    {{#ShowRateClassStart}}
+                                                                    <tr>
+                                                                        <td class="list_title">{{ localize "Email_Body_RateClass"}}</td>
+                                                                        <td class="list_value">{{ RateClassStart }}</td>
+                                                                    </tr>
+                                                                    {{/ShowRateClassStart}}
+
                                                                     <tr>
                                                                         <td class="list_title">{{ localize "Email_Body_Fare"}}</td>
                                                                         <td class="list_value">{{ Fare }}</td>
                                                                     </tr>
+
+                                                                    {{#ShowRateClassEnd}}
+                                                                    <tr>
+                                                                        <td class="list_title">{{ localize "Email_Body_RateClass"}}</td>
+                                                                        <td class="list_value">{{ RateClassEnd }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="list_title">{{ localize "Email_Body_Fare"}}</td>
+                                                                        <td class="list_value">{{ FareAtAlternateRate }}</td>
+                                                                    </tr>
+                                                                    {{/ShowRateClassEnd}}
+
                                                                     {{#ShowTax}}
-                                                                        <tr>
-                                                                            <td class="list_title">
-                                                                                {{#vatIsEnabled}}{{ localize "Email_Body_VAT"}}{{/vatIsEnabled}}
-                                                                                {{^vatIsEnabled}}{{ localize "Email_Body_Tax"}}{{/vatIsEnabled}}
-                                                                            </td>
-                                                                            <td class="list_value">{{ Tax }}</td>
-                                                                        </tr>
+                                                                    <tr>
+                                                                        <td class="list_title">
+                                                                            {{#vatIsEnabled}}{{ localize "Email_Body_VAT"}}{{/vatIsEnabled}}
+                                                                            {{^vatIsEnabled}}{{ localize "Email_Body_Tax"}}{{/vatIsEnabled}}
+                                                                        </td>
+                                                                        <td class="list_value">{{ Tax }}</td>
+                                                                    </tr>
                                                                     {{/ShowTax}}
+                                                                    {{#ShowMtaTax}}
+                                                                    <tr>
+                                                                        <td class="list_title">{{ localize "Email_Body_MtaTax"}}</td>
+                                                                        <td class="list_value">{{ MtaTax }}</td>
+                                                                    </tr>
+                                                                    {{/ShowMtaTax}}
 
                                                                     {{#ShowToll}}
                                                                     <tr>
@@ -538,10 +576,17 @@
                                                                         <td class="list_value">({{ AmountSavedByPromotion }})</td>
                                                                     </tr>
                                                                     {{/PromotionWasUsed}}
-                                                                    <tr class="fare_list_charged" style="color: {{EmailFontColor}}! important">
+                                                                    <tr class="fare_list_charged" style="color: { {EmailFontColor}}! important">
                                                                         <td class="list_title">{{ localize "Email_Body_TotalFare"}}</td>
                                                                         <td class="list_value">{{ TotalFare }}</td>
                                                                     </tr>
+
+                                                                    {{#ShowRideLinqLastFour}}
+                                                                    <tr>
+                                                                        <td class="list_title">{{ localize "Email_Body_RideLinqLastFour" }}</td>
+                                                                        <td class="list_value">{{ RideLinqLastFour }}</td>
+                                                                    </tr>
+                                                                    {{/ShowRideLinqLastFour}}
                                                                 </table>
                                                             </td>
                                                         </tr>

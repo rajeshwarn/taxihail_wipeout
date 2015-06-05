@@ -520,7 +520,12 @@ namespace apcurium.MK.Booking.EventHandlers
                         Status = OrderStatus.Created,
                         IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
                         PickupDate = @event.PairingDate,
-                        IsManualRideLinq = true
+                        IsManualRideLinq = true,
+                        VehicleNumber = @event.Medallion,
+                        DriverInfos = new DriverInfos
+                        {
+                            DriverId = @event.DriverId.ToString()
+                        }
                     });
                 }
 
@@ -552,7 +557,9 @@ namespace apcurium.MK.Booking.EventHandlers
                         RateChangeTime = @event.RateChangeTime,
                         Medallion = @event.Medallion,
                         TripId = @event.TripId,
-                        DriverId = @event.DriverId
+                        DriverId = @event.DriverId,
+                        LastFour = @event.LastFour,
+                        AccessFee = @event.AccessFee
                     });
                 }
             }
@@ -612,6 +619,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         orderStatusDetails.Status = OrderStatus.Completed;
                     }
+
+                    orderStatusDetails.VehicleNumber = @event.Medallion;
+
                     context.Save(orderStatusDetails);
                 }
 
@@ -622,6 +632,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     return;
                 }
 
+                rideLinqDetails.DriverId = @event.DriverId;
+                rideLinqDetails.TripId = @event.TripId;
                 rideLinqDetails.Distance = @event.Distance;
                 rideLinqDetails.PairingToken = @event.PairingToken;
                 rideLinqDetails.EndTime = @event.EndTime;
@@ -637,6 +649,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
                 rideLinqDetails.RateChangeTime = @event.RateChangeTime;
                 rideLinqDetails.Medallion = @event.Medallion;
+                rideLinqDetails.AccessFee = @event.AccessFee;
+                rideLinqDetails.LastFour = @event.LastFour;
 
                 context.Save(rideLinqDetails);
             }

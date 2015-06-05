@@ -32,9 +32,9 @@ namespace apcurium.MK.Booking.Commands
 
         public double? Tax { get; set; }
 
-        public double? RateAtTripStart { get; set; }
+        public int? RateAtTripStart { get; set; }
 
-        public double? RateAtTripEnd { get; set; }
+        public int? RateAtTripEnd { get; set; }
 
         public string RateChangeTime { get; set; }
 
@@ -47,5 +47,9 @@ namespace apcurium.MK.Booking.Commands
         public int TripId { get; set; }
 
         public int DriverId { get; set; }
+
+        public double? AccessFee { get; set; }
+
+        public string LastFour { get; set; }
     }
 }
