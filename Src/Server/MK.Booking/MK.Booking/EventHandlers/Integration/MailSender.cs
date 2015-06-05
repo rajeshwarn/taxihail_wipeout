@@ -135,7 +135,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                 cmtRideLinqFields: new SendReceipt.CmtRideLinqReceiptFields
                                 {
                                     DriverId = tripInfo.DriverId.ToString(),
-                                    DropOffDateTime = tripInfo.EndTime,
+                                    DropOffDateTime = tripInfo.EndTime.Value.AddHours(-4), // TODO: hardcoded for arro
                                     TripId = tripInfo.TripId,
                                     Distance = tripInfo.Distance,
                                     LastFour = tripInfo.LastFour,
@@ -203,7 +203,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         cmtRideLinqFields: new SendReceipt.CmtRideLinqReceiptFields
                         {
                             DriverId = @event.DriverId.ToString(),
-                            DropOffDateTime = @event.EndTime,
+                            DropOffDateTime = @event.EndTime.Value.AddHours(-4), // TODO Hardcoded for Arro
                             TripId = @event.TripId,
                             Distance = @event.Distance,
                             LastFour = @event.LastFour,
