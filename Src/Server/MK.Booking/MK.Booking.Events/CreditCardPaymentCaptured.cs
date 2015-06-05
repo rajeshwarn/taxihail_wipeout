@@ -11,11 +11,11 @@ namespace apcurium.MK.Booking.Events
 
         public string AuthorizationCode { get; set; }
 
+        public decimal Amount { get; set; }
+
         /// <summary>
         /// NB: This Amount property DOES NOT contain the taxes
         /// </summary>
-        public decimal Amount { get; set; }
-
         public decimal Meter { get; set; }
 
         public decimal Tip { get; set; }

@@ -262,6 +262,29 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Delete(Guid id)
+        {
+            var promotions = _promotionDao.GetAll().ToList();
+            var promToDelete = promotions.Find(p => p.Id == id);
+
+            if (promToDelete != null)
+            {
+                promotions.Remove(promToDelete);
+
+                _commandBus.Send(new ICommand[]
+                    {
+                        new DeactivatePromotion { PromoId = id },
+                        new DeletePromotion { PromoId = id }
+                    });
+
+                TempData["Model"] = promotions.Select(x => new PromoCode(x)).OrderBy(p => p.Name);
+
+                TempData["Info"] = string.Format("Promotion \"{0}\" Deleted", promToDelete.Name);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         // GET: AdminTH/PromoCode/Statistics/5
         public ActionResult Statistics(Guid id)
         {

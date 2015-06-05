@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Commands
 
         public PaymentProvider Provider { get; set; }
         
-        public decimal Amount { get; set; }
+        public decimal TotalAmount { get; set; }
 
         public decimal MeterAmount { get; set; }
 
@@ -33,7 +33,13 @@ namespace apcurium.MK.Booking.Commands
 
         public decimal TaxAmount { get; set; }
 
+        public decimal TollAmount { get; set; }
+
+        public decimal SurchargeAmount { get; set; }
+
         public bool IsNoShowFee { get; set; }
+
+        public bool IsCancellationFee { get; set; }
 
         public bool IsSettlingOverduePayment { get; set; }
 
@@ -44,6 +50,8 @@ namespace apcurium.MK.Booking.Commands
         public string NewCardToken { get; set; }
 
         public bool IsForPrepaidOrder { get; set; }
+
+        public decimal BookingFees { get; set; }
 
         public Guid Id { get; private set; }
     }

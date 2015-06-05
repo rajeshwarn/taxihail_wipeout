@@ -835,7 +835,7 @@
     <value>Il n'y a pas d'adresse email client enregistrée</value>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
-    <value>Le numéro de téléphone est indisponible</value>
+    <value>Votre numéro de téléphone ou celui de votre chauffeur est indisponible.</value>
   </data>
   <data name="NoPhoneNumberTitle" xml:space="preserve">
     <value>Le numéro de téléphone ne semble pas valide</value>
@@ -1000,7 +1000,7 @@
     <value>{0} Enregistré</value>
   </data>
   <data name="RemoveCreditCardMessage" xml:space="preserve">
-    <value>Etes-vous sur de vouloir supprimer cette carte de paiement?</value>
+    <value>Etes-vous sûr de vouloir supprimer cette carte de paiement?</value>
   </data>
   <data name="RemoveCreditCardTitle" xml:space="preserve">
     <value>Supprimer cette carte de paiement</value>
@@ -1153,7 +1153,7 @@
     <value>Information non disponible. Merci de nous contacter.</value>
   </data>
   <data name="StatusConfirmCancelRide" xml:space="preserve">
-    <value>Cette action annulera votre commande, souhaitez-vous continuer?</value>
+    <value>Êtes-vous sûr de vouloir annuler?</value>
   </data>
   <data name="StatusConfirmCancelRideError" xml:space="preserve">
     <value>Désolé, vous ne pouvez plus annuler cette demande. Merci de nous contacter</value>
@@ -1611,6 +1611,9 @@
   <data name="CallDriverUsingProxyMessage" xml:space="preserve">
     <value>Votre chauffeur vous rappellera dans quelques minutes</value>
   </data>
+  <data name="CallDriverUsingProxyErrorMessage" xml:space="preserve">
+    <value>Désolé, nous n'avons pas pu vous mettre en contact avec votre chauffeur.</value>
+  </data>
   <data name="TaxiHailNetworkTimeOutPopupTitle" xml:space="preserve">
     <value>Changer de compagnie?</value>
   </data>
@@ -1876,9 +1879,6 @@
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Tarif:</value>
   </data>
-  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
-    <value>Véhicule #:</value>
-  </data>
   <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
     <value>Code d'association:</value>
   </data>
@@ -1901,7 +1901,7 @@
     <value>Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</value>
   </data>
   <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
-    <value>Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.</value>
+    <value>Êtes-vous sûr de vouloir annuler? Des frais d'annulation peuvent être appliqués.</value>
   </data>
   <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
     <value>Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.</value>
@@ -1951,6 +1951,12 @@
   <data name="PromoMustHavePaymentMethodSetMessage_Multiple" xml:space="preserve">
     <value>Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.</value>
   </data>
+  <data name="GenericErrorTitle" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="CallDriverUsingProxyPrompt" xml:space="preserve">
+    <value>Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.</value>
+  </data>
   <data name="PromoMustHavePaymentMethodSetMessage_PayPal" xml:space="preserve">
     <value>Pour utiliser un code promotionnel, vous devez avoir un compte PayPal associé à votre compte.</value>
   </data>
@@ -1972,5 +1978,17 @@
   <data name="Error_EditAutoTipMessage" xml:space="preserve">
     <value>Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</value>
     <comment>An error occurred while trying to update the tip. Please try again.</comment>
+  </data>
+  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
+    <value>Vous êtes assis dans le véhicule {0}.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Payment" xml:space="preserve">
+    <value>Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Email" xml:space="preserve">
+    <value>Un reçu vous sera envoyé à {0}.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Greetings" xml:space="preserve">
+    <value>Appréciez la balade!</value>
   </data>
 </root>

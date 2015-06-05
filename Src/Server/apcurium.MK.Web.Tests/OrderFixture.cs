@@ -437,6 +437,7 @@ namespace apcurium.MK.Web.Tests
                 RatingScores = new List<RatingScore>
                 {
                     new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 1, Name = "Politness"},
+                    new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 2, Name = "Safety"},
                     new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 2, Name = "Safety"}
                 }
             };
@@ -447,7 +448,7 @@ namespace apcurium.MK.Web.Tests
 
             Assert.NotNull(orderRatingDetails);
             Assert.That(orderRatingDetails.Note, Is.EqualTo(orderRatingsRequest.Note));
-            Assert.That(orderRatingDetails.RatingScores.Count, Is.EqualTo(orderRatingsRequest.RatingScores.Count));
+            Assert.That(orderRatingDetails.RatingScores.Count, Is.EqualTo(2));
         }
 
         [Test]

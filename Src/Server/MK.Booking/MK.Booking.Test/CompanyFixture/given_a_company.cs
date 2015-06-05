@@ -346,5 +346,27 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(command.VehicleTypeId, evt.VehicleTypeId);
         }
+
+        [Test]
+        public void when_updating_fee_structure()
+        {
+            var fees = new List<Fees>
+            {
+                new Fees {Market = null, Booking = 1, Cancellation = 2, NoShow = 2},
+                new Fees {Market = "MTL", Booking = 0, Cancellation = 0, NoShow = 3}
+            };
+
+            var command = new UpdateFees
+            {
+                CompanyId = _companyId,
+                Fees = fees
+            };
+
+            _sut.When(command);
+
+            var evt = _sut.ThenHasSingle<FeesUpdated>();
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual(command.Fees, evt.Fees);
+        }
     }
 }

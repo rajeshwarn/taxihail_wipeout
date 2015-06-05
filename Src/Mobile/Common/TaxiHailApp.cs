@@ -21,6 +21,7 @@ using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.CraftyClicks;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 
 
@@ -92,6 +93,8 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IPlaces, Places>();
 			_container.Register<IPopularAddressProvider, PopularAddressProvider>();
 			_container.Register<ITariffProvider, TariffProvider>();
+
+            _container.Register<IPostalCodeService, CraftyClicksService>();
 
             // ***** PayPal *****
 			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));

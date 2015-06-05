@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Extensions
 			"route", "postal_code", "street_address"
 		};
 
-		public static GeoAddress[] ConvertGeoResultToAddresses(GeoResult result)
+		public static GeoAddress[] ConvertGeoResultToAddresses(this GeoResult result)
 		{ 
 			if (result.Status == ResultStatus.OK )
 			{

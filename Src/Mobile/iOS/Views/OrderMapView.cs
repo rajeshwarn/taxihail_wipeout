@@ -58,9 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ContentMode = UIViewContentMode.Center,
                 Hidden = true,
             };
-
-            AddSubviews(_pickupCenterPin, _dropoffCenterPin);
-
+             
 			this.RegionChanged += (s, e) => 
 			{
 				ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray () : null, GetMapBoundsFromProjection()));
@@ -110,8 +108,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             _pickupAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Pickup, _useThemeColorForPickupAndDestinationMapIcons);
             _destinationAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Destination, _useThemeColorForPickupAndDestinationMapIcons);
-
-            this.GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;
 
             InitializeGesture();
         }
@@ -260,6 +256,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _pickupCenterPin.Frame = 
                 _dropoffCenterPin.Frame = 
 					new CGRect((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height / 2) - pinSize.Height + mkMapPadding, pinSize.Width, pinSize.Height);
+
+            if (_pickupCenterPin.Superview == null)
+            {
+                AddSubviews(_pickupCenterPin, _dropoffCenterPin);
+                GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;
+            }
         }
 
         public override void LayoutSubviews()

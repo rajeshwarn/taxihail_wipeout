@@ -18,7 +18,6 @@ using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using TinyIoC;
 using TinyMessenger;
-using Android.App;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -51,52 +50,73 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             return tcs.Task;
         }
 
-        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
+        public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
             string negativeButtonTitle, Action negativeAction)
         {
-            AlertDialogHelper.Show(
+            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
+
+            var tcs = new TaskCompletionSource<object>();
+
+            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(
                 Context.Activity,
                 title,
                 message,
-                positiveButtonTitle, (s,e) => positiveAction(),
-                negativeButtonTitle, (s,e) => negativeAction());
-        }
-        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
-            string negativeButtonTitle, Action negativeAction, Action cancelAction)
-        {
-            AlertDialogHelper.Show(
-                Context.Activity,
-                title,
-                message,
-                positiveButtonTitle, (s,e) => positiveAction(),
-                negativeButtonTitle, (s,e) => negativeAction(),
-                cancelAction);
+                positiveButtonTitle, (s,e) => { positiveAction(); tcs.TrySetResult(null); },
+                negativeButtonTitle, (s,e) => { negativeAction(); tcs.TrySetResult(null); }));
+
+            return tcs.Task;
         }
 
         public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
-            string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
+            string negativeButtonTitle, Action negativeAction, Action cancelAction)
         {
+            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
+
             var tcs = new TaskCompletionSource<object>();
 
-            AlertDialogHelper.Show(
+            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(
                 Context.Activity,
                 title,
                 message,
                 positiveButtonTitle, (s,e) => { positiveAction(); tcs.TrySetResult(null); },
                 negativeButtonTitle, (s,e) => { negativeAction(); tcs.TrySetResult(null); },
-                neutralButtonTitle, (s,e) => { neutralAction(); tcs.TrySetResult(null); });
+                () => { cancelAction.Invoke(); tcs.TrySetResult(null); }));
 
             return tcs.Task;
         }
 
-        public void ShowMessage(string title, string message, List<KeyValuePair<string, Action>> additionalButton)
+        public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
+            string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
+        {
+            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
+
+            var tcs = new TaskCompletionSource<object>();
+
+            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(
+                Context.Activity,
+                title,
+                message,
+                positiveButtonTitle, (s,e) => { positiveAction(); tcs.TrySetResult(null); },
+                negativeButtonTitle, (s,e) => { negativeAction(); tcs.TrySetResult(null); },
+                neutralButtonTitle, (s,e) => { neutralAction(); tcs.TrySetResult(null); }));
+
+            return tcs.Task;
+        }
+
+        public Task ShowMessage(string title, string message, List<KeyValuePair<string, Action>> additionalButton)
         {
             throw new NotImplementedException();
         }
 
-        public void ShowMessage(string title, string message, Action additionalAction)
+        public Task ShowMessage(string title, string message, Action additionalAction)
         {
-            AlertDialogHelper.Show(Context.Activity, title, message, additionalAction);
+            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
+
+            var tcs = new TaskCompletionSource<object>();
+
+            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(Context.Activity, title, message, () => { additionalAction.Invoke(); tcs.TrySetResult(null); }));
+
+            return tcs.Task;
         }
 
         public void ShowProgress(bool show)
@@ -206,7 +226,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Context.Activity.StartActivity(i);
         }
 
-		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction)
+		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction, bool isNumericOnly = false)
         {
 			var tcs = new TaskCompletionSource<string> ();
 
@@ -218,6 +238,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			i.PutExtra("PositiveButtonTitle", Context.Activity.GetString(Resource.String.OkButtonText));
 			i.PutExtra("NegativeButtonTitle", Context.Activity.GetString(Resource.String.Cancel));
 			i.PutExtra("OwnerId", ownerId);
+
+		    i.PutExtra("isNumeric", isNumericOnly);
 
 			var messenger = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
 

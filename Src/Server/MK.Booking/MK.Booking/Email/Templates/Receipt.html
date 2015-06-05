@@ -5,7 +5,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>{{ localize "Email_Subject_AccountConfirmation" }}</title>
+    <title>{{ ApplicationName }} - {{ localize "Email_Subject_Receipt" }}</title>
     <style>
         /* -------------------------------------
             GLOBAL
@@ -490,15 +490,22 @@
                                                                             <td class="list_value">{{ Tax }}</td>
                                                                         </tr>
                                                                     {{/ShowTax}}
-                                                                    <tr class="fare_list_subtotal" style="color: { {EmailFontColor}}! important">
+
+                                                                    {{#ShowToll}}
+                                                                    <tr>
                                                                         <td class="list_title">{{ localize "Email_Body_Toll" }}</td>
                                                                         <td class="list_value">{{ Toll }}</td>
                                                                     </tr>
-                                                                    <tr class="fare_list_subtotal" style="color: { {EmailFontColor}}! important">
+                                                                    {{/ShowToll}}
+
+                                                                    {{#ShowExtra}}
+                                                                    <tr>
                                                                         <td class="list_title">{{ localize "Email_Body_Extra" }}</td>
                                                                         <td class="list_value">{{ Extra }}</td>
                                                                     </tr>
-                                                                    <tr class="fare_list_subtotal" style="color: { {EmailFontColor}}! important">
+                                                                    {{/ShowExtra}}
+
+                                                                    <tr class="fare_list_subtotal">
                                                                         <td class="list_title">{{ localize "Email_Body_SubTotal" }}</td>
                                                                         <td class="list_value">{{ SubTotal }}</td>
                                                                     </tr>
@@ -506,13 +513,32 @@
                                                                         <td class="list_title">{{ localize "Email_Body_Tip"}}</td>
                                                                         <td class="list_value">{{ Tip }}</td>
                                                                     </tr>
+
+                                                                    {{#ShowBookingFees}}
+                                                                    <tr>
+                                                                        <td class="list_title">
+                                                                            {{ localize "Email_Body_BookingFees"}}
+                                                                        </td>
+                                                                        <td class="list_value">{{ BookingFees }}</td>
+                                                                    </tr>
+                                                                    {{/ShowBookingFees}}
+
+                                                                    {{#ShowSurcharge}}
+                                                                    <tr>
+                                                                        <td class="list_title">
+                                                                            {{ localize "Email_Body_Surcharge"}}
+                                                                        </td>
+                                                                        <td class="list_value">{{ Surcharge }}</td>
+                                                                    </tr>
+                                                                    {{/ShowSurcharge}}
+
                                                                     {{#PromotionWasUsed}}
                                                                     <tr>
                                                                         <td class="list_title">{{ localize "Email_Body_Promo" }} ({{ PromoCode }})</td>
                                                                         <td class="list_value">({{ AmountSavedByPromotion }})</td>
                                                                     </tr>
                                                                     {{/PromotionWasUsed}}
-                                                                    <tr class="fare_list_charged" style="color: { {EmailFontColor}}! important">
+                                                                    <tr class="fare_list_charged" style="color: {{EmailFontColor}}! important">
                                                                         <td class="list_title">{{ localize "Email_Body_TotalFare"}}</td>
                                                                         <td class="list_value">{{ TotalFare }}</td>
                                                                     </tr>

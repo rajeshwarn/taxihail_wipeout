@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Domain
     public class Promotion : EventSourced
     {
         private bool _active;
+        private bool _deleted;
         private PromotionTriggerSettings _triggerSettings;
 
         private DateTime? _startDate;
@@ -47,6 +48,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<PromotionUnapplied>(OnPromotionUnapplied);
             Handles<PromotionRedeemed>(NoAction);
             Handles<UserAddedToPromotionWhiteList_V2>(OnUserAddedToWhiteList);
+            Handles<PromotionDeleted>(OnPromotionDeleted);
         }
 
         public Promotion(Guid id, IEnumerable<IVersionedEvent> history)
@@ -129,6 +131,11 @@ namespace apcurium.MK.Booking.Domain
             Update(new PromotionDeactivated());
         }
 
+        public void Delete()
+        {
+            Update(new PromotionDeleted());
+        }
+
         public bool CanApply(Guid accountId, DateTime pickupDate, bool isFutureBooking, out string errorMessage)
         {
             errorMessage = string.Empty;
@@ -136,6 +143,12 @@ namespace apcurium.MK.Booking.Domain
             if (!_active)
             {
                 errorMessage = "CannotCreateOrder_PromotionIsNotActive";
+                return false;
+            }
+
+            if (_deleted)
+            {
+                errorMessage = "CannotCreateOrder_PromotionIsDeleted";
                 return false;
             }
 
@@ -244,31 +257,31 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public decimal GetAmountSaved(decimal totalAmountOfOrder)
+        public decimal GetDiscountAmount(decimal taxedMeterAmount)
         {
             if (_discountType == PromoDiscountType.Cash)
             {
                 // return smallest value to make sure we don't credit user
-                return Math.Min(totalAmountOfOrder, _discountValue);
+                return Math.Min(taxedMeterAmount, _discountValue);
             }
 
             if (_discountType == PromoDiscountType.Percentage)
             {
-                var amountSaved = totalAmountOfOrder * (_discountValue / 100);
+                var amountSaved = taxedMeterAmount * (_discountValue / 100);
                 return Math.Round(amountSaved, 2);
             }
 
             return 0;
         }
 
-        public void Redeem(Guid orderId, decimal totalAmountOfOrder)
+        public void Redeem(Guid orderId, decimal taxedMeterAmount)
         {
             if (!_orderIds.Contains(orderId))
             {
                 throw new InvalidOperationException("Promotion must be applied to an order before being redeemed");
             }
 
-            var amountSaved = GetAmountSaved(totalAmountOfOrder);
+            var amountSaved = GetDiscountAmount(taxedMeterAmount);
 
             Update(new PromotionRedeemed
             {
@@ -330,6 +343,11 @@ namespace apcurium.MK.Booking.Domain
         private void OnPromotionDeactivated(PromotionDeactivated @event)
         {
             _active = false;
+        }
+
+        private void OnPromotionDeleted(PromotionDeleted @event)
+        {
+            _deleted = true;
         }
 
         private void OnPromotionApplied(PromotionApplied @event)

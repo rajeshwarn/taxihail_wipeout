@@ -70,6 +70,7 @@
     <Compile Include="CreditCardPaymentCaptured_V2.cs" />
     <Compile Include="CreditCardPaymentInitiated.cs" />
     <Compile Include="DispatchCompanySwitchIgnored.cs" />
+    <Compile Include="FeesUpdated.cs" />
     <Compile Include="IbsOrderInfoAddedToOrder.cs" />
     <Compile Include="OrderManuallyPairedForRideLinq.cs" />
     <Compile Include="OrderUnpairedFromManualRideLinq.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="OrderCancelledBecauseOfError.cs" />
     <Compile Include="OrderPreparedForNextDispatch.cs" />
     <Compile Include="OrderPairedForPayment.cs" />
+    <Compile Include="PromotionDeleted.cs" />
     <Compile Include="PromotionUnapplied.cs" />
     <Compile Include="RefundedOrderUpdated.cs" />
     <Compile Include="OrderSwitchedToNextDispatchCompany.cs" />

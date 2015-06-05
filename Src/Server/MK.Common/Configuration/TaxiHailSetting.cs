@@ -122,6 +122,10 @@ namespace MK.Common.Configuration
         [Display(Name = "Service Url", Description="Url of the TaxiHail Server")]
 		public string ServiceUrl { get; set; }
 
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "CraftyClicks Api Key", Description = "Enables the UK postcode address lookup using the CraftyClicks Api")]
+        public string CraftyClicksApiKey { get; set; }
+
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter Enabled", Description="Enable register/log in with Twitter")]
 		public bool TwitterEnabled{ get; protected set; }
@@ -426,12 +430,6 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Google Analytics Tracking ID", Description = "Company's Tracking ID used for Google Analytics")]
         public string GoogleAnalyticsTrackingId { get; protected set; }
-
-        [SendToClient, CustomizableByCompany]
-        public bool CallDriverUsingProxy { get; protected set; }
-
-        [SendToClient, CustomizableByCompany]
-        public string CallDriverUsingProxyUrl { get; protected set; }
 
 	    [SendToClient, CustomizableByCompany]
         public int InitialZoomLevel { get; set; }
