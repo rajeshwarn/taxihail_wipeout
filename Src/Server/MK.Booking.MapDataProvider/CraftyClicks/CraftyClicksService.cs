@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 {
     public class CraftyClicksService : IPostalCodeService
     {
-        private const string UkPostcodeRegexPattern = "[A-Za-z][A-Za-z]?[0-9][0-9]?[A-Za-z]?\\s?[0-9][A-Za-z][A-Za-z]";
+        private const string UkPostcodeRegexPattern = "^[A-Za-z][A-Za-z]?[0-9][0-9]?[A-Za-z]?\\s?[0-9][A-Za-z][A-Za-z;]$";
         private readonly IAppSettings _settingsService;
 
 

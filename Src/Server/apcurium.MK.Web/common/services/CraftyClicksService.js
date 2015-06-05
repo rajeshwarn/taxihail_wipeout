@@ -1,7 +1,7 @@
 ﻿// Crafty clicks address service
 
 (function () {
-    var ukPostcodeRegex = new RegExp("[A-Za-z][A-Za-z]?[0-9][0-9]?[A-Za-z]?\\s?[0-9][A-Za-z][A-Za-z]");
+    var ukPostcodeRegex = new RegExp("^[A-Za-z][A-Za-z]?[0-9][0-9]?[A-Za-z]?\\s?[0-9][A-Za-z][A-Za-z]$");
     TaxiHail.craftyclicks = {
         
         getCraftyClicksAdresses: function (postcode) {
