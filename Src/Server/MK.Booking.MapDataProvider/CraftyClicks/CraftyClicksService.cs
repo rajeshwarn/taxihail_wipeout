@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 {
     public class CraftyClicksService : IPostalCodeService
     {
-        private const string PostcodeRegex = "[A-Za-z][A-Za-z]?[0-9][0-9]?[A-Za-z]?\\s?[0-9][A-Za-z][A-Za-z]";
+        private const string UkPostcodeRegexPattern = "[A-Za-z][A-Za-z]?[0-9][0-9]?[A-Za-z]?\\s?[0-9][A-Za-z][A-Za-z]";
         private readonly IAppSettings _settingsService;
 
 
@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 
         public bool IsValidPostCode(string postalCode)
         {
-            return postalCode.HasValue() && Regex.IsMatch(postalCode, PostcodeRegex);
+            return postalCode.HasValue() && Regex.IsMatch(postalCode, UkPostcodeRegexPattern);
         }
 
 
