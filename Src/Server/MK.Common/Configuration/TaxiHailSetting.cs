@@ -431,12 +431,6 @@ namespace MK.Common.Configuration
         [Display(Name = "Google Analytics Tracking ID", Description = "Company's Tracking ID used for Google Analytics")]
         public string GoogleAnalyticsTrackingId { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
-        public bool CallDriverUsingProxy { get; protected set; }
-
-        [SendToClient, CustomizableByCompany]
-        public string CallDriverUsingProxyUrl { get; protected set; }
-
 	    [SendToClient, CustomizableByCompany]
         public int InitialZoomLevel { get; set; }
 

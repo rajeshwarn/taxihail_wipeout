@@ -93,6 +93,12 @@
     "TokenizeInvalidCardInfos": "Les informations de la carte sont invalides",
     "TokenizeGenericError": "Une erreur est survenue. Veuillez essayer de nouveau.",
     "error.CreditCardNotDeleted": "Il est impossible de supprimer la carte de crédit s'il y a une commande en cours.",
-    "ExpiredCreditCardError":  "La date d'expiration n'est pas valide.",
-    "ConfirmCVVMessage": "Veuillez entrer le code de vérification associé à votre carte de crédit se terminant par {0} pour continuer"
+    "ExpiredCreditCardError": "La date d'expiration n'est pas valide.",
+    "Call Driver": "Appeler chauffeur",
+    "ConfirmCVVMessage": "Veuillez entrer le code de vérification associé à votre carte de crédit se terminant par {0} pour continuer",
+    "modal.callDriver.message": "Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.",
+    "modal.callDriver.cancelButton": "Annuler",
+    "modal.callDriver.error": "Désolé, nous n'avons pas pu vous mettre en contact avec votre chauffeur.",
+    "modal.callDriver.success": "Votre chauffeur vous rappellera dans quelques minutes",
+    "Error": "Erreur"
 }

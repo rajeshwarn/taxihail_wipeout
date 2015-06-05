@@ -239,7 +239,7 @@
   <string name="NoFareText">Vous devez saisir une destination pour obtenir une estimation du prix du trajet</string>
   <string name="NoFareTextIfDestinationIsRequired">Vous devez saisir une destination</string>
   <string name="NoMailClient">Il n\'y a pas d\'adresse email client enregistrée</string>
-  <string name="NoPhoneNumberMessage">Le numéro de téléphone est indisponible</string>
+  <string name="NoPhoneNumberMessage">Votre numéro de téléphone ou celui de votre chauffeur est indisponible.</string>
   <string name="NoPhoneNumberTitle">Le numéro de téléphone ne semble pas valide</string>
   <string name="NoPreference">Pas de préférence</string>
   <string name="NoRingCodeText">--</string>
@@ -294,7 +294,7 @@
   <string name="Register">Inscription</string>
   <string name="ReminderDetails">Rappel: votre taxi arrivera au {0} à {1} le {2}</string>
   <string name="ReminderTitle">{0} Enregistré</string>
-  <string name="RemoveCreditCardMessage">Etes-vous sur de vouloir supprimer cette carte de paiement?</string>
+  <string name="RemoveCreditCardMessage">Etes-vous sûr de vouloir supprimer cette carte de paiement?</string>
   <string name="RemoveCreditCardTitle">Supprimer cette carte de paiement</string>
   <string name="ReSendConfirmation">Signaler le paiement</string>
   <string name="Reset">Réinitialiser</string>
@@ -498,6 +498,7 @@
   <string name="Safety">Conduite sécuritaire</string>
   <string name="Politeness">Politesse</string>
   <string name="CallDriverUsingProxyMessage">Votre chauffeur vous rappellera dans quelques minutes</string>
+  <string name="CallDriverUsingProxyErrorMessage">Désolé, nous n\'avons pas pu vous mettre en contact avec votre chauffeur.</string>
   <string name="TaxiHailNetworkTimeOutPopupTitle">Changer de compagnie?</string>
   <string name="TaxiHailNetworkTimeOutPopupMessage">En raison d\'un grand nombre de demandes, aucun véhicule n\'est disponible présentement. Désirez-vous passer une commande avec {0}?</string>
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accepter</string>
@@ -586,6 +587,7 @@
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Driver">Chauffeur #:</string>
   <string name="ManualRideLinqStatus_Fare">Tarif:</string>
+  <string name="ManualRideLinqStatus_Medallion">Véhicule #:</string>
   <string name="ManualRideLinqStatus_PairingCode">Code d\'association:</string>
   <string name="ManualRideLinqStatus_Tax">Taxes:</string>
   <string name="ManualRideLinqStatus_Tip">Pourboire:</string>
@@ -610,6 +612,8 @@
   <string name="Error_InvalidCvvMessage">Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres</string>
   <string name="ManualRideLinqCreditCardDisabled">Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu\'à ce que ce montant soit payé.</string>
   <string name="PromoMustHavePaymentMethodSetMessage_Multiple">Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.</string>
+  <string name="GenericErrorTitle">Erreur</string>
+  <string name="CallDriverUsingProxyPrompt">Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepter, votre chauffeur vous rappellera aussitôt que possible.</string>
   <string name="PromoMustHavePaymentMethodSetMessage_PayPal">Pour utiliser un code promotionnel, vous devez avoir un compte PayPal associé à votre compte.</string>
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.</string>
   <string name="ManualRideLinqStatus_Extra">Extra:</string>
@@ -617,8 +621,4 @@
   <string name="ManualRideLinqStatus_Toll">Péage:</string>
   <string name="View_EditAutoTip">Modifier Pourboire</string>
   <string name="Error_EditAutoTipMessage">Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</string>
-  <string name="ManualRideLinqStatus_Medallion">Vous êtes assis dans le véhicule {0}.</string>
-  <string name="ManualRideLinqStatus_Payment">Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.</string>
-  <string name="ManualRideLinqStatus_Email">Un reçu vous sera envoyé à {0}.</string>
-  <string name="ManualRideLinqStatus_Greetings">Appréciez la balade!</string>
 </resources>

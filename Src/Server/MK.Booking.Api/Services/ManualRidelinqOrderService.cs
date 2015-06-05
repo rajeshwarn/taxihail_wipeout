@@ -130,11 +130,13 @@ namespace apcurium.MK.Booking.Api.Services
                     Total = Math.Round(((double)trip.Total / 100), 2),
                     FareAtAlternateRate = Math.Round(((double)trip.FareAtAlternateRate / 100), 2),
                     Medallion = trip.Medallion,
-                    RateAtTripStart = Math.Round(((double)trip.RateAtTripStart / 100), 2),
-                    RateAtTripEnd = Math.Round(((double)trip.RateAtTripEnd / 100), 2),
+                    RateAtTripStart = trip.RateAtTripStart,
+                    RateAtTripEnd = trip.RateAtTripEnd,
                     RateChangeTime = trip.RateChangeTime,
                     TripId = trip.TripId,
-                    DriverId = trip.DriverId
+                    DriverId = trip.DriverId,
+                    LastFour = trip.LastFour,
+                    AccessFee = Math.Round(((double)trip.AccessFee / 100), 2)
                 };
 
                 _commandBus.Send(command);
@@ -160,7 +162,9 @@ namespace apcurium.MK.Booking.Api.Services
                     PairingDate = command.PairingDate,
                     PairingCode = pairingRequest.PairingCode,
                     PairingToken = trip.PairingToken,
-                    DriverId = trip.DriverId
+                    DriverId = trip.DriverId,
+                    LastFour = command.LastFour,
+                    AccessFee = command.AccessFee
                 };
 
                 return new ManualRideLinqResponse

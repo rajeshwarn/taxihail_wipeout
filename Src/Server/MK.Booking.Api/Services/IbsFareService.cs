@@ -51,28 +51,12 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     Distance = distance,
                     Price = fare.FareEstimate,
-                    FormattedDistance = FormatDistance(distance),
+                    FormattedDistance = _resources.FormatDistance(distance),
                     FormattedPrice = _resources.FormatPrice(fare.FareEstimate)
                 };
             }
 
             return new DirectionInfo();
-        }
-
-        private string FormatDistance(double? distance)
-        {
-            if (distance.HasValue)
-            {
-                if (_serverSettings.ServerData.DistanceFormat == DistanceFormat.Km)
-                {
-                    var distanceInKm = Math.Round(distance.Value, 1);
-                    return string.Format("{0:n1} km", distanceInKm);
-                }
-
-                return string.Format("{0:n1} miles", distance.Value);
-            }
-
-            return string.Empty;
         }
     }
 }

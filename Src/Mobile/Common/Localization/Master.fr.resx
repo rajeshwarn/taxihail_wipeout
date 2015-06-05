@@ -835,7 +835,7 @@
     <value>Il n'y a pas d'adresse email client enregistrée</value>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
-    <value>Le numéro de téléphone est indisponible</value>
+    <value>Votre numéro de téléphone ou celui de votre chauffeur est indisponible.</value>
   </data>
   <data name="NoPhoneNumberTitle" xml:space="preserve">
     <value>Le numéro de téléphone ne semble pas valide</value>
@@ -1000,7 +1000,7 @@
     <value>{0} Enregistré</value>
   </data>
   <data name="RemoveCreditCardMessage" xml:space="preserve">
-    <value>Etes-vous sur de vouloir supprimer cette carte de paiement?</value>
+    <value>Etes-vous sûr de vouloir supprimer cette carte de paiement?</value>
   </data>
   <data name="RemoveCreditCardTitle" xml:space="preserve">
     <value>Supprimer cette carte de paiement</value>
@@ -1611,6 +1611,9 @@
   <data name="CallDriverUsingProxyMessage" xml:space="preserve">
     <value>Votre chauffeur vous rappellera dans quelques minutes</value>
   </data>
+  <data name="CallDriverUsingProxyErrorMessage" xml:space="preserve">
+    <value>Désolé, nous n'avons pas pu vous mettre en contact avec votre chauffeur.</value>
+  </data>
   <data name="TaxiHailNetworkTimeOutPopupTitle" xml:space="preserve">
     <value>Changer de compagnie?</value>
   </data>
@@ -1947,6 +1950,12 @@
   </data>
   <data name="PromoMustHavePaymentMethodSetMessage_Multiple" xml:space="preserve">
     <value>Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.</value>
+  </data>
+  <data name="GenericErrorTitle" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="CallDriverUsingProxyPrompt" xml:space="preserve">
+    <value>Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.</value>
   </data>
   <data name="PromoMustHavePaymentMethodSetMessage_PayPal" xml:space="preserve">
     <value>Pour utiliser un code promotionnel, vous devez avoir un compte PayPal associé à votre compte.</value>

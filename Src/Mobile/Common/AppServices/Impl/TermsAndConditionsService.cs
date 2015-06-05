@@ -51,7 +51,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return;
 			}
 
-			var ackKey = GetTermsAcknowledgmentKey (_accountService.CurrentAccount.Email);
+			var currentAccount = _accountService.CurrentAccount;
+			if (currentAccount == null)
+			{
+				return;
+			}
+
+			var ackKey = GetTermsAcknowledgmentKey (currentAccount.Email);
 			var termsAcknowledged = _cacheService.Get<string>(ackKey);
 
 			if (response.Updated || !(termsAcknowledged == "yes"))

@@ -76,9 +76,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CraftyClicks\CraftyClicksRequest.cs" />
+    <Compile Include="CraftyClicks\CraftyClicksService.cs" />
     <Compile Include="CraftyClicks\Resources\CraftyClicksAddress.cs" />
     <Compile Include="CraftyClicks\Resources\DeliveryPoint.cs" />
     <Compile Include="CraftyClicks\Resources\OSGeoCode.cs" />
+    <Compile Include="IPostalCodeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Foursquare\FoursquareProvider.cs" />
     <Compile Include="Foursquare\Venue.cs" />

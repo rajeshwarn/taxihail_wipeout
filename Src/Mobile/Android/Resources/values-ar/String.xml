@@ -231,7 +231,7 @@
   <string name="NoFareText">اختر وجهة للحصول على سعر تقريبي.</string>
   <string name="NoFareTextIfDestinationIsRequired">يجب أن تحدد الوجهة.</string>
   <string name="NoMailClient">لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .</string>
-  <string name="NoPhoneNumberMessage">رقم هاتف هذا السائق خاطئ</string>
+  <string name="NoPhoneNumberMessage">Your phone number or the driver\'s phone number is invalid.</string>
   <string name="NoPhoneNumberTitle">رقم هاتف خاطئ</string>
   <string name="NoPreference">مفضلة - لا يوجد</string>
   <string name="NoRingCodeText">الرمز</string>
@@ -592,6 +592,10 @@
   <string name="Error_InvalidCvvTitle">Invalid CVV</string>
   <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="ManualRideLinqCreditCardDisabled">Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</string>
+  <string name="CallDriverUsingProxyMessage">Your driver will call you back in a few minutes</string>
+  <string name="CallDriverUsingProxyErrorMessage">Sorry, we weren\'t able to initiate a call with your driver.</string>
+  <string name="GenericErrorTitle">Error</string>
+  <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>
   <string name="ManualRideLinqStatus_Extra">Extra:</string>
   <string name="StatusEditAutoTipButton">Tip</string>
   <string name="ManualRideLinqStatus_Toll">Toll:</string>

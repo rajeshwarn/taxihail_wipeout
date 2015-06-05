@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using apcurium.MK.Booking.MapDataProvider.CraftyClicks;
 using apcurium.MK.Booking.MapDataProvider.Google;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 using apcurium.MK.Common.Configuration;
@@ -20,6 +21,8 @@ namespace apcurium.MK.Booking.MapDataProvider
 
             container.RegisterInstance<IGeocoder>(new GoogleApiClient(settings, container.Resolve<ILogger>(), null));
             container.RegisterInstance<IPlaceDataProvider>(new GoogleApiClient(settings, container.Resolve<ILogger>(), null));
+
+            container.RegisterInstance<IPostalCodeService>(new CraftyClicksService(settings));
 
             container.RegisterType<IDirectionDataProvider>(
                 new TransientLifetimeManager(),

@@ -128,6 +128,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
 			{
+                // don't hide the button if the user's phone number is not 
+                // entered because we need to tell the user why it's not there
 				return Settings.ShowCallDriver 
 					&& IsDriverInfoAvailable 
 					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); 
@@ -240,41 +242,46 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private string ConvertToValidPhoneNumberIfNecessary(string phoneNumber)
-		{
-			return phoneNumber.Length == 11
-				? phoneNumber
-				: string.Concat("1", phoneNumber);
-		}
-
 		public ICommand CallTaxi
         {
             get 
 			{ 
-				return this.GetCommand(() =>
-                {
-					if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
-                    {
-						if(Settings.CallDriverUsingProxy)
-						{
-							var driver = ConvertToValidPhoneNumberIfNecessary(OrderStatusDetail.DriverInfos.MobilePhone);
-							var passenger = ConvertToValidPhoneNumberIfNecessary(Order.Settings.Phone);
+				return this.GetCommand(async () =>
+				{
+				    var canCallDriver = Order.Settings.Phone.HasValue()
+				       && OrderStatusDetail.DriverInfos.MobilePhone.HasValue();
 
-							var proxyUrl = Settings.CallDriverUsingProxyUrl;
-							var request = WebRequest.Create(string.Format(proxyUrl, driver, passenger));
-							request.GetResponseAsync();
+				    if (canCallDriver)
+				    {
+				        var shouldInitiateCall = false;
+				        await this.Services().Message.ShowMessage(
+                            this.Services().Localize["GenericTitle"], this.Services().Localize["CallDriverUsingProxyPrompt"],
+                            this.Services().Localize["OkButtonText"], () => { shouldInitiateCall = true; },
+                            this.Services().Localize["Cancel"], () => { });
 
-							this.Services().Message.ShowMessage(this.Services().Localize["GenericTitle"], this.Services().Localize["CallDriverUsingProxyMessage"]);
-						}
-						else
-						{
-							_phoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone);
-						}
-                    }
-                    else
-                    {
+				        if (!shouldInitiateCall)
+				        {
+				            return;
+				        }
+
+				        var success = await _bookingService.InitiateCallToDriver(Order.Id);
+                        if (success)
+				        {
+				            this.Services().Message.ShowMessage(
+                                this.Services().Localize["GenericTitle"],
+				                this.Services().Localize["CallDriverUsingProxyMessage"]);
+				        }
+				        else
+				        {
+                            this.Services().Message.ShowMessage(
+                                this.Services().Localize["GenericErrorTitle"],
+                                this.Services().Localize["CallDriverUsingProxyErrorMessage"]);
+				        }
+				    }
+				    else
+				    {
                         this.Services().Message.ShowMessage(this.Services().Localize["NoPhoneNumberTitle"], this.Services().Localize["NoPhoneNumberMessage"]);
-                    }
+				    }
                 }); 
 			}
         }

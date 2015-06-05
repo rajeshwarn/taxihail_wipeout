@@ -150,13 +150,15 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Total = Math.Round(((double)tripInfo.Total / 100), 2),
                 FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
                 Medallion = tripInfo.Medallion,
-                RateAtTripStart = Math.Round(((double)tripInfo.RateAtTripStart / 100), 2),
-                RateAtTripEnd = Math.Round(((double)tripInfo.RateAtTripEnd / 100), 2),
+                RateAtTripStart = tripInfo.RateAtTripStart,
+                RateAtTripEnd = tripInfo.RateAtTripEnd,
                 RateChangeTime = tripInfo.RateChangeTime,
                 OrderId = orderstatusDetail.OrderId,
                 PairingToken = tripInfo.PairingToken,
                 TripId = tripInfo.TripId,
-                DriverId = tripInfo.DriverId
+                DriverId = tripInfo.DriverId,
+                AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
+                LastFour = tripInfo.LastFour
             });
         }
 
