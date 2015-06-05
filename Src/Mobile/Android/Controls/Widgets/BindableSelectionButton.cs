@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     /// <summary>
     /// A button which update the selected property when clicked
     /// </summary>
+    [Register("apcurium.mk.booking.mobile.client.controls.BindableSelectionButton")]
     public class BindableSelectionButton : Button
     {
         protected BindableSelectionButton(IntPtr javaReference, JniHandleOwnership transfer)

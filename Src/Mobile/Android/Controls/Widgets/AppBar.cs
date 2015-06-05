@@ -1,14 +1,14 @@
 using Android.Content;
 using Android.Util;
 using Android.Views;
-using Android.Widget;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
+    [Register("apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBar")]
     public class AppBar: MvxFrameControl, IChangePresentation
     {
         public AppBar(Context context, IAttributeSet attrs) :

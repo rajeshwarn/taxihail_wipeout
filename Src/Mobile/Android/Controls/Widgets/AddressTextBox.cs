@@ -8,9 +8,11 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
+    [Register("apcurium.mk.booking.mobile.client.controls.widgets.AddressTextBox")]
     public class AddressTextBox : LinearLayout
     {
         public Action<string> AddressUpdated { get; set; }

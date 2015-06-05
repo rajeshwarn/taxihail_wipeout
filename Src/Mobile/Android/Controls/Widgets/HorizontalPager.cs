@@ -8,6 +8,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Models;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -22,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public bool IsLoaded { get; set; }
     }
 
+    [Register("apcurium.MK.Booking.Mobile.Client.Controls.HorizontalPager")]
     public class HorizontalPager : ViewGroup
     {
         private static int ANIMATION_SCREEN_SET_DURATION_MILLIS = 500;

@@ -23,7 +23,6 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Maps.Geo;
-using System.Drawing;
 using Color = Android.Graphics.Color;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls

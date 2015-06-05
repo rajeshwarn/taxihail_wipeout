@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Client.Animations;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
+    [Register("apcurium.mk.booking.mobile.client.controls.SlidingPanel")]
     public sealed class SlidingPanel : LinearLayout, View.IOnTouchListener
     {
         private SlideDownAnimation _animation;

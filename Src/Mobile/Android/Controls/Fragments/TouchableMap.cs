@@ -9,8 +9,6 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using TinyIoC;
-using Android.App;
-using Android.Support.V4.View;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

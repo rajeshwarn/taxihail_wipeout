@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     /// <summary>
     /// Adapted from https://github.com/danclarke/AutoResizeTextView
     /// </summary>
+    [Register("apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView")]
     public class AutoResizeTextView : TextView
     {
         /// <summary>

@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
+    [Register("apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry")]
 	public class EditTextEntry : EditText
 	{
 		public EditTextEntry(Context context)
