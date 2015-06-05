@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 
         private Address[] ProcessAddressInformation(string postalCode, CraftyClicksAddress addressInformation)
         {
-            if (addressInformation == null)
+            if (addressInformation == null || addressInformation.Delivery_points == null)
             {
                 return new Address[0];
             }
@@ -82,7 +82,6 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
         private JsonServiceClient GetClient()
         {
 #if DEBUG
-
             return new JsonServiceClient("http://pcls1.craftyclicks.co.uk/json/");
 #else
             return new JsonServiceClient("https://pcls1.craftyclicks.co.uk/json/");
