@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Commands
 
         public string RateChangeTime { get; set; }
 
+        public DateTime? StartTime { get; set; }
+
         public DateTime? EndTime { get; set; }
 
         public string PairingToken { get; set; }

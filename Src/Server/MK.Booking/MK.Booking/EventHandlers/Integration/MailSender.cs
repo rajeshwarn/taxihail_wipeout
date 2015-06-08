@@ -135,7 +135,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                 cmtRideLinqFields: new SendReceipt.CmtRideLinqReceiptFields
                                 {
                                     DriverId = tripInfo.DriverId.ToString(),
-                                    DropOffDateTime = tripInfo.EndTime.Value.AddHours(-4), // TODO: hardcoded for arro
+                                    PickUpDateTime = tripInfo.StartTime.HasValue ? tripInfo.StartTime.Value.AddHours(-4) : (DateTime?)null,
+                                    DropOffDateTime = tripInfo.EndTime.Value.AddHours(-4), // TODO: hardcoded for Arro. Beurk caca
                                     TripId = tripInfo.TripId,
                                     Distance = tripInfo.Distance,
                                     LastFour = tripInfo.LastFour,
@@ -203,7 +204,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         cmtRideLinqFields: new SendReceipt.CmtRideLinqReceiptFields
                         {
                             DriverId = @event.DriverId.ToString(),
-                            DropOffDateTime = @event.EndTime.Value.AddHours(-4), // TODO Hardcoded for Arro
+                            PickUpDateTime = @event.StartTime.HasValue ? @event.StartTime.Value.AddHours(-4) : (DateTime?)null,
+                            DropOffDateTime = @event.EndTime.Value.AddHours(-4), // TODO Hardcoded for Arro. Encore plus de caca.
                             TripId = @event.TripId,
                             Distance = @event.Distance,
                             LastFour = @event.LastFour,

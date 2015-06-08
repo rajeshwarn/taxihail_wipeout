@@ -54,6 +54,8 @@ namespace apcurium.MK.Booking.Commands
 
         public class CmtRideLinqReceiptFields
         {
+            public DateTime? PickUpDateTime { get; set; }
+
             public DateTime? DropOffDateTime { get; set; }
 
             public double? Distance { get; set; }

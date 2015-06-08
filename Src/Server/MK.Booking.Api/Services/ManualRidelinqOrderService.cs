@@ -119,6 +119,7 @@ namespace apcurium.MK.Booking.Api.Services
                     PairingDate = DateTime.Now,
                     ClientLanguageCode = request.ClientLanguageCode,
                     Distance = trip.Distance,
+                    StartTime = trip.StartTime,
                     EndTime = trip.EndTime,
                     Extra = Math.Round(((double)trip.Extra / 100), 2),
                     Fare = Math.Round(((double)trip.Fare / 100), 2),
@@ -144,6 +145,7 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     OrderId = command.OrderId,
                     Distance = trip.Distance,
+                    StartTime = trip.StartTime,
                     EndTime = trip.EndTime,
                     Extra = command.Extra,
                     Fare = command.Fare,

@@ -160,7 +160,17 @@ namespace apcurium.MK.Booking.Api.Services
                                     new TollDetail
                                     {
                                         TollName = "Toll 2",
-                                        TollAmount = 205
+                                        TollAmount = 5
+                                    },
+                                    new TollDetail
+                                    {
+                                        TollName = "Toll 3",
+                                        TollAmount = 30
+                                    },
+                                    new TollDetail
+                                    {
+                                        TollName = "Toll 4",
+                                        TollAmount = 35
                                     }
                                 }
                             }, true);

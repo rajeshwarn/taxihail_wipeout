@@ -157,8 +157,9 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
             {
-                Distance = tripInfo.Distance,
+                StartTime = tripInfo.StartTime,
                 EndTime = tripInfo.EndTime,
+                Distance = tripInfo.Distance,
                 Extra = Math.Round(((double)tripInfo.Extra / 100), 2),
                 Fare = Math.Round(((double)tripInfo.Fare / 100), 2),
                 Tax = Math.Round(((double)tripInfo.Tax / 100), 2),

@@ -579,8 +579,12 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-            var subTotalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) + toll + tax;
-            var totalAmount = subTotalAmount + tip + bookingFees + surcharge + extra - amountSavedByPromotion;
+            //var subTotalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) + toll + tax;
+            //var totalAmount = subTotalAmount + tip + bookingFees + surcharge + extra - amountSavedByPromotion;
+
+            var totalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate)
+                + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)
+                + toll + tax + tip + bookingFees + surcharge + extra - amountSavedByPromotion;
 
             var templateData = new
             {
@@ -597,8 +601,12 @@ namespace apcurium.MK.Booking.Services.Impl
                 VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
                 DriverInfos = driverInfos,
                 DriverId = hasDriverInfo ? driverInfos.DriverId : "",
-                PickupDate = pickupDate.ToString("D", dateFormat),
-                PickupTime = pickupDate.ToString("t", dateFormat /* Short time pattern */),
+                PickupDate = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
+                    ? cmtRideLinqFields.PickUpDateTime.Value.ToString("D", dateFormat)
+                    : pickupDate.ToString("D", dateFormat),
+                PickupTime = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
+                    ? cmtRideLinqFields.PickUpDateTime.Value.ToString("t", dateFormat /* Short time pattern */)
+                    : pickupDate.ToString("t", dateFormat /* Short time pattern */),
                 DropOffDate = nullSafeDropOffDate.ToString("D", dateFormat),
                 DropOffTime = dropOffTime,
                 ShowDropOffTime = dropOffTime.HasValue(),
@@ -608,7 +616,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 Surcharge = _resources.FormatPrice(surcharge),
                 BookingFees = _resources.FormatPrice(bookingFees),
                 Extra = _resources.FormatPrice(extra),
-                SubTotal = _resources.FormatPrice(subTotalAmount),
+                //SubTotal = _resources.FormatPrice(subTotalAmount),
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalAmount),
                 Note = _serverSettings.ServerData.Receipt.Note,
@@ -640,11 +648,11 @@ namespace apcurium.MK.Booking.Services.Impl
                     : _resources.FormatPrice(0),
                 
                 // TODO: So it begins... Hack for Arro.
-                ShowToll1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1,
-                ShowToll2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2,
-                ShowToll3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3,
+                ShowToll1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 && cmtRideLinqFields.Tolls.Length <= 4,
+                ShowToll2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 && cmtRideLinqFields.Tolls.Length <= 4,
+                ShowToll3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 && cmtRideLinqFields.Tolls.Length <= 4,
                 ShowToll4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4,
-                ShowTollTotal = hasCmtTollDetails || (hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4),
+                ShowTollTotal = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4,
                 ShowRideLinqLastFour = /*cmtRideLinqFields.LastFour.HasValue()*/true,
                 ShowTripId = /*cmtRideLinqFields != null*/true,
                 ShowTax = /*Math.Abs(tax) >= 0.01*/true,
