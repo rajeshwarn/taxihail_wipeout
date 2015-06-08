@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Api.Services
             IEnumerable<AccountQuestionAnswer> priorAnswers = _dao.GetLastAnswersForAccountId(accountId);
             priorAnswers.ForEach(x =>
             {
-                var matches = questionsAndAnswers.Where(q => q.Id == x.AccountChargeQuestionId && q.SaveAnswer);
+                var matches = questionsAndAnswers.Where(q => q.Id == x.AccountChargeQuestionId && q.AccountId == x.AccountChargeId && q.SaveAnswer);
                 if (matches != null)
                 {
                     matches.ForEach(m => m.Answer = x.LastAnswer);

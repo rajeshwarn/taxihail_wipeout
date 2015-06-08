@@ -390,7 +390,9 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 @event.Answers.ForEach(x => {
-                    var answer = context.Query<AccountQuestionAnswer>().Where(a => a.AccountId == x.AccountId && a.AccountChargeQuestionId == x.AccountChargeQuestionId).FirstOrDefault();
+                    var answer = context.Query<AccountQuestionAnswer>()
+                        .Where(a => a.AccountId == x.AccountId && a.AccountChargeQuestionId == x.AccountChargeQuestionId && a.AccountChargeId == x.AccountChargeId)
+                        .FirstOrDefault();
                     if (answer == null) {
                         context.Save(x);
                     } else {

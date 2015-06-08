@@ -11,6 +11,9 @@ namespace apcurium.MK.Common.Entity
         public Guid AccountId { get; set; }
 
         [Key, Column(Order = 2)]
+        public Guid AccountChargeId { get; set; }
+
+        [Key, Column(Order = 3)]
         public int AccountChargeQuestionId { get; set; }
 
         public string LastAnswer { get; set; }
