@@ -112,6 +112,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             var surchargeAmount = Math.Round(((double)tripInfo.Surcharge / 100), 2);
                             var extraAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
                             var accessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2);
+                            var fareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2);
 
                             var tolls = new List<TollDetail>();
 
@@ -142,7 +143,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                     LastFour = tripInfo.LastFour,
                                     AccessFee = accessFee,
                                     StateSurcharge = tripInfo.Tax,
-                                    FareAtAlternateRate = tripInfo.FareAtAlternateRate,
+                                    FareAtAlternateRate = fareAtAlternateRate,
                                     RateAtTripEnd = tripInfo.RateAtTripEnd,
                                     RateAtTripStart = tripInfo.RateAtTripStart,
                                     Tolls = tolls.ToArray()
