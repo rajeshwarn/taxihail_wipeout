@@ -285,7 +285,7 @@ namespace DatabaseInitializer
                 MigratePaymentSettings(serverSettings, commandBus);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
-
+#if DEBUG
                 if (isUpdate)
                 {
                     var appPool = GetAppPool(param);
@@ -296,7 +296,7 @@ namespace DatabaseInitializer
                         Console.WriteLine("App pool Started...");
                     }
                 }
-
+#endif
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
             catch (Exception e)
