@@ -310,6 +310,13 @@ namespace DatabaseInitializer
 // ReSharper restore LocalizableElement
         }
 
+        private static ApplicationPool GetAppPool(DatabaseInitializerParams param)
+        {
+            var iisManager = new ServerManager();
+
+            return iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+        }
+
         public static void SetupMirroring(DatabaseInitializerParams param)
         {
             if (!string.IsNullOrEmpty(param.MirroringSharedFolder))
