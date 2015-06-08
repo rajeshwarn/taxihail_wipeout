@@ -196,6 +196,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This promotion is deleted.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionIsDeleted {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionIsDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This promotion is not active.
         /// </summary>
         public static string CannotCreateOrder_PromotionIsNotActive {
@@ -880,7 +889,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toll.
+        ///   Looks up a localized string similar to Tolls.
         /// </summary>
         public static string Email_Body_Toll {
             get {
@@ -1371,6 +1380,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string PushNotification_ChangeNetworkCompany {
             get {
                 return ResourceManager.GetString("PushNotification_ChangeNetworkCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit Card was declined.
+        /// </summary>
+        public static string PushNotification_CreditCardDeclined {
+            get {
+                return ResourceManager.GetString("PushNotification_CreditCardDeclined", resourceCulture);
             }
         }
         
