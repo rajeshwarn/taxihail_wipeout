@@ -130,13 +130,11 @@ namespace DatabaseInitializer
                     Console.WriteLine("Done playing events...");
 
                     Console.WriteLine("Stop App Pool to finish Database Migration...");
-                    var iisManager = new ServerManager();
-                    var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+                    var currentAppPool = GetAppPool(param);
 
-                    if (appPool != null
-                        && appPool.State == ObjectState.Started)
+                    if (currentAppPool != null && currentAppPool.State == ObjectState.Started)
                     {
-                        appPool.Stop();
+                        currentAppPool.Stop();
                     }
 
                     var lastEventCopyDateTime = creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, param.CompanyName, temporaryDatabaseName);
@@ -287,6 +285,17 @@ namespace DatabaseInitializer
                 MigratePaymentSettings(serverSettings, commandBus);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
+
+                if (isUpdate)
+                {
+                    var appPool = GetAppPool(param);
+                    if (appPool != null && appPool.State == ObjectState.Stopped)
+                    {
+                        Console.WriteLine("App pool is currently stopped, Starting App pool...");
+                        appPool.Start();
+                        Console.WriteLine("App pool Started...");
+                    }
+                }
 
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
