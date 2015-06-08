@@ -235,7 +235,7 @@
     <value>Estimated&amp;nbsp;Fare</value>
   </data>
   <data name="Email_Body_Fare" xml:space="preserve">
-    <value>Fare</value>
+    <value>Rate</value>
   </data>
   <data name="Email_Body_LargeBags" xml:space="preserve">
     <value>Large&amp;nbsp;bags</value>

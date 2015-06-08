@@ -592,7 +592,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fare.
+        ///   Looks up a localized string similar to Rate.
         /// </summary>
         public static string Email_Body_Fare {
             get {
