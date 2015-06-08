@@ -5,7 +5,7 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Common.Entity
 {
-    public class AccountQuestionAnswer
+    public class AccountChargeQuestionAnswer
 	{
         [Key, Column(Order = 1)]
         public Guid AccountId { get; set; }

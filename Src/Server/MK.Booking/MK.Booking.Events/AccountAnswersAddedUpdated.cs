@@ -6,6 +6,6 @@ namespace apcurium.MK.Booking.Events
 {
     public class AccountAnswersAddedUpdated : VersionedEvent
     {
-        public AccountQuestionAnswer[] Answers { get; set; }
+        public AccountChargeQuestionAnswer[] Answers { get; set; }
     }
 }

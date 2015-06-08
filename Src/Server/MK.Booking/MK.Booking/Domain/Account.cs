@@ -387,7 +387,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void SaveQuestionAnswer(IEnumerable<AccountQuestionAnswer> answers)
+        public void SaveQuestionAnswers(IEnumerable<AccountChargeQuestionAnswer> answers)
         {
             Update(new AccountAnswersAddedUpdated
             {

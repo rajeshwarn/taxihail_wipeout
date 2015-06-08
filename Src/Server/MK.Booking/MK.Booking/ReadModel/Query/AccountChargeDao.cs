@@ -37,11 +37,11 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public IList<AccountQuestionAnswer> GetLastAnswersForAccountId(Guid accountId)
+        public IList<AccountChargeQuestionAnswer> GetLastAnswersForAccountId(Guid accountId)
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<AccountQuestionAnswer>()
+                return context.Query<AccountChargeQuestionAnswer>()
                     .Where(x => x.AccountId == accountId)
                     .ToList();
             }

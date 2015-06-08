@@ -323,7 +323,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(AddUpdateAccountQuestionAnswer command)
         {
             var account = _repository.Find(command.AccountId);
-            account.SaveQuestionAnswer(command.Answers);
+            account.SaveQuestionAnswers(command.Answers);
             _repository.Save(account, command.Id.ToString());
         }
     }

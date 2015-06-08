@@ -337,10 +337,9 @@ namespace apcurium.MK.Booking.Api.Services
                     accountValidationResult.Prompts, accountValidationResult.PromptsLength,
                     bestAvailableCompany, applyPromoCommand, market, isPrepaid));
 
-            // MKTAXI-2652 if all worked then save the answers for the future
             var accountLastAnswers = request.QuestionsAndAnswers
                                         .Where(q => q.SaveAnswer = true)
-                                        .Select(q => new AccountQuestionAnswer { AccountId = account.Id, AccountChargeQuestionId = q.Id, AccountChargeId = q.AccountId, LastAnswer = q.Answer });
+                                        .Select(q => new AccountChargeQuestionAnswer { AccountId = account.Id, AccountChargeQuestionId = q.Id, AccountChargeId = q.AccountId, LastAnswer = q.Answer });
             if (accountLastAnswers != null)
             {
                 _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = account.Id, Answers = accountLastAnswers.ToArray() });

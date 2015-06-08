@@ -84,9 +84,9 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private void LoadCustomerAnswers(IEnumerable<AccountChargeQuestion> questionsAndAnswers, Guid accountId)
+        private void LoadCustomerAnswers(IEnumerable<AccountChargeQuestion> questionsAndAnswers, Guid userId)
         {
-            IEnumerable<AccountQuestionAnswer> priorAnswers = _dao.GetLastAnswersForAccountId(accountId);
+            IEnumerable<AccountChargeQuestionAnswer> priorAnswers = _dao.GetLastAnswersForAccountId(userId);
             priorAnswers.ForEach(x =>
             {
                 var matches = questionsAndAnswers.Where(q => q.Id == x.AccountChargeQuestionId && q.AccountId == x.AccountChargeId && q.SaveAnswer);
