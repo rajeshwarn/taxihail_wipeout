@@ -321,6 +321,7 @@
     <Content Include="assets\img\suv_badge.png" />
     <Content Include="assets\img\taxi_badge.png" />
     <Content Include="assets\js\additional-methods.js" />
+    <Content Include="assets\js\handlebars-v3.0.3.js" />
     <Content Include="assets\js\jquery.cookie.js" />
     <Content Include="assets\js\storage-polyfill.js" />
     <Content Include="collections\CreditCardCollection.js" />
@@ -383,7 +384,6 @@
     <Content Include="assets\img\validFieldGreen.png" />
     <Content Include="assets\js\backbone.js" />
     <Content Include="assets\js\bootstrap-tooltip.js" />
-    <Content Include="assets\js\handlebars-1.0.rc.1.js" />
     <Content Include="assets\js\jquery.edit-in-place.js" />
     <Content Include="assets\js\jquery.hotkeys.js" />
     <Content Include="assets\js\jquery.validate.js" />
