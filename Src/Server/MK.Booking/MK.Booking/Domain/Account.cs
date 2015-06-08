@@ -391,7 +391,6 @@ namespace apcurium.MK.Booking.Domain
         {
             Update(new AccountAnswersAddedUpdated
             {
-                AccountId = Id,
                 Answers = answers.ToArray()
             });
         }
