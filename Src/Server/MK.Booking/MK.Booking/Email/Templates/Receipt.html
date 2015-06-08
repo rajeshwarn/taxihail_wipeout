@@ -492,25 +492,14 @@
                                                         <tr>
                                                             <td>
                                                                 <table class="invoice" cellpadding="0" cellspacing="0">
-                                                                    {{#ShowRateClassStart}}
                                                                     <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_RateClass"}}</td>
-                                                                        <td class="list_value">{{ RateClassStart }}</td>
-                                                                    </tr>
-                                                                    {{/ShowRateClassStart}}
-
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_Fare"}}</td>
+                                                                        <td class="list_title">{{ localize "Email_Body_Fare"}} {{#ShowRateClassStart}} {{ RateClassStart }} {{/ShowRateClassStart}}</td>
                                                                         <td class="list_value">{{ Fare }}</td>
                                                                     </tr>
 
                                                                     {{#ShowRateClassEnd}}
                                                                     <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_RateClass"}}</td>
-                                                                        <td class="list_value">{{ RateClassEnd }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_Fare"}}</td>
+                                                                        <td class="list_title">{{ localize "Email_Body_Fare"}} {{ RateClassEnd }}</td>
                                                                         <td class="list_value">{{ FareAtAlternateRate }}</td>
                                                                     </tr>
                                                                     {{/ShowRateClassEnd}}

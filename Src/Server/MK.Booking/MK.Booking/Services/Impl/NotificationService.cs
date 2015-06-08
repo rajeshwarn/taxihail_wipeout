@@ -627,7 +627,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 TripId = cmtRideLinqFields.SelectOrDefault(x => x.TripId),
                 RateClassStart = rateClassStart,
                 RateClassEnd = rateClassEnd,
-                FareAtAlternateRate = fareAtAlternateRate,
+                FareAtAlternateRate = _resources.FormatPrice(fareAtAlternateRate),
 
                 TollName1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 ? cmtRideLinqFields.Tolls[0].TollName : string.Empty,
                 TollName2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 ? cmtRideLinqFields.Tolls[1].TollName : string.Empty,
