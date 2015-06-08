@@ -1991,4 +1991,10 @@
   <data name="ManualRideLinqStatus_Greetings" xml:space="preserve">
     <value>Appréciez la balade!</value>
   </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
+    <value>Merci de contacter {0} au {1} pour toute demande d'assistance</value>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
+    <value>Votre demande n'a pas pu être prise en compte, veuillez réessayer de nouveau.</value>
+  </data>
 </root>
