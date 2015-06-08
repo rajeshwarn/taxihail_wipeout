@@ -42,9 +42,11 @@
             for (var i = 0; i < 8; i++) {
                 var isRequiredCheckboxName = "questionIsRequiredFields" + i;
                 var isCaseSensitiveCheckboxName = "questionIsCaseSensitiveFields" + i;
+                var isSaveAnswerCheckboxName = "questionSaveAnswerFields" + i;
 
                 var isRequiredCheckboxControl = $("[name=" + isRequiredCheckboxName + "]")[0];
                 var isCaseSensitiveCheckboxControl = $("[name=" + isCaseSensitiveCheckboxName + "]")[0];
+                var isSaveAnswerCheckboxControl = $("[name=" + isSaveAnswerCheckboxName + "]")[0];
 
                 if (!isRequiredCheckboxControl.checked) {
                     account[isRequiredCheckboxName] = "off";
@@ -52,6 +54,10 @@
 
                 if (!isCaseSensitiveCheckboxControl.checked) {
                     account[isCaseSensitiveCheckboxName] = "off";
+                }
+
+                if (!isSaveAnswerCheckboxControl.checked) {
+                    account[isSaveAnswerCheckboxName] = "off";
                 }
             }
             this.model.save(account, {

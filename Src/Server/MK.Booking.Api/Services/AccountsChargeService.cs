@@ -69,6 +69,9 @@ namespace apcurium.MK.Booking.Api.Services
                     HideAnswers(account.Questions);
                 }
 
+                var currentUser = new Guid(this.GetSession().UserAuthId);
+                LoadCustomerAnswers(account.Questions, currentUser);
+
                 return account;
             }
         }
@@ -79,6 +82,20 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 accountChargeQuestion.Answer = string.Empty;
             }
+        }
+
+        private void LoadCustomerAnswers(IEnumerable<AccountChargeQuestion> questionsAndAnswers, Guid userId)
+        {
+            IEnumerable<AccountChargeQuestionAnswer> priorAnswers = _dao.GetLastAnswersForAccountId(userId);
+            priorAnswers.ForEach(x =>
+            {
+                var matches = questionsAndAnswers.Where(q => q.Id == x.AccountChargeQuestionId && q.AccountId == x.AccountChargeId && q.SaveAnswer);
+                if (matches != null)
+                {
+                    matches.ForEach(m => m.Answer = x.LastAnswer);
+                }
+            });
+
         }
 
         public object Post(AccountChargeRequest request)
