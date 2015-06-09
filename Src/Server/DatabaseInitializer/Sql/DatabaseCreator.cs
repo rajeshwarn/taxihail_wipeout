@@ -93,8 +93,12 @@ namespace DatabaseInitializer.Sql
 
         public void TurnOffMirroring(string connStringMaster, string companyName)
         {
-            var turnOff = string.Format("ALTER DATABASE {0} SET PARTNER OFF", companyName);
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, turnOff);
+            var setSingleUserMode = string.Format(@"
+                ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE 
+                ALTER DATABASE {0} SET PARTNER OFF 
+                ALTER DATABASE {0} SET MULTI_USER", companyName);
+
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, setSingleUserMode);
         }
 
         public bool DatabaseExists(string connStringMaster, string companyName)
