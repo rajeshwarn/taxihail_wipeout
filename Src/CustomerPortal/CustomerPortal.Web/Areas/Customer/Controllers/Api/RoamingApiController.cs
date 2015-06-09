@@ -245,10 +245,16 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             bool allowed = true;
 
             if (!string.IsNullOrEmpty(blackListedFleetIds))
-                allowed &= !blackListedFleetIds.Contains(fleetId.ToString());
+            {
+                var blackList = Regex.Replace(blackListedFleetIds, @"\s+", string.Empty).Split(',');
+                allowed &= !blackList.Contains(fleetId.ToString());
+            }
 
             if (!string.IsNullOrEmpty(whiteListedFleetIds))
-                allowed &= whiteListedFleetIds.Contains(fleetId.ToString());
+            {
+                var whiteList = Regex.Replace(whiteListedFleetIds, @"\s+", string.Empty).Split(',');
+                allowed &= whiteList.Contains(fleetId.ToString());
+            }
 
             return allowed;
         }
