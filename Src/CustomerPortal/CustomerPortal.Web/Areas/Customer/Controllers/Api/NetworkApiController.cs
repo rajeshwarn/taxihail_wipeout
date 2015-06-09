@@ -52,7 +52,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             foreach (var nearbyCompany in overlappingCompanies)
             {
-                if (!IsFleetIdWhitelisted(nearbyCompany.FleetId, networkSettings.WhiteListedFleetIds))
+                if (!IsFleetAllowed(nearbyCompany.FleetId, networkSettings.WhiteListedFleetIds, networkSettings.BlackListedFleetIds))
                 {
                     // Local company is not allowed by the home company
                     continue;
@@ -146,10 +146,10 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 if (company != null)
                 {
                     var networkSettings = network.FirstOrDefault(n => n.Id == company.CompanyKey);
-                    var isWhitelisted = networkSettings != null
-                        && IsFleetIdWhitelisted(networkSettings.FleetId, currentCompanyNetworkSettings.WhiteListedFleetIds);
+                    var isAllowed = networkSettings != null
+                        && IsFleetAllowed(networkSettings.FleetId, networkSettings.WhiteListedFleetIds, networkSettings.BlackListedFleetIds);
 
-                    if (!isWhitelisted)
+                    if (!isAllowed)
                     {
                         // Local company is not allowed by the home company
                         continue;
@@ -194,18 +194,17 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             };
         }
 
-        private bool IsFleetIdWhitelisted(int fleetId, string witeListedFleetIds)
+        private bool IsFleetAllowed(int fleetId, string whiteListedFleetIds, string blackListedFleetIds)
         {
-            if (!witeListedFleetIds.HasValue())
-            {
-                return true;
-            }
+            bool allowed = true;
 
-            // Remove all whitespaces and split
-            var whiteListedFleetIds = Regex.Replace(witeListedFleetIds, @"\s+", string.Empty).Split(',');
+            if (!string.IsNullOrEmpty(blackListedFleetIds))
+                allowed &= !blackListedFleetIds.Contains(fleetId.ToString());
 
-            // Whitelisted if list is empty or if the id is in the list
-            return !whiteListedFleetIds.Any() || whiteListedFleetIds.Contains(fleetId.ToString());
+            if (!string.IsNullOrEmpty(whiteListedFleetIds))
+                allowed &= whiteListedFleetIds.Contains(fleetId.ToString());
+
+            return allowed;
         }
     }
 }

@@ -50,18 +50,24 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 {
                     model.Id = networkId;
                 }
+
+                if (!string.IsNullOrEmpty(model.BlackListedFleetIds))
+                    if (model.BlackListedFleetIds.Contains(model.FleetId.ToString()))
+                        return Json(new { Success = false, Message = "You can not put your own fleet in the black list" });
+
                 if (!model.IsInNetwork)
                 {
                     foreach (var taxiHailNetworkSettings in Repository)
                     {
                         var preference = taxiHailNetworkSettings.Preferences.FirstOrDefault(x => x.CompanyKey == model.Id);
-                        if (preference!=null)
+                        if (preference != null)
                         {
                             taxiHailNetworkSettings.Preferences.Remove(preference);
                             Repository.Update(taxiHailNetworkSettings);
                         }
                     }
                 }
+
 
                 Repository.Update(model);
                 return Json(new { Success = true, Message = "Changes Saved" });
