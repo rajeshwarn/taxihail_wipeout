@@ -25,7 +25,7 @@ namespace apcurium.MK.Web
 
             bundles.Add(new ScriptBundle("~/bundles/assets").Include(
                 "~/assets/js/localstorage-polyfill.js",
-                "~/assets/js/handlebars-1.0.rc.1.js",
+                "~/assets/js/handlebars-v3.0.3.js",
                 "~/assets/js/jquery.hotkeys.js",
                 "~/assets/js/jquery.edit-in-place.js",
                 "~/assets/js/jquery.validate.js",
@@ -133,7 +133,7 @@ namespace apcurium.MK.Web
             // Admin Bundles
             bundles.Add(new ScriptBundle("~/admin/bundles/assets").Include(
                 "~/assets/js/localstorage-polyfill.js",
-                "~/assets/js/handlebars-1.0.rc.1.js",
+                "~/assets/js/handlebars-v3.0.3.js",
                 "~/assets/js/jquery.hotkeys.js",
                 "~/assets/js/jquery.edit-in-place.js",
                 "~/assets/js/jquery.cookie.js",

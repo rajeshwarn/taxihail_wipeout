@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             AddSubviews(AddressEditText, CancelButton, TableView);
 
             AddressEditText.OnKeyDown()
-                .Throttle(TimeSpan.FromMilliseconds(1500))
+                .Throttle(TimeSpan.FromMilliseconds(700))
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(text => ViewModel.TextSearchCommand.ExecuteIfPossible(text));
 				
