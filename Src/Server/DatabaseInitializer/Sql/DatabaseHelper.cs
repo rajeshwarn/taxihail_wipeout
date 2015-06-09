@@ -67,12 +67,12 @@ namespace DatabaseInitializer.Sql
             }
         }
 
-        public static T ExecuteScalarQuery<T>(string connectionString, string cmdText)
+        public static T ExecuteScalarQuery<T>(string connectionString, string cmdText, int commandTimeout = 600)
         {
             object result;
             using (var connection = new SqlConnection(connectionString))
             {
-                var sqlCommandCreate = new SqlCommand(cmdText) {Connection = connection, CommandTimeout = 600};
+                var sqlCommandCreate = new SqlCommand(cmdText) { Connection = connection, CommandTimeout = commandTimeout };
 
                 connection.Open();
                 result = sqlCommandCreate.ExecuteScalar();

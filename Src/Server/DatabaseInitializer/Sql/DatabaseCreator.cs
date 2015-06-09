@@ -284,23 +284,60 @@ namespace DatabaseInitializer.Sql
 
         public DateTime? CopyEventsAndCacheTables(string connString, string oldDatabase, string newDatabase)
         {
+            const int pageSize = 100000;
+
             //get the last events from the new database
             var maxDateTime = DatabaseHelper.ExecuteScalarQuery<DateTime?>(connString, string.Format("Select max([EventDate]) from [{0}].[Events].[Events]", newDatabase));
 
-
             var sqlDateTime = (DateTime)(maxDateTime ?? SqlDateTime.MinValue);
-                
-            var queryForEvents =
-                string.Format(
-                    "INSERT INTO [{0}].[Events].[Events] ([AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate]) " +
-                    "SELECT [AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate] " +
-                    "FROM [{1}].[Events].[Events] " +
-                    "WHERE [EventType] <> 'apcurium.MK.Booking.Events.OrderVehiclePositionChanged' AND [EventDate] > '{2}'", newDatabase, oldDatabase, sqlDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff")); // delete OrderVehiclePositionChanged events
+
+            Console.WriteLine("Counting number of events");
 
             var start = DateTime.Now;
-            Console.WriteLine("Starting to copy events: (Timeout: 3600 seconds)");
-            DatabaseHelper.ExecuteNonQuery(connString, queryForEvents, 3600);
-            Console.WriteLine("Finished copying events (Duration: {0})", (DateTime.Now - start).TotalSeconds);
+
+
+            var queryNumberEvents = string.Format(
+                @"Select Count(1)
+                FROM [{0}].[Events].[Events]
+                WHERE [EventType] <> 'apcurium.MK.Booking.Events.OrderVehiclePositionChanged' AND [EventDate] > '{1}'", oldDatabase, sqlDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+
+            var nbEvents = DatabaseHelper.ExecuteScalarQuery<int>(connString, queryNumberEvents, 3600);
+
+            Console.WriteLine("Original database has {0} events to copy (Duration: {1}) ", nbEvents, (DateTime.Now - start).TotalSeconds);
+            
+            if (nbEvents > 0)
+            {
+                var startRow = 0;
+
+                start = DateTime.Now;
+
+                const string queryBase =
+                    @"INSERT INTO [{0}].[Events].[Events] ([AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate]) " +
+                    "SELECT item.AggregateId as AggregateId, item.AggregateType as AggregateType, item.Version as Version, item.Payload as Payload, item.CorrelationId as CorrelationId, item.EventType as EventType, item.EventDate as EventDate " +
+                    "FROM (SELECT [AggregateId],[AggregateType],[Version],[Payload],[CorrelationId],[EventType],[EventDate], ROW_NUMBER() OVER(ORDER BY [EventDate]) as rownumber " +
+                        "FROM [{1}].[Events].[Events] " +
+                        "WHERE [EventType] <> 'apcurium.MK.Booking.Events.OrderVehiclePositionChanged' AND [EventDate] > '{2}') as item " +// delete OrderVehiclePositionChanged events
+                    "WHERE rownumber >= {3} AND rownumber <= {4}";
+
+                while (nbEvents > startRow)
+                {
+                    var endRow = startRow + pageSize > nbEvents
+                        ? nbEvents
+                        : startRow + pageSize;
+
+                    startRow++;
+
+                    var queryForEvents = string.Format(queryBase, newDatabase, oldDatabase, sqlDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"), startRow, endRow);
+
+                    Console.WriteLine("Copying events from row {0} to row {1}: (Timeout: 3600 seconds)", startRow, endRow);
+                    DatabaseHelper.ExecuteNonQuery(connString, queryForEvents, 3600);
+
+                    startRow = endRow;
+                }
+
+                Console.WriteLine("Finished copying events (Duration: {0})", (DateTime.Now - start).TotalSeconds);
+            }
+            
 
             // copy cache table except the static data
             var queryForCache = string.Format("INSERT INTO [{0}].[Cache].[Items]([Key],[Value],[ExpiresAt]) " +
