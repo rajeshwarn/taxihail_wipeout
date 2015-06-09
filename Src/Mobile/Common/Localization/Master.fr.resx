@@ -1470,6 +1470,9 @@
   <data name="CreditCardAdded" xml:space="preserve">
     <value>Votre compte est maintenant configuré pour le paiement via carte de crédit par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de confirmation.</value>
   </data>
+  <data name="CreditCardAdded_PayInCarDisabled" xml:space="preserve">
+    <value>Votre compte est maintenant configuré pour le paiement par la carte de crédit.</value>
+  </data>
   <data name="AddACardButton" xml:space="preserve">
     <value>Enregistrez</value>
   </data>

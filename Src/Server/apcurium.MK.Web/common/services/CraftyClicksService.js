@@ -1,9 +1,9 @@
 ﻿// Crafty clicks address service
 
 (function () {
-
+    var ukPostcodeRegex = new RegExp("^[A-Za-z][A-Za-z]?[0-9][0-9]?[A-Za-z]?\\s?[0-9][A-Za-z][A-Za-z]$");
     TaxiHail.craftyclicks = {
-
+        
         getCraftyClicksAdresses: function (postcode) {
             var defer = $.Deferred();
 
@@ -21,10 +21,8 @@
             return defer.promise();
         },
 
-        isValidPostalCode: function(query) {
-            var value = query.replace(" ", "");
-
-            return value.length >= 5 && value.length <= 7;
+        isValidPostalCode: function (query) {
+            return ukPostcodeRegex.test(query);
         }
 
     };
