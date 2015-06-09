@@ -55,6 +55,7 @@
     <Compile Include="AddOrUpdateNotificationSettings.cs" />
     <Compile Include="AddOrUpdateUserTaxiHailNetworkSettings.cs" />
     <Compile Include="AddPopularAddress.cs" />
+    <Compile Include="AddUpdateAccountQuestionAnswer.cs" />
     <Compile Include="AddUserToPromotionWhiteList.cs" />
     <Compile Include="CancelOrderBecauseOfError.cs" />
     <Compile Include="CreateOrderForManualRideLinqPair.cs" />

@@ -101,7 +101,6 @@ namespace apcurium.MK.Booking.Api.Services
             _payPalServiceFactory = payPalServiceFactory;
             _orderPaymentDao = orderPaymentDao;
             _feesDao = feesDao;
-
             _resources = new Resources.Resources(_serverSettings);
         }
 
@@ -340,6 +339,14 @@ namespace apcurium.MK.Booking.Api.Services
                     request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
                     accountValidationResult.Prompts, accountValidationResult.PromptsLength,
                     bestAvailableCompany, applyPromoCommand, market, isPrepaid));
+
+            var accountLastAnswers = request.QuestionsAndAnswers
+                                        .Where(q => q.SaveAnswer = true)
+                                        .Select(q => new AccountChargeQuestionAnswer { AccountId = account.Id, AccountChargeQuestionId = q.Id, AccountChargeId = q.AccountId, LastAnswer = q.Answer });
+            if (accountLastAnswers != null)
+            {
+                _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = account.Id, Answers = accountLastAnswers.ToArray() });
+            }
 
             return new OrderStatusDetail
             {

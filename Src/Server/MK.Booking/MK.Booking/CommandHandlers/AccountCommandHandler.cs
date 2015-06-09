@@ -45,7 +45,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UnlinkPayPalAccount>,
         ICommandHandler<UnlinkAllPayPalAccounts>,
         ICommandHandler<ReactToPaymentFailure>,
-        ICommandHandler<SettleOverduePayment>
+        ICommandHandler<SettleOverduePayment>,
+        ICommandHandler<AddUpdateAccountQuestionAnswer>
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -317,6 +318,12 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             account.SettleOverduePayment(command.OrderId);
 
+            _repository.Save(account, command.Id.ToString());
+        }
+        public void Handle(AddUpdateAccountQuestionAnswer command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.SaveQuestionAnswers(command.Answers);
             _repository.Save(account, command.Id.ToString());
         }
     }

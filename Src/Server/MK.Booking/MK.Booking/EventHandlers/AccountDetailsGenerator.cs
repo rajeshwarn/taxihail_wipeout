@@ -36,7 +36,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PayPalAccountLinked>,
         IEventHandler<PayPalAccountUnlinked>,
         IEventHandler<OverduePaymentSettled>,
-        IEventHandler<ChargeAccountPaymentDisabled>
+        IEventHandler<ChargeAccountPaymentDisabled>,
+        IEventHandler<AccountAnswersAddedUpdated>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -381,6 +382,24 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     context.Save(account);
                 }
+            }
+        }
+
+        public void Handle(AccountAnswersAddedUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                @event.Answers.ForEach(x => {
+                    var answer = context.Query<AccountChargeQuestionAnswer>()
+                        .Where(a => a.AccountId == x.AccountId && a.AccountChargeQuestionId == x.AccountChargeQuestionId && a.AccountChargeId == x.AccountChargeId)
+                        .FirstOrDefault();
+                    if (answer == null) {
+                        context.Save(x);
+                    } else {
+                        answer.LastAnswer = x.LastAnswer;
+                        context.Save(answer);
+                    }
+                });
             }
         }
     }

@@ -512,6 +512,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var hasPaymentInfo = paymentInfo != null;
             var hasDriverInfo = driverInfos != null && (driverInfos.FullName.HasValue() || driverInfos.VehicleMake != null || driverInfos.VehicleModel != null);
+            var showTripSection = hasDriverInfo || cmtRideLinqFields != null;
             var paymentAmount = string.Empty;
             var paymentMethod = string.Empty;
             var paymentTransactionId = string.Empty;
@@ -576,8 +577,8 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-            var subTotalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) + toll + tax;
-            var totalAmount = subTotalAmount + tip + bookingFees + surcharge + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) + extra - amountSavedByPromotion;
+            var subTotalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) + toll + tax;
+            var totalAmount = subTotalAmount + tip + bookingFees + surcharge + extra - amountSavedByPromotion;
 
             var templateData = new
             {
@@ -585,6 +586,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
+                ShowTripSection = showTripSection,
                 HasDriverInfo = hasDriverInfo,
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
                 VehicleNumber = vehicleNumber,
@@ -609,7 +611,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 TotalFare = _resources.FormatPrice(totalAmount),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
-                MtaTax = cmtRideLinqFields.SelectOrDefault(x => x.AccessFee),
+                MtaTax = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
                 RideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour),
                 Distance = _resources.FormatDistance(cmtRideLinqFields.SelectOrDefault(x => x.Distance)),
                 TripId = cmtRideLinqFields.SelectOrDefault(x => x.TripId),
@@ -618,7 +620,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 FareAtAlternateRate = fareAtAlternateRate,
                 ShowRideLinqLastFour = cmtRideLinqFields.LastFour.HasValue(),
                 ShowTripId = cmtRideLinqFields.SelectOrDefault(x => x.Distance).HasValue,
-                ShowDistance = cmtRideLinqFields.SelectOrDefault(x => x.Distance).HasValue && cmtRideLinqFields.Distance.Value > 0,
                 ShowTax = Math.Abs(tax) >= 0.01,
                 ShowMtaTax = cmtRideLinqFields.SelectOrDefault(x => x.AccessFee).HasValue &&  Math.Abs(cmtRideLinqFields.AccessFee.Value) > 0.01,
                 ShowToll = Math.Abs(toll) >= 0.01,
