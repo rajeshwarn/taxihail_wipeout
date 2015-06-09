@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -52,8 +53,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 }
 
                 if (!string.IsNullOrEmpty(model.BlackListedFleetIds))
-                    if (model.BlackListedFleetIds.Contains(model.FleetId.ToString()))
+                {
+                    var blackList = Regex.Replace(model.BlackListedFleetIds, @"\s+", string.Empty).Split(',');
+
+                    if (blackList.Contains(model.FleetId.ToString()))
+                    {
                         return Json(new { Success = false, Message = "You can not put your own fleet in the black list" });
+                    }
+                }
 
                 if (!model.IsInNetwork)
                 {
