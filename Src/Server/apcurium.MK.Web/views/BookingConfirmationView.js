@@ -77,7 +77,7 @@
 
                 for (var i = 0; i < refDataChargeTypes.length; i++) {
                     if (refDataChargeTypes[i].id === 1) {
-                        // Pay in Card
+                        // Pay in Car
                         chargeTypes.push(refDataChargeTypes[i]);
                     } else if (refDataChargeTypes[i].id === 3) {
                         // Card on File

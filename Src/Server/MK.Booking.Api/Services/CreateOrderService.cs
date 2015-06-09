@@ -133,6 +133,8 @@ namespace apcurium.MK.Booking.Api.Services
                 bestAvailableCompany = FindBestAvailableCompany(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
 
+            bestAvailableCompany = new BestAvailableCompany() {CompanyKey = "Axertis", CompanyName = "Axertis"};
+
             if (market.HasValue() && !bestAvailableCompany.CompanyKey.HasValue())
             {
                 // No companies available that are desserving this region for the company

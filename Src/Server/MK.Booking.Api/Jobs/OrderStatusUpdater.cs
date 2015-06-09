@@ -125,8 +125,6 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             InitializeCmtServiceClient();
 
-            // TODO anything to do for manual ridelinq?  when we create an order we have no idea which company we are dispatched to
-
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
             if (tripInfo == null)
             {

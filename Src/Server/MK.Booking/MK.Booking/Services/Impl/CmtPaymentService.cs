@@ -497,6 +497,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception ex)
             {
+                _logger.LogMessage("An error occured while trying to autorize a CMT payment.");
                 _logger.LogError(ex);
 
                 var aggregateException = ex as AggregateException;
