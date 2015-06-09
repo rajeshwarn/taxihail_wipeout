@@ -187,13 +187,13 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 },
                 Preferences = new List<CompanyPreference>
                 {
-                    new CompanyPreference{CompanyKey = "TaxiBlacklisted",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "BlacklistedTaxi",CanAccept = true,CanDispatch = true},
                 }
             };
 
             _blacklistedTaxi = new TaxiHailNetworkSettings()
             {
-                Id = "TaxiBlacklisted",
+                Id = "BlacklistedTaxi",
                 IsInNetwork = true,
                 Market = "SYD",
                 FleetId = 666,
@@ -416,7 +416,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         }
 
         [Test]
-        public void When_Getting_Fleets_From_a_Market_BL()
+        public void When_Getting_Fleets_From_a_Market_IgnoreBlacklist()
         {
             var response = Sut.GetMarketFleets("TaxiWhenBlacklistedProhibited", "SYD");
             var json = response.Content.ReadAsStringAsync().Result;
