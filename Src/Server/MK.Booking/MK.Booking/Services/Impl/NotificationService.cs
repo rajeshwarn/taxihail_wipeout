@@ -577,9 +577,14 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-            var subTotalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) + toll + tax;
-            var totalAmount = subTotalAmount + tip + bookingFees + surcharge + extra - amountSavedByPromotion;
+            var subTotalAmount = fare
+                + toll
+                + tax
+                + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
+                + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
 
+            var totalAmount = subTotalAmount + tip + bookingFees + surcharge + extra - amountSavedByPromotion;
+            
             var templateData = new
             {
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
@@ -618,7 +623,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 RateClassStart = rateClassStart,
                 RateClassEnd = rateClassEnd,
                 FareAtAlternateRate = fareAtAlternateRate,
-                ShowRideLinqLastFour = cmtRideLinqFields.LastFour.HasValue(),
+                ShowRideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour).HasValue(),
                 ShowTripId = cmtRideLinqFields.SelectOrDefault(x => x.Distance).HasValue,
                 ShowTax = Math.Abs(tax) >= 0.01,
                 ShowMtaTax = cmtRideLinqFields.SelectOrDefault(x => x.AccessFee).HasValue &&  Math.Abs(cmtRideLinqFields.AccessFee.Value) > 0.01,
@@ -648,6 +653,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
                 promoCode,
                 AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion))
+
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);

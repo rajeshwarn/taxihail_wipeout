@@ -337,12 +337,24 @@ namespace apcurium.MK.Booking.Api.Services
                     accountValidationResult.Prompts, accountValidationResult.PromptsLength,
                     bestAvailableCompany, applyPromoCommand, market, isPrepaid));
 
-            var accountLastAnswers = request.QuestionsAndAnswers
-                                        .Where(q => q.SaveAnswer = true)
-                                        .Select(q => new AccountChargeQuestionAnswer { AccountId = account.Id, AccountChargeQuestionId = q.Id, AccountChargeId = q.AccountId, LastAnswer = q.Answer });
-            if (accountLastAnswers != null)
+            if (request.QuestionsAndAnswers.HasValue())
             {
-                _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = account.Id, Answers = accountLastAnswers.ToArray() });
+                // Save question answers so we can display them the next time the user books
+                var accountLastAnswers = request.QuestionsAndAnswers
+                  .Where(q => q.SaveAnswer)
+                  .Select(q =>
+                      new AccountChargeQuestionAnswer
+                      {
+                          AccountId = account.Id,
+                          AccountChargeQuestionId = q.Id,
+                          AccountChargeId = q.AccountId,
+                          LastAnswer = q.Answer
+                      });
+
+                if (accountLastAnswers != null)
+                {
+                    _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = account.Id, Answers = accountLastAnswers.ToArray() });
+                }  
             }
 
             return new OrderStatusDetail
