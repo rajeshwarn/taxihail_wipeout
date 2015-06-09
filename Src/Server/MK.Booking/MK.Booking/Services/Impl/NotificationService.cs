@@ -582,9 +582,9 @@ namespace apcurium.MK.Booking.Services.Impl
             //var subTotalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) + toll + tax;
             //var totalAmount = subTotalAmount + tip + bookingFees + surcharge + extra - amountSavedByPromotion;
 
-            var totalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate)
-                + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)
-                + toll + tax + tip + bookingFees + surcharge + extra - amountSavedByPromotion;
+            var totalAmount = fare + toll + tax + tip + bookingFees + surcharge + extra - amountSavedByPromotion
+                + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
+                + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
 
             var templateData = new
             {
@@ -653,7 +653,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowToll3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 && cmtRideLinqFields.Tolls.Length <= 4,
                 ShowToll4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4,
                 ShowTollTotal = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4,
-                ShowRideLinqLastFour = /*cmtRideLinqFields.LastFour.HasValue()*/true,
+                ShowRideLinqLastFour = /*cmtRideLinqFields.SelectOrDefault(x => x.LastFour).HasValue()*/true,
                 ShowTripId = /*cmtRideLinqFields != null*/true,
                 ShowTax = /*Math.Abs(tax) >= 0.01*/true,
                 ShowMtaTax = true,
