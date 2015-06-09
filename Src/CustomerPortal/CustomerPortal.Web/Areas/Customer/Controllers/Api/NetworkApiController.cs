@@ -147,7 +147,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 {
                     var networkSettings = network.FirstOrDefault(n => n.Id == company.CompanyKey);
                     var isAllowed = networkSettings != null
-                        && IsFleetAllowed(networkSettings.FleetId, networkSettings.WhiteListedFleetIds, networkSettings.BlackListedFleetIds);
+                        && IsFleetAllowed(networkSettings.FleetId, currentCompanyNetworkSettings.WhiteListedFleetIds, currentCompanyNetworkSettings.BlackListedFleetIds);
 
                     if (!isAllowed)
                     {
