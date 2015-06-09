@@ -287,9 +287,9 @@ namespace DatabaseInitializer.Sql
             const int pageSize = 100000;
 
             //get the last events from the new database
-            var maxDateTime = DatabaseHelper.ExecuteScalarQuery<DateTime?>(connString, string.Format("Select max([EventDate]) from [{0}].[Events].[Events]", newDatabase));
+            var lastProcessedEventTime = DatabaseHelper.ExecuteScalarQuery<DateTime?>(connString, string.Format("Select max([EventDate]) from [{0}].[Events].[Events]", newDatabase));
 
-            var sqlDateTime = (DateTime)(maxDateTime ?? SqlDateTime.MinValue);
+            var sqlDateTime = (DateTime)(lastProcessedEventTime ?? SqlDateTime.MinValue);
 
             Console.WriteLine("Counting number of events");
 
@@ -347,7 +347,7 @@ namespace DatabaseInitializer.Sql
             DatabaseHelper.ExecuteNonQuery(connString, string.Format("TRUNCATE Table [{0}].[Cache].[Items]", newDatabase));
             DatabaseHelper.ExecuteNonQuery(connString, queryForCache);
 
-            return maxDateTime;
+            return lastProcessedEventTime;
         }
 
         public void CopyAppStartUpLogTable(string connString, string oldDatabase, string newDatabase)
