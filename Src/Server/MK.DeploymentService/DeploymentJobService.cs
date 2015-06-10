@@ -296,6 +296,21 @@ namespace MK.DeploymentService
             {
                 appPool.Start();
             }
+
+            if (string.IsNullOrEmpty(Settings.Default.SecondWebServerName))
+            {
+                return;
+            }
+
+            Log("Connecting to Second WebServer.");
+            var remoteServer = ServerManager.OpenRemote(Settings.Default.SecondWebServerName);
+            var remoteAppPool = remoteServer.ApplicationPools.FirstOrDefault(x => x.Name == Settings.Default.SecondWebServerName);
+
+            if (remoteAppPool != null && remoteAppPool.State == ObjectState.Stopped)
+            {
+                Log("Restarting remote pool");
+                remoteAppPool.Start();
+            }
         }
 
         private void DeployDataBase(string packagesDirectory, string companyName, string appPoolName)
@@ -343,7 +358,8 @@ namespace MK.DeploymentService
                 MirroringWitness = Settings.Default.MirroringWitness,
                 MirroringPrincipalPartner = Settings.Default.MirroringPrincipalPartner,
                 MirrorMasterConnectionString = Settings.Default.MirrorMasterConnectionString,
-                AppPoolName = appPoolName
+                AppPoolName = appPoolName,
+                SecondWebServerName = Settings.Default.SecondWebServerName
             };
 
             var paramFile = Guid.NewGuid().ToString().Replace("-", "") + ".params";

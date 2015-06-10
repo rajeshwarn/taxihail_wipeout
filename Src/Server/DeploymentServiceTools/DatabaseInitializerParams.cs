@@ -34,6 +34,7 @@ namespace DeploymentServiceTools
 
         public string AppPoolName { get; set; }
 
+        public string SecondWebServerName { get; set; }
         public string SqlServerDirectory
         {
             get { return string.Format("C:\\Program Files\\Microsoft SQL Server\\{0}\\MSSQL\\", SqlInstanceName); }

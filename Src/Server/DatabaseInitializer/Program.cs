@@ -137,6 +137,22 @@ namespace DatabaseInitializer
                         && appPool.State == ObjectState.Started)
                     {
                         appPool.Stop();
+                        Console.WriteLine("Local App Pool stopped");
+                    }
+
+                    if (param.SecondWebServerName.HasValue())
+                    {
+                        var remoteManager = ServerManager.OpenRemote(param.SecondWebServerName);
+                        if (remoteManager != null)
+                        {
+                            var remoteAppPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+
+                            if (remoteAppPool != null && remoteAppPool.State == ObjectState.Started)
+                            {
+                                remoteAppPool.Stop();
+                                Console.WriteLine("Remote App Pool stopped.");
+                            }
+                        }
                     }
 
                     var lastEventCopyDateTime = creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, param.CompanyName, temporaryDatabaseName);

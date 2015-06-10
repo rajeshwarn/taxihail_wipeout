@@ -96,8 +96,6 @@ namespace DatabaseInitializer.Sql
             DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "ALTER DATABASE [" + databaseName + "] SET MULTI_USE");
         }
 
-        
-
         public void TurnOffMirroring(string connStringMaster, string companyName)
         {
             // Disabling multi-user mode
