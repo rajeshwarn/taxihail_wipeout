@@ -24,7 +24,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IPromotionDao _promotionDao;
         private readonly IPaymentService _paymentService;
         private readonly IServerSettings _serverSettings;
-        private readonly IFeesDao _feesDao;
 
         public OverduePaymentService(
             ICommandBus commandBus,
@@ -34,8 +33,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IOrderPaymentDao orderPaymentDao,
             IPromotionDao promotionDao,
             IPaymentService paymentService,
-            IServerSettings serverSettings,
-            IFeesDao feesDao)
+            IServerSettings serverSettings)
         {
             _commandBus = commandBus;
             _overduePaymentDao = overduePaymentDao;
@@ -45,7 +43,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _promotionDao = promotionDao;
             _paymentService = paymentService;
             _serverSettings = serverSettings;
-            _feesDao = feesDao;
         }
 
         public object Get(OverduePaymentRequest request)

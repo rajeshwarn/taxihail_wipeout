@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -63,7 +64,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                             if (overduePaymentResult.IsSuccessful)
                             {
-                                var message = string.Format(localize["Overdue_Succeed_Message"], _overduePayment.OverdueAmount);
+                                var message = string.Format(localize["Overdue_Succeed_Message"],
+                                    string.Format(new CultureInfo(Settings.PriceFormat), localize["CurrencyPriceFormat"], _overduePayment.OverdueAmount));
 
                                 await this.Services().Message.ShowMessage(localize["Overdue_Succeed_Title"], message);
 
