@@ -85,8 +85,15 @@ namespace DatabaseInitializer.Sql
         }
         public void RestoreDatabase(string connStringMaster, string backupFolder, string databaseName)
         {
+            var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + databaseName + "') ";
+
+            // Ensuring that nothing is connected to the database.
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "ALTER DATABASE [" + databaseName + "] SET SINGLE_USER WITH ROLLBACK IMMEDIATE"); ;
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE DATABASE {0} FROM DISK = '{1}\{0}.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE LOG {0} FROM DISK = '{1}\{0}_log.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
+
+            // Restoring muti-user.
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "ALTER DATABASE [" + databaseName + "] SET MULTI_USE");
         }
 
         
