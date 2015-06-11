@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Services.Impl
             ILogger logger,
             IOrderPaymentDao paymentDao,
             IServerSettings serverSettings,
+            ServerPaymentSettings serverPaymentSettings,
             IPairingService pairingService,
             ICreditCardDao creditCardDao)
         {
@@ -40,10 +41,10 @@ namespace apcurium.MK.Booking.Services.Impl
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
 
-            BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
+            BraintreeGateway = GetBraintreeGateway(serverPaymentSettings.BraintreeServerSettings);
         }
 
-        public PaymentProvider ProviderType(Guid? orderId = null)
+        public PaymentProvider ProviderType(string companyKey, Guid? orderId = null)
         {
             return PaymentProvider.Braintree;
         }
@@ -53,7 +54,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return false;
         }
 
-        public PairingResponse Pair(Guid orderId, string cardToken, int autoTipPercentage)
+        public PairingResponse Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage)
         {
             try
             {
@@ -76,7 +77,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse Unpair(Guid orderId)
+        public BasePaymentResponse Unpair(string companyKey, Guid orderId)
         {
            _pairingService.Unpair(orderId);
 
@@ -87,12 +88,12 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public void VoidPreAuthorization(Guid orderId, bool isForPrepaid = false)
+        public void VoidPreAuthorization(string companyKey, Guid orderId, bool isForPrepaid = false)
         {
             var message = string.Empty;
             try
             {
-                var paymentDetail = _paymentDao.FindByOrderId(orderId);
+                var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
                 if (paymentDetail == null)
                 {
                     // nothing to void
@@ -114,7 +115,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void VoidTransaction(Guid orderId, string transactionId, ref string message)
+        public void VoidTransaction(string companyKey, Guid orderId, string transactionId, ref string message)
         {
             Void(transactionId, ref message);
         }
@@ -176,7 +177,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
         
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
+        public PreAuthorizePaymentResponse PreAuthorize(string companyKey, Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
@@ -233,7 +234,8 @@ namespace apcurium.MK.Booking.Services.Impl
                         OrderId = orderId,
                         CardToken = creditCard.Token,
                         Provider = PaymentProvider.Braintree,
-                        IsNoShowFee = false
+                        IsNoShowFee = false,
+                        CompanyKey = companyKey
                     });
                 }
 
@@ -260,7 +262,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid orderId, AccountDetail account, decimal preAuthAmount, decimal amount)
+        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(string companyKey, Guid orderId, AccountDetail account, decimal preAuthAmount, decimal amount)
         {
             if (amount <= preAuthAmount)
             {
@@ -273,21 +275,21 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage(string.Format("Re-Authorizing order {0} because it exceeded the original pre-auth amount ", orderId));
             _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preAuthAmount));
 
-            VoidPreAuthorization(orderId);
+            VoidPreAuthorization(companyKey, orderId);
 
             _logger.LogMessage(string.Format("Re-Authorizing order for amount of {0}", amount));
 
-            return PreAuthorize(orderId, account, amount, true);
+            return PreAuthorize(companyKey, orderId, account, amount, true);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
+        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
         {
             var commitTransactionId = transactionId;
             string authorizationCode = null;
 
             try
             {
-                var authResponse = ReAuthorizeIfNecessary(orderId, account, preauthAmount, amount);
+                var authResponse = ReAuthorizeIfNecessary(companyKey, orderId, account, preauthAmount, amount);
                 if (!authResponse.IsSuccessful)
                 {
                     return new CommitPreauthorizedPaymentResponse
@@ -340,9 +342,9 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse RefundPayment(Guid orderId)
+        public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
-            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
             if (paymentDetail == null)
             {
                 // No payment to refund
@@ -378,7 +380,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse UpdateAutoTip(Guid orderId, int autoTipPercentage)
+        public BasePaymentResponse UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
         {
             throw new NotImplementedException("Method only implemented for CMT RideLinQ");
         }

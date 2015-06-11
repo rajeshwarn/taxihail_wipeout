@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            if (!_serverSettings.GetPaymentSettings().IsUnpairingDisabled
+            if (!_serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey).IsUnpairingDisabled
                 && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id        // Only send notification if using CoF
                     || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)        // or PayPal
                 && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
@@ -262,7 +262,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var order = context.Find<OrderDetail>(orderId);
 
                 var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
-                var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings().IsUnpairingDisabled;
+                var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings(order.CompanyKey).IsUnpairingDisabled;
 
                 string successMessage;
                 if (isPayPal)

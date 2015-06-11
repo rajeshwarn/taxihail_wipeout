@@ -4,14 +4,19 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using RestSharp.Extensions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
+    /// <summary>
+    /// Fees only work with CMT for now
+    /// </summary>
     public class FeeService : IFeeService
     {
         private readonly IPaymentService _paymentService;
@@ -42,14 +47,82 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger = logger;
         }
 
-        public bool ChargeNoShowFeeIfNecessary(OrderStatusDetail orderStatusDetail)
+        public decimal? ChargeBookingFeesIfNecessary(OrderStatusDetail orderStatusDetail)
         {
-            if (orderStatusDetail.IsPrepaid)
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+
+            if (orderStatusDetail.IsPrepaid
+                || orderStatusDetail.CompanyKey == null // If booking is made on home company, booking fees will be included in same trip receipt
+                || (paymentSettings.PaymentMode != PaymentMethod.Cmt &&
+                    paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt))
             {
-                // Order is prepaid, if the user prepaid and decided not to show up, the fee is his fare already charged
-                return false;
+                return null;
             }
 
+            var feesForMarket = _feesDao.GetMarketFees(orderStatusDetail.Market);
+            var bookingFees = feesForMarket != null
+                ? feesForMarket.Booking
+                : 0;
+
+            if (bookingFees <= 0)
+            {
+                return null;
+            }
+
+            _logger.LogMessage("Booking fee of {0} will be charged for order {1}{2}.",
+                bookingFees,
+                orderStatusDetail.IBSOrderId,
+                string.Format(orderStatusDetail.Market.HasValue()
+                        ? "in market {0}"
+                        : string.Empty,
+                    orderStatusDetail.Market));
+
+            var account = _accountDao.FindById(orderStatusDetail.AccountId);
+            if (!account.HasValidPaymentInformation)
+            {
+                _logger.LogMessage("Booking fee cannot be charged for order {0} because the user has no payment method configured.", orderStatusDetail.IBSOrderId);
+                return null;
+            }
+
+            try
+            {
+                // PreAuthorization
+                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, bookingFees, FeeTypes.Booking);
+                if (preAuthResponse.IsSuccessful)
+                {
+                    // Commit
+                    var paymentResult = CommitPayment(bookingFees, bookingFees, orderStatusDetail.OrderId, FeeTypes.Booking);
+                    if (paymentResult.IsSuccessful)
+                    {
+                        _logger.LogMessage("No show fee of amount {0} was charged for order {1}.", bookingFees, orderStatusDetail.IBSOrderId);
+                        return bookingFees;
+                    }
+
+                    throw new Exception(paymentResult.Message);
+                }
+
+                throw new Exception(preAuthResponse.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage("Could not process no show fee for order {0}: {1}.", orderStatusDetail.IBSOrderId, ex.Message);
+                return null;
+            }
+        }
+
+        public decimal? ChargeNoShowFeeIfNecessary(OrderStatusDetail orderStatusDetail)
+        {
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            
+            if (orderStatusDetail.IsPrepaid
+                || (paymentSettings.PaymentMode != PaymentMethod.Cmt &&
+                    paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt))
+            {
+                // If order is prepaid, if the user prepaid and decided not to show up, the fee is his fare already charged
+                return null;
+            }
+
+            // As requested by MK, we need to charge booking fees on top of cancellation fees
             var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
             var feesForMarket = _feesDao.GetMarketFees(orderStatusDetail.Market);
             var noShowFee = feesForMarket != null
@@ -58,7 +131,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             if (noShowFee <= 0)
             {
-                return false;
+                return null;
             }
 
             _logger.LogMessage("No show fee of {0} will be charged for order {1}{2}.", 
@@ -73,21 +146,21 @@ namespace apcurium.MK.Booking.Services.Impl
             if (!account.HasValidPaymentInformation)
             {
                 _logger.LogMessage("No show fee cannot be charged for order {0} because the user has no payment method configured.", orderStatusDetail.IBSOrderId);
-                return false;
+                return null;
             }
 
             try
             {
                 // PreAuthorization
-                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, noShowFee);
+                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, noShowFee, FeeTypes.NoShow);
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
-                    var paymentResult = CommitPayment(noShowFee, bookingFees, orderStatusDetail.OrderId, true, false);
+                    var paymentResult = CommitPayment(noShowFee, bookingFees, orderStatusDetail.OrderId, FeeTypes.NoShow);
                     if (paymentResult.IsSuccessful)
                     {
                         _logger.LogMessage("No show fee of amount {0} was charged for order {1}.", noShowFee, orderStatusDetail.IBSOrderId);
-                        return true;
+                        return noShowFee;
                     }
 
                     throw new Exception(paymentResult.Message);
@@ -98,15 +171,19 @@ namespace apcurium.MK.Booking.Services.Impl
             catch (Exception ex)
             {
                 _logger.LogMessage("Could not process no show fee for order {0}: {1}.", orderStatusDetail.IBSOrderId, ex.Message);
-                throw ex;
+                return null;
             }
         }
 
-        public bool ChargeCancellationFeeIfNecessary(OrderStatusDetail orderStatusDetail)
+        public decimal? ChargeCancellationFeeIfNecessary(OrderStatusDetail orderStatusDetail)
         {
-            if (orderStatusDetail.IsPrepaid)
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+
+            if (orderStatusDetail.IsPrepaid
+                || (paymentSettings.PaymentMode != PaymentMethod.Cmt &&
+                    paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt))
             {
-                return false;
+                return null;
             }
 
             var isPastNoFeeCancellationWindow = orderStatusDetail.TaxiAssignedDate.HasValue
@@ -120,7 +197,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             if (cancellationFee <= 0 || !isPastNoFeeCancellationWindow)
             {
-                return false;
+                return null;
             }
 
             _logger.LogMessage("Cancellation fee of {0} will be charged for order {1}{2}.",
@@ -135,21 +212,21 @@ namespace apcurium.MK.Booking.Services.Impl
             if (!account.HasValidPaymentInformation)
             {
                 _logger.LogMessage("Cancellation fee cannot be charged for order {0} because the user has no payment method configured.", orderStatusDetail.IBSOrderId);
-                return false;
+                return null;
             }
 
             try
             {
                 // PreAuthorization
-                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, cancellationFee);
+                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, cancellationFee, FeeTypes.Cancellation);
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
-                    var paymentResult = CommitPayment(cancellationFee, bookingFees, orderStatusDetail.OrderId, false, true);
+                    var paymentResult = CommitPayment(cancellationFee, bookingFees, orderStatusDetail.OrderId, FeeTypes.Cancellation);
                     if (paymentResult.IsSuccessful)
                     {
                         _logger.LogMessage("Cancellation fee of amount {0} was charged for order {1}.", cancellationFee, orderStatusDetail.IBSOrderId);
-                        return true;
+                        return cancellationFee;
                     }
                     throw new Exception(paymentResult.Message);
                 }
@@ -158,14 +235,14 @@ namespace apcurium.MK.Booking.Services.Impl
             catch (Exception ex)
             {
                 _logger.LogMessage("Could not process cancellation fee for order {0}: {1}.", orderStatusDetail.IBSOrderId, ex.Message);
-                throw ex;
+                return null;
             }
         }
 
-        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, decimal totalFeeAmount, string cvv = null)
+        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, decimal totalFeeAmount, FeeTypes feeType, string companyKey = null)
         {
             // Check payment instead of PreAuth setting, because we do not preauth in the cases of future bookings
-            var paymentInfo = _paymentDao.FindByOrderId(orderId);
+            var paymentInfo = _paymentDao.FindByOrderId(orderId, companyKey);
             if (paymentInfo != null)
             {
                 // Already preauthorized on create order, do nothing
@@ -184,7 +261,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var result = _paymentService.PreAuthorize(orderId, account, totalFeeAmount, cvv: cvv);
+            // Fees are collected by the local company
+            var result = _paymentService.PreAuthorize(null, orderId, account, totalFeeAmount);
             if (result.IsSuccessful)
             {
                 // Wait for OrderPaymentDetail to be created
@@ -200,14 +278,15 @@ namespace apcurium.MK.Booking.Services.Impl
                     IBSOrderId = orderDetail.IBSOrderId,
                     OverdueAmount = totalFeeAmount,
                     TransactionId = result.TransactionId,
-                    TransactionDate = result.TransactionDate
+                    TransactionDate = result.TransactionDate,
+                    FeeType = feeType
                 });
             }
 
             return result;
         }
 
-        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalFeeAmount, decimal bookingFees, Guid orderId, bool isNoShowFee, bool isCancellationFee)
+        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalFeeAmount, decimal bookingFees, Guid orderId, FeeTypes feeType, string companyKey = null)
         {
             var orderDetail = _orderDao.FindById(orderId);
             if (orderDetail == null)
@@ -222,7 +301,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
             if (paymentDetail == null)
             {
                 throw new Exception("Payment not found");
@@ -245,13 +324,14 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     if (totalFeeAmount > 0)
                     {
-                        paymentProviderServiceResponse = _paymentService.CommitPayment(orderId, account, paymentDetail.PreAuthorizedAmount, totalFeeAmount, totalFeeAmount, 0, paymentDetail.TransactionId);
+                        // Fees are collected by the local company
+                        paymentProviderServiceResponse = _paymentService.CommitPayment(null, orderId, account, paymentDetail.PreAuthorizedAmount, totalFeeAmount, totalFeeAmount, 0, paymentDetail.TransactionId);
                         message = paymentProviderServiceResponse.Message;
                     }
                     else
                     {
                         // void preauth if it exists
-                        _paymentService.VoidPreAuthorization(orderId);
+                        _paymentService.VoidPreAuthorization(null, orderId);
 
                         paymentProviderServiceResponse.IsSuccessful = true;
                     }
@@ -267,22 +347,21 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
-                        Provider = _paymentService.ProviderType(orderDetail.Id),
+                        Provider = _paymentService.ProviderType(companyKey, orderDetail.Id),
                         TotalAmount = totalFeeAmount,
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(0),
                         TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
-                        IsNoShowFee = isNoShowFee,
-                        IsCancellationFee = isCancellationFee,
                         AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
                         TransactionId = paymentProviderServiceResponse.TransactionId,
+                        FeeType = feeType,
                         BookingFees = bookingFees
                     });
                 }
                 else
                 {
                     // Void PreAuth because commit failed
-                    _paymentService.VoidPreAuthorization(orderId);
+                    _paymentService.VoidPreAuthorization(null, orderId);
 
                     // Payment error
                     _commandBus.Send(new LogCreditCardError
@@ -300,7 +379,8 @@ namespace apcurium.MK.Booking.Services.Impl
                             IBSOrderId = orderDetail.IBSOrderId,
                             OverdueAmount = totalFeeAmount,
                             TransactionId = paymentProviderServiceResponse.TransactionId,
-                            TransactionDate = paymentProviderServiceResponse.TransactionDate
+                            TransactionDate = paymentProviderServiceResponse.TransactionDate,
+                            FeeType = feeType
                         });
                     }
                 }

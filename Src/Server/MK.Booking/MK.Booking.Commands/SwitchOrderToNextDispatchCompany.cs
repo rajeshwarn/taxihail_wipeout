@@ -21,5 +21,7 @@ namespace apcurium.MK.Booking.Commands
         public string CompanyName { get; set; }
 
         public string Market { get; set; }
+
+        public bool HasChangedBackToPaymentInCar { get; set; }
     }
 }

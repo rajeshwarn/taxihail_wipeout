@@ -138,8 +138,9 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Payment.IsCompleted"] = orderReport.Payment.IsCompleted.ToString();
                             orderReportEntry["Payment.IsCancelled"] = orderReport.Payment.IsCancelled.ToString();
                             orderReportEntry["Payment.IsRefunded"] = orderReport.Payment.IsRefunded.ToString();
-                            orderReportEntry["Payment.IsNoShowFee"] = orderReport.Payment.IsNoShowFee.ToString();
-                            orderReportEntry["Payment.IsCancellationFee"] = orderReport.Payment.IsCancellationFee.ToString();
+                            orderReportEntry["Payment.WasChargedNoShowFee"] = orderReport.Payment.WasChargedNoShowFee.ToString();
+                            orderReportEntry["Payment.WasChargedCancellationFee"] = orderReport.Payment.WasChargedCancellationFee.ToString();
+                            orderReportEntry["Payment.WasChargedBookingFee"] = orderReport.Payment.WasChargedBookingFee.ToString();    
                             orderReportEntry["Payment.Error"] = orderReport.Payment.Error;
 
                             orderReportEntry["Promotion.Code"] = orderReport.Promotion.Code;

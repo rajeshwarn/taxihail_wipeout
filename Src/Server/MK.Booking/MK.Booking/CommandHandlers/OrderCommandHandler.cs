@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SwitchOrderToNextDispatchCompany command)
         {
             var order = _repository.Find(command.OrderId);
-            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName, command.Market);
+            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName, command.Market, command.HasChangedBackToPaymentInCar);
             _repository.Save(order, command.Id.ToString());
         }
 

@@ -30,6 +30,8 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
+            @event.MigrateFees();
+
             using (var context = _contextFactory.Invoke())
             {
                 var payment = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
@@ -49,8 +51,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.Surcharge = @event.Surcharge;
                 payment.BookingFees = @event.BookingFees;
                 payment.IsCancelled = false;
-                payment.IsNoShowFee = @event.IsNoShowFee;
-                payment.IsCancellationFee = @event.IsCancellationFee;
+                payment.FeeType = @event.FeeType;
                 payment.Error = null;
 
                 // Update payment details after settling an overdue payment
@@ -124,7 +125,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     Provider = @event.Provider,
                     Type = @event.Provider == PaymentProvider.PayPal
                         ? PaymentType.PayPal
-                        : PaymentType.CreditCard
+                        : PaymentType.CreditCard,
+                    CompanyKey = @event.CompanyKey
                 });
             }
         }

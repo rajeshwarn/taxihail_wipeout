@@ -4,8 +4,10 @@ namespace apcurium.MK.Booking.Services
 {
     public interface IFeeService
     {
-        bool ChargeNoShowFeeIfNecessary(OrderStatusDetail orderStatusDetail);
+        decimal? ChargeBookingFeesIfNecessary(OrderStatusDetail orderStatusDetail);
 
-        bool ChargeCancellationFeeIfNecessary(OrderStatusDetail orderStatusDetail);
+        decimal? ChargeNoShowFeeIfNecessary(OrderStatusDetail orderStatusDetail);
+
+        decimal? ChargeCancellationFeeIfNecessary(OrderStatusDetail orderStatusDetail);
     }
 }

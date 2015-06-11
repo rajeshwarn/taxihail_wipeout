@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Events
 {
@@ -18,8 +19,23 @@ namespace apcurium.MK.Booking.Events
 
         public bool IsForPrepaidOrder { get; set; }
 
+        [Obsolete("Use FeeType enum instead")]
         public bool IsCancellationFee { get; set; }
 
         public decimal BookingFees { get; set; }
+
+        public FeeTypes FeeType { get; set; }
+
+        public void MigrateFees()
+        {
+            if (IsNoShowFee)
+            {
+                FeeType = FeeTypes.NoShow;
+            }
+            if (IsCancellationFee)
+            {
+                FeeType = FeeTypes.Cancellation;
+            }
+        }
     }
 }

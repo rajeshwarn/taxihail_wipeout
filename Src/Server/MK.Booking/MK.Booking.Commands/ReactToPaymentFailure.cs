@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Messaging;
 using System;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -23,5 +24,7 @@ namespace apcurium.MK.Booking.Commands
         public string TransactionId { get; set; }
 
         public DateTime? TransactionDate { get; set; }
+
+        public FeeTypes FeeType { get; set; }
     }
 }

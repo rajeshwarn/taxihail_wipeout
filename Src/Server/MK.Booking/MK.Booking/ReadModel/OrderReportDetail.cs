@@ -146,9 +146,11 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsRefunded { get; set; }
 
-        public bool IsNoShowFee { get; set; }
+        public bool WasChargedNoShowFee { get; set; }
 
-        public bool IsCancellationFee { get; set; }
+        public bool WasChargedCancellationFee { get; set; }
+
+        public bool WasChargedBookingFee { get; set; }
 
         public string Error { get; set; }
     }

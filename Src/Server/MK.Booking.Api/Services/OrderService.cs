@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Can't access another account's order");
             }
 
-            var payment = _orderPaymentDao.FindByOrderId(orderDetail.Id);
+            var payment = _orderPaymentDao.FindByOrderId(orderDetail.Id, orderDetail.CompanyKey);
             if (payment != null && !payment.IsCancelled && payment.IsCompleted)
             {
                 orderDetail.Fare = Convert.ToDouble(payment.Meter);

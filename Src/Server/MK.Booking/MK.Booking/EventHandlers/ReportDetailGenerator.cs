@@ -162,18 +162,37 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
+            @event.MigrateFees();
+
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                orderReport.Payment.AuthorizationCode = @event.AuthorizationCode;
-                orderReport.Payment.MeterAmount = @event.Meter;
-                orderReport.Payment.TipAmount = @event.Tip;
-                orderReport.Payment.TotalAmountCharged = @event.Amount;
+
+                if (@event.FeeType != FeeTypes.None)
+                {
+                    orderReport.Payment.TotalAmountCharged += @event.Amount;
+                }
+                else
+                {
+                    orderReport.Payment.MeterAmount = @event.Meter;
+                    orderReport.Payment.TipAmount = @event.Tip;
+                    orderReport.Payment.AuthorizationCode = @event.AuthorizationCode;
+                    orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? string.Empty : "Auth: " + @event.TransactionId;
+                    orderReport.Payment.BookingFees = @event.BookingFees;
+                }
+
+                if (!orderReport.Payment.TotalAmountCharged.HasValue)
+                {
+                    orderReport.Payment.TotalAmountCharged = 0;
+                }
+
+                orderReport.Payment.TotalAmountCharged += @event.Amount;
                 orderReport.Payment.IsCompleted = true;
-                orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
-                orderReport.Payment.IsNoShowFee = @event.IsNoShowFee;
-                orderReport.Payment.BookingFees = @event.BookingFees;
-                orderReport.Payment.IsCancellationFee = @event.IsCancellationFee;
+                
+                orderReport.Payment.WasChargedNoShowFee = @event.FeeType == FeeTypes.NoShow;
+                orderReport.Payment.WasChargedCancellationFee = @event.FeeType == FeeTypes.Cancellation;
+                orderReport.Payment.WasChargedBookingFee = orderReport.Payment.BookingFees > 0;
+                
                 context.Save(orderReport);
             }
         }

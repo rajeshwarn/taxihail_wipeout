@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     else if (pairingInfo != null && pairingInfo.DriverId.HasValue() && pairingInfo.Medallion.HasValue() && pairingInfo.PairingToken.HasValue())
                     {
                         // Send receipt for CMTRideLinq
-                        InitializeCmtServiceClient();
+                        InitializeCmtServiceClient(order.CompanyKey);
 
                         var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
                         if (tripInfo != null && tripInfo.EndTime.HasValue)
@@ -140,15 +140,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
-            if (@event.IsForPrepaidOrder)
+            @event.MigrateFees();
+
+            if (@event.IsForPrepaidOrder || @event.FeeType == FeeTypes.Booking)
             {
                 // Don't message user, he will be notified at the end of the ride
                 return;
             }
 
-            if (@event.IsCancellationFee || @event.IsNoShowFee)
+            if (@event.FeeType == FeeTypes.Cancellation || @event.FeeType == FeeTypes.NoShow)
             {
-                SendFeesReceipt(@event.OrderId, @event.Amount, @event.IsCancellationFee, @event.IsNoShowFee);
+                SendFeesReceipt(@event.OrderId, @event.Amount, @event.FeeType);
             }
             else
             {
@@ -233,17 +235,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void SendFeesReceipt(Guid orderId, decimal feeAmount, bool isCancellationFee, bool isNoShowFee)
+        private void SendFeesReceipt(Guid orderId, decimal feeAmount, FeeTypes feeType)
         {
             var order = _orderDao.FindById(orderId);
             var account = _accountDao.FindById(order.AccountId);
             var creditCard = _creditCardDao.FindByAccountId(order.AccountId).First();
 
-            if (isCancellationFee)
+            if (feeType == FeeTypes.Cancellation)
             {
                 _notificationService.SendCancellationFeesReceiptEmail(order.IBSOrderId ?? 0, Convert.ToDouble(feeAmount), creditCard.Last4Digits, account.Email, account.Language);
             }
-            else if (isNoShowFee)
+            else if (feeType == FeeTypes.NoShow)
             {
                 _notificationService.SendNoShowFeesReceiptEmail(order.IBSOrderId ?? 0, Convert.ToDouble(feeAmount), order.PickupAddress, creditCard.Last4Digits, account.Email, account.Language);
             }
@@ -324,9 +326,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void InitializeCmtServiceClient()
+        private void InitializeCmtServiceClient(string companyKey)
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings(companyKey).CmtPaymentSettings, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }

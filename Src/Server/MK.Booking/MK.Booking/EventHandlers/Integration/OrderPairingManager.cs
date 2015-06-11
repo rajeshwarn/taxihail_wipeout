@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
-                        if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt
+                        if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt
                             && _serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment 
                             && !orderStatus.RideLinqPairingCode.HasValue())
                         {
@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var cardToken = creditCard != null ? creditCard.Token : null;
                         var defaultTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
 
-                        var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, defaultTipPercentage);
+                        var response = _paymentFacadeService.Pair(order.CompanyKey, @event.SourceId, cardToken, defaultTipPercentage);
 
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful);
                     } 

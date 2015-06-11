@@ -341,7 +341,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 IBSOrderId = 5544,
                 OverdueAmount = 42.25m,
                 TransactionDate = transactionDate,
-                TransactionId = "1337"
+                TransactionId = "1337",
+                FeeType = FeeTypes.Booking
             });
 
             var @event1 = (OverduePaymentLogged)_sut.ThenHas<OverduePaymentLogged>().First();
@@ -353,6 +354,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(42.25m, @event1.Amount);
             Assert.AreEqual("1337", @event1.TransactionId);
             Assert.AreEqual(transactionDate, @event1.TransactionDate);
+            Assert.AreEqual(FeeTypes.Booking, @event1.FeeType);
 
             Assert.AreEqual(_accountId, @event2.SourceId);
         }

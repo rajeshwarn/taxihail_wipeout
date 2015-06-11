@@ -2,17 +2,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
-using ServiceStack.Messaging.Rcon;
-using ServiceStack.Text;
 
 #endregion
 
@@ -39,12 +34,15 @@ namespace apcurium.MK.Common.Configuration.Impl
             }
         }
 
-        public ServerPaymentSettings GetPaymentSettings()
+        public ServerPaymentSettings GetPaymentSettings(string companyKey = null)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var settings = context.Set<ServerPaymentSettings>().Find(AppConstants.CompanyId);
-                return settings ?? new ServerPaymentSettings();
+                var paymentSettings = companyKey.HasValue()
+                    ? context.Set<ServerPaymentSettings>().FirstOrDefault(p => p.CompanyKey == companyKey)
+                    : context.Set<ServerPaymentSettings>().Find(AppConstants.CompanyId);
+
+                return paymentSettings ?? new ServerPaymentSettings();
             }
         }
 

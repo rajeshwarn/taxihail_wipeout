@@ -37,9 +37,7 @@ namespace apcurium.MK.Booking.Commands
 
         public decimal SurchargeAmount { get; set; }
 
-        public bool IsNoShowFee { get; set; }
-
-        public bool IsCancellationFee { get; set; }
+        public FeeTypes FeeType { get; set; }
 
         public bool IsSettlingOverduePayment { get; set; }
 

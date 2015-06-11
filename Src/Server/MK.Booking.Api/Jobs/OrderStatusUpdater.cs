@@ -20,7 +20,6 @@ using apcurium.MK.Common.Resources;
 using CMTPayment;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using log4net;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -34,7 +33,6 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IOrderDao _orderDao;
         private readonly INotificationService _notificationService;
         private readonly IDirections _directions;
-        private readonly IIbsOrderService _ibsOrderService;
         private readonly IAccountDao _accountDao;
         private readonly IIbsOrderService _ibs;
         private readonly IPromotionDao _promotionDao;
@@ -47,8 +45,6 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
-
         private string _languageCode = string.Empty;
 
         public OrderStatusUpdater(IServerSettings serverSettings, 
@@ -57,7 +53,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             IOrderDao orderDao,
             INotificationService notificationService,
             IDirections directions,
-            IIbsOrderService ibsOrderService,
             IAccountDao accountDao,
             IIbsOrderService ibs,
             IPromotionDao promotionDao,
@@ -70,7 +65,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             _orderDao = orderDao;
             _notificationService = notificationService;
             _directions = directions;
-            _ibsOrderService = ibsOrderService;
             _serverSettings = serverSettings;
             _accountDao = accountDao;
             _ibs = ibs;
@@ -124,23 +118,22 @@ namespace apcurium.MK.Booking.Api.Jobs
             var rideLinqDetails = _orderDao.GetManualRideLinqById(orderstatusDetail.OrderId);
             if (rideLinqDetails == null)
             {
-                Log.InfoFormat("No manual RideLinQ details found for order {0}", orderstatusDetail.OrderId);
+                _logger.LogMessage("No manual RideLinQ details found for order {0}", orderstatusDetail.OrderId);
                 return;
             }
-            Log.DebugFormat("Initializing CmdClient for order {0} (RideLinq Pairing Token: {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
+            _logger.LogMessage("Initializing CmdClient for order {0} (RideLinq Pairing Token: {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
 
             InitializeCmtServiceClient();
 
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
             if (tripInfo == null)
             {
-                Log.InfoFormat("No Trip information found for order {0} (pairing token {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
+                _logger.LogMessage("No Trip information found for order {0} (pairing token {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
                 return;
             }
 
-            Log.DebugFormat("Sending Trip update command for trip {0} (order {1}; pairing token {2})", tripInfo.TripId, orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
-
-            Log.DebugFormat("Trip end time is {0}.", tripInfo.EndTime.HasValue ? tripInfo.EndTime.Value.ToString(CultureInfo.CurrentCulture) : "Not set yet");
+            _logger.LogMessage("Sending Trip update command for trip {0} (order {1}; pairing token {2})", tripInfo.TripId, orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
+            _logger.LogMessage("Trip end time is {0}.", tripInfo.EndTime.HasValue ? tripInfo.EndTime.Value.ToString(CultureInfo.CurrentCulture) : "Not set yet");
 
             _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
             {
@@ -199,7 +192,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
                 || (orderStatusDetail.Status == OrderStatus.TimedOut && ibsOrderInfo.IsWaitingToBeAssigned))
             {
-                Log.DebugFormat("Order {1}: Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status, orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {1}: Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status, orderStatusDetail.OrderId);
                 return;
             }
 
@@ -222,32 +215,47 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     if (ibsOrderInfo.Status == VehicleStatuses.Common.NoShow)
                     {
-                        _feeService.ChargeNoShowFeeIfNecessary(orderStatusDetail);
+                        // Charge No Show fees on company Null
+                        var feeCharged = _feeService.ChargeNoShowFeeIfNecessary(orderStatusDetail);
+
+                        if (orderStatusDetail.CompanyKey != null)
+                        {
+                            // Company not-null will never (so far) perceive no show fees, so we need to void its preauth
+                            _paymentService.VoidPreAuthorization(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId);
+                        }
+                        else
+                        {
+                            if (!feeCharged.HasValue)
+                            {
+                                // No fees were charged on company null, void the preauthorization to prevent misuse fees
+                                _paymentService.VoidPreAuthorization(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId);
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
                     orderStatusDetail.PairingError = ex.Message;
                 }
-                
-                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
+
+                _logger.LogMessage("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsTimedOut)
             {
                 orderStatusDetail.Status = OrderStatus.TimedOut;
-                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsComplete)
             {
                 orderStatusDetail.Status = OrderStatus.Completed;
-                Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
         }
 
-        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, decimal amount, string cvv = null)
+        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(string companyKey, Guid orderId, decimal amount, string cvv = null)
         {
             // Check payment instead of PreAuth setting, because we do not preauth in the cases of future bookings
-            var paymentInfo = _paymentDao.FindByOrderId(orderId);
+            var paymentInfo = _paymentDao.FindByOrderId(orderId, companyKey);
             if (paymentInfo != null)
             {
                 // Already preauthorized on create order, do nothing
@@ -266,7 +274,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var result = _paymentService.PreAuthorize(orderId, account, amount, cvv: cvv);
+            var result = _paymentService.PreAuthorize(orderDetail.CompanyKey, orderId, account, amount, cvv: cvv);
             if (result.IsSuccessful)
             {
                 // Wait for OrderPaymentDetail to be created
@@ -297,13 +305,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                 _orderDao.UpdateVehiclePosition(orderStatus.OrderId, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
                 _notificationService.SendTaxiNearbyPush(orderStatus.OrderId, ibsOrderInfo.Status, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
 
-                Log.DebugFormat("Vehicle position updated. New position: ({0}, {1}).", ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
+                _logger.LogMessage("Vehicle position updated. New position: ({0}, {1}).", ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
             }
         }
 
         private void SendUnpairWarningNotificationIfNecessary(OrderStatusDetail orderStatus)
         {
-            var paymentSettings = _serverSettings.GetPaymentSettings();
+            var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
             if (!paymentSettings.IsUnpairingDisabled && orderStatus.UnpairingTimeOut.HasValue)
             {
                 var halfwayUnpairTimeout = orderStatus.UnpairingTimeOut.Value.AddSeconds(-0.5 * paymentSettings.UnpairingTimeOut);
@@ -322,22 +330,21 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (pairingInfo.AutoTipPercentage.HasValue)
             {
                 ibsOrderInfo.Tip = FareHelper.CalculateTipAmount(ibsOrderInfo.Fare, pairingInfo.AutoTipPercentage.Value);
-                Log.DebugFormat("RideLinqCmt Pairing: Calculated a tip amount of {0}, based on an auto AutoTipPercentage percentage of {1}",
-                    ibsOrderInfo.Tip, pairingInfo.AutoTipPercentage.Value);
+                _logger.LogMessage("RideLinqCmt Pairing: Calculated a tip amount of {0}, based on an auto AutoTipPercentage percentage of {1}", ibsOrderInfo.Tip, pairingInfo.AutoTipPercentage.Value);
             }
             else
             {
-                Log.Debug("RideLinqCmt Pairing: AutoTipPercentage is null, no tip amount was assigned.");
+                _logger.LogMessage("RideLinqCmt Pairing: AutoTipPercentage is null, no tip amount was assigned.");
             }
         }
 
         private void HandlePairingForStandardPairing(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
         {
-            var orderPayment = _paymentDao.FindByOrderId(orderStatusDetail.OrderId);
+            var orderPayment = _paymentDao.FindByOrderId(orderStatusDetail.OrderId, orderStatusDetail.CompanyKey);
             if (orderPayment != null && (orderPayment.IsCompleted || orderPayment.IsCancelled))
             {
                 // Payment was already processed
-                Log.DebugFormat("Payment for order {0} was already processed, nothing else to do.", orderStatusDetail.OrderId);
+                _logger.LogMessage("Payment for order {0} was already processed, nothing else to do.", orderStatusDetail.OrderId);
                 return;
             }
 
@@ -355,17 +362,17 @@ namespace apcurium.MK.Booking.Api.Jobs
                     // no fare received but order is completed, change status to increase polling speed
                     orderStatusDetail.Status = OrderStatus.WaitingForPayment;
                     orderStatusDetail.PairingTimeOut = DateTime.UtcNow.AddMinutes(30);
-                    Log.DebugFormat("Order {1}: Status updated to: {0} with timeout in 30 minutes", orderStatusDetail.Status, orderStatusDetail.OrderId);
+                    _logger.LogMessage("Order {1}: Status updated to: {0} with timeout in 30 minutes", orderStatusDetail.Status, orderStatusDetail.OrderId);
                 }
 
                 if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
                     && DateTime.UtcNow > orderStatusDetail.PairingTimeOut)
                 {
                     orderStatusDetail.Status = OrderStatus.Completed;
-                    _paymentService.VoidPreAuthorization(orderStatusDetail.OrderId);
+                    _paymentService.VoidPreAuthorization(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId);
 
                     orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS.";
-                    Log.ErrorFormat("Order {1}: Pairing error: {0}", orderStatusDetail.PairingError, orderStatusDetail.OrderId);
+                    _logger.LogMessage("Order {1}: Pairing error: {0}", orderStatusDetail.PairingError, orderStatusDetail.OrderId);
                 }
 
                 return;
@@ -376,12 +383,30 @@ namespace apcurium.MK.Booking.Api.Jobs
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
             var tipAmount = FareHelper.CalculateTipAmount(ibsOrderInfo.MeterAmount, tipPercentage);
 
-            var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
-            var total = ibsOrderInfo.MeterAmount + tipAmount + Convert.ToDouble(bookingFees);
+            var bookingFees = 0m;
+            var total = ibsOrderInfo.MeterAmount + tipAmount;
 
-            Log.DebugFormat(
-                    "Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), adding booking fees of {4} for a total of {5}",
-                    orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, bookingFees, total);
+            if (orderStatusDetail.CompanyKey.HasValue())
+            {
+                // Booking fees will be received by the local company
+                var feesCharged = _feeService.ChargeBookingFeesIfNecessary(orderStatusDetail);
+                if (feesCharged.HasValue)
+                {
+                    bookingFees = feesCharged.Value;
+                    _logger.LogMessage("Order {0}: Booking fees of {1} charged to local company", orderStatusDetail.OrderId, feesCharged);
+                    _logger.LogMessage("Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), for a total of {4}",
+                            orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, total);
+                }
+            }
+            else
+            {
+                // Already in local company, include booking fees in trip
+                bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
+                total += Convert.ToDouble(bookingFees);
+
+                _logger.LogMessage("Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), adding booking fees of {4} for a total of {5}",
+                        orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, bookingFees, total);
+            }
 
             if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
@@ -405,7 +430,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 var tempPaymentInfo = _orderDao.GetTemporaryPaymentInfo(orderStatusDetail.OrderId);
 
                 // Preautorize
-                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, totalOrderAmount, tempPaymentInfo != null ? tempPaymentInfo.Cvv : null);
+                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId, totalOrderAmount, tempPaymentInfo != null ? tempPaymentInfo.Cvv : null);
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
@@ -423,45 +448,45 @@ namespace apcurium.MK.Booking.Api.Jobs
                         amountSaved);
                     if (paymentResult.IsSuccessful)
                     {
-                        Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
+                        _logger.LogMessage("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
                     }
                     else
                     {
                         if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                         {
-                            _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                            _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
                         }
 
                         // set the payment error message in OrderStatusDetail for reporting purpose
                         orderStatusDetail.PairingError = paymentResult.Message;
 
-                        Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
+                        _logger.LogMessage("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
                     }
                 }
                 else
                 {
                     if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                     {
-                        _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                        _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
                     }
 
                     // set the payment error message in OrderStatusDetail for reporting purpose
                     orderStatusDetail.PairingError = preAuthResponse.Message;
 
-                    Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, preAuthResponse.Message, preAuthResponse.TransactionId);
+                    _logger.LogMessage("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, preAuthResponse.Message, preAuthResponse.TransactionId);
                 }
             }
             catch (Exception ex)
             {
                 if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                 {
-                    _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                    _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
                 }
 
                 // set the payment error message in OrderStatusDetail for reporting purpose
                 orderStatusDetail.PairingError = ex.Message;
 
-                Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, ex.Message, "UNKNOWN");
+                _logger.LogMessage("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, ex.Message, "UNKNOWN");
             }
             
             // whether there's a success or not, we change the status back to Completed since we can't process the payment again
@@ -484,7 +509,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            var paymentDetail = _paymentDao.FindByOrderId(orderId, orderDetail.CompanyKey);
             if (paymentDetail == null)
             {
                 throw new Exception("Payment not found");
@@ -509,6 +534,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     {
                         // Commit
                         paymentProviderServiceResponse = _paymentService.CommitPayment(
+                            orderDetail.CompanyKey,
                             orderId,
                             account,
                             paymentDetail.PreAuthorizedAmount,
@@ -523,7 +549,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     {
                         // promotion made the ride free to the user
                         // void preauth if it exists
-                        _paymentService.VoidPreAuthorization(orderId);
+                        _paymentService.VoidPreAuthorization(orderDetail.CompanyKey, orderId);
 
                         paymentProviderServiceResponse.IsSuccessful = true;
                     }
@@ -532,7 +558,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 //send information to IBS
                 try
                 {
-                    var providerType = _paymentService.ProviderType(orderDetail.Id);
+                    var providerType = _paymentService.ProviderType(orderDetail.CompanyKey, orderDetail.Id);
 
                     string cardToken;
                     if (providerType == PaymentProvider.PayPal)
@@ -571,7 +597,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     {
                         if (paymentProviderServiceResponse.IsSuccessful)
                         {
-                            _paymentService.VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
+                            _paymentService.VoidTransaction(orderDetail.CompanyKey, orderId, paymentProviderServiceResponse.TransactionId, ref message);
                         }
                     }
                     catch (Exception ex)
@@ -597,7 +623,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     {
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
-                        Provider = _paymentService.ProviderType(orderDetail.Id),
+                        Provider = _paymentService.ProviderType(orderDetail.CompanyKey, orderDetail.Id),
                         TotalAmount = totalOrderAmount,
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(tipAmount),
@@ -614,7 +640,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 else
                 {
                     // Void PreAuth because commit failed
-                    _paymentService.VoidPreAuthorization(orderId);
+                    _paymentService.VoidPreAuthorization(orderDetail.CompanyKey, orderId);
 
                     // Payment error
                     _commandBus.Send(new LogCreditCardError
@@ -662,18 +688,18 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             if (orderStatusDetail.IsPrepaid)
             {
-                Log.DebugFormat("Order {0}: No pairing to process as the order has been paid at the time of booking.", orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {0}: No pairing to process as the order has been paid at the time of booking.", orderStatusDetail.OrderId);
                 return;
             }
 
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingInfo == null)
             {
-                Log.DebugFormat("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
+                _logger.LogMessage("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
                 return;
             }
 
-            var paymentMode = _serverSettings.GetPaymentSettings().PaymentMode;
+            var paymentMode = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey).PaymentMode;
             var isPayPal = _paymentService.IsPayPal(null, orderStatusDetail.OrderId);
             
             if (!isPayPal && paymentMode == PaymentMethod.RideLinqCmt)
@@ -739,13 +765,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (companyName.HasValue())
                 {
                     description = string.Format(_resources.Get("OrderStatus_wosWAITINGRoaming", _languageCode), companyName);
-                    Log.DebugFormat("Setting Waiting in roaming status description: {0}", description);
+                    _logger.LogMessage("Setting Waiting in roaming status description: {0}", description);
                 }
             }
             else if (ibsOrderInfo.IsAssigned)
             {
                 description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", _languageCode), ibsOrderInfo.VehicleNumber);
-                Log.DebugFormat("Setting Assigned status description: {0}", description);
+                _logger.LogMessage("Setting Assigned status description: {0}", description);
 
                 var sendEtaToDriver = _serverSettings.ServerData.DriverEtaNotificationMode == DriverEtaNotificationModes.Always ||
                                       (_serverSettings.ServerData.DriverEtaNotificationMode == DriverEtaNotificationModes.Once && sendEtaToDriverOnNotifyOnce);
@@ -757,26 +783,27 @@ namespace apcurium.MK.Booking.Api.Jobs
                         SendEtaMessageToDriver((double) ibsOrderInfo.VehicleLatitude, (double) ibsOrderInfo.VehicleLongitude, 
                             orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleNumber);
                     }
-                    catch
+                    catch(Exception ex)
                     {
-                        Log.Error("Cannot Send Eta to Vehicle Number " + ibsOrderInfo.VehicleNumber);
+                        _logger.LogMessage("Cannot Send Eta to Vehicle Number " + ibsOrderInfo.VehicleNumber);
+                        _logger.LogError(ex);
                     }
                 }
             }
             else if (ibsOrderInfo.IsCanceled)
             {
                 description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
-                Log.DebugFormat("Setting Canceled status description: {0}", description);
+                _logger.LogMessage("Setting Canceled status description: {0}", description);
             }
             else if (ibsOrderInfo.IsComplete)
             {
-                description = _resources.Get("OrderStatus_wosDONE", _languageCode);    
-                Log.DebugFormat("Setting Complete status description: {0}", description);
+                description = _resources.Get("OrderStatus_wosDONE", _languageCode);
+                _logger.LogMessage("Setting Complete status description: {0}", description);
             }
             else if (ibsOrderInfo.IsLoaded)
             {
                 if (orderDetail != null 
-                    && _serverSettings.GetPaymentSettings().IsUnpairingDisabled
+                    && _serverSettings.GetPaymentSettings(orderDetail.CompanyKey).IsUnpairingDisabled
                     && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
                 {
@@ -795,25 +822,26 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (eta != null && eta.IsValidEta())
             {
                 var etaMessage = string.Format(_resources.Get("EtaMessageToDriver"), eta.FormattedDistance, eta.Duration);
-                _ibsOrderService.SendMessageToDriver(etaMessage, vehicleNumber);
-                Log.Debug(etaMessage);
+                _ibs.SendMessageToDriver(etaMessage, vehicleNumber);
+                _logger.LogMessage(etaMessage);
             }
         }
 
         private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber)
         {
             var paymentBeingProcessedMessage = _resources.Get("PaymentBeingProcessedMessageToDriver");
-            _ibsOrderService.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber);
-            Log.Debug(paymentBeingProcessedMessage);
+            _ibs.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber);
+            _logger.LogMessage(paymentBeingProcessedMessage);
         }
 
         private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip)
         {
-            _ibsOrderService.SendPaymentNotification(amount, meter, tip, null, vehicleNumber);
+            _ibs.SendPaymentNotification(amount, meter, tip, null, vehicleNumber);
         }
 
         private void InitializeCmtServiceClient()
         {
+            // TODO anything to do for manual ridelinq?  when we create an order we have no idea which company we are dispatched to
             var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }

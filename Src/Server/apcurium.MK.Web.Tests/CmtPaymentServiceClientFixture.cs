@@ -51,7 +51,7 @@ namespace apcurium.MK.Web.Tests
             var serverSettings = UnityServiceLocator.Instance.Resolve<IServerSettings>();
             var pairingService = UnityServiceLocator.Instance.Resolve<IPairingService>();
             var creditCardDao = UnityServiceLocator.Instance.Resolve<ICreditCardDao>();
-            return new CmtPaymentService(commandBus, orderDao, logger, accountDao, orderPaymentDao, serverSettings, pairingService, creditCardDao);
+            return new CmtPaymentService(commandBus, orderDao, logger, accountDao, orderPaymentDao, serverSettings.GetPaymentSettings(), pairingService, creditCardDao);
         }
     }
 }
