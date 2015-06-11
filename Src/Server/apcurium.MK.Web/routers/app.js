@@ -48,6 +48,22 @@
         initialize: function (options) {
             options = options || {};
 
+            var exactRouteI = document.URL.lastIndexOf(TaxiHail.parameters.webSiteRootPath);
+
+            if (exactRouteI == -1) {
+
+                var lowerCaseRouteI = document.URL.toLowerCase().lastIndexOf(TaxiHail.parameters.webSiteRootPath.toLowerCase());
+
+                if (lowerCaseRouteI > -1) {
+                    var fixedURL = document.URL.substring(0, lowerCaseRouteI) + TaxiHail.parameters.webSiteRootPath;
+                    if (fixedURL.length < document.URL.length)
+                        fixedURL = fixedURL + document.URL.substring(lowerCaseRouteI + TaxiHail.parameters.webSiteRootPath.length, document.URL.length);
+
+                    window.location = fixedURL;
+                    return;
+                }
+            }
+
             var expire = new Date();
             expire.setTime(expire.getTime() + 3600000 * 24 * 365);
             document.cookie = "ss-opt=perm" + ";expires=" + expire.toGMTString();
