@@ -48,21 +48,42 @@
         initialize: function (options) {
             options = options || {};
 
+            // ------- initital URL route fix
+            /*
+             due to IIS hosting with ASP.NET app where IIS has multiple web site each one with different Alias all in-app URLs are
+             constructed from IIS web site using web site Alias name, so if user tapes initial URL to get the site different from
+             exact Alias (upper/lower case difference), the authentication cookie will be saved for that version of URL taped by
+             user and during the navigation on site user will have URLs where root part of URL will be possibly different in upper/lower case,
+             in that situation during clicking such URL browser will not send the authentication cookie to the server considering such URL different
+             from the URL for which cookie was saved initially.
+
+             to fix it this code relocates user to web page with the name which matches exactly IIS web site alias and authentication cookie
+             will be created with the path corresponding exactly IIS web site Alias
+
+             authentication cookie is saved for relative part of URL:
+             authentication cookie Path = /[web site alias] for http://[domain name]/[web site alias]
+            */
             var exactRouteI = document.URL.lastIndexOf(TaxiHail.parameters.webSiteRootPath);
 
-            if (exactRouteI == -1) {
-
+            if (exactRouteI == -1)
+            {
                 var lowerCaseRouteI = document.URL.toLowerCase().lastIndexOf(TaxiHail.parameters.webSiteRootPath.toLowerCase());
 
-                if (lowerCaseRouteI > -1) {
+                if (lowerCaseRouteI > -1)
+                {
                     var fixedURL = document.URL.substring(0, lowerCaseRouteI) + TaxiHail.parameters.webSiteRootPath;
+
                     if (fixedURL.length < document.URL.length)
+                    {
                         fixedURL = fixedURL + document.URL.substring(lowerCaseRouteI + TaxiHail.parameters.webSiteRootPath.length, document.URL.length);
+                    }
 
                     window.location = fixedURL;
                     return;
                 }
             }
+            // ------- initital URL route fix
+
 
             var expire = new Date();
             expire.setTime(expire.getTime() + 3600000 * 24 * 365);
