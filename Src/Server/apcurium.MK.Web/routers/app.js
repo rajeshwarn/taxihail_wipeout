@@ -48,7 +48,7 @@
         initialize: function (options) {
             options = options || {};
 
-            // ------- initital URL route fix
+            // ------- initial URL route fix
             /*
              due to IIS hosting with ASP.NET app where IIS has multiple web site each one with different Alias all in-app URLs are
              constructed from IIS web site using web site Alias name, so if user tapes initial URL to get the site different from
@@ -63,26 +63,26 @@
              authentication cookie is saved for relative part of URL:
              authentication cookie Path = /[web site alias] for http://[domain name]/[web site alias]
             */
-            var exactRouteI = document.URL.lastIndexOf(TaxiHail.parameters.webSiteRootPath);
+            var exactRoute = document.URL.lastIndexOf(TaxiHail.parameters.webSiteRootPath);
 
-            if (exactRouteI == -1)
+            if (exactRoute == -1)
             {
-                var lowerCaseRouteI = document.URL.toLowerCase().lastIndexOf(TaxiHail.parameters.webSiteRootPath.toLowerCase());
+                var lowerCaseRoute = document.URL.toLowerCase().lastIndexOf(TaxiHail.parameters.webSiteRootPath.toLowerCase());
 
-                if (lowerCaseRouteI > -1)
+                if (lowerCaseRoute > -1)
                 {
-                    var fixedURL = document.URL.substring(0, lowerCaseRouteI) + TaxiHail.parameters.webSiteRootPath;
+                    var fixedURL = document.URL.substring(0, lowerCaseRoute) + TaxiHail.parameters.webSiteRootPath;
 
                     if (fixedURL.length < document.URL.length)
                     {
-                        fixedURL = fixedURL + document.URL.substring(lowerCaseRouteI + TaxiHail.parameters.webSiteRootPath.length, document.URL.length);
+                        fixedURL = fixedURL + document.URL.substring(lowerCaseRoute + TaxiHail.parameters.webSiteRootPath.length, document.URL.length);
                     }
 
                     window.location = fixedURL;
                     return;
                 }
             }
-            // ------- initital URL route fix
+            // ------- initial URL route fix
 
 
             var expire = new Date();
