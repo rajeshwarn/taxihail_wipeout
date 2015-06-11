@@ -63,19 +63,19 @@
              authentication cookie is saved for relative part of URL:
              authentication cookie Path = /[web site alias] for http://[domain name]/[web site alias]
             */
-            var exactRoute = document.URL.lastIndexOf(TaxiHail.parameters.webSiteRootPath);
+            var exactRouteIndex = document.URL.lastIndexOf(TaxiHail.parameters.webSiteRootPath);
 
-            if (exactRoute == -1)
+            if (exactRouteIndex == -1)
             {
-                var lowerCaseRoute = document.URL.toLowerCase().lastIndexOf(TaxiHail.parameters.webSiteRootPath.toLowerCase());
+                var lowerCaseRouteIndex = document.URL.toLowerCase().lastIndexOf(TaxiHail.parameters.webSiteRootPath.toLowerCase());
 
-                if (lowerCaseRoute > -1)
+                if (lowerCaseRouteIndex > -1)
                 {
-                    var fixedURL = document.URL.substring(0, lowerCaseRoute) + TaxiHail.parameters.webSiteRootPath;
+                    var fixedURL = document.URL.substring(0, lowerCaseRouteIndex) + TaxiHail.parameters.webSiteRootPath;
 
                     if (fixedURL.length < document.URL.length)
                     {
-                        fixedURL = fixedURL + document.URL.substring(lowerCaseRoute + TaxiHail.parameters.webSiteRootPath.length, document.URL.length);
+                        fixedURL = fixedURL + document.URL.substring(lowerCaseRouteIndex + TaxiHail.parameters.webSiteRootPath.length, document.URL.length);
                     }
 
                     window.location = fixedURL;
