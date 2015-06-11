@@ -498,8 +498,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             }
 
-            var vatIsEnabled = _serverSettings.ServerData.VATIsEnabled;
+            // Email formatting is different for CMTRideLinQ
+            var isCmtRideLinqReceipt = cmtRideLinqFields != null;
 
+            var vatIsEnabled = _serverSettings.ServerData.VATIsEnabled;
             var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
 
             if (vatIsEnabled && tax == 0)
@@ -519,8 +521,9 @@ namespace apcurium.MK.Booking.Services.Impl
             var paymentAuthorizationCode = string.Empty;
 
             var hasFare = Math.Abs(fare) > double.Epsilon;
-            var hasCmtTollDetails = cmtRideLinqFields != null && cmtRideLinqFields.Tolls != null &&
-                                   cmtRideLinqFields.Tolls.Length > 0;
+            var hasCmtTollDetails = cmtRideLinqFields != null
+                && cmtRideLinqFields.Tolls != null
+                && cmtRideLinqFields.Tolls.Length > 0;
             var showFareAndPaymentDetails = hasPaymentInfo || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
 
             int? rateClassStart = null;
@@ -579,9 +582,6 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-            //var subTotalAmount = fare + cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) + cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) + toll + tax;
-            //var totalAmount = subTotalAmount + tip + bookingFees + surcharge + extra - amountSavedByPromotion;
-
             var totalAmount = fare + toll + tax + tip + bookingFees + surcharge + extra - amountSavedByPromotion
                 + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
                 + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
@@ -616,13 +616,13 @@ namespace apcurium.MK.Booking.Services.Impl
                 Surcharge = _resources.FormatPrice(surcharge),
                 BookingFees = _resources.FormatPrice(bookingFees),
                 Extra = _resources.FormatPrice(extra),
-                //SubTotal = _resources.FormatPrice(subTotalAmount),
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalAmount),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
                 MtaTax = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
                 RideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour),
+                
                 Distance = _resources.FormatDistance(cmtRideLinqFields.SelectOrDefault(x => x.Distance)),
                 TripId = cmtRideLinqFields.SelectOrDefault(x => x.TripId),
                 RateClassStart = rateClassStart,
@@ -647,22 +647,23 @@ namespace apcurium.MK.Booking.Services.Impl
                     ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[3].TollAmount / 100), 2))
                     : _resources.FormatPrice(0),
                 
-                // TODO: So it begins... Hack for Arro.
                 ShowToll1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 && cmtRideLinqFields.Tolls.Length <= 4,
                 ShowToll2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 && cmtRideLinqFields.Tolls.Length <= 4,
                 ShowToll3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 && cmtRideLinqFields.Tolls.Length <= 4,
                 ShowToll4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4,
                 ShowTollTotal = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4,
-                ShowRideLinqLastFour = /*cmtRideLinqFields.SelectOrDefault(x => x.LastFour).HasValue()*/true,
-                ShowTripId = /*cmtRideLinqFields != null*/true,
-                ShowTax = /*Math.Abs(tax) >= 0.01*/true,
-                ShowMtaTax = true,
-                ShowToll = /*Math.Abs(toll) >= 0.01*/true,
-                ShowSurcharge = /*Math.Abs(surcharge) >= 0.01*/true,
-                ShowBookingFees = Math.Abs(bookingFees) >= 0.01,
-                ShowExtra = /*Math.Abs(extra) >= 0.01*/true,
-                ShowRateClassStart = /*rateClassStart.HasValue*/true,
+                ShowRideLinqLastFour = isCmtRideLinqReceipt,
+                ShowTripId = isCmtRideLinqReceipt,
+                ShowTax = Math.Abs(tax) >= 0.01 || isCmtRideLinqReceipt,
+                ShowMtaTax = isCmtRideLinqReceipt,
+                ShowToll = Math.Abs(toll) >= 0.01 || isCmtRideLinqReceipt,
+                ShowSurcharge = Math.Abs(surcharge) >= 0.01 || isCmtRideLinqReceipt,
+                ShowBookingFees = Math.Abs(bookingFees) >= 0.01 || isCmtRideLinqReceipt,
+                ShowExtra = Math.Abs(extra) >= 0.01 || isCmtRideLinqReceipt,
+                ShowRateClassStart = rateClassStart.HasValue || isCmtRideLinqReceipt,
                 ShowRateClassEnd = rateClassEnd.HasValue,
+                ShowDistance = isCmtRideLinqReceipt,
+
                 vatIsEnabled,
                 HasPaymentInfo = hasPaymentInfo,
                 PaymentAmount = paymentAmount,

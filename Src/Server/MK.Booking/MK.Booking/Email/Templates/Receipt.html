@@ -473,10 +473,12 @@
                                                                     </tr>
                                                                     {{/ShowTripId}}
 
+                                                                    {{#ShowDistance}}
                                                                     <tr>
                                                                         <td class="driver_list_title">{{ localize "Email_Body_Distance" }}</td>
                                                                         <td class="list_value" colspan="4">{{ Distance }}</td>
                                                                     </tr>
+                                                                    {{/ShowDistance}}
                                                                 </table>
                                                             </td>
                                                         </tr>
@@ -567,11 +569,6 @@
                                                                         <td class="list_value">{{ MtaTax }}</td>
                                                                     </tr>
                                                                     {{/ShowMtaTax}}
-
-                                                                    <!--<tr class="fare_list_subtotal">
-                                                                        <td class="list_title">{{ localize "Email_Body_SubTotal" }}</td>
-                                                                        <td class="list_value">{{ SubTotal }}</td>
-                                                                    </tr>-->
 
                                                                     {{#ShowBookingFees}}
                                                                     <tr>
