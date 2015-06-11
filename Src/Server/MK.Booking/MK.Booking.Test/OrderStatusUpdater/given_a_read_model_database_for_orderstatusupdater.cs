@@ -175,7 +175,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
 
         private bool IsPayPal(Guid? accountId, Guid? orderId, bool isForPrepaid)
         {
-            var paymentService = new PaymentService(null, new AccountDao(() => new BookingDbContext(DbName)), new OrderDao(() => new BookingDbContext(DbName)), null, null);
+            var paymentService = new PaymentService(null, new AccountDao(() => new BookingDbContext(DbName)), new OrderDao(() => new BookingDbContext(DbName)), null, ConfigurationManager, null);
             return paymentService.IsPayPal(accountId, orderId, isForPrepaid);
         }
 
