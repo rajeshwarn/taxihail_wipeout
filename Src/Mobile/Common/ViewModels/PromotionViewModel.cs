@@ -35,11 +35,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             LoadActivePromotions();
         }
 
-        public override void OnViewStarted(bool firstTime)
+        public override async void OnViewStarted(bool firstTime)
         {
             base.OnViewStarted(firstTime);
 
-            HasValidPaymentInformation = _accountService.CurrentAccount.HasValidPaymentInformation;
+            var creditCard = await _accountService.GetCreditCard();
+
+            HasValidPaymentInformation = !(creditCard == null || creditCard.IsExpired() || creditCard.IsDeactivated);
         }
 
         private string _promotionCode;
