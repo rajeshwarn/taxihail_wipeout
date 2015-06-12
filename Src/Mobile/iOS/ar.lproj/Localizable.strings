@@ -1,4 +1,4 @@
-"CreateAccountEmailPlaceHolder"="البرید الإلكتروني";
+﻿"CreateAccountEmailPlaceHolder"="البرید الإلكتروني";
 "PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured in the app.";
 "CmtCardNumber"="طريقة الدفع:";
 "Edit"="تعديل";
@@ -83,6 +83,7 @@
 "VehicleNumberErrorTitle"="خطأ";
 "NoConnectionMessage"="لا يمكن الإتصال بالسيرفر ، من المحتمل أن تكون خارج الخدمة مؤقتا أو أن تكون غير متصل بالانترنت.";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
+"CreditCardAdded_PayInCarDisabled"="Your account is now enabled to pay for rides with this credit card.";
 "Notification_PaymentConfirmationPush"="Payment Confirmation";
 "PromoExpiringSoonMessage"="Expires in {0} days";
 "PassengerPhoneLabel"="الهاتف";

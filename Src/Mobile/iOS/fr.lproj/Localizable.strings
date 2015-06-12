@@ -1,4 +1,4 @@
-"CreateAccountEmailPlaceHolder"="Email (adresse électronique)";
+﻿"CreateAccountEmailPlaceHolder"="Email (adresse électronique)";
 "EstimateFareCalculating"="Calcul du prix de votre course ...";
 "CmtCardNumber"="Mode de paiement:";
 "Edit"="Editer";
@@ -84,6 +84,7 @@
 "VehicleNumberErrorTitle"="Erreur";
 "NoConnectionMessage"="Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.";
 "CreditCardAdded"="Votre compte est maintenant configuré pour le paiement via carte de crédit par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de confirmation.";
+"CreditCardAdded_PayInCarDisabled"="Votre compte est maintenant configuré pour le paiement par la carte de crédit.";
 "Notification_PaymentConfirmationPush"="Confirmation de paiement";
 "PromoExpiringSoonMessage"="Expire dans {0} jours";
 "PassengerPhoneLabel"="Téléphone";

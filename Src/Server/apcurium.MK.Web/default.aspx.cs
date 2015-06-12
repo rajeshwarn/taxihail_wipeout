@@ -16,6 +16,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using ServiceStack.Text;
+using System.Web;
 
 #endregion
 
@@ -70,6 +71,8 @@ namespace apcurium.MK.Web
         protected int AvailableVehicleRefreshRate { get; private set; }
 
         protected bool IsCraftyClicksEnabled { get; private set; }
+
+        protected string WebSiteRootPath { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -115,6 +118,7 @@ namespace apcurium.MK.Web
             HideMarketChangeWarning = config.ServerData.Network.HideMarketChangeWarning;
             AutoConfirmFleetChange = config.ServerData.Network.AutoConfirmFleetChange;
             IsCraftyClicksEnabled = config.ServerData.CraftyClicksApiKey.HasValue();
+            WebSiteRootPath = HttpContext.Current.Request.ApplicationPath;
 
             var paymentSettings = config.GetPaymentSettings();
 

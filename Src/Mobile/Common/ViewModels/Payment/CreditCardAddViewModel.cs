@@ -600,7 +600,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					    }
 					    else
 					    {
-                            await this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["CreditCardAdded"]);
+                            await this.Services().Message.ShowMessage(string.Empty, 
+                                _paymentSettings.IsOutOfAppPaymentDisabled ? 
+                                this.Services().Localize["CreditCardAdded_PayInCarDisabled"] :
+                                this.Services().Localize["CreditCardAdded"]);
 					    }
 						
 						if(_isFromPromotions)
