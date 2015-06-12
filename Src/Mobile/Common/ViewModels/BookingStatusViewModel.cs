@@ -140,8 +140,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return Settings.ShowMessageDriver
-                    && OrderStatusDetail.VehicleNumber.HasValue()
+                return /*Settings.ShowMessageDriver
+                    && */OrderStatusDetail.VehicleNumber.HasValue()
                     && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                         || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
             }
