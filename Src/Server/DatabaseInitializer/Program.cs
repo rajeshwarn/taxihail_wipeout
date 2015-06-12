@@ -108,6 +108,11 @@ namespace DatabaseInitializer
                     var temporaryDatabaseName = param.CompanyName + "_New";
 
                     PerformUpdate(param, creatorDb, param.CompanyName, temporaryDatabaseName);
+                    var currentAppPool = GetAppPool(param);
+                    if (currentAppPool != null && currentAppPool.State == ObjectState.Started)
+                    {
+                        currentAppPool.Stop();
+                    }
 
                     if (param.ReuseTemporaryDb)
                     {
@@ -250,7 +255,18 @@ namespace DatabaseInitializer
                 MigratePaymentSettings(serverSettings, commandBus);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
-
+#if DEBUG
+                if (isUpdate)
+                {
+                    var appPool = GetAppPool(param);
+                    if (appPool != null && appPool.State == ObjectState.Stopped)
+                    {
+                        Console.WriteLine("App pool is currently stopped, Starting App pool...");
+                        appPool.Start();
+                        Console.WriteLine("App pool Started...");
+                    }
+                }
+#endif
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
             catch (Exception e)
@@ -262,6 +278,13 @@ namespace DatabaseInitializer
             }
             return 0;
 // ReSharper restore LocalizableElement
+        }
+
+        private static ApplicationPool GetAppPool(DatabaseInitializerParams param)
+        {
+            var iisManager = new ServerManager();
+
+            return iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
         }
 
         public static void PerformUpdate(DatabaseInitializerParams param, DatabaseCreator creatorDb, string sourceDatabaseName, string targetDatabaseName)
