@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OrderEditView">
@@ -82,15 +82,6 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 </textField>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Apartment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZrU-4N-hYh" userLabel="Apartment">
-                                    <rect key="frame" x="8" y="166" width="61" height="17"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="17" id="5GO-3k-Yj1"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xc0-Ir-BQJ" userLabel="Apartment TextField" customClass="FlatTextField">
                                     <rect key="frame" x="8" y="189" width="136" height="41"/>
                                     <constraints>
@@ -133,6 +124,15 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Apartment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZrU-4N-hYh" userLabel="Apartment">
+                                    <rect key="frame" x="8" y="166" width="61" height="17"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="17" id="5GO-3k-Yj1"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -143,6 +143,7 @@
                                 <constraint firstItem="BgV-w2-ZOB" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="Bip-Zy-2sq"/>
                                 <constraint firstItem="tdj-6a-ZYn" firstAttribute="leading" secondItem="1Ib-CQ-l4c" secondAttribute="leading" id="EHw-rp-riD"/>
                                 <constraint firstAttribute="trailing" secondItem="qOU-hC-q4U" secondAttribute="trailing" constant="8" id="FDG-yI-T8h"/>
+                                <constraint firstItem="10z-cE-INp" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" priority="500" constant="14" id="HdN-b3-C6m"/>
                                 <constraint firstItem="tdj-6a-ZYn" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="JQ3-Kh-uZn"/>
                                 <constraint firstItem="LTY-qd-chV" firstAttribute="leading" secondItem="Xc0-Ir-BQJ" secondAttribute="trailing" constant="17" id="Knh-IV-bt0"/>
                                 <constraint firstItem="jhU-mT-P5E" firstAttribute="width" secondItem="1Ib-CQ-l4c" secondAttribute="width" id="NYO-yN-Rgu"/>
@@ -155,6 +156,7 @@
                                 <constraint firstItem="ZrU-4N-hYh" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" priority="500" constant="14" id="VlE-VN-F41"/>
                                 <constraint firstAttribute="trailing" secondItem="jhU-mT-P5E" secondAttribute="trailing" constant="8" id="YWe-dX-Lal"/>
                                 <constraint firstItem="Xc0-Ir-BQJ" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="a3v-5C-mEJ"/>
+                                <constraint firstItem="10z-cE-INp" firstAttribute="top" secondItem="4hS-SI-xiM" secondAttribute="bottom" priority="500" constant="12" id="bFw-am-S8f"/>
                                 <constraint firstItem="Xc0-Ir-BQJ" firstAttribute="leading" secondItem="ZrU-4N-hYh" secondAttribute="leading" id="dCn-4v-xxG"/>
                                 <constraint firstItem="jhU-mT-P5E" firstAttribute="top" secondItem="dqF-j3-PLn" secondAttribute="bottom" constant="6" id="ekE-I7-5yG"/>
                                 <constraint firstItem="10z-cE-INp" firstAttribute="top" secondItem="Xc0-Ir-BQJ" secondAttribute="bottom" constant="12" id="fUg-tf-8bT"/>
