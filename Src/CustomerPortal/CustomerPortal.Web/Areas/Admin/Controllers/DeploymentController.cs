@@ -150,7 +150,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 var job = new AddDeploymentJobModel { Android = true, CallBox = false, CompanyId = model.CompanyKey, CreateType = (int) DeploymentJobType.DeployClient , Database = false, IosAdhoc = true, IosAppStore = true, RevisionId = model.RevisionId , ServerUrlOptions = model.ServerUrlOptions  };                
                 
                 var environments = new MongoRepository<Environment>();
-                job.ServerId = model.ServerId;                
+                job.ServerId = environments.Single(e => e.Name == "MobileBuildServer").Id;                  
                 AddDeploymentJob(job);                
             }
 
