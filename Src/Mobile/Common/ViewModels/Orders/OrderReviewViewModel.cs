@@ -23,8 +23,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), settings => SettingsUpdated(settings));
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
 			Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
-			Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Where(note => note != Note), note => Note = note);
-			Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
+            //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
+			Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
+            Observe(_orderWorkflowService.GetAndObservePromoCode().Throttle(TimeSpan.FromMilliseconds(500)), code => PromoCode = code);
 		}
 			
 	    private async Task SettingsUpdated(BookingSettings settings)
