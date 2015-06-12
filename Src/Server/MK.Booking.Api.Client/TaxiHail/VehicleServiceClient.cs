@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
 	    public async Task SendMessageToDriver(string message, string vehicleNumber)
 	    {
-            var request = string.Format("vehicle/{0}/message", vehicleNumber);
+            var request = string.Format("/vehicle/{0}/message", vehicleNumber);
 
             await Client.PostAsync<string>(request,
                 new SendMessageToDriverRequest

@@ -625,4 +625,5 @@
   <string name="ManualRideLinqStatus_Payment">Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.</string>
   <string name="ManualRideLinqStatus_Email">Un reçu vous sera envoyé à {0}.</string>
   <string name="ManualRideLinqStatus_Greetings">Appréciez la balade!</string>
+  <string name="MessageToDriverTitle">Message au chauffeur</string>
 </resources>

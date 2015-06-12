@@ -4,7 +4,7 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [Route("vehicle/{VehicleNumber}/message", "POST")]
+    [Route("/vehicle/{VehicleNumber}/message", "POST")]
 	public class SendMessageToDriverRequest : BaseDto
 	{
 		public string Message { get; set; }

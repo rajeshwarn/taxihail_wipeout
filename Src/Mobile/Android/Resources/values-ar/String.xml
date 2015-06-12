@@ -606,4 +606,5 @@
   <string name="ManualRideLinqStatus_Payment">Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</string>
   <string name="ManualRideLinqStatus_Email">A receipt will be emailed to {0}.</string>
   <string name="ManualRideLinqStatus_Greetings">Enjoy the ride!</string>
+  <string name="MessageToDriverTitle">Message to Driver</string>
 </resources>

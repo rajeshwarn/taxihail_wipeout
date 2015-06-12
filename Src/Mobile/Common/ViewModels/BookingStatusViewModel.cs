@@ -743,8 +743,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var message = await this.Services().Message.ShowPromptDialog(
                         this.Services().Localize["MessageToDriverTitle"],
                         string.Empty,
-						() => { return; },
-                        true );
+						() => { return; });
 
 	                _vehicleService.SendMessageToDriver(message, _vehicleNumber);
 	            });

@@ -623,3 +623,4 @@
 "ManualRideLinqStatus_Payment"="Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.";
 "ManualRideLinqStatus_Email"="Un reçu vous sera envoyé à {0}.";
 "ManualRideLinqStatus_Greetings"="Appréciez la balade!";
+"MessageToDriverTitle"="Message au chauffeur";
