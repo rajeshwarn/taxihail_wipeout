@@ -83,18 +83,6 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/StatusEditAutoTipButton"
                 local:MvxBind="Click EditAutoTipCommand; Visibility CanEditAutoTip, Converter=Visibility" />
-            <Button
-                android:id="@+id/MessageDriverBtn"
-                style="@style/ButtonActionGrayStyle"
-                android:layout_marginTop="13dip"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/HeightButton"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dip"
-                android:layout_marginRight="8dip"
-                android:layout_gravity="center_vertical"
-                android:text="Msg Drv"
-                local:MvxBind="Click SendMessageToDriverCommand; Visibility IsMessageTaxiVisible, Converter=Visibility" />
         </LinearLayout>
     </FrameLayout>
     <apcurium.mk.booking.mobile.client.controls.SlidingPanel
@@ -278,13 +266,14 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="5dip" />
                 </LinearLayout>
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:paddingStart="10dip"
                     android:layout_marginEnd="10dip"
-                    android:paddingEnd="10dip">
+                    android:paddingEnd="10dip"
+                    android:orientation="vertical">
                     <ImageButton
                         local:MvxBind="Click CallTaxi; Visibility IsCallTaxiVisible, Converter=Visibility"
                         android:src="@drawable/phone"
@@ -294,7 +283,16 @@
                         android:layout_height="@dimen/HeightButton"
                         android:layout_marginEnd="10dip"
                         android:scaleType="fitCenter" />
-                </FrameLayout>
+                    <ImageButton
+                        local:MvxBind="Click SendMessageToDriverCommand; Visibility IsMessageTaxiVisible, Converter=Visibility"
+                        android:src="@drawable/phone"
+                        style="@style/ButtonActionGrayStyle"
+                        android:layout_marginTop="5dip"
+                        android:layout_width="40dip"
+                        android:layout_height="@dimen/HeightButton"
+                        android:layout_marginEnd="10dip"
+                        android:scaleType="fitCenter" />
+                </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout
