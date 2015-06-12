@@ -129,21 +129,24 @@ namespace DatabaseInitializer
                     replayService.ReplayAllEvents();
                     Console.WriteLine("Done playing events...");
 
-                    Console.WriteLine("Stop App Pool to finish Database Migration...");
-                    var currentAppPool = GetAppPool(param);
-
-                    if (currentAppPool != null && currentAppPool.State == ObjectState.Started)
+                    Console.WriteLine("Stop App Pool to finish Database Migration...");                
+                    using (var iisManager = new ServerManager())
                     {
-                        currentAppPool.Stop();
-                        Console.WriteLine("Local App Pool stopped");
+                        var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+
+                        if (appPool != null && appPool.State == ObjectState.Started)
+                        {
+                            appPool.Stop();
+                            Console.WriteLine("Local App Pool stopped");
+                        }
                     }
+                    
 
                     if (param.SecondWebServerName.HasValue())
                     {
-                        var remoteManager = ServerManager.OpenRemote(param.SecondWebServerName);
-                        if (remoteManager != null)
+                        using (var remoteServerManager = ServerManager.OpenRemote(param.SecondWebServerName))
                         {
-                            var remoteAppPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+                            var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
 
                             if (remoteAppPool != null && remoteAppPool.State == ObjectState.Started)
                             {
@@ -304,12 +307,16 @@ namespace DatabaseInitializer
 #if DEBUG
                 if (isUpdate)
                 {
-                    var appPool = GetAppPool(param);
-                    if (appPool != null && appPool.State == ObjectState.Stopped)
+                    using (var iisManager = new ServerManager())
                     {
-                        Console.WriteLine("App pool is currently stopped, Starting App pool...");
-                        appPool.Start();
-                        Console.WriteLine("App pool Started...");
+                        var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+
+                        if (appPool != null && appPool.State == ObjectState.Stopped)
+                        {
+                            Console.WriteLine("App pool is currently stopped, Starting App pool...");
+                            appPool.Start();
+                            Console.WriteLine("App pool Started...");
+                        }
                     }
                 }
 #endif
@@ -324,13 +331,6 @@ namespace DatabaseInitializer
             }
             return 0;
 // ReSharper restore LocalizableElement
-        }
-
-        private static ApplicationPool GetAppPool(DatabaseInitializerParams param)
-        {
-            var iisManager = new ServerManager();
-
-            return iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
         }
 
         public static void SetupMirroring(DatabaseInitializerParams param)
