@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -22,7 +23,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), settings => SettingsUpdated(settings));
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
 			Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
-			Observe(_orderWorkflowService.GetAndObserveNoteToDriver(), note => Note = note);
+            //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
+			Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
 			Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
 		}
 			
