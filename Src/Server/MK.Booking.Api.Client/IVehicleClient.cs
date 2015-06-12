@@ -13,5 +13,7 @@ namespace apcurium.MK.Booking.Api.Client
         Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId);
 
 		Task<VehicleType[]> GetVehicleTypes();
+
+        Task SendMessageToDriver(string message, string vehicleNumber);
     }
 }

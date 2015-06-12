@@ -1994,4 +1994,7 @@
   <data name="ManualRideLinqStatus_Greetings" xml:space="preserve">
     <value>Appréciez la balade!</value>
   </data>
+  <data name="MessageToDriverTitle" xml:space="preserve">
+    <value>Message au chauffeur</value>
+  </data>
 </root>
