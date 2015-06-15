@@ -582,7 +582,7 @@
 "View_RideLinqPair"="Check In";
 "PromotionLoadError"="Unable to load the available promotions. Please try again later.";
 "HomeView_ManualPairing"="In A Taxi";
-"HomeView_BookTaxi"="Book Taxi";
+"HomeView_BookTaxi"="Need a Taxi";
 "RideSettingsLoadError"="Unable to load the account settings. Please try again later.";
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";

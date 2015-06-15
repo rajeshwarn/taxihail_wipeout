@@ -64,6 +64,7 @@
                 </LinearLayout>
             </LinearLayout>
         <!-- Book now button -->
+        <!-- textSize set to 19dip to ensure text is visible.-->
             <FrameLayout
                 android:id="@+id/homeCenterButtons"
                 android:orientation="horizontal"
@@ -76,6 +77,7 @@
                     style="@style/ButtonActionGreenStyle"
                     android:layout_width="match_parent"
                     android:layout_height="44dip"
+                    android:textSize="19dip"
                     android:layout_marginBottom="5dp"
                     local:MvxBind="Click Book;Text BookButtonText"
                     android:layout_gravity="bottom|center_horizontal" />
@@ -184,10 +186,12 @@
                 android:layout_height="44dip"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="3dip"
+                android:textSize="19dip"
                 local:MvxBind="Click ManualPairingRideLinq"
                 android:text="@string/HomeView_ManualPairing"
                 android:layout_weight="1.5" />
         <!-- Book a taxi button -->
+        <!-- textSize set to 19dip to ensure text is visible.-->
             <FrameLayout
                 android:orientation="horizontal"
                 android:layout_width="0dp"
@@ -197,6 +201,7 @@
                 android:layout_weight="1.5">
                 <Button
                     style="@style/ButtonActionGreenStyle"
+                    android:textSize="19dip"
                     android:layout_width="match_parent"
                     android:layout_height="44dip"
                     android:text="@string/HomeView_BookTaxi"
