@@ -1870,7 +1870,7 @@
     <value>In A Taxi</value>
   </data>
   <data name="HomeView_BookTaxi" xml:space="preserve">
-    <value>Book Taxi</value>
+    <value>Need a Taxi</value>
   </data>
   <data name="RideSettingsLoadError" xml:space="preserve">
     <value>Unable to load the account settings. Please try again later.</value>
