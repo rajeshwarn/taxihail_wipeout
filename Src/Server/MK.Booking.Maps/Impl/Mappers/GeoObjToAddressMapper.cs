@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
                 ChangeStreetNumber(address, newStreetNumber);
             }
 
-            if (!isRange && address.StreetNumber.Contains("-") && components.Length == 2)
+            if (address.StreetNumber.Contains("-") && components.Length == 2)
             {
                 var newStreetNumber = components.Select(AddLeadingZeroIfSingleNumber).JoinBy("-");
                     
