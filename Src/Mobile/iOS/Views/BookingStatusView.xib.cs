@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 viewLine.Frame = new CGRect(0, topSlidingStatus.Bounds.Height -1, UIScreen.MainScreen.Bounds.Width, 1);
 
                 btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
-				btnTextDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
+				btnTextDriver.SetImage(UIImage.FromFile("message.png"), UIControlState.Normal);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
                 btnCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
                 btnNewRide.SetTitle(Localize.GetValue("StatusNewRideButton"), UIControlState.Normal);
