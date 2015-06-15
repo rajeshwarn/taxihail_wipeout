@@ -98,9 +98,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    {
                     var allOrders = await _accountService.GetHistoryOrders();
 
-                    // Do not display ManualRideLinQ orders yet. This will be done in MKTAXI-2589.
-			        orders = allOrders.Where(o => !o.IsManualRideLinq).ToArray();
-			    }
+                    // MKTAXI - 2589
+                    orders = allOrders.ToArray();
+                }
 			    catch (Exception ex)
 			    {
                     Logger.LogMessage(ex.Message, ex.ToString());
