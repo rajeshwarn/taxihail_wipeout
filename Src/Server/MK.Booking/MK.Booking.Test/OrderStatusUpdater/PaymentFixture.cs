@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.IBS;
@@ -717,6 +718,9 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
 
             // Act
             Sut.Update(ibsOrder, status);
+
+            // Wait for commands to be sent properly
+            Thread.Sleep(5000);
 
             // Assert
             PaymentServiceMock.Verify();
