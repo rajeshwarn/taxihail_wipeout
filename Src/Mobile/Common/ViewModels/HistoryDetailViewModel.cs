@@ -87,6 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		        _status = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => SendReceiptAvailable);
+                RaisePropertyChanged(() => RebookIsAvailable);
 		    }
 		}
         
@@ -135,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return IsCompleted 
 					&& !Settings.HideRebookOrder
-                    && ( Status != null )
+                    && Status != null
                     && !Status.IsManualRideLinq;
 			}
 		}
@@ -158,7 +159,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {          
 				return Settings.RatingEnabled 
 					&& IsDone 
-					&& !HasRated;
+					&& !HasRated
+                    && Status != null
+                    && !Status.IsManualRideLinq;
             }
         }
 
@@ -259,11 +262,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				var amount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
+			    if (Status.FareAvailable)
+			    {
+                    var amount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
+			        return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(amount.Value));
+			    }
+			    else if (Status.IsManualRideLinq)
+			    {
+			        return OrderStatus.Completed.ToString();
+			    }
 
-				return Status.FareAvailable
-					? string.Format ("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(amount.Value))
-					: Status.IBSStatusDescription;
+                return Status.IBSStatusDescription;
 			}
 		}
 
