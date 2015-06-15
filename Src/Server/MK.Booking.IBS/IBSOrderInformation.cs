@@ -42,6 +42,8 @@ namespace apcurium.MK.Booking.IBS
         public string TerminalId { get; set; }
         public string DriverId { get; set; }
 
+        public string DriverPhotoUrl { get; set; }
+
         public DateTime? Eta { get; set; }
 
         public double MeterAmount
@@ -83,6 +85,7 @@ namespace apcurium.MK.Booking.IBS
 
             ReferenceNumber = orderInfoFromIBS.ReferenceNumber.GetValue(ReferenceNumber);
             TerminalId = orderInfoFromIBS.TerminalId.GetValue(TerminalId);
+            //DriverPhotoUrl = orderInfoFromIBS.PhotoUrl;
 
             Fare = orderInfoFromIBS.Fare;
             Tip = orderInfoFromIBS.Tips;

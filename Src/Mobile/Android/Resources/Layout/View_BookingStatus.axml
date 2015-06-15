@@ -96,10 +96,25 @@
             android:layout_height="wrap_content"
             android:background="@color/main_background_color">
             <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dip"
+                android:layout_weight="0.25"
+                android:gravity="center"
+                local:MvxBind="Visibility DriverPhotoHidden, Converter=InvertedVisibility">
+                <Mvx.MvxImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:id="@+id/driverPhotoView"
+                    local:MvxBind="ImageUrl OrderStatusDetail.DriverInfos.DriverPhotoUrl" />
+            </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dip"
-                android:layout_marginTop="6dip">
+                android:layout_marginTop="6dip"
+                android:layout_weight="0.75">
                 <LinearLayout
                     android:id="@+id/companyLayout"
                     android:orientation="horizontal"
