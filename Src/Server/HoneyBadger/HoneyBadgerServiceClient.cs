@@ -31,8 +31,9 @@ namespace HoneyBadger
         /// <param name="searchRadius">Search radius in meters (Optional)</param>
         /// <param name="fleetIds">The ids of the fleets to search. (Optional)</param>
         /// <param name="returnAll">True to return all the available vehicles; false will return a set number defined by the admin settings. (Optional)</param>
+        /// <param name="wheelchairAccessibleOnly">True to return only wheelchair accessible vehicles, false will return all. (Optional)</param>
         /// <returns>The available vehicles.</returns>
-        public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false)
+        public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
         {
             if (fleetIds != null && !fleetIds.Any())
             {

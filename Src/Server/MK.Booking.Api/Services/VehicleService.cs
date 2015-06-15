@@ -119,11 +119,12 @@ namespace apcurium.MK.Booking.Api.Services
                 }
 
                 var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(
-                    availableVehiclesMarket,
-                    request.Latitude,
-                    request.Longitude,
-                    null,
-                    availableVehiclesFleetIds);
+                    market: availableVehiclesMarket,
+                    latitude: request.Latitude,
+                    longitude: request.Longitude,
+                    searchRadius: null,
+                    fleetIds: availableVehiclesFleetIds,
+                    wheelchairAccessibleOnly: (request.WheelchairAccessibleOnly != null ? request.WheelchairAccessibleOnly.Value : false));
 
                 vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
                 {

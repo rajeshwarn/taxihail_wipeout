@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public double Longitude { get; set; }
 
         public int? VehicleTypeId { get; set; }
+
+        public bool? WheelchairAccessibleOnly { get; set; }
     }
 
     public class AvailableVehiclesResponse : List<AvailableVehicle>
