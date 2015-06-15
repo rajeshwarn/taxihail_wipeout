@@ -19,5 +19,7 @@ namespace apcurium.MK.Booking.ReadModel
         public int MaxNumberPassengers { get; set; }
 
         public int? ReferenceNetworkVehicleTypeId { get; set; }
+
+        public bool IsWheelchairAccessible { get; set; }
     }
 }

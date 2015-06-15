@@ -51,6 +51,8 @@
             var vehicleType = this.serializeForm(form);
             var vehicleType = _.extend(this.model.toJSON(), vehicleType);
 
+            vehicleType.isWheelchairAccessible = $("[name=isWheelchairAccessible]")[0].checked;
+
             var isValid = this.validateNetworkVehiclePassengerNumbers(vehicleType);
             if (!isValid) {
                 this.$(':submit').button('reset');

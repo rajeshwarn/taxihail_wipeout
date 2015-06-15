@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Api.Services
                     longitude: request.Longitude,
                     searchRadius: null,
                     fleetIds: availableVehiclesFleetIds,
-                    wheelchairAccessibleOnly: (request.WheelchairAccessibleOnly != null ? request.WheelchairAccessibleOnly.Value : false));
+                    wheelchairAccessibleOnly: (vehicleType == null ? false : vehicleType.IsWheelchairAccessible));
 
                 vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
                 {
@@ -171,7 +171,8 @@ namespace apcurium.MK.Booking.Api.Services
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
                 CompanyId = AppConstants.CompanyId,
                 MaxNumberPassengers = request.MaxNumberPassengers,
-                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId
+                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId,
+                IsWheelchairAccessible = request.IsWheelchairAccessible
             };
 
             if (_serverSettings.ServerData.Network.Enabled)
@@ -214,7 +215,8 @@ namespace apcurium.MK.Booking.Api.Services
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
                 CompanyId = AppConstants.CompanyId,
                 MaxNumberPassengers = request.MaxNumberPassengers,
-                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId
+                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId,
+                IsWheelchairAccessible = request.IsWheelchairAccessible
             };
 
             _commandBus.Send(command);
