@@ -33,7 +33,14 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 
             var isRange = !foundByName && geoAddress.LocationType == "RANGE_INTERPOLATED";
             
-            //If the search was done by geolocation ( foundByName == false ), we check the type returned by google to see if it's a range.
+            //indicates that the returned result reflects an approximation (usually on a road) interpolated between two precise points (such as intersections). Interpolated results are generally returned when rooftop geocodes are unavailable for a street address.
+
+            //Mega patch for Four Twos!!! When you search for 2107 Utopia Pkwy, google returns 21-7.  
+            //If the search was done by name ( foundByName == true ) we assume that it's an address not a range.  
+            //If the search was done by geolocation ( foundByName == false ), we check the type returned by google.
+            //If the search was done by name ( foundByName == true ), and the address has 2 component 21-7, the second component must be padded with a zero.
+            //If this code causes a problem, we need to add a settings and make it active only for Four Twos ( or companies in queens )
+
             if (isRange && address.StreetNumber.Contains("-"))
             {
                 var components = address.StreetNumber.Split('-');
@@ -41,6 +48,19 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 
                 var newStreetNumber = components.Select(AddLeadingZeroIfSingleNumber).Take(firstMiddleCount).JoinBy("");
                 ChangeStreetNumber(address, newStreetNumber);
+            }
+            
+            if (address.StreetNumber.Contains("-") && (address.StreetNumber.Split('-').Count() == 2))
+            {
+                var streetNumberComponents = address.StreetNumber.Split('-');
+                var newStreetNumber = AddLeadingZeroIfSingleNumber(streetNumberComponents[0]) +
+                                      AddLeadingZeroIfSingleNumber(streetNumberComponents[1]);
+                ChangeStreetNumber(address, newStreetNumber);
+            }
+            else
+            {
+                var newStreetNumber = address.StreetNumber.Replace("-", "");
+                ChangeStreetNumber(address, newStreetNumber); 
             }
 
             if (address.StreetNumber.IsNullOrEmpty() && placeName.HasValue())
