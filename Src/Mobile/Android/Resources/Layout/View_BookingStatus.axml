@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:background="@color/main_background_color">
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dip"
                 android:layout_weight="0.25"
@@ -98,7 +98,7 @@
                     local:MvxBind="ImageUrl OrderStatusDetail.DriverInfos.DriverPhotoUrl" />
             </RelativeLayout>
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dip"
                 android:layout_marginTop="6dip"
