@@ -144,15 +144,27 @@ namespace DatabaseInitializer
 
                     if (param.SecondWebServerName.HasValue())
                     {
-                        using (var remoteServerManager = ServerManager.OpenRemote(param.SecondWebServerName))
+                        try
                         {
-                            var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
-
-                            if (remoteAppPool != null && remoteAppPool.State == ObjectState.Started)
+                            using (var remoteServerManager = ServerManager.OpenRemote(param.SecondWebServerName))
                             {
-                                remoteAppPool.Stop();
-                                Console.WriteLine("Remote App Pool stopped.");
+                                var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+
+                                if (remoteAppPool != null && remoteAppPool.State == ObjectState.Started)
+                                {
+                                    remoteAppPool.Stop();
+                                    Console.WriteLine("Remote App Pool stopped.");
+                                }
+                                else if(remoteAppPool == null)
+                                {
+                                    Console.WriteLine("No AppPool named {0} found at {1}", param.SecondWebServerName, param.AppPoolName);
+                                }
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Failed to connect to remote server {0}", param.SecondWebServerName);
+                            Console.WriteLine(ex.Message);
                         }
                     }
 

@@ -303,16 +303,27 @@ namespace MK.DeploymentService
             }
 
             Log("Connecting to Second WebServer.");
-
-            using (var remoteServer = ServerManager.OpenRemote(Settings.Default.SecondWebServerName))
+            try
             {
-                var remoteAppPool = remoteServer.ApplicationPools.FirstOrDefault(x => x.Name == Settings.Default.SecondWebServerName);
-
-                if (remoteAppPool != null && remoteAppPool.State == ObjectState.Stopped)
+                using (var remoteServerManager = ServerManager.OpenRemote(Settings.Default.SecondWebServerName))
                 {
-                    Log("Restarting remote pool");
-                    remoteAppPool.Start();
+                    var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == appPoolName);
+
+                    if (remoteAppPool != null && remoteAppPool.State == ObjectState.Stopped)
+                    {
+                        remoteAppPool.Stop();
+                        Console.WriteLine("Remote App Pool stopped.");
+                    }
+                    else if (remoteAppPool == null)
+                    {
+                        Console.WriteLine("No AppPool named {0} found at {1}", Settings.Default.SecondWebServerName, appPoolName);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to connect to remote server {0}", Settings.Default.SecondWebServerName);
+                Console.WriteLine(ex.Message);
             }
         }
 
