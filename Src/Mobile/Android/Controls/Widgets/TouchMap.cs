@@ -20,6 +20,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Color = Android.Graphics.Color;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
@@ -82,6 +83,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         ShowPickupPin(value);
                     }
+                });
+            }
+        }
+
+        private OrderStatusDetail _displayDeviceLocation;
+        public OrderStatusDetail DisplayDisplayDeviceLocation
+        {
+            get { return _displayDeviceLocation; }
+            set
+            {
+                DeferWhenMapReady(() =>
+                {
+                    _displayDeviceLocation = value;
+                    Map.UiSettings.MyLocationButtonEnabled = false;
+                    Map.MyLocationEnabled = !_displayDeviceLocation.IBSStatusId.HasValue() || VehicleStatuses.CanCancelOrderStatus.Contains(_displayDeviceLocation.IBSStatusId);
                 });
             }
         }
@@ -498,7 +514,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(lat, lng)));
         }
-
 
         private void DeferWhenMapReady(Action action)
         {
