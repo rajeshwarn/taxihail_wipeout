@@ -112,6 +112,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					var firstId = orders.First().Id;
 					var lastId = orders.Last().Id;
 					var ordersViewModels = new List<OrderViewModel>();
+
 					foreach (var item in orders)
 					{
 						var viewModel = new OrderViewModel
@@ -121,7 +122,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							CreatedDate = item.CreatedDate,
 							PickupAddress = item.PickupAddress,
 							PickupDate = item.PickupDate,
-							Status = item.Status,
+                            Status = item.Status,
 							Title = FormatDateTime(item.PickupDate),
 							IsFirst = item.Id == firstId,
 							IsLast = item.Id.Equals(lastId),
