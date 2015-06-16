@@ -135,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return IsCompleted 
 					&& !Settings.HideRebookOrder
-                    && ( Status != null )
+                    && Status != null
                     && !Status.IsManualRideLinq;
 			}
 		}
