@@ -226,7 +226,7 @@
     <value>Promotion</value>
   </data>
   <data name="Email_Body_Toll" xml:space="preserve">
-    <value>Péage</value>
+    <value>Péages</value>
   </data>
   <data name="Email_Body_TotalAmount" xml:space="preserve">
     <value>Montant total</value>

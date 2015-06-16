@@ -495,6 +495,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     AccountId = @event.AccountId,
                     Id = @event.SourceId,
+                    IBSOrderId = @event.TripId,
                     PickupDate = @event.PairingDate,
                     CreatedDate = @event.PairingDate,
                     PickupAddress = @event.PickupAddress,
@@ -634,10 +635,11 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
 
                 rideLinqDetails.DriverId = @event.DriverId;
+                rideLinqDetails.StartTime = @event.StartTime;
+                rideLinqDetails.EndTime = @event.EndTime;
                 rideLinqDetails.TripId = @event.TripId;
                 rideLinqDetails.Distance = @event.Distance;
                 rideLinqDetails.PairingToken = @event.PairingToken;
-                rideLinqDetails.EndTime = @event.EndTime;
                 rideLinqDetails.Extra = @event.Extra;
                 rideLinqDetails.Fare = @event.Fare;
                 rideLinqDetails.FareAtAlternateRate = @event.FareAtAlternateRate;

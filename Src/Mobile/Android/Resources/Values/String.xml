@@ -584,7 +584,7 @@
   <string name="View_RideLinqPair">Check In</string>
   <string name="PromotionLoadError">Unable to load the available promotions. Please try again later.</string>
   <string name="HomeView_ManualPairing">In A Taxi</string>
-  <string name="HomeView_BookTaxi">Book Taxi</string>
+  <string name="HomeView_BookTaxi">Need a Taxi</string>
   <string name="RideSettingsLoadError">Unable to load the account settings. Please try again later.</string>
   <string name="ManualPairingForRideLinQ_Pair">CHECK IN</string>
   <string name="PaymentLoadError">Unable to load the payment details. Please try again later.</string>

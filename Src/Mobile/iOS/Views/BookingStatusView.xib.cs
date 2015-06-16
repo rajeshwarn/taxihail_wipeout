@@ -293,6 +293,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.For(v => v.TaxiLocation)
 					.To(vm => vm.OrderStatusDetail);
 				set.Bind(mapStatus)
+					.For(v => v.DisplayDeviceLocation)
+					.To(vm => vm.OrderStatusDetail);
+				set.Bind(mapStatus)
 					.For(v => v.MapCenter)
 					.To(vm => vm.MapCenter);
 

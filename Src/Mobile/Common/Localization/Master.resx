@@ -1870,7 +1870,7 @@
     <value>In A Taxi</value>
   </data>
   <data name="HomeView_BookTaxi" xml:space="preserve">
-    <value>Book Taxi</value>
+    <value>Need a Taxi</value>
   </data>
   <data name="RideSettingsLoadError" xml:space="preserve">
     <value>Unable to load the account settings. Please try again later.</value>
@@ -2007,7 +2007,13 @@
   <data name="MessageToDriverTitle" xml:space="preserve">
     <value>Message to Driver</value>
   </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
+    <value>Please contact {0} at {1} for further assistance or try again.</value>
+  </data>
   <data name="SendMessageToDriverErrorMessage" xml:space="preserve">
     <value>An error occurred while trying to contact the driver. Please try again later.</value>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
+    <value>The order cannot be created, please try again.</value>
   </data>
 </root>
