@@ -626,4 +626,5 @@
   <string name="ManualRideLinqStatus_Email">Un reçu vous sera envoyé à {0}.</string>
   <string name="ManualRideLinqStatus_Greetings">Appréciez la balade!</string>
   <string name="MessageToDriverTitle">Message au chauffeur</string>
+  <string name="SendMessageToDriverErrorMessage">Une erreur est survenue en essayant de contacter le chauffeur. Veuillez réessayer plus tard.</string>
 </resources>

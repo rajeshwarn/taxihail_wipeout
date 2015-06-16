@@ -746,7 +746,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         string.Empty,
 						() => { return; });
 
-	                _vehicleService.SendMessageToDriver(message, _vehicleNumber);
+	                var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber);
+	                if (!messageSent)
+	                {
+                        this.Services().Message.ShowMessage(
+                            this.Services().Localize["Error"],
+                            this.Services().Localize["SendMessageToDriverErrorMessage"]);
+	                }
 	            });
 	        }
 	    }

@@ -1997,4 +1997,7 @@
   <data name="MessageToDriverTitle" xml:space="preserve">
     <value>Message au chauffeur</value>
   </data>
+  <data name="SendMessageToDriverErrorMessage" xml:space="preserve">
+    <value>Une erreur est survenue en essayant de contacter le chauffeur. Veuillez réessayer plus tard.</value>
+  </data>
 </root>
