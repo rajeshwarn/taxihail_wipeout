@@ -66,8 +66,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
 			_useThemeColorForPickupAndDestinationMapIcons = settings.UseThemeColorForMapIcons;
 			_showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
-
-            ShowsUserLocation = false;
         }
 
         public void OnRegionChanged()
