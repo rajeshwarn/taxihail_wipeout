@@ -51,6 +51,10 @@ namespace HoneyBadger
                     new KeyValuePair<string, string>("meterState", ((int)MeterStates.ForHire).ToString()),
                     new KeyValuePair<string, string>("logonState", ((int)LogonStates.LoggedOn).ToString())
                 };
+            if (wheelchairAccessibleOnly)
+            {
+                @params.Add(new KeyValuePair<string, string>("vehicleType", "1"));
+            }
 
             var vertices = GeographyHelper.CirclePointsFromRadius(latitude, longitude, searchRadiusInKm, 10);
 
