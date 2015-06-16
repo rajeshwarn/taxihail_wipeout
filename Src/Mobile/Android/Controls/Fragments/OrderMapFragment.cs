@@ -61,6 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             this.CreateBindingContext();  
                       
             Map = mapFragment.Map;
+		    Map.MyLocationEnabled = true;
 
             // NOTE: wasn't working on some devices, reverted to standard padding and moved the buttons up in the layout
             // add padding to the map to move the Google logo around

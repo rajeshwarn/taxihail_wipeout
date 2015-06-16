@@ -110,6 +110,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _destinationAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Destination, _useThemeColorForPickupAndDestinationMapIcons);
 
             InitializeGesture();
+
+			// Show glowing blue dot
+			this.ShowsUserLocation = true;
         }
             
         private void InitializeGesture()
