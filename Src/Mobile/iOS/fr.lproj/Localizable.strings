@@ -266,6 +266,7 @@
 "CreditCardBookingSettingsError"="Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.";
 "CreditCardInvalidCrediCardNUmber"="Le numéro de la carte ne semble pas être valide";
 "RideSettingsCompany"="Société";
+"ServiceError_ErrorCreatingOrderMessage_NoCall"="Votre demande n'a pas pu être prise en compte, veuillez réessayer de nouveau.";
 "CmtCancelPayment"="Annuler";
 "DriverInfoLicence"="Licence:";
 "Overdue_IBSOrderId"="Commande:";
@@ -570,6 +571,7 @@
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
 "November"="Novembre (11)";
 "EmptyString"="";
+"ServiceError_ErrorCreatingOrderMessage"="Merci de contacter {0} au {1} pour toute demande d'assistance";
 "HistoryDetailPromoLabel"="Code promo:";
 "DateTimePickerPickTime"="Sélectionner l'heure de départ";
 "CreateAccountErrorMessage"="Le compte de peut malheureusement pas être créé";
