@@ -19,6 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TinyIoC;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -65,9 +66,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
 			_useThemeColorForPickupAndDestinationMapIcons = settings.UseThemeColorForMapIcons;
 			_showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
-
-            // prevent from showing glowing blue dot
-            ShowsUserLocation = false;
         }
 
         public void OnRegionChanged()
@@ -213,6 +211,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private MKAnnotation _taxiLocationPin;
+
+		private OrderStatusDetail _displayDeviceLocation;
+		public OrderStatusDetail DisplayDeviceLocation
+		{
+			get { return _displayDeviceLocation; }
+			set
+			{
+				_displayDeviceLocation = value;
+				ShowsUserLocation = !_displayDeviceLocation.IBSStatusId.HasValue() || VehicleStatuses.CanCancelOrderStatus.Contains(_displayDeviceLocation.IBSStatusId);
+			}
+		}
 
         private OrderStatusDetail _taxiLocation;
         public OrderStatusDetail TaxiLocation
