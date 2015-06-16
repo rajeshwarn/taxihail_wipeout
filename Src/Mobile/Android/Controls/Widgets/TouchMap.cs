@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private OrderStatusDetail _displayDeviceLocation;
-        public OrderStatusDetail DisplayDisplayDeviceLocation
+        public OrderStatusDetail DisplayDeviceLocation
         {
             get { return _displayDeviceLocation; }
             set
