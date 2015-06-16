@@ -612,6 +612,8 @@
 "RideHistoryButton"="Historique des trajets";
 "Register"="Inscription";
 "View_HistoryDetail"="Détail de la commande";
+"MessageToDriverTitle"="Message au chauffeur";
+"SendMessageToDriverErrorMessage"="Une erreur est survenue en essayant de contacter le chauffeur. Veuillez réessayer plus tard.";
 "TaxiHailNetworkTimeOutErrorTitle"="Erreur";
 "HistoryDetailBuildingNameNotSpecified"="Non spécifié";
 "TabBook"="Réserver maintenant!";

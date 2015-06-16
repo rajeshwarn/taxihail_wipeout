@@ -593,6 +593,8 @@
 "RideHistoryButton"="حجوزات سابقة";
 "Register"="التسجيل";
 "View_HistoryDetail"="تفاصيل الطلب";
+"MessageToDriverTitle"="Message to Driver";
+"SendMessageToDriverErrorMessage"="An error occurred while trying to contact the driver. Please try again later.";
 "TaxiHailNetworkTimeOutErrorTitle"="Error";
 "HistoryDetailBuildingNameNotSpecified"="غير محدد";
 "TabBook"="احجز";

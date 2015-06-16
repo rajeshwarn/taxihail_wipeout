@@ -448,6 +448,10 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Registration PayBack", Description = "Defines if the PayBack field when creating a new account is required or not")]
         public bool? IsPayBackRegistrationFieldRequired { get; set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Show Message Driver", Description = "Show button on the status screen to message the driver")]
+        public bool ShowMessageDriver { get; set; }
     }
 }
 

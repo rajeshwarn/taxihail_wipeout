@@ -619,6 +619,8 @@
 "StatusConfirmNewBooking"="Booking a new taxi will keep this order active, do you want to continue ?";
 "InvalidPassengersNumber"="The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.";
 "TabBook"="Book";
+"MessageToDriverTitle"="Message to Driver";
+"SendMessageToDriverErrorMessage"="An error occurred while trying to contact the driver. Please try again later.";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";
 "TaxiMapTitle"="Your Taxi";
 "InvalidLoginMessage"="The email or/and password is invalid.";

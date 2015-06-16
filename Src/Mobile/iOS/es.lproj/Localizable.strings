@@ -604,6 +604,8 @@
 "DeleteCreditCard"="¿Desea eliminar la tarjeta de crédito asociada con esta cuenta?";
 "Register"="Registrarse";
 "View_HistoryDetail"="Detalles de la Reservación";
+"MessageToDriverTitle"="Message to Driver";
+"SendMessageToDriverErrorMessage"="An error occurred while trying to contact the driver. Please try again later.";
 "ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
 "HistoryDetailBuildingNameNotSpecified"="No Especificado";
 "TabBook"="De Alta";

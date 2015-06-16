@@ -136,6 +136,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
+        public bool IsMessageTaxiVisible
+        {
+            get
+            {
+                return Settings.ShowMessageDriver
+                    && IsDriverInfoAvailable
+                    && OrderStatusDetail.VehicleNumber.HasValue()
+                    && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+                        || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
+            }
+        }
+
         public bool IsDriverInfoAvailable
         {
             get 
@@ -226,19 +238,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public OrderStatusDetail OrderStatusDetail
         {
 			get { return _orderStatusDetail; }
-			set {
+			set
+            {
 				_orderStatusDetail = value;
-				RaisePropertyChanged (() => OrderStatusDetail);
-				RaisePropertyChanged (() => CompanyHidden);
-				RaisePropertyChanged (() => VehicleDriverHidden);
-				RaisePropertyChanged (() => VehicleLicenceHidden);
-				RaisePropertyChanged (() => VehicleTypeHidden);
-				RaisePropertyChanged (() => VehicleMakeHidden);
-				RaisePropertyChanged (() => VehicleModelHidden);
-				RaisePropertyChanged (() => VehicleColorHidden);
-				RaisePropertyChanged (() => IsDriverInfoAvailable);
-				RaisePropertyChanged (() => IsCallTaxiVisible);
-				RaisePropertyChanged (() => CanGoBack);
+				RaisePropertyChanged(() => OrderStatusDetail);
+				RaisePropertyChanged(() => CompanyHidden);
+				RaisePropertyChanged(() => VehicleDriverHidden);
+				RaisePropertyChanged(() => VehicleLicenceHidden);
+				RaisePropertyChanged(() => VehicleTypeHidden);
+				RaisePropertyChanged(() => VehicleMakeHidden);
+				RaisePropertyChanged(() => VehicleModelHidden);
+				RaisePropertyChanged(() => VehicleColorHidden);
+				RaisePropertyChanged(() => IsDriverInfoAvailable);
+				RaisePropertyChanged(() => IsCallTaxiVisible);
+                RaisePropertyChanged(() => IsMessageTaxiVisible);
+				RaisePropertyChanged(() => CanGoBack);
 			}
 		}
 
@@ -720,6 +734,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+	    public ICommand SendMessageToDriverCommand
+	    {
+	        get
+	        {
+	            return this.GetCommand(async () =>
+	            {
+                    var message = await this.Services().Message.ShowPromptDialog(
+                        this.Services().Localize["MessageToDriverTitle"],
+                        string.Empty,
+						() => { return; });
+
+	                var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber);
+	                if (!messageSent)
+	                {
+                        this.Services().Message.ShowMessage(
+                            this.Services().Localize["Error"],
+                            this.Services().Localize["SendMessageToDriverErrorMessage"]);
+	                }
+	            });
+	        }
+	    }
 
 		public ICommand PrepareNewOrder
         {

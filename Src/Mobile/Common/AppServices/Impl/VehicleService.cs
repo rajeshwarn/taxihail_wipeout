@@ -97,11 +97,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public AvailableVehicle GetNearestVehicle(Address pickup, AvailableVehicle[] cars)
 		{
-			if ((cars == null) || (!cars.Any ())) {
+			if (cars == null || !cars.Any ())
+            {
 				return null;
 			}
 
-			return OrderVehiclesByDistance (pickup, cars).First ();
+			return OrderVehiclesByDistance (pickup, cars).First();
 		}
 
 		public MapBounds GetBoundsForNearestVehicles(Address pickup, IEnumerable<AvailableVehicle> cars)
@@ -155,6 +156,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			return _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, null, null, true);  
 		}
+
+	    public async Task<bool> SendMessageToDriver(string message, string vehicleNumber)
+	    {
+            try
+            {
+                await UseServiceClientAsync<IVehicleClient>(service => service.SendMessageToDriver(message, vehicleNumber))
+                    .ConfigureAwait(false);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.LogMessage("Error when sending message to driver");
+                Logger.LogError(e);
+                return false;
+            }
+	    }
 
 		public void Stop ()
 		{   

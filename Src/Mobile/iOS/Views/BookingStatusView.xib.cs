@@ -81,6 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 viewLine.Frame = new CGRect(0, topSlidingStatus.Bounds.Height -1, UIScreen.MainScreen.Bounds.Width, 1);
 
                 btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
+				btnTextDriver.SetImage(UIImage.FromFile("message.png"), UIControlState.Normal);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
                 btnCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
                 btnNewRide.SetTitle(Localize.GetValue("StatusNewRideButton"), UIControlState.Normal);
@@ -88,6 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnTip.SetTitle(Localize.GetValue("StatusEditAutoTipButton"), UIControlState.Normal);
 
                 FlatButtonStyle.Silver.ApplyTo(btnCallDriver);
+				FlatButtonStyle.Silver.ApplyTo(btnTextDriver);
                 FlatButtonStyle.Silver.ApplyTo(btnCall);
 				FlatButtonStyle.Silver.ApplyTo(btnTip);
                 FlatButtonStyle.Red.ApplyTo(btnCancel);
@@ -95,6 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 FlatButtonStyle.Red.ApplyTo(btnUnpair);
                                             
                 btnCallDriver.SetX(UIScreen.MainScreen.Bounds.Width - btnCallDriver.Frame.Width - 12f); // 12f = right margin
+				btnTextDriver.SetX(UIScreen.MainScreen.Bounds.Width - btnTextDriver.Frame.Width - 12f); // 12f = right margin
 
                 View.BringSubviewToFront (bottomBar);
 
@@ -333,6 +336,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				set.Bind(btnTip)
 					.For(v => v.Hidden)
 					.To(vm => vm.CanEditAutoTip)
+					.WithConversion("BoolInverter");
+
+				set.Bind(btnTextDriver)
+					.For("TouchUpInside")
+					.To(vm => vm.SendMessageToDriverCommand);
+				set.Bind(btnTextDriver)
+					.For(v => v.Hidden)
+					.To(vm => vm.IsMessageTaxiVisible)
 					.WithConversion("BoolInverter");
 
 				set.Apply();

@@ -25,6 +25,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnMessageDriver { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnNewRide { get; set; }
 
 		[Outlet]
@@ -32,6 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnResend { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnTextDriver { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnTip { get; set; }
@@ -110,14 +116,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnTextDriver != null) {
+				btnTextDriver.Dispose ();
+				btnTextDriver = null;
+			}
+
 			if (bottomBar != null) {
 				bottomBar.Dispose ();
 				bottomBar = null;
-			}
-
-			if (btnTip != null) {
-				btnTip.Dispose ();
-				btnTip = null;
 			}
 
 			if (btnCall != null) {
@@ -135,6 +141,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnCancel = null;
 			}
 
+			if (btnMessageDriver != null) {
+				btnMessageDriver.Dispose ();
+				btnMessageDriver = null;
+			}
+
 			if (btnNewRide != null) {
 				btnNewRide.Dispose ();
 				btnNewRide = null;
@@ -148,6 +159,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnResend != null) {
 				btnResend.Dispose ();
 				btnResend = null;
+			}
+
+			if (btnTip != null) {
+				btnTip.Dispose ();
+				btnTip = null;
 			}
 
 			if (btnUnpair != null) {
