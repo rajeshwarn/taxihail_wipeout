@@ -281,6 +281,24 @@ namespace MK.DeploymentService
                 Thread.Sleep(2000);
             }
 
+            if (!string.IsNullOrEmpty(Settings.Default.SecondWebServerName))
+            {
+                using (var remoteServerManager = ServerManager.OpenRemote(Settings.Default.SecondWebServerName))
+                {
+                    var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == appPoolName);
+                    if (remoteAppPool == null)
+                    {
+                        Log("Creating a new app pool on the remote server");
+                        //create a new one
+                        remoteAppPool = remoteServerManager.ApplicationPools.Add(appPoolName);
+                        remoteAppPool.ManagedRuntimeVersion = "v4.0";
+                        remoteServerManager.CommitChanges();
+                        Thread.Sleep(2000);
+                    }
+                }
+            }
+            
+
             if (_job.Database)
             {
                 Log("Deploying Database");
