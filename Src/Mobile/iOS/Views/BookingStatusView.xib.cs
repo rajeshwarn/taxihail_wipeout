@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CoreGraphics;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
@@ -12,14 +13,15 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using MapKit;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using Cirrious.MvvmCross.Binding.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class BookingStatusView : BaseViewController<BookingStatusViewModel>
-    {
+	public partial class BookingStatusView : BaseViewController<BookingStatusViewModel>
+	{
 		private const float DEFAULT_STATUS_LABEL_HEIGHT = 21f;
 		private const float DEFAULT_TOP_VISIBLE_STATUS_HEIGHT = 45f;
-        private float VisibleStatusHeight = 45f;
+		private float VisibleStatusHeight = 45f;
 
 		private const float DEFAULT_CALL_BUTTON_WIDTH = 185f;
 		private const float DEFAULT_TIP_BUTTON_WIDTH = 65f;
@@ -27,105 +29,106 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		private const float DEFAULT_PADDING = 8f;
 
 		public BookingStatusView () : base("BookingStatusView", null)
-        {
-        }
+		{
+		}
 
-        public override void ViewWillAppear (bool animated)
-        {
-            base.ViewWillAppear (animated);
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
 
-            if (!Theme.IsApplied)
-            {
-                // reset to default theme for the navigation bar
-                ChangeThemeOfNavigationBar();
-                Theme.IsApplied = true;
-            }
-
-            NavigationController.NavigationBar.Hidden = false;
-            NavigationItem.Title = Localize.GetValue("View_BookingStatus");
-
-            ChangeThemeOfBarStyle();
-
-            NavigationItem.HidesBackButton = !ViewModel.CanGoBack;
-        }
-
-        public override void ViewDidLoad ()
-        {
-            base.ViewDidLoad ();
-
-            try 
+			if (!Theme.IsApplied)
 			{
-                View.BringSubviewToFront (statusBar);
+				// reset to default theme for the navigation bar
+				ChangeThemeOfNavigationBar();
+				Theme.IsApplied = true;
+			}
 
-                var textColor = UIColor.FromRGB (86, 86, 86);
+			NavigationController.NavigationBar.Hidden = false;
+			NavigationItem.Title = Localize.GetValue("View_BookingStatus");
 
-                statusBar.Initialize ( topVisibleStatus, topSlidingStatus );
-                lblConfirmation.Text = Localize.GetValue("LoadingMessage");
-                txtCompany.Text = Localize.GetValue("DriverInfoCompany");
-                txtCompany.TextColor = textColor;
-                txtDriver.Text = Localize.GetValue("DriverInfoDriver");
-                txtDriver.TextColor = textColor;
-                txtLicence.Text = Localize.GetValue("DriverInfoLicence");
-                txtLicence.TextColor = textColor;
-                txtTaxiType.Text = Localize.GetValue("DriverInfoTaxiType");
-                txtTaxiType.TextColor = textColor;
-                txtMake.Text = Localize.GetValue("DriverInfoMake");
-                txtMake.TextColor = textColor;
-                txtModel.Text = Localize.GetValue("DriverInfoModel");
-                txtModel.TextColor = textColor;
-                txtColor.Text = Localize.GetValue("DriverInfoColor");
-                txtColor.TextColor = textColor;
+			ChangeThemeOfBarStyle();
 
-                topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("background.png"));
+			NavigationItem.HidesBackButton = !ViewModel.CanGoBack;
+		}
 
-                viewLine.Frame = new CGRect(0, topSlidingStatus.Bounds.Height -1, UIScreen.MainScreen.Bounds.Width, 1);
+		public override void ViewDidLoad ()
+		{
+			base.ViewDidLoad ();
 
-                btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
-                btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
-                btnCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
-                btnNewRide.SetTitle(Localize.GetValue("StatusNewRideButton"), UIControlState.Normal);
-                btnUnpair.SetTitle(Localize.GetValue("UnpairPayInCar"), UIControlState.Normal);
+			try 
+			{
+				View.BringSubviewToFront (statusBar);
+
+				var textColor = UIColor.FromRGB (86, 86, 86);
+
+				statusBar.Initialize ( topVisibleStatus, topSlidingStatus );
+
+
+				lblConfirmation.Text = Localize.GetValue("LoadingMessage");
+				txtCompany.Text = Localize.GetValue("DriverInfoCompany");
+				txtCompany.TextColor = textColor;
+				txtDriver.Text = Localize.GetValue("DriverInfoDriver");
+				txtDriver.TextColor = textColor;
+				txtLicence.Text = Localize.GetValue("DriverInfoLicence");
+				txtLicence.TextColor = textColor;
+				txtTaxiType.Text = Localize.GetValue("DriverInfoTaxiType");
+				txtTaxiType.TextColor = textColor;
+				txtMake.Text = Localize.GetValue("DriverInfoMake");
+				txtMake.TextColor = textColor;
+				txtModel.Text = Localize.GetValue("DriverInfoModel");
+				txtModel.TextColor = textColor;
+				txtColor.Text = Localize.GetValue("DriverInfoColor");
+				txtColor.TextColor = textColor;
+
+				topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("background.png"));
+
+				viewLine.Frame = new CGRect(0, topSlidingStatus.Bounds.Height -1, UIScreen.MainScreen.Bounds.Width, 1);
+
+				btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
+				btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
+				btnCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
+				btnNewRide.SetTitle(Localize.GetValue("StatusNewRideButton"), UIControlState.Normal);
+				btnUnpair.SetTitle(Localize.GetValue("UnpairPayInCar"), UIControlState.Normal);
 				btnTip.SetTitle(Localize.GetValue("StatusEditAutoTipButton"), UIControlState.Normal);
 
-                FlatButtonStyle.Silver.ApplyTo(btnCallDriver);
-                FlatButtonStyle.Silver.ApplyTo(btnCall);
+				FlatButtonStyle.Silver.ApplyTo(btnCallDriver);
+				FlatButtonStyle.Silver.ApplyTo(btnCall);
 				FlatButtonStyle.Silver.ApplyTo(btnTip);
-                FlatButtonStyle.Red.ApplyTo(btnCancel);
-                FlatButtonStyle.Green.ApplyTo(btnNewRide);
-                FlatButtonStyle.Red.ApplyTo(btnUnpair);
-                                            
-                btnCallDriver.SetX(UIScreen.MainScreen.Bounds.Width - btnCallDriver.Frame.Width - 12f); // 12f = right margin
+				FlatButtonStyle.Red.ApplyTo(btnCancel);
+				FlatButtonStyle.Green.ApplyTo(btnNewRide);
+				FlatButtonStyle.Red.ApplyTo(btnUnpair);
 
-                View.BringSubviewToFront (bottomBar);
+				btnCallDriver.SetX(UIScreen.MainScreen.Bounds.Width - btnCallDriver.Frame.Width - 12f); // 12f = right margin
+				View.BringSubviewToFront (bottomBar);
 
 				ViewModel.PropertyChanged += (sender, e) => {
 					InvokeOnMainThread(()=>
-					{
-						UpdateTopSlidingStatus(e.PropertyName);
-					});
+						{
+							UpdateTopSlidingStatus(e.PropertyName);
+						});
 				};
 
 				// So you want to add a new button.... lawl
 				if(!ViewModel.Settings.HideCallDispatchButton)
-                {
+				{
 					btnCancel.SetFrame(DEFAULT_PADDING, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height);
 					btnCall.SetFrame(UIScreen.MainScreen.Bounds.Width - DEFAULT_PADDING - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height);
 					btnUnpair.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, DEFAULT_UNPAIR_BUTTON_WIDTH, btnUnpair.Frame.Height);
 					btnTip.SetFrame(btnCall.Frame.X - DEFAULT_TIP_BUTTON_WIDTH - DEFAULT_PADDING, btnCancel.Frame.Y, DEFAULT_TIP_BUTTON_WIDTH, btnUnpair.Frame.Height);
 
-                    var callFrame = btnCall.Frame;
+					var callFrame = btnCall.Frame;
 					var tipFrame = btnTip.Frame;
 
 					UpdateButtonsSize (callFrame, tipFrame);
 
-                    ViewModel.PropertyChanged += (sender, e) => 
-                    {
-                        InvokeOnMainThread(()=>
-                        {
-							UpdateButtonsSize (callFrame, tipFrame);
-                        });
-                    };
-                }
+					ViewModel.PropertyChanged += (sender, e) => 
+					{
+						InvokeOnMainThread(()=>
+							{
+								UpdateButtonsSize (callFrame, tipFrame);
+							});
+					};
+				}
 				else
 				{
 					ViewModel.PropertyChanged += (sender, e) => 
@@ -152,140 +155,147 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					};
 				}
 
-                textColor = UIColor.FromRGB (50, 50, 50);
 
-                lblCompany.TextColor = textColor;
-                lblDriver.TextColor = textColor;
-                lblLicence.TextColor = textColor;
-                lblTaxiType.TextColor = textColor;
-                lblMake.TextColor = textColor;
-                lblModel.TextColor = textColor;
-                lblColor.TextColor = textColor;
+				if (ViewModel.DriverPhotoHidden)
+				{
+					driverPhotoContainerView.Maybe(e => e.RemoveFromSuperview());
+					driverDescriptionContainerView.SetX(0);
+				}
 
-                lblConfirmation.TextColor = textColor;
-                lblStatus.TextColor = textColor;
+				textColor = UIColor.FromRGB (50, 50, 50);
 
-                ViewModel.PropertyChanged += (sender, e) => {
-                    InvokeOnMainThread(()=>
-                    {
-                        if (e.PropertyName == "Order"
-                            || e.PropertyName == "OrderStatusDetail") 
-                        {
-                            NavigationItem.HidesBackButton = !ViewModel.CanGoBack;
-                        }
-                    });
-                };
+				lblCompany.TextColor = textColor;
+				lblDriver.TextColor = textColor;
+				lblLicence.TextColor = textColor;
+				lblTaxiType.TextColor = textColor;
+				lblMake.TextColor = textColor;
+				lblModel.TextColor = textColor;
+				lblColor.TextColor = textColor;
 
-                var set = this.CreateBindingSet<BookingStatusView, BookingStatusViewModel>();
+				lblConfirmation.TextColor = textColor;
+				lblStatus.TextColor = textColor;
 
-                set.Bind(this)
-                    .For(v => v.StatusInfoText)
-                    .To(vm => vm.StatusInfoText);
+				ViewModel.PropertyChanged += (sender, e) => {
+					InvokeOnMainThread(()=>
+						{
+							if (e.PropertyName == "Order"
+								|| e.PropertyName == "OrderStatusDetail") 
+							{
+								NavigationItem.HidesBackButton = !ViewModel.CanGoBack;
+							}
+						});
+				};
 
-                set.Bind(lblConfirmation)
-                    .For(v => v.Text)
-                    .To(vm => vm.ConfirmationNoTxt);
+				var set = this.CreateBindingSet<BookingStatusView, BookingStatusViewModel>();
 
-                set.Bind(lblCompany)
-                    .For(v => v.Text)
-                    .To(vm => vm.OrderStatusDetail.CompanyName);
-                set.Bind(lblCompany)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.CompanyHidden);
+				set.Bind(this)
+					.For(v => v.StatusInfoText)
+					.To(vm => vm.StatusInfoText);
 
-                set.Bind(lblDriver)
-                    .For(v => v.Text)
-                    .To(vm => vm.OrderStatusDetail.DriverInfos.FullName);
-                set.Bind(lblDriver)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleDriverHidden);
+				set.Bind(lblConfirmation)
+					.For(v => v.Text)
+					.To(vm => vm.ConfirmationNoTxt);
 
-                set.Bind(lblLicence)
-                    .For(v => v.Text)
-                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleRegistration);
-                set.Bind(lblLicence)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleLicenceHidden);
+				set.Bind(lblCompany)
+					.For(v => v.Text)
+					.To(vm => vm.OrderStatusDetail.CompanyName);
+				set.Bind(lblCompany)
+					.For(v => v.Hidden)
+					.To(vm => vm.CompanyHidden);
 
-                set.Bind(lblTaxiType)
-                    .For(v => v.Text)
-                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleType);
-                set.Bind(lblTaxiType)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleTypeHidden);
+				set.Bind(lblDriver)
+					.For(v => v.Text)
+					.To(vm => vm.OrderStatusDetail.DriverInfos.FullName);
+				set.Bind(lblDriver)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleDriverHidden);
 
-                set.Bind(lblMake)
-                    .For(v => v.Text)
-                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleMake);
-                set.Bind(lblMake)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleMakeHidden);
+				set.Bind(lblLicence)
+					.For(v => v.Text)
+					.To(vm => vm.OrderStatusDetail.DriverInfos.VehicleRegistration);
+				set.Bind(lblLicence)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleLicenceHidden);
 
-                set.Bind(lblModel)
-                    .For(v => v.Text)
-                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleModel);
-                set.Bind(lblModel)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleModelHidden);
+				set.Bind(lblTaxiType)
+					.For(v => v.Text)
+					.To(vm => vm.OrderStatusDetail.DriverInfos.VehicleType);
+				set.Bind(lblTaxiType)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleTypeHidden);
 
-                set.Bind(lblColor)
-                    .For(v => v.Text)
-                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleColor);
-                set.Bind(lblColor)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleColorHidden);
+				set.Bind(lblMake)
+					.For(v => v.Text)
+					.To(vm => vm.OrderStatusDetail.DriverInfos.VehicleMake);
+				set.Bind(lblMake)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleMakeHidden);
 
-                set.Bind(txtCompany)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.CompanyHidden);
+				set.Bind(lblModel)
+					.For(v => v.Text)
+					.To(vm => vm.OrderStatusDetail.DriverInfos.VehicleModel);
+				set.Bind(lblModel)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleModelHidden);
 
-                set.Bind(txtDriver)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleDriverHidden);
+				set.Bind(lblColor)
+					.For(v => v.Text)
+					.To(vm => vm.OrderStatusDetail.DriverInfos.VehicleColor);
+				set.Bind(lblColor)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleColorHidden);
 
-                set.Bind(txtLicence)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleLicenceHidden);
+				set.Bind(txtCompany)
+					.For(v => v.Hidden)
+					.To(vm => vm.CompanyHidden);
 
-                set.Bind(txtTaxiType)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleTypeHidden);
+				set.Bind(txtDriver)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleDriverHidden);
 
-                set.Bind(txtMake)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleMakeHidden);
+				set.Bind(txtLicence)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleLicenceHidden);
 
-                set.Bind(txtModel)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleModelHidden);
+				set.Bind(txtTaxiType)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleTypeHidden);
 
-                set.Bind(txtColor)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.VehicleColorHidden);
+				set.Bind(txtMake)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleMakeHidden);
 
-                set.Bind(statusBar)
-                    .For(v => v.IsEnabled)
-                    .To(vm => vm.IsDriverInfoAvailable);
+				set.Bind(txtModel)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleModelHidden);
 
-                set.Bind(imgGrip)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.IsDriverInfoAvailable)
-                    .WithConversion("BoolInverter");
-                    
-                set.Bind(btnCallDriver)
-                    .For("TouchUpInside")
-                    .To(vm => vm.CallTaxi);
-                set.Bind(btnCallDriver)
-                    .For(v => v.Hidden)
-                    .To(vm => vm.IsCallTaxiVisible)
-                    .WithConversion("BoolInverter");
+				set.Bind(txtColor)
+					.For(v => v.Hidden)
+					.To(vm => vm.VehicleColorHidden);
+
+				set.Bind(statusBar)
+					.For(v => v.IsEnabled)
+					.To(vm => vm.IsDriverInfoAvailable);
+
+				set.Bind(imgGrip)
+					.For(v => v.Hidden)
+					.To(vm => vm.IsDriverInfoAvailable)
+					.WithConversion("BoolInverter");
+
+				set.Bind(btnCallDriver)
+					.For("TouchUpInside")
+					.To(vm => vm.CallTaxi);
+				set.Bind(btnCallDriver)
+					.For(v => v.Hidden)
+					.To(vm => vm.IsCallTaxiVisible)
+					.WithConversion("BoolInverter");
 
 				set.Bind(mapStatus)
 					.For(v => v.Pickup)
-                    .To(vm => vm.Order.PickupAddress);
-                set.Bind(mapStatus)
-                    .For(v => v.Dropoff)
-                    .To(vm => vm.Order.DropOffAddress);
+					.To(vm => vm.Order.PickupAddress);
+				set.Bind(mapStatus)
+					.For(v => v.Dropoff)
+					.To(vm => vm.Order.DropOffAddress);
 				set.Bind(mapStatus)
 					.For(v => v.TaxiLocation)
 					.To(vm => vm.OrderStatusDetail);
@@ -332,44 +342,51 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.To(vm => vm.CanEditAutoTip)
 					.WithConversion("BoolInverter");
 
+
+				if (!ViewModel.DriverPhotoHidden)
+				{
+					var k = new MvxImageViewLoader(() => this.driverPhoto);
+					set.Bind(k).For(v => v.ImageUrl).To(dd => dd.OrderStatusDetail.DriverInfos.DriverPhotoUrl);
+				}
+
 				set.Apply();
 
-                mapStatus.GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;
-                mapStatus.AddressSelectionMode = AddressSelectionMode.None;
+				mapStatus.GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;
+				mapStatus.AddressSelectionMode = AddressSelectionMode.None;
 
 				UpdateTopSlidingStatus("OrderStatusDetail"); //initial loading
-                var statusLineDivider = Line.CreateHorizontal(UIScreen.MainScreen.Bounds.Width, UIColor.Black.ColorWithAlpha(0.35f));
-                bottomBar.AddSubview(statusLineDivider);
-            
-            } 
+				var statusLineDivider = Line.CreateHorizontal(UIScreen.MainScreen.Bounds.Width, UIColor.Black.ColorWithAlpha(0.35f));
+				bottomBar.AddSubview(statusLineDivider);
+
+			} 
 			catch (Exception ex) 
 			{
-                Logger.LogError (ex);
-            }
-        }
+				Logger.LogError (ex);
+			}
+		}
 
-        public override void ViewWillDisappear(bool animated)
-        {
-            base.ViewWillDisappear(animated);
-            if (IsMovingFromParentViewController && animated)
-            {
-                // Back button pressed
-                ViewModel.PrepareNewOrder.ExecuteIfPossible(null);
-            }
-        }
+		public override void ViewWillDisappear(bool animated)
+		{
+			base.ViewWillDisappear(animated);
+			if (IsMovingFromParentViewController && animated)
+			{
+				// Back button pressed
+				ViewModel.PrepareNewOrder.ExecuteIfPossible(null);
+			}
+		}
 
 		void UpdateButtonsSize (CGRect callFrame, CGRect tipFrame)
-        {
-            if (ViewModel.IsCancelButtonVisible || ViewModel.IsUnpairButtonVisible)
-            {
-                // keep it tight and tidy in the right corner
-                btnCall.SetFrame(callFrame);
+		{
+			if (ViewModel.IsCancelButtonVisible || ViewModel.IsUnpairButtonVisible)
+			{
+				// keep it tight and tidy in the right corner
+				btnCall.SetFrame(callFrame);
 				btnTip.SetFrame (tipFrame);
-            }
-            else
-            {
-                // center it
-                //btnCall.SetX ((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
+			}
+			else
+			{
+				// center it
+				//btnCall.SetX ((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
 
 				var totalButtonsWidth = DEFAULT_TIP_BUTTON_WIDTH + DEFAULT_CALL_BUTTON_WIDTH + DEFAULT_PADDING;
 				var unusedWidth = UIScreen.MainScreen.Bounds.Width - totalButtonsWidth;
@@ -383,24 +400,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				//btnCall.SetX(UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width - 8).SetWidth(DEFAULT_CALL_BUTTON_WIDTH);
 				btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
 				FlatButtonStyle.Silver.ApplyTo(btnCall);
-            }
-        }
-            
+			}
+		}
+
 		public string StatusInfoText
 		{
-            get { return lblStatus.Text; }
+			get { return lblStatus.Text; }
 			set
 			{
 				if(lblStatus.Text != value)
 				{
 					lblStatus.Text = value;
-                    var nbLines = 1 + (int)(lblStatus.GetSizeThatFits (value, lblStatus.Font).Width / lblStatus.Frame.Width);
-                    var togglePadding = DEFAULT_STATUS_LABEL_HEIGHT * (nbLines - 1);
-                    lblStatus.SetHeight (DEFAULT_STATUS_LABEL_HEIGHT + togglePadding);              // increase label height
-                    VisibleStatusHeight = DEFAULT_TOP_VISIBLE_STATUS_HEIGHT + togglePadding;
-                    statusBar.SetMinHeight (VisibleStatusHeight);
-                    statusBar.SetMaxHeight (VisibleStatusHeight);
-                    statusBar.SetNeedsLayout();
+					var nbLines = 1 + (int)(lblStatus.GetSizeThatFits (value, lblStatus.Font).Width / lblStatus.Frame.Width);
+					var togglePadding = DEFAULT_STATUS_LABEL_HEIGHT * (nbLines - 1);
+					lblStatus.SetHeight (DEFAULT_STATUS_LABEL_HEIGHT + togglePadding);              // increase label height
+					VisibleStatusHeight = DEFAULT_TOP_VISIBLE_STATUS_HEIGHT + togglePadding;
+					statusBar.SetMinHeight (VisibleStatusHeight);
+					statusBar.SetMaxHeight (VisibleStatusHeight);
+					statusBar.SetNeedsLayout();
 				}
 			}
 		}
@@ -413,50 +430,50 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				var defaultHeightOfSlidingView = 151f;
 
 				var tupleList = new List<Tuple<UILabel, UILabel, bool>> ();
-                tupleList.Add (Tuple.Create (lblCompany, txtCompany, false));
-                tupleList.Add (Tuple.Create (lblDriver, txtDriver, false));
-                tupleList.Add (Tuple.Create (lblLicence, txtLicence, false));
-                tupleList.Add (Tuple.Create (lblTaxiType, txtTaxiType, false));
-                tupleList.Add (Tuple.Create (lblMake, txtMake, false));
-                tupleList.Add (Tuple.Create (lblModel, txtModel, false));
-                tupleList.Add (Tuple.Create (lblColor, txtColor, false));
+				tupleList.Add (Tuple.Create (lblCompany, txtCompany, false));
+				tupleList.Add (Tuple.Create (lblDriver, txtDriver, false));
+				tupleList.Add (Tuple.Create (lblLicence, txtLicence, false));
+				tupleList.Add (Tuple.Create (lblTaxiType, txtTaxiType, false));
+				tupleList.Add (Tuple.Create (lblMake, txtMake, false));
+				tupleList.Add (Tuple.Create (lblModel, txtModel, false));
+				tupleList.Add (Tuple.Create (lblColor, txtColor, false));
 
-                if (ViewModel.CompanyHidden){ 
-                    tupleList[0] = Tuple.Create (tupleList[0].Item1, tupleList[0].Item2, true);
-                    numberOfItemsHidden++;
-                }
+				if (ViewModel.CompanyHidden){ 
+					tupleList[0] = Tuple.Create (tupleList[0].Item1, tupleList[0].Item2, true);
+					numberOfItemsHidden++;
+				}
 				if (ViewModel.VehicleDriverHidden){ 
-                    tupleList[1] = Tuple.Create (tupleList[1].Item1, tupleList[1].Item2, true);
+					tupleList[1] = Tuple.Create (tupleList[1].Item1, tupleList[1].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleLicenceHidden){ 
-                    tupleList[2] = Tuple.Create (tupleList[2].Item1, tupleList[2].Item2, true);
+					tupleList[2] = Tuple.Create (tupleList[2].Item1, tupleList[2].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleTypeHidden){ 
-                    tupleList[3] = Tuple.Create (tupleList[3].Item1, tupleList[3].Item2, true);
+					tupleList[3] = Tuple.Create (tupleList[3].Item1, tupleList[3].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleMakeHidden){ 
-                    tupleList[4] = Tuple.Create (tupleList[4].Item1, tupleList[4].Item2, true);
+					tupleList[4] = Tuple.Create (tupleList[4].Item1, tupleList[4].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleModelHidden){ 
-                    tupleList[5] = Tuple.Create (tupleList[5].Item1, tupleList[5].Item2, true);
+					tupleList[5] = Tuple.Create (tupleList[5].Item1, tupleList[5].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleColorHidden){ 
-                    tupleList[6] = Tuple.Create (tupleList[6].Item1, tupleList[6].Item2, true);
+					tupleList[6] = Tuple.Create (tupleList[6].Item1, tupleList[6].Item2, true);
 					numberOfItemsHidden++;
 				}
-	
+
 				if (numberOfItemsHidden == 7) {
-                    statusBar.SetMaxHeight (VisibleStatusHeight);
-                    statusBar.SetNeedsLayout();
+					statusBar.SetMaxHeight (VisibleStatusHeight);
+					statusBar.SetNeedsLayout();
 					return;
 				}
 
-                statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + VisibleStatusHeight);
+				statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + VisibleStatusHeight);
 
 				var i = 0;
 				foreach (var item in tupleList) {
@@ -467,9 +484,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					}
 				}
 
-                statusBar.SetNeedsLayout();
+				statusBar.SetNeedsLayout();
 			}
 		}
-    }
+	}
 }
-
