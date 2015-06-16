@@ -142,6 +142,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             .SetPosition(new LatLng(value.VehicleLatitude.Value, value.VehicleLongitude.Value))
                             .InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap(value.VehicleNumber)))
                             .Visible(true));
+
+                        if (_taxiLocation.IBSStatusId == VehicleStatuses.Common.Loaded)
+                        {
+                            _pickupPin.Remove();
+                        }  
                     }
                     PostInvalidateDelayed(100);
                 });
