@@ -264,7 +264,6 @@
     <Compile Include="Entities\StoreSettings.cs" />
     <Compile Include="Entities\Style.cs" />
     <Compile Include="Entities\UserPreference.cs" />
-    <Compile Include="Entities\Users.cs" />
     <Compile Include="Entities\Version.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Extensions\DateFormatterExtension.cs" />
