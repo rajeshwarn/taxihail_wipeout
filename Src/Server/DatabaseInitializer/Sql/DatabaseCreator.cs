@@ -93,7 +93,7 @@ namespace DatabaseInitializer.Sql
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE LOG {0} FROM DISK = '{1}\{0}_log.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
 
             // Restoring muti-user.
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "ALTER DATABASE [" + databaseName + "] SET MULTI_USE");
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "ALTER DATABASE [" + databaseName + "] SET MULTI_USER");
         }
 
         public void TurnOffMirroring(string connStringMaster, string companyName)
