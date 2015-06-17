@@ -40,7 +40,7 @@ namespace CustomerPortal.Web.Services.Impl
             var message = new MailMessage()
             {
                 From = new MailAddress(userEmail, userName),
-                To = { ToEmail, "dominique.savoie@apcurium.com" },
+                To = { ToEmail },
                 Subject = SubjectTemplate.InvariantCultureFormat(company),
                 Body = MessageTemplate.InvariantCultureFormat(details, userName, server, tag),
                 IsBodyHtml = true
