@@ -18,13 +18,12 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
         private readonly ILogger _logger;
-        private readonly ObjectCache _cache;
+        private static readonly ObjectCache _cache = MemoryCache.Default;
 
         public ServerSettings(Func<ConfigurationDbContext> contextFactory, ILogger logger)
         {
             _contextFactory = contextFactory;
             _logger = logger;
-            _cache = MemoryCache.Default;
 
             ServerData = new ServerTaxiHailSetting();
             Load();
