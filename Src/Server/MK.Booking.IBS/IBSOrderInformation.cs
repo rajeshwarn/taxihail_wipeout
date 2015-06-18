@@ -79,8 +79,8 @@ namespace apcurium.MK.Booking.IBS
             ReferenceNumber = orderInfoFromIBS.ReferenceNumber.GetValue(ReferenceNumber);
             TerminalId = orderInfoFromIBS.TerminalId.GetValue(TerminalId);
 
-            DriverPhotoUrl = !string.IsNullOrEmpty(orderInfoFromIBS.ThumbnailImg) ? orderInfoFromIBS.ThumbnailImg :
-                                (!string.IsNullOrEmpty(orderInfoFromIBS.WebImg) ? orderInfoFromIBS.WebImg : null);
+            DriverPhotoUrl = orderInfoFromIBS.ThumbnailImg.HasValue() ? orderInfoFromIBS.ThumbnailImg :
+                                (orderInfoFromIBS.WebImg.HasValue() ? orderInfoFromIBS.WebImg : null);
 
             Fare = orderInfoFromIBS.Fare;
             Tip = orderInfoFromIBS.Tips;
