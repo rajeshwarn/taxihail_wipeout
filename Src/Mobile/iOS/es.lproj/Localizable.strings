@@ -249,6 +249,7 @@
 "NoPhoneNumberMessage"="Your phone number or the driver's phone number is invalid.";
 "PickupViewPickupLabel"="Recoger:";
 "AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";
+"MessageToDriverTitle"="Message to Driver";
 "searchHint"="Buscar";
 "StreetNumberDoneBt"="Usar esta dirección";
 "InvalidLocalContactMessage"="La dirección asociada a este contacto no puede ser verificada";
@@ -606,8 +607,6 @@
 "DeleteCreditCard"="¿Desea eliminar la tarjeta de crédito asociada con esta cuenta?";
 "Register"="Registrarse";
 "View_HistoryDetail"="Detalles de la Reservación";
-"MessageToDriverTitle"="Message to Driver";
-"SendMessageToDriverErrorMessage"="An error occurred while trying to contact the driver. Please try again later.";
 "ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
 "HistoryDetailBuildingNameNotSpecified"="No Especificado";
 "TabBook"="De Alta";
@@ -617,5 +616,6 @@
 "NoMailClient"="No hay clientes de correo instalados";
 "June"="Jun (06)";
 "ManualRideLinqStatus_Driver"="Driver id:";
+"SendMessageToDriverErrorMessage"="An error occurred while trying to contact the driver. Please try again later.";
 "InvalidAddressTextEdit"="No se puede verificar la dirección";
 "HistoryDetailPickupDateLabel"="Fecha del servicio:";

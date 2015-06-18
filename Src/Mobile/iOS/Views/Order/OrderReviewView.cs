@@ -8,6 +8,9 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using Foundation;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
@@ -27,8 +30,44 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 	        txtNote.PlaceholderColor = UIColor.FromRGB(75, 75, 75);
             txtNote.ShowCloseButtonOnKeyboard();
 
+            Foundation.NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, ObserveKeyboardShown);
+
             FlatButtonStyle.CompanyColor.ApplyTo(btnViewPromo);
 			btnViewPromo.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2);
+        }
+            
+        // Places the visible area of the scrollviewer at the top of the driver note.
+        private void ObserveKeyboardShown(NSNotification notification)
+        {    
+            var isKeyboardVisible = notification.Name == UIKeyboard.WillShowNotification;
+            var keyboardFrame = isKeyboardVisible 
+                ? UIKeyboard.FrameEndFromNotification(notification)
+                : UIKeyboard.FrameBeginFromNotification(notification);
+
+            var duration = UIKeyboard.AnimationDurationFromNotification(notification);
+
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            AnimateAsync(duration, async () => 
+            {
+                // We need to wait until the default animation from iOS stops before ajusting the scrollviewer to the correct location.
+                await Task.Delay(1000);
+                var activeView = KeyboardGetActiveView();
+                if (activeView == null)
+                    return;
+
+                var scrollView = activeView.FindSuperviewOfType(this, typeof(UIScrollView)) as UIScrollView;
+                if (scrollView == null)
+                    return;
+
+                var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardFrame.Height, 0.0f);
+                scrollView.ContentInset = contentInsets;
+                scrollView.ScrollIndicatorInsets = contentInsets;
+
+                // Move the active field to the top of the active view area.
+                var offset = activeView.Frame.Y - 3f;
+                scrollView.ContentOffset = new CoreGraphics.CGPoint(0, offset);
+            });
         }
 
         private void InitializeBinding()
@@ -88,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				.To(vm => vm.PromoCode)
 				.WithConversion("HasValueToVisibility");
 
-			if (!this.Services().Settings.ShowPassengerName)
+            if (!this.Services().Settings.ShowPassengerName)
             {
                 lblName.RemoveFromSuperview();
                 iconPassengerName.RemoveFromSuperview();
@@ -117,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				iconRingCode.RemoveFromSuperview();
             }
 
-			if (!this.Services().Settings.ShowPassengerPhone)
+            if (!this.Services().Settings.ShowPassengerPhone)
             {
                 lblPhone.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();

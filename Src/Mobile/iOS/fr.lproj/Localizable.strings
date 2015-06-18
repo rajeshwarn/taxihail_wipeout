@@ -248,6 +248,7 @@
 "CmtRideLinqErrorTitle"="Erreur";
 "PickupViewPickupLabel"="Départ:";
 "AccountPaymentCustomerNumberRequiredTitle"="Numéro de client du compte requis";
+"MessageToDriverTitle"="Message au chauffeur";
 "searchHint"="Rechercher";
 "StreetNumberDoneBt"="Utiliser cette adresse";
 "InvalidLocalContactMessage"="L'adresse semble ne pas correspondre au contact";
@@ -614,8 +615,6 @@
 "RideHistoryButton"="Historique des trajets";
 "Register"="Inscription";
 "View_HistoryDetail"="Détail de la commande";
-"MessageToDriverTitle"="Message au chauffeur";
-"SendMessageToDriverErrorMessage"="Une erreur est survenue en essayant de contacter le chauffeur. Veuillez réessayer plus tard.";
 "TaxiHailNetworkTimeOutErrorTitle"="Erreur";
 "HistoryDetailBuildingNameNotSpecified"="Non spécifié";
 "TabBook"="Réserver maintenant!";
@@ -625,5 +624,6 @@
 "NoMailClient"="Il n'y a pas d'adresse email client enregistrée";
 "June"="Juin (06)";
 "ManualRideLinqStatus_Driver"="Chauffeur #:";
+"SendMessageToDriverErrorMessage"="Une erreur est survenue en essayant de contacter le chauffeur. Veuillez réessayer plus tard.";
 "InvalidAddressTextEdit"="Désolé, l'adresse semble inconnue";
 "HistoryDetailPickupDateLabel"="Date de départ:";
