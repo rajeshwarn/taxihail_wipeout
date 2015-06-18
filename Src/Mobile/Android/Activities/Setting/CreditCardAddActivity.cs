@@ -18,6 +18,7 @@ using Org.Json;
 using PaypalSdkDroid.CardPayment;
 using PaypalSdkDroid.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using Android.Views.InputMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
@@ -66,6 +67,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
             var btnScanCard = FindViewById<Button>(Resource.Id.ScanCreditCardButton);
 
+            var spinnerExpMonth = FindViewById<EditTextSpinner>(Resource.Id.ExpMonthSpinner);
+            var spinnerExpYear = FindViewById<EditTextSpinner>(Resource.Id.ExpYearSpinner);
+
+            spinnerExpMonth.FocusChange += (sender, e) => HideKeyboard();
+            spinnerExpYear.FocusChange += (sender, e) => HideKeyboard();
+
             if (CardIOActivity.CanReadCardWithCamera()
                 && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
             {
@@ -81,6 +88,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             else
             {
                 btnScanCard.Visibility = ViewStates.Gone; 
+            }
+        }
+
+        private void HideKeyboard()
+        {
+            var inputManager = (InputMethodManager)GetSystemService(InputMethodService);
+            if (inputManager != null)
+            {
+                inputManager.ToggleSoftInput(ShowFlags.Implicit, HideSoftInputFlags.None);
             }
         }
 
