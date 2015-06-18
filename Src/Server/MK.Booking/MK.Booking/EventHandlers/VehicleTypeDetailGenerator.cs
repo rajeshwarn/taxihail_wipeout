@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 vehicleTypeDetail.ReferenceDataVehicleId = @event.ReferenceDataVehicleId;
                 vehicleTypeDetail.MaxNumberPassengers = @event.MaxNumberPassengers;
                 vehicleTypeDetail.ReferenceNetworkVehicleTypeId = @event.ReferenceNetworkVehicleTypeId;
+                vehicleTypeDetail.IsWheelchairAccessible = @event.IsWheelchairAccessible;
 
                 context.Save(vehicleTypeDetail);
             }

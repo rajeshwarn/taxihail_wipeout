@@ -232,6 +232,7 @@
     <Content Include="admin\assets\img\blackcar_badge.png" />
     <Content Include="admin\assets\img\suv_badge.png" />
     <Content Include="admin\assets\img\taxi_badge.png" />
+    <Content Include="admin\assets\img\wheelchair_badge.png" />
     <Content Include="admin\collections\RideRatingCollection.js" />
     <Content Include="admin\collections\VehicleTypeCollection.js" />
     <Content Include="admin\collections\AccountChargeCollection.js" />
@@ -320,6 +321,7 @@
     <Content Include="assets\img\refresh.png" />
     <Content Include="assets\img\suv_badge.png" />
     <Content Include="assets\img\taxi_badge.png" />
+    <Content Include="assets\img\wheelchair_badge.png" />
     <Content Include="assets\js\additional-methods.js" />
     <Content Include="assets\js\handlebars-v3.0.3.js" />
     <Content Include="assets\js\jquery.cookie.js" />

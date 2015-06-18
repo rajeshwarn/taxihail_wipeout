@@ -89,6 +89,7 @@
     <Compile Include="Requests\ResetPassword.cs" />
     <Compile Include="Requests\SaveAddress.cs" />
     <Compile Include="Requests\SearchLocationsRequest.cs" />
+    <Compile Include="Requests\SendMessageToDriverRequest.cs" />
     <Compile Include="Requests\SendReceipt.cs" />
     <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
     <Compile Include="Requests\Tariff.cs" />

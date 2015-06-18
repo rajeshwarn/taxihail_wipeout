@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Distance = 25d,
                 Fare = 15f,
                 Tax = 3f,
-                Toll = 1f,
+                TollTotal = 1f,
                 Extra = .5f,
                 Tip= 1.5f,
             });
@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Fare = 15f,
                 Tax = 3f,
                 Tip = 1.5f,
-                Toll = 1f,
+                TollTotal = 1f,
                 Extra = .5f,
                 EndTime = endTime,
                 Medallion = "MD25"

@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common.Entity;
 using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
@@ -29,6 +30,8 @@ namespace apcurium.MK.Booking.Events
 
         public string RateChangeTime { get; set; }
 
+        public DateTime? StartTime { get; set; }
+
         public DateTime? EndTime { get; set; }
 
         public string PairingToken { get; set; }
@@ -42,5 +45,7 @@ namespace apcurium.MK.Booking.Events
         public string LastFour { get; set; }
 
         public double? AccessFee { get; set; }
+
+        public TollDetail[] Tolls { get; set; }
     }
 }

@@ -20,6 +20,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Color = Android.Graphics.Color;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
@@ -86,6 +87,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        private OrderStatusDetail _displayDeviceLocation;
+        public OrderStatusDetail DisplayDeviceLocation
+        {
+            get { return _displayDeviceLocation; }
+            set
+            {
+                DeferWhenMapReady(() =>
+                {
+                    _displayDeviceLocation = value;
+
+                    Map.MyLocationEnabled = !_displayDeviceLocation.IBSStatusId.HasValue() || VehicleStatuses.CanCancelOrderStatus.Contains(_displayDeviceLocation.IBSStatusId);
+                    Map.UiSettings.MyLocationButtonEnabled = false;
+                });
+            }
+        }
+
         public Address DropOff
         {
             get { return _dropoff; }
@@ -126,6 +143,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             .SetPosition(new LatLng(value.VehicleLatitude.Value, value.VehicleLongitude.Value))
                             .InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap(value.VehicleNumber)))
                             .Visible(true));
+
+                        if (_taxiLocation.IBSStatusId == VehicleStatuses.Common.Loaded)
+                        {
+                            _pickupPin.Remove();
+                        }  
                     }
                     PostInvalidateDelayed(100);
                 });
@@ -498,7 +520,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(lat, lng)));
         }
-
 
         private void DeferWhenMapReady(Action action)
         {

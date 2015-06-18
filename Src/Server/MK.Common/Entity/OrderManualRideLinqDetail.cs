@@ -16,6 +16,8 @@ namespace apcurium.MK.Common.Entity
 
         public DateTime PairingDate { get; set; }
 
+        public DateTime? StartTime { get; set; }
+
         public DateTime? EndTime { get; set; }
 
         public bool IsCancelled { get; set; }

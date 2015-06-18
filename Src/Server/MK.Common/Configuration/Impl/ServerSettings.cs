@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Diagnostic;
@@ -22,6 +23,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             _contextFactory = contextFactory;
             _logger = logger;
+
             ServerData = new ServerTaxiHailSetting();
             Load();
         }
@@ -53,6 +55,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         }
 
         public TaxiHailSetting Data { get { return ServerData; } }
+
         public ServerTaxiHailSetting ServerData { get; private set; }
 
         public Task Load()

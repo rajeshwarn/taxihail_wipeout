@@ -618,6 +618,8 @@
     </Compile>
     <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
+    <BundleResource Include="Resources\message.png" />
+    <BundleResource Include="Resources\message%402x.png" />
     <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
   </ItemGroup>
   <ProjectExtensions>
@@ -629,9 +631,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup>
-    <Folder Include="Views\Payments\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
@@ -654,7 +654,9 @@
     <InterfaceDefinition Include="Views\LocationListView.xib" />
     <InterfaceDefinition Include="Views\HomeView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\OrderOptionsControl.xib" />
-    <InterfaceDefinition Include="Views\Order\OrderReviewView.xib" />
+    <InterfaceDefinition Include="Views\Order\OrderReviewView.xib">
+      <SubType>Designer</SubType>
+    </InterfaceDefinition>
     <InterfaceDefinition Include="Views\Order\OrderReviewView_Thriev.xib" />
     <InterfaceDefinition Include="Views\Order\OrderEditView.xib" />
     <InterfaceDefinition Include="Views\Order\OrderEditView_Thriev.xib" />

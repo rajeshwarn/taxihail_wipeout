@@ -498,8 +498,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             }
 
-            var vatIsEnabled = _serverSettings.ServerData.VATIsEnabled;
+            // Email formatting is different for CMTRideLinQ
+            var isCmtRideLinqReceipt = cmtRideLinqFields != null;
 
+            var vatIsEnabled = _serverSettings.ServerData.VATIsEnabled;
             var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
 
             if (vatIsEnabled && tax == 0)
@@ -519,6 +521,9 @@ namespace apcurium.MK.Booking.Services.Impl
             var paymentAuthorizationCode = string.Empty;
 
             var hasFare = Math.Abs(fare) > double.Epsilon;
+            var hasCmtTollDetails = cmtRideLinqFields != null
+                && cmtRideLinqFields.Tolls != null
+                && cmtRideLinqFields.Tolls.Length > 0;
             var showFareAndPaymentDetails = hasPaymentInfo || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
 
             int? rateClassStart = null;
@@ -577,13 +582,10 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-            var subTotalAmount = fare
-                + toll
-                + tax
+            var totalAmount = fare + toll + tax + tip + bookingFees + surcharge + extra - amountSavedByPromotion
                 + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
                 + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
 
-            var totalAmount = subTotalAmount + tip + bookingFees + surcharge + extra - amountSavedByPromotion;
             
             var templateData = new
             {
@@ -600,8 +602,12 @@ namespace apcurium.MK.Booking.Services.Impl
                 VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
                 DriverInfos = driverInfos,
                 DriverId = hasDriverInfo ? driverInfos.DriverId : "",
-                PickupDate = pickupDate.ToString("D", dateFormat),
-                PickupTime = pickupDate.ToString("t", dateFormat /* Short time pattern */),
+                PickupDate = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
+                    ? cmtRideLinqFields.PickUpDateTime.Value.ToString("D", dateFormat)
+                    : pickupDate.ToString("D", dateFormat),
+                PickupTime = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
+                    ? cmtRideLinqFields.PickUpDateTime.Value.ToString("t", dateFormat /* Short time pattern */)
+                    : pickupDate.ToString("t", dateFormat /* Short time pattern */),
                 DropOffDate = nullSafeDropOffDate.ToString("D", dateFormat),
                 DropOffTime = dropOffTime,
                 ShowDropOffTime = dropOffTime.HasValue(),
@@ -611,28 +617,54 @@ namespace apcurium.MK.Booking.Services.Impl
                 Surcharge = _resources.FormatPrice(surcharge),
                 BookingFees = _resources.FormatPrice(bookingFees),
                 Extra = _resources.FormatPrice(extra),
-                SubTotal = _resources.FormatPrice(subTotalAmount),
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalAmount),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
                 MtaTax = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
                 RideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour),
+                
                 Distance = _resources.FormatDistance(cmtRideLinqFields.SelectOrDefault(x => x.Distance)),
                 TripId = cmtRideLinqFields.SelectOrDefault(x => x.TripId),
                 RateClassStart = rateClassStart,
                 RateClassEnd = rateClassEnd,
-                FareAtAlternateRate = fareAtAlternateRate,
-                ShowRideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour).HasValue(),
-                ShowTripId = cmtRideLinqFields.SelectOrDefault(x => x.Distance).HasValue,
-                ShowTax = Math.Abs(tax) >= 0.01,
-                ShowMtaTax = cmtRideLinqFields.SelectOrDefault(x => x.AccessFee).HasValue &&  Math.Abs(cmtRideLinqFields.AccessFee.Value) > 0.01,
-                ShowToll = Math.Abs(toll) >= 0.01,
-                ShowSurcharge = Math.Abs(surcharge) >= 0.01,
-                ShowBookingFees = Math.Abs(bookingFees) >= 0.01,
-                ShowExtra = Math.Abs(extra) >= 0.01,
-                ShowRateClassStart = rateClassStart.HasValue,
+                FareAtAlternateRate = _resources.FormatPrice(fareAtAlternateRate),
+
+                TollName1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 ? cmtRideLinqFields.Tolls[0].TollName : string.Empty,
+                TollName2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 ? cmtRideLinqFields.Tolls[1].TollName : string.Empty,
+                TollName3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 ? cmtRideLinqFields.Tolls[2].TollName : string.Empty,
+                TollName4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4 ? cmtRideLinqFields.Tolls[3].TollName : string.Empty,
+
+                TollAmount1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[0].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
+                TollAmount2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[1].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
+                TollAmount3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[2].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
+                TollAmount4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[3].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
+                
+                ShowToll1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 && cmtRideLinqFields.Tolls.Length <= 4,
+                ShowToll2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 && cmtRideLinqFields.Tolls.Length <= 4,
+                ShowToll3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 && cmtRideLinqFields.Tolls.Length <= 4,
+                ShowToll4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4,
+                ShowTollTotal = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4,
+                ShowRideLinqLastFour = isCmtRideLinqReceipt,
+                ShowTripId = isCmtRideLinqReceipt,
+                ShowTax = Math.Abs(tax) >= 0.01 || isCmtRideLinqReceipt,
+                ShowMtaTax = isCmtRideLinqReceipt,
+                ShowToll = Math.Abs(toll) >= 0.01 || isCmtRideLinqReceipt,
+                ShowSurcharge = Math.Abs(surcharge) >= 0.01 || isCmtRideLinqReceipt,
+                ShowBookingFees = Math.Abs(bookingFees) >= 0.01 || isCmtRideLinqReceipt,
+                ShowExtra = Math.Abs(extra) >= 0.01 || isCmtRideLinqReceipt,
+                ShowRateClassStart = rateClassStart.HasValue || isCmtRideLinqReceipt,
                 ShowRateClassEnd = rateClassEnd.HasValue,
+                ShowDistance = isCmtRideLinqReceipt,
+
                 vatIsEnabled,
                 HasPaymentInfo = hasPaymentInfo,
                 PaymentAmount = paymentAmount,
