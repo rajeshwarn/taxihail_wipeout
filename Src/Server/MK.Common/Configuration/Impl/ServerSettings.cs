@@ -18,7 +18,7 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
         private readonly ILogger _logger;
-        private static readonly ObjectCache _cache = MemoryCache.Default;
+        private /*static*/ readonly ObjectCache _cache = MemoryCache.Default;
 
         public ServerSettings(Func<ConfigurationDbContext> contextFactory, ILogger logger)
         {
