@@ -248,9 +248,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         coord = new CLLocationCoordinate2D(value.VehicleLatitude.Value, value.VehicleLongitude.Value);
                     }
+
 					_taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, _useThemeColorForPickupAndDestinationMapIcons, _showAssignedVehicleNumberOnPin);
                     AddAnnotation(_taxiLocationPin);
+
+					if (_taxiLocation.IBSStatusId == VehicleStatuses.Common.Loaded)
+					{
+						RemoveAnnotation (_pickupPin);
+					}
                 }
+
                 SetNeedsDisplay();
             }
         }

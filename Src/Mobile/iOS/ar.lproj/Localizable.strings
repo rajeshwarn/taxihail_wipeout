@@ -257,6 +257,7 @@
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "CreditCardInvalidCrediCardNUmber"="رقم البطاقة الائتمانية خاطئة";
 "RideSettingsCompany"="الشركة";
+"ServiceError_ErrorCreatingOrderMessage_NoCall"="The order cannot be created, please try again.";
 "CmtCancelPayment"="الغاء";
 "DriverInfoLicence"="رقم الرخصة:";
 "Overdue_IBSOrderId"="Order:";
@@ -554,6 +555,7 @@
 "Notification_NearbyTaxiPush"="Nearby Taxi";
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
 "November"="نوفمبر (11)";
+"ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "HistoryDetailPromoLabel"="Promo Code:";
 "DateTimePickerPickTime"="اختر وقت الإلتقاء:";
 "CreateAccountErrorMessage"="لا يمكن إنشاء الحساب.";

@@ -437,6 +437,7 @@
 "LocationAddFavoriteTitle"="Add location";
 "PickupTimeTextPlaceholder"="Time: Now";
 "OrderNumber"="Order #";
+"ServiceError_ErrorCreatingOrderMessage_NoCall"="The order cannot be created, please try again.";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "Tuto06Top"="The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.";
 "Tuto04Bottom"="Doing so will provide an estimate for the cost for the trip.";
@@ -576,6 +577,7 @@
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
 "Tuto05Bottom"="Or Tap the Later button to schedule your pickup for a future time or date.";
 "DriverInfoModel"="Model:";
+"ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "View_BookRating"="Rate Your Trip";
 "DateTimePickerPickTime"="Select your pickup time:";
 "CreateAccountErrorMessage"="The account cannot be created.";
