@@ -268,6 +268,7 @@
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "CreditCardInvalidCrediCardNUmber"="El número de tarjeta de crédito es inválido";
 "RideSettingsCompany"="Compañía";
+"ServiceError_ErrorCreatingOrderMessage_NoCall"="The order cannot be created, please try again.";
 "CmtCancelPayment"="Cancelar";
 "DriverInfoLicence"="# de Placa:";
 "Overdue_IBSOrderId"="Order:";
@@ -563,6 +564,7 @@
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
 "Tuto05Bottom"="O puede tocar el botón  de “Mas Tarde” para programar un servicio futuro";
 "EmptyString"=" ";
+"ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "HistoryDetailPromoLabel"="Promo Code:";
 "DateTimePickerPickTime"="Seleccione la hora del servicio:";
 "CreateAccountErrorMessage"="No se pudo crear su cuenta.";
