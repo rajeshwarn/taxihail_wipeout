@@ -96,8 +96,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 DeferWhenMapReady(() =>
                 {
                     _displayDeviceLocation = value;
-                    Map.UiSettings.MyLocationButtonEnabled = false;
+
                     Map.MyLocationEnabled = !_displayDeviceLocation.IBSStatusId.HasValue() || VehicleStatuses.CanCancelOrderStatus.Contains(_displayDeviceLocation.IBSStatusId);
+                    Map.UiSettings.MyLocationButtonEnabled = false;
                 });
             }
         }
