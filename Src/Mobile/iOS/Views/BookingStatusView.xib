@@ -14,7 +14,7 @@
                 <outlet property="btnTip" destination="Maw-ph-u9p" id="ZHE-YX-CBr"/>
                 <outlet property="btnUnpair" destination="yY7-iB-SEt" id="Q2g-3z-w7f"/>
                 <outlet property="driverDescriptionContainerView" destination="200" id="aIs-P5-BJG"/>
-                <outlet property="driverPhoto" destination="SPN-jR-PmA" id="3Yy-dt-eQA"/>
+                <outlet property="driverPhoto" destination="SPN-jR-PmA" id="9CV-8C-ykN"/>
                 <outlet property="driverPhotoContainerView" destination="2er-T1-WYJ" id="8tT-XE-Eba"/>
                 <outlet property="imgGrip" destination="232" id="233"/>
                 <outlet property="lblColor" destination="216" id="222"/>
@@ -158,7 +158,7 @@
                             <rect key="frame" x="8" y="0.0" width="76" height="151"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="SPN-jR-PmA">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="SPN-jR-PmA" customClass="MvxImageView">
                                     <rect key="frame" x="0.0" y="0.0" width="76" height="151"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </imageView>

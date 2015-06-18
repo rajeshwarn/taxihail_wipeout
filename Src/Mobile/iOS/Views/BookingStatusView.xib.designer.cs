@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UIView driverDescriptionContainerView { get; set; }
 
 		[Outlet]
-		UIKit.UIImageView driverPhoto { get; set; }
+		Cirrious.MvvmCross.Binding.Touch.Views.MvxImageView driverPhoto { get; set; }
 
 		[Outlet]
 		UIKit.UIView driverPhotoContainerView { get; set; }
@@ -162,6 +162,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnUnpair != null) {
 				btnUnpair.Dispose ();
 				btnUnpair = null;
+			}
+
+			if (driverDescriptionContainerView != null) {
+				driverDescriptionContainerView.Dispose ();
+				driverDescriptionContainerView = null;
 			}
 
 			if (driverPhoto != null) {
@@ -287,11 +292,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (viewLine != null) {
 				viewLine.Dispose ();
 				viewLine = null;
-			}
-
-			if (driverDescriptionContainerView != null) {
-				driverDescriptionContainerView.Dispose ();
-				driverDescriptionContainerView = null;
 			}
 		}
 	}
