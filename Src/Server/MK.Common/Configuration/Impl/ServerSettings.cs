@@ -18,7 +18,7 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
         private readonly ILogger _logger;
-        private static readonly ObjectCache _cache = MemoryCache.Default;
+        //private static readonly ObjectCache _cache = MemoryCache.Default;
 
         public ServerSettings(Func<ConfigurationDbContext> contextFactory, ILogger logger)
         {
@@ -55,27 +55,34 @@ namespace apcurium.MK.Common.Configuration.Impl
             Load();
         }
 
+        //public TaxiHailSetting Data
+        //{
+        //    get
+        //    {
+        //        var serverData = _cache["MK.Settings"];
+        //        if (serverData == null)
+        //        {
+        //            // Settings expired, reload them
+        //            Reload();
+
+        //            _cache.Add("MK.Settings", ServerData, DateTime.UtcNow.AddSeconds(30));
+
+        //            return ServerData;
+        //        }
+        //        else
+        //        {
+        //            return ServerData;
+        //        }
+        //    }
+        //}
+
         public TaxiHailSetting Data
         {
             get
             {
-                var serverData = _cache["MK.Settings"];
-                if (serverData == null)
-                {
-                    // Settings expired, reload them
-                    Reload();
-
-                    _cache.Add("MK.Settings", ServerData, DateTime.UtcNow.AddSeconds(30));
-
-                    return ServerData;
-                }
-                else
-                {
-                    return ServerData;
-                }
+                return ServerData;
             }
         }
-
         public ServerTaxiHailSetting ServerData { get; private set; }
 
         public Task Load()
