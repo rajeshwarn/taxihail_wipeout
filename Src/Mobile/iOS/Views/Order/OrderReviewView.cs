@@ -16,6 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
     public partial class OrderReviewView : BaseBindableChildView<OrderReviewViewModel>
     {
+        // Offset to fix potential issue with iPhone 6+ that would not scroll the viewport completely.
+        private const float ScrollingOffset = 3f;
+
         public OrderReviewView(IntPtr handle) : base(handle)
         {
         }
@@ -54,18 +57,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 await Task.Delay(1000);
                 var activeView = KeyboardGetActiveView();
                 if (activeView == null)
+                {
                     return;
+                }
 
                 var scrollView = activeView.FindSuperviewOfType(this, typeof(UIScrollView)) as UIScrollView;
                 if (scrollView == null)
+                {
                     return;
+                }
 
                 var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardFrame.Height, 0.0f);
                 scrollView.ContentInset = contentInsets;
                 scrollView.ScrollIndicatorInsets = contentInsets;
 
                 // Move the active field to the top of the active view area.
-                var offset = activeView.Frame.Y - 3f;
+                var offset = activeView.Frame.Y - ScrollingOffset;
                 scrollView.ContentOffset = new CoreGraphics.CGPoint(0, offset);
             });
         }
@@ -133,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 iconPassengerName.RemoveFromSuperview();
             }
 
-			if (!this.Services().Settings.ShowPassengerNumber)
+			if (!this.Services().Settings.ShowPassengerNumber || true)
             {
                 if (lblNbPassengers != null && iconNbPasserngers != null)
                 {
@@ -142,7 +149,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 }
             }
 
-            if (!this.Services().Settings.ShowPassengerApartment)
+            if (!this.Services().Settings.ShowPassengerApartment || true)
             {
 				lblApt.RemoveFromSuperview();
 				iconApartment.RemoveFromSuperview ();
@@ -150,19 +157,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				iconRingCode.RemoveFromSuperview ();
             }
 
-            if (!this.Services().Settings.ShowRingCodeField)
+            if (!this.Services().Settings.ShowRingCodeField || true)
             {
                 lblRingCode.RemoveFromSuperview();
 				iconRingCode.RemoveFromSuperview();
             }
 
-            if (!this.Services().Settings.ShowPassengerPhone)
+            if (!this.Services().Settings.ShowPassengerPhone|| true)
             {
                 lblPhone.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();
             }
                 
-            if (!this.Services().Settings.PromotionEnabled)
+            if (!this.Services().Settings.PromotionEnabled || true)
             {
 				btnViewPromo.RemoveFromSuperview();
 				iconPromo.RemoveFromSuperview();
