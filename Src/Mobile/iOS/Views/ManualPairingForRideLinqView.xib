@@ -6,8 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ManualPairingForRideLinqView">
             <connections>
-                <outlet property="PairingCode1" destination="ffJ-rx-jiE" id="IfO-W2-FtP"/>
-                <outlet property="PairingCode2" destination="Cf3-Se-yw5" id="Jgt-WO-CG4"/>
+                <outlet property="PairingCode1" destination="ffJ-rx-jiE" id="9YD-dp-UXl"/>
+                <outlet property="PairingCode2" destination="Cf3-Se-yw5" id="KMg-gf-FMM"/>
                 <outlet property="btnPair" destination="0Ok-qV-hDh" id="tf8-pz-nu3"/>
                 <outlet property="lblInstructions" destination="BVP-xw-EI2" id="Gvc-Zt-zhJ"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
