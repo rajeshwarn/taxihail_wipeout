@@ -1,3 +1,6 @@
+using System;
+using apcurium.MK.Common.Extensions;
+using Android.Views;
 using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
@@ -6,6 +9,42 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
     {
         public static void ApplyTo(EditText pairingCodeEditText1, EditText pairingCodeEditText2)
         {
+            pairingCodeEditText1.KeyPress += (sender, args) =>
+            {
+                if (pairingCodeEditText1.Text.Length < 3)
+                {
+                    args.Handled = false;
+
+                    return;
+                }
+
+                var keyPressed = GetNumberOrDefault(args.KeyCode);
+
+                if (pairingCodeEditText2.Text.Length < 4 && keyPressed.HasValue())
+                {
+                    pairingCodeEditText2.Text = keyPressed + pairingCodeEditText2.Text;
+                    pairingCodeEditText2.RequestFocus();
+                    pairingCodeEditText2.SetSelection(1);
+                    return;
+                }
+
+                args.Handled = false;
+            };
+
+            pairingCodeEditText2.KeyPress += (sender, args) =>
+            {
+                if (pairingCodeEditText2.Text.Length == 0 && args.KeyCode == Keycode.Del)
+                {
+                    pairingCodeEditText1.Text = pairingCodeEditText1.Text.Substring(0, pairingCodeEditText1.Text.Length - 1);
+                    pairingCodeEditText1.RequestFocus();
+                    pairingCodeEditText1.SetSelection(pairingCodeEditText1.Text.Length);
+                }
+                else
+                {
+                    args.Handled = false;
+                }
+            };
+
             pairingCodeEditText1.AfterTextChanged += (sender, args) =>
             {
                 if (args.Editable.ToString().Length == 3)
@@ -21,6 +60,45 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
                     pairingCodeEditText1.RequestFocus();
                 }
             };
+        }
+
+        private static string GetNumberOrDefault(Keycode code)
+        {
+            switch (code)
+            {
+                case Keycode.Num0:
+                case Keycode.Numpad0:
+                    return "0";
+                case Keycode.Num1:
+                case Keycode.Numpad1:
+                    return "1";
+                case Keycode.Num2:
+                case Keycode.Numpad2:
+                    return "2";
+                case Keycode.Num3:
+                case Keycode.Numpad3:
+                    return "3";
+                case Keycode.Num4:
+                case Keycode.Numpad4:
+                    return "4";
+                case Keycode.Num5:
+                case Keycode.Numpad5:
+                    return "5";
+                case Keycode.Num6:
+                case Keycode.Numpad6:
+                    return "6";
+                case Keycode.Num7:
+                case Keycode.Numpad7:
+                    return "7";
+                case Keycode.Num8:
+                case Keycode.Numpad8:
+                    return "8";
+                case Keycode.Num9:
+                case Keycode.Numpad9:
+                    return "9";
+                default:
+                    return null;
+            }
         }
     }
 }
