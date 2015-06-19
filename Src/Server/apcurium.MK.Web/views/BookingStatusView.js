@@ -6,7 +6,8 @@
 
         events: {
             'click [data-action=cancel]': 'cancel',
-            'click #callDriverButton': 'callDriver'
+            'click #callDriverButton': 'callDriver',
+            'click #messageDriverButton': 'messageDriver'
         },
 
         initialize: function() {
@@ -78,6 +79,13 @@
                         this.$('#callDispatchButton').addClass('hidden');
                         this.$('#callDriverButton').removeClass('hidden');
                     }
+                }
+            }
+
+            if (TaxiHail.parameters.showMessageDriver == true) {
+                var driverInfos = status.get('driverInfos');
+                if (driverInfos !== undefined) {
+                    this.$('#messageDriverButton').removeClass('hidden');
                 }
             }
 
@@ -158,6 +166,29 @@
                         }
                     }, this));
             }, this);
+        },
+
+        messageDriver: function (e) {
+            e.preventDefault();
+
+            var message = prompt(this.localize('modal.messageDriver.message'), "");
+            if (message != null) {
+                var vehicleNumber = this.model.getStatus().get('vehicleNumber');
+                this.model.sendMessageToDriver(vehicleNumber, message)
+                    .done(_.bind(function (result) {
+                        if (result) {
+                            TaxiHail.message({
+                                title: this.localize('Message Driver'),
+                                message: this.localize('modal.messageDriver.success')
+                            });
+                        } else {
+                            TaxiHail.message({
+                                title: this.localize('Error'),
+                                message: this.localize('modal.messageDriver.error')
+                            });
+                        }
+                    }, this));
+            }
         },
         
         onStatusChanged: function (model, status) {
