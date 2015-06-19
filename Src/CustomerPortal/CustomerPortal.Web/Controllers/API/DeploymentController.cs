@@ -96,6 +96,7 @@ namespace CustomerPortal.Web.Controllers.API
 
         private bool IsVersionNumber(DeploymentJob job)
         {
+            //Regex pattern to ensure that we only send an email when the tag name is 'x.x.x'.
             return Regex.IsMatch(job.Revision.Tag, "^([0-9][0-9]*.[0-9][0-9]*.[0-9][0-9]*(.[0-9][0-9]*)?)$");
         }
     }
