@@ -58,9 +58,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     case VehicleStatuses.Common.Arrived:
                         _notificationService.SendArrivedPush(@event.Status);
                         break;
-                    case VehicleStatuses.Common.Loaded:
-                        _notificationService.SendPairingInquiryPush(@event.Status);
-                        break;
                     case VehicleStatuses.Common.Timeout:
                         if (!_serverSettings.ServerData.Network.Enabled)
                         {
