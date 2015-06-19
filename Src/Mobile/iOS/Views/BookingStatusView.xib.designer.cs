@@ -46,6 +46,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
 
 		[Outlet]
+		UIKit.UIView driverDescriptionContainerView { get; set; }
+
+		[Outlet]
+		Cirrious.MvvmCross.Binding.Touch.Views.MvxImageView driverPhoto { get; set; }
+
+		[Outlet]
+		UIKit.UIView driverPhotoContainerView { get; set; }
+
+		[Outlet]
 		UIKit.UIImageView imgGrip { get; set; }
 
 		[Outlet]
@@ -116,11 +125,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (btnTextDriver != null) {
-				btnTextDriver.Dispose ();
-				btnTextDriver = null;
-			}
-
 			if (bottomBar != null) {
 				bottomBar.Dispose ();
 				bottomBar = null;
@@ -161,6 +165,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnResend = null;
 			}
 
+			if (btnTextDriver != null) {
+				btnTextDriver.Dispose ();
+				btnTextDriver = null;
+			}
+
 			if (btnTip != null) {
 				btnTip.Dispose ();
 				btnTip = null;
@@ -169,6 +178,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnUnpair != null) {
 				btnUnpair.Dispose ();
 				btnUnpair = null;
+			}
+
+			if (driverDescriptionContainerView != null) {
+				driverDescriptionContainerView.Dispose ();
+				driverDescriptionContainerView = null;
+			}
+
+			if (driverPhoto != null) {
+				driverPhoto.Dispose ();
+				driverPhoto = null;
+			}
+
+			if (driverPhotoContainerView != null) {
+				driverPhotoContainerView.Dispose ();
+				driverPhotoContainerView = null;
 			}
 
 			if (imgGrip != null) {
