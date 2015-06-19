@@ -22,6 +22,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.Title = Localize.GetValue("View_RideLinqPair");
 
+
+
             ChangeThemeOfBarStyle();
             ChangeRightBarButtonFontToBold();
 	    }
@@ -51,10 +53,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bindingSet.Apply();
 
-            PairingCode1.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 3);
+            PairingCode1.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 3, OnMaxLength);
             PairingCode2.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 4);
 
-			PairingCode1.EditingChanged += (sender, e) => 
+            PairingCode1.EditingChanged += (sender, e) => 
 			{
 				if(PairingCode1.Text.Length == 3)
 				{
@@ -71,12 +73,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			};
 		}
 
-		private bool CheckMaxLength (UITextField textField, NSRange range, string replacementString, nint maxLenght)
+        private bool CheckMaxLength (UITextField textField, NSRange range, string replacementString, nint maxLenght, Action<string> onMaxLengthAction = null)
 		{
 			var textLength = textField.Text.HasValue() ? textField.Text.Length : 0;
 			var replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
 			var newLength = textLength + replaceLength - range.Length;
-            return newLength <= maxLenght;
+
+            if(newLength <= maxLenght)
+            {
+                return true;
+            }
+
+            if(onMaxLengthAction != null)
+            {
+                onMaxLengthAction(replacementString);
+            }
+
+            return false;
 		}
+
+        private void OnMaxLength(string value)
+        {
+            var length = value.HasValue() ? value.Length : 0;
+            if(PairingCode2.Text.Length + length <= 4)
+            {
+                PairingCode2.Text = value + PairingCode2.Text;
+                PairingCode2.BecomeFirstResponder();
+            }
+        }
 	}
 }

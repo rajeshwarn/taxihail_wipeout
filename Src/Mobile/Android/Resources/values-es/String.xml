@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">Email</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
   <string name="CmtCardNumber">Método de Pago:</string>
   <string name="Edit">Editar</string>
   <string name="RideSettingsName">Nombre</string>
@@ -45,7 +45,7 @@
   <string name="PaymentViewTipText">Propina</string>
   <string name="ConfirmVehiculeTypeLabel">Tipo de Vehículo</string>
   <string name="View_PaymentPreference">Preferencia de pago</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to have a credit card configured in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
   <string name="InvalidPassengersNumberTitle">Invalid Number of Passengers</string>
   <string name="InvalidAddressMessage">La dirección que ha proporcionado es inválida. Por favor vefíquela</string>
   <string name="CreateAccountErrorTitle">Error</string>
@@ -60,7 +60,6 @@
   <string name="RateLastRideTitle">¿Calificar su servicio?</string>
   <string name="VehicleNumberErrorMessage">No podemos encontrar el número de vehículo.  Por favor page en el vehículo.</string>
   <string name="CreditCardAdded">Su cuenta ha sido activada para pagar por defecto con tarjeta de crédito. Usted puede también pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
-  <string name="CreditCardAdded_PayInCarDisabled">Su cuenta ha sido activada para pagar con tarjeta de crédito.</string>
   <string name="PanelMenuViewLocationsText">Ubicaciones</string>
   <string name="CreateAccountFullNamePlaceHolder">Nombre completo</string>
   <string name="PayInCar">Pagar en el vehículo</string>
@@ -199,6 +198,7 @@
   <string name="CmtRideLinqGenericErrorMessage">Hubo un error al sincronizar, verifique la información de se tarjeta de crédito o intente nuevamente</string>
   <string name="View_RideLinqPair">Check In</string>
   <string name="DateTimePickerSetButton">De Alta</string>
+  <string name="CreditCardAdded_PayInCarDisabled">Your account is now enabled to pay for rides with this credit card.</string>
   <string name="AccountConfirmation_ErrorTitle">No se puede validar su cuenta</string>
   <string name="View_AccountConfirmation_Label_Instructions">Un mensaje de texto con su código ha sido enviado a su celular</string>
   <string name="NoFareText">Seleccione un destino para proveer estimado de costo</string>
@@ -436,7 +436,7 @@
   <string name="PickupMapTitle">Ubicacion de abordaje</string>
   <string name="DontAsk">No preguntar</string>
   <string name="TimeNow">Cuanto Antes</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked to your account.</string>
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
   <string name="InvalidLocalContactTitle">Contacto inválido</string>
   <string name="RideSettingsPayBack">PayBack</string>
