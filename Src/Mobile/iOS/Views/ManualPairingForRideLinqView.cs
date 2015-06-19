@@ -71,6 +71,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					PairingCode1.BecomeFirstResponder();
 				}
 			};
+
+            PairingCode2.BackButtonPressed += (object sender, EventArgs e) => 
+            {
+                PairingCode1.BecomeFirstResponder();
+            };
 		}
 
         private bool CheckMaxLength (UITextField textField, NSRange range, string replacementString, nint maxLenght, Action<string> onMaxLengthAction = null)
