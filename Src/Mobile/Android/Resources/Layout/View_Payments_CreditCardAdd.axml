@@ -159,12 +159,12 @@
                             style="@style/BlackTextLabel" />
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/ExpMonthSpinner"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:orientation="horizontal"
                         android:layout_marginBottom="8dp">
                         <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                            android:id="@+id/ExpMonthSpinner"
                             android:layout_width="0dip"
                             android:layout_weight="1"
                             android:layout_marginEnd="10dip"
@@ -175,11 +175,11 @@
                             local:MvxBind="Text ExpirationMonthDisplay; Data ExpirationMonths; SelectedItem ExpirationMonth" />
                     <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
                         <View
-                          android:id="@+id/ExpYearSpinner"
                             android:layout_width="0dp"
                             android:layout_weight="0.05"
                             android:layout_height="fill_parent" />
                         <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                            android:id="@+id/ExpYearSpinner"
                             android:layout_width="0dip"
                             android:layout_weight="1"
                             android:layout_height="@dimen/HeightEditTextFlat"

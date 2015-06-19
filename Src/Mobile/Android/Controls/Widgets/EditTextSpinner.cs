@@ -56,6 +56,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        public EventHandler<TouchEventArgs> OnTouch { get; set; }
+
         public string Text
         {
             get { return _text; }
@@ -177,10 +179,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
             var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);
+
             button.Click += (sender, e) =>
             {
                 if (Enabled)
                 {
+                    OnTouch.Invoke(button, new TouchEventArgs(true, null));
+
                     _spinner.PerformClick();
                 } 
             };

@@ -18,6 +18,7 @@ using Org.Json;
 using PaypalSdkDroid.CardPayment;
 using PaypalSdkDroid.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using Android.OS;
 using Android.Views.InputMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
@@ -70,8 +71,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             var spinnerExpMonth = FindViewById<EditTextSpinner>(Resource.Id.ExpMonthSpinner);
             var spinnerExpYear = FindViewById<EditTextSpinner>(Resource.Id.ExpYearSpinner);
 
-            spinnerExpMonth.FocusChange += (sender, e) => HideKeyboard();
-            spinnerExpYear.FocusChange += (sender, e) => HideKeyboard();
+            spinnerExpMonth.OnTouch += (sender, e) => HideKeyboard(spinnerExpMonth.WindowToken);
+            spinnerExpYear.OnTouch += (sender, e) => HideKeyboard(spinnerExpYear.WindowToken);
 
             if (CardIOActivity.CanReadCardWithCamera()
                 && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
@@ -91,12 +92,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             }
         }
 
-        private void HideKeyboard()
+        private void HideKeyboard(IBinder windowToken)
         {
             var inputManager = (InputMethodManager)GetSystemService(InputMethodService);
             if (inputManager != null)
             {
-                inputManager.ToggleSoftInput(ShowFlags.Implicit, HideSoftInputFlags.None);
+                inputManager.HideSoftInputFromWindow(windowToken, HideSoftInputFlags.NotAlways);
             }
         }
 
