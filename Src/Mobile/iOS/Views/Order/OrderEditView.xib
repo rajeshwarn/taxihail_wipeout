@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OrderEditView">
@@ -37,7 +37,7 @@
                                         <constraint firstAttribute="height" constant="17" id="gNa-RS-jxH"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4hS-SI-xiM" userLabel="Name TextField" customClass="FlatTextField">
@@ -48,15 +48,6 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                 </textField>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tdj-6a-ZYn" userLabel="Phone">
-                                    <rect key="frame" x="8" y="90" width="38" height="17"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="17" id="6PB-d8-jQ9"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Ib-CQ-l4c" userLabel="Phone TextField" customClass="FlatTextField">
                                     <rect key="frame" x="8" y="113" width="136" height="41"/>
                                     <constraints>
@@ -71,7 +62,7 @@
                                         <constraint firstAttribute="height" constant="17" id="PY7-er-U3S"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jhU-mT-P5E" userLabel="Passengers TextField" customClass="FlatTextField">
@@ -82,30 +73,13 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 </textField>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Apartment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZrU-4N-hYh" userLabel="Apartment">
-                                    <rect key="frame" x="8" y="166" width="61" height="17"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="17" id="5GO-3k-Yj1"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xc0-Ir-BQJ" userLabel="Apartment TextField" customClass="FlatTextField">
-                                    <rect key="frame" x="8" y="189" width="136" height="41"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="41" id="66E-jD-4nl"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Entry Code" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lYg-9k-Yax" userLabel="Entry Code">
                                     <rect key="frame" x="161" y="166" width="66" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="F1G-mB-q4e"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LTY-qd-chV" userLabel="Entry Code TextField" customClass="FlatTextField">
@@ -122,13 +96,39 @@
                                         <constraint firstAttribute="height" constant="17" id="KEt-HS-3Zs"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qOU-hC-q4U" userLabel="Charge Type TextField" customClass="ModalFlatTextField">
                                     <rect key="frame" x="8" y="265" width="289" height="41"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="2on-Ym-Zyh"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Apartment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZrU-4N-hYh" userLabel="Apartment">
+                                    <rect key="frame" x="8" y="166" width="61" height="17"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="17" id="5GO-3k-Yj1"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tdj-6a-ZYn" userLabel="Phone">
+                                    <rect key="frame" x="8" y="90" width="38" height="17"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="17" id="6PB-d8-jQ9"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xc0-Ir-BQJ" userLabel="Apartment TextField" customClass="FlatTextField">
+                                    <rect key="frame" x="8" y="189" width="136" height="41"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="41" id="66E-jD-4nl"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
@@ -143,6 +143,7 @@
                                 <constraint firstItem="BgV-w2-ZOB" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="Bip-Zy-2sq"/>
                                 <constraint firstItem="tdj-6a-ZYn" firstAttribute="leading" secondItem="1Ib-CQ-l4c" secondAttribute="leading" id="EHw-rp-riD"/>
                                 <constraint firstAttribute="trailing" secondItem="qOU-hC-q4U" secondAttribute="trailing" constant="8" id="FDG-yI-T8h"/>
+                                <constraint firstItem="10z-cE-INp" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" priority="540" constant="14" id="HdN-b3-C6m"/>
                                 <constraint firstItem="tdj-6a-ZYn" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="JQ3-Kh-uZn"/>
                                 <constraint firstItem="LTY-qd-chV" firstAttribute="leading" secondItem="Xc0-Ir-BQJ" secondAttribute="trailing" constant="17" id="Knh-IV-bt0"/>
                                 <constraint firstItem="jhU-mT-P5E" firstAttribute="width" secondItem="1Ib-CQ-l4c" secondAttribute="width" id="NYO-yN-Rgu"/>
@@ -151,27 +152,29 @@
                                 <constraint firstAttribute="trailing" secondItem="4hS-SI-xiM" secondAttribute="trailing" constant="8" id="QdX-aE-IxH"/>
                                 <constraint firstAttribute="trailing" secondItem="LTY-qd-chV" secondAttribute="trailing" constant="8" id="RSK-ok-mhv"/>
                                 <constraint firstAttribute="trailing" secondItem="1Ib-CQ-l4c" secondAttribute="trailing" priority="500" constant="8" id="Sdm-Mp-iee"/>
-                                <constraint firstItem="LTY-qd-chV" firstAttribute="centerY" secondItem="Xc0-Ir-BQJ" secondAttribute="centerY" id="Smu-fR-LGn"/>
-                                <constraint firstItem="ZrU-4N-hYh" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" priority="500" constant="14" id="VlE-VN-F41"/>
+                                <constraint firstItem="ZrU-4N-hYh" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" priority="570" constant="14" id="VlE-VN-F41"/>
                                 <constraint firstAttribute="trailing" secondItem="jhU-mT-P5E" secondAttribute="trailing" constant="8" id="YWe-dX-Lal"/>
-                                <constraint firstItem="Xc0-Ir-BQJ" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="a3v-5C-mEJ"/>
+                                <constraint firstItem="10z-cE-INp" firstAttribute="top" secondItem="4hS-SI-xiM" secondAttribute="bottom" priority="550" constant="12" id="bFw-am-S8f"/>
                                 <constraint firstItem="Xc0-Ir-BQJ" firstAttribute="leading" secondItem="ZrU-4N-hYh" secondAttribute="leading" id="dCn-4v-xxG"/>
                                 <constraint firstItem="jhU-mT-P5E" firstAttribute="top" secondItem="dqF-j3-PLn" secondAttribute="bottom" constant="6" id="ekE-I7-5yG"/>
                                 <constraint firstItem="10z-cE-INp" firstAttribute="top" secondItem="Xc0-Ir-BQJ" secondAttribute="bottom" constant="12" id="fUg-tf-8bT"/>
+                                <constraint firstItem="10z-cE-INp" firstAttribute="top" secondItem="jhU-mT-P5E" secondAttribute="bottom" priority="560" constant="12" id="fVr-Z4-qPq"/>
                                 <constraint firstItem="ZrU-4N-hYh" firstAttribute="top" secondItem="jhU-mT-P5E" secondAttribute="bottom" constant="12" id="gmp-NM-xNr"/>
-                                <constraint firstItem="tdj-6a-ZYn" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" priority="600" constant="14" id="iq6-8Y-WrI"/>
+                                <constraint firstItem="10z-cE-INp" firstAttribute="top" secondItem="LTY-qd-chV" secondAttribute="bottom" constant="12" id="ibe-tQ-ixa"/>
+                                <constraint firstItem="tdj-6a-ZYn" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" priority="950" constant="14" id="iq6-8Y-WrI"/>
                                 <constraint firstItem="10z-cE-INp" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="jFd-6G-GKe"/>
                                 <constraint firstItem="BgV-w2-ZOB" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" constant="14" id="lGY-BY-zwM"/>
                                 <constraint firstItem="LTY-qd-chV" firstAttribute="width" secondItem="Xc0-Ir-BQJ" secondAttribute="width" id="lo2-UA-ti5"/>
-                                <constraint firstItem="dqF-j3-PLn" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" priority="600" constant="14" id="m39-fT-3lZ"/>
+                                <constraint firstItem="dqF-j3-PLn" firstAttribute="top" secondItem="UWG-E6-QOn" secondAttribute="top" priority="950" constant="14" id="m39-fT-3lZ"/>
                                 <constraint firstAttribute="trailing" secondItem="Xc0-Ir-BQJ" secondAttribute="trailing" priority="500" constant="8" id="nQs-fO-umU"/>
                                 <constraint firstAttribute="bottom" secondItem="qOU-hC-q4U" secondAttribute="bottom" constant="10" id="nkr-RH-mNO"/>
                                 <constraint firstItem="qOU-hC-q4U" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="o5A-iY-KjQ"/>
-                                <constraint firstItem="10z-cE-INp" firstAttribute="top" secondItem="1Ib-CQ-l4c" secondAttribute="bottom" priority="500" constant="12" id="oNb-hQ-IoI"/>
+                                <constraint firstItem="10z-cE-INp" firstAttribute="top" secondItem="1Ib-CQ-l4c" secondAttribute="bottom" priority="560" constant="12" id="oNb-hQ-IoI"/>
+                                <constraint firstItem="LTY-qd-chV" firstAttribute="top" secondItem="lYg-9k-Yax" secondAttribute="bottom" constant="6" id="p73-yg-hFg"/>
                                 <constraint firstItem="ZrU-4N-hYh" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" constant="8" id="pSq-LC-2uA"/>
                                 <constraint firstItem="dqF-j3-PLn" firstAttribute="leading" secondItem="UWG-E6-QOn" secondAttribute="leading" priority="500" constant="8" id="q91-Sv-1Kk"/>
                                 <constraint firstItem="1Ib-CQ-l4c" firstAttribute="top" secondItem="tdj-6a-ZYn" secondAttribute="bottom" constant="6" id="qFN-sg-Ys1"/>
-                                <constraint firstItem="ZrU-4N-hYh" firstAttribute="top" secondItem="4hS-SI-xiM" secondAttribute="bottom" priority="750" constant="12" id="rmd-oe-OXI"/>
+                                <constraint firstItem="ZrU-4N-hYh" firstAttribute="top" secondItem="4hS-SI-xiM" secondAttribute="bottom" priority="580" constant="12" id="rmd-oe-OXI"/>
                                 <constraint firstItem="LTY-qd-chV" firstAttribute="leading" secondItem="lYg-9k-Yax" secondAttribute="leading" id="um9-G7-9FR"/>
                                 <constraint firstItem="4hS-SI-xiM" firstAttribute="top" secondItem="BgV-w2-ZOB" secondAttribute="bottom" constant="6" id="wJ2-G8-BeS"/>
                                 <constraint firstItem="jhU-mT-P5E" firstAttribute="leading" secondItem="1Ib-CQ-l4c" secondAttribute="trailing" constant="17" id="x4k-tG-pUE"/>
