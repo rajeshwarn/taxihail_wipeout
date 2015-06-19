@@ -139,11 +139,11 @@ namespace apcurium.MK.Booking.ConfigTool
                             pattern = new Regex("[ ']");
 	                        if ( string.IsNullOrEmpty( Config.FacebookAppId ) )
 	                        {
-                                ele.InnerXml = string.Format("<string>mk{1}</string>", Config.FacebookAppId, pattern.Replace(Config.ApplicationName, string.Empty));
+                                ele.InnerXml = string.Format("<string>mk{1}</string>", Config.FacebookAppId, pattern.Replace(Config.ApplicationName.ToLowerInvariant(), string.Empty));
 	                        }
 	                        else
 	                        {
-                                ele.InnerXml = string.Format("<string>fb{0}{1}</string><string>mk{1}</string>", Config.FacebookAppId, pattern.Replace(Config.ApplicationName, string.Empty));
+                                ele.InnerXml = string.Format("<string>fb{0}{1}</string><string>mk{1}</string>", Config.FacebookAppId, pattern.Replace(Config.ApplicationName.ToLowerInvariant(), string.Empty));
 	                        }
 						}
 					},
