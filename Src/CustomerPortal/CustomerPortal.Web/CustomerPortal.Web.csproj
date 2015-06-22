@@ -309,7 +309,9 @@
     <Compile Include="Security\SecurityHelper.cs" />
     <Compile Include="Services\GoogleApi.cs" />
     <Compile Include="Services\IClock.cs" />
+    <Compile Include="Services\IEmailSender.cs" />
     <Compile Include="Services\IFileManager.cs" />
+    <Compile Include="Services\Impl\EmailSender.cs" />
     <Compile Include="Services\Impl\PackagesManager.cs" />
     <Compile Include="Services\Impl\Clock.cs" />
     <Compile Include="Services\Impl\GraphicsManager.cs" />

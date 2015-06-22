@@ -426,7 +426,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
                     CardOnFileId = cardToken,
-                    Market = cmtPaymentSettings.Market
+                    Market = cmtPaymentSettings.Market,
+                    TripRequestNumber = orderStatusDetail.IBSOrderId.GetValueOrDefault().ToString()
                 };
 
                 if (orderStatusDetail.RideLinqPairingCode.HasValue())
