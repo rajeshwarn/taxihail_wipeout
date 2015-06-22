@@ -185,7 +185,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 if (Enabled)
                 {
-                    OnTouch.Invoke(button, new TouchEventArgs(true, null));
+					if (OnTouch != null)
+					{
+						OnTouch.Invoke(button, new TouchEventArgs(true, null));
+					}
 
                     _spinner.PerformClick();
                 } 

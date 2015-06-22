@@ -233,6 +233,7 @@
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.WebBrowser.Touch.dll</HintPath>
+	</Reference>
     <Reference Include="Cirrious.MvvmCross.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Touch.dll</HintPath>
     </Reference>
