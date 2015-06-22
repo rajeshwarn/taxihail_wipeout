@@ -5,16 +5,16 @@ using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
 {
-    public class PairingCodeBehavior
+    public static class PairingCodeBehavior
     {
         public static void ApplyTo(EditText pairingCodeEditText1, EditText pairingCodeEditText2)
         {
             pairingCodeEditText1.KeyPress += (sender, args) =>
             {
-                if (pairingCodeEditText1.Text.Length < 3)
+                // We need to ignore the KeyUp event as well as any events if we have lower then 3 characters in the left textbox.
+                if (args.Event.Action == KeyEventActions.Up || pairingCodeEditText1.Text.Length < 3)
                 {
                     args.Handled = false;
-
                     return;
                 }
 
@@ -33,32 +33,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
 
             pairingCodeEditText2.KeyPress += (sender, args) =>
             {
+                // We need to ignore the KeyUp event and only do the modifications on KeyDown.
+                if (args.Event.Action == KeyEventActions.Up)
+                {
+                    args.Handled = false;
+                    return;
+                }
+
                 if (pairingCodeEditText2.Text.Length == 0 && args.KeyCode == Keycode.Del)
                 {
                     pairingCodeEditText1.Text = pairingCodeEditText1.Text.Substring(0, pairingCodeEditText1.Text.Length - 1);
                     pairingCodeEditText1.RequestFocus();
                     pairingCodeEditText1.SetSelection(pairingCodeEditText1.Text.Length);
-                }
-                else
-                {
-                    args.Handled = false;
-                }
-            };
 
-            pairingCodeEditText1.AfterTextChanged += (sender, args) =>
-            {
-                if (args.Editable.ToString().Length == 3)
-                {
-                    pairingCodeEditText2.RequestFocus();
+                    return;
                 }
-            };
 
-            pairingCodeEditText2.AfterTextChanged += (sender, args) =>
-            {
-                if (args.Editable.ToString().Length == 0)
-                {
-                    pairingCodeEditText1.RequestFocus();
-                }
+                args.Handled = false;
             };
         }
 
