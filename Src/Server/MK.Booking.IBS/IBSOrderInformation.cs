@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.IBS
 
             IBSOrderId = orderInfoFromIBS.OrderID;
 
-            VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? VehicleNumber : orderInfoFromIBS.VehicleNumber.Trim(); ;
+            VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? VehicleNumber : orderInfoFromIBS.VehicleNumber.Trim();
             MobilePhone = orderInfoFromIBS.DriverMobilePhone.GetValue(MobilePhone);
             FirstName = orderInfoFromIBS.DriverFirstName.GetValue(FirstName);
             LastName = orderInfoFromIBS.DriverLastName.GetValue(LastName);
