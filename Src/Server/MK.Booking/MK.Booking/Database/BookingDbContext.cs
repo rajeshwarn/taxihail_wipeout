@@ -67,6 +67,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<OrderReportDetail>().ToTable("OrderReportDetail", SchemaName);
             modelBuilder.Entity<OrderNotificationDetail>().ToTable("OrderNotificationDetail", SchemaName);
             modelBuilder.Entity<OverduePaymentDetail>().ToTable("OverduePaymentDetail", SchemaName);
+            modelBuilder.Entity<FeesDetail>().ToTable("FeesDetail", SchemaName);
 
             modelBuilder.Entity<AccountChargeQuestion>().ToTable("AccountChargeQuestion", SchemaName);
             modelBuilder.Entity<AccountChargeDetail>().ToTable("AccountChargeDetail", SchemaName)
@@ -78,6 +79,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<VehicleTypeDetail>().ToTable("VehicleTypeDetail", SchemaName);
             modelBuilder.Entity<TemporaryOrderCreationInfoDetail>().ToTable("TemporaryOrderCreationInfoDetail", SchemaName);
             modelBuilder.Entity<TemporaryOrderPaymentInfoDetail>().ToTable("TemporaryOrderPaymentInfoDetail", SchemaName);
+            modelBuilder.Entity<AccountChargeQuestionAnswer>().ToTable("AccountChargeQuestionAnswer", SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class

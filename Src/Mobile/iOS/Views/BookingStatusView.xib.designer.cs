@@ -25,6 +25,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnMessageDriver { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnNewRide { get; set; }
 
 		[Outlet]
@@ -34,7 +37,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnResend { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnTextDriver { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnTip { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
+
+		[Outlet]
+		UIKit.UIView driverDescriptionContainerView { get; set; }
+
+		[Outlet]
+		Cirrious.MvvmCross.Binding.Touch.Views.MvxImageView driverPhoto { get; set; }
+
+		[Outlet]
+		UIKit.UIView driverPhotoContainerView { get; set; }
 
 		[Outlet]
 		UIKit.UIImageView imgGrip { get; set; }
@@ -65,6 +83,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.UILabel lblTaxiType { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton lblTip { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.TouchMap mapStatus { get; set; }
@@ -109,16 +130,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				bottomBar = null;
 			}
 
-			if (txtCompany != null) {
-				txtCompany.Dispose ();
-				txtCompany = null;
-			}
-
-			if (lblCompany != null) {
-				lblCompany.Dispose ();
-				lblCompany = null;
-			}
-
 			if (btnCall != null) {
 				btnCall.Dispose ();
 				btnCall = null;
@@ -132,6 +143,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnCancel != null) {
 				btnCancel.Dispose ();
 				btnCancel = null;
+			}
+
+			if (btnMessageDriver != null) {
+				btnMessageDriver.Dispose ();
+				btnMessageDriver = null;
 			}
 
 			if (btnNewRide != null) {
@@ -149,9 +165,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnResend = null;
 			}
 
+			if (btnTextDriver != null) {
+				btnTextDriver.Dispose ();
+				btnTextDriver = null;
+			}
+
+			if (btnTip != null) {
+				btnTip.Dispose ();
+				btnTip = null;
+			}
+
 			if (btnUnpair != null) {
 				btnUnpair.Dispose ();
 				btnUnpair = null;
+			}
+
+			if (driverDescriptionContainerView != null) {
+				driverDescriptionContainerView.Dispose ();
+				driverDescriptionContainerView = null;
+			}
+
+			if (driverPhoto != null) {
+				driverPhoto.Dispose ();
+				driverPhoto = null;
+			}
+
+			if (driverPhotoContainerView != null) {
+				driverPhotoContainerView.Dispose ();
+				driverPhotoContainerView = null;
 			}
 
 			if (imgGrip != null) {
@@ -162,6 +203,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblColor != null) {
 				lblColor.Dispose ();
 				lblColor = null;
+			}
+
+			if (lblCompany != null) {
+				lblCompany.Dispose ();
+				lblCompany = null;
 			}
 
 			if (lblConfirmation != null) {
@@ -199,6 +245,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblTaxiType = null;
 			}
 
+			if (lblTip != null) {
+				lblTip.Dispose ();
+				lblTip = null;
+			}
+
 			if (mapStatus != null) {
 				mapStatus.Dispose ();
 				mapStatus = null;
@@ -222,6 +273,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtColor != null) {
 				txtColor.Dispose ();
 				txtColor = null;
+			}
+
+			if (txtCompany != null) {
+				txtCompany.Dispose ();
+				txtCompany = null;
 			}
 
 			if (txtDriver != null) {

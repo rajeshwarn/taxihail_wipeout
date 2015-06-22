@@ -66,6 +66,7 @@
 "TaxiHailNetworkTimeOutPopupAccept"="Accepter";
 "ReSendConfirmation"="Signaler le paiement";
 "CreateAccountPhonePlaceHolder"="Ligne mobile";
+"Error_EditAutoTipMessage"="Une erreur est survenue en changeant le pourboire. Veuillez réessayer.";
 "ReminderTitle"="{0} Enregistré";
 "March"="Mars (03)";
 "LoginViewEmailPlaceHolder"="Email (adresse électronique)";
@@ -77,6 +78,7 @@
 "Error_AccountPaymentTitle"="Erreur";
 "Tuto05Top"="Sélectionner 'Commander maintenant' afin que nous puissions vous attribuer un véhicule dans les meilleurs délais";
 "View_SignIn"="Se connecter";
+"GenericErrorTitle"="Erreur";
 "BookDateLabel"="Départ différé";
 "HistoryViewSendReceiptError"="Désolé, nous avons rencontré un problème lors de l'envoi de la facture";
 "StatusCancelButton"="Annuler";
@@ -137,6 +139,7 @@
 "RideSettingsAccountNumber"="Numéro de compte entreprise (optionnel)";
 "RideSettingsPassword"="Mot de passe";
 "View_BookingDetail"="Détails de la réservation";
+"ManualRideLinqStatus_Toll"="Péage:";
 "WarningTitle"="Avertissement";
 "ManualPairingForRideLinQ_Error_Message"="Une erreur est survenue lors de l'enregistrement";
 "Delete"="Supprimer";
@@ -195,7 +198,9 @@
 "View_RideLinqPair"="Check In";
 "DateTimePickerSetButton"="Réserver maintenant!";
 "TaxiHailNetworkTimeOutPopupAlways"="Toujours accepter";
+"CreditCardAdded_PayInCarDisabled"="Votre compte est maintenant configuré pour le paiement par la carte de crédit.";
 "AccountConfirmation_ErrorTitle"="Impossible de confirmer votre compte.";
+"CallDriverUsingProxyErrorMessage"="Désolé, nous n'avons pas pu vous mettre en contact avec votre chauffeur.";
 "DestinationTextPlaceholder"="Adresse de destination";
 "NoFareText"="Vous devez saisir une destination pour obtenir une estimation du prix du trajet";
 "HistoryDetailOrderLabel"="Commande:";
@@ -239,10 +244,11 @@
 "GenericTitle"="";
 "PickupTextPlaceholder"="Adresse de départ";
 "CmtRideLinqConfirmPairViewConfirmPairDetailText"="Merci de vérifier que vous êtes dans le véhicule indiqué ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant les paramètres de paiement par défaut.";
-"NoPhoneNumberMessage"="Le numéro de téléphone est indisponible";
+"NoPhoneNumberMessage"="Votre numéro de téléphone ou celui de votre chauffeur est indisponible.";
 "CmtRideLinqErrorTitle"="Erreur";
 "PickupViewPickupLabel"="Départ:";
 "AccountPaymentCustomerNumberRequiredTitle"="Numéro de client du compte requis";
+"MessageToDriverTitle"="Message au chauffeur";
 "searchHint"="Rechercher";
 "StreetNumberDoneBt"="Utiliser cette adresse";
 "InvalidLocalContactMessage"="L'adresse semble ne pas correspondre au contact";
@@ -253,6 +259,7 @@
 "LocationDetailNameLabel"="Surnom";
 "ResetPasswordInvalidDataTitle"="Cet email n'est pas valide";
 "NoPhoneNumberTitle"="Le numéro de téléphone ne semble pas valide";
+"ManualRideLinqStatus_Extra"="Extra:";
 "UpdatedTermsAndConditionsAcceptButton"="Accepter";
 "PaymentConfirmationMessageToDriver"="Paiement effectué par le passager pour un montant de {0} (code: {1})";
 "Time"="Heure";
@@ -260,6 +267,7 @@
 "CreditCardBookingSettingsError"="Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.";
 "CreditCardInvalidCrediCardNUmber"="Le numéro de la carte ne semble pas être valide";
 "RideSettingsCompany"="Société";
+"ServiceError_ErrorCreatingOrderMessage_NoCall"="Votre demande n'a pas pu être prise en compte, veuillez réessayer de nouveau.";
 "CmtCancelPayment"="Annuler";
 "DriverInfoLicence"="Licence:";
 "Overdue_IBSOrderId"="Commande:";
@@ -268,6 +276,7 @@
 "UpdateBookingSettingsInvalidAccount"="Le numéro de compte saisi n'existe pas";
 "ResetPasswordConfirmationTitle"="Mot de passe envoyé";
 "NoPairingCreditCard"="Aucun";
+"CallDriverUsingProxyPrompt"="Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.";
 "Submit"="Envoyer";
 "AccountPaymentNumberRequiredTitle"="Numéro de compte requis";
 "CreditCardRemoveErrorMessage"="Vous devez avoir au moins une carte de crédit relier à votre compte. Vous devez ajouter une autre carte avant d'en supprimer une.";
@@ -316,7 +325,7 @@
 "PromoDescriptionCode"="Enter le code {0} ou appuyez sur le bouton ci-dessous.";
 "Error_AccountPaymentMessage"="Le numéro de compte ou de client semble invalide";
 "SaveAddressEmptyFieldTitle"="Merci de resaisir le nom";
-"ManualRideLinqStatus_Medallion"="Véhicule #:";
+"ManualRideLinqStatus_Medallion"="Vous êtes assis dans le véhicule {0}.";
 "Modify"="Modifier";
 "LoginForgotPasswordDetail"="Saisissez votre email pour recevoir votre nouveau mot de passe";
 "ResetPasswordTitleText"="Mot de passe oublié?";
@@ -331,7 +340,7 @@
 "CvvRequiredMessage"="Veuillez entrer le code de vérification associé à votre carte de crédit se terminant par {0} pour continuer";
 "DateTimePickerPickInvalidDateMessage"="La date de départ ne peut pas être antérieure à la date de commande";
 "AddressSearchingText"="Recherche…";
-"StatusConfirmCancelRideAndWarnForCancellationFees"="Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.";
+"StatusConfirmCancelRideAndWarnForCancellationFees"="Êtes-vous sûr de vouloir annuler? Des frais d'annulation peuvent être appliqués.";
 "MarketChangedMessage"="Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.";
 "Notification_DriverAssignedEmail"="Chauffeur assigné (Email)";
 "Tuto04Top"="Vous pouvez également saisir votre destination";
@@ -351,7 +360,7 @@
 "UpdateBookingSettingsInvalidDataTitle"="Détails de la réservation incorrects";
 "Now"="Immédiatement";
 "RideSummarySubTitleText"="Merci d'avoir choisi {0} pour votre trajet, nous espérons vous revoir bientôt.";
-"StatusConfirmCancelRide"="Cette action annulera votre commande, souhaitez-vous continuer?";
+"StatusConfirmCancelRide"="Êtes-vous sûr de vouloir annuler?";
 "View_AccountConfirmationTitle"="Confirmation de compte";
 "RateRide"="Évaluer la course";
 "ConfirmDestinationLabel"="Destination";
@@ -378,6 +387,7 @@
 "WarningEstimateDontShow"="Ne pas signaler";
 "ChooseProviderDialogTitle"="Choisissez un prestataire";
 "View_AboutUs"="À propos";
+"ManualRideLinqStatus_Greetings"="Appréciez la balade!";
 "WarningLocationService"="Merci d'activer la géolocalisation afin de pouvoir utiliser la carte";
 "LoginViewPasswordPlaceHolder"="Mot de passe";
 "ManualPairingForRideLinQ_InvalidCode_Message"="Le code d'association est invalide";
@@ -424,6 +434,7 @@
 "PassengerNameLabel"="Nom";
 "View_BookingStatus"="Statut";
 "ViewRatingBtn"="Voir les notes";
+"ManualRideLinqStatus_Email"="Un reçu vous sera envoyé à {0}.";
 "ChargeTypeCreditCardFile"="Carte de paiement déjà engistrée";
 "InvalidPhoneErrorMessage"="Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.";
 "CardExpiredMessage"="Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.";
@@ -459,6 +470,7 @@
 "Tuto05Bottom"="Afin de convenir d'une date/heure de départ ultéreure, merci de sélectionner 'Plus tard' sur votre écran";
 "Notification_ConfirmPairingPush"="Confirmation de pairing";
 "ResetPasswordInvalidDataMessage"="Désolé, cet email n'est pas valide";
+"ManualRideLinqStatus_Payment"="Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.";
 "StatusDescription"="Commande n°{0}";
 "EntryCodeLabel"="Saisissez un code";
 "Overdue_Succeed_Title"="Compte Approuvé";
@@ -469,6 +481,7 @@
 "Toggle_On"="Oui";
 "GooglePlayServicesNotAvailableMessage"="Merci de mettre à jour Google Play pour utiliser cette application mobile.";
 "LocationViewTitle"="Mes positions";
+"StatusEditAutoTipButton"="Pourboire";
 "DriverInfoDriver"="Chauffeur:";
 "SettingsViewTitle"="Paramètres";
 "TechSupportEmailTitle"="Support application mobile";
@@ -559,6 +572,7 @@
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
 "November"="Novembre (11)";
 "EmptyString"="";
+"ServiceError_ErrorCreatingOrderMessage"="Merci de contacter {0} au {1} pour toute demande d'assistance";
 "HistoryDetailPromoLabel"="Code promo:";
 "DateTimePickerPickTime"="Sélectionner l'heure de départ";
 "CreateAccountErrorMessage"="Le compte de peut malheureusement pas être créé";
@@ -576,7 +590,7 @@
 "NbPassengers"=" ({0} passagers)";
 "NearbyPlacesTitle"="À proximité";
 "AccountPaymentQuestionsPlaceHolder"="{0} caractères maximum";
-"RemoveCreditCardMessage"="Etes-vous sur de vouloir supprimer cette carte de paiement?";
+"RemoveCreditCardMessage"="Etes-vous sûr de vouloir supprimer cette carte de paiement?";
 "StreetNumberTitle"="Détails de l'adresse";
 "PayNow"="Payer maintenant!";
 "View_AccountConfirmation_Label_Instructions"="Un SMS contenant votre code a été envoyé à votre téléphone.";
@@ -595,6 +609,7 @@
 "WarningLocationServiceDontShow"="Ne pas signaler";
 "Overdue_Failed_Title"="Erreur de paiement";
 "TAXI"="TAXI";
+"View_EditAutoTip"="Modifier Pourboire";
 "StatusConfirmNewBooking"="Attention, la commande d'un nouveau véhicule n'annulera pas la précédente. Souhaitez-vous continuer?";
 "InvalidPassengersNumber"="Le type de vécicule sélectionné n'a pas suffisamment de places pour accueillir votre nombre de passagers. Veuillez modifier votre sélection ou commander plus d'un véhicule pour accommoder votre groupe.";
 "RideHistoryButton"="Historique des trajets";
@@ -609,5 +624,6 @@
 "NoMailClient"="Il n'y a pas d'adresse email client enregistrée";
 "June"="Juin (06)";
 "ManualRideLinqStatus_Driver"="Chauffeur #:";
+"SendMessageToDriverErrorMessage"="Une erreur est survenue en essayant de contacter le chauffeur. Veuillez réessayer plus tard.";
 "InvalidAddressTextEdit"="Désolé, l'adresse semble inconnue";
 "HistoryDetailPickupDateLabel"="Date de départ:";

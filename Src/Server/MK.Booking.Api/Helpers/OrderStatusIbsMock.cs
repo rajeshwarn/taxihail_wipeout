@@ -52,7 +52,8 @@ namespace apcurium.MK.Booking.Api.Helpers
                 MobilePhone = "5145551234",
                 DriverId = "99123",
                 TerminalId = "98695",
-                ReferenceNumber = "1209"
+                ReferenceNumber = "1209",
+                DriverPhotoUrl = "https://s-media-cache-ak0.pinimg.com/236x/e1/6a/8c/e16a8c1e8dc0c34886a1d14faa38be28.jpg"
             };
 
             var order = _orderDao.FindById(orderId);

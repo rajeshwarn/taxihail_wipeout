@@ -55,6 +55,7 @@
     <Compile Include="AddOrUpdateNotificationSettings.cs" />
     <Compile Include="AddOrUpdateUserTaxiHailNetworkSettings.cs" />
     <Compile Include="AddPopularAddress.cs" />
+    <Compile Include="AddUpdateAccountQuestionAnswer.cs" />
     <Compile Include="AddUserToPromotionWhiteList.cs" />
     <Compile Include="CancelOrderBecauseOfError.cs" />
     <Compile Include="CreateOrderForManualRideLinqPair.cs" />
@@ -62,6 +63,8 @@
     <Compile Include="SaveTemporaryOrderPaymentInfo.cs" />
     <Compile Include="UnapplyPromotion.cs" />
     <Compile Include="UnpairOrderForManualRideLinq.cs" />
+    <Compile Include="UpdateAutoTip.cs" />
+    <Compile Include="UpdateFees.cs" />
     <Compile Include="UpdateTripInfoInOrderForManualRideLinq.cs" />
     <Compile Include="UpdateRefundedOrder.cs" />
     <Compile Include="ReactToPaymentFailure.cs" />

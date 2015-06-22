@@ -128,10 +128,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
 			{
+                // don't hide the button if the user's phone number is not 
+                // entered because we need to tell the user why it's not there
 				return Settings.ShowCallDriver 
 					&& IsDriverInfoAvailable 
 					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); 
 			}
+        }
+
+        public bool IsMessageTaxiVisible
+        {
+            get
+            {
+                return Settings.ShowMessageDriver
+                    && IsDriverInfoAvailable
+                    && OrderStatusDetail.VehicleNumber.HasValue()
+                    && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+                        || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
+            }
         }
 
         public bool IsDriverInfoAvailable
@@ -178,7 +192,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor) || !IsDriverInfoAvailable; }
 		}
-		public bool CanGoBack
+
+        public bool DriverPhotoHidden
+        {
+            get { return (string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.DriverPhotoUrl) || !IsDriverInfoAvailable); }
+        }
+        
+        public bool CanGoBack
 		{
 			get
 			{
@@ -224,57 +244,65 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public OrderStatusDetail OrderStatusDetail
         {
 			get { return _orderStatusDetail; }
-			set {
+			set
+            {
 				_orderStatusDetail = value;
-				RaisePropertyChanged (() => OrderStatusDetail);
-				RaisePropertyChanged (() => CompanyHidden);
-				RaisePropertyChanged (() => VehicleDriverHidden);
-				RaisePropertyChanged (() => VehicleLicenceHidden);
-				RaisePropertyChanged (() => VehicleTypeHidden);
-				RaisePropertyChanged (() => VehicleMakeHidden);
-				RaisePropertyChanged (() => VehicleModelHidden);
-				RaisePropertyChanged (() => VehicleColorHidden);
-				RaisePropertyChanged (() => IsDriverInfoAvailable);
-				RaisePropertyChanged (() => IsCallTaxiVisible);
-				RaisePropertyChanged (() => CanGoBack);
+				RaisePropertyChanged(() => OrderStatusDetail);
+				RaisePropertyChanged(() => CompanyHidden);
+				RaisePropertyChanged(() => VehicleDriverHidden);
+				RaisePropertyChanged(() => VehicleLicenceHidden);
+				RaisePropertyChanged(() => VehicleTypeHidden);
+				RaisePropertyChanged(() => VehicleMakeHidden);
+				RaisePropertyChanged(() => VehicleModelHidden);
+				RaisePropertyChanged(() => VehicleColorHidden);
+                RaisePropertyChanged(() => DriverPhotoHidden);
+				RaisePropertyChanged(() => IsDriverInfoAvailable);
+				RaisePropertyChanged(() => IsCallTaxiVisible);
+                RaisePropertyChanged(() => IsMessageTaxiVisible);
+				RaisePropertyChanged(() => CanGoBack);
 			}
-		}
-
-		private string ConvertToValidPhoneNumberIfNecessary(string phoneNumber)
-		{
-			return phoneNumber.Length == 11
-				? phoneNumber
-				: string.Concat("1", phoneNumber);
 		}
 
 		public ICommand CallTaxi
         {
             get 
 			{ 
-				return this.GetCommand(() =>
-                {
-					if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
-                    {
-						if(Settings.CallDriverUsingProxy)
-						{
-							var driver = ConvertToValidPhoneNumberIfNecessary(OrderStatusDetail.DriverInfos.MobilePhone);
-							var passenger = ConvertToValidPhoneNumberIfNecessary(Order.Settings.Phone);
+				return this.GetCommand(async () =>
+				{
+				    var canCallDriver = Order.Settings.Phone.HasValue()
+				       && OrderStatusDetail.DriverInfos.MobilePhone.HasValue();
 
-							var proxyUrl = Settings.CallDriverUsingProxyUrl;
-							var request = WebRequest.Create(string.Format(proxyUrl, driver, passenger));
-							request.GetResponseAsync();
+				    if (canCallDriver)
+				    {
+				        var shouldInitiateCall = false;
+				        await this.Services().Message.ShowMessage(
+                            this.Services().Localize["GenericTitle"], this.Services().Localize["CallDriverUsingProxyPrompt"],
+                            this.Services().Localize["OkButtonText"], () => { shouldInitiateCall = true; },
+                            this.Services().Localize["Cancel"], () => { });
 
-							this.Services().Message.ShowMessage(this.Services().Localize["GenericTitle"], this.Services().Localize["CallDriverUsingProxyMessage"]);
-						}
-						else
-						{
-							_phoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone);
-						}
-                    }
-                    else
-                    {
+				        if (!shouldInitiateCall)
+				        {
+				            return;
+				        }
+
+				        var success = await _bookingService.InitiateCallToDriver(Order.Id);
+                        if (success)
+				        {
+				            this.Services().Message.ShowMessage(
+                                this.Services().Localize["GenericTitle"],
+				                this.Services().Localize["CallDriverUsingProxyMessage"]);
+				        }
+				        else
+				        {
+                            this.Services().Message.ShowMessage(
+                                this.Services().Localize["GenericErrorTitle"],
+                                this.Services().Localize["CallDriverUsingProxyErrorMessage"]);
+				        }
+				    }
+				    else
+				    {
                         this.Services().Message.ShowMessage(this.Services().Localize["NoPhoneNumberTitle"], this.Services().Localize["NoPhoneNumberMessage"]);
-                    }
+				    }
                 }); 
 			}
         }
@@ -514,11 +542,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var isUnPairPossible = DateTime.UtcNow <= OrderStatusDetail.UnpairingTimeOut;
 		    
             if (arePassengersOnBoard
-                && isUnPairPossible
                 && (Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                 || Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)) 
 			{
-				IsUnpairButtonVisible = await _bookingService.IsPaired(Order.Id);
+                var isPaired = await _bookingService.IsPaired(Order.Id);
+
+                CanEditAutoTip = isPaired;
+			    IsUnpairButtonVisible = isPaired && isUnPairPossible;
 			} 
 			else
 			{
@@ -626,9 +656,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     var confirmationMessage = Settings.WarnForFeesOnCancel
                         && (VehicleStatuses.CanCancelOrderStatus.Contains(OrderStatusDetail.IBSStatusId))
-                        ? string.Format(
-                            this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"],
-                            Settings.TaxiHail.ApplicationName)
+                        ? this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"]
                         : this.Services().Localize["StatusConfirmCancelRide"];
 
                     this.Services().Message.ShowMessage(
@@ -703,6 +731,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+        public ICommand EditAutoTipCommand
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    ShowViewModel<EditAutoTipViewModel>();
+                });
+            }
+        }
+
+	    public ICommand SendMessageToDriverCommand
+	    {
+	        get
+	        {
+	            return this.GetCommand(async () =>
+	            {
+                    var message = await this.Services().Message.ShowPromptDialog(
+                        this.Services().Localize["MessageToDriverTitle"],
+                        string.Empty,
+						() => { return; });
+
+	                var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber);
+	                if (!messageSent)
+	                {
+                        this.Services().Message.ShowMessage(
+                            this.Services().Localize["Error"],
+                            this.Services().Localize["SendMessageToDriverErrorMessage"]);
+	                }
+	            });
+	        }
+	    }
+
 		public ICommand PrepareNewOrder
         {
 			get
@@ -726,6 +787,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _isUnpairButtonVisible = value;
 				RaisePropertyChanged();
+            }
+        }
+
+        private bool _canEditAutoTip;
+        public bool CanEditAutoTip
+        {
+            get { return _canEditAutoTip; }
+            set
+            {
+                if (_canEditAutoTip != value)
+                {
+                    _canEditAutoTip = value;
+                    RaisePropertyChanged();
+                }
             }
         }
 

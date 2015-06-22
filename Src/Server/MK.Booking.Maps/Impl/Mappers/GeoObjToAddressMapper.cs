@@ -39,28 +39,22 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
             //If the search was done by name ( foundByName == true ) we assume that it's an address not a range.  
             //If the search was done by geolocation ( foundByName == false ), we check the type returned by google.
             //If the search was done by name ( foundByName == true ), and the address has 2 component 21-7, the second component must be padded with a zero.
-            //If this code causes a problem, we need to add a settings and make it active only for Four Twos ( or companies in queens )
+            //If the removal of the dash '-' is demanded by a company (namely in queens, by FourTwos) make a setting to remove it. Places like the UK has addresses with valid dashes.
 
+            var components = address.StreetNumber.Split('-');
             if (isRange && address.StreetNumber.Contains("-"))
             {
-                var components = address.StreetNumber.Split('-');
-                var firstMiddleCount = (components.Count()/2);
+                var firstMiddleCount = (components.Length/2);
 
-                var newStreetNumber = components.Select(AddLeadingZeroIfSingleNumber).Take(firstMiddleCount).JoinBy("");
+                var newStreetNumber = components.Select(AddLeadingZeroIfSingleNumber).Take(firstMiddleCount).JoinBy("-");
                 ChangeStreetNumber(address, newStreetNumber);
             }
-            
-            if (address.StreetNumber.Contains("-") && (address.StreetNumber.Split('-').Count() == 2))
+
+            if (address.StreetNumber.Contains("-") && components.Length == 2)
             {
-                var streetNumberComponents = address.StreetNumber.Split('-');
-                var newStreetNumber = AddLeadingZeroIfSingleNumber(streetNumberComponents[0]) +
-                                      AddLeadingZeroIfSingleNumber(streetNumberComponents[1]);
+                var newStreetNumber = components.Select(AddLeadingZeroIfSingleNumber).JoinBy("-");
+                    
                 ChangeStreetNumber(address, newStreetNumber);
-            }
-            else
-            {
-                var newStreetNumber = address.StreetNumber.Replace("-", "");
-                ChangeStreetNumber(address, newStreetNumber); 
             }
 
             if (address.StreetNumber.IsNullOrEmpty() && placeName.HasValue())

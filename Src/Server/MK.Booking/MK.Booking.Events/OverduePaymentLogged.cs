@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
@@ -14,5 +15,7 @@ namespace apcurium.MK.Booking.Events
         public string TransactionId { get; set; }
 
         public DateTime? TransactionDate { get; set; }
+
+        public FeeTypes FeeType { get; set; }
     }
 }

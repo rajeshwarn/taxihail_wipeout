@@ -57,6 +57,7 @@
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\CustomerPortalHttpClientProvider.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DeploymentJobService.cs" />
@@ -120,11 +121,5 @@
       <Name>DeploymentServiceTools</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="WebEntities\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Entities\" />
-    <Folder Include="FakeAttributes\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

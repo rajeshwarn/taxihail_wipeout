@@ -21,13 +21,16 @@ namespace apcurium.MK.Booking.Commands
         public string EmailAddress { get; set; }
         public int IBSOrderId { get; set; }
         public DateTime PickupDate { get; set; }
-        public DateTime? DropOffDate { get; set; }
+        public DateTime? UtcDropOffDate { get; set; }
         public string VehicleNumber { get; set; }
         public DriverInfos DriverInfos { get; set; }
         public double Tip { get; set; }
         public double Fare { get; set; }
         public double Toll { get; set; }
         public double Tax { get; set; }
+        public double Surcharge { get; set; }
+        public double Extra { get; set; }
+        public double BookingFees { get; set; }
         public double AmountSavedByPromotion { get; set; }
         public string PromoCode { get; set; }
         public PromoDiscountType PromoDiscountType { get; set; }
@@ -38,14 +41,49 @@ namespace apcurium.MK.Booking.Commands
         public Address PickupAddress { get; set; }
         public Address DropOffAddress { get; set; }
 
+        public CmtRideLinqReceiptFields CmtRideLinqFields { get; set; }
+
         public Payment PaymentInfo { get; set; } // OPTIONAL Null if not needed
 
         public double TotalFare
         {
-            get { return Fare + Toll + Tip + Tax - AmountSavedByPromotion; }
+            get { return Fare + Toll + Tip + Tax + Extra + Surcharge - AmountSavedByPromotion; }
         }
 
         public Guid Id { get; set; }
+
+        public class CmtRideLinqReceiptFields
+        {
+            public DateTime? PickUpDateTime { get; set; }
+
+            public DateTime? DropOffDateTime { get; set; }
+
+            public double? Distance { get; set; }
+
+            public int? TripId { get; set; }
+
+            public string DriverId { get; set; }
+
+            /// <summary>
+            /// Aka: IMSRCH / MTA Tax
+            /// </summary>
+            public double? AccessFee { get; set; }
+
+            /// <summary>
+            /// Aka: Tax / STSRCH
+            /// </summary>
+            public double? StateSurcharge { get; set; }
+
+            public string LastFour { get; set; }
+
+            public int RateAtTripStart { get; set; }
+
+            public int RateAtTripEnd { get; set; }
+
+            public double? FareAtAlternateRate { get; set; }
+
+            public TollDetail[] Tolls { get; set; }
+        }
 
         public class Payment
         {

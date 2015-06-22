@@ -136,6 +136,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public double? MdtFare { get; set; }
 
+        public decimal? BookingFees { get; set; }
+
         public bool IsPaired { get; set; }
 
         public bool IsCompleted { get; set; }
@@ -143,6 +145,12 @@ namespace apcurium.MK.Booking.ReadModel
         public bool IsCancelled { get; set; }
 
         public bool IsRefunded { get; set; }
+
+        public bool WasChargedNoShowFee { get; set; }
+
+        public bool WasChargedCancellationFee { get; set; }
+
+        public bool WasChargedBookingFee { get; set; }
 
         public string Error { get; set; }
     }

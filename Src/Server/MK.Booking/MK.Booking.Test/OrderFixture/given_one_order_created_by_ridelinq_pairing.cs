@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Distance = 25d,
                 Fare = 15f,
                 Tax = 3f,
-                Toll = 1f,
+                TollTotal = 1f,
                 Extra = .5f,
                 Tip= 1.5f,
             });
@@ -96,9 +96,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Fare = 15f,
                 Tax = 3f,
                 Tip = 1.5f,
-                Toll = 1f,
+                TollTotal = 1f,
                 Extra = .5f,
-                EndTime = endTime
+                EndTime = endTime,
+                Medallion = "MD25"
             });
 
 
@@ -109,6 +110,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(1.5f, @event.Tip);
             Assert.AreEqual(25d, @event.Distance);
             Assert.AreEqual(endTime, @event.EndTime);
+            Assert.AreEqual("MD25", @event.Medallion);
         }
     }
 }

@@ -26,11 +26,6 @@
             @Html.RadioButtonFor(x => x.DeployOptions, DeployOptions.Both) Both
         </div>
         <br />
-        <div id="mobServer">
-            @Html.LabelFor(x => x.Environment)
-            @Html.DropDownListFor(x => x.ServerId, Model.Environment, "-- select --", new { data_server_select = "" })
-        </div>
-        <br />
         <div>
             @Html.LabelFor(m => m.Revision)
             @Html.DropDownListFor(m => m.RevisionId, Model.Revision, "-- select --")

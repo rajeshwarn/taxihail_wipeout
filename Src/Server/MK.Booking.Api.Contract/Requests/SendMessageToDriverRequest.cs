@@ -1,14 +1,15 @@
-using System;
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 
-namespace MK.Common.Android
+namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Route("vehicle/{CarNumber}")]
-	public class SendMessageToDriverRequest : IReturn<SendMessageToDriverResponse>
+    [Authenticate]
+    [Route("/vehicle/{VehicleNumber}/message", "POST")]
+	public class SendMessageToDriverRequest : BaseDto
 	{
-		public string Message {get; set;}
+		public string Message { get; set; }
 
-	    public string CarNumber {get; set;}
+
+	    public string VehicleNumber { get; set; }
 	}
 }
-

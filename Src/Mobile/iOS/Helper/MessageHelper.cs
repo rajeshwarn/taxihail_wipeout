@@ -11,16 +11,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 	public static class MessageHelper
 	{
 		
-        public static void Show (string title, string message, string additionalActionTitle, Action additionalAction)
+        public static Task Show (string title, string message, string additionalActionTitle, Action additionalAction)
         {
+            var tcs = new TaskCompletionSource<object>();
+
             UIApplication.SharedApplication.InvokeOnMainThread (delegate {                                       
                 LoadingOverlay.StopAnimatingLoading();
                 var av = new UIAlertView (title, message, null, additionalActionTitle);
                 av.Clicked += delegate {
-                    additionalAction();     
+                    additionalAction();
+                    tcs.TrySetResult(null);
                 };                                      
                 av.Show();                                                      
             } );
+
+            return tcs.Task;
         }
 
         public static Task Show (string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction, string neutralActionTitle , Action neutralAction )
@@ -65,13 +70,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return tcs.Task;
         }
 
-        public static void Show (string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction)
+        public static Task Show (string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction)
         {
-            Show(title, message, positiveActionTitle, positiveAction, negativeActionTitle, negativeAction, () => { });
+            return Show(title, message, positiveActionTitle, positiveAction, negativeActionTitle, negativeAction, () => { });
         }
 
-        public static void Show(string title, string message, string positiveActionTitle, Action positiveAction, string negativeActionTitle, Action negativeAction, Action cancelAction)
+        public static Task Show(string title, string message, string positiveActionTitle, Action positiveAction, string negativeActionTitle, Action negativeAction, Action cancelAction)
         {
+            var tcs = new TaskCompletionSource<object>();
+
             UIApplication.SharedApplication.InvokeOnMainThread(delegate
             {
                 LoadingOverlay.StopAnimatingLoading();
@@ -94,13 +101,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                             positiveAction();
                         }
                     }
+                    tcs.TrySetResult(null);
                 };
                 av.Show();
             });
+
+            return tcs.Task;
         }
 
-        public static void Show (string title, string message, List<KeyValuePair<string,Action>> additionalButton)
+        public static Task Show (string title, string message, List<KeyValuePair<string,Action>> additionalButton)
         {
+            var tcs = new TaskCompletionSource<object>();
+
             UIApplication.SharedApplication.InvokeOnMainThread (delegate {      
                 var listTitle = additionalButton.Select(c => c.Key).ToArray();
                 LoadingOverlay.StopAnimatingLoading();
@@ -110,26 +122,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                     {
                         additionalButton[(int)e.ButtonIndex - 1].Value();
                     }
+                    tcs.TrySetResult(null);
                 };
                 av.Show ();                           
             });
+
+            return tcs.Task;
         }
-				
-		public static void Show (string title, string message, Action onDismiss)
-		{
-			UIApplication.SharedApplication.InvokeOnMainThread (delegate {					
-                LoadingOverlay.StopAnimatingLoading();
-                var av = new UIAlertView(title, message, null, Localize.GetValue("Close"), null);
-				av.Dismissed += delegate {
-					onDismiss();
-				};
-				av.Show ();							
-            });
-		}
-		
+
 		public static Task Show (string title, string message)
 		{
 			var tcs = new TaskCompletionSource<object>();
+
             UIApplication.SharedApplication.InvokeOnMainThread(delegate {					
                 LoadingOverlay.StopAnimatingLoading();
                 var av = new UIAlertView(title, message, null, Localize.GetValue("Close"), null);
@@ -138,10 +142,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 				};
 				av.Show ();
 			});
+
 			return tcs.Task;
 		}
 		
-		public static void Show ( string message )
+		public static void Show (string message)
 		{
 			UIApplication.SharedApplication.InvokeOnMainThread (delegate {								
                 LoadingOverlay.StopAnimatingLoading();

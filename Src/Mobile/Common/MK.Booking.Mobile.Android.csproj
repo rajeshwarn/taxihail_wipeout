@@ -222,6 +222,7 @@
     <Compile Include="ViewModels\Callbox\CallboxLoginViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxOrderListViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxOrderViewModel.cs" />
+    <Compile Include="ViewModels\EditAutoTipViewModel.cs" />
     <Compile Include="ViewModels\enum\ColorEnum.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />

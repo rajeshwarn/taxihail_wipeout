@@ -225,6 +225,7 @@
     <Compile Include="Areas\Admin\Models\VersionEmailViewModel.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\NetworkApiController.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\NetworkVehiclesApiController.cs" />
+    <Compile Include="Areas\Customer\Controllers\Api\PaymentSettingsApiController.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\RoamingApiController.cs" />
     <Compile Include="Areas\Customer\Models\RequestResponse\CompanyPreferencesRequest.cs" />
     <Compile Include="Attributes\NoCacheAttribute.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Entities\Network\TaxiHailNetworkSettings.cs" />
     <Compile Include="Entities\Network\NetworkVehicle.cs" />
     <Compile Include="Entities\Payment.cs" />
+    <Compile Include="Entities\Network\PaymentSettings.cs" />
     <Compile Include="Entities\Questionnaire.cs" />
     <Compile Include="Entities\AppStatus.cs" />
     <Compile Include="Entities\IBSSettings.cs" />
@@ -307,7 +309,9 @@
     <Compile Include="Security\SecurityHelper.cs" />
     <Compile Include="Services\GoogleApi.cs" />
     <Compile Include="Services\IClock.cs" />
+    <Compile Include="Services\IEmailSender.cs" />
     <Compile Include="Services\IFileManager.cs" />
+    <Compile Include="Services\Impl\EmailSender.cs" />
     <Compile Include="Services\Impl\PackagesManager.cs" />
     <Compile Include="Services\Impl\Clock.cs" />
     <Compile Include="Services\Impl\GraphicsManager.cs" />

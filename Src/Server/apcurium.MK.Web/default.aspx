@@ -57,6 +57,7 @@
             TaxiHail.parameters.geolocSearchBounds = '<%= GeolocSearchBounds %>';
             TaxiHail.parameters.hideDispatchButton = <%: HideDispatchButton ? "true" : "false" %>;
             TaxiHail.parameters.showCallDriver = <%: ShowCallDriver ? "true" : "false" %>;
+            TaxiHail.parameters.showMessageDriver = <%: ShowMessageDriver ? "true" : "false" %>;
             TaxiHail.parameters.accountActivationDisabled = <%: AccountActivationDisabled ? "true" : "false" %>;
             TaxiHail.parameters.isEstimateEnabled = <%: EstimateEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isEtaEnabled = <%: EtaEnabled ? "true" : "false" %>;
@@ -89,6 +90,7 @@
             TaxiHail.parameters.availableVehicleRefreshRate = "<%: AvailableVehicleRefreshRate %>";
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             TaxiHail.parameters.isCraftyClicksEnabled = "<%: IsCraftyClicksEnabled ? "true" : "false" %>";
+            TaxiHail.parameters.webSiteRootPath = "<%: WebSiteRootPath %>";
             
             <% if(IsPayBackRegistrationFieldRequired == true) { %>
                 TaxiHail.parameters.isPayBackRegistrationFieldRequired = "true";

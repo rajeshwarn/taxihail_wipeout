@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -20,9 +21,10 @@ namespace apcurium.MK.Booking.Services.Impl
     {
         private readonly ICommandBus _commandBus;
         private readonly ILogger _logger;
-        private readonly IServerSettings _serverSettings;
+        private readonly ServerPaymentSettings _serverPaymentSettings;
         private readonly IPairingService _pairingService;
         private readonly IOrderPaymentDao _paymentDao;
+        private readonly IServerSettings _serverSettings;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IOrderDao _orderDao;
 
@@ -31,7 +33,8 @@ namespace apcurium.MK.Booking.Services.Impl
         public MonerisPaymentService(ICommandBus commandBus,
             ILogger logger,
             IOrderPaymentDao paymentDao,
-            IServerSettings serverSettings, 
+            IServerSettings serverSettings,
+            ServerPaymentSettings serverPaymentSettings, 
             IPairingService pairingService,
             ICreditCardDao creditCardDao,
             IOrderDao orderDao)
@@ -40,12 +43,13 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger = logger;
             _paymentDao = paymentDao;
             _serverSettings = serverSettings;
+            _serverPaymentSettings = serverPaymentSettings;
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
             _orderDao = orderDao;
         }
 
-        public PaymentProvider ProviderType(Guid? orderId = null)
+        public PaymentProvider ProviderType(string companyKey, Guid? orderId = null)
         {
             return PaymentProvider.Moneris;
         }
@@ -55,7 +59,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return false;
         }
 
-        public PairingResponse Pair(Guid orderId, string cardToken, int autoTipPercentage)
+        public PairingResponse Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage)
         {
             try
             {
@@ -78,7 +82,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse Unpair(Guid orderId)
+        public BasePaymentResponse Unpair(string companyKey, Guid orderId)
         {
             _pairingService.Unpair(orderId);
 
@@ -89,20 +93,20 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public void VoidPreAuthorization(Guid orderId, bool isForPrepaid = false)
+        public void VoidPreAuthorization(string companyKey, Guid orderId, bool isForPrepaid = false)
         {
             var message = string.Empty;
             try
             {
                 // we must do a completion with $0 (see eSELECTplus_DotNet_IG.pdf, Process Flow for PreAuth / Capture Transactions)
-                var paymentDetail = _paymentDao.FindByOrderId(orderId);
+                var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
                 if (paymentDetail == null)
                 {
                     // nothing to void
                     return;
                 }
                 
-                var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+                var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
 
                 var completionCommand = new Completion(orderId.ToString(), 0.ToString("F"), paymentDetail.TransactionId, CryptType_SSLEnabledMerchant);
                 var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
@@ -123,14 +127,14 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void VoidTransaction(Guid orderId, string transactionId, ref string message)
+        public void VoidTransaction(string companyKey, Guid orderId, string transactionId, ref string message)
         {
             Void(orderId, transactionId, ref message);
         }
 
         private void Void(Guid orderId, string transactionId, ref string message)
         {
-            var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+            var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
 
             var correctionCommand = new PurchaseCorrection(orderId.ToString(), transactionId, CryptType_SSLEnabledMerchant);
             var correctionRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, correctionCommand);
@@ -150,7 +154,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken)
         {
-            var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+            var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
 
             try
             {
@@ -193,7 +197,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
+        public PreAuthorizePaymentResponse PreAuthorize(string companyKey, Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
@@ -215,7 +219,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (amountToPreAuthorize > 0)
                 {
                     // PreAuthorize transaction
-                    var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+                    var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
 
                     var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
                     AddCvvInfo(preAuthorizeCommand, cvv);
@@ -246,7 +250,8 @@ namespace apcurium.MK.Booking.Services.Impl
                         OrderId = orderId,
                         CardToken = creditCard.Token,
                         Provider = PaymentProvider.Moneris,
-                        IsNoShowFee = false
+                        IsNoShowFee = false,
+                        CompanyKey = companyKey
                     });
                 }
 
@@ -273,7 +278,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid orderId, AccountDetail account, decimal preAuthAmount, decimal amount)
+        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(string companyKey, Guid orderId, AccountDetail account, decimal preAuthAmount, decimal amount)
         {
             if (amount <= preAuthAmount)
             {
@@ -286,14 +291,14 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage(string.Format("Re-Authorizing order {0} because it exceeded the original pre-auth amount ", orderId));
             _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preAuthAmount));
             
-            VoidPreAuthorization(orderId);
+            VoidPreAuthorization(companyKey, orderId);
 
             _logger.LogMessage(string.Format("Re-Authorizing order for amount of {0}", amount));
 
-            return PreAuthorize(orderId, account, amount, true);
+            return PreAuthorize(companyKey, orderId, account, amount, true);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
+        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
         {
             string message;
             string authorizationCode = null;
@@ -301,13 +306,13 @@ namespace apcurium.MK.Booking.Services.Impl
 
             try
             {
-                var authResponse = ReAuthorizeIfNecessary(orderId, account, preauthAmount, amount);
+                var authResponse = ReAuthorizeIfNecessary(companyKey, orderId, account, preauthAmount, amount);
                 if (!authResponse.IsSuccessful)
                 {
                     return new CommitPreauthorizedPaymentResponse
                     {
                         IsSuccessful = false,
-                        IsDeclined = true,
+                        IsDeclined = authResponse.IsDeclined,
                         TransactionId = commitTransactionId,
                         TransactionDate = authResponse.TransactionDate,
                         Message = string.Format("Moneris Re-Auth of amount {0} failed.", amount)
@@ -336,7 +341,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     orderIdentifier = orderId.ToString();
                 }
 
-                var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+                var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
                 var completionCommand = new Completion(orderIdentifier, amount.ToString("F"), commitTransactionId, CryptType_SSLEnabledMerchant);
 
                 var orderStatus = _orderDao.FindOrderStatusById(orderId);
@@ -383,9 +388,14 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse RefundPayment(Guid orderId)
+        public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
             throw new NotImplementedException();
+        }
+
+        public BasePaymentResponse UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
+        {
+            throw new NotImplementedException("Method only implemented for CMT RideLinQ");
         }
 
         private void AddCvvInfo(ResPreauthCC preAuthorizeCommand, string cvv)

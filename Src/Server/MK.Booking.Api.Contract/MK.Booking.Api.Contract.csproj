@@ -80,6 +80,7 @@
     <Compile Include="ContractDocument.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
+    <Compile Include="Requests\InitiateCallToDriverRequest.cs" />
     <Compile Include="Requests\GetAddressesFromPostcalCodeRequest.cs" />
     <Compile Include="Requests\MarketVehicleTypesRequest.cs" />
     <Compile Include="Requests\ExecuteWebPaymentAndProceedWithOrder.cs" />
@@ -99,11 +100,14 @@
     <Compile Include="Requests\NetworkFleetsRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\GenerateClientTokenBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqPairingRequest.cs" />
+    <Compile Include="Requests\Payment\ManualRideLinqUpdateAutoTipRequest.cs" />
     <Compile Include="Requests\Payment\OverduePaymentRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\LinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\UnlinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\SettleOverduePaymentRequest.cs" />
+    <Compile Include="Requests\Payment\UpdateAutoTipRequest.cs" />
+    <Compile Include="Requests\SendMessageToDriverRequest.cs" />
     <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
     <Compile Include="Requests\IbsFareRequest.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />

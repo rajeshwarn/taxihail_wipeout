@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
@@ -21,6 +22,7 @@ namespace apcurium.MK.Booking.Services.Impl
     public class PayPalService : BasePayPalService
     {
         private readonly IServerSettings _serverSettings;
+        private readonly ServerPaymentSettings _serverPaymentSettings;
         private readonly ICommandBus _commandBus;
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
@@ -30,14 +32,16 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly Resources.Resources _resources;
 
         public PayPalService(IServerSettings serverSettings,
+            ServerPaymentSettings serverPaymentSettings,
             ICommandBus commandBus,
             IAccountDao accountDao,
             IOrderDao orderDao,
             ILogger logger,
             IPairingService pairingService,
-            IOrderPaymentDao paymentDao) : base(serverSettings, accountDao)
+            IOrderPaymentDao paymentDao) : base(serverPaymentSettings, accountDao)
         {
             _serverSettings = serverSettings;
+            _serverPaymentSettings = serverPaymentSettings;
             _commandBus = commandBus;
             _accountDao = accountDao;
             _orderDao = orderDao;
@@ -155,7 +159,7 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public InitializePayPalCheckoutResponse InitializeWebPayment(Guid accountId, Guid orderId, string baseUri, double? estimatedFare, string clientLanguageCode)
+        public InitializePayPalCheckoutResponse InitializeWebPayment(Guid accountId, Guid orderId, string baseUri, double? estimatedFare, decimal bookingFees, string clientLanguageCode)
         {
             if (!estimatedFare.HasValue)
             {
@@ -188,8 +192,11 @@ namespace apcurium.MK.Booking.Services.Impl
             var tipPercentage = defaultTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
             var tipAmount = FareHelper.CalculateTipAmount(fareObject.AmountInclTax, tipPercentage);
 
-            // Fare amount with tip
-            var totalAmount = fareAmount + tipAmount;
+            // Booking Fees with conversion rate if necessary
+            var bookingFeesAmount = Math.Round(bookingFees * conversionRate, 2);
+
+            // Fare amount with tip and booking fee
+            var totalAmount = fareAmount + tipAmount + bookingFeesAmount;
 
             var redirectUrl = baseUri + string.Format("/{0}/proceed", orderId);
 
@@ -244,13 +251,26 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             };
 
+            if (bookingFeesAmount > 0)
+            {
+                transactionList.First().item_list.items.Add(new Item
+                {
+                    name = _resources.Get("PayPalWebBookingFeeItemDescription", regionName.HasValue()
+                                        ? SupportedLanguages.en.ToString()
+                                        : clientLanguageCode),
+                    currency = currency,
+                    price = bookingFeesAmount.ToString("N", CultureInfo.InvariantCulture),
+                    quantity = "1"
+                });
+            }
+
             // Create web experience profile
             var profile = new WebProfile
             {
                 name = Guid.NewGuid().ToString(),
                 flow_config = new FlowConfig
                 {
-                    landing_page_type  = _serverSettings.GetPaymentSettings().PayPalServerSettings.LandingPageType.ToString()
+                    landing_page_type  = _serverPaymentSettings.PayPalServerSettings.LandingPageType.ToString()
                 }
             };
 
@@ -352,9 +372,9 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse RefundWebPayment(Guid orderId)
+        public BasePaymentResponse RefundWebPayment(string companyKey, Guid orderId)
         {
-            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
             if (paymentDetail == null)
             {
                 // No payment to refund
@@ -370,24 +390,15 @@ namespace apcurium.MK.Booking.Services.Impl
 
             try
             {
-                var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
-
-                _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
-
                 // Get captured payment
                 var payment = Payment.Get(GetAPIContext(GetAccessToken()), paymentDetail.TransactionId);
-
-                var amount = Math.Round(Convert.ToDecimal(payment.transactions[0].amount.total) * conversionRate, 2);
-                var currency = conversionRate != 1
-                    ? CurrencyCodes.Main.UnitedStatesDollar
-                    : _resources.GetCurrencyCode();
 
                 var refund = new Refund
                 {
                     amount = new Amount
                     {
-                        currency = currency,
-                        total = amount.ToString("N", CultureInfo.InvariantCulture)
+                        currency = payment.transactions[0].amount.currency,
+                        total = payment.transactions[0].amount.total
                     }
                 };
 
@@ -542,7 +553,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid accountId, Guid orderId, decimal preAuthAmount, decimal amount)
+        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(string companyKey, Guid accountId, Guid orderId, decimal preAuthAmount, decimal amount)
         {
             if (amount <= preAuthAmount)
             {
@@ -555,7 +566,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage(string.Format("Re-Authorizing order {0} because it exceeded the original pre-auth amount ", orderId));
             _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preAuthAmount));
 
-            VoidPreAuthorization(orderId);
+            VoidPreAuthorization(companyKey, orderId);
 
             var account = _accountDao.FindById(accountId);
 
@@ -564,17 +575,14 @@ namespace apcurium.MK.Booking.Services.Impl
             return PreAuthorize(accountId, orderId, account.Email, amount, true);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
             var order = _orderDao.FindById(orderId);
-            var accessToken = GetAccessToken(order.AccountId);
-            var apiContext = GetAPIContext(accessToken, orderId);
-
             var updatedTransactionId = transactionId;
 
             try
             {
-                var authResponse = ReAuthorizeIfNecessary(order.AccountId, orderId, preauthAmount, amount);
+                var authResponse = ReAuthorizeIfNecessary(companyKey, order.AccountId, orderId, preauthAmount, amount);
                 if (!authResponse.IsSuccessful)
                 {
                     return new CommitPreauthorizedPaymentResponse
@@ -590,6 +598,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     updatedTransactionId = authResponse.TransactionId;
                 }
+
+                var accessToken = GetAccessToken(order.AccountId);
+                var apiContext = GetAPIContext(accessToken, orderId);
 
                 var authorization = Authorization.Get(apiContext, updatedTransactionId);
 
@@ -637,19 +648,19 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void VoidPreAuthorization(Guid orderId)
+        public void VoidPreAuthorization(string companyKey, Guid orderId)
         {
             var message = string.Empty;
             try
             {
-                var paymentDetail = _paymentDao.FindByOrderId(orderId);
+                var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
                 if (paymentDetail == null)
                 {
                     // nothing to void
                     return;
                 }
 
-                Void(orderId, paymentDetail.TransactionId, ref message);
+                Void(companyKey, orderId, paymentDetail.TransactionId, ref message);
             }
             catch (Exception ex)
             {
@@ -663,12 +674,17 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void VoidTransaction(Guid orderId, string transactionId, ref string message)
+        public void VoidTransaction(string companyKey, Guid orderId, string transactionId, ref string message)
         {
-            Void(orderId, transactionId, ref message);
+            Void(companyKey, orderId, transactionId, ref message);
         }
 
-        private void Void(Guid orderId, string transactionId, ref string message)
+        public BasePaymentResponse UpdateAutoTip(Guid orderId, int autoTipPercentage)
+        {
+            throw new NotImplementedException("Method only implemented for CMT RideLinQ");
+        }
+
+        private void Void(string companyKey, Guid orderId, string transactionId, ref string message)
         {
             try
             {
@@ -691,7 +707,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 else if (authorization.state == AuthorizationStates.Captured || authorization.state == AuthorizationStates.PartiallyCaptured)
                 {
                     // Refund transaction
-                    var paymentDetails = _paymentDao.FindByOrderId(orderId);
+                    var paymentDetails = _paymentDao.FindByOrderId(orderId, companyKey);
 
                     var captureResponse = Capture.Get(apiContext, paymentDetails.AuthorizationCode);
 

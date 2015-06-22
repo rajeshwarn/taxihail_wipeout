@@ -55,6 +55,8 @@ namespace apcurium.MK.Booking.Commands
 
         public string RateChangeTime { get; set; }
 
+        public DateTime? StartTime { get; set; }
+
         public DateTime? EndTime { get; set; }
 
         public string Medallion { get; set; }
@@ -62,5 +64,9 @@ namespace apcurium.MK.Booking.Commands
         public int TripId { get; set; }
 
         public int DriverId { get; set; }
+
+        public double? AccessFee { get; set; }
+
+        public string LastFour { get; set; }
     }
 }

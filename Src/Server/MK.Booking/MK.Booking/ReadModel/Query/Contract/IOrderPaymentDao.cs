@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
     public interface IOrderPaymentDao
     {
         OrderPaymentDetail FindByTransactionId(string transactionId);
-        OrderPaymentDetail FindByOrderId(Guid orderId);
+
+        OrderPaymentDetail FindByOrderId(Guid orderId, string companyKey);
     }
 }

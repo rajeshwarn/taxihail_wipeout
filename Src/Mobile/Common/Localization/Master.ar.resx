@@ -812,7 +812,7 @@
     <value>لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .</value>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
-    <value>رقم هاتف هذا السائق خاطئ</value>
+    <value>Your phone number or the driver's phone number is invalid.</value>
   </data>
   <data name="NoPhoneNumberTitle" xml:space="preserve">
     <value>رقم هاتف خاطئ</value>
@@ -1127,7 +1127,7 @@
     <value>لا يمكننا الحصول على الحالة. رجاء الاتصال بمورد الخدمة.</value>
   </data>
   <data name="StatusConfirmCancelRide" xml:space="preserve">
-    <value>سيؤدي هذا الإختيار لإلغاء طلبك، هل ترغب في الإستمرار؟</value>
+    <value>Are you sure you want to cancel?</value>
   </data>
   <data name="StatusConfirmCancelRideError" xml:space="preserve">
     <value>لا يمكن إلغاء الطلب، الرجاء الإتصال لإلغائه.</value>
@@ -1443,6 +1443,9 @@
   </data>
   <data name="CreditCardAdded" xml:space="preserve">
     <value>Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</value>
+  </data>
+  <data name="CreditCardAdded_PayInCarDisabled" xml:space="preserve">
+    <value>Your account is now enabled to pay for rides with this credit card.</value>
   </data>
   <data name="AddACardButton" xml:space="preserve">
     <value>Add Card</value>
@@ -1828,9 +1831,6 @@
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Fare meter:</value>
   </data>
-  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
-    <value>Vehicule number:</value>
-  </data>
   <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
     <value>Pairing Code:</value>
   </data>
@@ -1850,7 +1850,7 @@
     <value>Done</value>
   </data>
   <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
-    <value>Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</value>
+    <value>Are you sure you want to cancel? A cancellation fee may apply.</value>
   </data>
   <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
     <value>You cannot delete your credit card when an order is scheduled or in progress.</value>
@@ -1896,5 +1896,56 @@
   </data>
   <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
     <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
+  </data>
+  <data name="CallDriverUsingProxyMessage" xml:space="preserve">
+    <value>Your driver will call you back in a few minutes</value>
+  </data>
+  <data name="CallDriverUsingProxyErrorMessage" xml:space="preserve">
+    <value>Sorry, we weren't able to initiate a call with your driver.</value>
+  </data>
+  <data name="GenericErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="CallDriverUsingProxyPrompt" xml:space="preserve">
+    <value>Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Extra" xml:space="preserve">
+    <value>Extra:</value>
+  </data>
+  <data name="StatusEditAutoTipButton" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="ManualRideLinqStatus_Toll" xml:space="preserve">
+    <value>Toll:</value>
+  </data>
+  <data name="View_EditAutoTip" xml:space="preserve">
+    <value>Edit Tip</value>
+  </data>
+  <data name="Error_EditAutoTipMessage" xml:space="preserve">
+    <value>An error occurred while trying to update the tip. Please try again.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
+    <value>You're checked into taxi #{0}.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Payment" xml:space="preserve">
+    <value>Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Email" xml:space="preserve">
+    <value>A receipt will be emailed to {0}.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Greetings" xml:space="preserve">
+    <value>Enjoy the ride!</value>
+  </data>
+  <data name="MessageToDriverTitle" xml:space="preserve">
+    <value>Message to Driver</value>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
+    <value>Please contact {0} at {1} for further assistance or try again.</value>
+  </data>
+  <data name="SendMessageToDriverErrorMessage" xml:space="preserve">
+    <value>An error occurred while trying to contact the driver. Please try again later.</value>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
+    <value>The order cannot be created, please try again.</value>
   </data>
 </root>

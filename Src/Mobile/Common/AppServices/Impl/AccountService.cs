@@ -19,6 +19,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
@@ -47,14 +48,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
 		private readonly ILocationService _locationService;
+        private readonly IPaymentService _paymentService;
 
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocalization localize,
-			ILocationService locationService)
+			ILocationService locationService,
+            IPaymentService paymentService)
 		{
 			_locationService = locationService;
+            _paymentService = paymentService;
             _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
@@ -544,7 +548,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-		public async Task<IList<ListItem>> GetPaymentsList (string hashedMarket = null)
+		public async Task<IList<ListItem>> GetPaymentsList()
         {
 			var refData = await GetReferenceData();
 
@@ -559,11 +563,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 || creditCard.IsDeactivated)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
-		    }
-
-		    if (hashedMarket.HasValue())
-		    {
-                refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id);
 		    }
 
             return refData.PaymentsList;

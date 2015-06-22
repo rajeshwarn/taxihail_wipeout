@@ -51,6 +51,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<CreditCardDeactivated>(NoAction);
             Handles<OverduePaymentLogged>(NoAction);
             Handles<OverduePaymentSettled>(NoAction);
+            Handles<AccountAnswersAddedUpdated>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -365,7 +366,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new PayPalAccountUnlinked());
         }
 
-        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate)
+        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType)
         {
             Update(new CreditCardDeactivated());
             Update(new OverduePaymentLogged
@@ -374,7 +375,8 @@ namespace apcurium.MK.Booking.Domain
                 IBSOrderId = ibsOrderId,
                 Amount = amount,
                 TransactionId = transactionId,
-                TransactionDate = transactionDate
+                TransactionDate = transactionDate,
+                FeeType = feeType
             });
         }
 
@@ -383,6 +385,14 @@ namespace apcurium.MK.Booking.Domain
             Update(new OverduePaymentSettled
             {
                 OrderId = orderId
+            });
+        }
+
+        public void SaveQuestionAnswers(IEnumerable<AccountChargeQuestionAnswer> answers)
+        {
+            Update(new AccountAnswersAddedUpdated
+            {
+                Answers = answers.ToArray()
             });
         }
     }

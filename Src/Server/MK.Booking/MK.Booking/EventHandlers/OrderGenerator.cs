@@ -27,7 +27,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderCancelledBecauseOfError>,
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
-        IEventHandler<ManualRideLinqTripInfoUpdated>
+        IEventHandler<ManualRideLinqTripInfoUpdated>,
+        IEventHandler<AutoTipUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -114,7 +115,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     ClientVersion = @event.ClientVersion,
                     CompanyKey = @event.CompanyKey,
                     CompanyName = @event.CompanyName,
-                    Market = @event.Market
+                    Market = @event.Market,
+                    BookingFees = @event.BookingFees
                 };
 
                 if (@event.IsPrepaid)
@@ -144,6 +146,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.CompanyKey = @event.CompanyKey;
                         order.CompanyName = @event.CompanyName;
                         order.Market = @event.Market;
+                        order.BookingFees = @event.BookingFees;
 
                         context.SaveChanges();
                     }
@@ -209,11 +212,12 @@ namespace apcurium.MK.Booking.EventHandlers
                         AutoTipPercentage = @event.AutoTipPercentage
                     });
 
-                    var paymentSettings = _serverSettings.GetPaymentSettings();
+                    var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
+
+                    var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
                     if (!paymentSettings.IsUnpairingDisabled)
                     {
                         // Unpair only available if automatic pairing is disabled
-                        var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
                         orderStatus.UnpairingTimeOut = @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);
                         context.Save(orderStatus);
                     }
@@ -306,6 +310,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         details.PairingTimeOut = @event.Status.PairingTimeOut;
                         details.PairingError = @event.Status.PairingError;
                         details.RideLinqPairingCode = @event.Status.RideLinqPairingCode;
+                        details.TaxiAssignedDate = @event.Status.TaxiAssignedDate;
                     }
                     else
                     {
@@ -347,6 +352,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     order.Tip = @event.Tip;
                     order.Toll = @event.Toll;
                     order.Tax = @event.Tax;
+                    order.Surcharge = @event.Surcharge;
 
                     context.Save(order);
                 }
@@ -489,6 +495,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     AccountId = @event.AccountId,
                     Id = @event.SourceId,
+                    IBSOrderId = @event.TripId,
                     PickupDate = @event.PairingDate,
                     CreatedDate = @event.PairingDate,
                     PickupAddress = @event.PickupAddress,
@@ -515,7 +522,12 @@ namespace apcurium.MK.Booking.EventHandlers
                         Status = OrderStatus.Created,
                         IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
                         PickupDate = @event.PairingDate,
-                        IsManualRideLinq = true
+                        IsManualRideLinq = true,
+                        VehicleNumber = @event.Medallion,
+                        DriverInfos = new DriverInfos
+                        {
+                            DriverId = @event.DriverId.ToString()
+                        }
                     });
                 }
 
@@ -547,7 +559,9 @@ namespace apcurium.MK.Booking.EventHandlers
                         RateChangeTime = @event.RateChangeTime,
                         Medallion = @event.Medallion,
                         TripId = @event.TripId,
-                        DriverId = @event.DriverId
+                        DriverId = @event.DriverId,
+                        LastFour = @event.LastFour,
+                        AccessFee = @event.AccessFee
                     });
                 }
             }
@@ -607,6 +621,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         orderStatusDetails.Status = OrderStatus.Completed;
                     }
+
+                    orderStatusDetails.VehicleNumber = @event.Medallion;
+
                     context.Save(orderStatusDetails);
                 }
 
@@ -617,9 +634,12 @@ namespace apcurium.MK.Booking.EventHandlers
                     return;
                 }
 
+                rideLinqDetails.DriverId = @event.DriverId;
+                rideLinqDetails.StartTime = @event.StartTime;
+                rideLinqDetails.EndTime = @event.EndTime;
+                rideLinqDetails.TripId = @event.TripId;
                 rideLinqDetails.Distance = @event.Distance;
                 rideLinqDetails.PairingToken = @event.PairingToken;
-                rideLinqDetails.EndTime = @event.EndTime;
                 rideLinqDetails.Extra = @event.Extra;
                 rideLinqDetails.Fare = @event.Fare;
                 rideLinqDetails.FareAtAlternateRate = @event.FareAtAlternateRate;
@@ -631,7 +651,27 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.RateAtTripStart = @event.RateAtTripStart;
                 rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
                 rideLinqDetails.RateChangeTime = @event.RateChangeTime;
+                rideLinqDetails.Medallion = @event.Medallion;
+                rideLinqDetails.AccessFee = @event.AccessFee;
+                rideLinqDetails.LastFour = @event.LastFour;
+
                 context.Save(rideLinqDetails);
+            }
+        }
+
+        public void Handle(AutoTipUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderPairing = context.Find<OrderPairingDetail>(@event.SourceId);
+                if (orderPairing == null)
+                {
+                    _logger.LogMessage("No Pairing found for Order : " + @event.SourceId);
+                    return;
+                }
+
+                orderPairing.AutoTipPercentage = @event.AutoTipPercentage;
+                context.Save(orderPairing);
             }
         }
 

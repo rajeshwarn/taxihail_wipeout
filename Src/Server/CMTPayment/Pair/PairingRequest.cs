@@ -27,6 +27,8 @@ namespace CMTPayment.Pair
 
         public string CardOnFileId { get; set; }
         
-        public string Market { get; set; }        
+        public string Market { get; set; }
+
+        public string TripRequestNumber { get; set; }
     }
 }

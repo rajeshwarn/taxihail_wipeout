@@ -20,6 +20,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private TaxiHailNetworkSettings _pilouTaxi;
         private TaxiHailNetworkSettings _lastTaxi;
         private TaxiHailNetworkSettings _bobTaxi;
+        private TaxiHailNetworkSettings _blacklistedTaxi;
+        private TaxiHailNetworkSettings _taxiWhenBlacklistedProhibited;
 
         private Company _chrisTaxiCompany;
         private Company _chrisTaxiBisCompany;
@@ -28,6 +30,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private Company _pilouTaxiCompany;
         private Company _lastTaxiCompany;
         private Company _bobTaxiCompany;
+        private Company _blacklistedTaxiCompany;
+        private Company _taxiWhenBlacklistedProhibitedCompany;
 
         [SetUp]
         public void Setup()
@@ -139,6 +143,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "SYD",
                 FleetId = 99999,
+                BlackListedFleetIds = "10101019, 666, 010101",
                 Region = new MapRegion
                 {
                     CoordinateStart = new MapCoordinate { Latitude = 45.420595, Longitude = -75.708386 }, // Ottawa
@@ -165,6 +170,44 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true},
                 }
             };
+
+
+
+            _taxiWhenBlacklistedProhibited = new TaxiHailNetworkSettings
+            {
+                Id = "TaxiWhenBlacklistedProhibited",
+                IsInNetwork = true,
+                Market = "SYD",
+                FleetId = 88784,
+                BlackListedFleetIds = "666",
+                Region = new MapRegion
+                {
+                    CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
+                },
+                Preferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CompanyKey = "BlacklistedTaxi",CanAccept = true,CanDispatch = true},
+                }
+            };
+
+            _blacklistedTaxi = new TaxiHailNetworkSettings()
+            {
+                Id = "BlacklistedTaxi",
+                IsInNetwork = true,
+                Market = "SYD",
+                FleetId = 666,
+                Region = new MapRegion()
+                {
+                    CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
+                },
+                Preferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CompanyKey = "TaxiWhenBlacklistedProhibited",CanAccept = true,CanDispatch = true},
+                }
+            };
+
 
             _chrisTaxiCompany = new Company
             {
@@ -251,6 +294,32 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 }
             };
 
+            _blacklistedTaxiCompany = new Company()
+            {
+                Id = "BlacklistedTaxi",
+                CompanyKey = "BlacklistedTaxi",
+                CompanyName = "BlacklistedTaxi",
+                IBS = new IBSSettings
+                {
+                    Password = "test",
+                    Username = "Taxi",
+                    ServiceUrl = "http://google.com"
+                }
+            };
+
+            _taxiWhenBlacklistedProhibitedCompany = new Company()
+            {
+                Id = "TaxiWhenBlacklistedProhibited",
+                CompanyKey = "TaxiWhenBlacklistedProhibited",
+                CompanyName = "TaxiWhenBlacklistedProhibited",
+                IBS = new IBSSettings
+                {
+                    Password = "test",
+                    Username = "Taxi",
+                    ServiceUrl = "http://google.com"
+                }
+            };
+
             NetworkRepository.DeleteAll();
             NetworkRepository.Add(_chrisTaxi);
             NetworkRepository.Add(_chrisTaxiBis);
@@ -259,6 +328,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             NetworkRepository.Add(_pilouTaxi);
             NetworkRepository.Add(_lastTaxi);
             NetworkRepository.Add(_bobTaxi);
+            NetworkRepository.Add(_blacklistedTaxi);
+            NetworkRepository.Add(_taxiWhenBlacklistedProhibited);
 
             CompanyRepository.DeleteAll();
             CompanyRepository.Add(_chrisTaxiCompany);
@@ -268,6 +339,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             CompanyRepository.Add(_pilouTaxiCompany);
             CompanyRepository.Add(_lastTaxiCompany);
             CompanyRepository.Add(_bobTaxiCompany);
+            CompanyRepository.Add(_blacklistedTaxiCompany);
+            CompanyRepository.Add(_taxiWhenBlacklistedProhibitedCompany);
         }
 
         public InMemoryRepository<TaxiHailNetworkSettings> NetworkRepository { get; set; }
@@ -299,9 +372,9 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual("PilouTaxi", newYorkFleets[0].CompanyPreference.CompanyKey);
 
             var sydneyFleets = fleetsPreferences["SYD"];
-            Assert.AreEqual(1, sydneyFleets.Count);
+            Assert.AreEqual(2, sydneyFleets.Count);
             Assert.AreEqual("LastTaxi", sydneyFleets[0].CompanyPreference.CompanyKey);
-
+            Assert.AreEqual("TaxiWhenBlacklistedProhibited", sydneyFleets[1].CompanyPreference.CompanyKey);
         }
 
         [Test]
@@ -340,6 +413,17 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual("http://altavista.com", secondFleet.IbsUrl);
             Assert.AreEqual("Alice", secondFleet.IbsUserName);
             Assert.AreEqual("Bob", secondFleet.IbsPassword);
+        }
+
+        [Test]
+        public void When_Getting_Fleets_From_a_Market_IgnoreBlacklist()
+        {
+            var response = Sut.GetMarketFleets("TaxiWhenBlacklistedProhibited", "SYD");
+            var json = response.Content.ReadAsStringAsync().Result;
+            var fleets = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
+
+            Assert.AreEqual(0, fleets.Count);
+            Assert.AreNotEqual(true, fleets.Any(t => t.CompanyKey == "BlacklistedTaxi"));
         }
 
         [Test]

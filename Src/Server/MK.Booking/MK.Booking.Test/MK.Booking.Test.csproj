@@ -73,6 +73,10 @@
     <Reference Include="ServiceStack.Text">
       <HintPath>..\..\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -115,6 +119,7 @@
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\CompanyDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\AccountChargeDetailGenerator.cs" />
+    <Compile Include="Integration\CompanyFixture\FeesDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\VehicleTypeDetailGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\RatingTypeDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\TariffDetailsGenerator.cs" />
@@ -143,6 +148,8 @@
     <Compile Include="OrderFixture\given_one_order.cs" />
     <Compile Include="OrderFixture\given_one_order_created_by_ridelinq_pairing.cs" />
     <Compile Include="OrderFixture\given_ridelin_pairing_request.cs" />
+    <Compile Include="OrderStatusUpdater\given_a_read_model_database_for_orderstatusupdater.cs" />
+    <Compile Include="OrderStatusUpdater\PaymentFixture.cs" />
     <Compile Include="PromotionFixture\given_no_promotion.cs" />
     <Compile Include="PromotionFixture\given_one_promotion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -173,6 +180,10 @@
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MK.Booking.Api\MK.Booking.Api.csproj">
+      <Project>{1a931a36-d855-4a7a-ad0f-1b35d76582f3}</Project>
+      <Name>MK.Booking.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MK.Booking.IBS\MK.Booking.IBS.csproj">
       <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>

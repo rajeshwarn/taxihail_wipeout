@@ -87,6 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		        _status = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => SendReceiptAvailable);
+                RaisePropertyChanged(() => RebookIsAvailable);
 		    }
 		}
         
@@ -134,7 +135,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get 
 			{
 				return IsCompleted 
-					&& !Settings.HideRebookOrder;
+					&& !Settings.HideRebookOrder
+                    && Status != null
+                    && !Status.IsManualRideLinq;
 			}
 		}
 
@@ -156,7 +159,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {          
 				return Settings.RatingEnabled 
 					&& IsDone 
-					&& !HasRated;
+					&& !HasRated
+                    && Status != null
+                    && !Status.IsManualRideLinq;
             }
         }
 
@@ -257,11 +262,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				var amount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
+			    if (Status.FareAvailable)
+			    {
+                    var amount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
+			        return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(amount.Value));
+			    }
+			    else if (Status.IsManualRideLinq)
+			    {
+			        return OrderStatus.Completed.ToString();
+			    }
 
-				return Status.FareAvailable
-					? string.Format ("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(amount.Value))
-					: Status.IBSStatusDescription;
+                return Status.IBSStatusDescription;
 			}
 		}
 
@@ -409,9 +420,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 var confirmationMessage = Settings.WarnForFeesOnCancel
                     && (VehicleStatuses.CanCancelOrderStatus.Contains(Status.IBSStatusId))
-                        ? string.Format(
-                            this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"],
-                            Settings.TaxiHail.ApplicationName)
+                        ? this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"]
                         : this.Services().Localize["StatusConfirmCancelRide"]; 
 
                 return this.GetCommand(() => this.Services().Message.ShowMessage(

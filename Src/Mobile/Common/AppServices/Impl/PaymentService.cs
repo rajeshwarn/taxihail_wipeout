@@ -134,6 +134,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 .Unpair(orderId);
         }
 
+        public async Task<bool> UpdateAutoTip(Guid orderId, int autoTipPercentage)
+        {
+            return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo)
+                .UpdateAutoTip(orderId, autoTipPercentage);
+        }
+
 		private IPaymentServiceClient GetClient()
 		{
 			if(_client == null)

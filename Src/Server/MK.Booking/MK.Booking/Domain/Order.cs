@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderManuallyPairedForRideLinq>(NoAction);
             Handles<OrderUnpairedFromManualRideLinq>(NoAction);
             Handles<ManualRideLinqTripInfoUpdated>(NoAction);
+            Handles<AutoTipUpdated>(NoAction);
         }
 
 
@@ -60,7 +61,8 @@ namespace apcurium.MK.Booking.Domain
         public Order(Guid id, Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, Address pickupAddress,
             string userAgent, string clientLanguageCode, string clientVersion, double? distance,
             double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
-            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion, int tripId, int driverId) 
+            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion,
+            int tripId, int driverId, double? accessFee, string lastFour) 
             : this(id)
         {
             Update(new OrderManuallyPairedForRideLinq
@@ -87,13 +89,15 @@ namespace apcurium.MK.Booking.Domain
                 Distance = distance,
                 Medallion = medallion,
                 TripId = tripId,
-                DriverId = driverId
+                DriverId = driverId,
+                AccessFee = accessFee,
+                LastFour = lastFour
             });
         }
 
         public Order(Guid id, Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
             double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid)
+            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees)
             : this(id)
         {
             if ((settings == null) || pickupAddress == null || 
@@ -121,7 +125,8 @@ namespace apcurium.MK.Booking.Domain
                 CompanyKey = companyKey,
                 CompanyName = companyName,
                 Market = market,
-                IsPrepaid = isPrepaid
+                IsPrepaid = isPrepaid,
+                BookingFees = bookingFees
             });
         }
 
@@ -133,9 +138,9 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare,double? faireAtAlternateRate, double? tax, double? tip, double? toll,
-            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, 
-            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId)
+        public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
+            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, DateTime? startTime,
+            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId, double? accessFee, string lastFour, TollDetail[] tolls)
         {
             Update(new ManualRideLinqTripInfoUpdated
             {
@@ -151,11 +156,15 @@ namespace apcurium.MK.Booking.Domain
                 RateAtTripStart = rateAtTripStart,
                 RateAtTripEnd = rateAtTripEnd,
                 RateChangeTime = rateChangeTime,
+                StartTime = startTime,
                 EndTime = endTime,
                 PairingToken = pairingToken,
                 Medallion = medallion,
                 TripId = tripId,
-                DriverId = driverId
+                DriverId = driverId,
+                AccessFee = accessFee,
+                LastFour = lastFour,
+                Tolls = tolls
             });
         }
 
@@ -183,16 +192,16 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdatePrepaidOrderPaymentInfo(Guid orderId, decimal amount, decimal meter, decimal tax,
-                decimal tip, string transactionId, PaymentProvider provider, PaymentType type)
+        public void UpdatePrepaidOrderPaymentInfo(Guid orderId, decimal totalAmount, decimal meterAmount, decimal taxAmount,
+                decimal tipAmount, string transactionId, PaymentProvider provider, PaymentType type)
         {
             Update(new PrepaidOrderPaymentInfoUpdated
             {
                 OrderId = orderId,
-                Amount = amount,
-                Meter = meter,
-                Tax = tax,
-                Tip = tip,
+                Amount = totalAmount,
+                Meter = meterAmount,
+                Tax = taxAmount,
+                Tip = tipAmount,
                 TransactionId = transactionId,
                 Provider = provider,
                 Type = type
@@ -231,7 +240,7 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax)
+        public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax, double? surcharge)
         {
             if (status == null) throw new InvalidOperationException();
 
@@ -244,6 +253,7 @@ namespace apcurium.MK.Booking.Domain
                     Tip = tip,
                     Toll = toll,
                     Tax = tax,
+                    Surcharge = surcharge,
                     IsCompleted = status.Status == OrderStatus.Completed
                 });
             }
@@ -294,14 +304,15 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void SwitchOrderToNextDispatchCompany(int ibsOrderId, string companyKey, string companyName, string market)
+        public void SwitchOrderToNextDispatchCompany(int ibsOrderId, string companyKey, string companyName, string market, bool hasChangedBackToPaymentInCar)
         {
             Update(new OrderSwitchedToNextDispatchCompany
             {
                 IBSOrderId = ibsOrderId,
                 CompanyKey = companyKey,
                 CompanyName = companyName,
-                Market = market
+                Market = market,
+                HasChangedBackToPaymentInCar = hasChangedBackToPaymentInCar
             });
         }
 
@@ -316,6 +327,14 @@ namespace apcurium.MK.Booking.Domain
             {
                 IsSuccessful = isSuccessful,
                 Message = message
+            });
+        }
+
+        public void UpdateAutoTip(int autoTipPercentage)
+        {
+            Update(new AutoTipUpdated
+            {
+                AutoTipPercentage = autoTipPercentage
             });
         }
 

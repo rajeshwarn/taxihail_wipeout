@@ -7,8 +7,13 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
+using CustomerPortal.Client;
+using CustomerPortal.Contract.Resources;
+using CustomerPortal.Contract.Resources.Payment;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
 
@@ -19,12 +24,21 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configurationDao;
         private readonly ILogger _logger;
+        private readonly IServerSettings _serverSettings;
         private readonly IPayPalServiceFactory _paylServiceFactory;
+        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
 
-        public PaymentSettingsService(ICommandBus commandBus, IConfigurationDao configurationDao, ILogger logger, IPayPalServiceFactory paylServiceFactory)
+        public PaymentSettingsService(ICommandBus commandBus,
+            IConfigurationDao configurationDao,
+            ILogger logger,
+            IServerSettings serverSettings,
+            IPayPalServiceFactory paylServiceFactory,
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
         {
             _logger = logger;
+            _serverSettings = serverSettings;
             _paylServiceFactory = paylServiceFactory;
+            _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _commandBus = commandBus;
             _configurationDao = configurationDao;
         }
@@ -53,6 +67,43 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 throw new ArgumentException("Please Select a payment setting");
             }
+
+            _taxiHailNetworkServiceClient.UpdatePaymentSettings(_serverSettings.ServerData.TaxiHail.ApplicationKey,
+                    new CompanyPaymentSettings
+                    {
+                        PaymentMode = request.ServerPaymentSettings.PaymentMode,
+                        BraintreePaymentSettings = new BraintreePaymentSettings
+                        {
+                            ClientKey = request.ServerPaymentSettings.BraintreeClientSettings.ClientKey,
+                            IsSandbox = request.ServerPaymentSettings.BraintreeServerSettings.IsSandbox,
+                            MerchantId = request.ServerPaymentSettings.BraintreeServerSettings.MerchantId,
+                            PrivateKey = request.ServerPaymentSettings.BraintreeServerSettings.PrivateKey,
+                            PublicKey = request.ServerPaymentSettings.BraintreeServerSettings.PublicKey
+                        },
+                        MonerisPaymentSettings = new MonerisPaymentSettings
+                        {
+                            IsSandbox = request.ServerPaymentSettings.MonerisPaymentSettings.IsSandbox,
+                            ApiToken = request.ServerPaymentSettings.MonerisPaymentSettings.ApiToken,
+                            BaseHost = request.ServerPaymentSettings.MonerisPaymentSettings.BaseHost,
+                            SandboxHost = request.ServerPaymentSettings.MonerisPaymentSettings.SandboxHost,
+                            StoreId = request.ServerPaymentSettings.MonerisPaymentSettings.StoreId
+                        },
+                        CmtPaymentSettings = new CmtPaymentSettings
+                        {
+                            BaseUrl = request.ServerPaymentSettings.CmtPaymentSettings.BaseUrl,
+                            ConsumerKey = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerKey,
+                            ConsumerSecretKey = request.ServerPaymentSettings.CmtPaymentSettings.ConsumerSecretKey,
+                            CurrencyCode = request.ServerPaymentSettings.CmtPaymentSettings.CurrencyCode,
+                            FleetToken = request.ServerPaymentSettings.CmtPaymentSettings.FleetToken,
+                            IsManualRidelinqCheckInEnabled = request.ServerPaymentSettings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled,
+                            IsSandbox = request.ServerPaymentSettings.CmtPaymentSettings.IsSandbox,
+                            Market = request.ServerPaymentSettings.CmtPaymentSettings.Market,
+                            MobileBaseUrl = request.ServerPaymentSettings.CmtPaymentSettings.MobileBaseUrl,
+                            SandboxBaseUrl = request.ServerPaymentSettings.CmtPaymentSettings.SandboxBaseUrl,
+                            SandboxMobileBaseUrl = request.ServerPaymentSettings.CmtPaymentSettings.SandboxMobileBaseUrl
+                        }
+                    })
+                    .HandleErrors();
 
             _commandBus.Send(new UpdatePaymentSettings {ServerPaymentSettings = request.ServerPaymentSettings});
         }

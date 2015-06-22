@@ -31,8 +31,8 @@ using System.Runtime.InteropServices;
 // 
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("2.2.10")]
-[assembly: AssemblyVersion("2.2.10")]
-[assembly: AssemblyFileVersion("2.2.10")]
+// [assembly: AssemblyVersion("3.0.1")]
+[assembly: AssemblyVersion("3.0.1")]
+[assembly: AssemblyFileVersion("3.0.1")]
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.xml", Watch = true)]

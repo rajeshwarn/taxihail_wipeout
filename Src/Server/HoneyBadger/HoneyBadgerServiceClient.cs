@@ -31,8 +31,9 @@ namespace HoneyBadger
         /// <param name="searchRadius">Search radius in meters (Optional)</param>
         /// <param name="fleetIds">The ids of the fleets to search. (Optional)</param>
         /// <param name="returnAll">True to return all the available vehicles; false will return a set number defined by the admin settings. (Optional)</param>
+        /// <param name="wheelchairAccessibleOnly">True to return only wheelchair accessible vehicles, false will return all. (Optional)</param>
         /// <returns>The available vehicles.</returns>
-        public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false)
+        public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
         {
             if (fleetIds != null && !fleetIds.Any())
             {
@@ -50,6 +51,10 @@ namespace HoneyBadger
                     new KeyValuePair<string, string>("meterState", ((int)MeterStates.ForHire).ToString()),
                     new KeyValuePair<string, string>("logonState", ((int)LogonStates.LoggedOn).ToString())
                 };
+            if (wheelchairAccessibleOnly)
+            {
+                @params.Add(new KeyValuePair<string, string>("vehicleType", "1"));
+            }
 
             var vertices = GeographyHelper.CirclePointsFromRadius(latitude, longitude, searchRadiusInKm, 10);
 
@@ -67,7 +72,9 @@ namespace HoneyBadger
                 }
             }
 
-            var queryString = BuildQueryString(@params);
+            var appendToExistingParams = _serverSettings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
+
+            var queryString = BuildQueryString(@params, appendToExistingParams);
 
             HoneyBadgerResponse response = null;
 
@@ -85,7 +92,9 @@ namespace HoneyBadger
              
             if (response != null && response.Entities != null)
             {
-                var entities = !returnAll ? response.Entities.Take(numberOfVehicles) : response.Entities;
+                var orderedVehicleList = response.Entities.OrderBy(v => v.Medallion);
+                var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
+                
                 return entities.Select(e => new VehicleResponse
                                 {
                                     Timestamp = e.TimeStamp,
@@ -133,7 +142,9 @@ namespace HoneyBadger
                 }
             }
 
-            var queryString = BuildQueryString(@params);
+            var appendToExistingParams = _serverSettings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
+
+            var queryString = BuildQueryString(@params, appendToExistingParams);
 
             HoneyBadgerResponse response = null;
 

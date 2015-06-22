@@ -1,21 +1,14 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
 using MK.Common.Configuration;
-
-#endregion
 
 namespace apcurium.MK.Booking.Domain
 {
@@ -95,6 +88,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
 
             Handles<PrivacyPolicyUpdated>(NoAction);
+
+            Handles<FeesUpdated>(NoAction);
         }
 
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
@@ -536,7 +531,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId, int maxNumberPassengers, int? networkVehicleTypeId)
+        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId, int maxNumberPassengers, int? networkVehicleTypeId, bool isWheelchairAccessible)
         {
             Update(new VehicleTypeAddedUpdated
             {
@@ -545,7 +540,8 @@ namespace apcurium.MK.Booking.Domain
                 VehicleTypeId = vehicleTypeId,
                 ReferenceDataVehicleId = referenceDataVehicleId,
                 MaxNumberPassengers = maxNumberPassengers,
-                ReferenceNetworkVehicleTypeId = networkVehicleTypeId
+                ReferenceNetworkVehicleTypeId = networkVehicleTypeId,
+                IsWheelchairAccessible = isWheelchairAccessible
             });
         }
 
@@ -572,6 +568,14 @@ namespace apcurium.MK.Booking.Domain
             Update(new PrivacyPolicyUpdated
             {
                 Policy = policy
+            });
+        }
+
+        public void UpdateFees(List<Fees> fees)
+        {
+            Update(new FeesUpdated
+            {
+                Fees = fees
             });
         }
 

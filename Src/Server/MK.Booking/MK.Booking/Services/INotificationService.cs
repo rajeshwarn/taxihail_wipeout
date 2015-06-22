@@ -1,6 +1,7 @@
 using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Services
@@ -27,10 +28,15 @@ namespace apcurium.MK.Booking.Services
         void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, SendBookingConfirmationEmail.BookingSettings settings, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
         void SendPasswordResetEmail(string password, string clientEmailAddress, string clientLanguageCode);
-        void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
-            double tax, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
-            DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
-            bool bypassNotificationSetting = false);
+
+        void SendCancellationFeesReceiptEmail(int ibsOrderId, double feeAmount, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
+
+        void SendNoShowFeesReceiptEmail(int ibsOrderId, double feeAmount, Address pickUpAddress, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
+
+        void SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip, double tax,
+            double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
+            DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion,
+            string promoCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields, bool bypassNotificationSetting = false);
         void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSettings = false);
 
         void SendCreditCardDeactivatedEmail(string creditCardCompany, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);

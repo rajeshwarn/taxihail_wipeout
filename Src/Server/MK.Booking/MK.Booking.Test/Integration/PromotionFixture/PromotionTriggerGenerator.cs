@@ -216,7 +216,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
 
             var newPayment = new CreditCardPaymentCaptured_V2
             {
-                IsNoShowFee = false,
+                FeeType = FeeTypes.None,
                 Meter = (decimal)15.31,
                 AuthorizationCode = Guid.NewGuid().ToString(),
                 AccountId = accountId

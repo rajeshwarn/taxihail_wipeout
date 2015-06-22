@@ -16,6 +16,8 @@ namespace apcurium.MK.Common.Entity
 
         public DateTime PairingDate { get; set; }
 
+        public DateTime? StartTime { get; set; }
+
         public DateTime? EndTime { get; set; }
 
         public bool IsCancelled { get; set; }
@@ -49,5 +51,9 @@ namespace apcurium.MK.Common.Entity
         public int TripId { get; set; }
 
         public int DriverId { get; set; }
+
+        public double? AccessFee { get; set; }
+
+        public string LastFour { get; set; }
     }
 }

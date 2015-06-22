@@ -16,12 +16,14 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -37,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly IAccountPaymentService _accountPaymentService;
 	    readonly INetworkRoamingService _networkRoamingService;
 		readonly IPaymentService _paymentService;
+	    private readonly ILogger _logger;
 
 	    readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
@@ -73,7 +76,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			ICacheService cacheService,
 			IAccountPaymentService accountPaymentService,
             INetworkRoamingService networkRoamingService,
-			IPaymentService paymentService)
+			IPaymentService paymentService,
+            ILogger logger)
 		{
 			_cacheService = cacheService;
 			_appSettings = configurationManager;
@@ -93,6 +97,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_accountPaymentService = accountPaymentService;
 		    _networkRoamingService = networkRoamingService;
 			_paymentService = paymentService;
+		    _logger = logger;
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
@@ -315,7 +320,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                 var hashedMarket = await _hashedMarketSubject.Take(1).ToTask();
 		        if (hashedMarket.HasValue())
 		        {
-		            bookingSettings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+					var paymentSettings = await _paymentService.GetPaymentSettings();
+
+					if (paymentSettings.PaymentMode != PaymentMethod.Cmt
+						&& paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
+					{
+						bookingSettings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+					}
 		        }
 		    }
 
@@ -346,34 +357,54 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			if (_bookingService.HasLastOrder) 
 			{
-				var status = await _bookingService.GetLastOrderStatus (); 
-				if (status == null)
-				{
-					return null;
-				}
+                var status = await _bookingService.GetLastOrderStatus();
+                if (status == null)
+                {
+                    return null;
+                }
 
-				if (!_bookingService.IsStatusCompleted(status)) 
-				{
-					var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
+                if (!_bookingService.IsStatusCompleted(status))
+                {
+                    try
+                    {
+                        var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
 
-                    return Tuple.Create(order, status);
-				}
+                        return Tuple.Create(order, status);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogMessage(string.Format("Error trying to get status of order {0}", status.OrderId));
+                        _logger.LogError(ex);
+
+                        return null;
+                    }
+                }
                 else
-				{
-                    var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
-					if (order.IsRated)
-					{
-						_bookingService.ClearLastOrder ();
-					}
-					else
-					{
-					    if (!order.IsManualRideLinq)
-					    {
-                            // Rating only for "normal" rides
-                            _bookingService.SetLastUnratedOrderId(status.OrderId);
-					    }
-					}
-				}
+                {
+                    try
+                    {
+                        var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
+                        if (order.IsRated)
+                        {
+                            _bookingService.ClearLastOrder();
+                        }
+                        else
+                        {
+                            if (!order.IsManualRideLinq)
+                            {
+                                // Rating only for "normal" rides
+                                _bookingService.SetLastUnratedOrderId(status.OrderId);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogMessage(string.Format("Error trying to get status of order {0}", status.OrderId));
+                        _logger.LogError(ex);
+
+                        return null;
+                    }
+                }
 			}
 
 			return null;

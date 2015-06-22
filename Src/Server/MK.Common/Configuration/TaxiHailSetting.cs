@@ -431,12 +431,6 @@ namespace MK.Common.Configuration
         [Display(Name = "Google Analytics Tracking ID", Description = "Company's Tracking ID used for Google Analytics")]
         public string GoogleAnalyticsTrackingId { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
-        public bool CallDriverUsingProxy { get; protected set; }
-
-        [SendToClient, CustomizableByCompany]
-        public string CallDriverUsingProxyUrl { get; protected set; }
-
 	    [SendToClient, CustomizableByCompany]
         public int InitialZoomLevel { get; set; }
 
@@ -454,6 +448,10 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Registration PayBack", Description = "Defines if the PayBack field when creating a new account is required or not")]
         public bool? IsPayBackRegistrationFieldRequired { get; set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Show Message Driver", Description = "Show button on the status screen to message the driver")]
+        public bool ShowMessageDriver { get; set; }
     }
 }
 

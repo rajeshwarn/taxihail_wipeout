@@ -18,9 +18,11 @@ namespace HoneyBadger
 
         protected HttpClient Client { get; private set; }
 
-        protected static string BuildQueryString(IEnumerable<KeyValuePair<string, string>> @params)
+        protected static string BuildQueryString(IEnumerable<KeyValuePair<string, string>> @params, bool appendToExistingParams = false)
         {
-            return "?" + string.Join("&", @params.Select(x => string.Join("=", x.Key, x.Value)));
+            var requestPrefix = appendToExistingParams ? "&" : "?";
+
+            return requestPrefix + string.Join("&", @params.Select(x => string.Join("=", x.Key, x.Value)));
         }
     }
 }

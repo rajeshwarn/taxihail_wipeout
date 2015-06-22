@@ -4,6 +4,7 @@ using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Attributes;
 using CustomerPortal.Web.Properties;
 using MongoRepository;
+using System.Text.RegularExpressions;
 
 namespace CustomerPortal.Web.Entities.Network
 
@@ -29,6 +30,9 @@ namespace CustomerPortal.Web.Entities.Network
 
         [Display(Name = "FleetIdWhiteListLabel", ResourceType = typeof(Resources))]
         public string WhiteListedFleetIds { get; set; }
+
+        [Display(Name = "FleetIdBlackListLabel", ResourceType = typeof(Resources))]
+        public string BlackListedFleetIds { get; set; }
 
         [Required]
         [Display(Name = "IncludeInTaxiHailNetwork",

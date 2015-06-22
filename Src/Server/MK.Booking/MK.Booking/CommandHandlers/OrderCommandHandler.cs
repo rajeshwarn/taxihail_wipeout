@@ -37,7 +37,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<CreateOrderForManualRideLinqPair>,
         ICommandHandler<UnpairOrderForManualRideLinq>,
         ICommandHandler<UpdateTripInfoInOrderForManualRideLinq>,
-        ICommandHandler<SaveTemporaryOrderPaymentInfo>
+        ICommandHandler<SaveTemporaryOrderPaymentInfo>,
+        ICommandHandler<UpdateAutoTip>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -58,7 +59,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(ChangeOrderStatus command)
         {
             var order = _repository.Find(command.Status.OrderId);
-            order.ChangeStatus(command.Status, command.Fare, command.Tip, command.Toll, command.Tax);
+            order.ChangeStatus(command.Status, command.Fare, command.Tip, command.Toll, command.Tax, command.Surcharge);
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -77,7 +78,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
                 command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
                 command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-                command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid);
+                command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees);
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -127,7 +128,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SwitchOrderToNextDispatchCompany command)
         {
             var order = _repository.Find(command.OrderId);
-            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName, command.Market);
+            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName, command.Market, command.HasChangedBackToPaymentInCar);
             _repository.Save(order, command.Id.ToString());
         }
 
@@ -186,8 +187,8 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             var order = _repository.Find(command.OrderId);
 
-            order.UpdatePrepaidOrderPaymentInfo(command.OrderId, command.Amount, command.Meter, command.Tax,
-                command.Tip, command.TransactionId, command.Provider, command.Type);
+            order.UpdatePrepaidOrderPaymentInfo(command.OrderId, command.TotalAmount, command.MeterAmount, command.TaxAmount,
+                command.TipAmount, command.TransactionId, command.Provider, command.Type);
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -204,7 +205,8 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = new Order(command.OrderId, command.AccountId, command.PairingDate, command.PairingCode, command.PairingToken,
                 command.PickupAddress, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
                 command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
-                command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.TripId, command.DriverId);
+                command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.TripId,
+                command.DriverId, command.AccessFee, command.LastFour);
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -220,8 +222,17 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Get(command.OrderId);
             order.UpdateRideLinqTripInfo(command.Distance,command.Total, command.Fare, command.FareAtAlternateRate, command.Tax,
-                command.Tip, command.Toll, command.Extra,command.Surcharge,command.RateAtTripStart, command.RateAtTripEnd, 
-                command.RateChangeTime ,command.EndTime, command.PairingToken, command.Medallion, command.TripId, command.DriverId);
+                command.Tip, command.TollTotal, command.Extra,command.Surcharge,command.RateAtTripStart, command.RateAtTripEnd, 
+                command.RateChangeTime, command.StartTime, command.EndTime, command.PairingToken, command.Medallion, command.TripId, command.DriverId, command.AccessFee,
+                command.LastFour, command.Tolls);
+
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(UpdateAutoTip command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.UpdateAutoTip(command.AutoTipPercentage);
 
             _repository.Save(order, command.Id.ToString());
         }

@@ -32,5 +32,9 @@ namespace CustomerPortal.Client
         Task UpdateMarketVehicleType(string companyId, CompanyVehicleType vehicleType);
 
         Task DeleteMarketVehicleMapping(string companyId, Guid id);
+
+        CompanyPaymentSettings GetPaymentSettings(string companyId);
+
+        Task UpdatePaymentSettings(string companyId, CompanyPaymentSettings companyPaymentSettings);
     }
 }

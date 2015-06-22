@@ -16,6 +16,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using ServiceStack.Text;
+using System.Web;
 
 #endregion
 
@@ -34,6 +35,7 @@ namespace apcurium.MK.Web
         protected bool FacebookEnabled { get; private set; }
         protected bool HideDispatchButton { get; private set; }
         protected bool ShowCallDriver { get; private set; }
+        protected bool ShowMessageDriver { get; private set; }
         protected string GeolocSearchFilter { get; private set; }
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
@@ -70,6 +72,8 @@ namespace apcurium.MK.Web
         protected int AvailableVehicleRefreshRate { get; private set; }
 
         protected bool IsCraftyClicksEnabled { get; private set; }
+
+        protected string WebSiteRootPath { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -85,6 +89,7 @@ namespace apcurium.MK.Web
             FacebookEnabled = config.ServerData.FacebookEnabled;
             HideDispatchButton = config.ServerData.HideCallDispatchButton;
             ShowCallDriver = config.ServerData.ShowCallDriver;
+            ShowMessageDriver = config.ServerData.ShowMessageDriver;
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
             IsCreditCardMandatory = config.ServerData.CreditCardIsMandatory;
@@ -115,6 +120,7 @@ namespace apcurium.MK.Web
             HideMarketChangeWarning = config.ServerData.Network.HideMarketChangeWarning;
             AutoConfirmFleetChange = config.ServerData.Network.AutoConfirmFleetChange;
             IsCraftyClicksEnabled = config.ServerData.CraftyClicksApiKey.HasValue();
+            WebSiteRootPath = HttpContext.Current.Request.ApplicationPath;
 
             var paymentSettings = config.GetPaymentSettings();
 

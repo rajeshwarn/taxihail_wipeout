@@ -5,6 +5,7 @@ using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 
 #endregion
@@ -34,6 +35,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
         private EventSourcingTestHelper<CreditCardPayment> _sut;
         private Guid _orderId;
         private Guid _paymentId;
+        private Guid _promoId;
         private readonly decimal _preAuthAmount = 25m;
 
         [Test]
@@ -45,14 +47,23 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             {
                 PaymentId = _paymentId,
                 MeterAmount = 20,
-                Amount = 24,
+                TotalAmount = 24,
                 TipAmount = 2,
                 TaxAmount = 2,
+                TollAmount = 2.4m,
+                SurchargeAmount = 1,
                 AccountId = accountId,
                 TransactionId = "123",
                 IsForPrepaidOrder = true,
                 IsSettlingOverduePayment = true,
-                NewCardToken = "fjff"
+                NewCardToken = "fjff",
+                FeeType = FeeTypes.Cancellation,
+                BookingFees = 5m,
+                AmountSavedByPromotion = 1,
+                AuthorizationCode = "authcode",
+                PromotionUsed = _promoId,
+                Provider = PaymentProvider.Braintree
+
             });
 
             var @event = _sut.ThenHasSingle<CreditCardPaymentCaptured_V2>();
@@ -61,11 +72,19 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             Assert.AreEqual(20, @event.Meter);
             Assert.AreEqual(2, @event.Tip);
             Assert.AreEqual(2, @event.Tax);
+            Assert.AreEqual(2.4, @event.Toll);
+            Assert.AreEqual(1, @event.Surcharge);
             Assert.AreEqual(_orderId, @event.OrderId);
             Assert.AreEqual(accountId, @event.AccountId);
             Assert.AreEqual("fjff", @event.NewCardToken);
             Assert.AreEqual(true, @event.IsSettlingOverduePayment);
             Assert.AreEqual(true, @event.IsForPrepaidOrder);
+            Assert.AreEqual(5, @event.BookingFees);
+            Assert.AreEqual(1, @event.AmountSavedByPromotion);
+            Assert.AreEqual("authcode", @event.AuthorizationCode);
+            Assert.AreEqual(_promoId, @event.PromotionUsed);
+            Assert.AreEqual(PaymentProvider.Braintree, @event.Provider);
+            Assert.AreEqual(FeeTypes.Cancellation, @event.FeeType);
         }
 
         [Test]
