@@ -48,7 +48,13 @@
                 showFavorites: false,
                 showPlaces: this.options.showPlaces
             }).on('selected', function (model, collection) {
-                this.model.set(model.toJSON());
+                var addressModel = model.toJSON();
+
+                // Have to remove this attribute or else, the model will think
+                // that we are updating an existing address instead of creating a new one
+                delete addressModel["id"];
+
+                this.model.set(addressModel);
                 this.close();
             }, this);
 
