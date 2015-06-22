@@ -69,13 +69,9 @@ namespace apcurium.MK.Common.Configuration.Impl
                     Reload();
 
                     _cache.Add(CacheKey, ServerData, DateTime.UtcNow.AddSeconds(CacheExpiration));
+                }
 
-                    return ServerData;
-                }
-                else
-                {
-                    return ServerData;
-                }
+                return ServerData;
             }
         }
 
