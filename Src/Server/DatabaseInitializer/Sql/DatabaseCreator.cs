@@ -92,6 +92,8 @@ namespace DatabaseInitializer.Sql
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE DATABASE {0} FROM DISK = '{1}\{0}.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE LOG {0} FROM DISK = '{1}\{0}_log.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
 
+            Thread.Sleep(TimeSpan.FromMinutes(1));
+            Console.WriteLine("Setting mirror database in Multi-User mode.");
             // Restoring muti-user.
             DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "ALTER DATABASE [" + databaseName + "] SET MULTI_USER");
         }
