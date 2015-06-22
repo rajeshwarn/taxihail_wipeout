@@ -1,8 +1,12 @@
 ﻿#region
 
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Http;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Entities;
+using CustomerPortal.Web.Services;
+using CustomerPortal.Web.Services.Impl;
 using MongoRepository;
 
 #endregion
@@ -13,19 +17,19 @@ namespace CustomerPortal.Web.Controllers.API
     public class DeploymentController : ApiController
     {
         private readonly IRepository<DeploymentJob> _repository;
-            private readonly IRepository<DefaultCompanySetting> _repositoryDefaultSettings;
+        private readonly IRepository<DefaultCompanySetting> _repositoryDefaultSettings;
+        private readonly IEmailSender _emailSender;
 
-            public DeploymentController(IRepository<DeploymentJob> repository, IRepository<DefaultCompanySetting> repositoryDefaultSettings)
+        public DeploymentController(IRepository<DeploymentJob> repository, IRepository<DefaultCompanySetting> repositoryDefaultSettings, IEmailSender emailSender)
         {
             _repository = repository;
             _repositoryDefaultSettings = repositoryDefaultSettings;
+            _emailSender = emailSender;
         }
 
-            public DeploymentController()
-                : this(new MongoRepository<DeploymentJob>(), new MongoRepository<DefaultCompanySetting>())
+        public DeploymentController() : this(new MongoRepository<DeploymentJob>(), new MongoRepository<DefaultCompanySetting>(), new EmailSender())
         {
         }
-
 
         [Route("api/deployments/{serverName}/next")]
         public DeploymentJob GetNextForServer(string serverName)
@@ -80,8 +84,20 @@ namespace CustomerPortal.Web.Controllers.API
                     deployment.Status = details.Status.Value.ToString();
                 }
 
+                if (details.Status == JobStatus.Error && deployment.UserEmail.HasValue() && IsVersionNumber(deployment))
+                {
+                    _emailSender.SendEmail(deployment.Details, deployment.Revision.Tag, deployment.Company.CompanyName, deployment.UserName,deployment.UserEmail, deployment.Server.Name);
+                }
+
                 _repository.Update(deployment);
             }
+        }
+
+
+        private bool IsVersionNumber(DeploymentJob job)
+        {
+            //Regex pattern to ensure that we only send an email when the tag name is 'x.x.x'.
+            return Regex.IsMatch(job.Revision.Tag, "^([0-9][0-9]*.[0-9][0-9]*.[0-9][0-9]*(.[0-9][0-9]*)?)$");
         }
     }
 }

@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
@@ -11,6 +13,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
+using AutoMapper;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Helpers;
 using CustomerPortal.Web.Services.Impl;
@@ -76,7 +79,8 @@ namespace CustomerPortal.Web
             EnsureDefaultDevicesAreInit();
             EnsureDefaultSettingsAreInit();
 
-            
+            Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
+                .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
         }
 
         private static void EnsureMenuColorIsSet()

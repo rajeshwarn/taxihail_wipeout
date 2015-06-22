@@ -331,7 +331,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var company = _repository.Get(command.CompanyId);
 
-            company.AddUpdateVehicleType(command.VehicleTypeId, command.Name, command.LogoName, command.ReferenceDataVehicleId, command.MaxNumberPassengers, command.ReferenceNetworkVehicleTypeId);
+            company.AddUpdateVehicleType(command.VehicleTypeId, command.Name, command.LogoName, command.ReferenceDataVehicleId, command.MaxNumberPassengers, command.ReferenceNetworkVehicleTypeId, command.IsWheelchairAccessible);
 
             _repository.Save(company, command.Id.ToString());
         }

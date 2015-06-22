@@ -22,6 +22,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             _contextFactory = contextFactory;
             _logger = logger;
+
             ServerData = new ServerTaxiHailSetting();
             Load();
         }
@@ -53,6 +54,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         }
 
         public TaxiHailSetting Data { get { return ServerData; } }
+
         public ServerTaxiHailSetting ServerData { get; private set; }
 
         public Task Load()

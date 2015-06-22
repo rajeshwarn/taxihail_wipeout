@@ -119,11 +119,12 @@ namespace apcurium.MK.Booking.Api.Services
                 }
 
                 var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(
-                    availableVehiclesMarket,
-                    request.Latitude,
-                    request.Longitude,
-                    null,
-                    availableVehiclesFleetIds);
+                    market: availableVehiclesMarket,
+                    latitude: request.Latitude,
+                    longitude: request.Longitude,
+                    searchRadius: null,
+                    fleetIds: availableVehiclesFleetIds,
+                    wheelchairAccessibleOnly: (vehicleType == null ? false : vehicleType.IsWheelchairAccessible));
 
                 vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
                 {
@@ -170,7 +171,8 @@ namespace apcurium.MK.Booking.Api.Services
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
                 CompanyId = AppConstants.CompanyId,
                 MaxNumberPassengers = request.MaxNumberPassengers,
-                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId
+                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId,
+                IsWheelchairAccessible = request.IsWheelchairAccessible
             };
 
             if (_serverSettings.ServerData.Network.Enabled)
@@ -213,7 +215,8 @@ namespace apcurium.MK.Booking.Api.Services
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
                 CompanyId = AppConstants.CompanyId,
                 MaxNumberPassengers = request.MaxNumberPassengers,
-                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId
+                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId,
+                IsWheelchairAccessible = request.IsWheelchairAccessible
             };
 
             _commandBus.Send(command);
