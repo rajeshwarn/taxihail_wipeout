@@ -67,6 +67,15 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
 
+        public ActionResult History()
+        {
+            var model = new DeploymentJobModel();
+
+            model.Jobs = new MongoRepository<DeploymentJob>().OrderByDescending(d => d.Date).ToArray();
+
+            return View("DeploymentHistory", model);
+        }
+
 
         public ActionResult Copy(string id)
         {

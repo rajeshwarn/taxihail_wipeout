@@ -510,6 +510,9 @@
     <Content Include="Areas\Admin\Views\NetworkVehicles\CreateVehicle.cshtml" />
     <Content Include="Areas\Admin\Views\NetworkVehicles\EditVehicle.cshtml" />
     <Content Include="Areas\Admin\Views\NetworkVehicles\VehicleIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\Deployment\DeploymentHistory.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
