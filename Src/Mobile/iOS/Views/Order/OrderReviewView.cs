@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 iconPassengerName.RemoveFromSuperview();
             }
 
-			if (!this.Services().Settings.ShowPassengerNumber || true)
+			if (!this.Services().Settings.ShowPassengerNumber)
             {
                 if (lblNbPassengers != null && iconNbPasserngers != null)
                 {
@@ -149,7 +149,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 }
             }
 
-            if (!this.Services().Settings.ShowPassengerApartment || true)
+            if (!this.Services().Settings.ShowPassengerApartment)
             {
 				lblApt.RemoveFromSuperview();
 				iconApartment.RemoveFromSuperview ();
@@ -157,19 +157,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				iconRingCode.RemoveFromSuperview ();
             }
 
-            if (!this.Services().Settings.ShowRingCodeField || true)
+            if (!this.Services().Settings.ShowRingCodeField)
             {
                 lblRingCode.RemoveFromSuperview();
 				iconRingCode.RemoveFromSuperview();
             }
 
-            if (!this.Services().Settings.ShowPassengerPhone|| true)
+            if (!this.Services().Settings.ShowPassengerPhone)
             {
                 lblPhone.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();
             }
                 
-            if (!this.Services().Settings.PromotionEnabled || true)
+            if (!this.Services().Settings.PromotionEnabled)
             {
 				btnViewPromo.RemoveFromSuperview();
 				iconPromo.RemoveFromSuperview();
@@ -188,9 +188,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             Initialize();
 
-            this.DelayBind (() => {
-                InitializeBinding();
-            });
+            this.DelayBind(InitializeBinding);
         }
 
         public override void LayoutSubviews()
