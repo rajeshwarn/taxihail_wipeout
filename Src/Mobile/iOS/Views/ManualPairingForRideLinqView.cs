@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bindingSet.Apply();
 
-            PairingCode1.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 3, OnMaxLength);
+            PairingCode1.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 3, MoveToPairingCode2);
             PairingCode2.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 4);
 
             PairingCode1.EditingChanged += (sender, e) => 
@@ -64,17 +64,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				}
 			};
 
-			PairingCode2.EditingChanged += (sender, e) => 
-			{
-				if(PairingCode2.Text.Length == 0)
-				{
-					PairingCode1.BecomeFirstResponder();
-				}
-			};
-
             PairingCode2.BackButtonPressed += (object sender, EventArgs e) => 
             {
-                PairingCode1.BecomeFirstResponder();
+                if(PairingCode2.Text.Length == 0)
+                {
+                    PairingCode1.BecomeFirstResponder();
+                }
             };
 		}
 
@@ -97,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             return false;
 		}
 
-        private void OnMaxLength(string value)
+        private void MoveToPairingCode2(string value)
         {
             var length = value.HasValue() ? value.Length : 0;
             if(PairingCode2.Text.Length + length <= 4)
