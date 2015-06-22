@@ -15,8 +15,12 @@ namespace apcurium.MK.Common.Configuration.Impl
 {
     public class ServerSettings : IServerSettings, IAppSettings
     {
+        private const int CacheExpiration = 30;  // In seconds
+        private const string CacheKey = "MK.Settings";
+
         private readonly Func<ConfigurationDbContext> _contextFactory;
         private readonly ILogger _logger;
+        private readonly ObjectCache _cache = MemoryCache.Default;
 
         public ServerSettings(Func<ConfigurationDbContext> contextFactory, ILogger logger)
         {
@@ -53,7 +57,22 @@ namespace apcurium.MK.Common.Configuration.Impl
             Load();
         }
 
-        public TaxiHailSetting Data { get { return ServerData; } }
+        public TaxiHailSetting Data
+        {
+            get
+            {
+                var serverData = _cache[CacheKey];
+                if (serverData == null)
+                {
+                    // Settings expired or not yet cached
+                    Reload();
+
+                    _cache.Add(CacheKey, ServerData, DateTime.UtcNow.AddSeconds(CacheExpiration));
+                }
+
+                return ServerData;
+            }
+        }
 
         public ServerTaxiHailSetting ServerData { get; private set; }
 
