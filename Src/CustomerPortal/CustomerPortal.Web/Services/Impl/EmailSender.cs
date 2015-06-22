@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 
@@ -10,11 +8,8 @@ namespace CustomerPortal.Web.Services.Impl
     {
         private const string MessageTemplate = "<html><head></head><body>Job started by {1} with server {2} for version {3}. <br/><br/> <b>Build log:</b> <br/><br/>{0}</body></html>";
 
-#if DEBUG
-        private const string SubjectTemplate = "[TEST]Deployment job failed for {0}.";
-#else
         private const string SubjectTemplate = "Deployment job failed for {0}.";
-#endif
+
         private const string ToEmail = "taxihail@apcurium.freshdesk.com";
         private SmtpClient GetClient()
         {
