@@ -534,17 +534,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
 		{
-			var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask();
-			if (selectionMode == AddressSelectionMode.PickupSelection)
-            {
-				_pickupAddressSubject.OnNext (address);
+			// Needs to run in a background thread to prevent a potential deadlock issue.
+			await Task.Run(async () =>
+				{
+					var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask();
+					if (selectionMode == AddressSelectionMode.PickupSelection)
+					{
+						_pickupAddressSubject.OnNext (address);
 
-				Task.Run(() => SetMarket(new Position { Latitude = address.Latitude, Longitude = address.Longitude }));
-			} 
-            else 
-            {
-				_destinationAddressSubject.OnNext (address);
-			}
+						await SetMarket(new Position { Latitude = address.Latitude, Longitude = address.Longitude });
+					} 
+					else 
+					{
+						_destinationAddressSubject.OnNext (address);
+					}
+				}, token);
 
 			// do NOT await this
 			CalculateEstimatedFare (token);
