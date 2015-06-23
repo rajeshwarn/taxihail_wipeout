@@ -22,6 +22,7 @@
         
         columns.Add(job => job.Company.CompanyName)
             .Titled("Company")
+            .SetWidth(90)
             .IsCustomHtmlColumn(true)
             .RenderValueAs(job => @<a href="@Url.Action("Manage", "Home", new {area = "Admin", id = @job.Company.Id})">@job.Company.CompanyName</a>)
             .Sortable(true)
@@ -29,12 +30,13 @@
             
         columns.Add(job => job.UserName)
             .Titled("User")
+            .SetWidth(90)
             .Filterable(true);
             
         columns.Add(job => job.Status)
             .Titled("Status")
             .IsCustomHtmlColumn(true)
-            .RenderValueAs(job => @<a title="job.Details" data-status data-key="job.Id" href="@Url.Action("Details", new { id = job.Id })" class="btn btn-link">@job.Status</a>)
+            .RenderValueAs(job => @<a title="@job.Details" data-status data-key="@job.Id" href="@Url.Action("Details", new { id = @job.Id })" class="btn btn-link">@job.Status</a>)
             .Filterable(true);
             
         columns.Add(job => job.Server.Name).Titled("Server");
@@ -47,6 +49,7 @@
             .Filterable(true);
 
         columns.Add(job => job.Revision.Tag)
+            .Titled("Revision")
             .IsCustomHtmlColumn(true)
             .RenderValueAs(job => job.Revision.Tag + "\r\n(" + job.Revision.Commit + ")")
             .Filterable(true);
@@ -81,3 +84,17 @@
             
     }).WithPaging(50).Selectable(false);
 </div>
+@section Scripts {
+    <script>
+        $("[data-status]").fetchStatus();
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('[data-status]').tipsy({ html: true, gravity: 'nw' });
+        });
+        $('[data-status]').tipsy({ html: true, gravity: 'nw' });
+
+    </script>
+
+}
