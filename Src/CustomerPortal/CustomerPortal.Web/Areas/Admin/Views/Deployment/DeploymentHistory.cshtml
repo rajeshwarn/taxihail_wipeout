@@ -1,4 +1,5 @@
 ﻿@using CustomerPortal.Web.Security
+@using GridMvc.Html
 @model CustomerPortal.Web.Areas.Admin.Models.DeploymentJobModel
 
 @{
@@ -14,52 +15,69 @@
 @if (SecurityHelper.IsApcuriumUser)
 {
     <div style="width: 100px; float: left; position: fixed">@Html.Partial("_DeployRevisionPartial")</div>
-
 }
 <div style="width: 870px; float: right">
-    <table class="table table-striped table-condensed">
-        <thead>
-            <tr>
-                <th>Company</th>
-                <th>User</th>
-                <th>Status</th>
-                <th>Server</th>
-                <th>Action</th>
-                <th>Date</th>
-                <th>Revision</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+    @Html.Grid(Model.Jobs).Columns(columns =>
+    {
+        
+        columns.Add(job => job.Company.CompanyName)
+            .Titled("Company")
+            .IsCustomHtmlColumn(true)
+            .RenderValueAs(job => @<a href="@Url.Action("Manage", "Home", new {area = "Admin", id = @job.Company.Id})">@job.Company.CompanyName</a>)
+            .Sortable(true)
+            .Filterable(true);
+            
+        columns.Add(job => job.UserName)
+            .Titled("User")
+            .Filterable(true);
+            
+        columns.Add(job => job.Status)
+            .Titled("Status")
+            .IsCustomHtmlColumn(true)
+            .RenderValueAs(job => @<a title="job.Details" data-status data-key="job.Id" href="@Url.Action("Details", new { id = job.Id })" class="btn btn-link">@job.Status</a>)
+            .Filterable(true);
+            
+        columns.Add(job => job.Server.Name).Titled("Server");
+        
+        columns.Add(job => job.Action).Titled("Action");
+        
+        columns.Add(job => job.Date)
+            .RenderValueAs(job => job.Date.ToLocalTime().ToString("G")).Titled("Date")
+            .Sortable(true)
+            .Filterable(true);
 
-        @foreach (var deploy in Model.Jobs)
+        columns.Add(job => job.Revision.Tag)
+            .IsCustomHtmlColumn(true)
+            .RenderValueAs(job => job.Revision.Tag + "\r\n(" + job.Revision.Commit + ")")
+            .Filterable(true);
+
+        if (SecurityHelper.IsApcuriumUser)
         {
-            <tr>
-                <td> <a href="@Url.Action("Manage", "Home", new {area = "Admin", id = deploy.Company.Id})">@deploy.Company.CompanyName</a></td>
-                <td>@deploy.UserName</td>
-                <td><a title="@deploy.Details" data-status data-key="@deploy.Id" href="@Url.Action("Details", new {id = deploy.Id})" class="btn btn-link">@deploy.Status</a></td>
-                <td>@deploy.Server.Name</td>
-                <td>@deploy.Action</td>
-                <td>@deploy.Date.ToLocalTime()</td>
-                <td>@deploy.Revision.Tag <br /> (@deploy.Revision.Commit)</td>
-
-                <td>
-                    @if (SecurityHelper.IsApcuriumUser)
-                    {
-                        <a href="@Url.Action("Copy", new {id = deploy.Id})">
-                            <img src="~/Images/copy.png" width="20" />
+            columns.Add(job => job.Id)
+                .Titled("Actions")
+                .IsCustomHtmlColumn(true)
+                .RenderValueAs(job =>
+                    @<div>
+                        <a href="@Url.Action("Copy", new {id = job.Id})">
+                            <img src="~/Images/copy.png" width="20"/>
                         </a>
-                    }
-                    <a href="@Url.Action("Index", "Version", new { area = "Admin", id = deploy.Company.Id })">
+                        <a href="@Url.Action("Index", "Version", new {area = "Admin", id = job.Company.Id})">
+                            <img src="~/Images/download.jpg" width="20"/>
+                        </a>
+                    </div>
+                );
+        }
+        else
+        {
+           columns.Add(job => job.Type)
+               .Titled("Actions")
+               .IsCustomHtmlColumn(true)
+               .RenderValueAs(job =>
+                    @<a href="@Url.Action("Index", "Version", new {area = "Admin", id = job.Company.Id})">
                         <img src="~/Images/download.jpg" width="20" />
                     </a>
-                    @if (SecurityHelper.IsApcuriumUser)
-                    {
-                        <a href="@Url.Action("Index", "Settings", new {area = "Admin", id = deploy.Company.CompanyKey})">
-                            <img src="~/Images/settings.jpg" width="20" />
-                        </a>
-                    }
-                </td>
-            </tr>
+                ); 
         }
-    </table>
+            
+    }).WithPaging(50).Selectable(false);
 </div>

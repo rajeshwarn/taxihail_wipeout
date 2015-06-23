@@ -267,6 +267,7 @@
     <Compile Include="Entities\Version.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Extensions\DateFormatterExtension.cs" />
+    <Compile Include="Extensions\GridExtensions.cs" />
     <Compile Include="Extensions\MapRegionExtensions.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="HtmlHelpers\ActiveTab.cs" />
@@ -512,6 +513,7 @@
     <Content Include="Areas\Admin\Views\NetworkVehicles\VehicleIndex.cshtml" />
     <Content Include="Areas\Admin\Views\Deployment\DeploymentHistory.cshtml">
       <SubType>Code</SubType>
+      <BrowseToURL>~/Admin/Deployment/History</BrowseToURL>
     </Content>
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
