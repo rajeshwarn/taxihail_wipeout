@@ -9,9 +9,11 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using TinyIoC;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
+	[Register("apcurium.mk.booking.mobile.client.controls.TouchableMap")]
     public class TouchableMap : SupportMapFragment
     {
         public View mOriginalContentView;

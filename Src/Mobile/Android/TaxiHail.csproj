@@ -21,6 +21,7 @@
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -42,7 +43,6 @@
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/Resources/Values/String.xml&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" workingdir="$(SolutionDir)/../LocalizationTool" />
       </CustomCommands>
     </CustomCommands>
-    <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -60,7 +60,6 @@
     <MonoDroidExtraArgs>
     </MonoDroidExtraArgs>
     <DebugType>full</DebugType>
-    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cirrious.MvvmCross.Plugins.DownloadCache">
