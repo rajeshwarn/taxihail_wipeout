@@ -7,12 +7,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
 {
     public static class PairingCodeBehavior
     {
+        private const int PairingCode1MaxLength = 3;
+        private const int PairingCode2MaxLength = 4;
+
         public static void ApplyTo(EditText pairingCodeEditText1, EditText pairingCodeEditText2)
         {
             pairingCodeEditText1.KeyPress += (sender, args) =>
             {
                 // We need to ignore the KeyUp event as well as any events if we have lower then 3 characters in the left textbox.
-                if (args.Event.Action == KeyEventActions.Up || pairingCodeEditText1.Text.Length < 3)
+                if (args.Event.Action == KeyEventActions.Up || pairingCodeEditText1.Text.Length < PairingCode1MaxLength)
                 {
                     args.Handled = false;
                     return;
@@ -20,7 +23,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
 
                 var keyPressed = GetNumberOrDefault(args.KeyCode);
 
-                if (pairingCodeEditText2.Text.Length < 4 && keyPressed.HasValue())
+                var isCaretAtEnd = pairingCodeEditText1.SelectionStart == pairingCodeEditText1.Text.Length;
+
+                // We check if the caret is at the end of the first textbox And we have typed a number And the second textbox is not at max length.
+                if (pairingCodeEditText2.Text.Length < PairingCode2MaxLength && keyPressed.HasValue() && isCaretAtEnd)
                 {
                     pairingCodeEditText2.Text = keyPressed + pairingCodeEditText2.Text;
                     pairingCodeEditText2.RequestFocus();
