@@ -6,7 +6,7 @@
             var $this = $(this),
                 id = $this.data().key,
                 status = $this.data().status;
-                if (!onlyGetActive || (status != "Error" && status != "Success")) {
+                if (!onlyGetActive || (status != "Error" && status != "Success" && status != "Cancelled")) {
                     $.get('/Admin/Deployment/StatusText/' + id, function (result) {
                         $this.html(result);
                     });

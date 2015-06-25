@@ -27,7 +27,7 @@
                 return;
             }
 
-            if (currentStatus == "Error" || currentStatus == "Success") {
+            if (currentStatus == "Error" || currentStatus == "Success" || currentStatus ==  "Cancelled") {
                 var now = new Date();
                 var datetime = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDay();
                 datetime += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
@@ -54,7 +54,7 @@
 
                     $('#lastUpdate').html(datetime);
 
-                    if (result == "Error" || result == "Success") {
+                    if (result == "Error" || result == "Success" || status == "Cancelled") {
                         stopped = true;
                     }
 
