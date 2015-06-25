@@ -99,7 +99,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void MoveToPairingCode2(string value)
         {
             var length = value.HasValue() ? value.Length : 0;
-            if (PairingCode2.Text.Length + length <= PairingCode2MaxLength)
+
+            var caretPosition = PairingCode1.GetOffsetFromPosition(PairingCode1.BeginningOfDocument, PairingCode1.SelectedTextRange.Start);
+
+            var isCaretAtEnd = caretPosition == PairingCode1MaxLength;
+
+            if (PairingCode2.Text.Length + length <= PairingCode2MaxLength && isCaretAtEnd)
             {
                 PairingCode2.Text = value + PairingCode2.Text;
                 PairingCode2.BecomeFirstResponder();
