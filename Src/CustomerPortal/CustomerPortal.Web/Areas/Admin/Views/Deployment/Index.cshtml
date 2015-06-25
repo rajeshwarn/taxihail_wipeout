@@ -41,6 +41,7 @@
         <thead>
         <tr>
             <th>Company</th>
+            <th>User</th>
             <th>Status</th>
             <th>Server</th>
             <th>Action</th>
@@ -56,6 +57,7 @@
         {
             <tr>
                 <td> <a href="@Url.Action("Manage", "Home", new {area = "Admin", id = deploy.Company.Id})">@deploy.Company.CompanyName</a></td>
+                <td>@deploy.UserName</td>
                 <td><a title="@deploy.Details" data-status="@deploy.Status" data-key="@deploy.Id" href="@Url.Action("Details", new {id = @deploy.Id})" class="btn btn-link">@deploy.Status</a></td>
                 <td>@deploy.Server.Name</td>
                 <td>@deploy.Action</td>
@@ -93,6 +95,9 @@
 
 @section Scripts {
     <script>
+
+        //$("[data-status='Error']" || "[data-status='Success']").fetchStatus();
+
         function refresh() {
             $("[data-status]").fetchStatus(true);
         }
