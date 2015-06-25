@@ -621,6 +621,22 @@
     <BundleResource Include="Resources\message.png" />
     <BundleResource Include="Resources\message%402x.png" />
     <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
+    <BundleResource Include="Resources\cluster_wheelchair.png" />
+    <BundleResource Include="Resources\cluster_wheelchair%402x.png" />
+    <BundleResource Include="Resources\nearby_wheelchair.png" />
+    <BundleResource Include="Resources\nearby_wheelchair%402x.png" />
+    <BundleResource Include="Resources\wheelchair_assigned.png" />
+    <BundleResource Include="Resources\wheelchair_assigned%402x.png" />
+    <BundleResource Include="Resources\wheelchair_assigned%403x.png" />
+    <BundleResource Include="Resources\wheelchair_available.png" />
+    <BundleResource Include="Resources\wheelchair_available%402x.png" />
+    <BundleResource Include="Resources\wheelchair_available%403x.png" />
+    <BundleResource Include="Resources\wheelchair_badge.png" />
+    <BundleResource Include="Resources\wheelchair_badge%402x.png" />
+    <BundleResource Include="Resources\wheelchair_badge%403x.png" />
+    <BundleResource Include="Resources\wheelchair_badge_selected.png" />
+    <BundleResource Include="Resources\wheelchair_badge_selected%402x.png" />
+    <BundleResource Include="Resources\wheelchair_badge_selected%403x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
