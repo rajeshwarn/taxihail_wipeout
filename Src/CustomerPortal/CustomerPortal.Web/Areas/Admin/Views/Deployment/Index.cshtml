@@ -80,6 +80,12 @@
                             <img src="~/Images/settings.jpg" width="20"/>
                         </a>
                     }
+                    @if (@deploy.Status == "Requested")
+                    {
+                        <a href="@Url.Action("Cancel", new {id = deploy.Id})">
+                            <img src="~/Images/delete.png" width="20" />
+                        </a>
+                    }
                 </td>
             </tr>
         }
@@ -112,6 +118,5 @@
         $('[data-status]').tipsy({ html: true, gravity: 'nw' });
 
     </script>
-
 
 }

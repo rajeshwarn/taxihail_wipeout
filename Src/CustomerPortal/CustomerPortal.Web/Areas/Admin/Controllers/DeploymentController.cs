@@ -346,10 +346,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete(string id)
+        public ActionResult Cancel(string id)
         {
+            var item = Repository.GetById(id);
 
-            Repository.Delete(r => r.Id == id);
+            item.Status = "Cancelled";
+
+            Repository.Update(item);
 
             return RedirectToAction("Index");
         }
