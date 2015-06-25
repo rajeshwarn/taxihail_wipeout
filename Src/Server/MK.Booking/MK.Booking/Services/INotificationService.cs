@@ -13,7 +13,6 @@ namespace apcurium.MK.Booking.Services
         void SendPromotionUnlockedPush(Guid orderId, PromotionDetail promotionDetail);
         void SendAssignedPush(OrderStatusDetail orderStatusDetail);
         void SendArrivedPush(OrderStatusDetail orderStatusDetail);
-        void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail);
         void SendTimeoutPush(OrderStatusDetail orderStatusDetail);
         void SendChangeDispatchCompanyPush(Guid orderId);
         void SendPaymentCapturePush(Guid orderId, decimal amount);

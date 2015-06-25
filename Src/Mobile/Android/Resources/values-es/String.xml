@@ -2,6 +2,7 @@
 <resources>
   <string name="AcceptButton">Aceptar</string>
   <string name="AccountActivationMessage">Se ha enviado un email, por favor siga el vínculo para confirmar su cuenta</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
   <string name="AccountActivationTitle">Confirmación requerida</string>
   <string name="AccountConfirmation_ErrorTitle">No se puede validar su cuenta</string>
   <string name="AccountDisabled">Su cuenta ha sido deshabilitada, por favor contacte a {0} al {1} para re-activar su cuenta</string>
@@ -197,6 +198,7 @@
   <string name="HistoryViewTitle">Historia</string>
   <string name="InvalidAccountOnActivatedMessage">Su cuenta no se pudo validar, usted debe iniciar seción antes de usar esta aplicación</string>
   <string name="InvalidAccountOnActivatedTitle">Cuenta inválida</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
   <string name="InvalidAddressMessage">La dirección que ha proporcionado es inválida. Por favor vefíquela</string>
   <string name="InvalidAddressTextEdit">No se puede verificar la dirección</string>
   <string name="InvalidAddressTitle">Dirección inválida</string>
@@ -295,6 +297,7 @@
   <string name="PanelMenuViewLocationsText">Ubicaciones</string>
   <string name="PanelMenuViewNotificationsText">Notificaciones</string>
   <string name="PanelMenuViewOrderHistoryText">Historia</string>
+  <string name="CreditCardAdded_PayInCarDisabled">Your account is now enabled to pay for rides with this credit card.</string>
   <string name="PanelMenuViewPaymentInfoText">Pago</string>
   <string name="PanelMenuViewReportProblemText">Reportar problema</string>
   <string name="PanelMenuViewSignOutText">Cerrar Sesión</string>
@@ -506,6 +509,7 @@
   <string name="UpdateBookingSettingsInvalidCoF">You must have a card on file to use this account</string>
   <string name="MarketChangedMessage">You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</string>
   <string name="MarketChangedMessageTitle">New service area detected</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked to your account.</string>
   <string name="PanelMenuViewTaxiHailNetworkText">TaxiHail Network</string>
   <string name="View_UserTaxiHailNetworkSettings">TaxiHail Network</string>
   <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
