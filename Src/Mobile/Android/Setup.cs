@@ -145,6 +145,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             return new PhonePresenter();
         }
 
+		protected override IList<string> ViewNamespaces {
+			get {
+				base.ViewNamespaces.Add("android.support.v4.app");
+
+				return base.ViewNamespaces;
+			}
+		}
+
         private void ConfigureInsights ()
         {
             #if !DEBUG
