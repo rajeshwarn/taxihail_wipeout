@@ -124,6 +124,7 @@
   <string name="DateTimePickerSetButton">Réserver maintenant!</string>
   <string name="DateToday">Aujourd\'hui</string>
   <string name="December">Décembre (12)</string>
+  <string name="CreditCardAdded_PayInCarDisabled">Votre compte est maintenant configuré pour le paiement par la carte de crédit.</string>
   <string name="DefaultRideSettingsViewTitle">Paramètres</string>
   <string name="Delete">Supprimer</string>
   <string name="DeleteAddressBt">Supprimer l\'adresse</string>
