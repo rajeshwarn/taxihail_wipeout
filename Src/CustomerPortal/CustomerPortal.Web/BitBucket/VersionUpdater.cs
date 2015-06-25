@@ -55,6 +55,7 @@ namespace CustomerPortal.Web.BitBucket
             //Existing Revisions, we ignore version number tags to prevent building a version from an alternate commit.
             //existing revisions => update
             var updatesRevisions = repository
+                .AsEnumerable()
                 .Where(revision => !IsVersionNumber(revision))
                 .Join(revisionsFromBitBucket, rev => rev.Tag, revBitbucket => revBitbucket.Tag, (rev, revBitbucket) => new Revision
                 {
