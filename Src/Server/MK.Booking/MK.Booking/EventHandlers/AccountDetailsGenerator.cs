@@ -119,6 +119,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     Name = account.Name,
                     NumberOfTaxi = 1,
                     Passengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger,
+                    CountryDialCode = @event.CountryDialCode,
                     Phone = @event.Phone,
                     PayBack = @event.PayBack
                 };

@@ -60,11 +60,11 @@ namespace apcurium.MK.Booking.Domain
             LoadFrom(history);
         }
 
-        public Account(Guid id, string name, string phone, string email, byte[] password, 
+        public Account(Guid id, string name, int countryDialCode, string phone, string email, byte[] password, 
             string confirmationToken, string language, bool accountActivationDisabled, string payBack, bool isAdmin = false)
             : this(id)
         {
-            if (Params.Get(name, phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
+            if (Params.Get(name, countryDialCode.ToString(), phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
                 || (password == null))
             {
                 throw new InvalidOperationException("Missing required fields");
@@ -74,6 +74,7 @@ namespace apcurium.MK.Booking.Domain
                 SourceId = id,
                 Name = name,
                 Email = email,
+                CountryDialCode = countryDialCode,
                 Phone = phone,
                 Password = password,
                 ConfirmationToken = confirmationToken,
@@ -84,11 +85,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public Account(Guid id, string name, string phone, string email, string payBack, string facebookId = null,
+        public Account(Guid id, string name, int countryDialCode, string phone, string email, string payBack, string facebookId = null,
             string twitterId = null, string language = null, bool isAdmin = false)
             : this(id)
         {
-            if (Params.Get(name, phone, email).Any(p => p.IsNullOrEmpty()))
+            if (Params.Get(name, countryDialCode.ToString(), phone, email).Any(p => p.IsNullOrEmpty()))
             {
                 throw new InvalidOperationException("Missing required fields");
             }
@@ -97,6 +98,7 @@ namespace apcurium.MK.Booking.Domain
                 SourceId = id,
                 Name = name,
                 Email = email,
+                CountryDialCode = countryDialCode,
                 Phone = phone,
                 TwitterId = twitterId,
                 FacebookId = facebookId,

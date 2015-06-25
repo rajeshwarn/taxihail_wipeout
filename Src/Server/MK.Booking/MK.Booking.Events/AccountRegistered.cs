@@ -12,6 +12,8 @@ namespace apcurium.MK.Booking.Events
 
         public string Email { get; set; }
 
+        public int CountryDialCode { get; set; }
+
         public string Phone { get; set; }
 
         public byte[] Password { get; set; }

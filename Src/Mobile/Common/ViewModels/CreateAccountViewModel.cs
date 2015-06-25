@@ -6,10 +6,66 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Helpers;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class CreateAccountViewModel: PageViewModel, ISubViewModel<RegisterAccount>
+    public class PhoneNumberChangedEventArgs : EventArgs
+    {
+        public int CountryDialCode { get; set; }
+
+        public string PhoneNumber { get; set; }
+    }
+
+    public class PhoneNumberInfo
+    {
+        int countryDialCode;
+        string phoneNumber;
+
+        public int CountryDialCode
+        {
+            get
+            {
+                return countryDialCode;
+            }
+            set
+            {
+                countryDialCode = value;
+                PhoneNumberDatasourceChangedCallEvent();
+            }
+        }
+
+        public string PhoneNumber
+        {
+            get
+            {
+                return phoneNumber;
+            }
+            set
+            {
+                phoneNumber = value;
+                PhoneNumberDatasourceChangedCallEvent();
+            }
+        }
+
+        public delegate void PhoneNumberDatasourceChangedEventHandler(object sender, PhoneNumberChangedEventArgs e);
+
+        public event PhoneNumberDatasourceChangedEventHandler PhoneNumberDatasourceChanged;
+
+        public void PhoneNumberDatasourceChangedCallEvent()
+        {
+            if (PhoneNumberDatasourceChanged != null)
+                PhoneNumberDatasourceChanged(this, new PhoneNumberChangedEventArgs() { CountryDialCode = countryDialCode, PhoneNumber = phoneNumber });
+        }
+
+        public void NotifyChanges(object sender, PhoneNumberChangedEventArgs e)
+        {
+            this.countryDialCode = e.CountryDialCode;
+            this.phoneNumber = e.PhoneNumber;
+        }
+    }
+    
+    public class CreateAccountViewModel : PageViewModel, ISubViewModel<RegisterAccount>
 	{
 		private readonly IRegisterWorkflowService _registerService;
 		private readonly ITermsAndConditionsService _termsService;
@@ -21,12 +77,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		public RegisterAccount Data { get; set; }
-		public string ConfirmPassword { get; set; }
+		
+        public string ConfirmPassword { get; set; }
+
+        public PhoneNumberInfo PhoneNumber { get; set; }
+
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 
 		public void Init(string twitterId, string facebookId, string name, string email)
 		{
+            PhoneNumber = new PhoneNumberInfo();
+
 			Data = new RegisterAccount
 			{
 				FacebookId = facebookId,
@@ -37,9 +99,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			#if DEBUG
 			Data.Email = "toto2@titi.com";
 			Data.Name = "Matthieu Duluc" ;
+            Data.CountryDialCode = 1;
 			Data.Phone = "5146543024";
 			Data.Password = "password";
 			ConfirmPassword = "password";
+            PhoneNumber.CountryDialCode = Data.CountryDialCode;
+            PhoneNumber.PhoneNumber = Data.Phone;
 			#endif
 		}
 
@@ -80,6 +145,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{
+                    Data.Phone = PhoneNumber.PhoneNumber;
+                    Data.CountryDialCode = PhoneNumber.CountryDialCode;
+
 					if (!IsEmail(Data.Email))
 					{
                         await this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
@@ -99,9 +167,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 
-                    if (!PhoneHelper.IsValidPhoneNumber(Data.Phone))
+                    string countryISOCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(Data.CountryDialCode)).CountryISOCode;
+                    if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(Data.Phone, countryISOCode))
 					{
-                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                        libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(countryISOCode);
+                        string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(countryISOCode);
+
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], phoneNumberExampleText));
 						return;
 					}
 

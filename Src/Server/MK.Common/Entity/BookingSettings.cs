@@ -4,6 +4,8 @@
     {
         public string Name { get; set; }
 
+        public int CountryDialCode { get; set; }
+
         public string Phone { get; set; }
 
         public int? ProviderId { get; set; }

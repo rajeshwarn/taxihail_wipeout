@@ -95,13 +95,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			var name = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountFullNamePlaceHolder"], null, "DialogCenter", InputTypes.TextFlagCapWords);
 			name.Bind(bindings, vm => vm.Data.Name);
 
-			var layoutCell = "DialogCenter";
-			if (ViewModel.HasSocialInfo) {
-				layoutCell = "DialogBottom";
-			}
-
-			var phone = new EntryElement(null, this.Services().Localize["CreateAccountPhonePlaceHolder"], null, layoutCell) { Numeric = true };
-			phone.Bind(bindings, vm => vm.Data.Phone);
+            PhoneNumberInfo phoneNumber = (bindings.BindingContextOwner.BindingContext.DataContext as CreateAccountViewModel).PhoneNumber;
+            var phone = new PhoneEditorElement(null, phoneNumber, "PhoneEditor");
 
 			var password = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordPlaceHolder"], null, "DialogCenter") { Password = true };
 			password.Bind(bindings, vm => vm.Data.Password);
@@ -113,7 +108,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var payback = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPayBackPlaceHolder"], null, "DialogBottom") { Numeric = true };
             payback.Bind(bindings, vm => vm.Data.PayBack);
 
-			section.Add (new Element[] { email, name, phone });
+
+            section.Add (new Element[] { email, name, phone });
 
 			if (!ViewModel.HasSocialInfo) {
 				section.Add (new Element[] { password, passwordConfirm });

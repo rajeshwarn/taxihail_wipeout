@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Commands
 
         public string Email { get; set; }
 
+        public int CountryDialCode { get; set; }
+        
         public string Phone { get; set; }
 
         public string Language { get; set; }

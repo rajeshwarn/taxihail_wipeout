@@ -186,7 +186,7 @@
   <string name="InvalidLocalContactTitle">الإسم غير صحيح</string>
   <string name="InvalidLoginMessage">البريد الإلكتروني و/أو كلمة المرور غير صحيحة.</string>
   <string name="InvalidLoginMessageTitle">خطأ في الدخول</string>
-  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must contain between 10 and 15 numbers.</string>
+  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must have format {0}</string>
   <string name="InvalidPickupAddress">رجاء إدخال عنوان صحيح لموقعك.</string>
   <string name="January">يناير (01)</string>
   <string name="July">يوليو (07)</string>

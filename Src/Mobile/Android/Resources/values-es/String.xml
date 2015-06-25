@@ -208,7 +208,7 @@
   <string name="InvalidLocalContactTitle">Contacto inválido</string>
   <string name="InvalidLoginMessage">Email y/o contraseña incorrecta</string>
   <string name="InvalidLoginMessageTitle">Error de inicio de sesión</string>
-  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must contain between 10 and 15 numbers.</string>
+  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must have format {0}</string>
   <string name="InvalidPickupAddress">Por favor entre una dirección de abordaje válida</string>
   <string name="January">Ene (01)</string>
   <string name="July">Jul (07)</string>

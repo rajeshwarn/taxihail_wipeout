@@ -193,7 +193,7 @@
   <string name="InvalidLocalContactTitle">Informations erronées</string>
   <string name="InvalidLoginMessage">L\'email et/ou le mot de passe semblent invalides</string>
   <string name="InvalidLoginMessageTitle">Erreur de connection</string>
-  <string name="InvalidPhoneErrorMessage">Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.</string>
+  <string name="InvalidPhoneErrorMessage">Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</string>
   <string name="InvalidPickupAddress">Merci d\'entrer une adresse de départ valide</string>
   <string name="January">Janvier (01)</string>
   <string name="July">Juillet (07)</string>
