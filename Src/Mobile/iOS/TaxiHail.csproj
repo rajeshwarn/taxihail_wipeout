@@ -594,6 +594,7 @@
     <Compile Include="Views\Order\OrderBookingOptions.designer.cs">
       <DependentUpon>OrderBookingOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Widgets\ExtendedTextFieldView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

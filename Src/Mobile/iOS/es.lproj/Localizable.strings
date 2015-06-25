@@ -1,5 +1,5 @@
-﻿"CreateAccountEmailPlaceHolder"="Email";
-"PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured in the app.";
+"CreateAccountEmailPlaceHolder"="Email";
+"PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured as part of your account.";
 "CmtCardNumber"="Método de Pago:";
 "Edit"="Editar";
 "RideSettingsName"="Nombre";
@@ -43,7 +43,7 @@
 "PaymentViewTipText"="Propina";
 "ConfirmVehiculeTypeLabel"="Tipo de Vehículo";
 "View_PaymentPreference"="Preferencia de pago";
-"PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to have a credit card configured in the app.";
+"PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to enter a credit card as part of your account.";
 "InvalidPassengersNumberTitle"="Invalid Number of Passengers";
 "InvalidAddressMessage"="La dirección que ha proporcionado es inválida. Por favor vefíquela";
 "CreateAccountErrorTitle"="Error";
@@ -58,7 +58,6 @@
 "RateLastRideTitle"="¿Calificar su servicio?";
 "VehicleNumberErrorMessage"="No podemos encontrar el número de vehículo.  Por favor page en el vehículo.";
 "CreditCardAdded"="Su cuenta ha sido activada para pagar por defecto con tarjeta de crédito. Usted puede también pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago";
-"CreditCardAdded_PayInCarDisabled"="Su cuenta ha sido activada para pagar con tarjeta de crédito.";
 "PanelMenuViewLocationsText"="Ubicaciones";
 "CreateAccountFullNamePlaceHolder"="Nombre completo";
 "PayInCar"="Pagar en el vehículo";
@@ -197,6 +196,7 @@
 "CmtRideLinqGenericErrorMessage"="Hubo un error al sincronizar, verifique la información de se tarjeta de crédito o intente nuevamente";
 "View_RideLinqPair"="Check In";
 "DateTimePickerSetButton"="De Alta";
+"CreditCardAdded_PayInCarDisabled"="Your account is now enabled to pay for rides with this credit card.";
 "AccountConfirmation_ErrorTitle"="No se puede validar su cuenta";
 "View_AccountConfirmation_Label_Instructions"="Un mensaje de texto con su código ha sido enviado a su celular";
 "NoFareText"="Seleccione un destino para proveer estimado de costo";
@@ -434,7 +434,7 @@
 "PickupMapTitle"="Ubicacion de abordaje";
 "DontAsk"="No preguntar";
 "TimeNow"="Cuanto Antes";
-"PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked in the app.";
+"PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked to your account.";
 "mobileKnowledgeUrl"="http://www.mobile-knowledge.com/";
 "InvalidLocalContactTitle"="Contacto inválido";
 "RideSettingsPayBack"="PayBack";

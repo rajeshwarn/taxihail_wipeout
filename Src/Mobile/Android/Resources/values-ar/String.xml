@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">البرید الإلكتروني</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
   <string name="CmtCardNumber">طريقة الدفع:</string>
   <string name="Edit">تعديل</string>
   <string name="RideSettingsName">الاسم</string>
@@ -43,7 +43,7 @@
   <string name="PaymentViewTipText">الإكرامية</string>
   <string name="ConfirmVehiculeTypeLabel">نوع السيارة:</string>
   <string name="View_PaymentPreference">طرق الدفع المفضلة</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to have a credit card configured in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
   <string name="InvalidPassengersNumberTitle">Invalid Number of Passengers</string>
   <string name="InvalidAddressMessage">العنوان الذي أدخلته غير صحيح. يرجى التأكد من المعلومات</string>
   <string name="CreateAccountErrorTitle">خطأ</string>
@@ -85,7 +85,6 @@
   <string name="VehicleNumberErrorTitle">خطأ</string>
   <string name="NoConnectionMessage">لا يمكن الإتصال بالسيرفر ، من المحتمل أن تكون خارج الخدمة مؤقتا أو أن تكون غير متصل بالانترنت.</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
-  <string name="CreditCardAdded_PayInCarDisabled">Your account is now enabled to pay for rides with this credit card.</string>
   <string name="Notification_PaymentConfirmationPush">Payment Confirmation</string>
   <string name="PromoExpiringSoonMessage">Expires in {0} days</string>
   <string name="PassengerPhoneLabel">الهاتف</string>
@@ -193,6 +192,7 @@
   <string name="View_RideLinqPair">Check In</string>
   <string name="DateTimePickerSetButton">احجز</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
+  <string name="CreditCardAdded_PayInCarDisabled">Your account is now enabled to pay for rides with this credit card.</string>
   <string name="DestinationTextPlaceholder">عنوان شارع الوصول</string>
   <string name="NoFareText">اختر وجهة للحصول على سعر تقريبي.</string>
   <string name="HistoryDetailOrderLabel">الطلب:</string>
@@ -430,7 +430,7 @@
   <string name="PanelMenuViewSignOutText">خروج</string>
   <string name="DontAsk">Don\'t ask</string>
   <string name="TimeNow">في أقرب وقت ممكن</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked to your account.</string>
   <string name="Overdue_Succeed_Message">Your overdue payment of {0} has been settled and your account is now enabled to pay with your card on file by default.</string>
   <string name="InvalidLocalContactTitle">الإسم غير صحيح</string>
   <string name="RideSettingsPayBack">PayBack</string>

@@ -10,6 +10,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class ManualPairingForRideLinqView : BaseViewController<ManualPairingForRideLinqViewModel>
 	{
+        private const int PairingCode1MaxLength = 3;
+        private const int PairingCode2MaxLength = 4;
+
+
 		public ManualPairingForRideLinqView()
 			: base("ManualPairingForRideLinqView", null)
 		{
@@ -21,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.Title = Localize.GetValue("View_RideLinqPair");
+
+
 
             ChangeThemeOfBarStyle();
             ChangeRightBarButtonFontToBold();
@@ -51,32 +57,53 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bindingSet.Apply();
 
-            PairingCode1.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 3);
-            PairingCode2.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 4);
+            PairingCode1.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, PairingCode1MaxLength, MoveToPairingCode2);
+            PairingCode2.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, PairingCode2MaxLength);
 
-			PairingCode1.EditingChanged += (sender, e) => 
+            PairingCode1.EditingChanged += (sender, e) => 
 			{
-				if(PairingCode1.Text.Length == 3)
+                if (PairingCode1.Text.Length == PairingCode1MaxLength)
 				{
 					PairingCode2.BecomeFirstResponder();
 				}
 			};
 
-			PairingCode2.EditingChanged += (sender, e) => 
-			{
-				if(PairingCode2.Text.Length == 0)
-				{
-					PairingCode1.BecomeFirstResponder();
-				}
-			};
+            PairingCode2.BackButtonPressed += (object sender, EventArgs e) => 
+            {
+                if(PairingCode2.Text.Length == 0)
+                {
+                    PairingCode1.BecomeFirstResponder();
+                }
+            };
 		}
 
-		private bool CheckMaxLength (UITextField textField, NSRange range, string replacementString, nint maxLenght)
+        private bool CheckMaxLength (UITextField textField, NSRange range, string replacementString, nint maxLenght, Action<string> onMaxLengthAction = null)
 		{
 			var textLength = textField.Text.HasValue() ? textField.Text.Length : 0;
 			var replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
 			var newLength = textLength + replaceLength - range.Length;
-            return newLength <= maxLenght;
+
+            if(newLength <= maxLenght)
+            {
+                return true;
+            }
+
+            if(onMaxLengthAction != null)
+            {
+                onMaxLengthAction(replacementString);
+            }
+
+            return false;
 		}
+
+        private void MoveToPairingCode2(string value)
+        {
+            var length = value.HasValue() ? value.Length : 0;
+            if (PairingCode2.Text.Length + length <= PairingCode2MaxLength)
+            {
+                PairingCode2.Text = value + PairingCode2.Text;
+                PairingCode2.BecomeFirstResponder();
+            }
+        }
 	}
 }

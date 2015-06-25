@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">Email</string>
   <string name="EstimateFareCalculating">Calculating...</string>
@@ -57,7 +57,6 @@
   <string name="RateLastRideTitle">Rate last ride?</string>
   <string name="View_RefineAddress">Pickup Details</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</string>
-  <string name="CreditCardAdded_PayInCarDisabled">Your account is now enabled to pay for rides with this credit card.</string>
   <string name="PanelMenuViewLocationsText">Locations</string>
   <string name="CreateAccountFullNamePlaceHolder">Full Name</string>
   <string name="CreateAccountPasswordPlaceHolder">Password</string>
@@ -96,7 +95,7 @@
   <string name="CreditCardCCV">CVV</string>
   <string name="ApplicationName">TaxiHail</string>
   <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to have a credit card configured in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
   <string name="AccountDisabled">Your account has been disabled, please contact {0} at {1} to activate your account.</string>
   <string name="CreditCardExpYear">Exp. Year</string>
   <string name="HistoryDetailAuthorizationLabel">Authorization:</string>
@@ -172,7 +171,7 @@
   <string name="PanelMenuViewAboutUsText">About Us</string>
   <string name="HistoryLoadError">Unable to load the history. Please try again later.</string>
   <string name="PaymentDetails.InvalidDataTitle">Invalid payment information</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked to your account.</string>
   <string name="September">Sep (09)</string>
   <string name="SaveAddressEmptyFieldTitle">Friendly name required</string>
   <string name="Politeness">Politeness</string>
@@ -197,6 +196,7 @@
   <string name="View_RideLinqPair">Check In</string>
   <string name="DateTimePickerSetButton">Book</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
+  <string name="CreditCardAdded_PayInCarDisabled">Your account is now enabled to pay for rides with this credit card.</string>
   <string name="AccountConfirmation_ErrorTitle">Cannot confirm account</string>
   <string name="View_AccountConfirmation_Label_Instructions">A text message with your code has been sent to your phone.</string>
   <string name="NoFareText">Choose a destination to get a price estimate.</string>
@@ -521,7 +521,7 @@
   <string name="ChooseProviderDialogTitle">Pick a provider</string>
   <string name="Overdue_Amount">Amount due:</string>
   <string name="UpdateBookingSettingsEmptyAccount">Account and rider numbers cannot be empty when Charge Type is set to Charge Account</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
   <string name="CreateAccountPayBackPlaceHolder">PayBack</string>
   <string name="WarningPushServiceAction">Thanks for letting me know</string>
   <string name="CmtRideLinqConfirmPairView">Confirm Payment Information</string>
