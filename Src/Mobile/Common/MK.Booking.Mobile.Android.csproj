@@ -381,6 +381,7 @@
     <None Include="Localization\Master.resx">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Localization\BlackCabNow.resx" />
     <EmbeddedResource Include="Localization\Master.es.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
