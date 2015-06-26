@@ -193,6 +193,9 @@ namespace MK.Common.Configuration
         [Display(Name = "SMS source number", Description = "Number from which the sms confirmation number will be sent")]
         public string SMSFromNumber { get; protected set; }
 
+        [Display(Name = "Hide aggregate vehicle pin", Description = "This option will hide the aggregate vehicle pin and will instead display every vehicle pin.")]
+	    public bool HideAggregateVehiclePin { get; protected set; }
+
         [Display(Name = "Twilio SMS account id", Description = "Account id for Twilio")]
         public string SMSAccountSid { get; protected set; }
 
