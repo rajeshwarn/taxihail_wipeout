@@ -418,7 +418,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
             string countryISOCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(SelectedCountryCode.CountryDialCode)).CountryISOCode;
-
             if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(Phone, countryISOCode))
             {
                 libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(countryISOCode);

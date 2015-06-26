@@ -13,6 +13,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -80,6 +81,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
+        public CountryCode[] CountryCodes
+        {
+            get
+            {
+                return CountryCode.CountryCodes;
+            }
+        }
+
+        public CountryCode SelectedCountryCode
+        {
+            get
+            {
+                return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(_bookingSettings.CountryDialCode));
+            }
+
+            set
+            {
+                _bookingSettings.CountryDialCode = value.CountryDialCode;
+                RaisePropertyChanged();
+            }
+        }
+
 		private BookingSettings _bookingSettings;
 		public BookingSettings BookingSettings
 		{
@@ -118,9 +141,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
-                    if (!PhoneHelper.IsValidPhoneNumber(BookingSettings.Phone))
+                    string countryISOCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(SelectedCountryCode.CountryDialCode)).CountryISOCode;
+                    if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(BookingSettings.Phone, countryISOCode))
                     {
-                        await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                        libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(countryISOCode);
+                        string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(countryISOCode);
+
+                        await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                            string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], phoneNumberExampleText));
                         return;
                     }
 
