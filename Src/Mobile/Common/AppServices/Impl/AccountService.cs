@@ -282,6 +282,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var bsr = new BookingSettingsRequest
             {
                 Name = settings.Name,
+                CountryDialCode = settings.CountryDialCode,
                 Phone = new string(phoneNumberChars),
                 VehicleTypeId = settings.VehicleTypeId,
                 ChargeTypeId = settings.ChargeTypeId,

@@ -185,6 +185,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 settings.NumberOfTaxi = @event.NumberOfTaxi;
                 settings.Passengers = @event.Passengers;
+                settings.CountryDialCode = @event.CountryDialCode;
                 settings.Phone = @event.Phone;
                 settings.AccountNumber = @event.AccountNumber;
                 settings.CustomerNumber = @event.CustomerNumber;

@@ -10,6 +10,8 @@ namespace apcurium.MK.Booking.Events
     {
         public string Name { get; set; }
 
+        public int CountryDialCode { get; set; }
+
         public string Phone { get; set; }
 
         public int Passengers { get; set; }

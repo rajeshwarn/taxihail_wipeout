@@ -12,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Helpers;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -235,6 +236,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public CountryCode[] CountryCodes
+        {
+            get
+            {
+                return CountryCode.CountryCodes;
+            }
+        }
+
+        public CountryCode SelectedCountryCode
+        {
+            get
+            {
+                return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(_bookingSettings.CountryDialCode));
+            }
+
+            set
+            {
+                _bookingSettings.CountryDialCode = value.CountryDialCode;
+                RaisePropertyChanged();
+            }
+        }
+
         public string Phone
         {
             get
@@ -394,9 +417,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return false;
             }
 
-            if (!PhoneHelper.IsValidPhoneNumber(Phone))
+            string countryISOCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(SelectedCountryCode.CountryDialCode)).CountryISOCode;
+
+            if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(Phone, countryISOCode))
             {
-                await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(countryISOCode);
+                string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(countryISOCode);
+
+                await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                    string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], phoneNumberExampleText));
                 return false;
             }
 

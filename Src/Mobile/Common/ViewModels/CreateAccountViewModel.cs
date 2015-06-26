@@ -87,14 +87,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init(string twitterId, string facebookId, string name, string email)
 		{
-            PhoneNumber = new PhoneNumberInfo();
+            PhoneNumber = new PhoneNumberInfo()
+            {
+                CountryDialCode = 1
+            };
 
 			Data = new RegisterAccount
 			{
 				FacebookId = facebookId,
 				TwitterId = twitterId,
 				Name = name,
-				Email = email
+				Email = email,
+                CountryDialCode = 1
 			};
 			#if DEBUG
 			Data.Email = "toto2@titi.com";

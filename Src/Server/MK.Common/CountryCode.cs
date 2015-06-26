@@ -39,6 +39,17 @@ namespace apcurium.MK.Common
             }
         }
 
+        public string СountryDialCodeInternationalFormat
+        {
+            get
+            {
+                if (CountryDialCode > 0)
+                    return "+" + CountryDialCode.ToString();
+                else
+                    return null;
+            }
+        }
+
         public CountryCode(string countryName, string countryISOCode):this()
         {
             this.countryISOCode = "";

@@ -170,6 +170,7 @@ namespace apcurium.MK.Booking.Domain
                 ChargeTypeId = settings.ChargeTypeId,
                 NumberOfTaxi = settings.NumberOfTaxi,
                 Passengers = settings.Passengers,
+                CountryDialCode = settings.CountryDialCode,
                 Phone = settings.Phone,
                 ProviderId = settings.ProviderId,
                 VehicleTypeId = settings.VehicleTypeId,

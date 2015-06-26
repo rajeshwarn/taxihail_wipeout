@@ -22,6 +22,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public string Email { get; set; }
 
+        public int CountryDialCode { get; set; }
+
         public string Phone { get; set; }
 
         public int? VehicleTypeId { get; set; }
