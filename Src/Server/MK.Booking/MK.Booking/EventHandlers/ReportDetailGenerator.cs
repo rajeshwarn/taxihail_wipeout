@@ -136,7 +136,9 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
-                orderReport.Payment.IsPaired = false;
+				orderReport.Payment.Type = null;
+                orderReport.Payment.IsPaired = true;
+                orderReport.Order.ChargeType = ChargeTypes.PaymentInCar.Display;
                 context.Save(orderReport);
             }
         }

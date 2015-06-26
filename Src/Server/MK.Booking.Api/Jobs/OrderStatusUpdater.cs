@@ -294,7 +294,14 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (result.IsSuccessful)
             {
                 // Wait for OrderPaymentDetail to be created
-                Thread.Sleep(500);
+                var paymentCreated = WaitForPaymentDetail(companyKey, orderId);
+                if (!paymentCreated)
+                {
+                    _paymentService.VoidPreAuthorization(companyKey, orderId);
+
+                    result.IsSuccessful = false;
+                    result.Message = "OrderPaymentDetail entry failed to be created in time";
+                }
             }
             else if (result.IsDeclined)
             {
@@ -311,6 +318,24 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             
             return result;
+        }
+
+        private bool WaitForPaymentDetail(string companyKey, Guid orderId)
+        {
+            const int checkInterval = 500; // in ms
+
+            // 5 seconds loop in the worse case
+            for (var i = 0; i < 10; i++)
+            {
+                Thread.Sleep(checkInterval);
+
+                if (_paymentDao.FindByOrderId(orderId, companyKey) != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus)
