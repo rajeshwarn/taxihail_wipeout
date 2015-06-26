@@ -34,6 +34,7 @@ using apcurium.MK.Common.Resources;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using System;
+using System.Threading.Tasks;
 using CMTPayment;
 using log4net;
 using ServiceStack.Common.Web;
@@ -261,7 +262,14 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (result.IsSuccessful)
             {
                 // Wait for OrderPaymentDetail to be created
-                Thread.Sleep(500);
+                var paymentCreated = WaitForPaymentDetail(orderId);
+                if (!paymentCreated)
+                {
+                    _paymentService.VoidPreAuthorization(orderId);
+
+                    result.IsSuccessful = false;
+                    result.Message = "OrderPaymentDetail entry failed to be created in time";
+                }
             }
             else if (result.IsDeclined)
             {
@@ -278,6 +286,24 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             
             return result;
+        }
+
+        private bool WaitForPaymentDetail(Guid orderId)
+        {
+            const int checkInterval = 500; // in ms
+
+            // 5 seconds loop in the worse case
+            for (int i = 0; i < 10; i++)
+            {
+                Thread.Sleep(checkInterval);
+
+                if (_paymentDao.FindByOrderId(orderId) != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void ChargeNoShowFeeIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
