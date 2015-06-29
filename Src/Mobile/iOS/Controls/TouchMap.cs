@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private bool _useThemeColorForPickupAndDestinationMapIcons;
 		private bool _showAssignedVehicleNumberOnPin;
+        private bool _hideClusterPins;
 
         protected TouchMap(CGRect rect) : base(rect)
         {
@@ -64,6 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void Initialize()
         {   
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+            _hideClusterPins = this.Services().Settings.HideAggregateVehiclePin;
 			_useThemeColorForPickupAndDestinationMapIcons = settings.UseThemeColorForMapIcons;
 			_showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
         }
@@ -266,7 +268,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             set
             {
-                ShowAvailableVehicles (Clusterize(value.ToArray()));
+                var availableVehicles = _hideClusterPins
+                            ? (value ?? Enumerable.Empty<AvailableVehicle>()).ToArray()
+                            : Clusterize((value ?? Enumerable.Empty<AvailableVehicle>()).ToArray());
+
+
+                ShowAvailableVehicles(availableVehicles);
             }
         }
 
