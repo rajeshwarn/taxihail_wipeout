@@ -56,17 +56,29 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(SendReceipt request)
         {
+            return Post(new SendReceiptAdmin { OrderId = request.OrderId });
+        }
+        public object Post(SendReceiptAdmin request)
+        {
             var order = _orderDao.FindById(request.OrderId);
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-
-            if (!order.IBSOrderId.HasValue)
+            if (order == null || !order.IBSOrderId.HasValue)
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
             }
 
-            if (account.Id != order.AccountId)
+            AccountDetail account;
+            // if the admin is requesting the receipt then it won't be for the logged in user
+            if (!request.RecipientEmail.IsNullOrEmpty())
             {
-                throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
+                account = _accountDao.FindById(order.AccountId);
+            }
+            else
+            {
+                account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+                if (account.Id != order.AccountId)
+                {
+                    throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
+                }
             }
 
             // If the order was created in another company, need to fetch the correct IBS account
@@ -169,7 +181,7 @@ namespace apcurium.MK.Booking.Api.Services
                 orderPayment = null;
             }
 
-            _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(
+            var sendReceiptCommand = SendReceiptCommandBuilder.GetSendReceiptCommand(
                     order, 
                     account, 
                     ibsOrderId, 
@@ -188,7 +200,12 @@ namespace apcurium.MK.Booking.Api.Services
                         : (double?)null,
                     promotionUsed,
                     creditCard,
-                    cmtRideLinqFields));
+                    cmtRideLinqFields);
+            if (!request.RecipientEmail.IsNullOrEmpty())
+            {
+                sendReceiptCommand.EmailAddress = request.RecipientEmail;
+            }
+            _commandBus.Send(sendReceiptCommand);
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
