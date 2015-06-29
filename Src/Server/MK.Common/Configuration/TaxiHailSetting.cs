@@ -194,8 +194,8 @@ namespace MK.Common.Configuration
         public string SMSFromNumber { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Hide aggregate vehicle pin", Description = "This option will hide the aggregate vehicle pin and will instead display every vehicle pin.")]
-	    public bool HideAggregateVehiclePin { get; protected set; }
+        [Display(Name = "Show individual taxi marker only", Description = "When this setting is enabled, we will only show individual taxi markers (and wont replace the individual taxi marker).")]
+	    public bool ShowIndividualTaxiMarkerOnly { get; protected set; }
 
         [Display(Name = "Twilio SMS account id", Description = "Account id for Twilio")]
         public string SMSAccountSid { get; protected set; }

@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private BitmapDescriptor _hailIcon;
 
 		private bool _showVehicleNumber;
-        private bool _hideClusterPins;
+        private bool _isClusterMarkerEnabled;
 
         public TouchMap(Context context)
             : base(context)
@@ -175,7 +175,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 DeferWhenMapReady(
                     () =>
                     {
-                        var availableVehicles = _hideClusterPins
+                        var availableVehicles = _isClusterMarkerEnabled
                             ? (value  ?? Enumerable.Empty<AvailableVehicle>()).ToArray()
                             : Clusterize((value ?? Enumerable.Empty<AvailableVehicle>()).ToArray());
 
@@ -235,7 +235,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void Initialize()
         {			
 			_showVehicleNumber = this.Services().Settings.ShowAssignedVehicleNumberOnPin;
-            _hideClusterPins = this.Services().Settings.HideAggregateVehiclePin;
+            _isClusterMarkerEnabled = this.Services().Settings.ShowIndividualTaxiMarkerOnly;
 
             var useCompanyColor = this.Services().Settings.UseThemeColorForMapIcons;
             var companyColor = Resources.GetColor(Resource.Color.company_color);
