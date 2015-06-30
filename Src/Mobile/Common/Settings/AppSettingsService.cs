@@ -13,6 +13,7 @@ using TinyIoC;
 using System.Globalization;
 using apcurium.MK.Common.Configuration.Helpers;
 using Cirrious.CrossCore;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
@@ -39,7 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
 		{
 			//check if the cache has already something
 			var data = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
-			if (data != null)
+			// We verify if the application name is present to make sure the cached settings are in a valid state.
+			if (data != null && data.TaxiHail.ApplicationName.HasValue())
 			{
                 // Use cached settings until settings are done loading
 				Data = data;
