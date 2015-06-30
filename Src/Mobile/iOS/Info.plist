@@ -35,6 +35,7 @@
     <key>CFBundleShortVersionString</key>
     <string>3.0.4</string>
     <key>MinimumOSVersion</key>
+    <string>6.0</string>
     <string>
     </string>
     <key>NSLocationWhenInUseUsageDescription</key>
