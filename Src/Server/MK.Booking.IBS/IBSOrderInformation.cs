@@ -42,6 +42,8 @@ namespace apcurium.MK.Booking.IBS
         public string TerminalId { get; set; }
         public string DriverId { get; set; }
 
+        public string DriverPhotoUrl { get; set; }
+
         public DateTime? Eta { get; set; }
 
         public double MeterAmount
@@ -59,13 +61,13 @@ namespace apcurium.MK.Booking.IBS
 
         }
 
-        public IBSOrderInformation(TOrderStatus_3 orderInfoFromIBS)
+        public IBSOrderInformation(TOrderStatus_4 orderInfoFromIBS)
         {
             Status = orderInfoFromIBS.OrderStatus.ToString();
 
             IBSOrderId = orderInfoFromIBS.OrderID;
 
-            VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? VehicleNumber : orderInfoFromIBS.VehicleNumber.Trim(); ;
+            VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? VehicleNumber : orderInfoFromIBS.VehicleNumber.Trim();
             MobilePhone = orderInfoFromIBS.DriverMobilePhone.GetValue(MobilePhone);
             FirstName = orderInfoFromIBS.DriverFirstName.GetValue(FirstName);
             LastName = orderInfoFromIBS.DriverLastName.GetValue(LastName);
@@ -83,6 +85,9 @@ namespace apcurium.MK.Booking.IBS
 
             ReferenceNumber = orderInfoFromIBS.ReferenceNumber.GetValue(ReferenceNumber);
             TerminalId = orderInfoFromIBS.TerminalId.GetValue(TerminalId);
+
+            DriverPhotoUrl = orderInfoFromIBS.ThumbnailImg.HasValue() ? orderInfoFromIBS.ThumbnailImg :
+                                (orderInfoFromIBS.WebImg.HasValue() ? orderInfoFromIBS.WebImg : null);
 
             Fare = orderInfoFromIBS.Fare;
             Tip = orderInfoFromIBS.Tips;

@@ -61,6 +61,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finding you a taxi....
+        /// </summary>
+        internal static string CreateOrder_WaitingForIbs {
+            get {
+                return ResourceManager.GetString("CreateOrder_WaitingForIbs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to State Surcharge.
         /// </summary>
         internal static string Email_Body_Tax {
@@ -75,6 +84,24 @@ namespace apcurium.MK.Booking.Resources {
         internal static string Email_Body_YourDriver {
             get {
                 return ResourceManager.GetString("Email_Body_YourDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finding you a taxi....
+        /// </summary>
+        internal static string OrderStatus_wosWAITING {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosWAITING", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finding you a taxi with company {0}....
+        /// </summary>
+        internal static string OrderStatus_wosWAITINGRoaming {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosWAITINGRoaming", resourceCulture);
             }
         }
     }

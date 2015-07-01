@@ -495,6 +495,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     AccountId = @event.AccountId,
                     Id = @event.SourceId,
+                    IBSOrderId = @event.TripId,
                     PickupDate = @event.PairingDate,
                     CreatedDate = @event.PairingDate,
                     PickupAddress = @event.PickupAddress,

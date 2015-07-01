@@ -100,5 +100,9 @@
     "modal.callDriver.cancelButton": "Annuler",
     "modal.callDriver.error": "Désolé, nous n'avons pas pu vous mettre en contact avec votre chauffeur.",
     "modal.callDriver.success": "Votre chauffeur vous rappellera dans quelques minutes",
+    "Message Driver": "Message Chauffeur",
+    "modal.messageDriver.message" : "Entrez le message à envoyer à votre chauffeur",
+    "modal.callDriver.error": "Désolé, impossible d'envoyer le message à votre chauffeur.",
+    "modal.callDriver.success":  "Le message a été envoyé à votre chauffeur.",
     "Error": "Erreur"
 }

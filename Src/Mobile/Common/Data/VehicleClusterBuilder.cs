@@ -29,7 +29,10 @@ namespace apcurium.MK.Booking.Mobile.Data
                     : _vehicles.Sum(x => x.Longitude) / _vehicles.Count,
 				VehicleNumber = IsEmpty
 					? default(double)
-					: _vehicles.Select(x => x.VehicleNumber).Aggregate((a,b) => a + b)
+					: _vehicles.Select(x => x.VehicleNumber).Aggregate((a,b) => a + b),
+                LogoName = IsEmpty
+                    ? null
+                    :_vehicles[0].LogoName
             };
         }
 	}

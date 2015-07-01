@@ -1123,6 +1123,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to pair. Please pay to your driver at the end of the ride.
+        /// </summary>
+        public static string OrderStatus_PairingFailed {
+            get {
+                return ResourceManager.GetString("OrderStatus_PairingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The address is not valid.
         /// </summary>
         public static string OrderStatus_wosAddrNotValid {
@@ -1402,7 +1411,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The ride #{0} could not be automatically paired.
+        ///   Looks up a localized string similar to Pairing failed. Pay to driver..
         /// </summary>
         public static string PushNotification_OrderPairingFailed {
             get {

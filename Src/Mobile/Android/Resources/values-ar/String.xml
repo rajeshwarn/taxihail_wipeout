@@ -2,6 +2,7 @@
 <resources>
   <string name="AcceptButton">موافق</string>
   <string name="AccountActivationMessage">تم إرسال رسالة إلكترونية. اتبع الرابط في الرسالة لتأكيد عنوانك</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
   <string name="AccountActivationTitle">مطلوب التأكيد</string>
   <string name="AccountDisabled">تم إيقاف حسابك، الرجاء الإتصال ب {0} على {1} لتفعيل حسابك</string>
   <string name="AccountDisabled_NoCall">تم إيقاف حسابك.</string>
@@ -80,6 +81,7 @@
   <string name="ConfirmVehiculeTypeLabel">نوع السيارة:</string>
   <string name="Continue">استمرار</string>
   <string name="Create">فتح حساب</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
   <string name="CreateAccountEmailPlaceHolder">البرید الإلكتروني</string>
   <string name="CreateAccountEmptyField">البيانات غير صحيحة، يجب تعبئة كافة الخانات.</string>
   <string name="CreateAccountErrorMessage">لا يمكن إنشاء الحساب.</string>
@@ -120,6 +122,7 @@
   <string name="DateTimePickerSetButton">احجز</string>
   <string name="DateToday">اليوم</string>
   <string name="December">ديسمبر (12)</string>
+  <string name="CreditCardAdded_PayInCarDisabled">Your account is now enabled to pay for rides with this credit card.</string>
   <string name="DefaultRideSettingsViewTitle">إعدادات</string>
   <string name="Delete">مسح</string>
   <string name="DeleteAddressBt">مسح العنوان</string>
@@ -460,6 +463,7 @@
   <string name="PanelMenuViewNotificationsText">Notifications</string>
   <string name="DontAsk">Don\'t ask</string>
   <string name="Notification_BookingConfirmationEmail">Booking Confirmation (Email)</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked to your account.</string>
   <string name="Notification_ConfirmPairingPush">Confirm Pairing</string>
   <string name="NotNow">Not now</string>
   <string name="Notification_DriverAssignedEmail">Driver Assigned (Email)</string>
@@ -606,4 +610,6 @@
   <string name="ManualRideLinqStatus_Payment">Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</string>
   <string name="ManualRideLinqStatus_Email">A receipt will be emailed to {0}.</string>
   <string name="ManualRideLinqStatus_Greetings">Enjoy the ride!</string>
+  <string name="MessageToDriverTitle">Message to Driver</string>
+  <string name="SendMessageToDriverErrorMessage">An error occurred while trying to contact the driver. Please try again later.</string>
 </resources>
