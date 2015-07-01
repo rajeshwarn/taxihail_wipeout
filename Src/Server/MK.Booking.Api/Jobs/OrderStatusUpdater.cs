@@ -21,6 +21,7 @@ using apcurium.MK.Common.Resources;
 using CMTPayment;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -318,6 +319,24 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             
             return result;
+        }
+
+        private bool WaitForPaymentDetail(Guid orderId)
+        {
+            const int checkInterval = 500; // in ms
+
+            // 5 seconds loop in the worse case
+            for (int i = 0; i < 10; i++)
+            {
+                Thread.Sleep(checkInterval);
+
+                if (_paymentDao.FindByOrderId(orderId) != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private bool WaitForPaymentDetail(string companyKey, Guid orderId)
