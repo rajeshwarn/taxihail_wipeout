@@ -79,10 +79,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 			
-
 		void PhoneNumberDatasourceChanged(object sender, PhoneNumberChangedEventArgs e)
 		{
-			Text = e.CountryDialCode > 0 ? "+" + e.CountryDialCode : null;
+            SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(e.CountryDialCode));
 		}
 
 		public void OnDialCodeSelectorClick()
