@@ -193,15 +193,56 @@ namespace apcurium.MK.Booking.IBS.Impl
             var result = new List<IBSOrderInformation>();
             UseService(service =>
             {
-                var status = service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
-                foreach (var orderInfoFromIbs in status)
-                {
-                    var statusInfos = new IBSOrderInformation(orderInfoFromIbs);
-                    result.Add(statusInfos);
-                }
+                var status = GetOrdersStatus(ibsOrdersIds, service)
+                    .Select(orderInfoFromIbs => new IBSOrderInformation(orderInfoFromIbs));
+
+                result.AddRange(status);
             });
 
             return result;
+        }
+
+        private IEnumerable<TOrderStatus_4> GetOrdersStatus(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
+        {
+            var ibsOrders = ibsOrdersIds.ToArray();
+            try
+            {
+                var ordersStatus4 = service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders);
+                return ordersStatus4;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogMessage("An error has occurred during GetOrdersStatus_4, falling back to GetOrdersStatus_3");
+                Logger.LogError(ex);
+            }
+
+            var ordersStatus3 = service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders);
+            return ordersStatus3
+                .Select(item => new TOrderStatus_4
+                {
+                    CallNumber = item.CallNumber,
+                    DriverFirstName = item.DriverFirstName,
+                    DriverLastName = item.DriverLastName,
+                    DriverMobilePhone = item.DriverMobilePhone,
+                    ETATime = item.ETATime,
+                    Fare = item.Fare,
+                    OrderID = item.OrderID,
+                    OrderStatus = item.OrderStatus,
+                    PairingCode = item.PairingCode,
+                    ReferenceNumber = item.ReferenceNumber,
+                    Surcharge = item.Surcharge,
+                    TerminalId = item.TerminalId,
+                    Tips = item.Tips,
+                    Tolls = item.Tolls,
+                    VAT = item.VAT,
+                    VehicleColor = item.VehicleColor,
+                    VehicleCoordinateLat = item.VehicleCoordinateLat,
+                    VehicleCoordinateLong = item.VehicleCoordinateLong,
+                    VehicleMake = item.VehicleMake,
+                    VehicleModel = item.VehicleModel,
+                    VehicleNumber = item.VehicleNumber,
+                    VehicleRegistration = item.VehicleRegistration
+                });
         }
 
         public bool SendMessageToDriver(string message, string vehicleNumber)

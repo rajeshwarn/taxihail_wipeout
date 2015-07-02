@@ -21,6 +21,7 @@ using apcurium.MK.Common.Resources;
 using CMTPayment;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
