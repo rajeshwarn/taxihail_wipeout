@@ -217,7 +217,32 @@ namespace apcurium.MK.Booking.IBS.Impl
             }
 
             var ordersStatus3 = service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders);
-            return ordersStatus3.Cast<TOrderStatus_4>();
+            return ordersStatus3
+                .Select(item => new TOrderStatus_4
+                {
+                    CallNumber = item.CallNumber,
+                    DriverFirstName = item.DriverFirstName,
+                    DriverLastName = item.DriverLastName,
+                    DriverMobilePhone = item.DriverMobilePhone,
+                    ETATime = item.ETATime,
+                    Fare = item.Fare,
+                    OrderID = item.OrderID,
+                    OrderStatus = item.OrderStatus,
+                    PairingCode = item.PairingCode,
+                    ReferenceNumber = item.ReferenceNumber,
+                    Surcharge = item.Surcharge,
+                    TerminalId = item.TerminalId,
+                    Tips = item.Tips,
+                    Tolls = item.Tolls,
+                    VAT = item.VAT,
+                    VehicleColor = item.VehicleColor,
+                    VehicleCoordinateLat = item.VehicleCoordinateLat,
+                    VehicleCoordinateLong = item.VehicleCoordinateLong,
+                    VehicleMake = item.VehicleMake,
+                    VehicleModel = item.VehicleModel,
+                    VehicleNumber = item.VehicleNumber,
+                    VehicleRegistration = item.VehicleRegistration
+                });
         }
 
         public bool SendMessageToDriver(string message, string vehicleNumber)
