@@ -193,7 +193,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var result = new List<IBSOrderInformation>();
             UseService(service =>
             {
-                var status = GetOrdersStatus_4(ibsOrdersIds, service)
+                var status = GetOrdersStatus(ibsOrdersIds, service)
                     .Select(orderInfoFromIbs => new IBSOrderInformation(orderInfoFromIbs));
 
                 result.AddRange(status);
@@ -202,7 +202,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        private IEnumerable<TOrderStatus_4> GetOrdersStatus_4(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
+        private IEnumerable<TOrderStatus_4> GetOrdersStatus(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
         {
             var ibsOrders = ibsOrdersIds.ToArray();
             try
@@ -212,7 +212,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             }
             catch (Exception ex)
             {
-                Logger.LogMessage("An error has occurred during GetOrdersStatus_4, falling back to OrdersStatus_3");
+                Logger.LogMessage("An error has occurred during GetOrdersStatus_4, falling back to GetOrdersStatus_3");
                 Logger.LogError(ex);
             }
 
