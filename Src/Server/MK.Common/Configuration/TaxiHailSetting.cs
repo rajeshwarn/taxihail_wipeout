@@ -193,6 +193,10 @@ namespace MK.Common.Configuration
         [Display(Name = "SMS source number", Description = "Number from which the sms confirmation number will be sent")]
         public string SMSFromNumber { get; protected set; }
 
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Show individual taxi marker only", Description = "When this setting is enabled, we will only show individual taxi markers (and won't replace with a cluster icon).")]
+	    public bool ShowIndividualTaxiMarkerOnly { get; protected set; }
+
         [Display(Name = "Twilio SMS account id", Description = "Account id for Twilio")]
         public string SMSAccountSid { get; protected set; }
 
