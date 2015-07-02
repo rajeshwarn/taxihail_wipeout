@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private bool _useThemeColorForPickupAndDestinationMapIcons;
 		private bool _showAssignedVehicleNumberOnPin;
-        private bool _isClusterMarkerEnabled;
+        private bool _isClusterMarkerDisabled;
 
         protected TouchMap(CGRect rect) : base(rect)
         {
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void Initialize()
         {   
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
-            _isClusterMarkerEnabled = this.Services().Settings.ShowIndividualTaxiMarkerOnly;
+            _isClusterMarkerDisabled = this.Services().Settings.ShowIndividualTaxiMarkerOnly;
 			_useThemeColorForPickupAndDestinationMapIcons = settings.UseThemeColorForMapIcons;
 			_showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
         }
@@ -268,7 +268,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             set
             {
-                var availableVehicles = _isClusterMarkerEnabled
+                var availableVehicles = _isClusterMarkerDisabled
                             ? (value ?? Enumerable.Empty<AvailableVehicle>()).ToArray()
                             : Clusterize((value ?? Enumerable.Empty<AvailableVehicle>()).ToArray());
 
