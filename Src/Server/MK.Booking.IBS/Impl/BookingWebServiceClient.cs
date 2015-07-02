@@ -193,15 +193,31 @@ namespace apcurium.MK.Booking.IBS.Impl
             var result = new List<IBSOrderInformation>();
             UseService(service =>
             {
-                var status = service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
-                foreach (var orderInfoFromIbs in status)
-                {
-                    var statusInfos = new IBSOrderInformation(orderInfoFromIbs);
-                    result.Add(statusInfos);
-                }
+                var status = GetOrdersStatus_4(ibsOrdersIds, service)
+                    .Select(orderInfoFromIbs => new IBSOrderInformation(orderInfoFromIbs));
+
+                result.AddRange(status);
             });
 
             return result;
+        }
+
+        private IEnumerable<TOrderStatus_4> GetOrdersStatus_4(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
+        {
+            var ibsOrders = ibsOrdersIds.ToArray();
+            try
+            {
+                var ordersStatus4 = service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders);
+                return ordersStatus4;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogMessage("An error has occurred during GetOrdersStatus_4, falling back to OrdersStatus_3");
+                Logger.LogError(ex);
+            }
+
+            var ordersStatus3 = service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders);
+            return ordersStatus3.Cast<TOrderStatus_4>();
         }
 
         public bool SendMessageToDriver(string message, string vehicleNumber)
