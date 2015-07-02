@@ -194,7 +194,7 @@ namespace MK.Common.Configuration
         public string SMSFromNumber { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Show individual taxi marker only", Description = "When this setting is enabled, we will only show individual taxi markers (and wont replace the individual taxi marker).")]
+        [Display(Name = "Show individual taxi marker only", Description = "When this setting is enabled, we will only show individual taxi markers (and won't replace with a cluster icon).")]
 	    public bool ShowIndividualTaxiMarkerOnly { get; protected set; }
 
         [Display(Name = "Twilio SMS account id", Description = "Account id for Twilio")]
