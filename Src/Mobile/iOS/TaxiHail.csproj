@@ -273,6 +273,7 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.Json">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Json.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Json.dll</HintPath>
     </Reference>
+    <Reference Include="MonoTouch.Dialog-1" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -621,6 +622,8 @@
     <BundleResource Include="Resources\message.png" />
     <BundleResource Include="Resources\message%402x.png" />
     <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
+    <Compile Include="Controls\Widgets\PhoneEditorElement.cs" />
+    <Compile Include="Controls\Widgets\DialCodeSelector.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

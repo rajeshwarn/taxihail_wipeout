@@ -677,7 +677,7 @@
     <value>خطأ في الدخول</value>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>The mobile number is invalid. It must contain between 10 and 15 numbers.</value>
+    <value>The mobile number is invalid. It must have format {0}</value>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
     <value>رجاء إدخال عنوان صحيح لموقعك.</value>

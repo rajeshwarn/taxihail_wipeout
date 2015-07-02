@@ -48,6 +48,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _bookingSettings = bookingSettings.FromJson<BookingSettings>();
                     _paymentSettings = await _paymentService.GetPaymentSettings();
 
+					PhoneNumber = new PhoneNumberInfo()
+					{
+						CountryDialCode = _bookingSettings.CountryDialCode
+					};
+
                     var p = await _accountService.GetPaymentsList();
 
 					_payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
@@ -105,6 +110,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return Settings.IsPayBackRegistrationFieldRequired.HasValue;
             }
         }
+
+		public PhoneNumberInfo PhoneNumber { get; set; }
 
         private PaymentDetailsViewModel _paymentPreferences;
         public PaymentDetailsViewModel PaymentPreferences

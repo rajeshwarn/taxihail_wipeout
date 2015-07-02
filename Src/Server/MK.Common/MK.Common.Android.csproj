@@ -34,9 +34,6 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libphonenumber">
-      <HintPath>..\..\Mobile\Libraries\libphonenumber\libphonenumber.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -55,6 +52,9 @@
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\..\Mobile\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="LibPhoneNumber">
+      <HintPath>..\..\Mobile\Libraries\libphonenumber\libphonenumber.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -61,7 +61,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public void NotifyChanges(object sender, PhoneNumberChangedEventArgs e)
         {
             this.countryDialCode = e.CountryDialCode;
-            this.phoneNumber = e.PhoneNumber;
+            
+			if (e.PhoneNumber != null)
+			{
+				this.phoneNumber = e.PhoneNumber;
+			}
         }
     }
     

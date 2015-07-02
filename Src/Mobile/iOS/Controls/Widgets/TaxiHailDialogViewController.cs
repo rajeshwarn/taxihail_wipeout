@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private readonly bool _willBeContainedInOtherView;
 
-        public TaxiHailDialogViewController(RootElement rootElement, bool pushing, bool willBeContainedInOtherView = true) : base (rootElement, pushing)
+        public TaxiHailDialogViewController(RootElement rootElement, bool pushing, bool willBeContainedInOtherView = true, float rowHeight = 0) : base (rootElement, pushing)
         {
             _willBeContainedInOtherView = willBeContainedInOtherView;
 
@@ -29,6 +29,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 Style = UITableViewStyle.Plain;
                 TableView.RowHeight = 40;
+            }
+
+            if (rowHeight > 0)
+            {
+                TableView.RowHeight = rowHeight;
             }
 
             TableView.ScrollEnabled = !_willBeContainedInOtherView;

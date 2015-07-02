@@ -356,7 +356,7 @@
 "Now"="Now";
 "RideSummarySubTitleText"="Thank you for riding with {0}, we look forward to serving you again soon.";
 "StatusConfirmCancelRide"="Are you sure you want to cancel?";
-"InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
+"InvalidPhoneErrorMessage"="The mobile number is invalid. It must have format {0}";
 "RateRide"="Rate my ride";
 "ConfirmDestinationLabel"="Destination";
 "MarketChangedMessageTitle"="New service area detected";

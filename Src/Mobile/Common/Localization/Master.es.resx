@@ -946,8 +946,7 @@
     <comment>Login error</comment>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>The mobile number is invalid. It must contain between 10 and 15 numbers.</value>
-    <comment>The mobile number is invalid. It must contain 10 numbers.</comment>
+    <value>The mobile number is invalid. It must have format {0}</value>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
     <value>Por favor entre una dirección de abordaje válida</value>

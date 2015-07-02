@@ -431,7 +431,7 @@
 "ViewRatingBtn"="Ver evaluaciones";
 "ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
 "ChargeTypeCreditCardFile"="Tarjeta de crédito guardada";
-"InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
+"InvalidPhoneErrorMessage"="The mobile number is invalid. It must have format {0}";
 "CardExpiredMessage"="Your credit card is expired. Add a new card to your account or update card informations to continue.";
 "LocationAddFavoriteTitle"="Agregar lugar";
 "NbPassenger"="({0} pasajero)";

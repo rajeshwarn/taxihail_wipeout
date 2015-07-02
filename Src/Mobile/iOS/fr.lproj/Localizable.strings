@@ -436,7 +436,7 @@
 "ViewRatingBtn"="Voir les notes";
 "ManualRideLinqStatus_Email"="Un reçu vous sera envoyé à {0}.";
 "ChargeTypeCreditCardFile"="Carte de paiement déjà engistrée";
-"InvalidPhoneErrorMessage"="Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.";
+"InvalidPhoneErrorMessage"="Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}";
 "CardExpiredMessage"="Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.";
 "LocationAddFavoriteTitle"="Ajouter une nouvelle adresse";
 "PickupTimeTextPlaceholder"="Heure: maintenant";
