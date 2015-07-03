@@ -52,6 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			this.navigationController = navigationController;
 			this.OnDialCodeChanged = OnDialCodeChanged;
 			this.selectedCountryCode = selectedCountryCode;
+            PhoneNumberInfoDatasourceChanged();
 		}
 
 		public void Configure(UINavigationController navigationController, PhoneNumberInfo phoneNumberInfo)
