@@ -25,6 +25,7 @@
 "UpdatePasswordNewPasswordLabel"="Nouveau mot de passe";
 "DestinationNotSpecifiedText"="Adresse de destination manquante";
 "PickupMapTitle"="Lieu de départ";
+"DialCodeSelectorTitle"="Code indicatif";
 "HomeView_ManualPairing"="Dans un Taxi";
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="Désolé, la réservation ne peut être complétée";

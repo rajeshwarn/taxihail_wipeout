@@ -510,6 +510,7 @@
 "BookRatingErrorTitle"="Aviso";
 "View"="Ver";
 "NoRingCodeText"="Número Código de entrada";
+"DialCodeSelectorTitle"="Dial Code";
 "Eta"="El taxi más cercano es {0} y esta a {1} {2} de distancia";
 "January"="Ene (01)";
 "AddReminderTitle"="Servicio programado";

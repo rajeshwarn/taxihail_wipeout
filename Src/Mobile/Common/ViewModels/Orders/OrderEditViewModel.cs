@@ -34,12 +34,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
 			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketUpdated(hashedMarket));
+
+			PhoneNumber = new PhoneNumberInfo();
 		}
 
 		public async Task Init()
 		{
 			Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+			PhoneNumber.CountryDialCode = _bookingSettings.CountryDialCode;
 			RaisePropertyChanged(() => IsChargeTypesEnabled);
 		}
 
@@ -80,6 +83,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				return _accountService.CurrentAccount.DefaultCreditCard == null || !Settings.DisableChargeTypeWhenCardOnFile;
             }
         }
+
+		public PhoneNumberInfo PhoneNumber { get; set; }
 
         public CountryCode[] CountryCodes
         {
