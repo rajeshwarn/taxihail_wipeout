@@ -74,15 +74,6 @@
                             android:textSize="19dip"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:text="+" />
-                        <TextView
-                            android:layout_height="match_parent"
-                            android:layout_width="wrap_content"
-                            android:gravity="start|center"
-                            android:textColor="#000000"
-                            android:textSize="19dip"
-                            android:ellipsize="end"
-                            android:singleLine="true"
                             android:id="@+id/lblDialCode" />
                         <TextView
                             android:layout_height="match_parent"

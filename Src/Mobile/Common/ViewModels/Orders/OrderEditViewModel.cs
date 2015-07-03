@@ -44,6 +44,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 			PhoneNumber.CountryDialCode = _bookingSettings.CountryDialCode;
 			RaisePropertyChanged(() => IsChargeTypesEnabled);
+            RaisePropertyChanged(() => PhoneNumber);
+            RaisePropertyChanged(() => SelectedCountryCode);
 		}
 
 	    private async Task MarketUpdated(string hashedMarket)
@@ -122,6 +124,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					RaisePropertyChanged(() => VehicleTypeName);
 					RaisePropertyChanged(() => ChargeTypeId);
 					RaisePropertyChanged(() => ChargeTypeName);
+                    RaisePropertyChanged(() => SelectedCountryCode);
 				}
 			}
 		}

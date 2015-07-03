@@ -66,6 +66,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     RaisePropertyChanged(() => Vehicles);
                     RaisePropertyChanged(() => VehicleTypeId);
                     RaisePropertyChanged(() => VehicleTypeName);
+                    RaisePropertyChanged(() => PhoneNumber);
+                    RaisePropertyChanged(() => SelectedCountryCode);
 			    }
 			    catch (Exception ex)
 			    {
