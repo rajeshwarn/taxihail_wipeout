@@ -25,6 +25,7 @@
 "UpdatePasswordNewPasswordLabel"="New Password";
 "DestinationNotSpecifiedText"="Destination not specified";
 "PickupMapTitle"="Pickup location";
+"DialCodeSelectorTitle"="Dial Code";
 "HomeView_ManualPairing"="In A Taxi";
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="Booking cannot be completed";

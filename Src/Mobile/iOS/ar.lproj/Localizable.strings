@@ -25,6 +25,7 @@
 "UpdatePasswordNewPasswordLabel"="كلمة المرور الجديدة";
 "DestinationNotSpecifiedText"="الوجهة غير محددة";
 "PickupMapTitle"="موقع الإلتقاء";
+"DialCodeSelectorTitle"="Dial Code";
 "HomeView_ManualPairing"="In A Taxi";
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="لا يمكن إتمام الحجز";

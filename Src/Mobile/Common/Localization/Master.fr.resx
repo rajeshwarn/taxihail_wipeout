@@ -2006,4 +2006,7 @@
   <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
     <value>Votre demande n'a pas pu être prise en compte, veuillez réessayer de nouveau.</value>
   </data>
+  <data name="DialCodeSelectorTitle" xml:space="preserve">
+    <value>Code indicatif</value>
+  </data>
 </root>

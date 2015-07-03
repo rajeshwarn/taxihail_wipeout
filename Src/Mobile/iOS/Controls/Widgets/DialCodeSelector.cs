@@ -120,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				section.Add(item);
 			}
 				
-			RootElement rootElement = new RootElement("Dial code", new RadioGroup(CountryCode.GetCountryCodeIndexByCountryDialCode(SelectedCountryCode.CountryDialCode)));
+            RootElement rootElement = new RootElement(Localize.GetValue("DialCodeSelectorTitle"), new RadioGroup(CountryCode.GetCountryCodeIndexByCountryDialCode(SelectedCountryCode.CountryDialCode)));
 			rootElement.Add(section);
 
 			var dialCodeSelectorViewController = new TaxiHailDialogViewController(rootElement, true, false, 20);

@@ -34,10 +34,6 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libphonenumber, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\libphonenumber\libphonenumber.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -120,6 +116,9 @@
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="LibPhoneNumber">
+      <HintPath>..\Libraries\libphonenumber\libphonenumber.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +354,7 @@
     <Compile Include="CancellableCommand.cs" />
     <Compile Include="ViewModels\Payment\OverduePaymentViewModel.cs" />
     <Compile Include="BindingConverter\StringFormatConverter.cs" />
+    <Compile Include="BindingConverter\DialCodeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
