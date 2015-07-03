@@ -17,14 +17,6 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
-        public enum GetOrdersStatusVersion
-        {
-            MostRecent,
-            GetOrdersStatus3,
-            GetOrdersStatus2
-        }
-            
-        private GetOrdersStatusVersion _accessibleGetOrderStatusVersion;
         private readonly IServerSettings _serverSettings;
         
         
@@ -32,7 +24,6 @@ namespace apcurium.MK.Booking.IBS.Impl
             : base(serverSettings.ServerData.IBS, logger)
         {
             _serverSettings = serverSettings;
-            _accessibleGetOrderStatusVersion = GetOrdersStatusVersion.MostRecent;
         }
 
         public BookingWebServiceClient(IServerSettings serverSettings, IBSSettingContainer ibsSettings, ILogger logger)
@@ -217,33 +208,25 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             var ibsOrders = ibsOrdersIds.ToArray();
 
-            if (_accessibleGetOrderStatusVersion == GetOrdersStatusVersion.MostRecent)
+            try
             {
-                try
-                {
-                    return service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders);
-                }
-                catch (Exception)
-                {
-                    Logger.LogMessage("GetOrdersStatus_4 is not available doing a fallback to GetOrdersStatus_3");
-                    _accessibleGetOrderStatusVersion = GetOrdersStatusVersion.GetOrdersStatus3;
-                }   
+                return service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders);
+            }
+            catch (Exception)
+            {
+                Logger.LogMessage("GetOrdersStatus_4 is not available doing a fallback to GetOrdersStatus_3");
             }
 
-            if (_accessibleGetOrderStatusVersion == GetOrdersStatusVersion.GetOrdersStatus3)
+            try
             {
-                try
-                {
-                    return service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders)
-						// We need to update the returned object to version 4 of TOrderStatus.
-						.Select(ToOrderStatus4);
-                }
-                catch (Exception)
-                {
-                    Logger.LogMessage("GetOrdersStatus_3 is not available doing a fallback to GetOrdersStatus_2");
-                    _accessibleGetOrderStatusVersion = GetOrdersStatusVersion.GetOrdersStatus2;
-                }   
+                return service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders)
+                    // We need to update the returned object to version 4 of TOrderStatus.
+                    .Select(ToOrderStatus4);
             }
+            catch (Exception)
+            {
+                Logger.LogMessage("GetOrdersStatus_3 is not available doing a fallback to GetOrdersStatus_2");
+            }  
              
             return service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrders)
 				// We need to update the returned object to version 4 of TOrderStatus.
