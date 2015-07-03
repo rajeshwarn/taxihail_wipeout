@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.IBS.Impl
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
         private readonly IServerSettings _serverSettings;
+        
         public BookingWebServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings.ServerData.IBS, logger)
         {
@@ -192,8 +193,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             var result = new List<IBSOrderInformation>();
             UseService(service =>
             {
-				//TODO: CASCO Do Downgrade to 3 and 2 here. Ensure everything works without crashes.
-                var status = service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
+				
+                var status = GetOrdersStatus(ibsOrdersIds, service);
                 foreach (var orderInfoFromIbs in status)
                 {
                     var statusInfos = new IBSOrderInformation(orderInfoFromIbs);
@@ -203,6 +204,80 @@ namespace apcurium.MK.Booking.IBS.Impl
             });
 
             return result;
+        }
+
+        //TODO: CASCO - Validate approach, might be a good thing to expand this idea a bit.
+        private IEnumerable<TOrderStatus_4> GetOrdersStatus(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
+        {
+            var ibsOrders = ibsOrdersIds.ToArray();
+            try
+            {
+                return service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders);
+            }
+            catch (Exception)
+            {
+                Logger.LogMessage("GetOrdersStatus_4 is not available doing a fallback to GetOrdersStatus_3");
+            }
+
+            try
+            {
+                return service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders)
+                    .Select(orderStatus => new TOrderStatus_4
+                    {
+                        OrderStatus = orderStatus.OrderStatus,
+                        CallNumber = orderStatus.CallNumber,
+                        DriverFirstName = orderStatus.DriverFirstName,
+                        DriverLastName = orderStatus.DriverLastName,
+                        DriverMobilePhone = orderStatus.DriverMobilePhone,
+                        ETATime = orderStatus.ETATime,
+                        Fare = orderStatus.Fare,
+                        OrderID = orderStatus.OrderID,
+                        ReferenceNumber = orderStatus.ReferenceNumber,
+                        TerminalId = orderStatus.TerminalId,
+                        Tips = orderStatus.Tips,
+                        Tolls = orderStatus.Tolls,
+                        VAT = orderStatus.VAT,
+                        VehicleColor = orderStatus.VehicleColor,
+                        VehicleCoordinateLat = orderStatus.VehicleCoordinateLat,
+                        VehicleCoordinateLong = orderStatus.VehicleCoordinateLong,
+                        VehicleMake = orderStatus.VehicleMake,
+                        VehicleModel = orderStatus.VehicleModel,
+                        VehicleNumber = orderStatus.VehicleNumber,
+                        VehicleRegistration = orderStatus.VehicleRegistration,
+                        PairingCode = orderStatus.PairingCode,
+                        Surcharge = orderStatus.Surcharge
+                    });
+            }
+            catch (Exception)
+            {
+                Logger.LogMessage("GetOrdersStatus_3 is not available doing a fallback to GetOrdersStatus_2");
+            }
+             
+            return service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrders)
+                    .Select(orderStatus => new TOrderStatus_4
+                    {
+                         OrderStatus = orderStatus.OrderStatus,
+                         CallNumber = orderStatus.CallNumber,
+                         DriverFirstName = orderStatus.DriverFirstName,
+                         DriverLastName = orderStatus.DriverLastName,
+                         DriverMobilePhone = orderStatus.DriverMobilePhone,
+                         ETATime = orderStatus.ETATime,
+                         Fare = orderStatus.Fare,
+                         OrderID = orderStatus.OrderID,
+                         ReferenceNumber = orderStatus.ReferenceNumber,
+                         TerminalId = orderStatus.TerminalId,
+                         Tips = orderStatus.Tips,
+                         Tolls = orderStatus.Tolls,
+                         VAT = orderStatus.VAT,
+                         VehicleColor = orderStatus.VehicleColor,
+                         VehicleCoordinateLat = orderStatus.VehicleCoordinateLat,
+                         VehicleCoordinateLong = orderStatus.VehicleCoordinateLong,
+                         VehicleMake = orderStatus.VehicleMake,
+                         VehicleModel = orderStatus.VehicleModel,
+                         VehicleNumber = orderStatus.VehicleNumber,
+                         VehicleRegistration = orderStatus.VehicleRegistration
+                    });
+
         }
 
         public bool SendMessageToDriver(string message, string vehicleNumber)
