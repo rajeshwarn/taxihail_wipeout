@@ -178,6 +178,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor) || !IsDriverInfoAvailable; }
 		}
+
+        public bool DriverPhotoHidden
+        {
+            get { return (string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.DriverPhotoUrl) || !IsDriverInfoAvailable); }
+        }
+
 		public bool CanGoBack
 		{
 			get
@@ -234,6 +240,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged (() => VehicleMakeHidden);
 				RaisePropertyChanged (() => VehicleModelHidden);
 				RaisePropertyChanged (() => VehicleColorHidden);
+                RaisePropertyChanged (() => DriverPhotoHidden);
 				RaisePropertyChanged (() => IsDriverInfoAvailable);
 				RaisePropertyChanged (() => IsCallTaxiVisible);
 				RaisePropertyChanged (() => CanGoBack);
