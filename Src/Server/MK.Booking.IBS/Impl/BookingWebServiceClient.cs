@@ -193,14 +193,10 @@ namespace apcurium.MK.Booking.IBS.Impl
             var result = new List<IBSOrderInformation>();
             UseService(service =>
             {
-				
-                var status = GetOrdersStatus(ibsOrdersIds, service);
-                foreach (var orderInfoFromIbs in status)
-                {
-                    var statusInfos = new IBSOrderInformation(orderInfoFromIbs);
+                var status = GetOrdersStatus(ibsOrdersIds, service)
+                    .Select(orderInfoFromIbs => new IBSOrderInformation(orderInfoFromIbs));
 
-                    result.Add(statusInfos);
-                }
+                result.AddRange(status);
             });
 
             return result;
