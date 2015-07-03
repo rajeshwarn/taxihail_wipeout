@@ -55,7 +55,8 @@ namespace apcurium.MK.Booking.IBS
 
         }
 
-        public IBSOrderInformation(TOrderStatus_2 orderInfoFromIBS)
+		//TODO: ForCascoBranch Ensure that TOrderStatus_2 to TOrderStatus_4 conversion is safe
+        public IBSOrderInformation(TOrderStatus_4 orderInfoFromIBS)
         {
             Status = orderInfoFromIBS.OrderStatus.ToString();
 
@@ -77,7 +78,9 @@ namespace apcurium.MK.Booking.IBS
 
             ReferenceNumber = orderInfoFromIBS.ReferenceNumber.GetValue(ReferenceNumber);
             TerminalId = orderInfoFromIBS.TerminalId.GetValue(TerminalId);
-            //DriverPhotoUrl = orderInfoFromIBS.PhotoUrl;
+
+            DriverPhotoUrl = !string.IsNullOrEmpty(orderInfoFromIBS.ThumbnailImg) ? orderInfoFromIBS.ThumbnailImg :
+                                (!string.IsNullOrEmpty(orderInfoFromIBS.WebImg) ? orderInfoFromIBS.WebImg : null);
 
             Fare = orderInfoFromIBS.Fare;
             Tip = orderInfoFromIBS.Tips;

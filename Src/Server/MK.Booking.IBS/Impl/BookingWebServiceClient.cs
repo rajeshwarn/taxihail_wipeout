@@ -192,6 +192,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var result = new List<IBSOrderInformation>();
             UseService(service =>
             {
+				//TODO: CASCO Do Downgrade to 3 and 2 here. Ensure everything works without crashes.
                 var status = service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
                 foreach (var orderInfoFromIbs in status)
                 {
