@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.IBS
         public double Fare { get; set; }
         public double Tip { get; set; }
         public double VAT { get; set; }
+	    public double Surcharge { get; set; }
         public string VehicleNumber { get; set; }
 
         public string PairingCode { get; set; }
@@ -81,7 +82,9 @@ namespace apcurium.MK.Booking.IBS
 
             DriverPhotoUrl = orderInfoFromIBS.ThumbnailImg.HasValue() ? orderInfoFromIBS.ThumbnailImg :
                                 (orderInfoFromIBS.WebImg.HasValue() ? orderInfoFromIBS.WebImg : null);
+
             PairingCode = orderInfoFromIBS.PairingCode;
+	        Surcharge = orderInfoFromIBS.Surcharge;
             Fare = orderInfoFromIBS.Fare;
             Tip = orderInfoFromIBS.Tips;
             Toll = orderInfoFromIBS.Tolls;
