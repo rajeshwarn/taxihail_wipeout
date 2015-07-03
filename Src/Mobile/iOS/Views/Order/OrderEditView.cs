@@ -122,12 +122,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             set.Apply();
 
-
-            lblPhoneDialCode.Configure(this.FindViewController().NavigationController, (DataContext as OrderEditViewModel).PhoneNumber);
             lblPhoneDialCode.NotifyChanges += (object sender, PhoneNumberChangedEventArgs e) =>
                 {
                     this.ViewModel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(e.CountryDialCode));
                 };
+            lblPhoneDialCode.Configure(this.FindViewController().NavigationController, (DataContext as OrderEditViewModel).PhoneNumber);
         }
 
         public override void AwakeFromNib()

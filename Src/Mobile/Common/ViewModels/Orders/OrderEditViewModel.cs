@@ -125,6 +125,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					RaisePropertyChanged(() => ChargeTypeId);
 					RaisePropertyChanged(() => ChargeTypeName);
                     RaisePropertyChanged(() => SelectedCountryCode);
+					PhoneNumber.CountryDialCode = _bookingSettings.CountryDialCode;
 				}
 			}
 		}
