@@ -114,6 +114,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         });
                     };
                 }
+				
+				if (ViewModel.DriverPhotoHidden)
+				{
+					driverPhotoContainerView.Maybe(e => e.RemoveFromSuperview());
+					driverDescriptionContainerView.SetX(0);
+				}
 
                 textColor = UIColor.FromRGB (50, 50, 50);
 
@@ -287,6 +293,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.To(vm => vm.IsUnpairButtonVisible)
 					.WithConversion("BoolInverter");
 
+				if (!ViewModel.DriverPhotoHidden)
+				{
+					var k = new MvxImageViewLoader(() => this.driverPhoto);
+					set.Bind(k).For(v => v.ImageUrl).To(dd => dd.OrderStatusDetail.DriverInfos.DriverPhotoUrl);
+				}
+					
 				set.Apply();
 
                 mapStatus.GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;
