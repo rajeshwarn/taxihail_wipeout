@@ -56,7 +56,6 @@ namespace apcurium.MK.Booking.IBS
 
         }
 
-		//TODO: ForCascoBranch Ensure that TOrderStatus_2 to TOrderStatus_4 conversion is safe
         public IBSOrderInformation(TOrderStatus_4 orderInfoFromIBS)
         {
             Status = orderInfoFromIBS.OrderStatus.ToString();

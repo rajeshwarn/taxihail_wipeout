@@ -212,6 +212,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
+		// This method is used to help find the correct GetOrdersStatus in IBS.
         private IEnumerable<TOrderStatus_4> GetOrdersStatus(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
         {
             var ibsOrders = ibsOrdersIds.ToArray();
@@ -234,7 +235,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 try
                 {
                     return service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders)
-                        .Select(ToOrderStatus4);
+						// We need to update the returned object to version 4 of TOrderStatus.
+						.Select(ToOrderStatus4);
                 }
                 catch (Exception)
                 {
@@ -244,7 +246,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             }
              
             return service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrders)
-                    .Select(orderStatus => ToOrderStatus4(orderStatus));
+				// We need to update the returned object to version 4 of TOrderStatus.
+				.Select(ToOrderStatus4);
 
         }
 
