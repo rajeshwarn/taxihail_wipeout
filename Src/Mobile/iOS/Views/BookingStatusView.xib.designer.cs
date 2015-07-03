@@ -158,11 +158,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnResend = null;
 			}
 
-			if (btnTip != null) {
-				btnTip.Dispose ();
-				btnTip = null;
-			}
-
 			if (btnUnpair != null) {
 				btnUnpair.Dispose ();
 				btnUnpair = null;
