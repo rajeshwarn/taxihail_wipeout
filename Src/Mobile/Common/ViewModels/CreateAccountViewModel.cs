@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -91,9 +92,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init(string twitterId, string facebookId, string name, string email)
 		{
+            string countryISOCode = new RegionInfo(CultureProvider.CultureInfo.LCID).TwoLetterISORegionName;
+
             PhoneNumber = new PhoneNumberInfo()
             {
-                CountryDialCode = 1
+                CountryDialCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryISOCode)).CountryDialCode
             };
 
 			Data = new RegisterAccount
