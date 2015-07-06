@@ -52,7 +52,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			this.navigationController = navigationController;
 			this.OnDialCodeChanged = OnDialCodeChanged;
 			this.selectedCountryCode = selectedCountryCode;
-            PhoneNumberInfoDatasourceChanged();
+
+            if (PhoneNumberInfoDatasourceChanged != null)
+                PhoneNumberInfoDatasourceChanged();
 		}
 
 		public void Configure(UINavigationController navigationController, PhoneNumberInfo phoneNumberInfo)
@@ -61,7 +63,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			PhoneNumberInfoDatasourceChanged = phoneNumberInfo.PhoneNumberDatasourceChangedCallEvent;
 			phoneNumberInfo.PhoneNumberDatasourceChanged += PhoneNumberDatasourceChanged;
 			this.NotifyChanges += phoneNumberInfo.NotifyChanges;
-			PhoneNumberInfoDatasourceChanged();
+
+            if (PhoneNumberInfoDatasourceChanged != null)
+			    PhoneNumberInfoDatasourceChanged();
 		}
 
 		CountryCode selectedCountryCode;
