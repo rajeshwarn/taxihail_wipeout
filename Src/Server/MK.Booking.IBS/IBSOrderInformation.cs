@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.IBS
             DriverPhotoUrl = orderInfoFromIBS.ThumbnailImg.HasValue() ? orderInfoFromIBS.ThumbnailImg :
                                 (orderInfoFromIBS.WebImg.HasValue() ? orderInfoFromIBS.WebImg : null);
 
-            PairingCode = orderInfoFromIBS.PairingCode;
+            PairingCode = orderInfoFromIBS.PairingCode.HasValue() ? orderInfoFromIBS.PairingCode : null;
 	        Surcharge = orderInfoFromIBS.Surcharge;
             Fare = orderInfoFromIBS.Fare;
             Tip = orderInfoFromIBS.Tips;
