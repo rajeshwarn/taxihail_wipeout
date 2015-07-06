@@ -113,6 +113,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
+		bool bookButtonHidden = true;
+
+		public bool BookButtonHidden
+		{
+			get
+			{
+				return bookButtonHidden;
+			}
+
+			set
+			{
+				bookButtonHidden = value;
+				RaisePropertyChanged(() => BookButtonHidden);
+			}
+		}
+
         private bool _isFutureBookingDisabled;
         public bool IsFutureBookingDisabled
         {

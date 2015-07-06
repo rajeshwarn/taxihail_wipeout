@@ -150,14 +150,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private FlatButton GenerateBookButton()
 		{
-			var btnBook = new FlatButton()
-			{
-				TranslatesAutoresizingMaskIntoConstraints = false
-			};
-			FlatButtonStyle.Green.ApplyTo(btnBook);
-			
+            var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
 
-			return btnBook;
+            var btnBook = new FlatButton()
+                {
+                    TranslatesAutoresizingMaskIntoConstraints = false
+                };
+            FlatButtonStyle.Green.ApplyTo(btnBook);
+
+            set.Bind(btnBook).For(v => v.Hidden).To(vm => vm.BookButtonHidden);
+            set.Apply();
+
+            return btnBook;
 		}
 
 		private UIImageView GeneratePromoImage()

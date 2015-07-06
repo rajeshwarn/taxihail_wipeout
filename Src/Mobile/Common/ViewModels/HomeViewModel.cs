@@ -117,6 +117,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				CheckCreditCardExpiration();
 
                 BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
+				BottomBar.BookButtonHidden = false;
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
