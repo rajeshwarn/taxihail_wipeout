@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 using apcurium.MK.Common.Extensions;
+using CustomerPortal.Web.BitBucket;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Services;
 using CustomerPortal.Web.Services.Impl;
@@ -84,20 +85,13 @@ namespace CustomerPortal.Web.Controllers.API
                     deployment.Status = details.Status.Value.ToString();
                 }
 
-                if (details.Status == JobStatus.Error && deployment.UserEmail.HasValue() && IsVersionNumber(deployment))
+                if (details.Status == JobStatus.Error && deployment.UserEmail.HasValue() && VersionUpdater.IsVersionNumber(deployment.Revision))
                 {
                     _emailSender.SendEmail(deployment.Details, deployment.Revision.Tag, deployment.Company.CompanyName, deployment.UserName,deployment.UserEmail, deployment.Server.Name);
                 }
 
                 _repository.Update(deployment);
             }
-        }
-
-
-        private bool IsVersionNumber(DeploymentJob job)
-        {
-            //Regex pattern to ensure that we only send an email when the tag name is 'x.x.x'.
-            return Regex.IsMatch(job.Revision.Tag, "^([0-9][0-9]*.[0-9][0-9]*.[0-9][0-9]*(.[0-9][0-9]*)?)$");
         }
     }
 }

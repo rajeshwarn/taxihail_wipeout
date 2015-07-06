@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private BitmapDescriptor _hailIcon;
 
 		private bool _showVehicleNumber;
+        private bool _isClusterMarkerDisabled;
 
         public TouchMap(Context context)
             : base(context)
@@ -174,7 +175,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 DeferWhenMapReady(
                     () =>
                     {
-                        ShowAvailableVehicles(Clusterize((value ?? Enumerable.Empty<AvailableVehicle>()).ToArray()));
+                        var availableVehicles = _isClusterMarkerDisabled
+                            ? (value  ?? Enumerable.Empty<AvailableVehicle>()).ToArray()
+                            : Clusterize((value ?? Enumerable.Empty<AvailableVehicle>()).ToArray());
+
+                        ShowAvailableVehicles(availableVehicles);
                     });
             }
         }
@@ -229,7 +234,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {			
-			_showVehicleNumber = this.Services ().Settings.ShowAssignedVehicleNumberOnPin;
+			_showVehicleNumber = this.Services().Settings.ShowAssignedVehicleNumberOnPin;
+            _isClusterMarkerDisabled = this.Services().Settings.ShowIndividualTaxiMarkerOnly;
 
             var useCompanyColor = this.Services().Settings.UseThemeColorForMapIcons;
             var companyColor = Resources.GetColor(Resource.Color.company_color);
@@ -437,8 +443,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             foreach (var v in vehicles)
             {
-                bool isCluster = v is AvailableVehicleCluster;
-                string logoKey = isCluster
+                var isCluster = v is AvailableVehicleCluster;
+                var logoKey = isCluster
                                  ? string.Format("cluster_{0}", v.LogoName ?? defaultLogoName)
                                  : string.Format("nearby_{0}", v.LogoName ?? defaultLogoName);
 
