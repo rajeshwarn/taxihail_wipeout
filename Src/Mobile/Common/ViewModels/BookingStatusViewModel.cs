@@ -178,7 +178,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor) || !IsDriverInfoAvailable; }
 		}
-		public bool CanGoBack
+
+        public bool DriverPhotoHidden
+        {
+            get { return (string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.DriverPhotoUrl) || !IsDriverInfoAvailable); }
+        }
+        
+        public bool CanGoBack
 		{
 			get
 			{
@@ -226,17 +232,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _orderStatusDetail; }
 			set {
 				_orderStatusDetail = value;
-				RaisePropertyChanged (() => OrderStatusDetail);
-				RaisePropertyChanged (() => CompanyHidden);
-				RaisePropertyChanged (() => VehicleDriverHidden);
-				RaisePropertyChanged (() => VehicleLicenceHidden);
-				RaisePropertyChanged (() => VehicleTypeHidden);
-				RaisePropertyChanged (() => VehicleMakeHidden);
-				RaisePropertyChanged (() => VehicleModelHidden);
-				RaisePropertyChanged (() => VehicleColorHidden);
-				RaisePropertyChanged (() => IsDriverInfoAvailable);
-				RaisePropertyChanged (() => IsCallTaxiVisible);
-				RaisePropertyChanged (() => CanGoBack);
+				RaisePropertyChanged(() => OrderStatusDetail);
+				RaisePropertyChanged(() => CompanyHidden);
+				RaisePropertyChanged(() => VehicleDriverHidden);
+				RaisePropertyChanged(() => VehicleLicenceHidden);
+				RaisePropertyChanged(() => VehicleTypeHidden);
+				RaisePropertyChanged(() => VehicleMakeHidden);
+				RaisePropertyChanged(() => VehicleModelHidden);
+				RaisePropertyChanged(() => VehicleColorHidden);
+                RaisePropertyChanged(() => DriverPhotoHidden);
+				RaisePropertyChanged(() => IsDriverInfoAvailable);
+				RaisePropertyChanged(() => IsCallTaxiVisible);
+				RaisePropertyChanged(() => CanGoBack);
 			}
 		}
 

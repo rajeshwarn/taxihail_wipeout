@@ -287,6 +287,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.To(vm => vm.IsUnpairButtonVisible)
 					.WithConversion("BoolInverter");
 
+                set.Bind(driverPhoto)
+                    .For(v => v.ImageUrl)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.DriverPhotoUrl);
+
+					
 				set.Apply();
 
                 mapStatus.GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;

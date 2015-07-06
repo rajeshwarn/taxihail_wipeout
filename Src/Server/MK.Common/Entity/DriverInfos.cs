@@ -34,5 +34,7 @@ namespace apcurium.MK.Common.Entity
         }
 
         public string MobilePhone { get; set; }
+
+        public string DriverPhotoUrl { get; set; }
     }
 }
