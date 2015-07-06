@@ -82,6 +82,7 @@ namespace apcurium.MK.Booking.IBS
             DriverPhotoUrl = orderInfoFromIBS.ThumbnailImg.HasValue() ? orderInfoFromIBS.ThumbnailImg :
                                 (orderInfoFromIBS.WebImg.HasValue() ? orderInfoFromIBS.WebImg : null);
 
+			// should always be null if not set because we compare it to OrderStatusDetail.RideLinqPairingCode
             PairingCode = orderInfoFromIBS.PairingCode.HasValue() ? orderInfoFromIBS.PairingCode : null;
 	        Surcharge = orderInfoFromIBS.Surcharge;
             Fare = orderInfoFromIBS.Fare;
