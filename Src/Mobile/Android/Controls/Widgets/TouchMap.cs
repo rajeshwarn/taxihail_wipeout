@@ -143,7 +143,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             .Anchor(.5f, 1f)
                             .SetPosition(new LatLng(value.VehicleLatitude.Value, value.VehicleLongitude.Value))
                             .InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap(value.VehicleNumber)))
+                            .SetTitle(value.VehicleNumber)
                             .Visible(true));
+                            
+                            _taxiLocationPin.ShowInfoWindow();
 
                         if (_taxiLocation.IBSStatusId == VehicleStatuses.Common.Loaded)
                         {
@@ -543,13 +546,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var taxiIcon = DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, Resources.GetColor(Resource.Color.company_color), true);
 
-			if (!_showVehicleNumber) 
+			//if (!_showVehicleNumber) 
             {
 				return taxiIcon;
 			}
 
             var textSize = DrawHelper.GetPixels(11);
-            var textVerticalOffset = DrawHelper.GetPixels(12);
+            var textVerticalOffset = DrawHelper.GetPixels(20);
 
             /* Find the width and height of the title*/
             var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
@@ -562,9 +565,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             paintText.GetTextBounds(vehicleNumber, 0, vehicleNumber.Length, rect);
 
             var mutableBitmap = taxiIcon.Copy(taxiIcon.GetConfig(), true);
-            var canvas = new Canvas(mutableBitmap);
+            //var canvas = new Canvas(mutableBitmap);
 // ReSharper disable once PossibleLossOfFraction
-            canvas.DrawText(vehicleNumber, canvas.Width/2, rect.Height() + textVerticalOffset, paintText);
+            //canvas.DrawText(vehicleNumber, canvas.Width/2, rect.Height() + textVerticalOffset, paintText);
             return mutableBitmap;
         }
 		public void Pause()
