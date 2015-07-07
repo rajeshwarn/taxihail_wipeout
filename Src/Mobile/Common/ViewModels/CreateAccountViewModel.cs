@@ -24,7 +24,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         string phoneNumber;
 
-        public CountryISOCode Country { get; set; }
+        public CountryISOCode Country
+        {
+            get
+            {
+                return country;
+            }
+
+            set
+            {
+                country = value;
+                PhoneNumberDatasourceChangedCallEvent();
+            }
+        }
 
         public string PhoneNumber
         {

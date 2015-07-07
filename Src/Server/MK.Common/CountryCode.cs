@@ -81,6 +81,7 @@ namespace apcurium.MK.Common
             }
             set
             {
+                countryISOCode = value;
                 countryDialCode = libphonenumber.PhoneNumberUtil.Instance.GetCountryCodeForRegion(countryISOCode.Code);
             }
         }
