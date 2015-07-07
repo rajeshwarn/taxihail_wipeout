@@ -30,25 +30,61 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:id="@+id/passengerNameLayout"
                     android:layout_height="35dip">
-                    <ImageView
-                        android:src="@drawable/account"
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.7"
+                        android:id="@+id/passengerNameLayout"
+                        android:layout_height="35dip">
+                        <ImageView
+                            android:src="@drawable/account"
+                            android:layout_height="match_parent"
+                            android:scaleType="center"
+                            android:layout_width="wrap_content" />
+                        <TextView
+                            android:layout_height="match_parent"
+                            android:layout_width="fill_parent"
+                            android:gravity="start|center"
+                            android:paddingStart="8dp"
+                            android:textColor="#000000"
+                            android:text="text"
+                            android:textSize="19dip"
+                            android:textStyle="bold"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:id="@+id/lblName" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/passengerNumberLayout"
+                        android:orientation="horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.3"
                         android:layout_height="match_parent"
-                        android:scaleType="center"
-                        android:layout_width="wrap_content" />
-                    <TextView
-                        android:layout_height="match_parent"
-                        android:layout_width="fill_parent"
-                        android:gravity="start|center"
-                        android:paddingStart="8dp"
-                        android:textColor="#000000"
-                        android:text="text"
-                        android:textSize="19dip"
-                        android:textStyle="bold"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:id="@+id/lblName" />
+                        android:layout_gravity="right"
+                        android:gravity="right">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent">
+                            <ImageView
+                                android:src="@drawable/passengers"
+                                android:layout_height="match_parent"
+                                android:layout_width="wrap_content"
+                                android:scaleType="center"
+                                android:gravity="center" />
+                            <TextView
+                                android:layout_height="match_parent"
+                                android:layout_width="fill_parent"
+                                android:gravity="start|center"
+                                android:paddingStart="8dp"
+                                android:textColor="#000000"
+                                android:text="text"
+                                android:textSize="19dp"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:id="@+id/lblNbPassengers" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
@@ -57,8 +93,7 @@
                     <LinearLayout
                         android:id="@+id/passengerPhoneLayout"
                         android:orientation="horizontal"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.5"
+                        android:layout_width="fill_parent"
                         android:layout_height="35dip">
                         <ImageView
                             android:src="@drawable/telephone"
@@ -86,29 +121,6 @@
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:id="@+id/lblPhone" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/passengerNumberLayout"
-                        android:orientation="horizontal"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:layout_height="match_parent">
-                        <ImageView
-                            android:src="@drawable/passengers"
-                            android:layout_height="match_parent"
-                            android:scaleType="center"
-                            android:layout_width="wrap_content" />
-                        <TextView
-                            android:layout_height="match_parent"
-                            android:layout_width="fill_parent"
-                            android:gravity="start|center"
-                            android:paddingStart="8dp"
-                            android:textColor="#000000"
-                            android:text="text"
-                            android:textSize="19dp"
-                            android:ellipsize="end"
-                            android:singleLine="true"
-                            android:id="@+id/lblNbPassengers" />
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
