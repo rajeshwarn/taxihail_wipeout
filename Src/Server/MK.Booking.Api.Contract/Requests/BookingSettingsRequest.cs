@@ -3,6 +3,7 @@
 using System;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Common;
 
 #endregion
 
@@ -22,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public string Email { get; set; }
 
-        public int CountryDialCode { get; set; }
+        public CountryISOCode Country { get; set; }
 
         public string Phone { get; set; }
 

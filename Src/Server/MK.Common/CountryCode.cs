@@ -8,13 +8,72 @@ namespace apcurium.MK.Common
     /// http://www.iso.org/iso/home/standards/country_codes.htm
     /// http://www.itu.int/dms_pub/itu-t/opb/sp/T-SP-E.164C-2011-PDF-E.pdf
     /// </summary>
+
+    public class CountryISOCode
+    {
+        public static readonly string[] countryISONames =
+        {
+            "Afghanistan","Åland Islands","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Antarctica","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas (the)","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia (Plurinational State of)","Bonaire, Sint Eustatius and Saba","Bosnia and Herzegovina","Botswana","Bouvet Island","Brazil","British Indian Ocean Territory (the)","Brunei Darussalam","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Cayman Islands (the)","Central African Republic (the)","Chad","Chile","China","Christmas Island","Cocos (Keeling) Islands (the)","Colombia","Comoros (the)","Congo (the Democratic Republic of the)","Congo (the)","Cook Islands (the)","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Curaçao","Cyprus","Czech Republic (the)","Denmark","Djibouti","Dominica","Dominican Republic (the)","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Falkland Islands (the) [Malvinas]","Faroe Islands (the)","Fiji","Finland","France","French Guiana","French Polynesia","French Southern Territories (the)","Gabon","Gambia (the)","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guadeloupe","Guam","Guatemala","Guernsey","Guinea","Guinea-Bissau","Guyana","Haiti","Heard Island and McDonald Islands","Holy See (the)","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran (Islamic Republic of)","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kiribati","Korea (the Democratic People's Republic of)","Korea (the Republic of)","Kuwait","Kyrgyzstan","Lao People's Democratic Republic (the)","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macao","Macedonia (the former Yugoslav Republic of)","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands (the)","Martinique","Mauritania","Mauritius","Mayotte","Mexico","Micronesia (Federated States of)","Moldova (the Republic of)","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands (the)","Netherlands Antilles","Neutral Zone","New Caledonia","New Zealand","Nicaragua","Niger (the)","Nigeria","Niue","Norfolk Island","Northern Mariana Islands (the)","Norway","Oman","Pakistan","Palau","Palestine, State of","Panama","Papua New Guinea","Paraguay","Peru","Philippines (the)","Pitcairn","Poland","Portugal","Puerto Rico","Qatar","Réunion","Romania","Russian Federation (the)","Rwanda","Saint Barthélemy","Saint Helena, Ascension and Tristan da Cunha","Saint Kitts and Nevis","Saint Lucia","Saint Martin (French part)","Saint Pierre and Miquelon","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Sint Maarten (Dutch part)","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Georgia and the South Sandwich Islands","South Sudan","Spain","Sri Lanka","Sudan (the)","Suriname","Svalbard and Jan Mayen","Swaziland","Sweden","Switzerland","Syrian Arab Republic","Taiwan (Province of China)","Tajikistan","Tanzania, United Republic of","Thailand","Timor-Leste","Togo","Tokelau","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Turks and Caicos Islands (the)","Tuvalu","Uganda","Ukraine","United Arab Emirates (the)","United Kingdom of Great Britain and Northern Ireland (the)","United States Minor Outlying Islands (the)","United States of America (the)","Uruguay","Uzbekistan","Vanuatu","Venezuela (Bolivarian Republic of)","Viet Nam","Virgin Islands (British)","Virgin Islands (U.S.)","Wallis and Futuna","Western Sahara*","Yemen","Zambia","Zimbabwe"
+        };
+
+        public static readonly string[] countryISOCodes =
+        {
+            "AF","AX","AL","DZ","AS","AD","AO","AI","AQ","AG","AR","AM","AW","AU","AT","AZ","BS","BH","BD","BB","BY","BE","BZ","BJ","BM","BT","BO","BQ","BA","BW","BV","BR","IO","BN","BG","BF","BI","CV","KH","CM","CA","KY","CF","TD","CL","CN","CX","CC","CO","KM","CD","CG","CK","CR","CI","HR","CU","CW","CY","CZ","DK","DJ","DM","DO","EC","EG","SV","GQ","ER","EE","ET","FK","FO","FJ","FI","FR","GF","PF","TF","GA","GM","GE","DE","GH","GI","GR","GL","GD","GP","GU","GT","GG","GN","GW","GY","HT","HM","VA","HN","HK","HU","IS","IN","ID","IR","IQ","IE","IM","IL","IT","JM","JP","JE","JO","KZ","KE","KI","KP","KR","KW","KG","LA","LV","LB","LS","LR","LY","LI","LT","LU","MO","MK","MG","MW","MY","MV","ML","MT","MH","MQ","MR","MU","YT","MX","FM","MD","MC","MN","ME","MS","MA","MZ","MM","NA","NR","NP","NL","AN","NT","NC","NZ","NI","NE","NG","NU","NF","MP","NO","OM","PK","PW","PS","PA","PG","PY","PE","PH","PN","PL","PT","PR","QA","RE","RO","RU","RW","BL","SH","KN","LC","MF","PM","VC","WS","SM","ST","SA","SN","RS","SC","SL","SG","SX","SK","SI","SB","SO","ZA","GS","SS","ES","LK","SD","SR","SJ","SZ","SE","CH","SY","TW","TJ","TZ","TH","TL","TG","TK","TO","TT","TN","TR","TM","TC","TV","UG","UA","AE","GB","UM","US","UY","UZ","VU","VE","VN","VG","VI","WF","EH","YE","ZM","ZW"
+        };
+
+        string code;
+
+        public string Code
+        {
+            get
+            {
+                return code;
+            }
+
+            set
+            {
+                if ((value == null) || (value != null && countryISOCodes.Where(c => c == value).Count() == 1))
+                {
+                    code = value;
+                }
+                else
+                {
+                    new ArgumentOutOfRangeException("Country code should be according to http://www.iso.org/iso/home/standards/country_codes.htm and belongs to Officially assigned codes");
+                }
+            }
+        }
+
+        public CountryISOCode()
+        {
+        }
+
+        public CountryISOCode(string code)
+        {
+            this.code = null;
+            Code = code;
+        }
+    }
+
     public struct CountryCode
     {
-        string countryISOCode;
+        public static readonly CountryCode[] CountryCodes;
+
+        static CountryCode()
+        {
+            CountryCodes = new CountryCode[CountryISOCode.countryISOCodes.Length];
+
+            for (int i = 0; i < CountryISOCode.countryISOCodes.Length; i++)
+            {
+                CountryCodes[i] = new CountryCode(CountryISOCode.countryISONames[i], CountryISOCode.countryISOCodes[i]);
+            }
+        }
+
+        CountryISOCode countryISOCode;
         int countryDialCode;
 
         public string CountryName { get; set; }
-        public string CountryISOCode
+        
+        public CountryISOCode CountryISOCode
         {
             get
             {
@@ -22,15 +81,10 @@ namespace apcurium.MK.Common
             }
             set
             {
-                if (string.IsNullOrEmpty(value) || value.Length != 2)
-                {
-                    new ArgumentException("Country ISO code must be according to http://www.iso.org/iso/home/standards/country_codes.htm");
-                }
-
-                countryISOCode = value.ToUpper();
-                countryDialCode = libphonenumber.PhoneNumberUtil.Instance.GetCountryCodeForRegion(countryISOCode);
+                countryDialCode = libphonenumber.PhoneNumberUtil.Instance.GetCountryCodeForRegion(countryISOCode.Code);
             }
         }
+        
         public int CountryDialCode
         {
             get
@@ -52,10 +106,10 @@ namespace apcurium.MK.Common
 
         public CountryCode(string countryName, string countryISOCode):this()
         {
-            this.countryISOCode = "";
+            this.countryISOCode = new CountryISOCode();
             this.countryDialCode = 0;
             CountryName = countryName;
-            CountryISOCode = countryISOCode;
+            CountryISOCode = new CountryISOCode(countryISOCode);
         }
 
         public string GetTextCountryDialCode()
@@ -63,13 +117,16 @@ namespace apcurium.MK.Common
             return CountryDialCode != 0 ? "+" + CountryDialCode.ToString() : null;
         }
 
-        public static int GetCountryCodeIndexByCountryISOCode(string countryISOCode)
+        public static int GetCountryCodeIndexByCountryISOCode(CountryISOCode countryISOCode)
         {
-            for (int i = 0; i < CountryCodes.Length; i++)
+            if (countryISOCode != null)
             {
-                if (countryISOCode == CountryCodes[i].CountryISOCode)
+                for (int i = 0; i < CountryCodes.Length; i++)
                 {
-                    return i;
+                    if (countryISOCode.Code == CountryCodes[i].CountryISOCode.Code)
+                    {
+                        return i;
+                    }
                 }
             }
 
@@ -118,260 +175,5 @@ namespace apcurium.MK.Common
 		{
 			return GetTextCountryDialCode();
 		}
-
-        public readonly static CountryCode[] CountryCodes = new CountryCode[]
-                {
-                   new CountryCode("Afghanistan", "AF"),
-                   new CountryCode("Åland Islands", "AX"),
-                   new CountryCode("Albania", "AL"),
-                   new CountryCode("Algeria", "DZ"),
-                   new CountryCode("American Samoa", "AS"),
-                   new CountryCode("Andorra", "AD"),
-                   new CountryCode("Angola", "AO"),
-                   new CountryCode("Anguilla", "AI"),
-                   new CountryCode("Antarctica", "AQ"),
-                   new CountryCode("Antigua and Barbuda", "AG"),
-                   new CountryCode("Argentina", "AR"),
-                   new CountryCode("Armenia", "AM"),
-                   new CountryCode("Aruba", "AW"),
-                   new CountryCode("Australia", "AU"),
-                   new CountryCode("Austria", "AT"),
-                   new CountryCode("Azerbaijan", "AZ"),
-                   new CountryCode("Bahamas (the)", "BS"),
-                   new CountryCode("Bahrain", "BH"),
-                   new CountryCode("Bangladesh", "BD"),
-                   new CountryCode("Barbados", "BB"),
-                   new CountryCode("Belarus", "BY"),
-                   new CountryCode("Belgium", "BE"),
-                   new CountryCode("Belize", "BZ"),
-                   new CountryCode("Benin", "BJ"),
-                   new CountryCode("Bermuda", "BM"),
-                   new CountryCode("Bhutan", "BT"),
-                   new CountryCode("Bolivia (Plurinational State of)", "BO"),
-                   new CountryCode("Bonaire, Sint Eustatius and Saba", "BQ"),
-                   new CountryCode("Bosnia and Herzegovina", "BA"),
-                   new CountryCode("Botswana", "BW"),
-                   new CountryCode("Bouvet Island", "BV"),
-                   new CountryCode("Brazil", "BR"),
-                   new CountryCode("British Indian Ocean Territory (the)", "IO"),
-                   new CountryCode("Brunei Darussalam", "BN"),
-                   new CountryCode("Bulgaria", "BG"),
-                   new CountryCode("Burkina Faso", "BF"),
-                   new CountryCode("Burundi", "BI"),
-                   new CountryCode("Cabo Verde", "CV"),
-                   new CountryCode("Cambodia", "KH"),
-                   new CountryCode("Cameroon", "CM"),
-                   new CountryCode("Canada", "CA"),
-                   new CountryCode("Cayman Islands (the)", "KY"),
-                   new CountryCode("Central African Republic (the)", "CF"),
-                   new CountryCode("Chad", "TD"),
-                   new CountryCode("Chile", "CL"),
-                   new CountryCode("China", "CN"),
-                   new CountryCode("Christmas Island", "CX"),
-                   new CountryCode("Cocos (Keeling) Islands (the)", "CC"),
-                   new CountryCode("Colombia", "CO"),
-                   new CountryCode("Comoros (the)", "KM"),
-                   new CountryCode("Congo (the Democratic Republic of the)", "CD"),
-                   new CountryCode("Congo (the)", "CG"),
-                   new CountryCode("Cook Islands (the)", "CK"),
-                   new CountryCode("Costa Rica", "CR"),
-                   new CountryCode("Côte d'Ivoire", "CI"),
-                   new CountryCode("Croatia", "HR"),
-                   new CountryCode("Cuba", "CU"),
-                   new CountryCode("Curaçao", "CW"),
-                   new CountryCode("Cyprus", "CY"),
-                   new CountryCode("Czech Republic (the)", "CZ"),
-                   new CountryCode("Denmark", "DK"),
-                   new CountryCode("Djibouti", "DJ"),
-                   new CountryCode("Dominica", "DM"),
-                   new CountryCode("Dominican Republic (the)", "DO"),
-                   new CountryCode("Ecuador", "EC"),
-                   new CountryCode("Egypt", "EG"),
-                   new CountryCode("El Salvador", "SV"),
-                   new CountryCode("Equatorial Guinea", "GQ"),
-                   new CountryCode("Eritrea", "ER"),
-                   new CountryCode("Estonia", "EE"),
-                   new CountryCode("Ethiopia", "ET"),
-                   new CountryCode("Falkland Islands (the) [Malvinas]", "FK"),
-                   new CountryCode("Faroe Islands (the)", "FO"),
-                   new CountryCode("Fiji", "FJ"),
-                   new CountryCode("Finland", "FI"),
-                   new CountryCode("France", "FR"),
-                   new CountryCode("French Guiana", "GF"),
-                   new CountryCode("French Polynesia", "PF"),
-                   new CountryCode("French Southern Territories (the)", "TF"),
-                   new CountryCode("Gabon", "GA"),
-                   new CountryCode("Gambia (the)", "GM"),
-                   new CountryCode("Georgia", "GE"),
-                   new CountryCode("Germany", "DE"),
-                   new CountryCode("Ghana", "GH"),
-                   new CountryCode("Gibraltar", "GI"),
-                   new CountryCode("Greece", "GR"),
-                   new CountryCode("Greenland", "GL"),
-                   new CountryCode("Grenada", "GD"),
-                   new CountryCode("Guadeloupe", "GP"),
-                   new CountryCode("Guam", "GU"),
-                   new CountryCode("Guatemala", "GT"),
-                   new CountryCode("Guernsey", "GG"),
-                   new CountryCode("Guinea", "GN"),
-                   new CountryCode("Guinea-Bissau", "GW"),
-                   new CountryCode("Guyana", "GY"),
-                   new CountryCode("Haiti", "HT"),
-                   new CountryCode("Heard Island and McDonald Islands", "HM"),
-                   new CountryCode("Holy See (the)", "VA"),
-                   new CountryCode("Honduras", "HN"),
-                   new CountryCode("Hong Kong", "HK"),
-                   new CountryCode("Hungary", "HU"),
-                   new CountryCode("Iceland", "IS"),
-                   new CountryCode("India", "IN"),
-                   new CountryCode("Indonesia", "ID"),
-                   new CountryCode("Iran (Islamic Republic of)", "IR"),
-                   new CountryCode("Iraq", "IQ"),
-                   new CountryCode("Ireland", "IE"),
-                   new CountryCode("Isle of Man", "IM"),
-                   new CountryCode("Israel", "IL"),
-                   new CountryCode("Italy", "IT"),
-                   new CountryCode("Jamaica", "JM"),
-                   new CountryCode("Japan", "JP"),
-                   new CountryCode("Jersey", "JE"),
-                   new CountryCode("Jordan", "JO"),
-                   new CountryCode("Kazakhstan", "KZ"),
-                   new CountryCode("Kenya", "KE"),
-                   new CountryCode("Kiribati", "KI"),
-                   new CountryCode("Korea (the Democratic People's Republic of)", "KP"),
-                   new CountryCode("Korea (the Republic of)", "KR"),
-                   new CountryCode("Kuwait", "KW"),
-                   new CountryCode("Kyrgyzstan", "KG"),
-                   new CountryCode("Lao People's Democratic Republic (the)", "LA"),
-                   new CountryCode("Latvia", "LV"),
-                   new CountryCode("Lebanon", "LB"),
-                   new CountryCode("Lesotho", "LS"),
-                   new CountryCode("Liberia", "LR"),
-                   new CountryCode("Libya", "LY"),
-                   new CountryCode("Liechtenstein", "LI"),
-                   new CountryCode("Lithuania", "LT"),
-                   new CountryCode("Luxembourg", "LU"),
-                   new CountryCode("Macao", "MO"),
-                   new CountryCode("Macedonia (the former Yugoslav Republic of)", "MK"),
-                   new CountryCode("Madagascar", "MG"),
-                   new CountryCode("Malawi", "MW"),
-                   new CountryCode("Malaysia", "MY"),
-                   new CountryCode("Maldives", "MV"),
-                   new CountryCode("Mali", "ML"),
-                   new CountryCode("Malta", "MT"),
-                   new CountryCode("Marshall Islands (the)", "MH"),
-                   new CountryCode("Martinique", "MQ"),
-                   new CountryCode("Mauritania", "MR"),
-                   new CountryCode("Mauritius", "MU"),
-                   new CountryCode("Mayotte", "YT"),
-                   new CountryCode("Mexico", "MX"),
-                   new CountryCode("Micronesia (Federated States of)", "FM"),
-                   new CountryCode("Moldova (the Republic of)", "MD"),
-                   new CountryCode("Monaco", "MC"),
-                   new CountryCode("Mongolia", "MN"),
-                   new CountryCode("Montenegro", "ME"),
-                   new CountryCode("Montserrat", "MS"),
-                   new CountryCode("Morocco", "MA"),
-                   new CountryCode("Mozambique", "MZ"),
-                   new CountryCode("Myanmar", "MM"),
-                   new CountryCode("Namibia", "NA"),
-                   new CountryCode("Nauru", "NR"),
-                   new CountryCode("Nepal", "NP"),
-                   new CountryCode("Netherlands (the)", "NL"),
-                   new CountryCode("Netherlands Antilles", "AN"),
-                   new CountryCode("Neutral Zone", "NT"),
-                   new CountryCode("New Caledonia", "NC"),
-                   new CountryCode("New Zealand", "NZ"),
-                   new CountryCode("Nicaragua", "NI"),
-                   new CountryCode("Niger (the)", "NE"),
-                   new CountryCode("Nigeria", "NG"),
-                   new CountryCode("Niue", "NU"),
-                   new CountryCode("Norfolk Island", "NF"),
-                   new CountryCode("Northern Mariana Islands (the)", "MP"),
-                   new CountryCode("Norway", "NO"),
-                   new CountryCode("Oman", "OM"),
-                   new CountryCode("Pakistan", "PK"),
-                   new CountryCode("Palau", "PW"),
-                   new CountryCode("Palestine, State of", "PS"),
-                   new CountryCode("Panama", "PA"),
-                   new CountryCode("Papua New Guinea", "PG"),
-                   new CountryCode("Paraguay", "PY"),
-                   new CountryCode("Peru", "PE"),
-                   new CountryCode("Philippines (the)", "PH"),
-                   new CountryCode("Pitcairn", "PN"),
-                   new CountryCode("Poland", "PL"),
-                   new CountryCode("Portugal", "PT"),
-                   new CountryCode("Puerto Rico", "PR"),
-                   new CountryCode("Qatar", "QA"),
-                   new CountryCode("Réunion", "RE"),
-                   new CountryCode("Romania", "RO"),
-                   new CountryCode("Russian Federation (the)", "RU"),
-                   new CountryCode("Rwanda", "RW"),
-                   new CountryCode("Saint Barthélemy", "BL"),
-                   new CountryCode("Saint Helena, Ascension and Tristan da Cunha", "SH"),
-                   new CountryCode("Saint Kitts and Nevis", "KN"),
-                   new CountryCode("Saint Lucia", "LC"),
-                   new CountryCode("Saint Martin (French part)", "MF"),
-                   new CountryCode("Saint Pierre and Miquelon", "PM"),
-                   new CountryCode("Saint Vincent and the Grenadines", "VC"),
-                   new CountryCode("Samoa", "WS"),
-                   new CountryCode("San Marino", "SM"),
-                   new CountryCode("Sao Tome and Principe", "ST"),
-                   new CountryCode("Saudi Arabia", "SA"),
-                   new CountryCode("Senegal", "SN"),
-                   new CountryCode("Serbia", "RS"),
-                   new CountryCode("Seychelles", "SC"),
-                   new CountryCode("Sierra Leone", "SL"),
-                   new CountryCode("Singapore", "SG"),
-                   new CountryCode("Sint Maarten (Dutch part)", "SX"),
-                   new CountryCode("Slovakia", "SK"),
-                   new CountryCode("Slovenia", "SI"),
-                   new CountryCode("Solomon Islands", "SB"),
-                   new CountryCode("Somalia", "SO"),
-                   new CountryCode("South Africa", "ZA"),
-                   new CountryCode("South Georgia and the South Sandwich Islands", "GS"),
-                   new CountryCode("South Sudan", "SS"),
-                   new CountryCode("Spain", "ES"),
-                   new CountryCode("Sri Lanka", "LK"),
-                   new CountryCode("Sudan (the)", "SD"),
-                   new CountryCode("Suriname", "SR"),
-                   new CountryCode("Svalbard and Jan Mayen", "SJ"),
-                   new CountryCode("Swaziland", "SZ"),
-                   new CountryCode("Sweden", "SE"),
-                   new CountryCode("Switzerland", "CH"),
-                   new CountryCode("Syrian Arab Republic", "SY"),
-                   new CountryCode("Taiwan (Province of China)", "TW"),
-                   new CountryCode("Tajikistan", "TJ"),
-                   new CountryCode("Tanzania, United Republic of", "TZ"),
-                   new CountryCode("Thailand", "TH"),
-                   new CountryCode("Timor-Leste", "TL"),
-                   new CountryCode("Togo", "TG"),
-                   new CountryCode("Tokelau", "TK"),
-                   new CountryCode("Tonga", "TO"),
-                   new CountryCode("Trinidad and Tobago", "TT"),
-                   new CountryCode("Tunisia", "TN"),
-                   new CountryCode("Turkey", "TR"),
-                   new CountryCode("Turkmenistan", "TM"),
-                   new CountryCode("Turks and Caicos Islands (the)", "TC"),
-                   new CountryCode("Tuvalu", "TV"),
-                   new CountryCode("Uganda", "UG"),
-                   new CountryCode("Ukraine", "UA"),
-                   new CountryCode("United Arab Emirates (the)", "AE"),
-                   new CountryCode("United Kingdom of Great Britain and Northern Ireland (the)", "GB"),
-                   new CountryCode("United States Minor Outlying Islands (the)", "UM"),
-                   new CountryCode("United States of America (the)", "US"),
-                   new CountryCode("Uruguay", "UY"),
-                   new CountryCode("Uzbekistan", "UZ"),
-                   new CountryCode("Vanuatu", "VU"),
-                   new CountryCode("Venezuela (Bolivarian Republic of)", "VE"),
-                   new CountryCode("Viet Nam", "VN"),
-                   new CountryCode("Virgin Islands (British)", "VG"),
-                   new CountryCode("Virgin Islands (U.S.)", "VI"),
-                   new CountryCode("Wallis and Futuna", "WF"),
-                   new CountryCode("Western Sahara*", "EH"),
-                   new CountryCode("Yemen", "YE"),
-                   new CountryCode("Zambia", "ZM"),
-                   new CountryCode("Zimbabwe", "ZW"),
-                };
     }
 }

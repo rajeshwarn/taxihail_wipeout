@@ -1,6 +1,7 @@
 ﻿using System;
 using Cirrious.CrossCore.Converters;
 using System.Globalization;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
@@ -8,17 +9,9 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 	{
 		public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value != null)
+			if ((value as CountryISOCode) != null)
 			{
-				int val = 0;
-
-				if (int.TryParse(value.ToString(), out val))
-				{
-					if (val > 0)
-					{
-						return "+" + val.ToString(culture);
-					}
-				}
+                return "+" + CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode((value as CountryISOCode))).CountryDialCode;
 			}
 
 			return null;

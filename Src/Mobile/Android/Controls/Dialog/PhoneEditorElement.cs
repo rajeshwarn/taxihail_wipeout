@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
         {
             if (phoneCountryCodeDropDown != null && phoneNumberTextEdit != null)
             {
-                phoneCountryCodeDropDown.SetSelection(CountryCode.GetCountryCodeIndexByCountryDialCode(e.CountryDialCode));
+                phoneCountryCodeDropDown.SetSelection(CountryCode.GetCountryCodeIndexByCountryISOCode(e.Country));
                 phoneNumberTextEdit.Text = e.PhoneNumber;
             }
         }
@@ -120,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
             if (NotifyChanges != null)
                 NotifyChanges(this, new PhoneNumberChangedEventArgs()
                 {
-                    CountryDialCode = CountryCode.GetCountryCodeByIndex(phoneCountryCodeDropDown.SelectedItemPosition).CountryDialCode,
+                    Country = CountryCode.GetCountryCodeByIndex(phoneCountryCodeDropDown.SelectedItemPosition).CountryISOCode,
                     PhoneNumber = phoneNumberTextEdit.Text
                 });
         }
@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
             if (NotifyChanges != null)
                 NotifyChanges(this, new PhoneNumberChangedEventArgs()
                 {
-                    CountryDialCode = CountryCode.GetCountryCodeByIndex(phoneCountryCodeDropDown.SelectedItemPosition).CountryDialCode,
+                    Country = CountryCode.GetCountryCodeByIndex(phoneCountryCodeDropDown.SelectedItemPosition).CountryISOCode,
                     PhoneNumber = phoneNumberTextEdit.Text
                 });
         }

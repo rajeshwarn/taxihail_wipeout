@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(_lblDialCode)
                 .For(v => v.Text)
-                .To(vm => vm.Settings.CountryDialCode)
+                .To(vm => vm.Settings.Country)
                 .WithConversion("DialCodeConverter");
 
             set.Bind(_lblPhone)

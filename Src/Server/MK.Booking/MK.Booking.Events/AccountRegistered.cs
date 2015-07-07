@@ -1,6 +1,8 @@
 ﻿#region
 
+using apcurium.MK.Common;
 using Infrastructure.EventSourcing;
+using System;
 
 #endregion
 
@@ -12,7 +14,7 @@ namespace apcurium.MK.Booking.Events
 
         public string Email { get; set; }
 
-        public int CountryDialCode { get; set; }
+        public CountryISOCode Country { get; set; }
 
         public string Phone { get; set; }
 

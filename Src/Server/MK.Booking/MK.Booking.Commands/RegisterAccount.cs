@@ -2,6 +2,7 @@
 
 using System;
 using Infrastructure.Messaging;
+using apcurium.MK.Common;
 
 #endregion
 
@@ -22,7 +23,7 @@ namespace apcurium.MK.Booking.Commands
 
         public string Email { get; set; }
 
-        public int CountryDialCode { get; set; }
+        public CountryISOCode Country { get; set; }
 
         public string Phone { get; set; }
 

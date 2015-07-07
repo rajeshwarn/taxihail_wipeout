@@ -13,28 +13,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class PhoneNumberChangedEventArgs : EventArgs
     {
-        public int CountryDialCode { get; set; }
+        public CountryISOCode Country { get; set; }
 
         public string PhoneNumber { get; set; }
     }
 
     public class PhoneNumberInfo
     {
-        int countryDialCode;
+        CountryISOCode country;
+
         string phoneNumber;
 
-        public int CountryDialCode
-        {
-            get
-            {
-                return countryDialCode;
-            }
-            set
-            {
-                countryDialCode = value;
-                PhoneNumberDatasourceChangedCallEvent();
-            }
-        }
+        public CountryISOCode Country { get; set; }
 
         public string PhoneNumber
         {
@@ -56,12 +46,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public void PhoneNumberDatasourceChangedCallEvent()
         {
             if (PhoneNumberDatasourceChanged != null)
-                PhoneNumberDatasourceChanged(this, new PhoneNumberChangedEventArgs() { CountryDialCode = countryDialCode, PhoneNumber = phoneNumber });
+                PhoneNumberDatasourceChanged(this, new PhoneNumberChangedEventArgs() { Country = country, PhoneNumber = phoneNumber });
         }
 
         public void NotifyChanges(object sender, PhoneNumberChangedEventArgs e)
         {
-            this.countryDialCode = e.CountryDialCode;
+            this.country = e.Country;
             
 			if (e.PhoneNumber != null)
 			{
@@ -96,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             PhoneNumber = new PhoneNumberInfo()
             {
-                CountryDialCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryISOCode)).CountryDialCode
+                Country = new CountryISOCode(countryISOCode)
             };
 
 			Data = new RegisterAccount
@@ -105,16 +95,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				TwitterId = twitterId,
 				Name = name,
 				Email = email,
-                CountryDialCode = 1
+                Country = PhoneNumber.Country
 			};
 			#if DEBUG
 			Data.Email = "toto2@titi.com";
 			Data.Name = "Matthieu Duluc" ;
-            Data.CountryDialCode = 1;
+            Data.Country = new CountryISOCode("CA");
 			Data.Phone = "5146543024";
 			Data.Password = "password";
 			ConfirmPassword = "password";
-            PhoneNumber.CountryDialCode = Data.CountryDialCode;
+            PhoneNumber.Country = Data.Country;
             PhoneNumber.PhoneNumber = Data.Phone;
 			#endif
 		}
@@ -157,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return this.GetCommand(async () =>
 				{
                     Data.Phone = PhoneNumber.PhoneNumber;
-                    Data.CountryDialCode = PhoneNumber.CountryDialCode;
+                    Data.Country = PhoneNumber.Country;
 
 					if (!IsEmail(Data.Email))
 					{
@@ -178,11 +168,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 
-                    string countryISOCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(Data.CountryDialCode)).CountryISOCode;
-                    if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(Data.Phone, countryISOCode))
+                    if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(Data.Phone, Data.Country.Code))
 					{
-                        libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(countryISOCode);
-                        string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(countryISOCode);
+                        libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(Data.Country.Code);
+                        string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(Data.Country.Code);
 
                         await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], phoneNumberExampleText));
 						return;

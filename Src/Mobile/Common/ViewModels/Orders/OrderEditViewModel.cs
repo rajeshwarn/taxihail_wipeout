@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
-			PhoneNumber.CountryDialCode = _bookingSettings.CountryDialCode;
+			PhoneNumber.Country = _bookingSettings.Country;
 			RaisePropertyChanged(() => IsChargeTypesEnabled);
             RaisePropertyChanged(() => PhoneNumber);
             RaisePropertyChanged(() => SelectedCountryCode);
@@ -100,12 +100,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(_bookingSettings.CountryDialCode));
+                return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(_bookingSettings.Country));
             }
 
             set
             {
-                _bookingSettings.CountryDialCode = value.CountryDialCode;
+                _bookingSettings.Country = value.CountryISOCode;
                 RaisePropertyChanged();
             }
         }
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					RaisePropertyChanged(() => ChargeTypeId);
 					RaisePropertyChanged(() => ChargeTypeName);
                     RaisePropertyChanged(() => SelectedCountryCode);
-					PhoneNumber.CountryDialCode = _bookingSettings.CountryDialCode;
+					PhoneNumber.Country = _bookingSettings.Country;
 				}
 			}
 		}
@@ -150,11 +150,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
-                    string countryISOCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(SelectedCountryCode.CountryDialCode)).CountryISOCode;
-                    if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(BookingSettings.Phone, countryISOCode))
+                    if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(BookingSettings.Phone, SelectedCountryCode.CountryISOCode.Code))
                     {
-                        libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(countryISOCode);
-                        string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(countryISOCode);
+                        libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(SelectedCountryCode.CountryISOCode.Code);
+                        string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(SelectedCountryCode.CountryISOCode.Code);
 
                         await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
                             string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], phoneNumberExampleText));

@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _bookingSettings = bookingSettings.FromJson<BookingSettings>();
                     _paymentSettings = await _paymentService.GetPaymentSettings();
 
-					PhoneNumber.CountryDialCode = _bookingSettings.CountryDialCode;
+					PhoneNumber.Country = _bookingSettings.Country;
 
                     var p = await _accountService.GetPaymentsList();
 
@@ -253,12 +253,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(_bookingSettings.CountryDialCode));
+                return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(_bookingSettings.Country));
             }
 
             set
             {
-                _bookingSettings.CountryDialCode = value.CountryDialCode;
+                _bookingSettings.Country = value.CountryISOCode;
                 RaisePropertyChanged();
             }
         }
@@ -422,11 +422,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return false;
             }
 
-            string countryISOCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(SelectedCountryCode.CountryDialCode)).CountryISOCode;
-            if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(Phone, countryISOCode))
+            if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(Phone, SelectedCountryCode.CountryISOCode.Code))
             {
-                libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(countryISOCode);
-                string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(countryISOCode);
+                libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(SelectedCountryCode.CountryISOCode.Code);
+                string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(SelectedCountryCode.CountryISOCode.Code);
 
                 await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
                     string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], phoneNumberExampleText));

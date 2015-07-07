@@ -12,6 +12,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -101,7 +102,9 @@ namespace apcurium.MK.Booking.Api.Services
                         {
                             ClientLanguageCode = command.Language,
                             Code = confirmationToken,
-                            PhoneNumber = command.Phone
+                            PhoneNumber = "+"
+                            + CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(command.Country)).CountryDialCode.ToString()
+                            + command.Phone
                         });
                     }
                     else

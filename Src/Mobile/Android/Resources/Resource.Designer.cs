@@ -3725,8 +3725,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0c00f2
 			public const int lblName = 2131493106;
 			
-			// aapt resource value: 0x7f0c0109
-			public const int lblNbPassengers = 2131493129;
+			// aapt resource value: 0x7f0c0108
+			public const int lblNbPassengers = 2131493128;
 			
 			// aapt resource value: 0x7f0c00f7
 			public const int lblPassengers = 2131493111;
@@ -3887,11 +3887,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0c0106
 			public const int passengerNameLayout = 2131493126;
 			
-			// aapt resource value: 0x7f0c0108
-			public const int passengerNumberLayout = 2131493128;
-			
 			// aapt resource value: 0x7f0c0107
-			public const int passengerPhoneLayout = 2131493127;
+			public const int passengerNumberLayout = 2131493127;
+			
+			// aapt resource value: 0x7f0c0109
+			public const int passengerPhoneLayout = 2131493129;
 			
 			// aapt resource value: 0x7f0c019d
 			public const int paypalImage = 2131493277;
