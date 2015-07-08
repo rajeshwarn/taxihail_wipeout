@@ -54,7 +54,6 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
             _honeyBadgerServiceClient = _serverSettings != null && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.Geo ? geoServiceClient : honeyBadgerServiceClient;
-            //_honeyBadgerServiceClient = honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _logger = logger;
         }
