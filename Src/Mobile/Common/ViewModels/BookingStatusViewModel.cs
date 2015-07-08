@@ -148,15 +148,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+	    public string VehicleRegistration
+	    {
+	        get
+	        {
+	            return OrderStatusDetail.RideLinqPairingCode.HasValue()
+	                ? OrderStatusDetail.VehicleNumber
+	                : OrderStatusDetail.DriverInfos.VehicleRegistration;
+	        }
+	    }
+
         public bool IsDriverInfoAvailable
         {
             get 
             {
-				bool showVehicleInformation = Settings.ShowVehicleInformation;
-				bool isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+				var showVehicleInformation = Settings.ShowVehicleInformation;
+				var isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded;
-				bool hasDriverInformation = OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue ()
+				var hasDriverInformation = OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue ()
 					|| OrderStatusDetail.DriverInfos.LastName.HasValue ()
 					|| OrderStatusDetail.DriverInfos.FirstName.HasValue ();
 
@@ -170,32 +180,66 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 		public bool VehicleDriverHidden
 		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.FullName) || !IsDriverInfoAvailable; }
+		    get
+		    {
+		        return !IsDriverInfoAvailable 
+                    || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.FullName) 
+                    || OrderStatusDetail.RideLinqPairingCode.HasValue();
+		    }
 		}
 		public bool VehicleLicenceHidden
 		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleRegistration) || !IsDriverInfoAvailable; }
+		    get
+		    {
+                return !IsDriverInfoAvailable || 
+                    (string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleRegistration) && !OrderStatusDetail.RideLinqPairingCode.HasValue()) ;
+		    }
 		}
 		public bool VehicleTypeHidden
 		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleType) || !IsDriverInfoAvailable; }
+            get
+            {
+                return !IsDriverInfoAvailable
+                  || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleType)
+                  || OrderStatusDetail.RideLinqPairingCode.HasValue();
+            }
 		}
 		public bool VehicleMakeHidden
 		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleMake) || !IsDriverInfoAvailable; }
+            get
+            {
+                return !IsDriverInfoAvailable
+                   || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleMake)
+                   || OrderStatusDetail.RideLinqPairingCode.HasValue(); 
+            }
 		}
 		public bool VehicleModelHidden
 		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleModel) || !IsDriverInfoAvailable; }
+            get
+            {
+                return !IsDriverInfoAvailable
+                     || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleModel)
+                     || OrderStatusDetail.RideLinqPairingCode.HasValue(); 
+            }
 		}
 		public bool VehicleColorHidden
 		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor) || !IsDriverInfoAvailable; }
+            get
+            {
+                return !IsDriverInfoAvailable
+                     || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor)
+                     || OrderStatusDetail.RideLinqPairingCode.HasValue(); 
+            }
 		}
 
         public bool DriverPhotoHidden
         {
-            get { return (string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.DriverPhotoUrl) || !IsDriverInfoAvailable); }
+            get
+            {
+                return !IsDriverInfoAvailable
+                     || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.DriverPhotoUrl)
+                     || OrderStatusDetail.RideLinqPairingCode.HasValue();
+            }
         }
         
         public bool CanGoBack
@@ -260,6 +304,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged(() => IsCallTaxiVisible);
                 RaisePropertyChanged(() => IsMessageTaxiVisible);
 				RaisePropertyChanged(() => CanGoBack);
+                RaisePropertyChanged(() => VehicleRegistration);
 			}
 		}
 
