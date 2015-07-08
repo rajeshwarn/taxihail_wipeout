@@ -53,16 +53,17 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             var ann = ((AddressAnnotation)Annotation);
             Image = ann.GetImage();
 
-            if (ann.AddressType == AddressAnnotationType.Taxi 
-				&& ann.ShowSubtitleOnPin) // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
+            // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
+            if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin) 
             {
-                var lblVehicleNumber = new UILabel (new CGRect (5, 8, Image.Size.Width-10, 16));
-                lblVehicleNumber.BackgroundColor = UIColor.Clear;
+                var lblVehicleNumber = new UILabel (new CGRect (0, -23, Image.Size.Width, 20));
+                lblVehicleNumber.BackgroundColor = UIColor.White;
                 lblVehicleNumber.TextColor = Theme.CompanyColor;
                 lblVehicleNumber.TextAlignment = UITextAlignment.Center;
                 lblVehicleNumber.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 30 / 2);
                 lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
-                lblVehicleNumber.Text = ((AddressAnnotation)Annotation).Subtitle;
+                lblVehicleNumber.Text = ((AddressAnnotation) Annotation).Subtitle;
+
                 AddSubview (lblVehicleNumber);
             }
 
@@ -72,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             {
                 CenterOffset = new CGPoint(0, -Image.Size.Height / 2 + 2);
             }
+             
 		}
 	}
 }
