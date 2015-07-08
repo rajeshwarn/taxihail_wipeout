@@ -146,9 +146,9 @@ namespace Cupertino
                 Regex.Match(htmlContent, "profileDataURL = \"([^\"]*)\"")
                     .Value.Replace("profileDataURL = ", string.Empty)
                     .Replace("\"", string.Empty); // '/profileDataURL = "([^"]*)"/'
-            jsonDataUrl += "&type=production";
+            jsonDataUrl += "&type=production&pageSize=500&pageNumber=1&sort=name=asc";
 
-            if (jsonDataUrl == "&type=production")
+            if (jsonDataUrl == "&type=production&pageSize=500&pageNumber=1&sort=name=asc")
             {
                 errorMessage = "There was a problem with the Apple Developer Center, please try again";
                 return null;
@@ -157,7 +157,22 @@ namespace Cupertino
             var jsonContent = _browserSession.Post(jsonDataUrl);
             var response = JsonConvert.DeserializeObject<ProvisioningProfileList>(jsonContent);
 
-            var profiles = response.ProvisioningProfiles.Where(x => x.AppId.Identifier == appId);
+            var profileIds = response.ProvisioningProfiles.Select(x => x.ProvisioningProfileId);
+
+            var profiles = new List<ProvisioningProfile>();
+
+            jsonDataUrl =
+                Regex.Match(htmlContent, "profileDataURL = \"([^\"]*)\"")
+                    .Value.Replace("profileDataURL = ", string.Empty)
+                    .Replace("\"", string.Empty).Replace("listProvisioningProfiles", "getProvisioningProfile");
+            foreach(var profileId in profileIds)
+            {
+                
+                _browserSession.FormElements["provisioningProfileId"] = profileId;
+                var resp = _browserSession.Post(jsonDataUrl);
+                profiles.Add(JsonConvert.DeserializeObject<ProvisioningProfileWrapper>(resp).ProvisioningProfile);
+            }
+            profiles = profiles.Where(x => x.AppId.Identifier == appId).ToList();
             if (!profiles.Any())
             {
                 errorMessage = string.Format("No profile corresponding to identifier {0} found", appId);
@@ -214,7 +229,7 @@ namespace Cupertino
                 Regex.Match(htmlContent, "deviceDataURL = \"([^\"]*)\"")
                     .Value.Replace("deviceDataURL = ", string.Empty)
                     .Replace("\"", string.Empty); // '/profileDataURL = "([^"]*)"/'
-
+            jsonDataUrl += "&pageSize=500&pageNumber=1&sort=name=asc";
             var jsonContent = _browserSession.Post(jsonDataUrl);
             return JsonConvert.DeserializeObject<RegisteredDevices>(jsonContent);
         }
@@ -228,7 +243,7 @@ namespace Cupertino
             HtmlNode selectedTeam = null;
             try
             {
-                var teams = doc.DocumentNode.SelectNodes("//select[@id='teams']//option");
+                var teams = doc.DocumentNode.SelectNodes("//label[contains(@for, 'memberDisplayId')]");//][@for='memberDisplayId*']");
                 selectedTeam = teams.FirstOrDefault(x => x.InnerText.Contains(team));
             }
             catch (Exception)
@@ -249,7 +264,7 @@ namespace Cupertino
                 return null;
             }
 
-            _browserSession.FormElements["memberDisplayId"] = selectedTeam.Attributes["value"].Value;
+            _browserSession.FormElements["memberDisplayId"] = selectedTeam.Attributes["for"].Value.Replace("memberDisplayId_","");
             htmlContent = _browserSession.Post("https://developer.apple.com" + actionUrl);
 
             return htmlContent;
