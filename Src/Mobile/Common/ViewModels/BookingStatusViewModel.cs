@@ -148,16 +148,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-	    public string VehicleRegistration
-	    {
-	        get
-	        {
-	            return OrderStatusDetail.RideLinqPairingCode.HasValue()
-	                ? OrderStatusDetail.VehicleNumber
-	                : OrderStatusDetail.DriverInfos.VehicleRegistration;
-	        }
-	    }
-
         public bool IsDriverInfoAvailable
         {
             get 
@@ -191,11 +181,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 		    get
 		    {
-                return !IsDriverInfoAvailable || 
-                    (string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleRegistration) && !OrderStatusDetail.RideLinqPairingCode.HasValue()) ;
+                return !IsDriverInfoAvailable
+                    || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleRegistration)
+                    || OrderStatusDetail.RideLinqPairingCode.HasValue();
 		    }
 		}
-		public bool VehicleTypeHidden
+
+	    public bool VehicleMedallionHidden
+	    {
+	        get
+	        {
+	            return !IsDriverInfoAvailable 
+                    || (string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber) && !OrderStatusDetail.RideLinqPairingCode.HasValue());
+	        }
+	    }
+
+	    public bool VehicleTypeHidden
 		{
             get
             {
@@ -304,7 +305,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged(() => IsCallTaxiVisible);
                 RaisePropertyChanged(() => IsMessageTaxiVisible);
 				RaisePropertyChanged(() => CanGoBack);
-                RaisePropertyChanged(() => VehicleRegistration);
+                RaisePropertyChanged(() => VehicleMedallionHidden);
 			}
 		}
 
