@@ -29,7 +29,6 @@
   <string name="Register">Register</string>
   <string name="View_TermsAndConditions">Terms and Conditions</string>
   <string name="View_UpdatedTermsAndConditions">New Terms and Conditions</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
   <string name="UpdatedTermsAndConditionsAcceptButton">Accept</string>
   <string name="TermsAndConditionsAcknowledgment">I acknowledge that I have read and understood the Terms and Conditions.</string>
   <string name="TermsAndConditionsLabel">Terms and Conditions</string>
@@ -87,8 +86,6 @@
   <string name="StatusViewTitle">Confirmed</string>
   <string name="Order">Order</string>
   <string name="StatusDescription">Order #{0}</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked to your account.</string>
-  <string name="CreditCardAdded_PayInCarDisabled">Your account is now enabled to pay for rides with this credit card.</string>
   <string name="ChangeBookingSettingsButton">Change booking settings</string>
   <string name="HistoryViewNoHistoryLabel">No booking history</string>
   <string name="LocationNoHistory">No history</string>
@@ -564,7 +561,6 @@
   <string name="Overdue_Amount">Amount due:</string>
   <string name="Overdue_Retry">Pay Now</string>
   <string name="Overdue_AddNewCard">Update Credit Card</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
   <string name="View_Overdue">Payment Declined</string>
   <string name="Overdue_Failed_Message">Your transaction was denied, please try again later or replace your credit card with a new one.</string>
   <string name="Overdue_Failed_Title">Payment Failed</string>
@@ -634,5 +630,9 @@
   <string name="ManualRideLinqStatus_Email">A receipt will be emailed to {0}.</string>
   <string name="ManualRideLinqStatus_Greetings">Enjoy the ride!</string>
   <string name="MessageToDriverTitle">Message to Driver</string>
+  <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance or try again.</string>
   <string name="SendMessageToDriverErrorMessage">An error occurred while trying to contact the driver. Please try again later.</string>
+  <string name="ServiceError_ErrorCreatingOrderMessage_NoCall">The order cannot be created, please try again.</string>
+  <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
+  <string name="DriverInfoVehicleMedallion">Medallion:</string>
 </resources>
