@@ -130,7 +130,7 @@
                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7X5-Mr-nnP" userLabel="Phone view">
                                     <rect key="frame" x="8" y="113" width="174" height="41"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78I-8Z-hfc" customClass="DialCodeSelector">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78I-8Z-hfc" customClass="CountrySelector">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="41"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="50" id="GsA-Z9-1Ji"/>

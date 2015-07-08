@@ -623,7 +623,7 @@
     <BundleResource Include="Resources\message%402x.png" />
     <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
     <Compile Include="Controls\Widgets\PhoneEditorElement.cs" />
-    <Compile Include="Controls\Widgets\DialCodeSelector.cs" />
+    <Compile Include="Controls\Widgets\CountrySelector.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

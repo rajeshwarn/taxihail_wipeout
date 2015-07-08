@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		public event PhoneNumberInfo.PhoneNumberDatasourceChangedEventHandler NotifyChanges;
 		Action PhoneNumberInfoDatasourceChanged;
 
-		DialCodeSelector phoneDialCodeLabel;
+        CountrySelector phoneDialCodeLabel;
 		UITextField phoneNumberTextEdit;
 		UINavigationController navigationController;
 
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			phoneNumberTextEdit.SetHeight(21).IncrementY(11);
 			phoneNumberTextEdit.EditingChanged += AfterTextChanged;
 
-			phoneDialCodeLabel = new DialCodeSelector(cell.Frame.SetX(0).SetWidth(50));
+            phoneDialCodeLabel = new CountrySelector(cell.Frame.SetX(0).SetWidth(50));
 			phoneDialCodeLabel.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
 			phoneDialCodeLabel.TintColor = UIColor.Black;
 			phoneDialCodeLabel.TextColor = UIColor.FromRGB(44, 44, 44);

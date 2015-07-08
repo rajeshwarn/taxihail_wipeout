@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblCustomerNumber { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.DialCodeSelector lblDialCode { get; set; }
+        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.CountrySelector lblDialCode { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblName { get; set; }

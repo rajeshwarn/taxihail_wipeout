@@ -10,8 +10,8 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-	[Register("DialCodeSelector")]
-	public class DialCodeSelector:UILabel
+    [Register("CountrySelector")]
+	public class CountrySelector:UILabel
 	{
 		UINavigationController navigationController;
 		Action<CountryCode> OnDialCodeChanged;
@@ -20,17 +20,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		Action PhoneNumberInfoDatasourceChanged;
 
 
-		public DialCodeSelector(IntPtr handle):base(handle)
+        public CountrySelector(IntPtr handle):base(handle)
 		{
 			Initialize();
 		}
 
-		public DialCodeSelector():base()
+        public CountrySelector():base()
 		{
 			Initialize();
 		}
 
-		public DialCodeSelector(CGRect frame):base(frame)
+        public CountrySelector(CGRect frame):base(frame)
 		{
 			Initialize();
 		}

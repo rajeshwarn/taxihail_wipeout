@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private readonly string _image;
 		float fontSize;
 
-        public RadioElementWithId(TId? id, string caption, string image = null, bool showBottomBar = true, float fontSize = 16):base( caption )
+        public RadioElementWithId(TId? id, string caption, string image = null, bool showBottomBar = true, float fontSize = 32 / 2):base( caption )
         {
             Id = id;
             _image = image;

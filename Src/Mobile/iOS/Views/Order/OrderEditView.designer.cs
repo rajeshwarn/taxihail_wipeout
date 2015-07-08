@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		UIKit.UILabel lblPhone { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.DialCodeSelector lblPhoneDialCode { get; set; }
+        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.CountrySelector lblPhoneDialCode { get; set; }
 
 		[Outlet]
 		UIKit.UIView phoneNumberView { get; set; }
