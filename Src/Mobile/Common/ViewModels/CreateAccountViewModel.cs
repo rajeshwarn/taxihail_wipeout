@@ -110,10 +110,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Country = PhoneNumber.Country
 			};
 			#if DEBUG
-			Data.Email = "toto2@titi.com";
-			Data.Name = "Matthieu Duluc" ;
+			Data.Email = "testaccount@net.net";
+			Data.Name = "test account" ;
             Data.Country = new CountryISOCode("CA");
-			Data.Phone = "5146543024";
+			Data.Phone = "5147777777";
 			Data.Password = "password";
 			ConfirmPassword = "password";
             PhoneNumber.Country = Data.Country;
