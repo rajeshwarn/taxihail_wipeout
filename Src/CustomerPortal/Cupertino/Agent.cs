@@ -33,9 +33,9 @@ namespace Cupertino
                 _browserSession.Get(
                     "https://daw.apple.com/cgi-bin/WebObjects/DSAuthWeb.woa/wa/login?&appIdKey=891bd3417a7776362562d2197f89480a8547b108fd934911bcbea0110d07f757&path=%2F%2Fmembercenter%2Flogin.action");
             var actionUrl = GetPostUrl(htmlContent);
-            _browserSession.FormElements["theAccountName"] = username;
-            _browserSession.FormElements["theAccountPW"] = password;
-            htmlContent = _browserSession.Post("https://daw.apple.com" + actionUrl);
+            _browserSession.FormElements["appleId"] = username;
+            _browserSession.FormElements["accountPassword"] = password;
+            htmlContent = _browserSession.Post("https://idmsa.apple.com/IDMSWebAuth/authenticate");
 
             if (IsLoginPage(htmlContent))
             {
@@ -45,7 +45,11 @@ namespace Cupertino
 
             //verify the metadata of the response to see the redirect url
             var redirectUrl = GetRedirectUrl(htmlContent);
-            htmlContent = _browserSession.Get(redirectUrl);
+
+            if (!string.IsNullOrEmpty(redirectUrl))
+            {
+                htmlContent = _browserSession.Get(redirectUrl);
+            }
 
             if (IsSelectTeamPage(htmlContent))
             {
@@ -256,6 +260,12 @@ namespace Cupertino
             var doc = new HtmlDocument();
             doc.LoadHtml(htmlContent);
             var select = doc.DocumentNode.SelectNodes("//meta[contains(@content, 'URL')]");
+
+            if (select == null)
+            {
+                return string.Empty;
+            }
+
             try
             {
                 return select[0].Attributes["content"].Value.Split('=')[1];
