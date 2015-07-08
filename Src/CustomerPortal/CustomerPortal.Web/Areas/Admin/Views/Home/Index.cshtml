@@ -55,8 +55,7 @@
                         <span data-version-staging data-key="@company.CompanyKey">S:@company.LastKnownStagingVersion</span></td>
                     <td><a href="@Url.Action("Status", new { company.Id })">@company.Status</a></td>
                     <td>                        
-                        <a class="btn" href="@Url.Action("Index", "IBS", new { company.Id })">IBS setup</a>                        
-                        <a class="btn" href="@Url.Action("Index", "Layout", new { company.Id })">Layouts</a>
+                        <a class="btn" href="@Url.Action("Index", "IBS", new { company.Id })">IBS setup</a>                                                
                         <a class="btn" href="@Url.Action("Index", "Version", new { company.Id })">Versions</a>                                                
                         <a class="btn" href="@Url.Action("DeployCustomer", "Deployment", new { company.Id })">Deployment</a>                                                
                     </td>

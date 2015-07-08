@@ -110,7 +110,7 @@ namespace Cupertino
             //request.Headers[HttpRequestHeader.AcceptEncoding] = "gzip, deflate";
             request.Headers[HttpRequestHeader.AcceptLanguage] = "en-US,en;q=0.5";
             request.Referer = _referer;
-
+            request.AutomaticDecompression = DecompressionMethods.GZip;
             AddCookiesTo(request); // Add cookies that were saved from previous requests
             if (_isPost) AddPostDataTo(request); // We only need to add post data on a POST request
 

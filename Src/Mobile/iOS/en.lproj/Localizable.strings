@@ -133,6 +133,7 @@
 "Error_InvalidCvvTitle"="Invalid CVV";
 "StreetNumberLabel"="Refine your address";
 "View_Payments_CmtRideLinqChangePaymentTitle"="Change Payment Info";
+"ServiceError_EmailClientAbsent"="Sorry, we're unable to create an email. There is no email client installed on this device";
 "InvalidLoginMessageTitle"="Login error";
 "CreateAccountTitleArray"="MrMrs";
 "RideSettingsAccountNumber"="Account Number";

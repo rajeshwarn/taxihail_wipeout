@@ -57,6 +57,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             if (!MFMailComposeViewController.CanSendMail)
             {
+                var av = new UIAlertView (Localize.GetValue("Error"), Localize.GetValue("ServiceError_EmailClientAbsent"), null, Localize.GetValue ("OkButtonText"), null);
+                av.Show ();
                 return;
             }
             

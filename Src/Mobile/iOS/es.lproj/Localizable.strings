@@ -135,6 +135,7 @@
 "TabPlaces"="Lugares";
 "CreditCardRemoveErrorTitle"="No puede eliminar la tarjeta de crédito";
 "RideHistoryButton"="Historial de viajes";
+"ServiceError_EmailClientAbsent"="Sorry, we're unable to create an email. There is no email client installed on this device";
 "InvalidLoginMessageTitle"="Error de inicio de sesión";
 "CreateAccountTitleArray"="SrSra";
 "RideSettingsAccountNumber"="Número de cuenta";
