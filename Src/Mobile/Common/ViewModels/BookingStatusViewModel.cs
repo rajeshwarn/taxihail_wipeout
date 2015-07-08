@@ -292,6 +292,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set
             {
 				_orderStatusDetail = value;
+				_orderStatusDetail.RideLinqPairingCode = "0123456789";
 				RaisePropertyChanged(() => OrderStatusDetail);
 				RaisePropertyChanged(() => CompanyHidden);
 				RaisePropertyChanged(() => VehicleDriverHidden);
@@ -406,6 +407,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_refreshStatusIsExecuting = true;
 
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
+
 				while(!CanRefreshStatus(status))
 				{
 					Logger.LogMessage ("Waiting for Ibs Order Creation (ibs order id)");
