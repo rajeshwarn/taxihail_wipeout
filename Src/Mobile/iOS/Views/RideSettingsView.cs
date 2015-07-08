@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblDialCode.BackgroundColor = UIColor.White;
 			lblDialCode.NotifyChanges += (object sender, PhoneNumberChangedEventArgs e) =>
 			{
-				this.ViewModel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(e.CountryDialCode));
+                    this.ViewModel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(e.Country));
 			};
 
             txtPhone.ShowCloseButtonOnKeyboard();

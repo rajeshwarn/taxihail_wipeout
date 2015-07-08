@@ -131,15 +131,15 @@
                                     <rect key="frame" x="8" y="113" width="174" height="41"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78I-8Z-hfc" customClass="DialCodeSelector">
-                                            <rect key="frame" x="0.0" y="0.0" width="41" height="41"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="41"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="41" id="GsA-Z9-1Ji"/>
+                                                <constraint firstAttribute="width" constant="50" id="GsA-Z9-1Ji"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Ib-CQ-l4c" userLabel="Phone TextField" customClass="FlatTextField">
-                                            <rect key="frame" x="41" y="0.0" width="133" height="41"/>
+                                            <rect key="frame" x="49" y="0.0" width="125" height="41"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="41" id="SzK-V1-AR7"/>
                                             </constraints>
@@ -149,7 +149,7 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstItem="1Ib-CQ-l4c" firstAttribute="leading" secondItem="78I-8Z-hfc" secondAttribute="trailing" id="6l4-lo-oG6"/>
+                                        <constraint firstItem="1Ib-CQ-l4c" firstAttribute="leading" secondItem="78I-8Z-hfc" secondAttribute="trailing" constant="-1" id="6l4-lo-oG6"/>
                                         <constraint firstItem="78I-8Z-hfc" firstAttribute="top" secondItem="7X5-Mr-nnP" secondAttribute="top" id="ACf-P0-U1c"/>
                                         <constraint firstItem="78I-8Z-hfc" firstAttribute="bottom" secondItem="1Ib-CQ-l4c" secondAttribute="bottom" id="O7e-UZ-4pQ"/>
                                         <constraint firstAttribute="height" constant="41" id="SzY-V1-AR6"/>

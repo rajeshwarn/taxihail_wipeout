@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             set.Bind(lblCountryDialCode)
                 .For(v => v.Text)
-                .To(vm => vm.Settings.CountryDialCode)
+                .To(vm => vm.Settings.Country)
                 .WithConversion("DialCodeConverter");
 
             set.Bind(lblPhone)

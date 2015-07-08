@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			
 		void PhoneNumberDatasourceChanged(object sender, PhoneNumberChangedEventArgs e)
 		{
-            SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(e.CountryDialCode));
+            SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(e.Country));
 		}
 
 		public void OnDialCodeSelectorClick()
@@ -118,14 +118,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 					if (NotifyChanges != null)
 					{
-						NotifyChanges(null, new PhoneNumberChangedEventArgs() { CountryDialCode = selectedCountryCode.CountryDialCode });
+                        NotifyChanges(null, new PhoneNumberChangedEventArgs() { Country = selectedCountryCode.CountryISOCode });
 					}
 				};
 
 				section.Add(item);
 			}
 				
-            RootElement rootElement = new RootElement(Localize.GetValue("DialCodeSelectorTitle"), new RadioGroup(CountryCode.GetCountryCodeIndexByCountryDialCode(SelectedCountryCode.CountryDialCode)));
+            RootElement rootElement = new RootElement(Localize.GetValue("DialCodeSelectorTitle"), new RadioGroup(CountryCode.GetCountryCodeIndexByCountryISOCode(SelectedCountryCode.CountryISOCode)));
 			rootElement.Add(section);
 
 			var dialCodeSelectorViewController = new TaxiHailDialogViewController(rootElement, true, false, 20);

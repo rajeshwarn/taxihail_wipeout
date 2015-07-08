@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			phoneDialCodeLabel.TextAlignment = UITextAlignment.Center;
 			phoneDialCodeLabel.AdjustsFontSizeToFitWidth = true;
 			phoneDialCodeLabel.SetHeight(phoneNumberTextEdit.Frame.Height).IncrementY(11).SetX(padding);
-			phoneDialCodeLabel.Configure(navigationController, CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(Value.CountryDialCode)), OnDialCodeSelected);
+            phoneDialCodeLabel.Configure(navigationController, CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Value.Country)), OnDialCodeSelected);
 
 			cell.AddSubview(phoneDialCodeLabel);
 			cell.AddSubview(phoneNumberTextEdit);
@@ -88,12 +88,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			
 		void OnDialCodeSelected(CountryCode countryCode)
 		{
-			Value.CountryDialCode = countryCode.CountryDialCode;
+            Value.Country = countryCode.CountryISOCode;
 
 			if (NotifyChanges != null)
 				NotifyChanges(this, new PhoneNumberChangedEventArgs()
 					{
-						CountryDialCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(phoneDialCodeLabel.Text)).CountryDialCode,
+                        Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(phoneDialCodeLabel.Text)).CountryISOCode,
 						PhoneNumber = phoneNumberTextEdit.Text
 					});
 		}
@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (NotifyChanges != null)
 				NotifyChanges(this, new PhoneNumberChangedEventArgs()
 					{
-						CountryDialCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(phoneDialCodeLabel.Text)).CountryDialCode,
+                        Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(phoneDialCodeLabel.Text)).CountryISOCode,
 						PhoneNumber = phoneNumberTextEdit.Text
 					});
 		}
@@ -114,8 +114,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			if (phoneDialCodeLabel != null && phoneNumberTextEdit != null)
 			{
-				phoneDialCodeLabel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(Value.CountryDialCode));
-				phoneDialCodeLabel.Text = e.CountryDialCode > 0 ? "+" + e.CountryDialCode : null;
+                phoneDialCodeLabel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Value.Country));
+                phoneDialCodeLabel.Text = phoneDialCodeLabel.SelectedCountryCode.CountryDialCode > 0 ? "+" + phoneDialCodeLabel.SelectedCountryCode.CountryDialCode : null;
 				phoneNumberTextEdit.Text = e.PhoneNumber;
 			}
 		}

@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             lblPhoneDialCode.NotifyChanges += (object sender, PhoneNumberChangedEventArgs e) =>
                 {
-                    this.ViewModel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(e.CountryDialCode));
+                    this.ViewModel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(e.Country));
                 };
             lblPhoneDialCode.Configure(this.FindViewController().NavigationController, (DataContext as OrderEditViewModel).PhoneNumber);
         }
