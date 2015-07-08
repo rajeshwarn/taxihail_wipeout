@@ -382,6 +382,16 @@
     <None Include="Localization\Master.resx">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Localization\Arro.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Arro.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\ArroDemo.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ArroDemo.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\BlackCabNow.resx" />
     <EmbeddedResource Include="Localization\Master.es.resx">
       <SubType>Designer</SubType>
