@@ -58,6 +58,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 IsManualRidelinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
                                            && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
 										   && !isInMarket;
+
+				BookButtonHidden = false;
             }
             catch (Exception ex)
             {
