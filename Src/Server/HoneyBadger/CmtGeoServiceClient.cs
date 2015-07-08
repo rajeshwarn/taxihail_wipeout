@@ -68,7 +68,8 @@ namespace HoneyBadger
             if (response != null && response.Entities != null)
             {
                 var numberOfVehicles = _serverSettings.ServerData.AvailableVehicles.Count;
-                var orderedVehicleList = response.Entities.OrderBy(v => v.Medallion);
+                // make sure that if ETA is null they are last in the list
+                var orderedVehicleList = response.Entities.OrderBy(v => (v.ETASeconds != null ? 0 : 1)).ThenBy(v => v.ETASeconds).ThenBy(v => v.Medallion);
                 var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
                 return ToVehicleResponse(entities);
             }

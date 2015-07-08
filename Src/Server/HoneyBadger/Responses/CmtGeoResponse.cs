@@ -8,6 +8,6 @@ namespace HoneyBadger.Responses
         public int Total { get; set; }
 
         [JsonProperty("vehicles")]
-        public HoneyBadgerContent[] Entities { get; set; }
+        public CmtGeoContent[] Entities { get; set; }
     }
 }
