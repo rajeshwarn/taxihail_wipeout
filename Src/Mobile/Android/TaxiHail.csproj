@@ -892,5 +892,8 @@
     <AndroidResource Include="Resources\Layout\CountryCodeItemDropDownMVX.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\PhoneEditorBottom.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
 </Project>

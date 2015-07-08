@@ -95,10 +95,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			var name = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountFullNamePlaceHolder"], null, "DialogCenter", InputTypes.TextFlagCapWords);
 			name.Bind(bindings, vm => vm.Data.Name);
 
-            PhoneNumberInfo phoneNumber = (bindings.BindingContextOwner.BindingContext.DataContext as CreateAccountViewModel).PhoneNumber;
-            var phone = new PhoneEditorElement(null, phoneNumber, "PhoneEditor");
+            var layoutCell = "DialogCenter";
+            var phoneEditorCell = "PhoneEditor";
+            
+            if (ViewModel.HasSocialInfo)
+            {
+    	        layoutCell = "DialogBottom";
+                phoneEditorCell = "PhoneEditorBottom";
+			}
 
-			var password = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordPlaceHolder"], null, "DialogCenter") { Password = true };
+            PhoneNumberInfo phoneNumber = (bindings.BindingContextOwner.BindingContext.DataContext as CreateAccountViewModel).PhoneNumber;
+            var phone = new PhoneEditorElement(null, phoneNumber, phoneEditorCell);
+
+            var password = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordPlaceHolder"], null, layoutCell) { Password = true };
 			password.Bind(bindings, vm => vm.Data.Password);
 
 

@@ -912,10 +912,13 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private void SendSms(string phoneNumber, string alert)
         {
-            // TODO MKTAXI-1836 Support International number
-            phoneNumber = phoneNumber.Length == 11
-                              ? phoneNumber
-                              : string.Concat("1", phoneNumber);
+            // TODO phoneNumber - pass here libphonenumber.PhoneNumber object
+            if (phoneNumber[0] != '+')
+            {
+                phoneNumber = phoneNumber.Length == 11
+                                  ? phoneNumber
+                                  : string.Concat("1", phoneNumber);
+            }
 
             _smsService.Send(phoneNumber, alert);
         }

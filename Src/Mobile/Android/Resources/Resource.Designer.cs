@@ -4520,151 +4520,154 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int PhoneEditor = 2130903124;
 			
 			// aapt resource value: 0x7f030055
-			public const int PromotionListItem = 2130903125;
+			public const int PhoneEditorBottom = 2130903125;
 			
 			// aapt resource value: 0x7f030056
-			public const int RatingListItem = 2130903126;
+			public const int PromotionListItem = 2130903126;
 			
 			// aapt resource value: 0x7f030057
-			public const int SimpleListItem = 2130903127;
+			public const int RatingListItem = 2130903127;
 			
 			// aapt resource value: 0x7f030058
-			public const int SimpleOrderListItem = 2130903128;
+			public const int SimpleListItem = 2130903128;
 			
 			// aapt resource value: 0x7f030059
-			public const int SpinnerCell = 2130903129;
+			public const int SimpleOrderListItem = 2130903129;
 			
 			// aapt resource value: 0x7f03005a
-			public const int SpinnerCellTextRight = 2130903130;
+			public const int SpinnerCell = 2130903130;
 			
 			// aapt resource value: 0x7f03005b
-			public const int SpinnerText = 2130903131;
+			public const int SpinnerCellTextRight = 2130903131;
 			
 			// aapt resource value: 0x7f03005c
-			public const int SpinnerTextWithImage = 2130903132;
+			public const int SpinnerText = 2130903132;
 			
 			// aapt resource value: 0x7f03005d
-			public const int SubView_AppBar = 2130903133;
+			public const int SpinnerTextWithImage = 2130903133;
 			
 			// aapt resource value: 0x7f03005e
-			public const int SubView_MainMenu = 2130903134;
+			public const int SubView_AppBar = 2130903134;
 			
 			// aapt resource value: 0x7f03005f
-			public const int SubView_OrderEdit = 2130903135;
+			public const int SubView_MainMenu = 2130903135;
 			
 			// aapt resource value: 0x7f030060
-			public const int SubView_OrderEdit_Thriev = 2130903136;
+			public const int SubView_OrderEdit = 2130903136;
 			
 			// aapt resource value: 0x7f030061
-			public const int SubView_OrderOptions = 2130903137;
+			public const int SubView_OrderEdit_Thriev = 2130903137;
 			
 			// aapt resource value: 0x7f030062
-			public const int SubView_OrderReview = 2130903138;
+			public const int SubView_OrderOptions = 2130903138;
 			
 			// aapt resource value: 0x7f030063
-			public const int SubView_OrderReview_Thriev = 2130903139;
+			public const int SubView_OrderReview = 2130903139;
 			
 			// aapt resource value: 0x7f030064
-			public const int support_simple_spinner_dropdown_item = 2130903140;
+			public const int SubView_OrderReview_Thriev = 2130903140;
 			
 			// aapt resource value: 0x7f030065
-			public const int TogglableSettingsListItem = 2130903141;
+			public const int support_simple_spinner_dropdown_item = 2130903141;
 			
 			// aapt resource value: 0x7f030066
-			public const int TutorialListItem = 2130903142;
+			public const int TogglableSettingsListItem = 2130903142;
 			
 			// aapt resource value: 0x7f030067
-			public const int View_About = 2130903143;
+			public const int TutorialListItem = 2130903143;
 			
 			// aapt resource value: 0x7f030068
-			public const int View_AccountConfirmation = 2130903144;
+			public const int View_About = 2130903144;
 			
 			// aapt resource value: 0x7f030069
-			public const int View_AddressPickerContainer = 2130903145;
+			public const int View_AccountConfirmation = 2130903145;
 			
 			// aapt resource value: 0x7f03006a
-			public const int View_Book_RideSummaryPage = 2130903146;
+			public const int View_AddressPickerContainer = 2130903146;
 			
 			// aapt resource value: 0x7f03006b
-			public const int View_BookingRating = 2130903147;
+			public const int View_Book_RideSummaryPage = 2130903147;
 			
 			// aapt resource value: 0x7f03006c
-			public const int View_BookingStatus = 2130903148;
+			public const int View_BookingRating = 2130903148;
 			
 			// aapt resource value: 0x7f03006d
-			public const int View_CreateAccount = 2130903149;
+			public const int View_BookingStatus = 2130903149;
 			
 			// aapt resource value: 0x7f03006e
-			public const int View_DateTimePicker = 2130903150;
+			public const int View_CreateAccount = 2130903150;
 			
 			// aapt resource value: 0x7f03006f
-			public const int View_EditAutoTip = 2130903151;
+			public const int View_DateTimePicker = 2130903151;
 			
 			// aapt resource value: 0x7f030070
-			public const int View_HistoryDetail = 2130903152;
+			public const int View_EditAutoTip = 2130903152;
 			
 			// aapt resource value: 0x7f030071
-			public const int View_HistoryList = 2130903153;
+			public const int View_HistoryDetail = 2130903153;
 			
 			// aapt resource value: 0x7f030072
-			public const int View_Home = 2130903154;
+			public const int View_HistoryList = 2130903154;
 			
 			// aapt resource value: 0x7f030073
-			public const int View_InitializeOrderForAccountPayment = 2130903155;
+			public const int View_Home = 2130903155;
 			
 			// aapt resource value: 0x7f030074
-			public const int View_LocationDetail = 2130903156;
+			public const int View_InitializeOrderForAccountPayment = 2130903156;
 			
 			// aapt resource value: 0x7f030075
-			public const int View_LocationList = 2130903157;
+			public const int View_LocationDetail = 2130903157;
 			
 			// aapt resource value: 0x7f030076
-			public const int View_Login = 2130903158;
+			public const int View_LocationList = 2130903158;
 			
 			// aapt resource value: 0x7f030077
-			public const int View_ManualPairingForRideLinq = 2130903159;
+			public const int View_Login = 2130903159;
 			
 			// aapt resource value: 0x7f030078
-			public const int View_ManualRideLinqStatus = 2130903160;
+			public const int View_ManualPairingForRideLinq = 2130903160;
 			
 			// aapt resource value: 0x7f030079
-			public const int View_ManualRideLinqSummary = 2130903161;
+			public const int View_ManualRideLinqStatus = 2130903161;
 			
 			// aapt resource value: 0x7f03007a
-			public const int View_NotificationSettings = 2130903162;
+			public const int View_ManualRideLinqSummary = 2130903162;
 			
 			// aapt resource value: 0x7f03007b
-			public const int View_OrderBookingOptionsDialog = 2130903163;
+			public const int View_NotificationSettings = 2130903163;
 			
 			// aapt resource value: 0x7f03007c
-			public const int View_OverduePayment = 2130903164;
+			public const int View_OrderBookingOptionsDialog = 2130903164;
 			
 			// aapt resource value: 0x7f03007d
-			public const int View_PasswordRecovery = 2130903165;
+			public const int View_OverduePayment = 2130903165;
 			
 			// aapt resource value: 0x7f03007e
-			public const int View_Payments_CreditCardAdd = 2130903166;
+			public const int View_PasswordRecovery = 2130903166;
 			
 			// aapt resource value: 0x7f03007f
-			public const int View_Promotion = 2130903167;
+			public const int View_Payments_CreditCardAdd = 2130903167;
 			
 			// aapt resource value: 0x7f030080
-			public const int View_RideSettings = 2130903168;
+			public const int View_Promotion = 2130903168;
 			
 			// aapt resource value: 0x7f030081
-			public const int View_TermsAndConditions = 2130903169;
+			public const int View_RideSettings = 2130903169;
 			
 			// aapt resource value: 0x7f030082
-			public const int View_Tutorial = 2130903170;
+			public const int View_TermsAndConditions = 2130903170;
 			
 			// aapt resource value: 0x7f030083
-			public const int View_UpdatedTermsAndConditions = 2130903171;
+			public const int View_Tutorial = 2130903171;
 			
 			// aapt resource value: 0x7f030084
-			public const int View_UpdatePassword = 2130903172;
+			public const int View_UpdatedTermsAndConditions = 2130903172;
 			
 			// aapt resource value: 0x7f030085
-			public const int View_UserTaxiHailNetworkSettings = 2130903173;
+			public const int View_UpdatePassword = 2130903173;
+			
+			// aapt resource value: 0x7f030086
+			public const int View_UserTaxiHailNetworkSettings = 2130903174;
 			
 			static Layout()
 			{

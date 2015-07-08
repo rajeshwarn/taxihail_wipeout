@@ -17,13 +17,14 @@ namespace apcurium.MK.Booking.SMS.Impl
             _serverSettings = serverSettings;
         }
 
+        // TODO toNumber - pass here libphonenumber.PhoneNumber object
         public void Send(string toNumber, string message)
         {
             var accountSid = _serverSettings.ServerData.SMSAccountSid;
             var authToken = _serverSettings.ServerData.SMSAuthToken;
             var fromNumber = _serverSettings.ServerData.SMSFromNumber;
             var twilio = new TwilioRestClient(accountSid, authToken);
-            var response = twilio.SendSmsMessage("+" + fromNumber, "+" + toNumber, message, "");
+            var response = twilio.SendSmsMessage("+" + fromNumber, toNumber[0] == '+' ? toNumber : "+" + toNumber, message, "");
 
             if (response.RestException != null)
             {
