@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         _taxiLocationPin = Map.AddMarker(new MarkerOptions()
                             .Anchor(.5f, 1f)
                             .SetPosition(new LatLng(value.VehicleLatitude.Value, value.VehicleLongitude.Value))
-                            .InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap(value.VehicleNumber)))
+                            .InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
                             .SetTitle(value.VehicleNumber)
                             .Visible(true));
                             
@@ -152,6 +152,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         {
                             _pickupPin.Remove();
                         }  
+
                     }
                     PostInvalidateDelayed(100);
                 });
@@ -542,33 +543,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private Bitmap CreateTaxiBitmap(string vehicleNumber)
+        private Bitmap CreateTaxiBitmap()
         {
-            var taxiIcon = DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, Resources.GetColor(Resource.Color.company_color), true);
-
-			//if (!_showVehicleNumber) 
-            {
-				return taxiIcon;
-			}
-
-            var textSize = DrawHelper.GetPixels(11);
-            var textVerticalOffset = DrawHelper.GetPixels(20);
-
-            /* Find the width and height of the title*/
-            var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
-            paintText.SetARGB(255, 0, 0, 0);
-            paintText.SetTypeface(Typeface.DefaultBold);
-            paintText.TextSize = textSize;
-            paintText.TextAlign = Paint.Align.Center;
-
-            var rect = new Rect();
-            paintText.GetTextBounds(vehicleNumber, 0, vehicleNumber.Length, rect);
-
-            var mutableBitmap = taxiIcon.Copy(taxiIcon.GetConfig(), true);
-            //var canvas = new Canvas(mutableBitmap);
-// ReSharper disable once PossibleLossOfFraction
-            //canvas.DrawText(vehicleNumber, canvas.Width/2, rect.Height() + textVerticalOffset, paintText);
-            return mutableBitmap;
+			return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, Resources.GetColor(Resource.Color.company_color), true);
         }
 		public void Pause()
 		{
