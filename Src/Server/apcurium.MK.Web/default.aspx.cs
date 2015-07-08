@@ -35,6 +35,7 @@ namespace apcurium.MK.Web
         protected bool FacebookEnabled { get; private set; }
         protected bool HideDispatchButton { get; private set; }
         protected bool ShowCallDriver { get; private set; }
+        protected bool ShowMessageDriver { get; private set; }
         protected string GeolocSearchFilter { get; private set; }
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
@@ -88,6 +89,7 @@ namespace apcurium.MK.Web
             FacebookEnabled = config.ServerData.FacebookEnabled;
             HideDispatchButton = config.ServerData.HideCallDispatchButton;
             ShowCallDriver = config.ServerData.ShowCallDriver;
+            ShowMessageDriver = config.ServerData.ShowMessageDriver;
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
             IsCreditCardMandatory = config.ServerData.CreditCardIsMandatory;

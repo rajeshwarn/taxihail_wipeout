@@ -783,6 +783,18 @@
     <AndroidResource Include="Resources\Drawable\button_action_blue_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\message.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\message.png" />
+    <AndroidResource Include="Resources\Drawable\cluster_wheelchair.png" />
+    <AndroidResource Include="Resources\Drawable\nearby_wheelchair.png" />
+    <AndroidResource Include="Resources\Drawable\wheelchair_assigned.png" />
+    <AndroidResource Include="Resources\Drawable\wheelchair_available.png" />
+    <AndroidResource Include="Resources\Drawable\wheelchair_badge.png" />
+    <AndroidResource Include="Resources\Drawable\wheelchair_badge_selected.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\cluster_wheelchair.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_wheelchair.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_assigned.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_available.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge_selected.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

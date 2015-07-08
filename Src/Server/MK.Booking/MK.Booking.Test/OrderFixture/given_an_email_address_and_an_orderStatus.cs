@@ -128,7 +128,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             AssertTemplateValueEquals("Surcharge", "$3.00");
             AssertTemplateValueEquals("BookingFees", "$5.00");
             AssertTemplateValueEquals("Extra", "$1.00");
-            AssertTemplateValueEquals("SubTotal", "$7.00");
             AssertTemplateValueEquals("Tip", "$2.00");
             AssertTemplateValueEquals("TotalFare", "$16.00");
             AssertTemplateValueEquals("Tax", "$1.00");

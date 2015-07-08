@@ -110,6 +110,10 @@
                     local:MvxBind="ImageUrl OrderStatusDetail.DriverInfos.DriverPhotoUrl" />
             </RelativeLayout>
             <RelativeLayout
+                android:layout_width="60dip"
+                android:layout_height="wrap_content"
+                local:MvxBind="Visibility DriverPhotoHidden, Converter=Visibility" />
+            <RelativeLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dip"

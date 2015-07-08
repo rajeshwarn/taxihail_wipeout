@@ -143,20 +143,6 @@
                     <rect key="frame" x="0.0" y="85" width="320" height="151"/>
                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="235" customClass="FlatButton">
-                            <rect key="frame" x="272" y="10" width="36" height="37"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                            <state key="normal">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GZf-JI-v0P" customClass="FlatButton">
-                            <rect key="frame" x="272" y="82" width="36" height="37"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                        </button>
                         <view contentMode="scaleToFill" id="237">
                             <rect key="frame" x="0.0" y="149" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
@@ -288,6 +274,20 @@
                                 </view>
                             </subviews>
                         </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="235" customClass="FlatButton">
+                            <rect key="frame" x="272" y="10" width="36" height="37"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GZf-JI-v0P" customClass="FlatButton">
+                            <rect key="frame" x="272" y="82" width="36" height="37"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
                     </subviews>
                 </view>
             </subviews>

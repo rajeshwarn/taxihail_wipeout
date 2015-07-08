@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.IBS
 
             IBSOrderId = orderInfoFromIBS.OrderID;
 
-            VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? VehicleNumber : orderInfoFromIBS.VehicleNumber.Trim(); ;
+            VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? VehicleNumber : orderInfoFromIBS.VehicleNumber.Trim();
             MobilePhone = orderInfoFromIBS.DriverMobilePhone.GetValue(MobilePhone);
             FirstName = orderInfoFromIBS.DriverFirstName.GetValue(FirstName);
             LastName = orderInfoFromIBS.DriverLastName.GetValue(LastName);
@@ -88,6 +88,9 @@ namespace apcurium.MK.Booking.IBS
 
             DriverPhotoUrl = orderInfoFromIBS.ThumbnailImg.HasValue() ? orderInfoFromIBS.ThumbnailImg :
                                 (orderInfoFromIBS.WebImg.HasValue() ? orderInfoFromIBS.WebImg : null);
+
+			// should always be null if not set because we compare it to OrderStatusDetail.RideLinqPairingCode
+            PairingCode = orderInfoFromIBS.PairingCode.HasValue() ? orderInfoFromIBS.PairingCode : null;
 
             Fare = orderInfoFromIBS.Fare;
             Tip = orderInfoFromIBS.Tips;

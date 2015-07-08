@@ -100,5 +100,9 @@
     "modal.callDriver.cancelButton":  "Cancel",
     "modal.callDriver.error":  "Sorry, we weren't able to initiate a call with your driver.",
     "modal.callDriver.success": "Your driver will call you back in a few minutes",
+    "Message Driver": "Message Driver",
+    "modal.messageDriver.message" : "Enter the message to send to your driver",
+    "modal.callDriver.error": "Sorry, we weren't able to send the message to your driver.",
+    "modal.callDriver.success":  "The message was sent to your driver.",
     "Error": "Error"
 }

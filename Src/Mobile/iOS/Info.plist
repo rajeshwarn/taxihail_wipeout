@@ -31,11 +31,13 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>3.0.1</string>
+    <string>3.0.8</string>
     <key>CFBundleShortVersionString</key>
-    <string>3.0.1</string>
+    <string>3.0.8</string>
     <key>MinimumOSVersion</key>
     <string>6.0</string>
+    <string>
+    </string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Your location will be shown on the map and is used to provide nearby search results.</string>
     <key>NSMainNibFile</key>

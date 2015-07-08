@@ -2470,4 +2470,7 @@
   <data name="DialCodeSelectorTitle" xml:space="preserve">
     <value>Dial Code</value>
   </data>
+  <data name="ServiceError_EmailClientAbsent" xml:space="preserve">
+    <value>Sorry, we're unable to create an email. There is no email client installed on this device</value>
+  </data>
 </root>

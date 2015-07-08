@@ -1,16 +1,16 @@
 ﻿#region
 
 using System;
-using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Attributes;
 using CustomerPortal.Web.BitBucket;
 using CustomerPortal.Web.Entities;
+using ExtendedMongoMembership;
 using MongoRepository;
 using Environment = CustomerPortal.Web.Entities.Environment;
-using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -20,11 +20,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
     [Authorize(Roles = RoleName.Admin)]
     public class DeploymentController : DeployementControllerBase
     {
+        private readonly MongoSession _session;
         private const string _allCompaniesKey = "allCompaniesKey";
 
         public DeploymentController(IRepository<DeploymentJob> repository)
             : base(repository)
         {
+            _session = new MongoSession(ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString);
         }
 
         public DeploymentController()
@@ -36,34 +38,56 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             var model = new DeploymentJobModel();
             var companies = new MongoRepository<Company>();
-            var companyList = companies.OrderBy(c => c.CompanyName).Select(c => new SelectListItem
-            {
-                Value = c.CompanyKey,
-                Text = c.CompanyName + " (" + c.CompanyKey + ")"
-            }).ToList();
+
+            var companyList = companies
+                .OrderBy(c => c.CompanyName)
+                .Select(c => new SelectListItem
+                {
+                    Value = c.CompanyKey,
+                    Text = c.CompanyName + " (" + c.CompanyKey + ")"
+                })
+                .ToList();
 
             companyList.Add(new SelectListItem {Value = _allCompaniesKey, Text = "** All companies ** - USE CAREFULLY"});
             model.ModelForView.Company = companyList;
 
             var environments = new MongoRepository<Environment>();
-            model.ModelForView.Environment = environments.OrderBy(e => e.Name).Select(e => new SelectListItem
-            {
-                Value = e.Id,
-                Text = e.Name
-            });
+            model.ModelForView.Environment = environments
+                .OrderBy(e => e.Name)
+                .Select(e => new SelectListItem
+                {
+                    Value = e.Id,
+                    Text = e.Name
+                });
 
             var revisions = new MongoRepository<Revision>();
-            model.ModelForView.Revision =
-                revisions.Where(r => !r.Hidden && !r.Inactive ).OrderBy(r => r.Tag).Select(r => new SelectListItem
+            model.ModelForView.Revision = revisions
+                .Where(r => !r.Hidden && !r.Inactive )
+                .OrderBy(r => r.Tag)
+                .Select(r => new SelectListItem
                 {
                     Value = r.Id,
                     Text = r.Tag
                 });
 
-            model.Jobs = new MongoRepository<DeploymentJob>().OrderByDescending(d => d.Date).ToArray();
+            var jobs = new MongoRepository<DeploymentJob>();
+            model.Jobs = jobs
+                .OrderByDescending(d => d.Date)
+                .Take(10) // Only take the last 10 jobs
+                .ToArray();
+
             return View(model);
         }
 
+
+        public ActionResult History()
+        {
+            var model = new DeploymentJobModel();
+
+            model.Jobs = new MongoRepository<DeploymentJob>().OrderByDescending(d => d.Date).ToArray();
+
+            return View("DeploymentHistory", model);
+        }
 
 
         public ActionResult Copy(string id)
@@ -144,7 +168,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult DeployCustomer(DeployCustomerModel model)
         {
-
             if (model.DeployOptions == DeployOptions.Both || model.DeployOptions == DeployOptions.MobileApp)
             {
                 var job = new AddDeploymentJobModel { Android = true, CallBox = false, CompanyId = model.CompanyKey, CreateType = (int) DeploymentJobType.DeployClient , Database = false, IosAdhoc = true, IosAppStore = true, RevisionId = model.RevisionId , ServerUrlOptions = model.ServerUrlOptions  };                
@@ -167,10 +190,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 job.ServerId = model.ServerUrlOptions == ServerUrlOptions.Production ? environments.Single(e =>  e.Name == "ProductionV2").Id : environments.Single(e => e.Name == "Staging").Id;
                 AddDeploymentJob(job);                
             }
-
-
-
-
+            
             return RedirectToAction("Index");
         }
 
@@ -267,7 +287,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             
         }
-        private AddDeploymentJobModel GetAddJobModel(Func<Entities.Environment, bool> predicate)
+        private AddDeploymentJobModel GetAddJobModel(System.Func<Environment, bool> predicate)
         {
             var model = new AddDeploymentJobModel();
 
@@ -326,10 +346,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete(string id)
+        public ActionResult Cancel(string id)
         {
+            var item = Repository.GetById(id);
 
-            Repository.Delete(r => r.Id == id);
+            item.Status = "Cancelled";
+
+            Repository.Update(item);
 
             return RedirectToAction("Index");
         }
@@ -362,12 +385,20 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             Action<Company> addACompanyAction = company =>
             {
-                var deploy = new DeploymentJob();
-                deploy.Id = Guid.NewGuid().ToString();
-                deploy.Date = DateTime.Now;
-                deploy.Company = company;
+                var user = _session.Users.SingleOrDefault(x => x.UserName == User.Identity.Name);
 
+                var userDisplayName = user != null ? user.CatchAll["Name"].AsString : "Unknown";
+
+                var deploy = new DeploymentJob
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Date = DateTime.Now,
+                    Company = company,
+                    UserEmail = User.Identity.Name,
+                    UserName = userDisplayName
+                };
                 var environments = new MongoRepository<Environment>();
+
                 deploy.Server = environments.Single(e => e.Id == model.ServerId);
                 var revisions = new MongoRepository<Revision>();
                 deploy.Revision = revisions.Single(r => r.Id == model.RevisionId);

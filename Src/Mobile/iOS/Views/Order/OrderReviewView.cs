@@ -9,11 +9,17 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Converters;
+using Foundation;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
     public partial class OrderReviewView : BaseBindableChildView<OrderReviewViewModel>
     {
+        // Offset to fix potential issue with iPhone 6+ that would not scroll the viewport completely.
+        private const float ScrollingOffset = 3f;
+
         public OrderReviewView(IntPtr handle) : base(handle)
         {
         }
@@ -28,8 +34,48 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 	        txtNote.PlaceholderColor = UIColor.FromRGB(75, 75, 75);
             txtNote.ShowCloseButtonOnKeyboard();
 
+            Foundation.NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, ObserveKeyboardShown);
+
             FlatButtonStyle.CompanyColor.ApplyTo(btnViewPromo);
 			btnViewPromo.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2);
+        }
+            
+        // Places the visible area of the scrollviewer at the top of the driver note.
+        private void ObserveKeyboardShown(NSNotification notification)
+        {    
+            var isKeyboardVisible = notification.Name == UIKeyboard.WillShowNotification;
+            var keyboardFrame = isKeyboardVisible 
+                ? UIKeyboard.FrameEndFromNotification(notification)
+                : UIKeyboard.FrameBeginFromNotification(notification);
+
+            var duration = UIKeyboard.AnimationDurationFromNotification(notification);
+
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            AnimateAsync(duration, async () => 
+            {
+                // We need to wait until the default animation from iOS stops before ajusting the scrollviewer to the correct location.
+                await Task.Delay(1000);
+                var activeView = KeyboardGetActiveView();
+                if (activeView == null)
+                {
+                    return;
+                }
+
+                var scrollView = activeView.FindSuperviewOfType(this, typeof(UIScrollView)) as UIScrollView;
+                if (scrollView == null)
+                {
+                    return;
+                }
+
+                var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardFrame.Height, 0.0f);
+                scrollView.ContentInset = contentInsets;
+                scrollView.ScrollIndicatorInsets = contentInsets;
+
+                // Move the active field to the top of the active view area.
+                var offset = activeView.Frame.Y - ScrollingOffset;
+                scrollView.ContentOffset = new CoreGraphics.CGPoint(0, offset);
+            });
         }
 
         private void InitializeBinding()
@@ -94,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				.To(vm => vm.PromoCode)
 				.WithConversion("HasValueToVisibility");
 
-			if (!this.Services().Settings.ShowPassengerName)
+            if (!this.Services().Settings.ShowPassengerName)
             {
                 lblName.RemoveFromSuperview();
                 iconPassengerName.RemoveFromSuperview();
@@ -123,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				iconRingCode.RemoveFromSuperview();
             }
 
-			if (!this.Services().Settings.ShowPassengerPhone)
+            if (!this.Services().Settings.ShowPassengerPhone)
             {
                 lblPhone.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();
@@ -148,9 +194,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             Initialize();
 
-            this.DelayBind (() => {
-                InitializeBinding();
-            });
+            this.DelayBind(InitializeBinding);
         }
 
         public override void LayoutSubviews()

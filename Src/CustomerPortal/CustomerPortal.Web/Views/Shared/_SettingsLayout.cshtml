@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using CustomerPortal.Web
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -20,6 +21,28 @@
                             @Html.Partial("_LoginStatusPartial")
                         </section>
                     </div>
+                    @if (User.IsInRole(RoleName.Admin))
+                    {
+                    <div class="container">
+                    		<a href='@Url.Action("index", "Home")'>Company list</a>
+				            |
+				            <a href='@Url.Action("Create")'>New Company</a>
+				            |
+				            <a href='@Url.Action("Index", "Membership")'>Manage Users</a>
+				            |
+				            <a href="@Url.Action("Index", "Deployment")">Deployment</a>
+				            |
+				            <a href="@Url.Action("Index", "Payment")">Payment</a>
+				            |
+				            <a href='@Url.Action("Index", "NetworkVehicles")'>Network Vehicles</a>
+				            |
+				            <a href="@Url.Action("RefreshVersions")">Refresh Versions</a>
+				            |
+				            <a href="@Url.Action("Index","StoreCredential")">Store Credentials</a>
+				            |
+				            <a href="@Url.Action("Index","CheckList")">Checklist</a>
+				      </div>
+				     }
                 </div>
             </div>
             <div style="width: 980px;">
