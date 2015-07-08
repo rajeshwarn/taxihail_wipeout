@@ -9,9 +9,11 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 	{
 		public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if ((value as CountryISOCode) != null)
+            CountryISOCode countryISOCode = value as CountryISOCode;
+
+            if (countryISOCode != null)
 			{
-                return "+" + CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode((value as CountryISOCode))).CountryDialCode;
+                return "+" + CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryISOCode)).CountryDialCode;
 			}
 
 			return null;
