@@ -621,9 +621,9 @@ namespace apcurium.MK.Booking.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Imprv. Surcharge.
         /// </summary>
-        public static string Email_Body_ImprovementSurchage {
+        public static string Email_Body_ImprovementSurcharge {
             get {
-                return ResourceManager.GetString("Email_Body_ImprovementSurchage", resourceCulture);
+                return ResourceManager.GetString("Email_Body_ImprovementSurcharge", resourceCulture);
             }
         }
         

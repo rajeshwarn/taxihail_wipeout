@@ -327,7 +327,7 @@
   <data name="Email_Body_Tax" xml:space="preserve">
     <value>Tax</value>
   </data>
-  <data name="Email_Body_ImprovementSurchage" xml:space="preserve">
+  <data name="Email_Body_ImprovementSurcharge" xml:space="preserve">
     <value>Imprv. Surcharge</value>
   </data>
   <data name="Email_Body_VehicleNumber" xml:space="preserve">
