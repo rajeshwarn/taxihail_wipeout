@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var layoutCell = "DialogCenter";
             var phoneEditorCell = "PhoneEditor";
             
-            if (ViewModel.HasSocialInfo)
+            if (ViewModel.HasSocialInfo && !ViewModel.Settings.IsPayBackRegistrationFieldRequired.HasValue)
             {
     	        layoutCell = "DialogBottom";
                 phoneEditorCell = "PhoneEditorBottom";
