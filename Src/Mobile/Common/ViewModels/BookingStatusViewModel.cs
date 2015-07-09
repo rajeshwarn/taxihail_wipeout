@@ -172,18 +172,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 		    get
 		    {
-		        return !IsDriverInfoAvailable 
-                    || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.FullName) 
-                    || OrderStatusDetail.RideLinqPairingCode.HasValue();
+		        return IsInformationHidden(OrderStatusDetail.DriverInfos.FullName);
 		    }
 		}
-		public bool VehicleLicenceHidden
+
+	    private bool IsInformationHidden(string informationToValidate)
+	    {
+	        return !IsDriverInfoAvailable
+	               || string.IsNullOrWhiteSpace(informationToValidate) 
+                   //Needded to hide information sent in error when in eHail auto ridelinq pairing mode.
+	               || OrderStatusDetail.RideLinqPairingCode.HasValue();
+	    }
+
+	    public bool VehicleLicenceHidden
 		{
 		    get
 		    {
-                return !IsDriverInfoAvailable
-                    || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleRegistration)
-                    || OrderStatusDetail.RideLinqPairingCode.HasValue();
+                return IsInformationHidden(OrderStatusDetail.DriverInfos.VehicleRegistration);
 		    }
 		}
 
@@ -200,36 +205,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             get
             {
-                return !IsDriverInfoAvailable
-                  || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleType)
-                  || OrderStatusDetail.RideLinqPairingCode.HasValue();
+                return IsInformationHidden(OrderStatusDetail.DriverInfos.VehicleType);
             }
 		}
 		public bool VehicleMakeHidden
 		{
             get
             {
-                return !IsDriverInfoAvailable
-                   || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleMake)
-                   || OrderStatusDetail.RideLinqPairingCode.HasValue(); 
+                return IsInformationHidden(OrderStatusDetail.DriverInfos.VehicleMake);
             }
 		}
 		public bool VehicleModelHidden
 		{
             get
             {
-                return !IsDriverInfoAvailable
-                     || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleModel)
-                     || OrderStatusDetail.RideLinqPairingCode.HasValue(); 
+                return IsInformationHidden(OrderStatusDetail.DriverInfos.VehicleModel);
             }
 		}
 		public bool VehicleColorHidden
 		{
             get
             {
-                return !IsDriverInfoAvailable
-                     || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor)
-                     || OrderStatusDetail.RideLinqPairingCode.HasValue(); 
+                return IsInformationHidden(OrderStatusDetail.DriverInfos.VehicleColor);
             }
 		}
 
@@ -237,9 +234,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return !IsDriverInfoAvailable
-                     || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.DriverPhotoUrl)
-                     || OrderStatusDetail.RideLinqPairingCode.HasValue();
+                return IsInformationHidden(OrderStatusDetail.DriverInfos.DriverPhotoUrl);
             }
         }
         

@@ -450,7 +450,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (propertyName == "OrderStatusDetail") 
 			{
 				var numberOfItemsHidden = 0;
-				var defaultHeightOfSlidingView = 171f;
+				var defaultHeightOfSlidingView = 151f;
 
 				var tupleList = new List<Tuple<UILabel, UILabel, bool>> ();
 				tupleList.Add(Tuple.Create(lblCompany, txtCompany, false));
@@ -490,9 +490,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					tupleList[6] = Tuple.Create (tupleList[6].Item1, tupleList[6].Item2, true);
 					numberOfItemsHidden++;
 				}
-
                 if(ViewModel.VehicleMedallionHidden){
-                    tupleList[7] = Tuple.Create (tupleList[6].Item1, tupleList[6].Item2, true);
+                    tupleList[7] = Tuple.Create (tupleList[7].Item1, tupleList[7].Item2, true);
                     numberOfItemsHidden++;
                 }
 
@@ -502,8 +501,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					return;
 				}
 
-				
-                if(tupleList.Where(p => !p.Item3).Count() == 1)
+                if(tupleList.Count(p => !p.Item3) == 1)
                 {
                     var medallion = tupleList[7];
 
