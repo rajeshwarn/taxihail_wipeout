@@ -180,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        return !IsDriverInfoAvailable
 	               || string.IsNullOrWhiteSpace(informationToValidate) 
-                   //Needded to hide information sent in error when in eHail auto ridelinq pairing mode.
+                   //Needed to hide information sent in error when in eHail auto ridelinq pairing mode.
 	               || OrderStatusDetail.RideLinqPairingCode.HasValue();
 	    }
 
