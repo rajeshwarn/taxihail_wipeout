@@ -502,35 +502,66 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					return;
 				}
 
-                if(numberOfItemsHidden == 7)
-                {
-                    numberOfItemsHidden = 1;
-                }
-
-				statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + VisibleStatusHeight);
-
+				
                 if(tupleList.Where(p => !p.Item3).Count() == 1)
                 {
                     var medallion = tupleList[7];
 
-                    var posY = defaultHeightOfSlidingView/2 - 20;
+                    var height = VisibleStatusHeight;
+
+                    //Both driver contact buttons are visible
+                    if(ViewModel.IsCallTaxiVisible && ViewModel.IsMessageTaxiVisible)
+                    {
+                        btnCallDriver.Frame = new CGRect(btnCallDriver.Frame.X, 4, btnCallDriver.Frame.Width, btnCallDriver.Frame.Height);
+
+                        var textDriverPosY = 4 + btnCallDriver.Frame.Y + btnCallDriver.Frame.Height;
+
+                        btnTextDriver.Frame = new CGRect(btnTextDriver.Frame.X, textDriverPosY, btnTextDriver.Frame.Width, btnTextDriver.Frame.Height);
+
+                        height = (float)(btnCallDriver.Frame.Height + btnTextDriver.Frame.Height + 12);
+
+                        statusBar.SetMaxHeight(height+VisibleStatusHeight);
+                    }
+                    // Only text driver button is visible
+                    else if(ViewModel.IsMessageTaxiVisible && !ViewModel.IsCallTaxiVisible)
+                    {
+                        btnTextDriver.Frame = new CGRect(btnTextDriver.Frame.X, 4, btnTextDriver.Frame.Width, btnTextDriver.Frame.Height);
+
+                        height = (float)(btnTextDriver.Frame.Height + 8);
+
+                        statusBar.SetMaxHeight(height+VisibleStatusHeight);
+                    }
+                    // Only Call Taxi Visible
+                    else if(!ViewModel.IsMessageTaxiVisible && ViewModel.IsCallTaxiVisible)
+                    {
+                        btnCallDriver.Frame = new CGRect(btnCallDriver.Frame.X, 4, btnCallDriver.Frame.Width, btnCallDriver.Frame.Height);
+
+                        height = (float)(btnCallDriver.Frame.Height + 8);
+
+                        statusBar.SetMaxHeight(height+VisibleStatusHeight);
+                    }
+
+                    var medallionPosY = height/2 -medallion.Item1.Frame.Height/2;
 
                     medallion.Item1.Frame = new CGRect(
                         medallion.Item1.Frame.X,
-                        posY,
+                        medallionPosY,
                         medallion.Item1.Frame.Width,
                         medallion.Item1.Frame.Height);
                     
                     medallion.Item2.Frame = new CGRect(
                         medallion.Item2.Frame.X, 
-                        posY,
+                        medallionPosY,
                         medallion.Item2.Frame.Width, 
                         medallion.Item2.Frame.Height);
+
 
                     statusBar.SetNeedsLayout();
 
                     return;
                 }
+
+                statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + VisibleStatusHeight);
 
 				var i = 0;
 				foreach (var item in tupleList) {
