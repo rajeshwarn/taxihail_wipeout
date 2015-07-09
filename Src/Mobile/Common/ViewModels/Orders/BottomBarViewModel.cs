@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-        private bool _isFutureBookingDisabled;
+        private bool _isFutureBookingDisabled = true;
         public bool IsFutureBookingDisabled
         {
             get { return _isFutureBookingDisabled; }
