@@ -7,6 +7,11 @@ namespace Cupertino.Model
         public IEnumerable<ProvisioningProfile> ProvisioningProfiles { get; set; } 
     }
 
+    public class ProvisioningProfileWrapper
+    {
+        public ProvisioningProfile ProvisioningProfile { get; set; }
+    }
+
     public class ProvisioningProfile
     {
         public AppId AppId { get; set; }
