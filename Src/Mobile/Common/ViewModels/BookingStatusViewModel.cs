@@ -292,7 +292,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set
             {
 				_orderStatusDetail = value;
-				_orderStatusDetail.RideLinqPairingCode = "0123456789";
 				RaisePropertyChanged(() => OrderStatusDetail);
 				RaisePropertyChanged(() => CompanyHidden);
 				RaisePropertyChanged(() => VehicleDriverHidden);
