@@ -619,20 +619,20 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Imprv. Surcharge.
+        /// </summary>
+        public static string Email_Body_ImprovementSurchage {
+            get {
+                return ResourceManager.GetString("Email_Body_ImprovementSurchage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Large&amp;nbsp;bags.
         /// </summary>
         public static string Email_Body_LargeBags {
             get {
                 return ResourceManager.GetString("Email_Body_LargeBags", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to MTA Tax.
-        /// </summary>
-        public static string Email_Body_MtaTax {
-            get {
-                return ResourceManager.GetString("Email_Body_MtaTax", resourceCulture);
             }
         }
         
