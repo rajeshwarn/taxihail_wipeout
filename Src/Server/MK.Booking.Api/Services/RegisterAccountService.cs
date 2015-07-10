@@ -41,15 +41,17 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
             }
 
-            if (libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(request.Phone, request.Country.Code))
+            CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
+
+            if (countryCode.IsNumberPossible(request.Phone))
             {
                 request.Phone = request.Phone.Replace(" ", "");
+                request.Phone = request.Phone.Replace("(", "");
+                request.Phone = request.Phone.Replace(")", "");
             }
             else
             {
-                libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(request.Country.Code);
-                string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(request.Country.Code);
-                throw new HttpError(string.Format(_resources.Get("PhoneNumberFormat"), phoneNumberExampleText));
+                throw new HttpError(string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
             }
 
             if (request.FacebookId.HasValue())

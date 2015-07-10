@@ -172,6 +172,18 @@ namespace apcurium.MK.Common
             return new CountryCode();
         }
 
+        public string GetPhoneExample()
+        {
+            libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(this.CountryISOCode.Code);
+            string phoneNumberExampleText = phoneNumberExample.Format(libphonenumber.PhoneNumberUtil.PhoneNumberFormat.E164);
+            return phoneNumberExampleText.Replace("+" + this.CountryDialCode.ToString(), "");
+        }
+
+        public bool IsNumberPossible(string phoneNumber)
+        {
+            return libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(phoneNumber, this.countryISOCode.Code);
+        }
+
 		public override string ToString()
 		{
 			return GetTextCountryDialCode();

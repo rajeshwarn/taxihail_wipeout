@@ -14,6 +14,7 @@ using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Common;
 
 #endregion
 
@@ -25,6 +26,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICommandBus _commandBus;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IServerSettings _serverSettings;
+        private readonly Resources.Resources _resources;
 
         public BookingSettingsService(IAccountChargeDao accountChargeDao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings)
         {
@@ -32,10 +34,24 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
             _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public object Put(BookingSettingsRequest request)
         {
+            CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
+
+            if (countryCode.IsNumberPossible(request.Phone))
+            {
+                request.Phone = request.Phone.Replace(" ", "");
+                request.Phone = request.Phone.Replace("(", "");
+                request.Phone = request.Phone.Replace(")", "");
+            }
+            else
+            {
+                throw new HttpError(string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
+            }
+
             var isChargeAccountEnabled = _serverSettings.GetPaymentSettings().IsChargeAccountPaymentEnabled;
 
             // Validate account number if charge account is enabled and account number is set.
