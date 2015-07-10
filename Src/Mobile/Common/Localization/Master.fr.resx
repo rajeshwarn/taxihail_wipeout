@@ -2009,4 +2009,7 @@
   <data name="ServiceError_EmailClientAbsent" xml:space="preserve">
     <value>Excusez, nous ne pouvons pas créer le courriel. Il n y'a pas de client de courriel installé sur cet appareil</value>
   </data>
+  <data name="DriverInfoVehicleMedallion" xml:space="preserve">
+    <value>Medallion:</value>
+  </data>
 </root>

@@ -24,6 +24,7 @@
                 <outlet property="lblDriver" destination="211" id="217"/>
                 <outlet property="lblLicence" destination="212" id="218"/>
                 <outlet property="lblMake" destination="214" id="220"/>
+                <outlet property="lblMedallion" destination="h4o-TX-XMI" id="wjb-ts-VLg"/>
                 <outlet property="lblModel" destination="215" id="221"/>
                 <outlet property="lblStatus" destination="199" id="208"/>
                 <outlet property="lblTaxiType" destination="213" id="219"/>
@@ -36,6 +37,7 @@
                 <outlet property="txtDriver" destination="204" id="225"/>
                 <outlet property="txtLicence" destination="203" id="226"/>
                 <outlet property="txtMake" destination="201" id="228"/>
+                <outlet property="txtMedallion" destination="Y4n-BQ-yFz" id="mAI-l2-tOu"/>
                 <outlet property="txtModel" destination="209" id="229"/>
                 <outlet property="txtTaxiType" destination="202" id="227"/>
                 <outlet property="view" destination="1" id="7"/>
@@ -187,6 +189,13 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Medallion:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="h4o-TX-XMI">
+                                            <rect key="frame" x="-142" y="65" width="200" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="13"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Colour:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="210">
                                             <rect key="frame" x="-142" y="105" width="200" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -239,6 +248,13 @@
                                             <rect key="frame" x="3" y="45" width="195" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y4n-BQ-yFz">
+                                            <rect key="frame" x="3" y="65" width="195" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
