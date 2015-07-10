@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http.Extensions;
 using CMTServices.Responses;
 
@@ -61,7 +62,11 @@ namespace CMTServices
             {
                 var numberOfVehicles = Settings.ServerData.AvailableVehicles.Count;
                 // make sure that if ETA is null they are last in the list
-                var orderedVehicleList = response.Entities.OrderBy(v => (v.ETASeconds != null ? 0 : 1)).ThenBy(v => v.ETASeconds).ThenBy(v => v.Medallion);
+                var orderedVehicleList = response.Entities
+                    .OrderBy(v => (v.ETASeconds != null ? 0 : 1))
+                    .ThenBy(v => v.ETASeconds)
+                    .ThenBy(v => v.Medallion);
+
                 var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
                 return ToVehicleResponse(entities);
             }
@@ -75,15 +80,10 @@ namespace CMTServices
             {
                 return null;
             }
-            var dictionary = new Dictionary<string, string>();
-            data.ForEach(kv =>
-            {
-                if (!String.IsNullOrEmpty(kv.Value))
-                {
-                    dictionary.Add(kv.Key, kv.Value);
-                }
-            });
-            return dictionary;
+
+            return data
+                .Where(kv => kv.Value.HasValue())
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
     }
