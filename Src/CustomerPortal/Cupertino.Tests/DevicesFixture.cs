@@ -11,7 +11,7 @@ namespace Cupertino.Tests
         {
             var response = agent.GetDevicesOfProfile(TestUsername, TestPassword, TestTeam, TestAppId);
 
-            Assert.IsTrue(response.DeviceUDIDs.Contains("2e00e12d970a3be9423369484fdd18f01235c400"));
+            Assert.IsTrue(response.DeviceUDIDs.Contains("b28f53617e9e79c987003e3dba98ed586cd35f1c"));
         }
     }
 }
