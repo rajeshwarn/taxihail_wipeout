@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.IBS.Impl
     {
         private readonly IServerSettings _serverSettings;
 
+        
         public BookingWebServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings.ServerData.IBS, logger)
         {
@@ -202,47 +203,91 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
+		// This method is used to help find the correct GetOrdersStatus in IBS.
         private IEnumerable<TOrderStatus_4> GetOrdersStatus(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
         {
             var ibsOrders = ibsOrdersIds.ToArray();
+
             try
             {
-                var ordersStatus4 = service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders);
-                return ordersStatus4;
+                return service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Logger.LogMessage("An error has occurred during GetOrdersStatus_4, falling back to GetOrdersStatus_3");
-                Logger.LogError(ex);
+                Logger.LogMessage("GetOrdersStatus_4 is not available doing a fallback to GetOrdersStatus_3");
             }
 
-            var ordersStatus3 = service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders);
-            return ordersStatus3
-                .Select(item => new TOrderStatus_4
-                {
-                    CallNumber = item.CallNumber,
-                    DriverFirstName = item.DriverFirstName,
-                    DriverLastName = item.DriverLastName,
-                    DriverMobilePhone = item.DriverMobilePhone,
-                    ETATime = item.ETATime,
-                    Fare = item.Fare,
-                    OrderID = item.OrderID,
-                    OrderStatus = item.OrderStatus,
-                    PairingCode = item.PairingCode,
-                    ReferenceNumber = item.ReferenceNumber,
-                    Surcharge = item.Surcharge,
-                    TerminalId = item.TerminalId,
-                    Tips = item.Tips,
-                    Tolls = item.Tolls,
-                    VAT = item.VAT,
-                    VehicleColor = item.VehicleColor,
-                    VehicleCoordinateLat = item.VehicleCoordinateLat,
-                    VehicleCoordinateLong = item.VehicleCoordinateLong,
-                    VehicleMake = item.VehicleMake,
-                    VehicleModel = item.VehicleModel,
-                    VehicleNumber = item.VehicleNumber,
-                    VehicleRegistration = item.VehicleRegistration
-                });
+            try
+            {
+                return service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders)
+                    // We need to update the returned object to version 4 of TOrderStatus.
+                    .Select(ToOrderStatus4);
+            }
+            catch (Exception)
+            {
+                Logger.LogMessage("GetOrdersStatus_3 is not available doing a fallback to GetOrdersStatus_2");
+            }  
+             
+            return service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrders)
+				// We need to update the returned object to version 4 of TOrderStatus.
+				.Select(ToOrderStatus4);
+
+        }
+
+        private static TOrderStatus_4 ToOrderStatus4(TOrderStatus_2 orderStatus)
+        {
+            return new TOrderStatus_4
+            {
+                OrderStatus = orderStatus.OrderStatus,
+                CallNumber = orderStatus.CallNumber,
+                DriverFirstName = orderStatus.DriverFirstName,
+                DriverLastName = orderStatus.DriverLastName,
+                DriverMobilePhone = orderStatus.DriverMobilePhone,
+                ETATime = orderStatus.ETATime,
+                Fare = orderStatus.Fare,
+                OrderID = orderStatus.OrderID,
+                ReferenceNumber = orderStatus.ReferenceNumber,
+                TerminalId = orderStatus.TerminalId,
+                Tips = orderStatus.Tips,
+                Tolls = orderStatus.Tolls,
+                VAT = orderStatus.VAT,
+                VehicleColor = orderStatus.VehicleColor,
+                VehicleCoordinateLat = orderStatus.VehicleCoordinateLat,
+                VehicleCoordinateLong = orderStatus.VehicleCoordinateLong,
+                VehicleMake = orderStatus.VehicleMake,
+                VehicleModel = orderStatus.VehicleModel,
+                VehicleNumber = orderStatus.VehicleNumber,
+                VehicleRegistration = orderStatus.VehicleRegistration
+            };
+        }
+
+        private static TOrderStatus_4 ToOrderStatus4(TOrderStatus_3 orderStatus)
+        {
+            return new TOrderStatus_4
+            {
+                OrderStatus = orderStatus.OrderStatus,
+                CallNumber = orderStatus.CallNumber,
+                DriverFirstName = orderStatus.DriverFirstName,
+                DriverLastName = orderStatus.DriverLastName,
+                DriverMobilePhone = orderStatus.DriverMobilePhone,
+                ETATime = orderStatus.ETATime,
+                Fare = orderStatus.Fare,
+                OrderID = orderStatus.OrderID,
+                ReferenceNumber = orderStatus.ReferenceNumber,
+                TerminalId = orderStatus.TerminalId,
+                Tips = orderStatus.Tips,
+                Tolls = orderStatus.Tolls,
+                VAT = orderStatus.VAT,
+                VehicleColor = orderStatus.VehicleColor,
+                VehicleCoordinateLat = orderStatus.VehicleCoordinateLat,
+                VehicleCoordinateLong = orderStatus.VehicleCoordinateLong,
+                VehicleMake = orderStatus.VehicleMake,
+                VehicleModel = orderStatus.VehicleModel,
+                VehicleNumber = orderStatus.VehicleNumber,
+                VehicleRegistration = orderStatus.VehicleRegistration,
+                PairingCode = orderStatus.PairingCode,
+                Surcharge = orderStatus.Surcharge
+            };
         }
 
         public bool SendMessageToDriver(string message, string vehicleNumber)

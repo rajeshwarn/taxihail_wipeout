@@ -124,7 +124,6 @@
   <string name="DateTimePickerSetButton">Réserver maintenant!</string>
   <string name="DateToday">Aujourd\'hui</string>
   <string name="December">Décembre (12)</string>
-  <string name="CreditCardAdded_PayInCarDisabled">Votre compte est maintenant configuré pour le paiement par la carte de crédit.</string>
   <string name="DefaultRideSettingsViewTitle">Paramètres</string>
   <string name="Delete">Supprimer</string>
   <string name="DeleteAddressBt">Supprimer l\'adresse</string>
@@ -627,5 +626,9 @@
   <string name="ManualRideLinqStatus_Email">Un reçu vous sera envoyé à {0}.</string>
   <string name="ManualRideLinqStatus_Greetings">Appréciez la balade!</string>
   <string name="MessageToDriverTitle">Message au chauffeur</string>
+  <string name="ServiceError_ErrorCreatingOrderMessage">Merci de contacter {0} au {1} pour toute demande d\'assistance</string>
   <string name="SendMessageToDriverErrorMessage">Une erreur est survenue en essayant de contacter le chauffeur. Veuillez réessayer plus tard.</string>
+  <string name="ServiceError_ErrorCreatingOrderMessage_NoCall">Votre demande n\'a pas pu être prise en compte, veuillez réessayer de nouveau.</string>
+  <string name="ServiceError_EmailClientAbsent">Excusez, nous ne pouvons pas créer le courriel. Il n y\'a pas de client de courriel installé sur cet appareil</string>
+  <string name="DriverInfoVehicleMedallion">Medallion:</string>
 </resources>

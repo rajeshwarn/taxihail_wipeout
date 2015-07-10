@@ -142,11 +142,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             set
             {
-                if (_availableVehicles != value)
+                if (_availableVehicles == value)
                 {
-                    _availableVehicles = value;
-                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value, GetMapBoundsFromProjection()));
+                    return;
                 }
+
+                _availableVehicles = _settings.ShowIndividualTaxiMarkerOnly
+                    ? value
+                    : VehicleClusterHelper.Clusterize(value, GetMapBoundsFromProjection());
+
+                ShowAvailableVehicles(_availableVehicles);
             }
         }
 
@@ -385,7 +390,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 ViewModel.UserMovedMap.ExecuteIfPossible(bounds);
             }
 
-            ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles, bounds)); 
+            if (!_settings.ShowIndividualTaxiMarkerOnly)
+            {
+                ShowAvailableVehicles(VehicleClusterHelper.Clusterize(AvailableVehicles, bounds)); 
+            }
+
         }
 
         private void ClearAllMarkers()

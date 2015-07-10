@@ -295,9 +295,14 @@
       <DependentUpon>Aexid.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Arro.Designer.cs">
+      <DependentUpon>Arro.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\ArroDemo.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Arro.resx</DependentUpon>
+      <DependentUpon>ArroDemo.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Global.ar.Designer.cs">
       <DependentUpon>Global.ar.resx</DependentUpon>
@@ -455,9 +460,14 @@
       <LastGenOutput>Aexid.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Arro.resx">
+      <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Arro.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ArroDemo.resx">
       <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ArroDemo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.ar.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

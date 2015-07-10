@@ -14,6 +14,7 @@ using MapKit;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using Cirrious.MvvmCross.Binding.Touch.Views;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -79,6 +80,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtModel.TextColor = textColor;
 				txtColor.Text = Localize.GetValue("DriverInfoColor");
 				txtColor.TextColor = textColor;
+                lblMedallion.Text = Localize.GetValue("DriverInfoVehicleMedallion");
+                lblMedallion.TextColor = textColor;
 
 				topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("background.png"));
 
@@ -171,6 +174,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblMake.TextColor = textColor;
 				lblModel.TextColor = textColor;
 				lblColor.TextColor = textColor;
+                txtMedallion.TextColor = textColor;
 
 				lblConfirmation.TextColor = textColor;
 				lblStatus.TextColor = textColor;
@@ -264,6 +268,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				set.Bind(txtMake)
 					.For(v => v.Hidden)
 					.To(vm => vm.VehicleMakeHidden);
+
+                set.Bind(txtMedallion)
+                    .To(vm => vm.OrderStatusDetail.VehicleNumber);
+
+                set.Bind(txtMedallion)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleMedallionHidden);
+
+                set.Bind(lblMedallion)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleMedallionHidden);
 
 				set.Bind(txtModel)
 					.For(v => v.Hidden)
@@ -437,16 +452,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				var numberOfItemsHidden = 0;
 				var defaultHeightOfSlidingView = 151f;
 
-				var tupleList = new List<Tuple<UILabel, UILabel, bool>> ();
-				tupleList.Add (Tuple.Create (lblCompany, txtCompany, false));
-				tupleList.Add (Tuple.Create (lblDriver, txtDriver, false));
-				tupleList.Add (Tuple.Create (lblLicence, txtLicence, false));
-				tupleList.Add (Tuple.Create (lblTaxiType, txtTaxiType, false));
-				tupleList.Add (Tuple.Create (lblMake, txtMake, false));
-				tupleList.Add (Tuple.Create (lblModel, txtModel, false));
-				tupleList.Add (Tuple.Create (lblColor, txtColor, false));
+			    var tupleList = new List<Tuple<UILabel, UILabel, bool>>
+			    {
+			        Tuple.Create(lblCompany, txtCompany, false),
+			        Tuple.Create(lblDriver, txtDriver, false),
+			        Tuple.Create(lblLicence, txtLicence, false),
+			        Tuple.Create(lblTaxiType, txtTaxiType, false),
+			        Tuple.Create(lblMake, txtMake, false),
+			        Tuple.Create(lblModel, txtModel, false),
+			        Tuple.Create(lblColor, txtColor, false),
+			        Tuple.Create(lblMedallion, txtMedallion, false)
+			    };
 
-				if (ViewModel.CompanyHidden){ 
+			    if (ViewModel.CompanyHidden){ 
 					tupleList[0] = Tuple.Create (tupleList[0].Item1, tupleList[0].Item2, true);
 					numberOfItemsHidden++;
 				}
@@ -474,22 +492,82 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					tupleList[6] = Tuple.Create (tupleList[6].Item1, tupleList[6].Item2, true);
 					numberOfItemsHidden++;
 				}
+                if(ViewModel.VehicleMedallionHidden){
+                    tupleList[7] = Tuple.Create (tupleList[7].Item1, tupleList[7].Item2, true);
+                    // Not incrementing the number of items hidden for this section since this section will only be displayed with eHail mode.
+                }
 
-				if (numberOfItemsHidden == 7) {
+                if (numberOfItemsHidden == 7 && ViewModel.VehicleMedallionHidden) {
 					statusBar.SetMaxHeight (VisibleStatusHeight);
 					statusBar.SetNeedsLayout();
 					return;
 				}
 
-				statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + VisibleStatusHeight);
+                if(tupleList.Count(p => !p.Item3) == 1)
+                {
+                    var medallion = tupleList[7];
+                    var height = VisibleStatusHeight;
+
+                    //Both driver contact buttons are visible
+                    if(ViewModel.IsCallTaxiVisible && ViewModel.IsMessageTaxiVisible)
+                    {
+                        btnCallDriver.Frame = new CGRect(btnCallDriver.Frame.X, 4, btnCallDriver.Frame.Width, btnCallDriver.Frame.Height);
+
+                        var textDriverPosY = 4 + btnCallDriver.Frame.Y + btnCallDriver.Frame.Height;
+
+                        btnTextDriver.Frame = new CGRect(btnTextDriver.Frame.X, textDriverPosY, btnTextDriver.Frame.Width, btnTextDriver.Frame.Height);
+
+                        height = (float)(btnCallDriver.Frame.Height + btnTextDriver.Frame.Height + 12);
+
+                        statusBar.SetMaxHeight(height+VisibleStatusHeight);
+                    }
+                    // Only text driver button is visible
+                    else if(ViewModel.IsMessageTaxiVisible && !ViewModel.IsCallTaxiVisible)
+                    {
+                        btnTextDriver.Frame = new CGRect(btnTextDriver.Frame.X, 4, btnTextDriver.Frame.Width, btnTextDriver.Frame.Height);
+
+                        height = (float)(btnTextDriver.Frame.Height + 8);
+
+                        statusBar.SetMaxHeight(height+VisibleStatusHeight);
+                    }
+                    // Only Call Taxi Visible
+                    else if(!ViewModel.IsMessageTaxiVisible && ViewModel.IsCallTaxiVisible)
+                    {
+                        btnCallDriver.Frame = new CGRect(btnCallDriver.Frame.X, 4, btnCallDriver.Frame.Width, btnCallDriver.Frame.Height);
+
+                        height = (float)(btnCallDriver.Frame.Height + 8);
+
+                        statusBar.SetMaxHeight(height+VisibleStatusHeight);
+                    }
+
+                    var medallionPosY = height/2 -medallion.Item1.Frame.Height/2;
+
+                    medallion.Item1.Frame = new CGRect(
+                        medallion.Item1.Frame.X,
+                        medallionPosY,
+                        medallion.Item1.Frame.Width,
+                        medallion.Item1.Frame.Height);
+                    
+                    medallion.Item2.Frame = new CGRect(
+                        medallion.Item2.Frame.X, 
+                        medallionPosY,
+                        medallion.Item2.Frame.Width, 
+                        medallion.Item2.Frame.Height);
+
+
+                    statusBar.SetNeedsLayout();
+
+                    return;
+                }
+
+                statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + VisibleStatusHeight);
 
 				var i = 0;
-				foreach (var item in tupleList) {
-					if (!item.Item3) {
-						item.Item1.Frame = new CGRect(item.Item1.Frame.X, 4 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
-						item.Item2.Frame = new CGRect(item.Item2.Frame.X, 4 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
-						i++;
-					}
+				foreach (var item in tupleList.Where(item => !item.Item3))
+				{
+				    item.Item1.Frame = new CGRect(item.Item1.Frame.X, 4 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
+				    item.Item2.Frame = new CGRect(item.Item2.Frame.X, 4 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
+				    i++;
 				}
 
 				statusBar.SetNeedsLayout();

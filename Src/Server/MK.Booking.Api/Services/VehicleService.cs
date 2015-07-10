@@ -43,17 +43,18 @@ namespace apcurium.MK.Booking.Api.Services
             ICommandBus commandBus,
             ReferenceDataService referenceDataService,
             HoneyBadgerServiceClient honeyBadgerServiceClient,
+            CmtGeoServiceClient geoServiceClient,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             IServerSettings serverSettings,
             ILogger logger)
         {
+            _serverSettings = serverSettings;
             _ibsServiceProvider = ibsServiceProvider;
             _dao = dao;
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
-            _honeyBadgerServiceClient = honeyBadgerServiceClient;
+            _honeyBadgerServiceClient = _serverSettings != null && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.Geo ? geoServiceClient : honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
-            _serverSettings = serverSettings;
             _logger = logger;
         }
 
@@ -87,9 +88,9 @@ namespace apcurium.MK.Booking.Api.Services
                 IList<int> availableVehiclesFleetIds = null;
 
                 if (!market.HasValue()
-                    && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger)
+                    && _serverSettings.ServerData.AvailableVehiclesMode != AvailableVehiclesModes.IBS)
                 {
-                    // LOCAL market Honey Badger
+                    // LOCAL market Honey Badger or Geo
                     availableVehiclesMarket = _serverSettings.ServerData.HoneyBadger.AvailableVehiclesMarket;
 
                     if (_serverSettings.ServerData.HoneyBadger.AvailableVehiclesFleetId.HasValue)
@@ -99,7 +100,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }
                 else
                 {
-                    // EXTERNAL market Honey Badger
+                    // EXTERNAL market Honey Badger or Geo
                     availableVehiclesMarket = market;
 
                     try

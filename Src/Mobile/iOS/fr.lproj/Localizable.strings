@@ -134,6 +134,7 @@
 "TabPlaces"="Points d'intérêt";
 "CreditCardRemoveErrorTitle"="La carte ne peut être supprimée";
 "View_Payments_CmtRideLinqChangePaymentTitle"="Modifier les informations relatives au paiement";
+"ServiceError_EmailClientAbsent"="Excusez, nous ne pouvons pas créer le courriel. Il n y'a pas de client de courriel installé sur cet appareil";
 "InvalidLoginMessageTitle"="Erreur de connection";
 "CreateAccountTitleArray"="MrMme";
 "RideSettingsAccountNumber"="Numéro de compte entreprise (optionnel)";
@@ -617,6 +618,7 @@
 "View_HistoryDetail"="Détail de la commande";
 "TaxiHailNetworkTimeOutErrorTitle"="Erreur";
 "HistoryDetailBuildingNameNotSpecified"="Non spécifié";
+"DriverInfoVehicleMedallion"="Medallion:";
 "TabBook"="Réserver maintenant!";
 "CreditCardRemoveErrorScheduledOrderMessage"="Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.";
 "TaxiMapTitle"="Votre véhicule";
