@@ -492,7 +492,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				}
                 if(ViewModel.VehicleMedallionHidden){
                     tupleList[7] = Tuple.Create (tupleList[7].Item1, tupleList[7].Item2, true);
-                    numberOfItemsHidden++;
+                    // Not incrementing the number of items hidden for this section since this section will only be displayed with eHail mode.
                 }
 
                 if (numberOfItemsHidden == 8) {
