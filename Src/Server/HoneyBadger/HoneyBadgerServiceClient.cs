@@ -12,8 +12,8 @@ namespace HoneyBadger
 {
     public class HoneyBadgerServiceClient : BaseServiceClient
     {
-        private readonly IServerSettings _serverSettings;
-        private readonly ILogger _logger;
+        protected readonly IServerSettings _serverSettings;
+        protected readonly ILogger _logger;
 
         public HoneyBadgerServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings)
@@ -33,45 +33,13 @@ namespace HoneyBadger
         /// <param name="returnAll">True to return all the available vehicles; false will return a set number defined by the admin settings. (Optional)</param>
         /// <param name="wheelchairAccessibleOnly">True to return only wheelchair accessible vehicles, false will return all. (Optional)</param>
         /// <returns>The available vehicles.</returns>
-        public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
+        public virtual IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
         {
-            if (fleetIds != null && !fleetIds.Any())
+            var @params = GetAvailableVehicleParams(market, latitude, longitude, searchRadius, fleetIds, returnAll, wheelchairAccessibleOnly);
+            if (@params == null)
             {
-                // No fleetId allowed for available vehicles
                 return new List<VehicleResponse>();
             }
-
-            var searchRadiusInKm = (searchRadius ?? _serverSettings.ServerData.AvailableVehicles.Radius) / 1000;
-            var numberOfVehicles = _serverSettings.ServerData.AvailableVehicles.Count;
-
-            var @params = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("includeEntities", "true"),
-                    new KeyValuePair<string, string>("market", market),
-                    new KeyValuePair<string, string>("meterState", ((int)MeterStates.ForHire).ToString()),
-                    new KeyValuePair<string, string>("logonState", ((int)LogonStates.LoggedOn).ToString())
-                };
-            if (wheelchairAccessibleOnly)
-            {
-                @params.Add(new KeyValuePair<string, string>("vehicleType", "1"));
-            }
-
-            var vertices = GeographyHelper.CirclePointsFromRadius(latitude, longitude, searchRadiusInKm, 10);
-
-            foreach (var vertex in vertices)
-            {
-                var point = string.Format("{0},{1}", vertex.Item1, vertex.Item2);
-                @params.Add(new KeyValuePair<string, string>("poly", point));
-            }
-
-            if (fleetIds != null)
-            {
-                foreach (var fleetId in fleetIds)
-                {
-                    @params.Add(new KeyValuePair<string, string>("fleet", fleetId.ToString()));
-                }
-            }
-
             var appendToExistingParams = _serverSettings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
 
             var queryString = BuildQueryString(@params, appendToExistingParams);
@@ -92,20 +60,76 @@ namespace HoneyBadger
              
             if (response != null && response.Entities != null)
             {
+                var numberOfVehicles = _serverSettings.ServerData.AvailableVehicles.Count;
                 var orderedVehicleList = response.Entities.OrderBy(v => v.Medallion);
                 var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
-                
-                return entities.Select(e => new VehicleResponse
-                                {
-                                    Timestamp = e.TimeStamp,
-                                    Latitude = e.Latitude,
-                                    Longitude = e.Longitude,
-                                    Medallion = e.Medallion,
-                                    FleetId = e.FleetId
-                                });
+                return ToVehicleResponse(entities);
             }
 
             return new List<VehicleResponse>();
+        }
+
+        protected List<KeyValuePair<string, string>> GetAvailableVehicleParams(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false, bool usePolygon = true)
+        {
+            if (fleetIds != null && !fleetIds.Any())
+            {
+                // No fleetId allowed for available vehicles
+                return null;
+            }
+
+            var searchRadiusInKm = (searchRadius ?? _serverSettings.ServerData.AvailableVehicles.Radius) / 1000;
+
+            var @params = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("includeEntities", "true"),
+                    new KeyValuePair<string, string>("market", market),
+                    new KeyValuePair<string, string>("meterState", ((int)MeterStates.ForHire).ToString()),
+                    new KeyValuePair<string, string>("logonState", ((int)LogonStates.LoggedOn).ToString())
+                };
+            if (wheelchairAccessibleOnly)
+            {
+                @params.Add(new KeyValuePair<string, string>("vehicleType", "1"));
+            }
+
+            if (usePolygon)
+            {
+                var vertices = GeographyHelper.CirclePointsFromRadius(latitude, longitude, searchRadiusInKm, 10);
+
+                foreach (var vertex in vertices)
+                {
+                    var point = string.Format("{0},{1}", vertex.Item1, vertex.Item2);
+                    @params.Add(new KeyValuePair<string, string>("poly", point));
+                }
+            }
+            else
+            {
+                @params.Add(new KeyValuePair<string,string>("lat", latitude.ToString()));
+                @params.Add(new KeyValuePair<string,string>("lon", longitude.ToString()));
+                @params.Add(new KeyValuePair<string,string>("rad", (searchRadiusInKm * 1000).ToString()));
+            }
+
+            if (fleetIds != null)
+            {
+                foreach (var fleetId in fleetIds)
+                {
+                    @params.Add(new KeyValuePair<string, string>("fleet", fleetId.ToString()));
+                }
+            }
+
+            return @params;
+
+        }
+
+        protected IEnumerable<VehicleResponse> ToVehicleResponse(IEnumerable<HoneyBadgerContent> entities)
+        {
+            return entities.Select(e => new VehicleResponse
+            {
+                Timestamp = e.TimeStamp,
+                Latitude = e.Latitude,
+                Longitude = e.Longitude,
+                Medallion = e.Medallion,
+                FleetId = e.FleetId
+            });
         }
 
         /// <summary>
