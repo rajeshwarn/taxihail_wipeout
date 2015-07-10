@@ -25,7 +25,7 @@ namespace HoneyBadger
                 BaseAddress = new Uri(serverSettings.ServerData.CmtGeoSettingContainer.ServiceUrl)
             };
             GeoClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            GeoClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer","A47275341E57CB7C593DE3EDD5FCA");
+            GeoClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", serverSettings.ServerData.CmtGeoSettingContainer.AppKey);
         }
 
         /// <summary>

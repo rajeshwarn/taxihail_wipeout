@@ -100,7 +100,7 @@ namespace MK.Common.Configuration
             TwitterCallback = "http://www.taxihail.com/oauth";
             TwitterRequestTokenUrl = "https://api.twitter.com/oauth/request_token";
             
-            InitialZoomLevel = 14;
+            InitialZoomLevel = 14;            
 		}
 
         public TaxiHailSettingContainer TaxiHail { get; protected set; }
@@ -113,8 +113,6 @@ namespace MK.Common.Configuration
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
         public InsightsSettingContainer Insights { get; protected set; }
         public NetworkSettingContainer Network { get; protected set; }
-
-        public CmtGeoSettingContainer CmtGeoSettingContainer { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Can Change Service Url", Description="Display a button on the login page to change the API server url")]

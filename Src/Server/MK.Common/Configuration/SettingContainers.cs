@@ -335,5 +335,8 @@ namespace apcurium.MK.Common.Configuration
     {
         [Display(Name = "Cmt Geo service Url", Description = "Cmt geo Service Url. N.B.: Market request parameter is added automatically by the middleware, no need to add it here.")]
         public string ServiceUrl { get; protected internal set; }
+
+        [Display(Name = "Cmt Geo service API key", Description = "The API key for geo services")]
+        public string AppKey { get; protected internal set; }
     }
 }
