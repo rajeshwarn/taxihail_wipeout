@@ -10,5 +10,5 @@ namespace HoneyBadger.Responses
 
         [JsonProperty("mapMatched")]
         public Boolean IsMapMatched { get; set; }
-s    }
+    }
 }
