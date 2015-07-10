@@ -452,17 +452,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				var numberOfItemsHidden = 0;
 				var defaultHeightOfSlidingView = 151f;
 
-				var tupleList = new List<Tuple<UILabel, UILabel, bool>> ();
-				tupleList.Add(Tuple.Create(lblCompany, txtCompany, false));
-				tupleList.Add(Tuple.Create(lblDriver, txtDriver, false));
-				tupleList.Add(Tuple.Create(lblLicence, txtLicence, false));
-				tupleList.Add(Tuple.Create(lblTaxiType, txtTaxiType, false));
-				tupleList.Add(Tuple.Create(lblMake, txtMake, false));
-				tupleList.Add(Tuple.Create(lblModel, txtModel, false));
-				tupleList.Add(Tuple.Create(lblColor, txtColor, false));
-                tupleList.Add(Tuple.Create(lblMedallion, txtMedallion, false));
+			    var tupleList = new List<Tuple<UILabel, UILabel, bool>>
+			    {
+			        Tuple.Create(lblCompany, txtCompany, false),
+			        Tuple.Create(lblDriver, txtDriver, false),
+			        Tuple.Create(lblLicence, txtLicence, false),
+			        Tuple.Create(lblTaxiType, txtTaxiType, false),
+			        Tuple.Create(lblMake, txtMake, false),
+			        Tuple.Create(lblModel, txtModel, false),
+			        Tuple.Create(lblColor, txtColor, false),
+			        Tuple.Create(lblMedallion, txtMedallion, false)
+			    };
 
-				if (ViewModel.CompanyHidden){ 
+			    if (ViewModel.CompanyHidden){ 
 					tupleList[0] = Tuple.Create (tupleList[0].Item1, tupleList[0].Item2, true);
 					numberOfItemsHidden++;
 				}
@@ -495,7 +497,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     // Not incrementing the number of items hidden for this section since this section will only be displayed with eHail mode.
                 }
 
-                if (numberOfItemsHidden == 8) {
+                if (numberOfItemsHidden == 7 && ViewModel.VehicleMedallionHidden) {
 					statusBar.SetMaxHeight (VisibleStatusHeight);
 					statusBar.SetNeedsLayout();
 					return;
@@ -504,7 +506,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 if(tupleList.Count(p => !p.Item3) == 1)
                 {
                     var medallion = tupleList[7];
-
                     var height = VisibleStatusHeight;
 
                     //Both driver contact buttons are visible
@@ -562,12 +563,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + VisibleStatusHeight);
 
 				var i = 0;
-				foreach (var item in tupleList) {
-					if (!item.Item3) {
-						item.Item1.Frame = new CGRect(item.Item1.Frame.X, 4 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
-						item.Item2.Frame = new CGRect(item.Item2.Frame.X, 4 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
-						i++;
-					}
+				foreach (var item in tupleList.Where(item => !item.Item3))
+				{
+				    item.Item1.Frame = new CGRect(item.Item1.Frame.X, 4 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
+				    item.Item2.Frame = new CGRect(item.Item2.Frame.X, 4 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
+				    i++;
 				}
 
 				statusBar.SetNeedsLayout();
