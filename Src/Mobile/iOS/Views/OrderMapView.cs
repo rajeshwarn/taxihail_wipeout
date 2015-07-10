@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
              
 			this.RegionChanged += (s, e) =>
 			{
-                if (!ViewModel.Settings.ShowIndividualTaxiMarkerOnly)
+                if (ViewModel != null && !ViewModel.Settings.ShowIndividualTaxiMarkerOnly)
                 {
                     ShowAvailableVehicles(VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray() : null, GetMapBoundsFromProjection()));
                 }
