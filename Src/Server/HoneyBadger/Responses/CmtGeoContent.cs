@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace HoneyBadger.Responses
 {
     public class CmtGeoContent : HoneyBadgerContent
     {
-        public int ETASeconds { get; set; }
-    }
+        [JsonProperty("etaInSeconds")]
+        public Int64 ETASeconds { get; set; }
+
+        [JsonProperty("mapMatched")]
+        public Boolean IsMapMatched { get; set; }
+s    }
 }
