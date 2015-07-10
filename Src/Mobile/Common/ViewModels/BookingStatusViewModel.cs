@@ -198,6 +198,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        {
 	            return !IsDriverInfoAvailable 
                     || string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber) 
+                    // Medallion should be hidden when not in eHail mode.
                     || !OrderStatusDetail.RideLinqPairingCode.HasValue();
 	        }
 	    }
