@@ -6,9 +6,9 @@ namespace HoneyBadger.Responses
     public class CmtGeoContent : HoneyBadgerContent
     {
         [JsonProperty("etaInSeconds")]
-        public Int64 ETASeconds { get; set; }
+        public long ETASeconds { get; set; }
 
         [JsonProperty("mapMatched")]
-        public Boolean IsMapMatched { get; set; }
+        public bool IsMapMatched { get; set; }
     }
 }
