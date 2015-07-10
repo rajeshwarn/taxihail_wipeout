@@ -5,12 +5,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Geography;
 using apcurium.MK.Common.Http.Extensions;
-using HoneyBadger.Enums;
-using HoneyBadger.Responses;
+using CMTServices.Responses;
 
-namespace HoneyBadger
+namespace CMTServices
 {
     public class CmtGeoServiceClient : HoneyBadgerServiceClient
     {

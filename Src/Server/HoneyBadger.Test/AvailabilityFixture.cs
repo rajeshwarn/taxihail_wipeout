@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using apcurium.MK.Booking.Test;
 using apcurium.MK.Common.Diagnostic;
+using CMTServices;
 
 namespace HoneyBadger.Test
 {

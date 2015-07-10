@@ -1,5 +1,5 @@
 ﻿
-namespace HoneyBadger.Responses
+namespace CMTServices.Responses
 {
     public class HoneyBadgerResponse
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace HoneyBadger.Enums
+namespace CMTServices.Enums
 {
     public enum EHailStates
     {

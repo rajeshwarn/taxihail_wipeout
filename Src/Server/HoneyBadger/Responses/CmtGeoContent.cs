@@ -1,7 +1,6 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace HoneyBadger.Responses
+namespace CMTServices.Responses
 {
     public class CmtGeoContent : HoneyBadgerContent
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using apcurium.MK.Common.Configuration;
 
-namespace HoneyBadger
+namespace CMTServices
 {
     public class BaseServiceClient
     {

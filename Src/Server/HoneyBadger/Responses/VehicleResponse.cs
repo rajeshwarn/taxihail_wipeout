@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HoneyBadger.Responses
+namespace CMTServices.Responses
 {
     public class VehicleResponse
     {
