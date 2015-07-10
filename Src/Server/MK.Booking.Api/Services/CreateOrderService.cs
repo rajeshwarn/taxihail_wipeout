@@ -108,6 +108,19 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("Create order request : " + request.ToJson());
 
+            CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
+
+            if (countryCode.IsNumberPossible(request.Settings.Phone))
+            {
+                request.Settings.Phone = request.Settings.Phone.Replace(" ", "");
+                request.Settings.Phone = request.Settings.Phone.Replace("(", "");
+                request.Settings.Phone = request.Settings.Phone.Replace(")", "");
+            }
+            else
+            {
+                throw new HttpError(string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
+            }
+
             // TODO: Find a better way to do this...
             var isFromWebApp = request.FromWebApp;
 

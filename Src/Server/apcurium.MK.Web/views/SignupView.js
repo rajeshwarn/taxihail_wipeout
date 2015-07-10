@@ -7,7 +7,7 @@
         events: {
             "change :text": "onPropertyChanged",
             "change :password": "onPropertyChanged",
-            "change #signup-countrycode": "onPropertyChanged"
+            "change #countrycode": "onPropertyChanged"
         },
 
         country:new Object(),
@@ -71,7 +71,7 @@
 
             this.$el.html(this.renderTemplate(data));
 
-            this.$("#signup-countrycode").val(this.country.code).selected = "true";
+            this.$("#countrycode").val(this.country.code).selected = "true";
 
             var itemfb = TaxiHail.localStorage.getItem('fbinfos');
             var itemtw = TaxiHail.localStorage.getItem('twinfos');

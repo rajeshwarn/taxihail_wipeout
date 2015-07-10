@@ -3,7 +3,7 @@
     var View = TaxiHail.ProfileView = TaxiHail.TemplatedView.extend({
         events: {
             'change :input': 'onPropertyChanged',
-            "change #signup-countrycode": "onPropertyChanged"
+            "change #countrycode": "onPropertyChanged"
     },
 
         initialize: function () {
@@ -112,7 +112,7 @@
 
             this.$el.html(this.renderTemplate(data));
 
-            this.$("#signup-countrycode").val(data.settings.country.code).selected = "true";
+            this.$("#countrycode").val(data.settings.country.code).selected = "true";
             
             this.validate({
                 rules: {

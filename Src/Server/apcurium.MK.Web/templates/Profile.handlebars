@@ -18,7 +18,7 @@
     <div class="control-group">
         <label class="control-label" for="inputPhone">{{localize "Phone"}}</label>
         <div class="controls">
-            <select id="signup-countrycode" name="countryCode" style="width:100%; margin-bottom:3px;">
+            <select id="countrycode" name="countryCode" style="width:100%; margin-bottom:3px;">
                 {{#each countryCodes}}
                    <option value="{{this.CountryISOCode.Code}}">{{this.СountryDialCodeInternationalFormat}}{{#each this.spaces}}&nbsp;{{/each}}{{this.CountryName}}</option>
                 {{/each}}
