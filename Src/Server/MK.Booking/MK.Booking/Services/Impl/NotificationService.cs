@@ -607,7 +607,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 TotalFare = _resources.FormatPrice(totalAmount),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
-                MtaTax = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
+                ImprovementSurcharge = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
                 RideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour),
                 
                 Distance = _resources.FormatDistance(cmtRideLinqFields.SelectOrDefault(x => x.Distance)),
@@ -642,7 +642,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowRideLinqLastFour = isCmtRideLinqReceipt,
                 ShowTripId = isCmtRideLinqReceipt,
                 ShowTax = Math.Abs(tax) >= 0.01 || isCmtRideLinqReceipt,
-                ShowMtaTax = isCmtRideLinqReceipt,
+                ShowImprovementSurcharge = isCmtRideLinqReceipt,
                 ShowToll = Math.Abs(toll) >= 0.01 || isCmtRideLinqReceipt,
                 ShowSurcharge = Math.Abs(surcharge) >= 0.01 || isCmtRideLinqReceipt,
                 ShowBookingFees = Math.Abs(bookingFees) >= 0.01 || isCmtRideLinqReceipt,

@@ -145,7 +145,6 @@ namespace apcurium.MK.Booking.Api.Services
                                 DropOffDateTime = DateTime.Now,
                                 AccessFee = 0.3,
                                 LastFour = "1114",
-                                StateSurcharge = 0.5,
                                 TripId = 9874,
                                 RateAtTripStart = 1,
                                 RateAtTripEnd = 4,
