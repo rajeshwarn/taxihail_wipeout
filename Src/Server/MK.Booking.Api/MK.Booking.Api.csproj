@@ -53,6 +53,10 @@
     <Reference Include="CsvHelper">
       <HintPath>..\packages\CsvHelper.2.3.0\lib\net40-client\CsvHelper.dll</HintPath>
     </Reference>
+    <Reference Include="libphonenumber, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\libphonenumber.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>

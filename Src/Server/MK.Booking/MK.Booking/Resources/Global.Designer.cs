@@ -1384,6 +1384,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The phone number is invalid. It must have format {0}.
+        /// </summary>
+        public static string PhoneNumberFormat {
+            get {
+                return ResourceManager.GetString("PhoneNumberFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Due to high demand, no cars are available right now. Do you want to book with {0} instead?.
         /// </summary>
         public static string PushNotification_ChangeNetworkCompany {

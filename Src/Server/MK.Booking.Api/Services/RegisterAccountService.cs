@@ -21,12 +21,14 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
+        private readonly Resources.Resources _resources;
 
         public RegisterAccountService(ICommandBus commandBus, IAccountDao accountDao, IServerSettings serverSettings)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
             _serverSettings = serverSettings;
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public object Post(RegisterAccount request)
@@ -37,6 +39,17 @@ namespace apcurium.MK.Booking.Api.Services
             if (_accountDao.FindByEmail(request.Email) != null)
             {
                 throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
+            }
+
+            if (libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(request.Phone, request.Country.Code))
+            {
+                request.Phone = request.Phone.Replace(" ", "");
+            }
+            else
+            {
+                libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(request.Country.Code);
+                string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(request.Country.Code);
+                throw new HttpError(string.Format(_resources.Get("PhoneNumberFormat"), phoneNumberExampleText));
             }
 
             if (request.FacebookId.HasValue())

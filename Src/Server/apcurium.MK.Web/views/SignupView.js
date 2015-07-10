@@ -1,16 +1,20 @@
-(function() {
+(function () {
     var View = TaxiHail.SignupView = TaxiHail.TemplatedView.extend({
-    
+
         tagName: 'form',
         className: 'signup-view form-horizontal',
 
-       events: {
+        events: {
             "change :text": "onPropertyChanged",
-            "change :password": "onPropertyChanged"
+            "change :password": "onPropertyChanged",
+            "change #signup-countrycode": "onPropertyChanged"
         },
 
+        country:new Object(),
+    
         initialize:function () {
             _.bindAll(this, "onsubmit");
+
             $.validator.addMethod("regex",
                 function (value, element, regexp) {
                     var re = new RegExp(regexp);
@@ -25,6 +29,9 @@
                     return count >= 10;
                 }
             );
+
+            this.model.set("country", this.country, { silent: true });
+            this.country.code = TaxiHail.parameters.defaultCountryCode;
         },
 
         render: function () {
@@ -39,7 +46,32 @@
                 showPayBackField: showPayBackField
             }
 
+            _.extend(data, {
+                countryCodes: TaxiHail.countryCodes,
+            });
+
+            for (var i = 0; i < data.countryCodes.length; i++) {
+
+                var spaces = [];
+                var spacesToAdd = 2;
+
+                if (data.countryCodes[i].CountryDialCode > 0) {
+                    var sp = (3 - data.countryCodes[i].CountryDialCode.toString().length) * 2;
+                    spacesToAdd += Math.max(sp, 0);
+                }
+                else {
+                    spacesToAdd += 8;
+                }
+
+                for (var i1 = 0; i1 < spacesToAdd; i1++)
+                    spaces.push(0);
+
+                data.countryCodes[i].spaces = spaces;
+            }
+
             this.$el.html(this.renderTemplate(data));
+
+            this.$("#signup-countrycode").val(this.country.code).selected = "true";
 
             var itemfb = TaxiHail.localStorage.getItem('fbinfos');
             var itemtw = TaxiHail.localStorage.getItem('twinfos');
@@ -50,8 +82,11 @@
                     email:true
                 },
                 name: "required",
+                countryCode:
+                    {
+                        required:true
+                    },
                 phone: {
-                    regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/,
                     required: true
                 },
                 password: {
@@ -93,7 +128,6 @@
                     },
                     name: "required",
                     phone: {
-                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/,
                         required: true
                     }                    
                 };
@@ -111,7 +145,6 @@
                     },
                     phone: {
                         required: TaxiHail.localize('error.PhoneRequired'),
-                        regex: TaxiHail.localize('error.PhoneBadFormat')
                     },
                     password: {
                         required: TaxiHail.localize('Password required')
@@ -132,8 +165,21 @@
         },
         
         onPropertyChanged: function (e) {
+
+            var dataNodeName = e.currentTarget.nodeName.toLowerCase();
+            var elementName = e.currentTarget.name;
+
             var $input = $(e.currentTarget);
-            this.model.set($input.attr('name'), $input.val(), {silent: true});
+
+            if (dataNodeName == "input") {
+                var dataValue = $input.val();
+                this.model.set($input.attr('name'), $input.val(), { silent: true });
+            }
+            else if (dataNodeName == "select") {
+                if (elementName == "countryCode") {
+                    this.country.code = $input.find(":selected").val();
+                }
+            }
         },
         
         onsubmit: function (form) {
