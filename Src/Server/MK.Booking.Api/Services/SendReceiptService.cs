@@ -150,7 +150,6 @@ namespace apcurium.MK.Booking.Api.Services
                         AccessFee = tripInfo.AccessFee,
                         DropOffDateTime = tripInfo.EndTime,
                         LastFour = tripInfo.LastFour,
-                        StateSurcharge = tripInfo.Tax,
                         FareAtAlternateRate = Math.Round(((double) tripInfo.FareAtAlternateRate / 100), 2),
                         RateAtTripEnd = tripInfo.RateAtTripEnd,
                         RateAtTripStart = tripInfo.RateAtTripStart
