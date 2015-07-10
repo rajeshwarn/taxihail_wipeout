@@ -18,6 +18,7 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Maps;
 using System.Net;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceClient.Web;
 
@@ -70,7 +71,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				var paymentSettings = await _paymentService.GetPaymentSettings();
 
-				_isCmtRideLinq = paymentSettings.PaymentMode == apcurium.MK.Common.Configuration.Impl.PaymentMethod.RideLinqCmt;
+				_isCmtRideLinq = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+
+			    RefreshView();
 			}
 			catch(Exception ex) 
 			{
@@ -304,26 +307,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			get { return _orderStatusDetail; }
 			set
-            {
-				_orderStatusDetail = value;
-				RaisePropertyChanged(() => OrderStatusDetail);
-				RaisePropertyChanged(() => CompanyHidden);
-				RaisePropertyChanged(() => VehicleDriverHidden);
-				RaisePropertyChanged(() => VehicleLicenceHidden);
-				RaisePropertyChanged(() => VehicleTypeHidden);
-				RaisePropertyChanged(() => VehicleMakeHidden);
-				RaisePropertyChanged(() => VehicleModelHidden);
-				RaisePropertyChanged(() => VehicleColorHidden);
-                RaisePropertyChanged(() => DriverPhotoHidden);
-				RaisePropertyChanged(() => IsDriverInfoAvailable);
-				RaisePropertyChanged(() => IsCallTaxiVisible);
-                RaisePropertyChanged(() => IsMessageTaxiVisible);
-				RaisePropertyChanged(() => CanGoBack);
-                RaisePropertyChanged(() => VehicleMedallionHidden);
+			{
+			    _orderStatusDetail = value;
+			    RefreshView();
 			}
-		}
+        }
 
-		public ICommand CallTaxi
+	    private void RefreshView()
+	    {
+	        RaisePropertyChanged(() => OrderStatusDetail);
+	        RaisePropertyChanged(() => CompanyHidden);
+	        RaisePropertyChanged(() => VehicleDriverHidden);
+	        RaisePropertyChanged(() => VehicleLicenceHidden);
+	        RaisePropertyChanged(() => VehicleTypeHidden);
+	        RaisePropertyChanged(() => VehicleMakeHidden);
+	        RaisePropertyChanged(() => VehicleModelHidden);
+	        RaisePropertyChanged(() => VehicleColorHidden);
+	        RaisePropertyChanged(() => DriverPhotoHidden);
+	        RaisePropertyChanged(() => IsDriverInfoAvailable);
+	        RaisePropertyChanged(() => IsCallTaxiVisible);
+	        RaisePropertyChanged(() => IsMessageTaxiVisible);
+	        RaisePropertyChanged(() => CanGoBack);
+	        RaisePropertyChanged(() => VehicleMedallionHidden);
+	    }
+
+	    public ICommand CallTaxi
         {
             get 
 			{ 
