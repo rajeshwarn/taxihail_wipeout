@@ -76,6 +76,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblMake { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblMedallion { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblModel { get; set; }
 
 		[Outlet]
@@ -115,6 +118,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel txtMake { get; set; }
 
 		[Outlet]
+		UIKit.UILabel txtMedallion { get; set; }
+
+		[Outlet]
 		UIKit.UILabel txtModel { get; set; }
 
 		[Outlet]
@@ -128,6 +134,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (bottomBar != null) {
 				bottomBar.Dispose ();
 				bottomBar = null;
+			}
+
+			if (lblMedallion != null) {
+				lblMedallion.Dispose ();
+				lblMedallion = null;
+			}
+
+			if (txtMedallion != null) {
+				txtMedallion.Dispose ();
+				txtMedallion = null;
 			}
 
 			if (btnCall != null) {

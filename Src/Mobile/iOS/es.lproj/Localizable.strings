@@ -610,6 +610,7 @@
 "View_HistoryDetail"="Detalles de la Reservación";
 "ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
 "HistoryDetailBuildingNameNotSpecified"="No Especificado";
+"DriverInfoVehicleMedallion"="Medallion:";
 "TabBook"="De Alta";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";
 "TaxiMapTitle"="Su Taxi";

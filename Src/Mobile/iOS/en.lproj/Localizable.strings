@@ -241,6 +241,7 @@
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "Tuto02Top"="We should be able to locate you using the GPS receiver in your mobile device.";
 "GenericTitle"="";
+"DriverInfoVehicleMedallion"="Medallion:";
 "CmtRideLinqConfirmPairViewConfirmPairDetailText"="Confirm that you are in the vehicle number indicated below.  By Tapping “Confirm”, this ride will automatically be paid by your credit card on file.";
 "ReSendConfirmation"="Notify driver of payment";
 "NoPhoneNumberMessage"="Your phone number or the driver's phone number is invalid.";
