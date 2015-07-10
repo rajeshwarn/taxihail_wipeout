@@ -132,9 +132,9 @@
       <Project>{5fd750a2-ee19-4a80-9b38-32adbf03765a}</Project>
       <Name>CMTPayment</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HoneyBadger\HoneyBadger.csproj">
+    <ProjectReference Include="..\HoneyBadger\CMTService.Server.csproj">
       <Project>{1c2f9d8b-7b65-4d2e-a099-d0040907d59c}</Project>
-      <Name>HoneyBadger</Name>
+      <Name>CMTService.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>
