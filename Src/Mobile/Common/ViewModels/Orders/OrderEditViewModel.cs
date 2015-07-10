@@ -150,13 +150,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
-                    if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(BookingSettings.Phone, SelectedCountryCode.CountryISOCode.Code))
+                    CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(SelectedCountryCode.CountryISOCode));
+                    if (!countryCode.IsNumberPossible(BookingSettings.Phone))
                     {
-                        libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(SelectedCountryCode.CountryISOCode.Code);
-                        string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(SelectedCountryCode.CountryISOCode.Code);
-
                         await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-                            string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], phoneNumberExampleText));
+                            string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], countryCode.GetPhoneExample()));
                         return;
                     }
 

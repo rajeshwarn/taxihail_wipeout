@@ -180,12 +180,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 
-                    if (!libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(Data.Phone, Data.Country.Code))
+                    CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Data.Country));
+                    if (!countryCode.IsNumberPossible(Data.Phone))
 					{
-                        libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(Data.Country.Code);
-                        string phoneNumberExampleText = phoneNumberExample.FormatInOriginalFormat(Data.Country.Code);
-
-                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], phoneNumberExampleText));
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"],
+                            string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], countryCode.GetPhoneExample()));
 						return;
 					}
 
