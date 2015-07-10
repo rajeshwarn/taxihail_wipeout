@@ -7,8 +7,8 @@
     <ProjectGuid>{E1008E0A-32C7-414E-BF90-96DE7A790F85}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HoneyBadger.Test</RootNamespace>
-    <AssemblyName>HoneyBadger.Test</AssemblyName>
+    <RootNamespace>CMTServices.Test</RootNamespace>
+    <AssemblyName>CMTServices.Server.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
