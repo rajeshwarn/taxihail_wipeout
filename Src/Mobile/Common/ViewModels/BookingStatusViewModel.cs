@@ -38,6 +38,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _isContactingNextCompany;
         private int? _currentIbsOrderId; 
 
+		private bool _isCmtRideLinq;
+
 	    public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
 			IPhoneService phoneService,
 			IBookingService bookingService,
@@ -54,11 +56,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init(string order, string orderStatus)
 		{
+			GetIsCmtRideLinq();
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);
             DisplayOrderNumber();
 			IsCancelButtonVisible = false;			
 			_waitingToNavigateAfterTimeOut = false;
+		}
+
+		private async Task GetIsCmtRideLinq()
+		{
+			try
+			{
+				var paymentSettings = await _paymentService.GetPaymentSettings();
+
+				_isCmtRideLinq = paymentSettings.PaymentMode == apcurium.MK.Common.Configuration.Impl.PaymentMethod.RideLinqCmt;
+			}
+			catch(Exception ex) 
+			{
+				Logger.LogError(ex);	
+			}
 		}
 	
 		public override void OnViewLoaded ()
@@ -181,7 +198,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        return !IsDriverInfoAvailable
 	               || string.IsNullOrWhiteSpace(informationToValidate) 
                    //Needed to hide information sent in error when in eHail auto ridelinq pairing mode.
-	               || OrderStatusDetail.RideLinqPairingCode.HasValue();
+	               || _isCmtRideLinq;
 	    }
 
 	    public bool VehicleLicenceHidden
@@ -199,7 +216,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	            return !IsDriverInfoAvailable 
                     || string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber) 
                     // Medallion should be hidden when not in eHail mode.
-                    || !OrderStatusDetail.RideLinqPairingCode.HasValue();
+					|| !_isCmtRideLinq;
 	        }
 	    }
 
