@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IVehicleTypeDao _dao;
         private readonly ICommandBus _commandBus;
         private readonly ReferenceDataService _referenceDataService;
-        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+        private readonly BaseAvailableVehicleServiceClient _availableVehicleServiceClient;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
@@ -53,7 +53,9 @@ namespace apcurium.MK.Booking.Api.Services
             _dao = dao;
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
-            _honeyBadgerServiceClient = _serverSettings != null && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.Geo ? geoServiceClient : honeyBadgerServiceClient;
+            _availableVehicleServiceClient = serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.Geo
+                ? (BaseAvailableVehicleServiceClient) geoServiceClient
+                : honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _logger = logger;
         }
@@ -119,13 +121,13 @@ namespace apcurium.MK.Booking.Api.Services
                     }
                 }
 
-                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(
+                var vehicleResponse = _availableVehicleServiceClient.GetAvailableVehicles(
                     market: availableVehiclesMarket,
                     latitude: request.Latitude,
                     longitude: request.Longitude,
                     searchRadius: null,
                     fleetIds: availableVehiclesFleetIds,
-                    wheelchairAccessibleOnly: (vehicleType == null ? false : vehicleType.IsWheelchairAccessible));
+                    wheelchairAccessibleOnly: (vehicleType != null && vehicleType.IsWheelchairAccessible));
 
                 vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
                 {

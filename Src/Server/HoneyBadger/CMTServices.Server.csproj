@@ -71,7 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseServiceClient.cs" />
+    <Compile Include="BaseAvailableVehicleServiceClient.cs" />
     <Compile Include="Converters\EpochDateTimeConverter.cs" />
     <Compile Include="Enums\DeviceTypes.cs" />
     <Compile Include="Enums\EHailStates.cs" />

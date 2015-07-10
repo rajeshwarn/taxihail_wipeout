@@ -10,7 +10,7 @@ using CMTServices.Responses;
 
 namespace CMTServices
 {
-    public class HoneyBadgerServiceClient : BaseServiceClient
+    public class HoneyBadgerServiceClient : BaseAvailableVehicleServiceClient
     {
         public HoneyBadgerServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings, logger, serverSettings.ServerData.HoneyBadger.ServiceUrl)

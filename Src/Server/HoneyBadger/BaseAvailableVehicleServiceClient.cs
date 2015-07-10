@@ -11,9 +11,9 @@ using CMTServices.Responses;
 
 namespace CMTServices
 {
-    public abstract class BaseServiceClient
+    public abstract class BaseAvailableVehicleServiceClient
     {
-        protected BaseServiceClient(IServerSettings serverSettings,ILogger logger ,string serviceUrl)
+        protected BaseAvailableVehicleServiceClient(IServerSettings serverSettings,ILogger logger ,string serviceUrl)
         {
             Settings = serverSettings;
             Logger = logger;

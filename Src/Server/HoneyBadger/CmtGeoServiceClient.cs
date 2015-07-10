@@ -11,7 +11,7 @@ using CMTServices.Responses;
 
 namespace CMTServices
 {
-    public class CmtGeoServiceClient : BaseServiceClient
+    public class CmtGeoServiceClient : BaseAvailableVehicleServiceClient
     {
         public CmtGeoServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings, logger, serverSettings.ServerData.CmtGeoSettingContainer.ServiceUrl)
