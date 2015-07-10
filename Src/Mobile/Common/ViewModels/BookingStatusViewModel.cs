@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_waitingToNavigateAfterTimeOut = false;
 		}
 
-		private async Task GetIsCmtRideLinq()
+		private async void GetIsCmtRideLinq()
 		{
 			try
 			{
