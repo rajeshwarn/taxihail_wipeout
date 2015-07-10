@@ -197,7 +197,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        get
 	        {
 	            return !IsDriverInfoAvailable 
-                    || (string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber) && !OrderStatusDetail.RideLinqPairingCode.HasValue());
+                    || string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber) 
+                    || !OrderStatusDetail.RideLinqPairingCode.HasValue();
 	        }
 	    }
 
