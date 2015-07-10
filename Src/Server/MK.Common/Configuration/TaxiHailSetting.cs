@@ -114,6 +114,8 @@ namespace MK.Common.Configuration
         public InsightsSettingContainer Insights { get; protected set; }
         public NetworkSettingContainer Network { get; protected set; }
 
+        public CmtGeoSettingContainer CmtGeoSettingContainer { get; protected set; }
+
         [RequiredAtStartup]
 		[Display(Name = "Can Change Service Url", Description="Display a button on the login page to change the API server url")]
 		public bool CanChangeServiceUrl { get; protected set; }

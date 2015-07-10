@@ -22,7 +22,7 @@ namespace HoneyBadger
             // create another client for the geo access
             GeoClient = new HttpClient
             {
-                BaseAddress = new Uri("http://geo-sandbox.cmtapi.com")
+                BaseAddress = new Uri(serverSettings.ServerData.CmtGeoSettingContainer.ServiceUrl)
             };
             GeoClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             GeoClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer","A47275341E57CB7C593DE3EDD5FCA");
