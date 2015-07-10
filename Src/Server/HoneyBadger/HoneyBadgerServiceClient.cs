@@ -12,14 +12,9 @@ namespace CMTServices
 {
     public class HoneyBadgerServiceClient : BaseServiceClient
     {
-        protected readonly IServerSettings _serverSettings;
-        protected readonly ILogger _logger;
-
         public HoneyBadgerServiceClient(IServerSettings serverSettings, ILogger logger)
-            : base(serverSettings)
+            : base(serverSettings, logger, serverSettings.ServerData.HoneyBadger.ServiceUrl)
         {
-            _serverSettings = serverSettings;
-            _logger = logger;
         }
 
         /// <summary>
@@ -33,14 +28,14 @@ namespace CMTServices
         /// <param name="returnAll">True to return all the available vehicles; false will return a set number defined by the admin settings. (Optional)</param>
         /// <param name="wheelchairAccessibleOnly">True to return only wheelchair accessible vehicles, false will return all. (Optional)</param>
         /// <returns>The available vehicles.</returns>
-        public virtual IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
+        public override IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
         {
             var @params = GetAvailableVehicleParams(market, latitude, longitude, searchRadius, fleetIds, returnAll, wheelchairAccessibleOnly);
             if (@params == null)
             {
                 return new List<VehicleResponse>();
             }
-            var appendToExistingParams = _serverSettings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
+            var appendToExistingParams = Settings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
 
             var queryString = BuildQueryString(@params, appendToExistingParams);
 
@@ -54,13 +49,13 @@ namespace CMTServices
             }
             catch (Exception ex)
             {
-                _logger.LogMessage("An error occured when trying to contact HoneyBadger");
-                _logger.LogError(ex);
+                Logger.LogMessage("An error occured when trying to contact HoneyBadger");
+                Logger.LogError(ex);
             }
              
             if (response != null && response.Entities != null)
             {
-                var numberOfVehicles = _serverSettings.ServerData.AvailableVehicles.Count;
+                var numberOfVehicles = Settings.ServerData.AvailableVehicles.Count;
                 var orderedVehicleList = response.Entities.OrderBy(v => v.Medallion);
                 var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
                 return ToVehicleResponse(entities);
@@ -68,70 +63,7 @@ namespace CMTServices
 
             return new List<VehicleResponse>();
         }
-
-        protected List<KeyValuePair<string, string>> GetAvailableVehicleParams(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false, bool usePolygon = true)
-        {
-            if (fleetIds != null && !fleetIds.Any())
-            {
-                // No fleetId allowed for available vehicles
-                return null;
-            }
-
-            var searchRadiusInKm = (searchRadius ?? _serverSettings.ServerData.AvailableVehicles.Radius) / 1000;
-
-            var @params = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("includeEntities", "true"),
-                    new KeyValuePair<string, string>("market", market),
-                    new KeyValuePair<string, string>("meterState", ((int)MeterStates.ForHire).ToString()),
-                    new KeyValuePair<string, string>("logonState", ((int)LogonStates.LoggedOn).ToString())
-                };
-            if (wheelchairAccessibleOnly)
-            {
-                @params.Add(new KeyValuePair<string, string>("vehicleType", "1"));
-            }
-
-            if (usePolygon)
-            {
-                var vertices = GeographyHelper.CirclePointsFromRadius(latitude, longitude, searchRadiusInKm, 10);
-
-                foreach (var vertex in vertices)
-                {
-                    var point = string.Format("{0},{1}", vertex.Item1, vertex.Item2);
-                    @params.Add(new KeyValuePair<string, string>("poly", point));
-                }
-            }
-            else
-            {
-                @params.Add(new KeyValuePair<string,string>("lat", latitude.ToString()));
-                @params.Add(new KeyValuePair<string,string>("lon", longitude.ToString()));
-                @params.Add(new KeyValuePair<string,string>("rad", (searchRadiusInKm * 1000).ToString()));
-            }
-
-            if (fleetIds != null)
-            {
-                foreach (var fleetId in fleetIds)
-                {
-                    @params.Add(new KeyValuePair<string, string>("fleet", fleetId.ToString()));
-                }
-            }
-
-            return @params;
-
-        }
-
-        protected IEnumerable<VehicleResponse> ToVehicleResponse(IEnumerable<HoneyBadgerContent> entities)
-        {
-            return entities.Select(e => new VehicleResponse
-            {
-                Timestamp = e.TimeStamp,
-                Latitude = e.Latitude,
-                Longitude = e.Longitude,
-                Medallion = e.Medallion,
-                FleetId = e.FleetId
-            });
-        }
-
+        
         /// <summary>
         /// Method that returns the vehicles statuses for a market.
         /// </summary>
@@ -153,20 +85,14 @@ namespace CMTServices
 			    new KeyValuePair<string, string>("market", market)
 		    };
 
-            foreach (var vehicleId in vehicleIds)
-            {
-                @params.Add(new KeyValuePair<string, string>("medallion", vehicleId));
-            }
+            @params.AddRange(vehicleIds.Select(vehicleId => new KeyValuePair<string, string>("medallion", vehicleId)));
 
             if (fleetIds != null)
             {
-                foreach (var fleetId in fleetIds)
-                {
-                    @params.Add(new KeyValuePair<string, string>("fleet", fleetId.ToString()));
-                }
+                @params.AddRange(fleetIds.Select(fleetId => new KeyValuePair<string, string>("fleet", fleetId.ToString())));
             }
 
-            var appendToExistingParams = _serverSettings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
+            var appendToExistingParams = Settings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
 
             var queryString = BuildQueryString(@params, appendToExistingParams);
 
@@ -180,8 +106,8 @@ namespace CMTServices
             }
             catch (Exception ex)
             {
-                _logger.LogMessage("An error occured when trying to contact HoneyBadger");
-                _logger.LogError(ex);
+                Logger.LogMessage("An error occured when trying to contact HoneyBadger");
+                Logger.LogError(ex);
             }
 
             if (response != null && response.Entities != null)

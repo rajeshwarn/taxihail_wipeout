@@ -10,20 +10,14 @@ using CMTServices.Responses;
 
 namespace CMTServices
 {
-    public class CmtGeoServiceClient : HoneyBadgerServiceClient
+    public class CmtGeoServiceClient : BaseServiceClient
     {
-        protected HttpClient GeoClient { get; private set; }
-
         public CmtGeoServiceClient(IServerSettings serverSettings, ILogger logger)
-            : base(serverSettings, logger)
+            : base(serverSettings, logger, serverSettings.ServerData.CmtGeoSettingContainer.ServiceUrl)
         {
             // create another client for the geo access
-            GeoClient = new HttpClient
-            {
-                BaseAddress = new Uri(serverSettings.ServerData.CmtGeoSettingContainer.ServiceUrl)
-            };
-            GeoClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            GeoClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", serverSettings.ServerData.CmtGeoSettingContainer.AppKey);
+            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", serverSettings.ServerData.CmtGeoSettingContainer.AppKey);
         }
 
         /// <summary>
@@ -55,17 +49,17 @@ namespace CMTServices
             CmtGeoResponse response = null;
             try
             {
-                response = GeoClient.Post("/availability", ToDictionary(@params)).Deserialize<CmtGeoResponse>().Result;
+                response = Client.Post("/availability", ToDictionary(@params)).Deserialize<CmtGeoResponse>().Result;
             }
             catch (Exception ex)
             {
-                _logger.LogMessage("An error occured when trying to contact Geo service");
-                _logger.LogError(ex);
+                Logger.LogMessage("An error occured when trying to contact Geo service");
+                Logger.LogError(ex);
             }
              
             if (response != null && response.Entities != null)
             {
-                var numberOfVehicles = _serverSettings.ServerData.AvailableVehicles.Count;
+                var numberOfVehicles = Settings.ServerData.AvailableVehicles.Count;
                 // make sure that if ETA is null they are last in the list
                 var orderedVehicleList = response.Entities.OrderBy(v => (v.ETASeconds != null ? 0 : 1)).ThenBy(v => v.ETASeconds).ThenBy(v => v.Medallion);
                 var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
