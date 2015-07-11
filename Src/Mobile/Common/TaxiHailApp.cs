@@ -164,12 +164,12 @@ namespace apcurium.MK.Booking.Mobile
 		    var appSettings = Mvx.Resolve<IAppSettings>();
 		    var facebookService = Mvx.Resolve<IFacebookService>();
 
-            if (appSettings.Data.FacebookEnabled)
+			if (appSettings.Data.FacebookEnabled && ( !string.IsNullOrWhiteSpace( appSettings.Data.FacebookAppId )) )
 			{
                 facebookService.Init();
 			}
 
-            if (appSettings.Data.FacebookPublishEnabled) 
+			if ( appSettings.Data.FacebookPublishEnabled  && ( !string.IsNullOrWhiteSpace( appSettings.Data.FacebookAppId )))
 			{
                 facebookService.PublishInstall();
 			}

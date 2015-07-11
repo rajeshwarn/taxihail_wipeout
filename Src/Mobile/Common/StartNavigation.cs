@@ -28,12 +28,12 @@ namespace apcurium.MK.Booking.Mobile
 
             await appSettings.Load();
 
-            if (appSettings.Data.FacebookEnabled)
+			if (appSettings.Data.FacebookEnabled && ( !string.IsNullOrWhiteSpace( appSettings.Data.FacebookAppId )))
             {
                 facebookService.Init();
             }
 
-            if (appSettings.Data.FacebookPublishEnabled)
+			if (appSettings.Data.FacebookPublishEnabled && ( !string.IsNullOrWhiteSpace( appSettings.Data.FacebookAppId )))
             {
                 facebookService.PublishInstall();
             }
