@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Api.Services
         public AvailableVehiclesResponse Post(AvailableVehicles request)
         {
             var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
-            string logoName = vehicleType != null ? vehicleType.LogoName : null;
+            var logoName = vehicleType != null ? vehicleType.LogoName : null;
 
             IbsVehiclePosition[] vehicles;
             string market = null;

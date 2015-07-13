@@ -50,7 +50,9 @@ namespace CMTServices
             CmtGeoResponse response = null;
             try
             {
-                response = Client.Post("/availability", ToDictionary(@params)).Deserialize<CmtGeoResponse>().Result;
+                response = Client.Post("/availability", ToDictionary(@params))
+                    .Deserialize<CmtGeoResponse>()
+                    .Result;
             }
             catch (Exception ex)
             {
@@ -67,14 +69,17 @@ namespace CMTServices
                     .ThenBy(v => v.ETASeconds)
                     .ThenBy(v => v.Medallion);
 
-                var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
+                var entities = !returnAll 
+                    ? orderedVehicleList.Take(numberOfVehicles) 
+                    : orderedVehicleList;
+
                 return ToVehicleResponse(entities);
             }
 
             return new List<VehicleResponse>();
         }
 
-        private Dictionary<string,string> ToDictionary(List<KeyValuePair<string,string>> data)
+        private Dictionary<string,string> ToDictionary(IEnumerable<KeyValuePair<string,string>> data)
         {
             if (data == null)
             {
