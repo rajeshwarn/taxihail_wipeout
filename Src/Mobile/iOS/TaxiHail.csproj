@@ -162,6 +162,10 @@
     </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PLCrashReporterUnifiedBinding, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.Insights.1.10.4.112\lib\Xamarin.iOS10\PLCrashReporterUnifiedBinding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -170,6 +174,10 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="Xamarin.Insights, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.Insights.1.10.4.112\lib\Xamarin.iOS10\Xamarin.Insights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Xamarin.iOS" />
     <Reference Include="GoogleAnalytics.iOS">
       <HintPath>..\Components\googleanalytics-3.0.10.2\lib\ios-unified\GoogleAnalytics.iOS.dll</HintPath>
@@ -200,12 +208,6 @@
     </Reference>
     <Reference Include="PaypalSdkTouch.Unified">
       <HintPath>..\Libraries\Monotouch\PaypalSdkTouch.Unified.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Insights">
-      <HintPath>..\packages\Xamarin.Insights.1.10.0.108\lib\Xamarin.iOS10\Xamarin.Insights.dll</HintPath>
-    </Reference>
-    <Reference Include="PLCrashReporterUnifiedBinding">
-      <HintPath>..\packages\Xamarin.Insights.1.10.0.108\lib\Xamarin.iOS10\PLCrashReporterUnifiedBinding.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Touch.dll</HintPath>
@@ -615,8 +617,7 @@
     <Compile Include="Controls\Widgets\ExtendedTextFieldView.cs" />
     <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
-	<Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
-
+    <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -627,9 +628,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup>
-    <Folder Include="Views\Payments\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
