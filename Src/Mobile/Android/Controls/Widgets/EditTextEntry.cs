@@ -26,12 +26,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		}
 
-        public override bool OnPreDraw ()
-        {
-            SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
-            return base.OnPreDraw ();
-        }
-                    
         public void SetClickAnywhereToDismiss()
         {
             var container = (View)this.Parent;
