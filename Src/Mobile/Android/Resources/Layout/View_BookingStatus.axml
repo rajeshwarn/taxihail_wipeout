@@ -194,6 +194,26 @@
                         android:paddingStart="5dip" />
                 </LinearLayout>
                 <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    local:MvxBind="Visibility VehicleMedallionHidden, Converter=InvertedVisibility">
+                  <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
+                      style="@style/BlackTextLabel"
+                      android:text="@string/DriverInfoVehicleMedallion"
+                      android:gravity="center_vertical|end"
+                      android:layout_width="60dip"
+                      android:layout_height="wrap_content" />
+                  <TextView
+                      style="@style/BlackTextLabel"
+                      local:MvxBind="Text OrderStatusDetail.VehicleNumber"
+                      android:gravity="center_vertical|start"
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:paddingStart="5dip" />
+                </LinearLayout>
+                <LinearLayout
                     android:id="@+id/taxiTypeLayout"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"

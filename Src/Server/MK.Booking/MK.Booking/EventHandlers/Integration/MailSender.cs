@@ -142,7 +142,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                     Distance = tripInfo.Distance,
                                     LastFour = tripInfo.LastFour,
                                     AccessFee = accessFee,
-                                    StateSurcharge = tripInfo.Tax,
                                     FareAtAlternateRate = fareAtAlternateRate,
                                     RateAtTripEnd = tripInfo.RateAtTripEnd,
                                     RateAtTripStart = tripInfo.RateAtTripStart,
@@ -216,7 +215,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             FareAtAlternateRate = @event.FareAtAlternateRate,
                             RateAtTripEnd = @event.RateAtTripEnd.HasValue ? Convert.ToInt32(@event.RateAtTripEnd) : 0,
                             RateAtTripStart = @event.RateAtTripStart.HasValue ? Convert.ToInt32(@event.RateAtTripStart) : 0,
-                            StateSurcharge = @event.Tax,
                             Tolls = @event.Tolls
                         });
                 }

@@ -600,6 +600,7 @@
 "View_HistoryDetail"="تفاصيل الطلب";
 "TaxiHailNetworkTimeOutErrorTitle"="Error";
 "HistoryDetailBuildingNameNotSpecified"="غير محدد";
+"DriverInfoVehicleMedallion"="Medallion:";
 "TabBook"="احجز";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";
 "TaxiMapTitle"="سيارة الأجرة الخاصه بك";

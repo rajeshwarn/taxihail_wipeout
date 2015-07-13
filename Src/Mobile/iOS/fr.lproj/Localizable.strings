@@ -619,6 +619,7 @@
 "View_HistoryDetail"="Détail de la commande";
 "TaxiHailNetworkTimeOutErrorTitle"="Erreur";
 "HistoryDetailBuildingNameNotSpecified"="Non spécifié";
+"DriverInfoVehicleMedallion"="Medallion:";
 "TabBook"="Réserver maintenant!";
 "CreditCardRemoveErrorScheduledOrderMessage"="Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.";
 "TaxiMapTitle"="Votre véhicule";

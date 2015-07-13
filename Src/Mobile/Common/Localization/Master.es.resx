@@ -2473,4 +2473,7 @@
   <data name="ServiceError_EmailClientAbsent" xml:space="preserve">
     <value>Sorry, we're unable to create an email. There is no email client installed on this device</value>
   </data>
+  <data name="DriverInfoVehicleMedallion" xml:space="preserve">
+    <value>Medallion:</value>
+  </data>
 </root>

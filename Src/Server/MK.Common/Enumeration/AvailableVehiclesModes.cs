@@ -7,6 +7,7 @@ namespace apcurium.MK.Common.Enumeration
     public enum AvailableVehiclesModes
     {
         IBS,
-        HoneyBadger
+        HoneyBadger,
+        Geo
     }
 }
