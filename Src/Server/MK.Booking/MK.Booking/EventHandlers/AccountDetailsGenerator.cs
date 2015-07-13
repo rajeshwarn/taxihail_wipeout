@@ -12,6 +12,8 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
+using System.Globalization;
+using apcurium.MK.Common;
 
 #endregion
 
@@ -114,14 +116,22 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.Roles |= (int) Roles.Admin;
                 }
 
-                if (@event.Country == null)
+                if (@event.Country == null || (@event.Country != null && string.IsNullOrEmpty(@event.Country.Code)))
                 {
-                    @event.Country = new Common.CountryISOCode("CA");
-                }
+                    CultureInfo currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
 
-                if (string.IsNullOrEmpty(@event.Country.Code))
-                {
-                    @event.Country.Code = "CA";
+                    string countryCode;
+
+                    if (currentCultureInfo != null)
+                    {
+                        countryCode = (new RegionInfo(currentCultureInfo.LCID)).TwoLetterISORegionName;
+                    }
+                    else
+                    {
+                        countryCode = "CA";
+                    }
+
+                    @event.Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryISOCode;
                 }
 
                 account.Settings = new BookingSettings
