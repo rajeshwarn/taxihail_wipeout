@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
         {
             BackgroundColor = UIColor.Clear;
 
-            txtNote.BackgroundColor = UIColor.FromRGB(242, 242, 242);
+            txtNote.BackgroundColor = UIColor.FromRGB(208, 208, 208);
             txtNote.Font = UIFont.FromName(FontName.HelveticaNeueBold, 18f);
             txtNote.Placeholder = Localize.GetValue("NotesToDriveLabel");
 	        txtNote.PlaceholderColor = UIColor.FromRGB(75, 75, 75);
