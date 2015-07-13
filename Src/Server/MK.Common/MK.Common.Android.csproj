@@ -88,6 +88,7 @@
     <Compile Include="Entity\TariffType.cs" />
     <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
+    <Compile Include="Enumeration\AvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
     <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />

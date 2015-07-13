@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using NUnit.Framework;
 using apcurium.MK.Booking.Test;
 using apcurium.MK.Common.Diagnostic;
+using NUnit.Framework;
 
-namespace HoneyBadger.Test
+namespace CMTServices.Test
 {
     [TestFixture]
     public class AvailabilityFixture
