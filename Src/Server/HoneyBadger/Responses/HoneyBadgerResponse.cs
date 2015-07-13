@@ -11,6 +11,6 @@ namespace CMTServices.Responses
 
         public int Available { get; set; }
 
-        public HoneyBadgerContent[] Entities { get; set; }
+        public BaseAvailableVehicleContent[] Entities { get; set; }
     }
 }

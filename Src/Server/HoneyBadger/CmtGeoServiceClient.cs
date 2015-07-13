@@ -79,6 +79,21 @@ namespace CMTServices
             return new List<VehicleResponse>();
         }
 
+        protected IEnumerable<VehicleResponse> ToVehicleResponse(IEnumerable<CmtGeoContent> entities)
+        {
+            return entities.Select(ToVehicleResponse);
+        }
+
+        protected VehicleResponse ToVehicleResponse(CmtGeoContent entity)
+        {
+            var response = base.ToVehicleResponse(entity);
+
+            response.Eta = entity.ETASeconds;
+
+            return response;
+        }
+
+
         private Dictionary<string,string> ToDictionary(IEnumerable<KeyValuePair<string,string>> data)
         {
             if (data == null)

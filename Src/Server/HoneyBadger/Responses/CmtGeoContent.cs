@@ -2,7 +2,7 @@
 
 namespace CMTServices.Responses
 {
-    public class CmtGeoContent : HoneyBadgerContent
+    public class CmtGeoContent : BaseAvailableVehicleContent
     {
         [JsonProperty("etaInSeconds")]
         public long? ETASeconds { get; set; }

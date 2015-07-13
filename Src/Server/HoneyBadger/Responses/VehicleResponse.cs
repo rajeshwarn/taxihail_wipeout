@@ -12,6 +12,8 @@ namespace CMTServices.Responses
 
         public string Medallion { get; set; }
 
-        public int FleetId { get; set; }
+       public int FleetId { get; set; }
+
+        public long? Eta { get; set; }
     }
 }

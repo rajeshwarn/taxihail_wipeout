@@ -63,6 +63,7 @@ namespace CMTServices
 
             return new List<VehicleResponse>();
         }
+
         
         /// <summary>
         /// Method that returns the vehicles statuses for a market.

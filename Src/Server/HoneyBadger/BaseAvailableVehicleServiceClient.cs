@@ -87,17 +87,21 @@ namespace CMTServices
 
         }
 
-        protected IEnumerable<VehicleResponse> ToVehicleResponse(IEnumerable<HoneyBadgerContent> entities)
+        protected IEnumerable<VehicleResponse> ToVehicleResponse(IEnumerable<BaseAvailableVehicleContent> entities)
         {
-            return entities.Select(e => new VehicleResponse
-            {
-                Timestamp = e.TimeStamp,
-                Latitude = e.Latitude,
-                Longitude = e.Longitude,
-                Medallion = e.Medallion,
-                FleetId = e.FleetId
-            });
+            return entities.Select(ToVehicleResponse);
         }
 
+        protected VehicleResponse ToVehicleResponse(BaseAvailableVehicleContent entity)
+        {
+            return new VehicleResponse
+            {
+                Timestamp = entity.TimeStamp,
+                Latitude = entity.Latitude,
+                Longitude = entity.Longitude,
+                Medallion = entity.Medallion,
+                FleetId = entity.FleetId,
+            };
+        }
     }
 }
