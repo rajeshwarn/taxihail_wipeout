@@ -247,7 +247,7 @@
                         android:padding="15dp"
                         local:MvxBind="Visibility PromoCode, Converter=HasValueToVisibility" />
                 </RelativeLayout>
-                <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
+                <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntryWithoutTypeface
                     android:background="#d0d0d0"
                     android:inputType="textMultiLine"
                     android:id="@+id/txtNotes"

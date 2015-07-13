@@ -209,6 +209,7 @@
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\Behavior\PairingCodeBehavior.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
+    <Compile Include="Controls\Widgets\EditTextEntryWithoutTypeface.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
