@@ -338,5 +338,11 @@ namespace apcurium.MK.Common.Configuration
 
         [Display(Name = "Cmt Geo service API key", Description = "The API key for geo services")]
         public string AppKey { get; protected internal set; }
+
+        [Display(Name = "Cmt Geo Available Vehicles Market", Description = "Market used to find vehicles when Available Vehicles Mode is set to 'Geo'")]
+        public string AvailableVehiclesMarket { get; protected internal set; }
+
+        [Display(Name = "Cmt Geo Available Vehicles Fleet ID", Description = "Fleet ID used to find vehicles when Available Vehicles Mode is set to 'Geo'")]
+        public int? AvailableVehiclesFleetId { get; protected internal set; }
     }
 }
