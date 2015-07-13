@@ -138,7 +138,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="95" id="JRg-DB-wXz"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </textView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hmp-Hd-8n0" userLabel="Time">
