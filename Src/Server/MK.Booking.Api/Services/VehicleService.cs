@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Api.Services
                     }
                 }
 
-                var vehicleResponse = GetAvailableServiceClient().GetAvailableVehicles(
+                var vehicleResponse = GetAvailableVehiclesServiceClient().GetAvailableVehicles(
                     market: availableVehiclesMarket,
                     latitude: request.Latitude,
                     longitude: request.Longitude,
@@ -329,7 +329,7 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
 
-        private BaseAvailableVehicleServiceClient GetAvailableServiceClient()
+        private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient()
         {
             switch (_serverSettings.ServerData.AvailableVehiclesMode)
             {
