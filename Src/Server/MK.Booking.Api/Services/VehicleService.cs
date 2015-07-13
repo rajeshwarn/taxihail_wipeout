@@ -337,14 +337,15 @@ namespace apcurium.MK.Booking.Api.Services
 
         private BaseAvailableVehicleServiceClient GetAvailableServiceClient()
         {
-            if (_serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.IBS)
+            switch (_serverSettings.ServerData.AvailableVehiclesMode)
             {
-                return null;
+                case AvailableVehiclesModes.Geo:
+                    return new CmtGeoServiceClient(_serverSettings, _logger);
+                case AvailableVehiclesModes.HoneyBadger:
+                    return new HoneyBadgerServiceClient(_serverSettings, _logger);
             }
 
-            return _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger
-                ? (BaseAvailableVehicleServiceClient) _honeyBadgerServiceClient
-                : _geoServiceClient;
+            throw new InvalidOperationException("{0} not supported".InvariantCultureFormat(_serverSettings.ServerData.AvailableVehiclesMode.ToString()));
         }
     }
 }
