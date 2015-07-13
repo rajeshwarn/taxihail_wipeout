@@ -33,8 +33,6 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IVehicleTypeDao _dao;
         private readonly ICommandBus _commandBus;
         private readonly ReferenceDataService _referenceDataService;
-        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
-        private readonly CmtGeoServiceClient _geoServiceClient;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
@@ -43,8 +41,6 @@ namespace apcurium.MK.Booking.Api.Services
             IVehicleTypeDao dao,
             ICommandBus commandBus,
             ReferenceDataService referenceDataService,
-            HoneyBadgerServiceClient honeyBadgerServiceClient,
-            CmtGeoServiceClient geoServiceClient,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             IServerSettings serverSettings,
             ILogger logger)
@@ -54,8 +50,6 @@ namespace apcurium.MK.Booking.Api.Services
             _dao = dao;
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
-            _honeyBadgerServiceClient = honeyBadgerServiceClient;
-            _geoServiceClient = geoServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _logger = logger;
         }
