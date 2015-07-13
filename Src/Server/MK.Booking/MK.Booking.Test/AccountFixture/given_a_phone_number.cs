@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.SMS;
 using Moq;
 using NUnit.Framework;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Test.AccountFixture
 {
@@ -41,18 +42,23 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_sending_confirmation_sms()
         {
-            const string phoneNumber = "15145555555";
+            const string phoneNumber = "5145555555";
             const string activationCode = "12345";
 
             _sut.When(new SendAccountConfirmationSMS
             {
                 ClientLanguageCode = "fr",
+                CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode,
                 Code = activationCode,
                 PhoneNumber = phoneNumber
             });
 
+            libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
+            toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryDialCode;
+            toPhoneNumber.NationalNumber = long.Parse(phoneNumber);
+
             _smsSenderMock.Verify(s => s
-                .Send(phoneNumber, It.Is<string>(message =>
+                .Send(toPhoneNumber, It.Is<string>(message =>
                     message.Contains(activationCode))));
         }
     }

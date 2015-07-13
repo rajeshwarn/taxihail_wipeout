@@ -117,8 +117,8 @@ namespace apcurium.MK.Booking.Api.Services
                         {
                             ClientLanguageCode = command.Language,
                             Code = confirmationToken,
-                            PhoneNumber = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(command.Country)).СountryDialCodeInternationalFormat
-                            + command.Phone
+                            CountryCode = command.Country,
+                            PhoneNumber = command.Phone
                         });
                     }
                     else

@@ -114,6 +114,16 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.Roles |= (int) Roles.Admin;
                 }
 
+                if (@event.Country == null)
+                {
+                    @event.Country = new Common.CountryISOCode("CA");
+                }
+
+                if (string.IsNullOrEmpty(@event.Country.Code))
+                {
+                    @event.Country.Code = "CA";
+                }
+
                 account.Settings = new BookingSettings
                 {
                     Name = account.Name,
