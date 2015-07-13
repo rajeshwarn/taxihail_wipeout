@@ -89,15 +89,24 @@ namespace apcurium.MK.Booking.Api.Services
                 string availableVehiclesMarket;
                 IList<int> availableVehiclesFleetIds = null;
 
-                if (!market.HasValue()
-                    && _serverSettings.ServerData.AvailableVehiclesMode != AvailableVehiclesModes.IBS)
+                if (!market.HasValue() && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger)
                 {
-                    // LOCAL market Honey Badger or Geo
-                    availableVehiclesMarket = _serverSettings.ServerData.HoneyBadger.AvailableVehiclesMarket;
+                    // LOCAL market Honey Badger
+                    availableVehiclesMarket = _serverSettings.ServerData.HoneyBadger.AvailableVehiclesMarket;                   
 
                     if (_serverSettings.ServerData.HoneyBadger.AvailableVehiclesFleetId.HasValue)
                     {
                         availableVehiclesFleetIds = new[] { _serverSettings.ServerData.HoneyBadger.AvailableVehiclesFleetId.Value };
+                    }
+                }
+                else if (!market.HasValue() && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
+                {
+                    // LOCAL market Geo
+                    availableVehiclesMarket = _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket;
+
+                    if (_serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId.HasValue)
+                    {
+                        availableVehiclesFleetIds = new[] { _serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId.Value };
                     }
                 }
                 else
@@ -136,7 +145,7 @@ namespace apcurium.MK.Booking.Api.Services
                     PositionDate = v.Timestamp,
                     VehicleNumber = v.Medallion,
                     FleetId = v.FleetId,
-                    Eta = v.Eta
+                    Eta = (int?)v.Eta
                 }).ToArray();
             }
 

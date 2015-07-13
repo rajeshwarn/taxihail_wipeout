@@ -14,11 +14,11 @@ namespace CMTServices
     public class CmtGeoServiceClient : BaseAvailableVehicleServiceClient
     {
         public CmtGeoServiceClient(IServerSettings serverSettings, ILogger logger)
-            : base(serverSettings, logger, serverSettings.ServerData.CmtGeoSettingContainer.ServiceUrl)
+            : base(serverSettings, logger, serverSettings.ServerData.CmtGeo.ServiceUrl)
         {
             // create another client for the geo access
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", serverSettings.ServerData.CmtGeoSettingContainer.AppKey);
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", serverSettings.ServerData.CmtGeo.AppKey);
         }
 
         /// <summary>
