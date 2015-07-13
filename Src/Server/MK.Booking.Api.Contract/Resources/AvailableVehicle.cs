@@ -7,6 +7,8 @@
         public double VehicleNumber { get; set; }
         public string LogoName { get; set; }
         public int FleetId { get; set; }
+
+        public int? Eta { get; set; }
     }
 
     public class AvailableVehicleCluster : AvailableVehicle

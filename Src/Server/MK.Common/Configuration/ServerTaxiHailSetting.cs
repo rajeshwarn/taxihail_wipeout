@@ -99,6 +99,14 @@ namespace MK.Common.Configuration
             PayPalConversionRate = 1;
             SendDetailedPaymentInfoToDriver = true;
             CompanyTimeZone = TimeZones.NotSet;
+
+            CmtGeo = new CmtGeoSettingContainer()
+            {
+                AppKey = "A47275341E57CB7C593DE3EDD5FCA",
+                ServiceUrl = "http://geo-sandbox.cmtapi.com"
+            };
+
+
         }
 
         public SmtpSettingContainer Smtp { get; protected set; }
@@ -111,6 +119,7 @@ namespace MK.Common.Configuration
         public CustomerPortalSettingContainer CustomerPortal { get; protected set; }
         public NetworkSettingContainer Network { get; protected set; }
         public HoneyBadgerSettingContainer HoneyBadger { get; protected set; }
+        public CmtGeoSettingContainer CmtGeo { get; protected set; }
 
         public bool IsWebSignupHidden { get; protected set; }
 
@@ -137,9 +146,6 @@ namespace MK.Common.Configuration
 
         [Display(Name = "TaxiHail Pro", Description = "Company has access to TaxiHail Pro features")]
         public bool IsTaxiHailPro { get; protected set; }
-
-        [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
-        public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
 
         [CustomizableByCompany]
         [Display(Name = "Driver Eta Notification Mode", Description = "Configures the notification mode to the driver for it's estimated time of arrival to the pickup location.")]

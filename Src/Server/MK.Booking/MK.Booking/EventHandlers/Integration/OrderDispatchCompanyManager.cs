@@ -10,10 +10,10 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using CMTServices;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
-using HoneyBadger;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 
