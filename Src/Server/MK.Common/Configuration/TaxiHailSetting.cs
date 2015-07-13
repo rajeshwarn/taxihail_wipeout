@@ -138,6 +138,10 @@ namespace MK.Common.Configuration
         [Display(Name = "Use single button for now and later booking", Description = "Replace book now and book later buttons with a single button that will display both options in a popup. (This feature does not work with manual CMT ridelinq pairing.)")]
         public bool UseSingleButtonForNowAndLaterBooking { get; set; }
 
+        [SendToClient]
+        [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
+        public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
+
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter Consumer Secret", Description = "Twitter API settings")]
         public string TwitterConsumerSecret { get; protected set; }

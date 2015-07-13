@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -60,7 +61,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Where (_ => _settings.Data.ShowEta)
 				.CombineLatest(orderWorkflowService.GetAndObservePickupAddress (), (vehicles, address) => new { address, vehicles } )
 				.Select (x => new { x.address, vehicle =  GetNearestVehicle(x.address, x.vehicles) })
-				.DistinctUntilChanged(x => x.vehicle == null ? double.MaxValue : Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
+				.DistinctUntilChanged(x =>
+				{
+				    if (x.vehicle == null)
+				    {
+				        return double.MaxValue;
+				    }
+
+				    return _settings.Data.AvailableVehiclesMode == AvailableVehiclesModes.Geo && x.vehicle.Eta.HasValue
+				        ? x.vehicle.Eta.Value
+				        : Position.CalculateDistance(x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude);
+				})
 				.SelectMany(x => CheckForEta(x.address, x.vehicle));
 		}
 
@@ -102,6 +113,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return null;
 			}
 
+
+		    if (_settings.Data.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
+		    {
+		        var car = cars
+                    .Where(v => v.Eta.HasValue)
+                    .OrderBy(v => v.Eta)
+                    .FirstOrDefault();
+
+                // If no ETA was returned by the GeoService, default back to calculated position.
+		        return car ?? OrderVehiclesByDistance(pickup, cars).First();
+		    }
+
 			return OrderVehiclesByDistance (pickup, cars).First();
 		}
 
@@ -142,14 +165,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.ToArray();
 		}
 
-		private Task<Direction> CheckForEta(Address pickup, AvailableVehicle vehicleLocation)
+		private async Task<Direction> CheckForEta(Address pickup, AvailableVehicle vehicleLocation)
 		{
 			if(vehicleLocation == null)
 			{
-				return Task.FromResult(new Direction());
+				return new Direction();
 			}
 
-			return GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);                    	
+			var direction = await GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);
+
+		    if (_settings.Data.AvailableVehiclesMode == AvailableVehiclesModes.Geo && vehicleLocation.Eta.HasValue)
+		    {
+		        direction.Duration = vehicleLocation.Eta.Value;
+		    }
+
+		    return direction;
 		}
 
 		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)

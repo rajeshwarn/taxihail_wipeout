@@ -147,9 +147,6 @@ namespace MK.Common.Configuration
         [Display(Name = "TaxiHail Pro", Description = "Company has access to TaxiHail Pro features")]
         public bool IsTaxiHailPro { get; protected set; }
 
-        [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
-        public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
-
         [CustomizableByCompany]
         [Display(Name = "Driver Eta Notification Mode", Description = "Configures the notification mode to the driver for it's estimated time of arrival to the pickup location.")]
         public DriverEtaNotificationModes DriverEtaNotificationMode { get; protected set; }

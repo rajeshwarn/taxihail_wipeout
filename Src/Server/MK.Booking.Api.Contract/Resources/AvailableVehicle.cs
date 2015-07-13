@@ -8,6 +8,9 @@
         public string LogoName { get; set; }
         public int FleetId { get; set; }
 
+        /// <summary>
+        /// This value is in seconds
+        /// </summary>
         public long? Eta { get; set; }
     }
 
