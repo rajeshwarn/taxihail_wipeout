@@ -33,7 +33,8 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IVehicleTypeDao _dao;
         private readonly ICommandBus _commandBus;
         private readonly ReferenceDataService _referenceDataService;
-        private readonly BaseAvailableVehicleServiceClient _availableVehicleServiceClient;
+        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+        private readonly CmtGeoServiceClient _geoServiceClient;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
@@ -53,9 +54,8 @@ namespace apcurium.MK.Booking.Api.Services
             _dao = dao;
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
-            _availableVehicleServiceClient = serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.Geo
-                ? (BaseAvailableVehicleServiceClient) geoServiceClient
-                : honeyBadgerServiceClient;
+            _honeyBadgerServiceClient = honeyBadgerServiceClient;
+            _geoServiceClient = geoServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _logger = logger;
         }
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Api.Services
                     }
                 }
 
-                var vehicleResponse = _availableVehicleServiceClient.GetAvailableVehicles(
+                var vehicleResponse = GetAvailableServiceClient().GetAvailableVehicles(
                     market: availableVehiclesMarket,
                     latitude: request.Latitude,
                     longitude: request.Longitude,
@@ -135,16 +135,21 @@ namespace apcurium.MK.Booking.Api.Services
                     Longitude = v.Longitude,
                     PositionDate = v.Timestamp,
                     VehicleNumber = v.Medallion,
-                    FleetId = v.FleetId
+                    FleetId = v.FleetId,
+                    Eta = v.Eta
                 }).ToArray();
             }
 
-            var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();
-                
-            foreach (var vehicle in availableVehicles)
-            {
-                vehicle.LogoName = logoName;
-            }
+            var availableVehicles = vehicles
+                .Select(v =>
+                {
+                    var availableVehicle = Mapper.Map<AvailableVehicle>(v);
+
+                    availableVehicle.LogoName = logoName;
+
+                    return availableVehicle;
+                });
+
             return new AvailableVehiclesResponse(availableVehicles);   
         }
 
@@ -318,6 +323,19 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value)).Select(x => new { x.Id, x.Display }).ToArray();
+        }
+
+
+        private BaseAvailableVehicleServiceClient GetAvailableServiceClient()
+        {
+            if (_serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.IBS)
+            {
+                return null;
+            }
+
+            return _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger
+                ? (BaseAvailableVehicleServiceClient) _honeyBadgerServiceClient
+                : _geoServiceClient;
         }
     }
 }
