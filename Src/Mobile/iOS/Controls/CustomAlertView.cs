@@ -252,6 +252,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     NSLayoutConstraint.Create(cancelButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _messageView, NSLayoutAttribute.Bottom, 1f, 20f),
                     NSLayoutConstraint.Create(cancelButton, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Leading, 1f, _dialogEdgeConstraint),
                     NSLayoutConstraint.Create(cancelButton, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Trailing, 1f, -_dialogEdgeConstraint),
+                    GetHeightConstraint(cancelButton),
                 });
             
         }
