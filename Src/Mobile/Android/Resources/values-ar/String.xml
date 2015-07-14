@@ -134,6 +134,7 @@
   <string name="TabPlaces">أماكن</string>
   <string name="CreditCardRemoveErrorTitle">لا يمكن إزالة البطاقة الائتمانية.</string>
   <string name="View_Payments_CmtRideLinqChangePaymentTitle">تغيير بيانات الدفع:</string>
+  <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
   <string name="InvalidLoginMessageTitle">خطأ في الدخول</string>
   <string name="CallDriverUsingProxyErrorMessage">Sorry, we weren\'t able to initiate a call with your driver.</string>
   <string name="RideSettingsAccountNumber">رقم الحساب</string>

@@ -135,6 +135,7 @@
   <string name="Error_InvalidCvvTitle">Invalid CVV</string>
   <string name="StreetNumberLabel">Refine your address</string>
   <string name="View_Payments_CmtRideLinqChangePaymentTitle">Change Payment Info</string>
+  <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
   <string name="InvalidLoginMessageTitle">Login error</string>
   <string name="CreateAccountTitleArray">MrMrs</string>
   <string name="RideSettingsAccountNumber">Account Number</string>

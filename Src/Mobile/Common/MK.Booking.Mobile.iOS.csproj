@@ -205,8 +205,8 @@
     <Compile Include="Style\ShadowDefinition.cs" />
     <Compile Include="Style\FontDefinition.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="TaxiHailApp.cs" />
     <Compile Include="StartNavigation.cs" />
+    <Compile Include="TaxiHailApp.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />

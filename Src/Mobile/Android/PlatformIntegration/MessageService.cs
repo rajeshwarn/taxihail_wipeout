@@ -68,24 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         }
 
         public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
-            string negativeButtonTitle, Action negativeAction, Action cancelAction)
-        {
-            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
-
-            var tcs = new TaskCompletionSource<object>();
-
-            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(
-                Context.Activity,
-                title,
-                message,
-                positiveButtonTitle, (s,e) => { positiveAction(); tcs.TrySetResult(null); },
-                negativeButtonTitle, (s,e) => { negativeAction(); tcs.TrySetResult(null); },
-                () => { cancelAction.Invoke(); tcs.TrySetResult(null); }));
-
-            return tcs.Task;
-        }
-
-        public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
             string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
         {
             var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
@@ -101,11 +83,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 neutralButtonTitle, (s,e) => { neutralAction(); tcs.TrySetResult(null); }));
 
             return tcs.Task;
-        }
-
-        public Task ShowMessage(string title, string message, List<KeyValuePair<string, Action>> additionalButton)
-        {
-            throw new NotImplementedException();
         }
 
         public Task ShowMessage(string title, string message, Action additionalAction)
@@ -226,7 +203,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Context.Activity.StartActivity(i);
         }
 
-		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction, bool isNumericOnly = false)
+        public Task<string> ShowPromptDialog(string title, string message, Action cancelAction, bool isNumericOnly = false, string inputText = "")
         {
 			var tcs = new TaskCompletionSource<string> ();
 
