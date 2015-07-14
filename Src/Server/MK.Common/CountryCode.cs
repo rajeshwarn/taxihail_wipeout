@@ -120,7 +120,7 @@ namespace apcurium.MK.Common
 
         public static int GetCountryCodeIndexByCountryISOCode(CountryISOCode countryISOCode)
         {
-            return GetCountryCodeIndexByCountryISOCode(countryISOCode.Code);
+            return (countryISOCode != null ? GetCountryCodeIndexByCountryISOCode(countryISOCode.Code) : -1);
         }
 
         public static int GetCountryCodeIndexByCountryISOCode(string countryISOCode)

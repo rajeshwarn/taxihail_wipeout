@@ -8,9 +8,9 @@ using Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-	public class PhoneEditorElement:ValueElement<PhoneNumberInfo>
+	public class PhoneEditorElement:ValueElement<PhoneNumberModel>
 	{
-		public event PhoneNumberInfo.PhoneNumberDatasourceChangedEventHandler NotifyChanges;
+        public event PhoneNumberModel.PhoneNumberDatasourceChangedEventHandler NotifyChanges;
 		Action PhoneNumberInfoDatasourceChanged;
 
         CountrySelector phoneDialCodeLabel;
@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		UINavigationController navigationController;
 
 
-		public PhoneEditorElement(string caption, PhoneNumberInfo phoneNumberInfo, UINavigationController navigationController):base(caption, phoneNumberInfo)
+        public PhoneEditorElement(string caption, PhoneNumberModel phoneNumberInfo, UINavigationController navigationController):base(caption, phoneNumberInfo)
 		{
 			PhoneNumberInfoDatasourceChanged = phoneNumberInfo.PhoneNumberDatasourceChangedCallEvent;
 			phoneNumberInfo.PhoneNumberDatasourceChanged += PhoneNumberDatasourceChanged;

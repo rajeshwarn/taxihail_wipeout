@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		UINavigationController navigationController;
 		Action<CountryCode> OnDialCodeChanged;
 
-		public event PhoneNumberInfo.PhoneNumberDatasourceChangedEventHandler NotifyChanges;
+        public event PhoneNumberModel.PhoneNumberDatasourceChangedEventHandler NotifyChanges;
 		Action PhoneNumberInfoDatasourceChanged;
 
 
@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 PhoneNumberInfoDatasourceChanged();
 		}
 
-		public void Configure(UINavigationController navigationController, PhoneNumberInfo phoneNumberInfo)
+        public void Configure(UINavigationController navigationController, PhoneNumberModel phoneNumberInfo)
 		{
 			this.navigationController = navigationController;
 			PhoneNumberInfoDatasourceChanged = phoneNumberInfo.PhoneNumberDatasourceChangedCallEvent;
