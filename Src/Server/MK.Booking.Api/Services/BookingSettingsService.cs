@@ -15,6 +15,7 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Helpers;
 
 #endregion
 
@@ -43,9 +44,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (countryCode.IsNumberPossible(request.Phone))
             {
-                request.Phone = request.Phone.Replace(" ", "");
-                request.Phone = request.Phone.Replace("(", "");
-                request.Phone = request.Phone.Replace(")", "");
+                request.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Phone);
             }
             else
             {

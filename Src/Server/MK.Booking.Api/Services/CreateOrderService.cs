@@ -35,6 +35,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using CreateOrder = apcurium.MK.Booking.Api.Contract.Requests.CreateOrder;
+using apcurium.MK.Common.Helpers;
 
 #endregion
 
@@ -112,9 +113,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (countryCode.IsNumberPossible(request.Settings.Phone))
             {
-                request.Settings.Phone = request.Settings.Phone.Replace(" ", "");
-                request.Settings.Phone = request.Settings.Phone.Replace("(", "");
-                request.Settings.Phone = request.Settings.Phone.Replace(")", "");
+                request.Settings.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Settings.Phone);
             }
             else
             {

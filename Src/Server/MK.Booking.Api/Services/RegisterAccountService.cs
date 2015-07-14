@@ -13,6 +13,7 @@ using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -42,12 +43,10 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
-
+            
             if (countryCode.IsNumberPossible(request.Phone))
             {
-                request.Phone = request.Phone.Replace(" ", "");
-                request.Phone = request.Phone.Replace("(", "");
-                request.Phone = request.Phone.Replace(")", "");
+                request.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Phone);
             }
             else
             {
