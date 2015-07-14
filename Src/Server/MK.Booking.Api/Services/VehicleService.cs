@@ -15,10 +15,10 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
+using CMTServices;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
-using HoneyBadger;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -33,7 +33,6 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IVehicleTypeDao _dao;
         private readonly ICommandBus _commandBus;
         private readonly ReferenceDataService _referenceDataService;
-        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
@@ -42,25 +41,23 @@ namespace apcurium.MK.Booking.Api.Services
             IVehicleTypeDao dao,
             ICommandBus commandBus,
             ReferenceDataService referenceDataService,
-            HoneyBadgerServiceClient honeyBadgerServiceClient,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             IServerSettings serverSettings,
             ILogger logger)
         {
+            _serverSettings = serverSettings;
             _ibsServiceProvider = ibsServiceProvider;
             _dao = dao;
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
-            _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
-            _serverSettings = serverSettings;
             _logger = logger;
         }
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
         {
             var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
-            string logoName = vehicleType != null ? vehicleType.LogoName : null;
+            var logoName = vehicleType != null ? vehicleType.LogoName : null;
 
             IbsVehiclePosition[] vehicles;
             string market = null;
@@ -86,20 +83,29 @@ namespace apcurium.MK.Booking.Api.Services
                 string availableVehiclesMarket;
                 IList<int> availableVehiclesFleetIds = null;
 
-                if (!market.HasValue()
-                    && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger)
+                if (!market.HasValue() && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger)
                 {
                     // LOCAL market Honey Badger
-                    availableVehiclesMarket = _serverSettings.ServerData.HoneyBadger.AvailableVehiclesMarket;
+                    availableVehiclesMarket = _serverSettings.ServerData.HoneyBadger.AvailableVehiclesMarket;                   
 
                     if (_serverSettings.ServerData.HoneyBadger.AvailableVehiclesFleetId.HasValue)
                     {
                         availableVehiclesFleetIds = new[] { _serverSettings.ServerData.HoneyBadger.AvailableVehiclesFleetId.Value };
                     }
                 }
+                else if (!market.HasValue() && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
+                {
+                    // LOCAL market Geo
+                    availableVehiclesMarket = _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket;
+
+                    if (_serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId.HasValue)
+                    {
+                        availableVehiclesFleetIds = new[] { _serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId.Value };
+                    }
+                }
                 else
                 {
-                    // EXTERNAL market Honey Badger
+                    // EXTERNAL market Honey Badger or Geo
                     availableVehiclesMarket = market;
 
                     try
@@ -118,13 +124,13 @@ namespace apcurium.MK.Booking.Api.Services
                     }
                 }
 
-                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(
+                var vehicleResponse = GetAvailableVehiclesServiceClient().GetAvailableVehicles(
                     market: availableVehiclesMarket,
                     latitude: request.Latitude,
                     longitude: request.Longitude,
                     searchRadius: null,
                     fleetIds: availableVehiclesFleetIds,
-                    wheelchairAccessibleOnly: (vehicleType == null ? false : vehicleType.IsWheelchairAccessible));
+                    wheelchairAccessibleOnly: (vehicleType != null && vehicleType.IsWheelchairAccessible));
 
                 vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
                 {
@@ -132,16 +138,21 @@ namespace apcurium.MK.Booking.Api.Services
                     Longitude = v.Longitude,
                     PositionDate = v.Timestamp,
                     VehicleNumber = v.Medallion,
-                    FleetId = v.FleetId
+                    FleetId = v.FleetId,
+                    Eta = (int?)v.Eta
                 }).ToArray();
             }
 
-            var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();
-                
-            foreach (var vehicle in availableVehicles)
-            {
-                vehicle.LogoName = logoName;
-            }
+            var availableVehicles = vehicles
+                .Select(v =>
+                {
+                    var availableVehicle = Mapper.Map<AvailableVehicle>(v);
+
+                    availableVehicle.LogoName = logoName;
+
+                    return availableVehicle;
+                });
+
             return new AvailableVehiclesResponse(availableVehicles);   
         }
 
@@ -315,6 +326,20 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value)).Select(x => new { x.Id, x.Display }).ToArray();
+        }
+
+
+        private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient()
+        {
+            switch (_serverSettings.ServerData.AvailableVehiclesMode)
+            {
+                case AvailableVehiclesModes.Geo:
+                    return new CmtGeoServiceClient(_serverSettings, _logger);
+                case AvailableVehiclesModes.HoneyBadger:
+                    return new HoneyBadgerServiceClient(_serverSettings, _logger);
+            }
+
+            throw new InvalidOperationException("{0} not supported".InvariantCultureFormat(_serverSettings.ServerData.AvailableVehiclesMode.ToString()));
         }
     }
 }

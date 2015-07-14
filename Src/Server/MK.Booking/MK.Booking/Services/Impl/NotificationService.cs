@@ -118,20 +118,6 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail)
-        {
-            var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            if (!_serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey).IsUnpairingDisabled
-                && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id        // Only send notification if using CoF
-                    || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)        // or PayPal
-                && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
-            {
-                SendPushOrSms(order.AccountId,
-                    _resources.Get("PushNotification_wosLOADED", order.ClientLanguageCode),
-                    new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", true } });
-            }
-        }
-
         public void SendTimeoutPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId); 
@@ -621,7 +607,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 TotalFare = _resources.FormatPrice(totalAmount),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
-                MtaTax = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
+                ImprovementSurcharge = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
                 RideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour),
                 
                 Distance = _resources.FormatDistance(cmtRideLinqFields.SelectOrDefault(x => x.Distance)),
@@ -656,7 +642,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowRideLinqLastFour = isCmtRideLinqReceipt,
                 ShowTripId = isCmtRideLinqReceipt,
                 ShowTax = Math.Abs(tax) >= 0.01 || isCmtRideLinqReceipt,
-                ShowMtaTax = isCmtRideLinqReceipt,
+                ShowImprovementSurcharge = isCmtRideLinqReceipt,
                 ShowToll = Math.Abs(toll) >= 0.01 || isCmtRideLinqReceipt,
                 ShowSurcharge = Math.Abs(surcharge) >= 0.01 || isCmtRideLinqReceipt,
                 ShowBookingFees = Math.Abs(bookingFees) >= 0.01 || isCmtRideLinqReceipt,

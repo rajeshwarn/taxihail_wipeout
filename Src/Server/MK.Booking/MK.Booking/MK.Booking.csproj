@@ -295,9 +295,14 @@
       <DependentUpon>Aexid.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Arro.Designer.cs">
+      <DependentUpon>Arro.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\ArroDemo.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Arro.resx</DependentUpon>
+      <DependentUpon>ArroDemo.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Global.ar.Designer.cs">
       <DependentUpon>Global.ar.resx</DependentUpon>
@@ -412,9 +417,9 @@
       <Project>{6A4623E1-41EF-4286-9A34-2ADC6407E94F}</Project>
       <Name>CustomerPortal.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HoneyBadger\HoneyBadger.csproj">
+    <ProjectReference Include="..\..\CMTServices.Server\CMTServices.Server.csproj">
       <Project>{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}</Project>
-      <Name>HoneyBadger</Name>
+      <Name>CMTServices.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
@@ -455,9 +460,14 @@
       <LastGenOutput>Aexid.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Arro.resx">
+      <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Arro.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ArroDemo.resx">
       <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ArroDemo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.ar.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

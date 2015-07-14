@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
@@ -188,6 +189,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					if (OnTouch != null)
 					{
 						OnTouch.Invoke(button, new TouchEventArgs(true, null));
+
+					    Task.Delay(1000);
 					}
 
                     _spinner.PerformClick();

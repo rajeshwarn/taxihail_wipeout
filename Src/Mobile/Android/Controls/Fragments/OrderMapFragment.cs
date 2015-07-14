@@ -141,11 +141,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             set
             {
-                if (_availableVehicles != value)
+                if (_availableVehicles == value)
                 {
-                    _availableVehicles = value;
-                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value, GetMapBoundsFromProjection()));
+                    return;
                 }
+
+                _availableVehicles = _settings.ShowIndividualTaxiMarkerOnly
+                    ? value
+                    : VehicleClusterHelper.Clusterize(value, GetMapBoundsFromProjection());
+
+                ShowAvailableVehicles(_availableVehicles);
             }
         }
 
@@ -259,9 +264,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _vehicleIcons.Add("nearby_taxi", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_taxi, companyColor, false)));
             _vehicleIcons.Add("nearby_suv", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_suv, companyColor, false)));
             _vehicleIcons.Add("nearby_blackcar", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_blackcar, companyColor, false)));
+            _vehicleIcons.Add("nearby_wheelchair", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_wheelchair, companyColor, false)));
             _vehicleIcons.Add("cluster_taxi", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_taxi, companyColor, false)));
             _vehicleIcons.Add("cluster_suv", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_suv, companyColor, false)));
             _vehicleIcons.Add("cluster_blackcar", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_blackcar, companyColor, false)));
+            _vehicleIcons.Add("cluster_wheelchair", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_wheelchair, companyColor, false)));
         }
 
         private MapBounds GetMapBoundsFromProjection()
@@ -382,7 +389,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 ViewModel.UserMovedMap.ExecuteIfPossible(bounds);
             }
 
-            ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles, bounds)); 
+            if (!_settings.ShowIndividualTaxiMarkerOnly)
+            {
+                ShowAvailableVehicles(VehicleClusterHelper.Clusterize(AvailableVehicles, bounds)); 
+            }
+
         }
 
         private void ClearAllMarkers()

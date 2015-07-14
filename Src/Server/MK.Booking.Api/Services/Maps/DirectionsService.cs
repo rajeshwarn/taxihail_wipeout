@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 FormattedDistance = result.FormattedDistance,
                 Price = result.Price,
                 FormattedPrice = result.FormattedPrice,
-                TripDurationInSeconds = result.Duration
+                TripDurationInSeconds = (int?)result.Duration
             };
 
             if (_serverSettings.ServerData.ShowEta
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                                 request.OriginLng.Value);
 
                         directionInfo.EtaFormattedDistance = etaDirectionInfo.FormattedDistance;
-                        directionInfo.EtaDuration = etaDirectionInfo.Duration;
+                        directionInfo.EtaDuration = (int?)etaDirectionInfo.Duration;
                     }
                 }
                 catch (Exception ex)

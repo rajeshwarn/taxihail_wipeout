@@ -469,7 +469,7 @@
     <comment>Your vehicle is almost at pickup location</comment>
   </data>
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
-    <value>Su servicio #{0} no pudo ser asignado automáticamente</value>
+    <value>Pairing failed. Pay to driver.</value>
     <comment>The ride #{0} could not be automatically paired</comment>
   </data>
   <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
@@ -782,5 +782,8 @@
   </data>
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
     <value>Credit Card was declined</value>
+  </data>
+  <data name="OrderStatus_PairingFailed" xml:space="preserve">
+    <value>Unable to pair. Please pay to your driver at the end of the ride</value>
   </data>
 </root>

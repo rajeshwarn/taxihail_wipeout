@@ -38,34 +38,56 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             var model = new DeploymentJobModel();
             var companies = new MongoRepository<Company>();
-            var companyList = companies.OrderBy(c => c.CompanyName).Select(c => new SelectListItem
-            {
-                Value = c.CompanyKey,
-                Text = c.CompanyName + " (" + c.CompanyKey + ")"
-            }).ToList();
+
+            var companyList = companies
+                .OrderBy(c => c.CompanyName)
+                .Select(c => new SelectListItem
+                {
+                    Value = c.CompanyKey,
+                    Text = c.CompanyName + " (" + c.CompanyKey + ")"
+                })
+                .ToList();
 
             companyList.Add(new SelectListItem {Value = _allCompaniesKey, Text = "** All companies ** - USE CAREFULLY"});
             model.ModelForView.Company = companyList;
 
             var environments = new MongoRepository<Environment>();
-            model.ModelForView.Environment = environments.OrderBy(e => e.Name).Select(e => new SelectListItem
-            {
-                Value = e.Id,
-                Text = e.Name
-            });
+            model.ModelForView.Environment = environments
+                .OrderBy(e => e.Name)
+                .Select(e => new SelectListItem
+                {
+                    Value = e.Id,
+                    Text = e.Name
+                });
 
             var revisions = new MongoRepository<Revision>();
-            model.ModelForView.Revision =
-                revisions.Where(r => !r.Hidden && !r.Inactive ).OrderBy(r => r.Tag).Select(r => new SelectListItem
+            model.ModelForView.Revision = revisions
+                .Where(r => !r.Hidden && !r.Inactive )
+                .OrderBy(r => r.Tag)
+                .Select(r => new SelectListItem
                 {
                     Value = r.Id,
                     Text = r.Tag
                 });
 
-            model.Jobs = new MongoRepository<DeploymentJob>().OrderByDescending(d => d.Date).ToArray();
+            var jobs = new MongoRepository<DeploymentJob>();
+            model.Jobs = jobs
+                .OrderByDescending(d => d.Date)
+                .Take(10) // Only take the last 10 jobs
+                .ToArray();
+
             return View(model);
         }
 
+
+        public ActionResult History()
+        {
+            var model = new DeploymentJobModel();
+
+            model.Jobs = new MongoRepository<DeploymentJob>().OrderByDescending(d => d.Date).ToArray();
+
+            return View("DeploymentHistory", model);
+        }
 
 
         public ActionResult Copy(string id)
@@ -324,10 +346,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete(string id)
+        public ActionResult Cancel(string id)
         {
+            var item = Repository.GetById(id);
 
-            Repository.Delete(r => r.Id == id);
+            item.Status = "Cancelled";
+
+            Repository.Update(item);
 
             return RedirectToAction("Index");
         }

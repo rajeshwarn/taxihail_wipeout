@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -60,7 +61,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Where (_ => _settings.Data.ShowEta)
 				.CombineLatest(orderWorkflowService.GetAndObservePickupAddress (), (vehicles, address) => new { address, vehicles } )
 				.Select (x => new { x.address, vehicle =  GetNearestVehicle(x.address, x.vehicles) })
-				.DistinctUntilChanged(x => x.vehicle == null ? double.MaxValue : Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
+				.DistinctUntilChanged(x => x.vehicle == null 
+                    ? double.MaxValue 
+                    : Position.CalculateDistance(x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude)
+                )
 				.SelectMany(x => CheckForEta(x.address, x.vehicle));
 		}
 
@@ -101,6 +105,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
 				return null;
 			}
+
+
+		    if (_settings.Data.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
+		    {
+				// We use the order this was returned in.
+		        var car = cars.FirstOrDefault(v => v.Eta.HasValue);
+
+                // If no ETA was returned by the GeoService, default back to calculated position.
+		        return car ?? OrderVehiclesByDistance(pickup, cars).First();
+		    }
 
 			return OrderVehiclesByDistance (pickup, cars).First();
 		}
@@ -149,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return Task.FromResult(new Direction());
 			}
 
-			return GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);                    	
+			return GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);
 		}
 
 		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
