@@ -97,7 +97,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             AnimateShow();
         }
 
-
         private void InitDialogView()
         {
             Frame = UIScreen.MainScreen.Bounds;
@@ -134,7 +133,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     });
             }
 
-
             _messageView = new UILabel()
             {
                 Text = _message,
@@ -156,7 +154,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Leading, 1f, _dialogEdgeConstraint),
                     NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Trailing, 1f, -_dialogEdgeConstraint),
                 });
-            
            
             AddSubviews (_dialogView);
         }
@@ -349,7 +346,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private NSLayoutConstraint GetHeightConstraint(UIView view)
         {
             return NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, _buttonsHeight);
-
         }
 
         private UIButton GetNormalButton(string title, Action action, bool isCancellation = false)
