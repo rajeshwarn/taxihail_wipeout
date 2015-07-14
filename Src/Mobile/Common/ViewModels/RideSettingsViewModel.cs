@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
 		    _accountService = accountService;
-			PhoneNumber = new PhoneNumberInfo();
+            PhoneNumber = new PhoneNumberModel();
 		}
 
 		public async void Init(string bookingSettings)
@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _paymentSettings = await _paymentService.GetPaymentSettings();
 
 					PhoneNumber.Country = _bookingSettings.Country;
+                    PhoneNumber.PhoneNumber = _bookingSettings.Phone;
 
                     var p = await _accountService.GetPaymentsList();
 
@@ -239,7 +240,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public PhoneNumberInfo PhoneNumber { get; set; }
+        public PhoneNumberModel PhoneNumber { get; set; }
 
         public CountryCode[] CountryCodes
         {
@@ -259,6 +260,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _bookingSettings.Country = value.CountryISOCode;
+                PhoneNumber.Country = value.CountryISOCode;
                 RaisePropertyChanged();
             }
         }
@@ -274,6 +276,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _bookingSettings.Phone)
                 {
                     _bookingSettings.Phone = value;
+                    PhoneNumber.PhoneNumber = value;
 					RaisePropertyChanged();
                 }
             }
@@ -422,11 +425,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return false;
             }
 
-            CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(SelectedCountryCode.CountryISOCode));
-            if (!countryCode.IsNumberPossible(Phone))
+            if (!PhoneNumber.IsNumberPossible())
             {
                 await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-                    string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], countryCode.GetPhoneExample()));
+                    string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], PhoneNumber.GetPhoneExample()));
                 return false;
             }
 

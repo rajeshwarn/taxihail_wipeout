@@ -97,6 +97,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			{
 				string text = "";
 
+                // this is to generate spaces between dial code number field and country name to align country name in one column
+                // the first column has different size between 0 and 4 characters (1 char for "+" and 3 for country dial code), according
+                // to width of this first column the code inserts additional spaces to align second column (country names) vertically
+                // in currently used font one caracter (A-Z a-z) equals to 2 spaces in its width
 				text += CountryCode.CountryCodes[i].CountryDialCode != 0 ?
 					new string(' ', (Math.Max(3 - CountryCode.CountryCodes[i].CountryDialCode.ToString().Length, 0)) * 2)
 					+ "+" + CountryCode.CountryCodes[i].CountryDialCode

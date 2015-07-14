@@ -11,67 +11,6 @@ using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class PhoneNumberChangedEventArgs : EventArgs
-    {
-        public CountryISOCode Country { get; set; }
-
-        public string PhoneNumber { get; set; }
-    }
-
-    public class PhoneNumberInfo
-    {
-        CountryISOCode country;
-
-        string phoneNumber;
-
-        public CountryISOCode Country
-        {
-            get
-            {
-                return country;
-            }
-
-            set
-            {
-                country = value;
-                PhoneNumberDatasourceChangedCallEvent();
-            }
-        }
-
-        public string PhoneNumber
-        {
-            get
-            {
-                return phoneNumber;
-            }
-            set
-            {
-                phoneNumber = value;
-                PhoneNumberDatasourceChangedCallEvent();
-            }
-        }
-
-        public delegate void PhoneNumberDatasourceChangedEventHandler(object sender, PhoneNumberChangedEventArgs e);
-
-        public event PhoneNumberDatasourceChangedEventHandler PhoneNumberDatasourceChanged;
-
-        public void PhoneNumberDatasourceChangedCallEvent()
-        {
-            if (PhoneNumberDatasourceChanged != null)
-                PhoneNumberDatasourceChanged(this, new PhoneNumberChangedEventArgs() { Country = country, PhoneNumber = phoneNumber });
-        }
-
-        public void NotifyChanges(object sender, PhoneNumberChangedEventArgs e)
-        {
-            this.country = e.Country;
-            
-			if (e.PhoneNumber != null)
-			{
-				this.phoneNumber = e.PhoneNumber;
-			}
-        }
-    }
-    
     public class CreateAccountViewModel : PageViewModel, ISubViewModel<RegisterAccount>
 	{
 		private readonly IRegisterWorkflowService _registerService;
@@ -87,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		
         public string ConfirmPassword { get; set; }
 
-        public PhoneNumberInfo PhoneNumber { get; set; }
+        public PhoneNumberModel PhoneNumber { get; set; }
 
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
@@ -96,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             string countryISOCode = new RegionInfo(CultureProvider.CultureInfo.LCID).TwoLetterISORegionName;
 
-            PhoneNumber = new PhoneNumberInfo()
+            PhoneNumber = new PhoneNumberModel()
             {
                 Country = new CountryISOCode(countryISOCode)
             };
@@ -180,11 +119,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 
-                    CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Data.Country));
-                    if (!countryCode.IsNumberPossible(Data.Phone))
+                    if (!PhoneNumber.IsNumberPossible())
 					{
                         await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"],
-                            string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], countryCode.GetPhoneExample()));
+                            string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], PhoneNumber.GetPhoneExample()));
 						return;
 					}
 

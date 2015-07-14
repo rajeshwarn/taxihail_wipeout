@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
 			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketUpdated(hashedMarket));
 
-			PhoneNumber = new PhoneNumberInfo();
+            PhoneNumber = new PhoneNumberModel();
 		}
 
 		public async Task Init()
@@ -43,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 			PhoneNumber.Country = _bookingSettings.Country;
+            PhoneNumber.PhoneNumber = _bookingSettings.Phone;
 			RaisePropertyChanged(() => IsChargeTypesEnabled);
             RaisePropertyChanged(() => PhoneNumber);
             RaisePropertyChanged(() => SelectedCountryCode);
@@ -86,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-		public PhoneNumberInfo PhoneNumber { get; set; }
+		public PhoneNumberModel PhoneNumber { get; set; }
 
         public CountryCode[] CountryCodes
         {
@@ -150,11 +151,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
-                    CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(SelectedCountryCode.CountryISOCode));
-                    if (!countryCode.IsNumberPossible(BookingSettings.Phone))
+                    PhoneNumber.Country = BookingSettings.Country;
+                    PhoneNumber.PhoneNumber = BookingSettings.Phone;
+
+                    if (!PhoneNumber.IsNumberPossible())
                     {
                         await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-                            string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], countryCode.GetPhoneExample()));
+                            string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], PhoneNumber.GetPhoneExample()));
                         return;
                     }
 

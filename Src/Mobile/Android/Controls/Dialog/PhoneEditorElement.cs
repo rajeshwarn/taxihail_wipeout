@@ -70,15 +70,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
         }
     }
 
-    public class PhoneEditorElement : ValueElement<PhoneNumberInfo>
+    public class PhoneEditorElement : ValueElement<PhoneNumberModel>
     {
-        public event PhoneNumberInfo.PhoneNumberDatasourceChangedEventHandler NotifyChanges;
+        public event PhoneNumberModel.PhoneNumberDatasourceChangedEventHandler NotifyChanges;
 
         Spinner phoneCountryCodeDropDown;
         EditText phoneNumberTextEdit;
         Action PhoneNumberInfoDatasourceChanged;
 
-        public PhoneEditorElement(string caption, PhoneNumberInfo phoneNumberInfo, string layoutName)
+        public PhoneEditorElement(string caption, PhoneNumberModel phoneNumberInfo, string layoutName)
             : base(caption, phoneNumberInfo, layoutName)
 		{
             PhoneNumberInfoDatasourceChanged = phoneNumberInfo.PhoneNumberDatasourceChangedCallEvent;

@@ -47,27 +47,8 @@
             }
 
             _.extend(data, {
-                countryCodes: TaxiHail.countryCodes,
+                countryCodes: TaxiHail.extendSpacesForCountryDialCode(TaxiHail.countryCodes),
             });
-
-            for (var i = 0; i < data.countryCodes.length; i++) {
-
-                var spaces = [];
-                var spacesToAdd = 2;
-
-                if (data.countryCodes[i].CountryDialCode > 0) {
-                    var sp = (3 - data.countryCodes[i].CountryDialCode.toString().length) * 2;
-                    spacesToAdd += Math.max(sp, 0);
-                }
-                else {
-                    spacesToAdd += 8;
-                }
-
-                for (var i1 = 0; i1 < spacesToAdd; i1++)
-                    spaces.push(0);
-
-                data.countryCodes[i].spaces = spaces;
-            }
 
             this.$el.html(this.renderTemplate(data));
 

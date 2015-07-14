@@ -101,7 +101,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			PhoneNumberInfo phoneNumberInfo = (bindings.BindingContextOwner.BindingContext.DataContext as CreateAccountViewModel).PhoneNumber;
 			PhoneEditorElement phoneEditorElement = new PhoneEditorElement(string.Empty, phoneNumberInfo, this.NavigationController);
-			phoneEditorElement = phoneEditorElement.Bind(bindings, vm => vm.PhoneNumber);
 
 			var section = new Section () {
 				emailEntryElement,
