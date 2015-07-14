@@ -10,8 +10,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public class EditTextEntry : EditText
 	{
-        protected bool setTypeFace = true;
-
 		public EditTextEntry(Context context)
 			: base(context)			
 		{
@@ -30,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public override bool OnPreDraw ()
         {
-            if (setTypeFace)
+            if ((this.InputType & Android.Text.InputTypes.TextVariationPassword) == Android.Text.InputTypes.TextVariationPassword)
             {
                 SetTypeface(Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
             }
