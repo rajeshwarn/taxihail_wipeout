@@ -539,6 +539,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                         statusBar.SetMaxHeight(height+VisibleStatusHeight);
                     }
+                    // We need to set the size of the statusBar to the height of the medallion textbox + margin since no call or text driver buttons are visible.
+                    //Prevents issue where slider panel behave strangely.
                     else
                     {
                         height = (float)(medallion.Item1.Frame.Height + 16);
