@@ -539,6 +539,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                         statusBar.SetMaxHeight(height+VisibleStatusHeight);
                     }
+                    else
+                    {
+                        height = (float)(medallion.Item1.Frame.Height + 16);
+
+                        statusBar.SetMaxHeight(height+VisibleStatusHeight);
+                    }
 
                     var medallionPosY = height/2 -medallion.Item1.Frame.Height/2;
 
