@@ -100,6 +100,7 @@
   <string name="CreditCardCCV">CVV</string>
   <string name="CreditCardErrorTitle">لا يمكنك حفظ هذه البطاقة الائتمانية</string>
   <string name="CreditCardExpMonth">شهر الإنتهاء</string>
+  <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
   <string name="CreditCardExpYear">سنة الإنتهاء</string>
   <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
   <string name="CreditCardInvalidCrediCardNUmber">رقم البطاقة الائتمانية خاطئة</string>

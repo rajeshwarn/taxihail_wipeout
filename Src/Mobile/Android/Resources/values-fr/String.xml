@@ -96,6 +96,7 @@
   <string name="CreateAccountPasswordConfirmationPlaceHolder">Confirmation du mot de passe</string>
   <string name="CreateAccountPasswordPlaceHolder">Mot de passe</string>
   <string name="CreateAccountPhonePlaceHolder">Ligne mobile</string>
+  <string name="ServiceError_EmailClientAbsent">Excusez, nous ne pouvons pas créer le courriel. Il n y\'a pas de client de courriel installé sur cet appareil</string>
   <string name="CreateAccountTitleArray">MrMme</string>
   <string name="CreateAccountTitleMr">Mr</string>
   <string name="CreateAccountTitleMrs">Mme</string>

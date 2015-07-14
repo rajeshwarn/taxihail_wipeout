@@ -287,6 +287,7 @@
   <string name="Order">Reservación</string>
   <string name="OrderHistoryListTitle">Reservación #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
   <string name="OrderNote">Reservado por Móvil</string>
+  <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
   <string name="OrderNoteGPS">Usando su GPS</string>
   <string name="OrderNoteGPSApproximate">(Dirección aproximada)</string>
   <string name="OrderNumber">Reservación#</string>
