@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                         tcs.TrySetCanceled();
                     }; 
                     cav.Clicked += delegate {
-                        var res = cav.InputView.Text;
+                        var res = cav.CustomInputView.Text;
                         tcs.TrySetResult(res);
                     }; 
                     cav.Show ();

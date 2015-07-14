@@ -13,9 +13,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     public class CustomAlertView: UIView
     {
         private UIView _dialogView;
-        private float _dialogHeight = 100;
-        private float _dialogEdgeConstraint = 10;
-        private const float _dialogMargin = 5;
+        private float _dialogHeight;
+        private const float _dialogEdgeConstraint = 10f;
+        private const float _buttonsHeight = 35f;
+        private const float _globalMargin = 20f;
+        private const float _dialogMargin = 5f;
         private UIWindow _modalWindow;
 
         private UILabel _messageView;
@@ -69,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             InitPrompt(cancelAction, isNumericOnly, inputText);
         }
 
-        public UITextView InputView{ get; set;}
+        public UITextView CustomInputView{ get; set;}
         public EventHandler Dismissed { get; set;}
         public EventHandler Clicked { get; set;}
 
@@ -146,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _dialogView.Add(_messageView); 
 
             _dialogView.AddConstraint(_hasTitle ? 
-                NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, title, NSLayoutAttribute.Bottom, 1f, 20f) : 
+                NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, title, NSLayoutAttribute.Bottom, 1f, _globalMargin) : 
                 NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Top, 1f, _dialogEdgeConstraint));
             
             _dialogView.AddConstraints(new [] 
@@ -210,13 +212,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 _dialogView.AddConstraints(new [] 
                     {
-                        NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, lblTitle, NSLayoutAttribute.Bottom, 1f, 20f),
+                        NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, lblTitle, NSLayoutAttribute.Bottom, 1f, _globalMargin),
                         NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Leading, 1f, _dialogEdgeConstraint),
                         NSLayoutConstraint.Create(_messageView, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Trailing, 1f, -_dialogEdgeConstraint),
                     }); 
             }
 
-            InputView = new UITextView()
+            CustomInputView = new UITextView()
             {
                     Text = inputText,
                 Font = UIFont.SystemFontOfSize(14),
@@ -224,21 +226,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 KeyboardType = isNumericOnly ? UIKeyboardType.NumberPad : UIKeyboardType.Default,
             };
 
-            _dialogView.Add(InputView); 
+            _dialogView.Add(CustomInputView); 
 
             _dialogView.AddConstraint(
-                NSLayoutConstraint.Create(InputView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, string.IsNullOrEmpty(_message) ? lblTitle : _messageView, NSLayoutAttribute.Bottom, 1f, 20f));
+                NSLayoutConstraint.Create(CustomInputView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, string.IsNullOrEmpty(_message) ? lblTitle : _messageView, NSLayoutAttribute.Bottom, 1f, _globalMargin));
             
             _dialogView.AddConstraints(new [] 
                 {
-                    NSLayoutConstraint.Create(InputView, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Leading, 1f, _dialogEdgeConstraint),
-                    NSLayoutConstraint.Create(InputView, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Trailing, 1f, -_dialogEdgeConstraint),
-                    GetHeightConstraint(InputView),
+                    NSLayoutConstraint.Create(CustomInputView, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Leading, 1f, _dialogEdgeConstraint),
+                    NSLayoutConstraint.Create(CustomInputView, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Trailing, 1f, -_dialogEdgeConstraint),
+                    GetHeightConstraint(CustomInputView),
                 }); 
 
             AddSubviews (_dialogView);
 
-            InitDoubleButtons(Localize.GetValue("Cancel"), Localize.GetValue("OkButtonText"), () =>{}, cancelAction, InputView);
+            InitDoubleButtons(Localize.GetValue("Cancel"), Localize.GetValue("OkButtonText"), () =>{}, cancelAction, CustomInputView);
         }
 
         private void InitCancelButton(string title)
@@ -249,9 +251,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             _dialogView.AddConstraints(new [] 
                 {
-                    NSLayoutConstraint.Create(cancelButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _messageView, NSLayoutAttribute.Bottom, 1f, 20f),
-                    NSLayoutConstraint.Create(cancelButton, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Leading, 1f, _dialogEdgeConstraint),
-                    NSLayoutConstraint.Create(cancelButton, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Trailing, 1f, -_dialogEdgeConstraint),
+                    NSLayoutConstraint.Create(cancelButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _messageView, NSLayoutAttribute.Bottom, 1f, _globalMargin),
+                    NSLayoutConstraint.Create(cancelButton, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Leading, 1f, _globalMargin),
+                    NSLayoutConstraint.Create(cancelButton, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Trailing, 1f, -_globalMargin),
                     GetHeightConstraint(cancelButton),
                 });
             
@@ -265,9 +267,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             _dialogView.AddConstraints(new [] 
                 {
-                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Top, NSLayoutRelation.Equal, topView, NSLayoutAttribute.Bottom, 1f, 20f),
-                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Leading, 1f, _dialogEdgeConstraint),
-                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Trailing, 1f, -_dialogEdgeConstraint),
+                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Top, NSLayoutRelation.Equal, topView, NSLayoutAttribute.Bottom, 1f, _globalMargin),
+                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Leading, 1f, _globalMargin),
+                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Trailing, 1f, -_globalMargin),
                     GetHeightConstraint(view),
                 });
 
@@ -299,15 +301,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             neutralTitle = string.IsNullOrEmpty(neutralTitle) ? "Cancel" : neutralTitle;
 
             var view = new UIView(){TranslatesAutoresizingMaskIntoConstraints = false};
+            var viewHeight = (_buttonsHeight * 3) + (_globalMargin * 2);
 
             _dialogView.Add(view); 
-
             _dialogView.AddConstraints(new [] 
                 {
-                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _messageView, NSLayoutAttribute.Bottom, 1f, 20f),
-                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Leading, 1f, _dialogEdgeConstraint),
-                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Trailing, 1f, -_dialogEdgeConstraint),
-                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 125f),
+                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _messageView, NSLayoutAttribute.Bottom, 1f, _globalMargin),
+                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Leading, 1f, _globalMargin),
+                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _dialogView, NSLayoutAttribute.Trailing, 1f, -_globalMargin),
+                    NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, viewHeight),
                 });
             
             var negativeButton = GetNormalButton(negativeTitle, negativeAction, true);
@@ -328,7 +330,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             
             view.AddConstraints(new [] 
                 {
-                    NSLayoutConstraint.Create(neutralButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, negativeButton, NSLayoutAttribute.Bottom, 1f, 10f),
+                    NSLayoutConstraint.Create(neutralButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, negativeButton, NSLayoutAttribute.Bottom, 1f, _globalMargin),
                     NSLayoutConstraint.Create(neutralButton, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, view, NSLayoutAttribute.Leading, 1f, 0f),
                     NSLayoutConstraint.Create(neutralButton, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, view, NSLayoutAttribute.Trailing, 1f, 0f),
                     GetHeightConstraint(neutralButton),
@@ -336,7 +338,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             
             view.AddConstraints(new [] 
                 {
-                    NSLayoutConstraint.Create(positiveButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, neutralButton, NSLayoutAttribute.Bottom, 1f, 10f),
+                    NSLayoutConstraint.Create(positiveButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, neutralButton, NSLayoutAttribute.Bottom, 1f, _globalMargin),
                     NSLayoutConstraint.Create(positiveButton, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, view, NSLayoutAttribute.Trailing, 1f, 0f),
                     NSLayoutConstraint.Create(positiveButton, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, view, NSLayoutAttribute.Leading, 1f, 0),
                     GetHeightConstraint(positiveButton),
@@ -344,74 +346,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             
         }
 
-        private async void AnimateShow()
-        {
-            LayoutIfNeeded();
-            if(_dialogView.Subviews.Length > 0)
-            {
-                if(_dialogView.Subviews.Length  == 1)
-                {
-                    _dialogHeight =  (float)_dialogView.Subviews[0].Frame.Bottom - (float)_dialogView.Subviews[0].Frame.Top; 
-                }
-                else
-                {
-                    _dialogHeight =  (float)_dialogView.Subviews[_dialogView.Subviews.Length  - 1].Frame.Bottom - (float)_dialogView.Subviews[0].Frame.Top; 
-                }
-            }
-
-            _dialogHeight += _dialogEdgeConstraint * 2;
-
-            var y = (UIScreen.MainScreen.Bounds.Height - _dialogHeight) / 2;
-
-            if (_isPrompt)
-            {
-                y= 50f;
-                InputView.BecomeFirstResponder();
-            }
-
-            _dialogView.Frame = new CGRect(_dialogView.Frame.X, y, _dialogView.Frame.Width, _dialogHeight);
-            LayoutIfNeeded();
-
-            await UIView.AnimateAsync(0.3, () =>
-                {
-                    _dialogView.Alpha = 1;
-                });
-        }
-
-        private void DismissEvent()
-        {
-            if (Dismissed != null) {
-                Dismissed?.Invoke(this, EventArgs.Empty);
-            }
-            Dismiss();
-        }
-
-        private void ClickedEvent()
-        {
-            if (Clicked != null) {
-                Clicked?.Invoke(this, EventArgs.Empty);
-            }
-            Dismiss();
-        }
-
-        private async void Dismiss()
-        {
-            await UIView.AnimateAsync(0.3, () =>
-                {
-                    _dialogView.Alpha = 0;
-                });
-            if (_modalWindow == UIApplication.SharedApplication.KeyWindow)
-            {
-                UIApplication.SharedApplication.Windows[0].MakeKeyWindow();
-            }
-            this.RemoveFromSuperview();
-            _modalWindow.Hidden = true;
-            LayoutIfNeeded();
-        }
-
         private NSLayoutConstraint GetHeightConstraint(UIView view)
         {
-            return NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 35f);
+            return NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, _buttonsHeight);
 
         }
 
@@ -470,6 +407,73 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 };
             return button;
         }
+
+
+        private async void AnimateShow()
+        {
+            LayoutIfNeeded();
+            if(_dialogView.Subviews.Length > 0)
+            {
+                if(_dialogView.Subviews.Length  == 1)
+                {
+                    _dialogHeight =  (float)_dialogView.Subviews[0].Frame.Bottom - (float)_dialogView.Subviews[0].Frame.Top; 
+                }
+                else
+                {
+                    _dialogHeight =  (float)_dialogView.Subviews[_dialogView.Subviews.Length  - 1].Frame.Bottom - (float)_dialogView.Subviews[0].Frame.Top; 
+                }
+            }
+
+            _dialogHeight += _dialogEdgeConstraint * 2;
+
+            var y = (UIScreen.MainScreen.Bounds.Height - _dialogHeight) / 2;
+
+            if (_isPrompt)
+            {
+                y= 50f;
+                CustomInputView.BecomeFirstResponder();
+            }
+
+            _dialogView.Frame = new CGRect(_dialogView.Frame.X, y, _dialogView.Frame.Width, _dialogHeight);
+            LayoutIfNeeded();
+
+            await UIView.AnimateAsync(0.3, () =>
+                {
+                    _dialogView.Alpha = 1;
+                });
+        }
+
+        private void DismissEvent()
+        {
+            if (Dismissed != null) {
+                Dismissed?.Invoke(this, EventArgs.Empty);
+            }
+            Dismiss();
+        }
+
+        private void ClickedEvent()
+        {
+            if (Clicked != null) {
+                Clicked?.Invoke(this, EventArgs.Empty);
+            }
+            Dismiss();
+        }
+
+        private async void Dismiss()
+        {
+            await UIView.AnimateAsync(0.3, () =>
+                {
+                    _dialogView.Alpha = 0;
+                });
+            if (_modalWindow == UIApplication.SharedApplication.KeyWindow)
+            {
+                UIApplication.SharedApplication.Windows[0].MakeKeyWindow();
+            }
+            this.RemoveFromSuperview();
+            _modalWindow.Hidden = true;
+            LayoutIfNeeded();
+        }
+
 
 #region NICE TO HAVE
       
