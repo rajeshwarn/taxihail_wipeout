@@ -1,4 +1,6 @@
-﻿namespace apcurium.MK.Booking.Maps
+﻿using System;
+
+namespace apcurium.MK.Booking.Maps
 {
     public class Direction
     {
