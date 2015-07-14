@@ -34,7 +34,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _message = message;
             InitDialogView();
             InitCancelButton(cancelButtonTitle);
-          
         }
         public CustomAlertView(string title, string message)
         {
@@ -470,9 +469,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             LayoutIfNeeded();
         }
 
-
-#region NICE TO HAVE
-      
         public override void TouchesBegan(Foundation.NSSet touches, UIEvent evt)
         {
             var touch = touches.AnyObject as UITouch;
@@ -484,7 +480,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             base.TouchesBegan(touches, evt);
         }
-#endregion
 
         UIImage GetImage(UIColor color)
         {
