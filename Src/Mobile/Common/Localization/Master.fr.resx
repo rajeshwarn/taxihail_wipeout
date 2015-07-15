@@ -2012,4 +2012,7 @@
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
   </data>
+  <data name="EtaLessThenAMinute" xml:space="preserve">
+    <value>Le véhicule le plus proche est à moins d'une minute et à {0}</value>
+  </data>
 </root>

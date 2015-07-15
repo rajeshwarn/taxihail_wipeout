@@ -303,9 +303,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-			    var showEta = Settings.ShowEta && Eta != null && FormattedEta.HasValue() && !ShowEstimate;
-
-				return showEta;
+			    return Settings.ShowEta && Eta != null && FormattedEta.HasValue() && !ShowEstimate;
 			}
 		}
 
