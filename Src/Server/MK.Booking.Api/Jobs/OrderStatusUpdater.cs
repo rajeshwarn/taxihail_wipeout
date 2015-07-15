@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly ICreditCardDao _creditCardDao;
         private readonly IFeeService _feeService;
         private readonly ILogger _logger;
-        private readonly Resources.Resources.Resources _resources;
+        private readonly Resources.Resources _resources;
 
         private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _logger = logger;
             _commandBus = commandBus;
             _paymentDao = paymentDao;
-            _resources = new Resources.Resources.Resources(serverSettings);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
@@ -220,8 +220,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             var geoService = new CmtGeoServiceClient(_serverSettings, _logger);
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
 
-            var eta = geoService.GetEta(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
-                orderStatusDetail.VehicleNumber);
+            var eta = geoService.GetEta(order.PickupAddress.Latitude, order.PickupAddress.Longitude,orderStatusDetail.VehicleNumber);
             if (eta.Eta.HasValue)
             {
                 var etaDateTime = DateTime.UtcNow.AddSeconds(eta.Eta.Value);

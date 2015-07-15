@@ -116,7 +116,7 @@ namespace CMTServices
                 Logger.LogMessage("An error occured when trying to contact Geo service");
                 Logger.LogError(ex);
 
-                return null;
+                return new VehicleResponse();
             }
         }
 
