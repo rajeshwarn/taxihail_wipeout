@@ -7,6 +7,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using System.Linq;
+using System.ComponentModel;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -51,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             get { return _button; }
         }
 
-        public void Configure<T>(string title, Func<ListItem<T>[]> getValues, Func<Nullable<T>> selectedId, Action<ListItem<T>> onItemSelected) where T : struct
+        public void Configure<T>(string title, Func<ListItem<T>[]> getValues, Func<Nullable<T>> selectedId, Action<ListItem<T>> onItemSelected, bool allowOther = false) where T : struct
         {
             Button.TouchUpInside += (sender, e) => {
                 var values = getValues();
@@ -61,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     return;
                 }
 
-                var selected = 0;
+                var selected = -1;
                 var section = new Section();
 
                 foreach (var v in values)
@@ -74,7 +75,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         display = Localize.GetValue("NoPreference");
                     }
 
-                    var item = new RadioElementWithId<T>(value.Id, display, value.Image, values.Last() != value);
+                    bool showBottomBar = values.Last() != value;
+                    if(allowOther)
+                    {
+                        showBottomBar = true; //other will be last
+                    }
+                    var item = new RadioElementWithId<T>(value.Id, display, value.Image, showBottomBar);
                     item.Tapped += () =>
                     {
                         onItemSelected(value);
@@ -87,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     {
                         selected = Array.IndexOf(values, value);
                     }
-                }
+                }                                    
 
                 _rootElement = new RootElement(title, new RadioGroup(selected));
                 _rootElement.Add(section);
@@ -95,10 +101,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 var currentController = this.FindViewController();
                 if(currentController == null) return;
                 currentController.View.EndEditing(true);
+                currentController.NavigationController.NavigationBar.Hidden = false;
+                currentController.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Plain, null, null);
 
                 var newDvc = new TaxiHailDialogViewController (_rootElement, true, false);
-                currentController.NavigationController.NavigationBar.Hidden = false;
-                currentController.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
+
+                if(allowOther)
+                { 
+                    var other = new OtherElement();
+                    other.KeyboardType = UIKeyboardType.NumberPad;
+                    section.Add(other);
+
+                    newDvc.NavigationItem.RightBarButtonItem = new UIBarButtonItem("Done", UIBarButtonItemStyle.Plain, null);
+                    newDvc.NavigationItem.RightBarButtonItem.Clicked += (s, eh) => {
+
+                    try
+                    {
+                        var value = (T)Convert.ChangeType(other.ObjectValue, typeof(T));
+                        onItemSelected(new ListItem<T>{ Id = value});   
+
+                    }catch(FormatException)
+                    {
+                        //display message ?
+                    }
+                    var controller = this.FindViewController();
+                    if (controller != null)
+                        controller.NavigationController.PopViewController(true);
+                    };
+                }
                 currentController.NavigationController.PushViewController(newDvc, true);
             };
         }
