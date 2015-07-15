@@ -1,7 +1,10 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
@@ -12,6 +15,8 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
@@ -23,6 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICacheClient _cacheClient;
         private readonly IServerSettings _serverSettings;
         private readonly IIBSServiceProvider _ibsServiceProvider;
+        private HttpClient restClient;
 
         public ReferenceDataService(
             IIBSServiceProvider ibsServiceProvider,
@@ -32,6 +38,14 @@ namespace apcurium.MK.Booking.Api.Services
             _ibsServiceProvider = ibsServiceProvider;
             _cacheClient = cacheClient;
             _serverSettings = serverSettings;
+            InitializeHttpClient();
+        }
+
+        private void InitializeHttpClient()
+        {
+            restClient = new HttpClient();
+            restClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            restClient.Timeout = TimeSpan.FromMilliseconds(10000);
         }
 
         public object Get(ReferenceDataRequest request)
@@ -75,6 +89,46 @@ namespace apcurium.MK.Booking.Api.Services
             result.PaymentsList = filteredPaymentList.ToList();
 
             return result;
+        }
+
+        public object Get(ReferenceListRequest request)
+        {
+            var getUri = new Uri(_serverSettings.ServerData.Gds.ServiceUrl + "/reference/" + request.ListName.ToLower() +
+                (request.SearchText.IsNullOrEmpty() ? "" : "/search/" + request.SearchText));
+            var response = restClient.GetAsync(getUri).ConfigureAwait(continueOnCapturedContext: false).GetAwaiter().GetResult();
+            var resultInfo = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            JArray result;
+            if (request.SearchText.IsNullOrEmpty())
+            {
+                result = JArray.Parse(resultInfo);
+            }
+            else
+            {
+                var searchResult = JObject.Parse(resultInfo);
+                result = (JArray)searchResult["items"];
+            }
+            result.ForEach(i => {
+                if (i["name"] == null) {
+                    i["name"] = i["id"];
+                }
+            });
+            if (request.size > 0)
+            {
+                result = new JArray(result.Take(request.size));
+            }
+            if (request.coreFieldsOnly)
+            {
+                return result.Select(i => new 
+                { 
+                    id = i["id"].ToString(),
+                    type = i["type"].ToString(),
+                    name = i["name"].ToString()
+                }).ToList();
+            }
+            else
+            {
+                return result.ToString(Formatting.None);
+            }
         }
 
         private ReferenceData GetReferenceData(string companyKey)
