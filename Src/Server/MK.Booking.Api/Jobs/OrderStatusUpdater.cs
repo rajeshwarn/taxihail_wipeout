@@ -22,6 +22,8 @@ using CMTPayment;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Enumeration.TimeZone;
+using CMTServices;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -43,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly ICreditCardDao _creditCardDao;
         private readonly IFeeService _feeService;
         private readonly ILogger _logger;
-        private readonly Resources.Resources _resources;
+        private readonly Resources.Resources.Resources _resources;
 
         private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
@@ -78,7 +80,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _logger = logger;
             _commandBus = commandBus;
             _paymentDao = paymentDao;
-            _resources = new Resources.Resources(serverSettings);
+            _resources = new Resources.Resources.Resources(serverSettings);
         }
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
@@ -196,12 +198,38 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.Eta =                             ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
             orderStatusDetail.RideLinqPairingCode =             ibsOrderInfo.PairingCode.GetValue(orderStatusDetail.RideLinqPairingCode);
             orderStatusDetail.DriverInfos.DriverPhotoUrl =      ibsOrderInfo.DriverPhotoUrl.GetValue(orderStatusDetail.DriverInfos.DriverPhotoUrl);
-            
+
+            UpdateEtaWithGeoServiceIfNecessary(orderStatusDetail, ibsStatusId);
+
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
             var wasProcessingOrderOrWaitingForDiver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
             // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
             orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned);
+        }
+
+        private void UpdateEtaWithGeoServiceIfNecessary(OrderStatusDetail orderStatusDetail, string ibsStatusId)
+        {
+            if (_serverSettings.ServerData.AvailableVehiclesMode != AvailableVehiclesModes.Geo 
+                || !orderStatusDetail.VehicleNumber.HasValue() 
+                || !ibsStatusId.SoftEqual(VehicleStatuses.Common.Assigned))
+            {
+                return;
+            }
+                
+            var geoService = new CmtGeoServiceClient(_serverSettings, _logger);
+            var order = _orderDao.FindById(orderStatusDetail.OrderId);
+
+            var eta = geoService.GetEta(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
+                orderStatusDetail.VehicleNumber);
+            if (eta.Eta.HasValue)
+            {
+                var etaDateTime = DateTime.UtcNow.AddSeconds(eta.Eta.Value);
+
+                orderStatusDetail.Eta = _serverSettings.ServerData.CompanyTimeZone == TimeZones.UTC || _serverSettings.ServerData.CompanyTimeZone == TimeZones.NotSet
+                    ? etaDateTime
+                    : TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, etaDateTime);
+            }
         }
 
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)

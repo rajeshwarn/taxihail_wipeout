@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -93,6 +94,31 @@ namespace CMTServices
             return response;
         }
 
+        public VehicleResponse GetEta(double latitude, double longitude, string medallion)
+        {
+            var @params = new[]
+            {
+                new KeyValuePair<string, string>("lat", latitude.ToString(CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("lon", latitude.ToString(CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("deviceName", medallion)
+            };
+
+            try
+            {
+                var response = Client.Post("/eta", ToDictionary(@params))
+                    .Deserialize<CmtGeoContent>()
+                    .Result;
+
+                return ToVehicleResponse(response);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogMessage("An error occured when trying to contact Geo service");
+                Logger.LogError(ex);
+
+                return null;
+            }
+        }
 
         private Dictionary<string,string> ToDictionary(IEnumerable<KeyValuePair<string,string>> data)
         {
