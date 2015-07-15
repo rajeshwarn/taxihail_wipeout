@@ -4,12 +4,13 @@ using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using CoreGraphics;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class OtherElement : EntryElement
     {
-        public OtherElement() : base (null, "Other")
+        public OtherElement() : base (null, Localize.GetValue("OtherListItemLabel"))
         {
             
         }
