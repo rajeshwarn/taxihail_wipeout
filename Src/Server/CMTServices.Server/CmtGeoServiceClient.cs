@@ -9,6 +9,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http.Extensions;
 using CMTServices.Responses;
+using ServiceStack.Common;
 
 namespace CMTServices
 {
@@ -96,16 +97,16 @@ namespace CMTServices
 
         public VehicleResponse GetEta(double latitude, double longitude, string medallion)
         {
-            var @params = new[]
+            var @params = new []
             {
-                new KeyValuePair<string, string>("lat", latitude.ToString(CultureInfo.InvariantCulture)),
-                new KeyValuePair<string, string>("lon", latitude.ToString(CultureInfo.InvariantCulture)),
-                new KeyValuePair<string, string>("deviceName", medallion)
+                new KeyValuePair<string, object>("lat", latitude),
+                new KeyValuePair<string, object>("lon", longitude),
+                new KeyValuePair<string, object>("deviceName", medallion)
             };
 
             try
             {
-                var response = Client.Post("/eta", ToDictionary(@params))
+                var response = Client.Post("/eta", @params.ToDictionary(kv => kv.Key, kv => kv.Value))
                     .Deserialize<CmtGeoContent>()
                     .Result;
 
@@ -113,7 +114,7 @@ namespace CMTServices
             }
             catch (Exception ex)
             {
-                Logger.LogMessage("An error occured when trying to contact Geo service");
+                Logger.LogMessage("An error occured when trying to contact CMT Geo service");
                 Logger.LogError(ex);
 
                 return new VehicleResponse();

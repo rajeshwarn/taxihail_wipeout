@@ -199,36 +199,11 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.RideLinqPairingCode =             ibsOrderInfo.PairingCode.GetValue(orderStatusDetail.RideLinqPairingCode);
             orderStatusDetail.DriverInfos.DriverPhotoUrl =      ibsOrderInfo.DriverPhotoUrl.GetValue(orderStatusDetail.DriverInfos.DriverPhotoUrl);
 
-            UpdateEtaWithGeoServiceIfNecessary(orderStatusDetail, ibsStatusId);
-
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
             var wasProcessingOrderOrWaitingForDiver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
             // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
             orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned);
-        }
-
-        private void UpdateEtaWithGeoServiceIfNecessary(OrderStatusDetail orderStatusDetail, string ibsStatusId)
-        {
-            if (_serverSettings.ServerData.AvailableVehiclesMode != AvailableVehiclesModes.Geo 
-                || !orderStatusDetail.VehicleNumber.HasValue() 
-                || !ibsStatusId.SoftEqual(VehicleStatuses.Common.Assigned))
-            {
-                return;
-            }
-                
-            var geoService = new CmtGeoServiceClient(_serverSettings, _logger);
-            var order = _orderDao.FindById(orderStatusDetail.OrderId);
-
-            var eta = geoService.GetEta(order.PickupAddress.Latitude, order.PickupAddress.Longitude,orderStatusDetail.VehicleNumber);
-            if (eta.Eta.HasValue)
-            {
-                var etaDateTime = DateTime.UtcNow.AddSeconds(eta.Eta.Value);
-
-                orderStatusDetail.Eta = _serverSettings.ServerData.CompanyTimeZone == TimeZones.UTC || _serverSettings.ServerData.CompanyTimeZone == TimeZones.NotSet
-                    ? etaDateTime
-                    : TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, etaDateTime);
-            }
         }
 
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)

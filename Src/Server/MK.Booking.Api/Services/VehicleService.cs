@@ -328,6 +328,29 @@ namespace apcurium.MK.Booking.Api.Services
             return referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value)).Select(x => new { x.Id, x.Display }).ToArray();
         }
 
+        public object Post(EtaForPickupRequest request)
+        {
+            if (_serverSettings.ServerData.AvailableVehiclesMode != AvailableVehiclesModes.Geo)
+            {
+                return new HttpResult(HttpStatusCode.BadRequest, "Api cannot be used unless available mode is set to Geo");
+            }
+
+            if (!request.Latitude.HasValue || !request.Longitude.HasValue || !request.VehicleNumber.HasValue())
+            {
+                return new HttpResult(HttpStatusCode.BadRequest, "Longitude, latitude and vehicle number are required.");
+            }
+
+            var geoService = (CmtGeoServiceClient)GetAvailableVehiclesServiceClient();
+
+            var result = geoService.GetEta(request.Latitude.Value, request.Longitude.Value, request.VehicleNumber);
+
+            return new EtaForPickupResponse
+            {
+                Eta = result.Eta,
+                Latitude = result.Latitude,
+                Longitude = result.Longitude
+            };
+        }
 
         private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient()
         {

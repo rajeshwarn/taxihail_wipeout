@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
@@ -173,6 +174,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		    return etaBetweenCoordinates;
 		}
+
+	    public async Task<Direction> GetEtaFromGeo(double fromLat, double fromLng, string vehicleNumber)
+	    {
+	        var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleNumber));
+
+	        var directions = await _directions.GetDirectionAsync(fromLat, fromLng, etaFromGeo.Latitude, etaFromGeo.Longitude, null, null, false);
+
+	        directions.Duration = etaFromGeo.Eta.HasValue
+                ? etaFromGeo.Eta.Value/60
+                : (long?) null;
+
+	        return directions;
+	    }
 
 		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
 		{
