@@ -10,6 +10,7 @@ using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using Android.Text;
 using System.Threading.Tasks;
+using Android.Views.InputMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
 {
@@ -159,27 +160,53 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
 
             InitView(owner, title, message);
 
+            var @params = (RelativeLayout.LayoutParams)_dialogView.LayoutParameters;
+            @params.RemoveRule(LayoutRules.CenterInParent);
+            @params.TopMargin = 200;
+
+            _dialogView.LayoutParameters = @params;
+
             _inputText.Text = inputText;
             _inputText.InputType = isNumericOnly ? InputTypes.ClassNumber : InputTypes.ClassText;
 
+
             _inputText.Visibility = ViewStates.Visible;
+            ToogleKeyboard(false, owner);
             _twoButtonsView.Visibility = ViewStates.Visible;
             _twoButtonsNegative.Text = Mvx.Resolve<ILocalization>()["Cancel"];
             _twoButtonsNegative.Click += (sender, e) => 
                 {  
                     cancelAction?.Invoke();
+                    ToogleKeyboard(true, owner);
                     hideAnimate();
+
                 };
             _twoButtonsPositive.Text = Mvx.Resolve<ILocalization>()["OkButtonText"];
             _twoButtonsPositive.Click += (sender, e) => 
                 {  
                     tcs.TrySetResult(_inputText.Text);
+                    ToogleKeyboard(true, owner);
                     hideAnimate();
                 };
 
             showAnimate(); 
 
             return tcs.Task;
+        }
+
+        private void ToogleKeyboard(bool hide, Activity owner)
+        {
+            if (hide)
+            {
+                var imm = (InputMethodManager)owner.GetSystemService(Context.InputMethodService);
+                imm.HideSoftInputFromWindow(_inputText.WindowToken, 0);
+            }
+            else
+            {
+                var imm = (InputMethodManager)owner.GetSystemService(Context.InputMethodService);
+                imm.ShowSoftInput(_inputText, ShowFlags.Forced);
+                imm.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.ImplicitOnly);
+            }
         }
 
         private void showAnimate()
