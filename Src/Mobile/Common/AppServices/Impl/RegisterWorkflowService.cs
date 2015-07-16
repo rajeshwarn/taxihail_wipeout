@@ -47,6 +47,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			});
 		}
 
+        public async Task GetConfirmationCode()
+        {
+            await _accountServiceClient.GetConfirmationCode(new ConfirmationCodeRequest
+            {
+                Email = _account.Email
+            });
+        }
+
 		public void RegistrationFinished ()
 		{
 			_registrationAddressSubject.OnNext (_account);

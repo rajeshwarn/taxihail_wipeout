@@ -635,4 +635,7 @@
   <string name="ServiceError_ErrorCreatingOrderMessage_NoCall">The order cannot be created, please try again.</string>
   <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
   <string name="DriverInfoVehicleMedallion">Medallion:</string>
+  <string name="ResendConfirmationCodeButtonText">Resend confirmation code</string>
+  <string name="ResendConfirmationCodeTitle">Confirmation</string>
+  <string name="ResendConfirmationCodeText">Confirmation code will be resend shortly</string>
 </resources>

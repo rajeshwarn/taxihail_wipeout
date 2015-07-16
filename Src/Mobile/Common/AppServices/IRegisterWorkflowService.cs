@@ -11,8 +11,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		void PrepareNewRegistration ();
 		IObservable<RegisterAccount> GetAndObserveRegistration();
 		Task RegisterAccount (RegisterAccount data);
-		Task ConfirmAccount (string code);
-		void RegistrationFinished();
+        Task ConfirmAccount (string code);
+
+        Task GetConfirmationCode();
+
+        void RegistrationFinished();
 		RegisterAccount Account { get; }
 	}
 }

@@ -631,4 +631,7 @@
   <string name="ServiceError_ErrorCreatingOrderMessage_NoCall">Votre demande n\'a pas pu être prise en compte, veuillez réessayer de nouveau.</string>
   <string name="ServiceError_EmailClientAbsent">Excusez, nous ne pouvons pas créer le courriel. Il n y\'a pas de client de courriel installé sur cet appareil</string>
   <string name="DriverInfoVehicleMedallion">Medallion:</string>
+  <string name="ResendConfirmationCodeButtonText">Renvoyer le code</string>
+  <string name="ResendConfirmationCodeTitle">Confirmation</string>
+  <string name="ResendConfirmationCodeText">Le code de confirmation sera envoyé bientôt</string>
 </resources>

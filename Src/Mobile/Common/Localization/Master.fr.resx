@@ -2012,4 +2012,13 @@
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
   </data>
+  <data name="ResendConfirmationCodeButtonText" xml:space="preserve">
+    <value>Renvoyer le code</value>
+  </data>
+  <data name="ResendConfirmationCodeTitle" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ResendConfirmationCodeText" xml:space="preserve">
+    <value>Le code de confirmation sera envoyé bientôt</value>
+  </data>
 </root>

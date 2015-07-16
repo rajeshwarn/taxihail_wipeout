@@ -2474,4 +2474,13 @@
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
   </data>
+  <data name="ResendConfirmationCodeButtonText" xml:space="preserve">
+    <value>Resend confirmation code</value>
+  </data>
+  <data name="ResendConfirmationCodeTitle" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ResendConfirmationCodeText" xml:space="preserve">
+    <value>Confirmation code will be resend shortly</value>
+  </data>
 </root>

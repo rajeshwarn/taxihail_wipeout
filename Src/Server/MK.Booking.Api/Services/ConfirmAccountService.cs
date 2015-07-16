@@ -90,5 +90,37 @@ namespace apcurium.MK.Booking.Api.Services
                 return new HttpResult(body, ContentType.Html);
             }
         }
+
+        public void Get(ConfirmationCodeRequest request)
+        {
+            var account = _accountDao.FindByEmail(request.Email);
+
+            if (account == null)
+                throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+
+            if (!_serverSettings.ServerData.AccountActivationDisabled)
+            {
+                if (_serverSettings.ServerData.SMSConfirmationEnabled)
+                {
+                    _commandBus.Send(new SendAccountConfirmationSMS
+                    {
+                        ClientLanguageCode = account.Language,
+                        Code = account.ConfirmationToken,
+                        PhoneNumber = account.Settings.Phone
+                    });
+                }
+                else
+                {
+                    _commandBus.Send(new SendAccountConfirmationEmail
+                    {
+                        ClientLanguageCode = account.Language,
+                        EmailAddress = account.Email,
+                        ConfirmationUrl =
+                            new Uri(string.Format("/api/account/confirm/{0}/{1}", account.Email,
+                                        account.ConfirmationToken), UriKind.Relative),
+                    });
+                }
+            }
+        }
     }
 }
