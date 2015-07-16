@@ -16,6 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnConfirm { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnResend { get; set; }
+
+		[Outlet]
 		UIKit.UIImageView imgViewLogo { get; set; }
 
 		[Outlet]
@@ -26,12 +29,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCode { get; set; }
-
+		
 		void ReleaseDesignerOutlets ()
 		{
-			if (txtCode != null) {
-				txtCode.Dispose ();
-				txtCode = null;
+			if (btnConfirm != null) {
+				btnConfirm.Dispose ();
+				btnConfirm = null;
 			}
 
 			if (imgViewLogo != null) {
@@ -49,9 +52,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblTitle = null;
 			}
 
-			if (btnConfirm != null) {
-				btnConfirm.Dispose ();
-				btnConfirm = null;
+			if (txtCode != null) {
+				txtCode.Dispose ();
+				txtCode = null;
+			}
+
+			if (btnResend != null) {
+				btnResend.Dispose ();
+				btnResend = null;
 			}
 		}
 	}

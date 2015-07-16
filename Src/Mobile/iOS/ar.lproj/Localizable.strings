@@ -145,6 +145,7 @@
 "View_UpdatedTermsAndConditions"="أحكام و شروط جديدة";
 "ResetPasswordSubtitleText"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";
 "BookPickupLocationEmptyPlaceholder"="انقر لإختيار نقطة الإلتقاء";
+"ResendConfirmationCodeText"="Confirmation code will be resend shortly";
 "CannotCancelOrderTitle"="اختيار غير صحيح";
 "OrderNoteGPS"="استخدام الGPS";
 "PromotionLoadError"="Unable to load the available promotions. Please try again later.";
@@ -356,6 +357,7 @@
 "View_AccountConfirmationTitle"="Account Confirmation";
 "RateRide"="قم بتقييم مشوارك";
 "ConfirmDestinationLabel"="الوجهة";
+"ResendConfirmationCodeButtonText"="Resend confirmation code";
 "UpdatePasswordConfirmationLabel"="تأكيد";
 "View_SearchAddress"="البحث عن عنوان";
 "CreateAccountInvalidPassword"="كلمة المرور غير صحيحة. كلمة المرور يجب أن تكون متطابقة و تكون بين 6 إلى 10 أحرف";
@@ -476,6 +478,7 @@
 "DriverInfoDriver"="السائق:";
 "SettingsViewTitle"="إعدادات";
 "TechSupportEmailTitle"="دعم تطبيق الهاتف الجوال";
+"ResendConfirmationCodeTitle"="Confirmation";
 "YesButton"="نعم";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
 "ManualRideLinqStatus_Tax"="Tax amount:";

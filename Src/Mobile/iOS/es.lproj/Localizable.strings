@@ -148,6 +148,7 @@
 "View_UpdatedTermsAndConditions"="Nuevos Términos y Condiciones";
 "NoCardOnFileMessage"="Usted seleccionó pagar con la tarjeta de crédito en su archivo, pero no tiene tarjeta registrada por defecto. Agregue una tarjeta a su cuenta o cambie el método de pago para continuar.";
 "BookPickupLocationEmptyPlaceholder"="Toque para seleccionar lugar de abordaje";
+"ResendConfirmationCodeText"="Confirmation code will be resend shortly";
 "CannotCancelOrderTitle"="Acción inválida";
 "OrderNoteGPS"="Usando su GPS";
 "PromotionLoadError"="Unable to load the available promotions. Please try again later.";
@@ -361,6 +362,7 @@
 "View_AccountConfirmationTitle"="Confirmación de cuenta.";
 "RateRide"="Califique su servicio";
 "ConfirmDestinationLabel"="Destino";
+"ResendConfirmationCodeButtonText"="Resend confirmation code";
 "UpdatePasswordConfirmationLabel"="Confirmación";
 "View_SearchAddress"="Búsqueda de dirección";
 "CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.";
@@ -482,6 +484,7 @@
 "DriverInfoDriver"="Chofer:";
 "SettingsViewTitle"="Ajustes";
 "TechSupportEmailTitle"="Soporte de applicion móvil";
+"ResendConfirmationCodeTitle"="Confirmation";
 "YesButton"="Si";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
 "ManualRideLinqStatus_Tax"="Tax amount:";

@@ -42,12 +42,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			FlatButtonStyle.Main.ApplyTo(btnConfirm); 
 			btnConfirm.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
 
+            FlatButtonStyle.Main.ApplyTo(btnResend);
+            btnResend.SetTitleColor(Theme.GetTextColor(Theme.LoginColor), UIControlState.Normal);
+
 			DismissKeyboardOnReturn(txtCode);
 
 			lblTitle.Text = Localize.GetValue ("View_AccountConfirmationTitle");
 			lblSubTitle.Text = Localize.GetValue ("View_AccountConfirmation_Label_Instructions");
 			txtCode.Placeholder = Localize.GetValue("View_AccountConfirmation_Label_Code");
 			btnConfirm.SetTitle(Localize.GetValue("View_AccountConfirmation_Button"), UIControlState.Normal);
+            btnResend.SetTitle(Localize.GetValue("ResendConfirmationCodeButtonText"), UIControlState.Normal);
+
 
 			var set = this.CreateBindingSet<AccountConfirmationView, AccountConfirmationViewModel>();
 
@@ -59,8 +64,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Text)
                 .To(vm => vm.Code);
 
+            set.Bind(btnResend)
+                .For("TouchUpInside")
+                .To(x => x.ResendConfirmationCode);
+
             set.Apply();
         }
     }
 }
-

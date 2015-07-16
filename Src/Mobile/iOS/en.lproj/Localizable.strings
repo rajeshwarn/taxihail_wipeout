@@ -146,6 +146,7 @@
 "View_UpdatedTermsAndConditions"="New Terms and Conditions";
 "ResetPasswordSubtitleText"="Enter your email and we'll send you a new one.";
 "BookPickupLocationEmptyPlaceholder"="Tap to choose pickup";
+"ResendConfirmationCodeText"="Confirmation code will be resend shortly";
 "CannotCancelOrderTitle"="Invalid Action";
 "OrderNoteGPS"=" using a GPS";
 "View_RideLinqStatus"="Status";
@@ -361,6 +362,7 @@
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
 "RateRide"="Rate my ride";
 "ConfirmDestinationLabel"="Destination";
+"ResendConfirmationCodeButtonText"="Resend confirmation code";
 "MarketChangedMessageTitle"="New service area detected";
 "apcuriumUrl"="http://www.apcurium.com/";
 "CreateAccountInvalidPassword"="The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.";
@@ -487,6 +489,7 @@
 "DriverInfoDriver"="Driver:";
 "SettingsViewTitle"="Settings";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
+"ResendConfirmationCodeTitle"="Confirmation";
 "YesButton"="Yes";
 "CreateAccountEmptyField"="The data is invalid, all the fields are required.";
 "ManualRideLinqStatus_Tax"="Tax amount:";
