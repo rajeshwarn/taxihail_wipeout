@@ -28,24 +28,18 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICacheClient _cacheClient;
         private readonly IServerSettings _serverSettings;
         private readonly IIBSServiceProvider _ibsServiceProvider;
-        private HttpClient restClient;
+        private readonly CmtDataService _cmtDataService;
 
         public ReferenceDataService(
             IIBSServiceProvider ibsServiceProvider,
             ICacheClient cacheClient,
-            IServerSettings serverSettings)
+            IServerSettings serverSettings,
+            CmtDataService cmtDataService)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _cacheClient = cacheClient;
             _serverSettings = serverSettings;
-            InitializeHttpClient();
-        }
-
-        private void InitializeHttpClient()
-        {
-            restClient = new HttpClient();
-            restClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            restClient.Timeout = TimeSpan.FromMilliseconds(10000);
+            _cmtDataService = cmtDataService;
         }
 
         public object Get(ReferenceDataRequest request)
@@ -93,42 +87,13 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ReferenceListRequest request)
         {
-            var getUri = new Uri(_serverSettings.ServerData.Gds.ServiceUrl + "/reference/" + request.ListName.ToLower() +
-                (request.SearchText.IsNullOrEmpty() ? "" : "/search/" + request.SearchText));
-            var response = restClient.GetAsync(getUri).ConfigureAwait(continueOnCapturedContext: false).GetAwaiter().GetResult();
-            var resultInfo = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            JArray result;
-            if (request.SearchText.IsNullOrEmpty())
+            return _cmtDataService.Get(new apcurium.MK.Booking.Api.Services.CmtDataService.ReferenceListRequest
             {
-                result = JArray.Parse(resultInfo);
-            }
-            else
-            {
-                var searchResult = JObject.Parse(resultInfo);
-                result = (JArray)searchResult["items"];
-            }
-            result.ForEach(i => {
-                if (i["name"] == null) {
-                    i["name"] = i["id"];
-                }
+                ListName = request.ListName,
+                SearchText = request.SearchText,
+                coreFieldsOnly = request.coreFieldsOnly,
+                size = request.size
             });
-            if (request.size > 0)
-            {
-                result = new JArray(result.Take(request.size));
-            }
-            if (request.coreFieldsOnly)
-            {
-                return result.Select(i => new 
-                { 
-                    id = i["id"].ToString(),
-                    type = i["type"].ToString(),
-                    name = i["name"].ToString()
-                }).ToList();
-            }
-            else
-            {
-                return result.ToString(Formatting.None);
-            }
         }
 
         private ReferenceData GetReferenceData(string companyKey)
