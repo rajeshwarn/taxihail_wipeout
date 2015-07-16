@@ -10,9 +10,12 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 using apcurium.MK.Common.Entity;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
+    [Register("apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner")]
     public class EditTextRightSpinner : LinearLayout
     {
         private ListItemAdapter _adapter;
@@ -99,12 +102,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         _adapter.Add(item);
                     }
+                    _adapter.Add(new ListItemData(){Key = 666, Value = "Other" });
                     SelectItem();
                 }
             }
         }
 
         public event EventHandler<AdapterView.ItemSelectedEventArgs> ItemSelected;
+
+        public event EventHandler<String> OtherValueSelected;
 
         public event EventHandler SpinnerClicked;
 
@@ -174,11 +180,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _spinner.Prompt = Context.GetString(Resource.String.ListPromptSelectOne);
         }
 
-        private void HandleItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        private async void HandleItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            if (ItemSelected != null)
+            if (ItemSelected != null
+                && e.Id != 666)
             {
                 ItemSelected(this, e);
+            }
+            else
+            {
+                var messageService = TinyIoCContainer.Current.Resolve<IMessageService>();
+                var value = await messageService.ShowPromptDialog("Other", "Enter a value: ", () => {}, true);
+                OtherValueSelected(this, value);
             }
         }
 

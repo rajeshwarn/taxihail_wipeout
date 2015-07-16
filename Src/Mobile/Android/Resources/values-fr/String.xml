@@ -514,6 +514,7 @@
   <string name="NetworkErrorMessage">Echec de la connexion. Merci de vérifier vos paramètres de connexion et réessayer.</string>
   <string name="Overdue_Date">Date de transaction:</string>
   <string name="View_ConfirmCarNumber">Confirmation</string>
+  <string name="OtherListItemLabel">Autre</string>
   <string name="BookRatingErrorTitle">Attention</string>
   <string name="View">Voir</string>
   <string name="NoRingCodeText">--</string>

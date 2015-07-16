@@ -516,6 +516,7 @@
   <string name="LocationDetailApartmentLabel">Apartment</string>
   <string name="Overdue_Date">Transaction date:</string>
   <string name="View_ConfirmCarNumber">Confirmation</string>
+  <string name="OtherListItemLabel">Other</string>
   <string name="View_BookingStatus">Status</string>
   <string name="View">View</string>
   <string name="NoRingCodeText">No code</string>

@@ -510,6 +510,7 @@
   <string name="LocationDetailApartmentLabel">Departamento</string>
   <string name="NetworkErrorMessage">No hay conección de red, por favor compruebe su conección y trate de nuevo</string>
   <string name="View_ConfirmCarNumber">Confirmación</string>
+  <string name="OtherListItemLabel">Other</string>
   <string name="BookRatingErrorTitle">Aviso</string>
   <string name="View">Ver</string>
   <string name="NoRingCodeText">Número Código de entrada</string>
