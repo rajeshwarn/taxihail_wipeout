@@ -697,7 +697,7 @@
     <value>Erreur de connection</value>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.</value>
+    <value>Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</value>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
     <value>Merci d'entrer une adresse de départ valide</value>
@@ -2006,8 +2006,11 @@
   <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
     <value>Votre demande n'a pas pu être prise en compte, veuillez réessayer de nouveau.</value>
   </data>
+  <data name="DialCodeSelectorTitle" xml:space="preserve">
+    <value>Code indicatif</value>
+    </data>
   <data name="ServiceError_EmailClientAbsent" xml:space="preserve">
-    <value>Excusez, nous ne pouvons pas créer le courriel. Il n y'a pas de client de courriel installé sur cet appareil</value>
+    <value>Désolé, nous ne pouvons pas créer le courriel. Il n'y a pas de client de courriel installé sur cet appareil.</value>
   </data>
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>

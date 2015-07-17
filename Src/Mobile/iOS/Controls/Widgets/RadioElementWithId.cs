@@ -9,12 +9,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private bool _showBottomBar;
         private readonly string _image;
+		float fontSize;
 
-        public RadioElementWithId(TId? id, string caption, string image = null, bool showBottomBar = true) : base( caption )
+        public RadioElementWithId(TId? id, string caption, string image = null, bool showBottomBar = true, float fontSize = 32 / 2):base( caption )
         {
             Id = id;
             _image = image;
             _showBottomBar = showBottomBar;
+			this.fontSize = fontSize;
         }
 
         protected override UITableViewCell GetCellImpl (UITableView tv)
@@ -27,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             cell.BackgroundColor = UIColor.Clear;
             cell.ContentView.BackgroundColor = UIColor.Clear;
             cell.TextLabel.BackgroundColor = UIColor.Clear;
-            cell.TextLabel.Font = UIFont.FromName(FontName.HelveticaNeueLight, 32/2);
+			cell.TextLabel.Font = UIFont.FromName(FontName.HelveticaNeueLight, fontSize);
             cell.TextLabel.TextColor = UIColor.FromRGB(44, 44, 44);
 
             this.Alignment = NaturalLanguageHelper.GetTextAlignment();

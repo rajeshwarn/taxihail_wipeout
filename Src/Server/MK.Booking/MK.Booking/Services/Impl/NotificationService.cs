@@ -327,12 +327,17 @@ namespace apcurium.MK.Booking.Services.Impl
             return string.Format("{0}/{1}", url1, url2);
         }
 
-        public void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode)
+        public void SendAccountConfirmationSMS(CountryISOCode countryCode, string phoneNumber, string code, string clientLanguageCode)
         {
             var template = _resources.Get(SMSConstant.Template.AccountConfirmation, clientLanguageCode);
             var message = string.Format(template, _serverSettings.ServerData.TaxiHail.ApplicationName, code);
 
-            SendSms(phoneNumber, message);
+            libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
+            toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryDialCode;
+            toPhoneNumber.NationalNumber = long.Parse(phoneNumber);
+            toPhoneNumber.ItalianLeadingZero = (phoneNumber[0] == '0');
+
+            SendSms(toPhoneNumber, message);
         }
 
         public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
@@ -884,25 +889,24 @@ namespace apcurium.MK.Booking.Services.Impl
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Set<AccountDetail>().Find(accountId);
-                var phoneNumber = account.Settings.Phone;
 
-                if (string.IsNullOrWhiteSpace(phoneNumber))
+                libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
+                toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(account.Settings.Country)).CountryDialCode;
+                toPhoneNumber.NationalNumber = long.Parse(account.Settings.Phone);
+                toPhoneNumber.ItalianLeadingZero = (account.Settings.Phone[0] == '0');
+
+                if (!toPhoneNumber.IsValidNumber)
                 {
-                    _logger.Maybe(() => _logger.LogMessage("Cannot send SMS, phone number in account is empty (account: {0})", accountId));
+                    _logger.Maybe(() => _logger.LogMessage("Cannot send SMS for account {0}, phone number is {1})", accountId, toPhoneNumber.IsPossibleNumberWithReason.ToString()));
                     return;
                 }
 
-                SendSms(phoneNumber, alert);
+                SendSms(toPhoneNumber, alert);
             }
         }
 
-        private void SendSms(string phoneNumber, string alert)
+        private void SendSms(libphonenumber.PhoneNumber phoneNumber, string alert)
         {
-            // TODO MKTAXI-1836 Support International number
-            phoneNumber = phoneNumber.Length == 11
-                              ? phoneNumber
-                              : string.Concat("1", phoneNumber);
-
             _smsService.Send(phoneNumber, alert);
         }
 
