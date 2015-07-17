@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<Direction> GetAndObserveEta();
 
-	    Task<Direction> GetEtaFromGeo(double fromLat, double fromLng, string vehicleNumber);
+		Task<Tuple<Direction, double?,double?>> GetEtaFromGeo(double fromLat, double fromLng, string vehicleNumber);
 
 		Task<Direction> GetEtaBetweenCoordinates (double fromLat, double fromLng, double toLat, double toLng);
 

@@ -175,7 +175,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		    return etaBetweenCoordinates;
 		}
 
-	    public async Task<Direction> GetEtaFromGeo(double fromLat, double fromLng, string vehicleNumber)
+		public async Task<Tuple<Direction, double?, double?>> GetEtaFromGeo(double fromLat, double fromLng, string vehicleNumber)
 	    {
 	        var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleNumber));
 
@@ -185,7 +185,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 ? etaFromGeo.Eta.Value/60
                 : (long?) null;
 
-	        return directions;
+			return Tuple.Create(directions, etaFromGeo.Latitude, etaFromGeo.Longitude);
 	    }
 
 		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)

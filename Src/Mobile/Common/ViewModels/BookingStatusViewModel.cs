@@ -476,12 +476,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& status.VehicleLatitude.HasValue
 					&& status.VehicleLongitude.HasValue)
 				{
+					Direction direction = null;
+					if(Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
+					{
+						var geoData = await _vehicleService.GetEtaFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber);
+						direction = geoData.Item1;
+						if(geoData.Item2.HasValue)
+						{							
+							status.VehicleLatitude = geoData.Item2;
+							status.VehicleLongitude = geoData.Item3;
+						}
+					}
+					else
+					{
+						direction = await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+					}                       
 
-					var d =  Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo
-                        ? await _vehicleService.GetEtaFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber)
-                        : await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+				    statusInfoText += " " + FormatEta(direction);
 
-				    statusInfoText += " " + FormatEta(d);						
 				}
 
 				StatusInfoText = statusInfoText;
