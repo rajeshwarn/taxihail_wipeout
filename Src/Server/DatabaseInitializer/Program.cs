@@ -146,6 +146,7 @@ namespace DatabaseInitializer
                     {
                         try
                         {
+                            Console.WriteLine("Stop Secondary App Pool ...");
                             using (var remoteServerManager = ServerManager.OpenRemote(param.SecondWebServerName))
                             {
                                 var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
@@ -184,6 +185,10 @@ namespace DatabaseInitializer
                         Console.WriteLine("Turning off database mirroring...");
                         creatorDb.TurnOffMirroring(param.MasterConnectionString, param.CompanyName);
                         Console.WriteLine("Database mirroring turned off.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No mirroring found");
                     }   
                     var oldDatabase = creatorDb.RenameDatabase(param.MasterConnectionString, param.CompanyName);
 
