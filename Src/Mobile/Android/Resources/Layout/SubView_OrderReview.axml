@@ -270,7 +270,7 @@
                         local:MvxBind="Visibility PromoCode, Converter=HasValueToVisibility" />
                 </RelativeLayout>
                 <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
-                    android:background="#f2f2f2"
+                    android:background="#d0d0d0"
                     android:inputType="textMultiLine"
                     android:id="@+id/txtNotes"
                     android:hint="@string/NotesToDriveLabel"
@@ -280,7 +280,8 @@
                     android:layout_height="fill_parent"
                     android:layout_alignParentLeft="true"
                     android:gravity="start|top"
-                    android:minHeight="44dip" />
+                    android:minHeight="44dip"
+                    android:textStyle="bold" />
                 <LinearLayout
                     android:id="@+id/HackBottomPadding"
                     android:layout_width="fill_parent"

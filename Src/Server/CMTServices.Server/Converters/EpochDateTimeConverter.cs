@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace HoneyBadger.Converters
+namespace CMTServices.Converters
 {
     public class EpochDateTimeConverter : JsonConverter
     {

@@ -100,7 +100,7 @@ namespace MK.Common.Configuration
             TwitterCallback = "http://www.taxihail.com/oauth";
             TwitterRequestTokenUrl = "https://api.twitter.com/oauth/request_token";
             
-            InitialZoomLevel = 14;
+            InitialZoomLevel = 14;            
 		}
 
         public TaxiHailSettingContainer TaxiHail { get; protected set; }
@@ -137,6 +137,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Use single button for now and later booking", Description = "Replace book now and book later buttons with a single button that will display both options in a popup. (This feature does not work with manual CMT ridelinq pairing.)")]
         public bool UseSingleButtonForNowAndLaterBooking { get; set; }
+
+        [SendToClient]
+        [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
+        public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter Consumer Secret", Description = "Twitter API settings")]

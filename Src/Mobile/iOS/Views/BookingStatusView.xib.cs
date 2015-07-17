@@ -137,6 +137,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				}
 				else
 				{
+                    btnCancel.SetFrame((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height);
+
 					ViewModel.PropertyChanged += (sender, e) => 
 					{
 						if (ViewModel.IsUnpairButtonVisible)
@@ -536,6 +538,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         btnCallDriver.Frame = new CGRect(btnCallDriver.Frame.X, 4, btnCallDriver.Frame.Width, btnCallDriver.Frame.Height);
 
                         height = (float)(btnCallDriver.Frame.Height + 8);
+
+                        statusBar.SetMaxHeight(height+VisibleStatusHeight);
+                    }
+                    // We need to set the size of the statusBar to the height of the medallion textbox + margin since no call or text driver buttons are visible.
+                    //Prevents issue where slider panel behave strangely.
+                    else
+                    {
+                        height = (float)(medallion.Item1.Frame.Height + 16);
 
                         statusBar.SetMaxHeight(height+VisibleStatusHeight);
                     }

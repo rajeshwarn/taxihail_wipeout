@@ -1,11 +1,11 @@
 ﻿using System;
-using HoneyBadger.Converters;
-using HoneyBadger.Enums;
+using CMTServices.Converters;
+using CMTServices.Enums;
 using Newtonsoft.Json;
 
-namespace HoneyBadger.Responses
+namespace CMTServices.Responses
 {
-    public class HoneyBadgerContent
+    public class BaseAvailableVehicleContent
     {
         [JsonProperty("dt")]
         public DeviceTypes DeviceType { get; set; }

@@ -5,27 +5,20 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Geography;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http.Extensions;
-using HoneyBadger.Enums;
-using HoneyBadger.Responses;
+using CMTServices.Responses;
 
-namespace HoneyBadger
+namespace CMTServices
 {
-    public class CmtGeoServiceClient : HoneyBadgerServiceClient
+    public class CmtGeoServiceClient : BaseAvailableVehicleServiceClient
     {
-        protected HttpClient GeoClient { get; private set; }
-
         public CmtGeoServiceClient(IServerSettings serverSettings, ILogger logger)
-            : base(serverSettings, logger)
+            : base(serverSettings, logger, serverSettings.ServerData.CmtGeo.ServiceUrl)
         {
             // create another client for the geo access
-            GeoClient = new HttpClient
-            {
-                BaseAddress = new Uri("http://geo-sandbox.cmtapi.com")
-            };
-            GeoClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            GeoClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer","A47275341E57CB7C593DE3EDD5FCA");
+            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", serverSettings.ServerData.CmtGeo.AppKey);
         }
 
         /// <summary>
@@ -57,41 +50,60 @@ namespace HoneyBadger
             CmtGeoResponse response = null;
             try
             {
-                response = GeoClient.Post("/availability", ToDictionary(@params)).Deserialize<CmtGeoResponse>().Result;
+                response = Client.Post("/availability", ToDictionary(@params))
+                    .Deserialize<CmtGeoResponse>()
+                    .Result;
             }
             catch (Exception ex)
             {
-                _logger.LogMessage("An error occured when trying to contact Geo service");
-                _logger.LogError(ex);
+                Logger.LogMessage("An error occured when trying to contact Geo service");
+                Logger.LogError(ex);
             }
              
             if (response != null && response.Entities != null)
             {
-                var numberOfVehicles = _serverSettings.ServerData.AvailableVehicles.Count;
+                var numberOfVehicles = Settings.ServerData.AvailableVehicles.Count;
                 // make sure that if ETA is null they are last in the list
-                var orderedVehicleList = response.Entities.OrderBy(v => (v.ETASeconds != null ? 0 : 1)).ThenBy(v => v.ETASeconds).ThenBy(v => v.Medallion);
-                var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
+                var orderedVehicleList = response.Entities
+                    .OrderBy(v => (v.ETASeconds != null ? 0 : 1))
+                    .ThenBy(v => v.ETASeconds)
+                    .ThenBy(v => v.Medallion);
+
+                var entities = !returnAll 
+                    ? orderedVehicleList.Take(numberOfVehicles) 
+                    : orderedVehicleList;
+
                 return ToVehicleResponse(entities);
             }
 
             return new List<VehicleResponse>();
         }
 
-        private Dictionary<string,string> ToDictionary(List<KeyValuePair<string,string>> data)
+        protected IEnumerable<VehicleResponse> ToVehicleResponse(IEnumerable<CmtGeoContent> entities)
+        {
+            return entities.Select(ToVehicleResponse);
+        }
+
+        protected VehicleResponse ToVehicleResponse(CmtGeoContent entity)
+        {
+            var response = base.ToVehicleResponse(entity);
+
+            response.Eta = entity.ETASeconds;
+
+            return response;
+        }
+
+
+        private Dictionary<string,string> ToDictionary(IEnumerable<KeyValuePair<string,string>> data)
         {
             if (data == null)
             {
                 return null;
             }
-            var dictionary = new Dictionary<string, string>();
-            data.ForEach(kv =>
-            {
-                if (!String.IsNullOrEmpty(kv.Value))
-                {
-                    dictionary.Add(kv.Key, kv.Value);
-                }
-            });
-            return dictionary;
+
+            return data
+                .Where(kv => kv.Value.HasValue())
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
     }

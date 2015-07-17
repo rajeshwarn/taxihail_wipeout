@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HoneyBadger.Responses
+namespace CMTServices.Responses
 {
     public class VehicleResponse
     {
@@ -12,6 +12,8 @@ namespace HoneyBadger.Responses
 
         public string Medallion { get; set; }
 
-        public int FleetId { get; set; }
+       public int FleetId { get; set; }
+
+        public long? Eta { get; set; }
     }
 }
