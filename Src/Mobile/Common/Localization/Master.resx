@@ -2025,4 +2025,7 @@
   <data name="OtherListItemLabel" xml:space="preserve">
     <value>Other</value>
   </data>
+   <data name="OtherListItemPromptLabel" xml:space="preserve">
+    <value>Enter a value:</value>
+  </data>
 </root>

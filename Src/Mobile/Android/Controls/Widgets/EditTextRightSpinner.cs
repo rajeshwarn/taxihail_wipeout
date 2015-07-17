@@ -10,12 +10,11 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 using apcurium.MK.Common.Entity;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    [Register("apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner")]
+    
     public class EditTextRightSpinner : LinearLayout
     {
         private ListItemAdapter _adapter;
@@ -207,10 +206,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             else
             {
+                //binding will send this event, so we need to handle it and not displaying the popup
                 if (_fromUI)
                 {
-                    var messageService = TinyIoCContainer.Current.Resolve<IMessageService>();
-                    var value = await messageService.ShowPromptDialog("Other", "Enter a value: ", () => { }, true);
+                    var value = await this.Services().Message.ShowPromptDialog(this.Services().Localize["Other"], 
+                            this.Services().Localize["OtherListItemPromptLabel"], () => { }, true);
                     OtherValueSelected?.Invoke(this, value);
                 }
                 else
@@ -251,6 +251,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             if (index < 0)
             {
+                //during initilization the binding will try to set the value, if there's none
+                //we need to set the selected to other (i.e. different from 0)
                 if (!_fromUI)
                 {
                     index = _adapter.Count - 1;
@@ -265,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
     }
 
-    [Register("apcurium.mk.booking.mobile.client.controls.SpinnerOtherSupport")]
+
     public class SpinnerOtherSupport : Spinner
     {
         [Register(".ctor", "(Landroid/content/Context;I)V", "")]
@@ -294,7 +296,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public SpinnerOtherSupport(Context context, IAttributeSet attrs) : base(context, attrs)
         {}
 
-        public event EventHandler<AdapterView.ItemSelectedEventArgs> ItemSelectedFromCode;
 
         public override void SetSelection(int position)
         {
@@ -304,6 +305,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 same = true;
             }
             base.SetSelection(position);
+            //the same value selected will not raised the event in the built-in control
+            //to handle the other option we need to raise it even if already selected
             if (same)
             {
                 OnItemSelectedListener?.OnItemSelected(this, SelectedView, position, SelectedItemId);
