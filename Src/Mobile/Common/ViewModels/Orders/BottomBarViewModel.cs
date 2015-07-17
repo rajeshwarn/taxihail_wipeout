@@ -58,6 +58,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 IsManualRidelinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
                                            && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
 										   && !isInMarket;
+
+				BookButtonHidden = false;
             }
             catch (Exception ex)
             {
@@ -113,7 +115,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        private bool _isFutureBookingDisabled;
+		bool bookButtonHidden = true;
+
+		public bool BookButtonHidden
+		{
+			get
+			{
+				return bookButtonHidden;
+			}
+
+			set
+			{
+				bookButtonHidden = value;
+				RaisePropertyChanged(() => BookButtonHidden);
+			}
+		}
+
+        private bool _isFutureBookingDisabled = true;
         public bool IsFutureBookingDisabled
         {
             get { return _isFutureBookingDisabled; }
