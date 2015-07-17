@@ -27,6 +27,7 @@
   <string name="UpdatePasswordNewPasswordLabel">New Password</string>
   <string name="DestinationNotSpecifiedText">Destination not specified</string>
   <string name="PickupMapTitle">Pickup location</string>
+  <string name="DialCodeSelectorTitle">Dial Code</string>
   <string name="HomeView_ManualPairing">In A Taxi</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
@@ -360,7 +361,7 @@
   <string name="Now">Now</string>
   <string name="RideSummarySubTitleText">Thank you for riding with {0}, we look forward to serving you again soon.</string>
   <string name="StatusConfirmCancelRide">Are you sure you want to cancel?</string>
-  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must contain between 10 and 15 numbers.</string>
+  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must have format {0}</string>
   <string name="RateRide">Rate my ride</string>
   <string name="ConfirmDestinationLabel">Destination</string>
   <string name="MarketChangedMessageTitle">New service area detected</string>

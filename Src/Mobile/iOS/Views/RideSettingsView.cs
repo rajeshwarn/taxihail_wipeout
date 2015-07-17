@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -50,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblPayBack.RemoveFromSuperview();
 				txtPayBack.RemoveFromSuperview();
 			}
-
+				
             lblName.Text = Localize.GetValue("RideSettingsName");
             lblPhone.Text = Localize.GetValue("RideSettingsPhone");
             lblVehicleType.Text = Localize.GetValue("RideSettingsVehiculeType");
@@ -64,6 +65,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
             DismissKeyboardOnReturn(txtName);
+
+			lblDialCode.Configure(this.NavigationController, (DataContext as RideSettingsViewModel).PhoneNumber);
+			lblDialCode.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
+			lblDialCode.TintColor = UIColor.Black;
+			lblDialCode.TextColor = UIColor.FromRGB(44, 44, 44);
+			lblDialCode.TextAlignment = UITextAlignment.Center;
+			lblDialCode.AdjustsFontSizeToFitWidth = true;
+			lblDialCode.BackgroundColor = UIColor.White;
+			lblDialCode.NotifyChanges += (object sender, PhoneNumberChangedEventArgs e) =>
+			{
+                    this.ViewModel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(e.Country));
+			};
 
             txtPhone.ShowCloseButtonOnKeyboard();
 			txtPayBack.ShowCloseButtonOnKeyboard();

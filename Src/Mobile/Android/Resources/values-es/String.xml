@@ -434,7 +434,7 @@
   <string name="ViewRatingBtn">Ver evaluaciones</string>
   <string name="ManualRideLinqStatus_Email">A receipt will be emailed to {0}.</string>
   <string name="ChargeTypeCreditCardFile">Tarjeta de crédito guardada</string>
-  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must contain between 10 and 15 numbers.</string>
+  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must have format {0}</string>
   <string name="CardExpiredMessage">Your credit card is expired. Add a new card to your account or update card informations to continue.</string>
   <string name="LocationAddFavoriteTitle">Agregar lugar</string>
   <string name="NbPassenger">({0} pasajero)</string>
@@ -513,6 +513,7 @@
   <string name="BookRatingErrorTitle">Aviso</string>
   <string name="View">Ver</string>
   <string name="NoRingCodeText">Número Código de entrada</string>
+  <string name="DialCodeSelectorTitle">Dial Code</string>
   <string name="Eta">El taxi más cercano es {0} y esta a {1} {2} de distancia</string>
   <string name="January">Ene (01)</string>
   <string name="AddReminderTitle">Servicio programado</string>
