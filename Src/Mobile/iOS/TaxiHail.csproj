@@ -643,6 +643,7 @@
     <BundleResource Include="Resources\wheelchair_badge_selected.png" />
     <BundleResource Include="Resources\wheelchair_badge_selected%402x.png" />
     <BundleResource Include="Resources\wheelchair_badge_selected%403x.png" />
+    <Compile Include="Controls\CustomAlertView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -135,7 +135,7 @@
 "TabPlaces"="Points d'intérêt";
 "CreditCardRemoveErrorTitle"="La carte ne peut être supprimée";
 "View_Payments_CmtRideLinqChangePaymentTitle"="Modifier les informations relatives au paiement";
-"ServiceError_EmailClientAbsent"="Excusez, nous ne pouvons pas créer le courriel. Il n y'a pas de client de courriel installé sur cet appareil";
+"ServiceError_EmailClientAbsent"="Désolé, nous ne pouvons pas créer le courriel. Il n'y a pas de client de courriel installé sur cet appareil.";
 "InvalidLoginMessageTitle"="Erreur de connection";
 "CreateAccountTitleArray"="MrMme";
 "RideSettingsAccountNumber"="Numéro de compte entreprise (optionnel)";
