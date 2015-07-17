@@ -419,7 +419,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 SetMapEnabled(false);
 
-                var localize = Mvx.Resolve<ILocalization>();
+                var localize = this.Services().Localize;
 
                 this.Services().Message.ShowMessage(null, localize["BookATaxi_Message"],
                     localize["Cancel"],

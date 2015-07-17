@@ -74,18 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public EventHandler Dismissed { get; set;}
         public EventHandler Clicked { get; set;}
 
-        bool _canBeDismissed = false;
-        public bool CanBeDismissed
-        {
-            get
-            {
-                return _canBeDismissed;
-            }
-            set
-            {
-                _canBeDismissed = value;
-            }
-        }
+        public bool CanBeDismissed { get; set;}
 
         public void Show()
         {
