@@ -164,6 +164,7 @@
   <string name="BookRatingErrorMessage">You need to rate your ride</string>
   <string name="BookItButton">Book Now</string>
   <string name="AccountPaymentQuestionsRequired">(required)</string>
+  <string name="OtherListItemPromptLabel">Enter a value:</string>
   <string name="LinkPayPal">Link PayPal</string>
   <string name="RideSettingsCustomerNumber">Account Rider Number</string>
   <string name="PaymentLoadError">Unable to load the payment details. Please try again later.</string>
