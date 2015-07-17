@@ -485,7 +485,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 CenterMap ();
 
-                UpdateActionsPossibleOnOrder(status.IBSStatusId);
+
+				UpdateActionsPossibleOnOrder(status);
 
                 DisplayOrderNumber();
 
@@ -603,9 +604,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, direction.Duration, durationUnit);
 		}
 
-        private async void UpdateActionsPossibleOnOrder(string statusId)
+		private async void UpdateActionsPossibleOnOrder(OrderStatusDetail status)
 		{
-            IsCancelButtonVisible = _bookingService.IsOrderCancellable(statusId);
+			
+			IsCancelButtonVisible = _bookingService.IsOrderCancellable(status);
 
 		    var arePassengersOnBoard = OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
             var isUnPairPossible = DateTime.UtcNow <= OrderStatusDetail.UnpairingTimeOut;
