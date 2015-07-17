@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common;
 using NUnit.Framework;
 
 #endregion
@@ -32,7 +33,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             {
                 AccountId = _accountId,
                 Name = "Bob Smith",
-                Phone = "888",
+                Phone = "5145551111",
+                Country = new CountryISOCode("CA"),
                 Password = "bsmith",
                 Email = "bob.smith@apcurium.com",
                 Language = "fr",
@@ -44,7 +46,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual("Bob Smith", @event.Name);
             Assert.IsNotEmpty(@event.Password);
             Assert.AreEqual("bob.smith@apcurium.com", @event.Email);
-            Assert.AreEqual("888", @event.Phone);
+            Assert.AreEqual("5145551111", @event.Phone);
+            Assert.AreEqual("CA", @event.Country.Code);
             Assert.AreEqual("fr", @event.Language);
         }
 
@@ -55,7 +58,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             {
                 AccountId = _accountId,
                 Name = "Bob Smith",
-                Phone = "888",
+                Phone = "5145551111",
+                Country = new CountryISOCode("CA"),
                 Password = "bsmith",
                 Email = "bob.smith@apcurium.com",
                 Language = "fr",
@@ -68,7 +72,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual("Bob Smith", @event.Name);
             Assert.IsNotEmpty(@event.Password);
             Assert.AreEqual("bob.smith@apcurium.com", @event.Email);
-            Assert.AreEqual("888", @event.Phone);
+            Assert.AreEqual("5145551111", @event.Phone);
+            Assert.AreEqual("CA", @event.Country.Code);
             Assert.AreEqual("fr", @event.Language);
             Assert.AreEqual(true, @event.AccountActivationDisabled);
         }
@@ -87,7 +92,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             {
                 AccountId = _accountId,
                 Name = "Francois Cuvelier",
-                Phone = "888",
+                Phone = "5145551111",
+                Country = new CountryISOCode("CA"),
                 Email = "francois.cuvelier@apcurium.com",
                 FacebookId = "123456789",
                 Language = "fr"
@@ -97,7 +103,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual("Francois Cuvelier", @event.Name);
             Assert.AreEqual("francois.cuvelier@apcurium.com", @event.Email);
-            Assert.AreEqual("888", @event.Phone);
+            Assert.AreEqual("5145551111", @event.Phone);
+            Assert.AreEqual("CA", @event.Country.Code);
             Assert.AreEqual("123456789", @event.FacebookId);
             Assert.AreEqual("fr", @event.Language);
         }
@@ -109,7 +116,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             {
                 AccountId = _accountId,
                 Name = "Francois Cuvelier",
-                Phone = "888",
+                Phone = "5145551111",
+                Country = new CountryISOCode("CA"),
                 Email = "francois.cuvelier@apcurium.com",
                 TwitterId = "123456789",
                 Language = "fr"
@@ -119,7 +127,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual("Francois Cuvelier", @event.Name);
             Assert.AreEqual("francois.cuvelier@apcurium.com", @event.Email);
-            Assert.AreEqual("888", @event.Phone);
+            Assert.AreEqual("5145551111", @event.Phone);
+            Assert.AreEqual("CA", @event.Country.Code);
             Assert.AreEqual("123456789", @event.TwitterId);
             Assert.AreEqual("fr", @event.Language);
         }

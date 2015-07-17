@@ -3,6 +3,7 @@ using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
@@ -60,6 +61,7 @@ namespace apcurium.MK.Web.Tests
                                 VehicleTypeId = 1,
                                 ProviderId = Provider.ApcuriumIbsProviderId,
                                 Phone = "514-555-1212",
+                                Country = new CountryISOCode("CA"),
                                 Passengers = 6,
                                 NumberOfTaxi = 1,
                                 Name = "Joe Smith"
