@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Domain
             string confirmationToken, string language, bool accountActivationDisabled, string payBack, bool isAdmin = false)
             : this(id)
         {
-            if (Params.Get(name, country.Code, phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
+            if (Params.Get(name, country.SelectOrDefault(countryCode => countryCode.Code), phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
                 || (password == null))
             {
                 throw new InvalidOperationException("Missing required fields");

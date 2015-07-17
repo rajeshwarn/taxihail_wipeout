@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 if (@event.Country == null || (@event.Country != null && string.IsNullOrEmpty(@event.Country.Code)))
                 {
-                    CultureInfo currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
+                    var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
 
                     string countryCode;
 
@@ -139,7 +139,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     Name = account.Name,
                     NumberOfTaxi = 1,
                     Passengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger,
-                    Country = @event.Country,
+                    Country = @event.Country ?? new CountryISOCode(),
                     Phone = @event.Phone,
                     PayBack = @event.PayBack
                 };
@@ -205,7 +205,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 settings.NumberOfTaxi = @event.NumberOfTaxi;
                 settings.Passengers = @event.Passengers;
-                settings.Country = @event.Country;
+                settings.Country = @event.Country ?? new CountryISOCode();
                 settings.Phone = @event.Phone;
                 settings.AccountNumber = @event.AccountNumber;
                 settings.CustomerNumber = @event.CustomerNumber;

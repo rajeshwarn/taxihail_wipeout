@@ -3,6 +3,10 @@ namespace apcurium.MK.Common.Entity
 {
     public class BookingSettings
     {
+        public BookingSettings()
+        {
+            Country = new CountryISOCode();
+        }
         public string Name { get; set; }
 
         public CountryISOCode Country { get; set; }

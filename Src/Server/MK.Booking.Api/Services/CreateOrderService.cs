@@ -109,7 +109,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("Create order request : " + request.ToJson());
 
-            CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
+            var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
 
             if (countryCode.IsNumberPossible(request.Settings.Phone))
             {
