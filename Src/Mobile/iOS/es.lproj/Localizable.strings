@@ -228,6 +228,7 @@
 "Notification_DriverAssignedPush"="Chofer asignado";
 "NoPayBackErrorMessage"="The PayBack field is required";
 "CmtRideLinqConfirmPairView"="Confirmar información de pago";
+"AccountNotActivatedCodeBySMS"="Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado";
 "CreateAccountEmptyField"="Los datos son inválidos, todos los campos son requeridos";
 "AccountNotActivated"="Su cuenta no ha sido activada. Otro email de activación le ha sido enviado";
 "Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";

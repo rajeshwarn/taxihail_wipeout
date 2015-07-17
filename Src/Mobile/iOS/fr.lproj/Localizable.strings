@@ -227,6 +227,7 @@
 "CallButton"="Appeler";
 "NoPayBackErrorMessage"="Le champs PayBack est requis";
 "CmtRideLinqConfirmPairView"="Confirmer les informations relatives au paiement";
+"AccountNotActivatedCodeBySMS"="Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide du SMS qui vient de vous être envoyé";
 "CreateAccountEmptyField"="Votre demande ne peut être validée, merci de remplir les champs obligatoires";
 "AccountNotActivated"="Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide de l'email qui vient de vous être envoyé";
 "Notification_PromotionUnlockedPush"="Promotions déverrouillées (Push)";

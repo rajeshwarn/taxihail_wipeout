@@ -227,6 +227,7 @@
 "Notification_DriverAssignedPush"="Driver Assigned";
 "NoPayBackErrorMessage"="The PayBack field is required";
 "RideSettingsCannotLoadListTitle"="Server error";
+"AccountNotActivatedCodeBySMS"="Your account has not been activated. Another activation SMS was sent to you.";
 "LoadingMessage"="Loading...";
 "AccountNotActivated"="Your account has not been activated. Another activation email was sent to you.";
 "AddReminderTitle"="Scheduled Pick-Up";
