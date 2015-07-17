@@ -6,6 +6,8 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -174,16 +176,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			}
 			else if (hint.State == HomeViewModelState.BookATaxi)
 			{
-				constraintOrderBookinOptionsTopSpace.Constant = 0;
-				homeView.LayoutIfNeeded();
-
-				UIView.Animate (
-					0.2f, 
-					() => {
-						ctrlOrderBookingOptions.Alpha = 1;
-						homeView.LayoutIfNeeded(); 
-					},
-					RedrawSubViews);
+                this.Services().Message.ShowMessage(null, Localize.GetValue("BookATaxi_Message"),
+                    Localize.GetValue("Cancel"),
+                    () => { ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible(); },
+                    Localize.GetValue("Now"),
+                    () => { ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(); },
+                    Localize.GetValue("BookItLaterButton"),
+                    () => { ViewModel.BottomBar.BookLater.ExecuteIfPossible(); });
 			}
 			else if (hint.State == HomeViewModelState.Edit)
 			{

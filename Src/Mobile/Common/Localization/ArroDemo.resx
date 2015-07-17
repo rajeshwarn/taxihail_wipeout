@@ -121,6 +121,6 @@
     <value>Finding you a taxi...</value>
   </data>
   <data name="ServiceError_EmailClientAbsent" xml:space="preserve">
-    <value>Contact Support - Please send us an email at support@goarro.com with the details of your issue.</value>
+    <value>Please send us an email at support@goarro.com with the details of your issue.</value>
   </data>
 </root>

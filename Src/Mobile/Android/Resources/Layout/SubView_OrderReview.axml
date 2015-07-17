@@ -30,38 +30,15 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:id="@+id/passengerNameLayout"
-                    android:layout_height="35dip">
-                    <ImageView
-                        android:src="@drawable/account"
-                        android:layout_height="match_parent"
-                        android:scaleType="center"
-                        android:layout_width="wrap_content" />
-                    <TextView
-                        android:layout_height="match_parent"
-                        android:layout_width="fill_parent"
-                        android:gravity="start|center"
-                        android:paddingStart="8dp"
-                        android:textColor="#000000"
-                        android:text="text"
-                        android:textSize="19dip"
-                        android:textStyle="bold"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:id="@+id/lblName" />
-                </LinearLayout>
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
                     android:layout_height="35dip">
                     <LinearLayout
-                        android:id="@+id/passengerPhoneLayout"
                         android:orientation="horizontal"
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.7"
+                        android:id="@+id/passengerNameLayout"
                         android:layout_height="35dip">
                         <ImageView
-                            android:src="@drawable/telephone"
+                            android:src="@drawable/account"
                             android:layout_height="match_parent"
                             android:scaleType="center"
                             android:layout_width="wrap_content" />
@@ -73,32 +50,77 @@
                             android:textColor="#000000"
                             android:text="text"
                             android:textSize="19dip"
+                            android:textStyle="bold"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:id="@+id/lblPhone" />
+                            android:id="@+id/lblName" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/passengerNumberLayout"
                         android:orientation="horizontal"
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:layout_height="match_parent">
+                        android:layout_weight="0.3"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:gravity="right">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent">
+                            <ImageView
+                                android:src="@drawable/passengers"
+                                android:layout_height="match_parent"
+                                android:layout_width="wrap_content"
+                                android:scaleType="center"
+                                android:gravity="center" />
+                            <TextView
+                                android:layout_height="match_parent"
+                                android:layout_width="fill_parent"
+                                android:gravity="start|center"
+                                android:paddingStart="8dp"
+                                android:textColor="#000000"
+                                android:text="text"
+                                android:textSize="19dp"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:id="@+id/lblNbPassengers" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="35dip">
+                    <LinearLayout
+                        android:id="@+id/passengerPhoneLayout"
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="35dip">
                         <ImageView
-                            android:src="@drawable/passengers"
+                            android:src="@drawable/telephone"
                             android:layout_height="match_parent"
                             android:scaleType="center"
                             android:layout_width="wrap_content" />
                         <TextView
                             android:layout_height="match_parent"
-                            android:layout_width="fill_parent"
+                            android:layout_width="wrap_content"
                             android:gravity="start|center"
                             android:paddingStart="8dp"
                             android:textColor="#000000"
-                            android:text="text"
-                            android:textSize="19dp"
+                            android:textSize="19dip"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:id="@+id/lblNbPassengers" />
+                            android:id="@+id/lblDialCode" />
+                        <TextView
+                            android:layout_height="match_parent"
+                            android:layout_width="fill_parent"
+                            android:gravity="start|center"
+                            android:paddingStart="2dp"
+                            android:textColor="#000000"
+                            android:text="text"
+                            android:textSize="19dip"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:id="@+id/lblPhone" />
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -248,7 +270,7 @@
                         local:MvxBind="Visibility PromoCode, Converter=HasValueToVisibility" />
                 </RelativeLayout>
                 <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
-                    android:background="#f2f2f2"
+                    android:background="#d0d0d0"
                     android:inputType="textMultiLine"
                     android:id="@+id/txtNotes"
                     android:hint="@string/NotesToDriveLabel"
@@ -258,7 +280,8 @@
                     android:layout_height="fill_parent"
                     android:layout_alignParentLeft="true"
                     android:gravity="start|top"
-                    android:minHeight="44dip" />
+                    android:minHeight="44dip"
+                    android:textStyle="bold" />
                 <LinearLayout
                     android:id="@+id/HackBottomPadding"
                     android:layout_width="fill_parent"

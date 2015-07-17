@@ -435,7 +435,7 @@
 "ViewRatingBtn"="Ver evaluaciones";
 "ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
 "ChargeTypeCreditCardFile"="Tarjeta de crédito guardada";
-"InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
+"InvalidPhoneErrorMessage"="The mobile number is invalid. It must have format {0}";
 "CardExpiredMessage"="Your credit card is expired. Add a new card to your account or update card informations to continue.";
 "LocationAddFavoriteTitle"="Agregar lugar";
 "NbPassenger"="({0} pasajero)";
@@ -515,6 +515,7 @@
 "BookRatingErrorTitle"="Aviso";
 "View"="Ver";
 "NoRingCodeText"="Número Código de entrada";
+"DialCodeSelectorTitle"="Dial Code";
 "Eta"="El taxi más cercano es {0} y esta a {1} {2} de distancia";
 "January"="Ene (01)";
 "AddReminderTitle"="Servicio programado";

@@ -345,4 +345,10 @@ namespace apcurium.MK.Common.Configuration
         [Display(Name = "Cmt Geo Available Vehicles Fleet ID", Description = "Fleet ID used to find vehicles when Available Vehicles Mode is set to 'Geo'")]
         public int? AvailableVehiclesFleetId { get; protected internal set; }
     }
+
+    public class CmtGdsSettingContainer
+    {
+        [Display(Name = "GDS Service Url", Description = "GDS Service Url. N.B.: Just the base URL most likely just server and port, should not end in /")]
+        public string ServiceUrl { get; protected internal set; }
+    }
 }

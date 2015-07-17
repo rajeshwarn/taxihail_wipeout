@@ -25,6 +25,7 @@
 "UpdatePasswordNewPasswordLabel"="كلمة المرور الجديدة";
 "DestinationNotSpecifiedText"="الوجهة غير محددة";
 "PickupMapTitle"="موقع الإلتقاء";
+"DialCodeSelectorTitle"="Dial Code";
 "HomeView_ManualPairing"="In A Taxi";
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="لا يمكن إتمام الحجز";
@@ -431,7 +432,7 @@
 "ViewRatingBtn"="رؤية التقييمات";
 "ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
 "ChargeTypeCreditCardFile"="بطاقة الائتمان في الملف";
-"InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
+"InvalidPhoneErrorMessage"="The mobile number is invalid. It must have format {0}";
 "CardExpiredMessage"="Your credit card is expired. Add a new card to your account or update card informations to continue.";
 "LocationAddFavoriteTitle"="إضافة موقع جدید";
 "PickupTimeTextPlaceholder"="الوقت: الآن";

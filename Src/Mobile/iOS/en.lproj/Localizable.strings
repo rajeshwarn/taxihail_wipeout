@@ -25,6 +25,7 @@
 "UpdatePasswordNewPasswordLabel"="New Password";
 "DestinationNotSpecifiedText"="Destination not specified";
 "PickupMapTitle"="Pickup location";
+"DialCodeSelectorTitle"="Dial Code";
 "HomeView_ManualPairing"="In A Taxi";
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="Booking cannot be completed";
@@ -360,7 +361,7 @@
 "Now"="Now";
 "RideSummarySubTitleText"="Thank you for riding with {0}, we look forward to serving you again soon.";
 "StatusConfirmCancelRide"="Are you sure you want to cancel?";
-"InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
+"InvalidPhoneErrorMessage"="The mobile number is invalid. It must have format {0}";
 "RateRide"="Rate my ride";
 "ConfirmDestinationLabel"="Destination";
 "ResendConfirmationCodeButtonText"="Resend confirmation code";
