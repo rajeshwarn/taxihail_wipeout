@@ -248,7 +248,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			{
 				if(a.Content == null)
 				{
-					tcs.TrySetCanceled ();
+                    tcs.TrySetResult (null);
 					cancelAction ();
 				}
 				else
