@@ -137,6 +137,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				}
 				else
 				{
+                    btnCancel.SetFrame((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height);
+
 					ViewModel.PropertyChanged += (sender, e) => 
 					{
 						if (ViewModel.IsUnpairButtonVisible)

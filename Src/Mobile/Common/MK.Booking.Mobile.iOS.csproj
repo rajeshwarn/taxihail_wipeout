@@ -133,6 +133,9 @@
     <Reference Include="Cirrious.MvvmCross">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.dll</HintPath>
     </Reference>
+    <Reference Include="LibPhoneNumber">
+      <HintPath>..\Libraries\libphonenumber\libphonenumber.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
@@ -146,6 +149,7 @@
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Messages\OrderStatusChanged.cs" />
+    <Compile Include="Models\PhoneNumberModel.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="AppServices\Impl\AccountService.cs" />
@@ -205,8 +209,8 @@
     <Compile Include="Style\ShadowDefinition.cs" />
     <Compile Include="Style\FontDefinition.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="TaxiHailApp.cs" />
     <Compile Include="StartNavigation.cs" />
+    <Compile Include="TaxiHailApp.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
@@ -353,6 +357,7 @@
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
     <Compile Include="ViewModels\ManualRideLinqStatusViewModel.cs" />
     <Compile Include="ViewModels\ManualRideLinqSummaryViewModel.cs" />
+    <Compile Include="BindingConverter\DialCodeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
