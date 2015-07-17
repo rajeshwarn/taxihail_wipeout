@@ -60,7 +60,7 @@ namespace apcurium.MK.Web.Tests
                                 ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                                 VehicleTypeId = 1,
                                 ProviderId = Provider.ApcuriumIbsProviderId,
-                                Phone = "514-555-1212",
+                                Phone = "5145551212",
                                 Country = new CountryISOCode("CA"),
                                 Passengers = 6,
                                 NumberOfTaxi = 1,

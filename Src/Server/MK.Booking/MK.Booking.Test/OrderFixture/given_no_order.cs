@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 ChargeTypeId = 99,
                 VehicleTypeId = 88,
                 ProviderId = 11,
-                Phone = "514-555-1212",
+                Phone = "5145551212",
                 Passengers = 6,
                 NumberOfTaxi = 1,
                 Name = "Joe Smith",
@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(99, orderCreated.Settings.ChargeTypeId);
             Assert.AreEqual(88, orderCreated.Settings.VehicleTypeId);
             Assert.AreEqual(11, orderCreated.Settings.ProviderId);
-            Assert.AreEqual("514-555-1212", orderCreated.Settings.Phone);
+            Assert.AreEqual("5145551212", orderCreated.Settings.Phone);
             Assert.AreEqual(6, orderCreated.Settings.Passengers);
             Assert.AreEqual(1, orderCreated.Settings.NumberOfTaxi);
             Assert.AreEqual("Joe Smith", orderCreated.Settings.Name);
@@ -145,7 +145,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 ChargeTypeId = 99,
                 VehicleTypeId = 88,
                 ProviderId = 11,
-                Phone = "514-555-1212",
+                Phone = "5145551212",
                 Passengers = 6,
                 NumberOfTaxi = 1,
                 Name = "Joe Smith"
@@ -191,7 +191,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 ChargeTypeId = 99,
                 VehicleTypeId = 88,
                 ProviderId = 11,
-                Phone = "514-555-1212",
+                Phone = "5145551212",
                 Passengers = 6,
                 NumberOfTaxi = 1,
                 Name = "Joe Smith"
