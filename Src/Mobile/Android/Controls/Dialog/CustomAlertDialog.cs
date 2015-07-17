@@ -66,13 +66,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
             _twoButtonsNegative.Text = negativeButtonTitle;
             _twoButtonsNegative.Click += (sender, e) => 
                 {  
-                    negativeAction?.Invoke();
+                    if(negativeAction != null)
+                    {
+                        negativeAction();
+                    }
                     hideAnimate();
                 };
             _twoButtonsPositive.Text = positiveButtonTitle;
             _twoButtonsPositive.Click += (sender, e) => 
                 {  
-                    positiveAction?.Invoke();
+                    if(positiveAction != null)
+                    {
+                        positiveAction();
+                    }
                     hideAnimate();
                 };
 
@@ -90,19 +96,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
             _threeButtonsNegative.Text = negativeButtonTitle;
             _threeButtonsNegative.Click += (sender, e) => 
                 {  
-                    negativeAction?.Invoke();
+                    if(negativeAction != null)
+                    {
+                        negativeAction();
+                    }
                     hideAnimate();
                 };
             _threeButtonsPositive.Text = positiveButtonTitle;
             _threeButtonsPositive.Click += (sender, e) => 
                 {  
-                    positiveAction?.Invoke();
+                    if(positiveAction != null)
+                    {
+                        positiveAction();
+                    }
                     hideAnimate();
                 };
             _threeButtonsNeutral.Text = neutralButtonTitle;
             _threeButtonsNeutral.Click += (sender, e) => 
                 {  
-                    neutralAction?.Invoke();
+                    if(neutralAction != null)
+                    {
+                        neutralAction();
+                    }
                     hideAnimate();
                 };
 
