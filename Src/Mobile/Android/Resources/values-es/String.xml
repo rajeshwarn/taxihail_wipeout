@@ -7,6 +7,7 @@
   <string name="AccountDisabled">Su cuenta ha sido deshabilitada, por favor contacte a {0} al {1} para re-activar su cuenta</string>
   <string name="AccountDisabled_NoCall">Su cuenta ha sido deshabilitada</string>
   <string name="AccountNotActivated">Su cuenta no ha sido activada. Otro email de activación le ha sido enviado</string>
+  <string name="AccountNotActivatedCodeBySMS">Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado</string>
   <string name="AccountPaymentNumberRequiredMessage">Por favor introduzca un número de cuenta válido.</string>
   <string name="AccountPaymentCustomerNumberRequiredMessage">Por favor introduzca un número de cliente válido.</string>
   <string name="AccountPaymentNumberRequiredTitle">Número de cuenta caducado.</string>

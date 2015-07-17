@@ -6,6 +6,7 @@
   <string name="AccountDisabled">تم إيقاف حسابك، الرجاء الإتصال ب {0} على {1} لتفعيل حسابك</string>
   <string name="AccountDisabled_NoCall">تم إيقاف حسابك.</string>
   <string name="AccountNotActivated">لم يتم تفعيل حسابك. تم إرسال بريد الكتروني اخر للتنشيط</string>
+  <string name="AccountNotActivatedCodeBySMS">Your account has not been activated. Another activation SMS was sent to you</string>
   <string name="AccountPaymentNumberRequiredMessage">Please enter a valid account number</string>
   <string name="AccountPaymentCustomerNumberRequiredMessage">Please enter a valid rider number</string>
   <string name="AccountPaymentNumberRequiredTitle">مطلوب رقم الحساب</string>

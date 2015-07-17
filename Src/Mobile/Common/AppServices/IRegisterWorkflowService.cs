@@ -16,6 +16,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task GetConfirmationCode();
 
         void RegistrationFinished();
-		RegisterAccount Account { get; }
+        RegisterAccount Account { get; set; }
 	}
 }

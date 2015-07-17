@@ -135,6 +135,9 @@
   <data name="AccountNotActivated" xml:space="preserve">
     <value>لم يتم تفعيل حسابك. تم إرسال بريد الكتروني اخر للتنشيط</value>
   </data>
+  <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
+    <value>Your account has not been activated. Another activation SMS was sent to you.</value>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Please enter a valid account number</value>
   </data>

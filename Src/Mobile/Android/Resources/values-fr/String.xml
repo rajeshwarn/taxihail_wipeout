@@ -6,6 +6,7 @@
   <string name="AccountDisabled">Votre compte a été désactivé, merci de contacter le {0} au {1} pour le réactiver</string>
   <string name="AccountDisabled_NoCall">Votre compte a été désactivé</string>
   <string name="AccountNotActivated">Votre compte n\'a pas pu être activé. Merci d\'activer le compte à l\'aide de l\'email qui vient de vous être envoyé</string>
+  <string name="AccountNotActivatedCodeBySMS">Votre compte n\'a pas pu être activé. Merci d\'activer le compte à l\'aide du SMS qui vient de vous être envoyé</string>
   <string name="AccountPaymentNumberRequiredMessage">Merci de saisir un numéro de compte valide</string>
   <string name="AccountPaymentCustomerNumberRequiredMessage">Merci de saisir un numéro de client valide</string>
   <string name="AccountPaymentCustomerNumberRequiredTitle">Numéro de client du compte requis</string>
