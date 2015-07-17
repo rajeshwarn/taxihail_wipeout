@@ -203,6 +203,7 @@
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\Behavior\PairingCodeBehavior.cs" />
+    <Compile Include="Controls\Dialog\PhoneEditorElement.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
@@ -891,6 +892,24 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_EditAutoTip.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\CountryCodeItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\CountryCodeItemDropDown.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\PhoneEditor.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\CountryCodeItemMVX.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\CountryCodeItemDropDownMVX.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\PhoneEditorBottom.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

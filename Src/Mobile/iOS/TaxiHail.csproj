@@ -625,6 +625,8 @@
     <BundleResource Include="Resources\message.png" />
     <BundleResource Include="Resources\message%402x.png" />
     <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
+    <Compile Include="Controls\Widgets\PhoneEditorElement.cs" />
+    <Compile Include="Controls\Widgets\CountrySelector.cs" />
     <BundleResource Include="Resources\cluster_wheelchair.png" />
     <BundleResource Include="Resources\cluster_wheelchair%402x.png" />
     <BundleResource Include="Resources\nearby_wheelchair.png" />

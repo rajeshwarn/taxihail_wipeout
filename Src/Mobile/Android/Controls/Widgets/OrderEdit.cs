@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblApartment;
         private TextView _lblEntryCode;
         private EditText _txtName;
+        private MvxSpinner _txtDialCode;
         private EditText _txtPhone;
         private EditText _txtPassengers;
         private EditText _txtLargeBags;
@@ -36,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             this.DelayBind(() => 
             {
                 _lblName = Content.FindViewById<TextView>(Resource.Id.lblName);
+                _txtDialCode = Content.FindViewById<MvxSpinner>(Resource.Id.lblDialCode);
                 _lblPhone = Content.FindViewById<TextView>(Resource.Id.lblPhone);
                 _lblPassengers = Content.FindViewById<TextView>(Resource.Id.lblPassengers);
                 _lblApartment = Content.FindViewById<TextView>(Resource.Id.lblApartment);
@@ -73,6 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (!this.Services().Settings.ShowPassengerPhone)
             {
                 _lblPhone.Maybe(x => x.Visibility = ViewStates.Gone);
+                _txtDialCode.Maybe(x => x.Visibility = ViewStates.Gone);
                 _txtPhone.Maybe(x => x.Visibility = ViewStates.Gone);
             }
 
@@ -104,6 +107,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.BindSafe(_txtName)
                 .For(v => v.Text)
                 .To(vm => vm.BookingSettings.Name);
+
+            set.BindSafe(_txtDialCode)
+                .For(v => v.ItemsSource)
+                .To(vm => vm.CountryCodes);
+
+            set.BindSafe(_txtDialCode)
+                .For(v => v.SelectedItem)
+                .To(vm => vm.SelectedCountryCode);
 
             set.BindSafe(_txtPhone)
                 .For(v => v.Text)

@@ -321,4 +321,9 @@
   		<item name="android:textSize">14dip</item>
   </style>
 
+  <style name="CreateAccount">
+    <item name="android:textSize">18dp</item>
+    <item name="android:textColor">@color/edit_text_foreground_color</item>
+  </style>
+
 </resources>
