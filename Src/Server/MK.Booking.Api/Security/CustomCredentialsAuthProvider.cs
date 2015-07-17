@@ -90,6 +90,7 @@ namespace apcurium.MK.Booking.Api.Security
                         {
                             ClientLanguageCode = account.Language,
                             Code = account.ConfirmationToken,
+                            CountryCode = account.Settings.Country,
                             PhoneNumber = account.Settings.Phone
                         });
                     }
