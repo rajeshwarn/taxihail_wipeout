@@ -213,6 +213,11 @@ namespace apcurium.MK.Web.Tests
                     Price = 10,
                     Distance = 3
                 },
+                Settings = new BookingSettings()
+                {
+                    Phone = "5145551212",
+                    Country = new CountryISOCode("CA")
+                },
                 ClientLanguageCode = SupportedLanguages.fr.ToString()
             };
 
