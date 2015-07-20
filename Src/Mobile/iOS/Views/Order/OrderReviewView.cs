@@ -8,6 +8,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Converters;
 using Foundation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -84,6 +85,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             set.Bind(lblName)
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Name);
+
+            set.Bind(lblCountryDialCode)
+                .For(v => v.Text)
+                .To(vm => vm.Settings.Country)
+                .WithConversion("DialCodeConverter");
 
             set.Bind(lblPhone)
                 .For(v => v.Text)

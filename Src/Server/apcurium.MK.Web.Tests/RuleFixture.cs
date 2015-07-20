@@ -112,7 +112,7 @@ namespace apcurium.MK.Web.Tests
                             ChargeTypeId = 99,
                             VehicleTypeId = 1,
                             ProviderId = Provider.ApcuriumIbsProviderId,
-                            Phone = "514-555-12129",
+                            Phone = "5145551212",
                             Passengers = 6,
                             NumberOfTaxi = 1,
                             Name = "Joe Smith"
@@ -147,7 +147,7 @@ namespace apcurium.MK.Web.Tests
                             ChargeTypeId = 99,
                             VehicleTypeId = 1,
                             ProviderId = Provider.ApcuriumIbsProviderId,
-                            Phone = "514-555-12129",
+                            Phone = "5145551212",
                             Passengers = 6,
                             NumberOfTaxi = 1,
                             Name = "Joe Smith"
@@ -362,7 +362,7 @@ namespace apcurium.MK.Web.Tests
                             ChargeTypeId = 99,
                             VehicleTypeId = 1,
                             ProviderId = 13,
-                            Phone = "514-555-12129",
+                            Phone = "5145551212",
                             Passengers = 6,
                             NumberOfTaxi = 1,
                             Name = "Joe Smith"
@@ -650,7 +650,7 @@ namespace apcurium.MK.Web.Tests
                             ChargeTypeId = 99,
                             VehicleTypeId = 1,
                             ProviderId = 13,
-                            Phone = "514-555-12129",
+                            Phone = "5145551212",
                             Passengers = 6,
                             NumberOfTaxi = 1,
                             Name = "Joe Smith"
@@ -703,7 +703,7 @@ namespace apcurium.MK.Web.Tests
                     ChargeTypeId = 99,
                     VehicleTypeId = 1,
                     ProviderId = 13,
-                    Phone = "514-555-12129",
+                    Phone = "5145551212",
                     Passengers = 6,
                     NumberOfTaxi = 1,
                     Name = "Joe Smith"
@@ -739,7 +739,7 @@ namespace apcurium.MK.Web.Tests
                             ChargeTypeId = 99,
                             VehicleTypeId = 1,
                             ProviderId = 13,
-                            Phone = "514-555-12129",
+                            Phone = "5145551212",
                             Passengers = 6,
                             NumberOfTaxi = 1,
                             Name = "Joe Smith"
@@ -772,7 +772,7 @@ namespace apcurium.MK.Web.Tests
                             ChargeTypeId = 99,
                             VehicleTypeId = 1,
                             ProviderId = 13,
-                            Phone = "514-555-12129",
+                            Phone = "5145551212",
                             Passengers = 6,
                             NumberOfTaxi = 1,
                             Name = "Joe Smith"

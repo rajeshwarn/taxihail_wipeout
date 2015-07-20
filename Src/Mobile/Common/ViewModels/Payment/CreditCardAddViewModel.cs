@@ -216,7 +216,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                             overduePayment = overduePayment.ToJson()
                         }),
                         this.Services().Localize["Cancel"],
-                        () => Close(this),
                         () => Close(this));
                 }
                 catch (Exception ex)

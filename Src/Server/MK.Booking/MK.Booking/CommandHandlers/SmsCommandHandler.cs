@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SendAccountConfirmationSMS command)
         {
-            _notificationService.SendAccountConfirmationSMS(command.PhoneNumber, command.Code, command.ClientLanguageCode);
+            _notificationService.SendAccountConfirmationSMS(command.CountryCode, command.PhoneNumber, command.Code, command.ClientLanguageCode);
         }
     }
 }

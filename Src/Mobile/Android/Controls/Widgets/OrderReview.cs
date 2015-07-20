@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	public class OrderReview : MvxFrameControl
     {    
         private TextView _lblName;
+        private TextView _lblDialCode;
         private TextView _lblPhone;
         private TextView _lblNbPassengers;
         private TextView _lblDate;
@@ -35,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             this.DelayBind (() => 
 			{
                 _lblName = Content.FindViewById<TextView>(Resource.Id.lblName);
+                _lblDialCode = Content.FindViewById<TextView>(Resource.Id.lblDialCode);
                 _lblPhone = Content.FindViewById<TextView>(Resource.Id.lblPhone);
                 _lblNbPassengers = Content.FindViewById<TextView>(Resource.Id.lblNbPassengers);
                 _lblLargeBags = Content.FindViewById<TextView>(Resource.Id.lblLargeBags);
@@ -72,6 +74,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(_lblName)
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Name);
+
+            set.Bind(_lblDialCode)
+                .For(v => v.Text)
+                .To(vm => vm.Settings.Country)
+                .WithConversion("DialCodeConverter");
 
             set.Bind(_lblPhone)
                 .For(v => v.Text)

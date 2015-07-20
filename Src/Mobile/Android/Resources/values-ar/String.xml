@@ -27,6 +27,7 @@
   <string name="UpdatePasswordNewPasswordLabel">كلمة المرور الجديدة</string>
   <string name="DestinationNotSpecifiedText">الوجهة غير محددة</string>
   <string name="PickupMapTitle">موقع الإلتقاء</string>
+  <string name="DialCodeSelectorTitle">Dial Code</string>
   <string name="HomeView_ManualPairing">In A Taxi</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="ErrorCreatingOrderTitle">لا يمكن إتمام الحجز</string>
@@ -430,7 +431,7 @@
   <string name="ViewRatingBtn">رؤية التقييمات</string>
   <string name="ManualRideLinqStatus_Email">A receipt will be emailed to {0}.</string>
   <string name="ChargeTypeCreditCardFile">بطاقة الائتمان في الملف</string>
-  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must contain between 10 and 15 numbers.</string>
+  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must have format {0}</string>
   <string name="CardExpiredMessage">Your credit card is expired. Add a new card to your account or update card informations to continue.</string>
   <string name="LocationAddFavoriteTitle">إضافة موقع جدید</string>
   <string name="PickupTimeTextPlaceholder">الوقت: الآن</string>

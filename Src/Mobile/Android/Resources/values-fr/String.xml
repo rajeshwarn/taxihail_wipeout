@@ -27,6 +27,7 @@
   <string name="UpdatePasswordNewPasswordLabel">Nouveau mot de passe</string>
   <string name="DestinationNotSpecifiedText">Adresse de destination manquante</string>
   <string name="PickupMapTitle">Lieu de départ</string>
+  <string name="DialCodeSelectorTitle">Code indicatif</string>
   <string name="HomeView_ManualPairing">Dans un Taxi</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="ErrorCreatingOrderTitle">Désolé, la réservation ne peut être complétée</string>
@@ -439,7 +440,7 @@
   <string name="ViewRatingBtn">Voir les notes</string>
   <string name="ManualRideLinqStatus_Email">Un reçu vous sera envoyé à {0}.</string>
   <string name="ChargeTypeCreditCardFile">Carte de paiement déjà engistrée</string>
-  <string name="InvalidPhoneErrorMessage">Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.</string>
+  <string name="InvalidPhoneErrorMessage">Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</string>
   <string name="CardExpiredMessage">Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.</string>
   <string name="LocationAddFavoriteTitle">Ajouter une nouvelle adresse</string>
   <string name="PickupTimeTextPlaceholder">Heure: maintenant</string>
@@ -514,7 +515,6 @@
   <string name="NetworkErrorMessage">Echec de la connexion. Merci de vérifier vos paramètres de connexion et réessayer.</string>
   <string name="Overdue_Date">Date de transaction:</string>
   <string name="View_ConfirmCarNumber">Confirmation</string>
-  <string name="OtherListItemLabel">Autre</string>
   <string name="BookRatingErrorTitle">Attention</string>
   <string name="View">Voir</string>
   <string name="NoRingCodeText">--</string>
