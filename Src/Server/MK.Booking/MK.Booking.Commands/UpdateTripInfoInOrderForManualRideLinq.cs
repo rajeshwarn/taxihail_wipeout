@@ -55,6 +55,8 @@ namespace apcurium.MK.Booking.Commands
 
         public string LastFour { get; set; }
 
+        public double? LastLatitudeOfVehicle { get; set; }
+        public double? LastLongitudeOfVehicle { get; set; }
         public TollDetail[] Tolls { get; set; }
     }
 }

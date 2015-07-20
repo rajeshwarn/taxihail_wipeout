@@ -172,7 +172,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                 DriverId = tripInfo.DriverId,
                 AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
                 LastFour = tripInfo.LastFour,
-                Tolls = tolls.ToArray()
+                Tolls = tolls.ToArray(),
+                LastLatitudeOfVehicle = tripInfo.Lat,
+                LastLongitudeOfVehicle = tripInfo.Lon,
             });
         }
 
