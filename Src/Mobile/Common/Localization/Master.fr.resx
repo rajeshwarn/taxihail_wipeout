@@ -2015,4 +2015,7 @@
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
   </data>
+  <data name="OtherListItemLabel" xml:space="preserve">
+    <value>Autre</value>
+  </data>
 </root>

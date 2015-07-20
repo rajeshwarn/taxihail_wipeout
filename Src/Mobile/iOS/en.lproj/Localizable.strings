@@ -515,6 +515,7 @@
 "LocationDetailApartmentLabel"="Apartment";
 "Overdue_Date"="Transaction date:";
 "View_ConfirmCarNumber"="Confirmation";
+"OtherListItemLabel"="Other";
 "View_BookingStatus"="Status";
 "View"="View";
 "NoRingCodeText"="No code";

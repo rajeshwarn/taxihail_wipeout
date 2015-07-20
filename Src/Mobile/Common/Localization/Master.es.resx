@@ -2476,4 +2476,7 @@
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
   </data>
+  <data name="OtherListItemLabel" xml:space="preserve">
+    <value>Other</value>
+  </data>
 </root>
