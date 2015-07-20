@@ -12,10 +12,8 @@
         <h4>&nbsp;</h4>
     </div>
 </div>
-@if (SecurityHelper.IsApcuriumUser)
-{
-    <div style="width: 100px; float: left; position: fixed">@Html.Partial("_DeployRevisionPartial")</div>
-}
+
+<div style="width: 100px; float: left; position: fixed">@Html.Partial("_DeployRevisionPartial")</div>
 <div style="width: 870px; float: right">
     @Html.Grid(Model.Jobs).Columns(columns =>
     {
