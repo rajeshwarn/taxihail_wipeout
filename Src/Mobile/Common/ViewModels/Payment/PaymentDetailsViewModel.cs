@@ -141,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return $"{Tip}%";
+				return string.Format("{0}%", Tip);
 			}
 		}
 
@@ -151,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             get
             {
-				return TipListDisabled ? "" : $"{Tip}%";
+				return TipListDisabled ? "" : string.Format("{0}%", Tip);
             }
         }
     }

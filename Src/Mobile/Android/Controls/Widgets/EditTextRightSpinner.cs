@@ -207,16 +207,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             else
             {
                 //binding will send this event, so we need to handle it and not displaying the popup
+				string value = null;
                 if (_fromUI)
                 {
-                    var value = await this.Services().Message.ShowPromptDialog(this.Services().Localize["Other"], 
+                    value = await this.Services().Message.ShowPromptDialog(this.Services().Localize["Other"], 
                             this.Services().Localize["OtherListItemPromptLabel"], () => { }, true);
-                    OtherValueSelected?.Invoke(this, value);
+					
                 }
-                else
-                {
-                    OtherValueSelected?.Invoke(this, null);
-                }
+				if (OtherValueSelected != null)
+				{
+					OtherValueSelected(this, value);
+				}
             }
         }
 
@@ -307,9 +308,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.SetSelection(position);
             //the same value selected will not raised the event in the built-in control
             //to handle the other option we need to raise it even if already selected
-            if (same)
+            if (same
+				&& OnItemSelectedListener!= null)
             {
-                OnItemSelectedListener?.OnItemSelected(this, SelectedView, position, SelectedItemId);
+                OnItemSelectedListener.OnItemSelected(this, SelectedView, position, SelectedItemId);
             }  
         }
     }
