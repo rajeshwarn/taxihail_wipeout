@@ -147,17 +147,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         {
             try
             {
-                var result = await this.Services().Message.ShowPromptDialog("Server Configuration",
+                var serviceUrl = await this.Services().Message.ShowPromptDialog("Server Configuration",
                     "Enter Server Url",
                     null,
                     false,
                     this.Services().Settings.ServiceUrl
                 );
 
-				if(result != null)
-				{
-                	ViewModel.SetServerUrl(result);
-				}
+                if(serviceUrl != null)
+                {
+                    ViewModel.SetServerUrl(serviceUrl);
+                }
             }
             catch(Exception ex)
             {

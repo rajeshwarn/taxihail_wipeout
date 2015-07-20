@@ -5,67 +5,70 @@
     Layout = "~/Views/Shared/_SettingsLayout.cshtml";    
 }
 
-<h3>Deployment Details for @Model.Company.CompanyName  </h3>
-<h4>Version : @Model.Revision.Tag (@Model.Revision.Commit)</h4>
-<h5>Server : @Model.Server.Name </h5>
-<h5>Started by : @Model.UserName</h5>
-<h5 id="currentStatus" >Status : @Model.Status</h5>
-<h5>Version : @Model.Action </h5>
+<div class="row">
+    <h3>Deployment Details for @Model.Company.CompanyName  </h3>
+    <h4>Version : @Model.Revision.Tag (@Model.Revision.Commit)</h4>
+    <h5>Server : @Model.Server.Name </h5>
+    <h5>Started by : @Model.UserName</h5>
+    <h5 id="currentStatus">Status : @Model.Status</h5>
+    <h5>Version : @Model.Action </h5>
 
-<br />
-<h5>Details :</h5>
-<p id="deployDetails" style="white-space:pre-wrap">@Html.Raw(Model.Details)</p>
-<br />
-<h6>Last update :</h6>
-<div id="lastUpdate"></div>
-@section Scripts {
-    <script>
-        var currentStatus = "@Model.Status";
-        var stopped = false;
-        function refresh() {
-            if (stopped) {
-                return;
-            }
+    <br />
+    <h5>Details :</h5>
+    <p id="deployDetails" style="white-space:pre-wrap">@Html.Raw(Model.Details)</p>
+    <br />
+    <h6>Last update :</h6>
+    <div id="lastUpdate"></div>
+    @section Scripts {
+        <script>
+            var currentStatus = "@Model.Status";
+            var stopped = false;
+            function refresh() {
+                if (stopped) {
+                    return;
+                }
 
-            if (currentStatus == "Error" || currentStatus == "Success" || currentStatus ==  "Cancelled") {
-                var now = new Date();
-                var datetime = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDay();
-                datetime += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-
-                $('#lastUpdate').html(datetime);
-
-                stopped = true;
-            } else {
-                $.get('/Admin/Deployment/DetailsText/@Model.Id', function(result) {
-
-
-                    $('#deployDetails').html(result);
-
-
-                });
-
-                $.get('/Admin/Deployment/StatusText/@Model.Id', function(result) {
-                    currentStatus = result;
-                    $('#currentStatus').html("Status : " + result);
-
+                if (currentStatus == "Error" || currentStatus == "Success" || currentStatus == "Cancelled") {
                     var now = new Date();
                     var datetime = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDay();
                     datetime += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
 
                     $('#lastUpdate').html(datetime);
 
-                    if (result == "Error" || result == "Success" || status == "Cancelled") {
-                        stopped = true;
-                    }
+                    stopped = true;
+                } else {
+                    $.get('/Admin/Deployment/DetailsText/@Model.Id', function (result) {
 
-                });
+
+                        $('#deployDetails').html(result);
+
+
+                    });
+
+                    $.get('/Admin/Deployment/StatusText/@Model.Id', function (result) {
+                        currentStatus = result;
+                        $('#currentStatus').html("Status : " + result);
+
+                        var now = new Date();
+                        var datetime = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDay();
+                        datetime += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+
+                        $('#lastUpdate').html(datetime);
+
+                        if (result == "Error" || result == "Success" || status == "Cancelled") {
+                            stopped = true;
+                        }
+
+                    });
+                }
             }
-        }
 
-        setInterval(refresh, 3000);
-    </script>
-}
+            setInterval(refresh, 3000);
+        </script>
+    }
 
 
-<br />
-<a href="@Url.Action("Index")" class="btn btn-link">Back to deployment list</a>
+    <br />
+    <a href="@Url.Action("Index")" class="btn btn-link">Back to deployment list</a>
+
+</div>

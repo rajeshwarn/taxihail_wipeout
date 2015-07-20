@@ -191,10 +191,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
             _twoButtonsNegative.Text = Mvx.Resolve<ILocalization>()["Cancel"];
             _twoButtonsNegative.Click += (sender, e) => 
                 {  
-					if(cancelAction != null)
-					{
-						cancelAction();
-					}
+                    if(cancelAction != null)
+                    {
+                        cancelAction();
+                    }
                     ToogleKeyboard(true, owner);
                     hideAnimate();
 
