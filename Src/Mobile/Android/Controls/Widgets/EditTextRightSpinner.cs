@@ -202,7 +202,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var item = _adapter.GetItem(e.Position);
             if (item != _otherItem)
             {
-                ItemSelected?.Invoke(this, e);
+				if (ItemSelected != null)
+				{
+					ItemSelected(this, e);
+				}
             }
             else
             {

@@ -154,7 +154,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                     this.Services().Settings.ServiceUrl
                 );
 
-                ViewModel.SetServerUrl(result);
+				if(result != null)
+				{
+                	ViewModel.SetServerUrl(result);
+				}
             }
             catch(Exception ex)
             {
