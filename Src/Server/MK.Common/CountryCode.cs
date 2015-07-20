@@ -21,24 +21,24 @@ namespace apcurium.MK.Common
             "AF","AX","AL","DZ","AS","AD","AO","AI","AQ","AG","AR","AM","AW","AU","AT","AZ","BS","BH","BD","BB","BY","BE","BZ","BJ","BM","BT","BO","BQ","BA","BW","BV","BR","IO","BN","BG","BF","BI","CV","KH","CM","CA","KY","CF","TD","CL","CN","CX","CC","CO","KM","CD","CG","CK","CR","CI","HR","CU","CW","CY","CZ","DK","DJ","DM","DO","EC","EG","SV","GQ","ER","EE","ET","FK","FO","FJ","FI","FR","GF","PF","TF","GA","GM","GE","DE","GH","GI","GR","GL","GD","GP","GU","GT","GG","GN","GW","GY","HT","HM","VA","HN","HK","HU","IS","IN","ID","IR","IQ","IE","IM","IL","IT","JM","JP","JE","JO","KZ","KE","KI","KP","KR","KW","KG","LA","LV","LB","LS","LR","LY","LI","LT","LU","MO","MK","MG","MW","MY","MV","ML","MT","MH","MQ","MR","MU","YT","MX","FM","MD","MC","MN","ME","MS","MA","MZ","MM","NA","NR","NP","NL","AN","NT","NC","NZ","NI","NE","NG","NU","NF","MP","NO","OM","PK","PW","PS","PA","PG","PY","PE","PH","PN","PL","PT","PR","QA","RE","RO","RU","RW","BL","SH","KN","LC","MF","PM","VC","WS","SM","ST","SA","SN","RS","SC","SL","SG","SX","SK","SI","SB","SO","ZA","GS","SS","ES","LK","SD","SR","SJ","SZ","SE","CH","SY","TW","TJ","TZ","TH","TL","TG","TK","TO","TT","TN","TR","TM","TC","TV","UG","UA","AE","GB","UM","US","UY","UZ","VU","VE","VN","VG","VI","WF","EH","YE","ZM","ZW"
         };
 
-        string code;
+        private string _code;
 
         public string Code
         {
             get
             {
-                return code;
+                return _code;
             }
 
             set
             {
-                if ((value == null) || (value != null && countryISOCodes.Where(c => c == value).Count() == 1))
+                if ((value == null) || countryISOCodes.Count(c => c == value) == 1)
                 {
-                    code = value;
+                    _code = value;
                 }
                 else
                 {
-                    new ArgumentOutOfRangeException("Country code should be according to http://www.iso.org/iso/home/standards/country_codes.htm and belongs to Officially assigned codes");
+                    throw new ArgumentOutOfRangeException("Country code should be according to http://www.iso.org/iso/home/standards/country_codes.htm and belongs to Officially assigned codes");
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace apcurium.MK.Common
 
         public CountryISOCode(string code)
         {
-            this.code = null;
+            this._code = null;
             Code = code;
         }
     }

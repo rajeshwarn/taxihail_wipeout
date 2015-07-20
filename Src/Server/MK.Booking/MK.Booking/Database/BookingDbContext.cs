@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Database;
 using apcurium.MK.Common.Entity;
 
@@ -30,6 +31,7 @@ namespace apcurium.MK.Booking.Database
             // Make the name of the views match exactly the name of the corresponding property.
             modelBuilder.ComplexType<Address>(); //doing here because address is shared among several projects, layers
             modelBuilder.ComplexType<DriverInfos>(); // same for drivers infos
+            modelBuilder.ComplexType<CountryISOCode>();
             modelBuilder.ComplexType<BookingSettings>();
             modelBuilder.Entity<OrderStatusDetail>()
                 .HasKey(x => x.OrderId)

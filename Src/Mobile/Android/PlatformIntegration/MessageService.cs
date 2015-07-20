@@ -217,7 +217,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                         message,
                         () => 
                         {
-                            tcs.TrySetCanceled (); 
+                    tcs.TrySetResult (null);
                             if(cancelAction != null)
                             {
                                 cancelAction();
