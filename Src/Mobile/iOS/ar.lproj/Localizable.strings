@@ -565,6 +565,7 @@
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "HistoryDetailPromoLabel"="Promo Code:";
 "DateTimePickerPickTime"="اختر وقت الإلتقاء:";
+"EtaLessThenAMinute"="The nearest taxi is {0} and less then a minute away";
 "CreateAccountErrorMessage"="لا يمكن إنشاء الحساب.";
 "View_RideSettings"="الملف الشخصي";
 "ScanCreditCard"="مسح بطاقة الائتمان";
