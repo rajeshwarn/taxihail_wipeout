@@ -650,8 +650,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Logger.LogMessage ("GoToSummary");
 			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (
 				new {
-					order = Order.ToJson(),
-					orderStatus = OrderStatusDetail.ToJson()
+					orderId = Order.Id
 				}.ToStringDictionary());
 		}
 

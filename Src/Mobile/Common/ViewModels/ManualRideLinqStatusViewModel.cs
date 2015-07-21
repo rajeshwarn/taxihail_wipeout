@@ -94,9 +94,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             _bookingService.ClearLastOrder();
 
-			var orderSummary = orderManualRideLinqDetail.ToJson();
-
-			ShowViewModelAndRemoveFromHistory<ManualRideLinqSummaryViewModel>(new {orderManualRideLinqDetail = orderSummary});
+			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (
+				new {
+				orderId = orderManualRideLinqDetail.OrderId
+			}.ToStringDictionary());
 		}
 
         public ICommand EditAutoTipCommand
