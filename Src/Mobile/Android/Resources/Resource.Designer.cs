@@ -126,23 +126,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0100b3
 			public const int HideViewAllButton = 2130772147;
 			
-			// aapt resource value: 0x7f0100b5
-			public const int MvxBind = 2130772149;
-			
-			// aapt resource value: 0x7f0100b9
-			public const int MvxDropDownItemTemplate = 2130772153;
-			
-			// aapt resource value: 0x7f0100b8
-			public const int MvxItemTemplate = 2130772152;
-			
 			// aapt resource value: 0x7f0100b6
-			public const int MvxLang = 2130772150;
+			public const int MvxBind = 2130772150;
 			
 			// aapt resource value: 0x7f0100ba
-			public const int MvxSource = 2130772154;
+			public const int MvxDropDownItemTemplate = 2130772154;
+			
+			// aapt resource value: 0x7f0100b9
+			public const int MvxItemTemplate = 2130772153;
 			
 			// aapt resource value: 0x7f0100b7
-			public const int MvxTemplate = 2130772151;
+			public const int MvxLang = 2130772151;
+			
+			// aapt resource value: 0x7f0100bb
+			public const int MvxSource = 2130772155;
+			
+			// aapt resource value: 0x7f0100b8
+			public const int MvxTemplate = 2130772152;
 			
 			// aapt resource value: 0x7f010014
 			public const int actionBarDivider = 2130771988;
@@ -248,6 +248,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0100b4
 			public const int allowEmptySelection = 2130772148;
+			
+			// aapt resource value: 0x7f0100b5
+			public const int allowOtherSelection = 2130772149;
 			
 			// aapt resource value: 0x7f010034
 			public const int background = 2130772020;
@@ -7833,10 +7836,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int CompatTextView_textAllCaps = 0;
 			
 			public static int[] EditTextSpinner = new int[] {
-					2130772148};
+					2130772148,
+					2130772149};
 			
 			// aapt resource value: 0
 			public const int EditTextSpinner_allowEmptySelection = 0;
+			
+			// aapt resource value: 1
+			public const int EditTextSpinner_allowOtherSelection = 1;
 			
 			public static int[] LinearLayoutICS = new int[] {
 					2130772019,
@@ -8113,8 +8120,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int MenuView_android_windowAnimationStyle = 0;
 			
 			public static int[] MvxBinding = new int[] {
-					2130772149,
-					2130772150};
+					2130772150,
+					2130772151};
 			
 			// aapt resource value: 0
 			public const int MvxBinding_MvxBind = 0;
@@ -8123,20 +8130,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int MvxBinding_MvxLang = 1;
 			
 			public static int[] MvxControl = new int[] {
-					2130772151};
+					2130772152};
 			
 			// aapt resource value: 0
 			public const int MvxControl_MvxTemplate = 0;
 			
 			public static int[] MvxImageView = new int[] {
-					2130772154};
+					2130772155};
 			
 			// aapt resource value: 0
 			public const int MvxImageView_MvxSource = 0;
 			
 			public static int[] MvxListView = new int[] {
-					2130772152,
-					2130772153};
+					2130772153,
+					2130772154};
 			
 			// aapt resource value: 1
 			public const int MvxListView_MvxDropDownItemTemplate = 1;

@@ -50,7 +50,10 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(ConfirmAccountRequest request)
         {
             var account = _accountDao.FindByEmail(request.EmailAddress);
-            if (account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            if (account == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
+            }
 
             if (request.IsSMSConfirmation.HasValue && request.IsSMSConfirmation.Value)
             {
@@ -96,8 +99,10 @@ namespace apcurium.MK.Booking.Api.Services
             var account = _accountDao.FindByEmail(request.Email);
 
             if (account == null)
-                throw new HttpError(HttpStatusCode.NotFound, "Not Found");
-
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
+            }
+                
             if (!_serverSettings.ServerData.AccountActivationDisabled)
             {
                 if (_serverSettings.ServerData.SMSConfirmationEnabled)
@@ -118,7 +123,7 @@ namespace apcurium.MK.Booking.Api.Services
                         EmailAddress = account.Email,
                         ConfirmationUrl =
                             new Uri(string.Format("/api/account/confirm/{0}/{1}", account.Email,
-                                        account.ConfirmationToken), UriKind.Relative),
+                                        account.ConfirmationToken), UriKind.Relative)
                     });
                 }
             }

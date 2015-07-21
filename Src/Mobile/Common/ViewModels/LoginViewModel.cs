@@ -311,13 +311,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         void GoToAccountConfirmationPageBySMS()
         {
-            _registrationService.Account = new RegisterAccount()
+            _registrationService.Account = new RegisterAccount
             {
                 Email = this.Email,
-                Password = this.Password,
+                Password = this.Password
             };
 
-            ShowViewModel<AccountConfirmationViewModel>(null as System.Collections.IDictionary);
+            ShowViewModel<AccountConfirmationViewModel>();
         }
 
         private void DoSignUp(object registerDataFromSocial = null)
