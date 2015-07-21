@@ -135,6 +135,9 @@
   <data name="AccountNotActivated" xml:space="preserve">
     <value>لم يتم تفعيل حسابك. تم إرسال بريد الكتروني اخر للتنشيط</value>
   </data>
+  <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
+    <value>Your account has not been activated. Another activation SMS was sent to you.</value>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Please enter a valid account number</value>
   </data>
@@ -1957,6 +1960,14 @@
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
   </data>
+  <data name="ResendConfirmationCodeButtonText" xml:space="preserve">
+    <value>Resend confirmation code</value>
+  </data>
+  <data name="ResendConfirmationCodeTitle" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ResendConfirmationCodeText" xml:space="preserve">
+    <value>Confirmation code will be resend shortly</value>
   <data name="EtaLessThenAMinute" xml:space="preserve">
     <value>The nearest taxi is {0} and less then a minute away</value>
   </data>

@@ -145,6 +145,10 @@
     <value>Su cuenta no ha sido activada. Otro email de activación le ha sido enviado</value>
     <comment>Your account has not been activated. Another activation email was sent to you.</comment>
   </data>
+  <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
+    <value>Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado</value>
+    <comment>Your account has not been activated. Another activation SMS was sent to you.</comment>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Por favor introduzca un número de cuenta válido.</value>
     <comment>Please enter a valid account number</comment>
@@ -2475,6 +2479,15 @@
   </data>
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
+  </data>
+  <data name="ResendConfirmationCodeButtonText" xml:space="preserve">
+    <value>Resend confirmation code</value>
+  </data>
+  <data name="ResendConfirmationCodeTitle" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ResendConfirmationCodeText" xml:space="preserve">
+    <value>Confirmation code will be resend shortly</value>
   </data>
   <data name="OtherListItemLabel" xml:space="preserve">
     <value>Other</value>

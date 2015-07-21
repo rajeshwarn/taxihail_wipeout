@@ -60,7 +60,7 @@
 "CreateAccountFullNamePlaceHolder"="الاسم الكامل";
 "CreateAccountPasswordPlaceHolder"="كلمة السر";
 "BookItButton"="احجز الآن";
-"DeleteAddressBt"="مسح العنوان";
+"CardOnFile"="Card on File";
 "InvalidAddressTitle"="عنوان غير صحيح";
 "FilteredAddresses_Error_Title"="Error";
 "TaxiHailNetworkTimeOutPopupAccept"="Accept";
@@ -114,6 +114,7 @@
 "Twitter"="الدخول عبر حساب تويتر";
 "DateToday"="اليوم";
 "View_BookingDetail_TitleRideSettings"="إعدادات الرحلة";
+"RideSettingsPhone"="الهاتف الجوال";
 "UpdateBookingSettingsEmptyField"="البيانات خاطئة، يجب تعبئة كافة الخانات.";
 "Notes"="ملاحظات";
 "Reset"="إعادة الضبط";
@@ -146,6 +147,7 @@
 "View_UpdatedTermsAndConditions"="أحكام و شروط جديدة";
 "ResetPasswordSubtitleText"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";
 "BookPickupLocationEmptyPlaceholder"="انقر لإختيار نقطة الإلتقاء";
+"ResendConfirmationCodeText"="Confirmation code will be resend shortly";
 "CannotCancelOrderTitle"="اختيار غير صحيح";
 "OrderNoteGPS"="استخدام الGPS";
 "PromotionLoadError"="Unable to load the available promotions. Please try again later.";
@@ -221,10 +223,10 @@
 "CallButton"="اتصل";
 "NoPayBackErrorMessage"="The PayBack field is required";
 "CmtRideLinqConfirmPairView"="تأكيد معلومات الدفع";
+"AccountNotActivatedCodeBySMS"="Your account has not been activated. Another activation SMS was sent to you.";
 "CreateAccountEmptyField"="البيانات غير صحيحة، يجب تعبئة كافة الخانات.";
 "AccountNotActivated"="لم يتم تفعيل حسابك. تم إرسال بريد الكتروني اخر للتنشيط";
 "Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
-"AddReminderTitle"="موعد الإلتقاء المحدد";
 "PromoExpiringIn1DayMessage"="Expires in 1 day";
 "Rebook"="إعادة حجز المشوار";
 "CmtTransactionResendConfirmationButtonText"="إعادة إرسال";
@@ -237,6 +239,7 @@
 "Confirm"="موافق";
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "CarAssigned"="السيارة الخاصة بك {0}";
+"PickupTextPlaceholder"="عنوان شارع الإلتقاء";
 "CmtRideLinqConfirmPairViewConfirmPairDetailText"="تأكد من أنك داخل السيارة المشار إليها أعلاه. إن قمت بالتأكيد سيتم خصم قيمة هذه الرحلة تلقائيا باستخدام إعدادات الدفع الخاصة بك.";
 "NoPhoneNumberMessage"="Your phone number or the driver's phone number is invalid.";
 "PickupViewPickupLabel"="الإلتقاء";
@@ -309,7 +312,6 @@
 "CallDriverUsingProxyMessage"="Your driver will call you back in a few minutes";
 "EstimatingFare"="جاري تقييم قيمة مشوارك...";
 "HistoryViewTitle"="التاريخ";
-"CardOnFile"="Card on File";
 "Continue"="استمرار";
 "InvalidChargeType"="You must select a charge type to be able to book a ride";
 "TermsAndConditionsLabel"="الأحكام والشروط";
@@ -357,6 +359,7 @@
 "View_AccountConfirmationTitle"="Account Confirmation";
 "RateRide"="قم بتقييم مشوارك";
 "ConfirmDestinationLabel"="الوجهة";
+"ResendConfirmationCodeButtonText"="Resend confirmation code";
 "UpdatePasswordConfirmationLabel"="تأكيد";
 "View_SearchAddress"="البحث عن عنوان";
 "CreateAccountInvalidPassword"="كلمة المرور غير صحيحة. كلمة المرور يجب أن تكون متطابقة و تكون بين 6 إلى 10 أحرف";
@@ -477,6 +480,7 @@
 "DriverInfoDriver"="السائق:";
 "SettingsViewTitle"="إعدادات";
 "TechSupportEmailTitle"="دعم تطبيق الهاتف الجوال";
+"ResendConfirmationCodeTitle"="Confirmation";
 "YesButton"="نعم";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
 "ManualRideLinqStatus_Tax"="Tax amount:";
@@ -505,10 +509,10 @@
 "View"="View";
 "NoRingCodeText"="الرمز";
 "DeleteCreditCardTitle"="حذف بطاقة الائتمان";
-"RideSettingsPhone"="الهاتف الجوال";
+"DeleteAddressBt"="مسح العنوان";
 "January"="يناير (01)";
 "Safety"="Safety";
-"PickupTextPlaceholder"="عنوان شارع الإلتقاء";
+"AddReminderTitle"="موعد الإلتقاء المحدد";
 "StatusActionCancelButton"="إلغاء هذا الطلب";
 "InvalidBookinInfo"="لحجز سيارة الأجرة، يجب إدخال عنوان صحيح.";
 "Politeness"="Politeness";
