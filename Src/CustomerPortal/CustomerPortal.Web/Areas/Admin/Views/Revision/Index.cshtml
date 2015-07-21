@@ -8,9 +8,8 @@
 }
 <div style="width: 980px; overflow: hidden">
     <div style="width: 860px; float: right; padding-bottom: 20px;">
-        <h4>Revisions</h4>
-        <a class="btn btn-primary" href="@Url.Action("Update", "Revision")">Refresh</a>
-        <a href="@Url.Action("Create", "Revision")" class="btn btn-link">Create new revision</a>
+        <h4>&nbsp;</h4>
+        
     </div>
 </div>
 
@@ -19,6 +18,11 @@
     
 @using (Html.BeginForm())
 {
+    <p>
+        <a class="btn btn-primary" href="@Url.Action("Update", "Revision")">Refresh</a>
+        <a href="@Url.Action("Create", "Revision")" class="btn btn-link">Create new revision</a>
+    </p>
+    
     <table class="table table-striped">
         <tr>
             <th>Tag</th>
