@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public MapBounds GetBoundsForNearestVehicles(Address pickup, IEnumerable<AvailableVehicle> cars)
 		{
-			if ((cars == null) || (!cars.Any ()) || !_settings.Data.ZoomOnNearbyVehicles) 
+			if (cars == null || !cars.Any() || !_settings.Data.ZoomOnNearbyVehicles) 
 			{
 				return null;
 			}
@@ -166,26 +166,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		    if (_settings.Data.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
 		    {
-                //Needs value in minutes not in seconds.
-                etaBetweenCoordinates.Duration = vehicleLocation.Eta.HasValue
-                    ? vehicleLocation.Eta/60
-                    : vehicleLocation.Eta;
+                // Needs value in minutes not in seconds.
+                etaBetweenCoordinates.Duration = vehicleLocation.Eta / 60;
 		    }
 
 		    return etaBetweenCoordinates;
 		}
 
-		public async Task<Tuple<Direction, double?, double?>> GetEtaFromGeo(double fromLat, double fromLng, string vehicleNumber)
+		public async Task<GeoDataEta> GetEtaFromGeo(double fromLat, double fromLng, string vehicleNumber)
 	    {
 	        var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleNumber));
 
 	        var directions = await _directions.GetDirectionAsync(fromLat, fromLng, etaFromGeo.Latitude, etaFromGeo.Longitude, null, null, false);
 
-	        directions.Duration = etaFromGeo.Eta.HasValue
-                ? etaFromGeo.Eta.Value/60
-                : (long?) null;
+	        directions.Duration = etaFromGeo.Eta / 60;
 
-			return Tuple.Create(directions, etaFromGeo.Latitude, etaFromGeo.Longitude);
+		    return new GeoDataEta(directions, etaFromGeo.Latitude, etaFromGeo.Longitude);
 	    }
 
 		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
@@ -233,5 +229,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			return _etaObservable;
 		}
+    }
+
+    public class GeoDataEta
+    {
+        public GeoDataEta(Direction directions, double? latitude, double? longitude)
+        {
+            Directions = directions;
+            Latitude = latitude;
+            Longitude = longitude;
+        }
+
+        public Direction Directions { get; private set; }
+
+        public double? Latitude { get; private set; }
+
+        public double? Longitude { get; private set; }
     }
 }

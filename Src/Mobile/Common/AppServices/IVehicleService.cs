@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Maps.Geo;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -22,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<Direction> GetAndObserveEta();
 
-		Task<Tuple<Direction, double?,double?>> GetEtaFromGeo(double fromLat, double fromLng, string vehicleNumber);
+        Task<GeoDataEta> GetEtaFromGeo(double fromLat, double fromLng, string vehicleNumber);
 
 		Task<Direction> GetEtaBetweenCoordinates (double fromLat, double fromLng, double toLat, double toLng);
 

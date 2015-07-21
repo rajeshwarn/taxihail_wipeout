@@ -21,9 +21,6 @@ using apcurium.MK.Common.Resources;
 using CMTPayment;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using System.Threading.Tasks;
-using apcurium.MK.Common.Enumeration.TimeZone;
-using CMTServices;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
