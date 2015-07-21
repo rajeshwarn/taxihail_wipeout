@@ -1968,6 +1968,7 @@
   </data>
   <data name="ResendConfirmationCodeText" xml:space="preserve">
     <value>Confirmation code will be resend shortly</value>
+  </data>
   <data name="EtaLessThenAMinute" xml:space="preserve">
     <value>The nearest taxi is {0} and less then a minute away</value>
   </data>
