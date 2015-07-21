@@ -19,16 +19,6 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 {
-    public static class A
-    {
-        public static void Main()
-        {
-            (new given_existing_account.given_settings_account()).when_settings_updated_with_null_country_code();
-
-        }
-    }
-
-
 // ReSharper disable once InconsistentNaming
     public class given_a_view_model_generator : given_a_read_model_database
     {
