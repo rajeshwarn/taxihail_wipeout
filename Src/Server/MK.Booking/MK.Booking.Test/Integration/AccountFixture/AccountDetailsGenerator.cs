@@ -19,6 +19,16 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 {
+    public static class A
+    {
+        public static void Main()
+        {
+            (new given_existing_account.given_settings_account()).when_settings_updated_with_null_country_code();
+
+        }
+    }
+
+
 // ReSharper disable once InconsistentNaming
     public class given_a_view_model_generator : given_a_read_model_database
     {
@@ -123,6 +133,30 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(dto.Settings.Passengers, config.ServerData.DefaultBookingSettings.NbPassenger);
                 Assert.IsNull(dto.Settings.VehicleTypeId);
                 Assert.IsNull(dto.Settings.ProviderId);
+            }
+        }
+
+        [Test]
+        public void when_account_registered_with_null_country_code()
+        {
+            var accountId = Guid.NewGuid();
+
+            var accountRegistered = new AccountRegistered
+            {
+                SourceId = accountId,
+                Name = "Bob",
+                Email = "bob.smith@apcurium.com",
+                Country = null,
+                Phone = "555.555.2525",
+                Password = new byte[] { 1 }
+            };
+            Sut.Handle(accountRegistered);
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<AccountDetail>(accountId);
+
+                Assert.AreEqual(CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("US")).CountryISOCode.Code, dto.Settings.Country.Code);
             }
         }
 
@@ -256,6 +290,32 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Assert.AreEqual(69, dto.Settings.VehicleTypeId);
                     Assert.AreEqual("1234", dto.Settings.AccountNumber);
                     Assert.AreEqual("0", dto.Settings.CustomerNumber);
+                }
+            }
+
+            public void when_settings_updated_with_null_country_code()
+            {
+                Sut.Handle(new BookingSettingsUpdated
+                {
+                    SourceId = _accountId,
+                    Name = "Robert",
+                    ChargeTypeId = 123,
+                    NumberOfTaxi = 3,
+                    Country = null,
+                    Phone = "123",
+                    Passengers = 3,
+                    ProviderId = 85,
+                    VehicleTypeId = 69,
+                    AccountNumber = "1234",
+                    CustomerNumber = "0"
+                });
+
+                using (var context = new BookingDbContext(DbName))
+                {
+                    var dto = context.Find<AccountDetail>(_accountId);
+
+                    Assert.NotNull(dto);
+                    Assert.AreEqual(CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("US")).CountryISOCode.Code, dto.Settings.Country.Code);
                 }
             }
 
