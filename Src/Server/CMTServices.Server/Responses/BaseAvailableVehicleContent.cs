@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace CMTServices.Responses
 {
-    public class BaseAvailableVehicleContent
+    public class  BaseAvailableVehicleContent
     {
         [JsonProperty("dt")]
         public DeviceTypes DeviceType { get; set; }

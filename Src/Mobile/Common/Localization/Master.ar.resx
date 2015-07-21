@@ -1951,10 +1951,13 @@
   <data name="DialCodeSelectorTitle" xml:space="preserve">
     <value>Dial Code</value>
   </data>
- <data name="ServiceError_EmailClientAbsent" xml:space="preserve">
+  <data name="ServiceError_EmailClientAbsent" xml:space="preserve">
     <value>Sorry, we're unable to create an email. There is no email client installed on this device</value>
   </data>
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
+  </data>
+  <data name="EtaLessThenAMinute" xml:space="preserve">
+    <value>The nearest taxi is {0} and less then a minute away</value>
   </data>
 </root>

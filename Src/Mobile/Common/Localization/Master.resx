@@ -2028,7 +2028,10 @@
   <data name="OtherListItemLabel" xml:space="preserve">
     <value>Other</value>
   </data>
-   <data name="OtherListItemPromptLabel" xml:space="preserve">
+  <data name="OtherListItemPromptLabel" xml:space="preserve">
     <value>Enter a value:</value>
+  </data>
+  <data name="EtaLessThenAMinute" xml:space="preserve">
+    <value>The nearest taxi is {0} and less then a minute away</value>
   </data>
 </root>
