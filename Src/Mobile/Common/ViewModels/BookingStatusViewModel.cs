@@ -677,13 +677,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			else
 			{
-				var @params = new
-					{
-						order = Order.ToJson(),
-						orderStatus = OrderStatusDetail.ToJson()
-					};
-
-				ShowViewModelAndRemoveFromHistory<RideSummaryViewModel>(@params.ToStringDictionary());
+                ShowViewModelAndRemoveFromHistory<RideSummaryViewModel>(new { orderId = Order.Id});
 			}
 		}
 
