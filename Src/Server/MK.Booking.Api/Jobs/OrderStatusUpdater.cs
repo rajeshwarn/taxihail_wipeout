@@ -464,7 +464,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (promoUsed != null)
                 {
                     var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                    amountSaved = promoDomainObject.GetDiscountAmount(Convert.ToDecimal(ibsOrderInfo.MeterAmount));
+                    amountSaved = promoDomainObject.GetDiscountAmount(Convert.ToDecimal(ibsOrderInfo.MeterAmount), Convert.ToDecimal(tipAmount));
                     totalOrderAmount = totalOrderAmount - amountSaved;
                 }
 

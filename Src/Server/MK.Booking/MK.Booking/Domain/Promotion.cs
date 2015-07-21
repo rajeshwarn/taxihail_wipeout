@@ -257,16 +257,19 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public decimal GetDiscountAmount(decimal taxedMeterAmount)
+        public decimal GetDiscountAmount(decimal taxedMeterAmount, decimal tipAmount)
         {
             if (_discountType == PromoDiscountType.Cash)
             {
                 // return smallest value to make sure we don't credit user
-                return Math.Min(taxedMeterAmount, _discountValue);
+                // Cash discount can pay for tip
+                var totalAmount = taxedMeterAmount + tipAmount;
+                return Math.Min(totalAmount, _discountValue);
             }
 
             if (_discountType == PromoDiscountType.Percentage)
             {
+                // % discount can't pay for tip
                 var amountSaved = taxedMeterAmount * (_discountValue / 100);
                 return Math.Round(amountSaved, 2);
             }
