@@ -149,6 +149,8 @@ namespace apcurium.MK.Booking.Api.Services
                                 RateAtTripStart = 1,
                                 RateAtTripEnd = 4,
                                 FareAtAlternateRate = 23.45,
+                                LastLatitudeOfVehicle = 45.546571, 
+                                LastLongitudeOfVehicle = -73.586309,
                                 Tolls = new[]
                                 {
                                     new TollDetail

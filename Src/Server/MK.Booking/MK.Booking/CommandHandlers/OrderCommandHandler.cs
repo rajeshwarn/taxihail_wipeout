@@ -224,7 +224,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             order.UpdateRideLinqTripInfo(command.Distance,command.Total, command.Fare, command.FareAtAlternateRate, command.Tax,
                 command.Tip, command.TollTotal, command.Extra,command.Surcharge,command.RateAtTripStart, command.RateAtTripEnd, 
                 command.RateChangeTime, command.StartTime, command.EndTime, command.PairingToken, command.Medallion, command.TripId, command.DriverId, command.AccessFee,
-                command.LastFour, command.Tolls);
+                command.LastFour, command.Tolls, command.LastLatitudeOfVehicle, command.LastLongitudeOfVehicle);
 
             _repository.Save(order, command.Id.ToString());
         }
