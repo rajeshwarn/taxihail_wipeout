@@ -804,19 +804,19 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private Position? TryToGetPositionOfDropOffAddress(Guid orderId, Address dropOffAddress, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)
         {
-            var orderStatus = _orderDao.FindOrderStatusById(orderId);
-            if ((orderStatus != null 
-                && orderStatus.VehicleLatitude.HasValue 
-                && orderStatus.VehicleLongitude.HasValue) )
-            {
-                return new Position(orderStatus.VehicleLatitude.Value, orderStatus.VehicleLongitude.Value);
-            }
-            else if ((cmtRideLinqFields != null
+            if (cmtRideLinqFields != null
                 && cmtRideLinqFields.LastLatitudeOfVehicle.HasValue
-                && cmtRideLinqFields.LastLongitudeOfVehicle.HasValue))
+                && cmtRideLinqFields.LastLongitudeOfVehicle.HasValue)
             {
                 return new Position(cmtRideLinqFields.LastLatitudeOfVehicle.Value, cmtRideLinqFields.LastLongitudeOfVehicle.Value);
+            }
 
+            var orderStatus = _orderDao.FindOrderStatusById(orderId);
+            if (orderStatus != null 
+                && orderStatus.VehicleLatitude.HasValue 
+                && orderStatus.VehicleLongitude.HasValue)
+            {
+                return new Position(orderStatus.VehicleLatitude.Value, orderStatus.VehicleLongitude.Value);
             }
                 
             if (dropOffAddress != null)
