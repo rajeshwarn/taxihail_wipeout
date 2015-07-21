@@ -367,17 +367,32 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         [NoCache]
         public ActionResult DetailsText(string id)
         {
-            var deploymentJob = Repository.Single(r => r.Id == id);
+            var deploymentJob = Repository.SingleOrDefault(r => r.Id == id);
 
-            return Content(deploymentJob.Details);
+            if (deploymentJob != null)
+            {
+                return Content(deploymentJob.Details);
+            }
+            else
+            {
+                return Content("Not found");
+            }
         }
 
         [NoCache]
         public ActionResult StatusText(string id)
         {
-            var deploymentJob = Repository.Single(r => r.Id == id);
+            var deploymentJob = Repository.SingleOrDefault(r => r.Id == id);
 
-            return Content(deploymentJob.Status);
+            if (deploymentJob != null)
+            {
+                return Content(deploymentJob.Status);
+            }
+            else
+            {
+                return Content("Not found");
+            }
+        
         }
 
 

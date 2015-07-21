@@ -513,6 +513,7 @@
 "NetworkErrorMessage"="Echec de la connexion. Merci de vérifier vos paramètres de connexion et réessayer.";
 "Overdue_Date"="Date de transaction:";
 "View_ConfirmCarNumber"="Confirmation";
+"OtherListItemLabel"="Autre";
 "BookRatingErrorTitle"="Attention";
 "View"="Voir";
 "NoRingCodeText"="--";

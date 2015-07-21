@@ -2008,11 +2008,17 @@
   </data>
   <data name="DialCodeSelectorTitle" xml:space="preserve">
     <value>Code indicatif</value>
-    </data>
+  </data>
   <data name="ServiceError_EmailClientAbsent" xml:space="preserve">
     <value>Désolé, nous ne pouvons pas créer le courriel. Il n'y a pas de client de courriel installé sur cet appareil.</value>
   </data>
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
+  </data>
+  <data name="OtherListItemLabel" xml:space="preserve">
+    <value>Autre</value>
+  </data>
+  <data name="EtaLessThenAMinute" xml:space="preserve">
+    <value>Le taxi le plus proche est {0} et à moins d'une minute de votre position</value>
   </data>
 </root>

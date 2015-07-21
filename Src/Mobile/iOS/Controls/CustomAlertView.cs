@@ -352,7 +352,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             button.TouchUpInside += (sender, e) =>
                 {
-                    action?.Invoke();
+                    if(action != null)
+                    {
+                        action();
+                    }
                     if(isCancellation)
                     {
                         DismissEvent();
@@ -386,7 +389,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             button.TouchUpInside += (sender, e) =>
                 {
-                    action?.Invoke();
+                    if(action != null)
+                    {
+                        action();
+                    }
                     ClickedEvent();
                 };
             return button;
@@ -430,7 +436,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void DismissEvent()
         {
             if (Dismissed != null) {
-                Dismissed?.Invoke(this, EventArgs.Empty);
+                Dismissed.Invoke(this, EventArgs.Empty);
             }
             Dismiss();
         }
@@ -438,7 +444,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void ClickedEvent()
         {
             if (Clicked != null) {
-                Clicked?.Invoke(this, EventArgs.Empty);
+                Clicked.Invoke(this, EventArgs.Empty);
             }
             Dismiss();
         }

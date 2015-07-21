@@ -508,6 +508,7 @@
 "LocationDetailApartmentLabel"="Departamento";
 "NetworkErrorMessage"="No hay conección de red, por favor compruebe su conección y trate de nuevo";
 "View_ConfirmCarNumber"="Confirmación";
+"OtherListItemLabel"="Other";
 "BookRatingErrorTitle"="Aviso";
 "View"="Ver";
 "NoRingCodeText"="Número Código de entrada";

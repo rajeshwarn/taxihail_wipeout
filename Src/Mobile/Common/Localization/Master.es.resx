@@ -2476,4 +2476,10 @@
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
   </data>
+  <data name="OtherListItemLabel" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="EtaLessThenAMinute" xml:space="preserve">
+    <value>The nearest taxi is {0} and less then a minute away</value>
+  </data>
 </root>

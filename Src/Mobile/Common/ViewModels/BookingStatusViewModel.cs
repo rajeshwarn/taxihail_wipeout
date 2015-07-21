@@ -476,8 +476,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& status.VehicleLatitude.HasValue
 					&& status.VehicleLongitude.HasValue)
 				{
-					Direction d =  await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
-					statusInfoText += " " + FormatEta(d);						
+					Direction direction;
+
+					if(Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
+					{
+						var geoData = await _vehicleService.GetEtaFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber);
+					    direction = geoData.Directions;
+
+                        if(geoData.Latitude.HasValue)
+                        {
+                            status.VehicleLatitude = geoData.Latitude;
+                            status.VehicleLongitude = geoData.Longitude;
+                        }
+					}
+					else
+					{
+						direction = await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+					}                       
+
+				    statusInfoText += " " + FormatEta(direction);
+
 				}
 
 				StatusInfoText = statusInfoText;

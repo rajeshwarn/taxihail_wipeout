@@ -53,13 +53,13 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 PhoneNumber = phoneNumber
             });
 
-            libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
-            toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryDialCode;
-            toPhoneNumber.NationalNumber = long.Parse(phoneNumber);
+            var toPhoneNumber = new libphonenumber.PhoneNumber
+            {
+                CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryDialCode,
+                NationalNumber = long.Parse(phoneNumber)
+            };
 
-            _smsSenderMock.Verify(s => s
-                .Send(toPhoneNumber, It.Is<string>(message =>
-                    message.Contains(activationCode))));
+            _smsSenderMock.Verify(s => s.Send(toPhoneNumber, It.Is<string>(message =>message.Contains(activationCode))));
         }
     }
 }

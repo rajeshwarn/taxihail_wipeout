@@ -10,6 +10,9 @@ namespace apcurium.MK.Common.Http.Extensions
 {
     public static class HttpClientExtensions
     {
+#if !CLIENT
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(typeof(HttpClientExtensions));
+#endif
         public static Task<HttpResponseMessage> Get(this HttpClient client, string relativeUrl)
         {
             return client.Send(HttpMethod.Get, new Uri(relativeUrl, UriKind.Relative));
@@ -39,12 +42,20 @@ namespace apcurium.MK.Common.Http.Extensions
             {
                 request.Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
             }
+#if !CLIENT
+            Log.Debug("Request : " + request);
+            Log.Debug("Request Content : " + jsonPayload);
+#endif
 
             var response = await client.SendAsync(request).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
+#if !CLIENT
+                Log.Debug("Response : " + response.StatusCode);
+                Log.Debug("ResponseBody : " + responseBody);
+#endif
                 throw new ServiceResponseException(response, responseBody);
             }
 
