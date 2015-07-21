@@ -1,8 +1,12 @@
-﻿using System;
+﻿using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CMTPayment.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {

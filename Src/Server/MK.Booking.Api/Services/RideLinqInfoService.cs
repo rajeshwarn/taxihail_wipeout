@@ -1,9 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Linq;
+using System.Net;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Resources;
+using CMTPayment;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Services
 {
     public class RideLinqInfoService : Service
