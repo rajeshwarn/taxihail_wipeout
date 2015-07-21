@@ -3,6 +3,7 @@
 @model dynamic
 @{
     ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml";
 }
 <div class='row'>
     <div class='span12'>
@@ -38,8 +39,7 @@
                     <th>Company name</th>
                     <th>Version</th>
                     <th>Status</th>
-                    <th>Actions</th>
-                    <th>Warnings</th>
+                    <th>Actions</th>                    
                     <th>Store</th>
                 </tr>
             </thead>
@@ -55,37 +55,35 @@
                         <span data-version-staging data-key="@company.CompanyKey">S:@company.LastKnownStagingVersion</span></td>
                     <td><a href="@Url.Action("Status", new { company.Id })">@company.Status</a></td>
                     <td>                        
-                        <a class="btn" href="@Url.Action("Index", "IBS", new { company.Id })">IBS setup</a>                                                
-                        <a class="btn" href="@Url.Action("Index", "Version", new { company.Id })">Versions</a>                                                
-                        <a class="btn" href="@Url.Action("DeployCustomer", "Deployment", new { company.Id })">Deployment</a>                                                
+                        <a href="@Url.Action("Index", "IBS", new { company.Id })" data-status title="IBS Setup">
+                            <img src="~/Images/ibs.png" width="20" />
+                        </a>
+                        <a href="@Url.Action("Index", "Version", new { company.Id })" data-status title="Versions">
+                            <img src="~/Images/versions.png" width="20" />
+                        </a>
+                        <a href="@Url.Action("DeployCustomer", "Deployment", new { company.Id })" data-status title="Deployment">
+                            <img src="~/Images/deploy.png" width="20" />
+                        </a>
+                        
                     </td>
-                    <td>
-                        @if (!company.IsValid())
-                        {
-                            <img data-status title="@company.ValidationError()" src="~/Images/warn.jpg" width="20" />
-                        }  
-                        @if (HomeController.Is15Ready(company))
-                        {
-                            <img src="~/Images/check.png" width="20" />
-                        }                       
-                    </td>
+                   
                     <td>
                         
                         @if (!string.IsNullOrEmpty(company.Store.AndroidStoreUrl))
                         {
-                            <a href="@company.Store.AndroidStoreUrl">
+                            <a href="@company.Store.AndroidStoreUrl" data-status title="@company.Store.PublishedDateDisplay">
                                 <img src="~/Images/android.png" width="20" />
                             </a>
                         }
                         @if (!string.IsNullOrEmpty(company.Store.AppleStoreId))
                         {
-                            <a href="@company.Store.AppleStoreUrl">
+                            <a href="@company.Store.AppleStoreUrl" data-status title="@company.Store.PublishedDateDisplay">
                                 <img src="~/Images/apple.png" width="20" />
                             </a>
                         }
                         
                            <br />
-                            @company.Store.PublishedDateDisplay
+                            
                         
                 </tr>
             }   
@@ -94,7 +92,7 @@
 </div>
 @section scripts
 {
-    @*<script>
+    <script>
         function loadVersion() {
             $(function() {
                 $('[data-version]').fetchVersion();
@@ -103,7 +101,7 @@
                 $('[data-version-staging]').fetchVersionStaging();
             });
         }
-    </script>*@
+    </script>
     
     
 

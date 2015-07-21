@@ -7,21 +7,18 @@
 }
 
 <div style="width: 980px; overflow: hidden">
-    <div style="width: 860px; float: right; padding-bottom: 20px;">
-        <h4>Deployment</h4>
+    <div style="width: 860px; float: right; padding-bottom: 0px;">
+        <h4><br /></h4>
     </div>
 </div>
 
-@if (SecurityHelper.IsApcuriumUser)
-{
-    <div style="width: 100px; float: left; position: fixed">@Html.Partial("_DeployRevisionPartial")</div>
-}
+<div style="width: 100px; float: left; position: fixed">@Html.Partial("_DeployRevisionPartial")</div>
 <div style="width: 870px; float: right">
 
     <div class='row'>
         <div class='span12'>
-            <p>
-                <h4>New Deployment</h4>
+            
+                
                 <div id="button-container">
                     @if (SecurityHelper.IsApcuriumUser)
                     {
@@ -34,7 +31,7 @@
 
 
                 <h4>Deployment Queue</h4>
-            </p>
+            
         </div>
     </div>
     <table class="table table-striped table-condensed">
@@ -72,11 +69,12 @@
                         </a>
                     }
                     <a href="@Url.Action("Index", "Version", new {area = "Admin", id = deploy.Company.Id})">
-                        <img src="~/Images/download.jpg" width="20"/>
+                        <img src="~/Images/versions.png" width="20" />
                     </a>
+                    
                     @if (SecurityHelper.IsApcuriumUser)
                     {
-                        <a href="@Url.Action("Index", "Settings", new {area = "Admin", id = deploy.Company.CompanyKey})">
+                        <a href="@Url.Action("Index", "Settings", new {area = "Admin", id = deploy.Company.CompanyKey})" >
                             <img src="~/Images/settings.jpg" width="20"/>
                         </a>
                     }

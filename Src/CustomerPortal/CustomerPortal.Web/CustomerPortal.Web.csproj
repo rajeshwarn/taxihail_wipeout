@@ -366,6 +366,7 @@
     <Content Include="Content\512x512.png" />
     <Content Include="Content\57x57.png" />
     <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\GridPagination.css" />
     <Content Include="Content\load.gif" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -464,11 +465,14 @@
     <Content Include="Images\check.png" />
     <Content Include="Images\copy.png" />
     <Content Include="Images\delete.png" />
+    <Content Include="Images\deploy.png" />
     <Content Include="Images\download.jpg" />
+    <Content Include="Images\ibs.png" />
     <Content Include="Images\settings.jpg" />
     <Content Include="Images\suv_badge.png" />
     <Content Include="Images\taxi_badge.png" />
     <Content Include="Images\THNetwork.png" />
+    <Content Include="Images\versions.png" />
     <Content Include="Images\warn.jpg" />
     <Content Include="log4net.xml" />
     <Content Include="Scripts\gridmvc.js" />
