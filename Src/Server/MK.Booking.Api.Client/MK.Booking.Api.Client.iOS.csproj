@@ -117,6 +117,7 @@
     <Compile Include="TaxiHail\CompanyServiceClient.cs" />
     <Compile Include="Payments\Moneris\MonerisServiceClient.cs" />
     <Compile Include="Payments\Moneris\MonerisTokenizeClient.cs" />
+    <Compile Include="TaxiHail\RideLinqInfoServiceClient.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
