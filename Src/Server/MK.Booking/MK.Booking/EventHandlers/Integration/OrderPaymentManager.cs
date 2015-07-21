@@ -76,7 +76,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     OrderId = @event.OrderId,
                     PromoId = @event.PromotionUsed.Value,
-                    TaxedMeterAmount = taxedMeterAmount // MK: Booking fees don't count towards promo rebate (2015/05/25)
+                    TaxedMeterAmount = taxedMeterAmount, // MK: Booking fees don't count towards promo rebate (2015/05/25)
+                    TipAmount = @event.Tip
                 };
 
                 var envelope = (Envelope<ICommand>)redeemPromotion;

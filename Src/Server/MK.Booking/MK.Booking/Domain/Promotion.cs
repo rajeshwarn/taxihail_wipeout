@@ -277,14 +277,14 @@ namespace apcurium.MK.Booking.Domain
             return 0;
         }
 
-        public void Redeem(Guid orderId, decimal taxedMeterAmount)
+        public void Redeem(Guid orderId, decimal taxedMeterAmount, decimal tipAmount)
         {
             if (!_orderIds.Contains(orderId))
             {
                 throw new InvalidOperationException("Promotion must be applied to an order before being redeemed");
             }
 
-            var amountSaved = GetDiscountAmount(taxedMeterAmount);
+            var amountSaved = GetDiscountAmount(taxedMeterAmount, tipAmount);
 
             Update(new PromotionRedeemed
             {
