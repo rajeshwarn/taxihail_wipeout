@@ -51,7 +51,8 @@ namespace apcurium.MK.Booking.Api.Services
                 Tax = tripInfo.Tax * .01,
                 Tip = tripInfo.Tip * .01,
                 Toll = tripInfo.TollHistory.SelectOrDefault(history => history.Sum(toll => toll.TollAmount * .01)),
-                Total = tripInfo.Total * .01
+                Total = tripInfo.Total * .01,
+                PairingCode = pairingInfo.PairingCode
             };
         }
 
