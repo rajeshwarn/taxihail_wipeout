@@ -13,6 +13,7 @@ using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
+using apcurium.MK.Common;
 
 #endregion
 
@@ -101,6 +102,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 SourceId = accountId,
                 Name = "Bob",
                 Email = "bob.smith@acpurium.com",
+                Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode,
                 Phone = "555.555.2525",
                 Password = new byte[] {1}
             };
@@ -112,7 +114,9 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                 Assert.NotNull(dto);
                 Assert.AreEqual(dto.Settings.Name, dto.Name);
+                Assert.AreEqual(CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode.Code, dto.Settings.Country.Code);
                 Assert.AreEqual(accountRegistered.Phone, dto.Settings.Phone);
+
 
                 var config = new TestServerSettings();
                 Assert.IsNull(dto.Settings.ChargeTypeId);
@@ -228,6 +232,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Name = "Robert",
                     ChargeTypeId = 123,
                     NumberOfTaxi = 3,
+                    Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode,
                     Phone = "123",
                     Passengers = 3,
                     ProviderId = 85,
@@ -244,6 +249,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Assert.AreEqual("Robert", dto.Settings.Name);
                     Assert.AreEqual(123, dto.Settings.ChargeTypeId);
                     Assert.AreEqual(3, dto.Settings.NumberOfTaxi);
+                    Assert.AreEqual(CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode.Code, dto.Settings.Country.Code);
                     Assert.AreEqual("123", dto.Settings.Phone);
                     Assert.AreEqual(3, dto.Settings.Passengers);
                     Assert.AreEqual(85, dto.Settings.ProviderId);
@@ -262,6 +268,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Name = "Robert",
                     ChargeTypeId = 1,
                     NumberOfTaxi = 3,
+                    Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode,
                     Phone = "123",
                     Passengers = 3,
                     ProviderId = 1,
@@ -278,6 +285,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Assert.IsNull(dto.Settings.ChargeTypeId);
                     Assert.IsNull(dto.Settings.ProviderId);
                     Assert.IsNull(dto.Settings.VehicleTypeId);
+                    Assert.AreEqual(dto.Settings.Country.Code, CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode.Code);
                 }
             }
 
