@@ -2,11 +2,16 @@
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using apcurium.MK.Booking.Mobile.Client.Order;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class ManualRideLinqSummaryView : BaseViewController<ManualRideLinqSummaryViewModel>
 	{
+        private MvxActionBasedTableViewSource _source;
+
 		public ManualRideLinqSummaryView()
 			: base("ManualRideLinqSummaryView", null)
 		{
@@ -17,6 +22,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	        base.ViewWillAppear(animated);
 
             NavigationController.NavigationBar.Hidden = false;
+            NavigationItem.HidesBackButton = true;
+
+            ChangeThemeOfBarStyle();
 	    }
 
 	    public override void ViewDidLoad()
@@ -26,24 +34,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var localize = this.Services().Localize;
 
 			NavigationItem.Title = localize["RideSummaryTitleText"];
-			lblPairingCodeLabel.Text = localize["ManualRideLinqStatus_PairingCode"];
 			lblDistanceLabel.Text = localize["ManualRideLinqStatus_Distance"];
 			lblTotalLabel.Text = localize["ManualRideLinqStatus_Total"];
 			lblFareLabel.Text = localize["ManualRideLinqStatus_Fare"];
 			lblTaxLabel.Text = localize["ManualRideLinqStatus_Tax"];
 			lblTipLabel.Text = localize["ManualRideLinqStatus_Tip"];
-			lblDriverId.Text = localize["ManualRideLinqStatus_Driver"];
 			lblExtraLabel.Text = localize["ManualRideLinqStatus_Extra"];
 			lblTollLabel.Text = localize["ManualRideLinqStatus_Toll"];
 
 			lblThanks.Text = String.Format(localize["RideSummarySubTitleText"], this.Services().Settings.TaxiHail.ApplicationName);
 
-			NavigationItem.RightBarButtonItem = new UIBarButtonItem()
-				{
-					Title = localize["ManualRideLinqSummary_Done"]
-				};
+            View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
+            PrepareTableView();
+
+            ViewModel.PropertyChanged += (sender, e) =>
+                {
+                    if(e.PropertyName == "RatingList")
+                    {
+                        ResizeTableView();
+                    }
+                };
+            
 			var bindingSet = this.CreateBindingSet<ManualRideLinqSummaryView, ManualRideLinqSummaryViewModel>();
+
+            NavigationItem.RightBarButtonItem = new UIBarButtonItem(localize["ManualRideLinqSummary_Done"], UIBarButtonItemStyle.Bordered, (o, e) => 
+                {  
+                    ViewModel.RateOrderAndNavigateToHome.ExecuteIfPossible();
+                });
+
+            bindingSet.Bind(_source)
+                .For(v => v.ItemsSource)
+                .To(vm => vm.RatingList);
 
 			bindingSet.Bind(lblPairingCodeText)
 				.To(vm => vm.OrderManualRideLinqDetail.PairingCode);
@@ -71,12 +93,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bindingSet.Bind(lblTotalText)
 				.To(vm => vm.FormattedTotal);
-
-			bindingSet.Bind(NavigationItem.RightBarButtonItem)
-				.To(vm => vm.GoToHome);
 			
 			bindingSet.Apply();
 		}
+
+        private void PrepareTableView()
+        {
+            _source = new MvxActionBasedTableViewSource(
+                tableRatingList,
+                UITableViewCellStyle.Default,
+                BookRatingCell.Identifier,
+                BookRatingCell.BindingText,
+                UITableViewCellAccessory.None);
+
+            _source.CellCreator = (tableView, indexPath, item) =>
+                {
+                    var cell = BookRatingCell.LoadFromNib(tableView);
+                    cell.RemoveDelay();
+                    return cell;
+                };
+
+            tableRatingList.Source = _source;
+        }
+
+        private void ResizeTableView()
+        {
+            if (ViewModel.RatingList != null)
+            {
+                constraintRatingTableHeight.Constant = BookRatingCell.Height * ViewModel.RatingList.Count;
+            }
+            else
+            {
+                constraintRatingTableHeight.Constant = 0;
+            }
+        }
 	}
 }
 
