@@ -164,6 +164,7 @@
 "BookRatingErrorMessage"="قم بتقييم مشوارك";
 "DriverInfoModel"="الموديل:";
 "StatusEditAutoTipButton"="Tip";
+"OtherListItemPromptLabel"="Enter a value:";
 "RideSettingsCustomerNumber"="Account Rider Number";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";
 "Overdue_Amount"="Amount due:";
@@ -490,6 +491,7 @@
 "PasswordLabel"="كلمة المرور";
 "CreateAccountTitleMrs"="السيدة";
 "RideSummaryTitleText"="شكرا لك";
+"OtherListItemLabel"="Custom Percent";
 "CmtCarNumber"="رقم السيارة:";
 "ReminderDetails"="تذكير: سيكون السائق في خدمتك من {0} الساعة {1} يوم {2}.";
 "HistoryDetailAptRingCodeLabel"="رمز السكن:";

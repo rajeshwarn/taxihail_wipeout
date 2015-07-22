@@ -520,7 +520,7 @@
 "LocationDetailApartmentLabel"="Apartment";
 "Overdue_Date"="Transaction date:";
 "View_ConfirmCarNumber"="Confirmation";
-"OtherListItemLabel"="Other";
+"OtherListItemLabel"="Custom Percent";
 "View_BookingStatus"="Status";
 "View"="View";
 "NoRingCodeText"="No code";

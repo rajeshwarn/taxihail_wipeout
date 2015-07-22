@@ -165,6 +165,7 @@
 "BookRatingErrorMessage"="Merci de noter la qualité de votre dernier trajet";
 "DriverInfoModel"="Modèle:";
 "AccountPaymentQuestionsRequired"="(requis)";
+"OtherListItemPromptLabel"="Entrez une valeur:";
 "RideSettingsCustomerNumber"="Numéro de client du compte (optionnel)";
 "PaymentLoadError"="Impossible de charger les informations de paiement. Veuillez réessayer plus tard.";
 "Overdue_Amount"="Montant dû:";
@@ -517,7 +518,7 @@
 "NetworkErrorMessage"="Echec de la connexion. Merci de vérifier vos paramètres de connexion et réessayer.";
 "Overdue_Date"="Date de transaction:";
 "View_ConfirmCarNumber"="Confirmation";
-"OtherListItemLabel"="Autre";
+"OtherListItemLabel"="Autre Pourcentage";
 "BookRatingErrorTitle"="Attention";
 "View"="Voir";
 "NoRingCodeText"="--";
