@@ -85,14 +85,6 @@ namespace apcurium.MK.Booking.Api.Services.Maps
 
                         directionInfo.EtaFormattedDistance = etaDirectionInfo.FormattedDistance;
                         directionInfo.EtaDuration = (int?)etaDirectionInfo.Duration;
-
-                        if (etaDirectionInfo.Duration.HasValue)
-                        {
-                            _commandBus.Send(new SaveOriginalEta
-                            {
-                                OriginalEta = etaDirectionInfo.Duration.Value
-                            });
-                        }
                     }
                 }
                 catch (Exception ex)
@@ -107,7 +99,19 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         public Direction Get(AssignedEtaRequest request)
         {
             var order = _orderDao.FindById(request.OrderId);
-            return _client.GetEta(request.VehicleLat, request.VehicleLng, order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+            var eta = _client.GetEta(request.VehicleLat, request.VehicleLng, order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+
+            var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
+
+            if (orderStatus != null && !orderStatus.OriginalEta.HasValue && eta.Duration.HasValue)
+            {
+                _commandBus.Send(new SaveOriginalEta
+                {
+                    OriginalEta = eta.Duration.Value
+                });
+            }
+
+            return eta;
         }
 
         private AvailableVehicle GetNearestAvailableVehicle(double originLat, double originLng, AvailableVehicle[] availableVehicles)

@@ -8,15 +8,17 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class LogApplicationStartUpService : Service
+    public class LogMetricsService : Service
     {
         private readonly ICommandBus _commandBus;
         private readonly IAccountDao _dao;
+        private readonly IOrderDao _orderDao;
 
-        public LogApplicationStartUpService(ICommandBus commandBus, IAccountDao dao)
+        public LogMetricsService(ICommandBus commandBus, IAccountDao dao, IOrderDao orderDao)
         {
             _commandBus = commandBus;
             _dao = dao;
+            _orderDao = orderDao;
         }
 
         public void Post(LogApplicationStartUpRequest request)
@@ -38,6 +40,19 @@ namespace apcurium.MK.Booking.Api.Services
             };
 
             _commandBus.Send(command);
+        }
+
+        public void Post(LogOriginalEtaRequest request)
+        {
+            var order = _orderDao.FindOrderStatusById(request.OrderId);
+
+            if (order != null && !order.OriginalEta.HasValue && request.OriginalEta.HasValue)
+            {
+                _commandBus.Send(new SaveOriginalEta
+                {
+                    OriginalEta = request.OriginalEta.Value
+                });
+            }
         }
     }
 }
