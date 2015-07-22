@@ -165,6 +165,7 @@
 "BookRatingErrorMessage"="Merci de noter la qualité de votre dernier trajet";
 "DriverInfoModel"="Modèle:";
 "AccountPaymentQuestionsRequired"="(requis)";
+"OtherListItemPromptLabel"="Entrez une valeur:";
 "RideSettingsCustomerNumber"="Numéro de client du compte (optionnel)";
 "PaymentLoadError"="Impossible de charger les informations de paiement. Veuillez réessayer plus tard.";
 "Overdue_Amount"="Montant dû:";
@@ -517,7 +518,7 @@
 "NetworkErrorMessage"="Echec de la connexion. Merci de vérifier vos paramètres de connexion et réessayer.";
 "Overdue_Date"="Date de transaction:";
 "View_ConfirmCarNumber"="Confirmation";
-"OtherListItemLabel"="Autre";
+"OtherListItemLabel"="Autre Pourcentage";
 "BookRatingErrorTitle"="Attention";
 "View"="Voir";
 "NoRingCodeText"="--";
@@ -582,6 +583,7 @@
 "ServiceError_ErrorCreatingOrderMessage"="Merci de contacter {0} au {1} pour toute demande d'assistance";
 "HistoryDetailPromoLabel"="Code promo:";
 "DateTimePickerPickTime"="Sélectionner l'heure de départ";
+"EtaLessThenAMinute"="Le taxi le plus proche est {0} et à moins d'une minute de votre position";
 "CreateAccountErrorMessage"="Le compte de peut malheureusement pas être créé";
 "View_RideSettings"="Profil";
 "ScanCreditCard"="Scanner la carte de paiement";

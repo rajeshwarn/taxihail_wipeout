@@ -164,6 +164,7 @@
 "BookRatingErrorMessage"="قم بتقييم مشوارك";
 "DriverInfoModel"="الموديل:";
 "StatusEditAutoTipButton"="Tip";
+"OtherListItemPromptLabel"="Enter a value:";
 "RideSettingsCustomerNumber"="Account Rider Number";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";
 "Overdue_Amount"="Amount due:";
@@ -490,6 +491,7 @@
 "PasswordLabel"="كلمة المرور";
 "CreateAccountTitleMrs"="السيدة";
 "RideSummaryTitleText"="شكرا لك";
+"OtherListItemLabel"="Custom Percent";
 "CmtCarNumber"="رقم السيارة:";
 "ReminderDetails"="تذكير: سيكون السائق في خدمتك من {0} الساعة {1} يوم {2}.";
 "HistoryDetailAptRingCodeLabel"="رمز السكن:";
@@ -565,6 +567,7 @@
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "HistoryDetailPromoLabel"="Promo Code:";
 "DateTimePickerPickTime"="اختر وقت الإلتقاء:";
+"EtaLessThenAMinute"="The nearest taxi is {0} and less then a minute away";
 "CreateAccountErrorMessage"="لا يمكن إنشاء الحساب.";
 "View_RideSettings"="الملف الشخصي";
 "ScanCreditCard"="مسح بطاقة الائتمان";

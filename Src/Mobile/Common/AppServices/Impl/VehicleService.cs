@@ -173,7 +173,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		    return etaBetweenCoordinates;
 		}
 
-		public async Task<GeoDataEta> GetEtaFromGeo(double fromLat, double fromLng, string vehicleNumber, Guid orderId)
+		public async Task<GeoDataEta> GetVehiclePositionInfoFromGeo(double fromLat, double fromLng, string vehicleNumber, Guid orderId)
 	    {
 			var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleNumber, orderId));
 

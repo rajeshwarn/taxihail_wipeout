@@ -2038,7 +2038,7 @@
     <value>Confirmation code will be resend shortly</value>
   </data>
   <data name="OtherListItemLabel" xml:space="preserve">
-    <value>Other</value>
+    <value>Custom Percent</value>
   </data>
   <data name="OtherListItemPromptLabel" xml:space="preserve">
     <value>Enter a value:</value>

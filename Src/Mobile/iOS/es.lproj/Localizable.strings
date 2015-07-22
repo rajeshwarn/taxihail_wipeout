@@ -165,6 +165,7 @@
 "BookRatingErrorMessage"="Usted necesita calificar su servicio";
 "DriverInfoModel"="Modelo:";
 "AccountPaymentQuestionsRequired"="(requerido)";
+"OtherListItemPromptLabel"="Enter a value:";
 "LinkPayPal"="Link PayPal";
 "RideSettingsCustomerNumber"="Número de cliente";
 "WarningLocationServiceTitle"="Aviso";
@@ -512,7 +513,7 @@
 "LocationDetailApartmentLabel"="Departamento";
 "NetworkErrorMessage"="No hay conección de red, por favor compruebe su conección y trate de nuevo";
 "View_ConfirmCarNumber"="Confirmación";
-"OtherListItemLabel"="Other";
+"OtherListItemLabel"="Custom Percent";
 "BookRatingErrorTitle"="Aviso";
 "View"="Ver";
 "NoRingCodeText"="Número Código de entrada";
@@ -575,6 +576,7 @@
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "HistoryDetailPromoLabel"="Promo Code:";
 "DateTimePickerPickTime"="Seleccione la hora del servicio:";
+"EtaLessThenAMinute"="The nearest taxi is {0} and less then a minute away";
 "CreateAccountErrorMessage"="No se pudo crear su cuenta.";
 "View_RideSettings"="Perfil";
 "ScanCreditCard"="Escanear su Tarjeta de crédito";
