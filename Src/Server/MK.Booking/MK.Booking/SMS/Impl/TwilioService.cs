@@ -17,7 +17,6 @@ namespace apcurium.MK.Booking.SMS.Impl
             _serverSettings = serverSettings;
         }
 
-        // TODO toNumber - pass here libphonenumber.PhoneNumber object
         public void Send(libphonenumber.PhoneNumber toNumber, string message)
         {
             if (!toNumber.IsValidNumber)
