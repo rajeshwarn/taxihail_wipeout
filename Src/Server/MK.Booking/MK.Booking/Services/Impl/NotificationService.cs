@@ -766,13 +766,26 @@ namespace apcurium.MK.Booking.Services.Impl
                 return dropOffAddress;
             }
 
-            var lat = cmtRideLinqFields != null ? cmtRideLinqFields.LastLatitudeOfVehicle.Value : orderStatus.VehicleLatitude.Value;
-            var lon = cmtRideLinqFields != null ? cmtRideLinqFields.LastLongitudeOfVehicle.Value : orderStatus.VehicleLongitude.Value;
+            double latitude;
+            double longitude;
+
+            if (cmtRideLinqFields != null
+                && cmtRideLinqFields.LastLatitudeOfVehicle.HasValue
+                && cmtRideLinqFields.LastLongitudeOfVehicle.HasValue)
+            {
+                latitude = cmtRideLinqFields.LastLatitudeOfVehicle.Value;
+                longitude = cmtRideLinqFields.LastLongitudeOfVehicle.Value;
+            }
+            else
+            {
+                latitude = orderStatus.VehicleLatitude.Value;
+                longitude = orderStatus.VehicleLongitude.Value;
+            }
 
             // Find the exact dropoff address using the last vehicle position
             var exactDropOffAddress = _geocoding.Search(
-                lat,
-                lon,
+                latitude,
+                longitude,
                 clientLanguageCode).FirstOrDefault();
 
             return exactDropOffAddress ?? dropOffAddress;
