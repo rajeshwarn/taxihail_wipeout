@@ -133,17 +133,9 @@ namespace DatabaseInitializer.Sql
 
         public void TurnOffMirroring(string connStringMaster, string companyName)
         {
-            // Disabling multi-user mode
-            var setSingleUserMode = string.Format("ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE", companyName);
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, setSingleUserMode);
-            
             // Disabling Mirroring
             var setMirroringOff = string.Format("ALTER DATABASE {0} SET PARTNER OFF ", companyName);
             DatabaseHelper.ExecuteNonQuery(connStringMaster, setMirroringOff);
-
-            // Enabling Muti-user mode
-            var setMultiUserMode = string.Format("ALTER DATABASE {0} SET MULTI_USER", companyName);
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, setMultiUserMode);
         }
 
         public bool DatabaseExists(string connStringMaster, string companyName)

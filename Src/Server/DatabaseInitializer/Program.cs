@@ -107,44 +107,6 @@ namespace DatabaseInitializer
                 {
                     var temporaryDatabaseName = param.CompanyName + "_New";
 
-                    Console.WriteLine("Stop App Pool to finish Database Migration...");                
-                    using (var iisManager = new ServerManager())
-                    {
-                        var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
-                        if (appPool != null && appPool.State == ObjectState.Started)
-                        {
-                            appPool.Stop();
-                            Console.WriteLine("Local App Pool stopped");
-                        }
-                    }
-
-                    if (param.SecondWebServerName.HasValue())
-                    {
-                        try
-                        {
-                            Console.WriteLine("Stop Secondary App Pool ...");
-                            using (var remoteServerManager = ServerManager.OpenRemote(param.SecondWebServerName))
-                            {
-                                var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
-
-                                if (remoteAppPool != null && remoteAppPool.State == ObjectState.Started)
-                                {
-                                    remoteAppPool.Stop();
-                                    Console.WriteLine("Remote App Pool stopped.");
-                                }
-                                else if(remoteAppPool == null)
-                                {
-                                    Console.WriteLine("No AppPool named {0} found at {1}", param.SecondWebServerName, param.AppPoolName);
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("Failed to connect to remote server {0}", param.SecondWebServerName);
-                            Console.WriteLine(ex.Message);
-                        }
-                    }
-
                     if (param.ReuseTemporaryDb)
                     {
                         // the idea behind reuse of temp db is that account doesn't have permission to rename db 
@@ -358,15 +320,7 @@ namespace DatabaseInitializer
             replayService.ReplayAllEvents();
             Console.WriteLine("Done playing events...");
 
-            Console.WriteLine("Stop App Pool to finish Database Migration...");
-            var iisManager = new ServerManager();
-            var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
-
-            if (appPool != null
-                && appPool.State == ObjectState.Started)
-            {
-                appPool.Stop();
-            }
+            StopAppPools(param);
 
             var lastEventCopyDateTime = creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
 
@@ -385,6 +339,46 @@ namespace DatabaseInitializer
                 Console.WriteLine("Turning off database mirroring...");
                 creatorDb.TurnOffMirroring(param.MasterConnectionString, sourceDatabaseName);
                 Console.WriteLine("Database mirroring turned off.");
+            }
+        }
+
+        private static void StopAppPools(DatabaseInitializerParams param)
+        {
+            Console.WriteLine("Stop App Pool to finish Database Migration...");
+            var iisManager = new ServerManager();
+            var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+
+            if (appPool != null
+                && appPool.State == ObjectState.Started)
+            {
+                appPool.Stop();
+            }
+
+            if (param.SecondWebServerName.HasValue())
+            {
+                try
+                {
+                    Console.WriteLine("Stop Secondary App Pool ...");
+                    using (var remoteServerManager = ServerManager.OpenRemote(param.SecondWebServerName))
+                    {
+                        var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+
+                        if (remoteAppPool != null && remoteAppPool.State == ObjectState.Started)
+                        {
+                            remoteAppPool.Stop();
+                            Console.WriteLine("Remote App Pool stopped.");
+                        }
+                        else if (remoteAppPool == null)
+                        {
+                            Console.WriteLine("No AppPool named {0} found at {1}", param.SecondWebServerName, param.AppPoolName);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Failed to connect to remote server {0}", param.SecondWebServerName);
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
 
