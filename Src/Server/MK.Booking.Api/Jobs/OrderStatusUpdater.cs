@@ -46,6 +46,9 @@ namespace apcurium.MK.Booking.Api.Jobs
     public class OrderStatusUpdater
     {
         private const string FailedCode = "0";
+        
+        // maximum probable time between the moment when user changes payment type on his device and it's saving in the database on server, seconds
+        const int timeBetweenPaymentChangeAndSaveInDB = 15;
 
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -60,6 +63,8 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
+        private readonly IOrderNotificationsDetailDao _orderNotificationsDetailDao;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -82,6 +87,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             IEventSourcedRepository<Promotion> promoRepository,
             IPaymentService paymentService,
             ICreditCardDao creditCardDao,
+            IIBSServiceProvider ibsServiceProvider,
+            IOrderNotificationsDetailDao orderNotificationsDetailDao,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -98,6 +105,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             _logger = logger;
             _commandBus = commandBus;
             _paymentDao = paymentDao;
+            _ibsServiceProvider = ibsServiceProvider;
+            _orderNotificationsDetailDao = orderNotificationsDetailDao;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -106,6 +115,9 @@ namespace apcurium.MK.Booking.Api.Jobs
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail);
 
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail);
+
+            if (orderFromIbs.IsLoaded || orderFromIbs.IsMeterOffNotPaid || orderFromIbs.IsComplete)
+                SendChargeTypeToIBS(orderStatusDetail);
 
             if (orderFromIbs.IsWaitingToBeAssigned)
             {
@@ -132,6 +144,45 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Tip = orderFromIbs.Tip,
                 Tax = orderFromIbs.VAT
             });
+        }
+
+        void SendChargeTypeToIBS(OrderStatusDetail orderStatusDetail)
+        {
+            if (orderStatusDetail.UnpairingTimeOut != null)
+            {
+                // payment in car type sent during order creation or after by user manually during payment change
+                if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(timeBetweenPaymentChangeAndSaveInDB))
+                    //).TotalSeconds > _serverSettings.GetPaymentSettings().UnpairingTimeOut + timeBetweenPaymentChangeAndSaveInDB)
+                {
+                    if (!orderStatusDetail.IsPrepaid)
+                    {
+                        OrderNotificationDetail orderNotification = _orderNotificationsDetailDao.FindByOrderId(orderStatusDetail.OrderId);
+
+                        if (!orderNotification.InfoAboutPaymentWasSentToDriver)
+                        {
+                            OrderDetail orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
+
+                            if (orderDetail.Status != (int)OrderStatus.Canceled && orderDetail.Status != (int)OrderStatus.TimedOut && orderDetail.Status != (int)OrderStatus.Removed)
+                            {
+                                int ibsAccount = (int)_accountDao.GetIbsAccountId(orderDetail.AccountId, null);
+
+                                if ((int)orderDetail.Settings.ChargeTypeId != (int)ChargeTypes.PaymentInCar.Id)
+                                {
+                                    _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
+
+                                    _orderNotificationsDetailDao.SaveOrderNotificationDetail(new OrderNotificationDetail()
+                                    {
+                                        Id = orderNotification.Id,
+                                        IsTaxiNearbyNotificationSent = orderNotification.IsTaxiNearbyNotificationSent,
+                                        IsUnpairingReminderNotificationSent = orderNotification.IsUnpairingReminderNotificationSent,
+                                        InfoAboutPaymentWasSentToDriver = true
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)

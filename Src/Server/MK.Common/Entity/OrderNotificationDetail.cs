@@ -9,5 +9,7 @@ namespace apcurium.MK.Common.Entity
         public bool IsTaxiNearbyNotificationSent { get; set; }
 
         public bool IsUnpairingReminderNotificationSent { get; set; }
+
+        public bool InfoAboutPaymentWasSentToDriver { get; set; }
     }
 }
