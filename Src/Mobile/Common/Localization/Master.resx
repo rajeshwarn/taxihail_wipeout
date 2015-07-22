@@ -255,6 +255,9 @@
   <data name="AccountNotActivated" xml:space="preserve">
     <value>Your account has not been activated. Another activation email was sent to you.</value>
   </data>
+  <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
+    <value>Your account has not been activated. Another activation SMS was sent to you.</value>
+  </data>
   <data name="BookItButton" xml:space="preserve">
     <value>Book Now</value>
   </data>
@@ -2025,8 +2028,17 @@
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
   </data>
+  <data name="ResendConfirmationCodeButtonText" xml:space="preserve">
+    <value>Resend confirmation code</value>
+  </data>
+  <data name="ResendConfirmationCodeTitle" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ResendConfirmationCodeText" xml:space="preserve">
+    <value>Confirmation code will be resend shortly</value>
+  </data>
   <data name="OtherListItemLabel" xml:space="preserve">
-    <value>Other</value>
+    <value>Custom Percent</value>
   </data>
   <data name="OtherListItemPromptLabel" xml:space="preserve">
     <value>Enter a value:</value>

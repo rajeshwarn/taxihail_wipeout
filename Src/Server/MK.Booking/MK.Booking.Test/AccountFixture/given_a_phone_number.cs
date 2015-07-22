@@ -3,7 +3,6 @@ using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Maps.Impl;
-using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.SMS;
@@ -28,6 +27,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _sut = new EventSourcingTestHelper<Account>();
 
             _smsSenderMock = new Mock<ISmsService>();
+
             _orderDaoMock = new Mock<IOrderDao>();
             _serverSettings = new TestServerSettings();
             _serverSettings.SetSetting("TaxiHail.ApplicationName", ApplicationName);
@@ -59,7 +59,9 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 NationalNumber = long.Parse(phoneNumber)
             };
 
-            _smsSenderMock.Verify(s => s.Send(toPhoneNumber, It.Is<string>(message =>message.Contains(activationCode))));
+            _smsSenderMock.Verify(s => s.Send(
+                It.Is<libphonenumber.PhoneNumber>(x => x.CountryCode == toPhoneNumber.CountryCode && x.NationalNumber == toPhoneNumber.NationalNumber), 
+                It.Is<string>(message => message.Contains(activationCode))));
         }
     }
 }

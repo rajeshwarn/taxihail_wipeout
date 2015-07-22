@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.IoC;
 using Funq;
@@ -61,7 +62,8 @@ namespace apcurium.MK.Web.SelfHost
                 {
                     new CustomCredentialsAuthProvider(UnityContainerExtensions.Resolve<ICommandBus>(container),
                         UnityContainerExtensions.Resolve<IAccountDao>(container),
-                        UnityContainerExtensions.Resolve<IPasswordService>(container)),
+                        UnityContainerExtensions.Resolve<IPasswordService>(container),
+                        UnityContainerExtensions.Resolve<IServerSettings>(container)),
                     new CustomFacebookAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container)),
                     new CustomTwitterAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container))
                 }));

@@ -8,7 +8,6 @@ namespace apcurium.MK.Common
     /// http://www.iso.org/iso/home/standards/country_codes.htm
     /// http://www.itu.int/dms_pub/itu-t/opb/sp/T-SP-E.164C-2011-PDF-E.pdf
     /// </summary>
-
     public class CountryISOCode
     {
         public static readonly string[] countryISONames =
@@ -32,7 +31,7 @@ namespace apcurium.MK.Common
 
             set
             {
-                if ((value == null) || countryISOCodes.Count(c => c == value) == 1)
+                if (value == null || countryISOCodes.Count(c => c == value) == 1)
                 {
                     _code = value;
                 }
@@ -49,7 +48,7 @@ namespace apcurium.MK.Common
 
         public CountryISOCode(string code)
         {
-            this._code = null;
+            _code = null;
             Code = code;
         }
     }
@@ -57,6 +56,8 @@ namespace apcurium.MK.Common
     public struct CountryCode
     {
         public static readonly CountryCode[] CountryCodes;
+
+        private int _countryDialCode;
 
         static CountryCode()
         {
@@ -67,22 +68,20 @@ namespace apcurium.MK.Common
                 CountryCodes[i] = new CountryCode(CountryISOCode.countryISONames[i], CountryISOCode.countryISOCodes[i]);
             }
         }
-
-        CountryISOCode countryISOCode;
-        int countryDialCode;
-
-        public string CountryName { get; set; }
         
+        public string CountryName { get; set; }
+
+        private CountryISOCode _countryIsoCode;
         public CountryISOCode CountryISOCode
         {
             get
             {
-                return countryISOCode;
+                return _countryIsoCode;
             }
             set
             {
-                countryISOCode = value;
-                countryDialCode = libphonenumber.PhoneNumberUtil.Instance.GetCountryCodeForRegion(countryISOCode.Code);
+                _countryIsoCode = value;
+                _countryDialCode = libphonenumber.PhoneNumberUtil.Instance.GetCountryCodeForRegion(_countryIsoCode.Code);
             }
         }
         
@@ -90,7 +89,7 @@ namespace apcurium.MK.Common
         {
             get
             {
-                return countryDialCode;
+                return _countryDialCode;
             }
         }
 
@@ -99,23 +98,24 @@ namespace apcurium.MK.Common
             get
             {
                 if (CountryDialCode > 0)
-                    return "+" + CountryDialCode.ToString();
-                else
-                    return null;
+                {
+                    return "+" + CountryDialCode;
+                }
+                return null;
             }
         }
 
         public CountryCode(string countryName, string countryISOCode):this()
         {
-            this.countryISOCode = new CountryISOCode();
-            this.countryDialCode = 0;
+            _countryIsoCode = new CountryISOCode();
+            _countryDialCode = 0;
             CountryName = countryName;
             CountryISOCode = new CountryISOCode(countryISOCode);
         }
 
         public string GetTextCountryDialCode()
         {
-            return CountryDialCode != 0 ? "+" + CountryDialCode.ToString() : null;
+            return CountryDialCode != 0 ? "+" + CountryDialCode : null;
         }
 
         public static int GetCountryCodeIndexByCountryISOCode(CountryISOCode countryISOCode)
@@ -127,7 +127,7 @@ namespace apcurium.MK.Common
         {
             if (countryISOCode != null)
             {
-                for (int i = 0; i < CountryCodes.Length; i++)
+                for (var i = 0; i < CountryCodes.Length; i++)
                 {
                     if (countryISOCode == CountryCodes[i].CountryISOCode.Code)
                     {
@@ -141,7 +141,7 @@ namespace apcurium.MK.Common
 
         public static int GetCountryCodeIndexByCountryDialCode(int countryDialCode)
         {
-           for (int i = 0; i < CountryCodes.Length; i++)
+           for (var i = 0; i < CountryCodes.Length; i++)
            {
               if (countryDialCode == CountryCodes[i].CountryDialCode)
               {
@@ -156,7 +156,7 @@ namespace apcurium.MK.Common
 		{
 			if (!string.IsNullOrEmpty(countryDialCode))
 			{
-				int dialCode = 0;
+				int dialCode;
 
 				if (int.TryParse(countryDialCode.TrimStart ('+'), out dialCode))
 				{
@@ -179,14 +179,14 @@ namespace apcurium.MK.Common
 
         public string GetPhoneExample()
         {
-            libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(this.CountryISOCode.Code);
+            libphonenumber.PhoneNumber phoneNumberExample = libphonenumber.PhoneNumberUtil.Instance.GetExampleNumber(CountryISOCode.Code);
             string phoneNumberExampleText = phoneNumberExample.Format(libphonenumber.PhoneNumberUtil.PhoneNumberFormat.E164);
-            return phoneNumberExampleText.Replace("+" + this.CountryDialCode.ToString(), "");
+            return phoneNumberExampleText.Replace("+" + CountryDialCode, string.Empty);
         }
 
         public bool IsNumberPossible(string phoneNumber)
         {
-            return libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(phoneNumber, this.countryISOCode.Code);
+            return libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(phoneNumber, _countryIsoCode.Code);
         }
 
 		public override string ToString()

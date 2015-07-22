@@ -224,6 +224,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                 var imm = (InputMethodManager)owner.GetSystemService(Context.InputMethodService);
                 imm.ShowSoftInput(_inputText, ShowFlags.Forced);
                 imm.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.ImplicitOnly);
+                _inputText.RequestFocus();
             }
         }
 
