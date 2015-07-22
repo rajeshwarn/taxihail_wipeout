@@ -107,7 +107,6 @@ namespace DatabaseInitializer
                 {
                     var temporaryDatabaseName = param.CompanyName + "_New";
 
-                    PerformUpdate(param, creatorDb, param.CompanyName, temporaryDatabaseName);
                     Console.WriteLine("Stop App Pool to finish Database Migration...");                
                     using (var iisManager = new ServerManager())
                     {
@@ -118,7 +117,6 @@ namespace DatabaseInitializer
                             Console.WriteLine("Local App Pool stopped");
                         }
                     }
-                    
 
                     if (param.SecondWebServerName.HasValue())
                     {
@@ -154,30 +152,30 @@ namespace DatabaseInitializer
                         PerformUpdate(param, creatorDb, temporaryDatabaseName, param.CompanyName);
                     }
                       
-                        var oldDatabase = creatorDb.RenameDatabase(param.MasterConnectionString, param.CompanyName);
+                    var oldDatabase = creatorDb.RenameDatabase(param.MasterConnectionString, param.CompanyName);
 
-                        Console.WriteLine("Rename New Database to use Company Name...");
-                        creatorDb.RenameDatabase(param.MasterConnectionString, temporaryDatabaseName, param.CompanyName);
+                    Console.WriteLine("Rename New Database to use Company Name...");
+                    creatorDb.RenameDatabase(param.MasterConnectionString, temporaryDatabaseName, param.CompanyName);
 
-                        if (param.MkWebConnectionString.ToLower().Contains("integrated security=true"))
-                        {
-                            creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
-                                "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
-                        }
-
-                        SetupMirroring(param);
-
-                        if (!string.IsNullOrEmpty(param.BackupFolder))
-                        {
-                            Console.WriteLine("Backup of old database...");
-                            var backupFolder = Path.Combine(param.BackupFolder, param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
-                            Directory.CreateDirectory(backupFolder);
-                            creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, oldDatabase);
-
-                            Console.WriteLine("Dropping of old database...");
-                            creatorDb.DropDatabase(param.MasterConnectionString, oldDatabase);
-                        }
+                    if (param.MkWebConnectionString.ToLower().Contains("integrated security=true"))
+                    {
+                        creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
+                            "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
                     }
+
+                    SetupMirroring(param);
+
+                    if (!string.IsNullOrEmpty(param.BackupFolder))
+                    {
+                        Console.WriteLine("Backup of old database...");
+                        var backupFolder = Path.Combine(param.BackupFolder, param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
+                        Directory.CreateDirectory(backupFolder);
+                        creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, oldDatabase);
+
+                        Console.WriteLine("Dropping of old database...");
+                        creatorDb.DropDatabase(param.MasterConnectionString, oldDatabase);
+                    }
+                    
                 }
                 else
                 {
