@@ -53,6 +53,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
+
+        public ICommand ResendConfirmationCode
+        {
+            get
+            {
+                return this.GetCommand(async () =>
+                {
+                    await _registerService.GetConfirmationCode();
+                    this.Services().Message.ShowMessage(this.Services().Localize["ResendConfirmationCodeTitle"],
+                        this.Services().Localize["ResendConfirmationCodeText"]);
+                });
+            }
+        }
 	}
 }
-

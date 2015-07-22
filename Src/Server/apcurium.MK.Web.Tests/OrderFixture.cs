@@ -61,7 +61,8 @@ namespace apcurium.MK.Web.Tests
                             ChargeTypeId = 99,
                             VehicleTypeId = 1,
                             ProviderId = Provider.ApcuriumIbsProviderId,
-                            Phone = "514-555-12129",
+                            Phone = "5145551212",
+                            Country = new CountryISOCode("CA"),
                             Passengers = 6,
                             NumberOfTaxi = 1,
                             Name = "Joe Smith",
@@ -127,7 +128,8 @@ namespace apcurium.MK.Web.Tests
                     ChargeTypeId = ChargeTypes.Account.Id,
                     VehicleTypeId = 1,
                     ProviderId = Provider.ApcuriumIbsProviderId,
-                    Phone = "514-555-12129",
+                    Phone = "5145551212",
+                    Country = new CountryISOCode("CA"),
                     Passengers = 6,
                     NumberOfTaxi = 1,
                     Name = "Joe Smith",
@@ -176,7 +178,8 @@ namespace apcurium.MK.Web.Tests
                     ChargeTypeId = 99,
                     VehicleTypeId = 1,
                     ProviderId = Provider.ApcuriumIbsProviderId,
-                    Phone = "514-555-12129",
+                    Phone = "5145551212",
+                    Country = new CountryISOCode("CA"),
                     Passengers = 6,
                     NumberOfTaxi = 1,
                     Name = "Joe Smith",
@@ -210,6 +213,11 @@ namespace apcurium.MK.Web.Tests
                     Price = 10,
                     Distance = 3
                 },
+                Settings = new BookingSettings()
+                {
+                    Phone = "5145551212",
+                    Country = new CountryISOCode("CA")
+                },
                 ClientLanguageCode = SupportedLanguages.fr.ToString()
             };
 
@@ -237,7 +245,8 @@ namespace apcurium.MK.Web.Tests
                     ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                     VehicleTypeId = 1,
                     ProviderId = Provider.ApcuriumIbsProviderId,
-                    Phone = "514-555-12129",
+                    Phone = "5145551212",
+                    Country = new CountryISOCode("CA"),
                     Passengers = 6,
                     NumberOfTaxi = 1,
                     Name = "Joe Smith",
@@ -303,7 +312,8 @@ namespace apcurium.MK.Web.Tests
                     ChargeTypeId = 99,
                     VehicleTypeId = 1,
                     ProviderId = Provider.ApcuriumIbsProviderId,
-                    Phone = "514-555-1212",
+                    Phone = "5145551212",
+                    Country = new CountryISOCode("CA"),
                     Passengers = 6,
                     NumberOfTaxi = 1,
                     Name = "Joe Smith",

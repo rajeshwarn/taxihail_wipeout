@@ -145,6 +145,10 @@
     <value>Su cuenta no ha sido activada. Otro email de activación le ha sido enviado</value>
     <comment>Your account has not been activated. Another activation email was sent to you.</comment>
   </data>
+  <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
+    <value>Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado</value>
+    <comment>Your account has not been activated. Another activation SMS was sent to you.</comment>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Por favor introduzca un número de cuenta válido.</value>
     <comment>Please enter a valid account number</comment>
@@ -946,8 +950,7 @@
     <comment>Login error</comment>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>The mobile number is invalid. It must contain between 10 and 15 numbers.</value>
-    <comment>The mobile number is invalid. It must contain 10 numbers.</comment>
+    <value>The mobile number is invalid. It must have format {0}</value>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
     <value>Por favor entre una dirección de abordaje válida</value>
@@ -2468,10 +2471,31 @@
   <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
     <value>The order cannot be created, please try again.</value>
   </data>
+  <data name="DialCodeSelectorTitle" xml:space="preserve">
+    <value>Dial Code</value>
+  </data>
   <data name="ServiceError_EmailClientAbsent" xml:space="preserve">
     <value>Sorry, we're unable to create an email. There is no email client installed on this device</value>
   </data>
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
+  </data>
+  <data name="ResendConfirmationCodeButtonText" xml:space="preserve">
+    <value>Resend confirmation code</value>
+  </data>
+  <data name="ResendConfirmationCodeTitle" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ResendConfirmationCodeText" xml:space="preserve">
+    <value>Confirmation code will be resend shortly</value>
+  </data>
+  <data name="OtherListItemLabel" xml:space="preserve">
+    <value>Custom Percent</value>
+  </data>
+  <data name="OtherListItemPromptLabel" xml:space="preserve">
+    <value>Enter a value:</value>
+  </data>
+  <data name="EtaLessThenAMinute" xml:space="preserve">
+    <value>The nearest taxi is {0} and less then a minute away</value>
   </data>
 </root>

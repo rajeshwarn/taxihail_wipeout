@@ -33,6 +33,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.PostAsync<Account>("/account/register", account);
         }
 
+        public Task GetConfirmationCode(ConfirmationCodeRequest request)
+        {
+            var uri = string.Format("/account/getconfirmationcode/{0}", request.Email);
+            return Client.GetAsync<string>(uri);
+        }
+
         public Task ConfirmAccount(ConfirmAccountRequest request)
         {
 			var uri = string.Format ("/account/confirm/{0}/{1}/{2}", 

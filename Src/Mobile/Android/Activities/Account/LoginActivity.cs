@@ -143,30 +143,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             };
         }
 
-        private void PromptServer()
+        private async void PromptServer()
         {
-            var alert = new AlertDialog.Builder(this);
-            alert.SetTitle("Server Configuration");
-            alert.SetMessage("Enter Server Url");
-
-            var input = new EditText(this)
+            try
             {
-                InputType = InputTypes.TextFlagNoSuggestions,
-                Text = this.Services().Settings.ServiceUrl
-            };
+                var serviceUrl = await this.Services().Message.ShowPromptDialog("Server Configuration",
+                    "Enter Server Url",
+                    null,
+                    false,
+                    this.Services().Settings.ServiceUrl
+                );
 
-            alert.SetView(input);
-
-            alert.SetPositiveButton("Ok", (s, e) =>
+                if(serviceUrl != null)
+                {
+                    ViewModel.SetServerUrl(serviceUrl);
+                }
+            }
+            catch(Exception ex)
             {
-                var serverUrl = input.Text;
-
-                ViewModel.SetServerUrl(serverUrl);
-            });
-
-            alert.SetNegativeButton("Cancel", (s, e) => { });
-
-            alert.Show();
+                Console.WriteLine(ex.Message);
+            }
+           
         }
         
         protected override void OnDestroy()

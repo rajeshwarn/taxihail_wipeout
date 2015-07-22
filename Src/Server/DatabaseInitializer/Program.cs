@@ -528,6 +528,7 @@ namespace DatabaseInitializer
                 AccountId = Guid.NewGuid(),
                 Email = "john@taxihail.com",
                 Name = "John Doe",
+                Country = new CountryISOCode("CA"),
                 Phone = "6132875020",
                 Password = "password"
             };
@@ -551,6 +552,7 @@ namespace DatabaseInitializer
                 AccountId = Guid.NewGuid(),
                 Email = "taxihail@apcurium.com",
                 Name = "Administrator",
+                Country = new CountryISOCode("CA"),
                 Phone = "6132875020",
                 Password = "1l1k3B4n4n@", //Todo Make the admin portal customizable
                 IsAdmin = true
@@ -706,6 +708,7 @@ namespace DatabaseInitializer
                 var updateAccountCommand = new UpdateBookingSettings
                 {
                     AccountId = john.Id,
+                    Country = new CountryISOCode("CA"),
                     Phone = "6132875020",
                     Name = "John Doe",
                     NumberOfTaxi = john.Settings.NumberOfTaxi,

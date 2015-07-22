@@ -16,7 +16,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
 			:base(target)
         {
 			target.ItemSelected += _spinner_ItemSelected;
+            target.OtherValueSelected += Target_OtherValueSelected;
         }
+
+
 
         public override MvxBindingMode DefaultMode
         {
@@ -26,6 +29,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
         public override Type TargetType
         {
             get { return typeof (object); }
+        }
+
+        void Target_OtherValueSelected (object sender, string value)
+        {
+            int newValue;
+            if (Int32.TryParse(value, out newValue)
+                && !newValue.Equals(_currentValue))
+            {
+                FireValueChanged(value);
+            }
         }
 
         private void _spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
