@@ -1,4 +1,4 @@
-﻿"CreateAccountEmailPlaceHolder"="Email";
+"CreateAccountEmailPlaceHolder"="Email";
 "EstimateFareCalculating"="Calculating...";
 "CmtCardNumber"="Payment Method:";
 "Edit"="Edit";
@@ -25,6 +25,7 @@
 "UpdatePasswordNewPasswordLabel"="New Password";
 "DestinationNotSpecifiedText"="Destination not specified";
 "PickupMapTitle"="Pickup location";
+"DialCodeSelectorTitle"="Dial Code";
 "HomeView_ManualPairing"="In A Taxi";
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="Booking cannot be completed";
@@ -55,7 +56,6 @@
 "RateLastRideTitle"="Rate last ride?";
 "View_RefineAddress"="Pickup Details";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen";
-"CreditCardAdded_PayInCarDisabled"="Your account is now enabled to pay for rides with this credit card.";
 "PanelMenuViewLocationsText"="Locations";
 "CreateAccountFullNamePlaceHolder"="Full Name";
 "CreateAccountPasswordPlaceHolder"="Password";
@@ -66,6 +66,7 @@
 "Toggle_Off"="Off";
 "HistoryDetailPromoLabel"="Promo Code:";
 "CreateAccountPhonePlaceHolder"="Mobile";
+"Error_EditAutoTipMessage"="An error occurred while trying to update the tip. Please try again.";
 "ReminderTitle"="{0} Booked";
 "March"="Mar (03)";
 "StatusNewRideButton"="New Ride";
@@ -78,6 +79,7 @@
 "Error_AccountPaymentTitle"="Error";
 "Order"="Order";
 "View_SignIn"="";
+"GenericErrorTitle"="Error";
 "BookDateLabel"="Pick Me Up Later";
 "TabHistory"="History";
 "StatusCancelButton"="Cancel this order";
@@ -85,6 +87,7 @@
 "VehicleNumberErrorTitle"="Error";
 "NoConnectionMessage"=" The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.";
 "Safety"="Safety";
+"CallDriverUsingProxyErrorMessage"="Sorry, we weren't able to initiate a call with your driver.";
 "PromoExpiringSoonMessage"="Expires in {0} days";
 "BookDropoffLocationButtonTitle"="Destination";
 "PassengerPhoneLabel"="Phone";
@@ -94,7 +97,7 @@
 "CreditCardCCV"="CVV";
 "ApplicationName"="TaxiHail";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
-"PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to have a credit card configured in the app.";
+"PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to enter a credit card as part of your account.";
 "AccountDisabled"="Your account has been disabled, please contact {0} at {1} to activate your account.";
 "CreditCardExpYear"="Exp. Year";
 "HistoryDetailAuthorizationLabel"="Authorization:";
@@ -112,6 +115,7 @@
 "DateToday"="Today";
 "View_BookingDetail_TitleRideSettings"="Ride Settings";
 "UpdateBookingSettingsEmptyField"="The data is invalid, all the fields are required.";
+"Error_EditAutoTipTitle"="Error";
 "Notes"="Notes";
 "TabPlaces"="Places";
 "UpdateBookingSettingsGenericError"="An error occured when updating the booking settings";
@@ -130,11 +134,13 @@
 "Error_InvalidCvvTitle"="Invalid CVV";
 "StreetNumberLabel"="Refine your address";
 "View_Payments_CmtRideLinqChangePaymentTitle"="Change Payment Info";
+"ServiceError_EmailClientAbsent"="Sorry, we're unable to create an email. There is no email client installed on this device";
 "InvalidLoginMessageTitle"="Login error";
 "CreateAccountTitleArray"="MrMrs";
 "RideSettingsAccountNumber"="Account Number";
 "RideSettingsPassword"="Password";
 "View_BookingDetail"="Booking Details";
+"ManualRideLinqStatus_Toll"="Toll:";
 "WarningTitle"="Warning";
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";
 "Delete"="Delete";
@@ -170,7 +176,7 @@
 "PanelMenuViewAboutUsText"="About Us";
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "PaymentDetails.InvalidDataTitle"="Invalid payment information";
-"PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked in the app.";
+"PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked to your account.";
 "September"="Sep (09)";
 "SaveAddressEmptyFieldTitle"="Friendly name required";
 "Politeness"="Politeness";
@@ -195,6 +201,7 @@
 "View_RideLinqPair"="Check In";
 "DateTimePickerSetButton"="Book";
 "TaxiHailNetworkTimeOutPopupAlways"="Always Accept";
+"CreditCardAdded_PayInCarDisabled"="Your account is now enabled to pay for rides with this credit card.";
 "AccountConfirmation_ErrorTitle"="Cannot confirm account";
 "View_AccountConfirmation_Label_Instructions"="A text message with your code has been sent to your phone.";
 "NoFareText"="Choose a destination to get a price estimate.";
@@ -235,21 +242,25 @@
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "Tuto02Top"="We should be able to locate you using the GPS receiver in your mobile device.";
 "GenericTitle"="";
+"DriverInfoVehicleMedallion"="Medallion:";
 "CmtRideLinqConfirmPairViewConfirmPairDetailText"="Confirm that you are in the vehicle number indicated below.  By Tapping “Confirm”, this ride will automatically be paid by your credit card on file.";
 "ReSendConfirmation"="Notify driver of payment";
-"NoPhoneNumberMessage"="The phone number is invalid for this driver.";
+"NoPhoneNumberMessage"="Your phone number or the driver's phone number is invalid.";
 "PickupViewPickupLabel"="Pickup:";
 "AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";
+"MessageToDriverTitle"="Message to Driver";
 "searchHint"="Search";
 "TechSupportEmailTitle"="Support Application Mobile";
 "View_RideLinqSummary"="Order summary";
 "InvalidLocalContactMessage"="The address associated to this contact cannot be validated.";
 "ManualRideLinqStatus_Total"="Total cost:";
 "LargeBagsLabel"="Large Bags";
+"ManualRideLinqStatus_Payment"="Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.";
 "SendErrorLogButton"="Send error log";
 "LocationDetailNameLabel"="Nickname";
 "ResetPasswordInvalidDataTitle"="Invalid email";
-"NoPhoneNumberTitle"="Invalid phone Number";
+"NoPhoneNumberTitle"="Invalid Phone Number";
+"ManualRideLinqStatus_Extra"="Extra:";
 "UpdatedTermsAndConditionsAcceptButton"="Accept";
 "PaymentConfirmationMessageToDriver"="The passenger has paid {0} (auth : {1})";
 "Time"="Time";
@@ -312,7 +323,7 @@
 "TabSearch"="Search";
 "PromoDescriptionCode"="Enter code {0} or press the button below";
 "Error_AccountPaymentMessage"="Invalid account or rider number";
-"ManualRideLinqStatus_Medallion"="Vehicule number:";
+"ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "LoginForgotPasswordDetail"="Enter your email and we'll send you a new one.";
 "NoButton"="No";
 "PayInCar"="Pay Cash/Credit Card in Car";
@@ -329,7 +340,7 @@
 "CvvRequiredMessage"="Please enter the CVV associated with your card on file ending with {0} to continue";
 "DateTimePickerPickInvalidDateMessage"="The pickup date must be in the future.";
 "AddressSearchingText"="Searching...";
-"StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.";
+"StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A cancellation fee may apply.";
 "MarketChangedMessage"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.";
 "Notification_DriverAssignedEmail"="Driver Assigned (Email)";
 "Tuto04Top"="If you want, you can also set your destination.";
@@ -347,8 +358,8 @@
 "UpdateBookingSettingsInvalidDataTitle"="Invalid booking settings info";
 "Now"="Now";
 "RideSummarySubTitleText"="Thank you for riding with {0}, we look forward to serving you again soon.";
-"StatusConfirmCancelRide"="This action will cancel your order, do you want to continue ?";
-"InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
+"StatusConfirmCancelRide"="Are you sure you want to cancel?";
+"InvalidPhoneErrorMessage"="The mobile number is invalid. It must have format {0}";
 "RateRide"="Rate my ride";
 "ConfirmDestinationLabel"="Destination";
 "MarketChangedMessageTitle"="New service area detected";
@@ -374,6 +385,7 @@
 "WarningEstimateDontShow"="Don't warn";
 "View_SearchAddress"="Address Search";
 "View_AboutUs"="About Us";
+"ManualRideLinqStatus_Greetings"="Enjoy the ride!";
 "WarningLocationService"="Please turn on location services to have your location show up in the map.";
 "LoginViewPasswordPlaceHolder"="Password";
 "ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
@@ -413,7 +425,7 @@
 "ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.";
 "HistoryDetailBuildingNameLabel"="Building Name:";
 "EtaDurationUnit"="min";
-"HomeView_BookTaxi"="Book Taxi";
+"HomeView_BookTaxi"="Need a Taxi";
 "Create"="Create";
 "BackButton"="Back";
 "ConfirmPhoneLabel"="Mobile:";
@@ -422,12 +434,14 @@
 "View_History"="History";
 "PassengerNameLabel"="Name";
 "Processing"="Processing your order...";
+"ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
 "ChargeTypeCreditCardFile"="Credit Card on File";
 "ServerInfo"="({0} v{1})";
 "CardExpiredMessage"="Your credit card is expired. Add a new card to your account or update card informations to continue.";
 "LocationAddFavoriteTitle"="Add location";
 "PickupTimeTextPlaceholder"="Time: Now";
 "OrderNumber"="Order #";
+"ServiceError_ErrorCreatingOrderMessage_NoCall"="The order cannot be created, please try again.";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "Tuto06Top"="The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.";
 "Tuto04Bottom"="Doing so will provide an estimate for the cost for the trip.";
@@ -470,6 +484,7 @@
 "Toggle_On"="On";
 "ConfirmPassengersLabel"="Passengers:";
 "LocationViewTitle"="My Locations";
+"StatusEditAutoTipButton"="Tip";
 "DriverInfoDriver"="Driver:";
 "SettingsViewTitle"="Settings";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
@@ -500,6 +515,7 @@
 "LocationDetailApartmentLabel"="Apartment";
 "Overdue_Date"="Transaction date:";
 "View_ConfirmCarNumber"="Confirmation";
+"OtherListItemLabel"="Other";
 "View_BookingStatus"="Status";
 "View"="View";
 "NoRingCodeText"="No code";
@@ -511,6 +527,7 @@
 "PickupTextPlaceholder"="Pickup street address";
 "StatusActionCancelButton"="Cancel this order";
 "BookRatingErrorTitle"="Warning";
+"CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
 "InvalidBookinInfo"="To book a ride, you need to enter a valid pickup address.";
 "DateTimePickerPickInvalidDateTitle"="Invalid date / time";
 "Overdue_Instructions"="Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.";
@@ -519,7 +536,7 @@
 "ChooseProviderDialogTitle"="Pick a provider";
 "Overdue_Amount"="Amount due:";
 "UpdateBookingSettingsEmptyAccount"="Account and rider numbers cannot be empty when Charge Type is set to Charge Account";
-"PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured in the app.";
+"PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured as part of your account.";
 "CreateAccountPayBackPlaceHolder"="PayBack";
 "WarningPushServiceAction"="Thanks for letting me know";
 "CmtRideLinqConfirmPairView"="Confirm Payment Information";
@@ -565,6 +582,7 @@
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
 "Tuto05Bottom"="Or Tap the Later button to schedule your pickup for a future time or date.";
 "DriverInfoModel"="Model:";
+"ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "View_BookRating"="Rate Your Trip";
 "DateTimePickerPickTime"="Select your pickup time:";
 "CreateAccountErrorMessage"="The account cannot be created.";
@@ -599,6 +617,7 @@
 "WarningLocationServiceDontShow"="Don't warn";
 "Overdue_Failed_Title"="Payment Failed";
 "TAXI"="TAXI";
+"View_EditAutoTip"="Edit Tip";
 "DriverInfoLicence"="Licence #:";
 "RideHistoryButton"="Ride History";
 "Register"="Register";
@@ -613,5 +632,6 @@
 "NoMailClient"="There are no email clients installed.";
 "June"="Jun (06)";
 "ManualRideLinqStatus_Driver"="Driver id:";
+"SendMessageToDriverErrorMessage"="An error occurred while trying to contact the driver. Please try again later.";
 "InvalidAddressTextEdit"="Cannot validate adddress";
 "HistoryDetailPickupDateLabel"="Pickup Date:";

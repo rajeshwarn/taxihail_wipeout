@@ -26,5 +26,7 @@ namespace apcurium.MK.Common.Entity
 		public int? MaxLength { get; set; }
 
         public string ErrorMessage { get; set; }
+
+        public bool SaveAnswer { get; set; }
 	}
 }

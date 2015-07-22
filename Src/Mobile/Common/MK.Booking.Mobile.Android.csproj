@@ -117,6 +117,9 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="LibPhoneNumber">
+      <HintPath>..\Libraries\libphonenumber\libphonenumber.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
@@ -225,6 +228,8 @@
     <Compile Include="ViewModels\Callbox\CallboxLoginViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxOrderListViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxOrderViewModel.cs" />
+    <Compile Include="Models\PhoneNumberModel.cs" />
+    <Compile Include="ViewModels\EditAutoTipViewModel.cs" />
     <Compile Include="ViewModels\enum\ColorEnum.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
@@ -350,6 +355,7 @@
     <Compile Include="CancellableCommand.cs" />
     <Compile Include="ViewModels\Payment\OverduePaymentViewModel.cs" />
     <Compile Include="BindingConverter\StringFormatConverter.cs" />
+    <Compile Include="BindingConverter\DialCodeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
@@ -381,6 +387,7 @@
     <None Include="Localization\Master.resx">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Localization\BlackCabNow.resx" />
     <EmbeddedResource Include="Localization\Master.es.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -22,6 +22,8 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
 using apcurium.MK.Common.Entity;
+using Cirrious.CrossCore;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -417,10 +419,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 SetMapEnabled(false);
 
-                ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+                var localize = this.Services().Localize;
 
-                var intent = new Intent(this, typeof (OrderBookingOptionsDialogActivity));
-                StartActivityForResult(intent, (int)ActivityEnum.BookATaxi);
+                this.Services().Message.ShowMessage(null, localize["BookATaxi_Message"],
+                    localize["Cancel"],
+                    () => { ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible(); },
+                    localize["Now"],
+                    () => { ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(); },
+                    localize["BookItLaterButton"],
+                    () => { ViewModel.BottomBar.BookLater.ExecuteIfPossible(); });
             }
             else if (_presentationState == HomeViewModelState.Review)
             {

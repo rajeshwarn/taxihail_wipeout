@@ -19,6 +19,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private TaxiHailNetworkSettings _tomTaxi;
         private TaxiHailNetworkSettings _pilouTaxi;
         private TaxiHailNetworkSettings _lastTaxi;
+        private TaxiHailNetworkSettings _blacklistedTaxi;
 
         private Company _chrisTaxiCompany;
         private Company _chrisTaxiBisCompany;
@@ -26,6 +27,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private Company _tomTaxiCompany;
         private Company _pilouTaxiCompany;
         private Company _lastTaxiCompany;
+        private Company _blacklistedTaxiCompany;
 
         const string BaseUrl = "http://localhost/CustomerPortal.Web/";
 
@@ -56,7 +58,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true,Order = 1},
                 }
             };
-           
+
             _chrisTaxiBis = new TaxiHailNetworkSettings()
             {
                 Id = "ChrisTaxiBis",
@@ -136,12 +138,29 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "LastTaxi",
                 IsInNetwork = true,
                 Market = "SYD",
+                BlackListedFleetIds = "10101019, 666, 010101",
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate{Latitude = 45.563135,Longitude = -73.71953}, //College Montmorency Laval
                     CoordinateEnd = new MapCoordinate{Latitude = 45.498094,Longitude = -73.62233} //Station cote des neiges
                 }
             };
+
+            _blacklistedTaxi = new TaxiHailNetworkSettings()
+            {
+                Id = "TaxiBlacklisted",
+                IsInNetwork = true,
+                Market = "SYD",
+                FleetId = 666,
+                Region = new MapRegion()
+                {
+                    CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
+                }
+            };
+           
+
+
 
             _chrisTaxiCompany = new Company()
             {
@@ -216,6 +235,20 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 }
             };
 
+            _blacklistedTaxiCompany = new Company()
+            {
+                Id = "BlacklistedTaxi",
+                CompanyKey = "BlacklistedTaxi",
+                CompanyName = "BlacklistedTaxi",
+                IBS = new IBSSettings
+                {
+                    Password = "test",
+                    Username = "Taxi",
+                    ServiceUrl = "http://google.com"
+                }
+            };
+
+
             NetworkRepository.DeleteAll();
             NetworkRepository.Add(_chrisTaxi);
             NetworkRepository.Add(_chrisTaxiBis);
@@ -223,6 +256,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             NetworkRepository.Add(_tomTaxi);
             NetworkRepository.Add(_pilouTaxi);
             NetworkRepository.Add(_lastTaxi);
+            NetworkRepository.Add(_blacklistedTaxi);
 
             CompanyRepository.DeleteAll();
             CompanyRepository.Add(_chrisTaxiCompany);
@@ -231,6 +265,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             CompanyRepository.Add(_tomTaxiCompany);
             CompanyRepository.Add(_pilouTaxiCompany);
             CompanyRepository.Add(_lastTaxiCompany);
+            CompanyRepository.Add(_blacklistedTaxiCompany);
         }
 
         public InMemoryRepository<TaxiHailNetworkSettings> NetworkRepository { get; set; }
@@ -283,6 +318,23 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreNotEqual(true, results.Any(t => t.CompanyPreference.CompanyKey == "ChrisTaxi"));
             Assert.AreNotEqual(true, results.Any(t => t.CompanyPreference.CompanyKey == "PilouTaxi"));
         }
+
+
+        [Test]
+        public void When_Company_In_Blacklist()
+        {
+            var response = Sut.Get(_lastTaxi.Id);
+            Assert.True(response.IsSuccessStatusCode);
+            var json = response.Content.ReadAsStringAsync().Result;
+
+            var results = JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
+
+            Assert.AreEqual(5, results.Count);
+
+            // Should Not return BlacklistedTaxi
+            Assert.AreNotEqual(true, results.Any(t => t.CompanyPreference.CompanyKey == "TaxiBlacklisted"));
+        }
+
 
         [Test]
         public void When_Regions_Overlap()

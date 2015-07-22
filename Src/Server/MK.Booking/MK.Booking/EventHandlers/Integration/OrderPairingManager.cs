@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
@@ -10,7 +11,8 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Common.Diagnostic;
-using RestSharp.Extensions;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -23,8 +25,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
         private readonly ILogger _logger;
+        private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPaymentService _paymentFacadeService;
         private readonly IServerSettings _serverSettings;
+        private readonly Resources.Resources _resources;
 
         public OrderPairingManager(INotificationService notificationService, 
             IOrderDao orderDao,
@@ -32,7 +36,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IAccountDao accountDao,
             IPaymentService paymentFacadeService,
             IServerSettings serverSettings,
-            ILogger logger)
+            ILogger logger,
+            Func<BookingDbContext> contextFactory)
         {
             _notificationService = notificationService;
             _orderDao = orderDao;
@@ -41,6 +46,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _paymentFacadeService = paymentFacadeService;
             _serverSettings = serverSettings;
             _logger = logger;
+            _contextFactory = contextFactory;
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -67,7 +74,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
-                        if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt
+                        if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt
                             && _serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment 
                             && !orderStatus.RideLinqPairingCode.HasValue())
                         {
@@ -79,12 +86,30 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var cardToken = creditCard != null ? creditCard.Token : null;
                         var defaultTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
 
-                        var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, defaultTipPercentage);
+                        var response = _paymentFacadeService.Pair(order.CompanyKey, @event.SourceId, cardToken, defaultTipPercentage);
+
+                        if (!response.IsSuccessful)
+                        {
+                            UpdatePairingFailedStatusDescription(order.Id, account.Language);
+                        }
 
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful);
                     } 
                 }
                 break;
+            }
+        }
+
+        private void UpdatePairingFailedStatusDescription(Guid orderId, string language)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var details = context.Find<OrderStatusDetail>(orderId);
+                if (details != null)
+                {
+                    details.IBSStatusDescription = _resources.Get("OrderStatus_PairingFailed", language ?? SupportedLanguages.en.ToString());
+                    context.Save(details);
+                }
             }
         }
     }

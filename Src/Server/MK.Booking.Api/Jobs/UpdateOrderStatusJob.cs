@@ -17,8 +17,8 @@ using apcurium.MK.Common.Configuration;
 using System.Reactive.Linq;
 using System.Diagnostics;
 using apcurium.MK.Common.Enumeration;
-using HoneyBadger;
-using HoneyBadger.Responses;
+using CMTServices;
+using CMTServices.Responses;
 using ServiceStack.Common;
 
 #endregion

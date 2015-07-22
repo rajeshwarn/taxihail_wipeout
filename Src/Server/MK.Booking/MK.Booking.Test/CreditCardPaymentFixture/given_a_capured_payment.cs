@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             Assert.Throws<InvalidOperationException>(() => _sut.When(new CaptureCreditCardPayment
             {
                 PaymentId = _paymentId,
-                AuthorizationCode = _authCode,
+                AuthorizationCode = _authCode
             }));
         }
     }

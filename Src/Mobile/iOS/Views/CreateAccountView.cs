@@ -98,11 +98,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				KeyboardType = UIKeyboardType.EmailAddress
 			}.Bind (bindings, vm => vm.Data.Email);
 
+
+            PhoneNumberModel phoneNumberInfo = (bindings.BindingContextOwner.BindingContext.DataContext as CreateAccountViewModel).PhoneNumber;
+			PhoneEditorElement phoneEditorElement = new PhoneEditorElement(string.Empty, phoneNumberInfo, this.NavigationController);
+
 			var section = new Section () {
 				emailEntryElement,
 				fullNameEntryElement,
-				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPhonePlaceHolder"), ViewModel.Data.Phone){ KeyboardType = UIKeyboardType.PhonePad }
-					.Bind(bindings, vm => vm.Data.Phone)
+				phoneEditorElement
 			};
 
 			if (!ViewModel.HasSocialInfo) {

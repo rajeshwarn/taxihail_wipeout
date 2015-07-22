@@ -51,6 +51,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<CreditCardDeactivated>(NoAction);
             Handles<OverduePaymentLogged>(NoAction);
             Handles<OverduePaymentSettled>(NoAction);
+            Handles<AccountAnswersAddedUpdated>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -59,11 +60,11 @@ namespace apcurium.MK.Booking.Domain
             LoadFrom(history);
         }
 
-        public Account(Guid id, string name, string phone, string email, byte[] password, 
+        public Account(Guid id, string name, CountryISOCode country, string phone, string email, byte[] password, 
             string confirmationToken, string language, bool accountActivationDisabled, string payBack, bool isAdmin = false)
             : this(id)
         {
-            if (Params.Get(name, phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
+            if (Params.Get(name, country.SelectOrDefault(countryCode => countryCode.Code), phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
                 || (password == null))
             {
                 throw new InvalidOperationException("Missing required fields");
@@ -73,6 +74,7 @@ namespace apcurium.MK.Booking.Domain
                 SourceId = id,
                 Name = name,
                 Email = email,
+                Country = country,
                 Phone = phone,
                 Password = password,
                 ConfirmationToken = confirmationToken,
@@ -83,11 +85,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public Account(Guid id, string name, string phone, string email, string payBack, string facebookId = null,
+        public Account(Guid id, string name, CountryISOCode country, string phone, string email, string payBack, string facebookId = null,
             string twitterId = null, string language = null, bool isAdmin = false)
             : this(id)
         {
-            if (Params.Get(name, phone, email).Any(p => p.IsNullOrEmpty()))
+            if (Params.Get(name, country.Code, phone, email).Any(p => p.IsNullOrEmpty()))
             {
                 throw new InvalidOperationException("Missing required fields");
             }
@@ -96,6 +98,7 @@ namespace apcurium.MK.Booking.Domain
                 SourceId = id,
                 Name = name,
                 Email = email,
+                Country = country,
                 Phone = phone,
                 TwitterId = twitterId,
                 FacebookId = facebookId,
@@ -167,6 +170,7 @@ namespace apcurium.MK.Booking.Domain
                 ChargeTypeId = settings.ChargeTypeId,
                 NumberOfTaxi = settings.NumberOfTaxi,
                 Passengers = settings.Passengers,
+                Country = settings.Country,
                 Phone = settings.Phone,
                 ProviderId = settings.ProviderId,
                 VehicleTypeId = settings.VehicleTypeId,
@@ -365,7 +369,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new PayPalAccountUnlinked());
         }
 
-        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate)
+        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType)
         {
             Update(new CreditCardDeactivated());
             Update(new OverduePaymentLogged
@@ -374,7 +378,8 @@ namespace apcurium.MK.Booking.Domain
                 IBSOrderId = ibsOrderId,
                 Amount = amount,
                 TransactionId = transactionId,
-                TransactionDate = transactionDate
+                TransactionDate = transactionDate,
+                FeeType = feeType
             });
         }
 
@@ -383,6 +388,14 @@ namespace apcurium.MK.Booking.Domain
             Update(new OverduePaymentSettled
             {
                 OrderId = orderId
+            });
+        }
+
+        public void SaveQuestionAnswers(IEnumerable<AccountChargeQuestionAnswer> answers)
+        {
+            Update(new AccountAnswersAddedUpdated
+            {
+                Answers = answers.ToArray()
             });
         }
     }

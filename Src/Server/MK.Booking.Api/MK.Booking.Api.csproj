@@ -68,6 +68,10 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.3.9.71\lib\net35\ServiceStack.dll</HintPath>
@@ -102,6 +106,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.4\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -129,6 +134,7 @@
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\OrderStatusUpdater.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
+    <Compile Include="Services\DriverService.cs" />
     <Compile Include="Services\ManualRidelinqOrderService.cs" />
     <Compile Include="Services\Maps\PostalCodeService.cs" />
     <Compile Include="Services\Payment\OverduePaymentService.cs" />
@@ -232,9 +238,9 @@
       <Project>{5fd750a2-ee19-4a80-9b38-32adbf03765a}</Project>
       <Name>CMTPayment</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HoneyBadger\HoneyBadger.csproj">
+    <ProjectReference Include="..\CMTServices.Server\CMTServices.Server.csproj">
       <Project>{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}</Project>
-      <Name>HoneyBadger</Name>
+      <Name>CMTServices.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>

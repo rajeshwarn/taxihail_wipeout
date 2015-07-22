@@ -141,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return Tips.First(x => x.Id == Tip).Display;
+				return string.Format("{0}%", Tip);
 			}
 		}
 
@@ -151,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             get
             {
-                return TipListDisabled ? "" : Tips.First(x => x.Id == Tip).Display;
+				return TipListDisabled ? "" : string.Format("{0}%", Tip);
             }
         }
     }

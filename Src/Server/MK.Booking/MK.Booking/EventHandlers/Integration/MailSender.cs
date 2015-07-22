@@ -1,14 +1,17 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using apcurium.MK.Booking.CommandBuilder;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -69,7 +72,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (@event.Status.IsPrepaid)
                 {
                     // Send receipt for PrePaid
-                    SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare ?? 0), Convert.ToDecimal(@event.Tip ?? 0), Convert.ToDecimal(@event.Tax ?? 0));
+                    // No tolls and surcharge for prepaid orders
+                    SendTripReceipt(@event.SourceId, 
+                        Convert.ToDecimal(@event.Fare ?? 0),
+                        Convert.ToDecimal(@event.Tip ?? 0),
+                        Convert.ToDecimal(@event.Tax ?? 0)); 
                 }
                 else
                 {
@@ -79,22 +86,67 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     if (order.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
                     {
                         // Send receipt for Pay in Car
-                        SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare), Convert.ToDecimal(@event.Tip), Convert.ToDecimal(@event.Tax));
+                        SendTripReceipt(@event.SourceId,
+                            Convert.ToDecimal(@event.Fare ?? 0),
+                            Convert.ToDecimal(@event.Tip ?? 0),
+                            Convert.ToDecimal(@event.Tax ?? 0),
+                            toll: Convert.ToDecimal(@event.Toll ?? 0),
+                            surcharge: Convert.ToDecimal(@event.Surcharge ?? 0));
                     }
                     else if (pairingInfo != null && pairingInfo.DriverId.HasValue() && pairingInfo.Medallion.HasValue() && pairingInfo.PairingToken.HasValue())
                     {
                         // Send receipt for CMTRideLinq
-                        InitializeCmtServiceClient();
+                        InitializeCmtServiceClient(order.CompanyKey);
 
                         var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
                         if (tripInfo != null && tripInfo.EndTime.HasValue)
                         {
+							var tollHistory = tripInfo.TollHistory != null
+								? tripInfo.TollHistory.Sum(p => p.TollAmount)
+								: 0;
+
                             var meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-                            var tollAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
+                            var tollAmount = Math.Round(((double)tollHistory / 100), 2);
                             var tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                             var taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
+                            var surchargeAmount = Math.Round(((double)tripInfo.Surcharge / 100), 2);
+                            var extraAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
+                            var accessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2);
+                            var fareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2);
 
-                            SendReceipt(@event.SourceId, Convert.ToDecimal(meterAmount), Convert.ToDecimal(tipAmount), Convert.ToDecimal(taxAmount), toll: Convert.ToDecimal(tollAmount), driverIdOverride: tripInfo.DriverId.ToString());
+                            var tolls = new List<TollDetail>();
+
+                            if (tripInfo.TollHistory != null)
+                            {
+                                tolls.AddRange(tripInfo.TollHistory.Select(toll =>
+                                    new TollDetail
+                                    {
+                                        TollName = toll.TollName,
+                                        TollAmount = toll.TollAmount
+                                    }));
+                            }
+    
+                            SendTripReceipt(@event.SourceId, 
+                                Convert.ToDecimal(meterAmount),
+                                Convert.ToDecimal(tipAmount),
+                                Convert.ToDecimal(taxAmount),
+                                extra: Convert.ToDecimal(extraAmount),
+                                toll: Convert.ToDecimal(tollAmount),
+                                surcharge: Convert.ToDecimal(surchargeAmount),
+                                cmtRideLinqFields: new SendReceipt.CmtRideLinqReceiptFields
+                                {
+                                    DriverId = tripInfo.DriverId.ToString(),
+                                    PickUpDateTime = tripInfo.StartTime,
+                                    DropOffDateTime = tripInfo.EndTime,
+                                    TripId = tripInfo.TripId,
+                                    Distance = tripInfo.Distance,
+                                    LastFour = tripInfo.LastFour,
+                                    AccessFee = accessFee,
+                                    FareAtAlternateRate = fareAtAlternateRate,
+                                    RateAtTripEnd = tripInfo.RateAtTripEnd,
+                                    RateAtTripStart = tripInfo.RateAtTripStart,
+                                    Tolls = tolls.ToArray()
+                                });
                         }
                     }
                 } 
@@ -103,15 +155,30 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
-            if (@event.IsNoShowFee
-                || @event.IsForPrepaidOrder)
+            @event.MigrateFees();
+
+            if (@event.IsForPrepaidOrder || @event.FeeType == FeeTypes.Booking)
             {
-                // Don't message user
-                // In the case of Prepaid order, he will be notified at the end of the ride
+                // Don't message user, he will be notified at the end of the ride
                 return;
             }
 
-            SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, @event.AmountSavedByPromotion);
+            if (@event.FeeType == FeeTypes.Cancellation || @event.FeeType == FeeTypes.NoShow)
+            {
+                SendFeesReceipt(@event.OrderId, @event.Amount, @event.FeeType);
+            }
+            else
+            {
+                SendTripReceipt(
+                    @event.OrderId, 
+                    @event.Meter,
+                    @event.Tip,
+                    @event.Tax,
+                    toll: @event.Toll,
+                    surcharge: @event.Surcharge,
+                    bookingFees: @event.BookingFees,
+                    amountSavedByPromotion: @event.AmountSavedByPromotion);
+            }
         }
 
         public void Handle(ManualRideLinqTripInfoUpdated @event)
@@ -127,8 +194,29 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     order.Tip = @event.Tip;
                     order.Tax = @event.Tax;
                     order.Toll = @event.Toll;
-   
-                    SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare), Convert.ToDecimal(@event.Tip), Convert.ToDecimal(@event.Tax), toll: Convert.ToDecimal(@event.Toll));
+                    order.Surcharge = @event.Surcharge;
+                    
+                    SendTripReceipt(@event.SourceId, 
+                        Convert.ToDecimal(@event.Fare ?? 0),
+                        Convert.ToDecimal(@event.Tip ?? 0),
+                        Convert.ToDecimal(@event.Tax ?? 0),
+                        extra: Convert.ToDecimal(@event.Extra ?? 0),
+                        toll: Convert.ToDecimal(@event.Toll ?? 0),
+                        surcharge: Convert.ToDecimal(@event.Surcharge ?? 0),
+                        cmtRideLinqFields: new SendReceipt.CmtRideLinqReceiptFields
+                        {
+                            DriverId = @event.DriverId.ToString(),
+                            PickUpDateTime = @event.StartTime,
+                            DropOffDateTime = @event.EndTime,
+                            TripId = @event.TripId,
+                            Distance = @event.Distance,
+                            LastFour = @event.LastFour,
+                            AccessFee = @event.AccessFee,
+                            FareAtAlternateRate = @event.FareAtAlternateRate,
+                            RateAtTripEnd = @event.RateAtTripEnd.HasValue ? Convert.ToInt32(@event.RateAtTripEnd) : 0,
+                            RateAtTripStart = @event.RateAtTripStart.HasValue ? Convert.ToInt32(@event.RateAtTripStart) : 0,
+                            Tolls = @event.Tolls
+                        });
                 }
             }
         }
@@ -163,7 +251,24 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m, decimal toll = 0, string driverIdOverride = null )
+        private void SendFeesReceipt(Guid orderId, decimal feeAmount, FeeTypes feeType)
+        {
+            var order = _orderDao.FindById(orderId);
+            var account = _accountDao.FindById(order.AccountId);
+            var creditCard = _creditCardDao.FindByAccountId(order.AccountId).First();
+
+            if (feeType == FeeTypes.Cancellation)
+            {
+                _notificationService.SendCancellationFeesReceiptEmail(order.IBSOrderId ?? 0, Convert.ToDouble(feeAmount), creditCard.Last4Digits, account.Email, account.Language);
+            }
+            else if (feeType == FeeTypes.NoShow)
+            {
+                _notificationService.SendNoShowFeesReceiptEmail(order.IBSOrderId ?? 0, Convert.ToDouble(feeAmount), order.PickupAddress, creditCard.Last4Digits, account.Email, account.Language);
+            }
+        }
+
+        private void SendTripReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m,
+            decimal toll = 0m, decimal extra = 0m, decimal surcharge = 0m, decimal bookingFees = 0m, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields = null)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -193,15 +298,31 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     var promoUsed = _promotionDao.FindByOrderId(orderId);
                     var ibsOrderId = order.IBSOrderId;
 
+
+                    decimal fare;
                     if (order.IsManualRideLinq)
                     {
                         var manualRideLinqDetail = context.Find<OrderManualRideLinqDetail>(orderStatus.OrderId);
                         ibsOrderId = manualRideLinqDetail.TripId;
+
+                        fare = meter;
+                    }
+                    else
+                    {
+                        if (cmtRideLinqFields != null)
+                        {
+                            fare = meter;
+                        }
+                        else
+                        {
+                            // Meter also contains toll and surcharge, to send an accurate receipt, we need to remove both toll and surcharge.
+                            fare = orderPayment.SelectOrDefault(payment => payment.Meter - payment.Toll - surcharge, meter - toll - surcharge);
+                        }
                     }
 
-                    if (driverIdOverride.HasValue())
+                    if (cmtRideLinqFields != null && cmtRideLinqFields.DriverId.HasValue())
                     {
-                        orderStatus.DriverInfos.DriverId = driverIdOverride;
+                        orderStatus.DriverInfos.DriverId = cmtRideLinqFields.DriverId;
                     }
 
                     var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
@@ -210,23 +331,27 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         ibsOrderId,
                         orderStatus.VehicleNumber,
                         orderStatus.DriverInfos,
-                        orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Meter), Convert.ToDouble(meter)),
+                        Convert.ToDouble(fare),
                         Convert.ToDouble(toll),
+                        Convert.ToDouble(extra),
+                        Convert.ToDouble(surcharge),
+                        Convert.ToDouble(bookingFees),
                         orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Tip), Convert.ToDouble(tip)),
                         Convert.ToDouble(tax),
                         orderPayment,
                         Convert.ToDouble(amountSavedByPromotion),
                         promoUsed,
-                        card);
+                        card,
+                        cmtRideLinqFields);
 
                     _commandBus.Send(command);
                 }
             }
         }
 
-        private void InitializeCmtServiceClient()
+        private void InitializeCmtServiceClient(string companyKey)
         {
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings(companyKey).CmtPaymentSettings, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }

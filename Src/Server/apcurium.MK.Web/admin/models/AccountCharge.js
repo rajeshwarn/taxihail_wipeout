@@ -47,6 +47,7 @@
                     answer: model.get('answerFields')[i],
                     isRequired: model.get('questionIsRequiredFields' + i) == 'on',
                     isCaseSensitive: model.get('questionIsCaseSensitiveFields' + i) == 'on',
+                    saveAnswer: model.get('questionSaveAnswerFields' + i) == 'on',
                     maxLength: model.get('questionMaxLengthFields')[i],
                     errorMessage: model.get('errorMessageFields')[i]
                 };

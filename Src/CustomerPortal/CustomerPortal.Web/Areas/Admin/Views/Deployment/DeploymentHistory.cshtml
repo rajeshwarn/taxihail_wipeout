@@ -1,0 +1,98 @@
+﻿@using CustomerPortal.Web.Security
+@using GridMvc.Html
+@model CustomerPortal.Web.Areas.Admin.Models.DeploymentJobModel
+
+@{
+    ViewBag.Title = "History";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml";
+}
+
+<div style="width: 980px; overflow: hidden">
+    <div style="width: 860px; float: right; padding-bottom: 20px;">
+        <h4>&nbsp;</h4>
+    </div>
+</div>
+
+<div style="width: 100px; float: left; position: fixed">@Html.Partial("_DeployRevisionPartial")</div>
+<div style="width: 870px; float: right">
+    @Html.Grid(Model.Jobs).Columns(columns =>
+    {
+        
+        columns.Add(job => job.Company.CompanyName)
+            .Titled("Company")
+            .SetWidth(90)
+            .IsCustomHtmlColumn(true)
+            .RenderValueAs(job => @<a href="@Url.Action("Manage", "Home", new {area = "Admin", id = @job.Company.Id})">@job.Company.CompanyName</a>)
+            .Sortable(true)
+            .Filterable(true);
+            
+        columns.Add(job => job.UserName)
+            .Titled("User")
+            .SetWidth(90)
+            .Filterable(true);
+            
+        columns.Add(job => job.Status)
+            .Titled("Status")
+            .IsCustomHtmlColumn(true)
+            .RenderValueAs(job => @<a title="@job.Details" data-status data-key="@job.Id" href="@Url.Action("Details", new { id = @job.Id })" class="btn btn-link">@job.Status</a>)
+            .Filterable(true);
+            
+        columns.Add(job => job.Server.Name).Titled("Server");
+        
+        columns.Add(job => job.Action).Titled("Action");
+        
+        columns.Add(job => job.Date)
+            .RenderValueAs(job => job.Date.ToLocalTime().ToString("G")).Titled("Date")
+            .Sortable(true)
+            .Filterable(true);
+
+        columns.Add(job => job.Revision.Tag)
+            .Titled("Revision")
+            .IsCustomHtmlColumn(true)
+            .RenderValueAs(job => job.Revision.Tag + "\r\n(" + job.Revision.Commit + ")")
+            .Filterable(true);
+
+        if (SecurityHelper.IsApcuriumUser)
+        {
+            columns.Add(job => job.Id)
+                .Titled("Actions")
+                .IsCustomHtmlColumn(true)
+                .RenderValueAs(job =>
+                    @<div>
+                        <a href="@Url.Action("Copy", new {id = job.Id})">
+                            <img src="~/Images/copy.png" width="20"/>
+                        </a>
+                        <a href="@Url.Action("Index", "Version", new {area = "Admin", id = job.Company.Id})">
+                            <img src="~/Images/download.jpg" width="20"/>
+                        </a>
+                    </div>
+                );
+        }
+        else
+        {
+           columns.Add(job => job.Type)
+               .Titled("Actions")
+               .IsCustomHtmlColumn(true)
+               .RenderValueAs(job =>
+                    @<a href="@Url.Action("Index", "Version", new {area = "Admin", id = job.Company.Id})">
+                        <img src="~/Images/download.jpg" width="20" />
+                    </a>
+                ); 
+        }
+            
+    }).WithPaging(50).Selectable(false);
+</div>
+@section Scripts {
+    <script>
+        $("[data-status]").fetchStatus();
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('[data-status]').tipsy({ html: true, gravity: 'nw' });
+        });
+        $('[data-status]').tipsy({ html: true, gravity: 'nw' });
+
+    </script>
+
+}

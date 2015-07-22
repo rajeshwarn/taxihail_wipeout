@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.IBS
         public double Fare { get; set; }
         public double Tip { get; set; }
         public double VAT { get; set; }
+        public double Surcharge { get; set; }
         public string VehicleNumber { get; set; }
 
         public string PairingCode { get; set; }
@@ -41,7 +42,14 @@ namespace apcurium.MK.Booking.IBS
         public string TerminalId { get; set; }
         public string DriverId { get; set; }
 
+        public string DriverPhotoUrl { get; set; }
+
         public DateTime? Eta { get; set; }
+
+        public double MeterAmount
+        {
+            get { return Fare + Toll + VAT + Surcharge; }
+        }
 
         public override string ToString()
         {
@@ -53,7 +61,7 @@ namespace apcurium.MK.Booking.IBS
 
         }
 
-        public IBSOrderInformation(TOrderStatus_2 orderInfoFromIBS)
+        public IBSOrderInformation(TOrderStatus_4 orderInfoFromIBS)
         {
             Status = orderInfoFromIBS.OrderStatus.ToString();
 
@@ -72,14 +80,23 @@ namespace apcurium.MK.Booking.IBS
             VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? orderInfoFromIBS.VehicleCoordinateLong : VehicleLongitude;
 
             DriverId = orderInfoFromIBS.CallNumber.GetValue(DriverId);
+            // should always be null if not set because we compare it to OrderStatusDetail.RideLinqPairingCode
+            PairingCode = orderInfoFromIBS.PairingCode.HasValue() ? orderInfoFromIBS.PairingCode : null; 
 
             ReferenceNumber = orderInfoFromIBS.ReferenceNumber.GetValue(ReferenceNumber);
             TerminalId = orderInfoFromIBS.TerminalId.GetValue(TerminalId);
+
+            DriverPhotoUrl = orderInfoFromIBS.ThumbnailImg.HasValue() ? orderInfoFromIBS.ThumbnailImg :
+                                (orderInfoFromIBS.WebImg.HasValue() ? orderInfoFromIBS.WebImg : null);
+
+			// should always be null if not set because we compare it to OrderStatusDetail.RideLinqPairingCode
+            PairingCode = orderInfoFromIBS.PairingCode.HasValue() ? orderInfoFromIBS.PairingCode : null;
 
             Fare = orderInfoFromIBS.Fare;
             Tip = orderInfoFromIBS.Tips;
             Toll = orderInfoFromIBS.Tolls;
             VAT = orderInfoFromIBS.VAT;
+            Surcharge = orderInfoFromIBS.Surcharge;
 
             Eta = orderInfoFromIBS.ETATime.ToDateTime();
         }

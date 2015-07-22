@@ -5,6 +5,7 @@ using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
@@ -59,7 +60,8 @@ namespace apcurium.MK.Booking.Api.Services
                 Email = testEmail,
                 Password = TestUserPassword,
                 Name = "Test",
-                Phone = "123456",
+                Phone = "5141234567",
+                Country = new CountryISOCode("CA"),
                 ConfimationToken = Guid.NewGuid().ToString("N"),
                 Language = "en",
                 IsAdmin = true

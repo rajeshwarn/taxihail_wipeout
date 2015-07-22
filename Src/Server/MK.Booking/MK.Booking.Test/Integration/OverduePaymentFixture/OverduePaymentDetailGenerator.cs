@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -63,11 +62,11 @@ namespace apcurium.MK.Booking.Test.Integration.OverduePaymentFixture
     }
 
     [TestFixture]
-    public class given_an_overdue_payment : given_a_view_model_generator
+    public class given_an_overdue_payment_with_no_fees : given_a_view_model_generator
     {
         readonly Guid _orderId = Guid.NewGuid();
 
-        public given_an_overdue_payment()
+        public given_an_overdue_payment_with_no_fees()
         {
             Sut.Handle(new OverduePaymentLogged
             {
@@ -75,7 +74,8 @@ namespace apcurium.MK.Booking.Test.Integration.OverduePaymentFixture
                 IBSOrderId = 4455,
                 Amount = 42.35m,
                 TransactionDate = DateTime.Now,
-                TransactionId = "1337"
+                TransactionId = "1337",
+                FeeType = FeeTypes.None
             });
         }
 
@@ -97,6 +97,92 @@ namespace apcurium.MK.Booking.Test.Integration.OverduePaymentFixture
                 Assert.AreEqual(42.35m, dto.OverdueAmount);
                 Assert.AreEqual("1337", dto.TransactionId);
                 Assert.AreEqual(true, dto.IsPaid);
+                Assert.AreEqual(false, dto.ContainBookingFees);
+                Assert.AreEqual(false, dto.ContainStandaloneFees);
+            }
+        }
+    }
+
+    [TestFixture]
+    public class given_an_overdue_payment_with_booking_fees : given_a_view_model_generator
+    {
+        readonly Guid _orderId = Guid.NewGuid();
+
+        public given_an_overdue_payment_with_booking_fees()
+        {
+            Sut.Handle(new OverduePaymentLogged
+            {
+                OrderId = _orderId,
+                IBSOrderId = 4455,
+                Amount = 42.35m,
+                TransactionDate = DateTime.Now,
+                TransactionId = "7331",
+                FeeType = FeeTypes.Booking
+            });
+        }
+
+        [Test]
+        public void when_overdue_payment_settled_then_dto_updated()
+        {
+            Sut.Handle(new OverduePaymentSettled
+            {
+                OrderId = _orderId
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<OverduePaymentDetail>(_orderId);
+                Assert.NotNull(dto);
+
+                Assert.AreEqual(_orderId, dto.OrderId);
+                Assert.AreEqual(4455, dto.IBSOrderId);
+                Assert.AreEqual(42.35m, dto.OverdueAmount);
+                Assert.AreEqual("7331", dto.TransactionId);
+                Assert.AreEqual(true, dto.IsPaid);
+                Assert.AreEqual(true, dto.ContainBookingFees);
+                Assert.AreEqual(false, dto.ContainStandaloneFees);
+            }
+        }
+    }
+
+    [TestFixture]
+    public class given_an_overdue_payment_with_cancellation_fees : given_a_view_model_generator
+    {
+        readonly Guid _orderId = Guid.NewGuid();
+
+        public given_an_overdue_payment_with_cancellation_fees()
+        {
+            Sut.Handle(new OverduePaymentLogged
+            {
+                OrderId = _orderId,
+                IBSOrderId = 4455,
+                Amount = 42.35m,
+                TransactionDate = DateTime.Now,
+                TransactionId = "1591",
+                FeeType = FeeTypes.Cancellation
+            });
+        }
+
+        [Test]
+        public void when_overdue_payment_settled_then_dto_updated()
+        {
+            Sut.Handle(new OverduePaymentSettled
+            {
+                OrderId = _orderId
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<OverduePaymentDetail>(_orderId);
+                Assert.NotNull(dto);
+
+                Assert.AreEqual(_orderId, dto.OrderId);
+                Assert.AreEqual(4455, dto.IBSOrderId);
+                Assert.AreEqual(42.35m, dto.OverdueAmount);
+                Assert.AreEqual("1591", dto.TransactionId);
+                Assert.AreEqual(true, dto.IsPaid);
+                Assert.AreEqual(false, dto.ContainBookingFees);
+                Assert.AreEqual(true, dto.ContainStandaloneFees);
             }
         }
     }

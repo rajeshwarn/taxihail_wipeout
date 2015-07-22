@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
-        private readonly IServerSettings _serverSettings;
+        private readonly ServerPaymentSettings _serverPaymentSettings;
         private readonly IPairingService _pairingService;
         private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Services.Impl
             ILogger logger, 
             IAccountDao accountDao, 
             IOrderPaymentDao paymentDao,
-            IServerSettings serverSettings,
+            ServerPaymentSettings serverPaymentSettings,
             IPairingService pairingService,
             ICreditCardDao creditCardDao)
         {
@@ -52,12 +52,12 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger = logger;
             _accountDao = accountDao;
             _paymentDao = paymentDao;
-            _serverSettings = serverSettings;
+            _serverPaymentSettings = serverPaymentSettings;
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
         }
 
-        public PaymentProvider ProviderType(Guid? orderId = null)
+        public PaymentProvider ProviderType(string companyKey, Guid? orderId = null)
         {
             return PaymentProvider.Cmt;
         }
@@ -67,11 +67,11 @@ namespace apcurium.MK.Booking.Services.Impl
             return false;
         }
         
-        public PairingResponse Pair(Guid orderId, string cardToken, int autoTipPercentage)
+        public PairingResponse Pair(string companyKey, Guid orderId, string cardToken, int autoTipPercentage)
         {
             try
             {
-                if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
+                if (_serverPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     // CMT RideLinq flow
 
@@ -134,11 +134,11 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse Unpair(Guid orderId)
+        public BasePaymentResponse Unpair(string companyKey, Guid orderId)
         {
             try
             {
-                if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
+                if (_serverPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     var orderPairingDetail = _orderDao.FindOrderPairingById(orderId);
                     if (orderPairingDetail == null)
@@ -173,12 +173,12 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void VoidPreAuthorization(Guid orderId, bool isForPrepaid = false)
+        public void VoidPreAuthorization(string companyKey, Guid orderId, bool isForPrepaid = false)
         {
             // Nothing to do for CMT since there's no notion of preauth
         }
 
-        public void VoidTransaction(Guid orderId, string transactionId, ref string message)
+        public void VoidTransaction(string companyKey, Guid orderId, string transactionId, ref string message)
         {
             var orderStatus = _orderDao.FindOrderStatusById(orderId);
             if (orderStatus == null)
@@ -186,7 +186,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 throw new Exception("Order status not found");
             }
 
-            Void(_serverSettings.GetPaymentSettings().CmtPaymentSettings.FleetToken,
+            Void(_serverPaymentSettings.CmtPaymentSettings.FleetToken,
                 orderStatus.VehicleNumber,
                 long.Parse(transactionId),
                 orderStatus.DriverInfos == null 
@@ -231,7 +231,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }; 
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
+        public PreAuthorizePaymentResponse PreAuthorize(string companyKey, Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
         {
             var paymentId = Guid.NewGuid();
             var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
@@ -244,7 +244,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 OrderId = orderId,
                 CardToken = creditCard.Token,
                 Provider = PaymentProvider.Cmt,
-                IsNoShowFee = false
+                IsNoShowFee = false,
+                CompanyKey = companyKey
             });
 
             return new PreAuthorizePaymentResponse
@@ -254,7 +255,7 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
+        public CommitPreauthorizedPaymentResponse CommitPayment(string companyKey, Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
         {
             // No need to use preauthAmount for CMT because we can't preauthorize
 
@@ -275,7 +276,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     throw new Exception("Order status not found");
                 }
 
-                var orderPayment = _paymentDao.FindByOrderId(orderId);
+                var orderPayment = _paymentDao.FindByOrderId(orderId, companyKey);
                 if (orderPayment == null)
                 {
                     throw new Exception("Order payment not found");
@@ -285,7 +286,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>();
                 var employeeId = orderStatus.DriverInfos == null ? string.Empty : orderStatus.DriverInfos.DriverId;
                 var tripId = orderStatus.IBSOrderId.Value;
-                var fleetToken = _serverSettings.GetPaymentSettings().CmtPaymentSettings.FleetToken;
+                var fleetToken = _serverPaymentSettings.CmtPaymentSettings.FleetToken;
                 var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
                                                     orderStatus.ReferenceNumber :
                                                     orderDetail.IBSOrderId.ToString();
@@ -349,12 +350,62 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public BasePaymentResponse RefundPayment(Guid orderId)
+        public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
             throw new NotImplementedException();
         }
 
-        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int? autoTipPercentage)
+        public BasePaymentResponse UpdateAutoTip(string companyKey, Guid orderId, int autoTipPercentage)
+        {
+            if (_serverPaymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
+            {
+                throw new Exception("This method can only be used with CMTRideLinQ as a payment provider.");
+            }
+
+            InitializeServiceClient();
+
+            try
+            {
+                var orderDetail = _orderDao.FindById(orderId);
+                var accountDetail = _accountDao.FindById(orderDetail.AccountId);
+                var orderPairing = _orderDao.FindOrderPairingById(orderId);
+
+                var request = new ManualRideLinqPairingRequest
+                {
+                    AutoTipPercentage = autoTipPercentage,
+                    CustomerId = accountDetail.Id.ToString(),
+                    CustomerName = accountDetail.Name,
+                    Latitude = orderDetail.PickupAddress.Latitude,
+                    Longitude = orderDetail.PickupAddress.Longitude,
+                    AutoCompletePayment = true
+                };
+
+                _logger.LogMessage("Updating CMT RideLinq auto tip. Request: {0}", request.ToJson());
+
+                var response = _cmtMobileServiceClient.Put(string.Format("v1/init/pairing/{0}", orderPairing.PairingToken), request);
+
+                // Wait for trip to be updated
+                _cmtTripInfoServiceHelper.WaitForTipUpdated(orderPairing.PairingToken, autoTipPercentage, response.TimeoutSeconds);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage("Error when trying to update CMT RideLinq auto tip");
+                _logger.LogError(ex);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int autoTipPercentage)
         {
             InitializeServiceClient();
 
@@ -363,10 +414,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
                 // send pairing request                                
-                var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
+                var cmtPaymentSettings = _serverPaymentSettings.CmtPaymentSettings;
                 var pairingRequest = new PairingRequest
                 {
-                    AutoTipPercentage = autoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage,
+                    AutoTipPercentage = autoTipPercentage,
                     AutoCompletePayment = true,
                     CallbackUrl = string.Empty,
                     CustomerId = orderStatusDetail.AccountId.ToString(),
@@ -375,7 +426,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
                     CardOnFileId = cardToken,
-                    Market = cmtPaymentSettings.Market
+                    Market = cmtPaymentSettings.Market,
+                    TripRequestNumber = orderStatusDetail.IBSOrderId.GetValueOrDefault().ToString()
                 };
 
                 if (orderStatusDetail.RideLinqPairingCode.HasValue())
@@ -446,6 +498,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception ex)
             {
+                _logger.LogMessage("An error occured while trying to autorize a CMT payment.");
                 _logger.LogError(ex);
 
                 var aggregateException = ex as AggregateException;
@@ -538,8 +591,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private void InitializeServiceClient()
         {
-            _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, _logger);
-            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverPaymentSettings.CmtPaymentSettings, null, null, _logger);
+            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverPaymentSettings.CmtPaymentSettings, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, _logger);
         }
     }

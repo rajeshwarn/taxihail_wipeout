@@ -1,7 +1,10 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
@@ -12,6 +15,8 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
@@ -23,15 +28,18 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICacheClient _cacheClient;
         private readonly IServerSettings _serverSettings;
         private readonly IIBSServiceProvider _ibsServiceProvider;
+        private readonly CmtDataService _cmtDataService;
 
         public ReferenceDataService(
             IIBSServiceProvider ibsServiceProvider,
             ICacheClient cacheClient,
-            IServerSettings serverSettings)
+            IServerSettings serverSettings,
+            CmtDataService cmtDataService)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _cacheClient = cacheClient;
             _serverSettings = serverSettings;
+            _cmtDataService = cmtDataService;
         }
 
         public object Get(ReferenceDataRequest request)
@@ -51,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Services
                 result.CompaniesList = FilterReferenceData(result.CompaniesList, _serverSettings.ServerData.IBS.ExcludedProviderId);
             }
 
-            var paymentSettings = _serverSettings.GetPaymentSettings();
+            var paymentSettings = _serverSettings.GetPaymentSettings(request.CompanyKey);
 
             var isChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
             var isPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled;
@@ -75,6 +83,17 @@ namespace apcurium.MK.Booking.Api.Services
             result.PaymentsList = filteredPaymentList.ToList();
 
             return result;
+        }
+
+        public object Get(ReferenceListRequest request)
+        {
+            return _cmtDataService.Get(new apcurium.MK.Booking.Api.Services.CmtDataService.ReferenceListRequest
+            {
+                ListName = request.ListName,
+                SearchText = request.SearchText,
+                coreFieldsOnly = request.coreFieldsOnly,
+                size = request.size
+            });
         }
 
         private ReferenceData GetReferenceData(string companyKey)

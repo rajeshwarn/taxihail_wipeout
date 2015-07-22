@@ -16,9 +16,12 @@ namespace apcurium.MK.Booking.Services
             _container = container;
         }
 
-        public PayPalService GetInstance()
+        public PayPalService GetInstance(string companyKey = null)
         {
-            return new PayPalService(_container.Resolve<IServerSettings>(), _container.Resolve<ICommandBus>(),
+            var serverSettings = _container.Resolve<IServerSettings>();
+            var paymentSettings = serverSettings.GetPaymentSettings(companyKey);
+
+            return new PayPalService(serverSettings, paymentSettings, _container.Resolve<ICommandBus>(),
                 _container.Resolve<IAccountDao>(), _container.Resolve<IOrderDao>(), _container.Resolve<ILogger>(),
                 _container.Resolve<IPairingService>(), _container.Resolve<IOrderPaymentDao>());
         }

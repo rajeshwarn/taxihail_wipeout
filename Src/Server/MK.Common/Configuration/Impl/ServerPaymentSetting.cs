@@ -25,9 +25,12 @@ namespace apcurium.MK.Common.Configuration.Impl
         [Key]
         public Guid Id { get; set; }
 
+        public string CompanyKey { get; set; }
+
         public BraintreeServerSettings BraintreeServerSettings { get; set; }
         public PayPalServerSettings PayPalServerSettings { get; set; }
 
+        [Obsolete("This property is deprecated. It is only kept to support older versions.", false)]
         public decimal? NoShowFee { get; set; }
 
         public bool IsPreAuthEnabled { get; set; }

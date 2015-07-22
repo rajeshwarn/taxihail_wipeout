@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">Email (adresse électronique)</string>
   <string name="EstimateFareCalculating">Calcul du prix de votre course ...</string>
@@ -27,6 +27,7 @@
   <string name="UpdatePasswordNewPasswordLabel">Nouveau mot de passe</string>
   <string name="DestinationNotSpecifiedText">Adresse de destination manquante</string>
   <string name="PickupMapTitle">Lieu de départ</string>
+  <string name="DialCodeSelectorTitle">Code indicatif</string>
   <string name="HomeView_ManualPairing">Dans un Taxi</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="ErrorCreatingOrderTitle">Désolé, la réservation ne peut être complétée</string>
@@ -68,6 +69,7 @@
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accepter</string>
   <string name="ReSendConfirmation">Signaler le paiement</string>
   <string name="CreateAccountPhonePlaceHolder">Ligne mobile</string>
+  <string name="Error_EditAutoTipMessage">Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</string>
   <string name="ReminderTitle">{0} Enregistré</string>
   <string name="March">Mars (03)</string>
   <string name="LoginViewEmailPlaceHolder">Email (adresse électronique)</string>
@@ -79,6 +81,7 @@
   <string name="Error_AccountPaymentTitle">Erreur</string>
   <string name="Tuto05Top">Sélectionner \'Commander maintenant\' afin que nous puissions vous attribuer un véhicule dans les meilleurs délais</string>
   <string name="View_SignIn">Se connecter</string>
+  <string name="GenericErrorTitle">Erreur</string>
   <string name="BookDateLabel">Départ différé</string>
   <string name="HistoryViewSendReceiptError">Désolé, nous avons rencontré un problème lors de l\'envoi de la facture</string>
   <string name="StatusCancelButton">Annuler</string>
@@ -86,7 +89,6 @@
   <string name="VehicleNumberErrorTitle">Erreur</string>
   <string name="NoConnectionMessage">Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.</string>
   <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement via carte de crédit par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de confirmation.</string>
-  <string name="CreditCardAdded_PayInCarDisabled">Votre compte est maintenant configuré pour le paiement par la carte de crédit.</string>
   <string name="Notification_PaymentConfirmationPush">Confirmation de paiement</string>
   <string name="PromoExpiringSoonMessage">Expire dans {0} jours</string>
   <string name="PassengerPhoneLabel">Téléphone</string>
@@ -135,11 +137,13 @@
   <string name="TabPlaces">Points d\'intérêt</string>
   <string name="CreditCardRemoveErrorTitle">La carte ne peut être supprimée</string>
   <string name="View_Payments_CmtRideLinqChangePaymentTitle">Modifier les informations relatives au paiement</string>
+  <string name="ServiceError_EmailClientAbsent">Désolé, nous ne pouvons pas créer le courriel. Il n\'y a pas de client de courriel installé sur cet appareil.</string>
   <string name="InvalidLoginMessageTitle">Erreur de connection</string>
   <string name="CreateAccountTitleArray">MrMme</string>
   <string name="RideSettingsAccountNumber">Numéro de compte entreprise (optionnel)</string>
   <string name="RideSettingsPassword">Mot de passe</string>
   <string name="View_BookingDetail">Détails de la réservation</string>
+  <string name="ManualRideLinqStatus_Toll">Péage:</string>
   <string name="WarningTitle">Avertissement</string>
   <string name="ManualPairingForRideLinQ_Error_Message">Une erreur est survenue lors de l\'enregistrement</string>
   <string name="Delete">Supprimer</string>
@@ -198,7 +202,9 @@
   <string name="View_RideLinqPair">Check In</string>
   <string name="DateTimePickerSetButton">Réserver maintenant!</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Toujours accepter</string>
+  <string name="CreditCardAdded_PayInCarDisabled">Votre compte est maintenant configuré pour le paiement par la carte de crédit.</string>
   <string name="AccountConfirmation_ErrorTitle">Impossible de confirmer votre compte.</string>
+  <string name="CallDriverUsingProxyErrorMessage">Désolé, nous n\'avons pas pu vous mettre en contact avec votre chauffeur.</string>
   <string name="DestinationTextPlaceholder">Adresse de destination</string>
   <string name="NoFareText">Vous devez saisir une destination pour obtenir une estimation du prix du trajet</string>
   <string name="HistoryDetailOrderLabel">Commande:</string>
@@ -242,10 +248,11 @@
   <string name="GenericTitle"></string>
   <string name="PickupTextPlaceholder">Adresse de départ</string>
   <string name="CmtRideLinqConfirmPairViewConfirmPairDetailText">Merci de vérifier que vous êtes dans le véhicule indiqué ci-dessus. Après confirmation, le paiement sera effectué automatiquement en utilisant les paramètres de paiement par défaut.</string>
-  <string name="NoPhoneNumberMessage">Le numéro de téléphone est indisponible</string>
+  <string name="NoPhoneNumberMessage">Votre numéro de téléphone ou celui de votre chauffeur est indisponible.</string>
   <string name="CmtRideLinqErrorTitle">Erreur</string>
   <string name="PickupViewPickupLabel">Départ:</string>
   <string name="AccountPaymentCustomerNumberRequiredTitle">Numéro de client du compte requis</string>
+  <string name="MessageToDriverTitle">Message au chauffeur</string>
   <string name="searchHint">Rechercher</string>
   <string name="StreetNumberDoneBt">Utiliser cette adresse</string>
   <string name="InvalidLocalContactMessage">L\'adresse semble ne pas correspondre au contact</string>
@@ -256,6 +263,7 @@
   <string name="LocationDetailNameLabel">Surnom</string>
   <string name="ResetPasswordInvalidDataTitle">Cet email n\'est pas valide</string>
   <string name="NoPhoneNumberTitle">Le numéro de téléphone ne semble pas valide</string>
+  <string name="ManualRideLinqStatus_Extra">Extra:</string>
   <string name="UpdatedTermsAndConditionsAcceptButton">Accepter</string>
   <string name="PaymentConfirmationMessageToDriver">Paiement effectué par le passager pour un montant de {0} (code: {1})</string>
   <string name="Time">Heure</string>
@@ -263,6 +271,7 @@
   <string name="CreditCardBookingSettingsError">Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.</string>
   <string name="CreditCardInvalidCrediCardNUmber">Le numéro de la carte ne semble pas être valide</string>
   <string name="RideSettingsCompany">Société</string>
+  <string name="ServiceError_ErrorCreatingOrderMessage_NoCall">Votre demande n\'a pas pu être prise en compte, veuillez réessayer de nouveau.</string>
   <string name="CmtCancelPayment">Annuler</string>
   <string name="DriverInfoLicence">Licence:</string>
   <string name="Overdue_IBSOrderId">Commande:</string>
@@ -271,6 +280,7 @@
   <string name="UpdateBookingSettingsInvalidAccount">Le numéro de compte saisi n\'existe pas</string>
   <string name="ResetPasswordConfirmationTitle">Mot de passe envoyé</string>
   <string name="NoPairingCreditCard">Aucun</string>
+  <string name="CallDriverUsingProxyPrompt">Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.</string>
   <string name="Submit">Envoyer</string>
   <string name="AccountPaymentNumberRequiredTitle">Numéro de compte requis</string>
   <string name="CreditCardRemoveErrorMessage">Vous devez avoir au moins une carte de crédit relier à votre compte. Vous devez ajouter une autre carte avant d\'en supprimer une.</string>
@@ -319,7 +329,7 @@
   <string name="PromoDescriptionCode">Enter le code {0} ou appuyez sur le bouton ci-dessous.</string>
   <string name="Error_AccountPaymentMessage">Le numéro de compte ou de client semble invalide</string>
   <string name="SaveAddressEmptyFieldTitle">Merci de resaisir le nom</string>
-  <string name="ManualRideLinqStatus_Medallion">Véhicule #:</string>
+  <string name="ManualRideLinqStatus_Medallion">Vous êtes assis dans le véhicule {0}.</string>
   <string name="Modify">Modifier</string>
   <string name="LoginForgotPasswordDetail">Saisissez votre email pour recevoir votre nouveau mot de passe</string>
   <string name="ResetPasswordTitleText">Mot de passe oublié?</string>
@@ -334,7 +344,7 @@
   <string name="CvvRequiredMessage">Veuillez entrer le code de vérification associé à votre carte de crédit se terminant par {0} pour continuer</string>
   <string name="DateTimePickerPickInvalidDateMessage">La date de départ ne peut pas être antérieure à la date de commande</string>
   <string name="AddressSearchingText">Recherche…</string>
-  <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d\'annulation si ces derniers abusent du service.</string>
+  <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Êtes-vous sûr de vouloir annuler? Des frais d\'annulation peuvent être appliqués.</string>
   <string name="MarketChangedMessage">Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.</string>
   <string name="Notification_DriverAssignedEmail">Chauffeur assigné (Email)</string>
   <string name="Tuto04Top">Vous pouvez également saisir votre destination</string>
@@ -354,7 +364,7 @@
   <string name="UpdateBookingSettingsInvalidDataTitle">Détails de la réservation incorrects</string>
   <string name="Now">Immédiatement</string>
   <string name="RideSummarySubTitleText">Merci d\'avoir choisi {0} pour votre trajet, nous espérons vous revoir bientôt.</string>
-  <string name="StatusConfirmCancelRide">Cette action annulera votre commande, souhaitez-vous continuer?</string>
+  <string name="StatusConfirmCancelRide">Êtes-vous sûr de vouloir annuler?</string>
   <string name="View_AccountConfirmationTitle">Confirmation de compte</string>
   <string name="RateRide">Évaluer la course</string>
   <string name="ConfirmDestinationLabel">Destination</string>
@@ -381,6 +391,7 @@
   <string name="WarningEstimateDontShow">Ne pas signaler</string>
   <string name="ChooseProviderDialogTitle">Choisissez un prestataire</string>
   <string name="View_AboutUs">À propos</string>
+  <string name="ManualRideLinqStatus_Greetings">Appréciez la balade!</string>
   <string name="WarningLocationService">Merci d\'activer la géolocalisation afin de pouvoir utiliser la carte</string>
   <string name="LoginViewPasswordPlaceHolder">Mot de passe</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">Le code d\'association est invalide</string>
@@ -427,8 +438,9 @@
   <string name="PassengerNameLabel">Nom</string>
   <string name="View_BookingStatus">Statut</string>
   <string name="ViewRatingBtn">Voir les notes</string>
+  <string name="ManualRideLinqStatus_Email">Un reçu vous sera envoyé à {0}.</string>
   <string name="ChargeTypeCreditCardFile">Carte de paiement déjà engistrée</string>
-  <string name="InvalidPhoneErrorMessage">Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.</string>
+  <string name="InvalidPhoneErrorMessage">Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</string>
   <string name="CardExpiredMessage">Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.</string>
   <string name="LocationAddFavoriteTitle">Ajouter une nouvelle adresse</string>
   <string name="PickupTimeTextPlaceholder">Heure: maintenant</string>
@@ -462,6 +474,7 @@
   <string name="Tuto05Bottom">Afin de convenir d\'une date/heure de départ ultéreure, merci de sélectionner \'Plus tard\' sur votre écran</string>
   <string name="Notification_ConfirmPairingPush">Confirmation de pairing</string>
   <string name="ResetPasswordInvalidDataMessage">Désolé, cet email n\'est pas valide</string>
+  <string name="ManualRideLinqStatus_Payment">Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.</string>
   <string name="StatusDescription">Commande n°{0}</string>
   <string name="EntryCodeLabel">Saisissez un code</string>
   <string name="Overdue_Succeed_Title">Compte Approuvé</string>
@@ -472,6 +485,7 @@
   <string name="Toggle_On">Oui</string>
   <string name="GooglePlayServicesNotAvailableMessage">Merci de mettre à jour Google Play pour utiliser cette application mobile.</string>
   <string name="LocationViewTitle">Mes positions</string>
+  <string name="StatusEditAutoTipButton">Pourboire</string>
   <string name="DriverInfoDriver">Chauffeur:</string>
   <string name="SettingsViewTitle">Paramètres</string>
   <string name="TechSupportEmailTitle">Support application mobile</string>
@@ -562,6 +576,7 @@
   <string name="ManualPairingForRideLinQ_Pair">CHECK IN</string>
   <string name="November">Novembre (11)</string>
   <string name="EmptyString"></string>
+  <string name="ServiceError_ErrorCreatingOrderMessage">Merci de contacter {0} au {1} pour toute demande d\'assistance</string>
   <string name="HistoryDetailPromoLabel">Code promo:</string>
   <string name="DateTimePickerPickTime">Sélectionner l\'heure de départ</string>
   <string name="CreateAccountErrorMessage">Le compte de peut malheureusement pas être créé</string>
@@ -579,7 +594,7 @@
   <string name="NbPassengers"> ({0} passagers)</string>
   <string name="NearbyPlacesTitle">À proximité</string>
   <string name="AccountPaymentQuestionsPlaceHolder">{0} caractères maximum</string>
-  <string name="RemoveCreditCardMessage">Etes-vous sur de vouloir supprimer cette carte de paiement?</string>
+  <string name="RemoveCreditCardMessage">Etes-vous sûr de vouloir supprimer cette carte de paiement?</string>
   <string name="StreetNumberTitle">Détails de l\'adresse</string>
   <string name="PayNow">Payer maintenant!</string>
   <string name="View_AccountConfirmation_Label_Instructions">Un SMS contenant votre code a été envoyé à votre téléphone.</string>
@@ -598,6 +613,7 @@
   <string name="WarningLocationServiceDontShow">Ne pas signaler</string>
   <string name="Overdue_Failed_Title">Erreur de paiement</string>
   <string name="TAXI">TAXI</string>
+  <string name="View_EditAutoTip">Modifier Pourboire</string>
   <string name="StatusConfirmNewBooking">Attention, la commande d\'un nouveau véhicule n\'annulera pas la précédente. Souhaitez-vous continuer?</string>
   <string name="InvalidPassengersNumber">Le type de vécicule sélectionné n\'a pas suffisamment de places pour accueillir votre nombre de passagers. Veuillez modifier votre sélection ou commander plus d\'un véhicule pour accommoder votre groupe.</string>
   <string name="RideHistoryButton">Historique des trajets</string>
@@ -605,6 +621,7 @@
   <string name="View_HistoryDetail">Détail de la commande</string>
   <string name="TaxiHailNetworkTimeOutErrorTitle">Erreur</string>
   <string name="HistoryDetailBuildingNameNotSpecified">Non spécifié</string>
+  <string name="DriverInfoVehicleMedallion">Medallion:</string>
   <string name="TabBook">Réserver maintenant!</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">Vous ne pouvez pas effacer une carte de crédit s\'il y a une commande en cours.</string>
   <string name="TaxiMapTitle">Votre véhicule</string>
@@ -612,6 +629,7 @@
   <string name="NoMailClient">Il n\'y a pas d\'adresse email client enregistrée</string>
   <string name="June">Juin (06)</string>
   <string name="ManualRideLinqStatus_Driver">Chauffeur #:</string>
+  <string name="SendMessageToDriverErrorMessage">Une erreur est survenue en essayant de contacter le chauffeur. Veuillez réessayer plus tard.</string>
   <string name="InvalidAddressTextEdit">Désolé, l\'adresse semble inconnue</string>
   <string name="HistoryDetailPickupDateLabel">Date de départ:</string>
 </resources>

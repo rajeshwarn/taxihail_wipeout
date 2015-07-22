@@ -19,6 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TinyIoC;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -34,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private bool _useThemeColorForPickupAndDestinationMapIcons;
 		private bool _showAssignedVehicleNumberOnPin;
+        private bool _isClusterMarkerDisabled;
 
         protected TouchMap(CGRect rect) : base(rect)
         {
@@ -63,11 +65,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void Initialize()
         {   
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+            _isClusterMarkerDisabled = this.Services().Settings.ShowIndividualTaxiMarkerOnly;
 			_useThemeColorForPickupAndDestinationMapIcons = settings.UseThemeColorForMapIcons;
 			_showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
-
-            // prevent from showing glowing blue dot
-            ShowsUserLocation = false;
         }
 
         public void OnRegionChanged()
@@ -214,6 +214,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private MKAnnotation _taxiLocationPin;
 
+		private OrderStatusDetail _displayDeviceLocation;
+		public OrderStatusDetail DisplayDeviceLocation
+		{
+			get { return _displayDeviceLocation; }
+			set
+			{
+				_displayDeviceLocation = value;
+				ShowsUserLocation = !_displayDeviceLocation.IBSStatusId.HasValue() || VehicleStatuses.CanCancelOrderStatus.Contains(_displayDeviceLocation.IBSStatusId);
+			}
+		}
+
         private OrderStatusDetail _taxiLocation;
         public OrderStatusDetail TaxiLocation
         {
@@ -239,9 +250,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         coord = new CLLocationCoordinate2D(value.VehicleLatitude.Value, value.VehicleLongitude.Value);
                     }
+
 					_taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, _useThemeColorForPickupAndDestinationMapIcons, _showAssignedVehicleNumberOnPin);
                     AddAnnotation(_taxiLocationPin);
+
+					if (_taxiLocation.IBSStatusId == VehicleStatuses.Common.Loaded)
+					{
+						RemoveAnnotation (_pickupPin);
+					}
                 }
+
                 SetNeedsDisplay();
             }
         }
@@ -250,7 +268,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             set
             {
-                ShowAvailableVehicles (Clusterize(value.ToArray()));
+                var availableVehicles = _isClusterMarkerDisabled
+                            ? (value ?? Enumerable.Empty<AvailableVehicle>()).ToArray()
+                            : Clusterize((value ?? Enumerable.Empty<AvailableVehicle>()).ToArray());
+
+
+                ShowAvailableVehicles(availableVehicles);
             }
         }
 

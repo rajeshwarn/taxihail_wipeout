@@ -18,5 +18,6 @@ namespace apcurium.MK.Booking.Commands
         public Guid CompanyId { get; set; }
         public int? ReferenceNetworkVehicleTypeId { get; set; }
         public int MaxNumberPassengers { get; set; }
+        public bool IsWheelchairAccessible { get; set; }
     }
 }

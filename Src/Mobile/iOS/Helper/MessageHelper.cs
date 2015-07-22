@@ -5,180 +5,119 @@ using System.Threading.Tasks;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Message;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
 	public static class MessageHelper
 	{
 		
-        public static void Show (string title, string message, string additionalActionTitle, Action additionalAction)
-        {
-            UIApplication.SharedApplication.InvokeOnMainThread (delegate {                                       
-                LoadingOverlay.StopAnimatingLoading();
-                var av = new UIAlertView (title, message, null, additionalActionTitle);
-                av.Clicked += delegate {
-                    additionalAction();     
-                };                                      
-                av.Show();                                                      
-            } );
-        }
-
-        public static Task Show (string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction, string neutralActionTitle , Action neutralAction )
+        public static Task Show (string title, string message, string additionalActionTitle, Action additionalAction)
         {
             var tcs = new TaskCompletionSource<object>();
 
-            UIApplication.SharedApplication.InvokeOnMainThread (delegate {                   
+            UIApplication.SharedApplication.InvokeOnMainThread (delegate {                                       
                 LoadingOverlay.StopAnimatingLoading();
-                UIAlertView av;
 
-                if (neutralAction != null)
-                {
-                    av = new UIAlertView(title, message, null, null, positiveActionTitle, negativeActionTitle, neutralActionTitle);
-                }   
-                else
-                {
-                    av = new UIAlertView(title, message, null, Localize.GetValue("Close"), positiveActionTitle, negativeActionTitle);
-                }
+                var cav = new CustomAlertView (title, message);
 
-                av.Clicked += delegate(object sender, UIButtonEventArgs e) {
-                    if (e.ButtonIndex == 0) 
-                    {
-                        positiveAction(); 
-                    }
-                    if (e.ButtonIndex == 1) 
-                    {
-                        negativeAction(); 
-                    }
-                    if (e.ButtonIndex == 2) 
-                    {
-                        if (neutralAction != null) 
-                        {
-                            neutralAction();
-                        }
-                    }
+                cav.Dismissed += delegate {
+                    additionalAction();
                     tcs.TrySetResult(null);
-                };
+                };   
 
-                av.Show ();                           
+                cav.Show();                                                      
+            } );
+
+            return tcs.Task;
+        }
+
+        public static Task Show (string title, string message)
+        {
+            var tcs = new TaskCompletionSource<object>();
+
+            UIApplication.SharedApplication.InvokeOnMainThread(delegate {                   
+                LoadingOverlay.StopAnimatingLoading();
+
+                var cav = new CustomAlertView(title, message, Localize.GetValue("Close"));
+                cav.Dismissed += delegate {
+                    tcs.TrySetResult(null);
+                }; 
+                cav.Show ();
             });
 
             return tcs.Task;
         }
 
-        public static void Show (string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction)
+        public static void Show (string message)
         {
-            Show(title, message, positiveActionTitle, positiveAction, negativeActionTitle, negativeAction, () => { });
+            UIApplication.SharedApplication.InvokeOnMainThread (delegate {                              
+                LoadingOverlay.StopAnimatingLoading();
+
+                var cav = new CustomAlertView(Localize.GetValue("GenericTitle"), message, Localize.GetValue("Close"));
+
+                cav.Show ();
+            });
+        }   
+
+        public static Task Show (string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction, string neutralActionTitle , Action neutralAction )
+        {
+            var tcs = new TaskCompletionSource<object>();
+
+            UIApplication.SharedApplication.InvokeOnMainThread(delegate {                   
+                LoadingOverlay.StopAnimatingLoading();
+
+                var cav = new CustomAlertView(title, message, positiveActionTitle, positiveAction, negativeActionTitle, negativeAction, neutralActionTitle, neutralAction);
+                cav.Clicked += delegate {
+                    tcs.TrySetResult(null);
+                }; 
+                cav.Dismissed += delegate {
+                    tcs.TrySetResult(null);
+                }; 
+                cav.Show ();
+            });
+
+            return tcs.Task;
         }
 
-        public static void Show(string title, string message, string positiveActionTitle, Action positiveAction, string negativeActionTitle, Action negativeAction, Action cancelAction)
+        public static Task Show (string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction)
         {
-            UIApplication.SharedApplication.InvokeOnMainThread(delegate
-            {
+            var tcs = new TaskCompletionSource<object>();
+
+            UIApplication.SharedApplication.InvokeOnMainThread(delegate {                   
                 LoadingOverlay.StopAnimatingLoading();
-                var av = new UIAlertView(title, message, null, negativeActionTitle, positiveActionTitle);
-                av.Canceled += (sender, args) => cancelAction();
-                av.Clicked += delegate(object sender, UIButtonEventArgs e)
-                {
-                    if (e.ButtonIndex == 0 && negativeAction != null)
-                    {
-                        negativeAction();
-                    }
-                    else if (e.ButtonIndex == 1 && positiveAction != null)
-                    {
-                        positiveAction();
-                    }
-                    else
-                    {
-                        if (positiveAction != null)
-                        {
-                            positiveAction();
-                        }
-                    }
-                };
-                av.Show();
+
+                var cav = new CustomAlertView(title, message, positiveActionTitle, positiveAction, negativeActionTitle, negativeAction);
+                cav.Clicked += delegate {
+                    tcs.TrySetResult(null);
+                }; 
+                cav.Dismissed += delegate {
+                    tcs.TrySetResult(null);
+                }; 
+                cav.Show ();
             });
+
+            return tcs.Task;
         }
 
-        public static void Show (string title, string message, List<KeyValuePair<string,Action>> additionalButton)
-        {
-            UIApplication.SharedApplication.InvokeOnMainThread (delegate {      
-                var listTitle = additionalButton.Select(c => c.Key).ToArray();
-                LoadingOverlay.StopAnimatingLoading();
-                var av = new UIAlertView(title, message, null, Localize.GetValue("Close"), listTitle);
-                av.Clicked += delegate(object sender, UIButtonEventArgs e) {
-                    if(e.ButtonIndex != 0)
-                    {
-                        additionalButton[(int)e.ButtonIndex - 1].Value();
-                    }
-                };
-                av.Show ();                           
-            });
-        }
-				
-		public static void Show (string title, string message, Action onDismiss)
-		{
-			UIApplication.SharedApplication.InvokeOnMainThread (delegate {					
-                LoadingOverlay.StopAnimatingLoading();
-                var av = new UIAlertView(title, message, null, Localize.GetValue("Close"), null);
-				av.Dismissed += delegate {
-					onDismiss();
-				};
-				av.Show ();							
-            });
-		}
-		
-		public static Task Show (string title, string message)
-		{
-			var tcs = new TaskCompletionSource<object>();
-            UIApplication.SharedApplication.InvokeOnMainThread(delegate {					
-                LoadingOverlay.StopAnimatingLoading();
-                var av = new UIAlertView(title, message, null, Localize.GetValue("Close"), null);
-				av.Dismissed += delegate {
-					tcs.TrySetResult(null);
-				};
-				av.Show ();
-			});
-			return tcs.Task;
-		}
-		
-		public static void Show ( string message )
-		{
-			UIApplication.SharedApplication.InvokeOnMainThread (delegate {								
-                LoadingOverlay.StopAnimatingLoading();
-                var av = new UIAlertView(Localize.GetValue("GenericTitle"), message, null, Localize.GetValue("Close"), null);
-				av.Show ();
-			});
-		}	
-
-		public static Task<string> Prompt (string title, string message, Action cancelAction, bool isNumericOnly = false)
+        public static Task<string> Prompt (string title, string message, Action cancelAction, bool isNumericOnly, string inputText)
 		{
 			var tcs = new TaskCompletionSource<string>();
 
 			UIApplication.SharedApplication.InvokeOnMainThread( delegate
 			{					
 				LoadingOverlay.StopAnimatingLoading();
-				var av = new UIAlertView(title, message, null, Localize.GetValue("Cancel"), Localize.GetValue("OkButtonText"));
-				av.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
 
-				if(isNumericOnly)
-				{
-					var textField = av.GetTextField(0);
-					textField.KeyboardType = UIKeyboardType.NumberPad;
-				}
-				av.Dismissed += (sender, e) => 
-				{
-					if(e.ButtonIndex == 0)
-					{
-						tcs.TrySetCanceled();
-						cancelAction();
-					}
-					else
-					{
-						var value = ((UIAlertView)sender).GetTextField(0).Text;
-						tcs.TrySetResult(value);
-					}
-				};
-				av.Show ();
+                    var cav = new CustomAlertView(title, message, cancelAction, isNumericOnly, inputText);
+
+                    cav.Dismissed += delegate {
+                        tcs.TrySetCanceled();
+                    }; 
+                    cav.Clicked += delegate {
+                        var res = cav.CustomInputView.Text;
+                        tcs.TrySetResult(res);
+                    }; 
+                    cav.Show ();
 			});
 
 			return tcs.Task;

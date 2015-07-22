@@ -59,9 +59,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 Hidden = true,
             };
              
-			this.RegionChanged += (s, e) => 
+			this.RegionChanged += (s, e) =>
 			{
-				ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray () : null, GetMapBoundsFromProjection()));
+                if (ViewModel != null && !ViewModel.Settings.ShowIndividualTaxiMarkerOnly)
+                {
+                    ShowAvailableVehicles(VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray() : null, GetMapBoundsFromProjection()));
+                }
 			};
         }
 
@@ -110,6 +113,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _destinationAnnotation = GetAnnotation(new CLLocationCoordinate2D(), AddressAnnotationType.Destination, _useThemeColorForPickupAndDestinationMapIcons);
 
             InitializeGesture();
+
+			// Show glowing blue dot
+			this.ShowsUserLocation = true;
         }
             
         private void InitializeGesture()
@@ -213,8 +219,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 if (_availableVehicles != value)
                 {
-                    _availableVehicles = value;
-                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value != null ? value.ToArray () : null, GetMapBoundsFromProjection()));
+                    _availableVehicles = ViewModel.Settings.ShowIndividualTaxiMarkerOnly
+                        ? value
+                        : VehicleClusterHelper.Clusterize(value != null ? value.ToArray() : null, GetMapBoundsFromProjection());
+                    ShowAvailableVehicles(_availableVehicles);
                 }
             }
         }

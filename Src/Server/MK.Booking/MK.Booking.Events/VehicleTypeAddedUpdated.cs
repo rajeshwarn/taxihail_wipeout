@@ -11,5 +11,6 @@ namespace apcurium.MK.Booking.Events
         public int ReferenceDataVehicleId { get; set; }
         public int MaxNumberPassengers { get; set; }
         public int? ReferenceNetworkVehicleTypeId { get; set; }
+        public bool IsWheelchairAccessible { get; set; }
     }
 }

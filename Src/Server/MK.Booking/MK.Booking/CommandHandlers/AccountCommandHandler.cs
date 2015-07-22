@@ -45,7 +45,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UnlinkPayPalAccount>,
         ICommandHandler<UnlinkAllPayPalAccounts>,
         ICommandHandler<ReactToPaymentFailure>,
-        ICommandHandler<SettleOverduePayment>
+        ICommandHandler<SettleOverduePayment>,
+        ICommandHandler<AddUpdateAccountQuestionAnswer>
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -103,7 +104,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(RegisterAccount command)
         {
             var password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
-            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password,
+            var account = new Account(command.AccountId, command.Name, command.Country, command.Phone, command.Email, password,
                 command.ConfimationToken, command.Language, command.AccountActivationDisabled, command.PayBack, command.IsAdmin);
             _repository.Save(account, command.Id.ToString());
         }
@@ -123,14 +124,14 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(RegisterFacebookAccount command)
         {
-            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email,
+            var account = new Account(command.AccountId, command.Name, command.Country, command.Phone, command.Email,
                 command.PayBack, command.FacebookId, language: command.Language);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(RegisterTwitterAccount command)
         {
-            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email,
+            var account = new Account(command.AccountId, command.Name, command.Country, command.Phone, command.Email,
                 command.PayBack, twitterId: command.TwitterId, language: command.Language);
             _repository.Save(account, command.Id.ToString());
         }
@@ -306,7 +307,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
 
-            account.ReactToPaymentFailure(command.OrderId, command.IBSOrderId, command.OverdueAmount, command.TransactionId, command.TransactionDate);
+            account.ReactToPaymentFailure(command.OrderId, command.IBSOrderId, command.OverdueAmount, command.TransactionId, command.TransactionDate, command.FeeType);
 
             _repository.Save(account, command.Id.ToString());
         }
@@ -317,6 +318,12 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             account.SettleOverduePayment(command.OrderId);
 
+            _repository.Save(account, command.Id.ToString());
+        }
+        public void Handle(AddUpdateAccountQuestionAnswer command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.SaveQuestionAnswers(command.Answers);
             _repository.Save(account, command.Id.ToString());
         }
     }

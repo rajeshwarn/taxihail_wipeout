@@ -6,6 +6,7 @@ using System.Dynamic;
 using System.Globalization;
 using System.Resources;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 
 #endregion
@@ -82,6 +83,21 @@ namespace apcurium.MK.Booking.Resources
             var culture = _serverSettings.ServerData.PriceFormat;
             var currencyPriceFormat = Get("CurrencyPriceFormat", culture);
             return string.Format(new CultureInfo(culture), currencyPriceFormat, price.HasValue ? price.Value : 0);
+        }
+
+        public string FormatDistance(double? distance)
+        {
+            if (distance.HasValue)
+            {
+                var distanceFormat = _serverSettings.ServerData.DistanceFormat;
+                var roundedDistance = Math.Round(distance.Value, 1);
+
+                return string.Format(distanceFormat == DistanceFormat.Km
+                    ? "{0:n1} km"
+                    : "{0:n1} Miles", roundedDistance);
+            }
+
+            return string.Empty;
         }
 
         public string GetCurrencyCode()

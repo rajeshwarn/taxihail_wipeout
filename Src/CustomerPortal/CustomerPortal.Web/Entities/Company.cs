@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Odbc;
 using System.Linq;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Properties;
@@ -25,6 +24,7 @@ namespace CustomerPortal.Web.Entities
             Store = new StoreSettings();
             Network = new TaxiHailNetworkSettings();
             Vehicles = new List<CompanyVehicle>();
+            PaymentSettings = new PaymentSettings();
 
             AppleAppStoreCredentials = new AppleStoreCredentials();
             GooglePlayCredentials = new AndroidStoreCredentials();
@@ -80,6 +80,8 @@ namespace CustomerPortal.Web.Entities
         public TaxiHailNetworkSettings Network { get; set; }
 
         public List<CompanyVehicle> Vehicles { get; set; }
+
+        public PaymentSettings PaymentSettings { get; set; }
 
         [Display(Name = "AppleAppStoreCredentials", Description = "AppleAppStoreCredentialsHelp", ResourceType = typeof (Resources))]
         public AppleStoreCredentials AppleAppStoreCredentials { get; set; }

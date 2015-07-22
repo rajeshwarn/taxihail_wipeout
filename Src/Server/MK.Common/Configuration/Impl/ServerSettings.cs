@@ -2,17 +2,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
+using System.Runtime.Caching;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
-using ServiceStack.Messaging.Rcon;
-using ServiceStack.Text;
 
 #endregion
 
@@ -20,13 +16,18 @@ namespace apcurium.MK.Common.Configuration.Impl
 {
     public class ServerSettings : IServerSettings, IAppSettings
     {
+        private const int CacheExpiration = 30;  // In seconds
+        private const string CacheKey = "MK.Settings";
+
         private readonly Func<ConfigurationDbContext> _contextFactory;
         private readonly ILogger _logger;
+        private readonly ObjectCache _cache = MemoryCache.Default;
 
         public ServerSettings(Func<ConfigurationDbContext> contextFactory, ILogger logger)
         {
             _contextFactory = contextFactory;
             _logger = logger;
+
             ServerData = new ServerTaxiHailSetting();
             Load();
         }
@@ -39,12 +40,15 @@ namespace apcurium.MK.Common.Configuration.Impl
             }
         }
 
-        public ServerPaymentSettings GetPaymentSettings()
+        public ServerPaymentSettings GetPaymentSettings(string companyKey = null)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var settings = context.Set<ServerPaymentSettings>().Find(AppConstants.CompanyId);
-                return settings ?? new ServerPaymentSettings();
+                var paymentSettings = companyKey.HasValue()
+                    ? context.Set<ServerPaymentSettings>().FirstOrDefault(p => p.CompanyKey == companyKey)
+                    : context.Set<ServerPaymentSettings>().Find(AppConstants.CompanyId);
+
+                return paymentSettings ?? new ServerPaymentSettings();
             }
         }
 
@@ -54,7 +58,23 @@ namespace apcurium.MK.Common.Configuration.Impl
             Load();
         }
 
-        public TaxiHailSetting Data { get { return ServerData; } }
+        public TaxiHailSetting Data
+        {
+            get
+            {
+                var serverData = _cache[CacheKey];
+                if (serverData == null)
+                {
+                    // Settings expired or not yet cached
+                    Reload();
+
+                    _cache.Add(CacheKey, ServerData, DateTime.UtcNow.AddSeconds(CacheExpiration));
+                }
+
+                return ServerData;
+            }
+        }
+
         public ServerTaxiHailSetting ServerData { get; private set; }
 
         public Task Load()

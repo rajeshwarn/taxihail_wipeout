@@ -321,4 +321,7 @@ the months ahead, and are always interested in what you have to say!</value>
   <data name="FleetIdWhiteListLabel" xml:space="preserve">
     <value>Fleets Whitelist</value>
   </data>
+  <data name="FleetIdBlackListLabel" xml:space="preserve">
+    <value>Fleets Blacklist</value>
+  </data>
 </root>

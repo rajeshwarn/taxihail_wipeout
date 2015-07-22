@@ -32,6 +32,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         public void Include(UILabel label)
         {
             label.Text = label.Text + "";
+			label.Lines = 1;
+			label.LineBreakMode = UILineBreakMode.CharacterWrap;
             label.AttributedText = new NSAttributedString(label.AttributedText.ToString() + "");
         }
         public void Include(UIImageView imageView)

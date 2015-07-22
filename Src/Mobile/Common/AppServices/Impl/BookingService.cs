@@ -12,9 +12,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
-using Cirrious.MvvmCross.Plugins.PhoneCall;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
-using System.Globalization;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Resources;
 
@@ -25,17 +23,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IAccountService _accountService;
 		readonly ILocalization _localize;
 		readonly IAppSettings _appSettings;
-		readonly IMvxPhoneCallTask _phoneCallTask;
 		readonly IGeolocService _geolocService;
 
 		public BookingService(IAccountService accountService,
 			ILocalization localize,
 			IAppSettings appSettings,
-			IMvxPhoneCallTask phoneCallTask,
 			IGeolocService geolocService)
 		{
 			_geolocService = geolocService;
-		    _phoneCallTask = phoneCallTask;
 			_appSettings = appSettings;
 			_localize = localize;
 			_accountService = accountService;
@@ -82,11 +77,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public async Task IgnoreDispatchCompanySwitch(Guid orderId)
         {
             await UseServiceClientAsync<OrderServiceClient>(service => service.IgnoreDispatchCompanySwitch(orderId));
-        }
-
-        private void CallCompany (string name, string number)
-        {
-			_phoneCallTask.MakePhoneCall (name, number);
         }
 
 		public Task<OrderStatusDetail> GetOrderStatusAsync (Guid orderId)
@@ -304,7 +294,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
             return isCompleted;
         }
-
+        
         public async Task<bool> SendReceipt (Guid orderId)
         {
 			var isCompleted = true;
@@ -362,6 +352,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return UseServiceClientAsync<ManualPairingForRideLinqServiceClient>(service => service.Unpair(orderId));
         }
 
+        public async Task<bool> UpdateAutoTipForManualRideLinq(Guid orderId, int autoTipPercentage)
+        {
+            var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => 
+                service.UpdateAutoTip(orderId, autoTipPercentage));
+
+            return response.IsSuccessful;
+        }
+
         public async Task<OrderManualRideLinqDetail> GetTripInfoFromManualRideLinq(Guid orderId)
         {
             var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.GetUpdatedTrip(orderId));
@@ -372,6 +370,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             throw new Exception(response.Message);
+        }
+
+        public Task<bool> InitiateCallToDriver(Guid orderId)
+        {
+            try
+            {
+                return Mvx.Resolve<OrderServiceClient>().InitiateCallToDriver(orderId);
+            }
+            catch (Exception)
+            {
+                return Task.FromResult(false);
+            }
         }
     }
 }

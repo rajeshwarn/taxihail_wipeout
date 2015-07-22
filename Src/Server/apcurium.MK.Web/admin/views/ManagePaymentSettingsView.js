@@ -211,7 +211,6 @@
             var paymentMode = this.$("[name=paymentMode]").val();
             var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
-            var noShowFeeDiv = this.$("#noShowFeeDiv");
             var isUnpairingDisabledDiv = this.$("#isUnpairingDisabledDiv");
             var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
 
@@ -247,13 +246,11 @@
             if (!newIsPayPalEnabled && paymentMode == 'None') {
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
-                noShowFeeDiv.hide();
                 isUnpairingDisabledDiv.hide();
                 unpairingTimeOutDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
-                noShowFeeDiv.show();
                 isUnpairingDisabledDiv.show();
                 unpairingTimeOutDiv.show();
             }
@@ -275,7 +272,6 @@
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var isUnpairingDisabledDiv = this.$("#isUnpairingDisabledDiv");
             var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
-            var noShowFeeDiv = this.$("#noShowFeeDiv");
 
             var currentPaymentMode = this.updatedModel.paymentMode;
 
@@ -323,7 +319,6 @@
             if (!isPayPalEnabled && newPaymentMode == 'None') {
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
-                noShowFeeDiv.hide();
                 isUnpairingDisabledDiv.hide();
                 unpairingTimeOutDiv.hide();
             } else {
@@ -331,7 +326,6 @@
                 preAuthAmountDiv.show();
                 isUnpairingDisabledDiv.show();
                 unpairingTimeOutDiv.show();
-                noShowFeeDiv.show();
             }
         }
     });

@@ -317,6 +317,15 @@ namespace CustomerPortal.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fleets Blacklist.
+        /// </summary>
+        public static string FleetIdBlackListLabel {
+            get {
+                return ResourceManager.GetString("FleetIdBlackListLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fleets Whitelist.
         /// </summary>
         public static string FleetIdWhiteListLabel {

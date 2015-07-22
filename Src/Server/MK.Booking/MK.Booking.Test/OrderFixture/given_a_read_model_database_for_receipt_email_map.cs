@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
         protected bool ObjectPropertyEquals(object o, string propertyName, string expectedValue)
         {
-            return (string)new RouteValueDictionary(o)[propertyName] == expectedValue;
+            return new RouteValueDictionary(o)[propertyName].ToString() == expectedValue;
         }
 
         protected bool ObjectPropertyContains(object o, string propertyName, string expectedValue)

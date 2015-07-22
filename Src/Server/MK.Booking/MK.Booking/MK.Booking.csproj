@@ -64,6 +64,10 @@
     <Reference Include="eSELECTplus_dotNet_API">
       <HintPath>..\..\Libraries\eSELECTplus_dotNet_API.dll</HintPath>
     </Reference>
+    <Reference Include="libphonenumber, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\libphonenumber.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -180,6 +184,7 @@
     <Compile Include="EventHandlers\AppSettingsGenerator.cs" />
     <Compile Include="EventHandlers\CompanyDetailsGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardPaymentDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\FeesDetailsGenerator.cs" />
     <Compile Include="EventHandlers\Integration\IIBSOrderService.cs" />
     <Compile Include="EventHandlers\Integration\OrderPairingManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderDispatchCompanyManager.cs" />
@@ -211,6 +216,7 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AccountIbsDetail.cs" />
+    <Compile Include="ReadModel\FeesDetail.cs" />
     <Compile Include="ReadModel\OverduePaymentDetail.cs" />
     <Compile Include="ReadModel\PayPalAccountDetails.cs" />
     <Compile Include="ReadModel\OrderReportDetail.cs" />
@@ -234,6 +240,7 @@
     <Compile Include="ReadModel\Query\Contract\ICompanyDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IFeesDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOverduePaymentDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IReportDao.cs" />
@@ -241,6 +248,7 @@
     <Compile Include="ReadModel\Query\Contract\IVehicleTypeDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\DeviceDao.cs" />
+    <Compile Include="ReadModel\Query\FeesDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\OrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\OverduePaymentDao.cs" />
@@ -290,6 +298,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Aexid.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Arro.Designer.cs">
+      <DependentUpon>Arro.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\ArroDemo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArroDemo.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Global.ar.Designer.cs">
       <DependentUpon>Global.ar.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -335,9 +353,11 @@
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
+    <Compile Include="Services\IFeeService.cs" />
     <Compile Include="Services\Impl\BasePayPalService.cs" />
     <Compile Include="Services\Impl\BraintreePaymentService.cs" />
     <Compile Include="Services\Impl\CmtPaymentService.cs" />
+    <Compile Include="Services\Impl\FeeService.cs" />
     <Compile Include="Services\Impl\MonerisPaymentService.cs" />
     <Compile Include="Services\Impl\PairingService.cs" />
     <Compile Include="Services\Impl\PayPalService.cs" />
@@ -368,6 +388,12 @@
     <Content Include="Email\Templates\CreditCardDeactivated.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Email\Templates\CancellationFeesReceipt.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\NoShowFeesReceipt.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Email\Templates\PasswordReset.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -395,9 +421,9 @@
       <Project>{6A4623E1-41EF-4286-9A34-2ADC6407E94F}</Project>
       <Name>CustomerPortal.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HoneyBadger\HoneyBadger.csproj">
+    <ProjectReference Include="..\..\CMTServices.Server\CMTServices.Server.csproj">
       <Project>{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}</Project>
-      <Name>HoneyBadger</Name>
+      <Name>CMTServices.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
@@ -436,6 +462,16 @@
     <EmbeddedResource Include="Resources\Aexid.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Aexid.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Arro.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Arro.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ArroDemo.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ArroDemo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.ar.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

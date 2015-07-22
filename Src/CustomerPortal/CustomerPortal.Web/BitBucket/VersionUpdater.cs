@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using CustomerPortal.Web.Areas.Admin.Repository;
 using CustomerPortal.Web.Entities;
 using MongoRepository;
@@ -20,8 +21,7 @@ namespace CustomerPortal.Web.BitBucket
         public static void UpdateVersions()
         {
             var repository = new MongoRepository<Revision>();
-            var req =
-                WebRequest.Create("https://bitbucket.org/api/1.0/repositories/apcurium/mk-taxi/tags") as HttpWebRequest;
+            var req = WebRequest.Create("https://bitbucket.org/api/1.0/repositories/apcurium/mk-taxi/tags") as HttpWebRequest;
             var authInfo = "buildapcurium:apcurium5200!";
             authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
             req.Headers["Authorization"] = "Basic " + authInfo;
@@ -52,11 +52,12 @@ namespace CustomerPortal.Web.BitBucket
             
             revisionsFromBitBucket.Add(GetDefaultRevision());
 
+            //Existing Revisions, we ignore version number tags to prevent building a version from an alternate commit.
             //existing revisions => update
-            var updatesRevisions = (from rev in repository.ToList()
-                let revBitbucket = revisionsFromBitBucket.FirstOrDefault(x => x.Tag == rev.Tag)
-                where revBitbucket != null && revBitbucket.Commit != rev.Commit
-                select new Revision
+            var updatesRevisions = repository
+                .AsEnumerable()
+                .Where(revision => !IsVersionNumber(revision))
+                .Join(revisionsFromBitBucket, rev => rev.Tag, revBitbucket => revBitbucket.Tag, (rev, revBitbucket) => new Revision
                 {
                     Id = rev.Id,
                     Tag = rev.Tag,
@@ -64,7 +65,9 @@ namespace CustomerPortal.Web.BitBucket
                     Hidden = rev.Hidden,
                     CustomerVisible = rev.CustomerVisible,
                     Inactive = rev.Inactive,
-                }).ToList();
+                })
+                .ToArray();
+           
 
             if (updatesRevisions.Any())
             {
@@ -78,6 +81,12 @@ namespace CustomerPortal.Web.BitBucket
             {
                 repository.Add(newRevisions);
             }
+        }
+
+        public static bool IsVersionNumber(Revision revision)
+        {
+            //Regex pattern to validate if revision is a version number.
+            return Regex.IsMatch(revision.Tag, "^([0-9][0-9]*.[0-9][0-9]*.[0-9][0-9]*(.[0-9][0-9]*)?)$");
         }
 
         private static Revision GetDefaultRevision()

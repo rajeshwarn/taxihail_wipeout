@@ -158,6 +158,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
+                context.SaveChanges();
             }
         }
 

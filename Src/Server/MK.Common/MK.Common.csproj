@@ -48,6 +48,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="libphonenumber, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\libphonenumber.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -89,6 +93,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -129,6 +134,8 @@
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
+    <Compile Include="Helpers\PhoneHelper.cs" />
+    <Compile Include="CountryCode.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="Cryptography\CryptographyHelper.cs" />
     <Compile Include="CurencyCodes.cs" />
@@ -137,12 +144,14 @@
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="DummyConfigurationManager.cs" />
     <Compile Include="Entity\AccountCharge.cs" />
+    <Compile Include="Entity\AccountChargeQuestionAnswer.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\AddressLocationType.cs" />
     <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
     <Compile Include="Entity\DriverInfos.cs" />
+    <Compile Include="Entity\Fees.cs" />
     <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
     <Compile Include="Entity\OrderNotificationDetail.cs" />
     <Compile Include="Entity\OrderPairingDetail.cs" />
@@ -161,12 +170,15 @@
     <Compile Include="Entity\TariffType.cs" />
     <Compile Include="Entity\RatingScore.cs" />
     <Compile Include="Entity\RatingType.cs" />
+    <Compile Include="Entity\TollDetail.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
     <Compile Include="Enumeration\AvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
     <Compile Include="Enumeration\DeploymentTargets.cs" />
     <Compile Include="Enumeration\DistanceFormat.cs" />
+    <Compile Include="Enumeration\DriverEtaNotificationModes.cs" />
+    <Compile Include="Enumeration\FeeTypes.cs" />
     <Compile Include="Enumeration\PaymentProvider.cs" />
     <Compile Include="Enumeration\PaymentType.cs" />
     <Compile Include="Enumeration\PayPal\AuthorizationStates.cs" />

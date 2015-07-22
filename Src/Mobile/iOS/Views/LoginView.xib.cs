@@ -148,22 +148,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Apply();
         }
 
-        void ChangeServerTouchUpInside (object sender, EventArgs e)
+        async void ChangeServerTouchUpInside (object sender, EventArgs e)
         {
-            var popup = new UIAlertView {AlertViewStyle = UIAlertViewStyle.PlainTextInput, Title = "Server Url"};
-			popup.GetTextField (0).Text = this.Services().Settings.ServiceUrl;
+            try
+            {
+                var serviceUrl = await this.Services().Message.ShowPromptDialog(
+                    "Server Url",
+                    string.Empty,
+                    () => { return; },
+                    false,
+                    this.Services().Settings.ServiceUrl);
 
-            var cancelBtnIndex = popup.AddButton ("Cancel");
-            var saveBtnIndex = popup.AddButton ("Save");
-
-            popup.CancelButtonIndex = cancelBtnIndex;
-
-            popup.Clicked += delegate(object sender2, UIButtonEventArgs e2) {
-                if (e2.ButtonIndex == saveBtnIndex) {
-                    ViewModel.SetServerUrl(popup.GetTextField (0).Text);                 
+                if(serviceUrl != null)
+                {
+                    ViewModel.SetServerUrl(serviceUrl);
                 }
-            };
-            popup.Show ();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

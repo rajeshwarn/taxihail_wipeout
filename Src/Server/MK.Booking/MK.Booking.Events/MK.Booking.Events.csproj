@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountAnswersAddedUpdated.cs" />
     <Compile Include="AccountChargeImported.cs" />
     <Compile Include="AccountChargeDeleted.cs" />
     <Compile Include="AccountConfirmed.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="AccountChargeAddedUpdated.cs" />
     <Compile Include="AdminRightGranted.cs" />
     <Compile Include="AppSettingsUpdated.cs" />
+    <Compile Include="AutoTipUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="ChargeAccountPaymentDisabled.cs" />
     <Compile Include="CompanyCreated.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="CreditCardPaymentCaptured_V2.cs" />
     <Compile Include="CreditCardPaymentInitiated.cs" />
     <Compile Include="DispatchCompanySwitchIgnored.cs" />
+    <Compile Include="FeesUpdated.cs" />
     <Compile Include="IbsOrderInfoAddedToOrder.cs" />
     <Compile Include="OrderManuallyPairedForRideLinq.cs" />
     <Compile Include="OrderUnpairedFromManualRideLinq.cs" />

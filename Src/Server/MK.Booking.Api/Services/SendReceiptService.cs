@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -55,17 +56,29 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(SendReceipt request)
         {
+            return Post(new SendReceiptAdmin { OrderId = request.OrderId });
+        }
+        public object Post(SendReceiptAdmin request)
+        {
             var order = _orderDao.FindById(request.OrderId);
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-
-            if (!order.IBSOrderId.HasValue)
+            if (order == null || !order.IBSOrderId.HasValue)
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
             }
 
-            if (account.Id != order.AccountId)
+            AccountDetail account;
+            // if the admin is requesting the receipt then it won't be for the logged in user
+            if (!request.RecipientEmail.IsNullOrEmpty())
             {
-                throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
+                account = _accountDao.FindById(order.AccountId);
+            }
+            else
+            {
+                account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+                if (account.Id != order.AccountId)
+                {
+                    throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
+                }
             }
 
             // If the order was created in another company, need to fetch the correct IBS account
@@ -78,26 +91,31 @@ namespace apcurium.MK.Booking.Api.Services
 
             var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId.Value, order.Settings.Phone);
 
-            var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
+            var orderPayment = _orderPaymentDao.FindByOrderId(order.Id, order.CompanyKey);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
             var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
 
-            double? meterAmount;
-            double? tollAmount;
+            double? fareAmount;
+            double? tollAmount = null;
             double? tipAmount;
             double? taxAmount;
+            double? surcharge;
+            double? bookingFees = null;
+            double? extraAmount = null;
             PromotionUsageDetail promotionUsed = null;
             ReadModel.CreditCardDetails creditCard = null;
 
             var ibsOrderId = orderStatus.IBSOrderId;
+            Commands.SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields = null;
 
             if (orderPayment != null && orderPayment.IsCompleted)
             {
-                meterAmount = Convert.ToDouble(orderPayment.Meter);
-                tollAmount = 0;
+                fareAmount = Convert.ToDouble(orderPayment.Meter);
                 tipAmount = Convert.ToDouble(orderPayment.Tip);
                 taxAmount = Convert.ToDouble(orderPayment.Tax);
-                
+                surcharge = Convert.ToDouble(orderPayment.Surcharge);
+                bookingFees = Convert.ToDouble(orderPayment.BookingFees);
+
                 // promotion can only be used with in app payment
                 promotionUsed = _promotionDao.FindByOrderId(request.OrderId);
 
@@ -112,19 +130,38 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     // this is for CMT RideLinq only, no VAT
 
-                    meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-                    tollAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
+                    fareAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
+                    var tollHistory = tripInfo.TollHistory != null
+                           ? tripInfo.TollHistory.Sum(p => p.TollAmount)
+                           : 0;
+
+                    tollAmount = Math.Round(((double)tollHistory / 100), 2);
+                    extraAmount = Math.Round(((double) tripInfo.Extra / 100), 2);
                     tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                     taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
+                    surcharge = Math.Round(((double) tripInfo.Surcharge / 100), 2);
                     orderStatus.DriverInfos.DriverId = tripInfo.DriverId.ToString();
-                    ibsOrderId = tripInfo.TripId;
+
+                    cmtRideLinqFields = new Commands.SendReceipt.CmtRideLinqReceiptFields
+                    {
+                        TripId = tripInfo.TripId,
+                        DriverId = tripInfo.DriverId.ToString(),
+                        Distance = tripInfo.Distance,
+                        AccessFee = tripInfo.AccessFee,
+                        DropOffDateTime = tripInfo.EndTime,
+                        LastFour = tripInfo.LastFour,
+                        FareAtAlternateRate = Math.Round(((double) tripInfo.FareAtAlternateRate / 100), 2),
+                        RateAtTripEnd = tripInfo.RateAtTripEnd,
+                        RateAtTripStart = tripInfo.RateAtTripStart
+                    };
                 }
                 else
                 {
-                    meterAmount = ibsOrder.Fare;
+                    fareAmount = ibsOrder.Fare;
                     tollAmount = ibsOrder.Toll;
                     tipAmount = FareHelper.CalculateTipAmount(ibsOrder.Fare.GetValueOrDefault(0), pairingInfo.AutoTipPercentage.Value);
                     taxAmount = ibsOrder.VAT;
+                    surcharge = order.Surcharge;
                 }
 
                 orderPayment = null;
@@ -134,17 +171,26 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                meterAmount = ibsOrder.Fare;
+                fareAmount = ibsOrder.Fare;
                 tollAmount = ibsOrder.Toll;
                 tipAmount = ibsOrder.Tip;
                 taxAmount = ibsOrder.VAT;
+                surcharge = order.Surcharge;
 
                 orderPayment = null;
             }
 
-            _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrderId, ibsOrder.VehicleNumber, orderStatus.DriverInfos,
-                    meterAmount,
+            var sendReceiptCommand = SendReceiptCommandBuilder.GetSendReceiptCommand(
+                    order, 
+                    account, 
+                    ibsOrderId, 
+                    ibsOrder.VehicleNumber, 
+                    orderStatus.DriverInfos,
+                    fareAmount,
                     tollAmount,
+                    extraAmount,
+                    surcharge,
+                    bookingFees,
                     tipAmount,
                     taxAmount,
                     orderPayment,
@@ -152,13 +198,20 @@ namespace apcurium.MK.Booking.Api.Services
                         ? Convert.ToDouble(promotionUsed.AmountSaved)
                         : (double?)null,
                     promotionUsed,
-                    creditCard));
+                    creditCard,
+                    cmtRideLinqFields);
+            if (!request.RecipientEmail.IsNullOrEmpty())
+            {
+                sendReceiptCommand.EmailAddress = request.RecipientEmail;
+            }
+            _commandBus.Send(sendReceiptCommand);
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
         private Trip GetTripInfo(string pairingToken)
         {
+            // TODO anything to do for manual ridelinq?  when we create an order we have no idea which company we are dispatched to
             var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
             var cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
 

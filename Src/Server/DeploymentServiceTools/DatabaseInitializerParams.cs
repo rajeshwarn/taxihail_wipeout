@@ -40,6 +40,7 @@ namespace DeploymentServiceTools
             get { return string.Format("C:\\Program Files\\Microsoft SQL Server\\{0}\\MSSQL\\", SqlInstanceName); }
         }
 
-        
+        public bool ReuseTemporaryDb { get; set; }
+
     }
 }

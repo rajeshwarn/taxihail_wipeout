@@ -58,9 +58,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     case VehicleStatuses.Common.Arrived:
                         _notificationService.SendArrivedPush(@event.Status);
                         break;
-                    case VehicleStatuses.Common.Loaded:
-                        _notificationService.SendPairingInquiryPush(@event.Status);
-                        break;
                     case VehicleStatuses.Common.Timeout:
                         if (!_serverSettings.ServerData.Network.Enabled)
                         {
@@ -80,10 +77,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
+            @event.MigrateFees();
+
             try
             {
-                if (@event.IsNoShowFee
-                    || @event.IsForPrepaidOrder)
+                if (@event.IsForPrepaidOrder || @event.FeeType != FeeTypes.None)
                 {
                     // Don't message user for now
                     return;

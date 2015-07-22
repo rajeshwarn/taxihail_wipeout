@@ -63,10 +63,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
             {
-                var response = _paymentService.Unpair(request.OrderId);
+                var response = _paymentService.Unpair(order.CompanyKey, request.OrderId);
                 if (response.IsSuccessful)
                 {
-                    _paymentService.VoidPreAuthorization(request.OrderId);
+                    _paymentService.VoidPreAuthorization(order.CompanyKey, request.OrderId);
                 }
                 else
                 {

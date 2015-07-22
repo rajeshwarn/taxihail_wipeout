@@ -2,6 +2,8 @@
 
 using System;
 using ServiceStack.ServiceHost;
+using System.Collections.Generic;
+using apcurium.MK.Common;
 
 #endregion
 
@@ -21,6 +23,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string LastName { get; set; }
 
         public string Password { get; set; }
+
+        public CountryISOCode Country { get; set; }
 
         public string Phone { get; set; }
 

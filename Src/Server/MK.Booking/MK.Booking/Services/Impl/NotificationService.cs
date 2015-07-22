@@ -118,20 +118,6 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail)
-        {
-            var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            if (!_serverSettings.GetPaymentSettings().IsUnpairingDisabled
-                && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id        // Only send notification if using CoF
-                    || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)        // or PayPal
-                && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
-            {
-                SendPushOrSms(order.AccountId,
-                    _resources.Get("PushNotification_wosLOADED", order.ClientLanguageCode),
-                    new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", true } });
-            }
-        }
-
         public void SendTimeoutPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId); 
@@ -262,7 +248,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var order = context.Find<OrderDetail>(orderId);
 
                 var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
-                var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings().IsUnpairingDisabled;
+                var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings(order.CompanyKey).IsUnpairingDisabled;
 
                 string successMessage;
                 if (isPayPal)
@@ -341,12 +327,17 @@ namespace apcurium.MK.Booking.Services.Impl
             return string.Format("{0}/{1}", url1, url2);
         }
 
-        public void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode)
+        public void SendAccountConfirmationSMS(CountryISOCode countryCode, string phoneNumber, string code, string clientLanguageCode)
         {
             var template = _resources.Get(SMSConstant.Template.AccountConfirmation, clientLanguageCode);
             var message = string.Format(template, _serverSettings.ServerData.TaxiHail.ApplicationName, code);
 
-            SendSms(phoneNumber, message);
+            libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
+            toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryDialCode;
+            toPhoneNumber.NationalNumber = long.Parse(phoneNumber);
+            toPhoneNumber.ItalianLeadingZero = (phoneNumber[0] == '0');
+
+            SendSms(toPhoneNumber, message);
         }
 
         public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
@@ -417,10 +408,39 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.PasswordReset, EmailConstant.Subject.PasswordReset, templateData, clientLanguageCode);
         }
 
-        public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
-            double tax, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
-            DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
-            bool bypassNotificationSetting = false)
+        public void SendCancellationFeesReceiptEmail(int ibsOrderId, double feeAmount, string last4Digits,
+            string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+        {
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
+                    {
+                        return;
+                    }
+                }
+            }
+            
+            var imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                LogoImg = imageLogoUrl,
+                IbsOrderId = ibsOrderId,
+                FeeAmount = _resources.FormatPrice(feeAmount),
+                Last4Digits = last4Digits
+            };
+
+            SendEmail(clientEmailAddress, EmailConstant.Template.CancellationFeesReceipt, EmailConstant.Subject.CancellationFeesReceipt, templateData, clientLanguageCode);
+        }
+
+        public void SendNoShowFeesReceiptEmail(int ibsOrderId, double feeAmount, Address pickUpAddress, string last4Digits,
+            string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
             {
@@ -434,8 +454,45 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             }
 
-            var vatIsEnabled = _serverSettings.ServerData.VATIsEnabled;
+            var imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
 
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                LogoImg = imageLogoUrl,
+                IbsOrderId = ibsOrderId,
+                FeeAmount = _resources.FormatPrice(feeAmount),
+                Last4Digits = last4Digits,
+                PickUpAddress = pickUpAddress.DisplayAddress
+            };
+
+            SendEmail(clientEmailAddress, EmailConstant.Template.NoShowFeesReceipt, EmailConstant.Subject.NoShowFeesReceipt, templateData, clientLanguageCode);
+        }
+
+
+        public void SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
+            double tax, double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
+            DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode,
+            SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields, bool bypassNotificationSetting = false)
+        {
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            // Email formatting is different for CMTRideLinQ
+            var isCmtRideLinqReceipt = cmtRideLinqFields != null;
+
+            var vatIsEnabled = _serverSettings.ServerData.VATIsEnabled;
             var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
 
             if (vatIsEnabled && tax == 0)
@@ -448,13 +505,33 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var hasPaymentInfo = paymentInfo != null;
             var hasDriverInfo = driverInfos != null && (driverInfos.FullName.HasValue() || driverInfos.VehicleMake != null || driverInfos.VehicleModel != null);
+            var showTripSection = hasDriverInfo || cmtRideLinqFields != null;
             var paymentAmount = string.Empty;
             var paymentMethod = string.Empty;
             var paymentTransactionId = string.Empty;
             var paymentAuthorizationCode = string.Empty;
 
             var hasFare = Math.Abs(fare) > double.Epsilon;
+            var hasCmtTollDetails = cmtRideLinqFields != null
+                && cmtRideLinqFields.Tolls != null
+                && cmtRideLinqFields.Tolls.Length > 0;
             var showFareAndPaymentDetails = hasPaymentInfo || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
+
+            int? rateClassStart = null;
+            int? rateClassEnd = null;
+            double? fareAtAlternateRate = null;
+
+            // RideLinQ Rate class & fare
+            if (cmtRideLinqFields != null)
+            {
+                rateClassStart = cmtRideLinqFields.RateAtTripStart;
+
+                if (cmtRideLinqFields.RateAtTripStart != cmtRideLinqFields.RateAtTripEnd)
+                {
+                    rateClassEnd = cmtRideLinqFields.RateAtTripEnd;
+                    fareAtAlternateRate = cmtRideLinqFields.FareAtAlternateRate ?? fare;
+                }
+            }
 
             if (hasPaymentInfo)
             {
@@ -487,40 +564,98 @@ namespace apcurium.MK.Booking.Services.Impl
                 : string.Empty;
 
             var timeZoneOfTheOrder = TryToGetOrderTimeZone(orderId);
-            var nullSafeDropOffDate = GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
-            var dropOffTime = dropOffDateInUtc.HasValue
+            var localDropOffDate = cmtRideLinqFields.SelectOrDefault(x => x.DropOffDateTime);
+            var nullSafeDropOffDate = localDropOffDate ?? GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
+            var dropOffTime = dropOffDateInUtc.HasValue || localDropOffDate.HasValue
                 ? nullSafeDropOffDate.ToString("t" /* Short time pattern */)
                 : string.Empty;
 
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
+            var totalAmount = fare + toll + tax + tip + bookingFees + surcharge + extra - amountSavedByPromotion
+                + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
+                + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
+
+            
             var templateData = new
             {
-                // template is missing the toll, if we decide to add it, we need to make sure we hide it if it's empty
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
+                ShowTripSection = showTripSection,
                 HasDriverInfo = hasDriverInfo,
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
                 VehicleNumber = vehicleNumber,
+                DriverName = hasDriverInfo ? driverInfos.FullName : string.Empty,
+                VehicleMake = hasDriverInfo ? driverInfos.VehicleMake : string.Empty,
+                VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
                 DriverInfos = driverInfos,
                 DriverId = hasDriverInfo ? driverInfos.DriverId : "",
-                PickupDate = pickupDate.ToString("D", dateFormat),
-                PickupTime = pickupDate.ToString("t", dateFormat /* Short time pattern */),
+                PickupDate = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
+                    ? cmtRideLinqFields.PickUpDateTime.Value.ToString("D", dateFormat)
+                    : pickupDate.ToString("D", dateFormat),
+                PickupTime = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
+                    ? cmtRideLinqFields.PickUpDateTime.Value.ToString("t", dateFormat /* Short time pattern */)
+                    : pickupDate.ToString("t", dateFormat /* Short time pattern */),
                 DropOffDate = nullSafeDropOffDate.ToString("D", dateFormat),
                 DropOffTime = dropOffTime,
                 ShowDropOffTime = dropOffTime.HasValue(),
-                ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet,
+                ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet && !localDropOffDate.HasValue,
                 Fare = _resources.FormatPrice(fare),
-                Toll = _resources.FormatPrice(toll),                
-                SubTotal = _resources.FormatPrice(totalFare + amountSavedByPromotion - tip), // represents everything except tip and the promo discount
+                Toll = _resources.FormatPrice(toll),        
+                Surcharge = _resources.FormatPrice(surcharge),
+                BookingFees = _resources.FormatPrice(bookingFees),
+                Extra = _resources.FormatPrice(extra),
                 Tip = _resources.FormatPrice(tip),
-                TotalFare = _resources.FormatPrice(totalFare),
+                TotalFare = _resources.FormatPrice(totalAmount),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
-                ShowTax = Math.Abs(tax) >= 0.01,
+                ImprovementSurcharge = _resources.FormatPrice(cmtRideLinqFields.SelectOrDefault(x => x.AccessFee)),
+                RideLinqLastFour = cmtRideLinqFields.SelectOrDefault(x => x.LastFour),
+                
+                Distance = _resources.FormatDistance(cmtRideLinqFields.SelectOrDefault(x => x.Distance)),
+                TripId = cmtRideLinqFields.SelectOrDefault(x => x.TripId),
+                RateClassStart = rateClassStart,
+                RateClassEnd = rateClassEnd,
+                FareAtAlternateRate = _resources.FormatPrice(fareAtAlternateRate),
+
+                TollName1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 ? cmtRideLinqFields.Tolls[0].TollName : string.Empty,
+                TollName2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 ? cmtRideLinqFields.Tolls[1].TollName : string.Empty,
+                TollName3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 ? cmtRideLinqFields.Tolls[2].TollName : string.Empty,
+                TollName4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4 ? cmtRideLinqFields.Tolls[3].TollName : string.Empty,
+
+                TollAmount1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[0].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
+                TollAmount2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[1].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
+                TollAmount3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[2].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
+                TollAmount4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4
+                    ? _resources.FormatPrice(Math.Round(((double)cmtRideLinqFields.Tolls[3].TollAmount / 100), 2))
+                    : _resources.FormatPrice(0),
+                
+                ShowToll1 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 1 && cmtRideLinqFields.Tolls.Length <= 4,
+                ShowToll2 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 2 && cmtRideLinqFields.Tolls.Length <= 4,
+                ShowToll3 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length >= 3 && cmtRideLinqFields.Tolls.Length <= 4,
+                ShowToll4 = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length == 4,
+                ShowTollTotal = hasCmtTollDetails && cmtRideLinqFields.Tolls.Length > 4,
+                ShowRideLinqLastFour = isCmtRideLinqReceipt,
+                ShowTripId = isCmtRideLinqReceipt,
+                ShowTax = Math.Abs(tax) >= 0.01 || isCmtRideLinqReceipt,
+                ShowImprovementSurcharge = isCmtRideLinqReceipt,
+                ShowToll = Math.Abs(toll) >= 0.01 || isCmtRideLinqReceipt,
+                ShowSurcharge = Math.Abs(surcharge) >= 0.01 || isCmtRideLinqReceipt,
+                ShowBookingFees = Math.Abs(bookingFees) >= 0.01 || isCmtRideLinqReceipt,
+                ShowExtra = Math.Abs(extra) >= 0.01 || isCmtRideLinqReceipt,
+                ShowRateClassStart = rateClassStart.HasValue || isCmtRideLinqReceipt,
+                ShowRateClassEnd = rateClassEnd.HasValue,
+                ShowDistance = isCmtRideLinqReceipt,
+
                 vatIsEnabled,
                 HasPaymentInfo = hasPaymentInfo,
                 PaymentAmount = paymentAmount,
@@ -541,6 +676,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
                 promoCode,
                 AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion))
+
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
@@ -753,25 +889,24 @@ namespace apcurium.MK.Booking.Services.Impl
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Set<AccountDetail>().Find(accountId);
-                var phoneNumber = account.Settings.Phone;
 
-                if (string.IsNullOrWhiteSpace(phoneNumber))
+                libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
+                toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(account.Settings.Country)).CountryDialCode;
+                toPhoneNumber.NationalNumber = long.Parse(account.Settings.Phone);
+                toPhoneNumber.ItalianLeadingZero = (account.Settings.Phone[0] == '0');
+
+                if (!toPhoneNumber.IsValidNumber)
                 {
-                    _logger.Maybe(() => _logger.LogMessage("Cannot send SMS, phone number in account is empty (account: {0})", accountId));
+                    _logger.Maybe(() => _logger.LogMessage("Cannot send SMS for account {0}, phone number is {1})", accountId, toPhoneNumber.IsPossibleNumberWithReason.ToString()));
                     return;
                 }
 
-                SendSms(phoneNumber, alert);
+                SendSms(toPhoneNumber, alert);
             }
         }
 
-        private void SendSms(string phoneNumber, string alert)
+        private void SendSms(libphonenumber.PhoneNumber phoneNumber, string alert)
         {
-            // TODO MKTAXI-1836 Support International number
-            phoneNumber = phoneNumber.Length == 11
-                              ? phoneNumber
-                              : string.Concat("1", phoneNumber);
-
             _smsService.Send(phoneNumber, alert);
         }
 
@@ -847,6 +982,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string BookingConfirmation = "Email_Subject_BookingConfirmation";
                 public const string PromotionUnlocked = "Email_Subject_PromotionUnlocked";
                 public const string CreditCardDeactivated = "Email_Subject_CreditCardDeactivated";
+                public const string CancellationFeesReceipt = "Email_Subject_CancellationFeesReceipt";
+                public const string NoShowFeesReceipt = "Email_Subject_NoShowFeesReceipt";
             }
 
             public static class Template
@@ -857,6 +994,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string BookingConfirmation = "BookingConfirmation";
                 public const string PromotionUnlocked = "PromotionUnlocked";
                 public const string CreditCardDeactivated = "CreditCardDeactivated";
+                public const string CancellationFeesReceipt = "CancellationFeesReceipt";
+                public const string NoShowFeesReceipt = "NoShowFeesReceipt";
             }
         }
 

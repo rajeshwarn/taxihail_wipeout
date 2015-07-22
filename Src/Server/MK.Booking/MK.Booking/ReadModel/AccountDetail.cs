@@ -75,5 +75,13 @@ namespace apcurium.MK.Booking.ReadModel
                 }
             }
         }
+
+        public bool HasValidPaymentInformation
+        {
+            get
+            {
+                return IsPayPalAccountLinked || DefaultCreditCard != null;
+            }
+        }
     }
 }

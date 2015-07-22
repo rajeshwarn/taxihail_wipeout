@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class ManualRideLinqStatusView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnTip { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
 
 		[Outlet]
@@ -22,10 +25,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblDriverIdText { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblEmail { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblGreetings { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblMedallion { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblPairingCode { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblPairingCodeText { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblPayment { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblVehicule { get; set; }
@@ -35,6 +50,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblMedallion != null) {
+				lblMedallion.Dispose ();
+				lblMedallion = null;
+			}
+
+			if (btnTip != null) {
+				btnTip.Dispose ();
+				btnTip = null;
+			}
+
 			if (btnUnpair != null) {
 				btnUnpair.Dispose ();
 				btnUnpair = null;
@@ -68,6 +93,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblVehiculeText != null) {
 				lblVehiculeText.Dispose ();
 				lblVehiculeText = null;
+			}
+
+			if (lblPayment != null) {
+				lblPayment.Dispose ();
+				lblPayment = null;
+			}
+
+			if (lblEmail != null) {
+				lblEmail.Dispose ();
+				lblEmail = null;
+			}
+
+			if (lblGreetings != null) {
+				lblGreetings.Dispose ();
+				lblGreetings = null;
 			}
 		}
 	}

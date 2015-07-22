@@ -52,6 +52,21 @@
             return $.post(this.url() + '/sendreceipt', {}, function(){}, 'json');
         },
 
+        initiateCallToDriver: function () {
+            return $.get(this.url() + '/calldriver', {}, function () { }, 'json');
+        },
+
+        sendMessageToDriver: function(vehicleNumber, message) {
+            return $.ajax({
+                type: 'POST',
+                url: 'api/vehicle/' + vehicleNumber + '/message',
+                data: JSON.stringify({
+                    message: message
+                }),
+                contentType: 'application/json'
+            }, this);
+        },
+
         getStatus: function() {
             return this._status || (this._status = new TaxiHail.OrderStatus({
                 id: this.id

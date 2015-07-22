@@ -8,19 +8,12 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-			if (value == null)
-			{
-				return null;
-			}
-
 			if (parameter == null)
 			{
 				return value;
 			}
 
-			var format = "{0:" + parameter.ToString()  + "}";
-
-			return string.Format(culture, format, value);
+			return string.Format(culture, parameter.ToString(), value);
         }
     }
 }

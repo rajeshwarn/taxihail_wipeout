@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">Email</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
   <string name="CmtCardNumber">Método de Pago:</string>
   <string name="Edit">Editar</string>
   <string name="RideSettingsName">Nombre</string>
@@ -45,7 +45,7 @@
   <string name="PaymentViewTipText">Propina</string>
   <string name="ConfirmVehiculeTypeLabel">Tipo de Vehículo</string>
   <string name="View_PaymentPreference">Preferencia de pago</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to have a credit card configured in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
   <string name="InvalidPassengersNumberTitle">Invalid Number of Passengers</string>
   <string name="InvalidAddressMessage">La dirección que ha proporcionado es inválida. Por favor vefíquela</string>
   <string name="CreateAccountErrorTitle">Error</string>
@@ -60,7 +60,6 @@
   <string name="RateLastRideTitle">¿Calificar su servicio?</string>
   <string name="VehicleNumberErrorMessage">No podemos encontrar el número de vehículo.  Por favor page en el vehículo.</string>
   <string name="CreditCardAdded">Su cuenta ha sido activada para pagar por defecto con tarjeta de crédito. Usted puede también pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
-  <string name="CreditCardAdded_PayInCarDisabled">Su cuenta ha sido activada para pagar con tarjeta de crédito.</string>
   <string name="PanelMenuViewLocationsText">Ubicaciones</string>
   <string name="CreateAccountFullNamePlaceHolder">Nombre completo</string>
   <string name="PayInCar">Pagar en el vehículo</string>
@@ -70,6 +69,7 @@
   <string name="FilteredAddresses_Error_Title">Error</string>
   <string name="November">Nov (11)</string>
   <string name="CreateAccountPhonePlaceHolder">Celular</string>
+  <string name="Error_EditAutoTipMessage">An error occurred while trying to update the tip. Please try again.</string>
   <string name="ReminderTitle">{0} Reservado</string>
   <string name="March">Mar (03)</string>
   <string name="LoginViewEmailPlaceHolder">Email</string>
@@ -81,6 +81,7 @@
   <string name="Error_AccountPaymentTitle">Error</string>
   <string name="Tuto05Top">Toque “Reservar ya” y se le asignará un vehiculo lo más pronto posible</string>
   <string name="View_SignIn"> </string>
+  <string name="GenericErrorTitle">Error</string>
   <string name="BookDateLabel">Recogerme más tarde</string>
   <string name="HistoryViewSendReceiptError">Error al enviar comprobante para esta reservación</string>
   <string name="StatusCancelButton">Cancelar reservación</string>
@@ -88,6 +89,7 @@
   <string name="VehicleNumberErrorTitle">Error</string>
   <string name="NoConnectionMessage">El servidor no puede ser contactado, puede estar caído o usted puede haber perdido la conexión a intenet</string>
   <string name="Safety">Seguridad</string>
+  <string name="CallDriverUsingProxyErrorMessage">Sorry, we weren\'t able to initiate a call with your driver.</string>
   <string name="PromoExpiringSoonMessage">Expires in {0} days</string>
   <string name="PassengerPhoneLabel">Teléfono</string>
   <string name="HistoryDetailPickupLabel">Recoger:</string>
@@ -135,11 +137,13 @@
   <string name="TabPlaces">Lugares</string>
   <string name="CreditCardRemoveErrorTitle">No puede eliminar la tarjeta de crédito</string>
   <string name="RideHistoryButton">Historial de viajes</string>
+  <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
   <string name="InvalidLoginMessageTitle">Error de inicio de sesión</string>
   <string name="CreateAccountTitleArray">SrSra</string>
   <string name="RideSettingsAccountNumber">Número de cuenta</string>
   <string name="RideSettingsPassword">Contraseña</string>
   <string name="View_BookingDetail">Detalles de la reservación</string>
+  <string name="ManualRideLinqStatus_Toll">Toll:</string>
   <string name="WarningTitle">Aviso</string>
   <string name="ManualPairingForRideLinQ_Error_Message">An error occurred during check in.</string>
   <string name="Delete">Eliminar</string>
@@ -199,6 +203,7 @@
   <string name="CmtRideLinqGenericErrorMessage">Hubo un error al sincronizar, verifique la información de se tarjeta de crédito o intente nuevamente</string>
   <string name="View_RideLinqPair">Check In</string>
   <string name="DateTimePickerSetButton">De Alta</string>
+  <string name="CreditCardAdded_PayInCarDisabled">Your account is now enabled to pay for rides with this credit card.</string>
   <string name="AccountConfirmation_ErrorTitle">No se puede validar su cuenta</string>
   <string name="View_AccountConfirmation_Label_Instructions">Un mensaje de texto con su código ha sido enviado a su celular</string>
   <string name="NoFareText">Seleccione un destino para proveer estimado de costo</string>
@@ -244,19 +249,22 @@
   <string name="PickupTextPlaceholder">Direccion de abordaje</string>
   <string name="CmtRideLinqConfirmPairViewConfirmPairDetailText">Revise que usted se encuentre en el vehículo indicado arriba. Si lo confirma, este viaje será pagado automáticamente utilizando sus configuración de pago predeterminada</string>
   <string name="ReSendConfirmation">Notificar al chofer del pago</string>
-  <string name="NoPhoneNumberMessage">El número de teléfono es inválido para este chofer</string>
+  <string name="NoPhoneNumberMessage">Your phone number or the driver\'s phone number is invalid.</string>
   <string name="PickupViewPickupLabel">Recoger:</string>
   <string name="AccountPaymentCustomerNumberRequiredTitle">Account Rider Number required</string>
+  <string name="MessageToDriverTitle">Message to Driver</string>
   <string name="searchHint">Buscar</string>
   <string name="StreetNumberDoneBt">Usar esta dirección</string>
   <string name="InvalidLocalContactMessage">La dirección asociada a este contacto no puede ser verificada</string>
   <string name="ManualRideLinqStatus_Total">Total cost:</string>
   <string name="August">Ago (08)</string>
   <string name="StreetNumberLabel">Refine su dirección</string>
+  <string name="ManualRideLinqStatus_Payment">Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</string>
   <string name="CmtConfirmPayment">Confirmar</string>
   <string name="LocationDetailNameLabel">Apodo</string>
   <string name="ResetPasswordInvalidDataTitle">Email inválido</string>
   <string name="NoPhoneNumberTitle">Número de telefóno inválido</string>
+  <string name="ManualRideLinqStatus_Extra">Extra:</string>
   <string name="UpdatedTermsAndConditionsAcceptButton">Aceptar</string>
   <string name="PaymentConfirmationMessageToDriver">El pasajero ha pagado {0} (auth : {1})</string>
   <string name="Time">Hora</string>
@@ -264,6 +272,7 @@
   <string name="CreditCardBookingSettingsError">An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</string>
   <string name="CreditCardInvalidCrediCardNUmber">El número de tarjeta de crédito es inválido</string>
   <string name="RideSettingsCompany">Compañía</string>
+  <string name="ServiceError_ErrorCreatingOrderMessage_NoCall">The order cannot be created, please try again.</string>
   <string name="CmtCancelPayment">Cancelar</string>
   <string name="DriverInfoLicence"># de Placa:</string>
   <string name="Overdue_IBSOrderId">Order:</string>
@@ -272,6 +281,7 @@
   <string name="UpdateBookingSettingsInvalidAccount">The account number that was entered doesn\'t exist</string>
   <string name="ResetPasswordConfirmationTitle">Contraseña enviada</string>
   <string name="NoPairingCreditCard">None</string>
+  <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>
   <string name="Submit">Pagar en Efectivo y Terminar</string>
   <string name="AccountPaymentNumberRequiredTitle">Número de cuenta caducado.</string>
   <string name="CreditCardRemoveErrorMessage">Necesita tener al menos una tarjeta de crédito en su cuenta. Si desea eliminar esta tarjeta, necesitará agregar otra antes</string>
@@ -306,6 +316,7 @@
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="StatusActionButton">Llamar / Reservar / Cancelar</string>
   <string name="PayPalLinkError">Unable to link your PayPal account</string>
+  <string name="CallDriverUsingProxyMessage">Your driver will call you back in a few minutes</string>
   <string name="EstimatingFare">Estimando costo de su servicio</string>
   <string name="HistoryViewTitle">Historia</string>
   <string name="Continue">Continuar</string>
@@ -317,7 +328,7 @@
   <string name="PromoDescriptionCode">Enter code {0} or press the button below</string>
   <string name="Error_AccountPaymentMessage">Invalid account or rider number</string>
   <string name="SaveAddressEmptyFieldTitle">Nombre</string>
-  <string name="ManualRideLinqStatus_Medallion">Vehicule number:</string>
+  <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
   <string name="LoginForgotPasswordDetail">Ingrese su email y le enviaremos una nueva contraseña</string>
   <string name="NoButton">No</string>
   <string name="CreditCardRequiredFields">Todos los campos requeridos</string>
@@ -330,7 +341,7 @@
   <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file ending with {0} to continue</string>
   <string name="DateTimePickerPickInvalidDateMessage">La fecha y hora del servicio deben ser en el futuro</string>
   <string name="AddressSearchingText">Buscando...</string>
-  <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</string>
+  <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Are you sure you want to cancel? A cancellation fee may apply.</string>
   <string name="MarketChangedMessage">You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</string>
   <string name="Tuto04Top">Si quiere, puede también especificar su destino</string>
   <string name="ConfirmPhoneLabel">Móvil:</string>
@@ -348,7 +359,7 @@
   <string name="UpdateBookingSettingsInvalidDataTitle">Información de reservación inválida.</string>
   <string name="Now">Ahora</string>
   <string name="RideSummarySubTitleText">Gracias por viajar con {0}, esperamos pronto poder volver servirle</string>
-  <string name="StatusConfirmCancelRide">Esta accion cancelará su reservacion desea continuar?</string>
+  <string name="StatusConfirmCancelRide">Are you sure you want to cancel?</string>
   <string name="View_AccountConfirmationTitle">Confirmación de cuenta.</string>
   <string name="RateRide">Califique su servicio</string>
   <string name="ConfirmDestinationLabel">Destino</string>
@@ -374,6 +385,7 @@
   <string name="WarningEstimateDontShow">No avisar</string>
   <string name="ChooseProviderDialogTitle">Seleccionar proveedor</string>
   <string name="View_AboutUs">Acerca de nosotros</string>
+  <string name="ManualRideLinqStatus_Greetings">Enjoy the ride!</string>
   <string name="WarningLocationService">Por favor encienda los servicios de ubicación para poder mostrar su posición en el mapa</string>
   <string name="LoginViewPasswordPlaceHolder">Contraseña</string>
   <string name="BookDestinationLabel">Ingrese su destino</string>
@@ -420,8 +432,9 @@
   <string name="apcuriumUrl">http://www.apcurium.com/</string>
   <string name="View_BookingStatus">Estado</string>
   <string name="ViewRatingBtn">Ver evaluaciones</string>
+  <string name="ManualRideLinqStatus_Email">A receipt will be emailed to {0}.</string>
   <string name="ChargeTypeCreditCardFile">Tarjeta de crédito guardada</string>
-  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must contain between 10 and 15 numbers.</string>
+  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must have format {0}</string>
   <string name="CardExpiredMessage">Your credit card is expired. Add a new card to your account or update card informations to continue.</string>
   <string name="LocationAddFavoriteTitle">Agregar lugar</string>
   <string name="NbPassenger">({0} pasajero)</string>
@@ -436,7 +449,7 @@
   <string name="PickupMapTitle">Ubicacion de abordaje</string>
   <string name="DontAsk">No preguntar</string>
   <string name="TimeNow">Cuanto Antes</string>
-  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked in the app.</string>
+  <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked to your account.</string>
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
   <string name="InvalidLocalContactTitle">Contacto inválido</string>
   <string name="RideSettingsPayBack">PayBack</string>
@@ -467,6 +480,7 @@
   <string name="Toggle_On">Encendido</string>
   <string name="GooglePlayServicesNotAvailableMessage">Usted necesita actualizar los servicios de “Google play” para poder utilizar esta aplicación</string>
   <string name="LocationViewTitle">Mis lugares</string>
+  <string name="StatusEditAutoTipButton">Tip</string>
   <string name="DriverInfoDriver">Chofer:</string>
   <string name="SettingsViewTitle">Ajustes</string>
   <string name="TechSupportEmailTitle">Soporte de applicion móvil</string>
@@ -499,6 +513,7 @@
   <string name="BookRatingErrorTitle">Aviso</string>
   <string name="View">Ver</string>
   <string name="NoRingCodeText">Número Código de entrada</string>
+  <string name="DialCodeSelectorTitle">Dial Code</string>
   <string name="Eta">El taxi más cercano es {0} y esta a {1} {2} de distancia</string>
   <string name="January">Ene (01)</string>
   <string name="AddReminderTitle">Servicio programado</string>
@@ -554,6 +569,7 @@
   <string name="ManualPairingForRideLinQ_Pair">CHECK IN</string>
   <string name="Tuto05Bottom">O puede tocar el botón  de “Mas Tarde” para programar un servicio futuro</string>
   <string name="EmptyString"> </string>
+  <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance or try again.</string>
   <string name="HistoryDetailPromoLabel">Promo Code:</string>
   <string name="DateTimePickerPickTime">Seleccione la hora del servicio:</string>
   <string name="CreateAccountErrorMessage">No se pudo crear su cuenta.</string>
@@ -589,6 +605,7 @@
   <string name="WarningLocationServiceDontShow">No avisar</string>
   <string name="Overdue_Failed_Title">Payment Failed</string>
   <string name="TAXI">TAXI</string>
+  <string name="View_EditAutoTip">Edit Tip</string>
   <string name="StatusConfirmNewBooking">Reservar un nuevo taxi mantendrá esta reservación activa, desea continuar?</string>
   <string name="InvalidPassengersNumber">The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.</string>
   <string name="DeleteCreditCard">¿Desea eliminar la tarjeta de crédito asociada con esta cuenta?</string>
@@ -596,6 +613,7 @@
   <string name="View_HistoryDetail">Detalles de la Reservación</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">The pairing code is invalid.</string>
   <string name="HistoryDetailBuildingNameNotSpecified">No Especificado</string>
+  <string name="DriverInfoVehicleMedallion">Medallion:</string>
   <string name="TabBook">De Alta</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">You cannot delete your credit card when an order is scheduled or in progress.</string>
   <string name="TaxiMapTitle">Su Taxi</string>
@@ -603,6 +621,7 @@
   <string name="NoMailClient">No hay clientes de correo instalados</string>
   <string name="June">Jun (06)</string>
   <string name="ManualRideLinqStatus_Driver">Driver id:</string>
+  <string name="SendMessageToDriverErrorMessage">An error occurred while trying to contact the driver. Please try again later.</string>
   <string name="InvalidAddressTextEdit">No se puede verificar la dirección</string>
   <string name="HistoryDetailPickupDateLabel">Fecha del servicio:</string>
 </resources>

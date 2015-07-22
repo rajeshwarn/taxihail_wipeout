@@ -55,6 +55,8 @@ namespace apcurium.MK.Booking.Commands
         public string Market { get; set; }
 
         public bool IsPrepaid { get; set; }
+
+        public decimal BookingFees { get; set; }
         
         public class PaymentInformation
         {

@@ -100,7 +100,7 @@ namespace MK.Common.Configuration
             TwitterCallback = "http://www.taxihail.com/oauth";
             TwitterRequestTokenUrl = "https://api.twitter.com/oauth/request_token";
             
-            InitialZoomLevel = 14;
+            InitialZoomLevel = 14;            
 		}
 
         public TaxiHailSettingContainer TaxiHail { get; protected set; }
@@ -137,6 +137,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Use single button for now and later booking", Description = "Replace book now and book later buttons with a single button that will display both options in a popup. (This feature does not work with manual CMT ridelinq pairing.)")]
         public bool UseSingleButtonForNowAndLaterBooking { get; set; }
+
+        [SendToClient]
+        [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
+        public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter Consumer Secret", Description = "Twitter API settings")]
@@ -192,6 +196,10 @@ namespace MK.Common.Configuration
 
         [Display(Name = "SMS source number", Description = "Number from which the sms confirmation number will be sent")]
         public string SMSFromNumber { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Show individual taxi marker only", Description = "When this setting is enabled, we will only show individual taxi markers (and won't replace with a cluster icon).")]
+	    public bool ShowIndividualTaxiMarkerOnly { get; protected set; }
 
         [Display(Name = "Twilio SMS account id", Description = "Account id for Twilio")]
         public string SMSAccountSid { get; protected set; }
@@ -431,12 +439,6 @@ namespace MK.Common.Configuration
         [Display(Name = "Google Analytics Tracking ID", Description = "Company's Tracking ID used for Google Analytics")]
         public string GoogleAnalyticsTrackingId { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
-        public bool CallDriverUsingProxy { get; protected set; }
-
-        [SendToClient, CustomizableByCompany]
-        public string CallDriverUsingProxyUrl { get; protected set; }
-
 	    [SendToClient, CustomizableByCompany]
         public int InitialZoomLevel { get; set; }
 
@@ -454,6 +456,10 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Registration PayBack", Description = "Defines if the PayBack field when creating a new account is required or not")]
         public bool? IsPayBackRegistrationFieldRequired { get; set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Show Message Driver", Description = "Show button on the status screen to message the driver")]
+        public bool ShowMessageDriver { get; set; }
     }
 }
 

@@ -19,23 +19,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblInstructions { get; set; }
 
 		[Outlet]
-		UIKit.UITextField PairingCode1 { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ExtendedTextFieldView PairingCode1 { get; set; }
 
 		[Outlet]
-		UIKit.UITextField PairingCode2 { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ExtendedTextFieldView PairingCode2 { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (btnPair != null) {
-				btnPair.Dispose ();
-				btnPair = null;
-			}
-
-			if (lblInstructions != null) {
-				lblInstructions.Dispose ();
-				lblInstructions = null;
-			}
-
 			if (PairingCode1 != null) {
 				PairingCode1.Dispose ();
 				PairingCode1 = null;
@@ -44,6 +34,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (PairingCode2 != null) {
 				PairingCode2.Dispose ();
 				PairingCode2 = null;
+			}
+
+			if (btnPair != null) {
+				btnPair.Dispose ();
+				btnPair = null;
+			}
+
+			if (lblInstructions != null) {
+				lblInstructions.Dispose ();
+				lblInstructions = null;
 			}
 		}
 	}

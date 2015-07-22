@@ -11,6 +11,9 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Helpers;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -18,34 +21,61 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
+		private readonly IPaymentService _paymentService;
 
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService)
+		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IPaymentService paymentService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
+			_paymentService = paymentService;
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
 			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketUpdated(hashedMarket));
+
+            PhoneNumber = new PhoneNumberModel();
 		}
 
 		public async Task Init()
 		{
 			Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
 			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+			PhoneNumber.Country = _bookingSettings.Country;
+            PhoneNumber.PhoneNumber = _bookingSettings.Phone;
 			RaisePropertyChanged(() => IsChargeTypesEnabled);
+            RaisePropertyChanged(() => PhoneNumber);
+            RaisePropertyChanged(() => SelectedCountryCode);
 		}
 
 	    private async Task MarketUpdated(string hashedMarket)
 	    {
-            ChargeTypes = (await _accountService.GetPaymentsList(hashedMarket))
-                .Select(x => new ListItem
-                {
-                    Id = x.Id,
-                    Display = this.Services().Localize[x.Display]
-                }).ToArray();
+			var paymentList = await _accountService.GetPaymentsList();
+
+			if (hashedMarket.HasValue())
+			{
+				var paymentSettings = await _paymentService.GetPaymentSettings();
+				if (paymentSettings.PaymentMode == PaymentMethod.Cmt
+					|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
+				{
+					// CoF payment option in external markets is only available with CMT payment
+					paymentList.Remove(i => i.Id != Common.Enumeration.ChargeTypes.PaymentInCar.Id
+						&& i.Id != Common.Enumeration.ChargeTypes.CardOnFile.Id);
+				}
+				else
+				{
+					// Only Pay in Car payment available in external markets for other payment providers
+					paymentList.Remove(i => i.Id != Common.Enumeration.ChargeTypes.PaymentInCar.Id);
+				}
+			}
+
+			ChargeTypes = paymentList
+				.Select(x => new ListItem
+					{
+						Id = x.Id,
+						Display = this.Services().Localize[x.Display]
+					}).ToArray();
 	    }
 
 	    public bool IsChargeTypesEnabled
@@ -54,6 +84,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
 				// this is in cache and set correctly when we add/update/delete credit card
 				return _accountService.CurrentAccount.DefaultCreditCard == null || !Settings.DisableChargeTypeWhenCardOnFile;
+            }
+        }
+
+		public PhoneNumberModel PhoneNumber { get; set; }
+
+        public CountryCode[] CountryCodes
+        {
+            get
+            {
+                return CountryCode.CountryCodes;
+            }
+        }
+
+        public CountryCode SelectedCountryCode
+        {
+            get
+            {
+                return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(_bookingSettings.Country));
+            }
+
+            set
+            {
+                _bookingSettings.Country = value.CountryISOCode;
+                RaisePropertyChanged();
             }
         }
 
@@ -71,6 +125,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					RaisePropertyChanged(() => VehicleTypeName);
 					RaisePropertyChanged(() => ChargeTypeId);
 					RaisePropertyChanged(() => ChargeTypeName);
+                    RaisePropertyChanged(() => SelectedCountryCode);
+					PhoneNumber.Country = _bookingSettings.Country;
 				}
 			}
 		}
@@ -95,9 +151,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
-                    if (!PhoneHelper.IsValidPhoneNumber(BookingSettings.Phone))
+                    PhoneNumber.Country = BookingSettings.Country;
+                    PhoneNumber.PhoneNumber = BookingSettings.Phone;
+
+                    if (!PhoneNumber.IsNumberPossible())
                     {
-                        await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                            string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], PhoneNumber.GetPhoneExample()));
                         return;
                     }
 

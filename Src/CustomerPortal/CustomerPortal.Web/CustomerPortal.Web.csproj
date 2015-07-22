@@ -225,6 +225,7 @@
     <Compile Include="Areas\Admin\Models\VersionEmailViewModel.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\NetworkApiController.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\NetworkVehiclesApiController.cs" />
+    <Compile Include="Areas\Customer\Controllers\Api\PaymentSettingsApiController.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\RoamingApiController.cs" />
     <Compile Include="Areas\Customer\Models\RequestResponse\CompanyPreferencesRequest.cs" />
     <Compile Include="Attributes\NoCacheAttribute.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Entities\Network\TaxiHailNetworkSettings.cs" />
     <Compile Include="Entities\Network\NetworkVehicle.cs" />
     <Compile Include="Entities\Payment.cs" />
+    <Compile Include="Entities\Network\PaymentSettings.cs" />
     <Compile Include="Entities\Questionnaire.cs" />
     <Compile Include="Entities\AppStatus.cs" />
     <Compile Include="Entities\IBSSettings.cs" />
@@ -265,6 +267,7 @@
     <Compile Include="Entities\Version.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Extensions\DateFormatterExtension.cs" />
+    <Compile Include="Extensions\GridExtensions.cs" />
     <Compile Include="Extensions\MapRegionExtensions.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="HtmlHelpers\ActiveTab.cs" />
@@ -307,7 +310,9 @@
     <Compile Include="Security\SecurityHelper.cs" />
     <Compile Include="Services\GoogleApi.cs" />
     <Compile Include="Services\IClock.cs" />
+    <Compile Include="Services\IEmailSender.cs" />
     <Compile Include="Services\IFileManager.cs" />
+    <Compile Include="Services\Impl\EmailSender.cs" />
     <Compile Include="Services\Impl\PackagesManager.cs" />
     <Compile Include="Services\Impl\Clock.cs" />
     <Compile Include="Services\Impl\GraphicsManager.cs" />
@@ -459,11 +464,14 @@
     <Content Include="Images\check.png" />
     <Content Include="Images\copy.png" />
     <Content Include="Images\delete.png" />
+    <Content Include="Images\deploy.png" />
     <Content Include="Images\download.jpg" />
+    <Content Include="Images\ibs.png" />
     <Content Include="Images\settings.jpg" />
     <Content Include="Images\suv_badge.png" />
     <Content Include="Images\taxi_badge.png" />
     <Content Include="Images\THNetwork.png" />
+    <Content Include="Images\versions.png" />
     <Content Include="Images\warn.jpg" />
     <Content Include="log4net.xml" />
     <Content Include="Scripts\gridmvc.js" />
@@ -506,6 +514,10 @@
     <Content Include="Areas\Admin\Views\NetworkVehicles\CreateVehicle.cshtml" />
     <Content Include="Areas\Admin\Views\NetworkVehicles\EditVehicle.cshtml" />
     <Content Include="Areas\Admin\Views\NetworkVehicles\VehicleIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\Deployment\DeploymentHistory.cshtml">
+      <SubType>Code</SubType>
+      <BrowseToURL>~/Admin/Deployment/History</BrowseToURL>
+    </Content>
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
@@ -69,19 +70,58 @@ namespace apcurium.MK.Web.Tests
         protected abstract PaymentProvider GetProvider();
 
         [Test]
-        public async void when_capturing_a_preauthorized_commit_a_credit_card_payment_but_ibs_failed()
+        public async void when_getting_an_overdue_payment()
         {
-            _fakeIbs.Fail = true;
-
             var orderId = Guid.NewGuid();
-            var creditCardId = Guid.NewGuid();
-
-            var client = GetPaymentClient();
-            var tokenizeResponse = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2 + "");
-            var token = tokenizeResponse.CardOnFileToken;
 
             using (var context = ContextFactory.Invoke())
             {
+                context.RemoveAll<OverduePaymentDetail>();
+                context.SaveChanges();
+
+                context.Set<OverduePaymentDetail>().Add(new OverduePaymentDetail
+                {
+                    AccountId = TestAccount.Id,
+                    IBSOrderId = 12345,
+                    OrderId = orderId,
+                    TransactionDate = DateTime.Now,
+                    TransactionId = "TransId",
+                    OverdueAmount = 52.34m,
+                    ContainBookingFees = true,
+                    IsPaid = false
+                });
+
+                context.SaveChanges();
+            }
+
+            var client = GetPaymentClient();
+
+            var overduePayment = await client.GetOverduePayment();
+
+            Assert.AreEqual(orderId, overduePayment.OrderId);
+            Assert.AreEqual(12345, overduePayment.IBSOrderId);
+            Assert.AreEqual("TransId", overduePayment.TransactionId);
+            Assert.AreEqual(52.34m, overduePayment.OverdueAmount);
+        }
+
+        [Test]
+        public async void when_settling_an_overdue_payment()
+        {
+            var orderId = Guid.NewGuid();
+            var creditCardId = Guid.NewGuid();
+            var pickUpDate = DateTime.Now;
+
+            var client = GetPaymentClient();
+
+            using (var context = ContextFactory.Invoke())
+            {
+                context.RemoveAll<OrderDetail>();
+                context.RemoveAll<OverduePaymentDetail>();
+                context.SaveChanges();
+
+                var tokenizeResponse = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2 + string.Empty);
+                var token = tokenizeResponse.CardOnFileToken;
+
                 var testAccount = context.Set<AccountDetail>().First(a => a.Id == TestAccount.Id);
                 testAccount.DefaultCreditCard = creditCardId;
 
@@ -96,63 +136,54 @@ namespace apcurium.MK.Web.Tests
                     Token = token
                 });
 
+                context.Set<OrderDetail>().Add(new OrderDetail
+                {
+                    Id = orderId,
+                    AccountId = TestAccount.Id,
+                    BookingFees = 15m,
+                    CreatedDate = DateTime.Now,
+                    PickupDate = pickUpDate,
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    ClientLanguageCode = SupportedLanguages.en.ToString()
+                });
+
+                context.Set<OrderStatusDetail>().Add(new OrderStatusDetail
+                {
+                    OrderId = orderId,
+                    IBSOrderId = 12345,
+                    VehicleNumber = "9001",
+                    Status = OrderStatus.Canceled,
+                    AccountId = TestAccount.Id,
+                    PickupDate = pickUpDate
+                });
+
+                context.Set<OrderPairingDetail>().Add(new OrderPairingDetail
+                {
+                    OrderId = orderId,
+                    AutoTipPercentage = 15
+                });
+
+                context.Set<OverduePaymentDetail>().Add(new OverduePaymentDetail
+                {
+                    AccountId = TestAccount.Id,
+                    IBSOrderId = 12345,
+                    OrderId = orderId,
+                    TransactionDate = DateTime.Now,
+                    TransactionId = "TransId",
+                    OverdueAmount = 52.34m,
+                    ContainBookingFees = false,
+                    ContainStandaloneFees = false,
+                    IsPaid = false
+                });
+
                 context.SaveChanges();
             }
 
-            var order = new CreateOrder
-            {
-                Id = orderId,
-                PickupAddress = TestAddresses.GetAddress1(),
-                DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
-                {
-                    Price = 65,
-                    Distance = 3
-                },
-                Settings = new BookingSettings
-                {
-                    ChargeTypeId = ChargeTypes.CardOnFile.Id,
-                    VehicleTypeId = 1,
-                    ProviderId = Provider.ApcuriumIbsProviderId,
-                    Phone = "514-555-12129",
-                    Passengers = 6,
-                    NumberOfTaxi = 1,
-                    Name = "Joe Smith",
-                    LargeBags = 1
-                },
-                Payment = new PaymentSettings
-                {
-                    CreditCardId = creditCardId,
-                    PayWithCreditCard = true
-                },
-                ClientLanguageCode = "fr"
-            };
+            var result = await client.SettleOverduePayment();
+            Assert.AreEqual(true, result.IsSuccessful);
 
-            var orderServiceClient = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            try
-            {
-                await orderServiceClient.CreateOrder(order);
-            }
-            catch (WebServiceException ex)
-            {
-                Console.WriteLine(ex.ErrorMessage);
-                throw;
-            }
-
-            // wait for ibs order id to be populated
-            await Task.Delay(10000);
-
-            const double amount = 31.50;
-            const double meter = 21.25;
-            const double tip = 10.25;
-
-            // TODO: fix test
-            //var response = await client.CommitPayment(token, amount, meter, tip, orderId);
-
-            //CreditCardsCleanUp();
-
-            //Assert.False(response.IsSuccessful);
-            //Assert.True(response.Message.Contains("ibs failed"));
+            var overduePayment = await client.GetOverduePayment();
+            Assert.IsNull(overduePayment);
         }
 
         [Test]
@@ -165,162 +196,6 @@ namespace apcurium.MK.Web.Tests
 
             var response = await client.ForgetTokenizedCard(token);
             Assert.True(response.IsSuccessful, response.Message);
-        }
-
-   
-        [Test]
-        [Ignore("Too much components tested, the notification to IBS is not working so the test failed. No easy way to disable the event handler of notification")]
-        public async void when_preauthorizing_and_capturing_a_credit_card_payment()
-        {
-            var orderId = Guid.NewGuid();
-            using (var context = ContextFactory.Invoke())
-            {
-                context.Set<OrderDetail>().Add(new OrderDetail
-                {
-                    Id = orderId,
-                    IBSOrderId = 1234,
-                    CreatedDate = DateTime.Now,
-                    PickupDate = DateTime.Now,
-                    AccountId = TestAccount.Id
-                });
-                context.Set<OrderStatusDetail>().Add(new OrderStatusDetail
-                {
-                    OrderId = orderId,
-                    VehicleNumber = "1001",
-                    PickupDate = DateTime.Now,
-                    AccountId = TestAccount.Id
-                });
-                context.SaveChanges();
-            }
-
-            var client = GetPaymentClient();
-
-            var tokenizeResponse = await client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "");
-            var token = tokenizeResponse.CardOnFileToken;
-
-            const double amount = 31.50;
-            const double meter = 21.25;
-            const double tip = 10.25;
-
-            // TODO: fix test
-            //var authorization = await client.CommitPayment(token, amount, meter, tip, orderId);
-            //Assert.True(authorization.IsSuccessful, authorization.Message);
-        }
-
-        [Test]
-        public async void when_double_preauthorizing_and_capturing_then_error()
-        {
-            var orderId = Guid.NewGuid();
-            var creditCardId = Guid.NewGuid();
-
-            var client = GetPaymentClient();
-
-            var tokenizeResponse = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2 + "");
-            var token = tokenizeResponse.CardOnFileToken;
-
-            using (var context = ContextFactory.Invoke())
-            {
-                var testAccount = context.Set<AccountDetail>().First(a => a.Id == TestAccount.Id);
-                testAccount.DefaultCreditCard = creditCardId;
-
-                context.RemoveAll<Booking.ReadModel.CreditCardDetails>();
-                context.SaveChanges();
-
-                context.Set<Booking.ReadModel.CreditCardDetails>().Add(new Booking.ReadModel.CreditCardDetails
-                {
-                    CreditCardId = creditCardId,
-                    AccountId = TestAccount.Id,
-                    CreditCardCompany = "Visa",
-                    Token = token
-                });
-
-                context.SaveChanges();
-            }
-
-            var order = new CreateOrder
-            {
-                Id = orderId,
-                PickupAddress = TestAddresses.GetAddress1(),
-                DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
-                {
-                    Price = 65,
-                    Distance = 3
-                },
-                Settings = new BookingSettings
-                {
-                    ChargeTypeId = ChargeTypes.CardOnFile.Id,
-                    VehicleTypeId = 1,
-                    ProviderId = Provider.ApcuriumIbsProviderId,
-                    Phone = "514-555-12129",
-                    Passengers = 6,
-                    NumberOfTaxi = 1,
-                    Name = "Joe Smith",
-                    LargeBags = 1
-                },
-                Payment = new PaymentSettings
-                {
-                    CreditCardId = creditCardId,
-                    PayWithCreditCard = true
-                },
-                ClientLanguageCode = "fr"
-            };
-
-            var orderServiceClient = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            try
-            {
-                await orderServiceClient.CreateOrder(order);
-            }
-            catch (WebServiceException ex)
-            {
-                Console.WriteLine(ex.ErrorMessage);
-                throw;
-            }
-            
-
-            // wait for ibs order id to be populated
-            await Task.Delay(10000);
-
-            const double amount = 31.50;
-            const double meter = 21.25;
-            const double tip = 10.25;
-
-            using (var context = ContextFactory.Invoke())
-            {
-                var payment = context.Set<OrderPaymentDetail>().First(x => x.OrderId == orderId);
-                payment.Amount = (decimal)amount;
-                payment.Meter = (decimal)meter;
-                payment.Tip = (decimal)tip;
-                payment.IsCompleted = true;
-
-                context.SaveChanges();
-            }
-
-            // TODO: fix test
-            //var authorization = await client.CommitPayment(token, amount, meter, tip, orderId);
-
-            //CreditCardsCleanUp();
-
-            //Assert.False(authorization.IsSuccessful);
-            //Assert.AreEqual("Order already paid or payment currently processing", authorization.Message);
-        }
-
-        private void CreditCardsCleanUp()
-        {
-            // Revert DB (delete test credit cards)
-            using (var context = ContextFactory.Invoke())
-            {
-                var testAccount = context.Set<AccountDetail>().First(a => a.Id == TestAccount.Id);
-                testAccount.DefaultCreditCard = null;
-
-                var creditCardsModel = context.Set<Booking.ReadModel.CreditCardDetails>();
-
-                foreach (var card in creditCardsModel)
-                {
-                    creditCardsModel.Remove(card);
-                }
-                context.SaveChanges();
-            }
         }
 
         [Test]

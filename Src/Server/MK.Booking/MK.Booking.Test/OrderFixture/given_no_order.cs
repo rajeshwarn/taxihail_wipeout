@@ -58,17 +58,27 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 UserLongitude = -74.554052,
                 UserAgent = "TestUserAgent",
                 ClientVersion = "1.0.0",
-                UserNote = "une note"
+                UserNote = "une note",
+                BookingFees = 5m,
+                Market = "MTL",
+                CompanyKey = "Kramerica",
+                CompanyName = "Kramerica Industries",
+                EstimatedFare = 50.5,
+                IsChargeAccountPaymentWithCardOnFile = true,
+                IsPrepaid = true
             };
             order.Settings = new BookingSettings
             {
                 ChargeTypeId = 99,
                 VehicleTypeId = 88,
                 ProviderId = 11,
-                Phone = "514-555-1212",
+                Phone = "5145551212",
                 Passengers = 6,
                 NumberOfTaxi = 1,
-                Name = "Joe Smith"
+                Name = "Joe Smith",
+                AccountNumber = "account",
+                CustomerNumber = "customer",
+                PayBack = "123"
             };
 
             _sut.When(order);
@@ -87,16 +97,26 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(99, orderCreated.Settings.ChargeTypeId);
             Assert.AreEqual(88, orderCreated.Settings.VehicleTypeId);
             Assert.AreEqual(11, orderCreated.Settings.ProviderId);
-            Assert.AreEqual("514-555-1212", orderCreated.Settings.Phone);
+            Assert.AreEqual("5145551212", orderCreated.Settings.Phone);
             Assert.AreEqual(6, orderCreated.Settings.Passengers);
             Assert.AreEqual(1, orderCreated.Settings.NumberOfTaxi);
             Assert.AreEqual("Joe Smith", orderCreated.Settings.Name);
+            Assert.AreEqual("account", orderCreated.Settings.AccountNumber);
+            Assert.AreEqual("customer", orderCreated.Settings.CustomerNumber);
+            Assert.AreEqual("123", orderCreated.Settings.PayBack);
             Assert.AreEqual("fr", orderCreated.ClientLanguageCode);
             Assert.AreEqual(46.50643, orderCreated.UserLatitude);
             Assert.AreEqual(-74.554052, orderCreated.UserLongitude);
             Assert.AreEqual("TestUserAgent", orderCreated.UserAgent);
             Assert.AreEqual("1.0.0", orderCreated.ClientVersion);
             Assert.AreEqual("une note", orderCreated.UserNote);
+            Assert.AreEqual(5, orderCreated.BookingFees);
+            Assert.AreEqual("MTL", orderCreated.Market);
+            Assert.AreEqual("Kramerica", orderCreated.CompanyKey);
+            Assert.AreEqual("Kramerica Industries", orderCreated.CompanyName);
+            Assert.AreEqual(50.5, orderCreated.EstimatedFare);
+            Assert.AreEqual(true, orderCreated.IsChargeAccountPaymentWithCardOnFile);
+            Assert.AreEqual(true, orderCreated.IsPrepaid);
         }
 
         [Test]
@@ -125,7 +145,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 ChargeTypeId = 99,
                 VehicleTypeId = 88,
                 ProviderId = 11,
-                Phone = "514-555-1212",
+                Phone = "5145551212",
                 Passengers = 6,
                 NumberOfTaxi = 1,
                 Name = "Joe Smith"
@@ -171,7 +191,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 ChargeTypeId = 99,
                 VehicleTypeId = 88,
                 ProviderId = 11,
-                Phone = "514-555-1212",
+                Phone = "5145551212",
                 Passengers = 6,
                 NumberOfTaxi = 1,
                 Name = "Joe Smith"

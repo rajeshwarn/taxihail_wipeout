@@ -12,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Helpers;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -25,8 +26,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
 
-	    private string _hashedMarket;
-
 		public RideSettingsViewModel(IAccountService accountService, 
 			IPaymentService paymentService,
             IAccountPaymentService accountPaymentService,
@@ -36,8 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
 		    _accountService = accountService;
-
-            Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => _hashedMarket = hashedMarket);
+            PhoneNumber = new PhoneNumberModel();
 		}
 
 		public async void Init(string bookingSettings)
@@ -49,8 +47,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _bookingSettings = bookingSettings.FromJson<BookingSettings>();
                     _paymentSettings = await _paymentService.GetPaymentSettings();
 
-                    var p = await _accountService.GetPaymentsList(_hashedMarket);
-                    _payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+					PhoneNumber.Country = _bookingSettings.Country;
+                    PhoneNumber.PhoneNumber = _bookingSettings.Phone;
+
+                    var p = await _accountService.GetPaymentsList();
+
+					_payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 
                     RaisePropertyChanged(() => Payments);
                     RaisePropertyChanged(() => ChargeTypeId);
@@ -65,6 +67,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     RaisePropertyChanged(() => Vehicles);
                     RaisePropertyChanged(() => VehicleTypeId);
                     RaisePropertyChanged(() => VehicleTypeName);
+                    RaisePropertyChanged(() => PhoneNumber);
+                    RaisePropertyChanged(() => SelectedCountryCode);
 			    }
 			    catch (Exception ex)
 			    {
@@ -129,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private ListItem[] _payments;
+		private ListItem[] _payments;
         public ListItem[] Payments
         {
             get
@@ -171,8 +175,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
 
                 var vehicle = Vehicles.FirstOrDefault(x => x.Id == VehicleTypeId);
-                if (vehicle == null)
-                    return null;
+				if (vehicle == null)
+				{
+					vehicle = Vehicles.FirstOrDefault();
+				}
                 return vehicle.Display;
             }
         }
@@ -209,8 +215,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                                 
                 var chargeType = Payments.FirstOrDefault(x => x.Id == ChargeTypeId);
-                if (chargeType == null)
-                    return null;
+				if (chargeType == null)
+				{
+					chargeType = Payments.FirstOrDefault();
+				}
+
 				return this.Services().Localize[chargeType.Display]; 
             }
         }
@@ -231,6 +240,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public PhoneNumberModel PhoneNumber { get; set; }
+
+        public CountryCode[] CountryCodes
+        {
+            get
+            {
+                return CountryCode.CountryCodes;
+            }
+        }
+
+        public CountryCode SelectedCountryCode
+        {
+            get
+            {
+                return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(_bookingSettings.Country));
+            }
+
+            set
+            {
+                _bookingSettings.Country = value.CountryISOCode;
+                PhoneNumber.Country = value.CountryISOCode;
+                RaisePropertyChanged();
+            }
+        }
+
         public string Phone
         {
             get
@@ -242,6 +276,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _bookingSettings.Phone)
                 {
                     _bookingSettings.Phone = value;
+                    PhoneNumber.PhoneNumber = value;
 					RaisePropertyChanged();
                 }
             }
@@ -390,9 +425,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return false;
             }
 
-            if (!PhoneHelper.IsValidPhoneNumber(Phone))
+            if (!PhoneNumber.IsNumberPossible())
             {
-                await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                    string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], PhoneNumber.GetPhoneExample()));
                 return false;
             }
 

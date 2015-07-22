@@ -18,6 +18,8 @@ namespace apcurium.MK.Booking.IBS.Impl
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
         private readonly IServerSettings _serverSettings;
+
+        
         public BookingWebServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings.ServerData.IBS, logger)
         {
@@ -192,16 +194,100 @@ namespace apcurium.MK.Booking.IBS.Impl
             var result = new List<IBSOrderInformation>();
             UseService(service =>
             {
-                var status = service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
-                foreach (var orderInfoFromIbs in status)
-                {
-                    var statusInfos = new IBSOrderInformation(orderInfoFromIbs);
+                var status = GetOrdersStatus(ibsOrdersIds, service)
+                    .Select(orderInfoFromIbs => new IBSOrderInformation(orderInfoFromIbs));
 
-                    result.Add(statusInfos);
-                }
+                result.AddRange(status);
             });
 
             return result;
+        }
+
+		// This method is used to help find the correct GetOrdersStatus in IBS.
+        private IEnumerable<TOrderStatus_4> GetOrdersStatus(IEnumerable<int> ibsOrdersIds, WebOrder7Service service)
+        {
+            var ibsOrders = ibsOrdersIds.ToArray();
+
+            try
+            {
+                return service.GetOrdersStatus_4(UserNameApp, PasswordApp, ibsOrders);
+            }
+            catch (Exception)
+            {
+                Logger.LogMessage("GetOrdersStatus_4 is not available doing a fallback to GetOrdersStatus_3");
+            }
+
+            try
+            {
+                return service.GetOrdersStatus_3(UserNameApp, PasswordApp, ibsOrders)
+                    // We need to update the returned object to version 4 of TOrderStatus.
+                    .Select(ToOrderStatus4);
+            }
+            catch (Exception)
+            {
+                Logger.LogMessage("GetOrdersStatus_3 is not available doing a fallback to GetOrdersStatus_2");
+            }  
+             
+            return service.GetOrdersStatus_2(UserNameApp, PasswordApp, ibsOrders)
+				// We need to update the returned object to version 4 of TOrderStatus.
+				.Select(ToOrderStatus4);
+
+        }
+
+        private static TOrderStatus_4 ToOrderStatus4(TOrderStatus_2 orderStatus)
+        {
+            return new TOrderStatus_4
+            {
+                OrderStatus = orderStatus.OrderStatus,
+                CallNumber = orderStatus.CallNumber,
+                DriverFirstName = orderStatus.DriverFirstName,
+                DriverLastName = orderStatus.DriverLastName,
+                DriverMobilePhone = orderStatus.DriverMobilePhone,
+                ETATime = orderStatus.ETATime,
+                Fare = orderStatus.Fare,
+                OrderID = orderStatus.OrderID,
+                ReferenceNumber = orderStatus.ReferenceNumber,
+                TerminalId = orderStatus.TerminalId,
+                Tips = orderStatus.Tips,
+                Tolls = orderStatus.Tolls,
+                VAT = orderStatus.VAT,
+                VehicleColor = orderStatus.VehicleColor,
+                VehicleCoordinateLat = orderStatus.VehicleCoordinateLat,
+                VehicleCoordinateLong = orderStatus.VehicleCoordinateLong,
+                VehicleMake = orderStatus.VehicleMake,
+                VehicleModel = orderStatus.VehicleModel,
+                VehicleNumber = orderStatus.VehicleNumber,
+                VehicleRegistration = orderStatus.VehicleRegistration
+            };
+        }
+
+        private static TOrderStatus_4 ToOrderStatus4(TOrderStatus_3 orderStatus)
+        {
+            return new TOrderStatus_4
+            {
+                OrderStatus = orderStatus.OrderStatus,
+                CallNumber = orderStatus.CallNumber,
+                DriverFirstName = orderStatus.DriverFirstName,
+                DriverLastName = orderStatus.DriverLastName,
+                DriverMobilePhone = orderStatus.DriverMobilePhone,
+                ETATime = orderStatus.ETATime,
+                Fare = orderStatus.Fare,
+                OrderID = orderStatus.OrderID,
+                ReferenceNumber = orderStatus.ReferenceNumber,
+                TerminalId = orderStatus.TerminalId,
+                Tips = orderStatus.Tips,
+                Tolls = orderStatus.Tolls,
+                VAT = orderStatus.VAT,
+                VehicleColor = orderStatus.VehicleColor,
+                VehicleCoordinateLat = orderStatus.VehicleCoordinateLat,
+                VehicleCoordinateLong = orderStatus.VehicleCoordinateLong,
+                VehicleMake = orderStatus.VehicleMake,
+                VehicleModel = orderStatus.VehicleModel,
+                VehicleNumber = orderStatus.VehicleNumber,
+                VehicleRegistration = orderStatus.VehicleRegistration,
+                PairingCode = orderStatus.PairingCode,
+                Surcharge = orderStatus.Surcharge
+            };
         }
 
         public bool SendMessageToDriver(string message, string vehicleNumber)
@@ -308,17 +394,6 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
         
-        private int ToCents(decimal dollarAmout)
-        {
-            return Convert.ToInt32(dollarAmout * 100);
-        }
-
-        private string CleanPhone(string phone)
-        {
-            var regEx = new Regex(@"\D");
-            return regEx.Replace(phone, "");
-        }
-
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
@@ -411,95 +486,6 @@ namespace apcurium.MK.Booking.IBS.Impl
             return orderId;
         }
 
-        private void SetPrompts(TBookOrder_8 order, string[] prompts, int?[] promptsLength)
-        {
-          if ( prompts != null )
-          {
-              if ( prompts.Count() >= 1)
-              {
-                  order.Prompt1 = prompts[0];
-              }
-              if (prompts.Count() >= 2)
-              {
-                  order.Prompt2 = prompts[1];
-              }
-              if (prompts.Count() >= 3)
-              {
-                  order.Prompt3 = prompts[2];
-              }
-              if (prompts.Count() >= 4)
-              {
-                  order.Prompt4 = prompts[3];
-              }
-              if (prompts.Count() >= 5)
-              {
-                  order.Prompt5 = prompts[4];
-              }
-              if (prompts.Count() >= 6)
-              {
-                  order.Prompt6 = prompts[5];
-              }
-
-              if (prompts.Count() >=7 )
-              {
-                  order.Prompt7 = prompts[6];
-              }
-
-              if (prompts.Count() >=8 )
-              {
-                  order.Prompt8 = prompts[7];
-              }                            
-          }
-          if (promptsLength != null)
-          {
-              if (promptsLength.Count() >= 1)
-              {
-                  order.Field1 = ConvertToString( promptsLength[0] );
-              }
-              if (promptsLength.Count() >= 2)
-              {
-                  order.Field2 = ConvertToString( promptsLength[1]);
-              }
-              if (promptsLength.Count() >= 3)
-              {
-                  order.Field3 = ConvertToString(promptsLength[2]);
-              }
-              if (promptsLength.Count() >= 4)
-              {
-                  order.Field4 = ConvertToString(promptsLength[3]);
-              }
-              if (promptsLength.Count() >= 5)
-              {
-                  order.Field5 = ConvertToString(promptsLength[4]);
-              }
-              if (promptsLength.Count() >= 6)
-              {
-                  order.Field6 = ConvertToString(promptsLength[5]);
-              }
-
-              if (promptsLength.Count() >= 7)
-              {
-                  order.Field7 = ConvertToString(promptsLength[6]);
-              }
-
-              if (promptsLength.Count() >= 8)
-              {
-                  order.Field8 = ConvertToString(promptsLength[7]);
-              }
-          }
-
-
-        }
-
-        private string ConvertToString(int? v)
-        {
-            if (v.HasValue)
-            {
-                return v.Value.ToString();
-            }
-            return null;
-        }
-
         public bool CancelOrder(int orderId, int accountId, string contactPhone)
         {
             Logger.LogMessage("WebService Cancel Order call : " + orderId + " " + accountId);
@@ -514,9 +500,114 @@ namespace apcurium.MK.Booking.IBS.Impl
             return isCompleted;
         }
 
+        public bool InitiateCallToDriver(int ibsOrderId, string vehicleNumber)
+        {
+            var success = false;
+            UseService(service =>
+            {
+                var result = service.SendP2DCall(UserNameApp, PasswordApp, vehicleNumber, ibsOrderId);
+                success = result == 0;
+            });
+            return success;
+        }
+
         protected override string GetUrl()
         {
             return base.GetUrl() + "IWEBOrder_7";
+        }
+
+        private int ToCents(decimal dollarAmout)
+        {
+            return Convert.ToInt32(dollarAmout * 100);
+        }
+
+        private string CleanPhone(string phone)
+        {
+            var regEx = new Regex(@"\D");
+            return regEx.Replace(phone, "");
+        }
+
+        private void SetPrompts(TBookOrder_8 order, string[] prompts, int?[] promptsLength)
+        {
+            if (prompts != null)
+            {
+                if (prompts.Count() >= 1)
+                {
+                    order.Prompt1 = prompts[0];
+                }
+                if (prompts.Count() >= 2)
+                {
+                    order.Prompt2 = prompts[1];
+                }
+                if (prompts.Count() >= 3)
+                {
+                    order.Prompt3 = prompts[2];
+                }
+                if (prompts.Count() >= 4)
+                {
+                    order.Prompt4 = prompts[3];
+                }
+                if (prompts.Count() >= 5)
+                {
+                    order.Prompt5 = prompts[4];
+                }
+                if (prompts.Count() >= 6)
+                {
+                    order.Prompt6 = prompts[5];
+                }
+                if (prompts.Count() >= 7)
+                {
+                    order.Prompt7 = prompts[6];
+                }
+                if (prompts.Count() >= 8)
+                {
+                    order.Prompt8 = prompts[7];
+                }
+            }
+            if (promptsLength != null)
+            {
+                if (promptsLength.Count() >= 1)
+                {
+                    order.Field1 = ConvertToString(promptsLength[0]);
+                }
+                if (promptsLength.Count() >= 2)
+                {
+                    order.Field2 = ConvertToString(promptsLength[1]);
+                }
+                if (promptsLength.Count() >= 3)
+                {
+                    order.Field3 = ConvertToString(promptsLength[2]);
+                }
+                if (promptsLength.Count() >= 4)
+                {
+                    order.Field4 = ConvertToString(promptsLength[3]);
+                }
+                if (promptsLength.Count() >= 5)
+                {
+                    order.Field5 = ConvertToString(promptsLength[4]);
+                }
+                if (promptsLength.Count() >= 6)
+                {
+                    order.Field6 = ConvertToString(promptsLength[5]);
+                }
+                if (promptsLength.Count() >= 7)
+                {
+                    order.Field7 = ConvertToString(promptsLength[6]);
+                }
+                if (promptsLength.Count() >= 8)
+                {
+                    order.Field8 = ConvertToString(promptsLength[7]);
+                }
+            }
+        }
+
+        private string ConvertToString(int? v)
+        {
+            if (v.HasValue)
+            {
+                return v.Value.ToString();
+            }
+            return null;
         }
     }
 }

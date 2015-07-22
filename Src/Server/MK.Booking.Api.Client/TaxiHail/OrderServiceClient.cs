@@ -124,5 +124,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 return Client.PostAsync<OrderValidationResult>(req, order);
             }
         }
+
+        public Task<bool> InitiateCallToDriver(Guid orderId)
+        {
+            var req = string.Format("/account/orders/{0}/calldriver", orderId);
+            return Client.GetAsync<bool>(req);
+        }
     }
 }

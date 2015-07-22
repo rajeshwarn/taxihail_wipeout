@@ -12,6 +12,8 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
+using System.Globalization;
+using apcurium.MK.Common;
 
 #endregion
 
@@ -36,7 +38,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PayPalAccountLinked>,
         IEventHandler<PayPalAccountUnlinked>,
         IEventHandler<OverduePaymentSettled>,
-        IEventHandler<ChargeAccountPaymentDisabled>
+        IEventHandler<ChargeAccountPaymentDisabled>,
+        IEventHandler<AccountAnswersAddedUpdated>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -113,11 +116,30 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.Roles |= (int) Roles.Admin;
                 }
 
+                if (@event.Country == null || (@event.Country != null && string.IsNullOrEmpty(@event.Country.Code)))
+                {
+                    var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
+
+                    string countryCode;
+
+                    if (currentCultureInfo != null)
+                    {
+                        countryCode = (new RegionInfo(currentCultureInfo.LCID)).TwoLetterISORegionName;
+                    }
+                    else
+                    {
+                        countryCode = "CA";
+                    }
+
+                    @event.Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryISOCode;
+                }
+
                 account.Settings = new BookingSettings
                 {
                     Name = account.Name,
                     NumberOfTaxi = 1,
                     Passengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger,
+                    Country = @event.Country ?? new CountryISOCode(),
                     Phone = @event.Phone,
                     PayBack = @event.PayBack
                 };
@@ -183,6 +205,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 settings.NumberOfTaxi = @event.NumberOfTaxi;
                 settings.Passengers = @event.Passengers;
+                settings.Country = @event.Country ?? new CountryISOCode();
                 settings.Phone = @event.Phone;
                 settings.AccountNumber = @event.AccountNumber;
                 settings.CustomerNumber = @event.CustomerNumber;
@@ -381,6 +404,24 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     context.Save(account);
                 }
+            }
+        }
+
+        public void Handle(AccountAnswersAddedUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                @event.Answers.ForEach(x => {
+                    var answer = context.Query<AccountChargeQuestionAnswer>()
+                        .Where(a => a.AccountId == x.AccountId && a.AccountChargeQuestionId == x.AccountChargeQuestionId && a.AccountChargeId == x.AccountChargeId)
+                        .FirstOrDefault();
+                    if (answer == null) {
+                        context.Save(x);
+                    } else {
+                        answer.LastAnswer = x.LastAnswer;
+                        context.Save(answer);
+                    }
+                });
             }
         }
     }

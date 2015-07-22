@@ -32,6 +32,10 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             var paymentId = Guid.NewGuid();
             var token = Guid.NewGuid().ToString();
             var amount = 12.34m;
+            var meter = 10;
+            var tip = 5;
+            var companyKey = "Apcurium";
+
             _sut.When(new InitiateCreditCardPayment
             {
                 PaymentId = paymentId,
@@ -39,7 +43,10 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
                 Amount = amount,
                 OrderId = orderId,
                 CardToken = token,
-                Provider = PaymentProvider.Cmt
+                Provider = PaymentProvider.Cmt,
+                Tip = tip,
+                Meter = meter,
+                CompanyKey = companyKey
             });
 
             var @event = _sut.ThenHasSingle<CreditCardPaymentInitiated>();
@@ -49,6 +56,9 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             Assert.AreEqual(transactionId, @event.TransactionId);
             Assert.AreEqual(amount, @event.Amount);
             Assert.AreEqual(token, @event.CardToken);
+            Assert.AreEqual(tip, @event.Tip);
+            Assert.AreEqual(meter, @event.Meter);
+            Assert.AreEqual(companyKey, @event.CompanyKey);
         }
     }
 }

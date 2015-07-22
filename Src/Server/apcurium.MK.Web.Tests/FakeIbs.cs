@@ -16,7 +16,7 @@ namespace apcurium.MK.Web.Tests
             }
         }
 
-        public void SendPaymentNotification(double totalAmount, double meterAmount, double tipAmount, string authorizationCode,
+        public void SendPaymentNotification(double totalAmount, double taxedMeterAmount, double tipAmount, string authorizationCode,
             string vehicleNumber)
         {
         }

@@ -2,10 +2,12 @@
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
@@ -48,7 +50,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var session = this.GetSession();
             var accountId = new Guid(session.UserAuthId);
 
-            return _overduePaymentDao.FindNotPaidByAccountId(accountId);
+            var overduePayment = _overduePaymentDao.FindNotPaidByAccountId(accountId);
+            if (overduePayment != null)
+            {
+                // Client app can crash if this value is null. Make sure that it doesn't happen.
+                overduePayment.IBSOrderId = overduePayment.IBSOrderId ?? 0;
+            }
+
+            return overduePayment;
         }
 
         public object Post(SettleOverduePaymentRequest request)
@@ -66,23 +75,62 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 };
             }
 
+            var order = _orderDao.FindById(overduePayment.OrderId);
             var accountDetail = _accountDao.FindById(accountId);
 
-            var payment = _orderPaymentDao.FindByOrderId(overduePayment.OrderId);
+            // since a preauth at start of ride will never trigger a overdue payment, if we get a noshow/cancel to settle, it will be the only payment to settle
+            // in the case of a succesful ride with another company, the overdue amount will contain the trip amount + booking fee so we have to separate them
+            var fees = 0m;
+            if (overduePayment.ContainBookingFees || overduePayment.ContainStandaloneFees)
+            {
+                fees = overduePayment.ContainBookingFees ? order.BookingFees : overduePayment.OverdueAmount;
+                if (fees > 0)
+                {
+                    var feesSettled = SettleOverduePayment(order.Id, accountDetail, fees, null, true);
+                    if (!feesSettled)
+                    {
+                        return new SettleOverduePaymentResponse
+                        {
+                            IsSuccessful = false
+                        };
+                    }
+                }
+            }
+
+            var remainingToSettle = overduePayment.OverdueAmount - fees;
+            if (remainingToSettle <= 0)
+            {
+                return new SettleOverduePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+                
+            var paymentSettled = SettleOverduePayment(order.Id, accountDetail, remainingToSettle, order.CompanyKey, false);
+            return new SettleOverduePaymentResponse
+            {
+                IsSuccessful = paymentSettled
+            };
+        }
+
+        private bool SettleOverduePayment(Guid orderId, AccountDetail accountDetail, decimal amount, string companyKey, bool isFee)
+        {
+            var payment = _orderPaymentDao.FindByOrderId(orderId, companyKey);
             var reAuth = payment != null;
 
-            var preAuthResponse = _paymentService.PreAuthorize(overduePayment.OrderId, accountDetail, overduePayment.OverdueAmount, reAuth, true);
+            var preAuthResponse = _paymentService.PreAuthorize(companyKey, orderId, accountDetail, amount, reAuth, isSettlingOverduePayment: true);
             if (preAuthResponse.IsSuccessful)
             {
                 // Wait for payment to be created
                 Thread.Sleep(500);
 
                 var commitResponse = _paymentService.CommitPayment(
-                    overduePayment.OrderId,
+                    companyKey,
+                    orderId,
                     accountDetail,
-                    overduePayment.OverdueAmount,
-                    overduePayment.OverdueAmount,
-                    overduePayment.OverdueAmount,
+                    amount,
+                    amount,
+                    amount,
                     0,
                     preAuthResponse.TransactionId,
                     preAuthResponse.ReAuthOrderId);
@@ -90,17 +138,25 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (commitResponse.IsSuccessful)
                 {
                     // Go fetch declined order, and send its receipt
-                    var paymentDetail = _orderPaymentDao.FindByOrderId(overduePayment.OrderId);
-                    var promotion = _promotionDao.FindByOrderId(overduePayment.OrderId);
+                    var paymentDetail = _orderPaymentDao.FindByOrderId(orderId, companyKey);
+                    var promotion = _promotionDao.FindByOrderId(orderId);
 
-                    var pairingInfo = _orderDao.FindOrderPairingById(overduePayment.OrderId);
-                    var tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(overduePayment.OverdueAmount, pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage);
-                    var meterAmount = overduePayment.OverdueAmount - tipAmount;
+                    decimal meterAmount = amount;
+                    decimal tipAmount = 0;
 
-                    var fareObject = FareHelper.GetFareFromAmountInclTax(meterAmount, 
+                    if (!isFee)
+                    {
+                        var pairingInfo = _orderDao.FindOrderPairingById(orderId);
+                        tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(amount, pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage);
+                        meterAmount = meterAmount - tipAmount;
+                    }
+
+                    var fareObject = FareHelper.GetFareFromAmountInclTax(meterAmount,
                         _serverSettings.ServerData.VATIsEnabled
                             ? _serverSettings.ServerData.VATPercentage
                             : 0);
+
+                    var orderDetail = _orderDao.FindById(orderId);
 
                     _commandBus.Send(new CaptureCreditCardPayment
                     {
@@ -108,37 +164,34 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         NewCardToken = paymentDetail.CardToken,
                         AccountId = accountDetail.Id,
                         PaymentId = paymentDetail.PaymentId,
-                        Provider = _paymentService.ProviderType(overduePayment.OrderId),
-                        Amount = overduePayment.OverdueAmount,
+                        Provider = _paymentService.ProviderType(companyKey, orderId),
+                        TotalAmount = amount,
                         MeterAmount = fareObject.AmountExclTax,
                         TipAmount = tipAmount,
                         TaxAmount = fareObject.TaxAmount,
+                        TollAmount = Convert.ToDecimal(orderDetail.Toll ?? 0),
+                        SurchargeAmount = Convert.ToDecimal(orderDetail.Surcharge ?? 0),
                         AuthorizationCode = commitResponse.AuthorizationCode,
                         TransactionId = commitResponse.TransactionId,
                         PromotionUsed = promotion != null ? promotion.PromoId : default(Guid?),
-                        AmountSavedByPromotion = promotion != null ? promotion.AmountSaved : 0
+                        AmountSavedByPromotion = promotion != null ? promotion.AmountSaved : 0,
+                        FeeType = isFee ? FeeTypes.Booking : FeeTypes.None
                     });
 
                     _commandBus.Send(new SettleOverduePayment
                     {
-                        AccountId = accountId,
-                        OrderId = overduePayment.OrderId
+                        AccountId = accountDetail.Id,
+                        OrderId = orderId
                     });
 
-                    return new SettleOverduePaymentResponse
-                    {
-                        IsSuccessful = true
-                    };
+                    return true;
                 }
 
                 // Payment failed, void preauth
-                _paymentService.VoidPreAuthorization(overduePayment.OrderId);
+                _paymentService.VoidPreAuthorization(companyKey, orderId);
             }
 
-            return new SettleOverduePaymentResponse
-            {
-                IsSuccessful = false
-            };
+            return false;
         }
     }
 }

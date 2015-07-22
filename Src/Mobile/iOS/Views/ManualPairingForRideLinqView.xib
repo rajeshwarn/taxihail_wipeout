@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ManualPairingForRideLinqView">
             <connections>
-                <outlet property="PairingCode1" destination="ffJ-rx-jiE" id="LDo-tg-Rjx"/>
-                <outlet property="PairingCode2" destination="Cf3-Se-yw5" id="euE-hU-UJf"/>
+                <outlet property="PairingCode1" destination="ffJ-rx-jiE" id="9YD-dp-UXl"/>
+                <outlet property="PairingCode2" destination="Cf3-Se-yw5" id="KMg-gf-FMM"/>
                 <outlet property="btnPair" destination="0Ok-qV-hDh" id="tf8-pz-nu3"/>
                 <outlet property="lblInstructions" destination="BVP-xw-EI2" id="Gvc-Zt-zhJ"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
@@ -34,8 +34,8 @@
                             </attributedString>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="ffJ-rx-jiE">
-                            <rect key="frame" x="57" y="128" width="90" height="40"/>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="ffJ-rx-jiE" customClass="ExtendedTextFieldView">
+                            <rect key="frame" x="57" y="128" width="90" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="8bJ-Br-p1V"/>
                                 <constraint firstAttribute="width" constant="90" id="PBb-Kc-UjI"/>
@@ -44,20 +44,10 @@
                             <fontDescription key="fontDescription" type="system" pointSize="35"/>
                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                         </textField>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="Cf3-Se-yw5">
-                            <rect key="frame" x="173" y="128" width="120" height="40"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="120" id="G4n-0S-DeD"/>
-                                <constraint firstAttribute="height" constant="40" id="x5b-et-hlw"/>
-                            </constraints>
-                            <nil key="textColor"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
-                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                        </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxc-dp-OfE">
                             <rect key="frame" x="153" y="126" width="14" height="42"/>
                             <fontDescription key="fontDescription" type="system" pointSize="35"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ok-qV-hDh" customClass="FlatButton">
@@ -69,6 +59,16 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="Cf3-Se-yw5" customClass="ExtendedTextFieldView">
+                            <rect key="frame" x="175" y="128" width="120" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="120" id="G4n-0S-DeD"/>
+                                <constraint firstAttribute="height" constant="40" id="x5b-et-hlw"/>
+                            </constraints>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                        </textField>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="BVP-xw-EI2" secondAttribute="centerX" id="2gc-LE-zbO"/>
