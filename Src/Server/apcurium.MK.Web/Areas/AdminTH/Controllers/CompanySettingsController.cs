@@ -54,7 +54,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             if (appSettings.Any())
             {
-                SetSettingsAvailableToAdmin(appSettings);
+                // Only the superadmin should be able to change the availability option of the settings.
+                var isSuperAdmin = Convert.ToBoolean(ViewData["IsSuperAdmin"]);
+                if (isSuperAdmin)
+                {
+                    SetSettingsAvailableToAdmin(appSettings);
+                }
 
                 var command = new AddOrUpdateAppSettings
                 {
