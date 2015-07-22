@@ -480,7 +480,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					if(Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
 					{
-						var geoData = await _vehicleService.GetEtaFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber);
+						var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber);
 					    direction = geoData.Directions;
 
                         if(geoData.Latitude.HasValue)
@@ -495,14 +495,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}                       
 
 				    statusInfoText += " " + FormatEta(direction);
+				}
 
+				if(Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo
+					&& status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
+				{
+					//refresh vehicle position on the map from the geo data
+					var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber);
+					if(geoData.Latitude.HasValue
+                       && geoData.Longitude.HasValue)
+					{
+						status.VehicleLatitude = geoData.Latitude;
+						status.VehicleLongitude = geoData.Longitude;
+					}
 				}
 
 				StatusInfoText = statusInfoText;
                 OrderStatusDetail = status;
 
                 CenterMap ();
-
+			
 
 				UpdateActionsPossibleOnOrder(status);
 
