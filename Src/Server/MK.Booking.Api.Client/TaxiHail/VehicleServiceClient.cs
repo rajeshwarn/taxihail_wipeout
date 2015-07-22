@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
+using System;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -32,13 +33,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			return response.ToArray();
 		}
 
-	    public Task<EtaForPickupResponse> GetEtaFromGeo(double latitude, double longitude, string vehicleNumber)
+	    public Task<EtaForPickupResponse> GetEtaFromGeo(double latitude, double longitude, string vehicleNumber, Guid orderId)
 	    {
 	        return Client.PostAsync(new EtaForPickupRequest
 	        {
 	            Longitude = longitude,
 	            Latitude = latitude,
-	            VehicleNumber = vehicleNumber
+	            VehicleNumber = vehicleNumber,
+                OrderId = orderId
 	        });
 	    }
 
