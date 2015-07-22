@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 _commandBus.Send(new SaveOriginalEta
                 {
+                    OrderId = request.OrderId,
                     OriginalEta = request.OriginalEta.Value
                 });
             }

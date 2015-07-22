@@ -1,9 +1,5 @@
 ﻿using Infrastructure.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -14,6 +10,9 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
         public Guid Id { get; set; }
+
+        public Guid OrderId { get; set; }
+
         public long OriginalEta { get; set; }
     }
 }

@@ -58,7 +58,6 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 && request.OriginLat.HasValue
                 && request.OriginLng.HasValue)
             {
-
                 try
                 {
                     // Get available vehicles                
@@ -107,6 +106,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
             {
                 _commandBus.Send(new SaveOriginalEta
                 {
+                    OrderId = request.OrderId,
                     OriginalEta = eta.Duration.Value
                 });
             }

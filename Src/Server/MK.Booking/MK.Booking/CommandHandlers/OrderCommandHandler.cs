@@ -240,7 +240,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SaveOriginalEta command)
         {
-            var order = _repository.Get(command.Id);
+            var order = _repository.Get(command.OrderId);
             order.SaveOriginalEta(command.OriginalEta);
 
             _repository.Save(order, command.Id.ToString());

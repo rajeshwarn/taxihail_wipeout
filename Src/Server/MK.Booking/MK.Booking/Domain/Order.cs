@@ -47,10 +47,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<ManualRideLinqTripInfoUpdated>(NoAction);
             Handles<AutoTipUpdated>(NoAction);
             Handles<OriginalEtaSaved>(NoAction);
-            
-
         }
-
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
@@ -346,9 +343,9 @@ namespace apcurium.MK.Booking.Domain
         public void SaveOriginalEta(long originalEta)
         {
             Update(new OriginalEtaSaved
-                {
-                    OriginalEta = originalEta
-                });
+            {
+                OriginalEta = originalEta
+            });
         }
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)
