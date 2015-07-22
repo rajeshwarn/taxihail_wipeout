@@ -14,6 +14,8 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using ServiceStack.Common.Extensions;
 using ServiceStack.ServiceInterface;
+using Infrastructure.Messaging;
+using apcurium.MK.Booking.Commands;
 
 #endregion
 
@@ -26,14 +28,16 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         private readonly IOrderDao _orderDao;
         private readonly VehicleService _vehicleService;
         private readonly ILogger _logger;
+        private readonly ICommandBus _commandBus;
 
-        public DirectionsService(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, VehicleService vehicleService, ILogger logger)
+        public DirectionsService(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, VehicleService vehicleService, ILogger logger, ICommandBus commandBus)
         {
             _client = client;
             _serverSettings = serverSettings;
             _orderDao = orderDao;
             _vehicleService = vehicleService;
             _logger = logger;
+            _commandBus = commandBus;
         }
 
         public object Get(DirectionsRequest request)
@@ -54,6 +58,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 && request.OriginLat.HasValue
                 && request.OriginLng.HasValue)
             {
+
                 try
                 {
                     // Get available vehicles                
@@ -80,6 +85,14 @@ namespace apcurium.MK.Booking.Api.Services.Maps
 
                         directionInfo.EtaFormattedDistance = etaDirectionInfo.FormattedDistance;
                         directionInfo.EtaDuration = (int?)etaDirectionInfo.Duration;
+
+                        if (etaDirectionInfo.Duration.HasValue)
+                        {
+                            _commandBus.Send(new SaveOriginalEta
+                            {
+                                OriginalEta = etaDirectionInfo.Duration.Value
+                            });
+                        }
                     }
                 }
                 catch (Exception ex)
