@@ -344,6 +344,14 @@ namespace apcurium.MK.Booking.Api.Services
 
             var result = geoService.GetEta(request.Latitude.Value, request.Longitude.Value, request.VehicleNumber);
 
+            if (result.Eta.HasValue)
+            {
+                _commandBus.Send(new SaveOriginalEta
+                {
+                    OriginalEta = result.Eta.Value
+                });
+            }
+
             return new EtaForPickupResponse
             {
                 Eta = result.Eta,

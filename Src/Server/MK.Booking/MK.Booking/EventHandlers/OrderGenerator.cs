@@ -28,7 +28,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
         IEventHandler<ManualRideLinqTripInfoUpdated>,
-        IEventHandler<AutoTipUpdated>
+        IEventHandler<AutoTipUpdated>,
+        IEventHandler<OriginalEtaSaved>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -680,6 +681,25 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
             context.SaveChanges();
+        }
+
+        public void Handle(OriginalEtaSaved @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (orderStatus == null)
+                {
+                    _logger.LogMessage("No Order Status found : " + @event.SourceId);
+                    return;
+                }
+
+                if (!orderStatus.OriginalEta.HasValue)
+                {
+                    orderStatus.OriginalEta = @event.OriginalEta;
+                    context.Save(orderStatus);
+                }
+            }
         }
     }
 }
