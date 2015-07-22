@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -150,7 +151,8 @@ namespace apcurium.MK.Web.Tests
                             Phone = "5145551212",
                             Passengers = 6,
                             NumberOfTaxi = 1,
-                            Name = "Joe Smith"
+                            Name = "Joe Smith",
+                            Country = new CountryISOCode("CA")
                         },
                     ClientLanguageCode = SupportedLanguages.en.ToString()
                 };
