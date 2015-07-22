@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public RegisterWorkflowService (IAccountService accountService, IAccountServiceClient accountServiceClient)
 		{
 			_accountServiceClient = accountServiceClient;
-			_accountService = accountService;			
+			_accountService = accountService;
 		}
 
 		public void PrepareNewRegistration ()
@@ -47,6 +47,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			});
 		}
 
+        public async Task GetConfirmationCode()
+        {
+            await _accountServiceClient.GetConfirmationCode(new ConfirmationCodeRequest
+            {
+                Email = _account.Email
+            });
+        }
+
 		public void RegistrationFinished ()
 		{
 			_registrationAddressSubject.OnNext (_account);
@@ -57,6 +65,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				return _account;
 			}
+
+            set
+            {
+                _account = value;
+            }
 		}
 	}
 }

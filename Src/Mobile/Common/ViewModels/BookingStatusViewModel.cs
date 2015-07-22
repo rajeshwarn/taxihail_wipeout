@@ -476,16 +476,47 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& status.VehicleLatitude.HasValue
 					&& status.VehicleLongitude.HasValue)
 				{
-					Direction d =  await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
-					statusInfoText += " " + FormatEta(d);						
+					Direction direction;
+
+					if(Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
+					{
+						var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber);
+					    direction = geoData.Directions;
+
+                        if(geoData.Latitude.HasValue)
+                        {
+                            status.VehicleLatitude = geoData.Latitude;
+                            status.VehicleLongitude = geoData.Longitude;
+                        }
+					}
+					else
+					{
+						direction = await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+					}                       
+
+				    statusInfoText += " " + FormatEta(direction);
+				}
+
+				if(Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo
+					&& status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
+				{
+					//refresh vehicle position on the map from the geo data
+					var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber);
+					if(geoData.Latitude.HasValue
+                       && geoData.Longitude.HasValue)
+					{
+						status.VehicleLatitude = geoData.Latitude;
+						status.VehicleLongitude = geoData.Longitude;
+					}
 				}
 
 				StatusInfoText = statusInfoText;
                 OrderStatusDetail = status;
 
                 CenterMap ();
+			
 
-                UpdateActionsPossibleOnOrder(status.IBSStatusId);
+				UpdateActionsPossibleOnOrder(status);
 
                 DisplayOrderNumber();
 
@@ -603,9 +634,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, direction.Duration, durationUnit);
 		}
 
-        private async void UpdateActionsPossibleOnOrder(string statusId)
+		private async void UpdateActionsPossibleOnOrder(OrderStatusDetail status)
 		{
-            IsCancelButtonVisible = _bookingService.IsOrderCancellable(statusId);
+			
+			IsCancelButtonVisible = _bookingService.IsOrderCancellable(status);
 
 		    var arePassengersOnBoard = OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
             var isUnPairPossible = DateTime.UtcNow <= OrderStatusDetail.UnpairingTimeOut;

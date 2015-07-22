@@ -366,6 +366,7 @@
     <Content Include="Content\512x512.png" />
     <Content Include="Content\57x57.png" />
     <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\GridPagination.css" />
     <Content Include="Content\load.gif" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

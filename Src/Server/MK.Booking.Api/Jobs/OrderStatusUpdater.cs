@@ -21,7 +21,6 @@ using apcurium.MK.Common.Resources;
 using CMTPayment;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -172,7 +171,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                 DriverId = tripInfo.DriverId,
                 AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
                 LastFour = tripInfo.LastFour,
-                Tolls = tolls.ToArray()
+                Tolls = tolls.ToArray(),
+                LastLatitudeOfVehicle = tripInfo.Lat,
+                LastLongitudeOfVehicle = tripInfo.Lon,
             });
         }
 
@@ -196,7 +197,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.Eta =                             ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
             orderStatusDetail.RideLinqPairingCode =             ibsOrderInfo.PairingCode.GetValue(orderStatusDetail.RideLinqPairingCode);
             orderStatusDetail.DriverInfos.DriverPhotoUrl =      ibsOrderInfo.DriverPhotoUrl.GetValue(orderStatusDetail.DriverInfos.DriverPhotoUrl);
-            
+
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
             var wasProcessingOrderOrWaitingForDiver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
@@ -465,7 +466,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (promoUsed != null)
                 {
                     var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                    amountSaved = promoDomainObject.GetDiscountAmount(Convert.ToDecimal(ibsOrderInfo.MeterAmount));
+                    amountSaved = promoDomainObject.GetDiscountAmount(Convert.ToDecimal(ibsOrderInfo.MeterAmount), Convert.ToDecimal(tipAmount));
                     totalOrderAmount = totalOrderAmount - amountSaved;
                 }
 

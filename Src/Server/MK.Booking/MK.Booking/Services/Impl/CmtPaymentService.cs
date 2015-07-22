@@ -489,6 +489,11 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             InitializeServiceClient();
 
+            if (!_serverPaymentSettings.CmtPaymentSettings.SubmitAsFleetAuthorization)
+            {
+                request = new MerchantAuthorizationRequest(request, _serverPaymentSettings.CmtPaymentSettings.MerchantToken);
+            }
+
             AuthorizationResponse response;
             try
             {

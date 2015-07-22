@@ -217,14 +217,14 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                         message,
                         () => 
                         {
-                    tcs.TrySetResult (null);
+                            tcs.TrySetResult (null);
                             if(cancelAction != null)
                             {
                                 cancelAction();
-                            };
+                            }
                         },
                         isNumericOnly,
-                        inputText) ;
+                        inputText);
                     
                     if(!string.IsNullOrEmpty(result))
                     {

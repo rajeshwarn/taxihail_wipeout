@@ -119,18 +119,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (@event.Country == null || (@event.Country != null && string.IsNullOrEmpty(@event.Country.Code)))
                 {
                     var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
-
-                    string countryCode;
-
-                    if (currentCultureInfo != null)
-                    {
-                        countryCode = (new RegionInfo(currentCultureInfo.LCID)).TwoLetterISORegionName;
-                    }
-                    else
-                    {
-                        countryCode = "CA";
-                    }
-
+                    string countryCode = (new RegionInfo(currentCultureInfo.LCID)).TwoLetterISORegionName;
                     @event.Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryISOCode;
                 }
 
@@ -139,7 +128,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     Name = account.Name,
                     NumberOfTaxi = 1,
                     Passengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger,
-                    Country = @event.Country ?? new CountryISOCode(),
+                    Country = @event.Country,
                     Phone = @event.Phone,
                     PayBack = @event.PayBack
                 };
@@ -201,6 +190,13 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (settings.ProviderId == _serverSettings.ServerData.DefaultBookingSettings.ProviderId)
                 {
                     settings.ProviderId = null;
+                }
+
+                if (@event.Country == null || (@event.Country != null && string.IsNullOrEmpty(@event.Country.Code)))
+                {
+                    var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
+                    string countryCode = (new RegionInfo(currentCultureInfo.LCID)).TwoLetterISORegionName;
+                    @event.Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryISOCode;
                 }
 
                 settings.NumberOfTaxi = @event.NumberOfTaxi;

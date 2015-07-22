@@ -32,6 +32,16 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			return response.ToArray();
 		}
 
+	    public Task<EtaForPickupResponse> GetEtaFromGeo(double latitude, double longitude, string vehicleNumber)
+	    {
+	        return Client.PostAsync(new EtaForPickupRequest
+	        {
+	            Longitude = longitude,
+	            Latitude = latitude,
+	            VehicleNumber = vehicleNumber
+	        });
+	    }
+
 		public async Task<VehicleType[]> GetVehicleTypes()
 	    {
             var response = await Client.GetAsync<VehicleType[]>("/admin/vehicletypes");

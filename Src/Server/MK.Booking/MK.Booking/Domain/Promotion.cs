@@ -257,16 +257,19 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public decimal GetDiscountAmount(decimal taxedMeterAmount)
+        public decimal GetDiscountAmount(decimal taxedMeterAmount, decimal tipAmount)
         {
             if (_discountType == PromoDiscountType.Cash)
             {
                 // return smallest value to make sure we don't credit user
-                return Math.Min(taxedMeterAmount, _discountValue);
+                // Cash discount can pay for tip
+                var totalAmount = taxedMeterAmount + tipAmount;
+                return Math.Min(totalAmount, _discountValue);
             }
 
             if (_discountType == PromoDiscountType.Percentage)
             {
+                // % discount can't pay for tip
                 var amountSaved = taxedMeterAmount * (_discountValue / 100);
                 return Math.Round(amountSaved, 2);
             }
@@ -274,14 +277,14 @@ namespace apcurium.MK.Booking.Domain
             return 0;
         }
 
-        public void Redeem(Guid orderId, decimal taxedMeterAmount)
+        public void Redeem(Guid orderId, decimal taxedMeterAmount, decimal tipAmount)
         {
             if (!_orderIds.Contains(orderId))
             {
                 throw new InvalidOperationException("Promotion must be applied to an order before being redeemed");
             }
 
-            var amountSaved = GetDiscountAmount(taxedMeterAmount);
+            var amountSaved = GetDiscountAmount(taxedMeterAmount, tipAmount);
 
             Update(new PromotionRedeemed
             {
