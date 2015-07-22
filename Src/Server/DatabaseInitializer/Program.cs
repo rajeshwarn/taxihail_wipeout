@@ -107,37 +107,42 @@ namespace DatabaseInitializer
                 {
                     var temporaryDatabaseName = param.CompanyName + "_New";
 
+                    PerformUpdate(param, creatorDb, param.CompanyName, temporaryDatabaseName);
+
                     if (param.ReuseTemporaryDb)
                     {
                         // the idea behind reuse of temp db is that account doesn't have permission to rename db 
                         // so we instead we need to re-migrate from the temp db to the actual name
                         PerformUpdate(param, creatorDb, temporaryDatabaseName, param.CompanyName);
                     }
-                      
-                    var oldDatabase = creatorDb.RenameDatabase(param.MasterConnectionString, param.CompanyName);
-
-                    Console.WriteLine("Rename New Database to use Company Name...");
-                    creatorDb.RenameDatabase(param.MasterConnectionString, temporaryDatabaseName, param.CompanyName);
-
-                    if (param.MkWebConnectionString.ToLower().Contains("integrated security=true"))
+                    else
                     {
-                        creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
-                            "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
+                        var oldDatabase = creatorDb.RenameDatabase(param.MasterConnectionString, param.CompanyName);
+
+                        Console.WriteLine("Rename New Database to use Company Name...");
+                        creatorDb.RenameDatabase(param.MasterConnectionString, temporaryDatabaseName, param.CompanyName);
+
+                        if (param.MkWebConnectionString.ToLower().Contains("integrated security=true"))
+                        {
+                            creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
+                                "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
+                        }
+
+                        SetupMirroring(param);
+
+                        if (!string.IsNullOrEmpty(param.BackupFolder))
+                        {
+                            Console.WriteLine("Backup of old database...");
+                            var backupFolder = Path.Combine(param.BackupFolder, param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
+                            Directory.CreateDirectory(backupFolder);
+                            creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, oldDatabase);
+
+                            Console.WriteLine("Dropping of old database...");
+                            creatorDb.DropDatabase(param.MasterConnectionString, oldDatabase);
+                        }
                     }
 
-                    SetupMirroring(param);
 
-                    if (!string.IsNullOrEmpty(param.BackupFolder))
-                    {
-                        Console.WriteLine("Backup of old database...");
-                        var backupFolder = Path.Combine(param.BackupFolder, param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
-                        Directory.CreateDirectory(backupFolder);
-                        creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, oldDatabase);
-
-                        Console.WriteLine("Dropping of old database...");
-                        creatorDb.DropDatabase(param.MasterConnectionString, oldDatabase);
-                    }
-                    
                 }
                 else
                 {
