@@ -140,8 +140,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             _otherItem = new ListItemData
                 {
-                    Key = 896357487,
-                    Value = "Other"
+                    Key = Int32.MaxValue,
+                    Value = this.Services().Localize["OtherListItemLabel"]
                 };
         }
 
@@ -213,8 +213,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				string value = null;
                 if (_fromUI)
                 {
-                    value = await this.Services().Message.ShowPromptDialog(this.Services().Localize["Other"], 
-                            this.Services().Localize["OtherListItemPromptLabel"], () => { }, true);
+                    value = await this.Services().Message.ShowPromptDialog(this.Services().Localize["OtherListItemLabel"], 
+                        this.Services().Localize["OtherListItemPromptLabel"], () => { }, true);
 					
                 }
 				if (OtherValueSelected != null)
