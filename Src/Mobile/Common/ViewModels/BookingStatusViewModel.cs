@@ -480,7 +480,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					if(Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
 					{
-						var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber);
+						var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration);
 					    direction = geoData.Directions;
 
                         if(geoData.Latitude.HasValue)

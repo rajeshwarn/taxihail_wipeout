@@ -173,9 +173,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		    return etaBetweenCoordinates;
 		}
 
-		public async Task<GeoDataEta> GetVehiclePositionInfoFromGeo(double fromLat, double fromLng, string vehicleNumber)
+		public async Task<GeoDataEta> GetVehiclePositionInfoFromGeo(double fromLat, double fromLng, string vehicleRegistration)
 	    {
-	        var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleNumber));
+            var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleRegistration));
 
 	        var directions = await _directions.GetDirectionAsync(fromLat, fromLng, etaFromGeo.Latitude, etaFromGeo.Longitude, null, null, false);
 
