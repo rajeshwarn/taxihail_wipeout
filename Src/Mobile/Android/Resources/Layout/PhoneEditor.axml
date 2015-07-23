@@ -16,5 +16,6 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/HeightEditText"
         android:background="@drawable/dialog_center"
-        style="@style/CreateAccount" />
+        style="@style/CreateAccount"
+        android:inputType="number" />
 </LinearLayout>
