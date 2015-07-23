@@ -501,7 +501,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
 				{
 					//refresh vehicle position on the map from the geo data
-					var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber);
+					var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration);
 					if(geoData.Latitude.HasValue
                        && geoData.Longitude.HasValue)
 					{
