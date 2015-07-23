@@ -676,15 +676,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async Task GoToSummary()
 		{
 			Logger.LogMessage ("GoToSummary");
+
 			if (OrderStatusDetail.RideLinqPairingCode.HasValue())
 			{
 				var ridelinqInfo = await _bookingService.GetTripInfoFromEHail(Order.Id);
 
 				var @params = new
-					{
-						orderId = ridelinqInfo.OrderId,
-                        orderManualRideLinqDetail = ridelinqInfo.ToJson()
-					};
+				{
+					orderId = ridelinqInfo.OrderId,
+                    orderManualRideLinqDetail = ridelinqInfo.ToJson()
+				};
 
                 ShowViewModelAndRemoveFromHistory<ManualRideLinqSummaryViewModel>(@params);
 			}

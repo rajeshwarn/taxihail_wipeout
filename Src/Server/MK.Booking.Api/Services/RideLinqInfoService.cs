@@ -26,15 +26,10 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(RidelinqInfoRequest request)
         {
-            if (!_serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment)
-            {
-                return new HttpResult(HttpStatusCode.BadRequest, "Endpoint only compatible with eHail system.");
-            }
-
             var pairingInfo = _orderDao.FindOrderPairingById(request.OrderId);
             if (pairingInfo == null || !pairingInfo.PairingToken.HasValue())
             {
-                return new HttpResult(HttpStatusCode.BadRequest, "Endpoint can only be called with an order doen with eHail");
+                return new HttpResult(HttpStatusCode.BadRequest, "Endpoint can only be called with an order done with eHail");
             }
 
             var tripInfo = GetTripHelper().GetTripInfo(pairingInfo.PairingToken);
@@ -43,25 +38,23 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 Distance = tripInfo.Distance,
                 DriverId = tripInfo.DriverId,
-                Extra = tripInfo.Extra * .01,
-                Fare = tripInfo.Fare * .01,
+                Extra = tripInfo.Extra / 100,
+                Fare = tripInfo.Fare / 100,
                 Medallion = tripInfo.Medallion,
                 OrderId = request.OrderId,
-                Surcharge = tripInfo.Surcharge * .01,
-                Tax = tripInfo.Tax * .01,
-                Tip = tripInfo.Tip * .01,
-                Toll = tripInfo.TollHistory.SelectOrDefault(history => history.Sum(toll => toll.TollAmount * .01)),
-                Total = tripInfo.Total * .01,
+                Surcharge = tripInfo.Surcharge / 100,
+                Tax = tripInfo.Tax / 100,
+                Tip = tripInfo.Tip / 100,
+                Toll = tripInfo.TollHistory.SelectOrDefault(history => history.Sum(toll => toll.TollAmount / 100)),
+                Total = tripInfo.Total / 100,
                 PairingCode = pairingInfo.PairingCode
             };
         }
-
 
         private CmtTripInfoServiceHelper GetTripHelper()
         {
             var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
             return new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
-
     }
 }
