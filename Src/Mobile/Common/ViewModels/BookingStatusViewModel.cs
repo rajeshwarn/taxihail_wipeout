@@ -31,8 +31,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IBookingService _bookingService;
 		private readonly IPaymentService _paymentService;
 		private readonly IVehicleService _vehicleService;
+	    private readonly IMetricsService _metricsService;
 
-        private int _refreshPeriod = 5;              // in seconds
+	    private int _refreshPeriod = 5;              // in seconds
         private bool _waitingToNavigateAfterTimeOut;
         private string _vehicleNumber;
         private bool _isDispatchPopupVisible;
@@ -45,14 +46,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPhoneService phoneService,
 			IBookingService bookingService,
 			IPaymentService paymentService,
-			IVehicleService vehicleService
-		)
+			IVehicleService vehicleService,
+		    IMetricsService metricsService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_phoneService = phoneService;
 			_bookingService = bookingService;
 			_paymentService = paymentService;
 			_vehicleService = vehicleService;
+	        _metricsService = metricsService;
 		}
 
 		public void Init(string order, string orderStatus)
@@ -492,6 +494,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					else
 					{
 						direction = await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+
+                        // Log original eta value
+					    if (direction.IsValidEta())
+					    {
+                            _metricsService.LogOriginalRideEta(Order.Id, direction.Duration);
+					    }
 					}                       
 
 				    statusInfoText += " " + FormatEta(direction);
