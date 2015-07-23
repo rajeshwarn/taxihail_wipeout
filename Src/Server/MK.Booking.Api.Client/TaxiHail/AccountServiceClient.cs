@@ -7,7 +7,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Api.Client.Extensions;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
@@ -190,10 +189,5 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var result = Client.GetAsync<Account>("/account/test/admin/" + Guid.NewGuid());
             return result;
         }
-
-		public Task LogApplicationStartUp(LogApplicationStartUpRequest request)
-		{
-			return Client.PostAsync<string> ("/account/logstartup", request);
-		}
     }
 }
