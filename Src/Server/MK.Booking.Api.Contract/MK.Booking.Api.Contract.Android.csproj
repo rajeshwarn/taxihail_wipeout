@@ -69,6 +69,7 @@
     <Compile Include="Requests\EtaForPickupRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
+    <Compile Include="Requests\LogOriginalEtaRequest.cs" />
     <Compile Include="Requests\NearbyPlacesRequest.cs" />
     <Compile Include="Requests\NotificationSettingsRequest.cs" />
     <Compile Include="Requests\OrderRatingRequest.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
     <Compile Include="Resources\VehicleType.cs" />
     <Compile Include="Requests\ActivationMethod.cs" />
+    <Compile Include="Requests\Payment\RidelinqInfoRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

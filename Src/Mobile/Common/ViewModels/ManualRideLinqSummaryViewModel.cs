@@ -4,12 +4,18 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class ManualRideLinqSummaryViewModel : PageViewModel
+	public class ManualRideLinqSummaryViewModel : RideSummaryViewModel
 	{
 		private OrderManualRideLinqDetail _orderManualRideLinqDetail;
+
+		public ManualRideLinqSummaryViewModel(IOrderWorkflowService orderWorkflowService, IBookingService bookingService)
+			:base(orderWorkflowService, bookingService)
+		{
+		}
 
 		public void Init(string orderManualRideLinqDetail)
 		{

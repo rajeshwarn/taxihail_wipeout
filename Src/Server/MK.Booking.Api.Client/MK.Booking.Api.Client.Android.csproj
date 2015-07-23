@@ -70,6 +70,7 @@
     <Compile Include="TaxiHail\CompanyServiceClient.cs" />
     <Compile Include="TaxiHail\ConfigurationClientService.cs" />
     <Compile Include="TaxiHail\ManualPairingForRideLinqServiceClient.cs" />
+    <Compile Include="TaxiHail\MetricsServiceClient.cs" />
     <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
     <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
     <Compile Include="TaxiHail\OrderServiceClient.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="Payments\Moneris\MonerisServiceClient.cs" />
     <Compile Include="Payments\Moneris\MonerisTokenizeClient.cs" />
+    <Compile Include="TaxiHail\RideLinqInfoServiceClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -431,7 +431,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
 
             // Log user session start
-			Mvx.Resolve<IAccountService>().LogApplicationStartUp();
+			Mvx.Resolve<IMetricsService>().LogApplicationStartUp();
 
 			if (_viewIsStarted) 
 			{

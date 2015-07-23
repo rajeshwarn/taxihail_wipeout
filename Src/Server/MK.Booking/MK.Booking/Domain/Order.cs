@@ -46,8 +46,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderUnpairedFromManualRideLinq>(NoAction);
             Handles<ManualRideLinqTripInfoUpdated>(NoAction);
             Handles<AutoTipUpdated>(NoAction);
+            Handles<OriginalEtaLogged>(NoAction);
         }
-
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
@@ -337,6 +337,14 @@ namespace apcurium.MK.Booking.Domain
             Update(new AutoTipUpdated
             {
                 AutoTipPercentage = autoTipPercentage
+            });
+        }
+
+        public void LogOriginalEta(long originalEta)
+        {
+            Update(new OriginalEtaLogged
+            {
+                OriginalEta = originalEta
             });
         }
 

@@ -84,6 +84,7 @@
     <Compile Include="Requests\EtaForPickupRequest.cs" />
     <Compile Include="Requests\InitiateCallToDriverRequest.cs" />
     <Compile Include="Requests\GetAddressesFromPostcalCodeRequest.cs" />
+    <Compile Include="Requests\LogOriginalEtaRequest.cs" />
     <Compile Include="Requests\MarketVehicleTypesRequest.cs" />
     <Compile Include="Requests\ExecuteWebPaymentAndProceedWithOrder.cs" />
     <Compile Include="Requests\FindMarketRequest.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Requests\Payment\PayPal\LinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\UnlinkPayPalAccountRequest.cs" />
+    <Compile Include="Requests\Payment\RidelinqInfoRequest.cs" />
     <Compile Include="Requests\Payment\SettleOverduePaymentRequest.cs" />
     <Compile Include="Requests\Payment\UpdateAutoTipRequest.cs" />
     <Compile Include="Requests\SendMessageToDriverRequest.cs" />

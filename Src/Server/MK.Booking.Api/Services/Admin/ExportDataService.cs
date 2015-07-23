@@ -112,6 +112,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Order.DropOffAddress"] = orderReport.Order.DropOffAddress.DisplayAddress;
                             orderReportEntry["Order.WasSwitchedToAnotherCompany"] = orderReport.Order.WasSwitchedToAnotherCompany.ToString();
                             orderReportEntry["Order.HasTimedOut"] = orderReport.Order.HasTimedOut.ToString();
+                            orderReportEntry["Order.OriginalEta"] = orderReport.Order.OriginalEta.ToString();
 
                             orderReportEntry["OrderStatus.Status"] = orderReport.OrderStatus.Status.ToString();
                             orderReportEntry["OrderStatus.OrderIsCancelled"] = orderReport.OrderStatus.OrderIsCancelled.ToString();                            
