@@ -48,48 +48,32 @@
                 android:layout_gravity="center_horizontal"
                 android:paddingBottom="10dip" />
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="8dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
-                android:weightSum="100">
-                <TextView
-                    android:layout_width="0dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_horizontal">
+                <cirrious.mvvmcross.binding.droid.views.MvxListView
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    style="@style/BlackTextLabel"
-                    android:layout_weight="50"
-                    android:gravity="right"
-                    android:text="@string/ManualRideLinqStatus_Driver" />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dip"
-                    style="@style/DetailText"
-                    android:layout_weight="50"
-                    local:MvxBind="Text OrderManualRideLinqDetail.DriverId" />
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:gravity="center_horizontal"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
-                android:weightSum="100">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    style="@style/BlackTextLabel"
-                    android:layout_weight="50"
-                    android:gravity="right"
-                    android:text="@string/ManualRideLinqStatus_PairingCode" />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dip"
-                    style="@style/DetailText"
-                    android:layout_weight="50"
-                    local:MvxBind="Text OrderManualRideLinqDetail.PairingCode" />
+                    android:id="@+id/RatingListView"
+                    android:layout_margin="12dip"
+                    android:layout_weight="1"
+                    local:MvxItemTemplate="@layout/ratinglistitem"
+                    local:MvxBind="ItemsSource RatingList; Visibility RatingList, Converter=Visibility" />
+                <Button
+                    style="@style/ButtonActionGreenStyle"
+                    android:layout_marginTop="6dip"
+                    android:id="@+id/RateOrderButton"
+                    android:layout_below="@id/RatingListView"
+                    android:text="@string/Submit"
+                    android:layout_height="@dimen/HeightButton"
+                    android:layout_width="fill_parent"
+                    local:MvxBind="Click RateOrderAndNavigateToHome; Visibility CanRate, Converter=Visibility" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -235,7 +219,8 @@
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip"
-                android:weightSum="100">
+                android:weightSum="100"
+                android:layout_marginBottom="10dp">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

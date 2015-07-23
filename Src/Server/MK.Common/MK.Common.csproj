@@ -233,6 +233,7 @@
     <Compile Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="Resources\PairingResponse.cs" />
     <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
+    <Compile Include="Resources\RideLinqInfoResponse.cs" />
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
     <Compile Include="TestCreditCards.cs" />
     <Compile Include="VehicleStatuses.cs" />

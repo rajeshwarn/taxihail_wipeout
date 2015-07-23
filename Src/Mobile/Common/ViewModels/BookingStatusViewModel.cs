@@ -97,10 +97,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.OnViewStarted (firstStart);
 
 			_refreshPeriod = Settings.OrderStatus.ClientPollingInterval;
-            
+
+            var isRefreshing = false;
+
 			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds (_refreshPeriod))
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe (_ => RefreshStatus())
+				.Where(_ => !isRefreshing)
+				.SelectMany(async _ =>
+					{
+						try
+						{
+							isRefreshing = true;
+							await RefreshStatus();
+							return _;
+						}
+						finally
+						{
+							isRefreshing = false;
+						}
+					})
+				.Subscribe()
 				.DisposeWith (Subscriptions);
 		}
 		
@@ -417,7 +433,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		private bool _refreshStatusIsExecuting;
-		private async void RefreshStatus()
+		private async Task RefreshStatus()
         {
             try 
 			{
@@ -482,7 +498,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					if(Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
                     {
-						var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber, status.OrderId);
+						var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, status.OrderId);
 					    direction = geoData.Directions;
 
                         if(geoData.Latitude.HasValue)
@@ -509,7 +525,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
 				{
 					//refresh vehicle position on the map from the geo data
-					var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.VehicleNumber, Order.Id);
+					var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, Order.Id);
 					if(geoData.Latitude.HasValue
                        && geoData.Longitude.HasValue)
 					{
@@ -531,7 +547,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (isDone) 
                 {
                     this.Services().MessengerHub.Publish(new OrderStatusChanged(this, status.OrderId, OrderStatus.Completed, null));
-					GoToSummary();
+					await GoToSummary();
                 }
 
 				if (_bookingService.IsStatusTimedOut(status.IBSStatusId))
@@ -665,14 +681,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public void GoToSummary()
+		public async Task GoToSummary()
 		{
 			Logger.LogMessage ("GoToSummary");
-			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (
-				new {
-					order = Order.ToJson(),
-					orderStatus = OrderStatusDetail.ToJson()
-				}.ToStringDictionary());
+
+			if (OrderStatusDetail.RideLinqPairingCode.HasValue())
+			{
+				var ridelinqInfo = await _bookingService.GetTripInfoFromEHail(Order.Id);
+
+				var @params = new
+				{
+					orderId = ridelinqInfo.OrderId,
+                    orderManualRideLinqDetail = ridelinqInfo.ToJson()
+				};
+
+                ShowViewModelAndRemoveFromHistory<ManualRideLinqSummaryViewModel>(@params);
+			}
+			else
+			{
+                ShowViewModelAndRemoveFromHistory<RideSummaryViewModel>(new { orderId = Order.Id});
+			}
 		}
 
         public async void GoToBookingScreen()
