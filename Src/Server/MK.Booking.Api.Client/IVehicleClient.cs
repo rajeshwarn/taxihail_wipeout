@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Api.Client
 
 		Task<VehicleType[]> GetVehicleTypes();
 
-        Task<EtaForPickupResponse> GetEtaFromGeo(double latitude, double longitude, string vehicleNumber);
+        Task<EtaForPickupResponse> GetEtaFromGeo(double latitude, double longitude, string vehicleRegistration);
 
         Task SendMessageToDriver(string message, string vehicleNumber);
     }
