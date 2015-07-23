@@ -41,7 +41,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 	            Latitude = latitude,
 	            VehicleRegistration = vehicleRegistration,
 	            OrderId = orderId
-                OrderId = orderId
 	        });
 	    }
 
