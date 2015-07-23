@@ -240,20 +240,10 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(LogOriginalEta command)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                var orderStatus = context.Find<OrderStatusDetail>(command.OrderId);
-                if (orderStatus == null)
-                {
-                    return;
-                }
+            var order = _repository.Get(command.OrderId);
+            order.LogOriginalEta(command.OriginalEta);
 
-                if (!orderStatus.OriginalEta.HasValue)
-                {
-                    orderStatus.OriginalEta = command.OriginalEta;
-                    context.Save(orderStatus);
-                }
-            }
+            _repository.Save(order, command.Id.ToString());
         }
     }
 }
