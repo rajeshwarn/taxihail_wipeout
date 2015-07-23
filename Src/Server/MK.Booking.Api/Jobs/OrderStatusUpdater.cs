@@ -150,9 +150,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             if (orderStatusDetail.UnpairingTimeOut != null)
             {
-                // payment in car type sent during order creation or after by user manually during payment change
                 if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(timeBetweenPaymentChangeAndSaveInDB))
-                    //).TotalSeconds > _serverSettings.GetPaymentSettings().UnpairingTimeOut + timeBetweenPaymentChangeAndSaveInDB)
                 {
                     if (!orderStatusDetail.IsPrepaid)
                     {
