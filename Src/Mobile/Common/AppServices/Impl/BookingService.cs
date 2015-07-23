@@ -373,6 +373,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             throw new Exception(response.Message);
         }
 
+		public Task<RideLinqInfoResponse> GetTripInfoFromEHail(Guid orderId)
+		{
+			return UseServiceClientAsync<RideLinqInfoServiceClient, RideLinqInfoResponse>(service => service.GetRideLinqInfoForEHail(orderId));
+		}
+
         public Task<bool> InitiateCallToDriver(Guid orderId)
         {
             try

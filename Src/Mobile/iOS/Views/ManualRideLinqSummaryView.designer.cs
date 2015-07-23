@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class ManualRideLinqSummaryView
 	{
 		[Outlet]
+		UIKit.NSLayoutConstraint constraintRatingTableHeight { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblDistanceLabel { get; set; }
 
 		[Outlet]
@@ -74,9 +77,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.UILabel lblTotalText { get; set; }
+
+		[Outlet]
+		UIKit.UITableView tableRatingList { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (constraintRatingTableHeight != null) {
+				constraintRatingTableHeight.Dispose ();
+				constraintRatingTableHeight = null;
+			}
+
 			if (lblDistanceLabel != null) {
 				lblDistanceLabel.Dispose ();
 				lblDistanceLabel = null;
@@ -95,6 +106,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblDriverIdText != null) {
 				lblDriverIdText.Dispose ();
 				lblDriverIdText = null;
+			}
+
+			if (lblExtraLabel != null) {
+				lblExtraLabel.Dispose ();
+				lblExtraLabel = null;
+			}
+
+			if (lblExtraText != null) {
+				lblExtraText.Dispose ();
+				lblExtraText = null;
 			}
 
 			if (lblFareLabel != null) {
@@ -152,16 +173,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblTipText = null;
 			}
 
-			if (lblTotalLabel != null) {
-				lblTotalLabel.Dispose ();
-				lblTotalLabel = null;
-			}
-
-			if (lblTotalText != null) {
-				lblTotalText.Dispose ();
-				lblTotalText = null;
-			}
-
 			if (lblTollLabel != null) {
 				lblTollLabel.Dispose ();
 				lblTollLabel = null;
@@ -172,14 +183,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblTollText = null;
 			}
 
-			if (lblExtraLabel != null) {
-				lblExtraLabel.Dispose ();
-				lblExtraLabel = null;
+			if (lblTotalLabel != null) {
+				lblTotalLabel.Dispose ();
+				lblTotalLabel = null;
 			}
 
-			if (lblExtraText != null) {
-				lblExtraText.Dispose ();
-				lblExtraText = null;
+			if (lblTotalText != null) {
+				lblTotalText.Dispose ();
+				lblTotalText = null;
+			}
+
+			if (tableRatingList != null) {
+				tableRatingList.Dispose ();
+				tableRatingList = null;
 			}
 		}
 	}

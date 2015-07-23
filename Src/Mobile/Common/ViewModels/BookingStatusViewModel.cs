@@ -95,10 +95,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.OnViewStarted (firstStart);
 
 			_refreshPeriod = Settings.OrderStatus.ClientPollingInterval;
-            
+
+            var isRefreshing = false;
+
 			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds (_refreshPeriod))
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe (_ => RefreshStatus())
+				.Where(_ => !isRefreshing)
+				.SelectMany(async _ =>
+					{
+						try
+						{
+							isRefreshing = true;
+							await RefreshStatus();
+							return _;
+						}
+						finally
+						{
+							isRefreshing = false;
+						}
+					})
+				.Subscribe()
 				.DisposeWith (Subscriptions);
 		}
 		
@@ -415,7 +431,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		private bool _refreshStatusIsExecuting;
-		private async void RefreshStatus()
+		private async Task RefreshStatus()
         {
             try 
 			{
@@ -523,7 +539,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (isDone) 
                 {
                     this.Services().MessengerHub.Publish(new OrderStatusChanged(this, status.OrderId, OrderStatus.Completed, null));
-					GoToSummary();
+					await GoToSummary();
                 }
 
 				if (_bookingService.IsStatusTimedOut(status.IBSStatusId))
@@ -657,14 +673,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public void GoToSummary()
+		public async Task GoToSummary()
 		{
 			Logger.LogMessage ("GoToSummary");
-			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (
-				new {
-					order = Order.ToJson(),
-					orderStatus = OrderStatusDetail.ToJson()
-				}.ToStringDictionary());
+
+			if (OrderStatusDetail.RideLinqPairingCode.HasValue())
+			{
+				var ridelinqInfo = await _bookingService.GetTripInfoFromEHail(Order.Id);
+
+				var @params = new
+				{
+					orderId = ridelinqInfo.OrderId,
+                    orderManualRideLinqDetail = ridelinqInfo.ToJson()
+				};
+
+                ShowViewModelAndRemoveFromHistory<ManualRideLinqSummaryViewModel>(@params);
+			}
+			else
+			{
+                ShowViewModelAndRemoveFromHistory<RideSummaryViewModel>(new { orderId = Order.Id});
+			}
 		}
 
         public async void GoToBookingScreen()
