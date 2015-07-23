@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
 
             if (orderStatus != null && !orderStatus.OriginalEta.HasValue && eta.Duration.HasValue)
             {
-                _commandBus.Send(new SaveOriginalEta
+                _commandBus.Send(new LogOriginalEta
                 {
                     OrderId = request.OrderId,
                     OriginalEta = eta.Duration.Value

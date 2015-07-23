@@ -79,7 +79,6 @@
     <Compile Include="OrderCancelledBecauseOfError.cs" />
     <Compile Include="OrderPreparedForNextDispatch.cs" />
     <Compile Include="OrderPairedForPayment.cs" />
-    <Compile Include="OriginalEtaSaved.cs" />
     <Compile Include="PromotionDeleted.cs" />
     <Compile Include="PromotionUnapplied.cs" />
     <Compile Include="RefundedOrderUpdated.cs" />

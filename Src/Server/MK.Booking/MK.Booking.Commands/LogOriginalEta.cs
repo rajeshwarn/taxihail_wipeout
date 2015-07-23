@@ -3,9 +3,9 @@ using System;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class SaveOriginalEta : ICommand
+    public class LogOriginalEta : ICommand
     {
-        public SaveOriginalEta()
+        public LogOriginalEta()
         {
             Id = Guid.NewGuid();
         }

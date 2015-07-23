@@ -351,7 +351,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (order != null && !order.OriginalEta.HasValue && result.Eta.HasValue)
             {
-                _commandBus.Send(new SaveOriginalEta
+                _commandBus.Send(new LogOriginalEta
                 {
                     OrderId = request.OrderId,
                     OriginalEta = result.Eta.Value
