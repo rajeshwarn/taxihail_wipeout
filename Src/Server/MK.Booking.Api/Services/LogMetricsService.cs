@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Net;
 using System.Reflection;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
@@ -21,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
         }
 
-        public void Post(LogApplicationStartUpRequest request)
+        public object Post(LogApplicationStartUpRequest request)
         {
             var session = this.GetSession();
             var account = _dao.FindById(new Guid(session.UserAuthId));
@@ -40,9 +42,11 @@ namespace apcurium.MK.Booking.Api.Services
             };
 
             _commandBus.Send(command);
+
+            return new HttpResult(HttpStatusCode.OK);
         }
 
-        public void Post(LogOriginalEtaRequest request)
+        public object Post(LogOriginalEtaRequest request)
         {
             var order = _orderDao.FindOrderStatusById(request.OrderId);
 
@@ -54,6 +58,8 @@ namespace apcurium.MK.Booking.Api.Services
                     OriginalEta = request.OriginalEta.Value
                 });
             }
+
+            return new HttpResult(HttpStatusCode.OK);
         }
     }
 }
