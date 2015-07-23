@@ -254,22 +254,10 @@ namespace DatabaseInitializer
                 MigratePaymentSettings(serverSettings, commandBus);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
-#if DEBUG
                 if (isUpdate)
                 {
-                    using (var iisManager = new ServerManager())
-                    {
-                        var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
-
-                        if (appPool != null && appPool.State == ObjectState.Stopped)
-                        {
-                            Console.WriteLine("App pool is currently stopped, Starting App pool...");
-                            appPool.Start();
-                            Console.WriteLine("App pool Started...");
-                        }
-                    }
+                    StartAppPools(param);
                 }
-#endif
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
             catch (Exception e)
@@ -357,6 +345,7 @@ namespace DatabaseInitializer
                 && appPool.State == ObjectState.Started)
             {
                 appPool.Stop();
+                Console.WriteLine("App Pool stopped.");
             }
 
             if (param.SecondWebServerName.HasValue())
@@ -372,6 +361,47 @@ namespace DatabaseInitializer
                         {
                             remoteAppPool.Stop();
                             Console.WriteLine("Remote App Pool stopped.");
+                        }
+                        else if (remoteAppPool == null)
+                        {
+                            Console.WriteLine("No AppPool named {0} found at {1}", param.SecondWebServerName, param.AppPoolName);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Failed to connect to remote server {0}", param.SecondWebServerName);
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        private static void StartAppPools(DatabaseInitializerParams param)
+        {
+            Console.WriteLine("Start App Pool...");
+            var iisManager = new ServerManager();
+            var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+
+            if (appPool != null
+                && appPool.State == ObjectState.Stopped)
+            {
+                appPool.Start();
+                Console.WriteLine("App Pool started.");
+            }
+
+            if (param.SecondWebServerName.HasValue())
+            {
+                try
+                {
+                    Console.WriteLine("Start Secondary App Pool ...");
+                    using (var remoteServerManager = ServerManager.OpenRemote(param.SecondWebServerName))
+                    {
+                        var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+
+                        if (remoteAppPool != null && remoteAppPool.State == ObjectState.Stopped)
+                        {
+                            remoteAppPool.Start();
+                            Console.WriteLine("Remote App Pool started.");
                         }
                         else if (remoteAppPool == null)
                         {
