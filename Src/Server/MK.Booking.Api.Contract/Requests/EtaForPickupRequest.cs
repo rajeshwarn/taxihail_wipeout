@@ -1,4 +1,5 @@
 ﻿using ServiceStack.ServiceHost;
+using System;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
@@ -10,6 +11,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public double? Longitude { get; set; }
 
         public double? Latitude { get; set; }
+        public Guid OrderId { get; set; }
     }
 
 

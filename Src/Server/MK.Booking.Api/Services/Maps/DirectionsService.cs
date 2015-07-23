@@ -14,6 +14,8 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using ServiceStack.Common.Extensions;
 using ServiceStack.ServiceInterface;
+using Infrastructure.Messaging;
+using apcurium.MK.Booking.Commands;
 
 #endregion
 
@@ -26,14 +28,16 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         private readonly IOrderDao _orderDao;
         private readonly VehicleService _vehicleService;
         private readonly ILogger _logger;
+        private readonly ICommandBus _commandBus;
 
-        public DirectionsService(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, VehicleService vehicleService, ILogger logger)
+        public DirectionsService(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, VehicleService vehicleService, ILogger logger, ICommandBus commandBus)
         {
             _client = client;
             _serverSettings = serverSettings;
             _orderDao = orderDao;
             _vehicleService = vehicleService;
             _logger = logger;
+            _commandBus = commandBus;
         }
 
         public object Get(DirectionsRequest request)
@@ -94,7 +98,20 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         public Direction Get(AssignedEtaRequest request)
         {
             var order = _orderDao.FindById(request.OrderId);
-            return _client.GetEta(request.VehicleLat, request.VehicleLng, order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+            var eta = _client.GetEta(request.VehicleLat, request.VehicleLng, order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+
+            var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
+
+            if (orderStatus != null && !orderStatus.OriginalEta.HasValue && eta.Duration.HasValue)
+            {
+                _commandBus.Send(new LogOriginalEta
+                {
+                    OrderId = request.OrderId,
+                    OriginalEta = eta.Duration.Value
+                });
+            }
+
+            return eta;
         }
 
         private AvailableVehicle GetNearestAvailableVehicle(double originLat, double originLng, AvailableVehicle[] availableVehicles)
