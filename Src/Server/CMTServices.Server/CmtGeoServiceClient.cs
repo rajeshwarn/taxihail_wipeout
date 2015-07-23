@@ -95,13 +95,13 @@ namespace CMTServices
             return response;
         }
 
-        public VehicleResponse GetEta(double latitude, double longitude, string medallion)
+        public VehicleResponse GetEta(double latitude, double longitude, string vehicleRegistration)
         {
             var @params = new []
             {
                 new KeyValuePair<string, object>("lat", latitude),
                 new KeyValuePair<string, object>("lon", longitude),
-                new KeyValuePair<string, object>("deviceName", medallion)
+                new KeyValuePair<string, object>("deviceName", vehicleRegistration)
             };
 
             try

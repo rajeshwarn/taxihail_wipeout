@@ -335,14 +335,14 @@ namespace apcurium.MK.Booking.Api.Services
                 return new HttpResult(HttpStatusCode.BadRequest, "Api cannot be used unless available mode is set to Geo");
             }
 
-            if (!request.Latitude.HasValue || !request.Longitude.HasValue || !request.VehicleNumber.HasValue())
+            if (!request.Latitude.HasValue || !request.Longitude.HasValue || !request.VehicleRegistration.HasValue())
             {
                 return new HttpResult(HttpStatusCode.BadRequest, "Longitude, latitude and vehicle number are required.");
             }
 
             var geoService = (CmtGeoServiceClient)GetAvailableVehiclesServiceClient();
 
-            var result = geoService.GetEta(request.Latitude.Value, request.Longitude.Value, request.VehicleNumber);
+            var result = geoService.GetEta(request.Latitude.Value, request.Longitude.Value, request.VehicleRegistration);
 
             return new EtaForPickupResponse
             {
