@@ -525,6 +525,7 @@
 "View_RefineAddress"="بيانات نقطة الإلتقاء";
 "NoCreditCardSelected"="الرجاء اختيار بطاقة الائتمان";
 "RefineAddressTitle"="قم بتدقيق العنوان";
+"TipPercent_Error"="Tip cannot be over 100%";
 "PaymentViewTotalText"="الإجمالي";
 "ManualRideLinqSummary_Done"="Done";
 "PaymentDetails.TipAmountLabel"="قيمة الإكرامية";

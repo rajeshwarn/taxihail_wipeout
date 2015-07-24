@@ -42,7 +42,5 @@ namespace apcurium.MK.Booking.Api.Client
 
         Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(Guid accountId);
         Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettingsRequest userTaxiHailNetworkSettingsRequest);
-
-		Task LogApplicationStartUp(LogApplicationStartUpRequest request);
     }
 }

@@ -79,6 +79,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		private int? _tip;
+		private int GetTip()
+		{
+			var tip = _accountService.CurrentAccount.DefaultTipPercent ?? Settings.DefaultTipPercentage;
+			tip = _tip.HasValue ? _tip.Value : tip;
+
+			return tip;
+		}
+
 		public string PaymentInfo
 		{
 			get
@@ -86,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return string.Format(this.Services().Localize["ManualRideLinqStatus_Payment"],
 					_accountService.CurrentAccount.DefaultCreditCard.CreditCardCompany,
 					_accountService.CurrentAccount.DefaultCreditCard.Last4Digits,
-                    _accountService.CurrentAccount.DefaultTipPercent ?? Settings.DefaultTipPercentage);
+					GetTip());
 			}
 		}
 	
@@ -94,9 +103,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             _bookingService.ClearLastOrder();
 
-			var orderSummary = orderManualRideLinqDetail.ToJson();
-
-			ShowViewModelAndRemoveFromHistory<ManualRideLinqSummaryViewModel>(new {orderManualRideLinqDetail = orderSummary});
+			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel>(new { orderId = orderManualRideLinqDetail.OrderId});
 		}
 
         public ICommand EditAutoTipCommand
@@ -105,7 +112,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-					ShowViewModel<EditAutoTipViewModel>();
+						ShowSubViewModel<EditAutoTipViewModel, int>(new {tip = GetTip()}, resultTip =>
+							{
+								_tip = resultTip;
+								RaisePropertyChanged(() => PaymentInfo);
+							});
                 });
             }
         }

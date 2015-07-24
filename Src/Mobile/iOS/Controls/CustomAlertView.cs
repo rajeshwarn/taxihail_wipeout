@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var title = new UILabel()
                 {
                     Text = _title,
-                    Font = UIFont.BoldSystemFontOfSize(14),
+                    Font = UIFont.BoldSystemFontOfSize(16),
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     TextAlignment = UITextAlignment.Center,
                     Lines = 0,
@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _messageView = new UILabel()
             {
                 Text = _message,
-                Font = UIFont.SystemFontOfSize(14),
+                Font = UIFont.SystemFontOfSize(16),
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 TextAlignment = UITextAlignment.Center,
                 Lines = 0,
@@ -166,7 +166,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var lblTitle = new UILabel()
                 {
                     Text = _title,
-                    Font = UIFont.BoldSystemFontOfSize(14),
+                    Font = UIFont.BoldSystemFontOfSize(16),
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     TextAlignment = UITextAlignment.Center,
                     Lines = 0,
@@ -186,7 +186,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _messageView = new UILabel()
                     {
                         Text = _message,
-                        Font = UIFont.SystemFontOfSize(14),
+                        Font = UIFont.SystemFontOfSize(16),
                         TranslatesAutoresizingMaskIntoConstraints = false,
                         TextAlignment = UITextAlignment.Center,
                         Lines = 0,
@@ -206,7 +206,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             CustomInputView = new UITextView()
             {
                     Text = inputText,
-                Font = UIFont.SystemFontOfSize(14),
+                    Font = UIFont.SystemFontOfSize(16),
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 KeyboardType = isNumericOnly ? UIKeyboardType.NumberPad : UIKeyboardType.Default,
             };
@@ -340,7 +340,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var button = new FlatButton()
                 {
-                    Font = UIFont.SystemFontOfSize(14),
+                    Font = UIFont.SystemFontOfSize(16),
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     BackgroundColor = _dialogView.BackgroundColor,
                 };
@@ -373,7 +373,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var button = new FlatButton()
                 {
-                    Font = UIFont.SystemFontOfSize(14),
+                    Font = UIFont.SystemFontOfSize(16),
                     TranslatesAutoresizingMaskIntoConstraints = false,
                 };
 

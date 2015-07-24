@@ -1,8 +1,9 @@
 ﻿using System;
+using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Common.Entity
 {
-    public class OrderManualRideLinqDetail
+    public class OrderManualRideLinqDetail 
     {
         public Guid OrderId { get; set; }
 
