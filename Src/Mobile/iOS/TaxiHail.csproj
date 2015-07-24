@@ -183,9 +183,6 @@
     <Reference Include="GoogleAnalytics.iOS">
       <HintPath>..\Components\googleanalytics-3.0.10.2\lib\ios-unified\GoogleAnalytics.iOS.dll</HintPath>
     </Reference>
-    <Reference Include="MonoTouch.FacebookConnect">
-      <HintPath>..\Components\facebookios-3.22.0\lib\ios-unified\MonoTouch.FacebookConnect.dll</HintPath>
-    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\ios-unified\System.Reactive.Core.dll</HintPath>
     </Reference>
