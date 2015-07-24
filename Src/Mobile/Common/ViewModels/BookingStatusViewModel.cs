@@ -532,7 +532,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (isDone) 
                 {
                     this.Services().MessengerHub.Publish(new OrderStatusChanged(this, status.OrderId, OrderStatus.Completed, null));
-					await GoToSummary();
+					GoToSummary();
                 }
 
 				if (_bookingService.IsStatusTimedOut(status.IBSStatusId))
@@ -645,7 +645,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async void UpdateActionsPossibleOnOrder(OrderStatusDetail status)
 		{
-			
 			IsCancelButtonVisible = _bookingService.IsOrderCancellable(status);
 
 		    var arePassengersOnBoard = OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
@@ -666,7 +665,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public async Task GoToSummary()
+		public async void GoToSummary()
 		{
 			Logger.LogMessage ("GoToSummary");
 
