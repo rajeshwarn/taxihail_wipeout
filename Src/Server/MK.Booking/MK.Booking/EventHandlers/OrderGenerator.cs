@@ -28,7 +28,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
         IEventHandler<ManualRideLinqTripInfoUpdated>,
-        IEventHandler<AutoTipUpdated>
+        IEventHandler<AutoTipUpdated>,
+        IEventHandler<OriginalEtaLogged>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -672,6 +673,24 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 orderPairing.AutoTipPercentage = @event.AutoTipPercentage;
                 context.Save(orderPairing);
+            }
+        }
+
+        public void Handle(OriginalEtaLogged @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (orderStatus == null)
+                {
+                    return;
+                }
+
+                if (!orderStatus.OriginalEta.HasValue)
+                {
+                    orderStatus.OriginalEta = @event.OriginalEta;
+                    context.Save(orderStatus);
+                }
             }
         }
 

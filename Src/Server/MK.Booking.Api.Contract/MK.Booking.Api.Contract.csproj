@@ -84,6 +84,7 @@
     <Compile Include="Requests\EtaForPickupRequest.cs" />
     <Compile Include="Requests\InitiateCallToDriverRequest.cs" />
     <Compile Include="Requests\GetAddressesFromPostcalCodeRequest.cs" />
+    <Compile Include="Requests\LogOriginalEtaRequest.cs" />
     <Compile Include="Requests\MarketVehicleTypesRequest.cs" />
     <Compile Include="Requests\ExecuteWebPaymentAndProceedWithOrder.cs" />
     <Compile Include="Requests\FindMarketRequest.cs" />

@@ -49,6 +49,7 @@ namespace apcurium.MK.Common.Entity
         public bool IsManualRideLinq { get; set; }
 
         public string RideLinqPairingCode { get; set; }
+        public long? OriginalEta { get; set; }
         
         public override string ToString()
         {
