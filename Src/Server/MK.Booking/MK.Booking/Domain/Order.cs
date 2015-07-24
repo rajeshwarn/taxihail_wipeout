@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderManuallyPairedForRideLinq>(NoAction);
             Handles<OrderUnpairedFromManualRideLinq>(NoAction);
             Handles<ManualRideLinqTripInfoUpdated>(NoAction);
+            Handles<OrderNotificationDetailUpdated>(NoAction);
         }
 
 
@@ -316,6 +317,17 @@ namespace apcurium.MK.Booking.Domain
             {
                 IsSuccessful = isSuccessful,
                 Message = message
+            });
+        }
+
+        public void UpdateOrderNotificationDetail(UpdateOrderNotificationDetail orderNotificationDetail)
+        {
+            Update(new OrderNotificationDetailUpdated()
+            {
+                OrderId = orderNotificationDetail.OrderId,
+                IsTaxiNearbyNotificationSent = orderNotificationDetail.IsTaxiNearbyNotificationSent,
+                IsUnpairingReminderNotificationSent = orderNotificationDetail.IsUnpairingReminderNotificationSent,
+                InfoAboutPaymentWasSentToDriver = orderNotificationDetail.InfoAboutPaymentWasSentToDriver
             });
         }
 

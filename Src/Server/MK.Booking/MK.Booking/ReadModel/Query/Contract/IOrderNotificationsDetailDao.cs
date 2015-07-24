@@ -10,7 +10,5 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
     public interface IOrderNotificationsDetailDao
     {
         OrderNotificationDetail FindByOrderId(Guid orderId);
-
-        void SaveOrderNotificationDetail(OrderNotificationDetail orderNotificationDetail);
     }
 }

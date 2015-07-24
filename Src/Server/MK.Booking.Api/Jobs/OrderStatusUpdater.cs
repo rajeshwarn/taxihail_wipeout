@@ -63,7 +63,6 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderNotificationsDetailDao _orderNotificationsDetailDao;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
@@ -87,7 +86,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             IEventSourcedRepository<Promotion> promoRepository,
             IPaymentService paymentService,
             ICreditCardDao creditCardDao,
-            IIBSServiceProvider ibsServiceProvider,
             IOrderNotificationsDetailDao orderNotificationsDetailDao,
             ILogger logger)
         {
@@ -105,7 +103,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             _logger = logger;
             _commandBus = commandBus;
             _paymentDao = paymentDao;
-            _ibsServiceProvider = ibsServiceProvider;
             _orderNotificationsDetailDao = orderNotificationsDetailDao;
             _resources = new Resources.Resources(serverSettings);
         }
@@ -116,7 +113,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail);
 
-            if (orderFromIbs.IsLoaded || orderFromIbs.IsMeterOffNotPaid || orderFromIbs.IsComplete)
+            if (orderFromIbs.IsLoaded)
                 SendChargeTypeMessageToDriver(orderStatusDetail);
 
             if (orderFromIbs.IsWaitingToBeAssigned)
@@ -148,7 +145,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         void SendChargeTypeMessageToDriver(OrderStatusDetail orderStatusDetail)
         {
-            if (!orderStatusDetail.IsPrepaid)
+            if (orderStatusDetail.IsPrepaid)
                 return;
 
             if (orderStatusDetail.UnpairingTimeOut != null)
@@ -157,26 +154,19 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     OrderNotificationDetail orderNotification = _orderNotificationsDetailDao.FindByOrderId(orderStatusDetail.OrderId);
 
-                    if (!orderNotification.InfoAboutPaymentWasSentToDriver)
+                    if (orderNotification == null || (orderNotification != null && !orderNotification.InfoAboutPaymentWasSentToDriver))
                     {
                         OrderDetail orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
 
-                        if (orderDetail.Status != (int)OrderStatus.Canceled && orderDetail.Status != (int)OrderStatus.TimedOut && orderDetail.Status != (int)OrderStatus.Removed)
+                        if (orderDetail.Settings.ChargeTypeId != ChargeTypes.PaymentInCar.Id)
                         {
-                            int ibsAccount = (int)_accountDao.GetIbsAccountId(orderDetail.AccountId, null);
+                            _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
 
-                            if ((int)orderDetail.Settings.ChargeTypeId != (int)ChargeTypes.PaymentInCar.Id)
-                            {
-                                _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
-
-                                _orderNotificationsDetailDao.SaveOrderNotificationDetail(new OrderNotificationDetail()
+                            _commandBus.Send(new UpdateOrderNotificationDetail()
                                 {
-                                    Id = orderNotification.Id,
-                                    IsTaxiNearbyNotificationSent = orderNotification.IsTaxiNearbyNotificationSent,
-                                    IsUnpairingReminderNotificationSent = orderNotification.IsUnpairingReminderNotificationSent,
+                                    OrderId = orderStatusDetail.OrderId,
                                     InfoAboutPaymentWasSentToDriver = true
                                 });
-                            }
                         }
                     }
                 }

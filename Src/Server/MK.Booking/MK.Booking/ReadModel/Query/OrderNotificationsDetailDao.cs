@@ -26,23 +26,5 @@ namespace apcurium.MK.Booking.ReadModel.Query
                     .FirstOrDefault(x => x.Id == orderId);
             }
         }
-
-        public void SaveOrderNotificationDetail(OrderNotificationDetail orderNotificationDetail)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderNotificationDetail.Id);
-
-                if (orderNotifications != null)
-                {
-                    orderNotifications.InfoAboutPaymentWasSentToDriver = orderNotificationDetail.InfoAboutPaymentWasSentToDriver;
-                    orderNotifications.IsTaxiNearbyNotificationSent = orderNotificationDetail.IsTaxiNearbyNotificationSent;
-                    orderNotifications.IsUnpairingReminderNotificationSent = orderNotificationDetail.IsUnpairingReminderNotificationSent;
-                    context.Save(orderNotifications);
-                }
-
-                context.Save(orderNotificationDetail);
-            }
-        }
     }
 }
