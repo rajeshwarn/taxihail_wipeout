@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 				text += " " + CountryCode.CountryCodes[i].CountryName;
 
-				var item = new RadioElementWithId<CountryCode>(CountryCode.CountryCodes[i], text, null, false, 10);
+				var item = new RadioElementWithId<CountryCode>(CountryCode.CountryCodes[i], text, null, false, 15);
 
 				CountryCode countryCode = CountryCode.CountryCodes[i];
 				item.Tapped += () =>
@@ -132,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             RootElement rootElement = new RootElement(Localize.GetValue("DialCodeSelectorTitle"), new RadioGroup(CountryCode.GetCountryCodeIndexByCountryISOCode(SelectedCountryCode.CountryISOCode)));
 			rootElement.Add(section);
 
-			var dialCodeSelectorViewController = new TaxiHailDialogViewController(rootElement, true, false, 20);
+			var dialCodeSelectorViewController = new TaxiHailDialogViewController(rootElement, true, false, 34);
 			navigationController.NavigationBar.Hidden = false;
 			navigationController.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
 			navigationController.PushViewController(dialCodeSelectorViewController, true);

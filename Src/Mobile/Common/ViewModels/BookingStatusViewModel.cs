@@ -98,25 +98,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_refreshPeriod = Settings.OrderStatus.ClientPollingInterval;
 
-            var isRefreshing = false;
-
 			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds (_refreshPeriod))
 				.ObserveOn(SynchronizationContext.Current)
-				.Where(_ => !isRefreshing)
-				.SelectMany(async _ =>
-					{
-						try
-						{
-							isRefreshing = true;
-							await RefreshStatus();
-							return _;
-						}
-						finally
-						{
-							isRefreshing = false;
-						}
-					})
-				.Subscribe()
+				.Subscribe(_ => RefreshStatus())
 				.DisposeWith (Subscriptions);
 		}
 		
@@ -435,7 +419,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		private bool _refreshStatusIsExecuting;
-		private async Task RefreshStatus()
+		private async void RefreshStatus()
         {
             try 
 			{
@@ -549,7 +533,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (isDone) 
                 {
                     this.Services().MessengerHub.Publish(new OrderStatusChanged(this, status.OrderId, OrderStatus.Completed, null));
-					await GoToSummary();
+					GoToSummary();
                 }
 
 				if (_bookingService.IsStatusTimedOut(status.IBSStatusId))
@@ -662,7 +646,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async void UpdateActionsPossibleOnOrder(OrderStatusDetail status)
 		{
-			
 			IsCancelButtonVisible = _bookingService.IsOrderCancellable(status);
 
 		    var arePassengersOnBoard = OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
@@ -683,26 +666,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public async Task GoToSummary()
+		public async void GoToSummary()
 		{
 			Logger.LogMessage ("GoToSummary");
 
-			if (OrderStatusDetail.RideLinqPairingCode.HasValue())
-			{
-				var ridelinqInfo = await _bookingService.GetTripInfoFromEHail(Order.Id);
-
-				var @params = new
-				{
-					orderId = ridelinqInfo.OrderId,
-                    orderManualRideLinqDetail = ridelinqInfo.ToJson()
-				};
-
-                ShowViewModelAndRemoveFromHistory<ManualRideLinqSummaryViewModel>(@params);
-			}
-			else
-			{
-                ShowViewModelAndRemoveFromHistory<RideSummaryViewModel>(new { orderId = Order.Id});
-			}
+            ShowViewModelAndRemoveFromHistory<RideSummaryViewModel>(new { orderId = Order.Id});
 		}
 
         public async void GoToBookingScreen()

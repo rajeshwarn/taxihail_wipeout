@@ -71,8 +71,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task<OrderManualRideLinqDetail> GetTripInfoFromManualRideLinq(Guid orderId);
 
-		Task<RideLinqInfoResponse> GetTripInfoFromEHail(Guid orderId);
-
 	    Task<bool> InitiateCallToDriver(Guid orderId);
 	}
 }
