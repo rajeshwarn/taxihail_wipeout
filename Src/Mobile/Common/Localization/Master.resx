@@ -1870,7 +1870,7 @@
     <value>Unable to load the available promotions. Please try again later.</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
-    <value>In A Taxi</value>
+    <value>In a Taxi</value>
   </data>
   <data name="HomeView_BookTaxi" xml:space="preserve">
     <value>Need a Taxi</value>
