@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 return context.Set<OrderNotificationDetail>()
-                    .FirstOrDefault(x => x.Id == orderId);
+                    .SingleOrDefault(x => x.Id == orderId);
             }
         }
     }
