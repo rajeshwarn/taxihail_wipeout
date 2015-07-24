@@ -100,8 +100,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds (_refreshPeriod))
 				.ObserveOn(SynchronizationContext.Current)
-				.SelectMany(RefreshStatus)
-				.Subscribe()
+				.Subscribe(_ => RefreshStatus())
 				.DisposeWith (Subscriptions);
 		}
 		

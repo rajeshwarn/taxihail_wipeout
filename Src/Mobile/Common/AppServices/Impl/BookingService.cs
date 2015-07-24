@@ -372,5 +372,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             throw new Exception(response.Message);
         }
+
+        public Task<bool> InitiateCallToDriver(Guid orderId)
+        {
+            try
+            {
+                return Mvx.Resolve<OrderServiceClient>().InitiateCallToDriver(orderId);
+            }
+            catch (Exception)
+            {
+                return Task.FromResult(false);
+            }
+        }
     }
 }
