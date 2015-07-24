@@ -889,9 +889,6 @@
     <AndroidResource Include="Resources\Layout\View_ManualPairingForRideLinq.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_ManualRideLinqSummary.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_ManualRideLinqStatus.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
