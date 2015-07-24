@@ -310,38 +310,47 @@ namespace MK.DeploymentService
 
             Log("Done Deploying Server");
 
-            if (appPool.State == ObjectState.Stopped)
+            StartAppPools(appPoolName);
+        }
+
+        private static void StartAppPools(string poolname)
+        {
+            Console.WriteLine("Start App Pool...");
+            var iisManager = new ServerManager();
+            var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == poolname);
+
+            if (appPool != null
+                && appPool.State == ObjectState.Stopped)
             {
                 appPool.Start();
+                Console.WriteLine("App Pool started.");
             }
 
-            if (string.IsNullOrEmpty(Settings.Default.SecondWebServerName))
+            if (!string.IsNullOrWhiteSpace(Settings.Default.SecondWebServerName))
             {
-                return;
-            }
-
-            Log("Connecting to Second WebServer.");
-            try
-            {
-                using (var remoteServerManager = ServerManager.OpenRemote(Settings.Default.SecondWebServerName))
+                try
                 {
-                    var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == appPoolName);
+                    Console.WriteLine("Start Secondary App Pool ...");
+                    using (var remoteServerManager = ServerManager.OpenRemote(Settings.Default.SecondWebServerName))
+                    {
+                        var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == poolname);
 
-                    if (remoteAppPool != null && remoteAppPool.State == ObjectState.Stopped)
-                    {
-                        remoteAppPool.Stop();
-                        Console.WriteLine("Remote App Pool stopped.");
-                    }
-                    else if (remoteAppPool == null)
-                    {
-                        Console.WriteLine("No AppPool named {0} found at {1}", Settings.Default.SecondWebServerName, appPoolName);
+                        if (remoteAppPool != null && remoteAppPool.State == ObjectState.Stopped)
+                        {
+                            remoteAppPool.Start();
+                            Console.WriteLine("Remote App Pool started.");
+                        }
+                        else if (remoteAppPool == null)
+                        {
+                            Console.WriteLine("No AppPool named {0} found at {1}", Settings.Default.SecondWebServerName, poolname);
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Failed to connect to remote server {0}", Settings.Default.SecondWebServerName);
-                Console.WriteLine(ex.Message);
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Failed to connect to remote server {0}", Settings.Default.SecondWebServerName);
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
 
