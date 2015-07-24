@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void OnActivated(UIApplication application)
         {
 			#if DEBUG
-			Xamarin.Calabash.Start();
+			//Xamarin.Calabash.Start();
 			#endif
 
 			UIApplication.CheckForIllegalCrossThreadCalls=true;
