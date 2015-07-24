@@ -175,9 +175,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="GoogleAnalytics.iOS">
-      <HintPath>..\Components\googleanalytics-3.0.10.2\lib\ios-unified\GoogleAnalytics.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\ios-unified\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -909,10 +906,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <XamarinComponentReference Include="googleanalytics">
-      <Version>3.0.10.2</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>
       <Visible>False</Visible>
