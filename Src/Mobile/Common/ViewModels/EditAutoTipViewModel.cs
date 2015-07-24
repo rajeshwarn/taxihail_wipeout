@@ -23,34 +23,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _bookingService = bookingService;
         }
 
-//		public async void Init(int tip = -1)
-//		{
-//			if (_paymentPreferences == null)
-//			{
-//				_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
-//				await _paymentPreferences.Start();
-//			}
-//			PaymentPreferences = _paymentPreferences;
-//			if (tip != -1)
-//			{
-//				PaymentPreferences.Tip = tip;
-//			}
-//		}
+		public async void Init(int tip = -1)
+		{
+			if (_paymentPreferences == null)
+			{
+				_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
+				await _paymentPreferences.Start();
+			}
+			if (tip != -1)
+			{
+				_paymentPreferences.Tip = tip;
+			}
+			PaymentPreferences = _paymentPreferences;
+		}
 
 		private PaymentDetailsViewModel _paymentPreferences;
-//		public PaymentDetailsViewModel PaymentPreferences { get; private set;}
-
-		public PaymentDetailsViewModel PaymentPreferences
+		public PaymentDetailsViewModel PaymentPreferences 
 		{ 
-			get
-			{
-				if (_paymentPreferences == null)
-				{
-					_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
-					_paymentPreferences.Start();
-				}
-				return  _paymentPreferences;
-			}
+			get{ return _paymentPreferences;} 
+			private set { _paymentPreferences = value; RaisePropertyChanged(); }
 		}
 
         public ICommand SaveAutoTipChangeCommand
