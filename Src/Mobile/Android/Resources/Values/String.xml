@@ -28,7 +28,7 @@
   <string name="DestinationNotSpecifiedText">Destination not specified</string>
   <string name="PickupMapTitle">Pickup location</string>
   <string name="DialCodeSelectorTitle">Dial Code</string>
-  <string name="HomeView_ManualPairing">In A Taxi</string>
+  <string name="HomeView_ManualPairing">In a Taxi</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
   <string name="DateTimePickerPickTitle">Pickup date and time</string>

@@ -540,7 +540,7 @@
   <string name="View_RefineAddress">Informations concernant le départ</string>
   <string name="DeleteBookItButtonImageNamePressed">Assets/Button/btnBookIt-Pressed_en.png</string>
   <string name="RefineAddressTitle">Affiner l\'adresse</string>
-  <string name="TipPercent_Error">Le Tip ne peut être supérieur à 100%</string>
+  <string name="TipPercent_Error">Le pourboire ne peut être supérieur à 100%</string>
   <string name="PaymentViewTotalText">Total</string>
   <string name="ManualRideLinqSummary_Done">Ok</string>
   <string name="PaymentDetails.TipAmountLabel">Montant du pourboire</string>

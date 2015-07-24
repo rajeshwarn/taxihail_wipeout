@@ -79,8 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		int? _tip;
-
+		private int? _tip;
 		private int GetTip()
 		{
 			var tip = _accountService.CurrentAccount.DefaultTipPercent ?? Settings.DefaultTipPercentage;

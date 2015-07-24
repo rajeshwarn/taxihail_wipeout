@@ -13,6 +13,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IPaymentService _paymentService;
         private readonly IBookingService _bookingService;
+		private const int TipMaxPercent = 100;
 
         public EditAutoTipViewModel(IOrderWorkflowService orderWorkflowService,
             IPaymentService paymentService,
@@ -30,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
 				await _paymentPreferences.Start();
 			}
-			if (tip != -1)
+			if (tip > -1)
 			{
 				_paymentPreferences.Tip = tip;
 			}
@@ -41,7 +42,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public PaymentDetailsViewModel PaymentPreferences 
 		{ 
 			get{ return _paymentPreferences;} 
-			private set { _paymentPreferences = value; RaisePropertyChanged(); }
+			private set 
+			{ 
+				_paymentPreferences = value; 
+				RaisePropertyChanged(); 
+			}
 		}
 
         public ICommand SaveAutoTipChangeCommand
@@ -52,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     using (this.Services().Message.ShowProgress())
                     {
-						if(PaymentPreferences.Tip > 100)
+							if(PaymentPreferences.Tip > TipMaxPercent)
 						{
 							await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
 						}

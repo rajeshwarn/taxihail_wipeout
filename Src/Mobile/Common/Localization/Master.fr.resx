@@ -2037,6 +2037,6 @@
     <value>Le taxi le plus proche est {0} et à moins d'une minute de votre position</value>
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
-    <value>Le Tip ne peut être supérieur à 100%</value>
+    <value>Le pourboire ne peut être supérieur à 100%</value>
   </data>
 </root>
