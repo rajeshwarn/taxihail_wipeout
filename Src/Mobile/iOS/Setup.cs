@@ -157,17 +157,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
             var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
 
-            Xamarin.Insights.Initialize(settings.Insights.APIKey);
-            Xamarin.Insights.DisableCollection = false;
-            Xamarin.Insights.DisableDataTransmission = false;
-            Xamarin.Insights.DisableExceptionCatching = false;
+            //Xamarin.Insights.Initialize(settings.Insights.APIKey);
+            //Xamarin.Insights.DisableCollection = false;
+            //Xamarin.Insights.DisableDataTransmission = false;
+            //Xamarin.Insights.DisableExceptionCatching = false;
 
             // identify with an unknown user in case an exception occurs before the user can log in
-            Xamarin.Insights.Identify(settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
-                {
-                    { "ApplicationVersion", packageInfo.Version },
-                    { "Company", settings.TaxiHail.ApplicationName },
-                });
+            //Xamarin.Insights.Identify(settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
+                //{
+                  //  { "ApplicationVersion", packageInfo.Version },
+                    //{ "Company", settings.TaxiHail.ApplicationName },
+                //});
             #endif
         }
 	}

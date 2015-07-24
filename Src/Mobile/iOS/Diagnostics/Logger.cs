@@ -116,8 +116,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
                 { "Company", GetCompanyName() },
             };
 
-            Xamarin.Insights.Identify(email, identification);
-            Xamarin.Insights.Report(ex);
+           // Xamarin.Insights.Identify(email, identification);
+            
             #endif
         }
 
