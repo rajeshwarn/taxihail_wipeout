@@ -444,9 +444,11 @@ namespace DatabaseInitializer
                 Console.WriteLine("Restoring mirroring backup...");
                 creatorDb.RestoreDatabase(param.MirrorMasterConnectionString, backupFolder, param.CompanyName);
 
-                Console.WriteLine("Setting up mirroring...");
+                Console.WriteLine("Set Mirroring Partner...");
                 creatorDb.SetMirroringPartner(param.MirrorMasterConnectionString, param.CompanyName, param.MirroringMirrorPartner);
+                Console.WriteLine("Complete Mirroring...");
                 creatorDb.CompleteMirroring(param.MasterConnectionString, param.CompanyName, param.MirroringPrincipalPartner, param.MirroringWitness);
+                Console.WriteLine("Mirroring Completed.");
             }
         }
 
