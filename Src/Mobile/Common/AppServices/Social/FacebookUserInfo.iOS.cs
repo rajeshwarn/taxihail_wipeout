@@ -1,19 +1,12 @@
-using MonoTouch.FacebookConnect;
 using Foundation;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Social
 {
 	public partial class FacebookUserInfo
     {
-		public static FacebookUserInfo CreateFrom(FBGraphObject data)
+		public static FacebookUserInfo CreateFrom(object data)
 		{
-			return new FacebookUserInfo
-			{
-				Id = (NSString)data["id"],
-				Email = (NSString)data["email"],
-				Firstname = (NSString)data["first_name"],
-				Lastname = (NSString)data["last_name"],
-			};
+			return null;
 		}
     }
 }
