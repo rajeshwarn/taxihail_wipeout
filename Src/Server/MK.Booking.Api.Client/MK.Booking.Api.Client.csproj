@@ -109,7 +109,6 @@
     <Compile Include="TaxiHail\IbsFareServiceClient.cs" />
     <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationAdministrationServiceClient.cs" />
-    <Compile Include="TaxiHail\RideLinqInfoServiceClient.cs" />
     <Compile Include="TaxiHail\RoamingValidationServiceClient.cs" />
     <Compile Include="TaxiHail\RulesServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
