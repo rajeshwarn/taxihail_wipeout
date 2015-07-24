@@ -172,7 +172,7 @@
 "View_PayPal"="PayPal";
 "InvalidBookinInfoTitle"="Invalid booking info";
 "AppNeedUpdateTitle"="Update available";
-"StatusEta"="and is {0} and {1} {2} away";
+"StatusEta"="and is {1} {2} away";
 "LocationHistoryTitle"="Locations history";
 "CreditCardExpiredUpdateNow"="Update now";
 "PanelMenuViewAboutUsText"="About Us";
@@ -373,7 +373,7 @@
 "DriverInfoMake"="Make:";
 "BookATaxi_Message"="When would you like to book?";
 "PanelMenuViewPromotionsText"="Promotions";
-"Eta"="The nearest taxi is {0} and {1} {2} away";
+"Eta"="Nearest taxi is {1} {2} away";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirm Payment Information";
 "CreateAccountInvalidDataTitle"="Invalid account info";
 "ChargeTypeLabel"="Charge type";
@@ -591,7 +591,7 @@
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "View_BookRating"="Rate Your Trip";
 "DateTimePickerPickTime"="Select your pickup time:";
-"EtaLessThenAMinute"="The nearest taxi is {0} and less then a minute away";
+"EtaLessThenAMinute"="Nearest taxi is less then a minute away";
 "CreateAccountErrorMessage"="The account cannot be created.";
 "View_RideSettings"="Profile";
 "StatusActionButton"="Call / Book / Cancel";

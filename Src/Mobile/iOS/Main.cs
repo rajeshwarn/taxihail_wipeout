@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Touch.Platform;
 using Cirrious.MvvmCross.ViewModels;
-using MonoTouch.FacebookConnect;
 using Foundation;
 using ObjCRuntime;
 using UIKit;
@@ -143,10 +142,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			Console.WriteLine(url.ToString());
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.TaxiHail.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
-			{
-				return FBAppCall.HandleOpenURL(url, sourceApplication);
-			}
+//            if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.TaxiHail.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
+//			{
+//				return FBAppCall.HandleOpenURL(url, sourceApplication);
+//			}
 
 			return false;
         }
