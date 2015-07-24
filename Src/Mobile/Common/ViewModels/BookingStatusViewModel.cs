@@ -154,7 +154,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 // entered because we need to tell the user why it's not there
 				return Settings.ShowCallDriver 
 					&& IsDriverInfoAvailable 
-					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); 
+					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue ()
+					&& (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+						|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived); 
 			}
         }
 

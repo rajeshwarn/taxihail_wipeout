@@ -970,7 +970,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number.
+        ///   Looks up a localized string similar to Vehicle #.
         /// </summary>
         public static string Email_Body_VehicleNumber {
             get {

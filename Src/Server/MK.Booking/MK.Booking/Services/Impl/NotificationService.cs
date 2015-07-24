@@ -504,7 +504,10 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             var hasPaymentInfo = paymentInfo != null;
+
             var hasDriverInfo = driverInfos != null && (driverInfos.FullName.HasValue() || driverInfos.VehicleMake != null || driverInfos.VehicleModel != null);
+
+            var showMinimalDriverInfo = !hasDriverInfo && cmtRideLinqFields != null;
             var showTripSection = hasDriverInfo || cmtRideLinqFields != null;
             var paymentAmount = string.Empty;
             var paymentMethod = string.Empty;
@@ -585,6 +588,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
                 ShowTripSection = showTripSection,
+                ShowMinimalDriverInfo = showMinimalDriverInfo,
                 HasDriverInfo = hasDriverInfo,
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
                 VehicleNumber = vehicleNumber,
@@ -592,7 +596,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 VehicleMake = hasDriverInfo ? driverInfos.VehicleMake : string.Empty,
                 VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
                 DriverInfos = driverInfos,
-                DriverId = hasDriverInfo ? driverInfos.DriverId : "",
+                DriverId = hasDriverInfo || cmtRideLinqFields != null ? driverInfos.DriverId : string.Empty,
                 PickupDate = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
                     ? cmtRideLinqFields.PickUpDateTime.Value.ToString("D", dateFormat)
                     : pickupDate.ToString("D", dateFormat),
@@ -606,7 +610,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 Fare = _resources.FormatPrice(fare),
                 Toll = _resources.FormatPrice(toll),        
                 Surcharge = _resources.FormatPrice(surcharge),
-                BookingFees = _resources.FormatPrice(bookingFees),
+                BookingFees = _resources.FormatPrice(bookingFees), 
                 Extra = _resources.FormatPrice(extra),
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalAmount),
@@ -650,7 +654,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowImprovementSurcharge = isCmtRideLinqReceipt,
                 ShowToll = Math.Abs(toll) >= 0.01 || isCmtRideLinqReceipt,
                 ShowSurcharge = Math.Abs(surcharge) >= 0.01 || isCmtRideLinqReceipt,
-                ShowBookingFees = Math.Abs(bookingFees) >= 0.01 || isCmtRideLinqReceipt,
+                ShowBookingFees = Math.Abs(bookingFees) >= 0.01,
                 ShowExtra = Math.Abs(extra) >= 0.01 || isCmtRideLinqReceipt,
                 ShowRateClassStart = rateClassStart.HasValue || isCmtRideLinqReceipt,
                 ShowRateClassEnd = rateClassEnd.HasValue,
