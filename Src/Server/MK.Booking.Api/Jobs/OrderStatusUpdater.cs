@@ -117,7 +117,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail);
 
             if (orderFromIbs.IsLoaded || orderFromIbs.IsMeterOffNotPaid || orderFromIbs.IsComplete)
-                SendChargeTypeToIBS(orderStatusDetail);
+                SendChargeTypeMessageToDriver(orderStatusDetail);
 
             if (orderFromIbs.IsWaitingToBeAssigned)
             {
@@ -146,36 +146,36 @@ namespace apcurium.MK.Booking.Api.Jobs
             });
         }
 
-        void SendChargeTypeToIBS(OrderStatusDetail orderStatusDetail)
+        void SendChargeTypeMessageToDriver(OrderStatusDetail orderStatusDetail)
         {
+            if (!orderStatusDetail.IsPrepaid)
+                return;
+
             if (orderStatusDetail.UnpairingTimeOut != null)
             {
                 if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(timeBetweenPaymentChangeAndSaveInDB))
                 {
-                    if (!orderStatusDetail.IsPrepaid)
+                    OrderNotificationDetail orderNotification = _orderNotificationsDetailDao.FindByOrderId(orderStatusDetail.OrderId);
+
+                    if (!orderNotification.InfoAboutPaymentWasSentToDriver)
                     {
-                        OrderNotificationDetail orderNotification = _orderNotificationsDetailDao.FindByOrderId(orderStatusDetail.OrderId);
+                        OrderDetail orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
 
-                        if (!orderNotification.InfoAboutPaymentWasSentToDriver)
+                        if (orderDetail.Status != (int)OrderStatus.Canceled && orderDetail.Status != (int)OrderStatus.TimedOut && orderDetail.Status != (int)OrderStatus.Removed)
                         {
-                            OrderDetail orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
+                            int ibsAccount = (int)_accountDao.GetIbsAccountId(orderDetail.AccountId, null);
 
-                            if (orderDetail.Status != (int)OrderStatus.Canceled && orderDetail.Status != (int)OrderStatus.TimedOut && orderDetail.Status != (int)OrderStatus.Removed)
+                            if ((int)orderDetail.Settings.ChargeTypeId != (int)ChargeTypes.PaymentInCar.Id)
                             {
-                                int ibsAccount = (int)_accountDao.GetIbsAccountId(orderDetail.AccountId, null);
+                                _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
 
-                                if ((int)orderDetail.Settings.ChargeTypeId != (int)ChargeTypes.PaymentInCar.Id)
+                                _orderNotificationsDetailDao.SaveOrderNotificationDetail(new OrderNotificationDetail()
                                 {
-                                    _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
-
-                                    _orderNotificationsDetailDao.SaveOrderNotificationDetail(new OrderNotificationDetail()
-                                    {
-                                        Id = orderNotification.Id,
-                                        IsTaxiNearbyNotificationSent = orderNotification.IsTaxiNearbyNotificationSent,
-                                        IsUnpairingReminderNotificationSent = orderNotification.IsUnpairingReminderNotificationSent,
-                                        InfoAboutPaymentWasSentToDriver = true
-                                    });
-                                }
+                                    Id = orderNotification.Id,
+                                    IsTaxiNearbyNotificationSent = orderNotification.IsTaxiNearbyNotificationSent,
+                                    IsUnpairingReminderNotificationSent = orderNotification.IsUnpairingReminderNotificationSent,
+                                    InfoAboutPaymentWasSentToDriver = true
+                                });
                             }
                         }
                     }
