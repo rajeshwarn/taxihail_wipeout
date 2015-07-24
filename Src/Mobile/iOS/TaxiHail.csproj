@@ -190,9 +190,6 @@
     <Reference Include="ServiceStack.Text.MonoTouch">
       <HintPath>..\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
     </Reference>
-    <Reference Include="GoogleConversionTracking">
-      <HintPath>..\Libraries\Monotouch\GoogleConversionTracking.dll</HintPath>
-    </Reference>
     <Reference Include="PaypalSdkTouch.Unified">
       <HintPath>..\Libraries\Monotouch\PaypalSdkTouch.Unified.dll</HintPath>
     </Reference>

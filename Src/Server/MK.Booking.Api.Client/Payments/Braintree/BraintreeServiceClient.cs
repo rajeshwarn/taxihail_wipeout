@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Resources;
-using BraintreeEncryption.Library;
+//using BraintreeEncryption.Library;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 {
@@ -26,18 +26,19 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
         {
             try
             {
-                var braintree = new BraintreeEncrypter(ClientKey);
-                var encryptedNumber = braintree.Encrypt(creditCardNumber);
-                var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
-                var encryptedCvv = braintree.Encrypt(cvv);
-
-                var result = await Client.PostAsync(new TokenizeCreditCardBraintreeRequest
-                {
-                    EncryptedCreditCardNumber = encryptedNumber,
-                    EncryptedExpirationDate = encryptedExpirationDate,
-                    EncryptedCvv = encryptedCvv,
-                });
-                return result;
+//                var braintree = new BraintreeEncrypter(ClientKey);
+//                var encryptedNumber = braintree.Encrypt(creditCardNumber);
+//                var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
+//                var encryptedCvv = braintree.Encrypt(cvv);
+//
+//                var result = await Client.PostAsync(new TokenizeCreditCardBraintreeRequest
+//                {
+//                    EncryptedCreditCardNumber = encryptedNumber,
+//                    EncryptedExpirationDate = encryptedExpirationDate,
+//                    EncryptedCvv = encryptedCvv,
+//                });
+//                return result;
+                return null;
             }
             catch (Exception e)
             {
