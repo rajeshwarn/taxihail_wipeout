@@ -8,7 +8,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class EditAutoTipViewModel : PageViewModel
+	public class EditAutoTipViewModel : PageViewModel, ISubViewModel<int>
     {
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IPaymentService _paymentService;
@@ -23,19 +23,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _bookingService = bookingService;
         }
 
-        private PaymentDetailsViewModel _paymentPreferences;
-        public PaymentDetailsViewModel PaymentPreferences
-        {
-            get
-            {
-                if (_paymentPreferences == null)
-                {
-                    _paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
-                    _paymentPreferences.Start();
-                }
-                return _paymentPreferences;
-            }
-        }
+//		public async void Init(int tip = -1)
+//		{
+//			if (_paymentPreferences == null)
+//			{
+//				_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
+//				await _paymentPreferences.Start();
+//			}
+//			PaymentPreferences = _paymentPreferences;
+//			if (tip != -1)
+//			{
+//				PaymentPreferences.Tip = tip;
+//			}
+//		}
+
+		private PaymentDetailsViewModel _paymentPreferences;
+//		public PaymentDetailsViewModel PaymentPreferences { get; private set;}
+
+		public PaymentDetailsViewModel PaymentPreferences
+		{ 
+			get
+			{
+				if (_paymentPreferences == null)
+				{
+					_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
+					_paymentPreferences.Start();
+				}
+				return  _paymentPreferences;
+			}
+		}
 
         public ICommand SaveAutoTipChangeCommand
         {
@@ -45,31 +61,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     using (this.Services().Message.ShowProgress())
                     {
-                        var activeOrder = await _orderWorkflowService.GetLastActiveOrder();
-                        if (activeOrder != null)
-                        {
-                            bool autoTipUpdated;
+						if(PaymentPreferences.Tip > 100)
+						{
+							await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
+						}
+						else
+						{
+	                        var activeOrder = await _orderWorkflowService.GetLastActiveOrder();
+	                        if (activeOrder != null)
+	                        {
+	                            bool autoTipUpdated;
+								
+								if (activeOrder.Item1.IsManualRideLinq)
+								{
+									// Manual ride linq rides
+									autoTipUpdated = await _bookingService.UpdateAutoTipForManualRideLinq(activeOrder.Item1.Id, PaymentPreferences.Tip);
+									if(autoTipUpdated)
+									{
+										this.ReturnResult(PaymentPreferences.Tip);
+									}
+								}	
+								else
+								{
+									// Normal rides
+									autoTipUpdated = await _paymentService.UpdateAutoTip(activeOrder.Item1.Id, PaymentPreferences.Tip);
+								}
 
-                            if (activeOrder.Item1.IsManualRideLinq)
-                            {
-                                // Manual ride linq rides
-                                autoTipUpdated = await _bookingService.UpdateAutoTipForManualRideLinq(activeOrder.Item1.Id, PaymentPreferences.Tip);
-                            }
-                            else
-                            {
-                                // Normal rides
-                                autoTipUpdated = await _paymentService.UpdateAutoTip(activeOrder.Item1.Id, PaymentPreferences.Tip);
-                            }
-
-                            if (autoTipUpdated)
-                            {
-                                Close(this);
-                            }
-                            else
-                            {
-                                this.Services().Message.ShowMessage(this.Services().Localize["Error_EditAutoTipTitle"], this.Services().Localize["Error_EditAutoTipMessage"]);
-                            }
-                        }
+								if (autoTipUpdated)
+								{
+									Close(this);
+								}
+								else
+								{
+									this.Services().Message.ShowMessage(this.Services().Localize["Error_EditAutoTipTitle"], this.Services().Localize["Error_EditAutoTipMessage"]);
+								}
+	                        }
+						}
                     }
                 });
             }

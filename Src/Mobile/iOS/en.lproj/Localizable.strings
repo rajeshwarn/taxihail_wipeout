@@ -548,6 +548,7 @@
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "Overdue_Failed_Message"="Your transaction was denied, please try again later or replace your credit card with a new one.";
 "RefineAddressTitle"="Refine an address";
+"TipPercent_Error"="Tip cannot be over 100%";
 "Tuto08Bottom"="We hope you find this application both convenient and intuitive.";
 "ManualRideLinqSummary_Done"="Done";
 "PaymentDetails.TipAmountLabel"="Tip Amount";

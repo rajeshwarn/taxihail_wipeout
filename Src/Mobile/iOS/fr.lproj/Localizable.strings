@@ -538,6 +538,7 @@
 "View_RefineAddress"="Informations concernant le départ";
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "RefineAddressTitle"="Affiner l'adresse";
+"TipPercent_Error"="Le Tip ne peut être supérieur à 100%";
 "PaymentViewTotalText"="Total";
 "ManualRideLinqSummary_Done"="Ok";
 "PaymentDetails.TipAmountLabel"="Montant du pourboire";

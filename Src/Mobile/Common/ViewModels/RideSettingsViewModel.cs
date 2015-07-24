@@ -437,6 +437,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyAccount"]);
                 return false;
             }
+			if (PaymentPreferences.Tip <= 100)
+			{
+				await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
+				return false;
+			}
 
             if (Settings.IsPayBackRegistrationFieldRequired == true && !PayBack.HasValue())
             {

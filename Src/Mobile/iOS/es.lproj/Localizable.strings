@@ -534,6 +534,7 @@
 "View_RefineAddress"="Detalles del servicio";
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "RefineAddressTitle"="Refinar dirección";
+"TipPercent_Error"="Tip cannot be over 100%";
 "PaymentViewTotalText"="Total";
 "PaymentDetails.TipAmountLabel"="Propina";
 "LoadingMessage"="Cargando....";

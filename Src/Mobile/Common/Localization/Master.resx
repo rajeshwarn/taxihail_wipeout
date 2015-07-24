@@ -2046,4 +2046,7 @@
   <data name="EtaLessThenAMinute" xml:space="preserve">
     <value>The nearest taxi is {0} and less then a minute away</value>
   </data>
+  <data name="TipPercent_Error" xml:space="preserve">
+    <value>Tip cannot be over 100%</value>
+  </data>
 </root>
