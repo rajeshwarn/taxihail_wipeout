@@ -234,6 +234,7 @@
     <Compile Include="ReadModel\Query\Contract\ICompanyDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IOrderNotificationsDetailDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOverduePaymentDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IReportDao.cs" />
@@ -241,6 +242,7 @@
     <Compile Include="ReadModel\Query\Contract\IVehicleTypeDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\DeviceDao.cs" />
+    <Compile Include="ReadModel\Query\OrderNotificationsDetailDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\OrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\OverduePaymentDao.cs" />

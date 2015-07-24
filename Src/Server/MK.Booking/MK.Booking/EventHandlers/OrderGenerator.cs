@@ -27,7 +27,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderCancelledBecauseOfError>,
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
-        IEventHandler<ManualRideLinqTripInfoUpdated>
+        IEventHandler<ManualRideLinqTripInfoUpdated>,
+        IEventHandler<OrderNotificationDetailUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -632,6 +633,32 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
                 rideLinqDetails.RateChangeTime = @event.RateChangeTime;
                 context.Save(rideLinqDetails);
+            }
+        }
+
+        public void Handle(OrderNotificationDetailUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderNotificationDetail = context.Find<OrderNotificationDetail>(@event.SourceId)
+                    ?? new OrderNotificationDetail { Id = @event.OrderId };
+
+                if (@event.IsTaxiNearbyNotificationSent.HasValue)
+                {
+                    orderNotificationDetail.IsTaxiNearbyNotificationSent = @event.IsTaxiNearbyNotificationSent.Value;
+                }
+
+                if (@event.IsUnpairingReminderNotificationSent.HasValue)
+                {
+                    orderNotificationDetail.IsUnpairingReminderNotificationSent = @event.IsUnpairingReminderNotificationSent.Value;
+                }
+
+                if (@event.InfoAboutPaymentWasSentToDriver.HasValue)
+                {
+                    orderNotificationDetail.InfoAboutPaymentWasSentToDriver = @event.InfoAboutPaymentWasSentToDriver.Value;
+                }
+
+                context.Save(orderNotificationDetail);
             }
         }
 

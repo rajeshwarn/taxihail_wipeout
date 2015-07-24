@@ -62,6 +62,7 @@
     <Compile Include="SaveTemporaryOrderPaymentInfo.cs" />
     <Compile Include="UnapplyPromotion.cs" />
     <Compile Include="UnpairOrderForManualRideLinq.cs" />
+    <Compile Include="UpdateOrderNotificationDetail.cs" />
     <Compile Include="UpdateTripInfoInOrderForManualRideLinq.cs" />
     <Compile Include="UpdateRefundedOrder.cs" />
     <Compile Include="ReactToPaymentFailure.cs" />
