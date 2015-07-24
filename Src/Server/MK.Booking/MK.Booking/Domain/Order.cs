@@ -322,7 +322,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdateOrderNotificationDetail(UpdateOrderNotificationDetail orderNotificationDetail)
         {
-            Update(new OrderNotificationDetailUpdated()
+            Update(new OrderNotificationDetailUpdated
             {
                 OrderId = orderNotificationDetail.OrderId,
                 IsTaxiNearbyNotificationSent = orderNotificationDetail.IsTaxiNearbyNotificationSent,

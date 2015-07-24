@@ -2,10 +2,7 @@
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -22,8 +19,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Set<OrderNotificationDetail>()
-                    .SingleOrDefault(x => x.Id == orderId);
+                return context.Set<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
             }
         }
     }

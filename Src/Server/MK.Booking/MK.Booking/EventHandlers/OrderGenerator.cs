@@ -9,7 +9,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
-using System.Linq;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -641,12 +640,8 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                OrderNotificationDetail orderNotificationDetail = context.Find<OrderNotificationDetail>(@event.SourceId);
-
-                if (orderNotificationDetail == null)
-                {
-                    orderNotificationDetail = new OrderNotificationDetail() { Id = @event.OrderId };
-                }
+                var orderNotificationDetail = context.Find<OrderNotificationDetail>(@event.SourceId)
+                    ?? new OrderNotificationDetail { Id = @event.OrderId };
 
                 if (@event.IsTaxiNearbyNotificationSent.HasValue)
                 {

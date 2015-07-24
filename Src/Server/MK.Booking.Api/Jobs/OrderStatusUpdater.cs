@@ -145,29 +145,29 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         void SendChargeTypeMessageToDriver(OrderStatusDetail orderStatusDetail)
         {
-            if (orderStatusDetail.IsPrepaid)
+            var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
+
+            if (orderStatusDetail.IsPrepaid
+                || orderDetail.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
+            {
                 return;
+            }
 
             if (orderStatusDetail.UnpairingTimeOut != null)
             {
                 if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(timeBetweenPaymentChangeAndSaveInDB))
                 {
-                    OrderNotificationDetail orderNotification = _orderNotificationsDetailDao.FindByOrderId(orderStatusDetail.OrderId);
+                    var orderNotification = _orderNotificationsDetailDao.FindByOrderId(orderStatusDetail.OrderId);
 
-                    if (orderNotification == null || (orderNotification != null && !orderNotification.InfoAboutPaymentWasSentToDriver))
+                    if (orderNotification == null || !orderNotification.InfoAboutPaymentWasSentToDriver)
                     {
-                        OrderDetail orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
+                        _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
 
-                        if (orderDetail.Settings.ChargeTypeId != ChargeTypes.PaymentInCar.Id)
+                        _commandBus.Send(new UpdateOrderNotificationDetail
                         {
-                            _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
-
-                            _commandBus.Send(new UpdateOrderNotificationDetail()
-                                {
-                                    OrderId = orderStatusDetail.OrderId,
-                                    InfoAboutPaymentWasSentToDriver = true
-                                });
-                        }
+                            OrderId = orderStatusDetail.OrderId,
+                            InfoAboutPaymentWasSentToDriver = true
+                        });
                     }
                 }
             }
