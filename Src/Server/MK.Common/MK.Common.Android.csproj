@@ -118,6 +118,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Diagnostic\IErrorHandler.cs" />
+    <Compile Include="Provider\IPOIProvider.cs" />
     <Compile Include="Provider\IPopularAddressProvider.cs" />
     <Compile Include="Provider\ITariffProvider.cs" />
     <Compile Include="Entity\DriverInfos.cs" />

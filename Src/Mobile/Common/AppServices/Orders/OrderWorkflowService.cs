@@ -24,6 +24,7 @@ using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -39,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly IAccountPaymentService _accountPaymentService;
 	    readonly INetworkRoamingService _networkRoamingService;
 		readonly IPaymentService _paymentService;
+        readonly IPOIProvider _poiProvider;
 	    private readonly ILogger _logger;
 
 	    readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
@@ -59,6 +61,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
+        readonly ISubject<string> _objPOIInfoSubject = new BehaviorSubject<string>(string.Empty);
+        readonly ISubject<string> _objPOIReferenceSubject = new BehaviorSubject<string>(string.Empty);
+        readonly ISubject<string> _objPOIRefPickupListSubject = new BehaviorSubject<string>(string.Empty);
+        readonly ISubject<string> _objPOIRefAirlineListSubject = new BehaviorSubject<string>(string.Empty);
 
         private bool _isOrderRebooked;
 
@@ -77,7 +83,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			IAccountPaymentService accountPaymentService,
             INetworkRoamingService networkRoamingService,
 			IPaymentService paymentService,
-            ILogger logger)
+            ILogger logger,
+            IPOIProvider poiProvider)
 		{
 			_cacheService = cacheService;
 			_appSettings = configurationManager;
@@ -98,6 +105,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		    _networkRoamingService = networkRoamingService;
 			_paymentService = paymentService;
 		    _logger = logger;
+            _poiProvider = poiProvider;
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
@@ -410,6 +418,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return null;
 		}
 
+
+        public async Task PIOInfo(string locationType, string placeId)
+        {
+            var pObject = await _poiProvider.GetPOI(locationType, placeId);
+            _objPOIInfoSubject.OnNext(pObject);
+        }
+
+        public async Task PIORefInfo(string reference)
+        {
+            var pObject = await _poiProvider.GetPOIRefInfo(reference);
+            _objPOIReferenceSubject.OnNext(pObject);
+        }
+
+        public async Task POIRefPickupList(string company, string textMatch, int maxRespSize)
+        {
+            var pObject = await _poiProvider.GetPOIRefPickupList(company, textMatch, maxRespSize );
+            _objPOIRefPickupListSubject.OnNext(pObject);
+
+        }
+
+        public async Task POIRefAirLineList(string company, string textMatch, int maxRespSize)
+        {
+            var pObject = await _poiProvider.GetPOIRefAirLineList(company, textMatch, maxRespSize);
+            _objPOIRefAirlineListSubject.OnNext(pObject);
+        }
+
         public Guid? GetLastUnratedRide()
 	    {
             if (_bookingService.HasUnratedLastOrder)
@@ -434,7 +468,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _addressSelectionModeSubject;
 		}
 
-		public async Task<Address> GetCurrentAddress()
+        public IObservable<string> GetAndObservePOIInformation()
+        {
+            return _objPOIInfoSubject;
+        }
+
+        public IObservable<string> GetAndObservePOIReference()
+        {
+            return _objPOIReferenceSubject;
+        }
+
+        public IObservable<string> GetAndObservePOIRefPickupList()
+        {
+            return _objPOIRefPickupListSubject;
+        }
+
+        public IObservable<string> GetAndObservePOIRefAirlineList()
+        {
+            return _objPOIRefAirlineListSubject;
+        }
+
+        public async Task<Address> GetCurrentAddress()
 		{
 			var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
 			if (currentSelectionMode == AddressSelectionMode.PickupSelection)
@@ -632,7 +686,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_orderValidationResultSubject.OnNext(null);
 			_loadingAddressSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
-		}
+            _objPOIInfoSubject.OnNext(string.Empty);
+            _objPOIReferenceSubject.OnNext(string.Empty);
+            _objPOIRefPickupListSubject.OnNext(string.Empty);
+            _objPOIRefAirlineListSubject.OnNext(string.Empty);
+        }
 
 		public void BeginCreateOrder()
 		{

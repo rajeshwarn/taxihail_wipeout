@@ -124,6 +124,7 @@
     <Compile Include="Params.cs" />
     <Compile Include="Diagnostic\IErrorHandler.cs" />
     <Compile Include="Entity\Address.cs" />
+    <Compile Include="Provider\IPOIProvider.cs" />
     <Compile Include="Provider\IPopularAddressProvider.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />

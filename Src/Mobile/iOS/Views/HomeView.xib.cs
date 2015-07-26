@@ -113,6 +113,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.OrderEdit);
 
+			set.Bind (orderAirport)
+				.For (v => v.DataContext)
+				.To (vm => vm.OrderAirport);
+
             set.Bind(bottomBar)
                 .For(v => v.DataContext)
                 .To(vm => vm.BottomBar);
@@ -147,6 +151,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 				CloseBookATaxiDialog();
 
+				_datePicker.ViewState = hint.State;
+				_datePicker.Show ();
+			} else if (hint.State == HomeViewModelState.AirportPickDate) {
+				_datePicker.ViewState = hint.State;
+
 				_datePicker.Show();
 			}
 			else if (hint.State == HomeViewModelState.Review)
@@ -167,6 +176,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						constraintOrderReviewBottomSpace.Constant = -65;
 						constraintOrderOptionsTopSpace.Constant = 22;
 						constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;       
+						constraintOrderAirportTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width; 
 
 						_datePicker.Hide();
                         
@@ -198,6 +208,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
 						constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f;
 						constraintOrderEditTrailingSpace.Constant = 8;
+						constraintOrderAirportTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
 						homeView.LayoutIfNeeded();
 						ctrlOrderReview.SetNeedsDisplay();
 						ctrlOrderOptions.SetNeedsDisplay();
@@ -222,12 +233,53 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
 						constraintOrderOptionsTopSpace.Constant = 22;
 						constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+						constraintOrderAirportTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
 						homeView.LayoutIfNeeded();
 						_datePicker.Hide();  
 					}, () =>
 					{
 						RedrawSubViews();
 					});
+			} else if (hint.State == HomeViewModelState.AirportDetails) {
+				// Order Options: Hidden
+				// Order Review: Hidden
+				// Order Edit: Hidden
+				// Date Picker: Hidden
+				// Order Airport: Visable
+				CloseBookATaxiDialog ();
+
+//				UIView.Animate (
+//					0.6f, 
+//					() => {
+//						orderEdit.SetNeedsDisplay ();
+//						ctrlOrderBookingOptions.SetNeedsDisplay ();
+//						constraintOrderReviewTopSpace.Constant = 10;
+//						constraintOrderReviewBottomSpace.Constant = -65;
+//						constraintOrderOptionsTopSpace.Constant = 22;
+//						constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;       
+//						constraintOrderAirportTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width; 
+//						_datePicker.Hide ();
+//
+//						homeView.LayoutIfNeeded ();
+//					},
+//					RedrawSubViews);
+
+				UIView.Animate (
+					0.6f, 
+					() => {
+						ctrlAddressPicker.Close ();
+						constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+						constraintOrderReviewBottomSpace.Constant = -65;
+						constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
+						constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f; 
+						constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+						constraintOrderAirportTrailingSpace.Constant = 8;
+						homeView.LayoutIfNeeded ();  
+						ctrlOrderReview.SetNeedsDisplay ();
+						ctrlOrderOptions.SetNeedsDisplay ();
+						_datePicker.Hide ();
+
+					}, () => orderAirport.SetNeedsDisplay ());
 			}
 			// We consider any other options as one of the search options.
 			else 
@@ -282,6 +334,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             orderEdit.SetNeedsDisplay();
             ctrlOrderOptions.SetNeedsDisplay();
 			ctrlOrderBookingOptions.SetNeedsDisplay();
+			orderAirport.SetNeedsDisplay ();
         }
     }
 }

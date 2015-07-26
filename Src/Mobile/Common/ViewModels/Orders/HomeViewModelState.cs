@@ -34,6 +34,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         /// Book a taxi dialog.
         /// </summary>
         BookATaxi,
+        /// <summary>
+        /// Choose pickup date and time for Airport booking
+        /// </summary>
+        AirportPickDate,
+        /// <summary>
+        /// Airport Details selection
+        /// </summary>
+        AirportDetails,
+
     }
 }
 

@@ -208,6 +208,7 @@
     <Compile Include="Controls\Behavior\PairingCodeBehavior.cs" />
     <Compile Include="Controls\Dialog\PhoneEditorElement.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
+    <Compile Include="Controls\Widgets\OrderAirport.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
@@ -912,5 +913,6 @@
     <AndroidResource Include="Resources\Layout\PhoneEditorBottom.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\SubView_OrderAirport.axml" />
   </ItemGroup>
 </Project>

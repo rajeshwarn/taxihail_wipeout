@@ -644,4 +644,13 @@
   <string name="SendMessageToDriverErrorMessage">An error occurred while trying to contact the driver. Please try again later.</string>
   <string name="InvalidAddressTextEdit">Cannot validate adddress</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
+  <string name="BookingAirportTitle">Airport</string>
+  <string name="BookingAirportAirlineslbl">Airline</string>
+  <string name="BookingAirportFlightNumlbl">Flight Number</string>
+  <string name="BookingAirportPUPointslbl">Pickup Point</string>
+  <string name="BookingAirportPUDatelbl">Pickup Date</string>
+  <string name="Next">Next</string>
+  <string name="BookingAirportPickupPointFee">Selecting Pickup Point {0} will incurr an additional Fee of {1}</string>
+  <string name="BookingAirportDetails">Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</string>
+  <string name="BookingAirportDetailsFee">, (Pickup Fee: {0})</string>
 </resources>

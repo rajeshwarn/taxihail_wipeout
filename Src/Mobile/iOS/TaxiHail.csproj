@@ -269,6 +269,7 @@
     <None Include="features\support\02_pre_stop_hooks.rb" />
     <None Include="features\support\env.rb" />
     <None Include="features\my_first.feature" />
+    <InterfaceDefinition Include="Views\Order\OrderAirportView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -296,6 +297,8 @@
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
+    <Compile Include="Views\Order\OrderAirportView.cs" />
+    <Compile Include="Views\Order\OrderAirportView.designer.cs" />
     <Compile Include="Views\PanelMenuView.cs">
       <DependentUpon>PanelMenuView.xib</DependentUpon>
     </Compile>

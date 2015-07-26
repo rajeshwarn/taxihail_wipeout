@@ -43,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private OrderReview _orderReview;
         private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
+        private OrderAirport _orderAirport;
         private AddressPicker _searchAddress;
         private ImageView _btnLocation; 
 		private LinearLayout _btnSettings;
@@ -209,6 +210,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
             _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
+            _orderAirport = (OrderAirport) FindViewById(Resource.Id.orderAirport);
             _searchAddress = (AddressPicker) FindViewById(Resource.Id.searchAddressControl);
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
             _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
@@ -222,15 +224,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
             ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = WindowManager.DefaultDisplay.Height;
 
-			if (this.Services ().Localize.IsRightToLeft) {
+			if (this.Services ().Localize.IsRightToLeft) 
+            {
 				((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).RightMargin = WindowManager.DefaultDisplay.Width;
-			} else {
+                ((LinearLayout.MarginLayoutParams)_orderAirport.LayoutParameters).RightMargin = WindowManager.DefaultDisplay.Width;
+            } 
+            else 
+            {
 				((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = WindowManager.DefaultDisplay.Width;
+                ((LinearLayout.MarginLayoutParams)_orderAirport.LayoutParameters).LeftMargin = WindowManager.DefaultDisplay.Width;
 			}
             
             _orderReview.Visibility = ViewStates.Gone;
             _orderEdit.Visibility = ViewStates.Gone;
             _searchAddress.Visibility = ViewStates.Gone;
+            _orderAirport.Visibility = ViewStates.Gone;
 
             // Creating a view controller for MapFragment
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
@@ -244,6 +252,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             set.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
             set.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // OrderOptions View Bindings
             set.Bind(_orderEdit).For("DataContext").To(vm => vm.OrderEdit); // OrderEdit View Bindings
+            set.Bind(_orderAirport).For("DataContext").To(vm => vm.OrderAirport); // OrderAirport View Bindings
             set.Bind(_orderReview).For("DataContext").To(vm => vm.OrderReview); // OrderReview View Bindings
             set.Bind(_searchAddress).For("DataContext").To(vm => vm.AddressPicker); // OrderReview View Bindings
             set.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
@@ -341,7 +350,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
                 var dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
-                ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(dt);
+                if (_presentationState == HomeViewModelState.PickDate)
+                {
+	                ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(dt);
+	            }
+                else
+                {
+                    ViewModel.BottomBar.SetPickupDateAndReturnToAirport.ExecuteIfPossible(dt);
+                }
             }
             else if (requestCode == (int) ActivityEnum.BookATaxi && resultCode == Result.Ok)
             {
@@ -415,6 +431,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
             }
+            else if (_presentationState == HomeViewModelState.AirportPickDate)
+            {
+                SetMapEnabled(false);
+                // Order Options: Visible
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                // Date Picker: Visible
+
+                ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+
+                SetSelectedOnBookLater(true);
+
+                var intent = new Intent(this, typeof(DateTimePickerActivity));
+                StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
+            }
             else if (_presentationState == HomeViewModelState.BookATaxi)
             {
                 SetMapEnabled(false);
@@ -436,6 +467,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 // Order Review: Visible
                 // Order Edit: Hidden
                 // Date Picker: Hidden
+                // Order Airport: Hidden
 
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, _orderOptions.Height);
                 animation.AnimationStart += (sender, e) =>
@@ -459,9 +491,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, 0);
 
+                var animation4 = AnimationHelper.GetForXTranslation(_orderAirport, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
+                animation4.AnimationStart += (sender, e) =>
+                {
+                    if (((LinearLayout.MarginLayoutParams)_orderAirport.LayoutParameters).Width != _frameLayout.Width)
+                    {
+                        ((LinearLayout.MarginLayoutParams)_orderAirport.LayoutParameters).Width = _frameLayout.Width;
+                    }
+                };
+
                 _orderReview.StartAnimation(animation);
                 _orderEdit.StartAnimation(animation2);
                 _orderOptions.StartAnimation(animation3);
+                _orderAirport.StartAnimation(animation4);
             }
             else if (_presentationState == HomeViewModelState.Edit)
             {
@@ -471,6 +513,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 // Order Review: Hidden
                 // Order Edit: Visible
                 // Date Picker: Hidden
+                // Order Airport: Hidden
 
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, WindowManager.DefaultDisplay.Height);
                 animation.AnimationEnd += (sender, e) =>
@@ -486,9 +529,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, 0, this.Services().Localize.IsRightToLeft);
                 var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, -_orderOptions.Height);
 
+                var animation4 = AnimationHelper.GetForXTranslation(_orderAirport, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
+
                 _orderReview.StartAnimation(animation);
                 _orderEdit.StartAnimation(animation2);
                 _orderOptions.StartAnimation(animation3);
+                _orderAirport.StartAnimation(animation4);
             }
             else if (_presentationState == HomeViewModelState.AddressSearch)
             {
@@ -512,6 +558,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 // Order Review: Hidden
                 // Order Edit: Hidden
                 // Date Picker: Hidden
+                // Order Aiport; Hidden
 
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, WindowManager.DefaultDisplay.Height);
                 animation.AnimationEnd += (sender, e) =>
@@ -526,10 +573,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
                 var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, 0);
+                var animation4 = AnimationHelper.GetForXTranslation(_orderAirport, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
 
                 _orderReview.StartAnimation(animation);
                 _orderEdit.StartAnimation(animation2);
                 _orderOptions.StartAnimation(animation3);
+                _orderAirport.StartAnimation(animation4);
 
                 _searchAddress.Close();
 
@@ -539,6 +588,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     _locateUserOnStart = true;
                 }
+            }
+            else if(_presentationState == HomeViewModelState.AirportDetails)
+            {
+                // Order Options: Hidden
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                // Date Picker: Hidden
+                // Order Airport: Visible
+
+                var animation = AnimationHelper.GetForYTranslation(_orderReview, WindowManager.DefaultDisplay.Height);
+                animation.AnimationEnd += (sender, e) =>
+                {
+                    // reset to a fix height in order to have a smooth translation animation next time we show the review screen
+                    var desiredHeight = _frameLayout.Height - _orderOptions.Height;
+                    if (((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
+                    {
+                        ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
+                    }
+                };
+
+                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
+                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, -_orderOptions.Height);
+
+                var animation4 = AnimationHelper.GetForXTranslation(_orderAirport, 0, this.Services().Localize.IsRightToLeft);
+
+                _orderReview.StartAnimation(animation);
+                _orderEdit.StartAnimation(animation2);
+                _orderOptions.StartAnimation(animation3);
+                _orderAirport.StartAnimation(animation4);
+
+                _searchAddress.Close();
             }
         }
 

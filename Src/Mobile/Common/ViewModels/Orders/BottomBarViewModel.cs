@@ -220,6 +220,76 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+        public ICommand SetPickupDateAndReturnToAirport
+        {
+            get
+            {
+                return this.GetCommand<DateTime?>(async date =>
+                {
+                    if (_orderValidationResult.HasError
+                        && _orderValidationResult.AppliesToCurrentBooking)
+                    {
+                        this.Services().Message.ShowMessage(this.Services().Localize["CurrentBookingDisabledTitle"], _orderValidationResult.Message);
+                        ResetToInitialState.ExecuteIfPossible();
+                        return;
+                    }
+
+                    // since it can take some time, recalculate estimate for date only if 
+                    // last calculated estimate was not for now
+                    if (date != null)
+                    {
+                        await _orderWorkflowService.SetPickupDate(date);
+                    }
+
+                    try
+                    {
+                        await _orderWorkflowService.ValidatePickupAndDestination();
+                        await _orderWorkflowService.ValidatePickupTime();
+                        await _orderWorkflowService.ValidateNumberOfPassengers(null);
+                    }
+                    catch (OrderValidationException e)
+                    {
+                        switch (e.Error)
+                        {
+                            case OrderValidationError.OpenDestinationSelection:
+                                // not really an error, but we stop the command from proceeding at this point
+                                return;
+                            case OrderValidationError.PickupAddressRequired:
+                                ResetToInitialState.ExecuteIfPossible();
+                                this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
+                                return;
+                            case OrderValidationError.DestinationAddressRequired:
+                                ResetToInitialState.ExecuteIfPossible();
+                                this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
+                                return;
+                            case OrderValidationError.InvalidPickupDate:
+                                ResetToInitialState.ExecuteIfPossible();
+                                this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]);
+                                return;
+                            case OrderValidationError.InvalidPassengersNumber:
+                                this.Services().Message.ShowMessage(this.Services().Localize["InvalidPassengersNumberTitle"], this.Services().Localize["InvalidPassengersNumber"]);
+                                return;
+                            default:
+                                Logger.LogError(e);
+                                return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(ex);
+                        ResetToInitialState.ExecuteIfPossible();
+                        return;
+                    }
+
+                    await _orderWorkflowService.ResetOrderSettings();
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AirportDetails));
+                    await ShowFareEstimateAlertDialogIfNecessary();
+                    await ValidateCardOnFile();
+                    await PreValidateOrder();
+                });
+            }
+        }
+
         public async void ReviewOrderDetails()
 	    {
             await _orderWorkflowService.ResetOrderSettings();
@@ -455,6 +525,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
+        public ICommand BookAirportLater
+        {
+            get
+            {
+                return this.GetCommand(async () =>
+                {
+                    Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AirportPickDate));
+                    await PrevalidatePickupAndDestinationRequired(onValidated);
+                });
+            }
+        }
+
 		private async Task PrevalidatePickupAndDestinationRequired(Action onValidated)
 		{
 			try
@@ -522,6 +604,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     // set pickup date to null to reset the estimate for now and not the possible date set by book later
                     _orderWorkflowService.SetPickupDate(null);
                     _orderWorkflowService.CancelRebookOrder();
+                    _orderWorkflowService.SetNoteToDriver(string.Empty);
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
                 });
             }
@@ -548,6 +631,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 if (value != _cancelEdit)
                 {
                     _cancelEdit = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public ICommand CancelAirport
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    // set pickup date to null to reset the estimate for now and not the possible date set by book later
+                    _orderWorkflowService.SetPickupDate(null);
+                    _orderWorkflowService.CancelRebookOrder();
+                    _orderWorkflowService.SetNoteToDriver(string.Empty);
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+                });
+            }
+        }
+
+        private ICommand _nextAirport;
+        public ICommand NextAirport
+        {
+            get { return _nextAirport; }
+            set
+            {
+                if (value != _nextAirport)
+                {
+                    _nextAirport = value;
                     RaisePropertyChanged();
                 }
             }
