@@ -2039,4 +2039,7 @@
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Le pourboire ne peut être supérieur à 100%</value>
   </data>
+  <data name="EtaNoTaxiAvailable" xml:space="preserve">
+    <value>Désolé, aucun taxi disponible dans les environs.</value>
+  </data>
 </root>

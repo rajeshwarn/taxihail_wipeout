@@ -529,6 +529,7 @@
   <string name="Politeness">Amabilidad</string>
   <string name="Overdue_Instructions">Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</string>
   <string name="View_CreateAccount">Cree su cuenta</string>
+  <string name="Eta_NoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
   <string name="ConfirmationOfPaymentSent">Confirmación de pago enviada al chofer</string>
   <string name="Overdue_Amount">Amount due:</string>
   <string name="UpdateBookingSettingsEmptyAccount">Account and rider numbers cannot be empty when Charge Type is set to Charge Account</string>

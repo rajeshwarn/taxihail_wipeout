@@ -585,6 +585,7 @@
 "HistoryDetailPromoLabel"="Code promo:";
 "DateTimePickerPickTime"="Sélectionner l'heure de départ";
 "EtaLessThenAMinute"="Le taxi le plus proche est à moins d'une minute de votre position";
+"EtaNoTaxiAvailable"="Désolé, aucun taxi disponible dans les environs.";
 "CreateAccountErrorMessage"="Le compte de peut malheureusement pas être créé";
 "View_RideSettings"="Profil";
 "ScanCreditCard"="Scanner la carte de paiement";

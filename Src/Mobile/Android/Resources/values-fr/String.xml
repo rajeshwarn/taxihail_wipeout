@@ -587,6 +587,7 @@
   <string name="HistoryDetailPromoLabel">Code promo:</string>
   <string name="DateTimePickerPickTime">Sélectionner l\'heure de départ</string>
   <string name="EtaLessThenAMinute">Le taxi le plus proche est à moins d\'une minute de votre position</string>
+  <string name="EtaNoTaxiAvailable">Désolé, aucun taxi disponible dans les environs.</string>
   <string name="CreateAccountErrorMessage">Le compte de peut malheureusement pas être créé</string>
   <string name="View_RideSettings">Profil</string>
   <string name="ScanCreditCard">Scanner la carte de paiement</string>

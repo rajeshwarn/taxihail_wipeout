@@ -569,6 +569,7 @@
 "HistoryDetailPromoLabel"="Promo Code:";
 "DateTimePickerPickTime"="اختر وقت الإلتقاء:";
 "EtaLessThenAMinute"="Nearest taxi is less then a minute away";
+"EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
 "CreateAccountErrorMessage"="لا يمكن إنشاء الحساب.";
 "View_RideSettings"="الملف الشخصي";
 "ScanCreditCard"="مسح بطاقة الائتمان";

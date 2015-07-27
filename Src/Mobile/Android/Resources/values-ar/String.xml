@@ -522,6 +522,7 @@
   <string name="Politeness">Politeness</string>
   <string name="Overdue_Instructions">Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</string>
   <string name="View_CreateAccount">افتح حسابك</string>
+  <string name="Eta_NoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
   <string name="ConfirmationOfPaymentSent">تم إرسال تأكيد السداد للسائق.</string>
   <string name="UpdateBookingSettingsEmptyAccount">Account and rider numbers cannot be empty when Charge Type is set to Charge Account</string>
   <string name="View_RefineAddress">بيانات نقطة الإلتقاء</string>

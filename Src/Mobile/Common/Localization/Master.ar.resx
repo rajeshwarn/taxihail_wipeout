@@ -1981,4 +1981,7 @@
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
   </data>
+  <data name="EtaNoTaxiAvailable" xml:space="preserve">
+    <value>Sorry, no taxis currently available nearby.</value>
+  </data>
 </root>

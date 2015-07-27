@@ -271,7 +271,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 			    if (!Eta.IsValidEta())
 			    {
-			        return string.Empty;
+					return this.Services ().Localize ["EtaNoTaxiAvailable"];;
 			    }
 
 			    if (Eta.Duration > 30) 
@@ -303,7 +303,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-			    return Settings.ShowEta && Eta != null && FormattedEta.HasValue() && !ShowEstimate;
+			    return Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate;
 			}
 		}
 

@@ -539,6 +539,7 @@
   <string name="DateTimePickerPickInvalidDateTitle">Invalid date / time</string>
   <string name="Overdue_Instructions">Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</string>
   <string name="View_CreateAccount">Create Your Account</string>
+  <string name="Eta_NoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
   <string name="ConfirmationOfPaymentSent">Confirmation of payment has been sent to the driver.</string>
   <string name="ChooseProviderDialogTitle">Pick a provider</string>
   <string name="Overdue_Amount">Amount due:</string>

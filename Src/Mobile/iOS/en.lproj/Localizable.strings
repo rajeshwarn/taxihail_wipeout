@@ -592,6 +592,7 @@
 "View_BookRating"="Rate Your Trip";
 "DateTimePickerPickTime"="Select your pickup time:";
 "EtaLessThenAMinute"="Nearest taxi is less then a minute away";
+"EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
 "CreateAccountErrorMessage"="The account cannot be created.";
 "View_RideSettings"="Profile";
 "StatusActionButton"="Call / Book / Cancel";
