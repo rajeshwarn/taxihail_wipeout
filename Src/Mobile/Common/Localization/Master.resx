@@ -1513,7 +1513,7 @@
     <value>Cancel</value>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>Nearest taxi is {1} {2} away</value>
+    <value>Nearest taxi is {0} {1} away</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
     <value>min</value>

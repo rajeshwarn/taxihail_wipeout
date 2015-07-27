@@ -172,7 +172,7 @@
 "View_PayPal"="PayPal";
 "InvalidBookinInfoTitle"="Informations de commande invalides";
 "AppNeedUpdateTitle"="Nouvelle version disponible";
-"StatusEta"="est à {0} et arrive dans {1} {2}";
+"StatusEta"="et arrive dans {0} {1}";
 "CreditCardExpYear"="Date d'expiration (année)";
 "CreditCardExpiredUpdateNow"="Mettre à jour";
 "PanelMenuViewAboutUsText"="À Propos";
@@ -377,7 +377,7 @@
 "DriverInfoMake"="Marque:";
 "BookATaxi_Message"="Quand voulez-vous commander votre taxi?";
 "View_BookSettingMenu"="Paramètres";
-"Eta"="Le véhicule le plus proche est à {1} {2} et {0}";
+"Eta"="Le véhicule le plus proche est à {0} {1}";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirmer les informations relatives au paiement";
 "CreateAccountInvalidDataTitle"="Données invalides";
 "Collapse"="Cacher";
@@ -584,7 +584,7 @@
 "ServiceError_ErrorCreatingOrderMessage"="Merci de contacter {0} au {1} pour toute demande d'assistance";
 "HistoryDetailPromoLabel"="Code promo:";
 "DateTimePickerPickTime"="Sélectionner l'heure de départ";
-"EtaLessThenAMinute"="Le taxi le plus proche est {0} et à moins d'une minute de votre position";
+"EtaLessThenAMinute"="Le taxi le plus proche est à moins d'une minute de votre position";
 "CreateAccountErrorMessage"="Le compte de peut malheureusement pas être créé";
 "View_RideSettings"="Profil";
 "ScanCreditCard"="Scanner la carte de paiement";

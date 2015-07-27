@@ -174,7 +174,7 @@
 "ResetPasswordSubtitleText"="Ingrese su email y le enviaremos una nueva contraseña";
 "InvalidBookinInfoTitle"="Información de reservación inválida";
 "AppNeedUpdateTitle"="Actualización disponible";
-"StatusEta"="y es {0} y está a {1} {2} de distancia";
+"StatusEta"="y está a {0} {1} de distancia";
 "CreditCardExpYear"="Mes de expiración";
 "CreditCardExpiredUpdateNow"="Update now";
 "LinkPayPalCCWarning"="Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?";
@@ -518,7 +518,7 @@
 "View"="Ver";
 "NoRingCodeText"="Número Código de entrada";
 "DialCodeSelectorTitle"="Dial Code";
-"Eta"="El taxi más cercano es {0} y esta a {1} {2} de distancia";
+"Eta"="El taxi más cercano esta a {0} {1} de distancia";
 "January"="Ene (01)";
 "AddReminderTitle"="Servicio programado";
 "StatusActionCancelButton"="Cancelar reservación";
@@ -577,7 +577,7 @@
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "HistoryDetailPromoLabel"="Promo Code:";
 "DateTimePickerPickTime"="Seleccione la hora del servicio:";
-"EtaLessThenAMinute"="The nearest taxi is {0} and less then a minute away";
+"EtaLessThenAMinute"="Nearest taxi is less then a minute away";
 "CreateAccountErrorMessage"="No se pudo crear su cuenta.";
 "View_RideSettings"="Perfil";
 "ScanCreditCard"="Escanear su Tarjeta de crédito";

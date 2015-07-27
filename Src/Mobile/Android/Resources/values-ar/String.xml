@@ -173,7 +173,7 @@
   <string name="View_PayPal">PayPal</string>
   <string name="InvalidBookinInfoTitle">بيانات الحجز غير صحيحة</string>
   <string name="AppNeedUpdateTitle">هناك تحديثات متاحة</string>
-  <string name="StatusEta">{0} and {1} {2} away</string>
+  <string name="StatusEta">and is {0} {1} away</string>
   <string name="CreditCardExpYear">سنة الإنتهاء</string>
   <string name="CreditCardExpiredUpdateNow">Update now</string>
   <string name="PanelMenuViewAboutUsText">نبذة عنا</string>
@@ -370,7 +370,7 @@
   <string name="DriverInfoMake">الصنع:</string>
   <string name="BookATaxi_Message">When would you like to book?</string>
   <string name="View_BookSettingMenu">إعدادات</string>
-  <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
+  <string name="Eta">Nearest taxi is {0} {1} away</string>
   <string name="View_Payments_CmtRideLinqConfirmPairTitle">تأكيد بيانات الدفع:</string>
   <string name="CreateAccountInvalidDataTitle">معلومات الحساب غير صحيحة</string>
   <string name="Collapse">تصغير</string>
@@ -570,7 +570,7 @@
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance or try again.</string>
   <string name="HistoryDetailPromoLabel">Promo Code:</string>
   <string name="DateTimePickerPickTime">اختر وقت الإلتقاء:</string>
-  <string name="EtaLessThenAMinute">The nearest taxi is {0} and less then a minute away</string>
+  <string name="EtaLessThenAMinute">Nearest taxi is less then a minute away</string>
   <string name="CreateAccountErrorMessage">لا يمكن إنشاء الحساب.</string>
   <string name="View_RideSettings">الملف الشخصي</string>
   <string name="ScanCreditCard">مسح بطاقة الائتمان</string>

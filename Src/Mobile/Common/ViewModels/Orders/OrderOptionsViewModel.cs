@@ -284,10 +284,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			    {
 
                     return Eta.Duration == 0
-			            ? string.Format(this.Services().Localize["EtaLessThenAMinute"], Eta.FormattedDistance)
-                        : string.Format(this.Services().Localize["Eta"], Eta.FormattedDistance, Eta.Duration, durationUnit);
+			            ? this.Services().Localize["EtaLessThenAMinute"]
+                        : string.Format(this.Services().Localize["Eta"], Eta.Duration, durationUnit);
 			    }
-			    return string.Format (this.Services ().Localize ["Eta"], Eta.FormattedDistance, Eta.Duration, durationUnit);
+			    return string.Format (this.Services ().Localize ["Eta"], Eta.Duration, durationUnit);
 			}
 		}
 

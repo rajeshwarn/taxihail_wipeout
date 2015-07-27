@@ -373,7 +373,7 @@
 "DriverInfoMake"="Make:";
 "BookATaxi_Message"="When would you like to book?";
 "PanelMenuViewPromotionsText"="Promotions";
-"Eta"="Nearest taxi is {1} {2} away";
+"Eta"="Nearest taxi is {0} {1} away";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirm Payment Information";
 "CreateAccountInvalidDataTitle"="Invalid account info";
 "ChargeTypeLabel"="Charge type";
