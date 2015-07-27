@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public bool IsVehicleTypeChangeEnabled
+		public bool IsVehicleTypeSelectionEnabled
 		{
 			get
 			{

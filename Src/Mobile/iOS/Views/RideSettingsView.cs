@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtPayBack.RemoveFromSuperview();
 			}
 
-            if (!ViewModel.IsVehicleTypeChangeEnabled)
+            if (!ViewModel.IsVehicleTypeSelectionEnabled)
             {
                 lblVehicleType.RemoveFromSuperview();
                 txtVehicleType.RemoveFromSuperview();
@@ -107,10 +107,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind (txtChargeType)
 				.For (v => v.Enabled)
 				.To (vm => vm.IsChargeTypesEnabled);
-
-            set.Bind(txtVehicleType)
-                .For(v => v.Enabled)
-                .To(vm => vm.IsVehicleTypeChangeEnabled);
 
 			set.Bind(txtAccountNumber)
 				.For(v => v.Text)
