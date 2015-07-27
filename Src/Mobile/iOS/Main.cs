@@ -80,10 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         // This method is required in iPhoneOS 3.0
         public override void OnActivated(UIApplication application)
-        {
-			#if DEBUG
-			//Xamarin.Calabash.Start();
-			#endif
+        {		
 
 			UIApplication.CheckForIllegalCrossThreadCalls=true;
 

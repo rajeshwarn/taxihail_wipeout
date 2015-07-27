@@ -1,7 +1,7 @@
 using System;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
-//using GoogleAnalytics.iOS;
+using GoogleAnalytics.iOS;
 using apcurium.MK.Common.Extensions;
 //using GoogleConversionTracking.Unified;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
@@ -14,50 +14,50 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     public class GoogleAnalyticsService: IAnalyticsService
 	{
         private IAppSettings _settings;
-		//private List<IGAITracker> Trackers { get; set; }
+		private List<IGAITracker> Trackers { get; set; }
 
 		public GoogleAnalyticsService (IAppSettings settings, IPackageInfo packageInfo)
 		{
             _settings = settings;
 
-//            Trackers = new List<IGAITracker>();
-//
-//			GAI.SharedInstance.TrackUncaughtExceptions = true;
-//			GAI.SharedInstance.DispatchInterval = 20;
-//
-//            // Prevent testing/debugging data from being sent to GA
-//            #if DEBUG
-//            GAI.SharedInstance.DryRun = true;
-//            #endif
-//
-//            // MK's tracking id
-//            Trackers.Add(GAI.SharedInstance.GetTracker ("UA-44714416-1"));
-//
-//            if (_settings.Data.GoogleAnalyticsTrackingId.HasValue())
-//            {
-//                // Company's own tracking id
-//                Trackers.Add(GAI.SharedInstance.GetTracker (_settings.Data.GoogleAnalyticsTrackingId));
-//            }
-//
-//            var appName = settings.Data.TaxiHail.ApplicationName.Replace(' ', '_');
-//            var version = packageInfo.Version;
-//            Trackers.ForEach(x => {
-//                x.Set(GAIConstants.AppName, appName);
-//                x.Set(GAIConstants.AppVersion, version);
-//            });
+            Trackers = new List<IGAITracker>();
+
+			GAI.SharedInstance.TrackUncaughtExceptions = true;
+			GAI.SharedInstance.DispatchInterval = 20;
+
+            // Prevent testing/debugging data from being sent to GA
+            #if DEBUG
+            GAI.SharedInstance.DryRun = true;
+            #endif
+
+            // MK's tracking id
+            Trackers.Add(GAI.SharedInstance.GetTracker ("UA-44714416-1"));
+
+            if (_settings.Data.GoogleAnalyticsTrackingId.HasValue())
+            {
+                // Company's own tracking id
+                Trackers.Add(GAI.SharedInstance.GetTracker (_settings.Data.GoogleAnalyticsTrackingId));
+            }
+
+            var appName = settings.Data.TaxiHail.ApplicationName.Replace(' ', '_');
+            var version = packageInfo.Version;
+            Trackers.ForEach(x => {
+                x.Set(GAIConstants.AppName, appName);
+                x.Set(GAIConstants.AppVersion, version);
+            });
 		}
 
 		public void LogViewModel (string viewModelName)
         {
-//            var appView = GAIDictionaryBuilder.CreateScreenView ();
-//			appView.Set (viewModelName, GAIConstants.ScreenName);
-//            Trackers.ForEach(x => x.Send(appView.Build()));
+            var appView = GAIDictionaryBuilder.CreateScreenView ();
+			appView.Set (viewModelName, GAIConstants.ScreenName);
+            Trackers.ForEach(x => x.Send(appView.Build()));
 		}
 
 		public void LogEvent(string @event)
 		{
-			//var eventGA = GAIDictionaryBuilder.CreateEvent ("Interaction", "Event", @event, 0);
-            //Trackers.ForEach(x => x.Send (eventGA.Build()));
+			var eventGA = GAIDictionaryBuilder.CreateEvent ("Interaction", "Event", @event, 0);
+            Trackers.ForEach(x => x.Send (eventGA.Build()));
 		}
 
 		public void LogCommand(string commandName, string parameter)
