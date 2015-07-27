@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateTripInfoInOrderForManualRideLinq>,
         ICommandHandler<SaveTemporaryOrderPaymentInfo>,
         ICommandHandler<UpdateAutoTip>,
-        ICommandHandler<LogOriginalEta>
+        ICommandHandler<LogOriginalEta>,
         ICommandHandler<UpdateOrderNotificationDetail>
     {
         private readonly IEventSourcedRepository<Order> _repository;
