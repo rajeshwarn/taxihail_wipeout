@@ -80,6 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 _scanIntent = new Intent(this, typeof(CardIOActivity));
                 _scanIntent.PutExtra(CardIOActivity.ExtraAppToken, this.Services().Settings.CardIOToken);
                 _scanIntent.PutExtra(CardIOActivity.ExtraRequireExpiry, false);
+                _scanIntent.PutExtra(CardIOActivity.ExtraUseCardioLogo, true);
                 _scanIntent.PutExtra(CardIOActivity.ExtraSuppressManualEntry, true);
                 _scanIntent.PutExtra(CardIOActivity.ExtraSuppressConfirmation, true);
 
