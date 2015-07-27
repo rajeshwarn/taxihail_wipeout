@@ -284,7 +284,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			    {
 
                     return Eta.Duration == 0
-			            ? this.Services().Localize["EtaLessThenAMinute"]
+			            ? this.Services().Localize["EtaLessThanAMinute"]
                         : string.Format(this.Services().Localize["Eta"], Eta.Duration, durationUnit);
 			    }
 			    return string.Format (this.Services ().Localize ["Eta"], Eta.Duration, durationUnit);
@@ -295,7 +295,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 		    get
 		    {
-		        return ShowVehicleSelection || ShowEstimate || ShowEta;
+		        return ShowVehicleSelection || ShowEstimate;
 		    }
 		}
 

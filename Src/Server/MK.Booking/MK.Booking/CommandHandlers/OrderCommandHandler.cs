@@ -39,7 +39,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateTripInfoInOrderForManualRideLinq>,
         ICommandHandler<SaveTemporaryOrderPaymentInfo>,
         ICommandHandler<UpdateAutoTip>,
-        ICommandHandler<LogOriginalEta>
+        ICommandHandler<LogOriginalEta>,
+        ICommandHandler<UpdateOrderNotificationDetail>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -243,6 +244,12 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = _repository.Get(command.OrderId);
             order.LogOriginalEta(command.OriginalEta);
 
+            _repository.Save(order, command.Id.ToString());
+        }
+        public void Handle(UpdateOrderNotificationDetail command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.UpdateOrderNotificationDetail(command);
             _repository.Save(order, command.Id.ToString());
         }
     }

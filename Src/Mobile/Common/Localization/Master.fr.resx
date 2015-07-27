@@ -2033,7 +2033,7 @@
   <data name="OtherListItemPromptLabel" xml:space="preserve">
     <value>Entrez une valeur:</value>
   </data>
-  <data name="EtaLessThenAMinute" xml:space="preserve">
+  <data name="EtaLessThanAMinute" xml:space="preserve">
     <value>Le taxi le plus proche est à moins d'une minute de votre position</value>
   </data>
   <data name="TipPercent_Error" xml:space="preserve">

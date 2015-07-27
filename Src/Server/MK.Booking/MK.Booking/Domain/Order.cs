@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<ManualRideLinqTripInfoUpdated>(NoAction);
             Handles<AutoTipUpdated>(NoAction);
             Handles<OriginalEtaLogged>(NoAction);
+            Handles<OrderNotificationDetailUpdated>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -345,6 +346,17 @@ namespace apcurium.MK.Booking.Domain
             Update(new OriginalEtaLogged
             {
                 OriginalEta = originalEta
+            });
+        }
+
+        public void UpdateOrderNotificationDetail(UpdateOrderNotificationDetail orderNotificationDetail)
+        {
+            Update(new OrderNotificationDetailUpdated
+            {
+                OrderId = orderNotificationDetail.OrderId,
+                IsTaxiNearbyNotificationSent = orderNotificationDetail.IsTaxiNearbyNotificationSent,
+                IsUnpairingReminderNotificationSent = orderNotificationDetail.IsUnpairingReminderNotificationSent,
+                InfoAboutPaymentWasSentToDriver = orderNotificationDetail.InfoAboutPaymentWasSentToDriver
             });
         }
 

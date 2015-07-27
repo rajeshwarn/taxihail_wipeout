@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.Mobile.Client.Views;
+using MonoTouch.FacebookConnect;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -79,10 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         // This method is required in iPhoneOS 3.0
         public override void OnActivated(UIApplication application)
-        {
-			#if DEBUG
-			//Xamarin.Calabash.Start();
-			#endif
+        {		
 
 			UIApplication.CheckForIllegalCrossThreadCalls=true;
 
@@ -142,10 +140,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			Console.WriteLine(url.ToString());
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-//            if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.TaxiHail.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
-//			{
-//				return FBAppCall.HandleOpenURL(url, sourceApplication);
-//			}
+            if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.TaxiHail.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
+			{
+				return FBAppCall.HandleOpenURL(url, sourceApplication);
+			}
 
 			return false;
         }

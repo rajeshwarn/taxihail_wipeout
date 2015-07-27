@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.Test.Integration;
@@ -65,6 +66,9 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var orderDao = new OrderDao(() => new BookingDbContext(DbName));
             var orderPaymentDao = new OrderPaymentDao(() => new BookingDbContext(DbName));
 
+            var notificationDetailsDaoMock = new Mock<IOrderNotificationsDetailDao>(MockBehavior.Loose)
+           
+
             Sut = new Api.Jobs.OrderStatusUpdater(ConfigurationManager,
                 bus.Object,
                 orderPaymentDao,
@@ -78,6 +82,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 PaymentServiceMock.Object,
                 new CreditCardDao(() => new BookingDbContext(DbName)),
                 new FeeService(PaymentServiceMock.Object, accountDao, new FeesDao(() => new BookingDbContext(DbName)), orderDao, orderPaymentDao, bus.Object, ConfigurationManager, LoggerMock.Object),
+                notificationDetailsDaoMock.Object, 
                 LoggerMock.Object);
         }
         

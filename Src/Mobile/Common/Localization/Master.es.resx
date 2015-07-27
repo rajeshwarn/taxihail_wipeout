@@ -2495,8 +2495,8 @@
   <data name="OtherListItemPromptLabel" xml:space="preserve">
     <value>Enter a value:</value>
   </data>
-  <data name="EtaLessThenAMinute" xml:space="preserve">
-    <value>Nearest taxi is less then a minute away</value>
+  <data name="EtaLessThanAMinute" xml:space="preserve">
+    <value>Nearest taxi is less than a minute away</value>
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
