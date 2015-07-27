@@ -295,7 +295,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 		    get
 		    {
-		        return ShowVehicleSelection || ShowEstimate || ShowEta;
+		        return ShowVehicleSelection || ShowEstimate;
 		    }
 		}
 
