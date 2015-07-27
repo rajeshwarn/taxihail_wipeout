@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderUnpairedFromManualRideLinq>,
         IEventHandler<ManualRideLinqTripInfoUpdated>,
         IEventHandler<AutoTipUpdated>,
-        IEventHandler<OriginalEtaLogged>
+        IEventHandler<OriginalEtaLogged>,
         IEventHandler<OrderNotificationDetailUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
