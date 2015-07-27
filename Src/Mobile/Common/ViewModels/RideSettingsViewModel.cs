@@ -106,6 +106,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public bool IsVehicleTypeSelectionEnabled
+		{
+			get
+			{
+				return Settings.VehicleTypeSelectionEnabled;
+			}
+		}
+
         private PaymentDetailsViewModel _paymentPreferences;
         public PaymentDetailsViewModel PaymentPreferences
         {

@@ -51,6 +51,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtPayBack.RemoveFromSuperview();
 			}
 
+            if (!ViewModel.IsVehicleTypeSelectionEnabled)
+            {
+                lblVehicleType.RemoveFromSuperview();
+                txtVehicleType.RemoveFromSuperview();
+            }
+
+
             lblName.Text = Localize.GetValue("RideSettingsName");
             lblPhone.Text = Localize.GetValue("RideSettingsPhone");
             lblVehicleType.Text = Localize.GetValue("RideSettingsVehiculeType");
