@@ -162,8 +162,8 @@
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" workingdir="$(SolutionDir)/../LocalizationTool" />
       </CustomCommands>
     </CustomCommands>
-    <MtouchUseThumb>true</MtouchUseThumb>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchUseThumb>true</MtouchUseThumb>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
