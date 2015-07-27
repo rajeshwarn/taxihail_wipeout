@@ -1513,7 +1513,7 @@
     <value>Cancel</value>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>Nearest taxi is {1} {2} away</value>
+    <value>Nearest taxi is {0} {1} away</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
     <value>min</value>
@@ -2043,10 +2043,13 @@
   <data name="OtherListItemPromptLabel" xml:space="preserve">
     <value>Enter a value:</value>
   </data>
-  <data name="EtaLessThenAMinute" xml:space="preserve">
-    <value>Nearest taxi is less then a minute away</value>
+  <data name="EtaLessThanAMinute" xml:space="preserve">
+    <value>Nearest taxi is less than a minute away</value>
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
+  </data>
+  <data name="EtaNoTaxiAvailable" xml:space="preserve">
+    <value>Sorry, no taxis currently available nearby.</value>
   </data>
 </root>

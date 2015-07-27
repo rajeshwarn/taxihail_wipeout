@@ -171,7 +171,7 @@
 "View_PayPal"="PayPal";
 "InvalidBookinInfoTitle"="بيانات الحجز غير صحيحة";
 "AppNeedUpdateTitle"="هناك تحديثات متاحة";
-"StatusEta"="{0} and {1} {2} away";
+"StatusEta"="and is {0} {1} away";
 "CreditCardExpYear"="سنة الإنتهاء";
 "CreditCardExpiredUpdateNow"="Update now";
 "PanelMenuViewAboutUsText"="نبذة عنا";
@@ -368,7 +368,7 @@
 "DriverInfoMake"="الصنع:";
 "BookATaxi_Message"="When would you like to book?";
 "View_BookSettingMenu"="إعدادات";
-"Eta"="The nearest taxi is {0} and {1} {2} away";
+"Eta"="Nearest taxi is {0} {1} away";
 "View_Payments_CmtRideLinqConfirmPairTitle"="تأكيد بيانات الدفع:";
 "CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
 "Collapse"="تصغير";
@@ -568,7 +568,8 @@
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "HistoryDetailPromoLabel"="Promo Code:";
 "DateTimePickerPickTime"="اختر وقت الإلتقاء:";
-"EtaLessThenAMinute"="The nearest taxi is {0} and less then a minute away";
+"EtaLessThenAMinute"="Nearest taxi is less then a minute away";
+"EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
 "CreateAccountErrorMessage"="لا يمكن إنشاء الحساب.";
 "View_RideSettings"="الملف الشخصي";
 "ScanCreditCard"="مسح بطاقة الائتمان";

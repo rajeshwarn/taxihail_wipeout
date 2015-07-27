@@ -174,7 +174,7 @@
   <string name="View_PayPal">PayPal</string>
   <string name="InvalidBookinInfoTitle">Informations de commande invalides</string>
   <string name="AppNeedUpdateTitle">Nouvelle version disponible</string>
-  <string name="StatusEta">est à {0} et arrive dans {1} {2}</string>
+  <string name="StatusEta">et arrive dans {0} {1}</string>
   <string name="CreditCardExpYear">Date d\'expiration (année)</string>
   <string name="CreditCardExpiredUpdateNow">Mettre à jour</string>
   <string name="PanelMenuViewAboutUsText">À Propos</string>
@@ -379,7 +379,7 @@
   <string name="DriverInfoMake">Marque:</string>
   <string name="BookATaxi_Message">Quand voulez-vous commander votre taxi?</string>
   <string name="View_BookSettingMenu">Paramètres</string>
-  <string name="Eta">Le véhicule le plus proche est à {1} {2} et {0}</string>
+  <string name="Eta">Le véhicule le plus proche est à {0} {1}</string>
   <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirmer les informations relatives au paiement</string>
   <string name="CreateAccountInvalidDataTitle">Données invalides</string>
   <string name="Collapse">Cacher</string>
@@ -586,7 +586,8 @@
   <string name="ServiceError_ErrorCreatingOrderMessage">Merci de contacter {0} au {1} pour toute demande d\'assistance</string>
   <string name="HistoryDetailPromoLabel">Code promo:</string>
   <string name="DateTimePickerPickTime">Sélectionner l\'heure de départ</string>
-  <string name="EtaLessThenAMinute">Le taxi le plus proche est {0} et à moins d\'une minute de votre position</string>
+  <string name="EtaLessThenAMinute">Le taxi le plus proche est à moins d\'une minute de votre position</string>
+  <string name="EtaNoTaxiAvailable">Désolé, aucun taxi disponible dans les environs.</string>
   <string name="CreateAccountErrorMessage">Le compte de peut malheureusement pas être créé</string>
   <string name="View_RideSettings">Profil</string>
   <string name="ScanCreditCard">Scanner la carte de paiement</string>

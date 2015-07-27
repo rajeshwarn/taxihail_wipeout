@@ -176,7 +176,7 @@
   <string name="ResetPasswordSubtitleText">Ingrese su email y le enviaremos una nueva contraseña</string>
   <string name="InvalidBookinInfoTitle">Información de reservación inválida</string>
   <string name="AppNeedUpdateTitle">Actualización disponible</string>
-  <string name="StatusEta">y es {0} y está a {1} {2} de distancia</string>
+  <string name="StatusEta">y está a {0} {1} de distancia</string>
   <string name="CreditCardExpYear">Mes de expiración</string>
   <string name="CreditCardExpiredUpdateNow">Update now</string>
   <string name="LinkPayPalCCWarning">Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</string>
@@ -520,7 +520,7 @@
   <string name="View">Ver</string>
   <string name="NoRingCodeText">Número Código de entrada</string>
   <string name="DialCodeSelectorTitle">Dial Code</string>
-  <string name="Eta">El taxi más cercano es {0} y esta a {1} {2} de distancia</string>
+  <string name="Eta">El taxi más cercano esta a {0} {1} de distancia</string>
   <string name="January">Ene (01)</string>
   <string name="AddReminderTitle">Servicio programado</string>
   <string name="StatusActionCancelButton">Cancelar reservación</string>
@@ -529,6 +529,7 @@
   <string name="Politeness">Amabilidad</string>
   <string name="Overdue_Instructions">Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</string>
   <string name="View_CreateAccount">Cree su cuenta</string>
+  <string name="Eta_NoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
   <string name="ConfirmationOfPaymentSent">Confirmación de pago enviada al chofer</string>
   <string name="Overdue_Amount">Amount due:</string>
   <string name="UpdateBookingSettingsEmptyAccount">Account and rider numbers cannot be empty when Charge Type is set to Charge Account</string>
@@ -579,7 +580,7 @@
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance or try again.</string>
   <string name="HistoryDetailPromoLabel">Promo Code:</string>
   <string name="DateTimePickerPickTime">Seleccione la hora del servicio:</string>
-  <string name="EtaLessThenAMinute">The nearest taxi is {0} and less then a minute away</string>
+  <string name="EtaLessThenAMinute">Nearest taxi is less then a minute away</string>
   <string name="CreateAccountErrorMessage">No se pudo crear su cuenta.</string>
   <string name="View_RideSettings">Perfil</string>
   <string name="ScanCreditCard">Escanear su Tarjeta de crédito</string>

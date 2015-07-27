@@ -373,7 +373,7 @@
 "DriverInfoMake"="Make:";
 "BookATaxi_Message"="When would you like to book?";
 "PanelMenuViewPromotionsText"="Promotions";
-"Eta"="Nearest taxi is {1} {2} away";
+"Eta"="Nearest taxi is {0} {1} away";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirm Payment Information";
 "CreateAccountInvalidDataTitle"="Invalid account info";
 "ChargeTypeLabel"="Charge type";
@@ -592,6 +592,7 @@
 "View_BookRating"="Rate Your Trip";
 "DateTimePickerPickTime"="Select your pickup time:";
 "EtaLessThenAMinute"="Nearest taxi is less then a minute away";
+"EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
 "CreateAccountErrorMessage"="The account cannot be created.";
 "View_RideSettings"="Profile";
 "StatusActionButton"="Call / Book / Cancel";
