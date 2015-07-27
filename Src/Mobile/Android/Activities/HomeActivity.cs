@@ -127,6 +127,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private void PanelMenuSignOutClick(object sender, EventArgs e)
         {
             ViewModel.Panel.SignOut.ExecuteIfPossible();
+            // Finish the activity, because clearTop does not seem to be enough in this case
+            // Finish is delayed 1sec in order to prevent the application from being terminated
             Observable.Return(Unit.Default).Delay(TimeSpan.FromSeconds(1)).Subscribe(x => { Finish(); });
         }
 

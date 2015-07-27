@@ -248,10 +248,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
 			{
-				return this.GetCommand(() =>
+				return this.GetCommand(async () =>
                 {
 						
-						this.Services().Message.ShowMessage(this.Services().Localize["PanelMenuViewSignOutText"], 
+						await this.Services().Message.ShowMessage(this.Services().Localize["PanelMenuViewSignOutText"], 
 							this.Services().Localize["PanelMenuViewSignOutPopupMessage"],
 							this.Services().Localize["YesButton"],
 							()=> 
@@ -262,9 +262,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								ShowViewModelAndClearHistory<LoginViewModel> ();
 							},
 							this.Services().Localize["NoButton"],
-							()=> {}
+							null
 						);
-					
                 });
             }
         }
