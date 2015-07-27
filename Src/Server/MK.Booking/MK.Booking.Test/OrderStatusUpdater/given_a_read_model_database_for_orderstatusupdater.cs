@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var orderDao = new OrderDao(() => new BookingDbContext(DbName));
             var orderPaymentDao = new OrderPaymentDao(() => new BookingDbContext(DbName));
 
-            var notificationDetailsDaoMock = new Mock<IOrderNotificationsDetailDao>(MockBehavior.Loose)
+            var notificationDetailsDaoMock = new Mock<IOrderNotificationsDetailDao>(MockBehavior.Loose);
            
 
             Sut = new Api.Jobs.OrderStatusUpdater(ConfigurationManager,
