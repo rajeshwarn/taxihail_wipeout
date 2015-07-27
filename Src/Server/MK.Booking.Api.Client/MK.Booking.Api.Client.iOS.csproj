@@ -65,6 +65,9 @@
     <Reference Include="ServiceStack.Text.MonoTouch">
       <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
     </Reference>
+    <Reference Include="BrainTreeEncryption.Library">
+      <HintPath>..\..\Mobile\Libraries\Monotouch\BrainTreeEncryption.Library.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

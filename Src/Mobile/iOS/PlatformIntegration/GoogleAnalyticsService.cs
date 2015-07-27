@@ -3,7 +3,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using GoogleAnalytics.iOS;
 using apcurium.MK.Common.Extensions;
-//using GoogleConversionTracking.Unified;
+using GoogleConversionTracking.Unified;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using Foundation;
 using System.Collections.Generic;
@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 try
                 {
-                    //ACTConversionReporter.ReportWithConversionID((NSString)conversionId, (NSString)label, (NSString)"1.000000", false);
+                    ACTConversionReporter.ReportWithConversionID((NSString)conversionId, (NSString)label, (NSString)"1.000000", false);
                 }
                 catch (Exception e)
                 {

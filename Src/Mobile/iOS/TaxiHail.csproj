@@ -271,6 +271,9 @@
     <Reference Include="GoogleAnalytics.iOS">
       <HintPath>..\Components\googleanalytics-3.0.10.3\lib\ios-unified\GoogleAnalytics.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="GoogleConversionTracking">
+      <HintPath>..\Libraries\Monotouch\GoogleConversionTracking.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
