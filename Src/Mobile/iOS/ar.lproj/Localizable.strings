@@ -325,6 +325,7 @@
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "LoginForgotPasswordDetail"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";
 "ResetPasswordTitleText"="نسيت كلمة المرور؟";
+"PanelMenuViewSignOutPopupMessage"="Are you sure?";
 "PayInCar"="Pay in Car";
 "CreditCardRequiredFields"="كافة الخانات مطلوبة";
 "SettingViewNotSignedIn"="لست متصلا في الوقت الحالي. يجب أن تقوم بالتسجيل لاستخدام هذا التطبيق.";

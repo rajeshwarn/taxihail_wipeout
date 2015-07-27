@@ -334,6 +334,7 @@
   <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
   <string name="LoginForgotPasswordDetail">Ingrese su email y le enviaremos una nueva contraseña</string>
   <string name="NoButton">No</string>
+  <string name="PanelMenuViewSignOutPopupMessage">Are you sure?</string>
   <string name="CreditCardRequiredFields">Todos los campos requeridos</string>
   <string name="SettingViewNotSignedIn">No se ha encontrado cuenta con este email</string>
   <string name="AcceptButton">Aceptar</string>

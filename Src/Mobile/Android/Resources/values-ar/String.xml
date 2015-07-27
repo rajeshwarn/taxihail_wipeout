@@ -327,6 +327,7 @@
   <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
   <string name="LoginForgotPasswordDetail">أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.</string>
   <string name="ResetPasswordTitleText">نسيت كلمة المرور؟</string>
+  <string name="PanelMenuViewSignOutPopupMessage">Are you sure?</string>
   <string name="PayInCar">Pay in Car</string>
   <string name="CreditCardRequiredFields">كافة الخانات مطلوبة</string>
   <string name="SettingViewNotSignedIn">لست متصلا في الوقت الحالي. يجب أن تقوم بالتسجيل لاستخدام هذا التطبيق.</string>

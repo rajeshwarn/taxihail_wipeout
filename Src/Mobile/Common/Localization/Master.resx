@@ -2049,4 +2049,7 @@
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
   </data>
+  <data name="PanelMenuViewSignOutPopupMessage" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
 </root>

@@ -336,6 +336,7 @@
   <string name="Modify">Modifier</string>
   <string name="LoginForgotPasswordDetail">Saisissez votre email pour recevoir votre nouveau mot de passe</string>
   <string name="ResetPasswordTitleText">Mot de passe oublié?</string>
+  <string name="PanelMenuViewSignOutPopupMessage">Êtes vous sûr?</string>
   <string name="PayInCar">Payer dans le taxi</string>
   <string name="CreditCardRequiredFields">Tous les champs obligatoires doivent être remplis</string>
   <string name="SettingViewNotSignedIn">Désolé, vous n\'êtes pas identifié. Merci de vous identifier pour pouvoir utiliser l\'application</string>

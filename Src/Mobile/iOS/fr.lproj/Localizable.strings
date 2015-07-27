@@ -334,6 +334,7 @@
 "Modify"="Modifier";
 "LoginForgotPasswordDetail"="Saisissez votre email pour recevoir votre nouveau mot de passe";
 "ResetPasswordTitleText"="Mot de passe oublié?";
+"PanelMenuViewSignOutPopupMessage"="Êtes vous sûr?";
 "PayInCar"="Payer dans le taxi";
 "CreditCardRequiredFields"="Tous les champs obligatoires doivent être remplis";
 "SettingViewNotSignedIn"="Désolé, vous n'êtes pas identifié. Merci de vous identifier pour pouvoir utiliser l'application";
