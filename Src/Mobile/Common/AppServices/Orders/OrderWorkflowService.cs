@@ -61,8 +61,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
-        readonly ISubject<string> _objPOIInfoSubject = new BehaviorSubject<string>(string.Empty);
-        readonly ISubject<string> _objPOIReferenceSubject = new BehaviorSubject<string>(string.Empty);
         readonly ISubject<string> _objPOIRefPickupListSubject = new BehaviorSubject<string>(string.Empty);
         readonly ISubject<string> _objPOIRefAirlineListSubject = new BehaviorSubject<string>(string.Empty);
 
@@ -418,29 +416,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return null;
 		}
 
-
-        public async Task PIOInfo(string locationType, string placeId)
+        public async Task POIRefPickupList(string textMatch, int maxRespSize)
         {
-            var pObject = await _poiProvider.GetPOI(locationType, placeId);
-            _objPOIInfoSubject.OnNext(pObject);
-        }
-
-        public async Task PIORefInfo(string reference)
-        {
-            var pObject = await _poiProvider.GetPOIRefInfo(reference);
-            _objPOIReferenceSubject.OnNext(pObject);
-        }
-
-        public async Task POIRefPickupList(string company, string textMatch, int maxRespSize)
-        {
-            var pObject = await _poiProvider.GetPOIRefPickupList(company, textMatch, maxRespSize );
+            var pObject = await _poiProvider.GetPOIRefPickupList(_appSettings.Data.TaxiHail.ApplicationKey, textMatch, maxRespSize);
             _objPOIRefPickupListSubject.OnNext(pObject);
 
         }
 
-        public async Task POIRefAirLineList(string company, string textMatch, int maxRespSize)
+        public async Task POIRefAirLineList(string textMatch, int maxRespSize)
         {
-            var pObject = await _poiProvider.GetPOIRefAirLineList(company, textMatch, maxRespSize);
+            var pObject = await _poiProvider.GetPOIRefAirLineList(_appSettings.Data.TaxiHail.ApplicationKey, textMatch, maxRespSize);
             _objPOIRefAirlineListSubject.OnNext(pObject);
         }
 
@@ -467,16 +452,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _addressSelectionModeSubject;
 		}
-
-        public IObservable<string> GetAndObservePOIInformation()
-        {
-            return _objPOIInfoSubject;
-        }
-
-        public IObservable<string> GetAndObservePOIReference()
-        {
-            return _objPOIReferenceSubject;
-        }
 
         public IObservable<string> GetAndObservePOIRefPickupList()
         {
@@ -686,8 +661,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_orderValidationResultSubject.OnNext(null);
 			_loadingAddressSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
-            _objPOIInfoSubject.OnNext(string.Empty);
-            _objPOIReferenceSubject.OnNext(string.Empty);
             _objPOIRefPickupListSubject.OnNext(string.Empty);
             _objPOIRefAirlineListSubject.OnNext(string.Empty);
         }

@@ -248,22 +248,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				// Order Airport: Visable
 				CloseBookATaxiDialog ();
 
-//				UIView.Animate (
-//					0.6f, 
-//					() => {
-//						orderEdit.SetNeedsDisplay ();
-//						ctrlOrderBookingOptions.SetNeedsDisplay ();
-//						constraintOrderReviewTopSpace.Constant = 10;
-//						constraintOrderReviewBottomSpace.Constant = -65;
-//						constraintOrderOptionsTopSpace.Constant = 22;
-//						constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;       
-//						constraintOrderAirportTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width; 
-//						_datePicker.Hide ();
-//
-//						homeView.LayoutIfNeeded ();
-//					},
-//					RedrawSubViews);
-
 				UIView.Animate (
 					0.6f, 
 					() => {

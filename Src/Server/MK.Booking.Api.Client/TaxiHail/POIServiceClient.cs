@@ -21,78 +21,49 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-
-        public Task<string> GetPOI(string locationType, string placeId)
-        {
-            var req = string.Format("/../getpoi/{0}/{1}?format=json", locationType, placeId);
-            var pObject = Client.GetAsync<string>(req);
-            return pObject;
-        }
-
-        public Task<string> GetPOIRefInfo(string reference)
-        {
-            var req = string.Format("/../reference/{0}?format=json", reference);
-            var pObject = Client.GetAsync<string>(req);
-            return pObject;
-        }
-
         public Task<string> GetPOIRefPickupList(string company, string textMatch, int maxRespSize)
         {
-            try
+            var sb = new StringBuilder();
+            sb.Append("/../reference/pickuppoint");
+            if( company != null && company != string.Empty )
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("/../reference/pickuppoint");
-                if(( company != null )&&( company != string.Empty ))
-                {
-                    sb.Append(string.Format( "_{0}", company));
-                }
-                if(( textMatch != null )&&( textMatch != string.Empty ))
-                {
-                    sb.Append(string.Format("/{0}", textMatch));
-                }
-                sb.Append("?format=json");
-                if( maxRespSize > 0 )
-                {
-                    sb.Append(string.Format("&size={0}", maxRespSize));
-                }
-                var req = sb.ToString();
-                var pObject = Client.GetAsync<string>(req);
-                return pObject;
+                sb.Append(string.Format( "_{0}", company));
             }
-            catch (Exception Ex)
+            if( textMatch != null && textMatch != string.Empty )
             {
-                return null;
+                sb.Append(string.Format("/{0}", textMatch));
             }
+            sb.Append("?format=json");
+            if( maxRespSize > 0 )
+            {
+                sb.Append(string.Format("&size={0}", maxRespSize));
+            }
+            var req = sb.ToString();
+            var pObject = Client.GetAsync<string>(req);
+            return pObject;
         }
 
         public Task<string> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
         {
-            try
+            var sb = new StringBuilder();
+            sb.Append("/../reference/airline");
+            if (company != null && company != string.Empty)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("/../reference/airline");
-                if ((company != null) && (company != string.Empty))
-                {
-                    sb.Append(string.Format("_{0}", company));
-                }
-                if ((textMatch != null) && (textMatch != string.Empty))
-                {
-                    sb.Append(string.Format("/{0}", textMatch));
-                }
-                sb.Append("?format=json");
-                if (maxRespSize > 0)
-                {
-                    sb.Append(string.Format("&size={0}", maxRespSize));
-                }
-                sb.Append(string.Format("&coreFieldsOnly=true"));
-                var req = sb.ToString();
-                var pObject = Client.GetAsync<string>(req);
-                return pObject;
+                sb.Append(string.Format("_{0}", company));
             }
-            catch (Exception Ex)
+            if (textMatch != null && textMatch != string.Empty)
             {
-                return null;
+                sb.Append(string.Format("/{0}", textMatch));
             }
+            sb.Append("?format=json");
+            if (maxRespSize > 0)
+            {
+                sb.Append(string.Format("&size={0}", maxRespSize));
+            }
+            sb.Append(string.Format("&coreFieldsOnly=true"));
+            var req = sb.ToString();
+            var pObject = Client.GetAsync<string>(req);
+            return pObject;
         }
     }
 }

@@ -42,7 +42,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 			txtFlightNum.Maybe (x => x.ShowCloseButtonOnKeyboard ());
 			txtPickupDate.Enabled = false;
-			//txtPickupDate.Maybe (x => x.ShowCloseButtonOnKeyboard ());
 
 			lblAirport.Maybe (x => x.Text = Localize.GetValue ("BookingAirportTitle"));
 			lblAirlines.Maybe (x => x.Text = Localize.GetValue ("BookingAirportAirlineslbl"));

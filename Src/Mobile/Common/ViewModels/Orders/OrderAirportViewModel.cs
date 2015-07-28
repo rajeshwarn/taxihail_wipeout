@@ -61,8 +61,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
         public async Task Init()
         {
-//            ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
-
             _airlines = new List<ListItem>
             {
 				new ListItem {Display = NoAirlines, Id = 0},
@@ -101,21 +99,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        int? iPUPointsId;
-        public int? PUPointsId
+        private int _PUPointsId;
+        public int PUPointsId
         {
             get
             {
-                return iPUPointsId;
+                return _PUPointsId;
             }
             set
             {
-                if (value != iPUPointsId)
+                if (value != _PUPointsId)
                 {
-                    iPUPointsId = value;
+                    _PUPointsId = value;
                     RaisePropertyChanged();
                     RaisePropertyChanged(() => PUPointsName);
-                    //					_orderWorkflowService.SetVehicleType (value);
                 }
             }
         }
@@ -124,11 +121,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                if (!PUPointsId.HasValue)
-                {
-                    return this.Services().Localize["NoPreference"];
-                }
-
                 if (PUPoints == null)
                 {
                     return null;
@@ -162,21 +154,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        int? iAirLineId;
+        private int? _AirLineId;
         public int? AirlineId
         {
             get
             {
-                return iAirLineId;
+                return _AirLineId;
             }
             set
             {
-                if (value != iAirLineId)
+                if (value != _AirLineId)
                 {
-                    iAirLineId = value;
+                    _AirLineId = value;
                     RaisePropertyChanged();
                     RaisePropertyChanged(() => AirlineName);
-                    //					_orderWorkflowService.SetVehicleType (value);
                 }
             }
         }
@@ -219,15 +210,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         }
 
         
-        private String sFlightNum;
+        private String _FlightNum;
         public String FlightNum
         {
-            get { return sFlightNum; }
+            get { return _FlightNum; }
             set
             {
-                if (value != sFlightNum)
+                if (value != _FlightNum)
                 {
-                    sFlightNum = value;
+                    _FlightNum = value;
                     RaisePropertyChanged();
                 }
             }
@@ -246,15 +237,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 : this.Services().Localize["TimeNow"];
         }
 
-        private string sPickupTimeStamp;
+        private string _PickupTimeStamp;
         public string PickupTimeStamp
         {
-            get { return sPickupTimeStamp; }
+            get { return _PickupTimeStamp; }
             set
             {
-                if (value != sPickupTimeStamp)
+                if (value != _PickupTimeStamp)
                 {
-                    sPickupTimeStamp = value;
+                    _PickupTimeStamp = value;
                     RaisePropertyChanged();
                 }
             }
@@ -288,8 +279,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     RaisePropertyChanged(() => Title);
                     if ((_pickupAddress != null) && (_pickupAddress.AddressLocationType == AddressLocationType.Airport))
                     {
-                        _orderWorkflowService.POIRefAirLineList(this.Services().Settings.TaxiHail.ApplicationKey, string.Empty, 0);
-                        _orderWorkflowService.POIRefPickupList(this.Services().Settings.TaxiHail.ApplicationKey, string.Empty, 0);
+                        _orderWorkflowService.POIRefAirLineList(string.Empty, 0);
+                        _orderWorkflowService.POIRefPickupList(string.Empty, 0);
 
                         // Clear/default any previous data
                         AirlineId = 0;
@@ -297,21 +288,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         FlightNum = string.Empty;
                         PUPointsId = 0;
                         RaisePropertyChanged(() => PUPointsName);
-                        //                    Log.Debug("MK-Dbg", String.Format("OrderAirportViewModel::PickupAddress: changed"));
                     }
                 }
             }
         }
 
-        private string objPOIPickup;
+        private string _POIPickup;
         public String POIPickup
         {
-            get { return objPOIPickup; }
+            get { return _POIPickup; }
             set
             {
-                if ((value != objPOIPickup)&&( value != null ))
+                if (value != _POIPickup && value != null )
                 {
-                    objPOIPickup = value;
+                    _POIPickup = value;
                     if (value != string.Empty)
                     {
                         var pArray = JArray.Parse(value);
@@ -333,7 +323,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                 }
                             }
                             PickupPoints.Add(new PointsItems { Name = sName, Fee = sFee });
-//                            Log.Debug("MK-Dbg", String.Format("OrderAirportViewModel::POIPickup: {0}, fee={1}", sName, dFee));
                         }
                         _PUPoints = new List<ListItem>();
                         for (int iIndex = 0; iIndex < PickupPoints.Count; iIndex++)
@@ -350,40 +339,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
         
-        private string objPOIAirline;
+        private string _POIAirline;
         public String POIAirline
         {
-            get { return objPOIAirline; }
+            get { return _POIAirline; }
             set
             {
-                if ((value != objPOIAirline)&&( value != null ))
+                if ( value != _POIAirline && value != null )
                 {
-                    objPOIAirline = value;
+                    _POIAirline = value;
                     if (value != string.Empty)
                     {
-//                        Log.Debug("MK-Dbg", String.Format("OrderAirportViewModel::POIAirline: {0}", value));
                         var pArray = JArray.Parse(value);
 
                         _airlines.Clear();
-                        int iId = 0;
+                        int index = 0;
                         foreach (var pItem in pArray)
                         {
-                            bool bAdd = false;
-                            string sName = string.Empty;
+                            bool addItem = false;
+                            string name = string.Empty;
                             foreach (var x in pItem)
                             {
                                 if ((((JProperty)x).Name == "type") && (((string)((JProperty)x).Value).IndexOf("airline") != -1 ))
                                 {
-                                    bAdd = true;
+                                    addItem = true;
                                 }
                                 else if (((JProperty)x).Name == "name")
                                 {
-                                    sName = ((string)((JProperty)x).Value);
+                                    name = ((string)((JProperty)x).Value);
                                 }
                             }
-                            if (bAdd == true)
+                            if (addItem == true)
                             {
-                                _airlines.Add(new ListItem { Display = sName, Id = iId++ });
+                                _airlines.Add(new ListItem { Display = name, Id = index++ });
                             }
                         }
                         AirlineId = 0;
@@ -400,52 +388,46 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(async () =>
                 {
-//                    var bookingSettings = await _orderWorkflowService.GetAndObserveBookingSettings().Take(1).ToTask();
-//                    var pickupAddress = await _orderWorkflowService.GetAndObservePickupAddress().Take(1).ToTask();
-
                     // check if additional fee is accepted
-                    PointsItems pItem = PickupPoints[(int)PUPointsId];
-                    bool bAccepted = true;
-                    int iFee = 0;
-                    if ((pItem != null) && (pItem.Fee != string.Empty))
+                    PointsItems pItem = PickupPoints[PUPointsId];
+                    bool accepted = true;
+                    int fee = 0;
+                    if (pItem != null && pItem.Fee != string.Empty)
                     {
 						foreach( char c in pItem.Fee )
 						{
 							if( Char.IsDigit(c)== true )
 							{
-								iFee *= 10;
-								iFee += Convert.ToInt32(c - 0x30);
-//                                Log.Debug("MK-Dbg", String.Format("OrderAirportViewModel::NextCommand: Fee: {0}", iFee));
+								fee *= 10;
+                                // When converting, subtract 0x30 to get true value between 0 - 9
+								fee += Convert.ToInt32(c - 0x30);
 							}
 						}
-						if( iFee > 0 )
+						if( fee > 0 )
 						{
-	                        bAccepted = false;
-	                        String sFeeWarning = string.Format(this.Services().Localize["BookingAirportPickupPointFee"], pItem.Name, pItem.Fee);
+	                        accepted = false;
+	                        var feeWarning = string.Format(this.Services().Localize["BookingAirportPickupPointFee"], pItem.Name, pItem.Fee);
 	                        await this.Services().Message.ShowMessage(
 	                            this.Services().Localize["WarningTitle"],
-	                            sFeeWarning,
+	                            feeWarning,
 	                            this.Services().Localize["OkButtonText"],
 	                            () =>
 	                            {
-	                                bAccepted = true;
+	                                accepted = true;
 	                            },
 	                            this.Services().Localize["Cancel"],
 	                            () => { });
 						}
                     }
-                    if (bAccepted)
+                    if (accepted)
                     {
-//                        BookingSettings = bookingSettings.Copy();
-//                        PickupAddress = pickupAddress.Copy();
-
-                        StringBuilder sb = new StringBuilder();
+                        var sb = new StringBuilder();
                         if( Note.Length > 0 )
                         {
                             sb.Append("{0}\n", Note );
                         }
                         sb.Append(this.Services().Localize["BookingAirportDetails"], _pickupAddress.FriendlyName, AirlineName, FlightNum, PUPointsName);
-                        if ((pItem != null) && (pItem.Fee != string.Empty)&&( iFee > 0 ))
+                        if (pItem != null && pItem.Fee != string.Empty && fee > 0 )
                         {
                             sb.Append(this.Services().Localize["BookingAirportDetailsFee"], pItem.Fee);
                         }
