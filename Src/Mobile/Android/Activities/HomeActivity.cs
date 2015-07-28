@@ -127,7 +127,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private void PanelMenuSignOutClick(object sender, EventArgs e)
         {
             ViewModel.Panel.SignOut.ExecuteIfPossible();
-            Observable.Return(Unit.Default).Delay(TimeSpan.FromSeconds(1)).Subscribe(x => { Finish(); });
         }
 
         private void PanelMenuToggle(object sender, EventArgs eventArgs)

@@ -331,6 +331,7 @@
   <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
   <string name="LoginForgotPasswordDetail">Enter your email and we\'ll send you a new one.</string>
   <string name="NoButton">No</string>
+  <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to logout?</string>
   <string name="PayInCar">Pay Cash/Credit Card in Car</string>
   <string name="CreditCardRequiredFields">All the fields are required</string>
   <string name="PromoBookRide">Use this promo code</string>
@@ -373,6 +374,7 @@
   <string name="CreateAccountInvalidPassword">The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
   <string name="DriverInfoMake">Make:</string>
+  <string name="PanelMenuViewSignOutPopupLogout">Logout</string>
   <string name="BookATaxi_Message">When would you like to book?</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="Eta">Nearest taxi is {0} {1} away</string>

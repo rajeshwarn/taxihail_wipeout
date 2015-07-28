@@ -334,6 +334,7 @@
 "Modify"="Modifier";
 "LoginForgotPasswordDetail"="Saisissez votre email pour recevoir votre nouveau mot de passe";
 "ResetPasswordTitleText"="Mot de passe oublié?";
+"PanelMenuViewSignOutPopupMessage"="Êtes vous sûr de vouloir vous déconnecter ?";
 "PayInCar"="Payer dans le taxi";
 "CreditCardRequiredFields"="Tous les champs obligatoires doivent être remplis";
 "SettingViewNotSignedIn"="Désolé, vous n'êtes pas identifié. Merci de vous identifier pour pouvoir utiliser l'application";
@@ -375,6 +376,7 @@
 "CreateAccountInvalidPassword"="Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.";
 "HistoryDetailRequestedLabel"="Commandé le:";
 "DriverInfoMake"="Marque:";
+"PanelMenuViewSignOutPopupLogout"="Déconnexion";
 "BookATaxi_Message"="Quand voulez-vous commander votre taxi?";
 "View_BookSettingMenu"="Paramètres";
 "Eta"="Le véhicule le plus proche est à {0} {1}";
