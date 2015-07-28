@@ -14,7 +14,7 @@ using Android.Runtime;
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	[Register("apcurium.mk.booking.mobile.client.controls.TouchableMap")]
-    public class TouchableMap : SupportMapFragment
+	public class TouchableMap : MapFragment
     {
         public View mOriginalContentView;
 
