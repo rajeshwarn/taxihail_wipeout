@@ -9,12 +9,13 @@
             ConsumerKey = "vmAoqWEY3zIvUCM4";
             ConsumerSecretKey = "DUWzh0jAldPc7C5I";
             SandboxMobileBaseUrl = "https://mobile-sandbox.cmtapi.com/";
-            SandboxBaseUrl = "https://payment-sandbox.cmtapi.com/";
+            SandboxBaseUrl = "https://payment-sandbox.cmtapi.com/v2/";
             MobileBaseUrl = "https://mobile.cmtapi.com/";
-            BaseUrl = "https://payment.cmtapi.com/";
+            BaseUrl = "https://payment.cmtapi.com/v2/";
             IsSandbox = true;
             CurrencyCode = CurrencyCodes.Main.UnitedStatesDollar;
             Market = "PHL";
+            SubmitAsFleetAuthorization = true;
 #endif
         }
 
@@ -39,5 +40,9 @@
         public string CurrencyCode { get; set; }
 
         public string Market { get; set; }
+
+        public bool SubmitAsFleetAuthorization { get; set; }
+
+        public string MerchantToken { get; set; }
     }
 }
