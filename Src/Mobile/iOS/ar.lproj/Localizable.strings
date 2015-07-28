@@ -325,7 +325,7 @@
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "LoginForgotPasswordDetail"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";
 "ResetPasswordTitleText"="نسيت كلمة المرور؟";
-"PanelMenuViewSignOutPopupMessage"="Are you sure you want to logout?";
+"PanelMenuViewSignOutPopupMessage"="Are you sure you want to sign out?";
 "PayInCar"="Pay in Car";
 "CreditCardRequiredFields"="كافة الخانات مطلوبة";
 "SettingViewNotSignedIn"="لست متصلا في الوقت الحالي. يجب أن تقوم بالتسجيل لاستخدام هذا التطبيق.";
@@ -367,7 +367,7 @@
 "CreateAccountInvalidPassword"="كلمة المرور غير صحيحة. كلمة المرور يجب أن تكون متطابقة و تكون بين 6 إلى 10 أحرف";
 "HistoryDetailRequestedLabel"="وقت المشوار:";
 "DriverInfoMake"="الصنع:";
-"PanelMenuViewSignOutPopupLogout"="Logout";
+"PanelMenuViewSignOutPopupLogout"="Sign Out";
 "BookATaxi_Message"="When would you like to book?";
 "View_BookSettingMenu"="إعدادات";
 "Eta"="Nearest taxi is {0} {1} away";

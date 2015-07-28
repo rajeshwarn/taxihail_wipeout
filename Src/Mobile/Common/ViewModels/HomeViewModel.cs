@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_tutorialService.DisplayTutorialToNewUser();
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 			}
-			
+
 			if (_locateUser)
 			{
 				AutomaticLocateMeAtPickup.Execute (null);
@@ -581,7 +581,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				// since this is called before OnViewStarted and AutomaticLocateMe needs it, do it here, otherwise AutomaticLocateMe will be very slow
 				_locationService.Start();
 
-				AutomaticLocateMeAtPickup.ExecuteIfPossible();
                 CheckUnratedRide();
 				CheckTermsAsync();
 				CheckCreditCardExpiration();
