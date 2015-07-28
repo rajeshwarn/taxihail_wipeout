@@ -10,7 +10,7 @@ using Android.Gms.Analytics;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-    // V2
+    // V3
     public class GoogleAnalyticsService : IAnalyticsService
     {
         private List<Tracker> Trackers { get; set; }
