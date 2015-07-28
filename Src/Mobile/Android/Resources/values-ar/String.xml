@@ -327,6 +327,7 @@
   <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
   <string name="LoginForgotPasswordDetail">أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.</string>
   <string name="ResetPasswordTitleText">نسيت كلمة المرور؟</string>
+  <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to logout?</string>
   <string name="PayInCar">Pay in Car</string>
   <string name="CreditCardRequiredFields">كافة الخانات مطلوبة</string>
   <string name="SettingViewNotSignedIn">لست متصلا في الوقت الحالي. يجب أن تقوم بالتسجيل لاستخدام هذا التطبيق.</string>
@@ -368,6 +369,7 @@
   <string name="CreateAccountInvalidPassword">كلمة المرور غير صحيحة. كلمة المرور يجب أن تكون متطابقة و تكون بين 6 إلى 10 أحرف</string>
   <string name="HistoryDetailRequestedLabel">وقت المشوار:</string>
   <string name="DriverInfoMake">الصنع:</string>
+  <string name="PanelMenuViewSignOutPopupLogout">Logout</string>
   <string name="BookATaxi_Message">When would you like to book?</string>
   <string name="View_BookSettingMenu">إعدادات</string>
   <string name="Eta">Nearest taxi is {0} {1} away</string>

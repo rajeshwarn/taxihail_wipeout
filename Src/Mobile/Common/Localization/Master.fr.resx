@@ -2042,4 +2042,10 @@
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
     <value>Désolé, aucun taxi disponible dans les environs.</value>
   </data>
+  <data name="PanelMenuViewSignOutPopupMessage" xml:space="preserve">
+    <value>Êtes vous sûr de vouloir vous déconnecter ?</value>
+  </data>
+  <data name="PanelMenuViewSignOutPopupLogout" xml:space="preserve">
+    <value>Déconnexion</value>
+  </data>
 </root>

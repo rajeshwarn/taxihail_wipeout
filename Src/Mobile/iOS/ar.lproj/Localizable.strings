@@ -325,6 +325,7 @@
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "LoginForgotPasswordDetail"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";
 "ResetPasswordTitleText"="نسيت كلمة المرور؟";
+"PanelMenuViewSignOutPopupMessage"="Are you sure you want to logout?";
 "PayInCar"="Pay in Car";
 "CreditCardRequiredFields"="كافة الخانات مطلوبة";
 "SettingViewNotSignedIn"="لست متصلا في الوقت الحالي. يجب أن تقوم بالتسجيل لاستخدام هذا التطبيق.";
@@ -366,6 +367,7 @@
 "CreateAccountInvalidPassword"="كلمة المرور غير صحيحة. كلمة المرور يجب أن تكون متطابقة و تكون بين 6 إلى 10 أحرف";
 "HistoryDetailRequestedLabel"="وقت المشوار:";
 "DriverInfoMake"="الصنع:";
+"PanelMenuViewSignOutPopupLogout"="Logout";
 "BookATaxi_Message"="When would you like to book?";
 "View_BookSettingMenu"="إعدادات";
 "Eta"="Nearest taxi is {0} {1} away";
@@ -517,6 +519,7 @@
 "AddReminderTitle"="موعد الإلتقاء المحدد";
 "StatusActionCancelButton"="إلغاء هذا الطلب";
 "InvalidBookinInfo"="لحجز سيارة الأجرة، يجب إدخال عنوان صحيح.";
+"EtaLessThanAMinute"="Nearest taxi is less than a minute away";
 "Politeness"="Politeness";
 "Overdue_Instructions"="Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.";
 "View_CreateAccount"="افتح حسابك";
@@ -568,7 +571,6 @@
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "HistoryDetailPromoLabel"="Promo Code:";
 "DateTimePickerPickTime"="اختر وقت الإلتقاء:";
-"EtaLessThenAMinute"="Nearest taxi is less then a minute away";
 "EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
 "CreateAccountErrorMessage"="لا يمكن إنشاء الحساب.";
 "View_RideSettings"="الملف الشخصي";

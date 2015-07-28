@@ -1984,4 +1984,10 @@
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
     <value>Sorry, no taxis currently available nearby.</value>
   </data>
+  <data name="PanelMenuViewSignOutPopupMessage" xml:space="preserve">
+    <value>Are you sure you want to logout?</value>
+  </data>
+  <data name="PanelMenuViewSignOutPopupLogout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
 </root>

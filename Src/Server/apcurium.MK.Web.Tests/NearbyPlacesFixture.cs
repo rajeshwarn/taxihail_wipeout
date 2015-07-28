@@ -20,8 +20,8 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
         }
 
-        private const double Latitude = 45.5062;
-        private const double Longitude = -73.5726;
+        private const double Latitude = 45.531743;
+        private const double Longitude = -73.622641;
 
         [TestFixtureSetUp]
         public override void TestFixtureSetup()

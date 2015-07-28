@@ -248,12 +248,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
 			{
-				return this.GetCommand(() =>
+				return this.GetCommand(async () =>
                 {
-					CloseMenu();
-					_orderWorkflowService.PrepareForNewOrder();
-					_accountService.SignOut();         
-					ShowViewModelAndClearHistory<LoginViewModel> ();
+						
+						await this.Services().Message.ShowMessage(null, 
+							this.Services().Localize["PanelMenuViewSignOutPopupMessage"],
+                            this.Services().Localize["PanelMenuViewSignOutPopupLogout"],
+							()=> 
+							{
+								CloseMenu();
+								_orderWorkflowService.PrepareForNewOrder();
+								_accountService.SignOut();         
+								ShowViewModelAndClearHistory<LoginViewModel> ();
+							},
+							this.Services().Localize["Cancel"],
+                            ()=> { } 
+						);
                 });
             }
         }
