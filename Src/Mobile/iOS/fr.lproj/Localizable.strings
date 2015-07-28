@@ -529,6 +529,7 @@
 "AddReminderTitle"="Départ(s) programmé(s)";
 "StatusActionCancelButton"="Annuler";
 "InvalidBookinInfo"="Pour commander une Audi, merci d'entrer une adresse valide";
+"EtaLessThanAMinute"="Le taxi le plus proche est à moins d'une minute de votre position";
 "Politeness"="Politesse";
 "Overdue_Instructions"=" La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Veuillez réessayer ou mettre à jour votre carte de crédit.";
 "View_CreateAccount"="Créer votre compte";
@@ -584,7 +585,6 @@
 "ServiceError_ErrorCreatingOrderMessage"="Merci de contacter {0} au {1} pour toute demande d'assistance";
 "HistoryDetailPromoLabel"="Code promo:";
 "DateTimePickerPickTime"="Sélectionner l'heure de départ";
-"EtaLessThenAMinute"="Le taxi le plus proche est à moins d'une minute de votre position";
 "EtaNoTaxiAvailable"="Désolé, aucun taxi disponible dans les environs.";
 "CreateAccountErrorMessage"="Le compte de peut malheureusement pas être créé";
 "View_RideSettings"="Profil";
