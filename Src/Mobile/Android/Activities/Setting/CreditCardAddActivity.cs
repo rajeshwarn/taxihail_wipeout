@@ -75,11 +75,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             spinnerExpYear.OnTouch += (sender, e) => HideKeyboard(spinnerExpYear.WindowToken);
 
             if (CardIOActivity.CanReadCardWithCamera()
+                // CardIOToken is only used to know if the company wants it or not
                 && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
             {
                 _scanIntent = new Intent(this, typeof(CardIOActivity));
-                _scanIntent.PutExtra(CardIOActivity.ExtraAppToken, this.Services().Settings.CardIOToken);
                 _scanIntent.PutExtra(CardIOActivity.ExtraRequireExpiry, false);
+                _scanIntent.PutExtra(CardIOActivity.ExtraHideCardioLogo, true);
                 _scanIntent.PutExtra(CardIOActivity.ExtraSuppressManualEntry, true);
                 _scanIntent.PutExtra(CardIOActivity.ExtraSuppressConfirmation, true);
 
