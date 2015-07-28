@@ -2053,9 +2053,9 @@
     <value>Sorry, no taxis currently available nearby.</value>
   </data>
   <data name="PanelMenuViewSignOutPopupMessage" xml:space="preserve">
-    <value>Are you sure you want to logout?</value>
+    <value>Are you sure you want to sign out?</value>
   </data>
   <data name="PanelMenuViewSignOutPopupLogout" xml:space="preserve">
-    <value>Logout</value>
+    <value>Sign Out</value>
   </data>
 </root>

@@ -41,6 +41,7 @@
     <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <MonoDroidExtraArgs>
     </MonoDroidExtraArgs>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -172,6 +173,9 @@
     <Reference Include="Cirrious.MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Insights, Version=1.10.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Xamarin.Insights.1.10.4.112\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.Android.Support.v13">
       <HintPath>..\packages\Xamarin.Android.Support.v13.22.2.0.0\lib\MonoAndroid403\Xamarin.Android.Support.v13.dll</HintPath>
     </Reference>
@@ -192,9 +196,6 @@
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Droid.FullFragging">
       <HintPath>..\packages\MvvmCross.HotTuna.Droid.FullFragging.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Droid.FullFragging.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Insights, Version=1.10.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Xamarin.Insights.1.10.4.112\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

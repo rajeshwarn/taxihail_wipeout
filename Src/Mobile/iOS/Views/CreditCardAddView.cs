@@ -285,7 +285,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     CollectExpiry = false,
                     DisableManualEntryButtons = true,
                     DisableBlurWhenBackgrounding = true,
-                    AutomaticallyAdjustsScrollViewInsets = false
+                    AutomaticallyAdjustsScrollViewInsets = false,
+                    HideCardIOLogo = true,
                 };
             }
 

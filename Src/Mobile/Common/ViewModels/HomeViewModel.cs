@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_tutorialService.DisplayTutorialToNewUser();
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 			}
-			
+
 			if (_locateUser)
 			{
 				AutomaticLocateMeAtPickup.Execute (null);
