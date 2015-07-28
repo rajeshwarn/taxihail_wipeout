@@ -25,7 +25,8 @@
 "UpdatePasswordNewPasswordLabel"="New Password";
 "DestinationNotSpecifiedText"="Destination not specified";
 "PickupMapTitle"="Pickup location";
-"HomeView_ManualPairing"="In A Taxi";
+"DialCodeSelectorTitle"="Dial Code";
+"HomeView_ManualPairing"="In a Taxi";
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="Booking cannot be completed";
 "DateTimePickerPickTitle"="Pickup date and time";
@@ -146,6 +147,7 @@
 "View_UpdatedTermsAndConditions"="New Terms and Conditions";
 "ResetPasswordSubtitleText"="Enter your email and we'll send you a new one.";
 "BookPickupLocationEmptyPlaceholder"="Tap to choose pickup";
+"ResendConfirmationCodeText"="Confirmation code will be resend shortly";
 "CannotCancelOrderTitle"="Invalid Action";
 "OrderNoteGPS"=" using a GPS";
 "View_RideLinqStatus"="Status";
@@ -162,6 +164,7 @@
 "BookRatingErrorMessage"="You need to rate your ride";
 "BookItButton"="Book Now";
 "AccountPaymentQuestionsRequired"="(required)";
+"OtherListItemPromptLabel"="Enter a value:";
 "LinkPayPal"="Link PayPal";
 "RideSettingsCustomerNumber"="Account Rider Number";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";
@@ -169,7 +172,7 @@
 "View_PayPal"="PayPal";
 "InvalidBookinInfoTitle"="Invalid booking info";
 "AppNeedUpdateTitle"="Update available";
-"StatusEta"="and is {0} and {1} {2} away";
+"StatusEta"="and is {1} {2} away";
 "LocationHistoryTitle"="Locations history";
 "CreditCardExpiredUpdateNow"="Update now";
 "PanelMenuViewAboutUsText"="About Us";
@@ -226,6 +229,7 @@
 "Notification_DriverAssignedPush"="Driver Assigned";
 "NoPayBackErrorMessage"="The PayBack field is required";
 "RideSettingsCannotLoadListTitle"="Server error";
+"AccountNotActivatedCodeBySMS"="Your account has not been activated. Another activation SMS was sent to you.";
 "LoadingMessage"="Loading...";
 "AccountNotActivated"="Your account has not been activated. Another activation email was sent to you.";
 "AddReminderTitle"="Scheduled Pick-Up";
@@ -358,9 +362,10 @@
 "Now"="Now";
 "RideSummarySubTitleText"="Thank you for riding with {0}, we look forward to serving you again soon.";
 "StatusConfirmCancelRide"="Are you sure you want to cancel?";
-"InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
+"InvalidPhoneErrorMessage"="The mobile number is invalid. It must have format {0}";
 "RateRide"="Rate my ride";
 "ConfirmDestinationLabel"="Destination";
+"ResendConfirmationCodeButtonText"="Resend confirmation code";
 "MarketChangedMessageTitle"="New service area detected";
 "apcuriumUrl"="http://www.apcurium.com/";
 "CreateAccountInvalidPassword"="The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.";
@@ -368,7 +373,7 @@
 "DriverInfoMake"="Make:";
 "BookATaxi_Message"="When would you like to book?";
 "PanelMenuViewPromotionsText"="Promotions";
-"Eta"="The nearest taxi is {0} and {1} {2} away";
+"Eta"="Nearest taxi is {0} {1} away";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirm Payment Information";
 "CreateAccountInvalidDataTitle"="Invalid account info";
 "ChargeTypeLabel"="Charge type";
@@ -487,6 +492,7 @@
 "DriverInfoDriver"="Driver:";
 "SettingsViewTitle"="Settings";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
+"ResendConfirmationCodeTitle"="Confirmation";
 "YesButton"="Yes";
 "CreateAccountEmptyField"="The data is invalid, all the fields are required.";
 "ManualRideLinqStatus_Tax"="Tax amount:";
@@ -514,6 +520,7 @@
 "LocationDetailApartmentLabel"="Apartment";
 "Overdue_Date"="Transaction date:";
 "View_ConfirmCarNumber"="Confirmation";
+"OtherListItemLabel"="Custom Percent";
 "View_BookingStatus"="Status";
 "View"="View";
 "NoRingCodeText"="No code";
@@ -541,6 +548,7 @@
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "Overdue_Failed_Message"="Your transaction was denied, please try again later or replace your credit card with a new one.";
 "RefineAddressTitle"="Refine an address";
+"TipPercent_Error"="Tip cannot be over 100%";
 "Tuto08Bottom"="We hope you find this application both convenient and intuitive.";
 "ManualRideLinqSummary_Done"="Done";
 "PaymentDetails.TipAmountLabel"="Tip Amount";
@@ -583,6 +591,8 @@
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "View_BookRating"="Rate Your Trip";
 "DateTimePickerPickTime"="Select your pickup time:";
+"EtaLessThenAMinute"="Nearest taxi is less then a minute away";
+"EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
 "CreateAccountErrorMessage"="The account cannot be created.";
 "View_RideSettings"="Profile";
 "StatusActionButton"="Call / Book / Cancel";

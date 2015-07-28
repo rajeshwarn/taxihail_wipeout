@@ -2,6 +2,6 @@
 {
     public interface ISmsService
     {
-        void Send(string toNumber, string message);
+        void Send(libphonenumber.PhoneNumber toNumber, string message);
     }
 }

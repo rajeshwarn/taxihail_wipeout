@@ -74,11 +74,13 @@
     <Compile Include="FeesUpdated.cs" />
     <Compile Include="IbsOrderInfoAddedToOrder.cs" />
     <Compile Include="OrderManuallyPairedForRideLinq.cs" />
+    <Compile Include="OrderNotificationDetailUpdated.cs" />
     <Compile Include="OrderUnpairedFromManualRideLinq.cs" />
     <Compile Include="NotificationSettingsAddedOrUpdated.cs" />
     <Compile Include="OrderCancelledBecauseOfError.cs" />
     <Compile Include="OrderPreparedForNextDispatch.cs" />
     <Compile Include="OrderPairedForPayment.cs" />
+    <Compile Include="OriginalEtaLogged.cs" />
     <Compile Include="PromotionDeleted.cs" />
     <Compile Include="PromotionUnapplied.cs" />
     <Compile Include="RefundedOrderUpdated.cs" />

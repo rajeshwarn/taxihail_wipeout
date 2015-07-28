@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 AdjustsFontSizeToFitWidth = true,
                 BackgroundColor = UIColor.Clear,
                 Lines = 1,
-                Font = UIFont.FromName(FontName.HelveticaNeueLight, 24 / 2),
+                Font = UIFont.FromName(FontName.HelveticaNeueLight, 30 / 2),
                 TextAlignment = UITextAlignment.Center,
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear,

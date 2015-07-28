@@ -8,6 +8,7 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using NUnit.Framework;
 
 namespace apcurium.MK.Booking.Test.OrderStatusUpdater
@@ -493,6 +494,9 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
 
             using (var context = new BookingDbContext(DbName))
             {
+                context.RemoveAll<FeesDetail>();
+                context.SaveChanges();
+
                 context.Save(new AccountDetail
                 {
                     Id = accountId,
@@ -573,6 +577,9 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
 
             using (var context = new BookingDbContext(DbName))
             {
+                context.RemoveAll<FeesDetail>();
+                context.SaveChanges();
+
                 context.Save(new AccountDetail
                 {
                     Id = accountId,
@@ -658,6 +665,9 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
 
             using (var context = new BookingDbContext(DbName))
             {
+                context.RemoveAll<FeesDetail>();
+                context.SaveChanges();
+
                 context.Save(new AccountDetail
                 {
                     Id = accountId,

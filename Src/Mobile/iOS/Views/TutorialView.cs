@@ -124,8 +124,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 // constraints for labelTop
                 View.AddConstraints(new [] 
                 {
-                    NSLayoutConstraint.Create(labelTop, NSLayoutAttribute.Left, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Left, 1f, 0f),
-                    NSLayoutConstraint.Create(labelTop, NSLayoutAttribute.Right, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Right, 1f, 0f),
+                    NSLayoutConstraint.Create(labelTop, NSLayoutAttribute.Left, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Left, 1f, 12f),
+                    NSLayoutConstraint.Create(labelTop, NSLayoutAttribute.Right, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Right, 1f, -12f),
                     NSLayoutConstraint.Create(labelTop, NSLayoutAttribute.Top, NSLayoutRelation.Equal, labelTopTitle, NSLayoutAttribute.Bottom, 1f, 5f),
                 });
 

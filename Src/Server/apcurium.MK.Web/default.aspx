@@ -104,7 +104,8 @@
 
             TaxiHail.referenceData = <%= ReferenceData %>;
             TaxiHail.vehicleTypes = <%= VehicleTypes %>;
-
+            TaxiHail.countryCodes = <%= CountryCodes %>;
+            TaxiHail.parameters.defaultCountryCode = "<%= DefaultCountryCode %>";
         </script>
 
         <%: Scripts.Render("~/bundles/app") %>

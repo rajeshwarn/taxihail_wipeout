@@ -9,6 +9,7 @@
         @Styles.Render("~/bundles/bootstrap/less")
         <script src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")" type="text/javascript"> </script>
         <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/GridPagination.css")" rel="stylesheet" type="text/css" />
         <script src="@Url.Content("~/Scripts/gridmvc.min.js")" type="text/javascript"></script>
     </head>
     <body>
@@ -23,26 +24,29 @@
                     </div>
                     @if (User.IsInRole(RoleName.Admin))
                     {
-                    <div class="container">
-                    		<a href='@Url.Action("index", "Home")'>Company list</a>
-				            |
-				            <a href='@Url.Action("Create")'>New Company</a>
-				            |
-				            <a href='@Url.Action("Index", "Membership")'>Manage Users</a>
-				            |
-				            <a href="@Url.Action("Index", "Deployment")">Deployment</a>
-				            |
-				            <a href="@Url.Action("Index", "Payment")">Payment</a>
-				            |
-				            <a href='@Url.Action("Index", "NetworkVehicles")'>Network Vehicles</a>
-				            |
-				            <a href="@Url.Action("RefreshVersions")">Refresh Versions</a>
-				            |
-				            <a href="@Url.Action("Index","StoreCredential")">Store Credentials</a>
-				            |
-				            <a href="@Url.Action("Index","CheckList")">Checklist</a>
-				      </div>
-				     }
+                        <div class="container" style="height:40px">
+                            <a href='@Url.Action("index", "Home")' class="btn">Company list</a>
+
+                            <a href='@Url.Action("Create")' class="btn">New Company</a>
+
+                            <a href='@Url.Action("Index", "Membership")' class="btn">Users</a>
+
+                            <a href="@Url.Action("Index", "Deployment")" class="btn">Deployment</a>
+
+                            <a href="@Url.Action("Index", "Payment")" class="btn">Payment</a>
+
+                            <a href='@Url.Action("Index", "NetworkVehicles")' class="btn">Network Vehicles</a>
+
+                            <a href="@Url.Action("Index","StoreCredential")" class="btn">Store Credentials</a>
+
+                            <a href="@Url.Action("Index","CheckList")" class="btn">Checklist</a>
+
+                            <br />
+
+
+
+                        </div>
+                    }
                 </div>
             </div>
             <div style="width: 980px;">

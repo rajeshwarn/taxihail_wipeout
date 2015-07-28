@@ -71,14 +71,27 @@
                         android:paddingBottom="5dip"
                         android:text="@string/RideSettingsPhone"
                         style="@style/BlackTextLabel" />
-                    <EditText
+                    <LinearLayout
                         android:layout_width="fill_parent"
-                        android:layout_marginBottom="10dip"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        local:MvxBind="Text Phone"
-                        android:maxLines="1"
-                        android:inputType="phone"
-                        android:singleLine="true" />
+                        android:layout_height="@dimen/HeightEditTextFlat">
+                        <MvxSpinner
+                            android:layout_width="60dp"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:layout_marginBottom="10dip"
+                            android:background="@drawable/edit_text_flat"
+                            style="@style/MainTheme"
+                            local:MvxItemTemplate="@layout/countrycodeitemmvx"
+                            local:MvxDropDownItemTemplate="@layout/countrycodeitemdropdownmvx"
+                            local:MvxBind="ItemsSource CountryCodes;SelectedItem SelectedCountryCode" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            local:MvxBind="Text Phone"
+                            android:maxLines="1"
+                            android:inputType="phone"
+                            android:singleLine="true" />
+                    </LinearLayout>
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -98,12 +111,13 @@
                         android:paddingTop="5dip"
                         android:paddingBottom="5dip"
                         android:text="@string/RideSettingsVehiculeType"
-                        style="@style/BlackTextLabel" />
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility" />
                     <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
-                        local:MvxBind="Text VehicleTypeName; Data Vehicles; SelectedItem VehicleTypeId" />
+                        local:MvxBind="Text VehicleTypeName; Data Vehicles; SelectedItem VehicleTypeId; Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility; Enabled IsVehicleTypeSelectionEnabled" />
                     <TextView
                         android:singleLine="true"
                         android:layout_height="wrap_content"
@@ -160,6 +174,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
+                        local:allowOtherSelection="true"
                         local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip" />
                     <TextView
                         android:layout_width="fill_parent"

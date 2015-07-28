@@ -12,6 +12,8 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -20,12 +22,14 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
+        private readonly Resources.Resources _resources;
 
         public RegisterAccountService(ICommandBus commandBus, IAccountDao accountDao, IServerSettings serverSettings)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
             _serverSettings = serverSettings;
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public object Post(RegisterAccount request)
@@ -36,6 +40,17 @@ namespace apcurium.MK.Booking.Api.Services
             if (_accountDao.FindByEmail(request.Email) != null)
             {
                 throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
+            }
+
+            CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
+            
+            if (countryCode.IsNumberPossible(request.Phone))
+            {
+                request.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Phone);
+            }
+            else
+            {
+                throw new HttpError(string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
             }
 
             if (request.FacebookId.HasValue())
@@ -101,6 +116,7 @@ namespace apcurium.MK.Booking.Api.Services
                         {
                             ClientLanguageCode = command.Language,
                             Code = confirmationToken,
+                            CountryCode = command.Country,
                             PhoneNumber = command.Phone
                         });
                     }

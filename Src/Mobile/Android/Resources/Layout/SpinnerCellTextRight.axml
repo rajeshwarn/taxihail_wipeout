@@ -16,7 +16,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:gravity="start|center_vertical" />
-        <Spinner
+        <apcurium.mk.booking.mobile.client.controls.SpinnerOtherSupport
             android:id="@+id/spinner"
             android:layout_width="1dp"
             android:layout_height="1dp"

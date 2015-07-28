@@ -2,10 +2,10 @@ using System;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using Foundation;
 using System.Threading.Tasks;
-using MonoTouch.FacebookConnect;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
+using MonoTouch.FacebookConnect;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 {

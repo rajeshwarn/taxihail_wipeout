@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Maps;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -268,33 +269,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				if (Eta.IsValidEta()) 
-				{
-					if (Eta.Duration > 30) 
-					{
-						return this.Services ().Localize ["EtaNotAvailable"];
-					} 
-					else 
-					{
-						var durationUnit = Eta.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
-						return string.Format (this.Services ().Localize ["Eta"], Eta.FormattedDistance, Eta.Duration, durationUnit);
-					}
-				}
+			    if (!Eta.IsValidEta())
+			    {
+					return this.Services ().Localize ["EtaNoTaxiAvailable"];;
+			    }
 
-				return string.Empty;
+			    if (Eta.Duration > 30) 
+			    {
+			        return this.Services ().Localize ["EtaNotAvailable"];
+			    }
+                var durationUnit = Eta.Duration <= 1 ? this.Services().Localize["EtaDurationUnit"] : this.Services().Localize["EtaDurationUnitPlural"];
+
+                if (Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
+			    {
+
+                    return Eta.Duration == 0
+			            ? this.Services().Localize["EtaLessThanAMinute"]
+                        : string.Format(this.Services().Localize["Eta"], Eta.Duration, durationUnit);
+			    }
+			    return string.Format (this.Services ().Localize ["Eta"], Eta.Duration, durationUnit);
 			}
 		}
 
 		public bool VehicleAndEstimateBoxIsVisible
 		{
-			get { return ShowVehicleSelection || ShowEstimate; }
+		    get
+		    {
+		        return ShowVehicleSelection || ShowEstimate;
+		    }
 		}
 
 		public bool ShowEta
 		{
 			get
 			{
-				return Settings.ShowEta && Eta != null && FormattedEta.HasValue() && !ShowEstimate;
+			    return Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate;
 			}
 		}
 

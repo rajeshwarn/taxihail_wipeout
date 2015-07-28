@@ -310,7 +310,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IsCompleted = _bookingService.IsStatusCompleted(Status);
 			IsDone = _bookingService.IsStatusDone(Status.IBSStatusId);
             
-			CanCancel = _bookingService.IsOrderCancellable (Status.IBSStatusId);
+			CanCancel = _bookingService.IsOrderCancellable (Status);
 		}
 
 		public ICommand NavigateToRatingPage

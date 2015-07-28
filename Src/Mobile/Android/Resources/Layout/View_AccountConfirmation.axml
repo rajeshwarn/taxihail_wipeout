@@ -69,5 +69,12 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/HeightButton"
             style="@style/ButtonMainStyle" />
+        <Button
+            android:id="@+id/btnResend"
+            local:MvxBind="Click ResendConfirmationCode"
+            android:text="@string/ResendConfirmationCodeButtonText"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/HeightButton"
+            style="@style/ButtonMainStyle" />
     </LinearLayout>
 </RelativeLayout>

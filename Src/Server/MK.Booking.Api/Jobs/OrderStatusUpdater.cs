@@ -21,13 +21,15 @@ using apcurium.MK.Common.Resources;
 using CMTPayment;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
     public class OrderStatusUpdater
     {
         private const string FailedCode = "0";
+        
+        // maximum probable time between the moment when user changes payment type on his device and it's saving in the database on server, seconds
+        const int timeBetweenPaymentChangeAndSaveInDB = 15;
 
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -42,6 +44,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IFeeService _feeService;
+        private readonly IOrderNotificationsDetailDao _orderNotificationsDetailDao;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -62,6 +65,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             IPaymentService paymentService,
             ICreditCardDao creditCardDao,
             IFeeService feeService,
+            IOrderNotificationsDetailDao orderNotificationsDetailDao,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -78,6 +82,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _logger = logger;
             _commandBus = commandBus;
             _paymentDao = paymentDao;
+            _orderNotificationsDetailDao = orderNotificationsDetailDao;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -86,6 +91,9 @@ namespace apcurium.MK.Booking.Api.Jobs
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail);
 
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail);
+
+            if (orderFromIbs.IsLoaded)
+                SendChargeTypeMessageToDriver(orderStatusDetail);
 
             if (orderFromIbs.IsWaitingToBeAssigned)
             {
@@ -113,6 +121,36 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Tax = orderFromIbs.VAT,
                 Surcharge = orderFromIbs.Surcharge
             });
+        }
+
+        void SendChargeTypeMessageToDriver(OrderStatusDetail orderStatusDetail)
+        {
+            var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
+
+            if (orderStatusDetail.IsPrepaid
+                || orderDetail.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
+            {
+                return;
+            }
+
+            if (orderStatusDetail.UnpairingTimeOut != null)
+            {
+                if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(timeBetweenPaymentChangeAndSaveInDB))
+                {
+                    var orderNotification = _orderNotificationsDetailDao.FindByOrderId(orderStatusDetail.OrderId);
+
+                    if (orderNotification == null || !orderNotification.InfoAboutPaymentWasSentToDriver)
+                    {
+                        _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
+
+                        _commandBus.Send(new UpdateOrderNotificationDetail
+                        {
+                            OrderId = orderStatusDetail.OrderId,
+                            InfoAboutPaymentWasSentToDriver = true
+                        });
+                    }
+                }
+            }
         }
 
         public void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)
@@ -172,7 +210,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                 DriverId = tripInfo.DriverId,
                 AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
                 LastFour = tripInfo.LastFour,
-                Tolls = tolls.ToArray()
+                Tolls = tolls.ToArray(),
+                LastLatitudeOfVehicle = tripInfo.Lat,
+                LastLongitudeOfVehicle = tripInfo.Lon,
             });
         }
 
@@ -196,7 +236,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.Eta =                             ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
             orderStatusDetail.RideLinqPairingCode =             ibsOrderInfo.PairingCode.GetValue(orderStatusDetail.RideLinqPairingCode);
             orderStatusDetail.DriverInfos.DriverPhotoUrl =      ibsOrderInfo.DriverPhotoUrl.GetValue(orderStatusDetail.DriverInfos.DriverPhotoUrl);
-            
+
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
             var wasProcessingOrderOrWaitingForDiver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
@@ -465,7 +505,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (promoUsed != null)
                 {
                     var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                    amountSaved = promoDomainObject.GetDiscountAmount(Convert.ToDecimal(ibsOrderInfo.MeterAmount));
+                    amountSaved = promoDomainObject.GetDiscountAmount(Convert.ToDecimal(ibsOrderInfo.MeterAmount), Convert.ToDecimal(tipAmount));
                     totalOrderAmount = totalOrderAmount - amountSaved;
                 }
 

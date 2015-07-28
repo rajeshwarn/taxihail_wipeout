@@ -19,7 +19,6 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
@@ -282,6 +281,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var bsr = new BookingSettingsRequest
             {
                 Name = settings.Name,
+                Country = settings.Country,
                 Phone = new string(phoneNumberChars),
                 VehicleTypeId = settings.VehicleTypeId,
                 ChargeTypeId = settings.ChargeTypeId,
@@ -775,37 +775,5 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateUserTaxiHailNetworkSettings(request));
         }
-			
-		public async void LogApplicationStartUp()
-		{
-			try
-			{
-				var packageInfo = Mvx.Resolve<IPackageInfo> ();
-
-				var position = await _locationService.GetUserPosition();
-
-				var request = new LogApplicationStartUpRequest
-				{
-					StartUpDate = DateTime.UtcNow,
-					Platform = packageInfo.Platform,
-					PlatformDetails = packageInfo.PlatformDetails,
-					ApplicationVersion = packageInfo.Version,
-					Latitude = position != null
-						? position.Latitude
-						: 0,
-					Longitude = position != null
-						? position.Longitude
-						: 0
-				};
-
-				// No need to await since we do not want to slowdown the app
-				UseServiceClientAsync<IAccountServiceClient> (client => client.LogApplicationStartUp(request));
-			}
-			catch (Exception e)
-			{
-				// If logging fails, run app anyway and log exception
-                Logger.LogError(e);
-			}
-		}
     }
 }

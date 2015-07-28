@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
@@ -61,10 +62,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Where (_ => _settings.Data.ShowEta)
 				.CombineLatest(orderWorkflowService.GetAndObservePickupAddress (), (vehicles, address) => new { address, vehicles } )
 				.Select (x => new { x.address, vehicle =  GetNearestVehicle(x.address, x.vehicles) })
-				.DistinctUntilChanged(x => x.vehicle == null 
-                    ? double.MaxValue 
-                    : Position.CalculateDistance(x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude)
-                )
+				.DistinctUntilChanged(x =>
+				{
+				    if (_settings.Data.AvailableVehiclesMode == AvailableVehiclesModes.Geo && x.vehicle != null)
+				    {
+				        return x.vehicle.Eta ?? double.MaxValue;
+				    }
+
+				    return x.vehicle == null
+				        ? double.MaxValue
+				        : Position.CalculateDistance(x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude);
+				})
 				.SelectMany(x => CheckForEta(x.address, x.vehicle));
 		}
 
@@ -106,22 +114,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return null;
 			}
 
-
-		    if (_settings.Data.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
-		    {
-				// We use the order this was returned in.
-		        var car = cars.FirstOrDefault(v => v.Eta.HasValue);
-
-                // If no ETA was returned by the GeoService, default back to calculated position.
-		        return car ?? OrderVehiclesByDistance(pickup, cars).First();
-		    }
-
-			return OrderVehiclesByDistance (pickup, cars).First();
+			return OrderVehiclesByDistanceIfNeeded (pickup, cars).First();
 		}
 
 		public MapBounds GetBoundsForNearestVehicles(Address pickup, IEnumerable<AvailableVehicle> cars)
 		{
-			if ((cars == null) || (!cars.Any ()) || !_settings.Data.ZoomOnNearbyVehicles) 
+			if (cars == null || !cars.Any() || !_settings.Data.ZoomOnNearbyVehicles) 
 			{
 				return null;
 			}
@@ -132,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var centerLatitude = pickup.Latitude;
 			var centerLongitude = pickup.Longitude;
 
-			var vehicles = OrderVehiclesByDistance (pickup, cars)
+			var vehicles = OrderVehiclesByDistanceIfNeeded (pickup, cars)
 				.Where (car => Position.CalculateDistance (car.Latitude, car.Longitude, centerLatitude, centerLongitude) <= radius)
 				.Take (vehicleCount)
 				.ToArray();
@@ -149,22 +147,43 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return maximumBounds;
 		}
 
-		IEnumerable<AvailableVehicle> OrderVehiclesByDistance(Address pickup, IEnumerable<AvailableVehicle> cars)
+		private IEnumerable<AvailableVehicle> OrderVehiclesByDistanceIfNeeded(Address pickup, IEnumerable<AvailableVehicle> cars)
 		{
-			return cars
-				.OrderBy (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude))
-				.ToArray();
+		    return _settings.Data.AvailableVehiclesMode == AvailableVehiclesModes.Geo
+                // Ensure that the cars are ordered correctly.
+                ? cars.OrderBy(car => car.Eta.HasValue ? 0 : 1).ThenBy(car => car.Eta).ThenBy(car  => car.VehicleNumber)
+                : cars.OrderBy (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude));
 		}
 
-		private Task<Direction> CheckForEta(Address pickup, AvailableVehicle vehicleLocation)
+	    private async Task<Direction> CheckForEta(Address pickup, AvailableVehicle vehicleLocation)
 		{
 			if(vehicleLocation == null)
 			{
-				return Task.FromResult(new Direction());
+                return new Direction();
 			}
 
-			return GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);
+		    var etaBetweenCoordinates = await GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);
+
+		    if (_settings.Data.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
+		    {
+                // Needs value in minutes not in seconds.
+                etaBetweenCoordinates.Duration = vehicleLocation.Eta / 60;
+		    }
+
+		    return etaBetweenCoordinates;
 		}
+
+		
+		public async Task<GeoDataEta> GetVehiclePositionInfoFromGeo(double fromLat, double fromLng, string vehicleRegistration, Guid orderId)
+	    {
+            var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleRegistration, orderId));
+
+	        var directions = await _directions.GetDirectionAsync(fromLat, fromLng, etaFromGeo.Latitude, etaFromGeo.Longitude, null, null, false);
+
+	        directions.Duration = etaFromGeo.Eta / 60;
+
+		    return new GeoDataEta(directions, etaFromGeo.Latitude, etaFromGeo.Longitude);
+	    }
 
 		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
 		{
@@ -211,5 +230,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			return _etaObservable;
 		}
+    }
+
+    public class GeoDataEta
+    {
+        public GeoDataEta(Direction directions, double? latitude, double? longitude)
+        {
+            Directions = directions;
+            Latitude = latitude;
+            Longitude = longitude;
+        }
+
+        public Direction Directions { get; private set; }
+
+        public double? Latitude { get; private set; }
+
+        public double? Longitude { get; private set; }
     }
 }

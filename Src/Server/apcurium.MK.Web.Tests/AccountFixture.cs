@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 
@@ -44,6 +45,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = accountId,
                 Phone = "", // TODO: set phone number here
+                Country = new CountryISOCode("CA"),
                 Email = tempEmail,
                 Name = "First Name Test",
                 Language = "en"
@@ -82,6 +84,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
+                Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
                 FacebookId = Guid.NewGuid().ToString(),
@@ -105,6 +108,7 @@ namespace apcurium.MK.Web.Tests
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
                 Email = GetTempEmail(),
+                Country = new CountryISOCode("CA"),
                 Name = "First Name Test",
                 TwitterId = Guid.NewGuid().ToString(),
                 Language = "en"
@@ -128,7 +132,8 @@ namespace apcurium.MK.Web.Tests
                 Name = "toto",
                 NumberOfTaxi = 6,
                 Passengers = 8,
-                Phone = "12345",
+                Phone = "5141234567",
+                Country = new CountryISOCode("CA"),
                 ProviderId = 13,
                 VehicleTypeId = 1,
                 DefaultTipPercent = 15
@@ -185,6 +190,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
+                Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
                 Password = "password"
@@ -210,6 +216,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
+                Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
                 Password = "password"
@@ -287,6 +294,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
+                Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
                 Password = "password"
@@ -297,6 +305,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
+                Country = new CountryISOCode("CA"),
                 Email = email,
                 Name = "First Name Test",
                 Password = "password"
@@ -314,6 +323,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
+                Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
                 FacebookId = facebookId.ToString()
@@ -324,6 +334,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
+                Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
                 FacebookId = facebookId.ToString()
@@ -342,6 +353,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
+                Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
                 TwitterId = twitterId.ToString()
@@ -352,6 +364,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
+                Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
                 TwitterId = twitterId.ToString()
@@ -368,6 +381,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
+                Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
                 Password = "password",
@@ -466,6 +480,7 @@ namespace apcurium.MK.Web.Tests
             {
                 AccountId = Guid.NewGuid(),
                 Phone = "5146543024",
+                Country = new CountryISOCode("CA"),
                 Email = GetTempEmail(),
                 Name = "First Name Test",
                 TwitterId = twitterId.ToString()

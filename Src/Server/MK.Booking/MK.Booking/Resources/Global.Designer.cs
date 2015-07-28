@@ -970,7 +970,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number.
+        ///   Looks up a localized string similar to Vehicle #.
         /// </summary>
         public static string Email_Body_VehicleNumber {
             get {
@@ -1380,6 +1380,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string PayPalWebTipItemDescription {
             get {
                 return ResourceManager.GetString("PayPalWebTipItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The phone number is invalid. It must have format {0}.
+        /// </summary>
+        public static string PhoneNumberFormat {
+            get {
+                return ResourceManager.GetString("PhoneNumberFormat", resourceCulture);
             }
         }
         

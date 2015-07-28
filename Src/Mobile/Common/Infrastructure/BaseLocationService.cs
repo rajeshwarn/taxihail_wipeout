@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
@@ -37,7 +37,10 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
                 return BestPosition;
             }
 
-            var position = await GetNextPosition(TimeSpan.FromSeconds(8), 70)
+			// ios does not send CLLocationManagerDelegate.didUpdateLocation constantly when there is no position update so the PositionExtensions.ValidCoordinateTime
+			// quickly becomes invalid which causes to pause (GetNextPosition([pause time],.....) every time when Find My Location click before acting to position on the map
+			// so the pause time should be 0
+			var position = await GetNextPosition(TimeSpan.Zero, 70)
                 .Take(1)
                 .DefaultIfEmpty() // Will return null in case of a timeout
                 .ToTask();

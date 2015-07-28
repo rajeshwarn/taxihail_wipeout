@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.Commands
 
         public decimal TaxedMeterAmount { get; set; }
 
+        public decimal TipAmount { get; set; }
+
         public Guid Id { get; private set; }
     }
 }

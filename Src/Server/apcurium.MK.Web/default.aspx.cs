@@ -17,6 +17,8 @@ using apcurium.MK.Common.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using ServiceStack.Text;
 using System.Web;
+using apcurium.MK.Common;
+using System.Globalization;
 
 #endregion
 
@@ -74,6 +76,10 @@ namespace apcurium.MK.Web
         protected bool IsCraftyClicksEnabled { get; private set; }
 
         protected string WebSiteRootPath { get; private set; }
+
+        protected string CountryCodes { get; private set; }
+
+        protected string DefaultCountryCode { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -157,6 +163,18 @@ namespace apcurium.MK.Web
             var vehicleService = ServiceLocator.Current.GetInstance<VehicleService>();
             var vehicleTypes = (IList<VehicleTypeDetail>)vehicleService.Get(new VehicleTypeRequest());
             VehicleTypes = JsonSerializer.SerializeToString(vehicleTypes, vehicleTypes.GetType());
+            CountryCodes = Newtonsoft.Json.JsonConvert.SerializeObject(CountryCode.CountryCodes);
+
+            CultureInfo defaultCultureInfo = CultureInfo.GetCultureInfo(config.ServerData.PriceFormat);
+
+            if (defaultCultureInfo != null)
+            {
+                DefaultCountryCode = (new RegionInfo(defaultCultureInfo.LCID)).TwoLetterISORegionName;
+            }
+            else
+            {
+                DefaultCountryCode = "CA";
+            }
         }
 
         protected string FindParam(string[] filters, string param)

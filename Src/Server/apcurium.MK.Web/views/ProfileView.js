@@ -2,8 +2,9 @@
     
     var View = TaxiHail.ProfileView = TaxiHail.TemplatedView.extend({
         events: {
-            'change :input': 'onPropertyChanged'
-        },
+            'change :input': 'onPropertyChanged',
+            "change #countrycode": "onPropertyChanged"
+    },
 
         initialize: function () {
 
@@ -18,7 +19,6 @@
             );
 
             this.render();
-
         },
 
         render: function () {
@@ -35,6 +35,11 @@
             if (!data.settings.payBack) {
                 // We need to make sure that the PayBack number, if empty, is saved as a string
                 data.settings.payBack = "";
+            }
+
+            if (!data.settings.country.code) {
+                // We need to make sure that the PayBack number, if empty, is saved as a string
+                data.settings.country.code = TaxiHail.parameters.defaultCountryCode;
             }
 
             var tipPercentages = [
@@ -82,17 +87,19 @@
                 isChargeAccountPaymentEnabled: TaxiHail.parameters.isChargeAccountPaymentEnabled,
                 displayTipSelection: displayTipSelection,
                 tipPercentages: tipPercentages,
-                showPayBackField: showPayBackField
+                showPayBackField: showPayBackField,
+                countryCodes: TaxiHail.extendSpacesForCountryDialCode(TaxiHail.countryCodes)
             });
 
             this.$el.html(this.renderTemplate(data));
+
+            this.$("#countrycode").val(data.settings.country.code).selected = "true";
             
             this.validate({
                 rules: {
                     name: "required",
                     phone: {
-                        required : true,
-                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/
+                        required : true
                     },
                     passengers: {
                         required: true,
@@ -108,8 +115,7 @@
                         required: TaxiHail.localize('error.NameRequired')
                     },
                     phone: {
-                        required: TaxiHail.localize('error.PhoneRequired'),
-                        regex: TaxiHail.localize('error.PhoneBadFormat')
+                        required: TaxiHail.localize('error.PhoneRequired')
                     },
                     passengers: {
                         required: TaxiHail.localize('error.PassengersRequired'),
@@ -139,6 +145,7 @@
             var accountNumber = this.model.get('settings').accountNumber;
             var customerNumber = this.model.get('settings').customerNumber;
             var chargeAccountEnabled = TaxiHail.parameters.isChargeAccountPaymentEnabled;
+
             if (chargeAccountEnabled && accountNumber) {
 
                 // Validate charge account number
@@ -168,11 +175,20 @@
                 .done(_.bind(function() {
                     this.renderConfirmationMessage();
                 }, this))
-                .fail(_.bind(function () {
+                .fail(_.bind(function (result) {
                     this.$(':submit').button('reset');
 
+                    var message = "";
+
+                    if (result.statusText != undefined) {
+                        message = result.statusText;
+                    }
+                    else {
+                        message = TaxiHail.localize("error.accountUpdate");
+                    }
+
                     var alert = new TaxiHail.AlertView({
-                        message: TaxiHail.localize("error.accountUpdate"),
+                        message: message,
                         type: 'error'
                     });
                     alert.on('ok', alert.remove, alert);
@@ -180,19 +196,30 @@
                 }, this));
         },
 
-        onPropertyChanged : function (e) {
+        onPropertyChanged: function (e) {
+
+            var dataNodeName = e.currentTarget.nodeName.toLowerCase();
+            var elementName = e.currentTarget.name;
+
             var $input = $(e.currentTarget);
             var settings = this.model.get('settings');
 
-            var name = $input.attr("name");
-            var value = $input.val();
+            if (dataNodeName == "input") {
+                var name = $input.attr("name");
+                var value = $input.val();
 
-            // Update local model values
-            if (name === "defaultTipPercent") {
-                this.model.set("defaultTipPercent", value);
+                // Update local model values
+                if (name === "defaultTipPercent") {
+                    this.model.set("defaultTipPercent", value);
+                }
+                settings[name] = value;
+                settings["defaultTipPercent"] = this.model.get("defaultTipPercent");
             }
-            settings[name] = value;
-            settings["defaultTipPercent"] = this.model.get("defaultTipPercent");
+            else if (dataNodeName == "select") {
+                if (elementName == "countryCode") {
+                    settings.country.code = $input.find(":selected").val();
+                }
+            }
 
             this.$(':submit').removeClass('disabled');
         }

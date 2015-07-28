@@ -6,10 +6,12 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Helpers;
+using apcurium.MK.Common;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class CreateAccountViewModel: PageViewModel, ISubViewModel<RegisterAccount>
+    public class CreateAccountViewModel : PageViewModel, ISubViewModel<RegisterAccount>
 	{
 		private readonly IRegisterWorkflowService _registerService;
 		private readonly ITermsAndConditionsService _termsService;
@@ -21,25 +23,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		public RegisterAccount Data { get; set; }
-		public string ConfirmPassword { get; set; }
+		
+        public string ConfirmPassword { get; set; }
+
+        public PhoneNumberModel PhoneNumber { get; set; }
+
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 
 		public void Init(string twitterId, string facebookId, string name, string email)
 		{
+            string countryISOCode = new RegionInfo(CultureProvider.CultureInfo.LCID).TwoLetterISORegionName;
+
+            PhoneNumber = new PhoneNumberModel()
+            {
+                Country = new CountryISOCode(countryISOCode)
+            };
+
 			Data = new RegisterAccount
 			{
 				FacebookId = facebookId,
 				TwitterId = twitterId,
 				Name = name,
-				Email = email
+				Email = email,
+                Country = PhoneNumber.Country
 			};
 			#if DEBUG
-			Data.Email = "toto2@titi.com";
-			Data.Name = "Matthieu Duluc" ;
-			Data.Phone = "5146543024";
+			Data.Email = "testaccount@net.net";
+			Data.Name = "test account" ;
+            Data.Country = new CountryISOCode("CA");
+			Data.Phone = "5147777777";
 			Data.Password = "password";
 			ConfirmPassword = "password";
+            PhoneNumber.Country = Data.Country;
+            PhoneNumber.PhoneNumber = Data.Phone;
 			#endif
 		}
 
@@ -80,6 +97,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{
+                    Data.Phone = PhoneNumber.PhoneNumber;
+                    Data.Country = PhoneNumber.Country;
+
 					if (!IsEmail(Data.Email))
 					{
                         await this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
@@ -99,9 +119,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 
-                    if (!PhoneHelper.IsValidPhoneNumber(Data.Phone))
+                    if (!PhoneNumber.IsNumberPossible())
 					{
-                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"],
+                            string.Format(this.Services().Localize["InvalidPhoneErrorMessage"], PhoneNumber.GetPhoneExample()));
 						return;
 					}
 

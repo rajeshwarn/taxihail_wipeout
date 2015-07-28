@@ -61,12 +61,15 @@
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\ClientPopularAddress.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
+    <Compile Include="Requests\ConfirmationCodeRequest.cs" />
     <Compile Include="Requests\CreateOrder.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
+    <Compile Include="Requests\EtaForPickupRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
+    <Compile Include="Requests\LogOriginalEtaRequest.cs" />
     <Compile Include="Requests\NearbyPlacesRequest.cs" />
     <Compile Include="Requests\NotificationSettingsRequest.cs" />
     <Compile Include="Requests\OrderRatingRequest.cs" />

@@ -31,7 +31,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    private readonly IMvxLifetime _mvxLifetime;
 		private readonly IAccountService _accountService;
 	    private readonly IBookingService _bookingService;
-		private readonly IPaymentService _paymentService;
+	    private readonly IMetricsService _metricsService;
+	    private readonly IPaymentService _paymentService;
 
 		private HomeViewModelState _currentState = HomeViewModelState.Initial;
 
@@ -47,7 +48,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService, 
             IMvxLifetime mvxLifetime,
             IPromotionService promotionService,
-            IBookingService bookingService) : base()
+            IBookingService bookingService,
+            IMetricsService metricsService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -57,6 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_termsService = termsService;
 		    _mvxLifetime = mvxLifetime;
 		    _bookingService = bookingService;
+		    _metricsService = metricsService;
 		    _accountService = accountService;
 			_paymentService = paymentService;
 
@@ -584,7 +587,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				CheckCreditCardExpiration();
                 AddressPicker.RefreshFilteredAddress();
 
-				_accountService.LogApplicationStartUp ();
+				_metricsService.LogApplicationStartUp ();
             }
         }
 

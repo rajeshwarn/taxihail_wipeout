@@ -1,24 +1,27 @@
 ﻿@model CustomerPortal.Web.Areas.Admin.Models.MarketModel
 
-<h2>New Market</h2>
+<div class='row'>
+    <h2>New Market</h2>
 
-@if (@ViewBag.Error != null)
-{
-    <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error</div>
-}
+    @if (@ViewBag.Error != null)
+    {
+        <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error</div>
+    }
 
-@using (Html.BeginForm("CreateMarket", "NetworkVehicles", FormMethod.Post))
-{
-    <div class="control-group">
-        @Html.LabelFor(x => x.Market, new {@class = "control-label"})
-        <div class="controls">
-            @Html.TextBoxFor(x => x.Market, new { @class = "input-block-level", @style = "width: 40%" })
-            @Html.ValidationMessageFor(x => x.Market)
+    @using (Html.BeginForm("CreateMarket", "NetworkVehicles", FormMethod.Post))
+    {
+        <div class="control-group">
+            @Html.LabelFor(x => x.Market, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(x => x.Market, new { @class = "input-block-level", @style = "width: 40%" })
+                @Html.ValidationMessageFor(x => x.Market)
+            </div>
         </div>
-    </div>
 
-    <div class="control-group btn-right-alignment">
-        <button type="submit" class="btn btn-primary span">Create</button>
-        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
-    </div>
-}
+        <div class="control-group btn-right-alignment">
+            <button type="submit" class="btn btn-primary span">Create</button>
+            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
+        </div>
+    }
+
+</div>

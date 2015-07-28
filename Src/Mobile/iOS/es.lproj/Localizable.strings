@@ -148,6 +148,7 @@
 "View_UpdatedTermsAndConditions"="Nuevos Términos y Condiciones";
 "NoCardOnFileMessage"="Usted seleccionó pagar con la tarjeta de crédito en su archivo, pero no tiene tarjeta registrada por defecto. Agregue una tarjeta a su cuenta o cambie el método de pago para continuar.";
 "BookPickupLocationEmptyPlaceholder"="Toque para seleccionar lugar de abordaje";
+"ResendConfirmationCodeText"="Confirmation code will be resend shortly";
 "CannotCancelOrderTitle"="Acción inválida";
 "OrderNoteGPS"="Usando su GPS";
 "PromotionLoadError"="Unable to load the available promotions. Please try again later.";
@@ -164,6 +165,7 @@
 "BookRatingErrorMessage"="Usted necesita calificar su servicio";
 "DriverInfoModel"="Modelo:";
 "AccountPaymentQuestionsRequired"="(requerido)";
+"OtherListItemPromptLabel"="Enter a value:";
 "LinkPayPal"="Link PayPal";
 "RideSettingsCustomerNumber"="Número de cliente";
 "WarningLocationServiceTitle"="Aviso";
@@ -172,7 +174,7 @@
 "ResetPasswordSubtitleText"="Ingrese su email y le enviaremos una nueva contraseña";
 "InvalidBookinInfoTitle"="Información de reservación inválida";
 "AppNeedUpdateTitle"="Actualización disponible";
-"StatusEta"="y es {0} y está a {1} {2} de distancia";
+"StatusEta"="y está a {0} {1} de distancia";
 "CreditCardExpYear"="Mes de expiración";
 "CreditCardExpiredUpdateNow"="Update now";
 "LinkPayPalCCWarning"="Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?";
@@ -227,6 +229,7 @@
 "Notification_DriverAssignedPush"="Chofer asignado";
 "NoPayBackErrorMessage"="The PayBack field is required";
 "CmtRideLinqConfirmPairView"="Confirmar información de pago";
+"AccountNotActivatedCodeBySMS"="Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado";
 "CreateAccountEmptyField"="Los datos son inválidos, todos los campos son requeridos";
 "AccountNotActivated"="Su cuenta no ha sido activada. Otro email de activación le ha sido enviado";
 "Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
@@ -361,6 +364,7 @@
 "View_AccountConfirmationTitle"="Confirmación de cuenta.";
 "RateRide"="Califique su servicio";
 "ConfirmDestinationLabel"="Destino";
+"ResendConfirmationCodeButtonText"="Resend confirmation code";
 "UpdatePasswordConfirmationLabel"="Confirmación";
 "View_SearchAddress"="Búsqueda de dirección";
 "CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.";
@@ -432,7 +436,7 @@
 "ViewRatingBtn"="Ver evaluaciones";
 "ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
 "ChargeTypeCreditCardFile"="Tarjeta de crédito guardada";
-"InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
+"InvalidPhoneErrorMessage"="The mobile number is invalid. It must have format {0}";
 "CardExpiredMessage"="Your credit card is expired. Add a new card to your account or update card informations to continue.";
 "LocationAddFavoriteTitle"="Agregar lugar";
 "NbPassenger"="({0} pasajero)";
@@ -482,6 +486,7 @@
 "DriverInfoDriver"="Chofer:";
 "SettingsViewTitle"="Ajustes";
 "TechSupportEmailTitle"="Soporte de applicion móvil";
+"ResendConfirmationCodeTitle"="Confirmation";
 "YesButton"="Si";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
 "ManualRideLinqStatus_Tax"="Tax amount:";
@@ -508,10 +513,12 @@
 "LocationDetailApartmentLabel"="Departamento";
 "NetworkErrorMessage"="No hay conección de red, por favor compruebe su conección y trate de nuevo";
 "View_ConfirmCarNumber"="Confirmación";
+"OtherListItemLabel"="Custom Percent";
 "BookRatingErrorTitle"="Aviso";
 "View"="Ver";
 "NoRingCodeText"="Número Código de entrada";
-"Eta"="El taxi más cercano es {0} y esta a {1} {2} de distancia";
+"DialCodeSelectorTitle"="Dial Code";
+"Eta"="El taxi más cercano esta a {0} {1} de distancia";
 "January"="Ene (01)";
 "AddReminderTitle"="Servicio programado";
 "StatusActionCancelButton"="Cancelar reservación";
@@ -527,6 +534,7 @@
 "View_RefineAddress"="Detalles del servicio";
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "RefineAddressTitle"="Refinar dirección";
+"TipPercent_Error"="Tip cannot be over 100%";
 "PaymentViewTotalText"="Total";
 "PaymentDetails.TipAmountLabel"="Propina";
 "LoadingMessage"="Cargando....";
@@ -569,6 +577,8 @@
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "HistoryDetailPromoLabel"="Promo Code:";
 "DateTimePickerPickTime"="Seleccione la hora del servicio:";
+"EtaLessThenAMinute"="Nearest taxi is less then a minute away";
+"EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
 "CreateAccountErrorMessage"="No se pudo crear su cuenta.";
 "View_RideSettings"="Perfil";
 "ScanCreditCard"="Escanear su Tarjeta de crédito";

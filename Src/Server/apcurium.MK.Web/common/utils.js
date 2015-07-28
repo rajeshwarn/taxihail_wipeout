@@ -65,14 +65,14 @@
         },
         orderStatusDisplay : function(status,resourceSet) {
             switch (status) {
-            case "Created":
-                return TaxiHail.localize("statusCreated",resourceSet);
-            case "Completed":
-                return TaxiHail.localize("statusCompleted", resourceSet);
-            case "Canceled":
-                return TaxiHail.localize("statusCanceled", resourceSet);
-            default:
-                return "";
+                case "Created":
+                    return TaxiHail.localize("statusCreated",resourceSet);
+                case "Completed":
+                    return TaxiHail.localize("statusCompleted", resourceSet);
+                case "Canceled":
+                    return TaxiHail.localize("statusCanceled", resourceSet);
+                default:
+                    return "";
             }
         },
         addResourceSet: function (name, resourceSet) {
@@ -269,7 +269,7 @@
                             }
                             meridian = "PM";
                         } else {
-                           meridian = "AM";
+                            meridian = "AM";
                         }
 
                         minute = minute < 10 ? '0' + minute : minute;
@@ -281,8 +281,34 @@
                 // not needed yet
                 return '';
             }
-        }
+        },
 
+        // this is to generate spaces between dial code number field and country name to align country name in one column
+        // the first column has different size between 0 and 4 characters (1 char for "+" and 3 for country dial code), according
+        // to width of this first column the code inserts additional spaces to align second column (country names) vertically
+        // in currently used font one caracter (A-Z a-z) equals to 2 spaces in its width
+        extendSpacesForCountryDialCode: function (countryDialCodeList) {
+            for (var i = 0; i < countryDialCodeList.length; i++) {
+
+                var spaces = [];
+                var spacesToAdd = 2;
+
+                if (countryDialCodeList[i].CountryDialCode > 0) {
+                    var sp = (3 - countryDialCodeList[i].CountryDialCode.toString().length) * 2;
+                    spacesToAdd += Math.max(sp, 0);
+                }
+                else {
+                    spacesToAdd += 8;
+                }
+
+                for (var i1 = 0; i1 < spacesToAdd; i1++)
+                    spaces.push(0);
+
+                countryDialCodeList[i].spaces = spaces;
+            }
+
+            return countryDialCodeList;
+        }
     });
 
     Handlebars.registerHelper('localize', function (resourceName) {

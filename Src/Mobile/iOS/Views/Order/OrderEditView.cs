@@ -11,6 +11,8 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
@@ -34,6 +36,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 textField.BackgroundColor = UIColor.FromRGB(242, 242, 242);
                 DismissKeyboardOnReturn(textField);
             }
+
+            txtPhone.BackgroundColor = UIColor.FromRGB(242, 242, 242);
+            lblPhoneDialCode.BackgroundColor = UIColor.FromRGB(242, 242, 242);
+            lblPhoneDialCode.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
+            lblPhoneDialCode.TintColor = UIColor.Black;
+            lblPhoneDialCode.TextColor = UIColor.FromRGB(44, 44, 44);
+            lblPhoneDialCode.TextAlignment = UITextAlignment.Center;
+            lblPhoneDialCode.AdjustsFontSizeToFitWidth = true;
 
             txtPhone.Maybe(x => x.ShowCloseButtonOnKeyboard());
             txtPassengers.Maybe(x => x.ShowCloseButtonOnKeyboard());
@@ -60,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (!this.Services().Settings.ShowPassengerPhone)
             {
                 lblPhone.Maybe(x => x.RemoveFromSuperview());
-                txtPhone.Maybe(x => x.RemoveFromSuperview());
+                phoneNumberView.Maybe(x => x.RemoveFromSuperview());
             }
 
 			if (!this.Services().Settings.ShowPassengerNumber)
@@ -111,6 +121,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				.To(vm => vm.IsChargeTypesEnabled);
 
             set.Apply();
+
+            lblPhoneDialCode.NotifyChanges += (object sender, PhoneNumberChangedEventArgs e) =>
+                {
+                    this.ViewModel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(e.Country));
+                };
+            lblPhoneDialCode.Configure(this.FindViewController().NavigationController, (DataContext as OrderEditViewModel).PhoneNumber);
         }
 
         public override void AwakeFromNib()

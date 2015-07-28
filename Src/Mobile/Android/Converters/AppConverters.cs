@@ -25,5 +25,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
 
         public readonly StringFormatConverter StringFormat = new StringFormatConverter();
         public readonly CurrencyFormatConverter CurrencyFormat = new CurrencyFormatConverter();
+        public readonly DialCodeConverter DialCodeConverter = new DialCodeConverter();
     }
 }

@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
+        private readonly IOrderDao _orderDao;
 
         public VehicleService(IIBSServiceProvider ibsServiceProvider,
             IVehicleTypeDao dao,
@@ -43,7 +44,8 @@ namespace apcurium.MK.Booking.Api.Services
             ReferenceDataService referenceDataService,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             IServerSettings serverSettings,
-            ILogger logger)
+            ILogger logger,
+            IOrderDao orderDao)
         {
             _serverSettings = serverSettings;
             _ibsServiceProvider = ibsServiceProvider;
@@ -52,6 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
             _referenceDataService = referenceDataService;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _logger = logger;
+            _orderDao = orderDao;
         }
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
@@ -328,6 +331,40 @@ namespace apcurium.MK.Booking.Api.Services
             return referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value)).Select(x => new { x.Id, x.Display }).ToArray();
         }
 
+        public object Post(EtaForPickupRequest request)
+        {
+            if (_serverSettings.ServerData.AvailableVehiclesMode != AvailableVehiclesModes.Geo)
+            {
+                return new HttpResult(HttpStatusCode.BadRequest, "Api cannot be used unless available mode is set to Geo");
+            }
+
+            if (!request.Latitude.HasValue || !request.Longitude.HasValue || !request.VehicleRegistration.HasValue())
+            {
+                return new HttpResult(HttpStatusCode.BadRequest, "Longitude, latitude and vehicle number are required.");
+            }
+
+            var geoService = (CmtGeoServiceClient)GetAvailableVehiclesServiceClient();
+
+            var result = geoService.GetEta(request.Latitude.Value, request.Longitude.Value, request.VehicleRegistration);
+
+            var order = _orderDao.FindOrderStatusById(request.OrderId);
+
+            if (order != null && !order.OriginalEta.HasValue && result.Eta.HasValue)
+            {
+                _commandBus.Send(new LogOriginalEta
+                {
+                    OrderId = request.OrderId,
+                    OriginalEta = result.Eta.Value
+                });
+            }
+
+            return new EtaForPickupResponse
+            {
+                Eta = result.Eta,
+                Latitude = result.Latitude,
+                Longitude = result.Longitude
+            };
+        }
 
         private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient()
         {

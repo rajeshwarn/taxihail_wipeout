@@ -14,12 +14,15 @@
         updateSettings: function () {
             var settings = this.get('settings');
 
-            return $.ajax({
+            var result = $.ajax({
                 type: 'PUT',
                 url: 'api/account/bookingsettings',
-                data: settings,
-                dataType: 'json'
+                data: JSON.stringify(settings),
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
             });
+
+            return result;
         },
 
         getChargeAccount: function (accountNumber, customerNumber) {

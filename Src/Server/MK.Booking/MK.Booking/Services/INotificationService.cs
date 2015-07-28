@@ -3,6 +3,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Services
 {
@@ -21,7 +22,7 @@ namespace apcurium.MK.Booking.Services
         void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success);
         void SendOrderCreationErrorPush(Guid orderId, string errorDescription);
 
-        void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode);
+        void SendAccountConfirmationSMS(CountryISOCode countryCode, string phoneNumber, string code, string clientLanguageCode);
 
         void SendAccountConfirmationEmail(Uri confirmationUrl, string clientEmailAddress, string clientLanguageCode);
         void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress,

@@ -9,13 +9,11 @@
 
 <div style="width: 980px; overflow: hidden">
     <div style="width: 860px; float: right; padding-bottom: 20px;">
-        <h4>Deployment history</h4>
+        <h4>&nbsp;</h4>
     </div>
 </div>
-@if (SecurityHelper.IsApcuriumUser)
-{
-    <div style="width: 100px; float: left; position: fixed">@Html.Partial("_DeployRevisionPartial")</div>
-}
+
+<div style="width: 100px; float: left; position: fixed">@Html.Partial("_DeployRevisionPartial")</div>
 <div style="width: 870px; float: right">
     @Html.Grid(Model.Jobs).Columns(columns =>
     {

@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             {
                 return context.Query<FeesDetail>()
                     .ToList()
-                    .FirstOrDefault(f => f.Market == market);
+                    .SingleOrDefault(f => f.Market == market);
             }
         }
     }

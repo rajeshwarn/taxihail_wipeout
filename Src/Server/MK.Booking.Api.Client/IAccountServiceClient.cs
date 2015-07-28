@@ -18,7 +18,10 @@ namespace apcurium.MK.Booking.Api.Client
     {
         Task<Account> GetMyAccount();
         Task RegisterAccount(RegisterAccount account);
-		Task ConfirmAccount(ConfirmAccountRequest request);
+
+        Task GetConfirmationCode(ConfirmationCodeRequest request);
+
+        Task ConfirmAccount(ConfirmAccountRequest request);
         Task UpdateBookingSettings(BookingSettingsRequest settings);
         Task<IEnumerable<Address>> GetFavoriteAddresses();
         Task<IList<Address>> GetHistoryAddresses(Guid accountId);
@@ -39,7 +42,5 @@ namespace apcurium.MK.Booking.Api.Client
 
         Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(Guid accountId);
         Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettingsRequest userTaxiHailNetworkSettingsRequest);
-
-		Task LogApplicationStartUp(LogApplicationStartUpRequest request);
     }
 }

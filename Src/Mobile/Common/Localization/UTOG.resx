@@ -160,10 +160,10 @@
     <value>Vehicle Type:</value>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>The nearest vehicle is {1} {2} away</value>
+    <value>Nearest vehicle is {0} {1} away</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    <value>and is {1} {2} away</value>
+    <value>and is {0} {1} away</value>
   </data>
   <data name="ReminderDetails" xml:space="preserve">
     <value>Reminder: your vehicle will pick you up from {0} at {1} on {2}.</value>

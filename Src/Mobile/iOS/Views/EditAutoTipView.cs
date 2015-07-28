@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
 			lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
-			txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, () => ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id);
+			txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, () => ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id, true);
 			txtTip.TextAlignment = UITextAlignment.Right;
 
 			btnSave.SetTitle (Localize.GetValue("Save"), UIControlState.Normal);

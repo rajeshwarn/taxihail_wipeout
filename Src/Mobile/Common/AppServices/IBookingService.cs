@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Resources;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
@@ -20,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         bool IsStatusDone(string statusId);
 
-		bool IsOrderCancellable(string statusId);
+		bool IsOrderCancellable(OrderStatusDetail status);
 
         bool IsCallboxStatusActive(string statusId);
 

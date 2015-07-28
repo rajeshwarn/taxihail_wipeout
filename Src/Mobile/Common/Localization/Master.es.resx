@@ -145,6 +145,10 @@
     <value>Su cuenta no ha sido activada. Otro email de activación le ha sido enviado</value>
     <comment>Your account has not been activated. Another activation email was sent to you.</comment>
   </data>
+  <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
+    <value>Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado</value>
+    <comment>Your account has not been activated. Another activation SMS was sent to you.</comment>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Por favor introduzca un número de cuenta válido.</value>
     <comment>Please enter a valid account number</comment>
@@ -783,8 +787,8 @@
     <comment>Estimating your fare...</comment>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>El taxi más cercano es {0} y esta a {1} {2} de distancia</value>
-    <comment>The nearest taxi is {0} and {1} {2} away</comment>
+    <value>El taxi más cercano esta a {0} {1} de distancia</value>
+    <comment>Nearest taxi is {0} {1} away</comment>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
     <value>min</value>
@@ -946,8 +950,7 @@
     <comment>Login error</comment>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>The mobile number is invalid. It must contain between 10 and 15 numbers.</value>
-    <comment>The mobile number is invalid. It must contain 10 numbers.</comment>
+    <value>The mobile number is invalid. It must have format {0}</value>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
     <value>Por favor entre una dirección de abordaje válida</value>
@@ -1684,8 +1687,8 @@
     <comment>Order #{0}</comment>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    <value>y es {0} y está a {1} {2} de distancia</value>
-    <comment>and is {0} and {1} {2} away</comment>
+    <value>y está a {0} {1} de distancia</value>
+    <comment>and is {0} {1} away</comment>
   </data>
   <data name="StatusInvalid" xml:space="preserve">
     <value>Estado no disponible</value>
@@ -2468,10 +2471,37 @@
   <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
     <value>The order cannot be created, please try again.</value>
   </data>
+  <data name="DialCodeSelectorTitle" xml:space="preserve">
+    <value>Dial Code</value>
+  </data>
   <data name="ServiceError_EmailClientAbsent" xml:space="preserve">
     <value>Sorry, we're unable to create an email. There is no email client installed on this device</value>
   </data>
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
+  </data>
+  <data name="ResendConfirmationCodeButtonText" xml:space="preserve">
+    <value>Resend confirmation code</value>
+  </data>
+  <data name="ResendConfirmationCodeTitle" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ResendConfirmationCodeText" xml:space="preserve">
+    <value>Confirmation code will be resend shortly</value>
+  </data>
+  <data name="OtherListItemLabel" xml:space="preserve">
+    <value>Custom Percent</value>
+  </data>
+  <data name="OtherListItemPromptLabel" xml:space="preserve">
+    <value>Enter a value:</value>
+  </data>
+  <data name="EtaLessThanAMinute" xml:space="preserve">
+    <value>Nearest taxi is less than a minute away</value>
+  </data>
+  <data name="TipPercent_Error" xml:space="preserve">
+    <value>Tip cannot be over 100%</value>
+  </data>
+  <data name="EtaNoTaxiAvailable" xml:space="preserve">
+    <value>Sorry, no taxis currently available nearby.</value>
   </data>
 </root>

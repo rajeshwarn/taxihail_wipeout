@@ -80,6 +80,7 @@
     <Compile Include="CmtGeoServiceClient.cs" />
     <Compile Include="HoneyBadgerServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CmtDataService.cs" />
     <Compile Include="Responses\CmtGeoContent.cs" />
     <Compile Include="Responses\BaseAvailableVehicleContent.cs" />
     <Compile Include="Responses\CmtGeoResponse.cs" />

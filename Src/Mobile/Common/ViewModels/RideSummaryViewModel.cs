@@ -26,11 +26,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_bookingService = bookingService;
 		}
 
-		public async void Init(string order, string orderStatus)
+		public async void Init(Guid orderId)
 		{			
-			Order = order.FromJson<Order> ();
-			OrderId = Order.Id;
-			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
+			OrderId = orderId;
 
 			CanRate = false;
 
@@ -131,9 +129,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			}
 		}
-
-		private Order Order { get; set; }
-		private OrderStatusDetail OrderStatus { get; set;}
 
 		bool _hasRated;		
 		public bool HasRated 

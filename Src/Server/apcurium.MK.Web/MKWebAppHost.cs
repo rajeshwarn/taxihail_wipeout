@@ -26,6 +26,7 @@ using ServiceStack.Text.Common;
 using ServiceStack.WebHost.Endpoints;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
+using apcurium.MK.Common.Configuration;
 
 #endregion
 
@@ -81,7 +82,8 @@ namespace apcurium.MK.Web
                 {
                     new CustomCredentialsAuthProvider(UnityContainerExtensions.Resolve<ICommandBus>(container),
                         UnityContainerExtensions.Resolve<IAccountDao>(container),
-                        UnityContainerExtensions.Resolve<IPasswordService>(container)),
+                        UnityContainerExtensions.Resolve<IPasswordService>(container),
+                        UnityContainerExtensions.Resolve<IServerSettings>(container)),
                     new CustomFacebookAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container)),
                     new CustomTwitterAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container))
                 }));

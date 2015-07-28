@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.Events
         public double? Toll { get; set; }
 
         public double? Extra { get; set; }
+        public double? LastLatitudeOfVehicle { get; set; }
+        public double? LastLongitudeOfVehicle { get; set; }
 
         public double? Tip { get; set; }
 

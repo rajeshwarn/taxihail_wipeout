@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -8,6 +9,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http.Extensions;
 using CMTServices.Responses;
+using ServiceStack.Common;
 
 namespace CMTServices
 {
@@ -93,6 +95,31 @@ namespace CMTServices
             return response;
         }
 
+        public VehicleResponse GetEta(double latitude, double longitude, string vehicleRegistration)
+        {
+            var @params = new []
+            {
+                new KeyValuePair<string, object>("lat", latitude),
+                new KeyValuePair<string, object>("lon", longitude),
+                new KeyValuePair<string, object>("deviceName", vehicleRegistration)
+            };
+
+            try
+            {
+                var response = Client.Post("/eta", @params.ToDictionary(kv => kv.Key, kv => kv.Value))
+                    .Deserialize<CmtGeoContent>()
+                    .Result;
+
+                return ToVehicleResponse(response);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogMessage("An error occured when trying to contact CMT Geo service");
+                Logger.LogError(ex);
+
+                return new VehicleResponse();
+            }
+        }
 
         private Dictionary<string,string> ToDictionary(IEnumerable<KeyValuePair<string,string>> data)
         {

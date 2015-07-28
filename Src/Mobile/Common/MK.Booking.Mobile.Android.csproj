@@ -114,9 +114,14 @@
     <Reference Include="Cirrious.MvvmCross.Dialog.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Dialog.Droid.dll</HintPath>
     </Reference>
+    <Reference Include="LibPhoneNumber">
+      <HintPath>..\Libraries\libphonenumber\libphonenumber.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
+    <Compile Include="AppServices\IMetricsService.cs" />
+    <Compile Include="AppServices\Impl\MetricsService.cs" />
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
     <Compile Include="AppServices\Impl\PromotionService.cs" />
     <Compile Include="AppServices\INetworkRoamingService.cs" />
@@ -222,12 +227,12 @@
     <Compile Include="ViewModels\Callbox\CallboxLoginViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxOrderListViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxOrderViewModel.cs" />
+    <Compile Include="Models\PhoneNumberModel.cs" />
     <Compile Include="ViewModels\EditAutoTipViewModel.cs" />
     <Compile Include="ViewModels\enum\ColorEnum.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
     <Compile Include="ViewModels\ManualRideLinqStatusViewModel.cs" />
-    <Compile Include="ViewModels\ManualRideLinqSummaryViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
@@ -349,6 +354,7 @@
     <Compile Include="ViewModels\Payment\OverduePaymentViewModel.cs" />
     <Compile Include="BindingConverter\StringFormatConverter.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <Compile Include="BindingConverter\DialCodeConverter.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
   </ItemGroup>

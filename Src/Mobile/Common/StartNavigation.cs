@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile
 		    var appSettings = Mvx.Resolve<IAppSettings>();
 		    var accountService = Mvx.Resolve<IAccountService>();
 		    var facebookService = Mvx.Resolve<IFacebookService>();
+		    var metricsService = Mvx.Resolve<IMetricsService>();
 
             await appSettings.Load();
 
@@ -90,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile
                 });
 
                 // Log user session start
-                accountService.LogApplicationStartUp();
+                metricsService.LogApplicationStartUp();
 
                 ShowViewModel<HomeViewModel>(new { locateUser = true });
             }

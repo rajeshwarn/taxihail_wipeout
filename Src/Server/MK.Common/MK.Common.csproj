@@ -48,6 +48,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="libphonenumber, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\libphonenumber.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -130,6 +134,8 @@
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
+    <Compile Include="Helpers\PhoneHelper.cs" />
+    <Compile Include="CountryCode.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="Cryptography\CryptographyHelper.cs" />
     <Compile Include="CurencyCodes.cs" />

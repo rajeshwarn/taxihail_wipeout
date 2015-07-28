@@ -13,6 +13,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
+using apcurium.MK.Common.Configuration;
 
 #endregion
 
@@ -22,11 +23,13 @@ namespace apcurium.MK.Booking.Api.Security
     {
         private readonly ICommandBus _commandBus;
         private readonly IPasswordService _passwordService;
+        private readonly IServerSettings _serverSettings;
 
-        public CustomCredentialsAuthProvider(ICommandBus commandBus, IAccountDao dao, IPasswordService passwordService)
+        public CustomCredentialsAuthProvider(ICommandBus commandBus, IAccountDao dao, IPasswordService passwordService, IServerSettings serverSettings)
         {
             _passwordService = passwordService;
             _commandBus = commandBus;
+            _serverSettings = serverSettings;
             Dao = dao;
         }
 
@@ -81,14 +84,28 @@ namespace apcurium.MK.Booking.Api.Security
                     var aspnetReq = (HttpRequest) authService.RequestContext.Get<IHttpRequest>().OriginalRequest;
                     var root = new Uri(aspnetReq.Url, VirtualPathUtility.ToAbsolute("~")).ToString();
 
-                    _commandBus.Send(new SendAccountConfirmationEmail
+                    if (_serverSettings.ServerData.SMSConfirmationEnabled)
                     {
-                        ClientLanguageCode = account.Language,
-                        EmailAddress = account.Email,
-                        ConfirmationUrl =
-                            new Uri(string.Format("/api/account/confirm/{0}/{1}", account.Email,
-                                        account.ConfirmationToken), UriKind.Relative),
-                    });
+                        _commandBus.Send(new SendAccountConfirmationSMS
+                        {
+                            ClientLanguageCode = account.Language,
+                            Code = account.ConfirmationToken,
+                            CountryCode = account.Settings.Country,
+                            PhoneNumber = account.Settings.Phone
+                        });
+                    }
+                    else
+                    {
+                        _commandBus.Send(new SendAccountConfirmationEmail
+                        {
+                            ClientLanguageCode = account.Language,
+                            EmailAddress = account.Email,
+                            ConfirmationUrl =
+                                new Uri(string.Format("/api/account/confirm/{0}/{1}", account.Email,
+                                            account.ConfirmationToken), UriKind.Relative),
+                        });
+                    }
+
                     throw HttpError.Unauthorized(AuthenticationErrorCode.AccountNotActivated);
                 }
 

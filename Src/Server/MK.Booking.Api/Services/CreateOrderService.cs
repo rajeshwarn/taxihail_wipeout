@@ -35,6 +35,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using CreateOrder = apcurium.MK.Booking.Api.Contract.Requests.CreateOrder;
+using apcurium.MK.Common.Helpers;
 
 #endregion
 
@@ -107,6 +108,17 @@ namespace apcurium.MK.Booking.Api.Services
         public object Post(CreateOrder request)
         {
             Log.Info("Create order request : " + request.ToJson());
+
+            var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
+
+            if (countryCode.IsNumberPossible(request.Settings.Phone))
+            {
+                request.Settings.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Settings.Phone);
+            }
+            else
+            {
+                throw new HttpError(string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
+            }
 
             // TODO: Find a better way to do this...
             var isFromWebApp = request.FromWebApp;
@@ -1007,7 +1019,7 @@ namespace apcurium.MK.Booking.Api.Services
                 providerId,
                 ibsAccountId,
                 request.Settings.Name,
-                request.Settings.Phone,
+                CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country)).CountryDialCode.ToString() + request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
                 ibsChargeTypeId,                    

@@ -89,6 +89,8 @@ namespace apcurium.MK.Booking.ReadModel
         public bool WasSwitchedToAnotherCompany { get; set; }
 
         public bool HasTimedOut { get; set; }
+
+        public long? OriginalEta { get; set; }
     }
 
     public class OrderReportOrderStatus

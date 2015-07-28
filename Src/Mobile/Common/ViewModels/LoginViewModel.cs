@@ -78,11 +78,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			CheckVersion();
 
-			if (_executeOnStart != null) 
-			{
-				_executeOnStart ();
-				_executeOnStart = null;
-			}
+            if (_executeOnStart != null)
+            {
+                _executeOnStart();
+                _executeOnStart = null;
+            }
         }
 
         public override void OnViewStopped()
@@ -279,9 +279,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             break;
 						case AuthFailure.AccountNotActivated:
 							{
-								var title = localize["InvalidLoginMessageTitle"];
-								var message = localize ["AccountNotActivated"];
-								this.Services ().Message.ShowMessage (title, message);
+
+                                if (Settings.SMSConfirmationEnabled)
+                                {
+                                    var title = localize["InvalidLoginMessageTitle"];
+                                    var message = localize["AccountNotActivatedCodeBySMS"];
+
+                                    this.Services().Message.ShowMessage(title, message, GoToAccountConfirmationPageBySMS);
+                                }
+                                else
+                                {
+                                    var title = localize["InvalidLoginMessageTitle"];
+                                    var message = localize["AccountNotActivated"];
+
+                                    this.Services().Message.ShowMessage(title, message);
+                                }
 							}
 							break;
                     }
@@ -295,6 +307,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Message.ShowMessage(title, message);
                 }
             }
+        }
+
+        void GoToAccountConfirmationPageBySMS()
+        {
+            _registrationService.Account = new RegisterAccount
+            {
+                Email = this.Email,
+                Password = this.Password
+            };
+
+            ShowViewModel<AccountConfirmationViewModel>();
         }
 
         private void DoSignUp(object registerDataFromSocial = null)
@@ -408,7 +431,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
 
             // Log user session start
-			Mvx.Resolve<IAccountService>().LogApplicationStartUp();
+			Mvx.Resolve<IMetricsService>().LogApplicationStartUp();
 
 			if (_viewIsStarted) 
 			{

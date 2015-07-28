@@ -4,8 +4,10 @@
     var id = ViewContext.RouteData.Values["id"];
 }
 
-<h2>@ViewBag.Title</h2>
+
+
 <div class='row'>
+    <h2>@ViewBag.Title</h2>
     <div class='span12'>
         <p>
             <a href='@Url.Action("Create", "Version", new {id})' class='btn btn-primary'>New Version</a>

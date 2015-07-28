@@ -46,8 +46,9 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderUnpairedFromManualRideLinq>(NoAction);
             Handles<ManualRideLinqTripInfoUpdated>(NoAction);
             Handles<AutoTipUpdated>(NoAction);
+            Handles<OriginalEtaLogged>(NoAction);
+            Handles<OrderNotificationDetailUpdated>(NoAction);
         }
-
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
@@ -140,7 +141,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
             double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, DateTime? startTime,
-            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId, double? accessFee, string lastFour, TollDetail[] tolls)
+            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId, double? accessFee, string lastFour, TollDetail[] tolls, double? lat, double? lon)
         {
             Update(new ManualRideLinqTripInfoUpdated
             {
@@ -164,7 +165,9 @@ namespace apcurium.MK.Booking.Domain
                 DriverId = driverId,
                 AccessFee = accessFee,
                 LastFour = lastFour,
-                Tolls = tolls
+                Tolls = tolls,
+                LastLatitudeOfVehicle = lat,
+                LastLongitudeOfVehicle = lon
             });
         }
 
@@ -335,6 +338,25 @@ namespace apcurium.MK.Booking.Domain
             Update(new AutoTipUpdated
             {
                 AutoTipPercentage = autoTipPercentage
+            });
+        }
+
+        public void LogOriginalEta(long originalEta)
+        {
+            Update(new OriginalEtaLogged
+            {
+                OriginalEta = originalEta
+            });
+        }
+
+        public void UpdateOrderNotificationDetail(UpdateOrderNotificationDetail orderNotificationDetail)
+        {
+            Update(new OrderNotificationDetailUpdated
+            {
+                OrderId = orderNotificationDetail.OrderId,
+                IsTaxiNearbyNotificationSent = orderNotificationDetail.IsTaxiNearbyNotificationSent,
+                IsUnpairingReminderNotificationSent = orderNotificationDetail.IsUnpairingReminderNotificationSent,
+                InfoAboutPaymentWasSentToDriver = orderNotificationDetail.InfoAboutPaymentWasSentToDriver
             });
         }
 

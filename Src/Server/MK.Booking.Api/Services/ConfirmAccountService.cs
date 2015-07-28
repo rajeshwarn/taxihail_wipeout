@@ -50,7 +50,10 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(ConfirmAccountRequest request)
         {
             var account = _accountDao.FindByEmail(request.EmailAddress);
-            if (account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            if (account == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
+            }
 
             if (request.IsSMSConfirmation.HasValue && request.IsSMSConfirmation.Value)
             {
@@ -88,6 +91,41 @@ namespace apcurium.MK.Booking.Api.Services
 
                 var body = _templateService.Render(template, templateData);
                 return new HttpResult(body, ContentType.Html);
+            }
+        }
+
+        public void Get(ConfirmationCodeRequest request)
+        {
+            var account = _accountDao.FindByEmail(request.Email);
+
+            if (account == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
+            }
+                
+            if (!_serverSettings.ServerData.AccountActivationDisabled)
+            {
+                if (_serverSettings.ServerData.SMSConfirmationEnabled)
+                {
+                    _commandBus.Send(new SendAccountConfirmationSMS
+                    {
+                        ClientLanguageCode = account.Language,
+                        Code = account.ConfirmationToken,
+                        CountryCode = account.Settings.Country,
+                        PhoneNumber = account.Settings.Phone
+                    });
+                }
+                else
+                {
+                    _commandBus.Send(new SendAccountConfirmationEmail
+                    {
+                        ClientLanguageCode = account.Language,
+                        EmailAddress = account.Email,
+                        ConfirmationUrl =
+                            new Uri(string.Format("/api/account/confirm/{0}/{1}", account.Email,
+                                        account.ConfirmationToken), UriKind.Relative)
+                    });
+                }
             }
         }
     }

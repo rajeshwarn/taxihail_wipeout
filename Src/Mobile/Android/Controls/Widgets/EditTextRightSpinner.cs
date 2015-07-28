@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 using apcurium.MK.Common.Entity;
 
+
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     [Register("apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner")]
@@ -22,8 +23,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private TextView _label;
         private string _leftImage;
         private int _selectedKey = int.MinValue;
-        private Spinner _spinner;
+        private SpinnerOtherSupport _spinner;
         private string _text;
+        bool _fromUI = false;
+        bool _allowOther = false;
+
+        ListItemData _otherItem;
 
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
         public EditTextRightSpinner(Context context)
@@ -100,12 +105,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         _adapter.Add(item);
                     }
+
+                    if (_allowOther)
+                    {
+                        _adapter.Add(_otherItem);
+                    }
                     SelectItem();
                 }
             }
         }
 
         public event EventHandler<AdapterView.ItemSelectedEventArgs> ItemSelected;
+
+        public event EventHandler<String> OtherValueSelected;
 
         public event EventHandler SpinnerClicked;
 
@@ -121,7 +133,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 var att = Context.ObtainStyledAttributes(attrs, new int[] { Android.Resource.Attribute.Background }, 0, 0);
                 _initialBackgroundColor = att.GetColor(0, -1);
+
+                var attOther = Context.ObtainStyledAttributes(attrs, new int[] { Resource.Attribute.allowOtherSelection }, 0, 0);
+                _allowOther = attOther.GetBoolean(0, false);
             }
+
+            _otherItem = new ListItemData
+                {
+                    Key = Int32.MaxValue,
+                    Value = this.Services().Localize["OtherListItemLabel"]
+                };
         }
 
         protected override void OnFinishInflate()
@@ -141,48 +162,67 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (resource != 0)
                 {
                     _imageLeftView.SetImageResource(resource);
-					if (this.Services ().Localize.IsRightToLeft) {
-						_label.SetPadding (0, 0, 70.ToPixels (), 0);
-					} else {
-						_label.SetPadding (70.ToPixels (), 0, 0, 0);
-					}
+                    if (this.Services ().Localize.IsRightToLeft) {
+                        _label.SetPadding (0, 0, 70.ToPixels (), 0);
+                    } else {
+                        _label.SetPadding (70.ToPixels (), 0, 0, 0);
+                    }
                 }
             }
             var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);
 
             button.Click += (sender, e) =>
-            {
-                if (Enabled)
                 {
-                    _spinner.PerformClick();
-
-                    if (SpinnerClicked != null)
+                    if (Enabled)
                     {
-                        SpinnerClicked(this, e);
-                    }
-                }
-            };
+                        _fromUI = true;
+                        _spinner.PerformClick();
 
-            _spinner = (Spinner) layout.FindViewById(Resource.Id.spinner);
+                        if (SpinnerClicked != null)
+                        {
+                            SpinnerClicked(this, e);
+                        }
+                    }
+                };
+
+            _spinner = (SpinnerOtherSupport) layout.FindViewById(Resource.Id.spinner);
             _spinner.Adapter = _adapter;
             SelectItem();
 
             _spinner.ItemSelected -= HandleItemSelected;
             _spinner.ItemSelected += HandleItemSelected;
 
-
-
             _spinner.Prompt = Context.GetString(Resource.String.ListPromptSelectOne);
         }
 
-        private void HandleItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
-        {
-            if (ItemSelected != null)
+
+
+        private async void HandleItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        {            
+            var item = _adapter.GetItem(e.Position);
+            if (item != _otherItem)
             {
-                ItemSelected(this, e);
+                if (ItemSelected != null)
+                {
+                    ItemSelected.Invoke(this, e);
+                }
+            }
+            else
+            {
+                //binding will send this event, so we need to handle it and not displaying the popup
+				string value = null;
+                if (_fromUI)
+                {
+                    value = await this.Services().Message.ShowPromptDialog(this.Services().Localize["OtherListItemLabel"], 
+                        this.Services().Localize["OtherListItemPromptLabel"], () => { }, true);
+					
+                }
+				if (OtherValueSelected != null)
+				{
+					OtherValueSelected(this, value);
+				}
             }
         }
-
 
         public Spinner GetSpinner()
         {
@@ -215,9 +255,67 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             if (index < 0)
             {
-                return;
+                //during initilization the binding will try to set the value, if there's none
+                //we need to set the selected to other (i.e. different from 0)
+                if (!_fromUI)
+                {
+                    index = _adapter.Count - 1;
+                }
+                else
+                {
+
+                    return;
+                }
             }
             if (_spinner != null) _spinner.SetSelection(index);
+        }
+    }
+
+
+    public class SpinnerOtherSupport : Spinner
+    {
+        [Register(".ctor", "(Landroid/content/Context;I)V", "")]
+        public SpinnerOtherSupport(Context context, [GeneratedEnum] SpinnerMode mode) : base (context, mode)
+        {}
+
+        [Register(".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;II)V", "")]
+        public SpinnerOtherSupport(Context context, IAttributeSet attrs, int defStyleAttr, [GeneratedEnum] SpinnerMode mode)
+            : base (context, attrs, defStyleAttr, mode)
+        {}
+
+        [Register(".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;I)V", "")]
+        public SpinnerOtherSupport(Context context, IAttributeSet attrs, int defStyleAttr)
+            : base (context, attrs, defStyleAttr)
+        {}
+
+        protected SpinnerOtherSupport(IntPtr javaReference, JniHandleOwnership transfer)
+            : base(javaReference, transfer)
+        {}
+
+        [Register(".ctor", "(Landroid/content/Context;)V", "")]
+        public SpinnerOtherSupport(Context context) : base (context)
+        {}
+
+        [Register(".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]
+        public SpinnerOtherSupport(Context context, IAttributeSet attrs) : base(context, attrs)
+        {}
+
+
+        public override void SetSelection(int position)
+        {
+            bool same = false;
+            if (position == SelectedItemPosition)
+            {
+                same = true;
+            }
+            base.SetSelection(position);
+            //the same value selected will not raised the event in the built-in control
+            //to handle the other option we need to raise it even if already selected
+            if (same
+				&& OnItemSelectedListener!= null)
+            {
+                OnItemSelectedListener.OnItemSelected(this, SelectedView, position, SelectedItemId);
+            }  
         }
     }
 }

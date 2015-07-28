@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Touch.Platform;
 using Cirrious.MvvmCross.ViewModels;
-using MonoTouch.FacebookConnect;
 using Foundation;
 using ObjCRuntime;
 using UIKit;
@@ -22,6 +21,7 @@ using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.Mobile.Client.Views;
+using MonoTouch.FacebookConnect;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -80,10 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         // This method is required in iPhoneOS 3.0
         public override void OnActivated(UIApplication application)
-        {
-			#if DEBUG
-			Xamarin.Calabash.Start();
-			#endif
+        {		
 
 			UIApplication.CheckForIllegalCrossThreadCalls=true;
 

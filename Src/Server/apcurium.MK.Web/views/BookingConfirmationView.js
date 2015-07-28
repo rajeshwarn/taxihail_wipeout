@@ -6,8 +6,9 @@
         
         events: {
             'click [data-action=cancel]': 'cancel',
-            'change :input': 'onPropertyChanged'
-        },
+            'change :input': 'onPropertyChanged',
+            "change #countrycode": "onPropertyChanged"
+    },
         initialize: function () {
             _.bindAll(this, 'book', "renderResults", 'showErrors');
 
@@ -134,11 +135,14 @@
                 vehiclesList: TaxiHail.vehicleTypes,
                 paymentsList: chargeTypes,
                 showPassengerNumber: TaxiHail.parameters.showPassengerNumber,
-                showEstimate: this.showEstimate
+                showEstimate: this.showEstimate,
+                countryCodes: TaxiHail.extendSpacesForCountryDialCode(TaxiHail.countryCodes)
             });
 
             this.$el.html(this.renderTemplate(data));
             
+            this.$("#countrycode").val(data.settings.country.code).selected = "true";
+
             if (!this.model.has('dropOffAddress')) {
                 this.$('[data-dropoff]').text(TaxiHail.localize('NotSpecified'));
             }
@@ -158,8 +162,7 @@
                 rules: {
                     'settings.name': "required",
                     'settings.phone': {
-                        required: true,
-                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/
+                        required: true
                     },
                     'settings.passengers': {
                         required: true,
@@ -337,17 +340,29 @@
         },
 
         onPropertyChanged: function (e) {
+
+            var dataNodeName = e.currentTarget.nodeName.toLowerCase();
+            var elementName = e.currentTarget.name;
+
+
             var $input = $(e.currentTarget),
                 attr = $input.attr('name').split('.');
            
-            if(attr.length > 1 && this.model.has(attr[0])) {
-                this.model.get(attr[0])[attr[1]] = $input.val();
+            if (dataNodeName == "input") {
+                if (attr.length > 1 && this.model.has(attr[0])) {
+                    this.model.get(attr[0])[attr[1]] = $input.val();
 
-                if ([attr[1]] == "vehicleTypeId" || [attr[1]] == "chargeTypeId") {
-                    this.initialize();
+                    if ([attr[1]] == "vehicleTypeId" || [attr[1]] == "chargeTypeId") {
+                        this.initialize();
+                    }
+                } else {
+                    this.model.set(attr[0], $input.val());
                 }
-            } else {
-                this.model.set(attr[0], $input.val());
+            }
+            else if (dataNodeName == "select") {
+                if (elementName == "countryCode") {
+                    this.model.attributes.settings.country.code = $input.find(":selected").val();
+                }
             }
         }
         

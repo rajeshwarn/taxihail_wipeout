@@ -18,6 +18,11 @@
             <div class="control-group">
                 <label class="control-label" for="signup-phone">{{localize "Phone"}}</label>
                 <div class="controls">
+                    <select id="countrycode" name="countryCode" style="width:100%; margin-bottom:3px;">
+                        {{#each countryCodes}}
+                            <option value="{{this.CountryISOCode.Code}}">{{this.СountryDialCodeInternationalFormat}}{{#each this.spaces}}&nbsp;{{/each}}{{this.CountryName}}</option>
+                        {{/each}}
+                    </select>
                     <input type="text" id="signup-phone" name="phone" value="" data-error-style="inline" class='input-block-level'>
                 </div>
             </div>

@@ -9,5 +9,6 @@
         android:layout_height="@dimen/HeightEditText"
         android:background="@drawable/dialog_center"
         android:typeface="monospace"
-        android:text="FieldValue" />
+        android:text="FieldValue"
+        android:password="true" />
 </LinearLayout>

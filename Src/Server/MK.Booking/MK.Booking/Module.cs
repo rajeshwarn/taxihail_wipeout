@@ -80,6 +80,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>(), container.Resolve<IServerSettings>()));
             container.RegisterInstance<IOverduePaymentDao>(new OverduePaymentDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IOrderNotificationsDetailDao>(new OrderNotificationsDetailDao(() => container.Resolve<BookingDbContext>()));
             
             RegisterMaps();
             RegisterCommandHandlers(container);

@@ -61,26 +61,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 Context.Activity,
                 title,
                 message,
-                positiveButtonTitle, (s,e) => { positiveAction(); tcs.TrySetResult(null); },
-                negativeButtonTitle, (s,e) => { negativeAction(); tcs.TrySetResult(null); }));
-
-            return tcs.Task;
-        }
-
-        public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
-            string negativeButtonTitle, Action negativeAction, Action cancelAction)
-        {
-            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
-
-            var tcs = new TaskCompletionSource<object>();
-
-            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(
-                Context.Activity,
-                title,
-                message,
-                positiveButtonTitle, (s,e) => { positiveAction(); tcs.TrySetResult(null); },
-                negativeButtonTitle, (s,e) => { negativeAction(); tcs.TrySetResult(null); },
-                () => { cancelAction.Invoke(); tcs.TrySetResult(null); }));
+                positiveButtonTitle, () => { positiveAction(); tcs.TrySetResult(null); },
+                negativeButtonTitle, () => { negativeAction(); tcs.TrySetResult(null); }));
 
             return tcs.Task;
         }
@@ -96,16 +78,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 Context.Activity,
                 title,
                 message,
-                positiveButtonTitle, (s,e) => { positiveAction(); tcs.TrySetResult(null); },
-                negativeButtonTitle, (s,e) => { negativeAction(); tcs.TrySetResult(null); },
-                neutralButtonTitle, (s,e) => { neutralAction(); tcs.TrySetResult(null); }));
+                positiveButtonTitle, () => { positiveAction(); tcs.TrySetResult(null); },
+                negativeButtonTitle, () => { negativeAction(); tcs.TrySetResult(null); },
+                neutralButtonTitle, () => { neutralAction(); tcs.TrySetResult(null); }));
 
             return tcs.Task;
-        }
-
-        public Task ShowMessage(string title, string message, List<KeyValuePair<string, Action>> additionalButton)
-        {
-            throw new NotImplementedException();
         }
 
         public Task ShowMessage(string title, string message, Action additionalAction)
@@ -226,41 +203,34 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Context.Activity.StartActivity(i);
         }
 
-		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction, bool isNumericOnly = false)
+        public Task<string> ShowPromptDialog(string title, string message, Action cancelAction = null, bool isNumericOnly = false, string inputText = "")
         {
-			var tcs = new TaskCompletionSource<string> ();
+            var tcs = new TaskCompletionSource<string> ();
 
-			var ownerId = Guid.NewGuid().ToString();
-			var i = new Intent(Context.Activity, typeof(EditTextDialogActivity));
-			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-			i.PutExtra("Title", title);
-			i.PutExtra("Message", message);
-			i.PutExtra("PositiveButtonTitle", Context.Activity.GetString(Resource.String.OkButtonText));
-			i.PutExtra("NegativeButtonTitle", Context.Activity.GetString(Resource.String.Cancel));
-			i.PutExtra("OwnerId", ownerId);
+            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
 
-		    i.PutExtra("isNumeric", isNumericOnly);
-
-			var messenger = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
-
-			TinyMessageSubscriptionToken token = null;
-			token = messenger.Subscribe<ActivityCompleted>(a =>
-			{
-				if(a.Content == null)
-				{
-					tcs.TrySetCanceled ();
-					cancelAction ();
-				}
-				else
-				{
-					tcs.TrySetResult (a.Content);
-				}
-
-				messenger.Unsubscribe<ActivityCompleted>(token);
-				token.Dispose();
-			}, a => a.OwnerId == ownerId);
-
-			Context.Activity.StartActivity(i);
+            dispatcher.RequestMainThreadAction( async () => 
+                {
+                    var result = await AlertDialogHelper.ShowPromptDialog(
+                        Context.Activity,
+                        title,
+                        message,
+                        () => 
+                        {
+                            tcs.TrySetResult (null);
+                            if(cancelAction != null)
+                            {
+                                cancelAction();
+                            }
+                        },
+                        isNumericOnly,
+                        inputText);
+                    
+                    if(!string.IsNullOrEmpty(result))
+                    {
+                        tcs.TrySetResult (result);
+                    }
+                });
 
 			return tcs.Task;
         }

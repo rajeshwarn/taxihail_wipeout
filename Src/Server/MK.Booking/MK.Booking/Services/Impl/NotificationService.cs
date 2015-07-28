@@ -327,12 +327,17 @@ namespace apcurium.MK.Booking.Services.Impl
             return string.Format("{0}/{1}", url1, url2);
         }
 
-        public void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode)
+        public void SendAccountConfirmationSMS(CountryISOCode countryCode, string phoneNumber, string code, string clientLanguageCode)
         {
             var template = _resources.Get(SMSConstant.Template.AccountConfirmation, clientLanguageCode);
             var message = string.Format(template, _serverSettings.ServerData.TaxiHail.ApplicationName, code);
 
-            SendSms(phoneNumber, message);
+            libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
+            toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryDialCode;
+            toPhoneNumber.NationalNumber = long.Parse(phoneNumber);
+            toPhoneNumber.ItalianLeadingZero = (phoneNumber[0] == '0');
+
+            SendSms(toPhoneNumber, message);
         }
 
         public void SendBookingConfirmationEmail(int ibsOrderId, string note, Address pickupAddress, Address dropOffAddress, DateTime pickupDate,
@@ -499,7 +504,10 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             var hasPaymentInfo = paymentInfo != null;
+
             var hasDriverInfo = driverInfos != null && (driverInfos.FullName.HasValue() || driverInfos.VehicleMake != null || driverInfos.VehicleModel != null);
+
+            var showMinimalDriverInfo = !hasDriverInfo && cmtRideLinqFields != null;
             var showTripSection = hasDriverInfo || cmtRideLinqFields != null;
             var paymentAmount = string.Empty;
             var paymentMethod = string.Empty;
@@ -542,8 +550,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 paymentTransactionId = paymentInfo.TransactionId;
             }
 
-            var addressToUseForDropOff = TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode);
-            var positionForStaticMap = TryToGetPositionOfDropOffAddress(orderId, dropOffAddress);
+            var addressToUseForDropOff = TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode, cmtRideLinqFields);
+            var positionForStaticMap = TryToGetPositionOfDropOffAddress(orderId, dropOffAddress, cmtRideLinqFields);
             
             var hasDropOffAddress = addressToUseForDropOff != null
                 && (!string.IsNullOrWhiteSpace(addressToUseForDropOff.FullAddress)
@@ -580,6 +588,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
                 ShowTripSection = showTripSection,
+                ShowMinimalDriverInfo = showMinimalDriverInfo,
                 HasDriverInfo = hasDriverInfo,
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
                 VehicleNumber = vehicleNumber,
@@ -587,7 +596,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 VehicleMake = hasDriverInfo ? driverInfos.VehicleMake : string.Empty,
                 VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
                 DriverInfos = driverInfos,
-                DriverId = hasDriverInfo ? driverInfos.DriverId : "",
+                DriverId = hasDriverInfo || cmtRideLinqFields != null ? driverInfos.DriverId : string.Empty,
                 PickupDate = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
                     ? cmtRideLinqFields.PickUpDateTime.Value.ToString("D", dateFormat)
                     : pickupDate.ToString("D", dateFormat),
@@ -601,7 +610,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 Fare = _resources.FormatPrice(fare),
                 Toll = _resources.FormatPrice(toll),        
                 Surcharge = _resources.FormatPrice(surcharge),
-                BookingFees = _resources.FormatPrice(bookingFees),
+                BookingFees = _resources.FormatPrice(bookingFees), 
                 Extra = _resources.FormatPrice(extra),
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalAmount),
@@ -645,7 +654,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowImprovementSurcharge = isCmtRideLinqReceipt,
                 ShowToll = Math.Abs(toll) >= 0.01 || isCmtRideLinqReceipt,
                 ShowSurcharge = Math.Abs(surcharge) >= 0.01 || isCmtRideLinqReceipt,
-                ShowBookingFees = Math.Abs(bookingFees) >= 0.01 || isCmtRideLinqReceipt,
+                ShowBookingFees = Math.Abs(bookingFees) >= 0.01,
                 ShowExtra = Math.Abs(extra) >= 0.01 || isCmtRideLinqReceipt,
                 ShowRateClassStart = rateClassStart.HasValue || isCmtRideLinqReceipt,
                 ShowRateClassEnd = rateClassEnd.HasValue,
@@ -748,20 +757,39 @@ namespace apcurium.MK.Booking.Services.Impl
             SendPushOrSms(account.Id, alert, data);
         }
 
-        private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode)
+        private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)
         {
             var orderStatus = _orderDao.FindOrderStatusById(orderId);
-            if (orderStatus == null
+            if ((orderStatus == null
                 || !orderStatus.VehicleLatitude.HasValue
                 || !orderStatus.VehicleLongitude.HasValue)
+                && (cmtRideLinqFields == null
+                || !cmtRideLinqFields.LastLatitudeOfVehicle.HasValue
+                || !cmtRideLinqFields.LastLongitudeOfVehicle.HasValue))
             {
                 return dropOffAddress;
             }
 
+            double latitude;
+            double longitude;
+
+            if (cmtRideLinqFields != null
+                && cmtRideLinqFields.LastLatitudeOfVehicle.HasValue
+                && cmtRideLinqFields.LastLongitudeOfVehicle.HasValue)
+            {
+                latitude = cmtRideLinqFields.LastLatitudeOfVehicle.Value;
+                longitude = cmtRideLinqFields.LastLongitudeOfVehicle.Value;
+            }
+            else
+            {
+                latitude = orderStatus.VehicleLatitude.Value;
+                longitude = orderStatus.VehicleLongitude.Value;
+            }
+
             // Find the exact dropoff address using the last vehicle position
             var exactDropOffAddress = _geocoding.Search(
-                orderStatus.VehicleLatitude.Value,
-                orderStatus.VehicleLongitude.Value,
+                latitude,
+                longitude,
                 clientLanguageCode).FirstOrDefault();
 
             return exactDropOffAddress ?? dropOffAddress;
@@ -791,8 +819,15 @@ namespace apcurium.MK.Booking.Services.Impl
             return TimeZoneHelper.TransformToLocalTime(timeZoneOfTheOrder, dropOffDateInUtc.Value);
         }
 
-        private Position? TryToGetPositionOfDropOffAddress(Guid orderId, Address dropOffAddress)
+        private Position? TryToGetPositionOfDropOffAddress(Guid orderId, Address dropOffAddress, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)
         {
+            if (cmtRideLinqFields != null
+                && cmtRideLinqFields.LastLatitudeOfVehicle.HasValue
+                && cmtRideLinqFields.LastLongitudeOfVehicle.HasValue)
+            {
+                return new Position(cmtRideLinqFields.LastLatitudeOfVehicle.Value, cmtRideLinqFields.LastLongitudeOfVehicle.Value);
+            }
+
             var orderStatus = _orderDao.FindOrderStatusById(orderId);
             if (orderStatus != null 
                 && orderStatus.VehicleLatitude.HasValue 
@@ -884,25 +919,24 @@ namespace apcurium.MK.Booking.Services.Impl
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Set<AccountDetail>().Find(accountId);
-                var phoneNumber = account.Settings.Phone;
 
-                if (string.IsNullOrWhiteSpace(phoneNumber))
+                libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
+                toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(account.Settings.Country)).CountryDialCode;
+                toPhoneNumber.NationalNumber = long.Parse(account.Settings.Phone);
+                toPhoneNumber.ItalianLeadingZero = (account.Settings.Phone[0] == '0');
+
+                if (!toPhoneNumber.IsValidNumber)
                 {
-                    _logger.Maybe(() => _logger.LogMessage("Cannot send SMS, phone number in account is empty (account: {0})", accountId));
+                    _logger.Maybe(() => _logger.LogMessage("Cannot send SMS for account {0}, phone number is {1})", accountId, toPhoneNumber.IsPossibleNumberWithReason.ToString()));
                     return;
                 }
 
-                SendSms(phoneNumber, alert);
+                SendSms(toPhoneNumber, alert);
             }
         }
 
-        private void SendSms(string phoneNumber, string alert)
+        private void SendSms(libphonenumber.PhoneNumber phoneNumber, string alert)
         {
-            // TODO MKTAXI-1836 Support International number
-            phoneNumber = phoneNumber.Length == 11
-                              ? phoneNumber
-                              : string.Concat("1", phoneNumber);
-
             _smsService.Send(phoneNumber, alert);
         }
 

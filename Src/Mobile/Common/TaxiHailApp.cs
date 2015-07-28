@@ -72,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile
             _container.Register((c, p) => new NetworkRoamingServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
 			_container.Register<IAccountService, AccountService>();
+            _container.Register<IMetricsService, MetricsService>();
 			_container.Register<IBookingService, BookingService>();
             _container.Register<INetworkRoamingService, NetworkRoamingService>();
 			_container.Register<IOrderWorkflowService, OrderWorkflowService>();

@@ -64,6 +64,10 @@
     <Reference Include="eSELECTplus_dotNet_API">
       <HintPath>..\..\Libraries\eSELECTplus_dotNet_API.dll</HintPath>
     </Reference>
+    <Reference Include="libphonenumber, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\libphonenumber.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -237,6 +241,7 @@
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IFeesDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IOrderNotificationsDetailDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOverduePaymentDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IReportDao.cs" />
@@ -245,6 +250,7 @@
     <Compile Include="ReadModel\Query\Contract\IOrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\DeviceDao.cs" />
     <Compile Include="ReadModel\Query\FeesDao.cs" />
+    <Compile Include="ReadModel\Query\OrderNotificationsDetailDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\OrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\OverduePaymentDao.cs" />

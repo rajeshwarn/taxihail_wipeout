@@ -21,6 +21,8 @@ namespace CMTPayment.Pair
         public int FareAtAlternateRate { get; set; }
         public int Extra { get; set; }
         public int Tip { get; set; }
+        public double? Lat { get; set; }
+        public double? Lon { get; set; }
         public int Surcharge { get; set; }
         public int Tax { get; set; }
         public int RateAtTripStart { get; set; }

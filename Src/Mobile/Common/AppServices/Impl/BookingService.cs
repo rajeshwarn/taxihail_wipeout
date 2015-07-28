@@ -173,12 +173,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					&& status.Status == OrderStatus.Canceled);
         }
 
-		public bool IsOrderCancellable(string statusId)
+		public bool IsOrderCancellable(OrderStatusDetail status)
 		{
-			return statusId == VehicleStatuses.Common.Assigned
-                || statusId == VehicleStatuses.Common.Waiting
-                || statusId == VehicleStatuses.Common.Arrived
-                || statusId == VehicleStatuses.Common.Scheduled;
+			return status.IBSStatusId == VehicleStatuses.Common.Assigned
+				|| status.IBSStatusId == VehicleStatuses.Common.Waiting
+				|| status.IBSStatusId == VehicleStatuses.Common.Arrived
+				|| status.IBSStatusId == VehicleStatuses.Common.Scheduled
+				|| string.IsNullOrEmpty(status.IBSStatusId) && status.IBSOrderId.HasValue;
 		}
 
         public bool IsCallboxStatusActive(string statusId)

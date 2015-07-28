@@ -38,7 +38,9 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UnpairOrderForManualRideLinq>,
         ICommandHandler<UpdateTripInfoInOrderForManualRideLinq>,
         ICommandHandler<SaveTemporaryOrderPaymentInfo>,
-        ICommandHandler<UpdateAutoTip>
+        ICommandHandler<UpdateAutoTip>,
+        ICommandHandler<LogOriginalEta>,
+        ICommandHandler<UpdateOrderNotificationDetail>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -48,7 +50,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository = repository;
             _contextFactory = contextFactory;
         }
-
+        
         public void Handle(CancelOrder command)
         {
             var order = _repository.Find(command.OrderId);
@@ -224,7 +226,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             order.UpdateRideLinqTripInfo(command.Distance,command.Total, command.Fare, command.FareAtAlternateRate, command.Tax,
                 command.Tip, command.TollTotal, command.Extra,command.Surcharge,command.RateAtTripStart, command.RateAtTripEnd, 
                 command.RateChangeTime, command.StartTime, command.EndTime, command.PairingToken, command.Medallion, command.TripId, command.DriverId, command.AccessFee,
-                command.LastFour, command.Tolls);
+                command.LastFour, command.Tolls, command.LastLatitudeOfVehicle, command.LastLongitudeOfVehicle);
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -234,6 +236,20 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = _repository.Get(command.OrderId);
             order.UpdateAutoTip(command.AutoTipPercentage);
 
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(LogOriginalEta command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.LogOriginalEta(command.OriginalEta);
+
+            _repository.Save(order, command.Id.ToString());
+        }
+        public void Handle(UpdateOrderNotificationDetail command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.UpdateOrderNotificationDetail(command);
             _repository.Save(order, command.Id.ToString());
         }
     }

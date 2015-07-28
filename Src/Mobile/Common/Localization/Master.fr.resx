@@ -135,6 +135,9 @@
   <data name="AccountNotActivated" xml:space="preserve">
     <value>Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide de l'email qui vient de vous être envoyé</value>
   </data>
+  <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
+    <value>Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide du SMS qui vient de vous être envoyé</value>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Merci de saisir un numéro de compte valide</value>
   </data>
@@ -697,7 +700,7 @@
     <value>Erreur de connection</value>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.</value>
+    <value>Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</value>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
     <value>Merci d'entrer une adresse de départ valide</value>
@@ -1504,7 +1507,7 @@
     <value>Notifications</value>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>Le véhicule le plus proche est à {1} {2} et {0}</value>
+    <value>Le véhicule le plus proche est à {0} {1}</value>
   </data>
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">
     <value>Notifications</value>
@@ -1540,7 +1543,7 @@
     <value>Notifications</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    <value>est à {0} et arrive dans {1} {2}</value>
+    <value>et arrive dans {0} {1}</value>
   </data>
   <data name="EtaNotAvailable" xml:space="preserve">
     <value>Il n'y a pas de véhicule disponible</value>
@@ -2006,10 +2009,37 @@
   <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
     <value>Votre demande n'a pas pu être prise en compte, veuillez réessayer de nouveau.</value>
   </data>
+  <data name="DialCodeSelectorTitle" xml:space="preserve">
+    <value>Code indicatif</value>
+  </data>
   <data name="ServiceError_EmailClientAbsent" xml:space="preserve">
-    <value>Excusez, nous ne pouvons pas créer le courriel. Il n y'a pas de client de courriel installé sur cet appareil</value>
+    <value>Désolé, nous ne pouvons pas créer le courriel. Il n'y a pas de client de courriel installé sur cet appareil.</value>
   </data>
   <data name="DriverInfoVehicleMedallion" xml:space="preserve">
     <value>Medallion:</value>
+  </data>
+  <data name="ResendConfirmationCodeButtonText" xml:space="preserve">
+    <value>Renvoyer le code</value>
+  </data>
+  <data name="ResendConfirmationCodeTitle" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ResendConfirmationCodeText" xml:space="preserve">
+    <value>Le code de confirmation sera envoyé bientôt</value>
+  </data>
+  <data name="OtherListItemLabel" xml:space="preserve">
+    <value>Autre Pourcentage</value>
+  </data>
+  <data name="OtherListItemPromptLabel" xml:space="preserve">
+    <value>Entrez une valeur:</value>
+  </data>
+  <data name="EtaLessThanAMinute" xml:space="preserve">
+    <value>Le taxi le plus proche est à moins d'une minute de votre position</value>
+  </data>
+  <data name="TipPercent_Error" xml:space="preserve">
+    <value>Le pourboire ne peut être supérieur à 100%</value>
+  </data>
+  <data name="EtaNoTaxiAvailable" xml:space="preserve">
+    <value>Désolé, aucun taxi disponible dans les environs.</value>
   </data>
 </root>

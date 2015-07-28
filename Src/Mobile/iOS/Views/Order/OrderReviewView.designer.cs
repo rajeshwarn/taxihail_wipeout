@@ -67,15 +67,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		UIKit.UILabel lblVehicule { get; set; }
 
 		[Outlet]
+        UIKit.UILabel lblCountryDialCode { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextView txtNote { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (iconPromo != null) {
-				iconPromo.Dispose ();
-				iconPromo = null;
-			}
-
 			if (btnViewPromo != null) {
 				btnViewPromo.Dispose ();
 				btnViewPromo = null;
@@ -109,6 +107,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (iconPhone != null) {
 				iconPhone.Dispose ();
 				iconPhone = null;
+			}
+
+			if (iconPromo != null) {
+				iconPromo.Dispose ();
+				iconPromo = null;
 			}
 
 			if (iconRingCode != null) {
@@ -164,6 +167,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (txtNote != null) {
 				txtNote.Dispose ();
 				txtNote = null;
+			}
+
+            if (lblCountryDialCode != null) {
+                lblCountryDialCode.Dispose ();
+                lblCountryDialCode = null;
 			}
 		}
 	}

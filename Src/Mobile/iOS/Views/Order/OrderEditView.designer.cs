@@ -34,6 +34,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		UIKit.UILabel lblPhone { get; set; }
 
 		[Outlet]
+        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.CountrySelector lblPhoneDialCode { get; set; }
+
+		[Outlet]
+		UIKit.UIView phoneNumberView { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtApartment { get; set; }
 
 		[Outlet]
@@ -124,6 +130,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (txtPhone != null) {
 				txtPhone.Dispose ();
 				txtPhone = null;
+			}
+
+			if (lblPhoneDialCode != null) {
+				lblPhoneDialCode.Dispose ();
+				lblPhoneDialCode = null;
+			}
+
+			if (phoneNumberView != null) {
+				phoneNumberView.Dispose ();
+				phoneNumberView = null;
 			}
 		}
 	}

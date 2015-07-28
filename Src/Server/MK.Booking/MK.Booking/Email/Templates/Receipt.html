@@ -453,6 +453,7 @@
                                                                         <td class="driver_list_title" colspan="2">{{ localize "Email_Body_VehicleModel" }}</td>
                                                                         <td class="list_value" colspan="2">{{ VehicleMake }} {{ VehicleModel }}</td>
                                                                     </tr>
+
                                                                     <tr>
                                                                         <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
                                                                         <td class="list_value" colspan="3">{{ VehicleNumber }}</td>
@@ -465,6 +466,18 @@
                                                                         <td class="list_value" colspan="3">{{ DriverId }}</td>
                                                                     </tr>
                                                                     {{/HasDriverId}}
+
+                                                                    {{#ShowMinimalDriverInfo}}
+                                                                    <tr>
+                                                                        <td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
+                                                                        <td class="list_value" colspan="4">{{ DriverId }}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
+                                                                        <td class="list_value" colspan="4">{{ VehicleNumber }}</td>
+                                                                    </tr>
+                                                                    {{/ShowMinimalDriverInfo}}
 
                                                                     {{#ShowTripId}}
                                                                     <tr>

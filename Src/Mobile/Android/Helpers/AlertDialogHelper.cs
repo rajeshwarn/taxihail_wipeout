@@ -3,6 +3,10 @@ using Android.App;
 using Android.Content;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using Android.Views;
+using Android.Animation;
+using apcurium.MK.Booking.Mobile.Client.Controls.Dialog;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
@@ -31,90 +35,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
         public static void Show(Activity owner, string title, string message, Action onClose = null)
         {
-			var dialog = new AlertDialog.Builder (owner);
-			dialog.SetTitle(title);
-            if (message.HasValue())
-            {
-                dialog.SetMessage(message);
-            }
-			dialog.SetPositiveButton("Ok", delegate
-            {
-                if (onClose != null)
-                {
-                    onClose();
-                }
-            });
-
-			owner.RunOnUiThread(() => { 
-				dialog.Create(); 
-				dialog.Show();
-			});
+            new CustomAlertDialog(owner, title, message, onClose);
         }
 
         public static void Show(Activity owner, string title, string message, string positiveButtonTitle,
-            EventHandler<DialogClickEventArgs> positiveClickHandler)
+            Action positiveAction)
         {
-            var dialog = new AlertDialog.Builder(owner);
-            dialog.SetPositiveButton(positiveButtonTitle, positiveClickHandler);
-            dialog.SetTitle(title);
-            if (message.HasValue())
-            {
-                dialog.SetMessage(message);
-            }
-            owner.RunOnUiThread(() =>
-            {
-                dialog.Create();
-                dialog.Show();
-            });
+            new CustomAlertDialog(owner, title, message, positiveAction, positiveButtonTitle);
         }
 
         public static void Show(Activity owner, string title, string message, string positiveButtonTitle,
-            EventHandler<DialogClickEventArgs> positiveClickHandler, string negativeButtonTitle,
-            EventHandler<DialogClickEventArgs> negativeClickHandler)
+            Action positiveAction, string negativeButtonTitle,
+            Action negativeAction)
         {
-            Show(owner, title, message, positiveButtonTitle, positiveClickHandler, negativeButtonTitle, negativeClickHandler, () => { });
+
+            new CustomAlertDialog(owner, title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction);
         }
 
         public static void Show(Activity owner, string title, string message, string positiveButtonTitle,
-            EventHandler<DialogClickEventArgs> positiveClickHandler, string negativeButtonTitle,
-            EventHandler<DialogClickEventArgs> negativeClickHandler, Action cancelAction)
+            Action positiveAction, string negativeButtonTitle,
+            Action negativeAction, string neutralButtonTitle,
+            Action neutralAction)
         {
-            var dialogBuilder = new AlertDialog.Builder(owner);
-            dialogBuilder.SetPositiveButton(positiveButtonTitle, positiveClickHandler);
-            dialogBuilder.SetNegativeButton(negativeButtonTitle, negativeClickHandler);
-            dialogBuilder.SetTitle(title);
-            if (message.HasValue())
-            {
-                dialogBuilder.SetMessage(message);
-            }
-            owner.RunOnUiThread(() =>
-            {
-                var dialog = dialogBuilder.Create();
-
-                dialog.CancelEvent += (sender, args) => cancelAction();
-                dialog.Show();
-            });
-        }
-
-        public static void Show(Activity owner, string title, string message, string positiveButtonTitle,
-            EventHandler<DialogClickEventArgs> positiveClickHandler, string negativeButtonTitle,
-            EventHandler<DialogClickEventArgs> negativeClickHandler, string neutralButtonTitle,
-            EventHandler<DialogClickEventArgs> neutralClickHandler)
-        {
-            var dialog = new AlertDialog.Builder(owner);
-            dialog.SetPositiveButton(positiveButtonTitle, positiveClickHandler);
-            dialog.SetNegativeButton(negativeButtonTitle, negativeClickHandler);
-            dialog.SetNeutralButton(neutralButtonTitle, neutralClickHandler);
-            dialog.SetTitle(title);
-            if (message.HasValue())
-            {
-                dialog.SetMessage(message);
-            }
-            owner.RunOnUiThread(() =>
-            {
-                dialog.Create();
-                dialog.Show();
-            });
+            new CustomAlertDialog(owner, title, message, positiveButtonTitle, positiveAction, 
+                negativeButtonTitle, negativeAction, neutralButtonTitle, neutralAction);
         }
 
         public static void Show(Activity owner, string title, string[] items,
@@ -134,6 +78,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                 dialog.Show();
             });
             
+        }
+        public static Task<string> ShowPromptDialog(Activity owner, string title, string message, Action cancelAction, bool isNumericOnly = false, string inputText = "")
+        {
+            var cad = new CustomAlertDialog();
+            return cad.ShowPrompt(owner, title, message, cancelAction, isNumericOnly, inputText);
         }
     }
 }

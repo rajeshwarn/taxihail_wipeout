@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var promotion = _repository.Get(command.PromoId);
 
-            promotion.Redeem(command.OrderId, command.TaxedMeterAmount);
+            promotion.Redeem(command.OrderId, command.TaxedMeterAmount, command.TipAmount);
 
             _repository.Save(promotion, command.Id.ToString());
         }

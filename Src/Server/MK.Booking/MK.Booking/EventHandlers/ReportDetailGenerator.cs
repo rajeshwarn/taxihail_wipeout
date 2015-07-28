@@ -34,7 +34,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<RefundedOrderUpdated>,
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
-        IEventHandler<ManualRideLinqTripInfoUpdated>
+        IEventHandler<ManualRideLinqTripInfoUpdated>,
+        IEventHandler<OriginalEtaLogged>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -498,6 +499,18 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
 
 
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(OriginalEtaLogged @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+
+                orderReport.Order.OriginalEta = @event.OriginalEta;
+                
                 context.Save(orderReport);
             }
         }

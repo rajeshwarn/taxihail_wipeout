@@ -25,6 +25,7 @@
 "UpdatePasswordNewPasswordLabel"="Nouveau mot de passe";
 "DestinationNotSpecifiedText"="Adresse de destination manquante";
 "PickupMapTitle"="Lieu de départ";
+"DialCodeSelectorTitle"="Code indicatif";
 "HomeView_ManualPairing"="Dans un Taxi";
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="Désolé, la réservation ne peut être complétée";
@@ -134,7 +135,7 @@
 "TabPlaces"="Points d'intérêt";
 "CreditCardRemoveErrorTitle"="La carte ne peut être supprimée";
 "View_Payments_CmtRideLinqChangePaymentTitle"="Modifier les informations relatives au paiement";
-"ServiceError_EmailClientAbsent"="Excusez, nous ne pouvons pas créer le courriel. Il n y'a pas de client de courriel installé sur cet appareil";
+"ServiceError_EmailClientAbsent"="Désolé, nous ne pouvons pas créer le courriel. Il n'y a pas de client de courriel installé sur cet appareil.";
 "InvalidLoginMessageTitle"="Erreur de connection";
 "CreateAccountTitleArray"="MrMme";
 "RideSettingsAccountNumber"="Numéro de compte entreprise (optionnel)";
@@ -147,6 +148,7 @@
 "View_UpdatedTermsAndConditions"="Nouvelles conditions d'utilisation";
 "ResetPasswordSubtitleText"="Saisissez votre email pour recevoir votre nouveau mot de passe";
 "BookPickupLocationEmptyPlaceholder"="Choisissez votre lieu de départ sur la carte";
+"ResendConfirmationCodeText"="Le code de confirmation sera envoyé bientôt";
 "CannotCancelOrderTitle"="Erreur";
 "OrderNoteGPS"="Utiliser un GPS";
 "PromotionLoadError"="Impossible de charger les promotions disponibles. Veuillez réessayer plus tard.";
@@ -163,13 +165,14 @@
 "BookRatingErrorMessage"="Merci de noter la qualité de votre dernier trajet";
 "DriverInfoModel"="Modèle:";
 "AccountPaymentQuestionsRequired"="(requis)";
+"OtherListItemPromptLabel"="Entrez une valeur:";
 "RideSettingsCustomerNumber"="Numéro de client du compte (optionnel)";
 "PaymentLoadError"="Impossible de charger les informations de paiement. Veuillez réessayer plus tard.";
 "Overdue_Amount"="Montant dû:";
 "View_PayPal"="PayPal";
 "InvalidBookinInfoTitle"="Informations de commande invalides";
 "AppNeedUpdateTitle"="Nouvelle version disponible";
-"StatusEta"="est à {0} et arrive dans {1} {2}";
+"StatusEta"="et arrive dans {0} {1}";
 "CreditCardExpYear"="Date d'expiration (année)";
 "CreditCardExpiredUpdateNow"="Mettre à jour";
 "PanelMenuViewAboutUsText"="À Propos";
@@ -226,6 +229,7 @@
 "CallButton"="Appeler";
 "NoPayBackErrorMessage"="Le champs PayBack est requis";
 "CmtRideLinqConfirmPairView"="Confirmer les informations relatives au paiement";
+"AccountNotActivatedCodeBySMS"="Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide du SMS qui vient de vous être envoyé";
 "CreateAccountEmptyField"="Votre demande ne peut être validée, merci de remplir les champs obligatoires";
 "AccountNotActivated"="Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide de l'email qui vient de vous être envoyé";
 "Notification_PromotionUnlockedPush"="Promotions déverrouillées (Push)";
@@ -365,6 +369,7 @@
 "View_AccountConfirmationTitle"="Confirmation de compte";
 "RateRide"="Évaluer la course";
 "ConfirmDestinationLabel"="Destination";
+"ResendConfirmationCodeButtonText"="Renvoyer le code";
 "UpdatePasswordConfirmationLabel"="Confirmation";
 "View_SearchAddress"="Rechercher une adresse";
 "CreateAccountInvalidPassword"="Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.";
@@ -372,7 +377,7 @@
 "DriverInfoMake"="Marque:";
 "BookATaxi_Message"="Quand voulez-vous commander votre taxi?";
 "View_BookSettingMenu"="Paramètres";
-"Eta"="Le véhicule le plus proche est à {1} {2} et {0}";
+"Eta"="Le véhicule le plus proche est à {0} {1}";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirmer les informations relatives au paiement";
 "CreateAccountInvalidDataTitle"="Données invalides";
 "Collapse"="Cacher";
@@ -437,7 +442,7 @@
 "ViewRatingBtn"="Voir les notes";
 "ManualRideLinqStatus_Email"="Un reçu vous sera envoyé à {0}.";
 "ChargeTypeCreditCardFile"="Carte de paiement déjà engistrée";
-"InvalidPhoneErrorMessage"="Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.";
+"InvalidPhoneErrorMessage"="Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}";
 "CardExpiredMessage"="Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.";
 "LocationAddFavoriteTitle"="Ajouter une nouvelle adresse";
 "PickupTimeTextPlaceholder"="Heure: maintenant";
@@ -486,6 +491,7 @@
 "DriverInfoDriver"="Chauffeur:";
 "SettingsViewTitle"="Paramètres";
 "TechSupportEmailTitle"="Support application mobile";
+"ResendConfirmationCodeTitle"="Confirmation";
 "YesButton"="Oui";
 "PanelMenuViewTaxiHailNetworkText"="Réseau TaxiHail";
 "ManualRideLinqStatus_Tax"="Taxes:";
@@ -512,6 +518,7 @@
 "NetworkErrorMessage"="Echec de la connexion. Merci de vérifier vos paramètres de connexion et réessayer.";
 "Overdue_Date"="Date de transaction:";
 "View_ConfirmCarNumber"="Confirmation";
+"OtherListItemLabel"="Autre Pourcentage";
 "BookRatingErrorTitle"="Attention";
 "View"="Voir";
 "NoRingCodeText"="--";
@@ -531,6 +538,7 @@
 "View_RefineAddress"="Informations concernant le départ";
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "RefineAddressTitle"="Affiner l'adresse";
+"TipPercent_Error"="Le pourboire ne peut être supérieur à 100%";
 "PaymentViewTotalText"="Total";
 "ManualRideLinqSummary_Done"="Ok";
 "PaymentDetails.TipAmountLabel"="Montant du pourboire";
@@ -576,6 +584,8 @@
 "ServiceError_ErrorCreatingOrderMessage"="Merci de contacter {0} au {1} pour toute demande d'assistance";
 "HistoryDetailPromoLabel"="Code promo:";
 "DateTimePickerPickTime"="Sélectionner l'heure de départ";
+"EtaLessThenAMinute"="Le taxi le plus proche est à moins d'une minute de votre position";
+"EtaNoTaxiAvailable"="Désolé, aucun taxi disponible dans les environs.";
 "CreateAccountErrorMessage"="Le compte de peut malheureusement pas être créé";
 "View_RideSettings"="Profil";
 "ScanCreditCard"="Scanner la carte de paiement";

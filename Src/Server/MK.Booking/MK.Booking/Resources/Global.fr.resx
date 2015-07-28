@@ -657,4 +657,7 @@
   <data name="OrderStatus_PairingFailed" xml:space="preserve">
     <value>Erreur lors de l'association. Veuillez payer à votre chauffeur à la fin de la course</value>
   </data>
+  <data name="PhoneNumberFormat" xml:space="preserve">
+    <value>Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</value>
+  </data>
 </root>
