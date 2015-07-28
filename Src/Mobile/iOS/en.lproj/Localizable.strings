@@ -536,6 +536,7 @@
 "BookRatingErrorTitle"="Warning";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
 "InvalidBookinInfo"="To book a ride, you need to enter a valid pickup address.";
+"EtaLessThanAMinute"="Nearest taxi is less than a minute away";
 "DateTimePickerPickInvalidDateTitle"="Invalid date / time";
 "Overdue_Instructions"="Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.";
 "View_CreateAccount"="Create Your Account";
@@ -593,7 +594,6 @@
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "View_BookRating"="Rate Your Trip";
 "DateTimePickerPickTime"="Select your pickup time:";
-"EtaLessThenAMinute"="Nearest taxi is less then a minute away";
 "EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
 "CreateAccountErrorMessage"="The account cannot be created.";
 "View_RideSettings"="Profile";

@@ -526,6 +526,7 @@
 "StatusActionCancelButton"="Cancelar reservación";
 "InvalidBookinInfo"="Para reservar su servicio, necesita ingresar una dirección de abordaje válida";
 "ReminderDetails"="Recordatorio: Un taxi lo vendrá a recoger de {0} al {1} en {2}";
+"EtaLessThanAMinute"="Nearest taxi is less than a minute away";
 "Politeness"="Amabilidad";
 "Overdue_Instructions"="Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.";
 "View_CreateAccount"="Cree su cuenta";
@@ -579,7 +580,6 @@
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "HistoryDetailPromoLabel"="Promo Code:";
 "DateTimePickerPickTime"="Seleccione la hora del servicio:";
-"EtaLessThenAMinute"="Nearest taxi is less then a minute away";
 "EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
 "CreateAccountErrorMessage"="No se pudo crear su cuenta.";
 "View_RideSettings"="Perfil";
