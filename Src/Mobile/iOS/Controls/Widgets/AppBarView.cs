@@ -21,8 +21,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private UIView _manualPairingButtons;
 		private UIView _airportOrderButtons;
 
-		int x = 0;
-
 		// Keeping a reference to the _imagePromo object to ensure binding does not break.
 		private UIImageView _imagePromo;
 		private UIImageView _imagePromoForManual;
