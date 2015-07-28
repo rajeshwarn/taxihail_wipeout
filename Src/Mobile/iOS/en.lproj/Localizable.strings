@@ -329,7 +329,7 @@
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "LoginForgotPasswordDetail"="Enter your email and we'll send you a new one.";
 "NoButton"="No";
-"PanelMenuViewSignOutPopupMessage"="Are you sure?";
+"PanelMenuViewSignOutPopupMessage"="Are you sure you want to logout?";
 "PayInCar"="Pay Cash/Credit Card in Car";
 "CreditCardRequiredFields"="All the fields are required";
 "PromoBookRide"="Use this promo code";
@@ -372,6 +372,7 @@
 "CreateAccountInvalidPassword"="The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.";
 "HistoryDetailRequestedLabel"="Requested:";
 "DriverInfoMake"="Make:";
+"PanelMenuViewSignOutPopupLogout"="Logout";
 "BookATaxi_Message"="When would you like to book?";
 "PanelMenuViewPromotionsText"="Promotions";
 "Eta"="Nearest taxi is {1} {2} away";

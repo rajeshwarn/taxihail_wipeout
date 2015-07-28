@@ -336,7 +336,7 @@
   <string name="Modify">Modifier</string>
   <string name="LoginForgotPasswordDetail">Saisissez votre email pour recevoir votre nouveau mot de passe</string>
   <string name="ResetPasswordTitleText">Mot de passe oublié?</string>
-  <string name="PanelMenuViewSignOutPopupMessage">Êtes vous sûr?</string>
+  <string name="PanelMenuViewSignOutPopupMessage">Êtes vous sûr de vouloir vous déconnecter ?</string>
   <string name="PayInCar">Payer dans le taxi</string>
   <string name="CreditCardRequiredFields">Tous les champs obligatoires doivent être remplis</string>
   <string name="SettingViewNotSignedIn">Désolé, vous n\'êtes pas identifié. Merci de vous identifier pour pouvoir utiliser l\'application</string>
@@ -378,6 +378,7 @@
   <string name="CreateAccountInvalidPassword">Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.</string>
   <string name="HistoryDetailRequestedLabel">Commandé le:</string>
   <string name="DriverInfoMake">Marque:</string>
+  <string name="PanelMenuViewSignOutPopupLogout">Déconnexion</string>
   <string name="BookATaxi_Message">Quand voulez-vous commander votre taxi?</string>
   <string name="View_BookSettingMenu">Paramètres</string>
   <string name="Eta">Le véhicule le plus proche est à {1} {2} et {0}</string>

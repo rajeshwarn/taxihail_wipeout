@@ -2040,6 +2040,9 @@
     <value>Le pourboire ne peut être supérieur à 100%</value>
   </data>
   <data name="PanelMenuViewSignOutPopupMessage" xml:space="preserve">
-    <value>Êtes vous sûr?</value>
+    <value>Êtes vous sûr de vouloir vous déconnecter ?</value>
+  </data>
+  <data name="PanelMenuViewSignOutPopupLogout" xml:space="preserve">
+    <value>Déconnexion</value>
   </data>
 </root>

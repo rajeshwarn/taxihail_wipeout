@@ -332,7 +332,7 @@
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "LoginForgotPasswordDetail"="Ingrese su email y le enviaremos una nueva contraseña";
 "NoButton"="No";
-"PanelMenuViewSignOutPopupMessage"="Are you sure?";
+"PanelMenuViewSignOutPopupMessage"="Are you sure you want to logout?";
 "CreditCardRequiredFields"="Todos los campos requeridos";
 "SettingViewNotSignedIn"="No se ha encontrado cuenta con este email";
 "AcceptButton"="Aceptar";
@@ -371,6 +371,7 @@
 "CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.";
 "HistoryDetailRequestedLabel"="Solicitud:";
 "DriverInfoMake"="Marca:";
+"PanelMenuViewSignOutPopupLogout"="Logout";
 "BookATaxi_Message"="When would you like to book?";
 "View_BookSettingMenu"="Ajustes";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirmar información de pago";

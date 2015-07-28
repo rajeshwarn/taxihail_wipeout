@@ -1982,6 +1982,9 @@
     <value>Tip cannot be over 100%</value>
   </data>
   <data name="PanelMenuViewSignOutPopupMessage" xml:space="preserve">
-    <value>Are you sure?</value>
+    <value>Are you sure you want to logout?</value>
+  </data>
+  <data name="PanelMenuViewSignOutPopupLogout" xml:space="preserve">
+    <value>Logout</value>
   </data>
 </root>
