@@ -641,7 +641,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 
 			var durationUnit = direction.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
-			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, direction.Duration, durationUnit);
+			return string.Format (this.Services ().Localize ["StatusEta"], direction.Duration, durationUnit);
 		}
 
 		private async void UpdateActionsPossibleOnOrder(OrderStatusDetail status)

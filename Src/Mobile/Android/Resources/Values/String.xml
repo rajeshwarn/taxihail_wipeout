@@ -377,7 +377,7 @@
   <string name="PanelMenuViewSignOutPopupLogout">Logout</string>
   <string name="BookATaxi_Message">When would you like to book?</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="Eta">Nearest taxi is {1} {2} away</string>
+  <string name="Eta">Nearest taxi is {0} {1} away</string>
   <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirm Payment Information</string>
   <string name="CreateAccountInvalidDataTitle">Invalid account info</string>
   <string name="ChargeTypeLabel">Charge type</string>
@@ -541,6 +541,7 @@
   <string name="DateTimePickerPickInvalidDateTitle">Invalid date / time</string>
   <string name="Overdue_Instructions">Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</string>
   <string name="View_CreateAccount">Create Your Account</string>
+  <string name="Eta_NoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
   <string name="ConfirmationOfPaymentSent">Confirmation of payment has been sent to the driver.</string>
   <string name="ChooseProviderDialogTitle">Pick a provider</string>
   <string name="Overdue_Amount">Amount due:</string>

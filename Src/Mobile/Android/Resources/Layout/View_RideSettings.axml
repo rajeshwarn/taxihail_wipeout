@@ -111,12 +111,13 @@
                         android:paddingTop="5dip"
                         android:paddingBottom="5dip"
                         android:text="@string/RideSettingsVehiculeType"
-                        style="@style/BlackTextLabel" />
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility" />
                     <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
-                        local:MvxBind="Text VehicleTypeName; Data Vehicles; SelectedItem VehicleTypeId" />
+                        local:MvxBind="Text VehicleTypeName; Data Vehicles; SelectedItem VehicleTypeId; Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility; Enabled IsVehicleTypeSelectionEnabled" />
                     <TextView
                         android:singleLine="true"
                         android:layout_height="wrap_content"
