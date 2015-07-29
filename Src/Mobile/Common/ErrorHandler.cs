@@ -43,7 +43,20 @@ namespace apcurium.MK.Booking.Mobile
 			}
 			else if (ex is WebException 
 				&& (((WebException)ex).Status == WebExceptionStatus.ConnectFailure 
-				 || ((WebException)ex).Status == WebExceptionStatus.NameResolutionFailure))
+				 || ((WebException)ex).Status == WebExceptionStatus.NameResolutionFailure
+                || ((WebException)ex).Status == WebExceptionStatus.SendFailure
+                || ((WebException)ex).Status == WebExceptionStatus.ReceiveFailure
+                || ((WebException)ex).Status == WebExceptionStatus.PipelineFailure
+                || ((WebException)ex).Status == WebExceptionStatus.RequestCanceled
+                || ((WebException)ex).Status == WebExceptionStatus.ConnectionClosed
+                || ((WebException)ex).Status == WebExceptionStatus.SecureChannelFailure
+                || ((WebException)ex).Status == WebExceptionStatus.KeepAliveFailure
+                || ((WebException)ex).Status == WebExceptionStatus.Pending
+                || ((WebException)ex).Status == WebExceptionStatus.Timeout
+                || ((WebException)ex).Status == WebExceptionStatus.UnknownError
+                || ((WebException)ex).Status == WebExceptionStatus.CacheEntryNotFound
+                || ((WebException)ex).Status == WebExceptionStatus.TrustFailure
+                ))
 			{
 				if(LastConnectError.Subtract(DateTime.Now).TotalSeconds < -5)
 				{

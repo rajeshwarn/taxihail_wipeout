@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using TinyIoC;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -38,8 +39,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				} 
 				if (!handled) {
 					throw;
-				}else{
-					return default(TResult);
+				}
+                else
+                {
+                    // this patch try to return empty typed list to avoid exceptions in program where result.FirstOrDefault calls happen
+                    // bad practice to rely on reflection should be replaced in future
+                    TResult result = CreateEmptyTypedArray<TResult>(null) as TResult;
+
+                    if (result == null)
+                        result = default(TResult);
+
+                    return result;
 				}
             }
         }
@@ -91,5 +101,46 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
+        static object CreateEmptyTypedArray<T>(Type type, int counter = 0)
+        {
+            if (counter > 5)
+                return null;
+
+            try
+            {
+                Type genericType;
+
+                if (type != null)
+                    genericType = type;
+                else
+                    genericType = typeof(T);
+
+                if (genericType.IsInterface && genericType.IsGenericType && !genericType.IsGenericTypeDefinition)
+                {
+                    Type[] typeInterfaces = genericType.GetInterfaces();
+
+                    if (typeInterfaces.Where(t => t.Name == "IEnumerable").Count() > 0)
+                    {
+                        object result = null;
+
+                        if (!genericType.GenericTypeArguments[0].IsInterface)
+                        {
+                            return Array.CreateInstance(genericType.GenericTypeArguments[0], 0);
+                        }
+                        else
+                        {
+                            result = CreateEmptyTypedArray<T>(genericType.GenericTypeArguments[0], ++counter);
+                            return Array.CreateInstance(result.GetType(), 0);
+                        }
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }
