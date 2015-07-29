@@ -681,13 +681,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				await Task.Delay (TimeSpan.FromSeconds (10));
 				_bookingService.ClearLastOrder();
 
-                await this.Services().Message.ShowMessage(
-                    this.Services().Localize["IBSTimeOutErrorTitle"],
-                    this.Services().Localize["IBSTimeOutErrorMessage"],
-                    () =>
-                    {
-                        ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true });
-                    });
+                ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true });
             }
         }
 
