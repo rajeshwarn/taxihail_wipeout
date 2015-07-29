@@ -10,7 +10,7 @@ namespace DeploymentServiceTools
     {
         public DatabaseInitializerParams()
         {
-        
+
         }
 
         public string CompanyName { get; set; }
@@ -19,7 +19,7 @@ namespace DeploymentServiceTools
 
         public string MasterConnectionString { get; set; }
 
-        public string SqlInstanceName { get; set; }        
+        public string SqlInstanceName { get; set; }
 
         public string BackupFolder { get; set; }
 
@@ -28,17 +28,19 @@ namespace DeploymentServiceTools
         public string MirrorMasterConnectionString { get; set; }
 
         public string MirroringMirrorPartner { get; set; }
-        
+
         public string MirroringPrincipalPartner { get; set; }
         public string MirroringWitness { get; set; }
 
         public string AppPoolName { get; set; }
 
+        public string SecondWebServerName { get; set; }
         public string SqlServerDirectory
         {
             get { return string.Format("C:\\Program Files\\Microsoft SQL Server\\{0}\\MSSQL\\", SqlInstanceName); }
         }
 
-        
+        public bool ReuseTemporaryDb { get; set; }
+
     }
 }

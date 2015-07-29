@@ -26,7 +26,7 @@ namespace DatabaseInitializer.Sql
     public class DatabaseCreator
     {
         ILog _logger = LogManager.GetLogger("DatabaseInitializer");
-        
+
         public void DropDatabase(string connStringMaster, string database, bool setoffline = true)
         {
             var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + database + "') ";
@@ -37,6 +37,39 @@ namespace DatabaseInitializer.Sql
                     exists + "ALTER DATABASE [" + database + "] SET OFFLINE WITH ROLLBACK IMMEDIATE");
             }
             DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "DROP DATABASE [" + database + "]");
+        }
+
+        public void DropSchema(string connString, string databaseName)
+        {
+            string procedureName = "MkDropSchema_" + databaseName;
+            DatabaseHelper.ExecuteNonQuery(connString, "IF OBJECT_ID('" + procedureName + "') IS NOT NULL DROP PROCEDURE " + procedureName);
+            string dropTablesCreateProcSql = @"
+                CREATE PROCEDURE " + procedureName + @" AS
+                BEGIN 
+                    DECLARE @Sql NVARCHAR(500) DECLARE @Cursor CURSOR;
+
+                    SET @Cursor = CURSOR FAST_FORWARD FOR
+                        SELECT DISTINCT sql = 'ALTER TABLE [' + tc2.TABLE_SCHEMA + '].[' + tc2.TABLE_NAME + '] DROP [' + rc1.CONSTRAINT_NAME + ']'
+                        FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc1
+                        LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc2 ON tc2.CONSTRAINT_NAME =rc1.CONSTRAINT_NAME
+                        WHERE rc1.CONSTRAINT_CATALOG = '" + databaseName + @"';
+
+                    OPEN @Cursor FETCH NEXT FROM @Cursor INTO @Sql;
+
+                    WHILE (@@FETCH_STATUS = 0)
+                    BEGIN
+                        Exec SP_EXECUTESQL @Sql
+                        FETCH NEXT FROM @Cursor INTO @Sql
+                    END
+
+                    CLOSE @Cursor DEALLOCATE @Cursor;
+
+                    EXEC sp_MSForEachTable 'DROP TABLE ?';
+                END
+                ";
+            DatabaseHelper.ExecuteNonQuery(connString, dropTablesCreateProcSql);
+            DatabaseHelper.ExecuteNonQuery(connString, "EXEC " + procedureName);
+            DatabaseHelper.ExecuteNonQuery(connString, "DROP PROCEDURE " + procedureName);
         }
 
 
@@ -60,10 +93,10 @@ namespace DatabaseInitializer.Sql
 
         public void SetMirroringPartner(string connStringMaster, string companyName, string partner)
         {
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE  {0} SET PARTNER='{1}'", companyName,partner));          
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
         }
 
-        public  void CompleteMirroring(string connStringMaster, string companyName, string partner, string witness)
+        public void CompleteMirroring(string connStringMaster, string companyName, string partner, string witness)
         {
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
             if (witness.HasValue())
@@ -85,16 +118,16 @@ namespace DatabaseInitializer.Sql
         }
         public void RestoreDatabase(string connStringMaster, string backupFolder, string databaseName)
         {
+            // Ensuring that nothing is connected to the database.
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE DATABASE {0} FROM DISK = '{1}\{0}.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE LOG {0} FROM DISK = '{1}\{0}_log.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
         }
 
-        
-
         public void TurnOffMirroring(string connStringMaster, string companyName)
         {
-            var turnOff = string.Format("ALTER DATABASE {0} SET PARTNER OFF", companyName);
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, turnOff);
+            // Disabling Mirroring
+            var setMirroringOff = string.Format("ALTER DATABASE {0} SET PARTNER OFF ", companyName);
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, setMirroringOff);
         }
 
         public bool DatabaseExists(string connStringMaster, string companyName)
@@ -164,7 +197,7 @@ namespace DatabaseInitializer.Sql
             {
                 Directory.CreateDirectory(dataPath);
             }
-           
+
             var logPath = Path.Combine(sqlDirectory, "Log");
             if (!Directory.Exists(logPath))
             {
@@ -304,7 +337,7 @@ namespace DatabaseInitializer.Sql
             var nbEvents = DatabaseHelper.ExecuteScalarQuery<int>(connString, queryNumberEvents, 3600);
 
             Console.WriteLine("Original database has {0} events to copy (Duration: {1}) ", nbEvents, (DateTime.Now - start).TotalSeconds);
-            
+
             if (nbEvents > 0)
             {
                 var startRow = 0;
@@ -337,7 +370,7 @@ namespace DatabaseInitializer.Sql
 
                 Console.WriteLine("Finished copying events (Duration: {0})", (DateTime.Now - start).TotalSeconds);
             }
-            
+
 
             // copy cache table except the static data
             var queryForCache = string.Format("INSERT INTO [{0}].[Cache].[Items]([Key],[Value],[ExpiresAt]) " +
@@ -400,7 +433,7 @@ namespace DatabaseInitializer.Sql
                 }
             }
             // ReSharper disable once EmptyGeneralCatchClause
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.Error("Error during Database Create Schema", e);
             }

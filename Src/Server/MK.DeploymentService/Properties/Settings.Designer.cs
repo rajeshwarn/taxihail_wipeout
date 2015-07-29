@@ -200,5 +200,14 @@ namespace MK.DeploymentService.Properties {
                 return ((string)(this["ReplicationSharedFolder"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SecondWebServerName {
+            get {
+                return ((string)(this["SecondWebServerName"]));
+            }
+        }
     }
 }
