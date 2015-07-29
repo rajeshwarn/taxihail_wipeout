@@ -251,6 +251,10 @@ namespace MK.Common.Configuration
 		public bool DestinationIsRequired { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
+        [Display(Name = "Disable Immediate Booking", Description = "Hide button to immediate booking ('book now button')")]
+        public bool DisableImmediateBooking { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Disable Future Booking", Description="Hide button to scheduled a booking in the future")]
         public bool DisableFutureBooking { get; protected set; }
 

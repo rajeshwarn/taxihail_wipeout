@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                            && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
 										   && !isInMarket;
 
-				BookButtonHidden = false;
+                BookButtonHidden = Settings.DisableImmediateBooking;
             }
             catch (Exception ex)
             {
