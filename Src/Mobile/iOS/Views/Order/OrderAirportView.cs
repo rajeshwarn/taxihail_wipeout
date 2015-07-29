@@ -50,8 +50,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			lblPickupDate.Maybe ( x=> x.Text = Localize.GetValue("BookingAirportPUDatelbl")); 
 
 
-			txtAirlines.Configure (Localize.GetValue ("BookingAirportAirlineslbl"), () => ViewModel.Airlines.ToArray (), () => ViewModel.AirlineId, x => ViewModel.AirlineId = x.Id);
-			txtPUPoints.Configure (Localize.GetValue ("BookingAirportPUPointslbl"), () => ViewModel.PUPoints.ToArray (), () => ViewModel.PUPointsId, x => ViewModel.PUPointsId = x.Id);
+			txtAirlines.Configure (Localize.GetValue ("BookingAirportAirlineslbl"), () => ViewModel.Airlines.ToArray (), () => ViewModel.AirlineId, x => ViewModel.AirlineId = x.Id ?? 0);
+			txtPUPoints.Configure (Localize.GetValue ("BookingAirportPUPointslbl"), () => ViewModel.PUPoints.ToArray (), () => ViewModel.PUPointsId, x => ViewModel.PUPointsId = x.Id ?? 0);
 
 			Foundation.NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, ObserveKeyboardShown);
 		}

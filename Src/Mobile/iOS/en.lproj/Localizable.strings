@@ -30,6 +30,7 @@
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="Booking cannot be completed";
 "DateTimePickerPickTitle"="Pickup date and time";
+"BookingAirportPUDatelbl"="Pickup Date";
 "Overdue_Succeed_Message"="Your overdue payment of {0} has been settled and your account is now enabled to pay with your card on file by default.";
 "RideSummaryTitleText"="Thank you";
 "BookViewInvalidDate"="The pickup date and pickup time are invalid.";
@@ -66,6 +67,7 @@
 "Toggle_Off"="Off";
 "HistoryDetailPromoLabel"="Promo Code:";
 "CreateAccountPhonePlaceHolder"="Mobile";
+"BookingAirportPUPointslbl"="Pickup Point";
 "Error_EditAutoTipMessage"="An error occurred while trying to update the tip. Please try again.";
 "ReminderTitle"="{0} Booked";
 "March"="Mar (03)";
@@ -200,11 +202,13 @@
 "PanelMenuViewNotificationsText"="Notifications";
 "Facebook"="Sign in with Facebook";
 "CmtRideLinqGenericErrorMessage"="There was an error during pairing, verify your credit card information or try again later.";
+"BookingAirportFlightNumlbl"="Flight Number";
 "View_RideLinqPair"="Check In";
 "DateTimePickerSetButton"="Book";
 "TaxiHailNetworkTimeOutPopupAlways"="Always Accept";
 "CreditCardAdded_PayInCarDisabled"="Your account is now enabled to pay for rides with this credit card.";
 "AccountConfirmation_ErrorTitle"="Cannot confirm account";
+"Next"="Next";
 "View_AccountConfirmation_Label_Instructions"="A text message with your code has been sent to your phone.";
 "NoFareText"="Choose a destination to get a price estimate.";
 "HistoryDetailOrderLabel"="Order:";
@@ -222,6 +226,7 @@
 "AppNeedUpdateMessage"="A new version of the application is available, please update the app to continue.";
 "WarningPushServiceTitle"="Push Notifications";
 "AddACardButton"="Add Card";
+"BookingAirportDetails"="Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}";
 "CreateAccountLanguageEnglish"="English";
 "VehicleNumberNotice"="Please note that if the vehicle number presented above does not match the actual car number of your ride, we regret that payment cannot be processed through the Application. Please press the back button to return to the trip status screen, and pay the driver directly.";
 "GooglePlayServicesNotAvailableTitle"="Update required";
@@ -271,6 +276,7 @@
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "Modify"="Modify";
 "RideSettingsCompany"="Company";
+"BookingAirportPickupPointFee"="Selecting Pickup Point {0} will incurr an additional Fee of {1}";
 "OkButtonText"="OK";
 "SignIn"="Sign In";
 "Overdue_IBSOrderId"="Order:";
@@ -294,6 +300,7 @@
 "RideSettingsPassengers"="Passengers";
 "DriverInfoTaxiType"="Taxi Type:";
 "UpdatePasswordConfirmationLabel"="Confirm New Password";
+"BookingAirportTitle"="Airport";
 "ManualRideLinqStatus_PairingCode"="Pairing Code:";
 "Notification_ReceiptEmail"="Receipt (Email)";
 "CurrencyPriceFormat"="{0:C}";
@@ -321,6 +328,7 @@
 "Continue"="Continue";
 "InvalidChargeType"="You must select a charge type to be able to book a ride";
 "TermsAndConditionsLabel"="Terms and Conditions";
+"BookingAirportAirlineslbl"="Airlines";
 "BookingService_MobileBookingNoteBuildingName"="Building name {0}.";
 "StatusConfirmCancelRideErrorTitle"="Cannot cancel";
 "TabSearch"="Search";
@@ -540,6 +548,7 @@
 "DateTimePickerPickInvalidDateTitle"="Invalid date / time";
 "Overdue_Instructions"="Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.";
 "View_CreateAccount"="Create Your Account";
+"BookingAirportDetailsFee"=", (Pickup Fee: {0})";
 "ConfirmationOfPaymentSent"="Confirmation of payment has been sent to the driver.";
 "ChooseProviderDialogTitle"="Pick a provider";
 "Overdue_Amount"="Amount due:";
