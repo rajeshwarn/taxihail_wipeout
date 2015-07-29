@@ -121,19 +121,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                     if (typeInterfaces.Where(t => t.Name == "IEnumerable").Count() > 0)
                     {
-                        for (int i = 0; i < genericType.GenericTypeArguments.Length; i++)
-                        {
-                            object result = null;
+                        object result = null;
 
-                            if (!genericType.GenericTypeArguments[0].IsInterface)
-                            {
-                                return Array.CreateInstance(genericType.GenericTypeArguments[0], 0);
-                            }
-                            else
-                            {
-                                result = CreateEmptyTypedArray<T>(genericType.GenericTypeArguments[0], ++counter);
-                                return Array.CreateInstance(result.GetType(), 0);
-                            }
+                        if (!genericType.GenericTypeArguments[0].IsInterface)
+                        {
+                            return Array.CreateInstance(genericType.GenericTypeArguments[0], 0);
+                        }
+                        else
+                        {
+                            result = CreateEmptyTypedArray<T>(genericType.GenericTypeArguments[0], ++counter);
+                            return Array.CreateInstance(result.GetType(), 0);
                         }
                     }
                 }
