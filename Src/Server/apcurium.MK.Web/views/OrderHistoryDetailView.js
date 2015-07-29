@@ -45,7 +45,7 @@
         },
         
         rebook : function () {
-            var attrs = _.pick(this.model.attributes, "dropOffAddress", "pickupAddress", "pickupDate", "settings");
+            var attrs = _.pick(this.model.attributes, "dropOffAddress", "pickupAddress", "settings");
             var newOrder = new TaxiHail.Order(attrs);
             newOrder.saveLocal();
             TaxiHail.app.navigate('confirmationbook', { trigger: true });
