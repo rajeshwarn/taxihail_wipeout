@@ -2049,6 +2049,21 @@
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
   </data>
+  <data name="EtaNoTaxiAvailable" xml:space="preserve">
+    <value>Sorry, no taxis currently available nearby.</value>
+  </data>
+  <data name="PanelMenuViewSignOutPopupMessage" xml:space="preserve">
+    <value>Are you sure you want to sign out?</value>
+  </data>
+  <data name="PanelMenuViewSignOutPopupLogout" xml:space="preserve">
+    <value>Sign Out</value>
+  </data>
+  <data name="IBSTimeOutErrorMessage" xml:space="preserve">
+    <value>Unfortunately, the dispatch serveur stopped responding. As a result, your ride was cancelled. If you already are in a vehicle, please pay directly to your driver at the end of the ride.</value>
+  </data>
+  <data name="IBSTimeOutErrorTitle" xml:space="preserve">
+    <value>Unexpected Error</value>
+  </data>
   <data name="BookingAirportTitle" xml:space="preserve">
     <value>Airport</value>
   </data>
@@ -2069,5 +2084,8 @@
   </data>
   <data name="BookingAirportPickupPointFee" xml:space="preserve">
     <value>Selecting Pickup Point {0} will incurr an additional Fee of {1}</value>
+  </data>
+  <data name="BookingAirportDetails" xml:space="preserve">
+    <value>Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</value>
   </data>
 </root>
