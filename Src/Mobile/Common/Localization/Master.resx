@@ -2064,4 +2064,34 @@
   <data name="IBSTimeOutErrorTitle" xml:space="preserve">
     <value>Unexpected Error</value>
   </data>
+  <data name="EtaNoTaxiAvailable" xml:space="preserve">
+    <value>Sorry, no taxis currently available nearby.</value>
+  </data>
+  <data name="BookingAirportTitle" xml:space="preserve">
+    <value>Airport</value>
+  </data>
+  <data name="BookingAirportAirlineslbl" xml:space="preserve">
+    <value>Airlines</value>
+  </data>
+  <data name="BookingAirportFlightNumlbl" xml:space="preserve">
+    <value>Flight Number</value>
+  </data>
+  <data name="BookingAirportPUPointslbl" xml:space="preserve">
+    <value>Pickup Point</value>
+  </data>
+  <data name="BookingAirportPUDatelbl" xml:space="preserve">
+    <value>Pickup Date</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="BookingAirportPickupPointFee" xml:space="preserve">
+    <value>Selecting Pickup Point {0} will incurr an additional Fee of {1}</value>
+  </data>
+  <data name="BookingAirportDetails" xml:space="preserve">
+    <value>Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</value>
+  </data>
+  <data name="BookingAirportDetailsFee" xml:space="preserve">
+    <value>, (Pickup Fee: {0})</value>
+  </data>s
 </root>
