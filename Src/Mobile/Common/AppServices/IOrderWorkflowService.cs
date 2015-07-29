@@ -65,7 +65,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode();
 
-		IObservable<int?> GetAndObserveVehicleType();
+        IObservable<string> GetAndObservePOIRefPickupList();
+
+        IObservable<string> GetAndObservePOIRefAirlineList();
+
+        IObservable<int?> GetAndObserveVehicleType();
 
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
 
@@ -90,6 +94,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    IObservable<OrderValidationResult> GetAndObserveOrderValidationResult();
 
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
+
+        Task POIRefPickupList(string textMatch, int maxRespSize);
+
+        Task POIRefAirLineList(string textMatch, int maxRespSize);
 
         Guid? GetLastUnratedRide();
 

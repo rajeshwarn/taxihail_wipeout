@@ -34,6 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.NSLayoutConstraint constraintHomeLeadingSpace { get; set; }
 
 		[Outlet]
+		UIKit.NSLayoutConstraint constraintOrderAirportTrailingSpace { get; set; }
+
+		[Outlet]
 		UIKit.NSLayoutConstraint constraintOrderBookinOptionsTopSpace { get; set; }
 
 		[Outlet]
@@ -65,6 +68,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.OrderMapView mapView { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderAirportView orderAirport { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderEditView orderEdit { get; set; }
@@ -119,6 +125,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				constraintOrderEditTrailingSpace = null;
 			}
 
+			if (constraintOrderAirportTrailingSpace != null) {
+				constraintOrderAirportTrailingSpace.Dispose ();
+				constraintOrderAirportTrailingSpace = null;
+			}
+
 			if (constraintOrderOptionsTopSpace != null) {
 				constraintOrderOptionsTopSpace.Dispose ();
 				constraintOrderOptionsTopSpace = null;
@@ -162,6 +173,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (mapView != null) {
 				mapView.Dispose ();
 				mapView = null;
+			}
+
+			if (orderAirport != null) {
+				orderAirport.Dispose ();
+				orderAirport = null;
 			}
 
 			if (orderEdit != null) {

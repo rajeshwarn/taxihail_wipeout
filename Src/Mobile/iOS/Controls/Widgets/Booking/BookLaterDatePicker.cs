@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
         FlatButton OrderButton { get; set; }
         UIDatePicker DatePicker { get; set; }
 
+		public HomeViewModelState ViewState { get; set; }
+
         public BookLaterDatePicker (IntPtr ptr):base(ptr)
         {
             Initialize ();    
@@ -65,6 +67,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
                 .For(v => v.Command)
                 .To(vm => vm.SetPickupDateAndReviewOrder);
 
+			set.Bind ()
+				.For (v => v.AirportOrder)
+				.To (vm => vm.SetPickupDateAndReturnToAirport);
+
             set.Bind(CancelButton)
                 .For("TouchUpInside")
                 .To(vm => vm.ResetToInitialState);
@@ -84,7 +90,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             OrderButton.Frame = new CGRect(width - buttonWidth - buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
 
             OrderButton.TouchUpInside += (sender, e) => {
-                Command.ExecuteIfPossible(Date);
+				if(ViewState == HomeViewModelState.AirportPickDate )
+				{
+					AirportOrder.ExecuteIfPossible(Date);
+				}
+				else{
+                	Command.ExecuteIfPossible(Date);
+				}
             };
 
             DatePicker.SetY(OrderButton.Frame.Bottom + buttonVerticalPadding);
@@ -111,6 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
         }
 
         public ICommand Command { get; set; }
+		public ICommand AirportOrder { get; set; }
 
         public DateTime? Date 
         {

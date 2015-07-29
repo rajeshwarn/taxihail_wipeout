@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.Mobile
 
 			_container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 			_container.Register((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+            _container.Register((c, p) => new POIServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 			_container.Register((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 			_container.Register((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
@@ -93,6 +94,7 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IGeocoding, Geocoding>();
 			_container.Register<IPlaces, Places>();
 			_container.Register<IPopularAddressProvider, PopularAddressProvider>();
+            _container.Register<IPOIProvider, POIProvider>();
 			_container.Register<ITariffProvider, TariffProvider>();
 
             _container.Register<IPostalCodeService, CraftyClicksService>();
