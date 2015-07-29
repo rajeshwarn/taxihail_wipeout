@@ -1522,7 +1522,7 @@
     <value>mins</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    <value>and is {1} {2} away</value>
+    <value>and is {0} {1} away</value>
   </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</value>
