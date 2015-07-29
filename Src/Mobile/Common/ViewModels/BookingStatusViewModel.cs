@@ -680,7 +680,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_waitingToNavigateAfterTimeOut = true;
 				await Task.Delay (TimeSpan.FromSeconds (10));
 				_bookingService.ClearLastOrder();
-				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
+
+                ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true });
             }
         }
 
