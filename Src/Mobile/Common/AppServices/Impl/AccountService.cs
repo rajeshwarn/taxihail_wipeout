@@ -756,10 +756,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return cachedSetting;
             }
 
-            var settings = await UseServiceClientAsync<IAccountServiceClient, UserTaxiHailNetworkSettings>(client => client.GetUserTaxiHailNetworkSettings(CurrentAccount.Id));
-            UserCache.Set(UserTaxiHailNetworkSettingsCacheKey, settings);
+			try
+			{
+				var settings = await UseServiceClientAsync<IAccountServiceClient, UserTaxiHailNetworkSettings>(client => client.GetUserTaxiHailNetworkSettings(CurrentAccount.Id));
+				UserCache.Set(UserTaxiHailNetworkSettingsCacheKey, settings);
 
-            return settings;
+				return settings;
+			}
+			catch
+			{
+				return null;
+			}
         }
 
         public async Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettings userTaxiHailNetworkSettings)

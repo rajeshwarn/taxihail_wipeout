@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.Mobile
         public static DateTime LastGeneralError = DateTime.MinValue;
 		public static DateTime LastUnauthorizedError = DateTime.MinValue;
 
+		private static bool _isErrorMessageDisplayed;
+
         public bool HandleError (Exception ex)
         {
 			var handled = false;
@@ -43,27 +45,38 @@ namespace apcurium.MK.Booking.Mobile
 
 				handled = true;
 			}
-			else if (ex is WebException 
+			else if ((ex is WebException 
 				&& (((WebException)ex).Status == WebExceptionStatus.ConnectFailure 
-				 || ((WebException)ex).Status == WebExceptionStatus.NameResolutionFailure))
+					|| ((WebException)ex).Status == WebExceptionStatus.NameResolutionFailure))
+				|| (ex is WebServiceException
+					&& ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.ServiceUnavailable))
 			{
 				if(LastConnectError.Subtract(DateTime.Now).TotalSeconds < -5)
 				{
 					LastConnectError = DateTime.Now;
 
-					var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
-					TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (
-						localize["NoConnectionTitle"], 
-						localize["NoConnectionMessage"]);
+					if (!_isErrorMessageDisplayed)
+					{
+						_isErrorMessageDisplayed = true;
+
+						var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
+						TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (
+							localize["NoConnectionTitle"], 
+							localize["NoConnectionMessage"],
+							() =>
+							{
+								_isErrorMessageDisplayed = false;
+							});
+					}
 
                     LogError(ex);
 				}
 
 				handled = true;
 			}
-            else if (ex is WebException)
+			else
             {
-                // Handle all other generic web exceptions
+                // Handle all other generic exceptions
 
                 if (LastGeneralError.Subtract(DateTime.Now).TotalSeconds < -5)
                 {
