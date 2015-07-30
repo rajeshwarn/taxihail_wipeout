@@ -6,14 +6,14 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
-using TinyIoC;
 using System.Collections.Generic;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
+    [Register("apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderReview")]
 	public class OrderReview : MvxFrameControl
     {    
         private TextView _lblName;

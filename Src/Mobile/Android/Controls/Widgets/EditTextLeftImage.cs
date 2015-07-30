@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
+    [Register("apcurium.mk.booking.mobile.client.controls.EditTextLeftImage")]
     public class EditTextLeftImage : LinearLayout
     {
         private ImageView _imageLeftView;
