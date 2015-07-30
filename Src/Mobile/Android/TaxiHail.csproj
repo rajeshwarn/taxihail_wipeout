@@ -87,6 +87,10 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.File">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.File.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.File.dll</HintPath>
     </Reference>
+    <Reference Include="DSoft.MVVM.Bootstrap">
+      <HintPath>..\packages\DSoft.MVVM.Bootstrap.1.0.0.0\lib\portable-net45+sl50+win+wp80+MonoAndroid10+xamarinios10+MonoTouch10\DSoft.MVVM.Bootstrap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
