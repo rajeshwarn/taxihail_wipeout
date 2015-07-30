@@ -206,9 +206,9 @@ namespace DatabaseInitializer.Sql
 
             DatabaseHelper.ExecuteNonQuery(connectionString, string.Format("CREATE DATABASE [" + databaseName + "] " +
                                                                            "ON " +
-                                                                           "( NAME = {3}_{2}, FILENAME = '{0}\\{3}_{2}.mdf' ) " +
+                                                                           "( NAME = '{3}_{2}', FILENAME = '{0}\\{3}_{2}.mdf' ) " +
                                                                            "LOG ON " +
-                                                                           "( NAME = {3}_{2}_log, FILENAME = '{1}\\{3}_{2}.ldf' ) ",
+                                                                           "( NAME = '{3}_{2}_log', FILENAME = '{1}\\{3}_{2}.ldf' ) ",
                 dataPath,
                 logPath,
                 DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss"),
