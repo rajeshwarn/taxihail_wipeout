@@ -14,11 +14,15 @@ namespace apcurium.MK.Booking.Mobile
     public class ErrorHandler : IErrorHandler
     {
         public static DateTime LastConnectError = DateTime.MinValue;
+        public static DateTime LastGeneralError = DateTime.MinValue;
 		public static DateTime LastUnauthorizedError = DateTime.MinValue;
+
+		private static bool _isErrorMessageDisplayed;
 
         public bool HandleError (Exception ex)
         {
 			var handled = false;
+
 			if (ex is WebServiceException 
 				&& ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.Unauthorized) 
             {
@@ -34,31 +38,69 @@ namespace apcurium.MK.Booking.Mobile
 							var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher> ();
 							dispatch.ShowViewModel(new MvxViewModelRequest (typeof(LoginViewModel), null, null, MvxRequestedBy.UserAction));
 
-							TinyIoCContainer.Current.Resolve<IOrderWorkflowService> ().PrepareForNewOrder ();
-							TinyIoCContainer.Current.Resolve<IAccountService> ().SignOut ();
+							TinyIoCContainer.Current.Resolve<IOrderWorkflowService>().PrepareForNewOrder ();
+							TinyIoCContainer.Current.Resolve<IAccountService>().SignOut ();
 						});
 				}
 
 				handled = true;
 			}
-			else if (ex is WebException 
+			else if ((ex is WebException 
 				&& (((WebException)ex).Status == WebExceptionStatus.ConnectFailure 
-				 || ((WebException)ex).Status == WebExceptionStatus.NameResolutionFailure))
+					|| ((WebException)ex).Status == WebExceptionStatus.NameResolutionFailure))
+				|| (ex is WebServiceException
+					&& ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.ServiceUnavailable))
 			{
 				if(LastConnectError.Subtract(DateTime.Now).TotalSeconds < -5)
 				{
 					LastConnectError = DateTime.Now;
 
-					var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
-					TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (
-						localize["NoConnectionTitle"], 
-						localize["NoConnectionMessage"]);
+					if (!_isErrorMessageDisplayed)
+					{
+						_isErrorMessageDisplayed = true;
+
+						var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
+						TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (
+							localize["NoConnectionTitle"], 
+							localize["NoConnectionMessage"],
+							() =>
+							{
+								_isErrorMessageDisplayed = false;
+							});
+					}
+
+                    LogError(ex);
 				}
 
 				handled = true;
 			}
+			else
+            {
+                // Handle all other generic exceptions
+
+                if (LastGeneralError.Subtract(DateTime.Now).TotalSeconds < -5)
+                {
+                    LastGeneralError = DateTime.Now;
+
+                    LogError(ex);
+                }
+
+                handled = true;
+            }
 
 			return handled;
+        }
+
+        private void LogError(Exception ex)
+        {
+            try
+            {
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+            }
+            catch
+            {
+                // Do nothing
+            }
         }
     }
 }

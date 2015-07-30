@@ -14,7 +14,7 @@
       <string>Icon-60@2x</string>
     </array>
     <key>CFBundleIdentifier</key>
-    <string>com.apcurium.mk.taxihail.dev</string>
+    <string>com.apcurium.MK.TaxiHailDemo</string>
     <key>CFBundleURLTypes</key>
     <array>
       <dict>
@@ -31,13 +31,11 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>3.0.12</string>
+    <string>3.0.17</string>
     <key>CFBundleShortVersionString</key>
-    <string>3.0.12</string>
+    <string>3.0.17</string>
     <key>MinimumOSVersion</key>
     <string>6.0</string>
-    <string>
-    </string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Your location will be shown on the map and is used to provide nearby search results.</string>
     <key>NSMainNibFile</key>

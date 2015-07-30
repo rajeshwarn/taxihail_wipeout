@@ -42,10 +42,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 // Do not throw an exception as the client would interpret this as an "error"
                 return;
             }
-                
-            // send a message to driver, if it fails we abort the pairing
-            _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
-
+            
             // send a command to save the pairing state for this order
             _commandBus.Send(new PairForPayment
             {

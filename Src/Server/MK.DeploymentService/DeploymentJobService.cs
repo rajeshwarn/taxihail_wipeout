@@ -281,6 +281,24 @@ namespace MK.DeploymentService
                 Thread.Sleep(2000);
             }
 
+            if (!string.IsNullOrEmpty(Settings.Default.SecondWebServerName))
+            {
+                using (var remoteServerManager = ServerManager.OpenRemote(Settings.Default.SecondWebServerName))
+                {
+                    var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == appPoolName);
+                    if (remoteAppPool == null)
+                    {
+                        Log("Creating a new app pool on the remote server");
+                        //create a new one
+                        remoteAppPool = remoteServerManager.ApplicationPools.Add(appPoolName);
+                        remoteAppPool.ManagedRuntimeVersion = "v4.0";
+                        remoteServerManager.CommitChanges();
+                        Thread.Sleep(2000);
+                    }
+                }
+            }
+            
+
             if (_job.Database)
             {
                 Log("Deploying Database");
@@ -292,9 +310,47 @@ namespace MK.DeploymentService
 
             Log("Done Deploying Server");
 
-            if (appPool.State == ObjectState.Stopped)
+            StartAppPools(appPoolName);
+        }
+
+        private static void StartAppPools(string poolname)
+        {
+            Console.WriteLine("Start App Pool...");
+            var iisManager = new ServerManager();
+            var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == poolname);
+
+            if (appPool != null
+                && appPool.State == ObjectState.Stopped)
             {
                 appPool.Start();
+                Console.WriteLine("App Pool started.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(Settings.Default.SecondWebServerName))
+            {
+                try
+                {
+                    Console.WriteLine("Start Secondary App Pool ...");
+                    using (var remoteServerManager = ServerManager.OpenRemote(Settings.Default.SecondWebServerName))
+                    {
+                        var remoteAppPool = remoteServerManager.ApplicationPools.FirstOrDefault(x => x.Name == poolname);
+
+                        if (remoteAppPool != null && remoteAppPool.State == ObjectState.Stopped)
+                        {
+                            remoteAppPool.Start();
+                            Console.WriteLine("Remote App Pool started.");
+                        }
+                        else if (remoteAppPool == null)
+                        {
+                            Console.WriteLine("No AppPool named {0} found at {1}", Settings.Default.SecondWebServerName, poolname);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Failed to connect to remote server {0}", Settings.Default.SecondWebServerName);
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
 
@@ -343,7 +399,8 @@ namespace MK.DeploymentService
                 MirroringWitness = Settings.Default.MirroringWitness,
                 MirroringPrincipalPartner = Settings.Default.MirroringPrincipalPartner,
                 MirrorMasterConnectionString = Settings.Default.MirrorMasterConnectionString,
-                AppPoolName = appPoolName
+                AppPoolName = appPoolName,
+                SecondWebServerName = Settings.Default.SecondWebServerName
             };
 
             var paramFile = Guid.NewGuid().ToString().Replace("-", "") + ".params";
@@ -387,20 +444,7 @@ namespace MK.DeploymentService
 
             CopyFiles(sourcePath, targetWeDirectory);
 
-            var website = iisManager.Sites[Settings.Default.SiteName];
-            var webApp = website.Applications.FirstOrDefault(x => x.Path == "/" + companyName);
-            if (webApp != null)
-            {
-                webApp.VirtualDirectories["/"].PhysicalPath = targetWeDirectory;
-                webApp.ApplicationPoolName = appPoolName;
-                iisManager.CommitChanges();
-            }
-            else
-            {
-                webApp = website.Applications.Add("/" + companyName, targetWeDirectory);
-                webApp.ApplicationPoolName = appPoolName;
-                iisManager.CommitChanges();
-            }
+            var webApp = SetupWebApplication(companyName, appPoolName, iisManager, targetWeDirectory);
 
             var configuration = webApp.GetWebConfiguration();
 
@@ -441,7 +485,37 @@ namespace MK.DeploymentService
 
             Log("Deploying IIS Finished");
 
-            ReplicateSite(companyName, targetWeDirectory, subFolder);
+            if (!string.IsNullOrEmpty(Settings.Default.SecondWebServerName))
+            {
+                Log("Deploying on mirror server");
+                ReplicateSite(companyName, targetWeDirectory, subFolder);
+
+                using (var remoteServer = ServerManager.OpenRemote(Settings.Default.SecondWebServerName))
+                {
+                    SetupWebApplication(companyName, appPoolName, remoteServer, targetWeDirectory);
+                }
+            }
+
+        }
+
+        private static Application SetupWebApplication(string companyName, string appPoolName, ServerManager iisManager,
+            string targetWeDirectory)
+        {
+            var website = iisManager.Sites[Settings.Default.SiteName];
+            var webApp = website.Applications.FirstOrDefault(x => x.Path == "/" + companyName);
+            if (webApp != null)
+            {
+                webApp.VirtualDirectories["/"].PhysicalPath = targetWeDirectory;
+                webApp.ApplicationPoolName = appPoolName;
+                iisManager.CommitChanges();
+            }
+            else
+            {
+                webApp = website.Applications.Add("/" + companyName, targetWeDirectory);
+                webApp.ApplicationPoolName = appPoolName;
+                iisManager.CommitChanges();
+            }
+            return webApp;
         }
 
         private void DeployTheme(string companyId, string companyName, string targetWeDirectory)

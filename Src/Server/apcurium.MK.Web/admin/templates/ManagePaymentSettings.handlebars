@@ -163,6 +163,16 @@
     <label class="control-label settingsLabel">{{{localize "Market"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.market" value="{{cmtPaymentSettings.market}}" />
 
+    <label class="control-label settingsLabel" >{{{localize "Submit As Fleet Authorization"}}}</label>
+   
+    <select  name="cmtPaymentSettings.submitAsFleetAuthorization" class="settingsBox">
+      <option value="{{cmtPaymentSettings.submitAsFleetAuthorization}}" selected="" >{{localizeBool cmtPaymentSettings.submitAsFleetAuthorization true="Yes" false="No"}}</option>
+      <option value="{{invertedBool cmtPaymentSettings.submitAsFleetAuthorization}}">{{localizeBool cmtPaymentSettings.submitAsFleetAuthorization true="No" false="Yes"}}</option>
+    </select>
+	
+	<label class="control-label settingsLabel">{{{localize "Merchant Token"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.merchantToken" value="{{cmtPaymentSettings.merchantToken}}" />
+
     <div id="cmtSettingsMessageZone"></div>
     <button type='button' id="cmtSettingsButton" class='btn' >{{localize "Test"}}</button>
 

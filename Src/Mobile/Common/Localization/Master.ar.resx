@@ -1463,7 +1463,7 @@
     <value>Cancel</value>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>The nearest taxi is {0} and {1} {2} away</value>
+    <value>Nearest taxi is {0} {1} away</value>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
     <value>min</value>
@@ -1472,7 +1472,7 @@
     <value>mins</value>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    <value>{0} and {1} {2} away</value>
+    <value>and is {0} {1} away</value>
   </data>
   <data name="NoCardOnFileMessage" xml:space="preserve">
     <value>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</value>
@@ -1975,10 +1975,19 @@
   <data name="OtherListItemPromptLabel" xml:space="preserve">
     <value>Enter a value:</value>
   </data>
-  <data name="EtaLessThenAMinute" xml:space="preserve">
-    <value>The nearest taxi is {0} and less then a minute away</value>
+  <data name="EtaLessThanAMinute" xml:space="preserve">
+    <value>Nearest taxi is less than a minute away</value>
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
+  </data>
+  <data name="EtaNoTaxiAvailable" xml:space="preserve">
+    <value>Sorry, no taxis currently available nearby.</value>
+  </data>
+  <data name="PanelMenuViewSignOutPopupMessage" xml:space="preserve">
+    <value>Are you sure you want to sign out?</value>
+  </data>
+  <data name="PanelMenuViewSignOutPopupLogout" xml:space="preserve">
+    <value>Sign Out</value>
   </data>
 </root>

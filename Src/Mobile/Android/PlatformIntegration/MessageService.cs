@@ -61,8 +61,22 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 Context.Activity,
                 title,
                 message,
-                positiveButtonTitle, () => { positiveAction(); tcs.TrySetResult(null); },
-                negativeButtonTitle, () => { negativeAction(); tcs.TrySetResult(null); }));
+                positiveButtonTitle, () => 
+                { 
+                    if(positiveAction != null)
+                    {
+                        positiveAction(); 
+                    }
+                    tcs.TrySetResult(null); 
+                },
+                negativeButtonTitle, () =>  
+                { 
+                    if(negativeAction != null)
+                    {
+                        negativeAction(); 
+                    }
+                    tcs.TrySetResult(null); 
+                }));
 
             return tcs.Task;
         }
@@ -78,9 +92,30 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 Context.Activity,
                 title,
                 message,
-                positiveButtonTitle, () => { positiveAction(); tcs.TrySetResult(null); },
-                negativeButtonTitle, () => { negativeAction(); tcs.TrySetResult(null); },
-                neutralButtonTitle, () => { neutralAction(); tcs.TrySetResult(null); }));
+                positiveButtonTitle, () =>
+                { 
+                    if(positiveAction != null)
+                    {
+                        positiveAction(); 
+                    }
+                    tcs.TrySetResult(null); 
+                },
+                negativeButtonTitle, () =>
+                { 
+                    if(negativeAction != null)
+                    {
+                        negativeAction(); 
+                    }
+                    tcs.TrySetResult(null); 
+                },
+                neutralButtonTitle, () => 
+                { 
+                    if(neutralAction != null)
+                    {
+                        neutralAction(); 
+                    }
+                    tcs.TrySetResult(null); 
+                }));
 
             return tcs.Task;
         }

@@ -93,7 +93,7 @@ namespace DatabaseInitializer.Sql
 
         public void SetMirroringPartner(string connStringMaster, string companyName, string partner)
         {
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE  {0} SET PARTNER='{1}'", companyName,partner));          
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName,partner));          
         }
 
         public  void CompleteMirroring(string connStringMaster, string companyName, string partner, string witness)
@@ -118,16 +118,16 @@ namespace DatabaseInitializer.Sql
         }
         public void RestoreDatabase(string connStringMaster, string backupFolder, string databaseName)
         {
+            // Ensuring that nothing is connected to the database.
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE DATABASE {0} FROM DISK = '{1}\{0}.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE LOG {0} FROM DISK = '{1}\{0}_log.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
         }
 
-        
-
         public void TurnOffMirroring(string connStringMaster, string companyName)
         {
-            var turnOff = string.Format("ALTER DATABASE {0} SET PARTNER OFF", companyName);
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, turnOff);
+            // Disabling Mirroring
+            var setMirroringOff = string.Format("ALTER DATABASE {0} SET PARTNER OFF ", companyName);
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, setMirroringOff);
         }
 
         public bool DatabaseExists(string connStringMaster, string companyName)

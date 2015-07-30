@@ -52,6 +52,9 @@ namespace apcurium.MK.Web.Tests
         [TestFixtureTearDown]
         public override void TestFixtureTearDown()
         {
+			var sut = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+			DeleteAllRules(sut);
+
             base.TestFixtureTearDown();
         }
 

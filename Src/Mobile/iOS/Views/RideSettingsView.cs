@@ -1,4 +1,4 @@
-using apcurium.MK.Booking.Mobile.Client.Extensions;
+﻿using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using UIKit;
@@ -51,7 +51,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblPayBack.RemoveFromSuperview();
 				txtPayBack.RemoveFromSuperview();
 			}
-				
+
+            if (!ViewModel.IsVehicleTypeSelectionEnabled)
+            {
+                lblVehicleType.RemoveFromSuperview();
+                txtVehicleType.RemoveFromSuperview();
+            }
+
+
             lblName.Text = Localize.GetValue("RideSettingsName");
             lblPhone.Text = Localize.GetValue("RideSettingsPhone");
             lblVehicleType.Text = Localize.GetValue("RideSettingsVehiculeType");

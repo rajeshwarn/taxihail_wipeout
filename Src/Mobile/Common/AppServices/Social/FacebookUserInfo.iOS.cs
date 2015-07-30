@@ -1,5 +1,5 @@
-using MonoTouch.FacebookConnect;
 using Foundation;
+using MonoTouch.FacebookConnect;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Social
 {

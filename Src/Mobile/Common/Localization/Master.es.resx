@@ -787,8 +787,8 @@
     <comment>Estimating your fare...</comment>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>El taxi más cercano es {0} y esta a {1} {2} de distancia</value>
-    <comment>The nearest taxi is {0} and {1} {2} away</comment>
+    <value>El taxi más cercano esta a {0} {1} de distancia</value>
+    <comment>Nearest taxi is {0} {1} away</comment>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
     <value>min</value>
@@ -1687,8 +1687,8 @@
     <comment>Order #{0}</comment>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    <value>y es {0} y está a {1} {2} de distancia</value>
-    <comment>and is {0} and {1} {2} away</comment>
+    <value>y está a {0} {1} de distancia</value>
+    <comment>and is {0} {1} away</comment>
   </data>
   <data name="StatusInvalid" xml:space="preserve">
     <value>Estado no disponible</value>
@@ -2495,10 +2495,19 @@
   <data name="OtherListItemPromptLabel" xml:space="preserve">
     <value>Enter a value:</value>
   </data>
-  <data name="EtaLessThenAMinute" xml:space="preserve">
-    <value>The nearest taxi is {0} and less then a minute away</value>
+  <data name="EtaLessThanAMinute" xml:space="preserve">
+    <value>Nearest taxi is less than a minute away</value>
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
+  </data>
+  <data name="EtaNoTaxiAvailable" xml:space="preserve">
+    <value>Sorry, no taxis currently available nearby.</value>
+  </data>
+  <data name="PanelMenuViewSignOutPopupMessage" xml:space="preserve">
+    <value>Are you sure you want to sign out?</value>
+  </data>
+  <data name="PanelMenuViewSignOutPopupLogout" xml:space="preserve">
+    <value>Sign Out</value>
   </data>
 </root>
