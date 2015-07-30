@@ -19,12 +19,13 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
-using System.Drawing;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Color = Android.Graphics.Color;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
+    [Register("apcurium.mk.booking.mobile.client.controls.TouchMap")]
     public class TouchMap : MapView
     {
         private readonly IList<Marker> _availableVehiclePushPins = new List<Marker>();

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/drop_shadow"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:layout_marginBottom="15dp">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left"
+        android:gravity="left">
+        <LinearLayout
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="8dp"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/top_bar_color"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lblAirport"
+                    android:text="@string/BookingAirportTitle"
+                    style="@style/TopTitleText"
+                    android:layout_gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/top_bar_title_height"
+                    android:gravity="center" />
+            </LinearLayout>
+        </LinearLayout>
+        <ScrollView
+            android:fillViewport="true"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <LinearLayout
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <TextView
+                    android:id="@+id/lblAirline"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dip"
+                    android:paddingBottom="5dip"
+                    android:text="@string/BookingAirportAirlineslbl"
+                    style="@style/BlackTextLabel" />
+                <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                    android:id="@+id/txtAirlines"
+                    android:background="#f2f2f2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightEditTextFlat"
+                    android:layout_marginBottom="10dip" />
+                <TextView
+                    android:id="@+id/lblFlightNum"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dip"
+                    android:paddingBottom="5dip"
+                    android:text="@string/BookingAirportFlightNumlbl"
+                    style="@style/BlackTextLabel" />
+                <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
+                    android:id="@+id/txtFlightNum"
+                    android:layout_width="fill_parent"
+                    android:background="#f2f2f2"
+                    android:layout_marginBottom="10dip"
+                    android:layout_height="@dimen/HeightEditTextFlat"
+                    android:maxLines="1"
+                    android:inputType="number"
+                    android:singleLine="true" />
+                <TextView
+                    android:id="@+id/lblPUPoints"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dip"
+                    android:paddingBottom="5dip"
+                    android:text="@string/BookingAirportPUPointslbl"
+                    style="@style/BlackTextLabel" />
+                <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                    android:id="@+id/txtPUPoints"
+                    android:background="#f2f2f2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightEditTextFlat"
+                    android:inputType="text"
+                    android:layout_marginBottom="10dip" />
+                <TextView
+                    android:id="@+id/lblDateTime"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dip"
+                    android:paddingBottom="5dip"
+                    android:text="@string/BookingAirportPUDatelbl"
+                    style="@style/BlackTextLabel" />
+                <Button
+                    android:id="@+id/txtDateTime"
+                    android:layout_width="fill_parent"
+                    android:background="#f2f2f2"
+                    android:layout_marginBottom="10dip"
+                    android:layout_height="@dimen/HeightEditTextFlat"
+                    style="@style/BlackTextLabelLarge"
+                    android:gravity="left|center_vertical" />
+                <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
+                    android:background="#f2f2f2"
+                    android:inputType="textMultiLine"
+                    android:id="@+id/txtAirportNotes"
+                    android:hint="@string/NotesToDriveLabel"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="start|top"
+                    android:minHeight="44dip" />
+                <LinearLayout
+                    android:id="@+id/HackBottomPadding"
+                    android:layout_width="fill_parent"
+                    android:layout_height="175dip"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

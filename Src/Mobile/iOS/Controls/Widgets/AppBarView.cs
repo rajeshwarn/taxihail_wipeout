@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIView _orderButtons;
         private UIView _editButtons;
 		private UIView _manualPairingButtons;
+		private UIView _airportOrderButtons;
 
 		// Keeping a reference to the _imagePromo object to ensure binding does not break.
 		private UIImageView _imagePromo;
@@ -53,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddButtonsForBooking();
             CreateButtonsForEdit();
 			CreateButtonsForManualRideLinqFlow();
+			CreateButtonsForAirportBooking ();
         }
 
 		private void CreateButtonsForManualRideLinqFlow()
@@ -437,7 +439,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void ChangeState(HomeViewModelPresentationHint hint)
         {   
             if (hint.State == HomeViewModelState.PickDate
-                || hint.State == HomeViewModelState.BookATaxi)
+                || hint.State == HomeViewModelState.BookATaxi 
+				|| hint.State == HomeViewModelState.AirportPickDate )
             {
                 // These states don't affect this control
                 return;
@@ -449,6 +452,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _reviewButtons.Hidden = hint.State != HomeViewModelState.Review;
             _editButtons.Hidden = hint.State != HomeViewModelState.Edit;
 			_manualPairingButtons.Hidden = !(hint.State == HomeViewModelState.Initial && viewModel.IsManualRidelinqEnabled);
+			_airportOrderButtons.Hidden = hint.State != HomeViewModelState.AirportDetails;
         }
 
         void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
@@ -458,6 +462,92 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ChangeState((HomeViewModelPresentationHint)hint);
             }
         }
-    }
+
+	
+		private void CreateButtonsForAirportBooking()
+		{
+			// - Cancel - Confirm - Edit 
+
+			_airportOrderButtons = new UIView() { Hidden = true };
+			_airportOrderButtons.TranslatesAutoresizingMaskIntoConstraints = false;
+			Add(_airportOrderButtons);
+
+			var btnCancel = new AppBarLabelButton(Localize.GetValue("Cancel"));
+			btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
+
+			var btnConfirm = new FlatButton();
+			btnConfirm.TranslatesAutoresizingMaskIntoConstraints = false;
+			FlatButtonStyle.Green.ApplyTo(btnConfirm);
+			btnConfirm.SetTitle(Localize.GetValue("Next"), UIControlState.Normal);
+
+			var btnBookLater = new AppBarButton(Localize.GetValue("BookItLaterButton"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "later_icon.png", "later_icon_pressed.png");
+			btnBookLater.TranslatesAutoresizingMaskIntoConstraints = false;
+
+			_airportOrderButtons.AddSubviews(btnCancel, btnConfirm, btnBookLater);
+
+			// Constraints for Container
+			_airportOrderButtons.Superview.AddConstraints(new []
+				{
+					NSLayoutConstraint.Create(_airportOrderButtons, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _airportOrderButtons.Superview, NSLayoutAttribute.Leading, 1, 0f),
+					NSLayoutConstraint.Create(_airportOrderButtons, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _airportOrderButtons.Superview, NSLayoutAttribute.Top, 1, 0f),
+					NSLayoutConstraint.Create(_airportOrderButtons, NSLayoutAttribute.Width, NSLayoutRelation.Equal, _airportOrderButtons.Superview, NSLayoutAttribute.Width, 1, 0f),
+					NSLayoutConstraint.Create(_airportOrderButtons, NSLayoutAttribute.Height, NSLayoutRelation.Equal, _airportOrderButtons.Superview, NSLayoutAttribute.Height, 1, 0f),
+				});
+
+			// Constraints for Cancel button
+			_airportOrderButtons.AddConstraints(new []
+				{
+					NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.Leading, 1, 8f),
+					NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 70f),
+					NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterY, 1, 0),
+				});
+
+//			// Constraints for Confirm button
+//			_airportOrderButtons.AddConstraints(new []
+//				{
+//					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterX, 1, 0),
+//					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterY, 1, 0),
+//					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Width, NSLayoutRelation.Equal, _airportOrderButtons.Subviews[1], NSLayoutAttribute.Width, 1, 0f),
+//					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41),
+//				});
+
+			// Constraints for Confirm button
+			_airportOrderButtons.AddConstraints(new []
+				{
+					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterY, 1, 0),
+					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnCancel, NSLayoutAttribute.Trailing, 1, 20f),
+					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, btnBookLater, NSLayoutAttribute.Leading, 1, -20f),
+					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41),
+				});
+			// Constraints for Book Later button
+			_airportOrderButtons.AddConstraints(new []
+				{
+					NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.Trailing, 1, -8f),
+					NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Width),
+					NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Height),
+					NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterY, 1, -4f),
+				});
+			
+			var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
+
+			set.Bind(btnCancel)
+				.For(v => v.Command)
+				.To(vm => vm.CancelReview);
+
+			set.Bind(btnConfirm)
+				.For(v => v.Command)
+				.To(vm => vm.NextAirport);
+
+			set.Bind(btnBookLater)
+				.For(v => v.Command)
+				.To(vm => vm.BookAirportLater);
+
+			set.Bind(btnBookLater)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsFutureBookingDisabled);
+
+			set.Apply();
+		}
+	}
 }
 

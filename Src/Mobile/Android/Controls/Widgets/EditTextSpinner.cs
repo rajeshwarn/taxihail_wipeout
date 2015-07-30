@@ -15,6 +15,7 @@ using Android.Content.Res;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
+    [Register("apcurium.mk.booking.mobile.client.controls.EditTextSpinner")] 
     public class EditTextSpinner : LinearLayout
     {
         private ListItemAdapter _adapter;

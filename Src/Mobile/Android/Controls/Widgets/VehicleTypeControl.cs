@@ -1,5 +1,4 @@
-﻿using System;
-using Android.Graphics.Drawables;
+﻿using Android.Graphics.Drawables;
 using Android.Widget;
 using Android.Content;
 using Android.Util;
@@ -9,9 +8,11 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using Android.Graphics;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
+    [Register("apcurium.mk.booking.mobile.client.controls.widgets.VehicleTypeControl")]
 	public class VehicleTypeControl : LinearLayout
 	{
 		private ImageView VehicleTypeImage { get; set; }

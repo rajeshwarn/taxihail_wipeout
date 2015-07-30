@@ -75,6 +75,7 @@
     <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
     <Compile Include="TaxiHail\OrderServiceClient.cs" />
     <Compile Include="TaxiHail\PlaceDetailServiceClient.cs" />
+    <Compile Include="TaxiHail\POIServiceClient.cs" />
     <Compile Include="TaxiHail\PopularAddressesServiceClient.cs" />
     <Compile Include="TaxiHail\ReferenceDataServiceClient.cs" />
     <Compile Include="TaxiHail\SearchLocationsServiceClient.cs" />

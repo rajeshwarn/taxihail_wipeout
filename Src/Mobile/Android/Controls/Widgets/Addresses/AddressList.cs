@@ -8,9 +8,11 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {
+    [Register("apcurium.mk.Booking.mobile.client.controls.widgets.addresses.AddressListView")]
     public class AddressListView : MvxFrameControl
     {
         private bool isCollapsed;

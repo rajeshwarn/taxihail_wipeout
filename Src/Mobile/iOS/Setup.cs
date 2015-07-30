@@ -42,10 +42,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			return new TaxiHailApp ();
 		}
 
-		protected override List<Type> ValueConverterHolders {
-			get {
-				return new List<Type> { typeof(AppConverters) };
-			}
+		protected override List<Type> ValueConverterHolders 
+        {
+			get { return new List<Type> { typeof(AppConverters) }; }
 		}
 
 		protected override void AddPluginsLoaders (Cirrious.CrossCore.Plugins.MvxLoaderPluginRegistry loaders)
@@ -124,9 +123,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
 				var settings = c.Resolve<IAppSettings> ();
 				var oauthConfig = new OAuthConfig ();
-				if (settings.Data.TwitterEnabled) {
-					oauthConfig = new OAuthConfig {
-
+				if (settings.Data.TwitterEnabled) 
+                {
+					oauthConfig = new OAuthConfig 
+                    {
 						ConsumerKey = settings.Data.TwitterConsumerKey,
 						Callback = settings.Data.TwitterCallback,
 						ConsumerSecret = settings.Data.TwitterConsumerSecret,
@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		protected override Cirrious.MvvmCross.Touch.Views.Presenters.IMvxTouchViewPresenter CreatePresenter ()
 		{
-            return new PhonePresenter (base.ApplicationDelegate, base.Window);
+            return new PhonePresenter ((UIApplicationDelegate)ApplicationDelegate, base.Window);
 		}
 
 		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider ()

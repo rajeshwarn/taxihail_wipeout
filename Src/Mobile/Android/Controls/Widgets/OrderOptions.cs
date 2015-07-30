@@ -1,4 +1,3 @@
-using System;
 using Android.Content;
 using Android.Util;
 using Android.Widget;
@@ -8,9 +7,11 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.Data;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
+    [Register("apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptions")]
     public class OrderOptions : MvxFrameControl, IChangePresentation
     {
         private AddressTextBox ViewPickup;
