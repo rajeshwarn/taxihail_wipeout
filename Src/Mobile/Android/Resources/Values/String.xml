@@ -644,6 +644,15 @@
   <string name="OtherListItemPromptLabel">Enter a value:</string>
   <string name="EtaLessThanAMinute">Nearest taxi is less than a minute away</string>
   <string name="TipPercent_Error">Tip cannot be over 100%</string>
+  <string name="BookingAirportTitle">Airport</string>
+  <string name="BookingAirportAirlineslbl">Airline</string>
+  <string name="BookingAirportFlightNumlbl">Flight Number</string>
+  <string name="BookingAirportPUPointslbl">Pickup Point</string>
+  <string name="BookingAirportPUDatelbl">Pickup Date</string>
+  <string name="Next">Next</string>
+  <string name="BookingAirportPickupPointFee">Selecting Pickup Point {0} will incurr an additional Fee of {1}</string>
+  <string name="BookingAirportDetails">Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</string>
+  <string name="BookingAirportDetailsFee">, (Pickup Fee: {0})</string>
   <string name="EtaNoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
   <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
   <string name="PanelMenuViewSignOutPopupLogout">Sign Out</string>

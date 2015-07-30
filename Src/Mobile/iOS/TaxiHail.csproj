@@ -34,6 +34,7 @@
     <OptimizePNGs>false</OptimizePNGs>
     <MtouchExtraArgs>-time -time</MtouchExtraArgs>
     <MtouchSdkVersion>8.1</MtouchSdkVersion>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -81,7 +82,6 @@
       </CustomCommands>
     </CustomCommands>
     <MtouchProfiling>true</MtouchProfiling>
-    <MtouchUseLlvm>true</MtouchUseLlvm>
     <MtouchUseThumb>true</MtouchUseThumb>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
   </PropertyGroup>
@@ -110,6 +110,8 @@
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" workingdir="$(SolutionDir)/../LocalizationTool" />
       </CustomCommands>
     </CustomCommands>
+    <MtouchUseThumb>true</MtouchUseThumb>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
@@ -288,6 +290,7 @@
     <None Include="features\support\02_pre_stop_hooks.rb" />
     <None Include="features\support\env.rb" />
     <None Include="features\my_first.feature" />
+    <InterfaceDefinition Include="Views\Order\OrderAirportView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -315,6 +318,8 @@
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
+    <Compile Include="Views\Order\OrderAirportView.cs" />
+    <Compile Include="Views\Order\OrderAirportView.designer.cs" />
     <Compile Include="Views\PanelMenuView.cs">
       <DependentUpon>PanelMenuView.xib</DependentUpon>
     </Compile>

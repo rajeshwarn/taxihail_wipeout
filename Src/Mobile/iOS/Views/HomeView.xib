@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeView">
@@ -12,6 +12,7 @@
                 <outlet property="btnMenu" destination="MeW-ns-SQv" id="7wz-qB-e5G"/>
                 <outlet property="btnTrain" destination="rTf-vs-kUc" id="csz-MU-0ht"/>
                 <outlet property="constraintHomeLeadingSpace" destination="Ofk-d3-Xjf" id="rC5-er-L3E"/>
+                <outlet property="constraintOrderAirportTrailingSpace" destination="5K3-0M-8vw" id="Ve5-zt-45o"/>
                 <outlet property="constraintOrderBookinOptionsTopSpace" destination="St1-7a-w2o" id="OKE-vf-BSR"/>
                 <outlet property="constraintOrderEditTrailingSpace" destination="4Uw-iv-741" id="egd-2Y-fEP"/>
                 <outlet property="constraintOrderOptionsTopSpace" destination="FRw-GE-bhA" id="PCn-eX-HZW"/>
@@ -23,6 +24,7 @@
                 <outlet property="ctrlOrderReview" destination="lYS-4q-3Mj" id="jyD-45-zXv"/>
                 <outlet property="homeView" destination="73H-fC-yqb" id="U5L-r5-78y"/>
                 <outlet property="mapView" destination="DgF-jB-8zt" id="ZNk-IP-Ogh"/>
+                <outlet property="orderAirport" destination="dKC-iR-zqB" id="iMG-VQ-5vt"/>
                 <outlet property="orderEdit" destination="Fsx-d8-MLA" id="qQ4-Ns-xYQ"/>
                 <outlet property="panelMenu" destination="9qQ-hI-lSq" id="1vK-dJ-O2D"/>
                 <outlet property="view" destination="1" id="3"/>
@@ -117,6 +119,10 @@
                             <rect key="frame" x="0.0" y="700" width="320" height="568"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dKC-iR-zqB" customClass="OrderAirportView">
+                            <rect key="frame" x="500" y="22" width="304" height="483"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
@@ -127,11 +133,14 @@
                         <constraint firstAttribute="trailing" secondItem="DgF-jB-8zt" secondAttribute="trailing" id="1zx-5z-Qo2"/>
                         <constraint firstAttribute="height" secondItem="cPP-SX-9eS" secondAttribute="height" id="2FV-c2-amB"/>
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="500" id="4Uw-iv-741"/>
+                        <constraint firstItem="dKC-iR-zqB" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="500" id="5K3-0M-8vw"/>
                         <constraint firstAttribute="trailing" secondItem="cXg-Q6-nLg" secondAttribute="trailing" id="8Ab-0L-enX"/>
                         <constraint firstAttribute="trailing" secondItem="cPP-SX-9eS" secondAttribute="trailing" id="Cdy-Mv-jlG"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="FRw-GE-bhA"/>
                         <constraint firstItem="MeW-ns-SQv" firstAttribute="top" secondItem="aEE-PN-YXj" secondAttribute="bottom" constant="8" id="GwO-hR-URR"/>
+                        <constraint firstItem="dKC-iR-zqB" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="Irn-xp-bFm"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="HaA-X5-eHm" secondAttribute="bottom" constant="620" id="JSE-qi-pXl"/>
+                        <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="dKC-iR-zqB" secondAttribute="bottom" constant="7" id="JkM-Sm-SEa"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="MI6-S6-jXH"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="Mlm-GQ-8rc"/>
                         <constraint firstItem="cPP-SX-9eS" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="PNq-BA-cDW"/>
@@ -139,6 +148,7 @@
                         <constraint firstItem="MeW-ns-SQv" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="Q0C-IM-4L9"/>
                         <constraint firstItem="cPP-SX-9eS" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="700" id="St1-7a-w2o"/>
                         <constraint firstAttribute="right" secondItem="lYS-4q-3Mj" secondAttribute="right" constant="8" id="Syf-T8-VwL"/>
+                        <constraint firstItem="lYS-4q-3Mj" firstAttribute="width" secondItem="dKC-iR-zqB" secondAttribute="width" id="V2j-fs-GMs"/>
                         <constraint firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" id="VBK-AW-R7l"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Fsx-d8-MLA" secondAttribute="bottom" constant="7" id="Vjz-XR-Ktl"/>
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="XF0-qe-pxP"/>

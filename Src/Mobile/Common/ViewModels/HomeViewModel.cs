@@ -69,6 +69,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderOptions = AddChild<OrderOptionsViewModel>();
 			OrderReview = AddChild<OrderReviewViewModel>();
 			OrderEdit = AddChild<OrderEditViewModel>();
+            OrderAirport = AddChild<OrderAirportViewModel>();
 			BottomBar = AddChild<BottomBarViewModel>();
 			AddressPicker = AddChild<AddressPickerViewModel>();
 
@@ -94,6 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				
 			BottomBar.Save = OrderEdit.Save;
 			BottomBar.CancelEdit = OrderEdit.Cancel;
+            BottomBar.NextAirport = OrderAirport.NextCommand;
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -393,6 +395,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged();
 			}
 		}
+
+        private OrderAirportViewModel _orderAirport;
+        public OrderAirportViewModel OrderAirport
+        {
+            get { return _orderAirport; }
+            set
+            {
+                _orderAirport = value;
+                RaisePropertyChanged();
+            }
+        }
 
 		private CancellableCommand _automaticLocateMeAtPickup;
 		public CancellableCommand AutomaticLocateMeAtPickup

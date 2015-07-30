@@ -283,13 +283,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				await _orderWorkflowService.SetAddress(detailedAddress);
 
-				if (returnToHome)
-				{
-					// This needs to be called if we are displaying the AddressPickerViewModel from the home view.
-					PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
-				}
+                if (_currentActiveFilter == AddressLocationType.Airport)
+                {
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AirportDetails));
+                }
+                else
+                {
 
-				ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+					if (returnToHome)
+					{
+						// This needs to be called if we are displaying the AddressPickerViewModel from the home view.
+						PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+					}
+	
+					ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+				}
 			}
 			catch(Exception ex)
 			{
