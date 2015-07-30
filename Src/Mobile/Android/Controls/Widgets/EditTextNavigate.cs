@@ -8,6 +8,7 @@ using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
+    [Register("apcurium.mk.booking.mobile.client.controls.EditTextNavigate")]
     public class EditTextNavigate : LinearLayout
     {
         private TextView _label;

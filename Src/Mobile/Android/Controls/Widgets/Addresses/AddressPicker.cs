@@ -18,9 +18,11 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {
+    [Register("apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressPicker")]
     public class AddressPicker : MvxFrameControl
     {
         private LinearLayout _searchList;

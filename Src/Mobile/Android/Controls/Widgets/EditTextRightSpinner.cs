@@ -14,7 +14,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    
+    [Register("apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner")]
     public class EditTextRightSpinner : LinearLayout
     {
         private ListItemAdapter _adapter;

@@ -4,17 +4,15 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
 using System;
 using apcurium.MK.Common.Extensions;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
+    [Register("apcurium.mk.booking.mobile.client.controls.widgets.VehicleTypeAndEstimateControl")]
     public class VehicleTypeAndEstimateControl : LinearLayout
     {
         private AutoResizeTextView EstimatedFareLabel { get; set; }

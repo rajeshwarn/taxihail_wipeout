@@ -7,14 +7,14 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
-using TinyIoC;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
+    [Register("apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderEdit")]
     public class OrderEdit : MvxFrameControl
     {
         private TextView _lblName;

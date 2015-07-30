@@ -11,6 +11,7 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
+    [Register("apcurium.mk.booking.mobile.client.controls.ListViewCell")]
     public class ListViewCell : TextView
     {
         private bool _isBottom;
