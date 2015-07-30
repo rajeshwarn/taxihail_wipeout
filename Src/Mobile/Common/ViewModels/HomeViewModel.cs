@@ -98,9 +98,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             BottomBar.NextAirport = OrderAirport.NextCommand;
 		}
 
+
+
 		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
+
+			firstTime = firstTime;
 
 			_locationService.Start();
             
@@ -174,7 +178,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				CheckUnratedRide ();
 			}
 		}
-			
+
+		public bool FirstTime{ get; set;}
+
 		private bool _isShowingUnratedPopup;
 	    private void CheckUnratedRide()
 	    {
