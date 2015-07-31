@@ -11,6 +11,8 @@ using CustomerPortal.Web.Areas.Admin.Repository;
 using CustomerPortal.Web.Entities;
 using MongoRepository;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 #endregion
 
@@ -18,39 +20,35 @@ namespace CustomerPortal.Web.BitBucket
 {
     public class VersionUpdater
     {
-        public static void UpdateVersions()
+        public async static Task UpdateVersions()
         {
             var repository = new MongoRepository<Revision>();
-            var req = WebRequest.Create("https://bitbucket.org/api/1.0/repositories/apcurium/mk-taxi/tags") as HttpWebRequest;
-            var authInfo = "buildapcurium:apcurium5200!";
-            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
-            req.Headers["Authorization"] = "Basic " + authInfo;
+            
             string result = null;
+
             try
             {
-                using (var resp = req.GetResponse() as HttpWebResponse)
-                {
-                    var reader = new StreamReader(resp.GetResponseStream());
-                    result = reader.ReadToEnd();
-                }
+                var response = await GetClient().GetAsync("tags");
+                result = await response.Content.ReadAsStringAsync();
             }
             catch
             {
                 //return new Dictionary<string, BitbucketTagsResponse>();
             }
+       
 
             var revisionsFromBitBucket =
-                JsonConvert.DeserializeObject<Dictionary<string, BitbucketTagsResponse>>(result)
+                JsonConvert.DeserializeObject<IList<GitHubRepoResponse>>(result)
                     .Select(x => new Revision
                     {
                         Id = Guid.NewGuid().ToString(),
-                        Commit = x.Value.node,
-                        Tag = x.Key
+                        Commit = x.Commit.Sha,
+                        Tag = x.Name
                     }).ToList();
 
             
             
-            revisionsFromBitBucket.Add(GetDefaultRevision());
+            revisionsFromBitBucket.Add(await GetDefaultRevision());
 
             //Existing Revisions, we ignore version number tags to prevent building a version from an alternate commit.
             //existing revisions => update
@@ -89,45 +87,47 @@ namespace CustomerPortal.Web.BitBucket
             return Regex.IsMatch(revision.Tag, "^([0-9][0-9]*.[0-9][0-9]*.[0-9][0-9]*(.[0-9][0-9]*)?)$");
         }
 
-        private static Revision GetDefaultRevision()
+        private async static Task<Revision> GetDefaultRevision()
         {
             var repository = new MongoRepository<Revision>();
-            var req =
-                WebRequest.Create("https://bitbucket.org/api/1.0/repositories/apcurium/mk-taxi/changesets/default/") as
-                    HttpWebRequest;
-            var authInfo = "buildapcurium:apcurium5200!";
-            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
-            req.Headers["Authorization"] = "Basic " + authInfo;
+           
             string result = null;
+
             try
             {
-                using (var resp = req.GetResponse() as HttpWebResponse)
-                {
-                    var reader = new StreamReader(resp.GetResponseStream());
-                    result = reader.ReadToEnd();
-                }
+                var response = await GetClient().GetAsync("branches/master");
+                result = await response.Content.ReadAsStringAsync();
             }
-            catch
+            catch (Exception ex)
             {
+                var test = ex;
                 //return new Dictionary<string, BitbucketTagsResponse>();
             }
 
             var revisionsFromBitBucket =
-                JsonConvert.DeserializeObject<BitbucketTagsResponse>(result);
-
-
-
+                JsonConvert.DeserializeObject<GitHubRepoResponse>(result);
 
             return new Revision
             {
                 Id = Guid.NewGuid().ToString(),
-                Commit = revisionsFromBitBucket.node,
+                Commit = revisionsFromBitBucket.Commit.Sha,
                 Tag = "default.tip"
             };
 
 
         }
+        private static HttpClient GetClient()
+        {
+            var client = new HttpClient() { BaseAddress = new Uri("https://api.github.com/repos/apcurium/taxihail/") };
 
+            var authInfo = "pierregarcia:f2c2a37b65892c0fc80958238c2e5ecfc8c4023c";
+            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
 
+            client.DefaultRequestHeaders.Add("Authorization", "Basic " + authInfo);
+            client.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36");
+
+            return client;
+        }
     }
 }

@@ -216,7 +216,7 @@
     <Compile Include="Areas\Admin\Models\DeploymentModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestResponse\DownloadProvisioningProfileRequest.cs" />
     <Compile Include="Areas\Admin\Models\EditSettings.cs" />
-    <Compile Include="Areas\Admin\Models\RequestResponse\BitbucketTagsResponse.cs" />
+    <Compile Include="Areas\Admin\Models\RequestResponse\GitHubRepoResponse.cs" />
     <Compile Include="Areas\Admin\Models\IbsTestResult.cs" />
     <Compile Include="Areas\Admin\Models\InitSettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\LayoutRejectModel.cs" />
