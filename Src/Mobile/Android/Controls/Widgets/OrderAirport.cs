@@ -11,54 +11,45 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 using System.Collections.Generic;
+using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
+	[Register("apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderAirport")]
     public class OrderAirport : MvxFrameControl
     {
-        private TextView lblAirport;
-        private TextView lblAirline;
-        private TextView lblFlightNum;
-        private TextView lblPUPoints;
-        private TextView lblDateTime;
-
-        private TextView txtDateTime;
-
-        private EditTextSpinner txtAirlines;
-        private EditTextSpinner txtPUPoints;
-        private EditText txtFlightNum;
-        private EditTextEntry txtEditNote;
+        private TextView _lblAirport;
+        private TextView _txtDateTime;
+		private EditTextSpinner _txtAirlines;
+        private EditTextSpinner _txtPUPoints;
+        private EditText _txtFlightNum;
+        private EditTextEntry _txtEditNote;
         private LinearLayout _bottomPadding;
 
         public OrderAirport(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderAirport, context), context, attrs)
 		{
             this.DelayBind(() => 
             {
-                lblAirport = Content.FindViewById<TextView>(Resource.Id.lblAirport);
-                lblAirline = Content.FindViewById<TextView>(Resource.Id.lblAirline);
-                lblFlightNum = Content.FindViewById<TextView>(Resource.Id.lblFlightNum);
-                lblPUPoints = Content.FindViewById<TextView>(Resource.Id.lblPUPoints);
-                lblDateTime = Content.FindViewById<TextView>(Resource.Id.lblDateTime);
+				_lblAirport = Content.FindViewById<TextView>(Resource.Id.lblAirport);
+				_txtPUPoints = Content.FindViewById<EditTextSpinner>(Resource.Id.txtPUPoints);
+                _txtAirlines = Content.FindViewById<EditTextSpinner>(Resource.Id.txtAirlines);
+                _txtFlightNum = Content.FindViewById<EditText>(Resource.Id.txtFlightNum);
+                _txtEditNote = FindViewById<EditTextEntry>(Resource.Id.txtAirportNotes);
+                _txtDateTime = Content.FindViewById<Button>(Resource.Id.txtDateTime);
 
-                txtPUPoints = Content.FindViewById<EditTextSpinner>(Resource.Id.txtPUPoints);
-                txtAirlines = Content.FindViewById<EditTextSpinner>(Resource.Id.txtAirlines);
-                txtFlightNum = Content.FindViewById<EditText>(Resource.Id.txtFlightNum);
-                txtEditNote = FindViewById<EditTextEntry>(Resource.Id.txtAirportNotes);
-                txtDateTime = Content.FindViewById<Button>(Resource.Id.txtDateTime);
-
-                txtEditNote.SetClickAnywhereToDismiss();
+                _txtEditNote.SetClickAnywhereToDismiss();
 
                 // hack for scroll in view when in EditText
                 _bottomPadding = Content.FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
                 TextFieldInHomeSubviewsBehavior.ApplyTo(
-                    new List<EditText>() { txtEditNote, txtFlightNum },
+                    new List<EditText>() { _txtEditNote, _txtFlightNum },
                     () => _bottomPadding.Visibility = ViewStates.Visible,
                     () => _bottomPadding.Visibility = ViewStates.Gone
                 );
                 var hintTextColor = Resources.GetColor(Resource.Color.drivernode_hint_color);
 
-                txtEditNote.SetHintTextColor(hintTextColor);
-                txtDateTime.SetHintTextColor(hintTextColor);
+                _txtEditNote.SetHintTextColor(hintTextColor);
+                _txtDateTime.SetHintTextColor(hintTextColor);
 
                 InitializeBinding();
             });
@@ -70,47 +61,47 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
             var set = this.CreateBindingSet<OrderAirport, OrderAirportViewModel>();
 
-            set.Bind(txtDateTime)
+            set.Bind(_txtDateTime)
                 .For(v => v.Text)
                 .To(vm => vm.PickupTimeStamp);
 
-            set.Bind(txtDateTime)
+            set.Bind(_txtDateTime)
                 .For("Click")
                 .To(vm => vm.NavigateToDatePicker);
 
-            set.Bind(lblAirport)
+            set.Bind(_lblAirport)
                 .For(v => v.Text)
                 .To(vm => vm.Title);
 
-            set.Bind(txtFlightNum)
+            set.Bind(_txtFlightNum)
                 .For(v => v.Text)
                 .To(vm => vm.FlightNum );
 
-            set.Bind(txtAirlines)
+            set.Bind(_txtAirlines)
                 .For("Text")
                 .To(vm => vm.AirlineName);
 
-            set.Bind(txtAirlines)
+            set.Bind(_txtAirlines)
                 .For("Data")
                 .To(vm => vm.Airlines);
 
-            set.Bind(txtAirlines)
+            set.Bind(_txtAirlines)
                 .For("SelectedItem")
                 .To(vm => vm.AirlineId);
 
-            set.Bind(txtEditNote)
+            set.Bind(_txtEditNote)
                 .For(v => v.Text)
                 .To(vm => vm.Note);
 
-            set.Bind(txtPUPoints)
+            set.Bind(_txtPUPoints)
                 .For("Text")
                 .To(vm => vm.PUPointsName);
 
-            set.Bind(txtPUPoints)
+            set.Bind(_txtPUPoints)
                 .For("Data")
                 .To(vm => vm.PUPoints);
 
-            set.Bind(txtPUPoints)
+            set.Bind(_txtPUPoints)
                 .For("SelectedItem")
                 .To(vm => vm.PUPointsId);
             
