@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		protected override Cirrious.MvvmCross.Touch.Views.Presenters.IMvxTouchViewPresenter CreatePresenter ()
 		{
-            return new PhonePresenter (base.ApplicationDelegate, base.Window);
+			return new PhonePresenter ((UIApplicationDelegate)ApplicationDelegate, base.Window);
 		}
 
 		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider ()

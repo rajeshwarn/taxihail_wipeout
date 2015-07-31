@@ -222,62 +222,62 @@
     <Reference Include="PaypalSdkTouch.Unified">
       <HintPath>..\Libraries\Monotouch\PaypalSdkTouch.Unified.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.dll</HintPath>
-    </Reference>
-    <Reference Include="CrossUI.Core">
-      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.0\lib\Xamarin.iOS10\CrossUI.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="CrossUI.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.0\lib\Xamarin.iOS10\CrossUI.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.WebBrowser.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Visibility.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.File">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.File.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.File.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.File.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.File.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.File.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.DownloadCache">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.DownloadCache.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.DownloadCache.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.DownloadCache.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.DownloadCache.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.DownloadCache.Touch.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.DownloadCache">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.DownloadCache.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.DownloadCache.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.DownloadCache.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.DownloadCache.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.DownloadCache.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.File">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.File.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.File.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.File.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.File.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.File.Touch.dll</HintPath>
+    </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.Json">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Json.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Json.dll</HintPath>
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Json.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PLCrashReporterUnifiedBinding, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Xamarin.Insights.1.10.4.112\lib\Xamarin.iOS10\PLCrashReporterUnifiedBinding.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Insights, Version=1.10.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Xamarin.Insights.1.10.4.112\lib\Xamarin.iOS10\Xamarin.Insights.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Visibility.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.WebBrowser.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="CrossUI.Core">
+      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.1\lib\Xamarin.iOS10\CrossUI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CrossUI.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.1\lib\Xamarin.iOS10\CrossUI.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Insights">
+      <HintPath>..\packages\Xamarin.Insights.1.10.5\lib\Xamarin.iOS10\Xamarin.Insights.dll</HintPath>
+    </Reference>
+    <Reference Include="PLCrashReporterUnifiedBinding">
+      <HintPath>..\packages\Xamarin.Insights.1.10.5\lib\Xamarin.iOS10\PLCrashReporterUnifiedBinding.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -585,9 +585,6 @@
     <Content Include="ar.lproj\InfoPlist.strings" />
     <Compile Include="Controls\Widgets\EtaView.cs" />
     <Compile Include="Helper\NSDateHelper.cs" />
-    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
-    <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
-    <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <BundleResource Include="Resources\paypal_icon.png" />
     <BundleResource Include="Resources\paypal_icon%402x.png" />
     <Compile Include="Extensions\NSErrorExtensions.cs" />
@@ -619,9 +616,12 @@
       <DependentUpon>OrderBookingOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\ExtendedTextFieldView.cs" />
-    <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
+    <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
     <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -898,6 +898,7 @@
     </ImageAsset>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <Import Project="..\packages\Xamarin.Insights.1.10.5\build\Xamarin.iOS10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.10.5\build\Xamarin.iOS10\Xamarin.Insights.targets')" />
   <ItemGroup>
     <XamarinComponentReference Include="googleanalytics">
       <Version>3.0.10.2</Version>
