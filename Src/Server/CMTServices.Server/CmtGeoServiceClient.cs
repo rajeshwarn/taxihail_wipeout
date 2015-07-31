@@ -47,7 +47,9 @@ namespace CMTServices
             @params.Add(new KeyValuePair<string,string>("includeETA", "true"));
             
             // required for geo service
-            @params.Add(new KeyValuePair<string, string>("limit", "12"));
+            @params.Add(new KeyValuePair<string, string>("limit", "10"));
+            @params.Add(new KeyValuePair<string, string>("availState", "1"));
+            
 
             CmtGeoResponse response = null;
             try
