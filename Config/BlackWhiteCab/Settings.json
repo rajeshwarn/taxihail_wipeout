@@ -1,0 +1,20 @@
+{
+   "ApplicationName" : "Thriev",
+   "CanChangeServiceUrl" : "false",
+   "DefaultPhoneNumber" : "441158243142",
+   "DefaultPhoneNumberDisplay" : "+441158243142",
+   "ErrorLog" : "",
+   "ErrorLogEnabled" : "false",
+   "FacebookAppId" : "",
+   "FacebookEnabled" : "false",
+   "ServiceUrl" : "http://services.taxihail.com/triev/api/",
+   "SiteUrl" : "http://www.thriev.com",
+   "SupportEmail" : "support@thriev.com",
+   "TwitterAccessTokenUrl" : "",
+   "TwitterAuthorizeUrl" : "",
+   "TwitterCallback" : "",
+   "TwitterConsumerKey" : "",
+   "TwitterConsumerSecret" : "",
+   "TwitterEnabled" : "false",
+   "TwitterRequestTokenUrl" : ""
+}

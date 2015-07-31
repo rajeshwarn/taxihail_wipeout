@@ -151,7 +151,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                         if (_taxiLocation.IBSStatusId == VehicleStatuses.Common.Loaded)
                         {
-                            _pickupPin.Remove();
+							if (_pickupPin != null)
+							{
+								_pickupPin.Remove();
+							}
                         }  
 
                     }

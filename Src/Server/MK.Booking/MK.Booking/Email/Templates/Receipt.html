@@ -245,10 +245,11 @@
             word-wrap: break-word;
         }
             .yourdriver td.driver_name {
-                vertical-align: central;
+                /*vertical-align: central;*/
                 font-weight: bold;
                 text-transform: uppercase;
-                width: 45%;
+                /*width: 45%; */
+            		text-align: right
             }
 
             .yourdriver td {
@@ -449,47 +450,53 @@
                                                                 <table class="yourdriver" cellpadding="0" cellspacing="0">
                                                                     {{#HasDriverInfo}}
                                                                     <tr style="color: { {EmailFontColor}}! important">
-                                                                        <td class="driver_name" rowspan="3">{{ DriverName }}</td>
-                                                                        <td class="driver_list_title" colspan="2">{{ localize "Email_Body_VehicleModel" }}</td>
-                                                                        <td class="list_value" colspan="2">{{ VehicleMake }} {{ VehicleModel }}</td>
-                                                                    </tr>
-
-                                                                    <tr>
-                                                                        <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
-                                                                        <td class="list_value" colspan="3">{{ VehicleNumber }}</td>
+                                                                        <td class="driver_list_title" >{{ localize "Email_Body_Driver" }}</td>
+                                                                        <td class="driver_name">{{ DriverName }}</td>
                                                                     </tr>
                                                                     {{/HasDriverInfo}}
 
                                                                     {{#HasDriverId}}
                                                                     <tr>
                                                                         <td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
-                                                                        <td class="list_value" colspan="3">{{ DriverId }}</td>
+                                                                        <td class="list_value">{{ DriverId }}</td>
                                                                     </tr>
                                                                     {{/HasDriverId}}
 
-                                                                    {{#ShowMinimalDriverInfo}}
+                                                                    {{#HasDriverInfo}}
                                                                     <tr>
-                                                                        <td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
-                                                                        <td class="list_value" colspan="4">{{ DriverId }}</td>
+                                                                        <td class="driver_list_title" >{{ localize "Email_Body_VehicleModel" }}</td>
+                                                                        <td class="list_value">{{ VehicleMake }} {{ VehicleModel }}</td>
                                                                     </tr>
 
                                                                     <tr>
                                                                         <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
-                                                                        <td class="list_value" colspan="4">{{ VehicleNumber }}</td>
+                                                                        <td class="list_value">{{ VehicleNumber }}</td>
+                                                                    </tr>
+                                                                    {{/HasDriverInfo}}
+
+                                                                    {{#ShowMinimalDriverInfo}}
+                                                                    <tr>
+                                                                        <td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
+                                                                        <td class="list_value" >{{ DriverId }}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
+                                                                        <td class="list_value" >{{ VehicleNumber }}</td>
                                                                     </tr>
                                                                     {{/ShowMinimalDriverInfo}}
 
                                                                     {{#ShowTripId}}
                                                                     <tr>
                                                                         <td class="driver_list_title">{{ localize "Email_Body_TripId" }}</td>
-                                                                        <td class="list_value" colspan="4">{{ TripId }}</td>
+                                                                        <td class="list_value" >{{ TripId }}</td>
                                                                     </tr>
                                                                     {{/ShowTripId}}
 
                                                                     {{#ShowDistance}}
                                                                     <tr>
                                                                         <td class="driver_list_title">{{ localize "Email_Body_Distance" }}</td>
-                                                                        <td class="list_value" colspan="4">{{ Distance }}</td>
+                                                                        <td class="list_value" >{{ Distance }}</td>
                                                                     </tr>
                                                                     {{/ShowDistance}}
                                                                 </table>
