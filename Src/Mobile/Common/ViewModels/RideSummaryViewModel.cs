@@ -1,11 +1,9 @@
 using System.Windows.Input;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
-using ServiceStack.Text;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Models;
 using System;
@@ -190,9 +188,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (RatingList.Any(c => c.Score == 0))
 			{
-				if (Settings.RatingRequired 
-					|| sendRatingButtonWasPressed) // button was pressed, send feedback to user in case of error
-					// CheckAndSendRatings is also called when exiting the view
+                if (Settings.RatingRequired                                      // button was pressed, send feedback to user in case of error
+                    || (Settings.RatingRequired && sendRatingButtonWasPressed))  // CheckAndSendRatings is also called when exiting the view                       
 				{
 					this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"],
 						this.Services().Localize["BookRatingErrorMessage"]);
@@ -207,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			try
 			{
-				var orderRating = new apcurium.MK.Common.Entity.OrderRatings
+				var orderRating = new OrderRatings
 				{
 					Note = Note,
 					OrderId = OrderId,
