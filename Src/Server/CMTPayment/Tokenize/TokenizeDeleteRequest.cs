@@ -2,7 +2,7 @@
 
 namespace CMTPayment.Tokenize
 {
-    [Route("v2/tokenize/{CardToken}/")]
+    [Route("tokenize/{CardToken}/")]
     public class TokenizeDeleteRequest : IReturn<TokenizeDeleteResponse>
     {
         public string CardToken { get; set; }

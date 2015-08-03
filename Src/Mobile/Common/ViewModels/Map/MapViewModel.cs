@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
 using System.Linq;
+using apcurium.MK.Common.Extensions;
 using MapBounds = apcurium.MK.Booking.Maps.Geo.MapBounds;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -96,16 +97,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public IList<AvailableVehicle> AvailableVehicles
 		{
 			get { return _availableVehicles; }
-			set
+		    private set
 			{
-				if (value.Count == 0 && _availableVehicles.Count > 0)
+                if (value != null
+                    && value.Count == 0
+                    && _availableVehicles != null
+                    && _availableVehicles.Count > 0)
 				{
 					if (KeepVehiclesWhenResultNullStartTime == null)
 					{
 						KeepVehiclesWhenResultNullStartTime = DateTime.Now;
 						return;
 					}
-					else if ((DateTime.Now - KeepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TimeToKeepVehiclesOnMapWhenResultNull)
+					if ((DateTime.Now - KeepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TimeToKeepVehiclesOnMapWhenResultNull)
 					{
 						return;
 					}
