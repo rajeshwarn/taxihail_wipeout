@@ -137,8 +137,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             }
 
 
-            bool disableImmediateBooking = bool.Parse(appSettings.Where(x => x.Key == "DisableImmediateBooking").First().Value),
-            disableFutureBooking = bool.Parse(appSettings.Where(x => x.Key == "DisableFutureBooking").First().Value);
+			bool disableImmediateBooking = bool.Parse(appSettings.Where(x => x.Key == "DisableImmediateBooking").First().Value);
+            bool disableFutureBooking = bool.Parse(appSettings.Where(x => x.Key == "DisableFutureBooking").First().Value);
 
             if (disableImmediateBooking && disableFutureBooking)
             {
