@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						KeepVehiclesWhenResultNullStartTime = DateTime.Now;
 						return;
 					}
-					else if ((DateTime.Now - KeepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TimeToKeepVehiclesOnMapWhenResultNull)
+					if ((DateTime.Now - KeepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TimeToKeepVehiclesOnMapWhenResultNull)
 					{
 						return;
 					}
