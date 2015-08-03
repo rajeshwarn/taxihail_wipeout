@@ -13,6 +13,8 @@ using MongoRepository;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Diagnostic;
+using System.Configuration;
 
 #endregion
 
@@ -26,19 +28,12 @@ namespace CustomerPortal.Web.BitBucket
             
             string result = null;
 
-            try
-            {
-                var response = await GetClient().GetAsync("tags");
-                result = await response.Content.ReadAsStringAsync();
-            }
-            catch
-            {
-                //return new Dictionary<string, BitbucketTagsResponse>();
-            }
+            var response = await GetClient().GetAsync("tags");
+            result = await response.Content.ReadAsStringAsync();
        
 
-            var revisionsFromBitBucket =
-                JsonConvert.DeserializeObject<IList<GitHubRepoResponse>>(result)
+            var revisionsFromGitHub =
+                JsonConvert.DeserializeObject<GitHubRepoResponse[]>(result)
                     .Select(x => new Revision
                     {
                         Id = Guid.NewGuid().ToString(),
@@ -48,14 +43,14 @@ namespace CustomerPortal.Web.BitBucket
 
             
             
-            revisionsFromBitBucket.Add(await GetDefaultRevision());
+            revisionsFromGitHub.Add(await GetDefaultRevision());
 
             //Existing Revisions, we ignore version number tags to prevent building a version from an alternate commit.
             //existing revisions => update
             var updatesRevisions = repository
                 .AsEnumerable()
                 .Where(revision => !IsVersionNumber(revision))
-                .Join(revisionsFromBitBucket, rev => rev.Tag, revBitbucket => revBitbucket.Tag, (rev, revBitbucket) => new Revision
+                .Join(revisionsFromGitHub, rev => rev.Tag, revBitbucket => revBitbucket.Tag, (rev, revBitbucket) => new Revision
                 {
                     Id = rev.Id,
                     Tag = rev.Tag,
@@ -74,7 +69,7 @@ namespace CustomerPortal.Web.BitBucket
 
             var tagsFromRepository = repository.Select(x => x.Tag).ToList();
             //new revisions in bitbucket => add to repository
-            var newRevisions = revisionsFromBitBucket.Where(x => !tagsFromRepository.Contains(x.Tag)).ToList();
+            var newRevisions = revisionsFromGitHub.Where(x => !tagsFromRepository.Contains(x.Tag)).ToList();
             if (newRevisions.Any())
             {
                 repository.Add(newRevisions);
@@ -93,24 +88,16 @@ namespace CustomerPortal.Web.BitBucket
            
             string result = null;
 
-            try
-            {
-                var response = await GetClient().GetAsync("branches/master");
-                result = await response.Content.ReadAsStringAsync();
-            }
-            catch (Exception ex)
-            {
-                var test = ex;
-                //return new Dictionary<string, BitbucketTagsResponse>();
-            }
+            var response = await GetClient().GetAsync("branches/master");
+            result = await response.Content.ReadAsStringAsync();
 
-            var revisionsFromBitBucket =
+            var revisionsFromGitHub =
                 JsonConvert.DeserializeObject<GitHubRepoResponse>(result);
 
             return new Revision
             {
                 Id = Guid.NewGuid().ToString(),
-                Commit = revisionsFromBitBucket.Commit.Sha,
+                Commit = revisionsFromGitHub.Commit.Sha,
                 Tag = "default.tip"
             };
 
@@ -120,7 +107,10 @@ namespace CustomerPortal.Web.BitBucket
         {
             var client = new HttpClient() { BaseAddress = new Uri("https://api.github.com/repos/apcurium/taxihail/") };
 
-            var authInfo = "pierregarcia:f2c2a37b65892c0fc80958238c2e5ecfc8c4023c";
+            var gitHubUsername = new AppSettingsReader().GetValue("GitHubUsername", typeof(string));
+            var gitHubToken = new AppSettingsReader().GetValue("GitHubToken", typeof(string));
+
+            var authInfo = string.Format("{0}:{1}",gitHubUsername, gitHubToken);
             authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
 
             client.DefaultRequestHeaders.Add("Authorization", "Basic " + authInfo);
