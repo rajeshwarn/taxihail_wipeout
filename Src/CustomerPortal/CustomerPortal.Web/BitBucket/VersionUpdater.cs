@@ -11,6 +11,10 @@ using CustomerPortal.Web.Areas.Admin.Repository;
 using CustomerPortal.Web.Entities;
 using MongoRepository;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Threading.Tasks;
+using apcurium.MK.Common.Diagnostic;
+using System.Configuration;
 
 #endregion
 
@@ -18,46 +22,35 @@ namespace CustomerPortal.Web.BitBucket
 {
     public class VersionUpdater
     {
-        public static void UpdateVersions()
+        public async static Task UpdateVersions()
         {
             var repository = new MongoRepository<Revision>();
-            var req = WebRequest.Create("https://bitbucket.org/api/1.0/repositories/apcurium/mk-taxi/tags") as HttpWebRequest;
-            var authInfo = "buildapcurium:apcurium5200!";
-            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
-            req.Headers["Authorization"] = "Basic " + authInfo;
+            
             string result = null;
-            try
-            {
-                using (var resp = req.GetResponse() as HttpWebResponse)
-                {
-                    var reader = new StreamReader(resp.GetResponseStream());
-                    result = reader.ReadToEnd();
-                }
-            }
-            catch
-            {
-                //return new Dictionary<string, BitbucketTagsResponse>();
-            }
 
-            var revisionsFromBitBucket =
-                JsonConvert.DeserializeObject<Dictionary<string, BitbucketTagsResponse>>(result)
+            var response = await GetClient().GetAsync("tags");
+            result = await response.Content.ReadAsStringAsync();
+       
+
+            var revisionsFromGitHub =
+                JsonConvert.DeserializeObject<GitHubRepoResponse[]>(result)
                     .Select(x => new Revision
                     {
                         Id = Guid.NewGuid().ToString(),
-                        Commit = x.Value.node,
-                        Tag = x.Key
+                        Commit = x.Commit.Sha,
+                        Tag = x.Name
                     }).ToList();
 
             
             
-            revisionsFromBitBucket.Add(GetDefaultRevision());
+            revisionsFromGitHub.Add(await GetDefaultRevision());
 
             //Existing Revisions, we ignore version number tags to prevent building a version from an alternate commit.
             //existing revisions => update
             var updatesRevisions = repository
                 .AsEnumerable()
                 .Where(revision => !IsVersionNumber(revision))
-                .Join(revisionsFromBitBucket, rev => rev.Tag, revBitbucket => revBitbucket.Tag, (rev, revBitbucket) => new Revision
+                .Join(revisionsFromGitHub, rev => rev.Tag, revBitbucket => revBitbucket.Tag, (rev, revBitbucket) => new Revision
                 {
                     Id = rev.Id,
                     Tag = rev.Tag,
@@ -76,7 +69,7 @@ namespace CustomerPortal.Web.BitBucket
 
             var tagsFromRepository = repository.Select(x => x.Tag).ToList();
             //new revisions in bitbucket => add to repository
-            var newRevisions = revisionsFromBitBucket.Where(x => !tagsFromRepository.Contains(x.Tag)).ToList();
+            var newRevisions = revisionsFromGitHub.Where(x => !tagsFromRepository.Contains(x.Tag)).ToList();
             if (newRevisions.Any())
             {
                 repository.Add(newRevisions);
@@ -89,45 +82,42 @@ namespace CustomerPortal.Web.BitBucket
             return Regex.IsMatch(revision.Tag, "^([0-9][0-9]*.[0-9][0-9]*.[0-9][0-9]*(.[0-9][0-9]*)?)$");
         }
 
-        private static Revision GetDefaultRevision()
+        private async static Task<Revision> GetDefaultRevision()
         {
             var repository = new MongoRepository<Revision>();
-            var req =
-                WebRequest.Create("https://bitbucket.org/api/1.0/repositories/apcurium/mk-taxi/changesets/default/") as
-                    HttpWebRequest;
-            var authInfo = "buildapcurium:apcurium5200!";
-            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
-            req.Headers["Authorization"] = "Basic " + authInfo;
+           
             string result = null;
-            try
-            {
-                using (var resp = req.GetResponse() as HttpWebResponse)
-                {
-                    var reader = new StreamReader(resp.GetResponseStream());
-                    result = reader.ReadToEnd();
-                }
-            }
-            catch
-            {
-                //return new Dictionary<string, BitbucketTagsResponse>();
-            }
 
-            var revisionsFromBitBucket =
-                JsonConvert.DeserializeObject<BitbucketTagsResponse>(result);
+            var response = await GetClient().GetAsync("branches/master");
+            result = await response.Content.ReadAsStringAsync();
 
-
-
+            var revisionsFromGitHub =
+                JsonConvert.DeserializeObject<GitHubRepoResponse>(result);
 
             return new Revision
             {
                 Id = Guid.NewGuid().ToString(),
-                Commit = revisionsFromBitBucket.node,
+                Commit = revisionsFromGitHub.Commit.Sha,
                 Tag = "default.tip"
             };
 
 
         }
+        private static HttpClient GetClient()
+        {
+            var client = new HttpClient() { BaseAddress = new Uri("https://api.github.com/repos/apcurium/taxihail/") };
 
+            var gitHubUsername = new AppSettingsReader().GetValue("GitHubUsername", typeof(string));
+            var gitHubToken = new AppSettingsReader().GetValue("GitHubToken", typeof(string));
 
+            var authInfo = string.Format("{0}:{1}",gitHubUsername, gitHubToken);
+            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
+
+            client.DefaultRequestHeaders.Add("Authorization", "Basic " + authInfo);
+            client.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36");
+
+            return client;
+        }
     }
 }
