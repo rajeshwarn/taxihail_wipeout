@@ -24,7 +24,7 @@ namespace MK.DeploymentService.Mobile
 		DeploymentJob _job;
 		private MonoBuilder _builder;
 		private CustomerPortalRepository _customerPortalRepository;
-		const string HG_PATH = "/usr/local/bin/hg";
+        const string GIT_PATH = "/usr/local/git/bin/git";
 		public bool _isWorking = false;
 
 		public DeploymentJobService ()
@@ -100,7 +100,7 @@ namespace MK.DeploymentService.Mobile
 
 					DownloadAndInstallProfileIfNecessary();
 
-					var taxiRepo = new TaxiRepository (HG_PATH, sourceDirectory);
+					var taxiRepo = new TaxiRepository (GIT_PATH, sourceDirectory);
 					UpdateJob ("FetchSource");
 					taxiRepo.FetchSource (_job.Revision.Commit, str => UpdateJob (str));
 
