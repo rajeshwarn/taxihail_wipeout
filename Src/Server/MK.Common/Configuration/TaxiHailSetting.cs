@@ -139,8 +139,12 @@ namespace MK.Common.Configuration
         public bool UseSingleButtonForNowAndLaterBooking { get; set; }
 
         [SendToClient]
-        [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
-        public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
+        [Display(Name = "Local Available Vehicles Mode", Description = "Available Vehicles provider in local market")]
+        public LocalAvailableVehiclesModes LocalAvailableVehiclesMode { get; protected set; }
+
+        [SendToClient]
+        [Display(Name = "External Available Vehicles Mode", Description = "Available Vehicles provider in external market")]
+        public ExternalAvailableVehiclesModes ExternalAvailableVehiclesMode { get; protected set; }
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter Consumer Secret", Description = "Twitter API settings")]

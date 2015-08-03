@@ -72,11 +72,11 @@ namespace apcurium.MK.Booking.Api.Services
             catch
             {
                 // Do nothing. If we fail to contact Customer Portal, we continue as if we are in a local market.
-                _logger.LogMessage("VehicleService: Error while trying to get company Market.");
+                _logger.LogMessage("VehicleService: Error while trying to get company Market to find available vehicles.");
             }
             
             if (!market.HasValue()
-                && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.IBS)
+                && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.IBS)
             {
                 // LOCAL market IBS
                 vehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Api.Services
                 string availableVehiclesMarket;
                 IList<int> availableVehiclesFleetIds = null;
 
-                if (!market.HasValue() && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger)
+                if (!market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.HoneyBadger)
                 {
                     // LOCAL market Honey Badger
                     availableVehiclesMarket = _serverSettings.ServerData.HoneyBadger.AvailableVehiclesMarket;                   
@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Api.Services
                         availableVehiclesFleetIds = new[] { _serverSettings.ServerData.HoneyBadger.AvailableVehiclesFleetId.Value };
                     }
                 }
-                else if (!market.HasValue() && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
+                else if (!market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo)
                 {
                     // LOCAL market Geo
                     availableVehiclesMarket = _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket;
@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Api.Services
                     }
                 }
 
-                var vehicleResponse = GetAvailableVehiclesServiceClient().GetAvailableVehicles(
+                var vehicleResponse = GetAvailableVehiclesServiceClient(market).GetAvailableVehicles(
                     market: availableVehiclesMarket,
                     latitude: request.Latitude,
                     longitude: request.Longitude,
@@ -333,17 +333,35 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(EtaForPickupRequest request)
         {
-            if (_serverSettings.ServerData.AvailableVehiclesMode != AvailableVehiclesModes.Geo)
-            {
-                return new HttpResult(HttpStatusCode.BadRequest, "Api cannot be used unless available mode is set to Geo");
-            }
-
             if (!request.Latitude.HasValue || !request.Longitude.HasValue || !request.VehicleRegistration.HasValue())
             {
                 return new HttpResult(HttpStatusCode.BadRequest, "Longitude, latitude and vehicle number are required.");
             }
 
-            var geoService = (CmtGeoServiceClient)GetAvailableVehiclesServiceClient();
+            var market = string.Empty;
+
+            try
+            {
+                market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude.Value, request.Longitude.Value);
+            }
+            catch
+            {
+                // Do nothing. If we fail to contact Customer Portal, we continue as if we are in a local market.
+                _logger.LogMessage("VehicleService: Error while trying to get company Market to compute ETA.");
+            }
+
+            if (!market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode != LocalAvailableVehiclesModes.Geo)
+            {
+                // Local market validation
+                return new HttpResult(HttpStatusCode.BadRequest, "Api cannot be used unless Local 'Available Vehicles Mode' is set to Geo");
+            }
+            if (market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode != ExternalAvailableVehiclesModes.Geo)
+            {
+                // External market validation
+                return new HttpResult(HttpStatusCode.BadRequest, "Api cannot be used unless 'External Available Mode' is set to Geo");
+            }
+            
+            var geoService = (CmtGeoServiceClient)GetAvailableVehiclesServiceClient(market);
 
             var result = geoService.GetEta(request.Latitude.Value, request.Longitude.Value, request.VehicleRegistration);
 
@@ -366,17 +384,42 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient()
+        private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
         {
-            switch (_serverSettings.ServerData.AvailableVehiclesMode)
+            if (market.HasValue())
             {
-                case AvailableVehiclesModes.Geo:
-                    return new CmtGeoServiceClient(_serverSettings, _logger);
-                case AvailableVehiclesModes.HoneyBadger:
-                    return new HoneyBadgerServiceClient(_serverSettings, _logger);
+                // External market
+                switch ( _serverSettings.ServerData.ExternalAvailableVehiclesMode)
+                {
+                    case ExternalAvailableVehiclesModes.Geo:
+                        {
+                            return new CmtGeoServiceClient(_serverSettings, _logger);
+                        }
+                    case ExternalAvailableVehiclesModes.HoneyBadger:
+                        {
+                            return new HoneyBadgerServiceClient(_serverSettings, _logger);
+                        }
+                    default: throw new InvalidOperationException("{0} is not a supported Vehicle provider"
+                        .InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
+                }
             }
-
-            throw new InvalidOperationException("{0} not supported".InvariantCultureFormat(_serverSettings.ServerData.AvailableVehiclesMode.ToString()));
+            else
+            {
+                // Local market
+                switch ( _serverSettings.ServerData.LocalAvailableVehiclesMode)
+                {
+                    case LocalAvailableVehiclesModes.Geo:
+                        {
+                            return new CmtGeoServiceClient(_serverSettings, _logger);
+                        }
+                    case LocalAvailableVehiclesModes.HoneyBadger:
+                        {
+                            return new HoneyBadgerServiceClient(_serverSettings, _logger);
+                        }
+                    default: throw new InvalidOperationException("{0} is not a supported Vehicle provider"
+                        .InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
+                }
+            }
         }
     }
 }

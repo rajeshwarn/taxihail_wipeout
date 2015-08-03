@@ -280,6 +280,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			    }
                 var durationUnit = Eta.Duration <= 1 ? this.Services().Localize["EtaDurationUnit"] : this.Services().Localize["EtaDurationUnitPlural"];
 
+                // TODO: voir si on peut enlever la condition et afficher EtaLessThanAMinute dans tous les cas
                 if (Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
 			    {
 
