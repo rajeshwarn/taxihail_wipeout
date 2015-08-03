@@ -8,9 +8,9 @@
             FleetToken = "270d2767ec30c1c2";
             ConsumerKey = "vmAoqWEY3zIvUCM4";
             ConsumerSecretKey = "DUWzh0jAldPc7C5I";
-            SandboxMobileBaseUrl = "https://mobile-sandbox.cmtapi.com/";
+            SandboxMobileBaseUrl = "https://mobile-sandbox.cmtapi.com/v1/";
             SandboxBaseUrl = "https://payment-sandbox.cmtapi.com/v2/";
-            MobileBaseUrl = "https://mobile.cmtapi.com/";
+            MobileBaseUrl = "https://mobile.cmtapi.com/v1/";
             BaseUrl = "https://payment.cmtapi.com/v2/";
             IsSandbox = true;
             CurrencyCode = CurrencyCodes.Main.UnitedStatesDollar;
