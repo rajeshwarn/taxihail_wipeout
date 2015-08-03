@@ -7,21 +7,35 @@ using System.Globalization;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using System.Collections.Generic;
 
 namespace MK.Booking.MapDataProvider.Foursquare
 {
 	/// <summary>
 	/// Foursquare provider.
-	/// documentation : https://developer.foursquare.com/docs/venues/search
+	/// api reference:
+	/// https://developer.foursquare.com/docs/venues/search
+	/// https://developer.foursquare.com/docs/venues/explore
 	/// </summary>
 	public class FoursquareProvider : IPlaceDataProvider
 	{
+		enum FoursquareQueryType
+		{
+			Search,
+			Explore
+		}
+
+
 	    private readonly IAppSettings _settings;
 	    private readonly ILogger _logger;
-	    private const string ApiUrl = "https://api.foursquare.com/v2/";
 
-        private const string SearchVenues = "venues/search?client_id={0}&client_secret={1}&intent=browse&radius={2}&v=2014100805";
-        private const string VenueDetails = "venues/{0}/?client_id={1}&client_secret={2}&v=2014100805";
+		static readonly uint maximumPageLength = 50, maximumPagesLimit = 5;
+
+		static readonly string ApiUrl = "https://api.foursquare.com/v2/";
+		static readonly string SearchVenues = "venues/search?v=20140806&m=foursquare&client_id={0}&client_secret={1}&intent=browse&radius={2}&limit=" + maximumPageLength.ToString();
+		static readonly string ExploreVenues = "venues/explore?v=20140806&m=foursquare&client_id={0}&client_secret={1}&radius={2}&limit=" + maximumPageLength.ToString();
+		static readonly string VenueDetails = "venues/{0}/?v=20140806&m=foursquare&client_id={1}&client_secret={2}";
+
 
         public FoursquareProvider(IAppSettings settings, ILogger logger)
 		{
@@ -31,28 +45,65 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 		public GeoPlace[] GetNearbyPlaces (double? latitude, double? longitude, string languageCode, bool sensor, int radius, string pipedTypeList = null)
 		{
-            var searchQueryString = GetBaseQueryString(latitude, longitude, radius);
+			var searchQueryString = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Search);
 
-		    pipedTypeList = pipedTypeList ?? _settings.Data.FoursquarePlacesTypes;
-		    if (pipedTypeList.HasValue())
-		    {
-                searchQueryString = string.Format("{0}&categoryId={1}", searchQueryString, pipedTypeList.Replace('|', ','));
-		    }
+			pipedTypeList = pipedTypeList ?? _settings.Data.FoursquarePlacesTypes;
+			if (pipedTypeList.HasValue())
+			{
+				searchQueryString = string.Format("{0}&categoryId={1}", searchQueryString, pipedTypeList.Replace('|', ','));
+			}
 
-			var client = new JsonServiceClient (ApiUrl);
-            var venues = client.Get<FoursquareVenuesResponse<VenuesResponse>>(searchQueryString);
+			var client = new JsonServiceClient(ApiUrl);
+			var searchAnswer = client.Get<FoursquareVenuesResponse<SearchResponse>>(searchQueryString);
 
-			return venues.Response.Venues.Select(ToPlace).ToArray();
+			List<Venue> venuesSearch = new List<Venue>();
+			if (searchAnswer.Response.Venues != null && searchAnswer.Response.Venues.Length > 0)
+			{
+				venuesSearch.AddRange(searchAnswer.Response.Venues);
+			}
+
+
+
+			uint page = 0, pages = 0;
+
+			var exploreQuery = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Explore);
+			FoursquareVenuesResponse<ExploreResponse> exploreAnswer;
+
+			List<Venue> venuesExplore = new List<Venue>();
+
+			do
+			{
+				exploreAnswer = client.Get<FoursquareVenuesResponse<ExploreResponse>>(exploreQuery + "&offset=" + ((page++) * maximumPageLength).ToString());
+
+				pages = Math.Min((uint)(exploreAnswer.Response.TotalResults / maximumPageLength) + 1, maximumPagesLimit);
+
+				venuesExplore.AddRange(
+						from q1 in exploreAnswer.Response.Groups
+						from q2 in q1.Items
+						select q2.Venue);
+
+			}
+			while (page < pages && exploreAnswer.Response.Groups != null && exploreAnswer.Response.Groups.Length > 0);
+
+
+			List<Venue> allVenues = new List<Venue>();
+
+			allVenues.AddRange(venuesExplore);
+			allVenues.AddRange(from vs in venuesSearch
+							   where !(from ve in venuesExplore select ve.id).Contains(vs.id)
+							   select vs);
+
+			return allVenues.Select(ToPlace).ToArray();
 		}
 
 		public GeoPlace[] SearchPlaces (double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
 		{
-            var searchQueryString = GetBaseQueryString(latitude, longitude, radius);
+            var searchQueryString = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Search);
 
 		    searchQueryString = string.Format("{0}&query={1}", searchQueryString, name);
 
 		    var client = new JsonServiceClient(ApiUrl);
-            var venues = client.Get<FoursquareVenuesResponse<VenuesResponse>>(searchQueryString);
+            var venues = client.Get<FoursquareVenuesResponse<SearchResponse>>(searchQueryString);
 
             return venues.Response.Venues.Select(ToPlace).ToArray();
 		}
@@ -66,14 +117,23 @@ namespace MK.Booking.MapDataProvider.Foursquare
                 Types = venue.categories.Select(x => x.name).ToList(),
                 Id = venue.id,
 				Address = new GeoAddress{ FullAddress  = venue.location.address, Latitude =  venue.location.lat , Longitude = venue.location.lng },
-
-
 	        };
 	    }
 
-	    private string GetBaseQueryString(double? latitude, double? longitude, int radius)
+		private string GetBaseQueryString(double? latitude, double? longitude, int radius, FoursquareQueryType foursquareQueryType)
 	    {
-            var searchQueryString = string.Format(SearchVenues, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret, radius);
+			string template = null;
+
+			if (foursquareQueryType == FoursquareQueryType.Search)
+			{
+				template = SearchVenues;
+			}
+			else if (foursquareQueryType == FoursquareQueryType.Explore)
+			{
+				template = ExploreVenues;
+			}
+
+            var searchQueryString = string.Format(template, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret, radius);
 
             latitude = latitude ?? _settings.Data.GeoLoc.DefaultLatitude;
             longitude = longitude ?? _settings.Data.GeoLoc.DefaultLongitude;
@@ -110,4 +170,3 @@ namespace MK.Booking.MapDataProvider.Foursquare
 		}
 	}
 }
-
