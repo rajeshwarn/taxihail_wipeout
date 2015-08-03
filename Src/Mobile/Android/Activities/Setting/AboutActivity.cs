@@ -15,8 +15,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.View_About);
-            FindViewById<WebView>(Resource.Id.aboutWebView).LoadUrl(ViewModel.Uri);
-            //FindViewById<WebView>(Resource.Id.aboutWebView).SetInitialScale(40);
+            var webView = FindViewById<WebView>(Resource.Id.aboutWebView);
+
+            webView.LoadUrl(ViewModel.Uri);
+            webView.Settings.JavaScriptEnabled = true;
         }
     }
 }
