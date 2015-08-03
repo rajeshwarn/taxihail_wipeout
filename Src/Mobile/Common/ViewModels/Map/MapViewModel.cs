@@ -96,9 +96,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public IList<AvailableVehicle> AvailableVehicles
 		{
 			get { return _availableVehicles; }
-			set
+		    private set
 			{
-				if (value.Count == 0 && _availableVehicles.Count > 0)
+                if (value != null
+                   && value.Count == 0
+                   && _availableVehicles != null
+                   && _availableVehicles.Count > 0)
 				{
 					if (KeepVehiclesWhenResultNullStartTime == null)
 					{
