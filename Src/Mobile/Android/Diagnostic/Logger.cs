@@ -81,32 +81,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             }
         }
 
-        protected override void SendToInsights (Exception ex)
-        {
-            #if !DEBUG
-            var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
-
-            var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
-            var settings = GetSettings();
-            var unknownUserIdentifier = settings != null 
-                ? settings.Insights.UnknownUserIdentifier
-                : new TaxiHailSetting().Insights.UnknownUserIdentifier; //default value if we can't load the settings
-
-            var email = account != null 
-                ? account.Email 
-                : unknownUserIdentifier;
-
-            var identification = new Dictionary<string, string>
-            {
-                { "ApplicationVersion", packageInfo.Version },
-                { "Company", GetCompanyName() },
-            };
-
-            Xamarin.Insights.Identify(email, identification);
-            Xamarin.Insights.Report(ex);
-            #endif
-        }
-
         private TaxiHailSetting GetSettings()
         {
             try

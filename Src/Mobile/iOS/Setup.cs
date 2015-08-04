@@ -95,9 +95,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			Cirrious.MvvmCross.Plugins.File.PluginLoader.Instance.EnsureLoaded ();
 			Cirrious.MvvmCross.Plugins.Json.PluginLoader.Instance.EnsureLoaded ();
 
-
-            ConfigureInsights ();
-
             container.Register<IGeocoder> ((c, p) => new AppleGeocoder ());
 			container.Register<IPlaceDataProvider, FoursquareProvider> ();
 
@@ -150,25 +147,5 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			return new TinyIoCProvider (TinyIoCContainer.Current);
 		}
-
-        private void ConfigureInsights()
-        {
-            #if !DEBUG
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
-            var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
-
-            Xamarin.Insights.Initialize(settings.Insights.APIKey);
-            Xamarin.Insights.DisableCollection = false;
-            Xamarin.Insights.DisableDataTransmission = false;
-            Xamarin.Insights.DisableExceptionCatching = false;
-
-            // identify with an unknown user in case an exception occurs before the user can log in
-            Xamarin.Insights.Identify(settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
-                {
-                    { "ApplicationVersion", packageInfo.Version },
-                    { "Company", settings.TaxiHail.ApplicationName },
-                });
-            #endif
-        }
 	}
 }
