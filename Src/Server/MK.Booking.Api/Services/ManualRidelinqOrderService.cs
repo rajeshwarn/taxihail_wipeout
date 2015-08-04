@@ -215,7 +215,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var account = _accountDao.FindById(accountId);
                 var orderDetail = _orderDao.FindById(request.OrderId);
 
-                var response = _cmtMobileServiceClient.Put(string.Format("v1/init/pairing/{0}", ridelinqOrderDetail.PairingToken),
+                var response = _cmtMobileServiceClient.Put(string.Format("init/pairing/{0}", ridelinqOrderDetail.PairingToken),
                     new CMTPayment.Pair.ManualRideLinqPairingRequest
                     {
                         AutoTipPercentage = request.AutoTipPercentage,
@@ -257,7 +257,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             try
             {
-                var response = _cmtMobileServiceClient.Delete<CmtUnpairingResponse>(string.Format("v1/init/pairing/{0}", order.PairingToken));
+                var response = _cmtMobileServiceClient.Delete<CmtUnpairingResponse>(string.Format("init/pairing/{0}", order.PairingToken));
 
                 // Wait for trip to be updated
                 _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(order.PairingToken, response.TimeoutSeconds);

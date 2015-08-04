@@ -2,7 +2,7 @@
 
 namespace CMTPayment.Tokenize
 {
-    [Route("v2/tokenize")]
+    [Route("tokenize")]
     public class TokenizeRequest : IReturn<TokenizeResponse>
     {
         public TokenizeRequest()
