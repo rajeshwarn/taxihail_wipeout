@@ -20,15 +20,19 @@ namespace CustomerPortal.Web.Controllers.API
         private readonly IRepository<DeploymentJob> _repository;
         private readonly IRepository<DefaultCompanySetting> _repositoryDefaultSettings;
         private readonly IEmailSender _emailSender;
+        private readonly ISourceControl _sourceControl;
 
-        public DeploymentController(IRepository<DeploymentJob> repository, IRepository<DefaultCompanySetting> repositoryDefaultSettings, IEmailSender emailSender)
+        public DeploymentController(IRepository<DeploymentJob> repository, IRepository<DefaultCompanySetting> repositoryDefaultSettings, IEmailSender emailSender, ISourceControl sourceControl)
         {
             _repository = repository;
             _repositoryDefaultSettings = repositoryDefaultSettings;
             _emailSender = emailSender;
+
+            _sourceControl = sourceControl;
         }
 
-        public DeploymentController() : this(new MongoRepository<DeploymentJob>(), new MongoRepository<DefaultCompanySetting>(), new EmailSender())
+        public DeploymentController()
+            : this(new MongoRepository<DeploymentJob>(), new MongoRepository<DefaultCompanySetting>(), new EmailSender(), SourceControlFactory.GetInstance())
         {
         }
 
@@ -85,7 +89,7 @@ namespace CustomerPortal.Web.Controllers.API
                     deployment.Status = details.Status.Value.ToString();
                 }
 
-                if (details.Status == JobStatus.Error && deployment.UserEmail.HasValue() && VersionUpdater.IsVersionNumber(deployment.Revision))
+                if (details.Status == JobStatus.Error && deployment.UserEmail.HasValue() && _sourceControl.IsVersionNumber(deployment.Revision))
                 {
                     _emailSender.SendEmail(deployment.Details, deployment.Revision.Tag, deployment.Company.CompanyName, deployment.UserName,deployment.UserEmail, deployment.Server.Name);
                 }

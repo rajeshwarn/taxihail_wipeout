@@ -106,6 +106,10 @@
             
         
             <a href="@Url.Action("Index")" class="btn btn-link">Back to deployment list</a>
+            @if (!string.IsNullOrEmpty(ViewBag.MaxTag))
+            {
+                <div class="alert alert-warning" role="alert" style="margin-top:10px"><strong>Warning!</strong> @ViewBag.MaxTag</div>
+            }
         </div>
     }
 </div>

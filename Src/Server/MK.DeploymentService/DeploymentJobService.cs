@@ -81,7 +81,7 @@ namespace MK.DeploymentService
 
                 Log("Source Folder = " + sourceDirectory);
 
-                var taxiRepo = new TaxiRepository("hg.exe", sourceDirectory);
+                var taxiRepo = new TaxiRepository(Settings.Default.GitPathExe, sourceDirectory);
                 if (_job.Server.Role == EnvironmentRole.BuildServer)
                 {
                     taxiRepo.FetchSource(_job.Revision.Commit, str => Log(str));
@@ -624,7 +624,7 @@ namespace MK.DeploymentService
 
         private static string GetZipFileName(DeploymentJob job)
         {
-            return string.Format("TaxiHail_[Bitbucket]{0}.zip", MakeValidFileName(job.Revision.Tag));
+            return string.Format("TaxiHail_[GitHub]{0}.zip", MakeValidFileName(job.Revision.Tag));
         }
 
         private static string MakeValidFileName(string name)

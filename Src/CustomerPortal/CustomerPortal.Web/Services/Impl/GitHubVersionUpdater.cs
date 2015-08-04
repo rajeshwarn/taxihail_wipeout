@@ -1,36 +1,32 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using CustomerPortal.Web.Areas.Admin.Repository;
+﻿using CustomerPortal.Web.Areas.Admin.Repository;
 using CustomerPortal.Web.Entities;
 using MongoRepository;
 using Newtonsoft.Json;
-using System.Net.Http;
-using System.Threading.Tasks;
-using apcurium.MK.Common.Diagnostic;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
-#endregion
-
-namespace CustomerPortal.Web.BitBucket
+namespace CustomerPortal.Web.Services.Impl
 {
-    public class VersionUpdater
+    public class GitHubVersionUpdater : ISourceControl
     {
-        public async static Task UpdateVersions()
+        public async Task<bool> UpdateVersions()
         {
             var repository = new MongoRepository<Revision>();
-            
+
             string result = null;
 
-            var response = await GetClient().GetAsync("tags");
+            var response = await GetClient().GetAsync("tags?per_page=100");
+            IEnumerable<string> links;
+            response.Headers.TryGetValues("link", out links);
+
             result = await response.Content.ReadAsStringAsync();
-       
+
 
             var revisionsFromGitHub =
                 JsonConvert.DeserializeObject<GitHubRepoResponse[]>(result)
@@ -41,8 +37,8 @@ namespace CustomerPortal.Web.BitBucket
                         Tag = x.Name
                     }).ToList();
 
-            
-            
+
+
             revisionsFromGitHub.Add(await GetDefaultRevision());
 
             //Existing Revisions, we ignore version number tags to prevent building a version from an alternate commit.
@@ -60,7 +56,7 @@ namespace CustomerPortal.Web.BitBucket
                     Inactive = rev.Inactive,
                 })
                 .ToArray();
-           
+
 
             if (updatesRevisions.Any())
             {
@@ -74,18 +70,21 @@ namespace CustomerPortal.Web.BitBucket
             {
                 repository.Add(newRevisions);
             }
+
+            var hasMoreThan100Tags = links != null ? true : false;
+            return hasMoreThan100Tags;
         }
 
-        public static bool IsVersionNumber(Revision revision)
+        public bool IsVersionNumber(Revision revision)
         {
             //Regex pattern to validate if revision is a version number.
             return Regex.IsMatch(revision.Tag, "^([0-9][0-9]*.[0-9][0-9]*.[0-9][0-9]*(.[0-9][0-9]*)?)$");
         }
 
-        private async static Task<Revision> GetDefaultRevision()
+        private async Task<Revision> GetDefaultRevision()
         {
             var repository = new MongoRepository<Revision>();
-           
+
             string result = null;
 
             var response = await GetClient().GetAsync("branches/master");
@@ -105,12 +104,12 @@ namespace CustomerPortal.Web.BitBucket
         }
         private static HttpClient GetClient()
         {
-            var client = new HttpClient() { BaseAddress = new Uri("https://api.github.com/repos/apcurium/taxihail/") };
+            var client = new HttpClient() { BaseAddress = new Uri("https://api.github.com/repos/apcurium/taxihaildev/") };
 
             var gitHubUsername = new AppSettingsReader().GetValue("GitHubUsername", typeof(string));
             var gitHubToken = new AppSettingsReader().GetValue("GitHubToken", typeof(string));
 
-            var authInfo = string.Format("{0}:{1}",gitHubUsername, gitHubToken);
+            var authInfo = string.Format("{0}:{1}", gitHubUsername, gitHubToken);
             authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
 
             client.DefaultRequestHeaders.Add("Authorization", "Basic " + authInfo);

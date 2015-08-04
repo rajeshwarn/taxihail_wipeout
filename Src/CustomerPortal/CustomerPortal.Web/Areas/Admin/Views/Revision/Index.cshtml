@@ -21,6 +21,10 @@
     <p>
         <a class="btn btn-primary" href="@Url.Action("Update", "Revision")">Refresh</a>
         <a href="@Url.Action("Create", "Revision")" class="btn btn-link">Create new revision</a>
+        @if (!string.IsNullOrEmpty(ViewBag.MaxTag))
+        {
+            <div class="alert alert-warning" role="alert"><strong>Warning!</strong> @ViewBag.MaxTag</div>
+        }
     </p>
     
     <table class="table table-striped">
