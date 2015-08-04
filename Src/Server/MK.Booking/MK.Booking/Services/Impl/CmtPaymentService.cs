@@ -381,7 +381,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 _logger.LogMessage("Updating CMT RideLinq auto tip. Request: {0}", request.ToJson());
 
-                var response = _cmtMobileServiceClient.Put(string.Format("v1/init/pairing/{0}", orderPairing.PairingToken), request);
+                var response = _cmtMobileServiceClient.Put(string.Format("init/pairing/{0}", orderPairing.PairingToken), request);
 
                 // Wait for trip to be updated
                 _cmtTripInfoServiceHelper.WaitForTipUpdated(orderPairing.PairingToken, autoTipPercentage, response.TimeoutSeconds);
