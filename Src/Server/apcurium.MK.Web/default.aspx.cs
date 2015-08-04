@@ -48,7 +48,11 @@ namespace apcurium.MK.Web
         protected bool ShowPassengerNumber { get; private set; }
         protected string ReferenceData { get; private set; }
         protected string VehicleTypes { get; private set; }
+
+        protected bool DisableImmediateBooking { get; private set; }
+
         protected bool DisableFutureBooking { get; private set; }
+       
         protected bool IsWebSignupVisible { get; private set; }
         protected double MaxFareEstimate { get; private set; }
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
@@ -88,6 +92,7 @@ namespace apcurium.MK.Web
             FacebookEnabled = config.ServerData.FacebookEnabled;
             HideDispatchButton = config.ServerData.HideCallDispatchButton;
             ShowCallDriver = config.ServerData.ShowCallDriver;
+            DisableImmediateBooking = config.ServerData.DisableImmediateBooking;
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
             IsCreditCardMandatory = config.ServerData.CreditCardIsMandatory;
