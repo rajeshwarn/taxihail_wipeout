@@ -2,7 +2,7 @@
 
 namespace CMTPayment.Pair
 {
-    [Route("v1/init/pairing/external/cof")]
+    [Route("init/pairing/external/cof")]
     public class ManualRideLinqPairingRequest : IReturn<CmtPairingResponse>
     {
         public string PairingCode { get; set; }

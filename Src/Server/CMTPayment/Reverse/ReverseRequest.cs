@@ -2,7 +2,7 @@
 
 namespace CMTPayment.Reverse
 {
-    [Route("v2/fleet/{FleetToken}/device/{DeviceId}/reverse")]
+    [Route("fleet/{FleetToken}/device/{DeviceId}/reverse")]
     public class ReverseRequest : IReturn<ReverseResponse>
     {
         public long TransactionId { get; set; }
