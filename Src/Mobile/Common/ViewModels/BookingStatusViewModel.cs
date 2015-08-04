@@ -474,18 +474,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					
 				var statusInfoText = status.IBSStatusDescription;
 
-				if(Settings.ShowEta 
+                var isLocalMarket = await _orderWorkflowService.GetAndObserveHashedMarket().Select(market => !market.HasValue()).Take(1);
+
+                var isUsingGeoServices = isLocalMarket
+                    ? Settings.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
+                    : Settings.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo;
+
+
+                if (Settings.ShowEta 
 					&& status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) 
 					&& status.VehicleNumber.HasValue()
 					&& status.VehicleLatitude.HasValue
 					&& status.VehicleLongitude.HasValue)
 				{
-					Direction direction;
+					long? eta;
 
-					if(Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
+					if(isUsingGeoServices)
                     {
 						var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, status.OrderId);
-					    direction = geoData.Directions;
+                        eta = geoData.Eta;
 
                         if(geoData.Latitude.HasValue)
                         {
@@ -495,26 +502,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 					else
 					{
-						direction = await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+						var direction = await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
 
                         // Log original eta value
 					    if (direction.IsValidEta())
 					    {
                             _metricsService.LogOriginalRideEta(Order.Id, direction.Duration);
 					    }
+
+					    eta = direction.Duration;
 					}                       
 
-				    statusInfoText += " " + FormatEta(direction);
+				    statusInfoText += " " + FormatEta(eta);
 				}
 
-                // TODO: On devrait pouvoir faire ca coté serveur (voir UpdateOrderStatusJob ligne 162 -on fait la meme chose avec HoneyBadger)
-                if (Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo
-                    && status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
+                // Needed to do this here since cmtGeoService needs the device's location to calculate the Eta and does not have the ability to get the position of a specific vehicle(or a bach of vehicle) without the device location.
+                if (isUsingGeoServices && status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
                 {
                     //refresh vehicle position on the map from the geo data
                     var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, Order.Id);
-                    if (geoData.Latitude.HasValue
-                       && geoData.Longitude.HasValue)
+                    if (geoData.Latitude.HasValue && geoData.Longitude.HasValue)
                     {
                         status.VehicleLatitude = geoData.Latitude;
                         status.VehicleLongitude = geoData.Longitude;
@@ -525,7 +532,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 OrderStatusDetail = status;
 
                 CenterMap ();
-			
 
 				UpdateActionsPossibleOnOrder(status);
 
@@ -634,15 +640,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-	    string FormatEta(Direction direction)
+	    string FormatEta(long? eta)
 		{
-			if (!direction.IsValidEta())
+			if (!eta.HasValue)
 			{
 				return string.Empty;
 			}
 
-			var durationUnit = direction.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
-			return string.Format (this.Services ().Localize ["StatusEta"], direction.Duration, durationUnit);
+			var durationUnit = eta <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
+			return string.Format (this.Services ().Localize ["StatusEta"], eta, durationUnit);
 		}
 
 		private async void UpdateActionsPossibleOnOrder(OrderStatusDetail status)
