@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web.Mvc;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Attributes;
-using CustomerPortal.Web.BitBucket;
 using CustomerPortal.Web.Entities;
 using ExtendedMongoMembership;
 using MongoRepository;

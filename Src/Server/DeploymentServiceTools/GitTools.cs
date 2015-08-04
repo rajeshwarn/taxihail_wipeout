@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace DeploymentServiceTools
 {
-    public class GitTools
+    public class GitTools : IVersionControlTools
     {
         private readonly string _sourceDirectory;
 
@@ -13,7 +13,7 @@ namespace DeploymentServiceTools
             _sourceDirectory = sourceDirectory;
         }
 
-        public string GitPath { get; set; }
+        private string GitPath { get; set; }
 
         public void Pull()
         {

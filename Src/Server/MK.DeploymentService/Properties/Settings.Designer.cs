@@ -194,15 +194,6 @@ namespace MK.DeploymentService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Git\\cmd\\git.exe")]
-        public string GitPathExe {
-            get {
-                return ((string)(this["GitPathExe"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://customer.taxihail.com/api/")]
         public string CustomerPortalUrl {
             get {
@@ -216,6 +207,24 @@ namespace MK.DeploymentService.Properties {
         public string ServerName {
             get {
                 return ((string)(this["ServerName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("hg.exe")]
+        public string VersionControlExePath {
+            get {
+                return ((string)(this["VersionControlExePath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsGitHubSourceControl {
+            get {
+                return ((bool)(this["IsGitHubSourceControl"]));
             }
         }
     }

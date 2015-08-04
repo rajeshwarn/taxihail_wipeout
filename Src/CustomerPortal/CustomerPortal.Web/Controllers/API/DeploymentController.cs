@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 using apcurium.MK.Common.Extensions;
-using CustomerPortal.Web.BitBucket;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Services;
 using CustomerPortal.Web.Services.Impl;

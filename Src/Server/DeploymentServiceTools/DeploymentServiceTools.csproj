@@ -35,12 +35,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseInitializerParams.cs" />
+    <Compile Include="IVersionControlTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MecurialTools.cs" />
     <Compile Include="MonoBuilder.cs" />
     <Compile Include="ProcessEx.cs" />
     <Compile Include="TaxiRepository.cs" />
     <Compile Include="GitTools.cs" />
+    <Compile Include="VersionControlToolsFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

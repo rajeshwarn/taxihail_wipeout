@@ -81,7 +81,7 @@ namespace MK.DeploymentService
 
                 Log("Source Folder = " + sourceDirectory);
 
-                var taxiRepo = new TaxiRepository(Settings.Default.GitPathExe, sourceDirectory);
+                var taxiRepo = new TaxiRepository(Settings.Default.VersionControlExePath, sourceDirectory, Settings.Default.IsGitHubSourceControl);
                 if (_job.Server.Role == EnvironmentRole.BuildServer)
                 {
                     taxiRepo.FetchSource(_job.Revision.Commit, str => Log(str));
