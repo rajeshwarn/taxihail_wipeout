@@ -49,11 +49,6 @@ namespace MK.Common.Configuration
                 Radius = 2000
             };
 
-            Insights = new InsightsSettingContainer 
-            {
-                APIKey = "a34cb0ffa9cae700769950f66237125e8ba4ed0d", // to be replaced when we have an official TaxiHail account
-                UnknownUserIdentifier = "unknown@user.com"
-            };
 			ShowEstimate = true;
 		    Network = new NetworkSettingContainer
 		    {
@@ -111,7 +106,6 @@ namespace MK.Common.Configuration
         public MapSettingContainer Map { get; protected set; }
         public GeoLocSettingContainer GeoLoc { get; protected set; }
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
-        public InsightsSettingContainer Insights { get; protected set; }
         public NetworkSettingContainer Network { get; protected set; }
 
         [RequiredAtStartup]

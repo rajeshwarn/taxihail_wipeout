@@ -129,4 +129,7 @@
   <data name="OrderStatus_wosWAITINGRoaming" xml:space="preserve">
     <value>Finding you a taxi with company {0}...</value>
   </data>
+  <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
+    <value>Sorry, no driver accepted. Please try again in a bit.</value>
+  </data>
 </root>

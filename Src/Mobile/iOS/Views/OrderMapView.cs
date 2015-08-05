@@ -472,8 +472,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void CancelAddressSearch()
         {
+            if (!((HomeViewModel)(ViewModel.Parent)).FirstTime)
+            {
+                ((HomeViewModel)(ViewModel.Parent)).AutomaticLocateMeAtPickup.Cancel();
+            }
             ((HomeViewModel)(ViewModel.Parent)).LocateMe.Cancel();
-            ((HomeViewModel)(ViewModel.Parent)).AutomaticLocateMeAtPickup.Cancel();
             ViewModel.UserMovedMap.Cancel();
             _userMovedMapSubsciption.Disposable = null;
         }
