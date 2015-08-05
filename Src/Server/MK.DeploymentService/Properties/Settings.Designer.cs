@@ -213,9 +213,9 @@ namespace MK.DeploymentService.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("hg.exe")]
-        public string VersionControlExePath {
+        public string BitBucketExePath {
             get {
-                return ((string)(this["VersionControlExePath"]));
+                return ((string)(this["BitBucketExePath"]));
             }
         }
         
@@ -225,6 +225,18 @@ namespace MK.DeploymentService.Properties {
         public bool IsGitHubSourceControl {
             get {
                 return ((bool)(this["IsGitHubSourceControl"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Git\\cmd\\git.exe")]
+        public string GitExePath {
+            get {
+                return ((string)(this["GitExePath"]));
+            }
+            set {
+                this["GitExePath"] = value;
             }
         }
     }
