@@ -295,7 +295,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 		    get
 		    {
-		        return ShowVehicleSelection || ShowEstimate;
+                return ShowVehicleSelection || ShowEstimate || ShowEta;
 		    }
 		}
 
@@ -303,13 +303,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-			    return Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate;
+				return Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate;
 			}
 		}
 
 		public bool ShowEstimate
 		{
-			get { return ShowDestination && Settings.ShowEstimate; }
+            get { return ShowDestination && Settings.ShowEstimate; }
 		}
 
 		public bool ShowVehicleSelection
