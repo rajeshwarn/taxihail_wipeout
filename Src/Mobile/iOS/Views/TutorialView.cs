@@ -11,6 +11,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class TutorialView : MvxViewController, IMvxModalTouchView
     {
+        static readonly nfloat pageYOffsetForSmallScreen = 3, minimalScreenHeight = 480;
+
         private int PageCount;
 
         public TutorialView () : base("TutorialView", null)
@@ -46,6 +48,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void CreatePanels (TutorialItemModel[] listTutorial)
         {
             scrollview.Scrolled += ScrollViewScrolled;
+
+            if (UIScreen.MainScreen.Bounds.Height <= minimalScreenHeight)
+            {
+                nfloat previousYScrollView = scrollview.Frame.Y;
+                scrollview.SetHeight(scrollview.Frame.Height + scrollview.Frame.Y);
+                scrollview.SetY(pageYOffsetForSmallScreen);
+
+                for (int i = 0; i < contentView.Constraints.Length; i++)
+                {
+                    if (contentView.Constraints[i].FirstItem == scrollview && contentView.Constraints[i].FirstAttribute == NSLayoutAttribute.Top)
+                    {
+                        contentView.Constraints[i].Constant = pageYOffsetForSmallScreen;
+                    }
+                }
+            }
 
             PageCount = listTutorial.Length;
 
@@ -135,7 +152,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     NSLayoutConstraint.Create(image, NSLayoutAttribute.Width, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Width, 1f, 0f),
                     NSLayoutConstraint.Create(image, NSLayoutAttribute.Height, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Height, 1f, 0f),
                     NSLayoutConstraint.Create(image, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.CenterX, 1f, 0f),
-                    NSLayoutConstraint.Create(image, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.CenterY, 1f, 30f),
+                    NSLayoutConstraint.Create(image, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.CenterY, 1f,
+                        (UIScreen.MainScreen.Bounds.Height > minimalScreenHeight ? 30f : 60f)),
                 });
             }
 
