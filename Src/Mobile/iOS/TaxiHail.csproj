@@ -273,12 +273,6 @@
     <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Insights">
-      <HintPath>..\packages\Xamarin.Insights.1.10.5\lib\Xamarin.iOS10\Xamarin.Insights.dll</HintPath>
-    </Reference>
-    <Reference Include="PLCrashReporterUnifiedBinding">
-      <HintPath>..\packages\Xamarin.Insights.1.10.5\lib\Xamarin.iOS10\PLCrashReporterUnifiedBinding.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -898,7 +892,6 @@
     </ImageAsset>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <Import Project="..\packages\Xamarin.Insights.1.10.5\build\Xamarin.iOS10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.10.5\build\Xamarin.iOS10\Xamarin.Insights.targets')" />
   <ItemGroup>
     <XamarinComponentReference Include="googleanalytics">
       <Version>3.0.10.2</Version>
