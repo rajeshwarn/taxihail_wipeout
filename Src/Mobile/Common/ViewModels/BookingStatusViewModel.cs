@@ -474,7 +474,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					
 				var statusInfoText = status.IBSStatusDescription;
 
-                var isLocalMarket = await _orderWorkflowService.GetAndObserveHashedMarket().Select(market => !market.HasValue()).Take(1);
+                var isLocalMarket = await _orderWorkflowService.GetAndObserveHashedMarket()
+                    .Select(hashedMarket => !hashedMarket.HasValue())
+                    .Take(1);
 
                 var isUsingGeoServices = isLocalMarket
                     ? Settings.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo

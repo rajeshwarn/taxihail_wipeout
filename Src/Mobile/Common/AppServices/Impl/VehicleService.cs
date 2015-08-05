@@ -159,9 +159,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return maximumBounds;
 		}
 
-		private IEnumerable<AvailableVehicle> OrderVehiclesByDistanceIfNeeded(bool isUsingCmtGeo, Address pickup, IEnumerable<AvailableVehicle> cars)
+		private IEnumerable<AvailableVehicle> OrderVehiclesByDistanceIfNeeded(bool isUsingGeoServices, Address pickup, IEnumerable<AvailableVehicle> cars)
 		{
-		    return isUsingCmtGeo
+		    return isUsingGeoServices
                 // Ensure that the cars are ordered correctly.
                 ? cars.OrderBy(car => car.Eta.HasValue ? 0 : 1).ThenBy(car => car.Eta).ThenBy(car  => car.VehicleNumber)
                 : cars.OrderBy (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude));
