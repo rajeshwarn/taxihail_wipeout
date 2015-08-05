@@ -289,15 +289,6 @@ namespace apcurium.MK.Common.Configuration
         public string Password { get; protected internal set; }
     }
 
-    public class InsightsSettingContainer
-    {
-        [Display(Name = "Insights API Key", Description = "Insights API Key")]
-        public string APIKey { get; protected internal set; }
-
-        [Display(Name = "Insights Unknown User Identifier", Description = "Insights Unknown User Identifier")]
-        public string UnknownUserIdentifier { get; protected internal set; }
-    }
-
     public class NetworkSettingContainer
     {
         [CustomizableByCompany, RequiresTaxiHailPro]
