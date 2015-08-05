@@ -73,7 +73,7 @@ namespace CustomerPortal.Web.Services.Impl
                 repository.Add(newRevisions);
             }
 
-            return new Task<bool>(() => { return false; });
+            return Task.Run(() => { return false; });
 
         }
 
