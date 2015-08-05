@@ -55,7 +55,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         public async Task<ActionResult> Update()
         {
             var hasLimitError = await _sourceControl.UpdateVersions();
-            TempData["UpdateTagLimitError"] = hasLimitError ? "Cannot fetch more than 100 tags" : string.Empty;
+            TempData["UpdateTagLimitError"] = hasLimitError ? "There's more than 100 tags, only the first 100 have been fetched." : string.Empty;
             return RedirectToAction("Index");
         }
 

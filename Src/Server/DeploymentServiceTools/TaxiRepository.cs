@@ -43,6 +43,7 @@ namespace DeploymentServiceTools
                     catch (Exception e)
                     {
                         logger("PurgeFailed: " + e.Message);
+                        logger("Continuing...);
                     }
                     logger("Git Pull");
                     vsc.Pull();
