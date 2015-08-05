@@ -498,8 +498,7 @@
     <comment>Sorry no cars are available due to high demand, please try later.</comment>
   </data>
   <data name="UnpairingConfirmationToDriver" xml:space="preserve">
-    <value>AVISO: No se deberá cobrar al cliente al final del servicio.</value>
-    <comment>WARNING: The client will NOT be charged at the end of the ride</comment>
+    <value>The customer will be paying in the car at the end of the ride</value>
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
     <value>This account is not supported in a different market.</value>
