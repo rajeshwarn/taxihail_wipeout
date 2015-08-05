@@ -75,7 +75,6 @@ namespace apcurium.MK.Common.Diagnostic
             if (indent == 0)
             {
                 Write(string.Format("{0}Error on {1}", indentStr, DateTime.Now));
-                SendToInsights (ex);
             }
 
             Write(string.Format ("{0}Message : {1}", indentStr, ex.Message));
@@ -106,7 +105,5 @@ namespace apcurium.MK.Common.Diagnostic
         public abstract string GetErrorLogPath();
 
         protected abstract void Write(string message);
-
-        protected abstract void SendToInsights(Exception ex);
     }
 }

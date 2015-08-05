@@ -77,8 +77,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		    container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
 
-            ConfigureInsights ();
-
             container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
 			container.Register<IPlaceDataProvider, FoursquareProvider>();
 			
@@ -152,27 +150,5 @@ namespace apcurium.MK.Booking.Mobile.Client
 				return base.ViewNamespaces;
 			}
 		}
-
-        private void ConfigureInsights ()
-        {
-            #if !DEBUG
-            
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
-            var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
-
-            Xamarin.Insights.Initialize(settings.Insights.APIKey, ApplicationContext);
-            Xamarin.Insights.DisableCollection = false;
-            Xamarin.Insights.DisableDataTransmission = false;
-            Xamarin.Insights.DisableExceptionCatching = false;
-
-            // identify with an unknown user in case an exception occurs before the user can log in
-            Xamarin.Insights.Identify(settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
-                {
-                    { "ApplicationVersion", packageInfo.Version },
-                    { "Company", settings.TaxiHail.ApplicationName },
-                });
-            
-            #endif
-        }
     }
 }
