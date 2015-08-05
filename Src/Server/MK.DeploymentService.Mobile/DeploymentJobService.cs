@@ -24,7 +24,7 @@ namespace MK.DeploymentService.Mobile
 		DeploymentJob _job;
 		private MonoBuilder _builder;
 		private CustomerPortalRepository _customerPortalRepository;
-		const string HG_PATH = "/usr/local/bin/hg";
+        const string GIT_PATH = "/usr/local/git/bin/git";
 		public bool _isWorking = false;
 
 		public DeploymentJobService ()
@@ -73,7 +73,7 @@ namespace MK.DeploymentService.Mobile
 
 					UpdateJob ("Starting", JobStatus.Inprogress);
 
-					var sourceDirectoryConfig = System.Configuration.ConfigurationManager.AppSettings["CheckoutDir"];
+                    var sourceDirectoryConfig =  System.Configuration.ConfigurationManager.AppSettings["CheckoutDir"];
 
 					var sourceDirectory = string.IsNullOrEmpty(sourceDirectoryConfig)
 						? Path.Combine (Path.GetTempPath (), "TaxiHailSourceNewService")
@@ -99,8 +99,10 @@ namespace MK.DeploymentService.Mobile
 						Directory.CreateDirectory( sourceDirectory);
 
 					DownloadAndInstallProfileIfNecessary();
+                    var path = System.Configuration.ConfigurationManager.AppSettings["BitBucketPath"];
+                    var isGitHub = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["IsGitHubSourceControl"]);
+                    var taxiRepo = new TaxiRepository (path, sourceDirectory,  isGitHub);
 
-					var taxiRepo = new TaxiRepository (HG_PATH, sourceDirectory);
 					UpdateJob ("FetchSource");
 					taxiRepo.FetchSource (_job.Revision.Commit, str => UpdateJob (str));
 
