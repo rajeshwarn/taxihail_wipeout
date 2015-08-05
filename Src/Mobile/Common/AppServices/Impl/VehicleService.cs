@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IConnectableObservable<AvailableVehicle[]> _availableVehiclesObservable;
         readonly IObservable<AvailableVehicle[]> _availableVehiclesWhenTypeChangesObservable;
 		readonly IObservable<Direction> _etaObservable;
-	    private readonly IObservable<bool> _isUsingGeoServices; 
+	    private readonly IObservable<bool> _isUsingGeoServicesObservable; 
 		readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 
 		readonly IDirections _directions;
@@ -60,8 +60,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 .Where(x => x.address.HasValidCoordinate())
                 .SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId));
 
-		    _isUsingGeoServices = orderWorkflowService.GetAndObserveHashedMarket()
-                .Select(item => !item.HasValue()
+		    _isUsingGeoServicesObservable = orderWorkflowService.GetAndObserveHashedMarket()
+                .Select(hashedMarket => !hashedMarket.HasValue()
                     ? _settings.Data.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
                     : _settings.Data.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo
                 );
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _etaObservable = _availableVehiclesObservable
 				.Where (_ => _settings.Data.ShowEta)
 				.CombineLatest(
-                    _isUsingGeoServices,
+                    _isUsingGeoServicesObservable,
                     orderWorkflowService.GetAndObservePickupAddress (), 
                     (vehicles, isUsingGeoServices, address) => new { address, isUsingGeoServices, vehicles } 
                 )
