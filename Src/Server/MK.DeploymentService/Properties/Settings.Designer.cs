@@ -194,24 +194,6 @@ namespace MK.DeploymentService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://customer.taxihail.com/api/")]
-        public string CustomerPortalUrl {
-            get {
-                return ((string)(this["CustomerPortalUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Production")]
-        public string ServerName {
-            get {
-                return ((string)(this["ServerName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("hg.exe")]
         public string BitBucketExePath {
             get {
@@ -228,15 +210,30 @@ namespace MK.DeploymentService.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Git\\cmd\\git.exe")]
         public string GitExePath {
             get {
                 return ((string)(this["GitExePath"]));
             }
-            set {
-                this["GitExePath"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://customer.taxihail.com/api/")]
+        public string CustomerPortalUrl {
+            get {
+                return ((string)(this["CustomerPortalUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Production")]
+        public string ServerName {
+            get {
+                return ((string)(this["ServerName"]));
             }
         }
     }

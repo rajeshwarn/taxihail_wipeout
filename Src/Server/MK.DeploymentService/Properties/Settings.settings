@@ -60,20 +60,20 @@
     <Setting Name="SecondWebServerName" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="CustomerPortalUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://customer.taxihail.com/api/</Value>
-    </Setting>
-    <Setting Name="ServerName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Production</Value>
-    </Setting>
     <Setting Name="BitBucketExePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">hg.exe</Value>
     </Setting>
     <Setting Name="IsGitHubSourceControl" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="GitExePath" Type="System.String" Scope="User">
+    <Setting Name="GitExePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\Program Files (x86)\Git\cmd\git.exe</Value>
+    </Setting>
+    <Setting Name="CustomerPortalUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://customer.taxihail.com/api/</Value>
+    </Setting>
+    <Setting Name="ServerName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Production</Value>
     </Setting>
   </Settings>
 </SettingsFile>
