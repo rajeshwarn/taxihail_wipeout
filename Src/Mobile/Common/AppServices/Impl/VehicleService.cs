@@ -246,5 +246,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public double? Latitude { get; private set; }
 
         public double? Longitude { get; private set; }
+
+		public bool IsPositionValid
+		{
+			get
+			{
+				return Latitude.HasValue
+					&& Longitude.HasValue
+					&& Latitude.Value > 0 
+					&& Longitude.Value > 0;
+			}
+		}
     }
 }
