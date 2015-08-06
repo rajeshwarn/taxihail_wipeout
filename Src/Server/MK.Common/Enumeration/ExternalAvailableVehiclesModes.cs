@@ -2,11 +2,10 @@
 namespace apcurium.MK.Common.Enumeration
 {
     /// <summary>
-    /// Available Vehicles providers when in home market
+    /// Available Vehicles providers when in external market
     /// </summary>
-    public enum AvailableVehiclesModes
+    public enum ExternalAvailableVehiclesModes
     {
-        IBS,
         HoneyBadger,
         Geo
     }
