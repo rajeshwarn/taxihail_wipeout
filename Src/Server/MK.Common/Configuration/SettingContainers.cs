@@ -12,7 +12,7 @@ namespace apcurium.MK.Common.Configuration
         [Display(Name = "Application Name", Description = "Application name as displayed in message")]
         public string ApplicationName { get; protected internal set; }
 
-		[RequiredAtStartup, SendToClient, CustomizableByCompany]
+		[RequiredAtStartup, SendToClient]
 		[Display(Name = "ApplicationKey", Description = "ApplicationKey")]
         public string ApplicationKey { get; protected internal set; }
 
