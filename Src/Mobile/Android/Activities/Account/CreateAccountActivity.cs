@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 phoneEditorCell = "PhoneEditorBottom";
 			}
 
-            PhoneNumberModel phoneNumber = (bindings.BindingContextOwner.BindingContext.DataContext as CreateAccountViewModel).PhoneNumber;
+            var phoneNumber = (bindings.BindingContextOwner.BindingContext.DataContext as CreateAccountViewModel).PhoneNumber;
             var phone = new PhoneEditorElement(null, phoneNumber, phoneEditorCell);
 
             var password = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordPlaceHolder"], null, layoutCell) { Password = true };

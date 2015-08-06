@@ -19,19 +19,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
 {
     public class CountryCodeAdapter : BaseAdapter<CountryCode>
     {
-        Context context;
-        CountryCode[] countryCodes;
+        private readonly Context _context;
+        private readonly CountryCode[] _countryCodes;
         public CountryCodeAdapter(Context context, CountryCode[] countryCodes)
         {
-            this.context = context;
-            this.countryCodes = countryCodes;
+            _context = context;
+            _countryCodes = countryCodes;
         }
 
         public override int Count
         {
             get
             {
-                return countryCodes.Length;
+                return _countryCodes.Length;
             }
         }
 
@@ -44,16 +44,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
         {
             get
             {
-                return countryCodes[i];
+                return _countryCodes[i];
             }
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             if (convertView == null)
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.CountryCodeItem, null);
+                convertView = LayoutInflater.From(_context).Inflate(Resource.Layout.CountryCodeItem, null);
 
-            convertView.FindViewById<TextView>(Resource.Id.countryDialCodeItem).Text = countryCodes[position].GetTextCountryDialCode();
+            convertView.FindViewById<TextView>(Resource.Id.countryDialCodeItem).Text = _countryCodes[position].GetTextCountryDialCode();
 
             return convertView;
         }
@@ -61,10 +61,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
         public override View GetDropDownView(int position, View convertView, ViewGroup parent)
         {
             if (convertView == null)
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.CountryCodeItemDropDown, null);
+                convertView = LayoutInflater.From(_context).Inflate(Resource.Layout.CountryCodeItemDropDown, null);
 
-            convertView.FindViewById<TextView>(Resource.Id.countryDialCodeDropDownItem).Text = countryCodes[position].GetTextCountryDialCode();
-            convertView.FindViewById<TextView>(Resource.Id.countryNameDropDownItem).Text = countryCodes[position].CountryName;
+            convertView.FindViewById<TextView>(Resource.Id.countryDialCodeDropDownItem).Text = _countryCodes[position].GetTextCountryDialCode();
+            convertView.FindViewById<TextView>(Resource.Id.countryNameDropDownItem).Text = _countryCodes[position].CountryName;
 
             return convertView;
         }
@@ -74,30 +74,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
     {
         public event PhoneNumberModel.PhoneNumberDatasourceChangedEventHandler NotifyChanges;
 
-        Spinner phoneCountryCodeDropDown;
-        EditText phoneNumberTextEdit;
-        Action PhoneNumberInfoDatasourceChanged;
+        private Spinner _phoneCountryCodeDropDown;
+        private EditText _phoneNumberTextEdit;
+        private readonly Action _phoneNumberInfoDatasourceChanged;
 
         public PhoneEditorElement(string caption, PhoneNumberModel phoneNumberInfo, string layoutName)
             : base(caption, phoneNumberInfo, layoutName)
 		{
-            PhoneNumberInfoDatasourceChanged = phoneNumberInfo.PhoneNumberDatasourceChangedCallEvent;
+            _phoneNumberInfoDatasourceChanged = phoneNumberInfo.PhoneNumberDatasourceChangedCallEvent;
             phoneNumberInfo.PhoneNumberDatasourceChanged += PhoneNumberDatasourceChanged;
             this.NotifyChanges += phoneNumberInfo.NotifyChanges;
         }
 
         protected override View GetViewImpl(Context context, ViewGroup parent)
         {
-            View phoneEditor = LayoutInflater.From(context).Inflate(Resource.Layout.PhoneEditor, null);
-            phoneCountryCodeDropDown = phoneEditor.FindViewById(Resource.Id.countryDialCodeDropDown) as Spinner;
-            phoneNumberTextEdit = phoneEditor.FindViewById(Resource.Id.phoneNumber) as EditText;
+            var phoneEditor = LayoutInflater.From(context).Inflate(Resource.Layout.PhoneEditor, null);
+            _phoneCountryCodeDropDown = phoneEditor.FindViewById(Resource.Id.countryDialCodeDropDown) as Spinner;
+            _phoneNumberTextEdit = phoneEditor.FindViewById(Resource.Id.phoneNumber) as EditText;
 
-            phoneCountryCodeDropDown.Adapter = new CountryCodeAdapter(context, CountryCode.CountryCodes);
+            _phoneCountryCodeDropDown.Adapter = new CountryCodeAdapter(context, CountryCode.CountryCodes);
 
-            phoneCountryCodeDropDown.ItemSelected += ItemSelected;
-            phoneNumberTextEdit.AfterTextChanged += AfterTextChanged;
+            _phoneCountryCodeDropDown.ItemSelected += ItemSelected;
+            _phoneNumberTextEdit.AfterTextChanged += AfterTextChanged;
 
-            PhoneNumberInfoDatasourceChanged();
+            _phoneNumberInfoDatasourceChanged();
 
             return phoneEditor;
         }
@@ -108,36 +108,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
 
         void PhoneNumberDatasourceChanged(object sender, PhoneNumberChangedEventArgs e)
         {
-            if (phoneCountryCodeDropDown != null && phoneNumberTextEdit != null)
+            if (_phoneCountryCodeDropDown != null && _phoneNumberTextEdit != null)
             {
-                phoneCountryCodeDropDown.SetSelection(CountryCode.GetCountryCodeIndexByCountryISOCode(e.Country));
-                phoneNumberTextEdit.Text = e.PhoneNumber;
+                _phoneCountryCodeDropDown.SetSelection(CountryCode.GetCountryCodeIndexByCountryISOCode(e.Country));
+                _phoneNumberTextEdit.Text = e.PhoneNumber;
             }
         }
 
         void AfterTextChanged(object sender, AfterTextChangedEventArgs e)
         {
-            if (NotifyChanges != null)
-                NotifyChanges(this, new PhoneNumberChangedEventArgs()
-                {
-                    Country = CountryCode.GetCountryCodeByIndex(phoneCountryCodeDropDown.SelectedItemPosition).CountryISOCode,
-                    PhoneNumber = phoneNumberTextEdit.Text
-                });
+            RaiseNotifyChange();
         }
 
         void ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            if (NotifyChanges != null)
-                NotifyChanges(this, new PhoneNumberChangedEventArgs()
-                {
-                    Country = CountryCode.GetCountryCodeByIndex(phoneCountryCodeDropDown.SelectedItemPosition).CountryISOCode,
-                    PhoneNumber = phoneNumberTextEdit.Text
-                });
+            RaiseNotifyChange();
         }
 
-        protected override void Dispose(bool disposing)
+        private void RaiseNotifyChange()
         {
-            base.Dispose(disposing);
+            if (NotifyChanges != null)
+            {
+                NotifyChanges(this, new PhoneNumberChangedEventArgs()
+                {
+                    Country = CountryCode.GetCountryCodeByIndex(_phoneCountryCodeDropDown.SelectedItemPosition).CountryISOCode,
+                    PhoneNumber = _phoneNumberTextEdit.Text
+                });
+            }
         }
     }
 }
