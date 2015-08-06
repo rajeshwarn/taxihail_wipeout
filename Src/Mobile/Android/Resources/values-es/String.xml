@@ -635,6 +635,4 @@
   <string name="EtaNoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
   <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
   <string name="PanelMenuViewSignOutPopupLogout">Sign Out</string>
-  <string name="IBSTimeOutErrorMessage">Unfortunately, the dispatch serveur stopped responding. As a result, your ride was cancelled. If you already are in a vehicle, please pay directly to your driver at the end of the ride.</string>
-  <string name="IBSTimeOutErrorTitle">Unexpected Error</string>
 </resources>

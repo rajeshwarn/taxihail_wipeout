@@ -17,6 +17,7 @@ using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -544,7 +545,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if(Settings.ZoomOnNearbyVehicles)
 			{
-				var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, vehicles);	
+			    var isUsingGeoServices = !_lastHashedMarket.HasValue()
+			        ? Settings.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
+			        : Settings.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo;
+
+                var bounds = _vehicleService.GetBoundsForNearestVehicles(isUsingGeoServices, Map.PickupAddress, vehicles);	
 				if (bounds != null)
 				{
 					this.ChangePresentation(new ChangeZoomPresentationHint(bounds));
