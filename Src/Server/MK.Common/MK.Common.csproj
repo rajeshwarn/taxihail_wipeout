@@ -134,6 +134,7 @@
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
+    <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="CountryCode.cs" />
     <Compile Include="CreditCard.cs" />
@@ -173,7 +174,7 @@
     <Compile Include="Entity\TollDetail.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
-    <Compile Include="Enumeration\AvailableVehiclesModes.cs" />
+    <Compile Include="Enumeration\LocalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
     <Compile Include="Enumeration\DeploymentTargets.cs" />
     <Compile Include="Enumeration\DistanceFormat.cs" />
