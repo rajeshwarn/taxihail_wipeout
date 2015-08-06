@@ -8,6 +8,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http.Extensions;
+using CMTServices.Enums;
 using CMTServices.Responses;
 using ServiceStack.Common;
 
@@ -36,20 +37,11 @@ namespace CMTServices
         /// <returns>The available vehicles.</returns>
         public override IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
         {
-            var @params = GetAvailableVehicleParams(market, latitude, longitude, searchRadius, fleetIds, returnAll, wheelchairAccessibleOnly, false);
+            var @params = GetAvailableVehicleParams(market, latitude, longitude, searchRadius, fleetIds, returnAll, wheelchairAccessibleOnly);
             if (@params == null)
             {
                 return new List<VehicleResponse>();
             }
-
-            // the following have different defaults from badger service
-            @params.Add(new KeyValuePair<string,string>("includeMapMatch", "true"));
-            @params.Add(new KeyValuePair<string,string>("includeETA", "true"));
-            
-            // required for geo service
-            @params.Add(new KeyValuePair<string, string>("limit", "10"));
-            @params.Add(new KeyValuePair<string, string>("availState", "1"));
-            
 
             CmtGeoResponse response = null;
             try
@@ -123,7 +115,7 @@ namespace CMTServices
             }
         }
 
-        private Dictionary<string,string> ToDictionary(IEnumerable<KeyValuePair<string,string>> data)
+        private Dictionary<string,object> ToDictionary(IEnumerable<KeyValuePair<string,object>> data)
         {
             if (data == null)
             {
@@ -131,9 +123,59 @@ namespace CMTServices
             }
 
             return data
-                .Where(kv => kv.Value.HasValue())
+                .Where(kv =>
+                {
+                    var arrayValue = kv.Value as IEnumerable<string>;
+
+                    return arrayValue != null 
+                        ? arrayValue.Any() 
+                        : (kv.Value as string).HasValue();
+                })
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
+        protected List<KeyValuePair<string, object>> GetAvailableVehicleParams(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
+        {
+            if (fleetIds != null && !fleetIds.Any())
+            {
+                // No fleetId allowed for available vehicles
+                return null;
+            }
+
+            var @params = new List<KeyValuePair<string, object>>
+                {
+                    new KeyValuePair<string, object>("meterState", ((int)MeterStates.ForHire).ToString()),
+                    new KeyValuePair<string, object>("logonState", ((int)LogonStates.LoggedOn).ToString()),
+                    new KeyValuePair<string, object>("lat", latitude.ToString(CultureInfo.InvariantCulture)),
+                    new KeyValuePair<string, object>("lon", longitude.ToString(CultureInfo.InvariantCulture)),
+                    new KeyValuePair<string, object>("rad", (searchRadius ?? Settings.ServerData.AvailableVehicles.Radius).ToString()),
+
+                    // the following have different defaults from badger service
+                    new KeyValuePair<string, object>("includeMapMatch", "true"),
+                    new KeyValuePair<string, object>("includeETA", "true"),
+
+                    // required for geo service
+                    new KeyValuePair<string, object>("limit", "10"),
+                    new KeyValuePair<string, object>("availState", ((int)AvailabilityStates.Available).ToString())
+                };
+
+            if (market.HasValue())
+            {
+                @params.Add(new KeyValuePair<string, object>("markets", market.Split(',')));
+
+            }
+
+            if (wheelchairAccessibleOnly)
+            {
+                @params.Add(new KeyValuePair<string, object>("wavState", "1"));
+            }
+
+            if (fleetIds != null)
+            {
+                @params.AddRange(fleetIds.Select(fleetId => new KeyValuePair<string, object>("fleets", fleetId.ToString())));
+            }
+
+            return @params;
+        }
     }
 }

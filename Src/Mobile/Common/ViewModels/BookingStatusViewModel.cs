@@ -496,7 +496,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, status.OrderId);
                         eta = geoData.Eta;
 
-                        if(geoData.Latitude.HasValue)
+						if(geoData.IsPositionValid)
                         {
                             status.VehicleLatitude = geoData.Latitude;
                             status.VehicleLongitude = geoData.Longitude;
@@ -523,7 +523,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     //refresh vehicle position on the map from the geo data
                     var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, Order.Id);
-                    if (geoData.Latitude.HasValue && geoData.Longitude.HasValue)
+					if(geoData.IsPositionValid)
                     {
                         status.VehicleLatitude = geoData.Latitude;
                         status.VehicleLongitude = geoData.Longitude;

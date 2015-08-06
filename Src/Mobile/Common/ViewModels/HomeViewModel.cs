@@ -82,6 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _isShowingTermsAndConditions;
 		private bool _isShowingCreditCardExpiredPrompt;
 		private bool _locateUser;
+		private bool _firstTime;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
         public void Init(bool locateUser, string defaultHintZoomLevel)
@@ -105,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.OnViewStarted(firstTime);
 
-			firstTime = firstTime;
+			_firstTime = firstTime;
 
 			_locationService.Start();
             
@@ -429,7 +430,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (_currentState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-						SetMapCenterToUserLocation(true, token);
+						if (_firstTime)
+						{
+							// Do not allow to cancel first locate me zoom
+							SetMapCenterToUserLocation(true, CancellationToken.None);
+						}
+						else
+						{
+							SetMapCenterToUserLocation(true, token);
+						}
 					}									
 				}));
 			}
