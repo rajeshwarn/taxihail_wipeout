@@ -12,9 +12,11 @@ namespace apcurium.MK.Common.Configuration
         [Display(Name = "Application Name", Description = "Application name as displayed in message")]
         public string ApplicationName { get; protected internal set; }
 
-        [RequiredAtStartup]
+		[RequiredAtStartup, SendToClient, CustomizableByCompany]
+		[Display(Name = "ApplicationKey", Description = "ApplicationKey")]
         public string ApplicationKey { get; protected internal set; }
 
+		[RequiredAtStartup]
         public string AccentColor { get; protected internal set; }
 
         public string EmailFontColor { get; protected internal set; }
