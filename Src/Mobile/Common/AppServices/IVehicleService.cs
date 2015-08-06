@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         IObservable<AvailableVehicle[]> GetAndObserveAvailableVehiclesWhenVehicleTypeChanges();
 
-		MapBounds GetBoundsForNearestVehicles(Address pickup, IEnumerable<AvailableVehicle> cars);
+		MapBounds GetBoundsForNearestVehicles(bool isUsingGeoServices, Address pickup, IEnumerable<AvailableVehicle> cars);
 
 		IObservable<Direction> GetAndObserveEta();
 		

@@ -643,6 +643,4 @@
   <string name="EtaNoTaxiAvailable">Désolé, aucun taxi disponible dans les environs.</string>
   <string name="PanelMenuViewSignOutPopupMessage">Êtes vous sûr de vouloir vous déconnecter ?</string>
   <string name="PanelMenuViewSignOutPopupLogout">Déconnexion</string>
-  <string name="IBSTimeOutErrorMessage">Malheureusement, le serveur de dispatch a arrêté de répondre. Par conséquent, votre course a été annulée. Si vous êtes déjà dans un véhicule, veuillez payer directement à votre chauffeur à la fin de la course.</string>
-  <string name="IBSTimeOutErrorTitle">Erreur Inatendue</string>
 </resources>
