@@ -468,7 +468,7 @@
   <string name="Eta">Nearest taxi is {0} {1} away</string>
   <string name="EtaDurationUnit">min</string>
   <string name="EtaDurationUnitPlural">mins</string>
-  <string name="StatusEta">and is {1} {2} away</string>
+  <string name="StatusEta">and is {0} {1} away</string>
   <string name="NoCardOnFileMessage">You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</string>
   <string name="CardExpiredMessage">Your credit card is expired. Add a new card to your account or update card informations to continue.</string>
   <string name="CreditCardExpiredTitle">Card expired</string>
@@ -644,8 +644,11 @@
   <string name="OtherListItemPromptLabel">Enter a value:</string>
   <string name="EtaLessThanAMinute">Nearest taxi is less than a minute away</string>
   <string name="TipPercent_Error">Tip cannot be over 100%</string>
+  <string name="EtaNoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
+  <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
   <string name="BookingAirportTitle">Airport</string>
-  <string name="BookingAirportAirlineslbl">Airline</string>
+  <string name="PanelMenuViewSignOutPopupLogout">Sign Out</string>
+  <string name="BookingAirportAirlineslbl">Airlines</string>
   <string name="BookingAirportFlightNumlbl">Flight Number</string>
   <string name="BookingAirportPUPointslbl">Pickup Point</string>
   <string name="BookingAirportPUDatelbl">Pickup Date</string>
@@ -653,9 +656,4 @@
   <string name="BookingAirportPickupPointFee">Selecting Pickup Point {0} will incurr an additional Fee of {1}</string>
   <string name="BookingAirportDetails">Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</string>
   <string name="BookingAirportDetailsFee">, (Pickup Fee: {0})</string>
-  <string name="EtaNoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
-  <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
-  <string name="PanelMenuViewSignOutPopupLogout">Sign Out</string>
-  <string name="IBSTimeOutErrorMessage">Unfortunately, the dispatch serveur stopped responding. As a result, your ride was cancelled. If you already are in a vehicle, please pay directly to your driver at the end of the ride.</string>
-  <string name="IBSTimeOutErrorTitle">Unexpected Error</string>
 </resources>
