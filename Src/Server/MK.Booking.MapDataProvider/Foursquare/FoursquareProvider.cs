@@ -29,11 +29,12 @@ namespace MK.Booking.MapDataProvider.Foursquare
 	    private readonly IAppSettings _settings;
 	    private readonly ILogger _logger;
 
-		static readonly uint maximumPageLength = 50, maximumPagesLimit = 5;
+		const uint MaximumPageLength = 50;
+		const uint MaximumPagesLimit = 5;
 
 		static readonly string ApiUrl = "https://api.foursquare.com/v2/";
-		static readonly string SearchVenues = "venues/search?v=20140806&m=foursquare&client_id={0}&client_secret={1}&intent=browse&radius={2}&limit=" + maximumPageLength.ToString();
-		static readonly string ExploreVenues = "venues/explore?v=20140806&m=foursquare&client_id={0}&client_secret={1}&radius={2}&limit=" + maximumPageLength.ToString();
+		static readonly string SearchVenues = "venues/search?v=20140806&m=foursquare&client_id={0}&client_secret={1}&intent=browse&radius={2}&limit=" + MaximumPageLength.ToString();
+		static readonly string ExploreVenues = "venues/explore?v=20140806&m=foursquare&client_id={0}&client_secret={1}&radius={2}&sortByDistance=1&limit=" + MaximumPageLength.ToString();
 		static readonly string VenueDetails = "venues/{0}/?v=20140806&m=foursquare&client_id={1}&client_secret={2}";
 
 
@@ -43,8 +44,11 @@ namespace MK.Booking.MapDataProvider.Foursquare
 		    _logger = logger;
 		}
 
-		public GeoPlace[] GetNearbyPlaces (double? latitude, double? longitude, string languageCode, bool sensor, int radius, string pipedTypeList = null)
+		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
 		{
+			if (maximumNumberOfPlaces == 0)
+				maximumNumberOfPlaces = MaximumPageLength;
+
 			var searchQueryString = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Search);
 
 			pipedTypeList = pipedTypeList ?? _settings.Data.FoursquarePlacesTypes;
@@ -63,7 +67,6 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			}
 
 
-
 			uint page = 0, pages = 0;
 
 			var exploreQuery = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Explore);
@@ -73,14 +76,16 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 			do
 			{
-				exploreAnswer = client.Get<FoursquareVenuesResponse<ExploreResponse>>(exploreQuery + "&offset=" + ((page++) * maximumPageLength).ToString());
+				exploreAnswer = client.Get<FoursquareVenuesResponse<ExploreResponse>>(exploreQuery + "&offset=" + ((page++) * MaximumPageLength).ToString());
 
-				pages = Math.Min((uint)(exploreAnswer.Response.TotalResults / maximumPageLength) + 1, maximumPagesLimit);
+				uint maximumPagesByDemand = (uint)(Math.Ceiling((double)maximumNumberOfPlaces / (double)MaximumPageLength));
+				uint maximumPagesByResponse = (uint)(Math.Ceiling((double)exploreAnswer.Response.TotalResults / (double)MaximumPageLength));
+				pages = Math.Min(Math.Min(maximumPagesByResponse, maximumPagesByDemand), MaximumPagesLimit);
 
 				venuesExplore.AddRange(
-						from q1 in exploreAnswer.Response.Groups
-						from q2 in q1.Items
-						select q2.Venue);
+						from gr in exploreAnswer.Response.Groups
+						from it in gr.Items
+						select it.Venue);
 
 			}
 			while (page < pages && exploreAnswer.Response.Groups != null && exploreAnswer.Response.Groups.Length > 0);
