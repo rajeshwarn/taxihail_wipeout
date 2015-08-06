@@ -161,7 +161,7 @@ namespace CMTServices
 
             if (market.HasValue())
             {
-                @params.Add(new KeyValuePair<string, object>("markets", market.Replace(';',',').Split(',')));
+                @params.Add(new KeyValuePair<string, object>("markets", market.Split(',')));
 
             }
 
