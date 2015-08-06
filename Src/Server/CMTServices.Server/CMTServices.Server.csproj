@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="BaseAvailableVehicleServiceClient.cs" />
     <Compile Include="Converters\EpochDateTimeConverter.cs" />
+    <Compile Include="Enums\AvailabilityStates.cs" />
     <Compile Include="Enums\DeviceTypes.cs" />
     <Compile Include="Enums\EHailStates.cs" />
     <Compile Include="Enums\LogonStates.cs" />
