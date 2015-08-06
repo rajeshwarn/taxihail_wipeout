@@ -244,14 +244,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand<DateTime?>(async date =>
                 {
-                    if (_orderValidationResult.HasError
-                        && _orderValidationResult.AppliesToCurrentBooking)
-                    {
-                        this.Services().Message.ShowMessage(this.Services().Localize["CurrentBookingDisabledTitle"], _orderValidationResult.Message);
-                        ResetToInitialState.ExecuteIfPossible();
-                        return;
-                    }
-
                     // since it can take some time, recalculate estimate for date only if 
                     // last calculated estimate was not for now
                     if (date != null)
@@ -261,9 +253,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                     try
                     {
-                        await _orderWorkflowService.ValidatePickupAndDestination();
                         await _orderWorkflowService.ValidatePickupTime();
-                        await _orderWorkflowService.ValidateNumberOfPassengers(null);
                     }
                     catch (OrderValidationException e)
                     {
@@ -547,11 +537,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return this.GetCommand(async () =>
-                {
-                    Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AirportPickDate));
-                    await PrevalidatePickupAndDestinationRequired(onValidated);
-                });
+				return this.GetCommand(() =>
+				{
+					PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AirportPickDate));
+				});
             }
         }
 
