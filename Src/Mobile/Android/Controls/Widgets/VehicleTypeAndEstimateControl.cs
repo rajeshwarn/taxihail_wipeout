@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System;
 using apcurium.MK.Common.Extensions;
 using Android.Runtime;
+using Android.Gms.Analytics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -17,22 +18,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private AutoResizeTextView EstimatedFareLabel { get; set; }
 		private AutoResizeTextView EtaLabel { get; set; }
-		private AutoResizeTextView EtaLabelInVehicleSelection { get; set; }
-        private View HorizontalDivider { get; set; }
+
+		private View HorizontalDivider { get; set; }
 
 		private LinearLayout VehicleSelectionAndEta { get; set; }
-		private LinearLayout EtaContainer { get; set; }
-		private LinearLayout EtaBadge { get; set; }
 		private LinearLayout VehicleSelection { get; set; }
 		private LinearLayout RideEstimate { get; set; }
 
 		private VehicleTypeControl EstimateSelectedVehicleType { get; set; }
-		private VehicleTypeControl EtaBadgeImage { get; set; }
+
+	
 		public Action<VehicleType> VehicleSelected { get; set; }
+
+		Common.Diagnostic.ILogger logger;
 
         public VehicleTypeAndEstimateControl(Context c, IAttributeSet attr) : base(c, attr)
         {
-
+			logger = TinyIoC.TinyIoCContainer.Current.Resolve<Common.Diagnostic.ILogger>();
         }
 
         protected override void OnFinishInflate()
@@ -45,12 +47,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			RideEstimate = (LinearLayout)layout.FindViewById (Resource.Id.RideEstimate);
 			VehicleSelectionAndEta = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelectionAndEta);
 			VehicleSelection = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelection);
-			EtaContainer = (LinearLayout)layout.FindViewById (Resource.Id.EtaContainer);
-			EtaBadge = (LinearLayout)layout.FindViewById (Resource.Id.EtaBadge);
 
             EstimatedFareLabel = (AutoResizeTextView)layout.FindViewById(Resource.Id.estimateFareAutoResizeLabel);
+			
 			EtaLabel = (AutoResizeTextView)layout.FindViewById(Resource.Id.EtaLabel);
-			EtaLabelInVehicleSelection = (AutoResizeTextView)layout.FindViewById(Resource.Id.EtaLabelInVehicleSelection);
+
 			EstimateSelectedVehicleType = (VehicleTypeControl)layout.FindViewById (Resource.Id.estimateSelectedVehicle);
             EstimateSelectedVehicleType.Selected = true;
 
@@ -112,25 +113,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-		private bool _showEta;
-		public bool ShowEta
-		{
-			get { return _showEta; }
-			set
-			{
-				if (_showEta != value)
-				{
-					_showEta = value;
-					Redraw();
-				}
-			}
-		}
-
 		bool _showVehicleSelectionContainer
 		{
-			get {
-				return ShowEta || ShowVehicleSelection;
-			}
+			get { return ShowVehicleSelection; }
 		}
 
 		private bool _showVehicleSelection;
@@ -157,7 +142,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				{
 					_eta = value;
 					EtaLabel.Text = _eta;
-					EtaLabelInVehicleSelection.Text = _eta;
 					Redraw ();
 				}
 			}
@@ -171,15 +155,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 HorizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.company_color), PorterDuff.Mode.SrcAtop);
 				RideEstimate.Visibility = ViewStates.Visible;
 				VehicleSelection.Visibility = ViewStates.Gone;
-				EtaContainer.Visibility = ViewStates.Gone;
                 EtaLabel.Visibility = Eta.HasValue() ? ViewStates.Visible : ViewStates.Gone;
             }
             else
             {
                 this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Color.Transparent);
 				RideEstimate.Visibility = ViewStates.Gone;
-				EtaContainer.Visibility = ShowEta ? ViewStates.Visible : ViewStates.Gone;
-				EtaContainer.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
+
 				VehicleSelection.Visibility = ShowVehicleSelection ? ViewStates.Visible : ViewStates.Gone;
 
 				VehicleSelectionAndEta.Visibility = _showVehicleSelectionContainer ? ViewStates.Visible : ViewStates.Gone;
@@ -207,14 +189,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 						};
 
 						VehicleSelection.AddView (vehicleView);
-					}
-				}
-
-				if (ShowEta) {
-					if (EtaBadgeImage == null || EtaBadgeImage.Vehicle != SelectedVehicle) {
-						EtaBadge.RemoveAllViews ();
-						EtaBadgeImage = new VehicleTypeControl (base.Context, SelectedVehicle);
-						EtaBadge.AddView (EtaBadgeImage);
 					}
 				}
             }

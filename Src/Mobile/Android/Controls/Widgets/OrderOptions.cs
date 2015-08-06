@@ -8,6 +8,8 @@ using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.Data;
 using Android.Runtime;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -17,6 +19,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private AddressTextBox ViewPickup;
         private AddressTextBox ViewDestination;
         private VehicleTypeAndEstimateControl ViewVehicleType;
+		private LinearLayout EtaContainer { get; set; }
+		private LinearLayout EtaBadge { get; set; }
+		private VehicleTypeControl EtaBadgeImage { get; set; }
+		private AutoResizeTextView EtaLabelInVehicleSelection { get; set; }
 
         public Button BigInvisibleButton { get; set; }
 
@@ -34,8 +40,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewPickup.SetInvisibleButton(BigInvisibleButton);
                 ViewDestination.SetInvisibleButton(BigInvisibleButton);
 
-                ViewVehicleType.Visibility = ViewStates.Gone;
+				EtaContainer = (LinearLayout)Content.FindViewById(Resource.Id.EtaContainer);
+				EtaBadge = (LinearLayout)Content.FindViewById(Resource.Id.EtaBadge);
+				EtaLabelInVehicleSelection = (AutoResizeTextView)Content.FindViewById(Resource.Id.EtaLabelInVehicleSelection);
+                EtaBadgeImage = new VehicleTypeControl (base.Context, (VehicleType)null);
+                EtaBadge.AddView (EtaBadgeImage);
 
+                EtaContainer.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
+
+                ViewVehicleType.Visibility = ViewStates.Gone;
                 InitializeBinding();
             });
         }
@@ -113,18 +126,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To (vm => vm.ShowDestinationSearchAddress);
 
 			set.Bind (ViewVehicleType)
-				.For (v => v.ShowEta)
-				.To (vm => vm.ShowEta);
-
-			set.Bind (ViewVehicleType)
 				.For (v => v.ShowVehicleSelection)
 				.To (vm => vm.ShowVehicleSelection);
 
-			set.Bind (ViewVehicleType)
+			set.Bind(ViewVehicleType)
 				.For (v => v.Eta)
 				.To (vm => vm.FormattedEta);
 
-			set.Apply ();
+			set.Bind(EtaContainer)
+				.For(v => v.Visibility)
+				.To(vm => vm.ShowEta)
+				.WithConversion("Visibility");
+
+			set.Bind(EtaLabelInVehicleSelection)
+				.For(v => v.Text)
+				.To(vm => vm.FormattedEta);
+
+            set.Bind (EtaBadgeImage)
+                .For (v => v.Vehicle)
+                .To (vm => vm.SelectedVehicleType);
+
+            set.Apply ();
 		}
 
         private void ChangeState(HomeViewModelPresentationHint hint)

@@ -25,30 +25,6 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="52dp" />
-        <LinearLayout
-            android:id="@+id/EtaContainer"
-            android:visibility="gone"
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="23dp">
-            <LinearLayout
-                android:id="@+id/EtaBadge"
-                android:orientation="horizontal"
-                android:gravity="clip_vertical"
-                android:paddingLeft="8dp"
-                android:layout_width="45dp"
-                android:layout_height="fill_parent" />
-            <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
-                android:paddingLeft="8dp"
-                android:paddingRight="4dp"
-                android:paddingBottom="2dp"
-                android:id="@+id/EtaLabelInVehicleSelection"
-                android:textColor="@color/label_text_color"
-                android:textSize="16dp"
-                android:gravity="left|center"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
-        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/RideEstimate"
