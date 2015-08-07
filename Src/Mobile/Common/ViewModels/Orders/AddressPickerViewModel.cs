@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -363,11 +363,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         AllAddresses.AddRangeDistinct(await ccAdrs, (x, y) => x.Equals(y));
 				    }
 
-                    AllAddresses.AddRangeDistinct(await fhAdrs, (x, y) => x.Equals(y));
+					AllAddresses.AddRangeDistinct(await fhAdrs, (x, y) => x.Equals(y));
 
 					if (char.IsDigit(criteria[0]))
 					{
-                        AllAddresses.AddRangeDistinct(await gAdrs, (x, y) => x.Equals(y));	
+						AllAddresses.AddRangeDistinct(await gAdrs, (x, y) => x.Equals(y));	
 						AllAddresses.AddRangeDistinct(await pAdrs, (x, y) => x.Equals(y));
 					}
 					else
@@ -375,7 +375,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						AllAddresses.AddRangeDistinct(await pAdrs, (x, y) => x.Equals(y));
 						AllAddresses.AddRangeDistinct(await gAdrs, (x, y) => x.Equals(y));	
 					}
-
 
 				}
 			}

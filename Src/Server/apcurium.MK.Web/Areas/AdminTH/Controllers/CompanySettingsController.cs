@@ -136,6 +136,21 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 }
             }
 
+
+			bool disableImmediateBooking = bool.Parse(appSettings.Where(x => x.Key == "DisableImmediateBooking").First().Value);
+            bool disableFutureBooking = bool.Parse(appSettings.Where(x => x.Key == "DisableFutureBooking").First().Value);
+
+            if (disableImmediateBooking && disableFutureBooking)
+            {
+                isValid = false;
+
+                if (errorMessageBuilder.Length > 0)
+                {
+                    errorMessageBuilder.Append(", ");
+                }
+                errorMessageBuilder.Append("Disable Immediate Booking and Disable Future Booking can not be 'Yes' simultaneously");
+            }
+
             if (!isValid)
             {
                 // Set error message

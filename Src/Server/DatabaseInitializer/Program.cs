@@ -58,7 +58,7 @@ namespace DatabaseInitializer
         {
             get
             {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();                
+                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
         }
 
@@ -73,13 +73,13 @@ namespace DatabaseInitializer
                 Console.WriteLine("Initializing...");
                 var param = GetParamsFromArgs(args);
 
-                Console.WriteLine("Working..." );
+                Console.WriteLine("Working...");
 
                 UnityContainer container;
                 Module module;
 
                 var creatorDb = new DatabaseCreator();
-                var isUpdate = creatorDb.DatabaseExists(param.MasterConnectionString , param.CompanyName);
+                var isUpdate = creatorDb.DatabaseExists(param.MasterConnectionString, param.CompanyName);
                 IDictionary<string, string> appSettings;
 
                 //for dev company, delete old database to prevent keeping too many databases
@@ -181,7 +181,7 @@ namespace DatabaseInitializer
 
                     //Save settings so that next calls to referenceDataService has the IBS Url
                     AddOrUpdateAppSettings(commandBus, appSettings);
-                    
+
                     FetchingIbsDefaults(container, commandBus);
 
                     CreateDefaultAccounts(container, commandBus);
@@ -249,7 +249,7 @@ namespace DatabaseInitializer
                         }
                     });
                 }
-                
+
                 Console.WriteLine("Migration of Payment Settings ...");
                 MigratePaymentSettings(serverSettings, commandBus);
 
@@ -265,7 +265,7 @@ namespace DatabaseInitializer
                 return 1;
             }
             return 0;
-// ReSharper restore LocalizableElement
+            // ReSharper restore LocalizableElement
         }
 
         public static void PerformUpdate(DatabaseInitializerParams param, DatabaseCreator creatorDb, string sourceDatabaseName, string targetDatabaseName)
@@ -319,6 +319,7 @@ namespace DatabaseInitializer
 
             Console.WriteLine("Replaying Events Raised Since the Copy...");
             
+
             replayService.ReplayAllEvents(lastEventCopyDateTime);
             creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
 
@@ -598,15 +599,15 @@ namespace DatabaseInitializer
             Console.WriteLine("args : " + args.JoinBy(" "));
             if (args.Any() && !string.IsNullOrWhiteSpace(args[0]) && args[0].Trim().StartsWith("f:"))
             {
-                var paramFile =  Path.Combine( AssemblyDirectory , args[0].Trim().Substring(2, args[0].Trim().Length - 2));
-                Console.WriteLine("Reading param file : " + paramFile );
-                if ( !File.Exists(paramFile ))
+                var paramFile = Path.Combine(AssemblyDirectory, args[0].Trim().Substring(2, args[0].Trim().Length - 2));
+                Console.WriteLine("Reading param file : " + paramFile);
+                if (!File.Exists(paramFile))
                 {
                     throw new ApplicationException("Parameteres file cannot be found");
                 }
                 var paramFileContent = File.ReadAllText(paramFile);
 
-                result = JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
+                result = JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent);
             }
             result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? LocalDevProjectName : result.CompanyName;
 
@@ -633,7 +634,7 @@ namespace DatabaseInitializer
                 result.SqlInstanceName = sqlInstanceName;
                 Console.WriteLine("Sql Directory Default is " + result.SqlServerDirectory);
             }
-            
+
             //Company connection string
             if (string.IsNullOrWhiteSpace(result.MkWebConnectionString) && (args.Length > 3))
             {
@@ -669,7 +670,7 @@ namespace DatabaseInitializer
 
         private static void FetchingIbsDefaults(UnityContainer container, ICommandBus commandBus)
         {
-            var appSettings = new Dictionary<string, string>(); 
+            var appSettings = new Dictionary<string, string>();
             Console.WriteLine("Calling ibs...");
             //Get default settings from IBS
             var ibsServiceProvider = container.Resolve<IIBSServiceProvider>();
@@ -692,7 +693,7 @@ namespace DatabaseInitializer
             }
 
             //Save settings so that registerAccountCommand succeed
-            AddOrUpdateAppSettings(commandBus, appSettings);         
+            AddOrUpdateAppSettings(commandBus, appSettings);
         }
 
         private static void EnsureDefaultAccountsHasCorrectSettings(ConnectionStringSettings connectionString, ICommandBus commandBus)
@@ -740,7 +741,7 @@ namespace DatabaseInitializer
             var rules = new RuleDao(() => new BookingDbContext(connectionString.ConnectionString));
             if (
                 rules.GetAll()
-                    .None(r => (r.Category == (int) RuleCategory.WarningRule) && (r.Type == (int) RuleType.Default)))
+                    .None(r => (r.Category == (int)RuleCategory.WarningRule) && (r.Type == (int)RuleType.Default)))
             {
                 // Default rate does not exist for this company 
                 commandBus.Send(new CreateRule
@@ -760,7 +761,7 @@ namespace DatabaseInitializer
 
             if (
                 rules.GetAll()
-                    .None(r => (r.Category == (int) RuleCategory.DisableRule) && (r.Type == (int) RuleType.Default)))
+                    .None(r => (r.Category == (int)RuleCategory.DisableRule) && (r.Type == (int)RuleType.Default)))
             {
                 // Default rate does not exist for this company 
                 commandBus.Send(new CreateRule
@@ -780,7 +781,7 @@ namespace DatabaseInitializer
 
             //validation of the pickup zone
             if (rules.GetAll()
-                    .None(r => (r.Category == (int)RuleCategory.DisableRule) 
+                    .None(r => (r.Category == (int)RuleCategory.DisableRule)
                                 && r.Type == (int)RuleType.Default
                                 && r.AppliesToPickup
                                 && r.ZoneRequired))
@@ -892,7 +893,7 @@ namespace DatabaseInitializer
         }
 
         private static Dictionary<string, string> GetCompanySettings(string companyName)
-        {            
+        {
             // Create settings
             var appSettings = new Dictionary<string, string>();
 
@@ -905,7 +906,7 @@ namespace DatabaseInitializer
             {
                 appSettings[token.Key] = token.Value.ToString();
             }
-            
+
             return appSettings;
         }
 
@@ -921,7 +922,7 @@ namespace DatabaseInitializer
         private static void CreateDefaultTariff(string connectionString, IServerSettings serverSettings, ICommandBus commandBus)
         {
             var tariffs = new TariffDao(() => new BookingDbContext(connectionString));
-            if (tariffs.GetAll().All(x => x.Type != (int) TariffType.Default))
+            if (tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
             {
                 commandBus.Send(new CreateTariff
                 {
@@ -979,14 +980,14 @@ namespace DatabaseInitializer
         private static void CreateDefaultVehicleTypes(UnityContainer container, ICommandBus commandBus)
         {
             var referenceDataService = container.Resolve<ReferenceDataService>();
-            var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
+            var referenceData = (ReferenceData)referenceDataService.Get(new ReferenceDataRequest());
 
             foreach (var company in referenceData.CompaniesList)
             {
                 var vehicles = container.Resolve<IIBSServiceProvider>().StaticData().GetVehicles(company);
                 foreach (var vehicle in vehicles)
                 {
-                     commandBus.Send(new AddUpdateVehicleType
+                    commandBus.Send(new AddUpdateVehicleType
                     {
                         VehicleTypeId = Guid.NewGuid(),
                         Name = string.Format("{0}", vehicle.Name),
@@ -996,20 +997,20 @@ namespace DatabaseInitializer
                         MaxNumberPassengers = vehicle.Capacity
                     });
                 }
-               
+
             }
         }
 
         private static void CheckAndAddCapacity(IEnumerable<VehicleTypeDetail> vehicleTypeDetails, UnityContainer container, ICommandBus commandBus)
         {
             var currentVersion = Assembly.GetAssembly(typeof(Program)).GetName().Version;
-            var versionIntroduceCapacity = new Version(2,2,1);
+            var versionIntroduceCapacity = new Version(2, 2, 1);
 
             //before version 2.2.1 vehicle type have no capacity, we need to set the value from IBS if any
             if (currentVersion.CompareTo(versionIntroduceCapacity) <= 0)
             {
                 var referenceDataService = container.Resolve<ReferenceDataService>();
-                var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
+                var referenceData = (ReferenceData)referenceDataService.Get(new ReferenceDataRequest());
                 var ibsVehicleData = new List<TVehicleTypeItem>();
 
                 foreach (var company in referenceData.CompaniesList)

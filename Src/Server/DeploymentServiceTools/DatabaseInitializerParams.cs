@@ -10,7 +10,7 @@ namespace DeploymentServiceTools
     {
         public DatabaseInitializerParams()
         {
-        
+
         }
 
         public string CompanyName { get; set; }
@@ -19,7 +19,7 @@ namespace DeploymentServiceTools
 
         public string MasterConnectionString { get; set; }
 
-        public string SqlInstanceName { get; set; }        
+        public string SqlInstanceName { get; set; }
 
         public string BackupFolder { get; set; }
 
@@ -28,7 +28,7 @@ namespace DeploymentServiceTools
         public string MirrorMasterConnectionString { get; set; }
 
         public string MirroringMirrorPartner { get; set; }
-        
+
         public string MirroringPrincipalPartner { get; set; }
         public string MirroringWitness { get; set; }
 

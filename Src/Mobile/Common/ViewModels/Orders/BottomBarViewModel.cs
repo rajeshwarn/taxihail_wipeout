@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                            && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
 										   && !isInMarket;
 
-				BookButtonHidden = false;
+                BookButtonHidden = Settings.DisableImmediateBooking && !Settings.UseSingleButtonForNowAndLaterBooking;
             }
             catch (Exception ex)
             {
@@ -688,17 +688,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(async () =>
                 {
+					// popup
 					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
-						&& !Settings.DisableFutureBooking)
+						&& !Settings.DisableFutureBooking && !Settings.DisableImmediateBooking)
                     {
 						//We need to show the Book A Taxi popup.
 						Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
 						await PrevalidatePickupAndDestinationRequired(onValidated);
                     }
-                    else
-                    {
-                        SetPickupDateAndReviewOrder.ExecuteIfPossible();
-                    }
+					// immediate booking
+					else if (!Settings.DisableImmediateBooking)
+					{
+						SetPickupDateAndReviewOrder.ExecuteIfPossible();
+					}
+					// future booking
+					else if (!Settings.DisableFutureBooking)
+					{
+						Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.PickDate));
+						await PrevalidatePickupAndDestinationRequired(onValidated);
+					}
                 });
             }
         }
