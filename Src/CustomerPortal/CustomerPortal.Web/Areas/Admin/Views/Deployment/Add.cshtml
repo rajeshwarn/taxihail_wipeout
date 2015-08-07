@@ -113,7 +113,8 @@
 @section Scripts {
     <script type="text/javascript">
         function ProductionConfirm() {
-            if ($('#ServerId').find(":selected").text() == 'Production') {
+            if ($('#ServerId').find(":selected").text() == 'Production'
+             || $('#ServerId').find(":selected").text() == 'ProductionV2') {
                 if (confirm("Are you sure you want to deploy on the PRODUCTION server?"))
                     return true;
                 else
