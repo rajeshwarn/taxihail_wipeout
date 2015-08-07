@@ -9,30 +9,25 @@ using System.Collections.Generic;
 using System;
 using apcurium.MK.Common.Extensions;
 using Android.Runtime;
+using Android.Gms.Analytics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("apcurium.mk.booking.mobile.client.controls.widgets.VehicleTypeAndEstimateControl")]
     public class VehicleTypeAndEstimateControl : LinearLayout
     {
-        private AutoResizeTextView EstimatedFareLabel { get; set; }
-		private AutoResizeTextView EtaLabel { get; set; }
-		private AutoResizeTextView EtaLabelInVehicleSelection { get; set; }
-        private View HorizontalDivider { get; set; }
+		private AutoResizeTextView _estimatedFareLabel;
+		private AutoResizeTextView _etaLabel;
+		private View _horizontalDivider;
+		private LinearLayout _vehicleSelectionAndEta;
+		private LinearLayout _vehicleSelection;
+		private LinearLayout _rideEstimate;
+		private VehicleTypeControl _estimateSelectedVehicleType;
 
-		private LinearLayout VehicleSelectionAndEta { get; set; }
-		private LinearLayout EtaContainer { get; set; }
-		private LinearLayout EtaBadge { get; set; }
-		private LinearLayout VehicleSelection { get; set; }
-		private LinearLayout RideEstimate { get; set; }
-
-		private VehicleTypeControl EstimateSelectedVehicleType { get; set; }
-		private VehicleTypeControl EtaBadgeImage { get; set; }
 		public Action<VehicleType> VehicleSelected { get; set; }
 
         public VehicleTypeAndEstimateControl(Context c, IAttributeSet attr) : base(c, attr)
         {
-
         }
 
         protected override void OnFinishInflate()
@@ -41,18 +36,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
             var layout = inflater.Inflate(Resource.Layout.Control_VehicleTypeAndEstimate, this, true);
 
-			HorizontalDivider = (View)layout.FindViewById(Resource.Id.HorizontalDivider);
-			RideEstimate = (LinearLayout)layout.FindViewById (Resource.Id.RideEstimate);
-			VehicleSelectionAndEta = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelectionAndEta);
-			VehicleSelection = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelection);
-			EtaContainer = (LinearLayout)layout.FindViewById (Resource.Id.EtaContainer);
-			EtaBadge = (LinearLayout)layout.FindViewById (Resource.Id.EtaBadge);
+			_horizontalDivider = (View)layout.FindViewById(Resource.Id.HorizontalDivider);
+			_rideEstimate = (LinearLayout)layout.FindViewById (Resource.Id.RideEstimate);
+			_vehicleSelectionAndEta = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelectionAndEta);
+			_vehicleSelection = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelection);
 
-            EstimatedFareLabel = (AutoResizeTextView)layout.FindViewById(Resource.Id.estimateFareAutoResizeLabel);
-			EtaLabel = (AutoResizeTextView)layout.FindViewById(Resource.Id.EtaLabel);
-			EtaLabelInVehicleSelection = (AutoResizeTextView)layout.FindViewById(Resource.Id.EtaLabelInVehicleSelection);
-			EstimateSelectedVehicleType = (VehicleTypeControl)layout.FindViewById (Resource.Id.estimateSelectedVehicle);
-            EstimateSelectedVehicleType.Selected = true;
+            _estimatedFareLabel = (AutoResizeTextView)layout.FindViewById(Resource.Id.estimateFareAutoResizeLabel);
+			
+			_etaLabel = (AutoResizeTextView)layout.FindViewById(Resource.Id.EtaLabel);
+
+			_estimateSelectedVehicleType = (VehicleTypeControl)layout.FindViewById (Resource.Id.estimateSelectedVehicle);
+            _estimateSelectedVehicleType.Selected = true;
 
             this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
         }
@@ -61,12 +55,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public VehicleType SelectedVehicle
 		{
-			get { return EstimateSelectedVehicleType.Vehicle; }
+			get { return _estimateSelectedVehicleType.Vehicle; }
 			set
 			{
-				if (EstimateSelectedVehicleType.Vehicle != value)
+				if (_estimateSelectedVehicleType.Vehicle != value)
 				{
-					EstimateSelectedVehicleType.Vehicle = value;
+					_estimateSelectedVehicleType.Vehicle = value;
 					Redraw();
 				}
 			}
@@ -102,35 +96,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public string EstimatedFare
         {
-            get{ return EstimatedFareLabel.Text; }
+            get{ return _estimatedFareLabel.Text; }
             set
             {
-                if (EstimatedFareLabel.Text != value)
+                if (_estimatedFareLabel.Text != value)
                 {
-                    EstimatedFareLabel.Text = value;
+                    _estimatedFareLabel.Text = value;
                 }
             }
         }
 
-		private bool _showEta;
-		public bool ShowEta
-		{
-			get { return _showEta; }
-			set
-			{
-				if (_showEta != value)
-				{
-					_showEta = value;
-					Redraw();
-				}
-			}
-		}
-
 		bool _showVehicleSelectionContainer
 		{
-			get {
-				return ShowEta || ShowVehicleSelection;
-			}
+			get { return ShowVehicleSelection; }
 		}
 
 		private bool _showVehicleSelection;
@@ -156,8 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				if (_eta != value)
 				{
 					_eta = value;
-					EtaLabel.Text = _eta;
-					EtaLabelInVehicleSelection.Text = _eta;
+					_etaLabel.Text = _eta;
 					Redraw ();
 				}
 			}
@@ -168,27 +145,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (ShowEstimate)
             {
 				this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
-                HorizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.company_color), PorterDuff.Mode.SrcAtop);
-				RideEstimate.Visibility = ViewStates.Visible;
-				VehicleSelection.Visibility = ViewStates.Gone;
-				EtaContainer.Visibility = ViewStates.Gone;
-                EtaLabel.Visibility = Eta.HasValue() ? ViewStates.Visible : ViewStates.Gone;
+                _horizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.company_color), PorterDuff.Mode.SrcAtop);
+				_rideEstimate.Visibility = ViewStates.Visible;
+				_vehicleSelection.Visibility = ViewStates.Gone;
+                _etaLabel.Visibility = Eta.HasValue() ? ViewStates.Visible : ViewStates.Gone;
             }
             else
             {
                 this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Color.Transparent);
-				RideEstimate.Visibility = ViewStates.Gone;
-				EtaContainer.Visibility = ShowEta ? ViewStates.Visible : ViewStates.Gone;
-				EtaContainer.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
-				VehicleSelection.Visibility = ShowVehicleSelection ? ViewStates.Visible : ViewStates.Gone;
+				_rideEstimate.Visibility = ViewStates.Gone;
 
-				VehicleSelectionAndEta.Visibility = _showVehicleSelectionContainer ? ViewStates.Visible : ViewStates.Gone;
+				_vehicleSelection.Visibility = ShowVehicleSelection ? ViewStates.Visible : ViewStates.Gone;
 
-				VehicleSelection.RemoveAllViews ();
+				_vehicleSelectionAndEta.Visibility = _showVehicleSelectionContainer ? ViewStates.Visible : ViewStates.Gone;
+
+				_vehicleSelection.RemoveAllViews ();
 
 				if (_showVehicleSelectionContainer) 
 				{
-					HorizontalDivider.SetBackgroundColor(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider));
+					_horizontalDivider.SetBackgroundColor(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider));
 				}
 
 				if (ShowVehicleSelection) {
@@ -206,15 +181,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 							}
 						};
 
-						VehicleSelection.AddView (vehicleView);
-					}
-				}
-
-				if (ShowEta) {
-					if (EtaBadgeImage == null || EtaBadgeImage.Vehicle != SelectedVehicle) {
-						EtaBadge.RemoveAllViews ();
-						EtaBadgeImage = new VehicleTypeControl (base.Context, SelectedVehicle);
-						EtaBadge.AddView (EtaBadgeImage);
+						_vehicleSelection.AddView (vehicleView);
 					}
 				}
             }

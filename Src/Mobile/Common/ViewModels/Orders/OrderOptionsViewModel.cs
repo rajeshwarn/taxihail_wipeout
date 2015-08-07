@@ -269,7 +269,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-			    if (!Eta.IsValidEta())
+                if (Eta == null || (Eta != null && !Eta.IsValidEta()))
 			    {
 					return this.Services ().Localize ["EtaNoTaxiAvailable"];;
 			    }
@@ -291,7 +291,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 		    get
 		    {
-		        return ShowVehicleSelection || ShowEstimate;
+                return ShowVehicleSelection || ShowEstimate;
 		    }
 		}
 
@@ -299,13 +299,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-			    return Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate;
+				return Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate;
 			}
 		}
 
 		public bool ShowEstimate
 		{
-			get { return ShowDestination && Settings.ShowEstimate; }
+            get { return ShowDestination && Settings.ShowEstimate; }
 		}
 
 		public bool ShowVehicleSelection
