@@ -29,13 +29,13 @@ namespace MK.Booking.MapDataProvider.Foursquare
 	    private readonly IAppSettings _settings;
 	    private readonly ILogger _logger;
 
-		const uint MaximumPageLength = 50;
-		const uint MaximumPagesLimit = 5;
+		private const uint MaximumPageLength = 50;
+		private const uint MaximumPagesLimit = 5;
 
-		static readonly string ApiUrl = "https://api.foursquare.com/v2/";
-		static readonly string SearchVenues = "venues/search?v=20140806&m=foursquare&client_id={0}&client_secret={1}&intent=browse&radius={2}&limit=" + MaximumPageLength.ToString();
-		static readonly string ExploreVenues = "venues/explore?v=20140806&m=foursquare&client_id={0}&client_secret={1}&radius={2}&sortByDistance=1&limit=" + MaximumPageLength.ToString();
-		static readonly string VenueDetails = "venues/{0}/?v=20140806&m=foursquare&client_id={1}&client_secret={2}";
+		private const string ApiUrl = "https://api.foursquare.com/v2/";
+		private const string SearchVenues = "venues/search?v=20140806&m=foursquare&client_id={0}&client_secret={1}&intent=browse&radius={2}&limit={3}";
+		private const string ExploreVenues = "venues/explore?v=20140806&m=foursquare&client_id={0}&client_secret={1}&radius={2}&sortByDistance=1&limit={3}";
+		private const string VenueDetails = "venues/{0}/?v=20140806&m=foursquare&client_id={1}&client_secret={2}";
 
 
         public FoursquareProvider(IAppSettings settings, ILogger logger)
@@ -127,18 +127,18 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 		private string GetBaseQueryString(double? latitude, double? longitude, int radius, FoursquareQueryType foursquareQueryType)
 	    {
-			string template = null;
+			string searchTemplate = null;
 
 			if (foursquareQueryType == FoursquareQueryType.Search)
 			{
-				template = SearchVenues;
+				searchTemplate = SearchVenues;
 			}
 			else if (foursquareQueryType == FoursquareQueryType.Explore)
 			{
-				template = ExploreVenues;
+				searchTemplate = ExploreVenues;
 			}
 
-            var searchQueryString = string.Format(template, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret, radius);
+            var searchQueryString = string.Format(searchTemplate, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret, radius, MaximumPageLength);
 
             latitude = latitude ?? _settings.Data.GeoLoc.DefaultLatitude;
             longitude = longitude ?? _settings.Data.GeoLoc.DefaultLongitude;
