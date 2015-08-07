@@ -124,6 +124,6 @@
     <value>Please send us an email at support@goarro.com with the details of your issue.</value>
   </data>
   <data name="StatusCancelButton" xml:space="preserve">
-    <value>Cancel this order</value>
+    <value>Cancel this ride</value>
   </data>
 </root>
