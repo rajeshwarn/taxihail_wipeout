@@ -408,17 +408,21 @@ namespace apcurium.MK.Booking.IBS.Impl
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
-            
+
             var order = new TBookOrder_8
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,                
                 Customer = passengerName,
                 Phone = CleanPhone(phone),
-                Fare = Convert.ToDouble(fare.AmountExclTax),
-                VAT = Convert.ToDouble(fare.TaxAmount),
                 AccountNum = accountNumber          
             };
+
+            if (!_serverSettings.ServerData.HideFareEstimateFromIBS)
+            {
+                order.Fare = Convert.ToDouble(fare.AmountExclTax);
+                order.VAT = Convert.ToDouble(fare.TaxAmount);
+            }
             
             order.DispByAuto = _ibsSettings.AutoDispatch;
             order.Priority = _ibsSettings.OrderPriority 
