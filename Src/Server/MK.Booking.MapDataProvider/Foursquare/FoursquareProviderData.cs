@@ -12,9 +12,73 @@ namespace MK.Booking.MapDataProvider.Foursquare
         public string Meta { get; set; }
         public T Response { get; set; }
     }
-    
 
-    public class VenuesResponse
+
+	public class SuggestedFilter
+	{
+		public string Name { get; set; }
+
+		public string Key { get; set; }
+	}
+
+	public class SuggestedFilters
+	{
+		public string Header { get; set; }
+
+		public SuggestedFilter[] Filters { get; set; }
+
+	}
+
+	public class ReasonItem
+	{
+		public string Summary { get; set; }
+
+		public string Type { get; set; }
+
+		public string ReasonName { get; set; }
+
+	}
+
+	public class Reasons
+	{
+		public int Count { get; set; }
+
+		public ReasonItem[] Items { get; set; }
+	}
+
+	public class GroupItem
+	{
+		public Reasons Reasons { get; set; }
+
+		public Venue Venue { get; set; }
+	}
+
+	public class Group
+	{
+		public string Type { get; set; }
+
+		public string Name { get; set; }
+
+		public GroupItem[] Items { get; set; }
+	}
+
+	public class ExploreResponse
+	{
+		public SuggestedFilters SuggestedFilters { get; set; }
+
+		public string HeaderLocation { get; set; }
+
+		public string HeaderFullLocation { get; set; }
+
+		public string HeaderLocationGranularity { get; set; }
+
+		public int TotalResults { get; set; }
+
+		public Group[] Groups { get; set; }
+	}
+
+
+    public class SearchResponse
     {
         public Venue[] Venues { get; set; }
     }
@@ -30,6 +94,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 	    {
 	        categories = new List<Category>();
 	    }
+
 		///
 		///  <summary>
 		/// A unique string identifier for this venue.

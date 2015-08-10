@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         private readonly IPopularAddressProvider _popularAddressProvider;
 
         public Places(IPlaceDataProvider client, IAppSettings appSettings,
-            IPopularAddressProvider popularAddressProvider)
+			IPopularAddressProvider popularAddressProvider)
         {
             _client = client;
             _appSettings = appSettings;
@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 googlePlaces =
 					_client.GetNearbyPlaces(latitude, longitude, currentLanguage, false,
-                        radius ?? defaultRadius).Take(15);
+                        radius ?? defaultRadius);
             }
             else
             {
@@ -91,21 +91,20 @@ namespace apcurium.MK.Booking.Maps.Impl
 
                 googlePlaces =
 					_client.SearchPlaces(latitude, longitude, name, currentLanguage, false,
-                        radius ?? defaultRadius, priceFormat.TwoLetterISORegionName.ToLower())
-                        .Take(15);
+                        radius ?? defaultRadius, priceFormat.TwoLetterISORegionName.ToLower());
             }
 
             if (latitude.HasValue && longitude.HasValue)
             {
                 var places =
                     popularAddresses.Concat(googlePlaces.Select(ConvertToAddress))
-                        .OrderBy(p => AddressSortingHelper.GetRelevance(p, name, latitude, longitude))
-                        .ToArray();
+                        .OrderBy(p => AddressSortingHelper.GetRelevance(p, name, latitude, longitude)).Take(15).ToArray();
+
                 return places;
             }
             else
             {
-                var places = popularAddresses.Concat(googlePlaces.Select(ConvertToAddress)).ToArray();
+                var places = popularAddresses.Concat(googlePlaces.Select(ConvertToAddress)).Take(15).ToArray();
                 return places;
             }
         }

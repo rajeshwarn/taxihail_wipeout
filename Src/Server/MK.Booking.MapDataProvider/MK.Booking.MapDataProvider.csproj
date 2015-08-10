@@ -76,7 +76,7 @@
     <Compile Include="Extensions\ResourcesExtensions.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtension.cs" />
     <Compile Include="Foursquare\FoursquareProvider.cs" />
-    <Compile Include="Foursquare\Venue.cs" />
+    <Compile Include="Foursquare\FoursquareProviderData.cs" />
     <Compile Include="Google\GoogleApiClient.cs" />
     <Compile Include="Google\Resources\AddressComponent.cs" />
     <Compile Include="Google\Resources\AddressComponentType.cs" />

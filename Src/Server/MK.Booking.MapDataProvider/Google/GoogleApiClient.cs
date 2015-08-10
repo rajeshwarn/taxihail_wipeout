@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 	    private const int MaxNumberOfAttemps = 3;
 	    private const int RetryDelay = 1000;
+		const uint MaximumPageLength = 50;
 
 		private readonly IAppSettings _settings;
 		private readonly ILogger _logger;
@@ -53,8 +54,13 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             get { return "gme-taxihailinc"; }
 	    }
 
-		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, string pipedTypeList = null)
+		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
         {
+            if (maximumNumberOfPlaces == 0)
+            {
+                maximumNumberOfPlaces = MaximumPageLength;
+            }
+
             pipedTypeList = pipedTypeList ?? new PlaceTypes(_settings.Data.GeoLoc.PlacesTypes).GetPipedTypeList();
             var client = new JsonServiceClient(PlacesServiceUrl);
 
