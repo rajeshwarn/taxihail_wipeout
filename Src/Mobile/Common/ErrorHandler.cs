@@ -84,8 +84,6 @@ namespace apcurium.MK.Booking.Mobile
 
                     LogError(ex);
                 }
-
-                handled = true;
             }
 
 			return handled;
