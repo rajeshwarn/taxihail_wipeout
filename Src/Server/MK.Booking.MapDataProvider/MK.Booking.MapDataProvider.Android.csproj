@@ -57,7 +57,7 @@
     <Compile Include="IPostalCodeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Foursquare\FoursquareProvider.cs" />
-    <Compile Include="Foursquare\Venue.cs" />
+    <Compile Include="Foursquare\FoursquareProviderData.cs" />
     <Compile Include="IPlaceDataProvider.cs" />
     <Compile Include="IGeocoder.cs" />
     <Compile Include="Google\Resources\AddressComponent.cs" />
