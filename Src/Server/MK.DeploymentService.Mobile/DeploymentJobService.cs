@@ -99,7 +99,7 @@ namespace MK.DeploymentService.Mobile
 						Directory.CreateDirectory( sourceDirectory);
 
 					DownloadAndInstallProfileIfNecessary();
-                    var path = System.Configuration.ConfigurationManager.AppSettings["BitBucketPath"];
+                    var path = System.Configuration.ConfigurationManager.AppSettings["GitPath"];
                     var isGitHub = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["IsGitHubSourceControl"]);
                     var taxiRepo = new TaxiRepository (path, sourceDirectory,  isGitHub);
 
