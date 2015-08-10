@@ -46,8 +46,10 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
 		{
-			if (maximumNumberOfPlaces == 0)
-				maximumNumberOfPlaces = MaximumPageLength;
+            if (maximumNumberOfPlaces == 0)
+            {
+                maximumNumberOfPlaces = MaximumPageLength;
+            }
 
 			var searchQueryString = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Search);
 

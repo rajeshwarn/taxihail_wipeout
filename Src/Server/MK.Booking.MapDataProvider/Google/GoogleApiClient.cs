@@ -56,8 +56,10 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
         {
-			if (maximumNumberOfPlaces == 0)
-				maximumNumberOfPlaces = MaximumPageLength;
+            if (maximumNumberOfPlaces == 0)
+            {
+                maximumNumberOfPlaces = MaximumPageLength;
+            }
 
             pipedTypeList = pipedTypeList ?? new PlaceTypes(_settings.Data.GeoLoc.PlacesTypes).GetPipedTypeList();
             var client = new JsonServiceClient(PlacesServiceUrl);
