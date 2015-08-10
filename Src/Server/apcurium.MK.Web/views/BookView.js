@@ -121,6 +121,10 @@
                     pin: 'red',
                     locatepopular : true
             });
+
+            if (TaxiHail.parameters.disableImmediateBooking) {
+                this.$('#bookNowButton').addClass('hidden');
+            }
             
             if (TaxiHail.parameters.disableFutureBooking) {
                 this.$('#bookLaterButton').addClass('hidden');

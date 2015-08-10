@@ -133,8 +133,12 @@ namespace MK.Common.Configuration
         public bool UseSingleButtonForNowAndLaterBooking { get; set; }
 
         [SendToClient]
-        [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
-        public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
+        [Display(Name = "Local Available Vehicles Mode", Description = "Available Vehicles provider in local market")]
+        public LocalAvailableVehiclesModes LocalAvailableVehiclesMode { get; protected set; }
+
+        [SendToClient]
+        [Display(Name = "External Available Vehicles Mode", Description = "Available Vehicles provider in external market")]
+        public ExternalAvailableVehiclesModes ExternalAvailableVehiclesMode { get; protected set; }
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter Consumer Secret", Description = "Twitter API settings")]
@@ -251,6 +255,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Destination Required", Description="Flag to add destination as required")]
 		public bool DestinationIsRequired { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Disable Immediate Booking", Description = "Hide button to immediate booking ('book now button')")]
+        public bool DisableImmediateBooking { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Disable Future Booking", Description="Hide button to scheduled a booking in the future")]

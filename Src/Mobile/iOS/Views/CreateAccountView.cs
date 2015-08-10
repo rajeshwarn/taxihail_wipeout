@@ -99,8 +99,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			}.Bind (bindings, vm => vm.Data.Email);
 
 
-            PhoneNumberModel phoneNumberInfo = (bindings.BindingContextOwner.BindingContext.DataContext as CreateAccountViewModel).PhoneNumber;
-			PhoneEditorElement phoneEditorElement = new PhoneEditorElement(string.Empty, phoneNumberInfo, this.NavigationController);
+            var phoneNumberInfo = (bindings.BindingContextOwner.BindingContext.DataContext as CreateAccountViewModel).PhoneNumber;
+			var phoneEditorElement = new PhoneEditorElement(string.Empty, phoneNumberInfo, NavigationController, Localize.GetValue("CreateAccountPhonePlaceHolder"));
 
 			var section = new Section () {
 				emailEntryElement,

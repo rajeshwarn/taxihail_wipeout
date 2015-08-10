@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<string> GetPOIRefPickupList(string company, string textMatch, int maxRespSize)
         {
             var sb = new StringBuilder();
-            sb.Append("/../reference/pickuppoint");
+            sb.Append("/references/pickuppoint");
             if( company != null && company != string.Empty )
             {
                 sb.Append(string.Format( "_{0}", company));
@@ -39,6 +39,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 sb.Append(string.Format("&size={0}", maxRespSize));
             }
             var req = sb.ToString();
+			Console.WriteLine (req);
             var pObject = Client.GetAsync<string>(req);
             return pObject;
         }
@@ -46,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<string> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
         {
             var sb = new StringBuilder();
-            sb.Append("/../reference/airline");
+            sb.Append("/references/airline");
             if (company != null && company != string.Empty)
             {
                 sb.Append(string.Format("_{0}", company));
@@ -62,6 +63,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             }
             sb.Append(string.Format("&coreFieldsOnly=true"));
             var req = sb.ToString();
+			Console.WriteLine (req);
             var pObject = Client.GetAsync<string>(req);
             return pObject;
         }

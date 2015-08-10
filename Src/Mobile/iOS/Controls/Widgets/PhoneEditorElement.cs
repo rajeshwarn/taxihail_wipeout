@@ -11,19 +11,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	public class PhoneEditorElement:ValueElement<PhoneNumberModel>
 	{
         public event PhoneNumberModel.PhoneNumberDatasourceChangedEventHandler NotifyChanges;
-		Action PhoneNumberInfoDatasourceChanged;
+	    private readonly Action _phoneNumberInfoDatasourceChanged;
 
-        CountrySelector phoneDialCodeLabel;
-		UITextField phoneNumberTextEdit;
-		UINavigationController navigationController;
+        private CountrySelector _phoneDialCodeLabel;
+		private UITextField _phoneNumberTextEdit;
+		private readonly UINavigationController _navigationController;
+	    private readonly string _placeHolder;
 
 
-        public PhoneEditorElement(string caption, PhoneNumberModel phoneNumberInfo, UINavigationController navigationController):base(caption, phoneNumberInfo)
+	    public PhoneEditorElement(string caption, PhoneNumberModel phoneNumberInfo, UINavigationController navigationController, string placeHolder = null):base(caption, phoneNumberInfo)
 		{
-			PhoneNumberInfoDatasourceChanged = phoneNumberInfo.PhoneNumberDatasourceChangedCallEvent;
+			_phoneNumberInfoDatasourceChanged = phoneNumberInfo.PhoneNumberDatasourceChangedCallEvent;
 			phoneNumberInfo.PhoneNumberDatasourceChanged += PhoneNumberDatasourceChanged;
-			this.NotifyChanges += phoneNumberInfo.NotifyChanges;
-			this.navigationController = navigationController;
+			NotifyChanges += phoneNumberInfo.NotifyChanges;
+			_navigationController = navigationController;
+	        _placeHolder = placeHolder;
 		}
 
 		private static readonly NSString entryKey = new NSString("EntryElement");
@@ -55,35 +57,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			float padding = 13.5f, dialCodeFieldLeftPadding = 60;
 			CoreGraphics.CGRect rect = cell.Frame.SetX(padding + dialCodeFieldLeftPadding).SetWidth (UIScreen.MainScreen.Bounds.Width - 2 * 8 - 2 * padding - dialCodeFieldLeftPadding);// screenwidth - margin - padding
 
-			phoneNumberTextEdit = new UITextField (rect);
-			phoneNumberTextEdit.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleLeftMargin;
-			phoneNumberTextEdit.Placeholder = "";
-			phoneNumberTextEdit.Tag = 1;
-			phoneNumberTextEdit.SecureTextEntry = false;
-			phoneNumberTextEdit.TintColor = UIColor.Black;
-			phoneNumberTextEdit.TextColor = UIColor.FromRGB(44, 44, 44);
-			phoneNumberTextEdit.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
-			phoneNumberTextEdit.VerticalAlignment = UIControlContentVerticalAlignment.Center;
-			phoneNumberTextEdit.AdjustsFontSizeToFitWidth = true;
-			phoneNumberTextEdit.AutocapitalizationType = UITextAutocapitalizationType.None;
-			phoneNumberTextEdit.KeyboardType = UIKeyboardType.NumberPad;
-			phoneNumberTextEdit.AdjustsFontSizeToFitWidth = true;
-			phoneNumberTextEdit.SetHeight(21).IncrementY(11);
-			phoneNumberTextEdit.EditingChanged += AfterTextChanged;
+		    _phoneNumberTextEdit = new UITextField(rect)
+		    {
+		        AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleLeftMargin,
+		        Placeholder = "",
+		        Tag = 1,
+		        SecureTextEntry = false,
+		        TintColor = UIColor.Black,
+		        TextColor = UIColor.FromRGB(44, 44, 44),
+		        Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2),
+		        VerticalAlignment = UIControlContentVerticalAlignment.Center,
+		        AdjustsFontSizeToFitWidth = true,
+		        AutocapitalizationType = UITextAutocapitalizationType.None,
+		        KeyboardType = UIKeyboardType.NumberPad
+		    };
 
-            phoneDialCodeLabel = new CountrySelector(cell.Frame.SetX(0).SetWidth(50));
-			phoneDialCodeLabel.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
-			phoneDialCodeLabel.TintColor = UIColor.Black;
-			phoneDialCodeLabel.TextColor = UIColor.FromRGB(44, 44, 44);
-			phoneDialCodeLabel.TextAlignment = UITextAlignment.Center;
-			phoneDialCodeLabel.AdjustsFontSizeToFitWidth = true;
-			phoneDialCodeLabel.SetHeight(phoneNumberTextEdit.Frame.Height).IncrementY(11).SetX(padding);
-            phoneDialCodeLabel.Configure(navigationController, CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Value.Country)), OnDialCodeSelected);
+            _phoneNumberTextEdit.Placeholder = _placeHolder;
+		    _phoneNumberTextEdit.AdjustsFontSizeToFitWidth = true;
+			_phoneNumberTextEdit.SetHeight(21).IncrementY(11);
+			_phoneNumberTextEdit.EditingChanged += AfterTextChanged;
 
-			cell.AddSubview(phoneDialCodeLabel);
-			cell.AddSubview(phoneNumberTextEdit);
+		    _phoneDialCodeLabel = new CountrySelector(cell.Frame.SetX(0).SetWidth(50))
+		    {
+		        Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2),
+		        TintColor = UIColor.Black,
+		        TextColor = UIColor.FromRGB(44, 44, 44),
+		        TextAlignment = UITextAlignment.Center,
+		        AdjustsFontSizeToFitWidth = true
+		    };
+		    _phoneDialCodeLabel.SetHeight(_phoneNumberTextEdit.Frame.Height).IncrementY(11).SetX(padding);
+            _phoneDialCodeLabel.Configure(_navigationController, CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Value.Country)), OnDialCodeSelected);
 
-			PhoneNumberInfoDatasourceChanged();
+			cell.AddSubview(_phoneDialCodeLabel);
+			cell.AddSubview(_phoneNumberTextEdit);
+
+			_phoneNumberInfoDatasourceChanged();
 		}
 			
 		void OnDialCodeSelected(CountryCode countryCode)
@@ -93,30 +101,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (NotifyChanges != null)
 				NotifyChanges(this, new PhoneNumberChangedEventArgs()
 					{
-                        Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(phoneDialCodeLabel.Text)).CountryISOCode,
-						PhoneNumber = phoneNumberTextEdit.Text
+                        Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(_phoneDialCodeLabel.Text)).CountryISOCode,
+						PhoneNumber = _phoneNumberTextEdit.Text
 					});
 		}
 
 		void AfterTextChanged(object sender, EventArgs e)
 		{
-			Value.PhoneNumber = phoneNumberTextEdit.Text;
+		    Value.PhoneNumber = _phoneNumberTextEdit.Text;
 
-			if (NotifyChanges != null)
-				NotifyChanges(this, new PhoneNumberChangedEventArgs()
-					{
-                        Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryDialCode(phoneDialCodeLabel.Text)).CountryISOCode,
-						PhoneNumber = phoneNumberTextEdit.Text
-					});
+		    RaiseNotifyChange();
 		}
-			
-		void PhoneNumberDatasourceChanged(object sender, PhoneNumberChangedEventArgs e)
+
+	    private void RaiseNotifyChange()
+	    {
+	        if (NotifyChanges != null)
+	        {
+                NotifyChanges(this, new PhoneNumberChangedEventArgs()
+                {
+                    Country =
+                          CountryCode.GetCountryCodeByIndex(
+                              CountryCode.GetCountryCodeIndexByCountryDialCode(_phoneDialCodeLabel.Text)).CountryISOCode,
+                    PhoneNumber = _phoneNumberTextEdit.Text
+                });
+            }
+	    }
+
+	    void PhoneNumberDatasourceChanged(object sender, PhoneNumberChangedEventArgs e)
 		{
-			if (phoneDialCodeLabel != null && phoneNumberTextEdit != null)
+			if (_phoneDialCodeLabel != null && _phoneNumberTextEdit != null)
 			{
-                phoneDialCodeLabel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Value.Country));
-                phoneDialCodeLabel.Text = phoneDialCodeLabel.SelectedCountryCode.CountryDialCode > 0 ? "+" + phoneDialCodeLabel.SelectedCountryCode.CountryDialCode : null;
-				phoneNumberTextEdit.Text = e.PhoneNumber;
+                _phoneDialCodeLabel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Value.Country));
+                _phoneDialCodeLabel.Text = _phoneDialCodeLabel.SelectedCountryCode.CountryDialCode > 0 ? "+" + _phoneDialCodeLabel.SelectedCountryCode.CountryDialCode : null;
+				_phoneNumberTextEdit.Text = e.PhoneNumber;
 			}
 		}
 

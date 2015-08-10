@@ -64,6 +64,7 @@
             TaxiHail.parameters.isEstimateWarningEnabled = <%: EstimateWarningEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isDestinationRequired = <%: DestinationIsRequired ? "true" : "false" %>;
             TaxiHail.parameters.maxFareEstimate = <%: MaxFareEstimate %>;
+            TaxiHail.parameters.disableImmediateBooking = <%: DisableImmediateBooking ? "true" : "false" %>;
             TaxiHail.parameters.disableFutureBooking = <%: DisableFutureBooking ? "true" : "false" %>;
             TaxiHail.parameters.showPassengerNumber = <%: ShowPassengerNumber ? "true" : "false" %>;
             TaxiHail.parameters.directionTarifMode = "<%: DirectionTarifMode %>";

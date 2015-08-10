@@ -17,6 +17,7 @@ using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -81,6 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _isShowingTermsAndConditions;
 		private bool _isShowingCreditCardExpiredPrompt;
 		private bool _locateUser;
+		private bool _firstTime;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
         public void Init(bool locateUser, string defaultHintZoomLevel)
@@ -104,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.OnViewStarted(firstTime);
 
-			firstTime = firstTime;
+			_firstTime = firstTime;
 
 			_locationService.Start();
             
@@ -428,7 +430,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (_currentState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-						SetMapCenterToUserLocation(true, token);
+						if (_firstTime)
+						{
+							// Do not allow to cancel first locate me zoom
+							SetMapCenterToUserLocation(true, CancellationToken.None);
+						}
+						else
+						{
+							SetMapCenterToUserLocation(true, token);
+						}
 					}									
 				}));
 			}
@@ -535,7 +545,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if(Settings.ZoomOnNearbyVehicles)
 			{
-				var bounds = _vehicleService.GetBoundsForNearestVehicles(Map.PickupAddress, vehicles);	
+			    var isUsingGeoServices = !_lastHashedMarket.HasValue()
+			        ? Settings.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
+			        : Settings.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo;
+
+                var bounds = _vehicleService.GetBoundsForNearestVehicles(isUsingGeoServices, Map.PickupAddress, vehicles);	
 				if (bounds != null)
 				{
 					this.ChangePresentation(new ChangeZoomPresentationHint(bounds));

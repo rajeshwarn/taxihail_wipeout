@@ -79,7 +79,7 @@
                     android:layout_height="44dip"
                     android:textSize="19dip"
                     android:layout_marginBottom="5dp"
-                    local:MvxBind="Click Book;Text BookButtonText"
+                    local:MvxBind="Click Book;Text BookButtonText; Visibility BookButtonHidden, Converter=InvertedVisibility"
                     android:layout_gravity="bottom|center_horizontal" />
                 <ImageView
                     android:id="@+id/imagePromo"

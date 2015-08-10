@@ -269,7 +269,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-			    if (!Eta.IsValidEta())
+                if (Eta == null || (Eta != null && !Eta.IsValidEta()))
 			    {
 					return this.Services ().Localize ["EtaNoTaxiAvailable"];;
 			    }
@@ -278,16 +278,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			    {
 			        return this.Services ().Localize ["EtaNotAvailable"];
 			    }
+
                 var durationUnit = Eta.Duration <= 1 ? this.Services().Localize["EtaDurationUnit"] : this.Services().Localize["EtaDurationUnitPlural"];
 
-                if (Settings.AvailableVehiclesMode == AvailableVehiclesModes.Geo)
-			    {
-
-                    return Eta.Duration == 0
-			            ? this.Services().Localize["EtaLessThanAMinute"]
-                        : string.Format(this.Services().Localize["Eta"], Eta.Duration, durationUnit);
-			    }
-			    return string.Format (this.Services ().Localize ["Eta"], Eta.Duration, durationUnit);
+                return Eta.Duration == 0
+                    ? this.Services().Localize["EtaLessThanAMinute"]
+                    : string.Format(this.Services().Localize["Eta"], Eta.Duration, durationUnit);
 			}
 		}
 
@@ -295,7 +291,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 		    get
 		    {
-		        return ShowVehicleSelection || ShowEstimate;
+                return ShowVehicleSelection || ShowEstimate;
 		    }
 		}
 
@@ -303,13 +299,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-			    return Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate;
+				return Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate;
 			}
 		}
 
 		public bool ShowEstimate
 		{
-			get { return ShowDestination && Settings.ShowEstimate; }
+            get { return ShowDestination && Settings.ShowEstimate; }
 		}
 
 		public bool ShowVehicleSelection

@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                            && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
 										   && !isInMarket;
 
-				BookButtonHidden = false;
+                BookButtonHidden = Settings.DisableImmediateBooking && !Settings.UseSingleButtonForNowAndLaterBooking;
             }
             catch (Exception ex)
             {
@@ -244,14 +244,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand<DateTime?>(async date =>
                 {
-                    if (_orderValidationResult.HasError
-                        && _orderValidationResult.AppliesToCurrentBooking)
-                    {
-                        this.Services().Message.ShowMessage(this.Services().Localize["CurrentBookingDisabledTitle"], _orderValidationResult.Message);
-                        ResetToInitialState.ExecuteIfPossible();
-                        return;
-                    }
-
                     // since it can take some time, recalculate estimate for date only if 
                     // last calculated estimate was not for now
                     if (date != null)
@@ -261,9 +253,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                     try
                     {
-                        await _orderWorkflowService.ValidatePickupAndDestination();
                         await _orderWorkflowService.ValidatePickupTime();
-                        await _orderWorkflowService.ValidateNumberOfPassengers(null);
                     }
                     catch (OrderValidationException e)
                     {
@@ -547,11 +537,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return this.GetCommand(async () =>
-                {
-                    Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AirportPickDate));
-                    await PrevalidatePickupAndDestinationRequired(onValidated);
-                });
+				return this.GetCommand(() =>
+				{
+					PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AirportPickDate));
+				});
             }
         }
 
@@ -699,17 +688,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(async () =>
                 {
+					// popup
 					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
-						&& !Settings.DisableFutureBooking)
+						&& !Settings.DisableFutureBooking && !Settings.DisableImmediateBooking)
                     {
 						//We need to show the Book A Taxi popup.
 						Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
 						await PrevalidatePickupAndDestinationRequired(onValidated);
                     }
-                    else
-                    {
-                        SetPickupDateAndReviewOrder.ExecuteIfPossible();
-                    }
+					// immediate booking
+					else if (!Settings.DisableImmediateBooking)
+					{
+						SetPickupDateAndReviewOrder.ExecuteIfPossible();
+					}
+					// future booking
+					else if (!Settings.DisableFutureBooking)
+					{
+						Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.PickDate));
+						await PrevalidatePickupAndDestinationRequired(onValidated);
+					}
                 });
             }
         }

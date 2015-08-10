@@ -26,7 +26,7 @@ namespace DatabaseInitializer.Sql
     public class DatabaseCreator
     {
         ILog _logger = LogManager.GetLogger("DatabaseInitializer");
-        
+
         public void DropDatabase(string connStringMaster, string database, bool setoffline = true)
         {
             var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + database + "') ";
@@ -93,10 +93,10 @@ namespace DatabaseInitializer.Sql
 
         public void SetMirroringPartner(string connStringMaster, string companyName, string partner)
         {
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName,partner));          
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
         }
 
-        public  void CompleteMirroring(string connStringMaster, string companyName, string partner, string witness)
+        public void CompleteMirroring(string connStringMaster, string companyName, string partner, string witness)
         {
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
             if (witness.HasValue())
@@ -197,7 +197,7 @@ namespace DatabaseInitializer.Sql
             {
                 Directory.CreateDirectory(dataPath);
             }
-           
+
             var logPath = Path.Combine(sqlDirectory, "Log");
             if (!Directory.Exists(logPath))
             {
@@ -206,9 +206,9 @@ namespace DatabaseInitializer.Sql
 
             DatabaseHelper.ExecuteNonQuery(connectionString, string.Format("CREATE DATABASE [" + databaseName + "] " +
                                                                            "ON " +
-                                                                           "( NAME = {3}_{2}, FILENAME = '{0}\\{3}_{2}.mdf' ) " +
+                                                                           "( NAME = '{3}_{2}', FILENAME = '{0}\\{3}_{2}.mdf' ) " +
                                                                            "LOG ON " +
-                                                                           "( NAME = {3}_{2}_log, FILENAME = '{1}\\{3}_{2}.ldf' ) ",
+                                                                           "( NAME = '{3}_{2}_log', FILENAME = '{1}\\{3}_{2}.ldf' ) ",
                 dataPath,
                 logPath,
                 DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss"),
@@ -337,7 +337,7 @@ namespace DatabaseInitializer.Sql
             var nbEvents = DatabaseHelper.ExecuteScalarQuery<int>(connString, queryNumberEvents, 3600);
 
             Console.WriteLine("Original database has {0} events to copy (Duration: {1}) ", nbEvents, (DateTime.Now - start).TotalSeconds);
-            
+
             if (nbEvents > 0)
             {
                 var startRow = 0;
@@ -370,7 +370,7 @@ namespace DatabaseInitializer.Sql
 
                 Console.WriteLine("Finished copying events (Duration: {0})", (DateTime.Now - start).TotalSeconds);
             }
-            
+
 
             // copy cache table except the static data
             var queryForCache = string.Format("INSERT INTO [{0}].[Cache].[Items]([Key],[Value],[ExpiresAt]) " +
@@ -433,7 +433,7 @@ namespace DatabaseInitializer.Sql
                 }
             }
             // ReSharper disable once EmptyGeneralCatchClause
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.Error("Error during Database Create Schema", e);
             }
