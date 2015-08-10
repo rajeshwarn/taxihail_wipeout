@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
@@ -19,6 +20,7 @@ using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Provider;
 using AutoMapper;
 using CMTServices;
@@ -88,7 +90,13 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<PaymentSettings, Commands.CreateOrder.PaymentInformation>();
             Mapper.CreateMap<BookingSettings, SendBookingConfirmationEmail.BookingSettings>();
-            Mapper.CreateMap<Address, IbsAddress>();
+            Mapper.CreateMap<Address, IbsAddress>()
+                .ForSourceMember(p => p.FullAddress, options => options.Ignore())
+                // Fix for issue where FullAddress contains a place name at the begining.
+                .AfterMap((addr, ibsAddr) => ibsAddr.FullAddress = Regex.IsMatch(addr.FullAddress, "^^[a-zA-Z]") && addr.DisplayAddress.HasValue()
+                    ? addr.DisplayAddress
+                    : addr.FullAddress
+                );
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusRequestResponse>();
             Mapper.CreateMap<OrderPairingDetail, OrderPairingResponse>();
