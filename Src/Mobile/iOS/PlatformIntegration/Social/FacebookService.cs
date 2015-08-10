@@ -2,33 +2,69 @@ using System;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using Foundation;
 using System.Threading.Tasks;
-using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
-using MonoTouch.FacebookConnect;
+using Facebook.LoginKit;
+using Facebook.CoreKit;
+using UIKit;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 {
 	public class FacebookService: IFacebookService
     {
-        private string _appId;
+        // seconds
+        private static readonly double TimeCorrectionForTokenExpiration = -(60 * 60);
+
+        private static string _facebookApplicationID;
+
+        public static void UIApplicationDelegateFinishedLaunching(UIApplication app, NSDictionary options)
+        {
+            ApplicationDelegate.SharedInstance.FinishedLaunching(app, options);
+        }
+
+        public static void UIApplicationDelegateOnActivated()
+        {
+            AppEvents.ActivateApp();
+        }
+
+        public static bool UIApplicationDelegateOpenURL(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation, string applicationName)
+        {
+            Facebook.CoreKit.Settings.AppID = _facebookApplicationID;
+            Facebook.CoreKit.Settings.DisplayName = applicationName;
+            return Facebook.CoreKit.ApplicationDelegate.SharedInstance.OpenUrl(application, url, sourceApplication, annotation);
+        }
+
+        public static string FacebookApplicationID
+        {
+            get
+            {
+                return _facebookApplicationID;
+            }
+        }
 
 		public void Init()
 		{
             try
             {
-                _appId = Mvx.Resolve<IAppSettings>().Data.FacebookAppId;
+                _facebookApplicationID = Mvx.Resolve<apcurium.MK.Common.Configuration.IAppSettings>().Data.FacebookAppId;
 
-                FBSettings.DefaultAppID = _appId;
-                FBSettings.DefaultUrlSchemeSuffix = Mvx.Resolve<IAppSettings>().Data.TaxiHail.ApplicationName.ToLower ().Replace (" ", string.Empty);
+                Facebook.CoreKit.Settings.AppID = _facebookApplicationID;
+                Facebook.CoreKit.Settings.AppUrlSchemeSuffix = "taxihail";
+                Profile.EnableUpdatesOnAccessTokenChange(true);
 
-                if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded) 
+                if (AccessToken.CurrentAccessToken == null
+                    || (AccessToken.CurrentAccessToken != null
+                        && NSDate.Now.SecondsSinceReferenceDate >= AccessToken.CurrentAccessToken.ExpirationDate.AddSeconds(TimeCorrectionForTokenExpiration).SecondsSinceReferenceDate))
                 {
-                    // If there's one, just open the session silently
-                    FBSession.OpenActiveSession (new[] { "public_profile", "email" },
-                        allowLoginUI: false,
-                        completion: (session, status, error) => {});
-                }                   
+                    LoginManager loginManager = new LoginManager();
+                    loginManager.LoginBehavior = LoginBehavior.Native;
+                    loginManager.LogInWithReadPermissions(new string[] { "public_profile", "email" }, (LoginManagerLoginResult result, NSError error) =>
+                        {
+                        });
+                }
             }
             catch(Exception ex)
             {
@@ -39,89 +75,77 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 
 		public void PublishInstall()
 		{
-            try
-            {
-                FBAppEvents.ActivateApp ();
-            }
-            catch(Exception ex)
-            {
-                Logger.LogMessage("Facebook PublishInstall failed");
-                Logger.LogError(ex);
-            }
 		}
 
-		public Task Connect()
+        public System.Threading.Tasks.Task Connect()
 		{
-			// If the session state is any of the two "open" states when the button is clicked
-			if (FBSession.ActiveSession.State == FBSessionState.Open
-				|| FBSession.ActiveSession.State == FBSessionState.OpenTokenExtended)
-			{
+            var tcs = new TaskCompletionSource<object>();
 
-				// Close the session and remove the access token from the cache
-				// The session state handler (in the app delegate) will be called automatically
-				FBSession.ActiveSession.CloseAndClearTokenInformation();
-			}
+            try
+            {
 
-			var tcs = new TaskCompletionSource<object>();
-			// Open a session showing the user the login UI
-			// You must ALWAYS ask for basic_info permissions when opening a session
-			try
-			{
-				FBSession.OpenActiveSession(new [] {"public_profile", "email"},
-					allowLoginUI: true,
-					completion: (session, status, error) =>
-					{
-						var connected = status == FBSessionState.Open
-						                 || status == FBSessionState.OpenTokenExtended;
+                if (AccessToken.CurrentAccessToken == null
+                    || (AccessToken.CurrentAccessToken != null
+                        && NSDate.Now.SecondsSinceReferenceDate >= AccessToken.CurrentAccessToken.ExpirationDate.AddSeconds(TimeCorrectionForTokenExpiration).SecondsSinceReferenceDate))
+                    
+                {
+                    LoginManager loginManager = new LoginManager();
+                    loginManager.LoginBehavior = LoginBehavior.Native;
+                    loginManager.LogInWithReadPermissions(new string[] { "public_profile", "email" }, (LoginManagerLoginResult result, NSError error) =>
+                        {
+                            if (error == null)
+                            {
+                                tcs.TrySetResult(result);
+                            }
+                            else
+                            {
+                                tcs.TrySetException(new Exception(error.ToString()));
+                            }
+                        });
+                }
+                else
+                {
+                    tcs.SetResult(new LoginManagerLoginResult(AccessToken.CurrentAccessToken, false, AccessToken.CurrentAccessToken.Permissions, new NSSet()));
+                }
+            }
+            catch(Exception e)
+            {
+                tcs.TrySetException(e);
+            }
 
-						if(connected)
-						{
-							tcs.TrySetResult(null);
-						}
-						else if (error != null)
-						{
-							tcs.TrySetException(new NSErrorException(error));
-						}
-
-					});
-			}
-			catch(Exception e)
-			{
-				tcs.TrySetException(e);
-			}
-
-			return tcs.Task;
+            return tcs.Task;
 		}
 
 		public void Disconnect()
 		{
-			// If the session state is any of the two "open" states when the button is clicked
-			if (FBSession.ActiveSession.State == FBSessionState.Open
-				|| FBSession.ActiveSession.State == FBSessionState.OpenTokenExtended)
-			{
-				// Close the session and remove the access token from the cache
-				// The session state handler (in the app delegate) will be called automatically
-				FBSession.ActiveSession.CloseAndClearTokenInformation();
-			}
+            AccessToken.CurrentAccessToken = null;
 		}
 
 		public Task<FacebookUserInfo> GetUserInfo()
 		{
-			var tcs = new TaskCompletionSource<FacebookUserInfo>();
-			FBRequestConnection.GetMe((connection, result, error) =>
-			{
-				if(error == null)
-				{
-					var graph = (FBGraphObject)result;
-					tcs.TrySetResult(FacebookUserInfo.CreateFrom(graph));
-				}
-				else
-				{
-					tcs.SetException(new NSErrorException(error));
-				}
-			});
+            var keys = new object [] { "fields" };
+            var values = new object [] { "id,first_name,last_name,email" };
+
+            string version = new GraphRequest("/me", null).Version;
+            string httpMethod = new GraphRequest("/me", null).HTTPMethod;
+
+            GraphRequest graphRequest = new GraphRequest("/me", NSDictionary.FromObjectsAndKeys(values, keys), AccessToken.CurrentAccessToken.TokenString, version, httpMethod);
+
+            var tcs = new TaskCompletionSource<FacebookUserInfo>();
+
+            graphRequest.Start((GraphRequestConnection connection, NSObject result, NSError error) =>
+                {
+                    if(error == null)
+                    {
+                        tcs.TrySetResult(FacebookUserInfo.CreateFrom(((NSDictionary)result).Select(v => new KeyValuePair<string, string>(v.Key.ToString(), v.Value.ToString())).ToDictionary(v => v.Key, v => v.Value)));
+                    }
+                    else
+                    {
+                        tcs.SetException(new NSErrorException(error));
+                    }
+                });
+
 			return tcs.Task;
 		}
     }
 }
-
