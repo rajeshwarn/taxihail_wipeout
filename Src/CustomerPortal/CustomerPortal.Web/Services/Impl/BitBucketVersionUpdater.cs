@@ -1,5 +1,7 @@
-﻿#region
-
+﻿using CustomerPortal.Web.Areas.Admin.Models.RequestResponse;
+using CustomerPortal.Web.Entities;
+using MongoRepository;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,18 +9,13 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using CustomerPortal.Web.Areas.Admin.Repository;
-using CustomerPortal.Web.Entities;
-using MongoRepository;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
-#endregion
-
-namespace CustomerPortal.Web.BitBucket
+namespace CustomerPortal.Web.Services.Impl
 {
-    public class VersionUpdater
+    public class BitBucketVersionUpdater : ISourceControl
     {
-        public static void UpdateVersions()
+        public Task<bool> UpdateVersions()
         {
             var repository = new MongoRepository<Revision>();
             var req = WebRequest.Create("https://bitbucket.org/api/1.0/repositories/apcurium/mk-taxi/tags") as HttpWebRequest;
@@ -26,21 +23,15 @@ namespace CustomerPortal.Web.BitBucket
             authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
             req.Headers["Authorization"] = "Basic " + authInfo;
             string result = null;
-            try
+
+            using (var resp = req.GetResponse() as HttpWebResponse)
             {
-                using (var resp = req.GetResponse() as HttpWebResponse)
-                {
-                    var reader = new StreamReader(resp.GetResponseStream());
-                    result = reader.ReadToEnd();
-                }
-            }
-            catch
-            {
-                //return new Dictionary<string, BitbucketTagsResponse>();
+                var reader = new StreamReader(resp.GetResponseStream());
+                result = reader.ReadToEnd();
             }
 
             var revisionsFromBitBucket =
-                JsonConvert.DeserializeObject<Dictionary<string, BitbucketTagsResponse>>(result)
+                JsonConvert.DeserializeObject<Dictionary<string, BitBucketRepoResponse>>(result)
                     .Select(x => new Revision
                     {
                         Id = Guid.NewGuid().ToString(),
@@ -48,8 +39,8 @@ namespace CustomerPortal.Web.BitBucket
                         Tag = x.Key
                     }).ToList();
 
-            
-            
+
+
             revisionsFromBitBucket.Add(GetDefaultRevision());
 
             //Existing Revisions, we ignore version number tags to prevent building a version from an alternate commit.
@@ -67,7 +58,7 @@ namespace CustomerPortal.Web.BitBucket
                     Inactive = rev.Inactive,
                 })
                 .ToArray();
-           
+
 
             if (updatesRevisions.Any())
             {
@@ -81,9 +72,12 @@ namespace CustomerPortal.Web.BitBucket
             {
                 repository.Add(newRevisions);
             }
+
+            return Task.Run(() => { return false; });
+
         }
 
-        public static bool IsVersionNumber(Revision revision)
+        public bool IsVersionNumber(Revision revision)
         {
             //Regex pattern to validate if revision is a version number.
             return Regex.IsMatch(revision.Tag, "^([0-9][0-9]*.[0-9][0-9]*.[0-9][0-9]*(.[0-9][0-9]*)?)$");
@@ -99,23 +93,15 @@ namespace CustomerPortal.Web.BitBucket
             authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
             req.Headers["Authorization"] = "Basic " + authInfo;
             string result = null;
-            try
+
+            using (var resp = req.GetResponse() as HttpWebResponse)
             {
-                using (var resp = req.GetResponse() as HttpWebResponse)
-                {
-                    var reader = new StreamReader(resp.GetResponseStream());
-                    result = reader.ReadToEnd();
-                }
-            }
-            catch
-            {
-                //return new Dictionary<string, BitbucketTagsResponse>();
+                var reader = new StreamReader(resp.GetResponseStream());
+                result = reader.ReadToEnd();
             }
 
             var revisionsFromBitBucket =
-                JsonConvert.DeserializeObject<BitbucketTagsResponse>(result);
-
-
+                JsonConvert.DeserializeObject<BitBucketRepoResponse>(result);
 
 
             return new Revision
@@ -124,10 +110,6 @@ namespace CustomerPortal.Web.BitBucket
                 Commit = revisionsFromBitBucket.node,
                 Tag = "default.tip"
             };
-
-
         }
-
-
     }
 }

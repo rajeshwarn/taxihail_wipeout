@@ -10,41 +10,43 @@ namespace DeploymentServiceTools
 {
     public class TaxiRepository
     {
-        private readonly string _hgPath;
+        private readonly string _exePath;
         private readonly string _sourceDirectory;
+        private readonly bool _isGitHub;
 
-        public TaxiRepository(string hgPath, string sourceDirectory)
+        public TaxiRepository(string exePath, string sourceDirectory, bool isGitHub)
         {
-            _hgPath = hgPath;
+            _exePath = exePath;
             _sourceDirectory = sourceDirectory;
+            _isGitHub = isGitHub;
         }
 
         public void FetchSource(string revisionNumber, Action<string> logger)
         {
-            var hg = new MecurialTools(_hgPath, _sourceDirectory);
-
+            var vsc = VersionControlToolsFactory.GetInstance(_exePath, _sourceDirectory, _isGitHub);
             if (!Directory.Exists(_sourceDirectory))
             {
                 logger("Full Clone");
-                hg.Clone(revisionNumber);
+                vsc.Clone(revisionNumber);
             }
             else
             {
                 try
                 {
-					logger("Hg Revert");
-                    hg.Revert();
-                    logger("Hg Purge");
+					logger("Git Revert");
+                    vsc.Revert();
+                    logger("Git Purge");
                     try
                     {
-                        hg.Purge();
+                        vsc.Purge();
                     }
                     catch (Exception e)
                     {
                         logger("PurgeFailed: " + e.Message);
+                        logger("Continuing...");
                     }
-                    logger("Hg Pull");
-                    hg.Pull();
+                    logger("Git Pull");
+                    vsc.Pull();
                 }
                 catch (Exception)
                 {
@@ -52,12 +54,12 @@ namespace DeploymentServiceTools
                     Delete();
 
                     logger("Full Clone");
-                    hg.Clone(revisionNumber);
+                    vsc.Clone(revisionNumber);
                 }
             }
 
-            logger("Hg Update to rev " + revisionNumber);
-            hg.Update(revisionNumber);
+            logger("Git Update to rev " + revisionNumber);
+            vsc.Update(revisionNumber);
         }
 
         private void Delete()

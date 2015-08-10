@@ -4,9 +4,10 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using CustomerPortal.Web.Areas.Admin.Models;
-using CustomerPortal.Web.BitBucket;
 using CustomerPortal.Web.Entities;
 using MongoRepository;
+using CustomerPortal.Web.Services;
+using System.Threading.Tasks;
 
 #endregion
 
@@ -15,18 +16,21 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
     [Authorize(Roles = RoleName.Admin)]
     public class RevisionController : RevisionControllerBase
     {
-        public RevisionController(IRepository<Revision> repository)
+        private readonly ISourceControl _sourceControl;
+        public RevisionController(IRepository<Revision> repository, ISourceControl sourceControl)
             : base(repository)
         {
+            _sourceControl = sourceControl;
         }
 
         public RevisionController()
-            : this(new MongoRepository<Revision>())
+            : this(new MongoRepository<Revision>(), SourceControlFactory.GetInstance())
         {
         }
 
         public ActionResult Index()
         {
+            ViewBag.MaxTag = TempData["UpdateTagLimitError"];
             var repository = new MongoRepository<Revision>();
             if (!repository.Any())
             {
@@ -48,9 +52,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return View();
         }
 
-        public ActionResult Update()
+        public async Task<ActionResult> Update()
         {
-            VersionUpdater.UpdateVersions();
+            var hasLimitError = await _sourceControl.UpdateVersions();
+            TempData["UpdateTagLimitError"] = hasLimitError ? "There's more than 100 tags, only the first 100 have been fetched." : string.Empty;
             return RedirectToAction("Index");
         }
 

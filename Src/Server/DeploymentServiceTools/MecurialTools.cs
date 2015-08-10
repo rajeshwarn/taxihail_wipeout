@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace DeploymentServiceTools
 {
-    public class MecurialTools
+    public class MecurialTools : IVersionControlTools
     {
         private readonly string _sourceDirectory;
 
@@ -17,7 +17,7 @@ namespace DeploymentServiceTools
             _sourceDirectory = sourceDirectory;
         }
 
-        public string HgPath { get; set; }
+        private string HgPath { get; set; }
 
         public void Pull()
         {

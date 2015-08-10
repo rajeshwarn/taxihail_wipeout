@@ -6,11 +6,12 @@ using System.Linq;
 using System.Web.Mvc;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Attributes;
-using CustomerPortal.Web.BitBucket;
 using CustomerPortal.Web.Entities;
 using ExtendedMongoMembership;
 using MongoRepository;
 using Environment = CustomerPortal.Web.Entities.Environment;
+using CustomerPortal.Web.Services;
+using System.Threading.Tasks;
 
 #endregion
 
@@ -21,16 +22,18 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
     public class DeploymentController : DeployementControllerBase
     {
         private readonly MongoSession _session;
+        private readonly ISourceControl _sourceControl;
         private const string _allCompaniesKey = "allCompaniesKey";
 
-        public DeploymentController(IRepository<DeploymentJob> repository)
+        public DeploymentController(IRepository<DeploymentJob> repository, ISourceControl sourceControl)
             : base(repository)
         {
+            _sourceControl = sourceControl;
             _session = new MongoSession(ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString);
         }
 
         public DeploymentController()
-            : this(new MongoRepository<DeploymentJob>())
+            : this(new MongoRepository<DeploymentJob>(), SourceControlFactory.GetInstance())
         {
         }
 
@@ -135,6 +138,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             model.RevisionId = revisionId;
             model.CreateType = (int) DeploymentJobType.ServerPackage;
 
+            ViewBag.MaxTag = TempData["UpdateTagLimitError"];
+
             return View("Add", model);
         }
 
@@ -215,6 +220,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             model.CompanyId = companyId;
             model.CreateType = (int)DeploymentJobType.DeployServer;
 
+            ViewBag.MaxTag = TempData["UpdateTagLimitError"];
+
             return View("Add", model);
         }
 
@@ -259,6 +266,9 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             model.CallBox = callbox;
             model.IosAdhoc = iosAdhoc;
             model.IosAppStore= iosAppStore;
+
+            ViewBag.MaxTag = TempData["UpdateTagLimitError"];
+
             return View("Add", model);
         }
 
@@ -268,9 +278,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             AddDeploymentJob(model);
             return RedirectToAction("Index");
         }
-        public ActionResult UpdateVersions(int createType)
+        public async Task<ActionResult> UpdateVersions(int createType)
         {
-            VersionUpdater.UpdateVersions();
+            var hasLimitError = await _sourceControl.UpdateVersions();
+            TempData["UpdateTagLimitError"] = hasLimitError ? "There's more than 100 tags, only the first 100 have been fetched." : string.Empty;
             var type = (DeploymentJobType)createType;
             if (type == DeploymentJobType.ServerPackage)
             {
