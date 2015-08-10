@@ -179,5 +179,9 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Company's time zone", Description = "Used to properly show dates in the correct time zone")]
         public TimeZones CompanyTimeZone { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Hide Fare Estimate From IBS", Description = "Prevent sending fare estimate to IBS when creating an order. DO NOT enable this setting if the fare estimate is the real/flat ride fare.")]
+        public bool HideFareEstimateFromIBS { get; protected set; }
     }
 }
