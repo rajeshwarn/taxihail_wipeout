@@ -455,18 +455,20 @@ namespace apcurium.MK.Booking.Services.Impl
                 var aggregateException = ex as AggregateException;
                 if (aggregateException == null)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 var webServiceException = aggregateException.InnerException as WebServiceException;
                 if (webServiceException == null)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 var response = JsonConvert.DeserializeObject<AuthorizationResponse>(webServiceException.ResponseBody);
 
-                return null;
+                _logger.LogMessage(string.Format("Error when trying to pair using DriveLinQ. Code: {0} - {1}"), response.ResponseCode, response.ResponseMessage); 
+
+                throw;
             }
         }
 

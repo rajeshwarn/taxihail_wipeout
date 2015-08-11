@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.EventHandlers.Integration;
@@ -168,7 +169,15 @@ namespace apcurium.MK.Booking.Api.Jobs
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
             if (tripInfo == null)
             {
-                _logger.LogMessage("No Trip information found for order {0} (pairing token {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
+                var errorMessage = string.Format("No Trip information found for order {0} (pairing token {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
+                _logger.LogMessage(errorMessage);
+
+                // Unpair and mark order as cancelled
+                _commandBus.Send(new UnpairOrderForManualRideLinq
+                {
+                    OrderId = rideLinqDetails.OrderId
+                });
+
                 return;
             }
 
