@@ -40,9 +40,6 @@ namespace HoneyBadger
                 return new List<VehicleResponse>();
             }
 
-            var searchRadiusInKm = (searchRadius ?? _serverSettings.ServerData.AvailableVehicles.Radius) / 1000;
-            var numberOfVehicles = _serverSettings.ServerData.AvailableVehicles.Count;
-
             var @params = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("includeEntities", "true"),
@@ -50,6 +47,8 @@ namespace HoneyBadger
                     new KeyValuePair<string, string>("meterState", ((int)MeterStates.ForHire).ToString()),
                     new KeyValuePair<string, string>("logonState", ((int)LogonStates.LoggedOn).ToString())
                 };
+
+            var searchRadiusInKm = (searchRadius ?? _serverSettings.ServerData.AvailableVehicles.Radius) / 1000;
 
             var vertices = GeographyHelper.CirclePointsFromRadius(latitude, longitude, searchRadiusInKm, 10);
 
@@ -67,7 +66,10 @@ namespace HoneyBadger
                 }
             }
 
-            var queryString = BuildQueryString(@params);
+            var honeyBadgerUrlParts = Settings.ServerData.HoneyBadger.ServiceUrl.Split('?');
+            var urlParamsFromSetting = honeyBadgerUrlParts.Length > 1 ? honeyBadgerUrlParts[1] : null;
+
+            var queryString = BuildQueryString(@params, urlParamsFromSetting);
 
             HoneyBadgerResponse response = null;
 
@@ -85,14 +87,18 @@ namespace HoneyBadger
              
             if (response != null && response.Entities != null)
             {
-                var entities = !returnAll ? response.Entities.Take(numberOfVehicles) : response.Entities;
+                var numberOfVehicles = _serverSettings.ServerData.AvailableVehicles.Count;
+                var orderedVehicleList = response.Entities.OrderBy(v => v.Medallion);
+                var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
+
                 return entities.Select(e => new VehicleResponse
                                 {
                                     Timestamp = e.TimeStamp,
                                     Latitude = e.Latitude,
                                     Longitude = e.Longitude,
                                     Medallion = e.Medallion,
-                                    FleetId = e.FleetId
+                                    FleetId = e.FleetId,
+                                    VehicleType = e.VehicleType
                                 });
             }
 
@@ -133,7 +139,10 @@ namespace HoneyBadger
                 }
             }
 
-            var queryString = BuildQueryString(@params);
+            var honeyBadgerUrlParts = Settings.ServerData.HoneyBadger.ServiceUrl.Split('?');
+            var urlParamsFromSetting = honeyBadgerUrlParts.Length > 1 ? honeyBadgerUrlParts[1] : null;
+
+            var queryString = BuildQueryString(@params, urlParamsFromSetting);
 
             HoneyBadgerResponse response = null;
 
