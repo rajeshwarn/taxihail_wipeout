@@ -18,7 +18,7 @@ namespace DeploymentServiceTools
         public void Pull()
         {
             var gitPull = ProcessEx.GetProcess(GitPath,
-                "pull origin master",
+                "fetch",
                 _sourceDirectory);
             using (var exeProcess = Process.Start(gitPull))
             {
