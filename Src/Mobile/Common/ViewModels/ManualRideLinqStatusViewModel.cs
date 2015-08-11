@@ -60,9 +60,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.DisposeWith (Subscriptions);
 		}
 
-		private async Task<OrderManualRideLinqDetail> RefreshDetails(CancellationToken token)
+		private Task<OrderManualRideLinqDetail> RefreshDetails(CancellationToken token)
 		{
-            return await _bookingService.GetTripInfoFromManualRideLinq(OrderId);
+            return _bookingService.GetTripInfoFromManualRideLinq(OrderId);
 		}
 
 		private Guid OrderId { get; set; }
