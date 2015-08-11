@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
@@ -35,6 +36,23 @@ namespace apcurium.MK.Booking.Mobile.Extensions
             return task;
         }
 
+	    public static async void FireAndForget(this Task task)
+	    {
+		    try
+		    {
+			    await task;
+		    }
+		    catch (OperationCanceledException)
+		    {
+			    // Operation Cancelled exception suppressed because we don't need to worry about a cancelled task.
+		    }
+		    catch (Exception ex)
+		    {
+				var logger = TinyIoCContainer.Current.Resolve<ILogger>();
+
+				logger.LogError(ex);
+		    }
+	    }
     }
 }
 
