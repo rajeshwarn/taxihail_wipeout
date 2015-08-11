@@ -62,9 +62,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async Task<OrderManualRideLinqDetail> RefreshDetails(CancellationToken token)
 		{
-            var orderDetails = await _bookingService.GetTripInfoFromManualRideLinq(OrderId);
-
-		    return orderDetails;
+            return await _bookingService.GetTripInfoFromManualRideLinq(OrderId);
 		}
 
 		private Guid OrderId { get; set; }
