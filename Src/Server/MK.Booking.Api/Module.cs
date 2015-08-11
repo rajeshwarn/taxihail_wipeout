@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<Address, IbsAddress>()
                 .ForSourceMember(p => p.FullAddress, options => options.Ignore())
                 // Fix for issue where FullAddress contains a place name at the begining.
-                .AfterMap((addr, ibsAddr) => ibsAddr.FullAddress = Regex.IsMatch(addr.FullAddress, "^^[a-zA-Z]") && addr.DisplayAddress.HasValue()
+                .AfterMap((addr, ibsAddr) => ibsAddr.FullAddress = Regex.IsMatch(addr.FullAddress, "^[a-zA-Z]") && addr.DisplayAddress.HasValue()
                     ? addr.DisplayAddress
                     : addr.FullAddress
                 );
