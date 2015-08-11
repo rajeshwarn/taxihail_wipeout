@@ -35,7 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         private ScrollView _scrollView;
         private Button _cancelButton;
 
-        private CompositeDisposable _subscriptions = new CompositeDisposable();
+	    private bool _isOpen = false;
+
+        private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
         private AddressPickerViewModel ViewModel 
         { 
             get { return (AddressPickerViewModel)DataContext; } 
@@ -90,6 +92,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                 {                    
                     SelectedCommand.Execute(address);
                 };
+
+				Close();
             });
         }
 
@@ -183,14 +187,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             {
                 FocusOnTextField();
             }
+
+	        _isOpen = true;
         } 
 
         public void Close()
         {
-            _addressEditText.HideKeyboard();
-            _favoriteAddressList.Collapse();
-            _recentAddressList.Collapse();
-            _nearbyAddressList.Collapse();
+			_addressEditText.HideKeyboard();
+			_favoriteAddressList.Collapse();
+			_recentAddressList.Collapse();
+			_nearbyAddressList.Collapse();
+            
         }
 
 		public void FocusOnTextField()

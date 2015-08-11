@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         private readonly IMvxPhoneCallTask _phone;
         private readonly IAccountService _accountService;
         private readonly IPaymentService _paymentService;
+	    private HomeViewModelState _homeHomeViewModelState;
 
         private OrderValidationResult _orderValidationResult;
 
@@ -632,7 +633,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        private async Task ShowFareEstimateAlertDialogIfNecessary()
+	    public HomeViewModelState HomeViewModelState
+	    {
+		    get { return _homeHomeViewModelState; }
+		    set
+		    {
+			    _homeHomeViewModelState = value;
+			    RaisePropertyChanged();
+		    }
+	    }
+
+	    private async Task ShowFareEstimateAlertDialogIfNecessary()
         {
             if (await _orderWorkflowService.ShouldWarnAboutEstimate())
             {

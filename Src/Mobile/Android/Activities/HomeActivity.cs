@@ -52,7 +52,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private FrameLayout _frameLayout;
         private int _menuWidth = 400;
         private Bundle _mainBundle;
-	    private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
+		private readonly SerialDisposable _subscriptions = new SerialDisposable();
+		
 	    
 
 	    protected override void OnCreate(Bundle bundle)
@@ -205,8 +206,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			{
 				ViewModel.OnViewLoaded();
                 ViewModel.SubscribeLifetimeChangedIfNecessary ();
-
-				ViewModel.ObserveHomeViewModelStateChanged().Subscribe(ChangeState, Logger.LogError).DisposeWith(_subscriptions);
 			}
 
 			var screenSize = new Point();
@@ -273,7 +272,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.Edit});
 
-			set.Bind(_orderEdit)
+			set.Bind(_searchAddress)
 				.For("Visibility")
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch });
@@ -317,6 +316,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ViewModel.Start();
 
+				_subscriptions.Disposable = ViewModel.ObserveHomeViewModelStateChanged().Subscribe(ChangeState, Logger.LogError);
+
                 if (_locateUserOnStart)
                 {
                     // this happens ONLY when returning from a ride
@@ -336,7 +337,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             MapFragment.Dispose();
 
-			_subscriptions.Clear();
+			_subscriptions.Disposable.Dispose();
         }
 
         protected override void OnSaveInstanceState(Bundle outState)
@@ -539,7 +540,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 _orderReview.StartAnimation(animation);
                 _orderEdit.StartAnimation(animation2);
                 _orderOptions.StartAnimation(animation3);
-
+				
                 _searchAddress.Close();
 
                 SetSelectedOnBookLater(false);
@@ -564,8 +565,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public void ChangePresentation(ChangePresentationHint hint)
         {
             MapFragment.ChangePresentation(hint);
-            _appBar.ChangePresentation(hint);
-            _orderOptions.ChangePresentation(hint);
         }
     }
 }

@@ -20,6 +20,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IVehicleService _vehicleService;
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
+		private bool _pickupSelected;
+		private bool _pickupInputDisabled;
+		private bool _destinationSelected;
+		private bool _destinationInputDisabled;
+		private bool _vehicleTypeInputDisabled;
+
         private string _hashedMarket;
 
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
@@ -49,6 +55,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			ShowDestination = false;
 
 			StartAsync();
+		}
+
+		public void ChangeHomeViewState(HomeViewModelState state)
+		{
+			switch (state)
+			{
+				case HomeViewModelState.Review:
+					PickupSelected = false;
+					PickupInputDisabled = true;
+					DestinationSelected = false;
+					DestinationInputDisabled = true;
+					VehicleTypeInputDisabled = true;
+					break;
+				case HomeViewModelState.PickDate:
+					PickupSelected = false;
+					PickupInputDisabled  = true;
+					DestinationSelected  = false;
+					DestinationInputDisabled = true;
+					VehicleTypeInputDisabled = true;
+					break;
+				case HomeViewModelState.Initial:
+					PickupSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
+					PickupInputDisabled = false;
+					DestinationSelected = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
+					DestinationInputDisabled = false;
+					VehicleTypeInputDisabled = false;
+					break;
+			}
 		}
 
 	    public async Task StartAsync()
@@ -359,6 +393,56 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 });
             }
         }
+
+		public bool PickupSelected
+		{
+			get { return _pickupSelected; }
+			set
+			{
+				_pickupSelected = value; 
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool PickupInputDisabled
+		{
+			get { return _pickupInputDisabled; }
+			set
+			{
+				_pickupInputDisabled = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool DestinationSelected
+		{
+			get { return _destinationSelected; }
+			set
+			{
+				_destinationSelected = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool DestinationInputDisabled
+		{
+			get { return _destinationInputDisabled; }
+			set
+			{
+				_destinationInputDisabled = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool VehicleTypeInputDisabled
+		{
+			get { return _vehicleTypeInputDisabled; }
+			set
+			{
+				_vehicleTypeInputDisabled = value; 
+				RaisePropertyChanged();
+			}
+		}
 
 		private void OnDestinationModeOpened()
 		{
