@@ -48,8 +48,9 @@ namespace DeploymentServiceTools
                     logger("Git Pull");
                     vsc.Pull();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    logger("Flow failed error :" + ex.Message);
                     logger("Revert Failed - Deleting all files");
                     Delete();
 
