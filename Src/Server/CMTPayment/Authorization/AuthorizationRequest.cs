@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using ServiceStack.ServiceHost;
 
 namespace CMTPayment.Authorization
@@ -6,21 +7,32 @@ namespace CMTPayment.Authorization
     [Route("merchants/{MerchantToken}/authorize")]
     public class MerchantAuthorizationRequest : AuthorizationRequest, IReturn<AuthorizationResponse>
     {
-        private static PropertyInfo[] BaseRequestProperties = typeof(AuthorizationRequest).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-        private static System.Type MerchantRequestType = typeof(MerchantAuthorizationRequest);
+        private static readonly PropertyInfo[] BaseRequestProperties = typeof(AuthorizationRequest).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+        private static readonly Type MerchantRequestType = typeof(MerchantAuthorizationRequest);
+
         public string MerchantToken { get; set; }
-        public MerchantAuthorizationRequest() { }
+
+        public MerchantAuthorizationRequest()
+        {
+        }
+
         public MerchantAuthorizationRequest(AuthorizationRequest request, string merchantToken)
             : this()
         {
             SetFromBaseRequest(request);
             MerchantToken = merchantToken;
         }
+
         private void SetFromBaseRequest(AuthorizationRequest request)
         {
-            for (int i = 0; i < BaseRequestProperties.Length; i++)
+            foreach (PropertyInfo baseProperty in BaseRequestProperties)
             {
-                MerchantRequestType.GetProperty(BaseRequestProperties[i].Name).SetValue(this, BaseRequestProperties[i].GetValue(request));
+                var property = MerchantRequestType.GetProperty(baseProperty.Name);
+                if (property.CanWrite)
+                {
+                    property.SetValue(this, baseProperty.GetValue(request));
+                }
             }
         }
     }
