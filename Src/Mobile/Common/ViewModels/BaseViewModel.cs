@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             return ShowViewModel<TViewModel>(parameterValues);
         }
 
-        protected void ShowViewModelAndRemoveFromHistory<TViewModel>(object parameter) where TViewModel : IMvxViewModel
+        protected void ShowViewModelAndRemoveFromHistory<TViewModel>(object parameter = null) where TViewModel : IMvxViewModel
         {
             var dictionary = parameter.ToSimplePropertyDictionary();
             dictionary = dictionary ?? new Dictionary<string,string>();
