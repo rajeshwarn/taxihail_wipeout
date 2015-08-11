@@ -1,6 +1,8 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
@@ -39,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _isShowingCreditCardExpiredPrompt;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
-		private readonly ISubject<Unit> _onNewOrderSubject = new Subject<Unit>(); 
 
 		private HomeViewModelState _currentViewState = HomeViewModelState.Initial;
 
@@ -79,6 +80,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
 			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
+		}
+
+		public bool IsMapEnabled
+		{
+			get { return _isMapEnabled; }
+			set
+			{
+				_isMapEnabled = value;
+				RaisePropertyChanged();
+			}
 		}
 
 
@@ -326,6 +337,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
+		public IObservable<HomeViewModelState> ObserveHomeViewModelStateChanged()
+		{
+			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+					h => PropertyChanged += h,
+					h => PropertyChanged -= h
+				)
+				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+				.Select(_ => CurrentViewState);
+		}
+
 	    public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
@@ -462,6 +483,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    CurrentViewState = state;
 	    }
 
+		public new ICommand CloseCommand
+		{
+			get
+			{
+				return this.GetCommand(() =>
+				{
+					switch (CurrentViewState)
+					{
+						case HomeViewModelState.Review:
+						case HomeViewModelState.PickDate:
+						case HomeViewModelState.AddressSearch:
+						case HomeViewModelState.AirportSearch:
+						case HomeViewModelState.TrainStationSearch:
+							CurrentViewState = HomeViewModelState.Initial;
+							break;
+						case HomeViewModelState.Edit:
+							CurrentViewState = HomeViewModelState.Review;
+							break;
+						default:
+							base.CloseCommand.ExecuteIfPossible();
+							break;
+					}
+				});
+			}
+		}
 
 	    public ICommand AirportSearch
 	    {
@@ -487,11 +533,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_currentViewState = value;
 				RaisePropertyChanged();
 			}
-		}
-
-		public IObservable<Unit> OnNewOrderObservable
-		{
-			get { return _onNewOrderSubject; }
 		}
 
 		private async void SetMapCenterToUserLocation(bool initialZoom, CancellationToken cancellationToken = default(CancellationToken))
@@ -562,7 +603,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (e.IsNewOrder)
 			{
-				_onNewOrderSubject.OnNext(Unit.Default);
+				AutomaticLocateMeAtPickup.ExecuteIfPossible();
 			}
 
             if (e.State == HomeViewModelState.Initial)
@@ -577,8 +618,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _subscribedToLifetimeChanged;
 	    private bool _isManualRideLinqEnabled;
+		private bool _isMapEnabled;
 
-	    public void SubscribeLifetimeChangedIfNecessary()
+		public void SubscribeLifetimeChangedIfNecessary()
 		{
 			if (!_subscribedToLifetimeChanged)
 			{

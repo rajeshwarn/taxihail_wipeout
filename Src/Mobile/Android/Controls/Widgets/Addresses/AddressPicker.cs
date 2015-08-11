@@ -181,14 +181,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             await ViewModel.LoadAddresses(filterAddresses).HandleErrors();
 			if (filterAddresses == AddressLocationType.Unspeficied || ViewModel.AllAddresses.Count > 1)
             {
-                Visibility = ViewStates.Visible;
                 FocusOnTextField();
             }
         } 
 
         public void Close()
         {
-            Visibility = ViewStates.Gone;
             _addressEditText.HideKeyboard();
             _favoriteAddressList.Collapse();
             _recentAddressList.Collapse();

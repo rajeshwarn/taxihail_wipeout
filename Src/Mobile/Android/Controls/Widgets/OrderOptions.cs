@@ -158,6 +158,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public void ChangePresentation(ChangePresentationHint hint)
         {
+			//TODO: MKTAXI-1960 this should be driven by view model, not view
             if (hint is HomeViewModelPresentationHint)
             {
                 ChangeState((HomeViewModelPresentationHint)hint);

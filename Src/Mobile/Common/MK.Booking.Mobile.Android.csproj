@@ -125,6 +125,7 @@
     <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\CurrencyFormatConverter.cs" />
+    <Compile Include="BindingConverter\HomeViewStateToVisibilityConverter.cs" />
     <Compile Include="BindingConverter\NoValueToVisibilityConverter.cs" />
     <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
