@@ -1,14 +1,12 @@
-using System;
-using Android.Content;
-using Android.Util;
-using Android.Widget;
-using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using Android.Content;
+using Android.Runtime;
+using Android.Util;
+using Android.Views;
+using Android.Widget;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
-using Android.Views;
-using apcurium.MK.Booking.Mobile.Data;
-using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -72,22 +70,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set.Bind (_viewPickup.AddressTextView)
                 .To (vm => vm.PickupAddress.DisplayAddress);
 
-			//set.Bind(_viewPickup)
-			//	.For(v => v.IsSelected)
-			//	.To(vm => vm.PickupSelected);
+			set.Bind(_viewPickup)
+				.For(v => v.UserInputDisabled)
+				.To(vm => vm.PickupInputDisabled);
 
-			//set.Bind(_viewPickup)
-			//	.For(v => v.UserInputDisabled)
-			//	.To(vm => vm.PickupInputDisabled);
-			
-
-			//set.Bind(_viewDestination)
-			//	.For(v => v.IsSelected)
-			//	.To(vm => vm.DestinationSelected);
-
-			//set.Bind(_viewDestination)
-			//	.For(v => v.UserInputDisabled)
-			//	.To(vm => vm.DestinationInputDisabled);
+			set.Bind(_viewDestination)
+				.For(v => v.UserInputDisabled)
+				.To(vm => vm.DestinationInputDisabled);
 
 			set.Bind(_viewDestination)
 				.For(v => v.IsSelected)
@@ -124,9 +113,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				.For (v => v.SelectedVehicle)
 				.To (vm => vm.SelectedVehicleType);
 
-			//set.Bind(_viewVehicleType)
-			//	.For(v => v.IsReadOnly)
-			//	.To(vm => vm.VehicleTypeInputDisabled);
+			set.Bind(_viewVehicleType)
+				.For(v => v.IsReadOnly)
+				.To(vm => vm.VehicleTypeInputDisabled);
 
 			set.Bind (_viewPickup)
                 .For ("AddressClicked")

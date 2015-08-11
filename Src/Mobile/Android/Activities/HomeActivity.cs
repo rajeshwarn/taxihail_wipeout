@@ -418,10 +418,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			if (state == HomeViewModelState.PickDate)
             {
                 SetMapEnabled(false);
-                // Order Options: Visible
-                // Order Review: Hidden
-                // Order Edit: Hidden
-                // Date Picker: Visible
 
                 ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 
@@ -442,10 +438,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			else if (state == HomeViewModelState.Review)
             {
                 SetMapEnabled(false);
-                // Order Options: Visible
-                // Order Review: Visible
-                // Order Edit: Hidden
-                // Date Picker: Hidden
 
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, _orderOptions.Height);
                 animation.AnimationStart += (sender, e) =>
@@ -476,11 +468,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			else if (state == HomeViewModelState.Edit)
             {
                 SetMapEnabled(false);
-
-                // Order Options: Hidden
-                // Order Review: Hidden
-                // Order Edit: Visible
-                // Date Picker: Hidden
 
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, screenSize.Y);
                 animation.AnimationEnd += (sender, e) =>
@@ -518,10 +505,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			else if (state == HomeViewModelState.Initial)
             {
                 SetMapEnabled(true);
-                // Order Options: Visible
-                // Order Review: Hidden
-                // Order Edit: Hidden
-                // Date Picker: Hidden
 
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, screenSize.Y);
                 animation.AnimationEnd += (sender, e) =>
