@@ -5,8 +5,10 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
+using System.ComponentModel;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Maps;
@@ -43,10 +45,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
 			Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
 			Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
-            Observe (_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketChanged(hashedMarket));
+            Observe (_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
             Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
+			Observe(ObserveHomeViewModelState(), UpdateHomeViewState);
 		}
+
+		private IObservable<HomeViewModelState> ObserveHomeViewModelState()
+		{
+			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+					h => Parent.PropertyChanged += h,
+					h => Parent.PropertyChanged -= h
+				)
+				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
+				.DistinctUntilChanged();
+		}
+
 
 		public void Init()
 		{
@@ -55,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			StartAsync();
 		}
 
-		public void ChangeHomeViewState(HomeViewModelState state)
+		public void UpdateHomeViewState(HomeViewModelState state)
 		{
 			switch (state)
 			{

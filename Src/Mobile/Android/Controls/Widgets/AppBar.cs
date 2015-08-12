@@ -2,6 +2,7 @@ using Android.Content;
 using Android.Util;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Android.Runtime;
 using Cirrious.MvvmCross.Binding.BindingContext;
@@ -28,17 +29,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 	        set.Bind(bookButtons)
 		        .For(v => v.Visibility)
-		        .To(vm => vm.HomeViewModelState)
+		        .To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
 		        .WithConversion("HomeViewStateToVisibility", new[] {HomeViewModelState.Initial});
 
 			set.Bind(editButtons)
 				.For(v => v.Visibility)
-				.To(vm => vm.HomeViewModelState)
+				.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Edit });
 
 			set.Bind(reviewButtons)
 				.For(v => v.Visibility)
-				.To(vm => vm.HomeViewModelState)
+				.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Review });
 
 			set.Apply();

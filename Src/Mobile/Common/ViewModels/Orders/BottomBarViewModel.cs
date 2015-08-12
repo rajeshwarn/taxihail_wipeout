@@ -633,16 +633,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-	    public HomeViewModelState HomeViewModelState
-	    {
-		    get { return _homeHomeViewModelState; }
-		    set
-		    {
-			    _homeHomeViewModelState = value;
-			    RaisePropertyChanged();
-		    }
-	    }
-
 	    private async Task ShowFareEstimateAlertDialogIfNecessary()
         {
             if (await _orderWorkflowService.ShouldWarnAboutEstimate())

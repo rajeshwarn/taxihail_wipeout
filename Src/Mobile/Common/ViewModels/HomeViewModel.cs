@@ -512,10 +512,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				_currentViewState = value;
 				RaisePropertyChanged();
-
-				//Propagate change on child ViewModel
-				BottomBar.HomeViewModelState = value;
-				OrderOptions.ChangeHomeViewState(value);
 			}
 		}
 
