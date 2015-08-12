@@ -80,14 +80,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
 			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
-
-			ObserveHomeViewModelStateChanged()
-				.Subscribe(state =>
-				{
-					BottomBar.HomeViewModelState = state;
-					OrderOptions.ChangeHomeViewState(state);
-				})
-				.DisposeWith(Subscriptions);
 		}
 
 
@@ -335,17 +327,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-		public IObservable<HomeViewModelState> ObserveHomeViewModelStateChanged()
-		{
-			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-					h => PropertyChanged += h,
-					h => PropertyChanged -= h
-				)
-				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
-				.Select(_ => CurrentViewState)
-				.DistinctUntilChanged();
-		}
-
 	    public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
@@ -531,6 +512,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				_currentViewState = value;
 				RaisePropertyChanged();
+
+				//Propagate change on child ViewModel
+				BottomBar.HomeViewModelState = value;
+				OrderOptions.ChangeHomeViewState(value);
 			}
 		}
 
