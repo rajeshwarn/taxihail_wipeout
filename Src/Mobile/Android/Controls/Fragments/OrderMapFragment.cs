@@ -24,6 +24,7 @@ using Cirrious.MvvmCross.Binding.Droid.Views;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Maps.Geo;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Color = Android.Graphics.Color;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
@@ -31,25 +32,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     public class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
     {
         public GoogleMap Map { get; set;}
-        public TouchableMap _touchableMap { get; set;}
+	    public TouchableMap TouchableMap { get; set;}
         private ImageView _pickupOverlay;
         private ImageView _destinationOverlay;
         private Marker _pickupPin;
         private Marker _destinationPin;
-        private CompositeDisposable _subscriptions = new CompositeDisposable();
-        private bool bypassCameraChangeEvent = false;
+        private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
+        private bool _bypassCameraChangeEvent = false;
 
-        private List<Marker> _availableVehicleMarkers = new List<Marker> ();
+        private readonly List<Marker> _availableVehicleMarkers = new List<Marker> ();
 
         private BitmapDescriptor _destinationIcon;
         private BitmapDescriptor _hailIcon;
 
-        private Resources _resources;
-		private TaxiHailSetting _settings;
+        private readonly Resources _resources;
+		private readonly TaxiHailSetting _settings;
 
         private IDictionary<string, BitmapDescriptor> _vehicleIcons; 
 
-		private const int _mapPadding = 60;
+		private const int MAP_PADDING = 60;
 
 		public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
@@ -67,11 +68,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             // the padding must be the same for left/right and top/bottom for the pins to be correctly aligned
 			Map.SetPadding (6.ToPixels(), 6.ToPixels(), 6.ToPixels(), 6.ToPixels());
 
-            _touchableMap = mapFragment;
+            TouchableMap = mapFragment;
 
             InitializeOverlayIcons();
 
-            this.DelayBind(() => InitializeBinding());
+            this.DelayBind(InitializeBinding);
 
             CreatePins();
         }
@@ -84,12 +85,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var red = Color.Argb(255, 255, 0, 23);
             var green = Color.Argb(255, 30, 192, 34);
 
-            _pickupOverlay = (ImageView)_touchableMap.Activity.FindViewById(Resource.Id.pickupOverlay);
+            _pickupOverlay = (ImageView)TouchableMap.Activity.FindViewById(Resource.Id.pickupOverlay);
             _pickupOverlay.Visibility = ViewStates.Visible;
             _pickupOverlay.SetPadding(0, 0, 0, _pickupOverlay.Drawable.IntrinsicHeight / 2);
             _pickupOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.hail_icon, useCompanyColor ? companyColor : green, true));
 
-            _destinationOverlay = (ImageView)_touchableMap.Activity.FindViewById(Resource.Id.destinationOverlay);
+            _destinationOverlay = (ImageView)TouchableMap.Activity.FindViewById(Resource.Id.destinationOverlay);
             _destinationOverlay.Visibility = ViewStates.Visible;
             _destinationOverlay.SetPadding(0, 0, 0, _destinationOverlay.Drawable.IntrinsicHeight / 2);
             _destinationOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.destination_icon, useCompanyColor ? companyColor : red, true));
@@ -182,7 +183,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var set = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
 
-            _touchableMap.Surface.Touched += (object sender, MotionEvent e) =>
+            TouchableMap.Surface.Touched += (sender, e) =>
             {
                 switch (e.Action)
                 {
@@ -198,20 +199,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }               
             };
 
-            _touchableMap.Surface.MoveBy = (deltaX, deltaY) =>
+            TouchableMap.Surface.MoveBy = (deltaX, deltaY) =>
             {
-                _touchableMap.Map.MoveCamera(CameraUpdateFactory.ScrollBy(deltaX, deltaY));
+                TouchableMap.Map.MoveCamera(CameraUpdateFactory.ScrollBy(deltaX, deltaY));
             };
 
-            _touchableMap.Surface.ZoomBy = (animate, zoomByAmount) =>
+            TouchableMap.Surface.ZoomBy = (animate, zoomByAmount) =>
             {
                 if(animate)
                 {
-                    _touchableMap.Map.AnimateCamera (CameraUpdateFactory.ZoomBy(zoomByAmount));
+                    TouchableMap.Map.AnimateCamera (CameraUpdateFactory.ZoomBy(zoomByAmount));
                 }
                 else
                 {
-                    _touchableMap.Map.MoveCamera (CameraUpdateFactory.ZoomBy(zoomByAmount));
+                    TouchableMap.Map.MoveCamera (CameraUpdateFactory.ZoomBy(zoomByAmount));
                 }
             };
 
@@ -219,7 +220,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .FromEventPattern<GoogleMap.CameraChangeEventArgs>(Map, "CameraChange")
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(e => OnCameraChanged(e))
+                .Subscribe(OnCameraChanged)
                 .DisposeWith(_subscriptions);
 
             set.Bind()
@@ -233,7 +234,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set.Bind()
                 .For(v => v.DestinationAddress)
                 .To(vm => vm.DestinationAddress);
-
 
             set.Bind()
                 .For(v => v.AvailableVehicles)
@@ -332,7 +332,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
             {
-                Position position = new Position(){ Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
+                var position = new Position(){ Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
 
                 _destinationPin.Visible = false;
                 _pickupOverlay.Visibility = ViewStates.Invisible;
@@ -356,7 +356,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 if (DestinationAddress.HasValidCoordinate())
                 {
-                    Position position = new Position(){ Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
+                    var position = new Position(){ Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
                     _destinationPin.Visible = true;
                     _destinationPin.Position = new LatLng(position.Latitude, position.Longitude);             
                 }
@@ -369,9 +369,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void OnCameraChanged(System.Reactive.EventPattern<GoogleMap.CameraChangeEventArgs> e)
         {
-            if (bypassCameraChangeEvent)
+            if (_bypassCameraChangeEvent)
             {
-                bypassCameraChangeEvent = false;
+                _bypassCameraChangeEvent = false;
                 return;
             }
 
@@ -466,7 +466,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 // When doing this presentation change, we don't want to reverse geocode the position since we already know the address and it's already set
                 // It occurs on Android only, because of a Camera Change event
-                bypassCameraChangeEvent = true;
+                _bypassCameraChangeEvent = true;
                 var zoomLevel = streetLevelZoomHint.InitialZoom 
                     ? _settings.InitialZoomLevel 
                     : MapViewModel.ZoomStreetLevel;
@@ -490,7 +490,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
 				{
 					// add a negative padding to counterbalance the map padding done for the "Google" legal logo on the map
-					Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds (GetRegionFromMapBounds(newBounds), -_mapPadding.ToPixels())); 
+					Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds (GetRegionFromMapBounds(newBounds), -MAP_PADDING.ToPixels())); 
 				}
 			}
 

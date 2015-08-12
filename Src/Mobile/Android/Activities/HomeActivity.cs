@@ -277,6 +277,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch });
 
+		    set.Bind(_touchMap)
+			    .For(v => v.IsMapGestuesEnabled)
+			    .To(vm => vm.CurrentViewState)
+			    .WithConversion("EnumToBool", HomeViewModelState.Initial);
+
 		    set.Apply();
 	    }
 
@@ -420,15 +425,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnLowMemory();
         }
 
-        private void SetMapEnabled(bool enabled)
-        {
-            // TODO: MKTAXI-1960 this should be done on the ChangePresentation of the map itself, like iOS
-            _touchMap.Map.UiSettings.SetAllGesturesEnabled(enabled);
-			_touchMap.View.Enabled = enabled;
-            _btnLocation.Enabled = enabled;
-            _btnSettings.Enabled = enabled;
-        }
-
 		private void ChangeState(HomeViewModelState state)
         {
 			var screenSize = new Point();
@@ -437,8 +433,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			if (state == HomeViewModelState.PickDate)
             {
-                SetMapEnabled(false);
-
                 ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 
                 SetSelectedOnBookLater(true);
@@ -448,17 +442,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 			else if (state == HomeViewModelState.BookATaxi)
             {
-                SetMapEnabled(false);
-
                 ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 
                 var intent = new Intent(this, typeof (OrderBookingOptionsDialogActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.BookATaxi);
             }
 			else if (state == HomeViewModelState.Review)
-            {
-                SetMapEnabled(false);
-
+            {	
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, _orderOptions.Height);
                 animation.AnimationStart += (sender, e) =>
                 {
@@ -487,8 +477,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 			else if (state == HomeViewModelState.Edit)
             {
-                SetMapEnabled(false);
-
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, screenSize.Y);
                 animation.AnimationEnd += (sender, e) =>
                 {
@@ -509,23 +497,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 			else if (state == HomeViewModelState.AddressSearch)
             {
-                SetMapEnabled(false);
                 _searchAddress.Open(AddressLocationType.Unspeficied);
             }
 			else if (state == HomeViewModelState.AirportSearch)
             {
-                SetMapEnabled(false);
                 _searchAddress.Open(AddressLocationType.Airport);
             }
 			else if (state == HomeViewModelState.TrainStationSearch)
             {
-                SetMapEnabled(false);
                 _searchAddress.Open(AddressLocationType.Train);
             }
 			else if (state == HomeViewModelState.Initial)
             {
-                SetMapEnabled(true);
-
                 var animation = AnimationHelper.GetForYTranslation(_orderReview, screenSize.Y);
                 animation.AnimationEnd += (sender, e) =>
                 {

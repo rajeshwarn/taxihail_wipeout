@@ -1,25 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
-using System.Linq;
-using MapBounds = apcurium.MK.Booking.Maps.Geo.MapBounds;
+using Position = apcurium.MK.Booking.Mobile.Infrastructure.Position;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class MapViewModel: BaseViewModel
     {
 		// seconds
-		static readonly int TimeToKeepVehiclesOnMapWhenResultNull = 10;
-		DateTime? KeepVehiclesWhenResultNullStartTime = null;
+		private const int TIME_TO_KEEP_VEHICLES_ON_MAP_WHEN_RESULT_NULL = 10;
+		private DateTime? _keepVehiclesWhenResultNullStartTime;
        
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IVehicleService _vehicleService;
@@ -100,18 +96,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				if (value.Count == 0 && _availableVehicles.Count > 0)
 				{
-					if (KeepVehiclesWhenResultNullStartTime == null)
+					if (_keepVehiclesWhenResultNullStartTime == null)
 					{
-						KeepVehiclesWhenResultNullStartTime = DateTime.Now;
+						_keepVehiclesWhenResultNullStartTime = DateTime.Now;
 						return;
 					}
-					else if ((DateTime.Now - KeepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TimeToKeepVehiclesOnMapWhenResultNull)
+					else if ((DateTime.Now - _keepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TIME_TO_KEEP_VEHICLES_ON_MAP_WHEN_RESULT_NULL)
 					{
 						return;
 					}
 				}
 
-				KeepVehiclesWhenResultNullStartTime = null;
+				_keepVehiclesWhenResultNullStartTime = null;
 
 				_availableVehicles = value;
 				RaisePropertyChanged();
