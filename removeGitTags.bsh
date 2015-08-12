@@ -1,0 +1,37 @@
+function contains() {
+    local n=$#
+    local value=${!n}
+    for ((i=1;i < $#;i++)) {
+        if [[ "${!i}" == "${value}" ]]; then
+            echo "y"
+            return 0
+        fi
+    }
+    echo "n"
+    return 1
+}
+
+IFS=$'\r\n' GLOBIGNORE='*' :; Tags=($(cat tagsList))
+
+echo ''
+echo ''
+echo 'WARNING!!!!! Do you also want to remove REMOTE TAGS'
+echo ''
+echo "Press [Yes/n] :"
+echo ''
+
+read -e deleteRemote
+
+echo "$deleteRemote"
+for t in `git tag`
+    do
+        if [ $(contains "${Tags[@]}" $t) != "y" ]; then
+            if [ "$deleteRemote" == "Yes" ]; then
+                echo "deleting remote tags"
+                git push origin :$t
+            fi
+                echo "deleting local tags"
+                git tag -d $t
+
+        fi
+done
