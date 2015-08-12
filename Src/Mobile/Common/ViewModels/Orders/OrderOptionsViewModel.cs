@@ -48,6 +48,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             Observe (_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
             Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
+		}
+
+		public override void OnViewStarted(bool firstTime)
+		{
+			base.OnViewStarted(firstTime);
+
+			
+		}
+
+		public override void Start()
+		{
+			base.Start();
+
 			Observe(ObserveHomeViewModelState(), UpdateHomeViewState);
 		}
 
