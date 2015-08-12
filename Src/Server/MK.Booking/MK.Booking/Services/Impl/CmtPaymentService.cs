@@ -31,7 +31,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ServerPaymentSettings _serverPaymentSettings;
         private readonly IPairingService _pairingService;
         private readonly ICreditCardDao _creditCardDao;
-        private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
         private readonly IOrderPaymentDao _paymentDao;
 
@@ -46,8 +45,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IOrderPaymentDao paymentDao,
             ServerPaymentSettings serverPaymentSettings,
             IPairingService pairingService,
-            ICreditCardDao creditCardDao,
-            IServerSettings serverSettings)
+            ICreditCardDao creditCardDao)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
@@ -57,7 +55,6 @@ namespace apcurium.MK.Booking.Services.Impl
             _serverPaymentSettings = serverPaymentSettings;
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
-            _serverSettings = serverSettings;
         }
 
         public PaymentProvider ProviderType(string companyKey, Guid? orderId = null)
@@ -496,13 +493,11 @@ namespace apcurium.MK.Booking.Services.Impl
 
             MerchantAuthorizationRequest merchantRequest = null;
 
-            var serverPaymentSettings = _serverSettings.GetPaymentSettings();
-
-            if (!serverPaymentSettings.CmtPaymentSettings.SubmitAsFleetAuthorization)
+            if (!_serverPaymentSettings.CmtPaymentSettings.SubmitAsFleetAuthorization)
             {
                 merchantRequest = new MerchantAuthorizationRequest(request)
                 {
-                    MerchantToken = serverPaymentSettings.CmtPaymentSettings.MerchantToken
+                    MerchantToken = _serverPaymentSettings.CmtPaymentSettings.MerchantToken
                 };
             }
 
