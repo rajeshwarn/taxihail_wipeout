@@ -332,9 +332,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnPause();	        
             if (ViewModel != null)
             {
-                ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
-
-	           // _subscription.Disposable = null;
+	            ViewModel.UnsubscribeLifetimeChangedIfNecessary();
             }
         }
 
