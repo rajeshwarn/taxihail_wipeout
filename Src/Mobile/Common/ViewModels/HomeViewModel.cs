@@ -515,6 +515,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		public bool CanUseCloseCommand()
+		{
+			return CurrentViewState != HomeViewModelState.Initial;
+		}
+
 		private async void SetMapCenterToUserLocation(bool initialZoom, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			try

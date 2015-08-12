@@ -301,6 +301,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (ViewModel != null)
             {
                 ViewModel.SubscribeLifetimeChangedIfNecessary ();
+
+				_subscription.Disposable = ObserveCurrentViewState();
             }
             base.OnRestart ();
         }
@@ -311,11 +313,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var mainLayout = FindViewById(Resource.Id.HomeLayout);
             mainLayout.Invalidate();
             _touchMap.OnResume();
-
-	        if (ViewModel != null)
-	        {
-				_subscription.Disposable = ObserveCurrentViewState();
-	        }
         }
 
 	    private IDisposable ObserveCurrentViewState()
@@ -337,7 +334,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
 
-	            _subscription.Disposable = null;
+	           // _subscription.Disposable = null;
             }
         }
 
@@ -550,9 +547,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 return false;
             }
 
-            if (keyCode == Keycode.Back)
+			if (keyCode == Keycode.Back && ViewModel.CanUseCloseCommand())
             {
 	            ViewModel.CloseCommand.ExecuteIfPossible();
+
+	            return false;
             }
 
             return base.OnKeyDown(keyCode, e);
