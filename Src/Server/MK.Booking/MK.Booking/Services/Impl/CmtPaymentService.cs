@@ -527,6 +527,11 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private TokenizeDeleteResponse DeleteCreditCard(TokenizeDeleteRequest request)
         {
+            return new TokenizeDeleteResponse
+            {
+                ResponseCode = 1
+            };
+            /*
             InitializeServiceClient();
 
             TokenizeDeleteResponse response;
@@ -557,6 +562,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             
             return response;
+             */
         }
 
         private ReverseResponse Reverse(ReverseRequest request)
