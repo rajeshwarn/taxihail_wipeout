@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
@@ -14,12 +13,10 @@ using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class OrderEditViewModel: BaseViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
+	public class OrderEditViewModel: BaseViewModel
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
-
-        public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
 		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService)
 		{
@@ -131,7 +128,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 						return;
 					}
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
+
+					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
 				});
 			}
 		}
@@ -147,8 +145,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 					BookingSettings = bookingSettings.Copy();
 					PickupAddress = pickupAddress.Copy();
-					
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
+					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
 				});
 			}
 		}

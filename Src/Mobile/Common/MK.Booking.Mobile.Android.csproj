@@ -326,7 +326,6 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="ViewModels\UpdatedTermsAndConditionsViewModel.cs" />
     <Compile Include="ViewModels\IRequestPresentationState.cs" />
-    <Compile Include="ViewModels\Orders\HomeViewModelStateRequestedEventArgs.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="ViewModels\ISubViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />

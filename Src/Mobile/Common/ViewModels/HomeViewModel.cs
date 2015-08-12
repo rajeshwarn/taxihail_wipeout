@@ -565,40 +565,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		protected sealed override TViewModel AddChild<TViewModel>()
-		{
-            var child = base.AddChild<TViewModel>();
-			var rps = child as IRequestPresentationState<HomeViewModelStateRequestedEventArgs>;
-			if (rps != null)
-			{
-				rps.PresentationStateRequested += OnPresentationStateRequested;
-			}
-
-            return child;
-		}
-
-		private void OnPresentationStateRequested(object sender, HomeViewModelStateRequestedEventArgs e)
-		{
-			CurrentViewState = e.State;
-
-			if (e.IsNewOrder)
-			{
-				AutomaticLocateMeAtPickup.ExecuteIfPossible();
-			}
-
-            if (e.State == HomeViewModelState.Initial)
-            {
-                _vehicleService.Start ();
-            }
-            else
-            {
-                _vehicleService.Stop ();
-            }
-		}
-
 		private bool _subscribedToLifetimeChanged;
 	    private bool _isManualRideLinqEnabled;
-		private bool _isMapEnabled;
 
 		public void SubscribeLifetimeChangedIfNecessary()
 		{

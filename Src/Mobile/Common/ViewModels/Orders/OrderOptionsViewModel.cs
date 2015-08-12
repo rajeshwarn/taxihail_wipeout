@@ -15,12 +15,11 @@ using apcurium.MK.Booking.Maps;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class OrderOptionsViewModel : BaseViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
+	public class OrderOptionsViewModel : BaseViewModel
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
-        public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
 		private bool _pickupInputDisabled;
 		private bool _destinationInputDisabled;
@@ -50,13 +49,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
 		}
 
-		public override void OnViewStarted(bool firstTime)
-		{
-			base.OnViewStarted(firstTime);
-
-			
-		}
-
 		public override void Start()
 		{
 			base.Start();
@@ -80,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			ShowDestination = false;
 
-			StartAsync();
+			StartAsync().FireAndForget();
 		}
 
 		public void UpdateHomeViewState(HomeViewModelState state)
@@ -146,9 +138,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	    async Task SetDefaultVehicleType()
 		{
 			var data = await _accountService.GetReferenceData ();
-			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.Value);
+			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault??false);
 			var defaultId = defaultVehicleType != null
-                ? defaultVehicleType.Id.Value
+                ? defaultVehicleType.Id??0
                 : 0;
 
 			VehicleTypes = new List<VehicleType>
@@ -392,8 +384,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				    {
 				        _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
 				    }
-
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AddressSearch));
+					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AddressSearch;
 				});
 			}
 		}
@@ -409,7 +400,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
                     }
 
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AddressSearch));
+					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AddressSearch;
                 });
             }
         }
