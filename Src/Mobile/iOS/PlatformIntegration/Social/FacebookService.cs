@@ -10,6 +10,7 @@ using UIKit;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 {
@@ -52,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
                 _facebookApplicationID = Mvx.Resolve<apcurium.MK.Common.Configuration.IAppSettings>().Data.FacebookAppId;
 
                 Facebook.CoreKit.Settings.AppID = _facebookApplicationID;
-                Facebook.CoreKit.Settings.AppUrlSchemeSuffix = "taxihail";
+                Facebook.CoreKit.Settings.AppUrlSchemeSuffix = Mvx.Resolve<IAppSettings>().Data.TaxiHail.ApplicationName.ToLower().Replace (" ", string.Empty);
                 Profile.EnableUpdatesOnAccessTokenChange(true);
 
                 if (AccessToken.CurrentAccessToken == null
@@ -61,9 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
                 {
                     LoginManager loginManager = new LoginManager();
                     loginManager.LoginBehavior = LoginBehavior.Native;
-                    loginManager.LogInWithReadPermissions(new string[] { "public_profile", "email" }, (LoginManagerLoginResult result, NSError error) =>
-                        {
-                        });
+                    loginManager.LogInWithReadPermissions(new string[] { "public_profile", "email" }, (LoginManagerLoginResult result, NSError error) => {});
                 }
             }
             catch(Exception ex)
@@ -83,11 +82,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 
             try
             {
-
                 if (AccessToken.CurrentAccessToken == null
                     || (AccessToken.CurrentAccessToken != null
                         && NSDate.Now.SecondsSinceReferenceDate >= AccessToken.CurrentAccessToken.ExpirationDate.AddSeconds(TimeCorrectionForTokenExpiration).SecondsSinceReferenceDate))
-                    
                 {
                     LoginManager loginManager = new LoginManager();
                     loginManager.LoginBehavior = LoginBehavior.Native;
@@ -118,7 +115,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 
 		public void Disconnect()
 		{
-            AccessToken.CurrentAccessToken = null;
+            LoginManager loginManager = new LoginManager();
+            loginManager.LogOut();
 		}
 
 		public Task<FacebookUserInfo> GetUserInfo()
