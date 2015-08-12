@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 	public class FacebookService: IFacebookService
     {
         // seconds
-        private static readonly double TimeCorrectionForTokenExpiration = -(60 * 60);
+        private static readonly double MinimumTimeTokenStayActive = 60 * 60;
 
         private static string _facebookApplicationID;
 
@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 
                 if (AccessToken.CurrentAccessToken == null
                     || (AccessToken.CurrentAccessToken != null
-                        && NSDate.Now.SecondsSinceReferenceDate >= AccessToken.CurrentAccessToken.ExpirationDate.AddSeconds(TimeCorrectionForTokenExpiration).SecondsSinceReferenceDate))
+						&& NSDate.Now.SecondsSinceReferenceDate >= AccessToken.CurrentAccessToken.ExpirationDate.AddSeconds(-MinimumTimeTokenStayActive).SecondsSinceReferenceDate))
                 {
                     LoginManager loginManager = new LoginManager();
                     loginManager.LoginBehavior = LoginBehavior.Native;
@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
             {
                 if (AccessToken.CurrentAccessToken == null
                     || (AccessToken.CurrentAccessToken != null
-                        && NSDate.Now.SecondsSinceReferenceDate >= AccessToken.CurrentAccessToken.ExpirationDate.AddSeconds(TimeCorrectionForTokenExpiration).SecondsSinceReferenceDate))
+						&& NSDate.Now.SecondsSinceReferenceDate >= AccessToken.CurrentAccessToken.ExpirationDate.AddSeconds(-MinimumTimeTokenStayActive).SecondsSinceReferenceDate))
                 {
                     LoginManager loginManager = new LoginManager();
                     loginManager.LoginBehavior = LoginBehavior.Native;
