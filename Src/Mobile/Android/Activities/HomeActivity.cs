@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private FrameLayout _frameLayout;
         private int _menuWidth = 400;
         private Bundle _mainBundle;
-		private readonly SerialDisposable _subscriptions = new SerialDisposable();
+		private readonly SerialDisposable _subscription = new SerialDisposable();
 		
 	    
 
@@ -296,14 +296,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var mainLayout = FindViewById(Resource.Id.HomeLayout);
             mainLayout.Invalidate();
             _touchMap.OnResume();
+
+	        if (ViewModel != null)
+	        {
+				_subscription.Disposable = ObserveCurrentViewState();
+	        }
         }
 
-        protected override void OnPause()
+	    private IDisposable ObserveCurrentViewState()
+	    {
+		    return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+			    h => ViewModel.PropertyChanged += h,
+			    h => ViewModel.PropertyChanged -= h
+			    )
+			    .Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+			    .Select(_ => ViewModel.CurrentViewState)
+			    .DistinctUntilChanged()
+			    .Subscribe(ChangeState, Logger.LogError);
+	    }
+
+	    protected override void OnPause()
         {
             base.OnPause();	        
             if (ViewModel != null)
             {
                 ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
+
+	            _subscription.Disposable = null;
             }
         }
 
@@ -316,7 +335,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ViewModel.Start();
 
-				_subscriptions.Disposable = ViewModel.ObserveHomeViewModelStateChanged().Subscribe(ChangeState, Logger.LogError);
+				_subscription.Disposable = ObserveCurrentViewState();
 
                 if (_locateUserOnStart)
                 {
@@ -337,7 +356,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             MapFragment.Dispose();
 
-			_subscriptions.Disposable.Dispose();
+			_subscription.Disposable = null;
         }
 
         protected override void OnSaveInstanceState(Bundle outState)
@@ -405,6 +424,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             // TODO: MKTAXI-1960 this should be done on the ChangePresentation of the map itself, like iOS
             _touchMap.Map.UiSettings.SetAllGesturesEnabled(enabled);
+			_touchMap.View.Enabled = enabled;
             _btnLocation.Enabled = enabled;
             _btnSettings.Enabled = enabled;
         }
