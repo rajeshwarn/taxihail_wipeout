@@ -4,6 +4,7 @@ using System.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -30,6 +31,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ServerPaymentSettings _serverPaymentSettings;
         private readonly IPairingService _pairingService;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
         private readonly IOrderPaymentDao _paymentDao;
 
@@ -44,7 +46,8 @@ namespace apcurium.MK.Booking.Services.Impl
             IOrderPaymentDao paymentDao,
             ServerPaymentSettings serverPaymentSettings,
             IPairingService pairingService,
-            ICreditCardDao creditCardDao)
+            ICreditCardDao creditCardDao,
+            IServerSettings serverSettings)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
@@ -54,6 +57,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _serverPaymentSettings = serverPaymentSettings;
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
+            _serverSettings = serverSettings;
         }
 
         public PaymentProvider ProviderType(string companyKey, Guid? orderId = null)
@@ -490,21 +494,31 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             InitializeServiceClient();
 
-            if (!_serverPaymentSettings.CmtPaymentSettings.SubmitAsFleetAuthorization)
+            MerchantAuthorizationRequest merchantRequest = null;
+
+            var serverPaymentSettings = _serverSettings.GetPaymentSettings();
+
+            if (!serverPaymentSettings.CmtPaymentSettings.SubmitAsFleetAuthorization)
             {
-                request = new MerchantAuthorizationRequest(request, _serverPaymentSettings.CmtPaymentSettings.MerchantToken);
+                merchantRequest = new MerchantAuthorizationRequest(request)
+                {
+                    MerchantToken = serverPaymentSettings.CmtPaymentSettings.MerchantToken
+                };
             }
 
             AuthorizationResponse response;
+
             try
             {
-                var responseTask = _cmtPaymentServiceClient.PostAsync(request);
+                var responseTask = merchantRequest != null
+                    ? _cmtPaymentServiceClient.PostAsync(merchantRequest)
+                    : _cmtPaymentServiceClient.PostAsync(request);
+
                 responseTask.Wait();
                 response = responseTask.Result;
             }
             catch (Exception ex)
             {
-                _logger.LogMessage("An error occured while trying to autorize a CMT payment.");
                 _logger.LogError(ex);
 
                 var aggregateException = ex as AggregateException;
