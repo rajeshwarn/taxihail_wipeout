@@ -11,7 +11,7 @@ using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public partial class OrderOptionsControl : BaseBindableChildView<OrderOptionsViewModel>, IChangePresentation
+    public partial class OrderOptionsControl : BaseBindableChildView<OrderOptionsViewModel>
     {
         private NSLayoutConstraint _heightConstraint;
 
@@ -54,45 +54,68 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				.For(v => v.IsSelected)
 				.To(vm => vm.AddressSelectionMode)
 				.WithConversion("EnumToBool", AddressSelectionMode.PickupSelection);
+            
             set.Bind(viewPickup)
                 .For(v => v.IsLoadingAddress)
                 .To(vm => vm.IsLoadingAddress);
+
             set.Bind(viewPickup.AddressTextView)
                 .To(vm => vm.PickupAddress.DisplayAddress);
+
+            set.Bind(viewPickup)
+                .For(v => v.UserInputDisabled)
+                .To(vm => vm.PickupInputDisabled);
 
             set.Bind(viewDestination)
                 .For(v => v.Hidden)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("BoolInverter");
+            
 			set.Bind(viewDestination)
 				.For(v => v.IsSelected)
 				.To(vm => vm.AddressSelectionMode)
 				.WithConversion("EnumToBool", AddressSelectionMode.DropoffSelection);
+            
             set.Bind(viewDestination)
                 .For(v => v.IsLoadingAddress)
                 .To(vm => vm.IsLoadingAddress);
+            
             set.Bind(viewDestination.AddressTextView)
                 .To(vm => vm.DestinationAddress.DisplayAddress);
+
+            set.Bind(viewDestination)
+                .For(v => v.UserInputDisabled)
+                .To(vm => vm.DestinationInputDisabled);
+
+            set.Bind(viewVehicleType)
+                .For(v => v.IsReadOnly)
+                .To(vm => vm.VehicleTypeInputDisabled);
 
             set.Bind(viewVehicleType)
                 .For(v => v.EstimatedFare)
                 .To(vm => vm.EstimatedFare);
+            
             set.Bind(viewVehicleType)
                 .For(v => v.Hidden)
 				.To(vm => vm.VehicleAndEstimateBoxIsVisible)
                 .WithConversion("BoolInverter");
+            
             set.Bind(viewVehicleType)
                 .For(v => v.ShowEstimate)
 				.To(vm => vm.ShowEstimate);
+            
 			set.Bind(viewVehicleType)
 				.For(v => v.ShowVehicleSelection)
 				.To(vm => vm.ShowVehicleSelection);
+            
             set.Bind (viewVehicleType)
                 .For (v => v.Vehicles)
                 .To (vm => vm.VehicleTypes);
+            
             set.Bind (viewVehicleType)
                 .For (v => v.SelectedVehicle)
                 .To (vm => vm.SelectedVehicleType);
+            
 			set.Bind (viewVehicleType)
 				.For (v => v.Eta)
 				.To (vm => vm.FormattedEta);
@@ -101,9 +124,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Hidden)
                 .To(vm => vm.ShowEta)
                 .WithConversion("BoolInverter");
+            
             set.Bind (viewEta)
                 .For (v => v.SelectedVehicle)
                 .To (vm => vm.SelectedVehicleType);
+            
             set.Bind (viewEta)
                 .For (v => v.Eta)
                 .To (vm => vm.FormattedEta);
@@ -138,42 +163,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             _heightConstraint.Constant = (nfloat)Subviews[0].Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height);
             SetNeedsDisplay();
-        }
-
-        private void ChangeState(HomeViewModelPresentationHint hint)
-        {
-            switch (hint.State)
-            {
-				case HomeViewModelState.Review:
-                    viewPickup.IsSelected = false;
-					viewPickup.UserInputDisabled = true;
-                    viewDestination.IsSelected = false;
-					viewDestination.UserInputDisabled = true;
-                    viewVehicleType.IsReadOnly = true;
-                    break;
-                case HomeViewModelState.PickDate:
-                    viewPickup.IsSelected = false;
-					viewPickup.UserInputDisabled = true;
-                    viewDestination.IsSelected = false;
-					viewDestination.UserInputDisabled = true;
-                    viewVehicleType.IsReadOnly = true;
-                    break;
-                case HomeViewModelState.Initial:
-					viewPickup.IsSelected = ViewModel.AddressSelectionMode == AddressSelectionMode.PickupSelection;
-                    viewPickup.UserInputDisabled = false;
-                    viewDestination.IsSelected = ViewModel.AddressSelectionMode == AddressSelectionMode.DropoffSelection;
-					viewDestination.UserInputDisabled = false;
-                    viewVehicleType.IsReadOnly = false;
-                    break;
-            }
-        }
-
-        void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
-        {
-            if (hint is HomeViewModelPresentationHint)
-            {
-                ChangeState((HomeViewModelPresentationHint)hint);
-            }
         }
     }
 }

@@ -6,12 +6,18 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using System;
+using System.ComponentModel;
+using System.Reactive.Linq;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
+using System.Reactive.Disposables;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class HomeView : BaseViewController<HomeViewModel>, IChangePresentation
     {
         private BookLaterDatePicker _datePicker;
+        private readonly SerialDisposable _subscription = new SerialDisposable();
 
         public override void ViewWillAppear (bool animated)
         {
@@ -30,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (ViewModel != null)
             {
                 ViewModel.SubscribeLifetimeChangedIfNecessary ();
+                _subscription.Disposable = ObserveCurrentViewState();
             }
         }
 
@@ -40,7 +47,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (ViewModel != null)
             {
                 ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
+                _subscription.Disposable = null;
             }
+        }
+
+        private IDisposable ObserveCurrentViewState()
+        {
+            return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+                h => ViewModel.PropertyChanged += h,
+                h => ViewModel.PropertyChanged -= h
+            )
+                .Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+                .Select(_ => ViewModel.CurrentViewState)
+                .DistinctUntilChanged()
+                .Subscribe(ChangeState, Logger.LogError);
         }
 
         public override void ViewDidLoad()
@@ -126,17 +146,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Apply();
         }
 
-        public void ChangePresentation(ChangePresentationHint hint)
-        {            
-            if (hint is HomeViewModelPresentationHint)
-            {
-                ChangeState((HomeViewModelPresentationHint)hint);
-            }
-        }
-
-        void ChangeState(HomeViewModelPresentationHint hint)
+        void ChangeState(HomeViewModelState state)
         {
-			if (hint.State == HomeViewModelState.PickDate)
+			if (state == HomeViewModelState.PickDate)
 			{
 				// Order Options: Visible
 				// Order Review: Hidden
@@ -147,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 				_datePicker.Show();
 			}
-			else if (hint.State == HomeViewModelState.Review)
+			else if (state == HomeViewModelState.Review)
 			{
 				// Order Options: Visible
 				// Order Review: Visible
@@ -172,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					},
 					RedrawSubViews);
 			}
-			else if (hint.State == HomeViewModelState.BookATaxi)
+			else if (state == HomeViewModelState.BookATaxi)
 			{
 				constraintOrderBookinOptionsTopSpace.Constant = 0;
 				homeView.LayoutIfNeeded();
@@ -185,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					},
 					RedrawSubViews);
 			}
-			else if (hint.State == HomeViewModelState.Edit)
+			else if (state == HomeViewModelState.Edit)
 			{
 				// Order Options: Hidden
 				// Order Review: Hidden
@@ -204,7 +216,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						ctrlOrderOptions.SetNeedsDisplay();
 					}, () => orderEdit.SetNeedsDisplay());
 			}
-			else if (hint.State == HomeViewModelState.Initial)
+			else if (state == HomeViewModelState.Initial)
 			{
 				// Order Options: Visible
 				// Order Review: Hidden
@@ -244,7 +256,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					{
 						RedrawSubViews();
 					});
-				switch (hint.State)
+				switch (state)
 				{
 					case HomeViewModelState.AddressSearch:
 						ctrlAddressPicker.Open(AddressLocationType.Unspeficied);
@@ -256,7 +268,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						ctrlAddressPicker.Open(AddressLocationType.Train);
 						break;
 				}
-
 			}
         }
 
@@ -283,6 +294,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             orderEdit.SetNeedsDisplay();
             ctrlOrderOptions.SetNeedsDisplay();
 			ctrlOrderBookingOptions.SetNeedsDisplay();
+        }
+
+        public void ChangePresentation(ChangePresentationHint hint)
+        {
+            mapView.ChangePresentation(hint);
         }
     }
 }
