@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private int _selectedKey = int.MinValue;
         private Spinner _spinner;
         private string _text;
+		private Button _button;
 
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
         public EditTextRightSpinner(Context context)
@@ -61,7 +62,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 _text = value;
-                if (_label != null) _label.Text = value;
+				if (_label != null)
+				{
+					_label.Text = value;
+					_button.ContentDescription = this.ContentDescription + " " + Text;
+				}
             }
         }
 
@@ -148,9 +153,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					}
                 }
             }
-            var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);
 
-            button.Click += (sender, e) =>
+			_button = (Button)layout.FindViewById(Resource.Id.openSpinnerButton);
+
+			_button.ContentDescription = this.ContentDescription + " " + Text;
+
+			_button.Click += (sender, e) =>
             {
                 if (Enabled)
                 {

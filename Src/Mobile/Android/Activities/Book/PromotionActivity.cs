@@ -5,7 +5,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "PromotionActivity",
+	[Activity(Label = "@string/PromotionActivityName",
         Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class PromotionActivity : BaseBindingActivity<PromotionViewModel>

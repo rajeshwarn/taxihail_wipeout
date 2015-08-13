@@ -19,7 +19,7 @@ using ClipboardManager = Android.Text.ClipboardManager;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-	[Activity(Label = "Login",
+	[Activity(Label = "@string/LoginActivityName",
         Theme = "@style/LoginTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     [IntentFilter(new[] { Intent.ActionView },
