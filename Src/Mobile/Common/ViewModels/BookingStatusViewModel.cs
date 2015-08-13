@@ -19,7 +19,6 @@ using apcurium.MK.Booking.Maps;
 using System.Net;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels

@@ -451,14 +451,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private void GotoBookingStatus(Tuple<Order, OrderStatusDetail> result)
-		{
-			//TODO: MKTAXI-2726 - Do booking status state change here.
-			ShowViewModel<BookingStatusViewModel>(new {
-				order = result.Item1.ToJson(),
-				orderStatus = result.Item2.ToJson()
-			});
-		}
 
         public ICommand BookLater
         {

@@ -156,11 +156,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    }
 			    else
 			    {
-                    ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
-                    {
-                        order = lastOrder.Item1.ToJson(),
-                        orderStatus = lastOrder.Item2.ToJson()
-                    });
+					GotoBookingStatus(lastOrder.Item1, lastOrder.Item2);
 			    }
 
 				
@@ -332,6 +328,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_bookingStatus = value; 
 				RaisePropertyChanged();
 			}
+		}
+
+		public void GotoBookingStatus(Order order, OrderStatusDetail orderStatusDetail)
+		{
+			CurrentViewState = HomeViewModelState.BookingStatus;
+
+			BookingStatus.StartBookingStatus(order,orderStatusDetail);
 		}
 
 		public PanelMenuViewModel Panel { get; set; }
