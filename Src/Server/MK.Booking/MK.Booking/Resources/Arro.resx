@@ -132,4 +132,16 @@
   <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
     <value>Sorry, no driver accepted. Please try again in a bit.</value>
   </data>
+  <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
+    <value>Sorry, no driver accepted. Please try again in a bit.</value>
+  </data>
+  <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
+    <value>Taxi {0}</value>
+  </data>
+  <data name="OrderStatus_wosARRIVED" xml:space="preserve">
+    <value>Your taxi has arrived. Driver will wait 3 minutes.</value>
+  </data>
+  <data name="PushNotification_wosARRIVED" xml:space="preserve">
+    <value>Your Taxi (#{0}) has arrived. Driver will wait 3 minutes.</value>
+  </data>
 </root>

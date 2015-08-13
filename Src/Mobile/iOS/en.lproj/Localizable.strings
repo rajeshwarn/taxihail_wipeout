@@ -654,3 +654,4 @@
 "BookingAirportPickupPointFee"="Selecting Pickup Point {0} will incurr an additional Fee of {1}";
 "BookingAirportDetails"="Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}";
 "BookingAirportDetailsFee"=", (Pickup Fee: {0})";
+"ManualRideLinqStatus_Cancelled"="You have been unpaired from RideLinQ. Please type in the pairing code again.";

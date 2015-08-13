@@ -42,17 +42,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshInterval))
                 .SelectMany((_, cancellationToken) => RefreshDetails(cancellationToken))
-				.Where(orderDetails => orderDetails.EndTime.HasValue)
+				.Where(orderDetails => orderDetails.EndTime.HasValue || orderDetails.IsCancelled)
 				.Take(1) // trigger only once
 				.Subscribe(
-					ToRideSummary,
+				    orderDetails =>
+				    {
+				        if (orderDetails.IsCancelled)
+				        {
+				            HandlePairingError();
+				        }
+				        else
+				        {
+                            ToRideSummary(orderDetails);
+				        }
+				    },
 					Logger.LogError)
 				.DisposeWith (Subscriptions);
 		}
 
-		private async Task<OrderManualRideLinqDetail> RefreshDetails(CancellationToken token)
+		private Task<OrderManualRideLinqDetail> RefreshDetails(CancellationToken token)
 		{
-            return await _bookingService.GetTripInfoFromManualRideLinq(OrderId);
+            return _bookingService.GetTripInfoFromManualRideLinq(OrderId);
 		}
 
 		private Guid OrderId { get; set; }
@@ -105,6 +115,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel>(new { orderId = orderManualRideLinqDetail.OrderId});
 		}
+
+        private void HandlePairingError()
+        {
+            this.Services().Message.ShowMessage(
+                this.Services().Localize["CmtRideLinqErrorTitle"],
+                this.Services().Localize["ManualRideLinqStatus_Cancelled"],
+                () =>
+                {
+                    ShowViewModelAndClearHistory<HomeViewModel>();
+                });
+        }
 
         public ICommand EditAutoTipCommand
         {

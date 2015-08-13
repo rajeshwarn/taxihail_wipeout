@@ -4,6 +4,7 @@ using System.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -455,18 +456,20 @@ namespace apcurium.MK.Booking.Services.Impl
                 var aggregateException = ex as AggregateException;
                 if (aggregateException == null)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 var webServiceException = aggregateException.InnerException as WebServiceException;
                 if (webServiceException == null)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 var response = JsonConvert.DeserializeObject<AuthorizationResponse>(webServiceException.ResponseBody);
 
-                return null;
+                _logger.LogMessage(string.Format("Error when trying to pair using DriveLinQ. Code: {0} - {1}"), response.ResponseCode, response.ResponseMessage); 
+
+                throw;
             }
         }
 
@@ -488,21 +491,29 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             InitializeServiceClient();
 
+            MerchantAuthorizationRequest merchantRequest = null;
+
             if (!_serverPaymentSettings.CmtPaymentSettings.SubmitAsFleetAuthorization)
             {
-                request = new MerchantAuthorizationRequest(request, _serverPaymentSettings.CmtPaymentSettings.MerchantToken);
+                merchantRequest = new MerchantAuthorizationRequest(request)
+                {
+                    MerchantToken = _serverPaymentSettings.CmtPaymentSettings.MerchantToken
+                };
             }
 
             AuthorizationResponse response;
+
             try
             {
-                var responseTask = _cmtPaymentServiceClient.PostAsync(request);
+                var responseTask = merchantRequest != null
+                    ? _cmtPaymentServiceClient.PostAsync(merchantRequest)
+                    : _cmtPaymentServiceClient.PostAsync(request);
+
                 responseTask.Wait();
                 response = responseTask.Result;
             }
             catch (Exception ex)
             {
-                _logger.LogMessage("An error occured while trying to autorize a CMT payment.");
                 _logger.LogError(ex);
 
                 var aggregateException = ex as AggregateException;

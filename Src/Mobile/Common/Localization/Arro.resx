@@ -126,4 +126,7 @@
   <data name="StatusCancelButton" xml:space="preserve">
     <value>Cancel this ride</value>
   </data>
+  <data name="StatusEta" xml:space="preserve">
+    <value>is {0} {1} away</value>
+  </data>
 </root>
