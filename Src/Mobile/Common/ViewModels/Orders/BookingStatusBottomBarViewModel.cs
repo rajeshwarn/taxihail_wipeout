@@ -4,7 +4,6 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -94,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							{
 								this.Services().Analytics.LogEvent("BookCancelled");
 								_bookingService.ClearLastOrder();
-								ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true });
+								ParentViewModel.ReturnToInitialState();
 							}
 							else
 							{

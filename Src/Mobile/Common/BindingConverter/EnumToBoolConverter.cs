@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Globalization;
+using System.Linq;
 using Cirrious.CrossCore.Converters;
 
 namespace apcurium.MK.Booking.Mobile.BindingConverter
@@ -15,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 
 		public override object Convert (object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value == null)
+			if (value == null || parameter == null)
 			{
 				return InvertResultIfNecessary (false);
 			}
@@ -26,7 +28,14 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 			{
 				return InvertResultIfNecessary (false);
 			}
-			return InvertResultIfNecessary(name.Equals(parameter.ToString()));
+
+			var paramArray = parameter as IEnumerable;
+
+			var valueIsInParam = paramArray == null
+				? name.Equals(parameter.ToString())
+				: paramArray.Cast<object>().Select(item => item.ToString()).Any(item => name.Equals(item));
+
+			return InvertResultIfNecessary(valueIsInParam);
 		}
 
 		private bool InvertResultIfNecessary(bool value)

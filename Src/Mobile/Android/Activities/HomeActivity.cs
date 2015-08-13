@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -25,6 +26,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
@@ -46,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
         private AddressPicker _searchAddress;
+	    private AppBarBookingStatus _appBarBookingStatus;
         private ImageView _btnLocation; 
 		private LinearLayout _btnSettings;
         private AppBar _appBar;
@@ -53,8 +56,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private int _menuWidth = 400;
         private Bundle _mainBundle;
 		private readonly SerialDisposable _subscription = new SerialDisposable();
-		
-	    
 
 	    protected override void OnCreate(Bundle bundle)
         {
@@ -225,6 +226,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
 			_btnSettings = FindViewById<LinearLayout>(Resource.Id.btnSettings);
             _btnLocation = FindViewById<ImageView>(Resource.Id.btnLocation);
+	        _appBarBookingStatus = FindViewById<AppBarBookingStatus>(Resource.Id.appBarBookingStatus);
 
             // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside
             _orderOptions.BigInvisibleButton = _bigButton;
@@ -260,37 +262,64 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		    set.Bind(_orderReview).For("DataContext").To(vm => vm.OrderReview); // OrderReview View Bindings
 		    set.Bind(_searchAddress).For("DataContext").To(vm => vm.AddressPicker); // OrderReview View Bindings
 		    set.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
+		    set.Bind(_appBarBookingStatus).For("DataContext").To(vm => vm.BookingStatus.BottomBar);
 
 			//Setup Visibility
 		    set.Bind(_orderReview)
-			    .For("Visibility")
+			    .For(v => v.Visibility)
 			    .To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.Review});
+				.WithConversion("HomeViewStateToVisibility", new[]{ HomeViewModelState.Review });
 
 			set.Bind(_orderEdit)
-				.For("Visibility")
+				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.Edit});
+				.WithConversion("HomeViewStateToVisibility", new[]{ HomeViewModelState.Edit });
 
 			set.Bind(_searchAddress)
-				.For("Visibility")
+				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch });
+			
+			set.Bind(_appBar)
+				.For(v => v.Visibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Initial, HomeViewModelState.Review, HomeViewModelState.Edit, HomeViewModelState.BookATaxi });
 
+			set.Bind(_appBarBookingStatus)
+				.For(v => v.Visibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+			
+			set.Bind(_orderOptions)
+				.For(v => v.Visibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[]
+				{
+					HomeViewModelState.Initial, 
+					HomeViewModelState.PickDate,
+					HomeViewModelState.BookATaxi,
+					HomeViewModelState.Edit, 
+					HomeViewModelState.AddressSearch, 
+					HomeViewModelState.AirportSearch, 
+					HomeViewModelState.TrainStationSearch
+				});
+
+
+			//Setup Map enabled state.
 		    set.Bind(_touchMap)
 			    .For(v => v.IsMapGestuesEnabled)
 			    .To(vm => vm.CurrentViewState)
-			    .WithConversion("EnumToBool", HomeViewModelState.Initial);
+				.WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus });
 
 			set.Bind(_btnLocation)
 				.For(v => v.Enabled)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("EnumToBool", HomeViewModelState.Initial);
+				.WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus });
 		    
 			set.Bind(_btnSettings)
 				.For(v => v.Enabled)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("EnumToBool", HomeViewModelState.Initial);
+				.WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus });
 
 		    set.Apply();
 	    }

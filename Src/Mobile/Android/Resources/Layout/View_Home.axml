@@ -159,6 +159,12 @@
                     android:id="@+id/appBar"
                     android:layout_height="wrap_content"
                     android:background="@color/setting_menu_color" />
+							<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarBookingStatus
+									android:layout_width="fill_parent"
+									android:layout_height="wrap_content"
+									android:id="@+id/appBarBookingStatus"
+									android:background="@color/setting_menu_color" />
+									
             </LinearLayout>
         <!-- Address Search -->
             <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressPicker

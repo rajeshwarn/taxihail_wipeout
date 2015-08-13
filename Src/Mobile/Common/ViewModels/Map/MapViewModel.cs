@@ -28,43 +28,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_orderWorkflowService = orderWorkflowService;
 			_vehicleService = vehicleService;
 
+			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
 			Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(), isDestinationModeOpened => IsDestinationModeOpened = isDestinationModeOpened);
-            Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
             Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
-
         }
-
-		public override void Start()
-		{
-			base.Start();
-
-			Observe(ObserveCurrentHomeViewModelState(), HomeViewModelStateChanged);
-		}
-
-		private void HomeViewModelStateChanged(HomeViewModelState state)
-		{
-			if (state == HomeViewModelState.Initial)
-			{
-				IsMapDisabled = false;
-			}
-			else
-			{
-				IsMapDisabled = true;
-			}
-		}
-
-		private IObservable<HomeViewModelState> ObserveCurrentHomeViewModelState()
-		{
-			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-					h => Parent.PropertyChanged += h,
-					h => Parent.PropertyChanged -= h
-				)
-				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
-				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
-				.DistinctUntilChanged();
-		}
 
 		public static int ZoomStreetLevel = 14;
 
@@ -119,20 +88,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				_isDestinationModeOpened = value;
 				RaisePropertyChanged();
-			}
-		}
-
-		private bool _isMapDisabled;
-		public bool IsMapDisabled
-		{
-			get { return _isMapDisabled; }
-			set
-			{
-				if (_isMapDisabled != value)
-				{
-					_isMapDisabled = value;
-					RaisePropertyChanged();
-				}
 			}
 		}
 

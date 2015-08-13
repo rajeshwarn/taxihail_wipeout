@@ -518,18 +518,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}.ToStringDictionary());
 		}
 
-        public async void GoToBookingScreen()
+        private async void GoToBookingScreen()
 		{
             if (!_waitingToNavigateAfterTimeOut)
             {
 				_waitingToNavigateAfterTimeOut = true;
 				await Task.Delay (TimeSpan.FromSeconds (10));
-				_bookingService.ClearLastOrder();
-				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
+				ReturnToInitialState();
             }
         }
 
-        private void CenterMap()
+		public void ReturnToInitialState()
+		{
+			_bookingService.ClearLastOrder();
+			((HomeViewModel) Parent).CurrentViewState = HomeViewModelState.Initial;
+
+			StopBookingStatus();
+		}
+
+		private void CenterMap()
         {   
 			if (Order == null) 
 			{
