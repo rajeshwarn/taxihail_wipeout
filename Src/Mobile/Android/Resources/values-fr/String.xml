@@ -624,7 +624,7 @@
 	<string name="CloseTutorial">Fermer l\'aide</string>
 	<string name="TutorialActivityName">Aide</string>
 	<string name="HomeActivityName">Accueil</string>
-	<string name="PasswordRecoveryActivityName">Reinitialisation de mot de passe</string>
+	<string name="PasswordRecoveryActivityName">Réinitialisation de mot de passe</string>
 	<string name="LocationDetailsActivityName">Détails de localisation</string>
 	<string name="LoginActivityName">Se connecter</string>
 	<string name="LocationsActivityName">Adresses favorites</string>
