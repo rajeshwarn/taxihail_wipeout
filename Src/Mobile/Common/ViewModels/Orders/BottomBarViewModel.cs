@@ -13,6 +13,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using ServiceStack.Text;
+using System.ComponentModel;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -43,8 +44,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 Observe(ObserveIsPromoCodeApplied(), isPromoCodeApplied => IsPromoCodeActive = isPromoCodeApplied);
             }
 
+			RefreshAppBarViewState(HomeViewModelState.Initial);
+
             Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), OrderValidated);
         }
+
+		public override void Start()
+		{
+			base.Start();
+
+			Observe(ObserveHomeViewModelState(), RefreshAppBarViewState);
+		}
+
+		private void RefreshAppBarViewState(HomeViewModelState state)
+		{
+			if (state == HomeViewModelState.PickDate || state == HomeViewModelState.BookATaxi)
+			{
+				// These states don't affect visibility
+				return;
+			}
+
+			HideOrderButtons = !(state == HomeViewModelState.Initial && !IsManualRidelinqEnabled);
+			HideReviewButtons = state != HomeViewModelState.Review;
+			HideEditButtons = state != HomeViewModelState.Edit;
+			HideManualRideLinqButtons = !(state == HomeViewModelState.Initial && IsManualRidelinqEnabled);
+		}
+
+		private IObservable<HomeViewModelState> ObserveHomeViewModelState()
+		{
+			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+				h => Parent.PropertyChanged += h,
+				h => Parent.PropertyChanged -= h
+			)
+				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
+				.DistinctUntilChanged();
+		}
 
         public async void CheckManualRideLinqEnabledAsync(bool isInMarket)
         {
@@ -107,6 +142,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             set
             {
                 _isManualRidelinqEnabled = value;
+
+				RefreshAppBarViewState(((HomeViewModel)Parent).CurrentViewState);
+
                 RaisePropertyChanged();
                 RaisePropertyChanged(() => BookButtonText);
             }
@@ -116,11 +154,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool BookButtonHidden
 		{
-			get
-			{
-				return _bookButtonHidden;
-			}
-
+			get { return _bookButtonHidden; }
 			set
 			{
 				_bookButtonHidden = value;
@@ -141,6 +175,64 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 }
             }
         }
+
+		#region iOS Bindings
+		private bool _hideManualRideLinqButtons;
+		public bool HideManualRideLinqButtons
+		{
+			get { return _hideManualRideLinqButtons; }
+			set
+			{
+				if (_hideManualRideLinqButtons != value)
+				{
+					_hideManualRideLinqButtons = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+
+		private bool _hideOrderButtons;
+		public bool HideOrderButtons
+		{
+			get { return _hideOrderButtons; }
+			set
+			{
+				if (_hideOrderButtons != value)
+				{
+					_hideOrderButtons = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+
+		private bool _hideReviewButtons;
+		public bool HideReviewButtons
+		{
+			get { return _hideReviewButtons; }
+			set
+			{
+				if (_hideReviewButtons != value)
+				{
+					_hideReviewButtons = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+
+		private bool _hideEditButtons;
+		public bool HideEditButtons
+		{
+			get { return _hideEditButtons; }
+			set
+			{
+				if (_hideEditButtons != value)
+				{
+					_hideEditButtons = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
 
         private void OrderValidated(OrderValidationResult orderValidationResult)
         {
