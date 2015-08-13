@@ -447,7 +447,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				var result = await _orderWorkflowService.ConfirmOrder();
 				this.Services().Analytics.LogEvent("Book");
-				GotoBookingStatus(result);
+				((HomeViewModel)Parent).GotoBookingStatus(result.Item1, result.Item2);
 			}
 		}
 
