@@ -1,10 +1,6 @@
 using System;
-using System.ComponentModel;
 using System.Linq;
-using System.Reactive;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Windows.Input;
@@ -16,15 +12,15 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class HomeViewModel : PageViewModel
+	public sealed class HomeViewModel : PageViewModel
     {
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly ILocationService _locationService;
@@ -77,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderEdit = AddChild<OrderEditViewModel>();
 			BottomBar = AddChild<BottomBarViewModel>();
 			AddressPicker = AddChild<AddressPickerViewModel>();
+			BookingStatus = AddChild<BookingStatusViewModel>();
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
 			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
@@ -327,7 +324,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-	    public PanelMenuViewModel Panel { get; set; }
+		public BookingStatusViewModel BookingStatus
+		{
+			get { return _bookingStatus; }
+			set
+			{
+				_bookingStatus = value; 
+				RaisePropertyChanged();
+			}
+		}
+
+		public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
 		public MapViewModel Map
@@ -476,6 +483,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						case HomeViewModelState.AddressSearch:
 						case HomeViewModelState.AirportSearch:
 						case HomeViewModelState.TrainStationSearch:
+						case HomeViewModelState.BookingStatus:
 							CurrentViewState = HomeViewModelState.Initial;
 							break;
 						case HomeViewModelState.Edit:
@@ -517,7 +525,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool CanUseCloseCommand()
 		{
-			return CurrentViewState != HomeViewModelState.Initial;
+			return CurrentViewState != HomeViewModelState.Initial && BookingStatus.CanGoBack;
 		}
 
 		private async void SetMapCenterToUserLocation(bool initialZoom, CancellationToken cancellationToken = default(CancellationToken))
@@ -544,7 +552,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 					catch (TimeoutException)
 					{ 
-						Console.WriteLine("ZoomOnNearbyVehiclesIfPossible: Timeout occured while waiting for available vehicles");
+						Console.WriteLine(@"ZoomOnNearbyVehiclesIfPossible: Timeout occured while waiting for available vehicles");
 					}
 				}
 			}
@@ -572,6 +580,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _subscribedToLifetimeChanged;
 	    private bool _isManualRideLinqEnabled;
+		private BookingStatusViewModel _bookingStatus;
 
 		public void SubscribeLifetimeChangedIfNecessary()
 		{
