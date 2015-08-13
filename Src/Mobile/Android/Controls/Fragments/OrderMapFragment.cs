@@ -128,6 +128,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 _addressSelectionMode = value;
+
                 ShowMarkers();
             }
         }
@@ -328,7 +329,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             ShowMarkers();
         }
 
-        void ShowMarkers()
+        private void ShowMarkers()
         {
             if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
             {
@@ -348,7 +349,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     _pickupPin.Visible = false;
                 }
             }
-            else
+            else if(AddressSelectionMode == AddressSelectionMode.PickupSelection)
             {
                 _pickupPin.Visible = false;
                 _destinationOverlay.Visibility = ViewStates.Invisible;
@@ -364,7 +365,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     _destinationPin.Visible = false;
                 }
-            }            
+            }
+            else
+            {
+				_destinationOverlay.Visibility = ViewStates.Gone;
+				_pickupOverlay.Visibility = ViewStates.Gone;
+            }
         }
 
         private void OnCameraChanged(System.Reactive.EventPattern<GoogleMap.CameraChangeEventArgs> e)
