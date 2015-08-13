@@ -105,14 +105,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					btnUnpair.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnUnpair.Frame.Width, btnUnpair.Frame.Height);
 
                     var callFrame = btnCall.Frame;
-                    UpdateCallButtonSize (callFrame);
-                    ViewModel.PropertyChanged += (sender, e) => 
-                    {
-                        InvokeOnMainThread(()=>
-                        {
-                            UpdateCallButtonSize (callFrame);
-                        });
-                    };
+					//UpdateCallButtonSize (callFrame);
+					//ViewModel.PropertyChanged += (sender, e) => 
+					//{
+					//	InvokeOnMainThread(()=>
+					//	{
+					//		UpdateCallButtonSize (callFrame);
+					//	});
+					//};
                 }
 
                 textColor = UIColor.FromRGB (50, 50, 50);
@@ -256,13 +256,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.For(v => v.MapCenter)
 					.To(vm => vm.MapCenter);
 
-				set.Bind(btnCancel)
-					.For("TouchUpInside")
-					.To(vm => vm.CancelOrder);
-				set.Bind(btnCancel)
-					.For(v => v.Hidden)
-					.To(vm => vm.IsCancelButtonVisible)
-					.WithConversion("BoolInverter");
+				//set.Bind(btnCancel)
+				//	.For("TouchUpInside")
+				//	.To(vm => vm.CancelOrder);
+				//set.Bind(btnCancel)
+				//	.For(v => v.Hidden)
+				//	.To(vm => vm.IsCancelButtonVisible)
+				//	.WithConversion("BoolInverter");
 
 				set.Bind(btnCall)
 					.For(v => v.Hidden)
@@ -271,21 +271,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.For(v => v.Enabled)
 					.To(vm => vm.Settings.HideCallDispatchButton)
 					.WithConversion("BoolInverter");
-				set.Bind(btnCall)
-					.For("TouchUpInside")
-					.To(vm => vm.CallCompany);
+				//set.Bind(btnCall)
+				//	.For("TouchUpInside")
+				//	.To(vm => vm.CallCompany);
 
 				set.Bind(btnNewRide)
 					.For("TouchUpInside")
 					.To(vm => vm.NewRide);
 
-				set.Bind(btnUnpair)
-					.For("TouchUpInside")
-					.To(vm => vm.Unpair);
-				set.Bind(btnUnpair)
-					.For(v => v.Hidden)
-					.To(vm => vm.IsUnpairButtonVisible)
-					.WithConversion("BoolInverter");
+				//set.Bind(btnUnpair)
+				//	.For("TouchUpInside")
+				//	.To(vm => vm.Unpair);
+				//set.Bind(btnUnpair)
+				//	.For(v => v.Hidden)
+				//	.To(vm => vm.IsUnpairButtonVisible)
+				//	.WithConversion("BoolInverter");
 
                 set.Bind(driverPhoto)
                     .For(v => v.ImageUrl)
@@ -314,25 +314,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (IsMovingFromParentViewController && animated)
             {
                 // Back button pressed
-                ViewModel.PrepareNewOrder.ExecuteIfPossible(null);
+                ViewModel.PrepareNewOrder.ExecuteIfPossible();
             }
         }
 
-        void UpdateCallButtonSize (CGRect callFrame)
-        {
-            if (ViewModel.IsCancelButtonVisible || ViewModel.IsUnpairButtonVisible)
-            {
-                // keep it tight and tidy in the right corner
-                btnCall.SetFrame(callFrame);
-            }
-            else
-            {
-                // center it
-                btnCall.SetX ((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
-                btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
-                FlatButtonStyle.Silver.ApplyTo(btnCall);
-            }
-        }
+		//void UpdateCallButtonSize (CGRect callFrame)
+		//{
+		//	if (ViewModel.IsCancelButtonVisible || ViewModel.IsUnpairButtonVisible)
+		//	{
+		//		// keep it tight and tidy in the right corner
+		//		btnCall.SetFrame(callFrame);
+		//	}
+		//	else
+		//	{
+		//		// center it
+		//		btnCall.SetX ((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
+		//		btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
+		//		FlatButtonStyle.Silver.ApplyTo(btnCall);
+		//	}
+		//}
             
 		public string StatusInfoText
 		{

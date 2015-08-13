@@ -212,6 +212,7 @@
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
     <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Orders\BookingStatusBottomBarViewModel.cs" />
     <Compile Include="ViewModels\PromotionItemViewModel.cs" />
     <Compile Include="ViewModels\PromotionViewModel.cs" />
     <Compile Include="ViewModels\SelectableItemViewModel.cs" />

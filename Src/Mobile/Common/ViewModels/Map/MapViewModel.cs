@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reactive.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Entity;
 using Position = apcurium.MK.Booking.Mobile.Infrastructure.Position;
 
@@ -30,9 +33,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
+
+			
         }
 
-        public static int ZoomStreetLevel = 14;
+		public override void OnViewStarted(bool firstTime)
+		{
+			base.OnViewStarted(firstTime);
+
+			if (firstTime)
+			{
+				Observe(ObserveCurrentHomeViewModelState(), HomeViewModelStateChanged);
+			}
+		}
+
+		private void HomeViewModelStateChanged(HomeViewModelState state)
+		{
+			if (state == HomeViewModelState.Initial && AddressSelectionMode == AddressSelectionMode.None)
+			{
+				AddressSelectionMode = AddressSelectionMode.PickupSelection;
+			}
+			else if (state == HomeViewModelState.BookingStatus)
+			{
+				AddressSelectionMode = AddressSelectionMode.None;
+			}
+		}
+
+		private IObservable<HomeViewModelState> ObserveCurrentHomeViewModelState()
+		{
+			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+					h => Parent.PropertyChanged += h,
+					h => Parent.PropertyChanged -= h
+				)
+				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
+				.DistinctUntilChanged();
+		}
+
+		public static int ZoomStreetLevel = 14;
 
         private Address _pickupAddress;
 		public Address PickupAddress
