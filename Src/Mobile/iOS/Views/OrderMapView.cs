@@ -24,6 +24,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using System.ComponentModel;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -102,6 +103,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind()
                     .For("AvailableVehicles")
                     .To(vm => vm.AvailableVehicles);
+
+                set.Bind()
+                   .For("IsMapDisabled")
+                   .To(vm => vm.IsMapDisabled);
 
                 set.Apply();
             });
@@ -216,6 +221,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     _availableVehicles = value;
                     ShowAvailableVehicles (VehicleClusterHelper.Clusterize(value != null ? value.ToArray () : null, GetMapBoundsFromProjection()));
                 }
+            }
+        }
+
+        private bool _isMapDisabled;
+        public bool IsMapDisabled
+        {
+            get { return _isMapDisabled; }
+            set
+            {
+                _isMapDisabled = value;
+                SetEnabled(!value);
             }
         }
 
@@ -470,26 +486,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _userMovedMapSubsciption.Disposable = null;
         }
 
-        private void ChangeState(HomeViewModelPresentationHint hint)
-        {
-            switch (hint.State)
-            {
-                case HomeViewModelState.Initial:
-                    SetEnabled(true);
-                    break;
-                default:
-                    SetEnabled(false);
-                    break;
-            }
-        }
-
         public void ChangePresentation(ChangePresentationHint hint)
         {
-            if (hint is HomeViewModelPresentationHint)
-            {
-                ChangeState((HomeViewModelPresentationHint)hint);
-            }
-
             var streetLevelZoomHint = hint as ZoomToStreetLevelPresentationHint;
 			if (streetLevelZoomHint != null)
             {

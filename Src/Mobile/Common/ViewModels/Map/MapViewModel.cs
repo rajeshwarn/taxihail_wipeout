@@ -34,28 +34,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
 
-			
         }
 
-		public override void OnViewStarted(bool firstTime)
+		public override void Start()
 		{
-			base.OnViewStarted(firstTime);
+			base.Start();
 
-			if (firstTime)
-			{
-				Observe(ObserveCurrentHomeViewModelState(), HomeViewModelStateChanged);
-			}
+			Observe(ObserveCurrentHomeViewModelState(), HomeViewModelStateChanged);
 		}
 
 		private void HomeViewModelStateChanged(HomeViewModelState state)
 		{
-			if (state == HomeViewModelState.Initial && AddressSelectionMode == AddressSelectionMode.None)
+			if (state == HomeViewModelState.Initial)
 			{
-				AddressSelectionMode = AddressSelectionMode.PickupSelection;
+				IsMapDisabled = false;
 			}
-			else if (state == HomeViewModelState.BookingStatus)
+			else
 			{
-				AddressSelectionMode = AddressSelectionMode.None;
+				IsMapDisabled = true;
 			}
 		}
 
@@ -123,6 +119,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				_isDestinationModeOpened = value;
 				RaisePropertyChanged();
+			}
+		}
+
+		private bool _isMapDisabled;
+		public bool IsMapDisabled
+		{
+			get { return _isMapDisabled; }
+			set
+			{
+				if (_isMapDisabled != value)
+				{
+					_isMapDisabled = value;
+					RaisePropertyChanged();
+				}
 			}
 		}
 
