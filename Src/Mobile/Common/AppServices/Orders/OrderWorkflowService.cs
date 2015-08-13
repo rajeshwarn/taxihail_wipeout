@@ -146,18 +146,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			await CalculateEstimatedFare();
 		}
 
-		public async Task ToggleBetweenPickupAndDestinationSelectionMode()
+		public async Task ToggleBetweenPickupAndDestinationSelectionMode(AddressSelectionMode? forceValue = null)
 		{
+			if (forceValue.HasValue)
+			{
+				_addressSelectionModeSubject.OnNext(forceValue.Value);
+
+				return;
+			}
+
 			var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
 
-			if (currentSelectionMode == AddressSelectionMode.PickupSelection)
-			{
-				_addressSelectionModeSubject.OnNext (AddressSelectionMode.DropoffSelection);
-			} 
-			else 
-			{
-				_addressSelectionModeSubject.OnNext (AddressSelectionMode.PickupSelection);
-			}
+			_addressSelectionModeSubject.OnNext(currentSelectionMode == AddressSelectionMode.PickupSelection
+				? AddressSelectionMode.DropoffSelection
+				: AddressSelectionMode.PickupSelection);
 		}
 
 		public async Task ValidatePickupTime()

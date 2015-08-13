@@ -28,50 +28,6 @@
             android:enabled="false"
             local:MvxBind="Pickup Order.PickupAddress; DropOff Order.DropOffAddress; TaxiLocation OrderStatusDetail; Center MapCenter"
             android:clickable="true" />
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="56dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:gravity="center_vertical"
-            android:background="@drawable/StatusBottomBarBackground">
-            <Button
-                android:id="@+id/CancelBtn"
-                style="@style/ButtonActionRedStyle"
-                android:layout_marginTop="13dip"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/HeightButton"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dip"
-                android:layout_marginRight="8dip"
-                android:layout_gravity="center_vertical"
-                android:text="@string/StatusCancelButton"
-                local:MvxBind="Click CancelOrder; Visibility IsCancelButtonVisible, Converter=Visibility" />
-            <Button
-                android:id="@+id/UnpairBtn"
-                style="@style/ButtonActionRedStyle"
-                android:layout_marginTop="13dip"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/HeightButton"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dip"
-                android:layout_marginRight="8dip"
-                android:layout_gravity="center_vertical"
-                android:text="@string/UnpairPayInCar"
-                local:MvxBind="Click Unpair; Visibility IsUnpairButtonVisible, Converter=Visibility" />
-            <Button
-                android:id="@+id/CallBtn"
-                style="@style/ButtonActionGrayStyle"
-                android:layout_marginTop="13dip"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/HeightButton"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dip"
-                android:layout_marginRight="8dip"
-                android:layout_gravity="center_vertical"
-                android:text="@string/StatusCallButton"
-                local:MvxBind="Click CallCompany; Visibility Settings.HideCallDispatchButton, Converter=InvertedVisibility" />
-        </LinearLayout>
     </FrameLayout>
     <apcurium.mk.booking.mobile.client.controls.SlidingPanel
         android:layout_width="fill_parent"

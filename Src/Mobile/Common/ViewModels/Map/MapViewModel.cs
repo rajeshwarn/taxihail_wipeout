@@ -28,47 +28,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_orderWorkflowService = orderWorkflowService;
 			_vehicleService = vehicleService;
 
+			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
 			Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(), isDestinationModeOpened => IsDestinationModeOpened = isDestinationModeOpened);
-            Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
             Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
-
-			
         }
-
-		public override void OnViewStarted(bool firstTime)
-		{
-			base.OnViewStarted(firstTime);
-
-			if (firstTime)
-			{
-				Observe(ObserveCurrentHomeViewModelState(), HomeViewModelStateChanged);
-			}
-		}
-
-		private void HomeViewModelStateChanged(HomeViewModelState state)
-		{
-			if (state == HomeViewModelState.Initial && AddressSelectionMode == AddressSelectionMode.None)
-			{
-				AddressSelectionMode = AddressSelectionMode.PickupSelection;
-			}
-			else if (state == HomeViewModelState.BookingStatus)
-			{
-				AddressSelectionMode = AddressSelectionMode.None;
-			}
-		}
-
-		private IObservable<HomeViewModelState> ObserveCurrentHomeViewModelState()
-		{
-			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-					h => Parent.PropertyChanged += h,
-					h => Parent.PropertyChanged -= h
-				)
-				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
-				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
-				.DistinctUntilChanged();
-		}
 
 		public static int ZoomStreetLevel = 14;
 

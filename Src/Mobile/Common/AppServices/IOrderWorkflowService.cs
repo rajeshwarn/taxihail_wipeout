@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task SetPickupDate(DateTime? date);
 
-		Task ToggleBetweenPickupAndDestinationSelectionMode();
+		Task ToggleBetweenPickupAndDestinationSelectionMode(AddressSelectionMode? forceValue = null);
 
 		Task ToggleIsDestinationModeOpened(bool? forceValue = null);
 

@@ -261,6 +261,7 @@
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\Behavior\PairingCodeBehavior.cs" />
+    <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
@@ -457,7 +458,9 @@
     <Compile Include="Activities\Location\LocationDetailActivity.cs" />
     <Compile Include="Activities\Location\LocationListActivity.cs" />
     <Compile Include="Activities\HomeActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_Home.axml" />
+    <AndroidResource Include="Resources\Layout\View_Home.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <Compile Include="Controls\Widgets\IMvxBindable.cs" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_old.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
@@ -926,6 +929,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_ManualRideLinqStatus.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\SubView_BookingStatus.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\SubView_Appbar_BookingStatus.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

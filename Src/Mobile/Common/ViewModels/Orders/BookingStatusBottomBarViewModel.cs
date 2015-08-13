@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							{
 								this.Services().Analytics.LogEvent("BookCancelled");
 								_bookingService.ClearLastOrder();
-								ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true });
+								ParentViewModel.ReturnToInitialState();
 							}
 							else
 							{
