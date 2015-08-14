@@ -65,6 +65,11 @@
                         android:layout_width="fill_parent"
                         android:id="@+id/orderOptions"
                         android:layout_height="wrap_content" />
+										<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusView
+											  android:layout_width="fill_parent"
+												android:layout_height="wrap_content"
+												android:id="@+id/orderStatus"
+												android:layout_gravity="top"/>
                 <!-- Menu button -->
                     <LinearLayout
                         android:clickable="true"
