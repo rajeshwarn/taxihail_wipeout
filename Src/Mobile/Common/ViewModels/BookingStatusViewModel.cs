@@ -19,6 +19,7 @@ using apcurium.MK.Booking.Maps;
 using System.Net;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using Cirrious.MvvmCross.Platform;
 using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -511,11 +512,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void GoToSummary()
 		{
 			Logger.LogMessage ("GoToSummary");
-			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (
-				new {
-					order = Order.ToJson(),
-					orderStatus = OrderStatusDetail.ToJson()
-				}.ToStringDictionary());
+
+			var @params = new
+			{
+				order = Order.ToJson(),
+				orderStatus = OrderStatusDetail.ToJson()
+			};
+
+			StopBookingStatus();
+
+			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (@params.ToSimplePropertyDictionary());
+
+			((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
 		}
 
         private async void GoToBookingScreen()
