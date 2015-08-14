@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Cirrious.CrossCore.Converters;
@@ -8,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
 	public class EnumToBoolConverter: MvxValueConverter
 	{
-		private bool _inverted;
+		private readonly bool _inverted;
 
 		public EnumToBoolConverter(bool inverted = false)
 		{
@@ -31,11 +32,11 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 
 			var paramArray = parameter as IEnumerable;
 
-			var valueIsInParam = paramArray == null
-				? name.Equals(parameter.ToString())
-				: paramArray.Cast<object>().Select(item => item.ToString()).Any(item => name.Equals(item));
+			var result = !(parameter is string) && paramArray != null
+				? paramArray.Cast<object>().Where(item => item != null).Select(item => item.ToString()).Any(item => item.Equals(name))
+				: name.Equals(parameter.ToString());
 
-			return InvertResultIfNecessary(valueIsInParam);
+			return InvertResultIfNecessary(result);
 		}
 
 		private bool InvertResultIfNecessary(bool value)

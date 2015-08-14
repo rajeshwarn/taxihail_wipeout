@@ -103,7 +103,7 @@
                 <!-- Airport Button -->
                     <LinearLayout
                         android:clickable="true"
-                        local:MvxBind="Click AirportSearch; Visibility IsAirportButtonHidden, Converter=InvertedVisibility"
+                        local:MvxBind="Click AirportSearch; Visibility IsAirportButtonHidden, Converter=InvertedVisibility; Enabled CurrentViewState, Converter=EnumToBool, ConverterParameter=Initial"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -121,7 +121,7 @@
                 <!-- Train station Button -->
                     <LinearLayout
                         android:clickable="true"
-                        local:MvxBind="Click TrainStationSearch; Visibility IsTrainButtonHidden, Converter=InvertedVisibility"
+                        local:MvxBind="Click TrainStationSearch; Visibility IsTrainButtonHidden, Converter=InvertedVisibility; Enabled CurrentViewState, Converter=EnumToBool, ConverterParameter=Initial"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
                         android:layout_height="50dp"

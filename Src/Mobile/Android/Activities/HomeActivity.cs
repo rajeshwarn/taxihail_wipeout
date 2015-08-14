@@ -321,6 +321,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("EnumToBool", HomeViewModelState.Initial);
 
+			set.Bind(_btnLocation)
+				.For(v => v.Enabled)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("EnumToBool", HomeViewModelState.Initial);
+
 		    var settingsAndLocationVisibleStates = new[]
 		    {
 			    HomeViewModelState.Initial,
