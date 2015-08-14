@@ -23,6 +23,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IVehicleService _vehicleService;
 
+		public static int ZoomStreetLevel = 14;
+
 		public MapViewModel(IOrderWorkflowService orderWorkflowService, IVehicleService vehicleService)
         {
 			_orderWorkflowService = orderWorkflowService;
@@ -35,7 +37,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
         }
 
-		public static int ZoomStreetLevel = 14;
+		public override void Start()
+		{
+			base.Start();
+
+			Observe(ObserveCurrentHomeViewModelState(), HomeViewModelStateChanged);
+		}
+
+		private IObservable<HomeViewModelState> ObserveCurrentHomeViewModelState()
+		{
+			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+				h => Parent.PropertyChanged += h,
+				h => Parent.PropertyChanged -= h
+			)
+				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
+				.DistinctUntilChanged();
+		}
+
+		private void HomeViewModelStateChanged(HomeViewModelState state)
+		{
+			if (state == HomeViewModelState.Initial)
+			{
+				IsMapDisabled = false;
+			}
+			else
+			{
+				IsMapDisabled = true;
+			}
+		}
 
         private Address _pickupAddress;
 		public Address PickupAddress
@@ -88,6 +118,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				_isDestinationModeOpened = value;
 				RaisePropertyChanged();
+			}
+		}
+
+		private bool _isMapDisabled;
+		public bool IsMapDisabled
+		{
+			get { return _isMapDisabled; }
+			set
+			{
+				if (_isMapDisabled != value)
+				{
+					_isMapDisabled = value;
+					RaisePropertyChanged();
+				}
 			}
 		}
 
