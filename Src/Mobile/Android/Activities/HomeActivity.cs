@@ -49,6 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private OrderOptions _orderOptions;
         private AddressPicker _searchAddress;
 	    private AppBarBookingStatus _appBarBookingStatus;
+		private OrderStatusView _orderStatus;
 		private LinearLayout _btnLocation; 
 		private LinearLayout _btnSettings;
         private AppBar _appBar;
@@ -227,6 +228,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			_btnSettings = FindViewById<LinearLayout>(Resource.Id.btnSettings);
 			_btnLocation = FindViewById<LinearLayout>(Resource.Id.btnLocation);
 	        _appBarBookingStatus = FindViewById<AppBarBookingStatus>(Resource.Id.appBarBookingStatus);
+	        _orderStatus = FindViewById<OrderStatusView>(Resource.Id.orderStatus);
 
             // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside
             _orderOptions.BigInvisibleButton = _bigButton;
@@ -263,6 +265,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		    set.Bind(_searchAddress).For("DataContext").To(vm => vm.AddressPicker); // OrderReview View Bindings
 		    set.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
 		    set.Bind(_appBarBookingStatus).For("DataContext").To(vm => vm.BookingStatus.BottomBar);
+		    set.Bind(_orderStatus).For("DataContext").To(vm => vm.BookingStatus);
 
 			//Setup Visibility
 		    set.Bind(_orderReview)
@@ -289,8 +292,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
-			
 
+			set.Bind(_orderStatus)
+				.For(v => v.Visibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+			
 			set.Bind(_orderOptions)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)

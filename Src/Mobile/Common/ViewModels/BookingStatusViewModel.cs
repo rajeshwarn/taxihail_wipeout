@@ -114,7 +114,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public bool IsCallTaxiVisible
+		public bool IsContactTaxiVisible
+		{
+			get
+			{
+				return IsCallTaxiVisible &&
+					(OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
+			}
+		}
+
+		public bool IsCallTaxiVisible
         {
             get 
 			{
@@ -238,6 +247,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 RaisePropertyChanged(() => DriverPhotoHidden);
 				RaisePropertyChanged(() => IsDriverInfoAvailable);
 				RaisePropertyChanged(() => IsCallTaxiVisible);
+				RaisePropertyChanged(() => IsContactTaxiVisible);
 				RaisePropertyChanged(() => CanGoBack);
 			}
 		}

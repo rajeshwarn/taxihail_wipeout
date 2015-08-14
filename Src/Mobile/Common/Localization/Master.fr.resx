@@ -1960,4 +1960,7 @@
   <data name="PromoMustHavePaymentMethodSetMessage_CreditCard" xml:space="preserve">
     <value>Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.</value>
   </data>
+	<data name="OrderStatus_Medallion" xml:space="preserve">
+		<value>Medallion</value>
+	</data>
 </root>
