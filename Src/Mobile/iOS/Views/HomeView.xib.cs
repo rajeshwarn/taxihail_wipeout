@@ -89,14 +89,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Command)
                 .To(vm => vm.Panel.OpenOrCloseMenu);
 
+            set.Bind(btnMenu)
+                .For(v => v.Hidden)
+                .To(vm => vm.CurrentViewState)
+                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus });;
+
 			set.Bind(btnAirport)
 				.For(v => v.Command)
 				.To(vm => vm.AirportSearch);
 
             set.Bind(btnAirport)
                 .For(v => v.Hidden)
-                .To(vm => vm.Settings.IsAirportButtonEnabled)
-                .WithConversion("BoolInverter");
+                .To(vm => vm.IsAirportButtonHidden);
 
 			set.Bind(btnTrain)
 				.For(v => v.Command)
@@ -104,12 +108,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(btnTrain)
 				.For(v => v.Hidden)
-				.To(vm => vm.Settings.IsTrainStationButtonEnabled)
-				.WithConversion("BoolInverter");
+                .To(vm => vm.IsTrainButtonHidden);
 
             set.Bind(btnLocateMe)
                 .For(v => v.Command)
                 .To(vm => vm.LocateMe);
+
+            set.Bind(btnLocateMe)
+                .For(v => v.Hidden)
+                .To(vm => vm.CurrentViewState)
+                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus });
 
             set.Bind(mapView)
                 .For(v => v.DataContext)
@@ -225,23 +233,53 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 				CloseBookATaxiDialog();
 
-				UIView.Animate(
-					0.6f, 
-					() =>
-					{
-						ctrlOrderReview.SetNeedsDisplay();
-						ctrlAddressPicker.Close();
-						constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
-						constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
-						constraintOrderOptionsTopSpace.Constant = 22;
-						constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
-						homeView.LayoutIfNeeded();
-						_datePicker.Hide();  
-					}, () =>
-					{
-						RedrawSubViews();
-					});
+                UIView.Animate(
+                    0.6f, 
+                    () =>
+                    {
+                        ctrlOrderReview.SetNeedsDisplay();
+                        ctrlAddressPicker.Close();
+                        constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderOptionsTopSpace.Constant = 22;
+                        constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+                        homeView.LayoutIfNeeded();
+                        _datePicker.Hide();  
+                    }, () =>
+                    {
+                        RedrawSubViews();
+                    });
 			}
+            else if (state == HomeViewModelState.BookingStatus)
+            {
+                // Order Options: Hidden
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                // Date Picker: Hidden
+                // Adress Picker: Hidden
+                // Initial app bar: Hidden
+                // Booking Status app bar: Visible
+
+                CloseBookATaxiDialog();
+
+                UIView.Animate(
+                    0.6f, 
+                    () =>
+                    {
+                        ctrlOrderReview.SetNeedsDisplay();
+                        ctrlAddressPicker.Close();
+                        constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f;
+                        constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+                        homeView.LayoutIfNeeded();
+                        _datePicker.Hide();  
+                    }, () =>
+                    {
+                        RedrawSubViews();
+                    });
+
+            }
 			// We consider any other options as one of the search options.
 			else 
 			{
