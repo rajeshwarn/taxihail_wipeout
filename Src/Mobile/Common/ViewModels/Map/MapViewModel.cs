@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void HomeViewModelStateChanged(HomeViewModelState state)
 		{
-			if (state == HomeViewModelState.Initial)
+			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus)
 			{
 				IsMapDisabled = false;
 			}
