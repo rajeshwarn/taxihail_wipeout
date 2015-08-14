@@ -68,7 +68,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
             ViewBag.Title = company.CompanyName;
             var model = new Version();
-            model.WebsiteUrl = "https://services.taxihail.com/" + company.CompanyKey;
+            model.WebsiteUrl = "https://api.taxihail.com/" + company.CompanyKey;
 
             return View(model);
         }
