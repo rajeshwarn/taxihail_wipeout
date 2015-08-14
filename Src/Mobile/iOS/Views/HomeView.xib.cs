@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnMenu)
                 .For(v => v.Hidden)
                 .To(vm => vm.CurrentViewState)
-                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus });;
+                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus });
 
 			set.Bind(btnAirport)
 				.For(v => v.Command)
@@ -151,6 +151,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.DataContext)
 				.To(vm => vm.BottomBar);
 
+            set.Bind(bookingStatusBottomBar)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.CurrentViewState)
+                .WithConversion("EnumToBool",
+                    new[]
+                    {
+                        HomeViewModelState.Initial,
+                        HomeViewModelState.BookATaxi,
+                        HomeViewModelState.Edit,
+                        HomeViewModelState.PickDate,
+                        HomeViewModelState.Review,
+                        HomeViewModelState.TrainStationSearch,
+                        HomeViewModelState.AddressSearch,
+                        HomeViewModelState.AirportSearch
+                    });
+
+            set.Bind(bookingStatusBottomBar)
+                .For(v => v.DataContext)
+                .To(vm => vm.BookingStatus.BottomBar);
+
             set.Apply();
         }
 
@@ -195,6 +215,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			else if (state == HomeViewModelState.BookATaxi)
 			{
 				constraintOrderBookinOptionsTopSpace.Constant = 0;
+
 				homeView.LayoutIfNeeded();
 
 				UIView.Animate (
@@ -332,6 +353,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             orderEdit.SetNeedsDisplay();
             ctrlOrderOptions.SetNeedsDisplay();
 			ctrlOrderBookingOptions.SetNeedsDisplay();
+            bookingStatusBottomBar.SetNeedsDisplay();
         }
 
         public void ChangePresentation(ChangePresentationHint hint)

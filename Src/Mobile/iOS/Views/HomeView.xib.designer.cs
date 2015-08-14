@@ -16,6 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.NSLayoutConstraint _constraintOrderBookinOptionsTopSpace { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarBookingStatus bookingStatusBottomBar { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarView bottomBar { get; set; }
 
 		[Outlet]
@@ -29,6 +32,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnTrain { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarBookingStatus constraintAppBarBookingStatusBottomSpace { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintAppBarBookingStatusTopSpace { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintAppBarBookingStatusVerticalSpace { get; set; }
 
 		[Outlet]
 		UIKit.NSLayoutConstraint constraintHomeLeadingSpace { get; set; }
@@ -74,9 +86,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (constraintAppBarBookingStatusVerticalSpace != null) {
+				constraintAppBarBookingStatusVerticalSpace.Dispose ();
+				constraintAppBarBookingStatusVerticalSpace = null;
+			}
+
 			if (_constraintOrderBookinOptionsTopSpace != null) {
 				_constraintOrderBookinOptionsTopSpace.Dispose ();
 				_constraintOrderBookinOptionsTopSpace = null;
+			}
+
+			if (bookingStatusBottomBar != null) {
+				bookingStatusBottomBar.Dispose ();
+				bookingStatusBottomBar = null;
 			}
 
 			if (bottomBar != null) {
@@ -102,6 +124,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnTrain != null) {
 				btnTrain.Dispose ();
 				btnTrain = null;
+			}
+
+			if (constraintAppBarBookingStatusBottomSpace != null) {
+				constraintAppBarBookingStatusBottomSpace.Dispose ();
+				constraintAppBarBookingStatusBottomSpace = null;
+			}
+
+			if (constraintAppBarBookingStatusTopSpace != null) {
+				constraintAppBarBookingStatusTopSpace.Dispose ();
+				constraintAppBarBookingStatusTopSpace = null;
 			}
 
 			if (constraintHomeLeadingSpace != null) {
