@@ -233,5 +233,6 @@
 	<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusContactTaxiOverlay 
 		android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-		android:id="@+id/ContactTaxiOverlay"/>
+		android:id="@+id/ContactTaxiOverlay"
+		android:background="@drawable/drop_shadow" />
 </LinearLayout>
