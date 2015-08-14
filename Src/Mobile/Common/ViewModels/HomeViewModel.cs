@@ -520,6 +520,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
+		public bool IsAirportButtonHidden
+		{
+			get { return !Settings.IsAirportButtonEnabled || CurrentViewState == HomeViewModelState.BookingStatus; }
+		}
+
+		public bool IsTrainButtonHidden
+		{
+			get { return !Settings.IsTrainStationButtonEnabled || CurrentViewState == HomeViewModelState.BookingStatus; }
+		}
+
 		public HomeViewModelState CurrentViewState
 		{
 			get { return _currentViewState; }
@@ -537,6 +547,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_currentViewState = value;
 
 				RaisePropertyChanged();
+				RaisePropertyChanged(() => IsAirportButtonHidden);
+				RaisePropertyChanged(() => IsTrainButtonHidden);
 			}
 		}
 

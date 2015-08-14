@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private OrderOptions _orderOptions;
         private AddressPicker _searchAddress;
 	    private AppBarBookingStatus _appBarBookingStatus;
-        private ImageView _btnLocation; 
+		private LinearLayout _btnLocation; 
 		private LinearLayout _btnSettings;
         private AppBar _appBar;
         private FrameLayout _frameLayout;
@@ -225,7 +225,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
             _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
 			_btnSettings = FindViewById<LinearLayout>(Resource.Id.btnSettings);
-            _btnLocation = FindViewById<ImageView>(Resource.Id.btnLocation);
+			_btnLocation = FindViewById<LinearLayout>(Resource.Id.btnLocation);
 	        _appBarBookingStatus = FindViewById<AppBarBookingStatus>(Resource.Id.appBarBookingStatus);
 
             // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside
@@ -290,6 +290,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
 			
+
 			set.Bind(_orderOptions)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
@@ -304,7 +305,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 					HomeViewModelState.TrainStationSearch
 				});
 
-
 			//Setup Map enabled state.
 		    set.Bind(_touchMap)
 			    .For(v => v.IsMapGestuesEnabled)
@@ -314,13 +314,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			set.Bind(_btnLocation)
 				.For(v => v.Enabled)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus });
+				.WithConversion("EnumToBool", HomeViewModelState.Initial);
 		    
 			set.Bind(_btnSettings)
 				.For(v => v.Enabled)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus });
+				.WithConversion("EnumToBool", HomeViewModelState.Initial);
 
+		    var settingsAndLocationVisibleStates = new[]
+		    {
+			    HomeViewModelState.Initial,
+			    HomeViewModelState.PickDate,
+			    HomeViewModelState.BookATaxi,
+			    HomeViewModelState.Edit,
+			    HomeViewModelState.AddressSearch,
+			    HomeViewModelState.AirportSearch,
+			    HomeViewModelState.TrainStationSearch,
+			    HomeViewModelState.Review
+		    };
+
+			set.Bind(_btnLocation)
+				.For(v => v.Visibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", settingsAndLocationVisibleStates);
+
+			set.Bind(_btnSettings)
+				.For(v => v.Visibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", settingsAndLocationVisibleStates);
+			
 		    set.Apply();
 	    }
 

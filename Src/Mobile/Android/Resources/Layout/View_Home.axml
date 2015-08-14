@@ -85,6 +85,7 @@
                 <!-- Locate Me button -->
                     <LinearLayout
                         android:clickable="true"
+												android:id="@+id/btnLocation"
                         local:MvxBind="Click LocateMe"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
@@ -94,7 +95,6 @@
                         android:layout_gravity="right|bottom">
                         <ImageView
                             android:clickable="false"
-                            android:id="@+id/btnLocation"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="center"
@@ -103,7 +103,7 @@
                 <!-- Airport Button -->
                     <LinearLayout
                         android:clickable="true"
-                        local:MvxBind="Click AirportSearch; Visibility Settings.IsAirportButtonEnabled, Converter=Visibility; Enabled CurrentViewState, Converter=EnumToBool, ConverterParameter='Initial'"
+                        local:MvxBind="Click AirportSearch; Visibility IsAirportButtonHidden, Converter=InvertedVisibility"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -121,7 +121,7 @@
                 <!-- Train station Button -->
                     <LinearLayout
                         android:clickable="true"
-                        local:MvxBind="Click TrainStationSearch; Visibility Settings.IsTrainStationButtonEnabled, Converter=Visibility; Enabled CurrentViewState, Converter=EnumToBool, ConverterParameter='Initial'"
+                        local:MvxBind="Click TrainStationSearch; Visibility IsTrainButtonHidden, Converter=InvertedVisibility"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
