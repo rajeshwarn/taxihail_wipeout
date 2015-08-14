@@ -134,7 +134,9 @@ namespace apcurium.MK.Booking.Mobile
 				case MvxLifetimeEvent.ActivatedFromMemory:
 				case MvxLifetimeEvent.ActivatedFromDisk:
 					RefreshAppData();
+#if !MONOTOUCH
 					TryFacebookInitAndPublish();
+#endif
                     break;
             }
         }

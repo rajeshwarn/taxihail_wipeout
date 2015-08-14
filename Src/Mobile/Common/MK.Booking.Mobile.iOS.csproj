@@ -133,9 +133,6 @@
     <Reference Include="Cirrious.MvvmCross">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.dll</HintPath>
     </Reference>
-    <Reference Include="MonoTouch.FacebookConnect">
-      <HintPath>..\Components\facebookios-3.22.0\lib\ios-unified\MonoTouch.FacebookConnect.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\Impl\MetricsService.cs" />
@@ -284,9 +281,6 @@
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="AppServices\IVehicleService.cs" />
     <Compile Include="AppServices\Impl\VehicleService.cs" />
-    <Compile Include="AppServices\Social\FacebookUserInfo.iOS.cs">
-      <DependentUpon>FacebookUserInfo.cs</DependentUpon>
-    </Compile>
     <Compile Include="AppServices\Social\FacebookUserInfo.cs" />
     <Compile Include="AppServices\Social\IFacebookService.cs" />
     <Compile Include="AppServices\Social\ITwitterService.cs" />
@@ -452,10 +446,6 @@
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="facebookios">
-      <Version>3.22.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

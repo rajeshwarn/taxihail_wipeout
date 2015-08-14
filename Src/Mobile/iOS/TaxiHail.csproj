@@ -250,9 +250,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="MonoTouch.FacebookConnect">
-      <HintPath>..\Components\facebookios-3.22.0\lib\ios-unified\MonoTouch.FacebookConnect.dll</HintPath>
-    </Reference>
     <Reference Include="GoogleAnalytics.iOS">
       <HintPath>..\Components\googleanalytics-3.0.10.3\lib\ios-unified\GoogleAnalytics.iOS.dll</HintPath>
     </Reference>
@@ -273,6 +270,9 @@
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.Json">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Json.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook">
+      <HintPath>..\packages\Xamarin.Facebook.4.3.0.0\lib\Xamarin.iOS10\Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -925,12 +925,12 @@
       <Version>2.2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
-    <XamarinComponentReference Include="facebookios">
-      <Version>3.22.0</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="googleanalytics">
       <Version>3.0.10.3</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="facebookios">
+      <Version>4.3.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

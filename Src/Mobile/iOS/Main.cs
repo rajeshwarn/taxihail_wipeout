@@ -21,7 +21,7 @@ using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.Mobile.Client.Views;
-using MonoTouch.FacebookConnect;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -65,6 +65,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             }
 
+            FacebookService.UIApplicationDelegateFinishedLaunching(app, options);
+
 			var setup = new Setup(this, window);
             setup.Initialize();
 
@@ -81,8 +83,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         // This method is required in iPhoneOS 3.0
         public override void OnActivated(UIApplication application)
         {		
-
 			UIApplication.CheckForIllegalCrossThreadCalls=true;
+
+            FacebookService.UIApplicationDelegateOnActivated();
 
             var locService = TinyIoCContainer.Current.Resolve<ILocationService>();
             if ( locService != null )
@@ -140,9 +143,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			Console.WriteLine(url.ToString());
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            if (url.AbsoluteString.StartsWith("fb" + settings.Data.FacebookAppId + settings.Data.TaxiHail.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
+            if (url.AbsoluteString.StartsWith("fb" + FacebookService.FacebookApplicationID + settings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty)))
 			{
-				return FBAppCall.HandleOpenURL(url, sourceApplication);
+                return FacebookService.UIApplicationDelegateOpenURL(application, url, sourceApplication, annotation, settings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty));
 			}
 
 			return false;
