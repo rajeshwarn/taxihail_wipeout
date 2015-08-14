@@ -6,7 +6,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AppBarBookingStatus">
             <connections>
+                <outlet property="btnCall" destination="7Bx-XG-5tK" id="PsK-DK-jLP"/>
                 <outlet property="btnCancel" destination="ipp-gG-QLh" id="w1w-Ik-WgT"/>
+                <outlet property="btnUnpair" destination="OSF-Ez-zc4" id="6iv-xv-lRe"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -15,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ipp-gG-QLh" customClass="FlatButton">
-                    <rect key="frame" x="18" y="8" width="284" height="41"/>
+                    <rect key="frame" x="18" y="8" width="159" height="41"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="7SF-Jk-fNl"/>
                     </constraints>
@@ -24,12 +26,37 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OSF-Ez-zc4" customClass="FlatButton">
+                    <rect key="frame" x="185" y="8" width="83" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="Lro-bV-BtH"/>
+                    </constraints>
+                    <state key="normal" title="Pay in Car">
+                        <color key="titleColor" red="1" green="0.0" blue="0.010051519910000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Bx-XG-5tK" customClass="FlatButton">
+                    <rect key="frame" x="276" y="8" width="31" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="c1M-hR-PvD"/>
+                    </constraints>
+                    <state key="normal" title="Call">
+                        <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="7Bx-XG-5tK" secondAttribute="trailing" constant="13" id="3Jg-ES-mTx"/>
                 <constraint firstItem="ipp-gG-QLh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="453-XH-zgJ"/>
-                <constraint firstAttribute="trailing" secondItem="ipp-gG-QLh" secondAttribute="trailing" constant="18" id="J63-J7-X9u"/>
-                <constraint firstItem="ipp-gG-QLh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="18" id="pbT-aB-JEw"/>
+                <constraint firstAttribute="trailing" secondItem="ipp-gG-QLh" secondAttribute="trailing" priority="400" constant="8" id="CvG-Tg-s69"/>
+                <constraint firstItem="OSF-Ez-zc4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="SuO-6I-pqa"/>
+                <constraint firstItem="7Bx-XG-5tK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="nOf-wD-gi0"/>
+                <constraint firstItem="ipp-gG-QLh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="500" constant="18" id="pbT-aB-JEw"/>
+                <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="OSF-Ez-zc4" secondAttribute="trailing" priority="400" constant="8" id="t9j-Ea-Rd7"/>
+                <constraint firstItem="OSF-Ez-zc4" firstAttribute="leading" secondItem="ipp-gG-QLh" secondAttribute="trailing" priority="400" constant="8" id="tRG-ZX-oxv"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

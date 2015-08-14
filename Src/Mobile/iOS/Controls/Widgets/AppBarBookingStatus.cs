@@ -36,16 +36,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             BackgroundColor = UIColor.Clear;
 
             FlatButtonStyle.Red.ApplyTo(btnCancel);
-            //FlatButtonStyle.Silver.ApplyTo(btnCancel);
-
-            SetNeedsDisplay();
+            FlatButtonStyle.Red.ApplyTo(btnUnpair);
+            FlatButtonStyle.Silver.ApplyTo(btnCall);
         }
 
         private void InitializeBinding()
         {
             var set = this.CreateBindingSet<AppBarBookingStatus, BookingStatusBottomBarViewModel>();
 
-            // TODO
+            set.Bind(btnCancel)
+                .For(v => v.Command)
+                .To(vm => vm.CancelOrder);
+
+            set.Bind(btnCancel)
+                .For(v => v.Hidden)
+                .To(vm => vm.IsCancelButtonVisible)
+                .WithConversion("BoolInverter");
+
+            set.Bind(btnUnpair)
+                .For(v => v.Command)
+                .To(vm => vm.Unpair);
+
+            set.Bind(btnUnpair)
+                .For(v => v.Hidden)
+                .To(vm => vm.IsUnpairButtonVisible)
+                .WithConversion("BoolInverter");
+
+            set.Bind(btnCall)
+                .For(v => v.Command)
+                .To(vm => vm.CallCompany);
+
+            set.Bind(btnCall)
+                .For(v => v.Hidden)
+                .To(vm => vm.Settings.HideCallDispatchButton);
 
             set.Apply();
         }

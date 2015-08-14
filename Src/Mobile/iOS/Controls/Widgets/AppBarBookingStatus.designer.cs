@@ -13,13 +13,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	partial class AppBarBookingStatus
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCall { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
 			if (btnCancel != null) {
 				btnCancel.Dispose ();
 				btnCancel = null;
+			}
+
+			if (btnUnpair != null) {
+				btnUnpair.Dispose ();
+				btnUnpair = null;
+			}
+
+			if (btnCall != null) {
+				btnCall.Dispose ();
+				btnCall = null;
 			}
 		}
 	}
