@@ -259,8 +259,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				return Latitude.HasValue
 					&& Longitude.HasValue
-					&& Latitude.Value > 0 
-					&& Longitude.Value > 0;
+					&& Latitude.Value != 0
+					&& Longitude.Value != 0;
 			}
 		}
     }

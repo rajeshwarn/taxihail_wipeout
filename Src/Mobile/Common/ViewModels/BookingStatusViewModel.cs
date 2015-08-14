@@ -519,7 +519,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
                 // Needed to do this here since cmtGeoService needs the device's location to calculate the Eta and does not have the ability to get the position of a specific vehicle(or a bach of vehicle) without the device location.
-                if (isUsingGeoServices && status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
+				if (isUsingGeoServices &&
+					(status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
+						|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
                 {
                     //refresh vehicle position on the map from the geo data
                     var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, Order.Id);
