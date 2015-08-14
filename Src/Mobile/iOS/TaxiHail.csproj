@@ -616,6 +616,8 @@
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
+    <Compile Include="Controls\Widgets\AppBarBookingStatus.designer.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -666,6 +668,7 @@
     <InterfaceDefinition Include="Views\ManualRideLinqSummaryView.xib" />
     <InterfaceDefinition Include="Views\ManualRideLinqStatusView.xib" />
     <InterfaceDefinition Include="Views\Order\OrderBookingOptions.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\AppBarBookingStatus.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
