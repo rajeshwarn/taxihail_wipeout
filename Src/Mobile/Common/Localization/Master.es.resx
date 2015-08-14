@@ -2421,4 +2421,7 @@
   <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
     <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
   </data>
+	<data name="OrderStatus_Medallion" xml:space="preserve">
+		<value>Medallion</value>
+	</data>
 </root>
