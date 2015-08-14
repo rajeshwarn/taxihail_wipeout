@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">Email (adresse électronique)</string>
   <string name="EstimateFareCalculating">Calcul du prix de votre course ...</string>
@@ -529,7 +529,6 @@
   <string name="Tuto08Top">Vous avez la possibilité de revoir l\'historique de vos trajets et donc de renouveler une commande en sélectionnant le trajet souhaité.</string>
   <string name="UnpairWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
   <string name="CurrencyPriceFormat">{0:C}</string>
-  <string name="dummyaaa">xaaa</string>
   <string name="EstimatePriceOver100">Appelez-nous pour connaître le prix!</string>
   <string name="CreditCardInstructions">Afin d\'utiliser l\'application, vous devez ajouter un mode de paiement à votre compte.</string>
   <string name="NoPreference">Pas de préférence</string>

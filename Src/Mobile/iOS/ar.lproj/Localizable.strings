@@ -11,6 +11,7 @@
 "InvalidChoiceTitle"="اختيار خاطئ";
 "PickupDateTextPlaceholder"="التاريخ: اليوم";
 "Version"="v{0}";
+"LocateMeButton"="Locate Me";
 "PayPalLinkedInfo"="Account Linked";
 "WarningPromoCodeDontShow"="لا تحذر";
 "Knowledgabledriver"="Knowledgable driver";
@@ -148,6 +149,7 @@
 "Tuto01Top"="معرفة كيفية حجز رحلة بنقرتين على جهازك.";
 "RideSettingsCannotLoadListTitle"="خطأ في السيرفر";
 "RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
+"TrainStationsButton"="Train Stations";
 "OkButtonText"="موافق";
 "Tuto01Bottom"="ابدأ باختيار موقعك الحالي.";
 "ManualUnPairingForRideLinQ_Error_Message"="An error occured when trying to unpair. Please try again.";
@@ -217,7 +219,6 @@
 "CreateAccountEmptyField"="البيانات غير صحيحة، يجب تعبئة كافة الخانات.";
 "AccountNotActivated"="لم يتم تفعيل حسابك. تم إرسال بريد الكتروني اخر للتنشيط";
 "Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
-"AddReminderTitle"="موعد الإلتقاء المحدد";
 "PromoExpiringIn1DayMessage"="Expires in 1 day";
 "Rebook"="إعادة حجز المشوار";
 "CmtTransactionResendConfirmationButtonText"="إعادة إرسال";
@@ -230,6 +231,7 @@
 "Confirm"="موافق";
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "CarAssigned"="السيارة الخاصة بك {0}";
+"PickupTextPlaceholder"="عنوان شارع الإلتقاء";
 "CmtRideLinqConfirmPairViewConfirmPairDetailText"="تأكد من أنك داخل السيارة المشار إليها أعلاه. إن قمت بالتأكيد سيتم خصم قيمة هذه الرحلة تلقائيا باستخدام إعدادات الدفع الخاصة بك.";
 "NoPhoneNumberMessage"="رقم هاتف هذا السائق خاطئ";
 "PickupViewPickupLabel"="الإلتقاء";
@@ -356,6 +358,7 @@
 "View_Payments_CmtRideLinqConfirmPairTitle"="تأكيد بيانات الدفع:";
 "CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
 "Collapse"="تصغير";
+"MenuButton"="Menu";
 "Error_InvalidCvvTitle"="Invalid CVV";
 "CmtTransactionSuccessMessage"="تم إرسال التاكيد للسائق (رقم الترخيص: {0})";
 "SendEmail"="ارسل رسالة إلكترونية...";
@@ -421,6 +424,7 @@
 "PickupTimeTextPlaceholder"="الوقت: الآن";
 "HistoryViewSendReceiptButton"="إرسال إيصال";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
+"StreetNumber"="Street Number";
 "Tuto06Top"="تتيح لك شاشة التأكيد مراجعة بيانات مشوارك وتغيير خياراتك لهذه الرحلة تحديدا.";
 "Tuto04Bottom"="بذلك سيتم تزويدك بسعر تقريبي للرحلة.";
 "Error_AccountPaymentQuestionRequiredMessage"="يجب الإجابة على جميع الأسئلة للإستمرار";
@@ -477,6 +481,7 @@
 "NoConnectionTitle"="خطأ في الإتصال";
 "OrderNoteGPSApproximate"="(عنوان تقريبي)";
 "PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with your configured payment method.";
+"AirportsButton"="Airports";
 "UnpairPayInCar"="Pay in Car";
 "PromoCodeLabel"="Promo code";
 "ResetPasswordEmailPlaceHolder"="البريد الإلكتروني";
@@ -493,7 +498,7 @@
 "RideSettingsPhone"="الهاتف الجوال";
 "January"="يناير (01)";
 "Safety"="Safety";
-"PickupTextPlaceholder"="عنوان شارع الإلتقاء";
+"AddReminderTitle"="موعد الإلتقاء المحدد";
 "StatusActionCancelButton"="إلغاء هذا الطلب";
 "InvalidBookinInfo"="لحجز سيارة الأجرة، يجب إدخال عنوان صحيح.";
 "Politeness"="Politeness";
@@ -501,6 +506,7 @@
 "View_CreateAccount"="افتح حسابك";
 "ConfirmationOfPaymentSent"="تم إرسال تأكيد السداد للسائق.";
 "UpdateBookingSettingsEmptyAccount"="Account and rider numbers cannot be empty when Charge Type is set to Charge Account";
+"CloseTutorial"="Close Tutorial";
 "View_RefineAddress"="بيانات نقطة الإلتقاء";
 "NoCreditCardSelected"="الرجاء اختيار بطاقة الائتمان";
 "RefineAddressTitle"="قم بتدقيق العنوان";
@@ -513,7 +519,6 @@
 "Tuto08Top"="يمكنك مراجعة تاريخ طلباتك في أي وقت، وأيضا إعادة حجز رحلة سابقة مجددا بلمسة زر.";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
 "CurrencyPriceFormat"="{0}ر.س";
-"dummyaaa"="xaaa";
 "EstimatePriceOver100"="إتصال لمعرفة السعر";
 "CreditCardInstructions"="In order to use the application, you need to add a payment method to your account.";
 "NoPreference"="مفضلة - لا يوجد";

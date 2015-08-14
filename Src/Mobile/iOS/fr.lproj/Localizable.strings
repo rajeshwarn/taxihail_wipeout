@@ -11,6 +11,7 @@
 "InvalidChoiceTitle"="Choix invalide";
 "PickupDateTextPlaceholder"="Date: Aujourd'hui";
 "Version"="v{0}";
+"LocateMeButton"="Localiser moi";
 "PayPalLinkedInfo"="Compte associé";
 "WarningPromoCodeDontShow"="Ne pas signaler";
 "Knowledgabledriver"="Trajet respecté";
@@ -151,6 +152,7 @@
 "Tuto01Top"="Réserver un véhicule en quelques secondes";
 "RideSettingsCannotLoadListTitle"="Echec de la connexion";
 "RateLastRideMessage"="Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l'évaluer?";
+"TrainStationsButton"="Stations de trains";
 "OkButtonText"="Valider";
 "Tuto01Bottom"="Commencez par sélectionner votre position actuelle.";
 "ManualUnPairingForRideLinQ_Error_Message"="Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.";
@@ -367,6 +369,7 @@
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirmer les informations relatives au paiement";
 "CreateAccountInvalidDataTitle"="Données invalides";
 "Collapse"="Cacher";
+"MenuButton"="Menu";
 "Error_InvalidCvvTitle"="CVV Invalide";
 "CmtTransactionSuccessMessage"="Confirmation envoyée au chauffeur (code: {0})";
 "SendEmail"="Envoyer un email…";
@@ -390,6 +393,7 @@
 "apcuriumUrl"="http://www.apcurium.com/";
 "BookItLaterButton"="Plus tard";
 "WarningEstimate"="Veuillez noter que le prix fournit par cette application n'est seulement qu'un estimé. Le tarif calculé par le compteur, incluant tout frais minimum et extras, seront facturés à la fin du trajet.";
+"CloseTutorial"="Fermer l'aide";
 "AddPaymentMethod_Multiple"="Ajouter une méthode de paiement";
 "StreetNumberLabel"="Affiner l'adresse";
 "PickupViewDestinationLabel"="Destination &gt;&gt;";
@@ -432,6 +436,7 @@
 "PickupTimeTextPlaceholder"="Heure: maintenant";
 "HistoryViewSendReceiptButton"="Je souhaite recevoir une facture";
 "ManualRideLinqNoCardOnFile"="Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ";
+"StreetNumber"="Numéro d'immeuble";
 "Tuto06Top"="L'écran de confirmation vous permet de vérifier que les détails de votre trajet sont corrects. En cas d'erreur, merci d'effectuer les modifications";
 "Tuto04Bottom"="En faisant cela vous aurez une estimation du coût de votre trajet.";
 "Error_AccountPaymentQuestionRequiredMessage"="Vous devez saisir tous les champs pour continuer";
@@ -490,6 +495,7 @@
 "NoConnectionTitle"="Erreur de connexion";
 "OrderNoteGPSApproximate"="(adresse approximative)";
 "PromoMustUseCardOnFileMessage"="Pour utiliser un code promotionnel, vous devez payer avec la méthode de paiement configuré à l'intéreur de l'application.";
+"AirportsButton"="Aéroports";
 "UnpairPayInCar"="Payer dans le taxi";
 "PromoCodeLabel"="Code promotionnel";
 "ResetPasswordEmailPlaceHolder"="Email (adresse électronique)";
@@ -527,7 +533,6 @@
 "Tuto08Top"="Vous avez la possibilité de revoir l'historique de vos trajets et donc de renouveler une commande en sélectionnant le trajet souhaité.";
 "UnpairWarningMessageWithPromo"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";
 "CurrencyPriceFormat"="{0:C}";
-"dummyaaa"="xaaa";
 "EstimatePriceOver100"="Appelez-nous pour connaître le prix!";
 "CreditCardInstructions"="Afin d'utiliser l'application, vous devez ajouter un mode de paiement à votre compte.";
 "NoPreference"="Pas de préférence";

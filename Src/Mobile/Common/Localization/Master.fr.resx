@@ -540,9 +540,6 @@
   <data name="DriverInfoTaxiType" xml:space="preserve">
     <value>Type de véhicule:</value>
   </data>
-  <data name="dummyaaa" xml:space="preserve">
-    <value>xaaa</value>
-  </data>
   <data name="Edit" xml:space="preserve">
     <value>Editer</value>
   </data>
@@ -1959,5 +1956,23 @@
   </data>
   <data name="PromoMustHavePaymentMethodSetMessage_CreditCard" xml:space="preserve">
     <value>Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.</value>
+  </data>
+  <data name="MenuButton" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="LocateMeButton" xml:space="preserve">
+    <value>Localiser moi</value>
+  </data>
+  <data name="AirportsButton" xml:space="preserve">
+    <value>Aéroports</value>
+  </data>
+   <data name="TrainStationsButton" xml:space="preserve">
+    <value>Stations de trains</value>
+  </data>
+  <data name="StreetNumber" xml:space="preserve">
+    <value>Numéro d'immeuble</value>
+  </data>
+  <data name="CloseTutorial" xml:space="preserve">
+    <value>Fermer l'aide</value>
   </data>
 </root>

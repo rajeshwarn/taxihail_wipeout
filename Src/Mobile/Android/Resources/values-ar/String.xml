@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">البرید الإلكتروني</string>
   <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
@@ -515,7 +515,6 @@
   <string name="Tuto08Top">يمكنك مراجعة تاريخ طلباتك في أي وقت، وأيضا إعادة حجز رحلة سابقة مجددا بلمسة زر.</string>
   <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
   <string name="CurrencyPriceFormat">{0}ر.س</string>
-  <string name="dummyaaa">xaaa</string>
   <string name="EstimatePriceOver100">إتصال لمعرفة السعر</string>
   <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
   <string name="NoPreference">مفضلة - لا يوجد</string>

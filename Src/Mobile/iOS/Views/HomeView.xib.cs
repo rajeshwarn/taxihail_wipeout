@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -58,6 +59,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             panelMenu.ViewToAnimate = homeView;
             panelMenu.PanelOffsetConstraint = constraintHomeLeadingSpace;
+
+            btnMenu.AccessibilityLabel = Localize.GetValue("MenuButton");
+            btnLocateMe.AccessibilityLabel = Localize.GetValue("LocateMeButton");
+            btnAirport.AccessibilityLabel = Localize.GetValue("AirportsButton");
+            btnTrain.AccessibilityLabel = Localize.GetValue("TrainStationsButton");
 
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
 

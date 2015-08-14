@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">Email</string>
   <string name="EstimateFareCalculating">Calculating...</string>
@@ -536,7 +536,6 @@
   <string name="Tuto08Top">You can review your order history at any time, and even rebook a previous trip with the push of a button</string>
   <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
   <string name="HistoryViewSendReceiptButton">Send Receipt</string>
-  <string name="dummyaaa">xaaa</string>
   <string name="EstimatePriceOver100">Call for price</string>
   <string name="StreetNumberDoneBt">Use This Address</string>
   <string name="TabContacts">Contacts</string>

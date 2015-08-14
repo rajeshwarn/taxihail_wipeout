@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">Email</string>
   <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
@@ -523,7 +523,6 @@
   <string name="Tuto08Top">Puede revisar su historial de reservaciones en cualquier momento, e incluso reservar el mismo viaje con solo tocar un botón</string>
   <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
   <string name="CurrencyPriceFormat">{0:C}</string>
-  <string name="dummyaaa">xaaa</string>
   <string name="EstimatePriceOver100">Llame para confirmar el costo</string>
   <string name="CreditCardInstructions">Para usar esta aplicación necesita ingresar un método de pago a su cuenta</string>
   <string name="NoPreference">Sin preferencia</string>
