@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -166,17 +168,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				return _userMovedMap ?? (_userMovedMap = new CancellableCommand<MapBounds>(async (bounds, token) =>
-                {
-                	await _orderWorkflowService.SetAddressToCoordinate(
-						new Position 
-							{ 
-								Latitude = bounds.GetCenter().Latitude, 
-								Longitude = bounds.GetCenter().Longitude 
-							},
-                        token);
-				}, _ => true));
+				return _userMovedMap ?? (_userMovedMap = new CancellableCommand<MapBounds>(SetAddressToCoordinate, _ => true));
             }
         }
+
+		private async Task SetAddressToCoordinate(MapBounds bounds, CancellationToken token)
+		{
+			if (AddressSelectionMode == AddressSelectionMode.None)
+			{
+				return;
+			}
+
+			var position = new Position
+			{
+				Latitude = bounds.GetCenter().Latitude,
+				Longitude = bounds.GetCenter().Longitude
+			};
+
+			await _orderWorkflowService.SetAddressToCoordinate(position, token);
+		}
     }
 }
