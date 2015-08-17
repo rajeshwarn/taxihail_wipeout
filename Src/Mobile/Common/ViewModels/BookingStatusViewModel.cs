@@ -71,6 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar.IsCancelButtonVisible = false;
 			_waitingToNavigateAfterTimeOut = false;
 
+			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
 
 			_refreshPeriod = Settings.OrderStatus.ClientPollingInterval;
 
@@ -85,6 +86,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Order = null;
 			OrderStatusDetail = null;
+
+			_orderWorkflowService.SetAddresses(new Address(), new Address());
+
+			_orderWorkflowService.PrepareForNewOrder();
 		}
 
 		private readonly SerialDisposable _subscriptions = new SerialDisposable();

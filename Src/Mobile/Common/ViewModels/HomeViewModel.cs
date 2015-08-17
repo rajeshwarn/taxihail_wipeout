@@ -335,10 +335,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			CurrentViewState = HomeViewModelState.BookingStatus;
 
-			Map.PickupAddress = order.PickupAddress;
-			Map.DestinationAddress = order.DropOffAddress;
-
-			BookingStatus.StartBookingStatus(order,orderStatusDetail);
+			BookingStatus.StartBookingStatus(order, orderStatusDetail);
 		}
 
 		public PanelMenuViewModel Panel { get; set; }

@@ -85,6 +85,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
 
+		void SetAddresses(Address pickupAddress, Address destinationAddress);
+
 		IObservable<bool> GetAndObserveIsDestinationModeOpened();
 
 	    IObservable<OrderValidationResult> GetAndObserveOrderValidationResult();
