@@ -44,6 +44,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
         private bool _bypassCameraChangeEvent = false;
 
+		private IEnumerable<CoordinateViewModel> _center;
+
 		private OrderStatusDetail _taxiLocation;
 		private Marker _taxiLocationPin;
 
@@ -144,6 +146,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 ShowMarkers();
             }
         }
+
+		public IEnumerable<CoordinateViewModel> Center
+		{
+			get { return _center; }
+			set
+			{
+				_center = value;
+				if (value != null)
+				{
+					SetZoom(value.ToArray()); 
+				}
+			}
+		}
 
 		public OrderStatusDetail TaxiLocation
 		{
@@ -621,5 +636,58 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(centerHint.Latitude, centerHint.Longitude)));
             }
         }
+
+		private void AnimateTo(double lat, double lng, float zoom)
+		{
+			Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(lat, lng), zoom));
+		}
+
+		private void AnimateTo(double lat, double lng)
+		{
+			Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(lat, lng)));
+		}
+
+		private void SetZoom(CoordinateViewModel[] adressesToDisplay)
+		{
+			if (adressesToDisplay.Length == 1)
+			{
+				var lat = adressesToDisplay[0].Coordinate.Latitude;
+				var lon = adressesToDisplay[0].Coordinate.Longitude;
+
+				if (adressesToDisplay[0].Zoom != ZoomLevel.DontChange)
+				{
+					AnimateTo(lat, lon, 16);
+				}
+				else
+				{
+					AnimateTo(lat, lon);
+				}
+				return;
+			}
+
+			double minLat = 90;
+			double maxLat = -90;
+			double minLon = 180;
+			double maxLon = -180;
+
+			foreach (var item in adressesToDisplay)
+			{
+				var lat = item.Coordinate.Latitude;
+				var lon = item.Coordinate.Longitude;
+				maxLat = Math.Max(lat, maxLat);
+				minLat = Math.Min(lat, minLat);
+				maxLon = Math.Max(lon, maxLon);
+				minLon = Math.Min(lon, minLon);
+			}
+
+			if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
+			{
+				AnimateTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 16);
+			}
+			else
+			{
+				Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(new LatLngBounds(new LatLng(minLat, minLon), new LatLng(maxLat, maxLon)), DrawHelper.GetPixels(100)));
+			}
+		}
     }
 }
