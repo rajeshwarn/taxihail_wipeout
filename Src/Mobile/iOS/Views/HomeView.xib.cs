@@ -151,6 +151,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.DataContext)
 				.To(vm => vm.BottomBar);
 
+            #region BookingStatus
+
             set.Bind(bookingStatusBottomBar)
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.CurrentViewState)
@@ -170,6 +172,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(bookingStatusBottomBar)
                 .For(v => v.DataContext)
                 .To(vm => vm.BookingStatus.BottomBar);
+
+            set.Bind(bookingStatusControl)
+                .For(v => v.DataContext)
+                .To(vm => vm.BookingStatus);
+
+            /*set.Bind(bookingStatusControl)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.CurrentViewState)
+                .WithConversion("EnumToBool",
+                    new[]
+                    {
+                        HomeViewModelState.Initial,
+                        HomeViewModelState.BookATaxi,
+                        HomeViewModelState.Edit,
+                        HomeViewModelState.PickDate,
+                        HomeViewModelState.Review,
+                        HomeViewModelState.TrainStationSearch,
+                        HomeViewModelState.AddressSearch,
+                        HomeViewModelState.AirportSearch
+                    });*/
+
+            set.Bind(this.mapView)
+                .For(v => v.TaxiLocation)
+                .To(vm => vm.BookingStatus.OrderStatusDetail);
+
+            #endregion
 
             set.Apply();
         }
@@ -354,6 +382,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ctrlOrderOptions.SetNeedsDisplay();
 			ctrlOrderBookingOptions.SetNeedsDisplay();
             bookingStatusBottomBar.SetNeedsDisplay();
+            bookingStatusControl.SetNeedsDisplay();
         }
 
         public void ChangePresentation(ChangePresentationHint hint)

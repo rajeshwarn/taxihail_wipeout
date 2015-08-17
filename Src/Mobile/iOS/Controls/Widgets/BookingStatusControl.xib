@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookingStatusControl">
+            <connections>
+                <outlet property="lblOrderNumber" destination="F3w-Jg-zVD" id="pV9-lI-hvR"/>
+                <outlet property="lblOrderStatus" destination="KtK-9e-n0C" id="OeL-hT-CYu"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QS4-3I-Wm4" userLabel="Status">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order #1234" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F3w-Jg-zVD">
+                            <rect key="frame" x="8" y="8" width="304" height="21"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Taxi is at pickup location" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KtK-9e-n0C">
+                            <rect key="frame" x="8" y="37" width="304" height="20"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="F3w-Jg-zVD" secondAttribute="trailing" constant="8" id="FH3-RU-p8m"/>
+                        <constraint firstItem="KtK-9e-n0C" firstAttribute="leading" secondItem="QS4-3I-Wm4" secondAttribute="leading" constant="8" id="Mcx-64-Hww"/>
+                        <constraint firstItem="F3w-Jg-zVD" firstAttribute="top" secondItem="QS4-3I-Wm4" secondAttribute="top" constant="8" id="Qe8-r9-RhO"/>
+                        <constraint firstAttribute="trailing" secondItem="KtK-9e-n0C" secondAttribute="trailing" constant="8" id="RX3-27-AU5"/>
+                        <constraint firstItem="KtK-9e-n0C" firstAttribute="top" secondItem="F3w-Jg-zVD" secondAttribute="bottom" constant="8" symbolic="YES" id="hCj-5h-UOb"/>
+                        <constraint firstItem="F3w-Jg-zVD" firstAttribute="leading" secondItem="QS4-3I-Wm4" secondAttribute="leading" constant="8" id="xP6-mL-X8G"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="QS4-3I-Wm4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="8Ed-ch-PzT"/>
+                <constraint firstItem="QS4-3I-Wm4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Brb-v7-aLO"/>
+                <constraint firstAttribute="trailing" secondItem="QS4-3I-Wm4" secondAttribute="trailing" id="LYC-e6-6Fn"/>
+                <constraint firstItem="QS4-3I-Wm4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="adQ-0c-dqm"/>
+                <constraint firstAttribute="bottom" secondItem="QS4-3I-Wm4" secondAttribute="bottom" id="oZN-60-84s"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="340" y="446"/>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination"/>
+    </simulatedMetricsContainer>
+</document>

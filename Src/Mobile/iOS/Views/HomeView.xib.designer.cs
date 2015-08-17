@@ -19,6 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarBookingStatus bookingStatusBottomBar { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.BookingStatusControl bookingStatusControl { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarView bottomBar { get; set; }
 
 		[Outlet]
@@ -86,9 +89,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (constraintAppBarBookingStatusVerticalSpace != null) {
-				constraintAppBarBookingStatusVerticalSpace.Dispose ();
-				constraintAppBarBookingStatusVerticalSpace = null;
+			if (bookingStatusControl != null) {
+				bookingStatusControl.Dispose ();
+				bookingStatusControl = null;
 			}
 
 			if (_constraintOrderBookinOptionsTopSpace != null) {
@@ -134,6 +137,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (constraintAppBarBookingStatusTopSpace != null) {
 				constraintAppBarBookingStatusTopSpace.Dispose ();
 				constraintAppBarBookingStatusTopSpace = null;
+			}
+
+			if (constraintAppBarBookingStatusVerticalSpace != null) {
+				constraintAppBarBookingStatusVerticalSpace.Dispose ();
+				constraintAppBarBookingStatusVerticalSpace = null;
 			}
 
 			if (constraintHomeLeadingSpace != null) {

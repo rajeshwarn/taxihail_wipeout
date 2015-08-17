@@ -25,6 +25,10 @@ using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using System.ComponentModel;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Common;
+using TinyIoC;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -41,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private readonly SerialDisposable _userMovedMapSubsciption = new SerialDisposable();
 
         private bool _useThemeColorForPickupAndDestinationMapIcons;
+        private bool _showAssignedVehicleNumberOnPin;
 
         public OrderMapView(IntPtr handle) :base(handle)
         {
@@ -82,7 +87,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void Initialize()
         {
-			_useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+            _showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
+            _useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
 
             this.DelayBind(() => 
             {
@@ -522,6 +529,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 // Set the new region center, but keep current span                
                 this.SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(centerHint.Latitude, centerHint.Longitude), Region.Span), true);
+            }
+        }
+
+        private MKAnnotation _taxiLocationPin;
+
+        private OrderStatusDetail _taxiLocation;
+        public OrderStatusDetail TaxiLocation
+        {
+            get { return _taxiLocation; }
+            set
+            {
+                _taxiLocation = value;
+                if (_taxiLocationPin != null)
+                {
+                    RemoveAnnotation(_taxiLocationPin);
+                    _taxiLocationPin = null;
+                }
+
+                if ((value != null))
+                {
+                    var coord = new CLLocationCoordinate2D(0,0);            
+                    if (value.VehicleLatitude.HasValue
+                        && value.VehicleLongitude.HasValue
+                        && value.VehicleLongitude.Value != 0
+                        && value.VehicleLatitude.Value != 0
+                        && !string.IsNullOrEmpty(value.VehicleNumber) 
+                        && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
+                    {
+                        coord = new CLLocationCoordinate2D(value.VehicleLatitude.Value, value.VehicleLongitude.Value);
+                    }
+                    _taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, _useThemeColorForPickupAndDestinationMapIcons, _showAssignedVehicleNumberOnPin);
+                    AddAnnotation(_taxiLocationPin);
+                }
+                SetNeedsDisplay();
             }
         }
     }
