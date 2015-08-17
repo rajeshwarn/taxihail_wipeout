@@ -347,7 +347,6 @@
     <AndroidResource Include="Resources\Layout\Control_EditTextLeftImage.axml" />
     <Compile Include="Binding\EditTextCreditCardNumberBinding.cs" />
     <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
-    <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Services\Social\FacebookService.cs" />
     <Compile Include="Services\Social\TwitterService.cs" />
     <AndroidResource Include="Resources\Drawable\edit_text_rounded.xml" />
@@ -392,7 +391,6 @@
     <Compile Include="Controls\Widgets\EditTextSpinner.cs" />
     <Compile Include="Controls\Widgets\PictureListViewCell.cs" />
     <Compile Include="Controls\Widgets\SlidingPanel.cs" />
-    <Compile Include="Controls\Widgets\TouchMap.cs" />
     <Compile Include="Controls\Widgets\HorizontalPager.cs" />
     <AndroidResource Include="Resources\Drawable\button_action_black_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
