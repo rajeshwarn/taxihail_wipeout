@@ -267,6 +267,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		    set.Bind(_appBarBookingStatus).For("DataContext").To(vm => vm.BookingStatus.BottomBar);
 		    set.Bind(_orderStatus).For("DataContext").To(vm => vm.BookingStatus);
 
+			// Setup bookingStatusMode
+		    set.Bind(MapFragment)
+			    .For(v => v.TaxiLocation)
+			    .To(vm => vm.BookingStatus.OrderStatusDetail);
+
 			//Setup Visibility
 		    set.Bind(_orderReview)
 			    .For(v => v.Visibility)

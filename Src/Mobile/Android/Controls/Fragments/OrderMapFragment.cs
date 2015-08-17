@@ -24,7 +24,11 @@ using Cirrious.MvvmCross.Binding.Droid.Views;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Maps.Geo;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Common;
+using Android.Graphics;
+using Android.Text;
 using Color = Android.Graphics.Color;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
@@ -40,6 +44,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
         private bool _bypassCameraChangeEvent = false;
 
+		private OrderStatusDetail _taxiLocation;
+		private Marker _taxiLocationPin;
+
         private readonly List<Marker> _availableVehicleMarkers = new List<Marker> ();
 
         private BitmapDescriptor _destinationIcon;
@@ -52,12 +59,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private const int MAP_PADDING = 60;
 
+		private readonly bool _showVehicleNumber;
+
+	    private bool _isBookingMode = false;
+
 		public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
             _resources = resources;
 			_settings = settings;
+			_showVehicleNumber = settings.ShowAssignedVehicleNumberOnPin;
 
-            InitDrawables();
+			InitDrawables();
 
             this.CreateBindingContext();  
                       
@@ -107,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private Address _destinationAddress;
+	    private Address _destinationAddress;
         public Address DestinationAddress
         {
             get { return _destinationAddress; }
@@ -133,6 +145,83 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+		public OrderStatusDetail TaxiLocation
+		{
+			get { return _taxiLocation; }
+			set
+			{
+				_taxiLocation = value;
+
+				UpdateTaxiLocation(value);
+			}
+		}
+
+
+	    private void UpdateTaxiLocation(OrderStatusDetail value)
+	    {
+			if (_taxiLocationPin != null)
+			{
+				_taxiLocationPin.Remove();
+			}
+
+			if (value != null
+				&& value.VehicleLatitude.HasValue
+				&& value.VehicleLongitude.HasValue
+				&& !string.IsNullOrEmpty(value.VehicleNumber)
+				&& VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
+			{
+				try
+				{
+					_taxiLocationPin = Map.AddMarker(new MarkerOptions()
+						.Anchor(.5f, 1f)
+						.SetPosition(new LatLng(value.VehicleLatitude.Value, value.VehicleLongitude.Value))
+						.InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap(value.VehicleNumber)))
+						.Visible(true));
+				}
+				catch (Exception ex)
+				{
+					Logger.LogError(ex);
+				}
+
+				_isBookingMode = true;
+
+				ShowAvailableVehicles(null);
+			}
+			else
+			{
+				_isBookingMode = false;
+			}
+	    }
+
+		private Bitmap CreateTaxiBitmap(string vehicleNumber)
+		{
+			var taxiIcon = DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
+
+			if (!_showVehicleNumber)
+			{
+				return taxiIcon;
+			}
+
+			var textSize = DrawHelper.GetPixels(11);
+			var textVerticalOffset = DrawHelper.GetPixels(12);
+
+			/* Find the width and height of the title*/
+			var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
+			paintText.SetARGB(255, 0, 0, 0);
+			paintText.SetTypeface(Typeface.DefaultBold);
+			paintText.TextSize = textSize;
+			paintText.TextAlign = Paint.Align.Center;
+
+			var rect = new Rect();
+			paintText.GetTextBounds(vehicleNumber, 0, vehicleNumber.Length, rect);
+
+			var mutableBitmap = taxiIcon.Copy(taxiIcon.GetConfig(), true);
+			var canvas = new Canvas(mutableBitmap);
+			// ReSharper disable once PossibleLossOfFraction
+			canvas.DrawText(vehicleNumber, canvas.Width / 2, rect.Height() + textVerticalOffset, paintText);
+			return mutableBitmap;
+		}
+
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IList<AvailableVehicle> AvailableVehicles
         {
@@ -153,8 +242,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public IMvxBindingContext BindingContext { get; set; }
 
         private bool lockGeocoding = false;
+	    private string _selectedVehicleMedallion;
 
-        [MvxSetToNullAfterBinding]
+	    [MvxSetToNullAfterBinding]
         public object DataContext
         {
             get { return BindingContext.DataContext; }
@@ -434,24 +524,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void CreateMarker(AvailableVehicle vehicle)
         {
-                bool isCluster = vehicle is AvailableVehicleCluster;
-                const string defaultLogoName = "taxi";
-                string logoKey = isCluster
-                                 ? string.Format("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
-                                 : string.Format("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
+            var isCluster = vehicle is AvailableVehicleCluster;
+            const string defaultLogoName = "taxi";
+            var logoKey = isCluster
+                                ? string.Format("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
+                                : string.Format("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
 
-                var vehicleMarker =
-                Map.AddMarker(new MarkerOptions()
-                  .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
-                  .Anchor(.5f, 1f)
-                  .InvokeIcon(_vehicleIcons[logoKey]));
+            var vehicleMarker = Map.AddMarker(new MarkerOptions()
+                .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
+                .Anchor(.5f, 1f)
+                .InvokeIcon(_vehicleIcons[logoKey]));
 
             _availableVehicleMarkers.Add (vehicleMarker);
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
         {
-            if (vehicles == null)
+            if (vehicles == null || _isBookingMode)
             {
                 ClearAllMarkers ();
                 return;
