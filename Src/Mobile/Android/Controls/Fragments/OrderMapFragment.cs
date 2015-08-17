@@ -223,7 +223,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(OnCameraChanged)
                 .DisposeWith(_subscriptions);
-
+			
             set.Bind()
                 .For(v => v.AddressSelectionMode)
                 .To(vm => vm.AddressSelectionMode);
@@ -266,16 +266,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private MapBounds GetMapBoundsFromProjection()
         {
-            var _bounds = Map.Projection.VisibleRegion.LatLngBounds;
+            var bounds = Map.Projection.VisibleRegion.LatLngBounds;
 
-            var bounds = new MapBounds()
+            var newMapBounds = new MapBounds()
             { 
-                SouthBound = _bounds.Southwest.Latitude, 
-                WestBound = _bounds.Southwest.Longitude, 
-                NorthBound = _bounds.Northeast.Latitude, 
-                EastBound = _bounds.Northeast.Longitude
+                SouthBound = bounds.Southwest.Latitude, 
+                WestBound = bounds.Southwest.Longitude, 
+                NorthBound = bounds.Northeast.Latitude, 
+                EastBound = bounds.Northeast.Longitude
             };
-            return bounds;
+            return newMapBounds;
         }
 
 		private LatLngBounds GetRegionFromMapBounds(MapBounds bounds)
@@ -370,6 +370,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
 				_destinationOverlay.Visibility = ViewStates.Gone;
 				_pickupOverlay.Visibility = ViewStates.Gone;
+
+
+	            if (PickupAddress.HasValidCoordinate())
+	            {
+					var position = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
+					_pickupPin.Visible = true;
+					_pickupPin.Position = new LatLng(position.Latitude, position.Longitude);  
+	            }
+	            else
+	            {
+					_pickupPin.Visible = false;
+	            }
+
+	            if (DestinationAddress.HasValidCoordinate())
+	            {
+					var position = new Position() { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
+					_destinationPin.Visible = true;
+					_destinationPin.Position = new LatLng(position.Latitude, position.Longitude); 
+	            }
+	            else
+	            {
+					_destinationPin.Visible = false;
+	            }
+
+
+				
             }
         }
 
