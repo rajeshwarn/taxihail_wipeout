@@ -239,6 +239,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 _isMapDisabled = value;
                 SetEnabled(!value);
+
+                if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
+                {
+                    // Hide movable pickup pin
+                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
+                    SetOverlay(_pickupCenterPin, false);
+
+                    // Show static pickup pic
+                    SetAnnotation(PickupAddress, _pickupAnnotation, true);
+                }
             }
         }
 
@@ -326,12 +336,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
                 {
-                    // Hide movable pickup pin
-                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
-                    SetOverlay(_pickupCenterPin, false);
+                    return;
 
-                    // Show static pickup pic
-                    SetAnnotation(PickupAddress, _pickupAnnotation, true);
                 }
                 else
                 {
@@ -544,6 +550,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+        #region OrderStatus
+
         private MKAnnotation _taxiLocationPin;
 
         private OrderStatusDetail _taxiLocation;
@@ -573,9 +581,90 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     }
                     _taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, _useThemeColorForPickupAndDestinationMapIcons, _showAssignedVehicleNumberOnPin);
                     AddAnnotation(_taxiLocationPin);
+
+                    if (_taxiLocation.IBSStatusId == VehicleStatuses.Common.Loaded)
+                    {
+                        RemoveAnnotation (_pickupAnnotation);
+
+                        // Hide movable pickup pin
+                        //SetAnnotation(PickupAddress, _pickupAnnotation, false);
+                        //SetOverlay(_pickupCenterPin, false);
+
+                        // Show static pickup pic
+                        //SetAnnotation(PickupAddress, _pickupAnnotation, true);
+                    }
                 }
                 SetNeedsDisplay();
             }
         }
+
+        private IEnumerable<CoordinateViewModel> _center;
+        public IEnumerable<CoordinateViewModel> MapCenter
+        {
+            get { return _center; }
+            set
+            {
+                _center = value;                
+                SetZoom(MapCenter);                   
+            }
+        }
+
+        private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
+        {
+            var coordinateViewModels = adressesToDisplay as CoordinateViewModel[] ?? adressesToDisplay.ToArray();
+            if(adressesToDisplay == null || !coordinateViewModels.Any())
+            {
+                return;
+            }
+
+            var region = new MKCoordinateRegion();
+            double? deltaLat = null;
+            double? deltaLng = null;
+            CLLocationCoordinate2D center;
+
+            if (coordinateViewModels.Count() == 1)
+            {
+                var lat = coordinateViewModels.ElementAt(0).Coordinate.Latitude;
+                var lon = coordinateViewModels.ElementAt(0).Coordinate.Longitude;
+
+                if (coordinateViewModels.ElementAt(0).Zoom == ZoomLevel.DontChange)
+                {
+                    region = Region;
+                }
+                else
+                {
+                    deltaLat = 0.004;
+                    deltaLng = 0.004;
+                }
+
+                center = new CLLocationCoordinate2D(lat, lon);
+            }
+            else
+            {
+                var minLat = coordinateViewModels.Min(a => a.Coordinate.Latitude);
+                var maxLat = coordinateViewModels.Max(a => a.Coordinate.Latitude);
+                var minLon = coordinateViewModels.Min(a => a.Coordinate.Longitude);
+                var maxLon = coordinateViewModels.Max(a => a.Coordinate.Longitude);
+
+                deltaLat = (Math.Abs(maxLat - minLat)) * 1.5;
+                deltaLng = (Math.Abs(maxLon - minLon)) * 1.5;
+                center = new CLLocationCoordinate2D((maxLat + minLat) / 2, (maxLon + minLon) / 2);
+            }
+
+            SetRegionAndZoom(region, center, deltaLat, deltaLng);
+        }
+
+        private void SetRegionAndZoom(MKCoordinateRegion region, CLLocationCoordinate2D center, double? deltaLat, double? deltaLng)
+        {
+            region.Center = center;
+            if (deltaLat.HasValue && deltaLng.HasValue)
+            {
+                region.Span = new MKCoordinateSpan(deltaLat.Value, deltaLng.Value);
+            }
+            SetRegion(region, true);
+            RegionThatFits(region);
+        }
+
+        #endregion
     }
 }
