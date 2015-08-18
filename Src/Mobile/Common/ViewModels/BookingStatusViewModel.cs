@@ -90,6 +90,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_orderWorkflowService.SetAddresses(new Address(), new Address());
 
 			_orderWorkflowService.PrepareForNewOrder();
+
+			_vehicleService.SetAvailableVehicle(true);
 		}
 
 		private readonly SerialDisposable _subscriptions = new SerialDisposable();
@@ -405,8 +407,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& status.VehicleLatitude.HasValue
 					&& status.VehicleLongitude.HasValue)
 				{
-					var d =  await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+					var d =  await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ConfigureAwait(false);
 					statusInfoText += " " + FormatEta(d);						
+				}
+
+				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) 
+					&& status.VehicleNumber.HasValue() 
+					&& status.VehicleLatitude.HasValue 
+					&& status.VehicleLongitude.HasValue)
+				{
+					_vehicleService.SetAvailableVehicle(false);
 				}
 
 				StatusInfoText = statusInfoText;

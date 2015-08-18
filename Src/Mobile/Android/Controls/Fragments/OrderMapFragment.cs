@@ -23,9 +23,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Maps.Geo;
-using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common;
 using Android.Graphics;
 using Android.Text;
@@ -42,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private Marker _pickupPin;
         private Marker _destinationPin;
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
-        private bool _bypassCameraChangeEvent = false;
+	    private bool _bypassCameraChangeEvent;
 
 		private IEnumerable<CoordinateViewModel> _center;
 
@@ -63,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private readonly bool _showVehicleNumber;
 
-	    private bool _isBookingMode = false;
+	    private bool _isBookingMode;
 
 		public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
@@ -256,8 +254,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public IMvxBindingContext BindingContext { get; set; }
 
-        private bool lockGeocoding = false;
-	    private string _selectedVehicleMedallion;
+        private bool _lockGeocoding;
 
 	    [MvxSetToNullAfterBinding]
         public object DataContext
@@ -279,7 +276,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void CancelAddressSearch()
         {
-            lockGeocoding = true;
+            _lockGeocoding = true;
             ((HomeViewModel)(ViewModel.Parent)).LocateMe.Cancel();
             ((HomeViewModel)(ViewModel.Parent)).AutomaticLocateMeAtPickup.Cancel();
             ViewModel.UserMovedMap.Cancel();
@@ -300,7 +297,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         CancelAddressSearch();
                         break;                       
                     default:
-                        lockGeocoding = false;
+                        _lockGeocoding = false;
                         break;
                 }               
             };
@@ -513,7 +510,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
             var bounds = GetMapBoundsFromProjection();
-            if (!lockGeocoding)
+            if (!_lockGeocoding)
             {
                 ViewModel.UserMovedMap.ExecuteIfPossible(bounds);
             }

@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private GestureDetector _gestureDetector;
         private ScaleGestureDetector _scaleDetector;
 
-        private static DateTime BlockScrollUntilDate = DateTime.MinValue;
+        private static DateTime _blockScrollUntilDate = DateTime.MinValue;
 
         public event EventHandler<MotionEvent> Touched;
         public Action<bool, float> ZoomBy;
@@ -146,7 +146,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     return false;
                 }
 
-                if (BlockScrollUntilDate >= DateTime.Now)
+                if (_blockScrollUntilDate >= DateTime.Now)
                 {
                     return false;
                 }
@@ -183,7 +183,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             public override bool OnScale (ScaleGestureDetector detector)
             {
                 _view.ZoomBy.Invoke (false, (detector.ScaleFactor - 1f) * 4);
-                BlockScrollUntilDate = DateTime.Now.AddMilliseconds (500);
+                _blockScrollUntilDate = DateTime.Now.AddMilliseconds (500);
                 return true;
             }
         }
