@@ -1,26 +1,26 @@
-﻿using System;
+﻿
+using System;
+
 using Foundation;
 using UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.Client.Style;
 using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public partial class AppBarBookingStatus : BaseBindableChildView<BookingStatusBottomBarViewModel>
+    public partial class ContactTaxiControl : BaseBindableChildView<BookingStatusViewModel>
     {
-        public AppBarBookingStatus (IntPtr handle) : base(handle)
+        public ContactTaxiControl (IntPtr handle) : base(handle)
         {
-            
         }
 
         public override void AwakeFromNib()
         {
             base.AwakeFromNib();
-            var nib = UINib.FromName ("AppBarBookingStatus", null);
-
+            var nib = UINib.FromName ("ContactTaxiControl", null);
             AddSubview((UIView)nib.Instantiate (this, null)[0]);
 
             Initialize();
@@ -33,42 +33,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            BackgroundColor = UIColor.Clear;
-
-            FlatButtonStyle.Red.ApplyTo(btnCancel);
-            FlatButtonStyle.Red.ApplyTo(btnUnpair);
-            FlatButtonStyle.Silver.ApplyTo(btnCall);
+            BackgroundColor = Theme.CompanyColor;
+            btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
         }
 
         private void InitializeBinding()
         {
-            var set = this.CreateBindingSet<AppBarBookingStatus, BookingStatusBottomBarViewModel>();
+            if (!ViewModel.IsCallTaxiVisible)
+            {
+                btnCallDriver.RemoveFromSuperview();
+            }
 
-            set.Bind(btnCancel)
-                .For(v => v.Command)
-                .To(vm => vm.CancelOrder);
+            var set = this.CreateBindingSet<ContactTaxiControl, BookingStatusViewModel>();
 
-            set.Bind(btnCancel)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsCancelButtonVisible)
+            set.Bind(lblMedallion)
+                .For(v => v.Text)
+                .To(vm => vm.OrderStatusDetail.VehicleNumber);
+
+            set.Bind(btnCallDriver)
+                .For("TouchUpInside")
+                .To(vm => vm.CallTaxi);
+
+            set.Bind(btnCallDriver)
+                .For(v => v.Hidden)
+                .To(vm => vm.IsCallTaxiVisible)
                 .WithConversion("BoolInverter");
-
-            set.Bind(btnUnpair)
-                .For(v => v.Command)
-                .To(vm => vm.Unpair);
-
-            set.Bind(btnUnpair)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsUnpairButtonVisible)
-                .WithConversion("BoolInverter");
-
-            set.Bind(btnCall)
-                .For(v => v.Command)
-                .To(vm => vm.CallCompany);
-
-            set.Bind(btnCall)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.Settings.HideCallDispatchButton);
 
             set.Apply();
         }
@@ -107,6 +96,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             }
         }
-    }
+    } 
 }
 

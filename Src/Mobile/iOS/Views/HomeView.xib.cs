@@ -17,7 +17,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
     public partial class HomeView : BaseViewController<HomeViewModel>, IChangePresentation
     {
         private BookLaterDatePicker _datePicker;
-        private readonly SerialDisposable _subscription = new SerialDisposable();
+        private readonly SerialDisposable _viewStatesubscription = new SerialDisposable();
+        private readonly SerialDisposable _bookingStatussubscription = new SerialDisposable();
+
+        private int BookingStatusHiddenConstraintValue = -200;
+        private int ContactDriverHiddenConstraintValue = -80;
 
         public override void ViewWillAppear (bool animated)
         {
@@ -36,7 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (ViewModel != null)
             {
                 ViewModel.SubscribeLifetimeChangedIfNecessary ();
-                _subscription.Disposable = ObserveCurrentViewState();
+                _viewStatesubscription.Disposable = ObserveCurrentViewState();
+                _bookingStatussubscription.Disposable = ObserveBookingStatus();
             }
         }
 
@@ -47,7 +52,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (ViewModel != null)
             {
                 ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
-                _subscription.Disposable = null;
+                _viewStatesubscription.Disposable = null;
+                _bookingStatussubscription.Disposable = null;
             }
         }
 
@@ -63,6 +69,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .Subscribe(ChangeState, Logger.LogError);
         }
 
+        private IDisposable ObserveBookingStatus()
+        {
+            return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+                h => ViewModel.BookingStatus.PropertyChanged += h,
+                h => ViewModel.BookingStatus.PropertyChanged -= h
+            )
+                .Where(args => args.EventArgs.PropertyName.Equals("IsContactTaxiVisible"))
+                .Select(_ => ViewModel.BookingStatus.IsContactTaxiVisible)
+                .DistinctUntilChanged()
+                .Subscribe(ToggleContactTaxiVisibility, Logger.LogError);
+        }
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -70,6 +88,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnMenu.SetImage(UIImage.FromFile("menu_icon.png"), UIControlState.Normal);
 
             btnLocateMe.SetImage(UIImage.FromFile("location_icon.png"), UIControlState.Normal);
+
+            contactTaxiControl.BackgroundColor = Theme.CompanyColor;
 
             _datePicker = new BookLaterDatePicker();            
 			_datePicker.UpdateView(UIScreen.MainScreen.Bounds.Height, UIScreen.MainScreen.Bounds.Width);
@@ -177,32 +197,48 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.BookingStatus);
 
-            /*set.Bind(bookingStatusControl)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.CurrentViewState)
-                .WithConversion("EnumToBool",
-                    new[]
-                    {
-                        HomeViewModelState.Initial,
-                        HomeViewModelState.BookATaxi,
-                        HomeViewModelState.Edit,
-                        HomeViewModelState.PickDate,
-                        HomeViewModelState.Review,
-                        HomeViewModelState.TrainStationSearch,
-                        HomeViewModelState.AddressSearch,
-                        HomeViewModelState.AirportSearch
-                    });*/
-
             set.Bind(this.mapView)
                 .For(v => v.TaxiLocation)
                 .To(vm => vm.BookingStatus.OrderStatusDetail);
 
+            set.Bind(contactTaxiControl)
+                .For(v => v.DataContext)
+                .To(vm => vm.BookingStatus);
+            
             #endregion
 
             set.Apply();
         }
 
-        void ChangeState(HomeViewModelState state)
+        private void ToggleContactTaxiVisibility(bool isContactTaxiVisible)
+        {
+            if (isContactTaxiVisible && constraintContactTaxiTopSpace.Constant != 22)
+            {
+                UIView.Animate(
+                    0.6f, 
+                    () =>
+                    {
+                        constraintContactTaxiTopSpace.Constant = 22;
+
+                        homeView.LayoutIfNeeded();
+                    },
+                    RedrawSubViews);
+            }
+            else if (!isContactTaxiVisible && constraintContactTaxiTopSpace.Constant != BookingStatusHiddenConstraintValue)
+            {
+                UIView.Animate(
+                    0.6f, 
+                    () =>
+                    {
+                        constraintContactTaxiTopSpace.Constant = BookingStatusHiddenConstraintValue;
+
+                        homeView.LayoutIfNeeded();
+                    },
+                    RedrawSubViews);
+            }
+        }
+
+        private void ChangeState(HomeViewModelState state)
         {
 			if (state == HomeViewModelState.PickDate)
 			{
@@ -286,6 +322,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     0.6f, 
                     () =>
                     {
+                        bookingStatusTopSpaceConstraint.Constant = BookingStatusHiddenConstraintValue;
+
                         ctrlOrderReview.SetNeedsDisplay();
                         ctrlAddressPicker.Close();
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
@@ -321,6 +359,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f;
                         constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+                        bookingStatusTopSpaceConstraint.Constant = 22f;
+
                         homeView.LayoutIfNeeded();
                         _datePicker.Hide();  
                     }, () =>
@@ -383,6 +423,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			ctrlOrderBookingOptions.SetNeedsDisplay();
             bookingStatusBottomBar.SetNeedsDisplay();
             bookingStatusControl.SetNeedsDisplay();
+            contactTaxiControl.SetNeedsDisplay();
         }
 
         public void ChangePresentation(ChangePresentationHint hint)

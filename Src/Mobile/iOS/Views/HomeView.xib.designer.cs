@@ -22,6 +22,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.BookingStatusControl bookingStatusControl { get; set; }
 
 		[Outlet]
+		UIKit.NSLayoutConstraint bookingStatusTopSpaceConstraint { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarView bottomBar { get; set; }
 
 		[Outlet]
@@ -46,6 +49,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.NSLayoutConstraint constraintAppBarBookingStatusVerticalSpace { get; set; }
 
 		[Outlet]
+		UIKit.NSLayoutConstraint constraintContactTaxiTopSpace { get; set; }
+
+		[Outlet]
 		UIKit.NSLayoutConstraint constraintHomeLeadingSpace { get; set; }
 
 		[Outlet]
@@ -62,6 +68,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.NSLayoutConstraint constraintOrderReviewTopSpace { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ContactTaxiControl contactTaxiControl { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.AddressPicker.AddressPickerView ctrlAddressPicker { get; set; }
@@ -89,9 +98,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (bookingStatusControl != null) {
-				bookingStatusControl.Dispose ();
-				bookingStatusControl = null;
+			if (constraintContactTaxiTopSpace != null) {
+				constraintContactTaxiTopSpace.Dispose ();
+				constraintContactTaxiTopSpace = null;
 			}
 
 			if (_constraintOrderBookinOptionsTopSpace != null) {
@@ -102,6 +111,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (bookingStatusBottomBar != null) {
 				bookingStatusBottomBar.Dispose ();
 				bookingStatusBottomBar = null;
+			}
+
+			if (bookingStatusControl != null) {
+				bookingStatusControl.Dispose ();
+				bookingStatusControl = null;
+			}
+
+			if (bookingStatusTopSpaceConstraint != null) {
+				bookingStatusTopSpaceConstraint.Dispose ();
+				bookingStatusTopSpaceConstraint = null;
 			}
 
 			if (bottomBar != null) {
@@ -172,6 +191,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (constraintOrderReviewTopSpace != null) {
 				constraintOrderReviewTopSpace.Dispose ();
 				constraintOrderReviewTopSpace = null;
+			}
+
+			if (contactTaxiControl != null) {
+				contactTaxiControl.Dispose ();
+				contactTaxiControl = null;
 			}
 
 			if (ctrlAddressPicker != null) {

@@ -123,7 +123,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return IsCallTaxiVisible &&
+				// TODO
+				return /*IsCallTaxiVisible*/ OrderStatusDetail != null &&
 					(OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
 		}
@@ -133,7 +134,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get 
 			{
 				return Settings.ShowCallDriver 
-					&& IsDriverInfoAvailable 
+					&& IsDriverInfoAvailable
+					&& OrderStatusDetail != null
 					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); 
 			}
         }
@@ -142,6 +144,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
             {
+				if (OrderStatusDetail == null)
+				{
+					return false;
+				}
+
 				bool showVehicleInformation = Settings.ShowVehicleInformation;
 				bool isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
