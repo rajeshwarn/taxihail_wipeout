@@ -53,8 +53,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (ViewModel != null)
             {
                 ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
-                _viewStatesubscription.Disposable = null;
-                _bookingStatussubscription.Disposable = null;
+                _viewStatesubscription.Dispose();
+                _bookingStatussubscription.Dispose();
             }
         }
 

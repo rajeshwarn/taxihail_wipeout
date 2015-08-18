@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             InitializeGesture();
         }
-            
+
         private void InitializeGesture()
         {
             // disable on map since we're handling gestures ourselves
@@ -324,19 +324,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             else
             {
-                SetAnnotation(PickupAddress, _pickupAnnotation, false);
-				SetOverlay(_dropoffCenterPin, false);
-				SetOverlay(_pickupCenterPin, true);
-
-                if (DestinationAddress.HasValidCoordinate())
+                if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
                 {
-                    SetAnnotation(DestinationAddress, _destinationAnnotation, true);
+                    // Hide movable pickup pin
+                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
+                    SetOverlay(_pickupCenterPin, false);
+
+                    // Show static pickup pic
+                    SetAnnotation(PickupAddress, _pickupAnnotation, true);
                 }
                 else
                 {
-                    SetAnnotation(DestinationAddress, _destinationAnnotation, false);
+                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
+                    SetOverlay(_dropoffCenterPin, false);
+                    SetOverlay(_pickupCenterPin, true);
+
+                    if (DestinationAddress.HasValidCoordinate())
+                    {
+                        SetAnnotation(DestinationAddress, _destinationAnnotation, true);
+                    }
+                    else
+                    {
+                        SetAnnotation(DestinationAddress, _destinationAnnotation, false);
+                    }
                 }
-            }            
+            }
         }
                      
         private void HandleTouchBegin (object sender, EventArgs e)
