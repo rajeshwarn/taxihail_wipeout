@@ -201,13 +201,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void ToggleContactTaxiVisibility(bool isContactTaxiVisible)
         {
-            if (isContactTaxiVisible && constraintContactTaxiTopSpace.Constant != 22)
+            if (isContactTaxiVisible && constraintContactTaxiTopSpace.Constant != 8f)
             {
                 UIView.Animate(
                     0.6f, 
                     () =>
                     {
-                        constraintContactTaxiTopSpace.Constant = 22;
+                        constraintContactTaxiTopSpace.Constant = 8f;
 
                         homeView.LayoutIfNeeded();
                     },
