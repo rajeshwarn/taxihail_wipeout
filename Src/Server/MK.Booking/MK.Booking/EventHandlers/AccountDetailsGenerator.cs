@@ -10,7 +10,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 using System.Globalization;
 using apcurium.MK.Common;
@@ -28,7 +27,6 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountPasswordReset>,
         IEventHandler<AccountPasswordUpdated>,
         IEventHandler<RoleAddedToUserAccount>,
-        IEventHandler<PaymentProfileUpdated>,
         IEventHandler<CreditCardAddedOrUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
@@ -210,17 +208,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 account.DefaultTipPercent = @event.DefaultTipPercent;
 
                 account.Settings = settings;
-                context.Save(account);
-            }
-        }
-
-        public void Handle(PaymentProfileUpdated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var account = context.Find<AccountDetail>(@event.SourceId);          
-                account.DefaultCreditCard = @event.DefaultCreditCard;
-                account.DefaultTipPercent = @event.DefaultTipPercent;
                 context.Save(account);
             }
         }
