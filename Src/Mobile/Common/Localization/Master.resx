@@ -2035,7 +2035,7 @@
     <value>Confirmation</value>
   </data>
   <data name="ResendConfirmationCodeText" xml:space="preserve">
-    <value>Confirmation code will be resend shortly</value>
+    <value>Confirmation code will be resent shortly</value>
   </data>
   <data name="OtherListItemLabel" xml:space="preserve">
     <value>Custom Percent</value>
