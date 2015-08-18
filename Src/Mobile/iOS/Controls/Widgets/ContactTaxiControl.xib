@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="btnCallDriver" destination="Iyf-Mq-hwp" id="ubp-Kf-u6t"/>
                 <outlet property="lblMedallion" destination="wSS-X2-NIl" id="CdD-Q3-KTc"/>
+                <outlet property="view" destination="iN0-l3-epB" id="0IP-bP-YKM"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -38,7 +39,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="wSS-X2-NIl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="2LC-L2-p4P"/>
                 <constraint firstItem="dah-XL-xr4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="22" id="5KB-jN-6fq"/>

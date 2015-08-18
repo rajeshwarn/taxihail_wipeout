@@ -20,12 +20,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		[Outlet]
 		UIKit.UILabel lblMedallion { get; set; }
+
+		[Outlet]
+		UIKit.UIView view { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblMedallion != null) {
-				lblMedallion.Dispose ();
-				lblMedallion = null;
+			if (view != null) {
+				view.Dispose ();
+				view = null;
+			}
+
+			if (btnCallDriver != null) {
+				btnCallDriver.Dispose ();
+				btnCallDriver = null;
 			}
 
 			if (imgPhone != null) {
@@ -33,9 +41,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				imgPhone = null;
 			}
 
-			if (btnCallDriver != null) {
-				btnCallDriver.Dispose ();
-				btnCallDriver = null;
+			if (lblMedallion != null) {
+				lblMedallion.Dispose ();
+				lblMedallion = null;
 			}
 		}
 	}

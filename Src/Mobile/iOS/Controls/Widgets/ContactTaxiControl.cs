@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             base.AwakeFromNib();
             var nib = UINib.FromName ("ContactTaxiControl", null);
+
             AddSubview((UIView)nib.Instantiate (this, null)[0]);
 
             Initialize();
@@ -39,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void InitializeBinding()
         {
+            view.BackgroundColor = Theme.CompanyColor;
             if (!ViewModel.IsCallTaxiVisible)
             {
                 btnCallDriver.RemoveFromSuperview();
