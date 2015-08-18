@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Platform;
 using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -87,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = null;
 			OrderStatusDetail = null;
 
-			_orderWorkflowService.SetAddresses(new Address(), new Address());
+			//_orderWorkflowService.SetAddresses(new Address(), new Address());
 
 			_orderWorkflowService.PrepareForNewOrder();
 
@@ -577,10 +578,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void ReturnToInitialState()
 		{
-			_bookingService.ClearLastOrder();
-			((HomeViewModel) Parent).CurrentViewState = HomeViewModelState.Initial;
-
 			StopBookingStatus();
+
+			_bookingService.ClearLastOrder();
+
+			var homeViewModel = Parent as HomeViewModel;
+
+			homeViewModel.CurrentViewState = HomeViewModelState.Initial;
+			homeViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
 		}
 
 		private void CenterMap()

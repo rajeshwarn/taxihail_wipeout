@@ -246,8 +246,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     SetAnnotation(PickupAddress, _pickupAnnotation, false);
                     SetOverlay(_pickupCenterPin, false);
 
+                    // Hide movable dropoff pin
+                    SetAnnotation(PickupAddress, _destinationAnnotation, false);
+                    SetOverlay(_dropoffCenterPin, false);
+
                     // Show static pickup pic
                     SetAnnotation(PickupAddress, _pickupAnnotation, true);
+
+                    // Show static dropoff pic
+                    SetAnnotation(DestinationAddress, _destinationAnnotation, true);
                 }
             }
         }
@@ -585,13 +592,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     if (_taxiLocation.IBSStatusId == VehicleStatuses.Common.Loaded)
                     {
                         RemoveAnnotation (_pickupAnnotation);
-
-                        // Hide movable pickup pin
-                        //SetAnnotation(PickupAddress, _pickupAnnotation, false);
-                        //SetOverlay(_pickupCenterPin, false);
-
-                        // Show static pickup pic
-                        //SetAnnotation(PickupAddress, _pickupAnnotation, true);
                     }
                 }
                 SetNeedsDisplay();
