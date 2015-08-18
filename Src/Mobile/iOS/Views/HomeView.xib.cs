@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private int BookingStatusHiddenConstraintValue = -200;
         private int ContactDriverHiddenConstraintValue = -80;
+        private int BookingStatusAppBarHiddenConstrainValue = 80;
 
         public override void ViewWillAppear (bool animated)
         {
@@ -174,22 +175,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             #region BookingStatus
 
             set.Bind(bookingStatusBottomBar)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.CurrentViewState)
-                .WithConversion("EnumToBool",
-                    new[]
-                    {
-                        HomeViewModelState.Initial,
-                        HomeViewModelState.BookATaxi,
-                        HomeViewModelState.Edit,
-                        HomeViewModelState.PickDate,
-                        HomeViewModelState.Review,
-                        HomeViewModelState.TrainStationSearch,
-                        HomeViewModelState.AddressSearch,
-                        HomeViewModelState.AirportSearch
-                    });
-
-            set.Bind(bookingStatusBottomBar)
                 .For(v => v.DataContext)
                 .To(vm => vm.BookingStatus.BottomBar);
 
@@ -262,7 +247,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				UIView.Animate(
 					0.6f, 
 					() =>
-					{
+                    {
 						orderEdit.SetNeedsDisplay();
 						ctrlOrderBookingOptions.SetNeedsDisplay();
 						constraintOrderReviewTopSpace.Constant = 10;
@@ -317,6 +302,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				// Date Picker: Hidden
 
 				CloseBookATaxiDialog();
+                constraintAppBarBookingStatus.Constant = BookingStatusAppBarHiddenConstrainValue;
 
                 UIView.Animate(
                     0.6f, 
@@ -348,6 +334,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 // Booking Status app bar: Visible
 
                 CloseBookATaxiDialog();
+                constraintAppBarBookingStatus.Constant = 0;
+
 
                 UIView.Animate(
                     0.6f, 
