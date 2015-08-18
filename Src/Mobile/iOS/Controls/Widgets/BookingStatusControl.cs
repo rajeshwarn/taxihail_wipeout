@@ -10,6 +10,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public partial class BookingStatusControl : BaseBindableChildView<BookingStatusViewModel>
     {
+        private NSLayoutConstraint _heightConstraint;
+
         public BookingStatusControl (IntPtr handle) : base(handle)
         {
         }
@@ -30,6 +32,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
+            //_heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1.0f, 60.0f);
+            //AddConstraint(_heightConstraint);
+            //lblOrderNumber.Text = "Order #12345";
+            //lblOrderStatus.Text = "this is le status asklfsadf nadsfinasdi a sdf";
             BackgroundColor = UIColor.White;
         }
 
@@ -48,39 +54,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Apply();
         }
 
-        private NSLayoutConstraint[] _hiddenContraints { get; set; }
-
-        public bool HiddenWithConstraints
+        public void Resize()
         {
-            get
-            {
-                return base.Hidden;
-            }
-            set
-            {
-                if (base.Hidden != value)
-                {
-                    base.Hidden = value;
-                    if (value)
-                    {
-                        _hiddenContraints = this.Superview.Constraints != null 
-                            ? this.Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
-                            : null;
-                        if (_hiddenContraints != null)
-                        {
-                            this.Superview.RemoveConstraints(_hiddenContraints);
-                        }
-                    }
-                    else
-                    {
-                        if (_hiddenContraints != null)
-                        {
-                            this.Superview.AddConstraints(_hiddenContraints);
-                            _hiddenContraints = null;
-                        }
-                    }
-                }
-            }
+            _heightConstraint.Constant = (nfloat)Subviews[0].Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height);
+            SetNeedsDisplay();
         }
     } 
 }

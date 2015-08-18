@@ -44,11 +44,10 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="QS4-3I-Wm4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="8Ed-ch-PzT"/>
-                <constraint firstItem="QS4-3I-Wm4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Brb-v7-aLO"/>
-                <constraint firstAttribute="trailing" secondItem="QS4-3I-Wm4" secondAttribute="trailing" id="LYC-e6-6Fn"/>
-                <constraint firstItem="QS4-3I-Wm4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="adQ-0c-dqm"/>
-                <constraint firstAttribute="bottom" secondItem="QS4-3I-Wm4" secondAttribute="bottom" id="oZN-60-84s"/>
+                <constraint firstItem="QS4-3I-Wm4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="8Nh-3m-SwS"/>
+                <constraint firstAttribute="trailing" secondItem="QS4-3I-Wm4" secondAttribute="trailing" id="gR6-Ck-Wmb"/>
+                <constraint firstItem="QS4-3I-Wm4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="jQz-Ne-uCU"/>
+                <constraint firstAttribute="bottom" secondItem="QS4-3I-Wm4" secondAttribute="bottom" id="nMo-rd-M2r"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
