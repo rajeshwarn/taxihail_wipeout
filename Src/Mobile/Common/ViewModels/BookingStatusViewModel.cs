@@ -417,6 +417,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& status.VehicleLongitude.HasValue)
 				{
 					_vehicleService.SetAvailableVehicle(false);
+
+					status.DriverInfos.FirstName = "bob";
+					status.DriverInfos.LastName = "bob";
+					status.DriverInfos.VehicleColor = "Red";
+					status.DriverInfos.VehicleMake = "Ford";
+					status.DriverInfos.VehicleModel = "Fiesta";
+					status.DriverInfos.VehicleRegistration = "123456";
 				}
 
 				StatusInfoText = statusInfoText;

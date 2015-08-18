@@ -25,6 +25,7 @@ using MK.Common.Configuration;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Extensions;
 using Android.Graphics;
 using Android.Text;
 using Color = Android.Graphics.Color;
@@ -680,11 +681,54 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
 			{
 				AnimateTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 16);
+				return;
 			}
-			else
+
+			if (Math.Abs(maxLat - minLat) > .008)
 			{
-				Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(new LatLngBounds(new LatLng(minLat, minLon), new LatLng(maxLat, maxLon)), DrawHelper.GetPixels(100)));
+				maxLat += .0025;
+
+				var bookingStatusViewModel = ((HomeViewModel) ViewModel.Parent).BookingStatus;
+
+				if (_settings.ShowCallDriver)
+				{
+					maxLat += 0.0025;
+				}
+
+				if (_settings.ShowVehicleInformation)
+				{	
+					if (bookingStatusViewModel.VehicleDriverHidden)
+					{
+						maxLat += 0.0007;
+					}
+					if (bookingStatusViewModel.VehicleLicenceHidden)
+					{
+						maxLat += 0.0007;
+					}
+					if (bookingStatusViewModel.VehicleColorHidden)
+					{
+						maxLat += 0.0007;
+					}
+					if (bookingStatusViewModel.VehicleMakeHidden)
+					{
+						maxLat += 0.0007;
+					}
+					if (bookingStatusViewModel.VehicleModelHidden)
+					{
+						maxLat += 0.0007;
+					}
+					if (bookingStatusViewModel.VehicleTypeHidden)
+					{
+						maxLat += 0.0007;
+					}
+					if (bookingStatusViewModel.CompanyHidden)
+					{
+						maxLat += 0.0007;
+					}
+				}	
 			}
+
+			Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(new LatLngBounds(new LatLng(minLat, minLon), new LatLng(maxLat, maxLon)), DrawHelper.GetPixels(100)));
 		}
     }
 }
