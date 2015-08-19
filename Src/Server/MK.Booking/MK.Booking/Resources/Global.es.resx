@@ -209,6 +209,10 @@
     <value>Reservación&amp;nbsp;#</value>
     <comment>Order&amp;nbsp;#</comment>
   </data>
+  <data name="Email_Body_TripId" xml:space="preserve">
+    <value>Servicio #</value>
+    <comment>Trip #</comment>
+  </data>
   <data name="Email_Body_PaidWith" xml:space="preserve">
     <value>Pagado con</value>
     <comment>Paid With</comment>
@@ -342,7 +346,8 @@
     <comment>ETA displayed to client is {0} and {1} min</comment>
   </data>
   <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
-    <value>Payment being processed by the app...</value>
+    <value>Procesando Pago…</value>
+    <comment>Payment being processed by the app...</comment>
   </data>
   <data name="OrderStatus_CabDriverETA" xml:space="preserve">
     <value>TEA: {0}</value>
@@ -466,16 +471,21 @@
     <comment>Your vehicle is almost at pickup location</comment>
   </data>
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
-    <value>Su servicio #{0} no pudo ser asignado automáticamente</value>
+    <value>Pairing failed. Pay to driver.</value>
     <comment>The ride #{0} could not be automatically paired</comment>
   </data>
   <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
     <value>Su reservación#{0} sera cargada automáticamente al final del servicio usando su tarjeta con terminación en {1} y usando su propina especificada por defecto de {2}%</value>
     <comment>The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%</comment>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your credit card on file ending with {1}. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+  </data>
   <data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
-    <value>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%</value>
-    <comment>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%</comment>
+    <value>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {1}%</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your PayPal account. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
   </data>
   <data name="PushNotification_PaymentReceived" xml:space="preserve">
     <value>Su tarjeta de crédito ha sido cargada por un total de {0}. Este monto incluye tanto su servicio como su propina.</value>
@@ -514,6 +524,9 @@
   <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>CONDUCTOR / VEHICULO</value>
     <comment>Your Driver</comment>
+  </data>
+  <data name="Email_Body_Distance" xml:space="preserve">
+    <value>Distance</value>
   </data>
   <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
     <value>There is no promotion associated to this code</value>
@@ -693,17 +706,12 @@
   <data name="PayPalWebPaymentDescription" xml:space="preserve">
     <value>Taxi ride of amount {0}</value>
   </data>
-  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
-    <value>The ride #{0} will be paid at the end of the trip using your PayPal account. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
-  </data>
-  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
-    <value>The ride #{0} will be paid at the end of the trip using your credit card on file. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride. </value>
-  </data>
   <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
     <value>Reminder: If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
   </data>
   <data name="PayPal" xml:space="preserve">
     <value>PayPal</value>
+    <comment>PayPal</comment>
   </data>
   <data name="CannotCreateOrder_CreditCardDeactivated" xml:space="preserve">
     <value>Your card on file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment</value>
@@ -741,13 +749,46 @@
   <data name="ManualRideLinq_CreditCardDisabled" xml:space="preserve">
     <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
   </data>
+  <data name="Email_Body_Surcharge" xml:space="preserve">
+    <value>Surcharge</value>
+  </data>
   <data name="Email_Body_Extra" xml:space="preserve">
     <value>Extra</value>
   </data>
   <data name="Email_Body_DriverId" xml:space="preserve">
     <value>Driver #</value>
   </data>
+  <data name="PayPalWebBookingFeeItemDescription" xml:space="preserve">
+    <value>Booking Fees</value>
+  </data>
+  <data name="Email_Subject_CancellationFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - Cancellation Fees</value>
+  </data>
+  <data name="Email_Subject_NoShowFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - No Show Fees</value>
+  </data>
+  <data name="Email_Body_CancellationFee" xml:space="preserve">
+    <value>You have been charged a fee of {{FeeAmount}} for the ride #{{IbsOrderId}} because it was cancelled.</value>
+  </data>
+  <data name="Email_Body_NoShowFee" xml:space="preserve">
+    <value>You have been charged a fee of {{FeeAmount}} for the ride #{{IbsOrderId}} because you were absent when the driver tried to pick you up at {{PickUpAddress}}.</value>
+  </data>
+  <data name="Email_Body_Fee_Conclusion" xml:space="preserve">
+    <value>This amount will be automatically debited from your credit card ending with {{Last4Digits}}.</value>
+  </data>
+  <data name="Email_Body_BookingFees" xml:space="preserve">
+    <value>Booking Fees</value>
+  </data>
+  <data name="Email_Body_RateClass" xml:space="preserve">
+    <value>Rate Code</value>
+  </data>
   <data name="PushNotification_CreditCardDeclined" xml:space="preserve">
     <value>Credit Card was declined</value>
+  </data>
+  <data name="OrderStatus_PairingFailed" xml:space="preserve">
+    <value>Unable to pair. Please pay to your driver at the end of the ride</value>
+  </data>
+  <data name="PhoneNumberFormat" xml:space="preserve">
+    <value>The phone number is invalid. It must have format {0}</value>
   </data>
 </root>
