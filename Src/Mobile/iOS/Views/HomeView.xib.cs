@@ -90,8 +90,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             btnLocateMe.SetImage(UIImage.FromFile("location_icon.png"), UIControlState.Normal);
 
-            contactTaxiControl.BackgroundColor = Theme.CompanyColor;
-
             _datePicker = new BookLaterDatePicker();            
 			_datePicker.UpdateView(UIScreen.MainScreen.Bounds.Height, UIScreen.MainScreen.Bounds.Width);
             _datePicker.Hide();
