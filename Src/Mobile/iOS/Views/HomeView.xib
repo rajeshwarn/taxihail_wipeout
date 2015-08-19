@@ -110,10 +110,10 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZLu-Q7-DYG" customClass="BookingStatusControl">
-                            <rect key="frame" x="8" y="-200" width="304" height="158"/>
+                            <rect key="frame" x="8" y="-200" width="304" height="163"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="158" id="Ztr-kp-Q7L"/>
+                                <constraint firstAttribute="height" constant="163" id="Ztr-kp-Q7L"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="300" translatesAutoresizingMaskIntoConstraints="NO" id="lYS-4q-3Mj" customClass="OrderReviewView">
@@ -161,7 +161,7 @@
                         <constraint firstAttribute="height" secondItem="cPP-SX-9eS" secondAttribute="height" id="2FV-c2-amB"/>
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="500" id="4Uw-iv-741"/>
                         <constraint firstAttribute="trailing" secondItem="cXg-Q6-nLg" secondAttribute="trailing" id="8Ab-0L-enX"/>
-                        <constraint firstItem="qYq-T6-6x7" firstAttribute="top" secondItem="ZLu-Q7-DYG" secondAttribute="bottom" constant="-283" id="9l2-hu-sB1"/>
+                        <constraint firstItem="qYq-T6-6x7" firstAttribute="top" secondItem="ZLu-Q7-DYG" secondAttribute="bottom" constant="-288" id="9l2-hu-sB1"/>
                         <constraint firstAttribute="trailing" secondItem="cPP-SX-9eS" secondAttribute="trailing" id="Cdy-Mv-jlG"/>
                         <constraint firstItem="eeH-0k-Y1u" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="DDA-uB-eCh"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="FRw-GE-bhA"/>

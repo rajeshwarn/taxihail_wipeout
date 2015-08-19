@@ -16,11 +16,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="304" height="158"/>
+            <rect key="frame" x="0.0" y="0.0" width="304" height="163"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QS4-3I-Wm4" userLabel="Status">
-                    <rect key="frame" x="0.0" y="0.0" width="304" height="75"/>
+                    <rect key="frame" x="0.0" y="0.0" width="304" height="80"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order #1234" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F3w-Jg-zVD">
                             <rect key="frame" x="8" y="8" width="288" height="21"/>
@@ -29,7 +29,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Taxi is at pickup location" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KtK-9e-n0C">
-                            <rect key="frame" x="8" y="37" width="288" height="20"/>
+                            <rect key="frame" x="8" y="34" width="288" height="20"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
@@ -41,12 +41,12 @@
                         <constraint firstItem="KtK-9e-n0C" firstAttribute="leading" secondItem="QS4-3I-Wm4" secondAttribute="leading" constant="8" id="Mcx-64-Hww"/>
                         <constraint firstItem="F3w-Jg-zVD" firstAttribute="top" secondItem="QS4-3I-Wm4" secondAttribute="top" constant="8" id="Qe8-r9-RhO"/>
                         <constraint firstAttribute="trailing" secondItem="KtK-9e-n0C" secondAttribute="trailing" constant="8" id="RX3-27-AU5"/>
-                        <constraint firstItem="KtK-9e-n0C" firstAttribute="top" secondItem="F3w-Jg-zVD" secondAttribute="bottom" constant="8" symbolic="YES" id="hCj-5h-UOb"/>
+                        <constraint firstItem="KtK-9e-n0C" firstAttribute="top" secondItem="F3w-Jg-zVD" secondAttribute="bottom" constant="5" id="hCj-5h-UOb"/>
                         <constraint firstItem="F3w-Jg-zVD" firstAttribute="leading" secondItem="QS4-3I-Wm4" secondAttribute="leading" constant="8" id="xP6-mL-X8G"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kLg-86-8qE" userLabel="Driver Infos">
-                    <rect key="frame" x="0.0" y="83" width="304" height="75"/>
+                    <rect key="frame" x="0.0" y="88" width="304" height="75"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qrO-wp-i5w" customClass="MvxImageView">
                             <rect key="frame" x="8" y="0.0" width="70" height="70"/>
