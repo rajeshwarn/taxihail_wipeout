@@ -408,7 +408,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             });
         }
 
-        private void ClearAllAnnotations()
+        private void ClearAvailableVehiclesAnnotations()
         {
             foreach (var vehicleAnnotation in _availableVehicleAnnotations)
             {
@@ -447,7 +447,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             if (vehicles == null)
             {
-                ClearAllAnnotations ();
+                ClearAvailableVehiclesAnnotations();
                 return;
             }
 
@@ -592,6 +592,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     if (_taxiLocation.IBSStatusId == VehicleStatuses.Common.Loaded)
                     {
                         RemoveAnnotation (_pickupAnnotation);
+                        ClearAvailableVehiclesAnnotations();
                     }
                 }
                 SetNeedsDisplay();

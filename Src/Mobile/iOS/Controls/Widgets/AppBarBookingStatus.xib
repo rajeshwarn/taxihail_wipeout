@@ -17,9 +17,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OSF-Ez-zc4" customClass="FlatButton">
-                    <rect key="frame" x="8" y="7" width="83" height="41"/>
+                    <rect key="frame" x="8" y="7" width="304" height="41"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="Lro-bV-BtH"/>
+                        <constraint firstAttribute="width" priority="900" constant="304" id="saE-rk-UJm"/>
                     </constraints>
                     <state key="normal" title="Pay in Car">
                         <color key="titleColor" red="1" green="0.0" blue="0.010051519910000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -27,8 +28,9 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Bx-XG-5tK" customClass="FlatButton">
-                    <rect key="frame" x="99" y="8" width="213" height="41"/>
+                    <rect key="frame" x="262" y="8" width="50" height="41"/>
                     <constraints>
+                        <constraint firstAttribute="width" priority="850" constant="50" id="BYc-Ep-GFs"/>
                         <constraint firstAttribute="height" constant="41" id="c1M-hR-PvD"/>
                     </constraints>
                     <state key="normal" title="Call">
@@ -37,9 +39,10 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ipp-gG-QLh" customClass="FlatButton">
-                    <rect key="frame" x="8" y="8" width="83" height="41"/>
+                    <rect key="frame" x="8" y="8" width="246" height="41"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="7SF-Jk-fNl"/>
+                        <constraint firstAttribute="width" priority="900" constant="304" id="yIu-mQ-J9T"/>
                     </constraints>
                     <state key="normal" title="Cancel">
                         <color key="titleColor" red="1" green="0.0" blue="0.010051519910000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -52,9 +55,9 @@
                 <constraint firstItem="ipp-gG-QLh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="0Yr-yt-81j"/>
                 <constraint firstItem="ipp-gG-QLh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="FBn-y0-KpS"/>
                 <constraint firstAttribute="trailing" secondItem="7Bx-XG-5tK" secondAttribute="trailing" constant="8" id="GNu-Kd-K6r"/>
-                <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="ipp-gG-QLh" secondAttribute="trailing" priority="800" constant="8" id="Idz-FR-1Ip"/>
+                <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="ipp-gG-QLh" secondAttribute="trailing" constant="8" id="Idz-FR-1Ip"/>
                 <constraint firstItem="OSF-Ez-zc4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="cyW-Nv-Hhe"/>
-                <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="700" constant="8" id="fYT-Mw-aXs"/>
+                <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="900" constant="8" id="fYT-Mw-aXs"/>
                 <constraint firstItem="7Bx-XG-5tK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="i6A-ML-pde"/>
                 <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="OSF-Ez-zc4" secondAttribute="trailing" priority="800" constant="8" id="tcO-vU-F2y"/>
                 <constraint firstItem="OSF-Ez-zc4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="7" id="vML-XH-yi2"/>

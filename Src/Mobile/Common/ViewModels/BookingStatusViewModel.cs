@@ -88,8 +88,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = null;
 			OrderStatusDetail = null;
 
-			//_orderWorkflowService.SetAddresses(new Address(), new Address());
-
 			_orderWorkflowService.PrepareForNewOrder();
 
 			_vehicleService.SetAvailableVehicle(true);
@@ -126,8 +124,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				// TODO
-				return /*IsCallTaxiVisible*/ OrderStatusDetail != null &&
+				return IsCallTaxiVisible &&
 					(OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
 		}
@@ -442,7 +439,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					GoToSummary();
                 }
 
-				if (_bookingService.IsStatusTimedOut(status.IBSStatusId))
+				if (_bookingService.IsStatusTimedOut(status.IBSStatusId)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
                 {
                     GoToBookingScreen();
                 }
@@ -453,8 +451,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 			finally
 			{			
-				Logger.LogMessage ("RefreshStatus ends");
-				_refreshStatusIsExecuting = false;			
+				Logger.LogMessage("RefreshStatus ends");
+				_refreshStatusIsExecuting = false;
 			}
         }
 
