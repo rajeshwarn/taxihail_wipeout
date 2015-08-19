@@ -152,10 +152,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			set
 			{
 				_center = value;
-				if (value != null)
-				{
-					SetZoom(value.ToArray()); 
-				}
+				SetZoom(value); 
 			}
 		}
 
@@ -645,14 +642,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(lat, lng)));
 		}
 
-		private void SetZoom(CoordinateViewModel[] adressesToDisplay)
+		private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
 		{
-			if (adressesToDisplay.Length == 1)
-			{
-				var lat = adressesToDisplay[0].Coordinate.Latitude;
-				var lon = adressesToDisplay[0].Coordinate.Longitude;
+			var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.ToArray();
+            if(addresseesToDisplay == null || !coordinateViewModels.Any())
+            {
+                return;
+            }
 
-				if (adressesToDisplay[0].Zoom != ZoomLevel.DontChange)
+			if (coordinateViewModels.Length == 1)
+			{
+				var lat = coordinateViewModels[0].Coordinate.Latitude;
+				var lon = coordinateViewModels[0].Coordinate.Longitude;
+
+				if (coordinateViewModels[0].Zoom != ZoomLevel.DontChange)
 				{
 					AnimateTo(lat, lon, 16);
 				}
@@ -668,7 +671,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			double minLon = 180;
 			double maxLon = -180;
 
-			foreach (var item in adressesToDisplay)
+			foreach (var item in coordinateViewModels)
 			{
 				var lat = item.Coordinate.Latitude;
 				var lon = item.Coordinate.Longitude;
@@ -683,9 +686,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				AnimateTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 16);
 				return;
 			}
-
+			
 			// Changes the map zoom to prevent hiding the pin under the booking status.
-			if (Math.Abs(maxLat - minLat) > .008)
+			if (Math.Abs(maxLat - minLat) > .001)
 			{
 				maxLat += .0025;
 
@@ -693,36 +696,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 				if (_settings.ShowCallDriver)
 				{
-					maxLat += 0.0025;
+					maxLat += 0.0045;
 				}
 
 				if (_settings.ShowVehicleInformation)
 				{	
-					if (bookingStatusViewModel.VehicleDriverHidden)
+					if (!bookingStatusViewModel.VehicleDriverHidden)
 					{
 						maxLat += 0.0007;
 					}
-					if (bookingStatusViewModel.VehicleLicenceHidden)
+					if (!bookingStatusViewModel.VehicleColorHidden)
 					{
 						maxLat += 0.0007;
 					}
-					if (bookingStatusViewModel.VehicleColorHidden)
+					if (!bookingStatusViewModel.VehicleMakeHidden || bookingStatusViewModel.VehicleModelHidden)
 					{
 						maxLat += 0.0007;
 					}
-					if (bookingStatusViewModel.VehicleMakeHidden)
-					{
-						maxLat += 0.0007;
-					}
-					if (bookingStatusViewModel.VehicleModelHidden)
-					{
-						maxLat += 0.0007;
-					}
-					if (bookingStatusViewModel.VehicleTypeHidden)
-					{
-						maxLat += 0.0007;
-					}
-					if (bookingStatusViewModel.CompanyHidden)
+					if (!bookingStatusViewModel.CompanyHidden)
 					{
 						maxLat += 0.0007;
 					}
