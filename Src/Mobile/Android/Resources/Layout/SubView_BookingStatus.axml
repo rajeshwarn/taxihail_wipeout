@@ -104,6 +104,7 @@
 						android:orientation="horizontal"
 						android:layout_width="fill_parent"
 						android:layout_height="wrap_content"
+						android:layout_below="@id/driverLayout"
 						local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility">
 					<TextView
 							android:id="@+id/modelValue"
@@ -127,6 +128,7 @@
 						android:orientation="horizontal"
 						android:layout_width="fill_parent"
 						android:layout_height="wrap_content"
+						android:layout_below="@id/makeLayout"
 						local:MvxBind="Visibility VehicleColorHidden, Converter=InvertedVisibility">
 					<TextView
 							android:id="@+id/ColorValue"
