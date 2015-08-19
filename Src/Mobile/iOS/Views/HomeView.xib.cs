@@ -238,7 +238,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     0.6f, 
                     () =>
                     {
-                        constraintContactTaxiTopSpace.Constant = ContactDriverHiddenConstraintValue;
+                        constraintContactTaxiTopSpace.Constant = /*ContactDriverHiddenConstraintValue*/-60;
                         contactTaxiControl.SetNeedsDisplay();
 
                         homeView.LayoutIfNeeded();
@@ -340,6 +340,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 				CloseBookATaxiDialog();
                 constraintAppBarBookingStatus.Constant = BookingStatusAppBarHiddenConstrainValue;
+                constraintContactTaxiTopSpace.Constant = ContactDriverHiddenConstraintValue;
                 homeView.LayoutIfNeeded();
 
                 UIView.Animate(
@@ -373,6 +374,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 CloseBookATaxiDialog();
                 constraintAppBarBookingStatus.Constant = 0;
+                //constraintContactTaxiTopSpace.Constant = -58;
+
                 homeView.LayoutIfNeeded();
 
 

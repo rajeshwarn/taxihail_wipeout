@@ -134,10 +134,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
 			{
-				return Settings.ShowCallDriver 
-					&& IsDriverInfoAvailable
-					&& OrderStatusDetail != null
-					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue(); 
+				if (OrderStatusDetail == null || OrderStatusDetail.DriverInfos == null)
+				{
+					return false;
+				}
+
+				bool isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
+					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded;
+
+				return Settings.ShowCallDriver && isOrderStatusValid && OrderStatusDetail.DriverInfos.MobilePhone.HasValue(); 
 			}
         }
 
