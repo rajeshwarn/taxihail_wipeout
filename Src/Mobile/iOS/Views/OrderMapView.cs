@@ -610,10 +610,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
+	    private double GetLatitudeDeltaThreshold()
+	    {
+		    return UIHelper.Is35InchDisplay
+				? 0.001
+				: 0.004;
+	    }
+
+        private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
         {
-            var coordinateViewModels = adressesToDisplay as CoordinateViewModel[] ?? adressesToDisplay.ToArray();
-            if(adressesToDisplay == null || !coordinateViewModels.Any())
+            var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.ToArray();
+            if(addresseesToDisplay == null || !coordinateViewModels.Any())
             {
                 return;
             }
@@ -654,60 +661,58 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var minLon = coordinateViewModels.Min(a => a.Coordinate.Longitude);
                 var maxLon = coordinateViewModels.Max(a => a.Coordinate.Longitude);
 
-				const double statusOffset = .0025;
-	            const double calldriverOffset = 0.0005;
+				const double statusOffset = .0045;
 	            const double vehicleInformationOffset = 0.0007;
 
+	            double latitudeOffset = 0;
 				// Changes the map zoom to prevent hiding the pin under the booking status.
-				if (Math.Abs(maxLat - minLat) > .008)
+				if (Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
 				{
-					maxLat += statusOffset;
-					minLat += statusOffset;
+					latitudeOffset += statusOffset;
 
 					var bookingStatusViewModel = ((HomeViewModel)ViewModel.Parent).BookingStatus;
 
 					if (settings.ShowCallDriver)
 					{
-						maxLat += statusOffset;
-						minLat += calldriverOffset;
+						latitudeOffset += statusOffset;
 					}
 
 					if (settings.ShowVehicleInformation)
 					{
 						if (bookingStatusViewModel.VehicleDriverHidden)
 						{
-							maxLat += vehicleInformationOffset;
+							latitudeOffset += vehicleInformationOffset;
 						}
 						if (bookingStatusViewModel.VehicleLicenceHidden)
 						{
-							maxLat += vehicleInformationOffset;
+							latitudeOffset += vehicleInformationOffset;
 						}
 						if (bookingStatusViewModel.VehicleColorHidden)
 						{
-							maxLat += vehicleInformationOffset;
+							latitudeOffset += vehicleInformationOffset;
 						}
 						if (bookingStatusViewModel.VehicleMakeHidden)
 						{
-							maxLat += vehicleInformationOffset;
+							latitudeOffset += vehicleInformationOffset;
 						}
 						if (bookingStatusViewModel.VehicleModelHidden)
 						{
-							maxLat += vehicleInformationOffset;
+							latitudeOffset += vehicleInformationOffset;
 						}
 						if (bookingStatusViewModel.VehicleTypeHidden)
 						{
-							maxLat += vehicleInformationOffset;
+							latitudeOffset += vehicleInformationOffset;
 						}
 						if (bookingStatusViewModel.CompanyHidden)
 						{
-							maxLat += vehicleInformationOffset;
+							latitudeOffset += vehicleInformationOffset;
 						}
 					}
 				}
 
-                deltaLat = (Math.Abs(maxLat - minLat)) * 1.5;
+				deltaLat = (Math.Abs(maxLat - minLat)) * 1.5;
                 deltaLng = (Math.Abs(maxLon - minLon)) * 1.5;
-                center = new CLLocationCoordinate2D((maxLat + minLat) / 2, (maxLon + minLon) / 2);
+				center = new CLLocationCoordinate2D(((maxLat + minLat) / 2) + latitudeOffset, (maxLon + minLon) / 2);
             }
 
             SetRegionAndZoom(region, center, deltaLat, deltaLng);
