@@ -34,13 +34,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            BackgroundColor = Theme.CompanyColor;
+            view.BackgroundColor = Theme.CompanyColor;
+            lblMedallionTitle.TextColor = Theme.LabelTextColor;
+            lblMedallion.TextColor = Theme.LabelTextColor;
+
             btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
         }
 
         private void InitializeBinding()
         {
-            view.BackgroundColor = Theme.CompanyColor;
             if (!ViewModel.IsCallTaxiVisible)
             {
                 btnCallDriver.RemoveFromSuperview();
