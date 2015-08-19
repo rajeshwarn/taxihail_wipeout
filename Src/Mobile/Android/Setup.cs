@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             });
 
-			InitializeSocialNetwork();
+			
         }
 
 		protected override void FillTargetFactories(IMvxTargetBindingFactoryRegistry registry)
@@ -135,7 +135,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
 		{
-			return new TinyIoCProvider(TinyIoCContainer.Current);
+			var iocContainer = new TinyIoCProvider(TinyIoCContainer.Current);
+			
+			InitializeSocialNetwork();
+			
+			return iocContainer;
 		}
 
         protected override Cirrious.MvvmCross.Droid.Views.IMvxAndroidViewPresenter CreateViewPresenter()

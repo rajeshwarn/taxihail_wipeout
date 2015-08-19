@@ -14,21 +14,19 @@ using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
-using Xamarin.FacebookBinding;
 using ClipboardManager = Android.Text.ClipboardManager;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
 	[Activity(Label = "Login",
         Theme = "@style/LoginTheme",
-        ScreenOrientation = ScreenOrientation.Portrait)]
+		ScreenOrientation = ScreenOrientation.Portrait)]
     [IntentFilter(new[] { Intent.ActionView },
         DataScheme = "taxihail",
         Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable })]
 	public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
 		private readonly FacebookService _facebookService;
-		private UiLifecycleHelper _uiHelper;
 		public LoginActivity ()
 		{
 			_facebookService = (FacebookService)TinyIoCContainer.Current.Resolve<IFacebookService>();
@@ -37,32 +35,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		protected override void OnCreate(Bundle bundle)
 		{
 			base.OnCreate(bundle);
-			_uiHelper = new UiLifecycleHelper(this, _facebookService.StatusCallback);
-			_uiHelper.OnCreate(bundle);
 		}
 
 		protected override void OnPause()
 		{
 			base.OnPause();
-			_uiHelper.OnPause();
 		}
 
 		protected override void OnResume()
 		{
 			base.OnResume();
-			_uiHelper.OnResume();
 		}
 
 		protected override void OnSaveInstanceState(Bundle outState)
 		{
 			base.OnSaveInstanceState(outState);
-			_uiHelper.OnSaveInstanceState(outState);
 		}
 
 		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
 		{
 			base.OnActivityResult(requestCode, resultCode, data);
-			_uiHelper.OnActivityResult(requestCode, (int)resultCode, data);
+			_facebookService.ActivityOnActivityResult(requestCode, resultCode, data);
 		}
 
 		protected override void OnViewModelSet()
@@ -172,7 +165,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         protected override void OnDestroy()
         {
             base.OnDestroy();
-			_uiHelper.OnDestroy();           
             GC.Collect();
         }
 	}
