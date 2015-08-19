@@ -106,11 +106,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 
 		class GetUserInfoCallback : Java.Lang.Object, GraphRequest.ICallback
 		{
-			TaskCompletionSource<FacebookUserInfo> _tcs;
+			TaskCompletionSource<FacebookUserInfo> _taskCompletionSource;
 
-			public GetUserInfoCallback(TaskCompletionSource<FacebookUserInfo> tcs)
+			public GetUserInfoCallback(TaskCompletionSource<FacebookUserInfo> taskCompletionSource)
 			{
-				_tcs = tcs;
+				_taskCompletionSource = taskCompletionSource;
 			}
 
 			public void OnCompleted(GraphResponse response)
@@ -126,11 +126,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 						userInfo.Add(userInfoKeys.Get(i).ToString(), response.JSONObject.GetString(userInfoKeys.Get(i).ToString()));
 					}
 
-					_tcs.TrySetResult(FacebookUserInfo.CreateFrom(userInfo));
+					_taskCompletionSource.TrySetResult(FacebookUserInfo.CreateFrom(userInfo));
 				}
 				else
 				{
-					_tcs.TrySetException(response.Error.Exception);
+					_taskCompletionSource.TrySetException(response.Error.Exception);
 				}
 			}
 		}
@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 			static object exclusiveAccess = new object();
 			private TaskCompletionSource<object> _loginTaskCompletionSource;
 
-			public void SetTaskCompletionSource(TaskCompletionSource<object> tcs)
+			public void SetTaskCompletionSource(TaskCompletionSource<object> taskCompletionSource)
 			{
 				lock (exclusiveAccess)
 				{
@@ -149,7 +149,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 						_loginTaskCompletionSource.TrySetCanceled();
 					}
 
-					_loginTaskCompletionSource = tcs;
+					_loginTaskCompletionSource = taskCompletionSource;
 				}
 			}
 
