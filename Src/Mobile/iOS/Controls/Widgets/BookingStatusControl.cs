@@ -10,8 +10,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public partial class BookingStatusControl : BaseBindableChildView<BookingStatusViewModel>
     {
-        private NSLayoutConstraint _heightConstraint;
-
         public BookingStatusControl (IntPtr handle) : base(handle)
         {
         }
@@ -32,10 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            //_heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1.0f, 60.0f);
-            //AddConstraint(_heightConstraint);
-            //lblOrderNumber.Text = "Order #12345";
-            //lblOrderStatus.Text = "this is le status asklfsadf nadsfinasdi a sdf";
             BackgroundColor = UIColor.White;
         }
 
@@ -51,14 +45,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Text)
                 .To(vm => vm.StatusInfoText);
 
-            set.Apply();
-        }
+            set.Bind(viewDriverInfos)
+                .For(v => v.Hidden)
+                .To(vm => vm.IsDriverInfoAvailable)
+                .WithConversion("BoolInverter");
 
-        public void Resize()
-        {
-            _heightConstraint.Constant = (nfloat)Subviews[0].Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height);
-            SetNeedsDisplay();
+            set.Bind(driverPhoto)
+                .For(v => v.ImageUrl)
+                .To(vm => vm.OrderStatusDetail.DriverInfos.DriverPhotoUrl);
+
+            set.Bind(lblDriverName)
+                .For(v => v.Text)
+                .To(vm => vm.OrderStatusDetail.DriverInfos.FullName);
+
+            set.Bind(lblVehicleInfos)
+                .For(v => v.Text)
+                .To(vm => vm.OrderStatusDetail.DriverInfos.FullVehicleInfo);
+
+            set.Apply();
         }
     } 
 }
-

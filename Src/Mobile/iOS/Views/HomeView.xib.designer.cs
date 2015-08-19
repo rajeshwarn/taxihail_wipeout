@@ -55,6 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.NSLayoutConstraint constraintAppBarStatusBottomSpace { get; set; }
 
 		[Outlet]
+		UIKit.NSLayoutConstraint constraintBookingStatusHeight { get; set; }
+
+		[Outlet]
 		UIKit.NSLayoutConstraint constraintContactTaxiTopSpace { get; set; }
 
 		[Outlet]
@@ -104,9 +107,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (constraintAppBarBookingStatus != null) {
-				constraintAppBarBookingStatus.Dispose ();
-				constraintAppBarBookingStatus = null;
+			if (constraintBookingStatusHeight != null) {
+				constraintBookingStatusHeight.Dispose ();
+				constraintBookingStatusHeight = null;
 			}
 
 			if (_constraintOrderBookinOptionsTopSpace != null) {
@@ -152,6 +155,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnTrain != null) {
 				btnTrain.Dispose ();
 				btnTrain = null;
+			}
+
+			if (constraintAppBarBookingStatus != null) {
+				constraintAppBarBookingStatus.Dispose ();
+				constraintAppBarBookingStatus = null;
 			}
 
 			if (constraintAppBarBookingStatusBottomSpace != null) {

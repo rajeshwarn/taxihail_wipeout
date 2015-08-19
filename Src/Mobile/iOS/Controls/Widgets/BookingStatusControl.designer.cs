@@ -13,13 +13,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	partial class BookingStatusControl
 	{
 		[Outlet]
+		Cirrious.MvvmCross.Binding.Touch.Views.MvxImageView driverPhoto { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblDriverName { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblOrderNumber { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblOrderStatus { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblVehicleInfos { get; set; }
+
+		[Outlet]
+		UIKit.UIView viewDriverInfos { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (driverPhoto != null) {
+				driverPhoto.Dispose ();
+				driverPhoto = null;
+			}
+
+			if (lblDriverName != null) {
+				lblDriverName.Dispose ();
+				lblDriverName = null;
+			}
+
 			if (lblOrderNumber != null) {
 				lblOrderNumber.Dispose ();
 				lblOrderNumber = null;
@@ -28,6 +50,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (lblOrderStatus != null) {
 				lblOrderStatus.Dispose ();
 				lblOrderStatus = null;
+			}
+
+			if (lblVehicleInfos != null) {
+				lblVehicleInfos.Dispose ();
+				lblVehicleInfos = null;
+			}
+
+			if (viewDriverInfos != null) {
+				viewDriverInfos.Dispose ();
+				viewDriverInfos = null;
 			}
 		}
 	}

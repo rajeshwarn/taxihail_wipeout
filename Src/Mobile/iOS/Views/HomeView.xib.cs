@@ -19,10 +19,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private BookLaterDatePicker _datePicker;
         private readonly SerialDisposable _viewStatesubscription = new SerialDisposable();
         private readonly SerialDisposable _bookingStatussubscription = new SerialDisposable();
+        private readonly SerialDisposable _orderStatusDetailSubscription = new SerialDisposable();
 
-        private int BookingStatusHiddenConstraintValue = -200;
-        private int ContactDriverHiddenConstraintValue = -80;
-        private int BookingStatusAppBarHiddenConstrainValue = 80;
+        private const int BookingStatusHiddenConstraintValue = -200;
+        private const int ContactDriverHiddenConstraintValue = -250;
+        private const int BookingStatusAppBarHiddenConstrainValue = 80;
+        private const int BookingStatusHeight = 75;
+        private const int BookingStatusAndDriverInfosHeight = 158;
+
 
         public override void ViewWillAppear (bool animated)
         {
@@ -42,7 +46,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 ViewModel.SubscribeLifetimeChangedIfNecessary ();
                 _viewStatesubscription.Disposable = ObserveCurrentViewState();
-                _bookingStatussubscription.Disposable = ObserveBookingStatus();
+                _bookingStatussubscription.Disposable = ObserveIsContactTaxiVisible();
+                _orderStatusDetailSubscription.Disposable = ObserveIsDriverInfoAvailable();
             }
         }
 
@@ -52,9 +57,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             if (ViewModel != null)
             {
-                ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
+                ViewModel.UnsubscribeLifetimeChangedIfNecessary();
+
                 _viewStatesubscription.Dispose();
                 _bookingStatussubscription.Dispose();
+                _orderStatusDetailSubscription.Dispose();
             }
         }
 
@@ -70,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .Subscribe(ChangeState, Logger.LogError);
         }
 
-        private IDisposable ObserveBookingStatus()
+        private IDisposable ObserveIsContactTaxiVisible()
         {
             return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
                 h => ViewModel.BookingStatus.PropertyChanged += h,
@@ -80,6 +87,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .Select(_ => ViewModel.BookingStatus.IsContactTaxiVisible)
                 .DistinctUntilChanged()
                 .Subscribe(ToggleContactTaxiVisibility, Logger.LogError);
+        }
+
+        private IDisposable ObserveIsDriverInfoAvailable()
+        {
+            return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+                h => ViewModel.BookingStatus.PropertyChanged += h,
+                h => ViewModel.BookingStatus.PropertyChanged -= h
+            )
+                .Where(args => args.EventArgs.PropertyName.Equals("IsDriverInfoAvailable"))
+                .Select(_ => ViewModel.BookingStatus.IsDriverInfoAvailable)
+                .DistinctUntilChanged()
+                .Subscribe(ResizeBookingStatusControl, Logger.LogError);
         }
 
         public override void ViewDidLoad()
@@ -212,20 +231,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     },
                     RedrawSubViews);
             }
-            else if (!isContactTaxiVisible && constraintContactTaxiTopSpace.Constant != BookingStatusHiddenConstraintValue)
+            else if (!isContactTaxiVisible && constraintContactTaxiTopSpace.Constant != ContactDriverHiddenConstraintValue)
             {
                 // Hide
                 UIView.Animate(
                     0.6f, 
                     () =>
                     {
-                        constraintContactTaxiTopSpace.Constant = BookingStatusHiddenConstraintValue;
+                        constraintContactTaxiTopSpace.Constant = ContactDriverHiddenConstraintValue;
                         contactTaxiControl.SetNeedsDisplay();
 
                         homeView.LayoutIfNeeded();
                     },
                     RedrawSubViews);
             }
+        }
+
+        private void ResizeBookingStatusControl(bool isDriverInfoAvailable)
+        {
+            if (isDriverInfoAvailable)
+            {
+                constraintBookingStatusHeight.Constant = BookingStatusAndDriverInfosHeight;
+            }
+            else
+            {
+                constraintBookingStatusHeight.Constant = BookingStatusHeight;
+            }
+            bookingStatusControl.SetNeedsDisplay();
         }
 
         private void ChangeState(HomeViewModelState state)
@@ -308,7 +340,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 				CloseBookATaxiDialog();
                 constraintAppBarBookingStatus.Constant = BookingStatusAppBarHiddenConstrainValue;
-                bookingStatusBottomBar.SetNeedsDisplay();
+                homeView.LayoutIfNeeded();
 
                 UIView.Animate(
                     0.6f, 
@@ -341,6 +373,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 CloseBookATaxiDialog();
                 constraintAppBarBookingStatus.Constant = 0;
+                homeView.LayoutIfNeeded();
 
 
                 UIView.Animate(
