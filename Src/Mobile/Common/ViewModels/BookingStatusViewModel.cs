@@ -67,8 +67,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			StatusInfoText = string.Format(this.Services().Localize["Processing"]);
 
-			CenterMap();
-
 			BottomBar.IsCancelButtonVisible = false;
 			_waitingToNavigateAfterTimeOut = false;
 
@@ -91,6 +89,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_orderWorkflowService.PrepareForNewOrder();
 
 			_vehicleService.SetAvailableVehicle(true);
+
+			MapCenter = null;
 		}
 
 		private readonly SerialDisposable _subscriptions = new SerialDisposable();
@@ -427,7 +427,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				StatusInfoText = statusInfoText;
                 OrderStatusDetail = status;
 
-                CenterMap ();
+                CenterMapIfNeeded ();
 
                 BottomBar.UpdateActionsPossibleOnOrder(status.IBSStatusId);
 
@@ -586,51 +586,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			homeViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
 		}
 
-		private void CenterMap()
+		private void CenterMapIfNeeded()
         {   
 			if (Order == null) 
 			{
 				return;
 			}
 
-			var showPickupOnlyStatus = new [] { VehicleStatuses.Common.Waiting, VehicleStatuses.Common.Timeout, VehicleStatuses.Common.Scheduled };
-			var showPickupAndVehicleStatus = new [] { VehicleStatuses.Common.Assigned, VehicleStatuses.Common.Arrived, VehicleStatuses.Common.NoShow };
-			var showVehicleAndDropOffStatus = new [] { VehicleStatuses.Common.Loaded, VehicleStatuses.Common.MeterOffNotPayed, VehicleStatuses.Common.Done };
-
-			// should show nothing but pickup
-			if (OrderStatusDetail == null
-				|| showPickupOnlyStatus.Contains(OrderStatusDetail.IBSStatusId)
-				|| (!OrderStatusDetail.VehicleLatitude.HasValue && !OrderStatusDetail.VehicleLongitude.HasValue))
-			{
-				var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
-				MapCenter = new[] { pickup };
-				return;
-			}
-
-			// should show pickup and vehicle
-			if (showPickupAndVehicleStatus.Contains(OrderStatusDetail.IBSStatusId) && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue)
+			if (VehicleStatuses.Common.Assigned.Equals(OrderStatusDetail.IBSStatusId) 
+				&& OrderStatusDetail.VehicleLatitude.HasValue 
+				&& OrderStatusDetail.VehicleLongitude.HasValue
+				&& MapCenter == null)
 			{
 				var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
 				var vehicle = CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value);
 				MapCenter = new[] { pickup, vehicle };
+
 				return;
 			}
 
-			// should show vehicle and dropoff (if available)
-			if (showVehicleAndDropOffStatus.Contains(OrderStatusDetail.IBSStatusId) && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue)
+			if (!VehicleStatuses.Common.Assigned.Equals(OrderStatusDetail.IBSStatusId))
 			{
-				var vehicle = CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value, true);
-
-				if (Order.DropOffAddress != null
-					&& Order.DropOffAddress.HasValidCoordinate ())
-				{
-					var dropOff = CoordinateViewModel.Create(Order.DropOffAddress.Latitude, Order.DropOffAddress.Longitude, true);
-					MapCenter = new[] { vehicle, dropOff };
-				}
-				else
-				{
-					MapCenter = new[] { vehicle };
-				}
+				MapCenter = new CoordinateViewModel[0];
 			}
         }
 
