@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OSF-Ez-zc4" customClass="FlatButton">
-                    <rect key="frame" x="8" y="7" width="304" height="41"/>
+                    <rect key="frame" x="8" y="7" width="296" height="41"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="Lro-bV-BtH"/>
                         <constraint firstAttribute="width" priority="900" constant="304" id="saE-rk-UJm"/>
@@ -28,7 +28,7 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Bx-XG-5tK" customClass="FlatButton">
-                    <rect key="frame" x="262" y="8" width="50" height="41"/>
+                    <rect key="frame" x="312" y="8" width="0.0" height="41"/>
                     <constraints>
                         <constraint firstAttribute="width" priority="850" constant="50" id="BYc-Ep-GFs"/>
                         <constraint firstAttribute="height" constant="41" id="c1M-hR-PvD"/>
@@ -39,7 +39,7 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ipp-gG-QLh" customClass="FlatButton">
-                    <rect key="frame" x="8" y="8" width="246" height="41"/>
+                    <rect key="frame" x="8" y="8" width="296" height="41"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="7SF-Jk-fNl"/>
                         <constraint firstAttribute="width" priority="900" constant="304" id="yIu-mQ-J9T"/>
@@ -59,7 +59,7 @@
                 <constraint firstItem="OSF-Ez-zc4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="cyW-Nv-Hhe"/>
                 <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="900" constant="8" id="fYT-Mw-aXs"/>
                 <constraint firstItem="7Bx-XG-5tK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="i6A-ML-pde"/>
-                <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="OSF-Ez-zc4" secondAttribute="trailing" priority="800" constant="8" id="tcO-vU-F2y"/>
+                <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="OSF-Ez-zc4" secondAttribute="trailing" constant="8" id="lDF-Ie-PgN"/>
                 <constraint firstItem="OSF-Ez-zc4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="7" id="vML-XH-yi2"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

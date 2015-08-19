@@ -67,7 +67,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
              
 			this.RegionChanged += (s, e) => 
 			{
-				ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray () : null, GetMapBoundsFromProjection()));
+                // If no pending orders or status is not assigned yet
+                if (_orderStatusDetail == null
+                    || _orderStatusDetail.IBSStatusId == null
+                    || (_orderStatusDetail != null && _orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting))
+                {
+                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray () : null, GetMapBoundsFromProjection()));
+                }
 			};
         }
 
@@ -561,20 +567,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private MKAnnotation _taxiLocationPin;
 
-        private OrderStatusDetail _taxiLocation;
-        public OrderStatusDetail TaxiLocation
+        private OrderStatusDetail _orderStatusDetail;
+        public OrderStatusDetail OrderStatusDetail
         {
-            get { return _taxiLocation; }
+            get { return _orderStatusDetail; }
             set
             {
-                _taxiLocation = value;
+                _orderStatusDetail = value;
+
                 if (_taxiLocationPin != null)
                 {
                     RemoveAnnotation(_taxiLocationPin);
                     _taxiLocationPin = null;
                 }
 
-                if ((value != null))
+                if (value != null)
                 {
                     var coord = new CLLocationCoordinate2D(0,0);            
                     if (value.VehicleLatitude.HasValue
@@ -589,10 +596,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     _taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, _useThemeColorForPickupAndDestinationMapIcons, _showAssignedVehicleNumberOnPin);
                     AddAnnotation(_taxiLocationPin);
 
-                    if (_taxiLocation.IBSStatusId == VehicleStatuses.Common.Loaded)
+                    if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned)
+                    {
+                        ClearAvailableVehiclesAnnotations();
+                    }
+
+                    if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)
                     {
                         RemoveAnnotation (_pickupAnnotation);
-                        ClearAvailableVehiclesAnnotations();
                     }
                 }
                 SetNeedsDisplay();
@@ -670,7 +681,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				{
 					latitudeOffset += statusOffset;
 
-					var bookingStatusViewModel = ((HomeViewModel)ViewModel.Parent).BookingStatus;
+                    var bookingStatusViewModel = ((HomeViewModel)ViewModel.Parent).BookingStatus;
 
 					if (settings.ShowCallDriver)
 					{
