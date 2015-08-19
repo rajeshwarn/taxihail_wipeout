@@ -104,7 +104,6 @@
 						android:orientation="horizontal"
 						android:layout_width="fill_parent"
 						android:layout_height="wrap_content"
-						android:layout_below="@id/taxiTypeLayout"
 						local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility">
 					<TextView
 							android:id="@+id/modelValue"
@@ -128,15 +127,7 @@
 						android:orientation="horizontal"
 						android:layout_width="fill_parent"
 						android:layout_height="wrap_content"
-						android:layout_below="@id/modelLayout"
 						local:MvxBind="Visibility VehicleColorHidden, Converter=InvertedVisibility">
-					<apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
-							android:id="@+id/ColorLabel"
-							style="@style/BlackTextLabel"
-							android:text="@string/DriverInfoColor"
-							android:gravity="center_vertical|end"
-							android:layout_width="60dip"
-							android:layout_height="wrap_content" />
 					<TextView
 							android:id="@+id/ColorValue"
 							style="@style/BlackTextLabel"
