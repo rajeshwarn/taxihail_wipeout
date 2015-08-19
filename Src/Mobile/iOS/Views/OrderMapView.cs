@@ -605,7 +605,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set
             {
                 _center = value;                
-                SetZoom(MapCenter);                   
+                SetZoom(value);                   
             }
         }
 
@@ -641,10 +641,68 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             else
             {
+	            if (ViewModel == null)
+	            {
+		            return;
+	            }
+
+	            var settings = ViewModel.Settings;
+
                 var minLat = coordinateViewModels.Min(a => a.Coordinate.Latitude);
                 var maxLat = coordinateViewModels.Max(a => a.Coordinate.Latitude);
                 var minLon = coordinateViewModels.Min(a => a.Coordinate.Longitude);
                 var maxLon = coordinateViewModels.Max(a => a.Coordinate.Longitude);
+
+				const double statusOffset = .0025;
+	            const double calldriverOffset = 0.0005;
+	            const double vehicleInformationOffset = 0.0007;
+
+				// Changes the map zoom to prevent hiding the pin under the booking status.
+				if (Math.Abs(maxLat - minLat) > .008)
+				{
+					maxLat += statusOffset;
+					minLat += statusOffset;
+
+					var bookingStatusViewModel = ((HomeViewModel)ViewModel.Parent).BookingStatus;
+
+					if (settings.ShowCallDriver)
+					{
+						maxLat += statusOffset;
+						minLat += calldriverOffset;
+					}
+
+					if (settings.ShowVehicleInformation)
+					{
+						if (bookingStatusViewModel.VehicleDriverHidden)
+						{
+							maxLat += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.VehicleLicenceHidden)
+						{
+							maxLat += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.VehicleColorHidden)
+						{
+							maxLat += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.VehicleMakeHidden)
+						{
+							maxLat += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.VehicleModelHidden)
+						{
+							maxLat += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.VehicleTypeHidden)
+						{
+							maxLat += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.CompanyHidden)
+						{
+							maxLat += vehicleInformationOffset;
+						}
+					}
+				}
 
                 deltaLat = (Math.Abs(maxLat - minLat)) * 1.5;
                 deltaLng = (Math.Abs(maxLon - minLon)) * 1.5;
