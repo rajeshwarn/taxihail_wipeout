@@ -74,6 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 
 		public void PublishInstall()
 		{
+			AppEvents.ActivateApp();
 		}
 
         public System.Threading.Tasks.Task Connect()
