@@ -684,6 +684,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				return;
 			}
 
+			// Changes the map zoom to prevent hiding the pin under the booking status.
 			if (Math.Abs(maxLat - minLat) > .008)
 			{
 				maxLat += .0025;
