@@ -39,6 +39,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public string TextLine2 { get; set; }
 
+		public override Java.Lang.ICharSequence ContentDescriptionFormatted
+		{
+			get
+			{
+				Java.Lang.ICharSequence baseContent = base.ContentDescriptionFormatted;
+
+				if (baseContent == null || (baseContent != null && baseContent.Length() == 0))
+				{
+					if (TextLine1 != TextLine2)
+					{
+						return new Java.Lang.String(TextLine1 + " " + TextLine2);
+					}
+					else
+					{
+						return new Java.Lang.String(TextLine1);
+					}
+				}
+				else
+				{
+					return baseContent;
+				}
+			}
+			set
+			{
+				base.ContentDescriptionFormatted = value;
+			}
+		}
+
         public bool ShowRightArrow { get; set; }
 
 		private Android.Graphics.Drawables.Drawable _backgroundDrawable;	

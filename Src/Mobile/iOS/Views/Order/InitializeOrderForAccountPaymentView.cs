@@ -61,70 +61,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 			var i = 0;
 
-			if (ViewModel.Questions[0].Model.IsEnabled)
-			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[0].QuestionLabel);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[0].Model.Answer);
-				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[0].QuestionPlaceholder);
-				set.Bind (GetTuple(i).Item3).For (v => v.MaxLength).To (vm => vm.Questions[0].Model.MaxLength);
-				i++;
-			}
+            for (i = 0; i <= 7; i++)
+            {
+                if (ViewModel.Questions[i].Model.IsEnabled)
+                {
+                    set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[i].QuestionLabel);
+                    set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[i].Model.Answer);
+                    set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[i].QuestionPlaceholder);
+                    set.Bind (GetTuple(i).Item3).For (v => v.AccessibilityLabel).To (vm => vm.Questions[i].QuestionPlaceholder);
 
-			if (ViewModel.Questions[1].Model.IsEnabled)
-			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[1].QuestionLabel);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[1].Model.Answer);
-				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[1].QuestionPlaceholder);
-				i++;
-			}
-
-			if (ViewModel.Questions[2].Model.IsEnabled)
-			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[2].QuestionLabel);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[2].Model.Answer);
-				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[2].QuestionPlaceholder);
-				i++;
-			}
-
-			if (ViewModel.Questions[3].Model.IsEnabled)
-			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[3].QuestionLabel);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[3].Model.Answer);
-				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[3].QuestionPlaceholder);
-				i++;
-			}
-
-			if (ViewModel.Questions[4].Model.IsEnabled)
-			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[4].QuestionLabel);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[4].Model.Answer);
-				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[4].QuestionPlaceholder);
-				i++;
-			}
-
-			if (ViewModel.Questions[5].Model.IsEnabled)
-			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[5].QuestionLabel);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[5].Model.Answer);
-				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[5].QuestionPlaceholder);
-				i++;
-			}
-
-			if (ViewModel.Questions[6].Model.IsEnabled)
-			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[6].QuestionLabel);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[6].Model.Answer);
-				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[6].QuestionPlaceholder);
-				i++;
-			}
-
-			if (ViewModel.Questions[7].Model.IsEnabled)
-			{
-				set.Bind (GetTuple(i).Item2).For (v => v.Text).To (vm => vm.Questions[7].QuestionLabel);
-				set.Bind (GetTuple(i).Item3).For (v => v.Text).To (vm => vm.Questions[7].Model.Answer);
-				set.Bind (GetTuple(i).Item3).For (v => v.Placeholder).To (vm => vm.Questions[7].QuestionPlaceholder);
-				i++;
-			}
+                    if (i == 0)
+                    {
+                        set.Bind (GetTuple(i).Item3).For (v => v.MaxLength).To (vm => vm.Questions[i].Model.MaxLength);
+                    }
+                }
+            }
 
 			var nextUnassignedControls = GetTuple (i);
 			while (nextUnassignedControls != null)
@@ -149,4 +100,3 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		}
 	}
 }
-

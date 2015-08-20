@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-	[Activity(Label = "RideSettingsActivity", 
+	[Activity(Label = "@string/ProfileSettingsActivityName", 
         Theme = "@style/MainTheme",
         WindowSoftInputMode = SoftInput.AdjustResize, 
         ScreenOrientation = ScreenOrientation.Portrait

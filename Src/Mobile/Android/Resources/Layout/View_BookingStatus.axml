@@ -321,7 +321,8 @@
                         android:layout_width="40dip"
                         android:layout_height="@dimen/HeightButton"
                         android:layout_marginEnd="10dip"
-                        android:scaleType="fitCenter" />
+                        android:scaleType="fitCenter"
+                        android:contentDescription="@string/CallDriver" />
                     <ImageButton
                         local:MvxBind="Click SendMessageToDriverCommand; Visibility IsMessageTaxiVisible, Converter=Visibility"
                         android:src="@drawable/message"

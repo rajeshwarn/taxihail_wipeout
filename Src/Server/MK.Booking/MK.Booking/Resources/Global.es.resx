@@ -210,7 +210,8 @@
     <comment>Order&amp;nbsp;#</comment>
   </data>
   <data name="Email_Body_TripId" xml:space="preserve">
-    <value>Trip #</value>
+    <value>Servicio #</value>
+    <comment>Trip #</comment>
   </data>
   <data name="Email_Body_PaidWith" xml:space="preserve">
     <value>Pagado con</value>
@@ -345,7 +346,8 @@
     <comment>ETA displayed to client is {0} and {1} min</comment>
   </data>
   <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
-    <value>Payment being processed by the app...</value>
+    <value>Procesando Pago…</value>
+    <comment>Payment being processed by the app...</comment>
   </data>
   <data name="OrderStatus_CabDriverETA" xml:space="preserve">
     <value>TEA: {0}</value>
@@ -709,6 +711,7 @@
   </data>
   <data name="PayPal" xml:space="preserve">
     <value>PayPal</value>
+    <comment>PayPal</comment>
   </data>
   <data name="CannotCreateOrder_CreditCardDeactivated" xml:space="preserve">
     <value>Your card on file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment</value>

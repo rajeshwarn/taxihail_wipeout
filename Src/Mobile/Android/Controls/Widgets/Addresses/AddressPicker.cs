@@ -16,6 +16,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Entity;
+using Android.Runtime;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Runtime;

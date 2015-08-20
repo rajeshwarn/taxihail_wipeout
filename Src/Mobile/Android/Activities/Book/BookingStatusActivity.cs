@@ -13,7 +13,7 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "Book Status", Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait)]
+	[Activity(Label = "@string/BookStatusActivityName", Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class BookingStatusActivity : BaseBindingActivity<BookingStatusViewModel>
     {
         private TouchMap _touchMap;

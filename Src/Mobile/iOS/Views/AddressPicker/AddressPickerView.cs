@@ -61,6 +61,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 AutocapitalizationType = UITextAutocapitalizationType.None,
                 AutocorrectionType = UITextAutocorrectionType.No
             };
+
+            AddressEditText.Placeholder = Localize.GetValue("PickupTextPlaceholder");
+            AddressEditText.AccessibilityLabel = AddressEditText.Placeholder;
+
             AddressEditText.TranslatesAutoresizingMaskIntoConstraints = false;
 
             CancelButton = new FlatButton();

@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Converters;
+using apcurium.MK.Common.Extensions;
 using Foundation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             txtNote.Font = UIFont.FromName(FontName.HelveticaNeueBold, 18f);
             txtNote.Placeholder = Localize.GetValue("NotesToDriveLabel");
 	        txtNote.PlaceholderColor = UIColor.FromRGB(75, 75, 75);
+            txtNote.AccessibilityLabel = txtNote.Placeholder;
             txtNote.ShowCloseButtonOnKeyboard();
 
             Foundation.NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, ObserveKeyboardShown);
@@ -86,6 +88,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Name);
 
+            lblName.AccessibilityHint = Localize.GetValue("PassengerNameLabel");
+
             set.Bind(lblCountryDialCode)
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Country)
@@ -95,29 +99,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Phone);
 
+            lblPhone.AccessibilityHint = Localize.GetValue("PassengerPhoneLabel");
+
             set.BindSafe(lblNbPassengers)
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Passengers);
+
+            lblNbPassengers.AccessibilityHint = Localize.GetValue("PassengerNumberLabel");
 
             set.Bind(lblDate)
                 .For(v => v.Text)
                 .To(vm => vm.Date);
 
+            lblDate.AccessibilityHint = Localize.GetValue("ConfirmDateTimeLabel");
+
             set.Bind(lblVehicule)
                 .For(v => v.Text)
                 .To(vm => vm.VehiculeType);
+
+            lblVehicule.AccessibilityHint = Localize.GetValue("ConfirmVehiculeTypeLabel");
 
             set.Bind(lblChargeType)
                 .For(v => v.Text)
                 .To(vm => vm.ChargeType);
 
+            lblChargeType.AccessibilityHint = Localize.GetValue("ChargeTypeLabel");
+
             set.BindSafe(lblApt)
                 .For(v => v.Text)
                 .To(vm => vm.Apartment);
 
+            lblApt.Maybe(ve => ve.AccessibilityHint = Localize.GetValue("ApartmentLabel"));
+
             set.BindSafe(lblRingCode)
                 .For(v => v.Text)
                 .To(vm => vm.RingCode);
+
+            lblRingCode.Maybe(ve => ve.AccessibilityHint = Localize.GetValue("EntryCodeLabel"));
 
             set.BindSafe(lblNbLargeBags)
                 .For(v => v.Text)
@@ -205,4 +223,3 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
         }
     }
 }
-

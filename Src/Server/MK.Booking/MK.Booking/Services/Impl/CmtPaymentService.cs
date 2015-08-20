@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -492,6 +493,7 @@ namespace apcurium.MK.Booking.Services.Impl
             InitializeServiceClient();
 
             MerchantAuthorizationRequest merchantRequest = null;
+
 
             if (!_serverPaymentSettings.CmtPaymentSettings.SubmitAsFleetAuthorization)
             {

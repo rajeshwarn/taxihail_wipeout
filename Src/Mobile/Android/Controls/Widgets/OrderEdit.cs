@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Extensions;
+using Android.Runtime;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Runtime;

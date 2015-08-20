@@ -27,7 +27,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "Home", 
+	[Activity(Label = "@string/HomeActivityName", 
         Theme = "@style/MainTheme", 
         ScreenOrientation = ScreenOrientation.Portrait, 
         ClearTaskOnLaunch = true, 
@@ -241,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             // Creating a view controller for MapFragment
             Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
-			_touchMap = (TouchableMap)FragmentManager.FindFragmentById(Resource.Id.mapPickup);
+            _touchMap = (TouchableMap)FragmentManager.FindFragmentById(Resource.Id.mapPickup);
             _touchMap.OnCreate(mapViewSavedInstanceState);
 			_mapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
 
