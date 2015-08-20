@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.IBS
         {
             CreateMap<TVehiclePosition, IbsVehiclePosition>()
                 .ForMember(x => x.FleetId, opt => opt.Ignore())
+                .ForMember(x => x.VehicleType, opt => opt.Ignore())
                 .ForMember(x => x.VehicleNumber, opt => opt.MapFrom(x => x.VehicleNumber.Trim()))
                 .ForMember(x => x.PositionDate, opt => opt
                     .MapFrom(x => x.GPSLastUpdated.ToDateTime().GetValueOrDefault()));

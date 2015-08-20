@@ -92,8 +92,14 @@ namespace apcurium.MK.Booking.Api.Services
                     // LOCAL market Honey Badger
                     availableVehiclesMarket = _serverSettings.ServerData.HoneyBadger.AvailableVehiclesMarket;
 
-                    if (_serverSettings.ServerData.HoneyBadger.AvailableVehiclesFleetId.HasValue)
+                    if (request.FleetIds != null)
                     {
+                        // Use fleet ids specified in the request first
+                        availableVehiclesFleetIds = request.FleetIds;
+                    }
+                    else if (_serverSettings.ServerData.HoneyBadger.AvailableVehiclesFleetId.HasValue)
+                    {
+                        // Or fleet id specified in the settings
                         availableVehiclesFleetIds = new[] { _serverSettings.ServerData.HoneyBadger.AvailableVehiclesFleetId.Value };
                     }
                 }
@@ -108,7 +114,24 @@ namespace apcurium.MK.Booking.Api.Services
                         var roamingCompanies = _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, market);
                         if (roamingCompanies != null)
                         {
-                            availableVehiclesFleetIds = roamingCompanies.Select(r => r.FleetId).ToArray();
+                            var roamingFleetIds = roamingCompanies.Select(r => r.FleetId);
+
+                            if (request.FleetIds != null)
+                            {
+                                // From the fleets accessible by that company, only return vehicles from the fleets specified in the request
+                                availableVehiclesFleetIds = roamingFleetIds
+                                    .Where(fleetId => request.FleetIds.Contains(fleetId))
+                                    .ToArray();
+                            }
+                            else
+                            {
+                                // Return vehicles from all fleets accessible by that company
+                                availableVehiclesFleetIds = roamingFleetIds.ToArray();
+                            }
+                        }
+                        else
+                        {
+                            availableVehiclesFleetIds = request.FleetIds;
                         }
                     }
                     catch
@@ -122,7 +145,7 @@ namespace apcurium.MK.Booking.Api.Services
                     availableVehiclesMarket,
                     request.Latitude,
                     request.Longitude,
-                    null,
+                    request.SearchRadius,
                     availableVehiclesFleetIds);
 
                 vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
@@ -131,7 +154,8 @@ namespace apcurium.MK.Booking.Api.Services
                     Longitude = v.Longitude,
                     PositionDate = v.Timestamp,
                     VehicleNumber = v.Medallion,
-                    FleetId = v.FleetId
+                    FleetId = v.FleetId,
+                    VehicleType = v.VehicleType
                 }).ToArray();
             }
 

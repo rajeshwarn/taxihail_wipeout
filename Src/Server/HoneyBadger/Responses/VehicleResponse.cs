@@ -13,5 +13,7 @@ namespace HoneyBadger.Responses
         public string Medallion { get; set; }
 
         public int FleetId { get; set; }
+
+        public int VehicleType { get; set; }
     }
 }
