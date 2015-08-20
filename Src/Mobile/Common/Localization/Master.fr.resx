@@ -1993,4 +1993,91 @@
 	<data name="Rating5" xml:space="preserve">
     <value>Excellent</value>
   </data>
+	<data name="MessageActivityName" xml:space="preserve">
+    <value>Message</value>
+  </data>
+	<data name="BookSummaryActivityName" xml:space="preserve">
+    <value>Book summary</value>
+  </data>
+	<data name="ManualRideLinqStatusActivityName" xml:space="preserve">
+    <value>Manual RideLinq Status</value>
+  </data>
+	<data name="ManualPairingForRideLinqActivityName" xml:space="preserve">
+    <value>Manual pairing for RideLinq</value>
+  </data>
+	<data name="UserTaxiHailNetworkSettingsActivityName" xml:space="preserve">
+    <value>User TaxiHail network settings</value>
+  </data>
+	<data name="BookStatusActivityName" xml:space="preserve">
+    <value>Booking status</value>
+  </data>
+	<data name="UpdatePasswordActivityName" xml:space="preserve">
+    <value>Update password</value>
+  </data>
+	<data name="AccountConfirmationActivityName" xml:space="preserve">
+    <value>Account confirmation</value>
+  </data>
+	<data name="InitializeOrderForAccountPaymentActivityName" xml:space="preserve">
+    <value>Initialition of order of account payment</value>
+  </data>
+	<data name="NotificationSettingsActivityName" xml:space="preserve">
+    <value>Notification setting</value>
+  </data>
+	<data name="ProfileSettingsActivityName" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+	<data name="OverduePaymentActivityName" xml:space="preserve">
+    <value>Overdue payment</value>
+  </data>
+	<data name="AccountCreationActivityName" xml:space="preserve">
+    <value>Account creation</value>
+  </data>
+	<data name="CreditCardAddingActivityName" xml:space="preserve">
+    <value>Add or edit credit card</value>
+  </data>
+	<data name="TermsAndConditionsActivityName" xml:space="preserve">
+    <value>Terms and conditions</value>
+  </data>
+	<data name="HistoryDetailsActivityName" xml:space="preserve">
+    <value>History details</value>
+  </data>
+	<data name="HistoryActivityName" xml:space="preserve">
+    <value>History</value>
+  </data>
+	<data name="AboutActivityName" xml:space="preserve">
+    <value>About</value>
+  </data>
+	<data name="BookingRateActivityName" xml:space="preserve">
+    <value>Booking rate</value>
+  </data>
+	<data name="PromotionActivityName" xml:space="preserve">
+    <value>Promotion</value>
+  </data>
+	<data name="LocationsActivityName" xml:space="preserve">
+    <value>Favorite locations</value>
+  </data>
+	<data name="AddressSearch" xml:space="preserve">
+    <value>Address search</value>
+  </data>
+	<data name="PickupAddress" xml:space="preserve">
+    <value>Pickup address</value>
+  </data>
+	<data name="DestinationAddress" xml:space="preserve">
+    <value>Destination address</value>
+  </data>
+	<data name="TutorialActivityName" xml:space="preserve">
+    <value>Tutorial</value>
+  </data>
+	<data name="HomeActivityName" xml:space="preserve">
+    <value>Home</value>
+  </data>
+	<data name="PasswordRecoveryActivityName" xml:space="preserve">
+    <value>Password recovery</value>
+  </data>
+	<data name="LocationDetailsActivityName" xml:space="preserve">
+    <value>Location Details</value>
+  </data>
+	<data name="LoginActivityName" xml:space="preserve">
+    <value>Login</value>
+  </data>
 </root>
