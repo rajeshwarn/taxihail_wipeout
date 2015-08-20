@@ -13,7 +13,6 @@ using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
 using Android.OS;
 using System.Collections.Generic;
-using Cirrious.CrossCore;
 using Xamarin.Facebook.AppEvents;
 
 namespace apcurium.MK.Booking.Mobile.Client.Services.Social
@@ -36,10 +35,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 		{
 			if (!FacebookSdk.IsInitialized)
 			{
-				_facebookApplicationID = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().Data.FacebookAppId;
+				IAppSettings appSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>();
 
+				_facebookApplicationID = appSettings.Data.FacebookAppId;
 				FacebookSdk.ApplicationId = _facebookApplicationID;
-				FacebookSdk.ApplicationName = Mvx.Resolve<IAppSettings>().Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty);
+				FacebookSdk.ApplicationName = appSettings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty);
 				FacebookSdk.SdkInitialize(Application.Context);
 				_facebookCallbackManager = CallbackManagerFactory.Create();
 				LoginManager.Instance.RegisterCallback(_facebookCallbackManager, _facebookCallback);
@@ -137,12 +137,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 
 		class FacebookCallback<TResult> : Java.Lang.Object, IFacebookCallback where TResult : Java.Lang.Object
 		{
-			static object exclusiveAccess = new object();
+			private static object _exclusiveAccess = new object();
 			private TaskCompletionSource<object> _loginTaskCompletionSource;
 
 			public void SetTaskCompletionSource(TaskCompletionSource<object> taskCompletionSource)
 			{
-				lock (exclusiveAccess)
+				lock (_exclusiveAccess)
 				{
 					if (_loginTaskCompletionSource != null)
 					{
