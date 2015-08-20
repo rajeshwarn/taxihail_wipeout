@@ -643,4 +643,10 @@
   <string name="EtaNoTaxiAvailable">Désolé, aucun taxi disponible dans les environs.</string>
   <string name="PanelMenuViewSignOutPopupMessage">Êtes vous sûr de vouloir vous déconnecter ?</string>
   <string name="PanelMenuViewSignOutPopupLogout">Déconnexion</string>
+	<string name="SendMessageDriver">Envoyer message au chauffeur</string>
+	<string name="Rating1">Terrible</string>
+	<string name="Rating2">Mauvais</string>
+	<string name="Rating3">Moyenne</string>
+	<string name="Rating4">Bien</string>
+	<string name="Rating5">Excellent</string>
 </resources>
