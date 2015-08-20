@@ -2269,7 +2269,7 @@
     <comment>Link</comment>
   </data>
   <data name="PayPalLinked" xml:space="preserve">
-    <value>Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \ "Pagar en vehículo \" en la pantalla de pago</value>
+    <value>Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</value>
     <comment>Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</comment>
   </data>
   <data name="PayPalLinkedInfo" xml:space="preserve">
