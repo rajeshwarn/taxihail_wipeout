@@ -8,7 +8,7 @@ using Android.Widget;
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     [Activity(Theme = "@style/MainTheme",
-        Label = "ManualRideLinqSummaryActivity",
+		Label = "@string/ManualRideLinqSummaryActivityName",
         ScreenOrientation = ScreenOrientation.Portrait
       )]
     public class ManualRideLinqSummaryActivity : BaseBindingActivity<ManualRideLinqSummaryViewModel>

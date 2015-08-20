@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CreateAccountEmailPlaceHolder">البرید الإلكتروني</string>
   <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
@@ -515,7 +515,6 @@
   <string name="Tuto08Top">يمكنك مراجعة تاريخ طلباتك في أي وقت، وأيضا إعادة حجز رحلة سابقة مجددا بلمسة زر.</string>
   <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
   <string name="CurrencyPriceFormat">{0}ر.س</string>
-  <string name="dummyaaa">xaaa</string>
   <string name="EstimatePriceOver100">إتصال لمعرفة السعر</string>
   <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
   <string name="NoPreference">مفضلة - لا يوجد</string>
@@ -594,4 +593,40 @@
   <string name="ManualRideLinqStatus_Driver">Driver id:</string>
   <string name="InvalidAddressTextEdit">لا يمكن التعرف على العنوان</string>
   <string name="HistoryDetailPickupDateLabel">تاریخ المشوار:</string>
+	<string name="MenuButton">Menu Button</string>
+	<string name="LocateMeButton">Locate Me Button</string>
+	<string name="AirportsButton">Airports Button</string>
+	<string name="TrainStationsButton">Train Stations Button</string>
+	<string name="PickupAddress">Pickup Address</string>
+	<string name="DestinationAddress">Destination Address</string>
+	<string name="AddressSearch">Address Search</string>
+	<string name="CallDriver">Call Driver</string>
+	<string name="CloseTutorial">Close Tutorial</string>
+	<string name="TutorialActivityName">Tutorial</string>
+	<string name="HomeActivityName">Home</string>
+	<string name="PasswordRecoveryActivityName">Password Recovery</string>
+	<string name="LocationDetailsActivityName">Location Details</string>
+	<string name="LoginActivityName">Login</string>
+	<string name="LocationsActivityName">Favorite Locations</string>
+	<string name="PromotionActivityName">Promotion</string>
+	<string name="BookingRateActivityName">Booking Rate</string>
+	<string name="AboutActivityName">About</string>
+	<string name="HistoryActivityName">History</string>
+	<string name="TermsAndConditionsActivityName">Terms and Conditions</string>
+	<string name="HistoryDetailsActivityName">History Details</string>
+	<string name="CreditCardAddingActivityName">Credit Card Adding</string>
+	<string name="AccountCreationActivityName">Account Creation</string>
+	<string name="OverduePaymentActivityName">Overdue Payment</string>
+	<string name="ProfileSettingsActivityName">Profile</string>
+	<string name="NotificationSettingsActivityName">Notification Settings</string>
+	<string name="InitializeOrderForAccountPaymentActivityName">Initialization of Order For Account Payment</string>
+	<string name="AccountConfirmationActivityName">Account Confirmation</string>
+	<string name="UpdatePasswordActivityName">Update Password</string>
+	<string name="BookStatusActivityName">Book Status</string>
+	<string name="UserTaxiHailNetworkSettingsActivityName">User TaxiHail Network Settings</string>
+	<string name="ManualPairingForRideLinqActivityName">Manual Pairing For RideLinq</string>
+	<string name="ManualRideLinqStatusActivityName">Manual RideLinq Status</string>
+	<string name="ManualRideLinqSummaryActivityName">Manual RideLinq Summary</string>
+	<string name="BookSummaryActivityName">Book Summary</string>
+	<string name="MessageActivityName">Message</string>
 </resources>

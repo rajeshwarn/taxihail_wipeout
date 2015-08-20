@@ -187,6 +187,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblExpYear.Text = Localize.GetValue("CreditCardExpYear");
             lblCvv.Text = Localize.GetValue("CreditCardCCV");
 
+            txtNameOnCard.AccessibilityLabel = Localize.GetValue("CreditCardName");
+            txtNameOnCard.Placeholder = txtNameOnCard.AccessibilityLabel;
+
+            txtCardNumber.AccessibilityLabel = Localize.GetValue("CreditCardNumber");
+            txtCardNumber.Placeholder = txtCardNumber.AccessibilityLabel;
+
+            txtExpMonth.AccessibilityLabel = Localize.GetValue("CreditCardExpMonth");
+            txtExpMonth.Placeholder = txtExpMonth.AccessibilityLabel;
+
+            txtExpYear.AccessibilityLabel = Localize.GetValue("CreditCardExpYear");
+            txtExpYear.Placeholder = txtExpYear.AccessibilityLabel;
+
+            txtCvv.AccessibilityLabel = Localize.GetValue("CreditCardCCV");
+            txtCvv.Placeholder = txtCvv.AccessibilityLabel;
+
             txtCardNumber.ClearsOnBeginEditing = true;
             txtCardNumber.ShowCloseButtonOnKeyboard();
             txtCvv.ShowCloseButtonOnKeyboard();

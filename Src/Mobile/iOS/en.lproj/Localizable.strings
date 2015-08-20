@@ -10,6 +10,7 @@
 "CreditCardNumber"="Card Number";
 "InvalidChoiceTitle"="Invalid Choice";
 "PickupDateTextPlaceholder"="Date: Today";
+"LocateMeButton"="Locate Me";
 "PayPalLinkedInfo"="Account Linked";
 "WarningPromoCodeDontShow"="Don't warn";
 "Knowledgabledriver"="Knowledgable driver";
@@ -343,6 +344,7 @@
 "PaymentDetails.Optional"="(Optional)";
 "PromoProgress"="Progress :";
 "WarningEstimate"="Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.";
+"StreetNumber"="Street Number";
 "RideSettingsChargeType"="Charge type";
 "UpdateBookingSettingsInvalidDataTitle"="Invalid booking settings info";
 "Now"="Now";
@@ -361,6 +363,7 @@
 "Eta"="The nearest taxi is {0} and {1} {2} away";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirm Payment Information";
 "CreateAccountInvalidDataTitle"="Invalid account info";
+"MenuButton"="Menu";
 "ChargeTypeLabel"="Charge type";
 "CmtTransactionSuccessMessage"="Confirmation sent to the driver (Authorization Code:  {0})";
 "SendEmail"="Send mail...";
@@ -386,6 +389,7 @@
 "CmtRideLinqErrorTitle"="Error";
 "BookItLaterButton"="Later";
 "CreditCardRemoveErrorTitle"="Cannot remove credit card";
+"CloseTutorial"="Close Tutorial";
 "AddPaymentMethod_Multiple"="Add payment method";
 "PendingOrderView"="View";
 "CreditCardInvalidCrediCardNUmber"="The Credit Card Number is invalid";
@@ -428,6 +432,7 @@
 "LocationAddFavoriteTitle"="Add location";
 "PickupTimeTextPlaceholder"="Time: Now";
 "OrderNumber"="Order #";
+"TrainStationsButton"="Train Stations";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "Tuto06Top"="The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.";
 "Tuto04Bottom"="Doing so will provide an estimate for the cost for the trip.";
@@ -492,6 +497,7 @@
 "NoConnectionTitle"="Connection error";
 "OrderNoteGPSApproximate"=" (approx. address)";
 "PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with your configured payment method.";
+"AirportsButton"="Airports";
 "UnpairPayInCar"="Pay in Car";
 "PromoCodeLabel"="Promo code";
 "ResetPasswordEmailPlaceHolder"="Email";
@@ -534,7 +540,6 @@
 "Tuto08Top"="You can review your order history at any time, and even rebook a previous trip with the push of a button";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
 "HistoryViewSendReceiptButton"="Send Receipt";
-"dummyaaa"="xaaa";
 "EstimatePriceOver100"="Call for price";
 "StreetNumberDoneBt"="Use This Address";
 "TabContacts"="Contacts";

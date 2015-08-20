@@ -7,7 +7,7 @@ using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
-    [Activity(Theme = "@android:style/Theme.Dialog")]
+	[Activity(Label = "@string/MessageActivityName", Theme = "@android:style/Theme.Dialog")]
     public class SelectItemDialogActivity : Activity
     {
         private string[] _items;

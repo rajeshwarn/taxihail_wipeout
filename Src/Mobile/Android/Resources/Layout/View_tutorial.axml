@@ -38,5 +38,6 @@
         android:layout_height="40dip"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        local:MvxBind="Click CloseCommand" />
+        local:MvxBind="Click CloseCommand"
+        android:contentDescription="@string/CloseTutorial" />
 </RelativeLayout>

@@ -5,7 +5,7 @@ using Android.Content.PM;
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     [Activity(Theme = "@style/MainTheme",
-           Label = "ManualRideLinqStatusActivity",
+		   Label = "@string/ManualRideLinqStatusActivityName",
            ScreenOrientation = ScreenOrientation.Portrait
          )]  
     public class ManualRideLinqStatusActivity : BaseBindingActivity<ManualRideLinqStatusViewModel>

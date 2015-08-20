@@ -1,4 +1,4 @@
-"CreateAccountEmailPlaceHolder"="Email";
+﻿"CreateAccountEmailPlaceHolder"="Email";
 "PromoMustHavePaymentMethodSetMessage_Multiple"="Para utilizar un código de promoción, es necesario tener un método de pago configurado como parte de su cuenta.";
 "CmtCardNumber"="Método de Pago:";
 "Edit"="Editar";
@@ -11,6 +11,8 @@
 "InvalidChoiceTitle"="Selección inválida";
 "PickupDateTextPlaceholder"="Fecha: Hoy";
 "Version"="v{0}";
+"Version"="v{0}";
+"LocateMeButton"="Locate Me";
 "PayPalLinkedInfo"="Cuenta vinculada";
 "WarningPromoCodeDontShow"="No avisar";
 "ManualUnPairingForRideLinQ_Error_Message"="Se produjo un error al intentar desemparejar. Por favor, vuelva a intentarlo.";
@@ -158,6 +160,7 @@
 "Tuto01Top"="Asi es como puede reservar su viaje en un par de clicks";
 "RideSettingsCannotLoadListTitle"="Error de Servidor";
 "RateLastRideMessage"="Apreciaríamos su opinión en su reciente servicio, ¿le gustaría evaluarlo?";
+"TrainStationsButton"="Train Stations";
 "OkButtonText"="OK";
 "Tuto01Bottom"="Comienze seleccionando su ubicación";
 "View_UserTaxiHailNetworkSettings"="TaxiHail Network";
@@ -377,6 +380,7 @@
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirmar información de pago";
 "CreateAccountInvalidDataTitle"="Información de cuenta inválida";
 "Collapse"="Mostrar menos";
+"MenuButton"="Menu";
 "Error_InvalidCvvTitle"="CVV Inválido";
 "CmtTransactionSuccessMessage"="Confirmación enviada al chofer (Código de autorización: {0})";
 "SendEmail"="Enviar email...";
@@ -401,6 +405,7 @@
 "BookItLaterButton"="Mas Tarde";
 "WarningEstimate"="Por favor note que el costo presentado por esta aplicación es solamente un estimado. El costo del servicio es calculado por distancia. Mínimos y extras serán adicionados al final de su viaje.";
 "PromotionButton"="Pulse para entrar o Ver Código de promoción";
+"CloseTutorial"="Close Tutorial";
 "AddPaymentMethod_Multiple"="Agregar método de pago";
 "PendingOrderView"="Ver";
 "PickupViewDestinationLabel"="Destino &gt;&gt;";
@@ -444,6 +449,7 @@
 "NbPassenger"="({0} pasajero)";
 "HistoryViewSendReceiptButton"="Enviar comprobante";
 "ManualRideLinqNoCardOnFile"="Usted necesita tener una tarjeta en el perfil para enparejarse con RideLinQ";
+"StreetNumber"="Street Number";
 "Tuto06Top"="La pantalla de confirmacion le permite verificar los detalles de su reservación y cambiar cualquier preferencia que requiera para este servicio";
 "Tuto04Bottom"="Haciendo esto se le proveerá un costo estimado para su viaje";
 "View_LocationDetail"="Detalles de ubicación";
@@ -507,6 +513,7 @@
 "NoConnectionTitle"="Error en conexión";
 "OrderNoteGPSApproximate"="(Dirección aproximada)";
 "PromoMustUseCardOnFileMessage"="Para utilizar un código de promoción, tiene que pagar con su método de pago configurado.";
+"AirportsButton"="Airports";
 "UnpairPayInCar"="Pagar en el vehículo";
 "PromoCodeLabel"="Código de promoción";
 "ResetPasswordEmailPlaceHolder"="Email";
@@ -546,7 +553,6 @@
 "Tuto08Top"="Puede revisar su historial de reservaciones en cualquier momento, e incluso reservar el mismo viaje con solo tocar un botón";
 "UnpairWarningMessageWithPromo"="Si usted decide pagar en el carro, usted no podrá utilizar la promoción";
 "CurrencyPriceFormat"="{0:C}";
-"dummyaaa"="xaaa";
 "EstimatePriceOver100"="Llame para confirmar el costo";
 "CreditCardInstructions"="Para usar esta aplicación necesita ingresar un método de pago a su cuenta";
 "NoPreference"="Sin preferencia";
