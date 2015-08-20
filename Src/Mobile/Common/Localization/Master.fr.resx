@@ -2183,4 +2183,22 @@
 	<data name="BookStatusActivityName" xml:space="preserve">
     <value>Booking status</value>
   </data>
+	<data name="CallDriver" xml:space="preserve">
+    <value>Appeler chauffeur</value>
+ </data>
+	<data name="Rating1" xml:space="preserve">
+    <value>Terrible</value>
+  </data>
+	<data name="Rating2" xml:space="preserve">
+    <value>Mauvais</value>
+  </data>
+	<data name="Rating3" xml:space="preserve">
+    <value>Moyenne</value>
+  </data>
+	<data name="Rating4" xml:space="preserve">
+    <value>Bien</value>
+  </data>
+	<data name="Rating5" xml:space="preserve">
+    <value>Excellent</value>
+  </data>
 </root>
