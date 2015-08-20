@@ -620,6 +620,7 @@
 	<string name="PickupAddress">Adresse de départ</string>
 	<string name="DestinationAddress">Adresse de destination</string>
 	<string name="AddressSearch">Recherche d\'adresse</string>
+	<string name="CallDriver">Appeler chauffeur</string>
 	<string name="CloseTutorial">Fermer l\'aide</string>
 	<string name="TutorialActivityName">Aide</string>
 	<string name="HomeActivityName">Accueil</string>

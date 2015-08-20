@@ -76,6 +76,7 @@
 <string name="ChargeTypeLabel">Tipo de Cargo</string>
 <string name="ChooseProviderDialogTitle">Seleccionar proveedor</string>
 <string name="Close">Cerrar</string>
+<string name="CallDriver">Call Driver</string>	
 <string name="CloseTutorial">Close Tutorial</string>
 <string name="CmtCancelPayment">Cancelar</string>
 <string name="CmtCardNumber">Método de Pago:</string>
