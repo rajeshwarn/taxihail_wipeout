@@ -539,6 +539,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				else if (value == HomeViewModelState.Initial && _currentViewState == HomeViewModelState.BookingStatus)
 				{
 					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode(AddressSelectionMode.PickupSelection);
+					_bottomBar.EstimateSelected = false;
 				}
 
 				_currentViewState = value;

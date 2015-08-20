@@ -23,13 +23,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="304" height="80"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order #1234" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F3w-Jg-zVD">
-                            <rect key="frame" x="8" y="8" width="288" height="21"/>
+                            <rect key="frame" x="8" y="5" width="288" height="21"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Taxi is at pickup location" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KtK-9e-n0C">
-                            <rect key="frame" x="8" y="34" width="288" height="20"/>
+                            <rect key="frame" x="8" y="31" width="288" height="20"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
@@ -39,7 +39,7 @@
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="F3w-Jg-zVD" secondAttribute="trailing" constant="8" id="FH3-RU-p8m"/>
                         <constraint firstItem="KtK-9e-n0C" firstAttribute="leading" secondItem="QS4-3I-Wm4" secondAttribute="leading" constant="8" id="Mcx-64-Hww"/>
-                        <constraint firstItem="F3w-Jg-zVD" firstAttribute="top" secondItem="QS4-3I-Wm4" secondAttribute="top" constant="8" id="Qe8-r9-RhO"/>
+                        <constraint firstItem="F3w-Jg-zVD" firstAttribute="top" secondItem="QS4-3I-Wm4" secondAttribute="top" constant="5" id="Qe8-r9-RhO"/>
                         <constraint firstAttribute="trailing" secondItem="KtK-9e-n0C" secondAttribute="trailing" constant="8" id="RX3-27-AU5"/>
                         <constraint firstItem="KtK-9e-n0C" firstAttribute="top" secondItem="F3w-Jg-zVD" secondAttribute="bottom" constant="5" id="hCj-5h-UOb"/>
                         <constraint firstItem="F3w-Jg-zVD" firstAttribute="leading" secondItem="QS4-3I-Wm4" secondAttribute="leading" constant="8" id="xP6-mL-X8G"/>

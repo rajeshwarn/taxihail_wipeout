@@ -75,10 +75,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
 				h => Parent.PropertyChanged += h,
 				h => Parent.PropertyChanged -= h
-			)
-				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
-				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
-				.DistinctUntilChanged();
+			).Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+			.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
+			.DistinctUntilChanged();
 		}
 
         public async void CheckManualRideLinqEnabledAsync(bool isInMarket)
@@ -127,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
             set
             {
-                if (value != _estimateSelected)
+				if (_estimateSelected != value)
                 {
                     _estimateSelected = value;
                     RaisePropertyChanged();

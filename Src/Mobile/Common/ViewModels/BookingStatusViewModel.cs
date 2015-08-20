@@ -25,7 +25,7 @@ using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public sealed class BookingStatusViewModel : PageViewModel
+	public sealed class BookingStatusViewModel : BaseViewModel
     {
 		private readonly IPhoneService _phoneService;
 		private readonly IBookingService _bookingService;
