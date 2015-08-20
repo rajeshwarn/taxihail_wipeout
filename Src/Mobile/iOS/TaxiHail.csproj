@@ -316,7 +316,6 @@
     <Compile Include="Views\PanelMenuView.designer.cs">
       <DependentUpon>PanelMenuView.xib</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="MapUtitilties\AddressAnnotation.cs" />
     <Compile Include="Controls\TouchGesture.cs" />
     <Compile Include="MapUtitilties\PinAnnotationView.cs" />
@@ -427,12 +426,6 @@
     </Compile>
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Controls\Widgets\PaymentSelector.cs" />
-    <Compile Include="Views\BookingStatusView.xib.cs">
-      <DependentUpon>BookingStatusView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BookingStatusView.xib.designer.cs">
-      <DependentUpon>BookingStatusView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Widgets\FlatCheckBox.cs" />
     <Compile Include="Controls\Binding\FlatCheckBoxBinding.cs" />
     <Compile Include="Controls\Widgets\FlatTextView.cs" />
@@ -654,7 +647,6 @@
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
     <InterfaceDefinition Include="Views\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\BookRatingView.xib" />
-    <InterfaceDefinition Include="Views\BookingStatusView.xib" />
     <InterfaceDefinition Include="Views\HistoryListView.xib" />
     <InterfaceDefinition Include="Views\LocationListView.xib" />
     <InterfaceDefinition Include="Views\HomeView.xib" />
