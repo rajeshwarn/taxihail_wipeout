@@ -649,7 +649,7 @@
 "AddressSearch"="Address search";
 "PickupAddress"="Pickup address";
 "DestinationAddress"="Destination address";
-"CallDriver"="Call driver";
+"CallDriver"="Appeler chauffeur";
 "BookingAirportTitle"="Airport";
 "BookingAirportAirlineslbl"="Airlines";
 "BookingAirportFlightNumlbl"="Flight Number";
@@ -686,3 +686,8 @@
 "MessageActivityName"="Message";
 "BookSummaryActivityName"="Book summary";
 "BookStatusActivityName"="Booking status";
+"Rating1"="Terrible";
+"Rating2"="Mauvais";
+"Rating3"="Moyenne";
+"Rating4"="Bien";
+"Rating5"="Excellent";

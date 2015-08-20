@@ -630,7 +630,7 @@
 "AddressSearch"="Address search";
 "PickupAddress"="Pickup address";
 "DestinationAddress"="Destination address";
-"CallDriver"="Call driver";
+"CallDriver"="Call Driver";
 "BookingAirportTitle"="Airport";
 "BookingAirportAirlineslbl"="Airlines";
 "BookingAirportFlightNumlbl"="Flight Number";
@@ -667,3 +667,8 @@
 "MessageActivityName"="Message";
 "BookSummaryActivityName"="Book summary";
 "BookStatusActivityName"="Booking status";
+"Rating1"="Awful";
+"Rating2"="Poor";
+"Rating3"="Average";
+"Rating4"="Good";
+"Rating5"="Excellent";

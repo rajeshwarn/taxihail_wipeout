@@ -665,7 +665,7 @@
   <string name="AddressSearch">Address search</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="DestinationAddress">Destination address</string>
-  <string name="CallDriver">Call driver</string>
+  <string name="CallDriver">Call Driver</string>
   <string name="TutorialActivityName">Tutorial</string>
   <string name="HomeActivityName">Home</string>
   <string name="PasswordRecoveryActivityName">Password recovery</string>
@@ -692,4 +692,9 @@
   <string name="ManualRideLinqStatusActivityName">Manual RideLinq Status</string>
   <string name="BookSummaryActivityName">Book summary</string>
   <string name="MessageActivityName">Message</string>
+  <string name="Rating1">Awful</string>
+  <string name="Rating2">Poor</string>
+  <string name="Rating3">Average</string>
+  <string name="Rating4">Good</string>
+  <string name="Rating5">Excellent</string>
 </resources>

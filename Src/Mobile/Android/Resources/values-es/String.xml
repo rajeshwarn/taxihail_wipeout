@@ -643,7 +643,7 @@
   <string name="AddressSearch">Address search</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="DestinationAddress">Destination address</string>
-  <string name="CallDriver">Call driver</string>
+  <string name="CallDriver">Call Driver</string>
   <string name="BookingAirportTitle">Airport</string>
   <string name="BookingAirportAirlineslbl">Airlines</string>
   <string name="BookingAirportFlightNumlbl">Flight Number</string>
@@ -680,4 +680,9 @@
   <string name="MessageActivityName">Message</string>
   <string name="BookSummaryActivityName">Book summary</string>
   <string name="BookStatusActivityName">Booking status</string>
+  <string name="Rating1">Awful</string>
+  <string name="Rating2">Poor</string>
+  <string name="Rating3">Average</string>
+  <string name="Rating4">Good</string>
+  <string name="Rating5">Excellent</string>
 </resources>
