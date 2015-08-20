@@ -9,16 +9,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Social
 		public string Lastname { get; private set; }
 		public string Email { get; private set; }
 
-		public static FacebookUserInfo CreateFrom(IDictionary<string, object> data)
+		public static FacebookUserInfo CreateFrom(IDictionary<string, string> data)
 		{
 			return new FacebookUserInfo
 			{
-				Id = (string)data["id"],
-				Email = (string)data["email"],
-				Firstname = (string)data["first_name"],
-				Lastname = (string)data["last_name"],
+				Id = data["id"],
+				Email = data["email"],
+				Firstname = data["first_name"],
+				Lastname = data["last_name"],
 			};
 		}
     }
 }
-
