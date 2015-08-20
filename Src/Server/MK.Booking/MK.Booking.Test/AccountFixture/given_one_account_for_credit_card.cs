@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         {
             _sut = new EventSourcingTestHelper<Account>();
 
-            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService(), null));
+            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService(), null, new TestServerSettings()));
             _sut.Given(new AccountRegistered
             {
                 SourceId = _accountId,
@@ -129,6 +129,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
             var creditCardDeactivated = _sut.ThenHasOne<CreditCardDeactivated>();
             Assert.AreEqual(_accountId, creditCardDeactivated.SourceId);
+            Assert.AreEqual(true, creditCardDeactivated.IsOutOfAppPaymentDisabled);
 
             var overduePaymentLogged = _sut.ThenHasOne<OverduePaymentLogged>();
             Assert.AreEqual(_accountId, overduePaymentLogged.SourceId);

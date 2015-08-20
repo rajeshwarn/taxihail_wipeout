@@ -35,5 +35,7 @@ namespace apcurium.MK.Booking.Events
         public bool AccountActivationDisabled { get; set; }
 
         public string PayBack { get; set; }
+
+        public int NbPassengers { get; set; }
     }
 }

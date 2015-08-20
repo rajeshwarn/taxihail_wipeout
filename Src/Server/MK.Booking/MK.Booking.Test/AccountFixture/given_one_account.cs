@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         {
             _sut = new EventSourcingTestHelper<Account>();
 
-            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService(), null));
+            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService(),null, new TestServerSettings()));
             _sut.Given(new AccountRegistered
             {
                 SourceId = _accountId,
@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         private EventSourcingTestHelper<Account> _sut;
         private Guid _accountId = Guid.NewGuid();
         private readonly string _confimationToken = Guid.NewGuid().ToString();
+
 
         [Test]
         public void when_adding_an_address_successfully()

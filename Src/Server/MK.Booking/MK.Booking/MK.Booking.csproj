@@ -179,7 +179,9 @@
     <Compile Include="Email\ITemplateService.cs" />
     <Compile Include="Email\TemplateService.cs" />
     <Compile Include="EventHandlers\AccountChargeDetailGenerator.cs" />
+    <Compile Include="EventHandlers\AccountChargeQuestionAnswerGenerator.cs" />
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\AccountIbsDetailGenerator.cs" />
     <Compile Include="EventHandlers\AddressListGenerator.cs" />
     <Compile Include="EventHandlers\AppSettingsGenerator.cs" />
     <Compile Include="EventHandlers\CompanyDetailsGenerator.cs" />
@@ -193,6 +195,7 @@
     <Compile Include="EventHandlers\Integration\PromotionTriggerGenerator.cs" />
     <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
     <Compile Include="EventHandlers\OverduePaymentDetailGenerator.cs" />
+    <Compile Include="EventHandlers\PaypalAccountDetailsGenerator.cs" />
     <Compile Include="EventHandlers\ReportDetailGenerator.cs" />
     <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
     <Compile Include="EventHandlers\PaymentSettingGenerator.cs" />

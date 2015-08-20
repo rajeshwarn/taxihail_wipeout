@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
@@ -33,7 +32,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            Sut = new AccountDetailsGenerator(() => new BookingDbContext(DbName), new TestServerSettings());
+            Sut = new AccountDetailsGenerator(() => new BookingDbContext(DbName));
         }
     }
 
@@ -53,7 +52,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Password = new byte[] {1},
                 FacebookId = "FacebookId",
                 TwitterId = "TwitterId",
-                Language = "fr"
+                Language = "fr",
+                NbPassengers = 2
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -69,6 +69,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(false, dto.IsConfirmed);
                 Assert.AreEqual(false, dto.DisabledByAdmin);
                 Assert.AreEqual("fr", dto.Language);
+                Assert.AreEqual(2, dto.Settings.Passengers);
             }
         }
 
@@ -212,6 +213,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Name = "Bob",
                 Email = "bob.smith@acpurium.com",
                 Password = new byte[] {1},
+                Country = CountryCode.GetCountryCodeByIndex(0).CountryISOCode
             });
         }
 
@@ -227,7 +229,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     SourceId = _accountId,
                     Name = "Bob",
                     Email = "bob.smith@acpurium.com",
-                    Password = new byte[] {1}
+                    Password = new byte[] {1},
+                    Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode
                 });
             }
 
@@ -338,26 +341,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Assert.AreEqual(dto.Settings.Country.Code, CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode.Code);
                 }
             }
-
-            [Test]
-            public void when_update_payment_profile_then_account_dto_updated()
-            {
-                int? defaultTipPercent = 15;
-
-                Sut.Handle(new PaymentProfileUpdated
-                {
-                    SourceId = _accountId,
-                    DefaultTipPercent = defaultTipPercent
-                });
-
-                using (var context = new BookingDbContext(DbName))
-                {
-                    var dto = context.Find<AccountDetail>(_accountId);
-
-                    Assert.NotNull(dto);
-                    Assert.AreEqual(defaultTipPercent, dto.DefaultTipPercent);
-                }
-            }
+            
         }
 
         [Test]

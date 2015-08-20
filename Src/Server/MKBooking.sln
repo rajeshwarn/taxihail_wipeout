@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{14455101-7665-4CD6-A9F7-235BF1C50A6E}"
 EndProject
@@ -72,6 +72,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMTServices.Server", "CMTServices.Server\CMTServices.Server.csproj", "{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMTServices.Server.Test", "CMTServices.Server.Test\CMTServices.Server.Test.csproj", "{E1008E0A-32C7-414E-BF90-96DE7A790F85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Events.Migration", "MK.Events.Migration\MK.Events.Migration.csproj", "{A49E7882-15E6-420A-A372-D11B74609B04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -383,6 +385,18 @@ Global
 		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Release|x86.ActiveCfg = Release|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Debug|x86.Build.0 = Debug|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Release|x86.ActiveCfg = Release|Any CPU
+		{A49E7882-15E6-420A-A372-D11B74609B04}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -415,6 +429,7 @@ Global
 		{5FD750A2-EE19-4A80-9B38-32ADBF03765A} = {14455101-7665-4CD6-A9F7-235BF1C50A6E}
 		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C} = {14455101-7665-4CD6-A9F7-235BF1C50A6E}
 		{E1008E0A-32C7-414E-BF90-96DE7A790F85} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
+		{A49E7882-15E6-420A-A372-D11B74609B04} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime;packages\Unity.2.1.505.2\lib\NET35

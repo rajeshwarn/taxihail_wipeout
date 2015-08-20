@@ -39,7 +39,6 @@ namespace apcurium.MK.Booking.Domain
             Handles<CreditCardAddedOrUpdated>(NoAction);
             Handles<CreditCardRemoved>(NoAction);
             Handles<AllCreditCardsRemoved>(NoAction);
-            Handles<PaymentProfileUpdated>(NoAction);
             Handles<DeviceRegisteredForPushNotifications>(NoAction);
             Handles<DeviceUnregisteredForPushNotifications>(NoAction);
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
@@ -61,7 +60,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public Account(Guid id, string name, CountryISOCode country, string phone, string email, byte[] password, 
-            string confirmationToken, string language, bool accountActivationDisabled, string payBack, bool isAdmin = false)
+            string confirmationToken, string language, bool accountActivationDisabled, string payBack, int nbPassenger, bool isAdmin = false)
             : this(id)
         {
             if (Params.Get(name, country.SelectOrDefault(countryCode => countryCode.Code), phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
@@ -81,11 +80,12 @@ namespace apcurium.MK.Booking.Domain
                 Language = language,
                 IsAdmin = isAdmin,
                 AccountActivationDisabled = accountActivationDisabled,
-                PayBack = payBack
+                PayBack = payBack,
+                NbPassengers = nbPassenger
             });
         }
 
-        public Account(Guid id, string name, CountryISOCode country, string phone, string email, string payBack, string facebookId = null,
+        public Account(Guid id, string name, CountryISOCode country, string phone, string email, string payBack, int nbPassenger, string facebookId = null,
             string twitterId = null, string language = null, bool isAdmin = false)
             : this(id)
         {
@@ -104,7 +104,8 @@ namespace apcurium.MK.Booking.Domain
                 FacebookId = facebookId,
                 Language = language,
                 IsAdmin = isAdmin,
-                PayBack = payBack
+                PayBack = payBack,
+                NbPassengers = nbPassenger
             });
         }
 
@@ -369,9 +370,12 @@ namespace apcurium.MK.Booking.Domain
             Update(new PayPalAccountUnlinked());
         }
 
-        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType)
+        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate, FeeTypes feeType, bool isOutOfAppPaymentDisabled)
         {
-            Update(new CreditCardDeactivated());
+            Update(new CreditCardDeactivated
+            {
+                IsOutOfAppPaymentDisabled = isOutOfAppPaymentDisabled
+            });
             Update(new OverduePaymentLogged
             {
                 OrderId = orderId,
@@ -383,11 +387,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void SettleOverduePayment(Guid orderId)
+        public void SettleOverduePayment(Guid orderId, bool isPayInTaxiEnabled)
         {
             Update(new OverduePaymentSettled
             {
-                OrderId = orderId
+                OrderId = orderId,
+                IsPayInTaxiEnabled = isPayInTaxiEnabled
             });
         }
 

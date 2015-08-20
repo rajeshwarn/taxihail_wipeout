@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.EventSourcing;
@@ -50,13 +51,15 @@ namespace apcurium.MK.Booking.CommandHandlers
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IServerSettings _serverSettings;
         private readonly IEventSourcedRepository<Account> _repository;
 
-        public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService, Func<BookingDbContext> contextFactory)
+        public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService, Func<BookingDbContext> contextFactory, IServerSettings _serverSettings)
         {
             _repository = repository;
             _passwordService = passwordService;
             _contextFactory = contextFactory;
+            this._serverSettings = _serverSettings;
         }
 
         public void Handle(AddOrUpdateCreditCard command)
@@ -105,7 +108,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
             var account = new Account(command.AccountId, command.Name, command.Country, command.Phone, command.Email, password,
-                command.ConfimationToken, command.Language, command.AccountActivationDisabled, command.PayBack, command.IsAdmin);
+                command.ConfimationToken, command.Language, command.AccountActivationDisabled, command.PayBack, _serverSettings.ServerData.DefaultBookingSettings.NbPassenger, command.IsAdmin);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -125,14 +128,14 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(RegisterFacebookAccount command)
         {
             var account = new Account(command.AccountId, command.Name, command.Country, command.Phone, command.Email,
-                command.PayBack, command.FacebookId, language: command.Language);
+                command.PayBack, _serverSettings.ServerData.DefaultBookingSettings.NbPassenger, command.FacebookId, language: command.Language);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(RegisterTwitterAccount command)
         {
             var account = new Account(command.AccountId, command.Name, command.Country, command.Phone, command.Email,
-                command.PayBack, twitterId: command.TwitterId, language: command.Language);
+                command.PayBack, _serverSettings.ServerData.DefaultBookingSettings.NbPassenger, twitterId: command.TwitterId, language: command.Language);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -189,6 +192,21 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             var settings = new BookingSettings();
             Mapper.Map(command, settings);
+
+            if (command.ChargeTypeId == _serverSettings.ServerData.DefaultBookingSettings.ChargeTypeId)
+            {
+                command.ChargeTypeId = null;
+            }
+
+            if (command.VehicleTypeId == _serverSettings.ServerData.DefaultBookingSettings.VehicleTypeId)
+            {
+                command.VehicleTypeId = null;
+            }
+
+            if (command.ProviderId == _serverSettings.ServerData.DefaultBookingSettings.ProviderId)
+            {
+                command.ProviderId = null;
+            }
 
             account.UpdateBookingSettings(settings, command.DefaultTipPercent);
 
@@ -307,7 +325,9 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
 
-            account.ReactToPaymentFailure(command.OrderId, command.IBSOrderId, command.OverdueAmount, command.TransactionId, command.TransactionDate, command.FeeType);
+            account.ReactToPaymentFailure(command.OrderId, command.IBSOrderId, command.OverdueAmount, command.TransactionId, 
+                command.TransactionDate, command.FeeType,
+                _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled);
 
             _repository.Save(account, command.Id.ToString());
         }
@@ -316,7 +336,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
 
-            account.SettleOverduePayment(command.OrderId);
+            account.SettleOverduePayment(command.OrderId, _serverSettings.GetPaymentSettings().IsPayInTaxiEnabled);
 
             _repository.Save(account, command.Id.ToString());
         }

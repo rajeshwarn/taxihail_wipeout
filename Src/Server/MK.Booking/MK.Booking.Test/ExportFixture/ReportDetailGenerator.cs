@@ -10,6 +10,7 @@ using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Test.Integration;
+using apcurium.MK.Common;
 using ServiceStack.Text;
 #endregion
 
@@ -49,12 +50,12 @@ namespace apcurium.MK.Booking.Test.ExportFixture
             _accountId = Guid.NewGuid();
             _promoId = Guid.NewGuid();
 
-            var accountDetailGenerator = new AccountDetailsGenerator(() => new BookingDbContext(DbName),
-                new TestServerSettings());
+            var accountDetailGenerator = new AccountDetailsGenerator(() => new BookingDbContext(DbName));
 
             accountDetailGenerator.Handle(new AccountRegistered
             {
                 SourceId = _accountId,
+                Country = CountryCode.GetCountryCodeByIndex(0).CountryISOCode
             });
 
             accountDetailGenerator.Handle(new AccountConfirmed() { SourceId = _accountId });

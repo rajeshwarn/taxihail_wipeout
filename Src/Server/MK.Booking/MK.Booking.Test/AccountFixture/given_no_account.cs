@@ -20,11 +20,13 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         public void given_no_account_setup()
         {
             _sut = new EventSourcingTestHelper<Account>();
-            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService(), null));
+            _testServerSettings = new TestServerSettings();
+            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService(), null, _testServerSettings));
         }
 
         private EventSourcingTestHelper<Account> _sut;
         private readonly Guid _accountId = Guid.NewGuid();
+        private TestServerSettings _testServerSettings;
 
         [Test]
         public void when_registering_account_successfully()
@@ -49,6 +51,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual("5145551111", @event.Phone);
             Assert.AreEqual("CA", @event.Country.Code);
             Assert.AreEqual("fr", @event.Language);
+            Assert.AreEqual(_testServerSettings.ServerData.DefaultBookingSettings.NbPassenger, @event.NbPassengers);
         }
 
         [Test]
@@ -107,6 +110,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual("CA", @event.Country.Code);
             Assert.AreEqual("123456789", @event.FacebookId);
             Assert.AreEqual("fr", @event.Language);
+            Assert.AreEqual(_testServerSettings.ServerData.DefaultBookingSettings.NbPassenger, @event.NbPassengers);
         }
 
         [Test]
@@ -131,6 +135,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual("CA", @event.Country.Code);
             Assert.AreEqual("123456789", @event.TwitterId);
             Assert.AreEqual("fr", @event.Language);
+            Assert.AreEqual(_testServerSettings.ServerData.DefaultBookingSettings.NbPassenger, @event.NbPassengers);
         }
     }
 }

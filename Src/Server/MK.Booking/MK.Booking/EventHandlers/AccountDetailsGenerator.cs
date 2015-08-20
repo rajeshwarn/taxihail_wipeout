@@ -6,13 +6,10 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
-using System.Globalization;
-using apcurium.MK.Common;
 
 #endregion
 
@@ -36,15 +33,12 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PayPalAccountLinked>,
         IEventHandler<PayPalAccountUnlinked>,
         IEventHandler<OverduePaymentSettled>,
-        IEventHandler<ChargeAccountPaymentDisabled>,
-        IEventHandler<AccountAnswersAddedUpdated>
+        IEventHandler<ChargeAccountPaymentDisabled>
     {
-        private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
 
-        public AccountDetailsGenerator(Func<BookingDbContext> contextFactory, IServerSettings serverSettings)
+        public AccountDetailsGenerator(Func<BookingDbContext> contextFactory)
         {
-            _serverSettings = serverSettings;
             _contextFactory = contextFactory;
         }
 
@@ -114,42 +108,17 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.Roles |= (int) Roles.Admin;
                 }
 
-                if (@event.Country == null || (@event.Country != null && string.IsNullOrEmpty(@event.Country.Code)))
-                {
-                    var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
-                    string countryCode = (new RegionInfo(currentCultureInfo.LCID)).TwoLetterISORegionName;
-                    @event.Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryISOCode;
-                }
-
                 account.Settings = new BookingSettings
                 {
                     Name = account.Name,
                     NumberOfTaxi = 1,
-                    Passengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger,
+                    Passengers = @event.NbPassengers,
                     Country = @event.Country,
                     Phone = @event.Phone,
                     PayBack = @event.PayBack
                 };
 
                 context.Save(account);
-                var defaultCompanyAddress = (from a in context.Query<DefaultAddressDetails>()
-                    select a).ToList();
-
-                //add default company favorite address
-                defaultCompanyAddress.ForEach(c => context.Set<AddressDetails>().Add(new AddressDetails
-                {
-                    AccountId = account.Id,
-                    Apartment = c.Apartment,
-                    BuildingName = c.BuildingName,
-                    FriendlyName = c.FriendlyName,
-                    FullAddress = c.FullAddress,
-                    Id = Guid.NewGuid(),
-                    IsHistoric = false,
-                    Latitude = c.Latitude,
-                    Longitude = c.Longitude,
-                    RingCode = c.RingCode
-                }));
-                context.SaveChanges();
             }
         }
 
@@ -175,31 +144,9 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.ProviderId = @event.ProviderId;
                 settings.VehicleTypeId = @event.VehicleTypeId;
 
-                if (settings.ChargeTypeId == _serverSettings.ServerData.DefaultBookingSettings.ChargeTypeId)
-                {
-                    settings.ChargeTypeId = null;
-                }
-
-                if (settings.VehicleTypeId == _serverSettings.ServerData.DefaultBookingSettings.VehicleTypeId)
-                {
-                    settings.VehicleTypeId = null;
-                }
-
-                if (settings.ProviderId == _serverSettings.ServerData.DefaultBookingSettings.ProviderId)
-                {
-                    settings.ProviderId = null;
-                }
-
-                if (@event.Country == null || (@event.Country != null && string.IsNullOrEmpty(@event.Country.Code)))
-                {
-                    var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
-                    string countryCode = (new RegionInfo(currentCultureInfo.LCID)).TwoLetterISORegionName;
-                    @event.Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryISOCode;
-                }
-
                 settings.NumberOfTaxi = @event.NumberOfTaxi;
                 settings.Passengers = @event.Passengers;
-                settings.Country = @event.Country ?? new CountryISOCode();
+                settings.Country = @event.Country;
                 settings.Phone = @event.Phone;
                 settings.AccountNumber = @event.AccountNumber;
                 settings.CustomerNumber = @event.CustomerNumber;
@@ -239,11 +186,13 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 // used for migration, if user removed one card but had another one, we set this one as the default card
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                var otherCreditCardForAccount = context.Query<CreditCardDetails>().FirstOrDefault(x => x.AccountId == @event.SourceId && x.CreditCardId != @event.CreditCardId);
-                account.DefaultCreditCard = otherCreditCardForAccount != null ? otherCreditCardForAccount.CreditCardId : (Guid?) null;
-                account.Settings.ChargeTypeId = otherCreditCardForAccount != null ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
+                account.DefaultCreditCard = @event.NewDefaultCreditCardId;
+                account.Settings.ChargeTypeId = @event.NewDefaultCreditCardId == null
+                    ? ChargeTypes.PaymentInCar.Id
+                    : ChargeTypes.CardOnFile.Id;
                 context.Save(account);
             }
+            
         }
 
         public void Handle(AllCreditCardsRemoved @event)
@@ -263,37 +212,22 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardDeactivated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (!@event.IsOutOfAppPaymentDisabled)
             {
-                if (!_serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled)
+                using (var context = _contextFactory.Invoke())
                 {
-                    // If pay in taxi is not disable, this becomes the default payment method
                     var account = context.Find<AccountDetail>(@event.SourceId);
                     account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
                     context.Save(account);
                 }
             }
-        }
+    }
 
         public void Handle(AccountLinkedToIbs @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                if (@event.CompanyKey.HasValue())
-                {
-                    var ibsAccountLink = 
-                        context.Query<AccountIbsDetail>().FirstOrDefault(x => x.AccountId == @event.SourceId && x.CompanyKey == @event.CompanyKey) 
-                            ?? new AccountIbsDetail
-                               {
-                                   AccountId = @event.SourceId,
-                                   CompanyKey = @event.CompanyKey
-                               };
-
-                    ibsAccountLink.IBSAccountId = @event.IbsAccountId;
-
-                    context.Save(ibsAccountLink);
-                }
-                else
+                if (!@event.CompanyKey.HasValue())
                 {
                     var account = context.Find<AccountDetail>(@event.SourceId);
                     account.IBSAccountId = @event.IbsAccountId;
@@ -308,9 +242,6 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IBSAccountId = null;
-
-                context.RemoveWhere<AccountIbsDetail>(x => x.AccountId == @event.SourceId);
-                context.SaveChanges();
             }
         }
 
@@ -321,22 +252,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsPayPalAccountLinked = true;
                 account.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
-
-                var payPalAccountDetails = context.Find<PayPalAccountDetails>(@event.SourceId);
-                if (payPalAccountDetails == null)
-                {
-                    context.Save(new PayPalAccountDetails
-                    {
-                        AccountId = @event.SourceId,
-                        EncryptedRefreshToken = @event.EncryptedRefreshToken
-                    });
-                }
-                else
-                {
-                    payPalAccountDetails.EncryptedRefreshToken = @event.EncryptedRefreshToken;
-                }
-
-                context.SaveChanges();
+                context.Save(account);
             }
         }
 
@@ -347,9 +263,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsPayPalAccountLinked = false;
                 context.Save(account);
-
-                context.RemoveWhere<PayPalAccountDetails>(x => x.AccountId == @event.SourceId);
-                context.SaveChanges();
             }
         }
 
@@ -378,11 +291,11 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OverduePaymentSettled @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (@event.IsPayInTaxiEnabled)
             {
-                if (_serverSettings.GetPaymentSettings().IsPayInTaxiEnabled)
+                using (var context = _contextFactory.Invoke())
                 {
-                    // Re-enable card on file as the default payment method
+                    //Re-enable card on file as the default payment method
                     var account = context.Find<AccountDetail>(@event.SourceId);
                     account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     context.Save(account);
@@ -390,22 +303,6 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(AccountAnswersAddedUpdated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                @event.Answers.ForEach(x => {
-                    var answer = context.Query<AccountChargeQuestionAnswer>()
-                        .Where(a => a.AccountId == x.AccountId && a.AccountChargeQuestionId == x.AccountChargeQuestionId && a.AccountChargeId == x.AccountChargeId)
-                        .FirstOrDefault();
-                    if (answer == null) {
-                        context.Save(x);
-                    } else {
-                        answer.LastAnswer = x.LastAnswer;
-                        context.Save(answer);
-                    }
-                });
-            }
-        }
+        
     }
 }

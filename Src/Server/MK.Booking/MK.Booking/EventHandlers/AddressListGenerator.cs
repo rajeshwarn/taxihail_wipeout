@@ -12,11 +12,19 @@ using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>,
-        IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>, IEventHandler<AddressRemovedFromHistory>,
-        IEventHandler<DefaultFavoriteAddressAdded>, IEventHandler<DefaultFavoriteAddressRemoved>,
-        IEventHandler<DefaultFavoriteAddressUpdated>
-        , IEventHandler<PopularAddressAdded>, IEventHandler<PopularAddressRemoved>, IEventHandler<PopularAddressUpdated>
+    public class AddressListGenerator : 
+        IEventHandler<FavoriteAddressAdded>, 
+        IEventHandler<FavoriteAddressRemoved>,
+        IEventHandler<FavoriteAddressUpdated>, 
+        IEventHandler<OrderCreated>, 
+        IEventHandler<AddressRemovedFromHistory>,
+        IEventHandler<DefaultFavoriteAddressAdded>, 
+        IEventHandler<DefaultFavoriteAddressRemoved>,
+        IEventHandler<DefaultFavoriteAddressUpdated>,
+        IEventHandler<PopularAddressAdded>, 
+        IEventHandler<PopularAddressRemoved>,
+        IEventHandler<PopularAddressUpdated>, 
+        IEventHandler<AccountRegistered>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -200,6 +208,32 @@ namespace apcurium.MK.Booking.EventHandlers
                     Mapper.Map(@event.Address, address);
                     context.SaveChanges();
                 }
+            }
+        }
+
+        public void Handle(AccountRegistered @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                //TODO remove this 
+                var defaultCompanyAddress = (from a in context.Query<DefaultAddressDetails>()
+                    select a).ToList();
+
+                //add default company favorite address
+                defaultCompanyAddress.ForEach(c => context.Set<AddressDetails>().Add(new AddressDetails
+                {
+                    AccountId = @event.SourceId,
+                    Apartment = c.Apartment,
+                    BuildingName = c.BuildingName,
+                    FriendlyName = c.FriendlyName,
+                    FullAddress = c.FullAddress,
+                    Id = Guid.NewGuid(),
+                    IsHistoric = false,
+                    Latitude = c.Latitude,
+                    Longitude = c.Longitude,
+                    RingCode = c.RingCode
+                }));
+                context.SaveChanges();
             }
         }
     }
