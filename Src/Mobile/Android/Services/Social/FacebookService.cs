@@ -86,17 +86,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 
 		public Task<FacebookUserInfo> GetUserInfo()
 		{
-			var tcs = new TaskCompletionSource<FacebookUserInfo>();
+			var _taskCompletionSource = new TaskCompletionSource<FacebookUserInfo>();
 
 			Bundle parameters = new Bundle();
 			parameters.PutString("fields", "id,first_name,last_name,email");
 
 			GraphRequest graphRequestData = new GraphRequest();
-			GraphRequest userInfoGraphRequest = new GraphRequest(AccessToken.CurrentAccessToken, "me", parameters, graphRequestData.HttpMethod, new GetUserInfoCallback(tcs), graphRequestData.Version);
+			GraphRequest userInfoGraphRequest = new GraphRequest(AccessToken.CurrentAccessToken, "me", parameters, graphRequestData.HttpMethod, new GetUserInfoCallback(_taskCompletionSource), graphRequestData.Version);
 
 			userInfoGraphRequest.ExecuteAsync();
 			
-			return tcs.Task;
+			return _taskCompletionSource.Task;
 		}
 
 		public void PublishInstall()
