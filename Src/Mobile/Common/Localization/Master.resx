@@ -1983,4 +1983,22 @@
   <data name="CloseTutorial" xml:space="preserve">
     <value>Close Tutorial</value>
   </data>
+	<data name="CallDriver" xml:space="preserve">
+    <value>Call Driver</value>
+  </data>
+	<data name="Rating1" xml:space="preserve">
+    <value>Awful</value>
+  </data>
+	<data name="Rating2" xml:space="preserve">
+    <value>Poor</value>
+  </data>
+	<data name="Rating3" xml:space="preserve">
+    <value>Average</value>
+  </data>
+	<data name="Rating4" xml:space="preserve">
+    <value>Good</value>
+  </data>
+	<data name="Rating5" xml:space="preserve">
+    <value>Excellent</value>
+  </data>
 </root>

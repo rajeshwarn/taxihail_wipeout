@@ -670,4 +670,9 @@
 <string name="WarningPushServiceTitle">Notificaciones lanzadas</string>
 <string name="WarningTitle">Aviso</string>
 <string name="YesButton">Si</string>
+<string name="Rating1">Awful</string>
+<string name="Rating2">Poor</string>
+<string name="Rating3">Average</string>
+<string name="Rating4">Good</string>
+<string name="Rating5">Excellent</string>
 </resources>

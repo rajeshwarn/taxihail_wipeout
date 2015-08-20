@@ -89,6 +89,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                             
                 btnCallDriver.SetX(UIScreen.MainScreen.Bounds.Width - btnCallDriver.Frame.Width - 12f); // 12f = right margin
 
+				btnCallDriver.AccessibilityLabel = Localize.GetValue("CallDriver");
+
                 View.BringSubviewToFront (bottomBar);
 
 				ViewModel.PropertyChanged += (sender, e) => {

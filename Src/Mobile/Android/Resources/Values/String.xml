@@ -652,4 +652,9 @@
 	<string name="ManualRideLinqSummaryActivityName">Manual RideLinq Summary</string>
 	<string name="BookSummaryActivityName">Book Summary</string>
 	<string name="MessageActivityName">Message</string>
+	<string name="Rating1">Awful</string>
+	<string name="Rating2">Poor</string>
+	<string name="Rating3">Average</string>
+	<string name="Rating4">Good</string>
+	<string name="Rating5">Excellent</string>
 </resources>

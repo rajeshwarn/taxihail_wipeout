@@ -648,5 +648,10 @@
 	<string name="ManualRideLinqStatusActivityName">Statut de RideLinq manuel</string>
 	<string name="ManualRideLinqSummaryActivityName">Résumé de RideLinq manuel</string>
 	<string name="BookSummaryActivityName">Résumé de la commande</string>
-	<string name="MessageActivityName">Avertissement</string>	
+	<string name="MessageActivityName">Avertissement</string>
+	<string name="Rating1">Terrible</string>
+	<string name="Rating2">Mauvais</string>
+	<string name="Rating3">Moyenne</string>
+	<string name="Rating4">Bien</string>
+	<string name="Rating5">Excellent</string>
 </resources>
