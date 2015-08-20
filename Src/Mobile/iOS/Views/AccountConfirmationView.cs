@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblTitle.Text = Localize.GetValue ("View_AccountConfirmationTitle");
 			lblSubTitle.Text = Localize.GetValue ("View_AccountConfirmation_Label_Instructions");
 			txtCode.Placeholder = Localize.GetValue("View_AccountConfirmation_Label_Code");
+            txtCode.AccessibilityLabel = txtCode.Placeholder;
 			btnConfirm.SetTitle(Localize.GetValue("View_AccountConfirmation_Button"), UIControlState.Normal);
             btnResend.SetTitle(Localize.GetValue("ResendConfirmationCodeButtonText"), UIControlState.Normal);
 

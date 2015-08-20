@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-	[Activity(Label = "InitializeOrderForAccountPaymentActivity", Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait)]
+	[Activity(Label = "@string/InitializeOrderForAccountPaymentActivityName", Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait)]
 	public class InitializeOrderForAccountPaymentActivity : BaseBindingActivity<InitializeOrderForAccountPaymentViewModel>
 	{
 		protected override void OnViewModelSet()

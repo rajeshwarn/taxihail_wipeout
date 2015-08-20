@@ -11,7 +11,7 @@ using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
-	[Activity(Label = "Tutorial", Theme = "@style/TutorialDialog", ScreenOrientation = ScreenOrientation.Portrait)]
+	[Activity(Label = "@string/TutorialActivityName", Theme = "@style/TutorialDialog", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TutorialActivity : MvxActivity
     {
         private BitmapDrawable _grayCircle;
