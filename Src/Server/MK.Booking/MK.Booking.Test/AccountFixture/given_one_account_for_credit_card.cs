@@ -20,7 +20,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         {
             _sut = new EventSourcingTestHelper<Account>();
 
-            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService(), null, new TestServerSettings()));
+            _testServerSettings = new TestServerSettings();
+            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService(), null, _testServerSettings));
             _sut.Given(new AccountRegistered
             {
                 SourceId = _accountId,
@@ -33,6 +34,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
         private EventSourcingTestHelper<Account> _sut;
         private readonly Guid _accountId = Guid.NewGuid();
+        private TestServerSettings _testServerSettings;
 
         [Test]
         public void when_add_first_credit_card()
@@ -119,6 +121,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         public void when_credit_card_deactivated()
         {
             var orderId = Guid.NewGuid();
+            _testServerSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled = true;
+
 
             _sut.When(new ReactToPaymentFailure
             {
