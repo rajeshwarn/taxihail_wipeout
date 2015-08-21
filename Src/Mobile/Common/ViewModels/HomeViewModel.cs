@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
@@ -12,16 +13,16 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class HomeViewModel : PageViewModel
+	public sealed class HomeViewModel : PageViewModel
     {
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly ILocationService _locationService;
@@ -34,8 +35,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    private readonly IBookingService _bookingService;
 	    private readonly IMetricsService _metricsService;
 	    private readonly IPaymentService _paymentService;
+		private string _lastHashedMarket = string.Empty;
+		private bool _isShowingTermsAndConditions;
+		private bool _isShowingCreditCardExpiredPrompt;
+		private bool _locateUser;
+		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
-		private HomeViewModelState _currentState = HomeViewModelState.Initial;
+		private HomeViewModelState _currentViewState = HomeViewModelState.Initial;
 
 		public HomeViewModel(IOrderWorkflowService orderWorkflowService, 
 			IMvxWebBrowserTask browserTask,
@@ -73,17 +79,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             OrderAirport = AddChild<OrderAirportViewModel>();
 			BottomBar = AddChild<BottomBarViewModel>();
 			AddressPicker = AddChild<AddressPickerViewModel>();
+			BookingStatus = AddChild<BookingStatusViewModel>();
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
 			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
 		}
 
-	    private string _lastHashedMarket = string.Empty;
-		private bool _isShowingTermsAndConditions;
-		private bool _isShowingCreditCardExpiredPrompt;
-		private bool _locateUser;
 		private bool _firstTime;
-		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
         public void Init(bool locateUser, string defaultHintZoomLevel)
         {
@@ -119,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (firstTime)
 			{
-				Panel.Start();
+				Panel.Start().FireAndForget();
 
                 AddressPicker.RefreshFilteredAddress();
 
@@ -143,7 +145,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (_defaultHintZoomLevel != null)
 			{
-				this.ChangePresentation(_defaultHintZoomLevel);
+				ChangePresentation(_defaultHintZoomLevel);
 				_defaultHintZoomLevel = null;
 			}
 
@@ -166,11 +168,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    }
 			    else
 			    {
-                    ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
-                    {
-                        order = lastOrder.Item1.ToJson(),
-                        orderStatus = lastOrder.Item2.ToJson()
-                    });
+					GotoBookingStatus(lastOrder.Item1, lastOrder.Item2);
 			    }
 
 				
@@ -336,7 +334,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-	    public PanelMenuViewModel Panel { get; set; }
+		public BookingStatusViewModel BookingStatus
+		{
+			get { return _bookingStatus; }
+			set
+			{
+				_bookingStatus = value; 
+				RaisePropertyChanged();
+			}
+		}
+
+		public void GotoBookingStatus(Order order, OrderStatusDetail orderStatusDetail)
+		{
+			CurrentViewState = HomeViewModelState.BookingStatus;
+
+			BookingStatus.StartBookingStatus(order, orderStatusDetail);
+		}
+
+		public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
 		public MapViewModel Map
@@ -420,14 +435,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return _automaticLocateMeAtPickup ?? (_automaticLocateMeAtPickup = new CancellableCommand(async (token) =>
+				return _automaticLocateMeAtPickup ?? (_automaticLocateMeAtPickup = new CancellableCommand(async token =>
 				{				
 					// we want this command to be top priority, so cancel previous map-related commands
 					LocateMe.Cancel();
 					Map.UserMovedMap.Cancel();
 
 					var addressSelectionMode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
-					if (_currentState == HomeViewModelState.Initial 
+					if (CurrentViewState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
 						if (_firstTime)
@@ -466,8 +481,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    private void ProcessSingleOrNoFilteredAddresses(AddressLocationType filter, HomeViewModelState state)
 	    {
             var filteredAddress = AddressPicker.FilteredPlaces
-                        .Where(address => address.Address.AddressLocationType == filter)
-                        .ToArray();
+                    .Where(address => address.Address.AddressLocationType == filter)
+                    .ToArray();
 
             if (!filteredAddress.Any())
             {
@@ -488,9 +503,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return;
             }
 
-            ChangePresentation(new HomeViewModelPresentationHint(state));
+		    CurrentViewState = state;
 	    }
 
+		public new ICommand CloseCommand
+		{
+			get
+			{
+				return this.GetCommand(() =>
+				{
+					switch (CurrentViewState)
+					{
+						case HomeViewModelState.Review:
+						case HomeViewModelState.PickDate:
+						case HomeViewModelState.AddressSearch:
+						case HomeViewModelState.AirportSearch:
+						case HomeViewModelState.TrainStationSearch:
+						case HomeViewModelState.BookingStatus:
+							CurrentViewState = HomeViewModelState.Initial;
+							break;
+						case HomeViewModelState.Edit:
+							CurrentViewState = HomeViewModelState.Review;
+							break;
+						default:
+							base.CloseCommand.ExecuteIfPossible();
+							break;
+					}
+				});
+			}
+		}
 
 	    public ICommand AirportSearch
 	    {
@@ -508,6 +549,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
+		public bool IsAirportButtonHidden
+		{
+			get { return !Settings.IsAirportButtonEnabled || CurrentViewState == HomeViewModelState.BookingStatus; }
+		}
+
+		public bool IsTrainButtonHidden
+		{
+			get { return !Settings.IsTrainStationButtonEnabled || CurrentViewState == HomeViewModelState.BookingStatus; }
+		}
+
+		public HomeViewModelState CurrentViewState
+		{
+			get { return _currentViewState; }
+			set
+			{
+				if (value == HomeViewModelState.BookingStatus)
+				{
+					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode(AddressSelectionMode.None);
+				}
+				else if (value == HomeViewModelState.Initial && _currentViewState == HomeViewModelState.BookingStatus)
+				{
+					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode(AddressSelectionMode.PickupSelection);
+					_bottomBar.EstimateSelected = false;
+				}
+
+				_currentViewState = value;
+
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => IsAirportButtonHidden);
+				RaisePropertyChanged(() => IsTrainButtonHidden);
+			}
+		}
+
+		public bool CanUseCloseCommand()
+		{
+			return CurrentViewState != HomeViewModelState.Initial && BookingStatus.CanGoBack;
+		}
+
 		private async void SetMapCenterToUserLocation(bool initialZoom, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			try
@@ -522,22 +601,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					// do the uber zoom
 					try 
 					{
-						var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
-						ZoomOnNearbyVehiclesIfPossible (availableVehicles);
+						var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles()
+							.Timeout(TimeSpan.FromSeconds (5))
+							.Where(x => x.Any())
+							.Take (1)
+							.ToTask(cancellationToken);
+
+						ZoomOnNearbyVehiclesIfPossible(availableVehicles);
 					}
 					catch (TimeoutException)
 					{ 
-						Console.WriteLine("ZoomOnNearbyVehiclesIfPossible: Timeout occured while waiting for available vehicles");
+						Console.WriteLine(@"ZoomOnNearbyVehiclesIfPossible: Timeout occured while waiting for available vehicles");
 					}
 				}
 			}
 			catch(OperationCanceledException)
 			{
-				return;
+				// Operation Cancelled exception is suppressed because we needed to stop the current process but we don't have to handle this.
 			}
-			catch(Exception)
+			catch(Exception ex)
 			{
-				return;
+				Logger.LogError(ex);
 			}
 		}
 
@@ -552,43 +636,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var bounds = _vehicleService.GetBoundsForNearestVehicles(isUsingGeoServices, Map.PickupAddress, vehicles);	
 				if (bounds != null)
 				{
-					this.ChangePresentation(new ChangeZoomPresentationHint(bounds));
+					ChangePresentation(new ChangeZoomPresentationHint(bounds));
 				}
 			}
 		}
 
-		protected override TViewModel AddChild<TViewModel>()
-		{
-            var child = base.AddChild<TViewModel>();
-			var rps = child as IRequestPresentationState<HomeViewModelStateRequestedEventArgs>;
-			if (rps != null)
-			{
-				rps.PresentationStateRequested += OnPresentationStateRequested;
-			}
-
-            return child;
-		}
-
-		private void OnPresentationStateRequested(object sender, HomeViewModelStateRequestedEventArgs e)
-		{
-			_currentState = e.State;
-
-			this.ChangePresentation(new HomeViewModelPresentationHint(e.State, e.IsNewOrder));
-
-            if (e.State == HomeViewModelState.Initial)
-            {
-                _vehicleService.Start ();
-            }
-            else
-            {
-                _vehicleService.Stop ();
-            }
-		}
-
 		private bool _subscribedToLifetimeChanged;
 	    private bool _isManualRideLinqEnabled;
+		private BookingStatusViewModel _bookingStatus;
 
-	    public void SubscribeLifetimeChangedIfNecessary()
+		public void SubscribeLifetimeChangedIfNecessary()
 		{
 			if (!_subscribedToLifetimeChanged)
 			{
@@ -608,8 +665,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void OnApplicationLifetimeChanged(object sender, MvxLifetimeEventArgs args)
         {
-            if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk
-                || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
+            if (args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk || args.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)
             {
 				// since this is called before OnViewStarted and AutomaticLocateMe needs it, do it here, otherwise AutomaticLocateMe will be very slow
 				_locationService.Start();

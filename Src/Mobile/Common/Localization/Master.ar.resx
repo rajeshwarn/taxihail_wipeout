@@ -2164,4 +2164,7 @@
   <data name="Rating5" xml:space="preserve">
     <value>Excellent</value>
   </data>
+	<data name="OrderStatus_Medallion" xml:space="preserve">
+		<value>Medallion</value>
+	</data>
 </root>

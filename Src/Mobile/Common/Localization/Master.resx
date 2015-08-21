@@ -2319,4 +2319,7 @@
 	<data name="MessageActivityName" xml:space="preserve">
     <value>Message</value>
   </data>
+	<data name="OrderStatus_Medallion" xml:space="preserve">
+		<value>Medallion</value>
+	</data>
 </root>

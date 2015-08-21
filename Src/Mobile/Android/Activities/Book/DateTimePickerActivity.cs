@@ -26,8 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             SetContentView(Resource.Layout.View_DateTimePicker);
 
-            long dateTimeticks = Intent.GetLongExtra("SelectedDate", 0);
-            DateTime selected = dateTimeticks > 0 ? new DateTime(dateTimeticks) : GetNowWithInterval();
+            var dateTimeticks = Intent.GetLongExtra("SelectedDate", 0);
+            var selected = dateTimeticks > 0 ? new DateTime(dateTimeticks) : GetNowWithInterval();
 
             var timePicker = FindViewById<TimePicker>(Resource.Id.timePickerCtl);
             timePicker.SetIs24HourView(Boolean.True);
@@ -38,8 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _lastMinutes = selected.Minute == 0 ? 60 : selected.Minute;
 
             FindViewById<TimePicker>(Resource.Id.timePickerCtl).TimeChanged += TimeOnTimeChanged;
-            FindViewById<DatePicker>(Resource.Id.datePickerCtl)
-                .UpdateDate(selected.Year, selected.Month - 1, selected.Day);
+            FindViewById<DatePicker>(Resource.Id.datePickerCtl).UpdateDate(selected.Year, selected.Month - 1, selected.Day);
             FindViewById<Button>(Resource.Id.DoneButton).Click += DoneOnClick;
             //FindViewById<Button>(Resource.Id.NowButton).Click += TimeOnClick;
 
@@ -56,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private DateTime GetNowWithInterval()
         {
             var now = DateTime.Now;
-            int i = GetNextIntervalMinutes(now.Minute);
+            var i = GetNextIntervalMinutes(now.Minute);
             if (i < now.Minute)
             {
                 return new DateTime(now.Year, now.Month, now.Day, now.Hour + 1, 0, 0);
@@ -76,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (result > DateTime.Now)
             {
-                Intent _result = new Intent();              
+                var _result = new Intent();              
                 _result.PutExtra("DateTimeResult", result.Ticks);
                 SetResult(Android.App.Result.Ok, _result);
                 Finish();

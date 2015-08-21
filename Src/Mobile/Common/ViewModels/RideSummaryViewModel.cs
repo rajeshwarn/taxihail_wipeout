@@ -183,6 +183,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (RatingList == null)
 			{
 				Logger.LogMessage("RatingList is null");
+
+				// Prevent the user from getting stuck on this screen
+				HasRated = true;
+
 			    return;
 			}
 

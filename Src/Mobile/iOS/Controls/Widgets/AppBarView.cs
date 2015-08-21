@@ -13,7 +13,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("AppBarView")]
-    public class AppBarView : MvxView, IChangePresentation
+    public class AppBarView : MvxView
     {
         private UIView _reviewButtons;
         private UIView _orderButtons;
@@ -125,10 +125,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		        .For("Title")
 		        .To(vm => vm.BookButtonText);
 
-			set.Bind(_manualPairingButtons)
-				.For(v => v.Hidden)
-				.To(vm => vm.IsManualRidelinqEnabled)
-				.WithConversion("BoolInverter");
+            set.Bind(_manualPairingButtons)
+                .For(v => v.Hidden)
+                .To(vm => vm.HideManualRideLinqButtons);
 
 			set.Bind(_imagePromoForManual)
 				.For(v => v.Hidden)
@@ -290,9 +289,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Hidden)
                 .To(vm => vm.IsFutureBookingDisabled);
 
-			set.Bind(_orderButtons)
-				.For(v => v.Hidden)
-				.To(vm => vm.IsManualRidelinqEnabled);
+            set.Bind(_orderButtons)
+                .For(v => v.Hidden)
+                .To(vm => vm.HideOrderButtons);
 
             set.Apply();
         }
@@ -423,6 +422,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Command)
                 .To(vm => vm.Save);
 
+            set.Bind(_editButtons)
+                .For(v => v.Hidden)
+                .To(vm => vm.HideEditButtons);
+
+            set.Bind(_reviewButtons)
+                .For(v => v.Hidden)
+                .To(vm => vm.HideReviewButtons);
+
             set.Apply();
         }
 
@@ -435,34 +442,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 Line.Frame = new CGRect(0, 0, Frame.Width, UIHelper.OnePixel);
             }
         }
-
-        private void ChangeState(HomeViewModelPresentationHint hint)
-        {   
-            if (hint.State == HomeViewModelState.PickDate
-                || hint.State == HomeViewModelState.BookATaxi 
-				|| hint.State == HomeViewModelState.AirportPickDate )
-            {
-                // These states don't affect this control
-                return;
-            }
-
-			var viewModel = (BottomBarViewModel)DataContext;
-
-			_orderButtons.Hidden = !(hint.State == HomeViewModelState.Initial && !viewModel.IsManualRidelinqEnabled);
-            _reviewButtons.Hidden = hint.State != HomeViewModelState.Review;
-            _editButtons.Hidden = hint.State != HomeViewModelState.Edit;
-			_manualPairingButtons.Hidden = !(hint.State == HomeViewModelState.Initial && viewModel.IsManualRidelinqEnabled);
-			_airportOrderButtons.Hidden = hint.State != HomeViewModelState.AirportDetails;
-        }
-
-        void IChangePresentation.ChangePresentation(ChangePresentationHint hint)
-        {
-            if (hint is HomeViewModelPresentationHint)
-            {
-                ChangeState((HomeViewModelPresentationHint)hint);
-            }
-        }
-
 	
 		private void CreateButtonsForAirportBooking()
 		{
@@ -545,6 +524,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set.Bind(btnBookLater)
 				.For(v => v.Hidden)
 				.To(vm => vm.IsFutureBookingDisabled);
+
+            set.Bind(_airportOrderButtons)
+                .For(v => v.Hidden)
+                .To(vm => vm.HideAirportButtons);
 
 			set.Apply();
 		}

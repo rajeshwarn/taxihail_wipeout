@@ -16,7 +16,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class AddressPickerViewModel : PageViewModel,
-		IRequestPresentationState<HomeViewModelStateRequestedEventArgs>,
 		ISubViewModel<Address>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
@@ -38,9 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private AddressLocationType _currentActiveFilter;
 
-	    private string _previousPostCode = string.Empty;
-
-		public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
+		private string _previousPostCode = string.Empty;
 
 		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
 			IPlaces placesService,
@@ -68,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			if (searchCriteria != null) 
 			{
 				_isInLocationDetail = true;
-				SearchAddress (searchCriteria);
+				SearchAddress (searchCriteria).FireAndForget();
 				StartingText = searchCriteria;
 			} 
 			else 
@@ -126,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        }
 	        catch (Exception ex)
 	        {
-	            this.Logger.LogError(ex);
+	            Logger.LogError(ex);
 	        }
 	    }
 
@@ -145,11 +142,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	    public async Task LoadAddresses(AddressLocationType filter)
 		{
             _ignoreTextChange = true;
+
 	        try
 	        {
 				_currentActiveFilter = filter;
 
-	            if (filter == AddressLocationType.Unspeficied)
+		        if (filter == AddressLocationType.Unspeficied)
 	            {
                     await LoadAddressesUnspecified();
 	            }
@@ -285,15 +283,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                 if (_currentActiveFilter == AddressLocationType.Airport)
                 {
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AirportDetails));
+					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportDetails;
                 }
                 else
                 {
-
 					if (returnToHome)
 					{
-						// This needs to be called if we are displaying the AddressPickerViewModel from the home view.
-						PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
 					}
 	
 					ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
@@ -320,7 +316,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}
 					else
 					{
-						PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
 					}
 				}); 
 			}

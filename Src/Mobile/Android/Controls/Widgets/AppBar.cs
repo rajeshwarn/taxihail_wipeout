@@ -1,53 +1,38 @@
-using Android.Content;
-using Android.Util;
-using Android.Views;
-using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using Android.Content;
 using Android.Runtime;
+using Android.Util;
+using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBar")]
-    public class AppBar: MvxFrameControl, IChangePresentation
+    public class AppBar: MvxFrameControl
     {
-        public AppBar(Context context, IAttributeSet attrs) :
+		public AppBar(Context context, IAttributeSet attrs) :
             base(Resource.Layout.SubView_AppBar, context, attrs)
         {
+			this.DelayBind(SetupBinding);
         }
 
-        private void ChangeState(HomeViewModelPresentationHint hint)
+        private void SetupBinding()
         {
             var bookButtons = Content.FindViewById(Resource.Id.order_buttons);
             var reviewButtons = Content.FindViewById(Resource.Id.review_buttons);
             var editButtons = Content.FindViewById(Resource.Id.edit_buttons);
             var airportButtons = Content.FindViewById(Resource.Id.airport_buttons);
 
-            if (hint.State == HomeViewModelState.Review)
-            {
-                bookButtons.Visibility = ViewStates.Gone;
-                reviewButtons.Visibility = ViewStates.Visible;
-                editButtons.Visibility = ViewStates.Gone;
+	        var set = this.CreateBindingSet<AppBar, BottomBarViewModel>();
                 airportButtons.Visibility = ViewStates.Gone;
-            }
-            else if (hint.State == HomeViewModelState.Edit)
-            {
-                bookButtons.Visibility = ViewStates.Gone;
-                reviewButtons.Visibility = ViewStates.Gone;
-                editButtons.Visibility = ViewStates.Visible;
                 airportButtons.Visibility = ViewStates.Gone;
-            }
-            else if (hint.State == HomeViewModelState.Initial)
-            {
-                bookButtons.Visibility = ViewStates.Visible;
-                reviewButtons.Visibility = ViewStates.Gone;
-                editButtons.Visibility = ViewStates.Gone;
                 airportButtons.Visibility = ViewStates.Gone;
-            }
+  	}
             else if ((hint.State == HomeViewModelState.PickDate)||(hint.State == HomeViewModelState.AirportPickDate))
             {
-                // Do nothing
+		// Do nothing
                 // this state does not affect this control
             }
             else if( hint.State == HomeViewModelState.AirportDetails )
@@ -56,15 +41,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 bookButtons.Visibility = ViewStates.Gone;
                 reviewButtons.Visibility = ViewStates.Gone;
                 editButtons.Visibility = ViewStates.Gone;
-            }
-        }
 
-        public void ChangePresentation(ChangePresentationHint hint)
-        {
-            if (hint is HomeViewModelPresentationHint)
-            {
-                ChangeState((HomeViewModelPresentationHint)hint);
-            }
+	        set.Bind(bookButtons)
+		        .For(v => v.Visibility)
+		        .To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
+		        .WithConversion("HomeViewStateToVisibility", new[] {HomeViewModelState.Initial});
+
+			set.Bind(editButtons)
+				.For(v => v.Visibility)
+				.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Edit });
+
+			set.Bind(reviewButtons)
+				.For(v => v.Visibility)
+				.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Review });
+
+			set.Apply();
         }
     }
 }

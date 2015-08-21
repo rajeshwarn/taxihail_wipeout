@@ -1,43 +1,74 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Entity;
-using System.Linq;
+using Position = apcurium.MK.Booking.Mobile.Infrastructure.Position;
 using apcurium.MK.Common.Extensions;
-using MapBounds = apcurium.MK.Booking.Maps.Geo.MapBounds;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class MapViewModel: BaseViewModel
     {
 		// seconds
-		static readonly int TimeToKeepVehiclesOnMapWhenResultNull = 10;
-		DateTime? KeepVehiclesWhenResultNullStartTime = null;
+		private const int TIME_TO_KEEP_VEHICLES_ON_MAP_WHEN_RESULT_NULL = 10;
+		private DateTime? _keepVehiclesWhenResultNullStartTime;
        
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IVehicleService _vehicleService;
+
+		public static int ZoomStreetLevel = 14;
 
 		public MapViewModel(IOrderWorkflowService orderWorkflowService, IVehicleService vehicleService)
         {
 			_orderWorkflowService = orderWorkflowService;
 			_vehicleService = vehicleService;
 
+			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
 			Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(), isDestinationModeOpened => IsDestinationModeOpened = isDestinationModeOpened);
-            Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
             Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
         }
 
-        public static int ZoomStreetLevel = 14;
+		public override void Start()
+		{
+			base.Start();
+
+			Observe(ObserveCurrentHomeViewModelState(), HomeViewModelStateChanged);
+		}
+
+		private IObservable<HomeViewModelState> ObserveCurrentHomeViewModelState()
+		{
+			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+				h => Parent.PropertyChanged += h,
+				h => Parent.PropertyChanged -= h
+			)
+				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
+				.DistinctUntilChanged();
+		}
+
+		private void HomeViewModelStateChanged(HomeViewModelState state)
+		{
+			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus)
+			{
+				IsMapDisabled = false;
+			}
+			else
+			{
+				IsMapDisabled = true;
+			}
+		}
 
         private Address _pickupAddress;
 		public Address PickupAddress
@@ -93,6 +124,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		private bool _isMapDisabled;
+		public bool IsMapDisabled
+		{
+			get { return _isMapDisabled; }
+			set
+			{
+				if (_isMapDisabled != value)
+				{
+					_isMapDisabled = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
 		public IList<AvailableVehicle> AvailableVehicles
 		{
@@ -104,18 +149,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     && _availableVehicles != null
                     && _availableVehicles.Count > 0)
 				{
-					if (KeepVehiclesWhenResultNullStartTime == null)
+					if (_keepVehiclesWhenResultNullStartTime == null)
 					{
-						KeepVehiclesWhenResultNullStartTime = DateTime.Now;
+						_keepVehiclesWhenResultNullStartTime = DateTime.Now;
 						return;
 					}
-					if ((DateTime.Now - KeepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TimeToKeepVehiclesOnMapWhenResultNull)
+					else if ((DateTime.Now - _keepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TIME_TO_KEEP_VEHICLES_ON_MAP_WHEN_RESULT_NULL)
 					{
 						return;
 					}
 				}
 
-				KeepVehiclesWhenResultNullStartTime = null;
+				_keepVehiclesWhenResultNullStartTime = null;
 
 				_availableVehicles = value;
 				RaisePropertyChanged();
@@ -127,17 +172,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				return _userMovedMap ?? (_userMovedMap = new CancellableCommand<MapBounds>(async (bounds, token) =>
-                {
-                	await _orderWorkflowService.SetAddressToCoordinate(
-						new Position 
-							{ 
-								Latitude = bounds.GetCenter().Latitude, 
-								Longitude = bounds.GetCenter().Longitude 
-							},
-                        token);
-				}, _ => true));
+				return _userMovedMap ?? (_userMovedMap = new CancellableCommand<MapBounds>(SetAddressToCoordinate, _ => true));
             }
         }
+
+		private async Task SetAddressToCoordinate(MapBounds bounds, CancellationToken token)
+		{
+			if (AddressSelectionMode == AddressSelectionMode.None)
+			{
+				return;
+			}
+
+			var position = new Position
+			{
+				Latitude = bounds.GetCenter().Latitude,
+				Longitude = bounds.GetCenter().Longitude
+			};
+
+			await _orderWorkflowService.SetAddressToCoordinate(position, token);
+		}
     }
 }

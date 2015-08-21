@@ -1,23 +1,22 @@
-using Android.Content;
-using Android.Util;
-using Android.Widget;
-using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using Android.Content;
+using Android.Runtime;
+using Android.Util;
+using Android.Views;
+using Android.Widget;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
-using Android.Views;
-using apcurium.MK.Booking.Mobile.Data;
-using Android.Runtime;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptions")]
-    public class OrderOptions : MvxFrameControl, IChangePresentation
+    public class OrderOptions : MvxFrameControl
     {
         private AddressTextBox _viewPickup;
-		private AddressTextBox _viewDestination;
+        private AddressTextBox _viewDestination;
         private VehicleTypeAndEstimateControl _viewVehicleType;
 		private LinearLayout _etaContainer;
 		private LinearLayout _etaBadge;
@@ -50,6 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 _viewVehicleType.Visibility = ViewStates.Gone;
                 InitializeBinding();
+
             });
         }
 
@@ -72,9 +72,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel> ();
 
 			set.Bind (_viewPickup)
-                .For (v => v.IsSelected)
-				.To (vm => vm.AddressSelectionMode)
+				.For(v => v.IsSelected)
+				.To(vm => vm.AddressSelectionMode)
 				.WithConversion("EnumToBool", AddressSelectionMode.PickupSelection);
+
 			set.Bind (_viewPickup)
                 .For (v => v.IsLoadingAddress)
                 .To (vm => vm.IsLoadingAddress);
@@ -82,14 +83,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set.Bind (_viewPickup.AddressTextView)
                 .To (vm => vm.PickupAddress.DisplayAddress);
 
-			set.Bind (_viewDestination)
-				.For (v => v.IsSelected)
-				.To (vm => vm.AddressSelectionMode)
+			set.Bind(_viewPickup)
+				.For(v => v.UserInputDisabled)
+				.To(vm => vm.PickupInputDisabled);
+
+			set.Bind(_viewDestination)
+				.For(v => v.UserInputDisabled)
+				.To(vm => vm.DestinationInputDisabled);
+
+			set.Bind(_viewDestination)
+				.For(v => v.IsSelected)
+				.To(vm => vm.AddressSelectionMode)
 				.WithConversion("EnumToBool", AddressSelectionMode.DropoffSelection);
+
 			set.Bind (_viewDestination)
                 .For (v => v.Visibility)
                 .To (vm => vm.ShowDestination)
                 .WithConversion ("Visibility");
+
 			set.Bind (_viewDestination)
                 .For (v => v.IsLoadingAddress)
                 .To (vm => vm.IsLoadingAddress);
@@ -100,6 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set.Bind (_viewVehicleType)
                 .For (v => v.EstimatedFare)
                 .To (vm => vm.EstimatedFare);
+
 			set.Bind (_viewVehicleType)
                 .For (v => v.Visibility)
 				.To (vm => vm.VehicleAndEstimateBoxIsVisible)
@@ -116,6 +128,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set.Bind (_viewVehicleType)
 				.For (v => v.SelectedVehicle)
 				.To (vm => vm.SelectedVehicleType);
+
+			set.Bind(_viewVehicleType)
+				.For(v => v.IsReadOnly)
+				.To(vm => vm.VehicleTypeInputDisabled);
 
 			set.Bind (_viewPickup)
                 .For ("AddressClicked")
@@ -148,8 +164,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Apply ();
 		}
-
-        private void ChangeState(HomeViewModelPresentationHint hint)
+		
+	private void ChangeState(HomeViewModelPresentationHint hint)
         {
             switch (hint.State)
             {

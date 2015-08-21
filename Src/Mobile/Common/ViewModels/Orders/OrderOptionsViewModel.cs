@@ -5,8 +5,10 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
+using System.ComponentModel;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Maps;
@@ -14,12 +16,15 @@ using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class OrderOptionsViewModel : BaseViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
+	public class OrderOptionsViewModel : BaseViewModel
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
-        public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
+
+		private bool _pickupInputDisabled;
+		private bool _destinationInputDisabled;
+		private bool _vehicleTypeInputDisabled;
 
         private string _hashedMarket;
 
@@ -40,16 +45,57 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
 			Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
 			Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
-            Observe (_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketChanged(hashedMarket));
+            Observe (_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
             Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
 		}
+
+		public override void Start()
+		{
+			base.Start();
+
+			Observe(ObserveHomeViewModelState(), UpdateHomeViewState);
+		}
+
+		private IObservable<HomeViewModelState> ObserveHomeViewModelState()
+		{
+			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+					h => Parent.PropertyChanged += h,
+					h => Parent.PropertyChanged -= h
+				)
+				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
+				.DistinctUntilChanged();
+		}
+
 
 		public void Init()
 		{
 			ShowDestination = false;
 
-			StartAsync();
+			StartAsync().FireAndForget();
+		}
+
+		public void UpdateHomeViewState(HomeViewModelState state)
+		{
+			switch (state)
+			{
+				case HomeViewModelState.Review:
+					PickupInputDisabled = true;
+					DestinationInputDisabled = true;
+					VehicleTypeInputDisabled = true;
+					break;
+				case HomeViewModelState.PickDate:
+					PickupInputDisabled  = true;
+					DestinationInputDisabled = true;
+					VehicleTypeInputDisabled = true;
+					break;
+				case HomeViewModelState.Initial:
+					PickupInputDisabled = false;
+					DestinationInputDisabled = false;
+					VehicleTypeInputDisabled = false;
+					break;
+			}
 		}
 
 	    public async Task StartAsync()
@@ -93,9 +139,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	    async Task SetDefaultVehicleType()
 		{
 			var data = await _accountService.GetReferenceData ();
-			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.Value);
+			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault??false);
 			var defaultId = defaultVehicleType != null
-                ? defaultVehicleType.Id.Value
+                ? defaultVehicleType.Id??0
                 : 0;
 
 			VehicleTypes = new List<VehicleType>
@@ -343,8 +389,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				    {
 				        _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
 				    }
-
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AddressSearch));
+					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AddressSearch;
 				});
 			}
 		}
@@ -360,10 +405,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
                     }
 
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AddressSearch));
+					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AddressSearch;
                 });
             }
         }
+
+		public bool PickupInputDisabled
+		{
+			get { return _pickupInputDisabled; }
+			set
+			{
+				_pickupInputDisabled = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool DestinationInputDisabled
+		{
+			get { return _destinationInputDisabled; }
+			set
+			{
+				_destinationInputDisabled = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool VehicleTypeInputDisabled
+		{
+			get { return _vehicleTypeInputDisabled; }
+			set
+			{
+				_vehicleTypeInputDisabled = value; 
+				RaisePropertyChanged();
+			}
+		}
 
 		private void OnDestinationModeOpened()
 		{
