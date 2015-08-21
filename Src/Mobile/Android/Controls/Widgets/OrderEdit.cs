@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using Android.Graphics;
 using Android.Runtime;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
@@ -32,6 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private EditText _txtEntryCode;
         private EditTextSpinner _txtChargeType;
         private LinearLayout _bottomPadding;
+
+	    private bool _isShown;
 
 		public OrderEdit(Context context, IAttributeSet attrs) : base(LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderEdit, context), context, attrs)
         {
@@ -63,6 +66,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
 
         private OrderEditViewModel ViewModel { get { return (OrderEditViewModel)DataContext; } }
+
+	    public Point ScreenSize { get; set; }
+
+	    public void ShowIfNeeded()
+	    {
+		    if (_isShown)
+		    {
+			    return;
+		    }
+		    _isShown = true;
+
+			var animation = AnimationHelper.GetForXTranslation(this, 0, this.Services().Localize.IsRightToLeft);
+
+			StartAnimation(animation);
+	    }
+
+	    public void HideIfNeeded(int desiredWidth)
+	    {
+			if (!_isShown)
+		    {
+			    return;
+		    }
+		    _isShown = false;
+
+
+			var animation = AnimationHelper.GetForXTranslation(this, ScreenSize.X, this.Services().Localize.IsRightToLeft);
+			animation.AnimationStart += (sender, e) =>
+			{
+				if (((MarginLayoutParams) LayoutParameters).Width != desiredWidth)
+				{
+					((MarginLayoutParams) LayoutParameters).Width = desiredWidth;
+				}
+
+			};
+
+			StartAnimation(animation);
+	    }
 
         private void InitializeBinding()
         {

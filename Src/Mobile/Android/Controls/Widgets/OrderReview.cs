@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using System.Collections.Generic;
+using Android.Graphics;
 using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -29,6 +30,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private EditTextEntry _editPromoCode;
         private Button _btnPromo;
         private LinearLayout _bottomPadding;
+
+	    private bool isShown;
                 
         public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
         {
@@ -61,6 +64,54 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
 
         private OrderReviewViewModel ViewModel { get { return (OrderReviewViewModel)DataContext; } }
+
+	    public Point ScreenSize { get; set; }
+
+	    public void ShowIfNeeded(int y)
+	    {
+			if (isShown)
+			{
+				return;
+			}
+
+		    isShown = true;
+
+		    var animation = AnimationHelper.GetForYTranslation(this, y);
+            animation.AnimationStart += (sender, e) =>
+            {
+                // set it to fill_parent to allow the subview to take the remaining space in the screen 
+                // and to allow the view to resize when keyboard is up
+                if (((MarginLayoutParams)LayoutParameters).Height != ViewGroup.LayoutParams.MatchParent)
+                {
+                    ((MarginLayoutParams)LayoutParameters).Height = ViewGroup.LayoutParams.MatchParent;
+                }
+            };
+
+			StartAnimation(animation);
+	    }
+
+	    public void HideIfNeeded(int desiredHeight)
+	    {
+		    if (!isShown)
+		    {
+			    return;
+		    }
+
+		    isShown = false;
+
+
+			var animation = AnimationHelper.GetForYTranslation(this, ScreenSize.Y);
+			animation.AnimationEnd += (sender, e) =>
+			{
+				// reset to a fix height in order to have a smooth translation animation next time we show the review screen
+				if (((MarginLayoutParams)LayoutParameters).Height != desiredHeight)
+				{
+					((MarginLayoutParams)LayoutParameters).Height = desiredHeight;
+				}
+			};
+
+			StartAnimation(animation);
+	    }
 
         private void InitializeBinding()
         {

@@ -248,6 +248,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnCreate(mapViewSavedInstanceState);
 			MapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
 
+	        _orderReview.ScreenSize = screenSize;
+	        _orderEdit.ScreenSize = screenSize;
+
+			//TODO: remove this when finished with animations
+			_orderStatus.Visibility = ViewStates.Gone;
+
             SetupHomeViewBinding();
 
 	        PanelMenuInit();
@@ -477,10 +483,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 		private void ChangeState(HomeViewModelState state)
         {
-			var screenSize = new Point();
-
-			WindowManager.DefaultDisplay.GetSize(screenSize);
-
 			if (state == HomeViewModelState.PickDate)
             {
                 ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
@@ -499,51 +501,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 			else if (state == HomeViewModelState.Review)
             {	
-                var animation = AnimationHelper.GetForYTranslation(_orderReview, _orderOptions.Height);
-                animation.AnimationStart += (sender, e) =>
-                {
-                    // set it to fill_parent to allow the subview to take the remaining space in the screen 
-                    // and to allow the view to resize when keyboard is up
-                    if (((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).Height != ViewGroup.LayoutParams.MatchParent)
-                    {
-                        ((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).Height = ViewGroup.LayoutParams.MatchParent;
-                    }
-                };
-
-				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, screenSize.X, this.Services().Localize.IsRightToLeft);
-                animation2.AnimationStart += (sender, e) =>
-                {
-                    if (((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).Width != _frameLayout.Width)
-                    {
-                        ((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).Width = _frameLayout.Width;
-                    }
-                };
-
-                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, 0);
-
-                _orderReview.StartAnimation(animation);
-                _orderEdit.StartAnimation(animation2);
-                _orderOptions.StartAnimation(animation3);
+				_orderReview.ShowIfNeeded(_orderOptions.Height);
+				_orderOptions.ShowIfNeeded();
+				_orderEdit.HideIfNeeded(_frameLayout.Width);
             }
 			else if (state == HomeViewModelState.Edit)
             {
-                var animation = AnimationHelper.GetForYTranslation(_orderReview, screenSize.Y);
-                animation.AnimationEnd += (sender, e) =>
-                {
-                    // reset to a fix height in order to have a smooth translation animation next time we show the review screen
-                    var desiredHeight = _frameLayout.Height - _orderOptions.Height;
-                    if (((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
-                    {
-                        ((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
-                    }
-                };
-
-				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, 0, this.Services().Localize.IsRightToLeft);
-                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, -_orderOptions.Height);
-
-                _orderReview.StartAnimation(animation);
-                _orderEdit.StartAnimation(animation2);
-                _orderOptions.StartAnimation(animation3);
+				_orderReview.HideIfNeeded(_frameLayout.Height - _orderOptions.Height);
+				_orderOptions.HideIfNeeded();
+				_orderEdit.ShowIfNeeded();
             }
 			else if (state == HomeViewModelState.AddressSearch)
             {
@@ -557,25 +523,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 _searchAddress.Open(AddressLocationType.Train);
             }
+			else if (state == HomeViewModelState.BookingStatus)
+			{
+				_orderReview.HideIfNeeded(_frameLayout.Height - _orderOptions.Height);
+				_orderOptions.HideIfNeeded();
+				_orderEdit.HideIfNeeded(_frameLayout.Width);
+			}
 			else if (state == HomeViewModelState.Initial)
             {
-                var animation = AnimationHelper.GetForYTranslation(_orderReview, screenSize.Y);
-                animation.AnimationEnd += (sender, e) =>
-                {
-                    // reset to a fix height in order to have a smooth translation animation next time we show the review screen
-                    var desiredHeight = _frameLayout.Height - _orderOptions.Height;
-                    if (((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
-                    {
-                        ((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
-                    }
-                };
-
-				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, screenSize.X, this.Services().Localize.IsRightToLeft);
-                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, 0);
-
-                _orderReview.StartAnimation(animation);
-                _orderEdit.StartAnimation(animation2);
-                _orderOptions.StartAnimation(animation3);
+				_orderReview.HideIfNeeded(_frameLayout.Height - _orderOptions.Height);
+				_orderOptions.ShowIfNeeded();
+                _orderEdit.HideIfNeeded(_frameLayout.Width);
 				
                 _searchAddress.Close();
 

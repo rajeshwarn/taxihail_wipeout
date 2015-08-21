@@ -1,3 +1,4 @@
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Android.Content;
@@ -16,6 +17,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private AddressTextBox _viewPickup;
         private AddressTextBox _viewDestination;
         private VehicleTypeAndEstimateControl _viewVehicleType;
+
+	    private bool _isShown = true;
 
         public Button BigInvisibleButton { get; set; }
 
@@ -41,6 +44,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
 
         private OrderOptionsViewModel ViewModel { get { return (OrderOptionsViewModel)DataContext; } }
+
+
+	    public void HideIfNeeded()
+	    {
+		    if (!_isShown)
+		    {
+			    return;
+		    }
+
+		    _isShown = false;
+
+			StartAnimation(AnimationHelper.GetForYTranslation(this, -Height));
+	    }
+	    public void ShowIfNeeded()
+	    {
+			if (_isShown)
+			{
+				return;
+			}
+
+			_isShown = true;
+
+			StartAnimation(AnimationHelper.GetForYTranslation(this, 0));
+	    }
 
         void InitializeBinding()
 		{
