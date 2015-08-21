@@ -113,31 +113,7 @@
                     <TextView
                         android:id="@+id/modelValue"
                         style="@style/BlackTextLabel"
-                        local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleModel"
-                        android:gravity="center_vertical|start"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="5dip" />
-                    <TextView
-                        android:id="@+id/makeValue"
-                        style="@style/BlackTextLabel"
-                        local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleMake"
-                        android:gravity="center_vertical|start"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="5dip" />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/colorLayout"
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/makeLayout"
-                    local:MvxBind="Visibility VehicleColorHidden, Converter=InvertedVisibility">
-                    <TextView
-                        android:id="@+id/ColorValue"
-                        style="@style/BlackTextLabel"
-                        local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleColor"
+                        local:MvxBind="Text OrderStatusDetail.DriverInfos.FullVehicleInfo "
                         android:gravity="center_vertical|start"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
