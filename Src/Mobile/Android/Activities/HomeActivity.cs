@@ -277,16 +277,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			    .To(vm => vm.BookingStatus.MapCenter);
 
 			//Setup Visibility
-		    set.Bind(_orderReview)
-			    .For(v => v.Visibility)
-			    .To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[]{ HomeViewModelState.Review });
-
-			set.Bind(_orderEdit)
-				.For(v => v.Visibility)
-				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[]{ HomeViewModelState.Edit });
-
 			set.Bind(_searchAddress)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
@@ -302,24 +292,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
 
-			set.Bind(_orderStatus)
+			var settingsAndLocationVisibleStates = new[]
+		    {
+			    HomeViewModelState.Initial,
+			    HomeViewModelState.PickDate,
+			    HomeViewModelState.BookATaxi,
+			    HomeViewModelState.Edit,
+			    HomeViewModelState.AddressSearch,
+			    HomeViewModelState.AirportSearch,
+			    HomeViewModelState.TrainStationSearch,
+			    HomeViewModelState.Review
+		    };
+
+			set.Bind(_btnLocation)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
-			
-			set.Bind(_orderOptions)
+				.WithConversion("HomeViewStateToVisibility", settingsAndLocationVisibleStates);
+
+			set.Bind(_btnSettings)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[]
-				{
-					HomeViewModelState.Initial, 
-					HomeViewModelState.PickDate,
-					HomeViewModelState.BookATaxi,
-					HomeViewModelState.Edit, 
-					HomeViewModelState.AddressSearch, 
-					HomeViewModelState.AirportSearch, 
-					HomeViewModelState.TrainStationSearch
-				});
+				.WithConversion("HomeViewStateToVisibility", settingsAndLocationVisibleStates);
 
 			//Setup Map enabled state.
 		    set.Bind(_touchMap)
@@ -342,27 +335,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("EnumToBool", HomeViewModelState.Initial);
 
-		    var settingsAndLocationVisibleStates = new[]
-		    {
-			    HomeViewModelState.Initial,
-			    HomeViewModelState.PickDate,
-			    HomeViewModelState.BookATaxi,
-			    HomeViewModelState.Edit,
-			    HomeViewModelState.AddressSearch,
-			    HomeViewModelState.AirportSearch,
-			    HomeViewModelState.TrainStationSearch,
-			    HomeViewModelState.Review
-		    };
-
-			set.Bind(_btnLocation)
-				.For(v => v.Visibility)
-				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", settingsAndLocationVisibleStates);
-
-			set.Bind(_btnSettings)
-				.For(v => v.Visibility)
-				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", settingsAndLocationVisibleStates);
+		    
 			
 		    set.Apply();
 	    }
