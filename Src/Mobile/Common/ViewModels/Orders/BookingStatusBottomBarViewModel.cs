@@ -51,7 +51,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				&& (ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
 				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
 			{
-				IsUnpairButtonVisible = await _bookingService.IsPaired(ParentViewModel.Order.Id);
+				var isPaired = await _bookingService.IsPaired(ParentViewModel.Order.Id);
+
+				CanEditAutoTip = isPaired;
+				IsUnpairButtonVisible = isPaired && isUnPairPossible;
 			}
 			else
 			{
@@ -160,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		bool _isUnpairButtonVisible;
+		private bool _isUnpairButtonVisible;
 		public bool IsUnpairButtonVisible
 		{
 			get { return _isUnpairButtonVisible; }
@@ -168,6 +171,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_isUnpairButtonVisible = value;
 				RaisePropertyChanged();
+			}
+		}
+
+		private bool _canEditAutoTip;
+		public bool CanEditAutoTip
+		{
+			get { return _canEditAutoTip; }
+			set
+			{
+				if (_canEditAutoTip != value)
+				{
+					_canEditAutoTip = value;
+					RaisePropertyChanged();
+				}
 			}
 		}
 	}
