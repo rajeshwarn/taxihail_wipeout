@@ -242,6 +242,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IBSAccountId = null;
+                context.Save(account);
             }
         }
 

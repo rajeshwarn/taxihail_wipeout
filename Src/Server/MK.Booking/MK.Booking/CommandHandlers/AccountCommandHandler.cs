@@ -193,19 +193,19 @@ namespace apcurium.MK.Booking.CommandHandlers
             var settings = new BookingSettings();
             Mapper.Map(command, settings);
 
-            if (command.ChargeTypeId == _serverSettings.ServerData.DefaultBookingSettings.ChargeTypeId)
+            if (settings.ChargeTypeId == _serverSettings.ServerData.DefaultBookingSettings.ChargeTypeId)
             {
-                command.ChargeTypeId = null;
+                settings.ChargeTypeId = null;
             }
 
-            if (command.VehicleTypeId == _serverSettings.ServerData.DefaultBookingSettings.VehicleTypeId)
+            if (settings.VehicleTypeId == _serverSettings.ServerData.DefaultBookingSettings.VehicleTypeId)
             {
-                command.VehicleTypeId = null;
+                settings.VehicleTypeId = null;
             }
 
-            if (command.ProviderId == _serverSettings.ServerData.DefaultBookingSettings.ProviderId)
+            if (settings.ProviderId == _serverSettings.ServerData.DefaultBookingSettings.ProviderId)
             {
-                command.ProviderId = null;
+                settings.ProviderId = null;
             }
 
             account.UpdateBookingSettings(settings, command.DefaultTipPercent);

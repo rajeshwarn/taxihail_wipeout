@@ -19,7 +19,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         public void Setup()
         {
             _sut = new EventSourcingTestHelper<Account>();
-            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService(), null, new TestServerSettings()));
+            _testServerSettings = new TestServerSettings();
+            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService(), null, _testServerSettings));
             _sut.Given(new AccountRegistered
             {
                 SourceId = _accountId,
@@ -31,6 +32,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
         private EventSourcingTestHelper<Account> _sut;
         private readonly Guid _accountId = Guid.NewGuid();
+        private TestServerSettings _testServerSettings;
 
         [Test]
         public void when_updating_successfully()
@@ -65,6 +67,34 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual("1234", @event.AccountNumber);
             Assert.AreEqual("0", @event.CustomerNumber);
             Assert.AreEqual(defaultTipPercent, @event.DefaultTipPercent);
+        }
+
+        [Test]
+        public void when_updating_with_defaults_values_then_event_should_have_null_values()
+        {
+            int? defaultTipPercent = 15;
+
+            _sut.When(new UpdateBookingSettings
+            {
+                AccountId = _accountId,
+                Name = "Robert2 Smither2",
+                ChargeTypeId = _testServerSettings.ServerData.DefaultBookingSettings.ChargeTypeId,
+                NumberOfTaxi = 3,
+                Phone = "123",
+                Passengers = 3,
+                ProviderId = _testServerSettings.ServerData.DefaultBookingSettings.ProviderId,
+                VehicleTypeId = _testServerSettings.ServerData.DefaultBookingSettings.VehicleTypeId,
+                DefaultTipPercent = defaultTipPercent,
+                AccountNumber = "1234",
+                CustomerNumber = "0"
+            });
+
+            var @event = _sut.ThenHasOne<BookingSettingsUpdated>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(null, @event.ChargeTypeId);
+            Assert.AreEqual(null, @event.ProviderId);
+            Assert.AreEqual(null, @event.VehicleTypeId);
         }
     }
 }

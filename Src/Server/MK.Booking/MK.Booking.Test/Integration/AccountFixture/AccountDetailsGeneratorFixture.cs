@@ -405,7 +405,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         }
 
         [Test]
-        public void when_account_linked_to_another_ibs_then_dto_not_populated()
+        public void when_account_linked_to_another_ibs_then_dto_not_updated()
         {
             Sut.Handle(new AccountLinkedToIbs
             {

@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             Sut = new AccountIbsDetailGenerator(() => new BookingDbContext(DbName));
         }
     }
-
+    [TestFixture]
     public class given_exsiting_account : given_accountibsdetails_generator
     {
         private readonly Guid _accountId = Guid.NewGuid();
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         }
 
         [Test]
-        public void when_account_unlinked_from_ibs_then_dto_updated()
+        public void when_account_unlinked_from_ibs_then_dto_removed()
         {
             Sut.Handle(new AccountLinkedToIbs
             {
@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
             using (var context = new BookingDbContext(DbName))
             {
-                var accountIbsDetail = context.Query<AccountIbsDetail>().FirstOrDefault(x => x.AccountId == _accountId);
+                var accountIbsDetail = context.Query<AccountIbsDetail>().FirstOrDefault(x => x.AccountId == _accountId && x.CompanyKey == "test");
                 Assert.Null(accountIbsDetail);
             }
         }
