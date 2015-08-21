@@ -147,12 +147,13 @@ namespace apcurium.MK.Booking.Api.Services
                         TripId = tripInfo.TripId,
                         DriverId = tripInfo.DriverId.ToString(),
                         Distance = tripInfo.Distance,
-                        AccessFee = tripInfo.AccessFee,
+                        AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
                         DropOffDateTime = tripInfo.EndTime,
                         LastFour = tripInfo.LastFour,
                         FareAtAlternateRate = Math.Round(((double) tripInfo.FareAtAlternateRate / 100), 2),
                         RateAtTripEnd = tripInfo.RateAtTripEnd,
-                        RateAtTripStart = tripInfo.RateAtTripStart
+                        RateAtTripStart = tripInfo.RateAtTripStart,
+						Tolls = tripInfo.TollHistory
                     };
                 }
                 else
