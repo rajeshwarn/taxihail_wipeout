@@ -82,7 +82,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             Sut.Handle(new AccountRegistered
             {
                 SourceId = accountId,
-                Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode
+                Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode,
+                NbPassengers = 1
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -107,7 +108,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Email = "bob.smith@acpurium.com",
                 Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode,
                 Phone = "555.555.2525",
-                Password = new byte[] {1}
+                Password = new byte[] {1},
+                NbPassengers = 1
             };
             Sut.Handle(accountRegistered);
 
@@ -141,7 +143,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Name = "Bob",
                 Email = "bob.smith@acpurium.com",
                 FacebookId = "123456789",
-                Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode
+                Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode,
+                NbPassengers = 1
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -166,7 +169,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Name = "Bob",
                 Email = "bob.smith@acpurium.com",
                 TwitterId = "123456789",
-                Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode
+                Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode,
+                NbPassengers = 1
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -194,7 +198,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Name = "Bob",
                 Email = "bob.smith@acpurium.com",
                 Password = new byte[] {1},
-                Country = CountryCode.GetCountryCodeByIndex(0).CountryISOCode
+                Country = CountryCode.GetCountryCodeByIndex(0).CountryISOCode,
+                NbPassengers = 1
             });
         }
 
@@ -211,7 +216,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Name = "Bob",
                     Email = "bob.smith@acpurium.com",
                     Password = new byte[] {1},
-                    Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode
+                    Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode("CA")).CountryISOCode,
+                    NbPassengers = 1
                 });
             }
 

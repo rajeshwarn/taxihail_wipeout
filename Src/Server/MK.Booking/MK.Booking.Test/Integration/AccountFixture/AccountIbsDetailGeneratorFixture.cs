@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         }
     }
     [TestFixture]
-    public class given_exsiting_account : given_accountibsdetails_generator
+    public class given_existing_ibs_account : given_accountibsdetails_generator
     {
         private readonly Guid _accountId = Guid.NewGuid();
 
@@ -43,8 +43,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
             using (var context = new BookingDbContext(DbName))
             {
-                var dto = context.Find<AccountIbsDetail>(_accountId);
-                Assert.Null(dto);
+                var dto = context.Query<AccountIbsDetail>().Where(x => x.AccountId == _accountId).ToList();
+                Assert.IsEmpty(dto);
             }
         }
 

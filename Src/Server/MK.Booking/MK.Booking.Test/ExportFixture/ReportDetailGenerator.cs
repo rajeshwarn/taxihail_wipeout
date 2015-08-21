@@ -55,7 +55,8 @@ namespace apcurium.MK.Booking.Test.ExportFixture
             accountDetailGenerator.Handle(new AccountRegistered
             {
                 SourceId = _accountId,
-                Country = CountryCode.GetCountryCodeByIndex(0).CountryISOCode
+                Country = CountryCode.GetCountryCodeByIndex(0).CountryISOCode,
+                NbPassengers = 1
             });
 
             accountDetailGenerator.Handle(new AccountConfirmed() { SourceId = _accountId });
