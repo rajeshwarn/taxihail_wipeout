@@ -119,7 +119,8 @@
     <Compile Include="CompanyFixture\given_a_company.cs" />
     <Compile Include="ExportFixture\ReportDetailGenerator.cs" />
     <Compile Include="Infrastructure\AsynchronousMemoryCommandBusFixture.cs" />
-    <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
+    <Compile Include="Integration\AccountFixture\AccountDetailsGeneratorFixture.cs" />
+    <Compile Include="Integration\AccountFixture\AccountIbsDetailGeneratorFixture.cs" />
     <Compile Include="Integration\AccountFixture\DeviceDetailsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\NotificationSettingsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\UserTaxiHailNetworkSettingsGenerator.cs" />

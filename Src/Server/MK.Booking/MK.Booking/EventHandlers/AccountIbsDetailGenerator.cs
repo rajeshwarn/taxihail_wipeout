@@ -22,23 +22,24 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountLinkedToIbs @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if (@event.CompanyKey.HasValue())
             {
-                if (@event.CompanyKey.HasValue())
+                using (var context = _contextFactory.Invoke())
                 {
                     var ibsAccountLink =
                         context.Query<AccountIbsDetail>()
-                                .FirstOrDefault(x => x.AccountId == @event.SourceId 
-                                                     && x.CompanyKey == @event.CompanyKey)
-                            ?? new AccountIbsDetail
-                            {
-                                AccountId = @event.SourceId,
-                                CompanyKey = @event.CompanyKey
-                            };
+                            .FirstOrDefault(x => x.AccountId == @event.SourceId
+                                                 && x.CompanyKey == @event.CompanyKey)
+                        ?? new AccountIbsDetail
+                        {
+                            AccountId = @event.SourceId,
+                            CompanyKey = @event.CompanyKey
+                        };
 
                     ibsAccountLink.IBSAccountId = @event.IbsAccountId;
 
                     context.Save(ibsAccountLink);
+
                 }
             }
         }
