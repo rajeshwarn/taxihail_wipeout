@@ -486,7 +486,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        public void SetEnabled(bool enabled)
+        private void SetEnabled(bool enabled)
         {
             this.ScrollEnabled = enabled;
             this.UserInteractionEnabled = enabled;                       

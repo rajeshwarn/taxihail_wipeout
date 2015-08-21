@@ -11,15 +11,16 @@ using System.ComponentModel;
 using System.Reactive.Linq;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using System.Reactive.Disposables;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class HomeView : BaseViewController<HomeViewModel>, IChangePresentation
     {
         private BookLaterDatePicker _datePicker;
-        private readonly SerialDisposable _viewStatesubscription = new SerialDisposable();
-        private readonly SerialDisposable _bookingStatussubscription = new SerialDisposable();
-        private readonly SerialDisposable _orderStatusDetailSubscription = new SerialDisposable();
+        private SerialDisposable _viewStatesubscription = new SerialDisposable();
+        private SerialDisposable _bookingStatussubscription = new SerialDisposable();
+        private SerialDisposable _orderStatusDetailSubscription = new SerialDisposable();
 
         private const int BookingStatusHiddenConstraintValue = -200;
         private const int ContactDriverHiddenConstraintValue = -283;
@@ -58,7 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (ViewModel != null)
             {
                 ViewModel.UnsubscribeLifetimeChangedIfNecessary();
-
                 _viewStatesubscription.Dispose();
                 _bookingStatussubscription.Dispose();
                 _orderStatusDetailSubscription.Dispose();
