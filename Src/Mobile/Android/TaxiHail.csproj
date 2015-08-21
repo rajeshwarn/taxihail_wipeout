@@ -845,6 +845,7 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\train.png" />
     <AndroidResource Include="Resources\Drawable\button_action_blue_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_blue_text_selector.xml" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\phone.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
