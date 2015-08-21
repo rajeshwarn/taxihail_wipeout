@@ -1,150 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:local="http://schemas.android.com/apk/res-auto"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
-	<LinearLayout android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:background="@drawable/drop_shadow">
-		<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="6dp"
-				android:layout_marginLeft="6dp"
-				android:layout_marginRight="6dp"
-				android:layout_marginBottom="0dp"
-				android:orientation="vertical"
-				android:gravity="center_horizontal|center_vertical">
-			<TextView
-					style="@style/BlackTextLabel"
-					local:MvxBind="Text ConfirmationNoTxt"
-					android:gravity="center_horizontal|top"
-					android:textStyle="bold"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content" />
-			<TextView
-					android:id="@+id/statusWithEtaLabel"
-					style="@style/BlackTextLabelOneOrTwoLines"
-					android:gravity="center_horizontal|top"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="35dip"
-					android:layout_marginRight="35dip"
-					local:MvxBind="Text StatusInfoText" />
-		</LinearLayout>
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-			<RelativeLayout
-					android:layout_width="0dip"
-					android:layout_height="match_parent"
-					android:layout_marginLeft="15dip"
-					android:layout_weight="0.25"
-					android:gravity="center"
-					local:MvxBind="Visibility DriverPhotoHidden, Converter=InvertedVisibility">
-				<Mvx.MvxImageView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:scaleType="fitCenter"
-						android:id="@+id/driverPhotoView"
-						local:MvxBind="ImageUrl OrderStatusDetail.DriverInfos.DriverPhotoUrl" />
-			</RelativeLayout>
-			<RelativeLayout
-					android:layout_width="60dip"
-					android:layout_height="wrap_content"
-					local:MvxBind="Visibility DriverPhotoHidden, Converter=Visibility" />
-			<RelativeLayout
-					android:layout_width="0dip"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="6dip"
-					android:layout_marginTop="6dip"
-					android:layout_weight="0.75">
-				<LinearLayout
-						android:id="@+id/companyLayout"
-						android:orientation="horizontal"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						local:MvxBind="Visibility CompanyHidden, Converter=InvertedVisibility">
-					<TextView
-							android:id="@+id/companyValue"
-							style="@style/BlackTextLabel"
-							local:MvxBind="Text OrderStatusDetail.CompanyName"
-							android:gravity="center_vertical|start"
-							android:layout_width="fill_parent"
-							android:layout_height="wrap_content"
-							android:paddingStart="5dip"
-							android:lines="1"
-							android:ellipsize="end"
-							android:singleLine="true" />
-				</LinearLayout>
-				<LinearLayout
-						android:id="@+id/driverLayout"
-						android:orientation="horizontal"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:layout_below="@id/companyLayout"
-						local:MvxBind="Visibility VehicleDriverHidden, Converter=InvertedVisibility">
-					<TextView
-							android:id="@+id/driverValue"
-							style="@style/BlackTextLabel"
-							local:MvxBind="Text OrderStatusDetail.DriverInfos.FullName"
-							android:gravity="center_vertical|start"
-							android:textStyle="bold"
-							android:layout_width="fill_parent"
-							android:layout_height="wrap_content"
-							android:paddingStart="5dip"
-							android:lines="1"
-							android:ellipsize="end"
-							android:singleLine="true" />
-				</LinearLayout>
-				<LinearLayout
-						android:id="@+id/makeLayout"
-						android:orientation="horizontal"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:layout_below="@id/driverLayout"
-						local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility">
-					<TextView
-							android:id="@+id/modelValue"
-							style="@style/BlackTextLabel"
-							local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleModel"
-							android:gravity="center_vertical|start"
-							android:layout_width="fill_parent"
-							android:layout_height="wrap_content"
-							android:paddingStart="5dip" />
-					<TextView
-							android:id="@+id/makeValue"
-							style="@style/BlackTextLabel"
-							local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleMake"
-							android:gravity="center_vertical|start"
-							android:layout_width="fill_parent"
-							android:layout_height="wrap_content"
-							android:paddingStart="5dip" />
-				</LinearLayout>
-				<LinearLayout
-						android:id="@+id/colorLayout"
-						android:orientation="horizontal"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:layout_below="@id/makeLayout"
-						local:MvxBind="Visibility VehicleColorHidden, Converter=InvertedVisibility">
-					<TextView
-							android:id="@+id/ColorValue"
-							style="@style/BlackTextLabel"
-							local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleColor"
-							android:gravity="center_vertical|start"
-							android:layout_width="fill_parent"
-							android:layout_height="wrap_content"
-							android:paddingStart="5dip" />
-				</LinearLayout>
-			</RelativeLayout>
-		</LinearLayout>
-	</LinearLayout>
-	<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusContactTaxiOverlay 
-		android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-		android:id="@+id/ContactTaxiOverlay"
-		android:background="@drawable/drop_shadow" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/statusLayout"
+        android:elevation="1dp"
+        android:background="@drawable/drop_shadow">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="0dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal|center_vertical">
+            <TextView
+                style="@style/BlackTextLabel"
+                local:MvxBind="Text ConfirmationNoTxt"
+                android:gravity="center_horizontal|top"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/statusWithEtaLabel"
+                style="@style/BlackTextLabelOneOrTwoLines"
+                android:gravity="center_horizontal|top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dip"
+                android:layout_marginRight="35dip"
+                local:MvxBind="Text StatusInfoText" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+						android:layout_marginBottom="5dip">
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dip"
+                android:layout_weight="0.25"
+                android:gravity="center"
+                local:MvxBind="Visibility DriverPhotoHidden, Converter=InvertedVisibility">
+                <Mvx.MvxImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:id="@+id/driverPhotoView"
+                    local:MvxBind="ImageUrl OrderStatusDetail.DriverInfos.DriverPhotoUrl" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="60dip"
+                android:layout_height="wrap_content"
+                local:MvxBind="Visibility DriverPhotoHidden, Converter=Visibility" />
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dip"
+                android:layout_marginTop="6dip"
+                android:layout_weight="0.75">
+                <LinearLayout
+                    android:id="@+id/companyLayout"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    local:MvxBind="Visibility CompanyHidden, Converter=InvertedVisibility">
+                    <TextView
+                        android:id="@+id/companyValue"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Text OrderStatusDetail.CompanyName"
+                        android:gravity="center_vertical|start"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dip"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        android:singleLine="true" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/driverLayout"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/companyLayout"
+                    local:MvxBind="Visibility VehicleDriverHidden, Converter=InvertedVisibility">
+                    <TextView
+                        android:id="@+id/driverValue"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Text OrderStatusDetail.DriverInfos.FullName"
+                        android:gravity="center_vertical|start"
+                        android:textStyle="bold"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dip"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        android:singleLine="true" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/makeLayout"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/driverLayout"
+                    local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility">
+                    <TextView
+                        android:id="@+id/modelValue"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleModel"
+                        android:gravity="center_vertical|start"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dip" />
+                    <TextView
+                        android:id="@+id/makeValue"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleMake"
+                        android:gravity="center_vertical|start"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dip" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/colorLayout"
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/makeLayout"
+                    local:MvxBind="Visibility VehicleColorHidden, Converter=InvertedVisibility">
+                    <TextView
+                        android:id="@+id/ColorValue"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleColor"
+                        android:gravity="center_vertical|start"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dip" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+	<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusContactTaxiOverlay
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ContactTaxiOverlay"
+        android:background="@drawable/drop_shadow" />
+	
 </LinearLayout>

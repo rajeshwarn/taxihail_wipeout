@@ -19,8 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private VehicleTypeAndEstimateControl _viewVehicleType;
 
 	    private bool _isShown = true;
+	    private ViewStates _animatedVisibility;
 
-        public Button BigInvisibleButton { get; set; }
+	    public Button BigInvisibleButton { get; set; }
 
         public OrderOptions(Context context, IAttributeSet attrs) : base (Resource.Layout.SubView_OrderOptions, context, attrs)
         {
@@ -45,6 +46,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private OrderOptionsViewModel ViewModel { get { return (OrderOptionsViewModel)DataContext; } }
 
+	    public ViewStates AnimatedVisibility
+	    {
+		    get { return _animatedVisibility; }
+		    set
+		    {
+			    _animatedVisibility = value;
+			    if (value == ViewStates.Visible)
+			    {
+					ShowIfNeeded();
+				    return;
+			    }
+				HideIfNeeded();
+		    }
+	    }
 
 	    public void HideIfNeeded()
 	    {

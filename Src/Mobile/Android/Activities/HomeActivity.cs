@@ -242,6 +242,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = screenSize.X;
 			}
 
+	        ((ViewGroup.MarginLayoutParams) _orderStatus.LayoutParameters).TopMargin = -screenSize.Y;
+
             // Creating a view controller for MapFragment
             var mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
             _touchMap = (TouchableMap)FragmentManager.FindFragmentById(Resource.Id.mapPickup);
@@ -250,9 +252,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 	        _orderReview.ScreenSize = screenSize;
 	        _orderEdit.ScreenSize = screenSize;
-
-			//TODO: remove this when finished with animations
-			_orderStatus.Visibility = ViewStates.Gone;
 
             SetupHomeViewBinding();
 
@@ -283,6 +282,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			    .To(vm => vm.BookingStatus.MapCenter);
 
 			//Setup Visibility
+			set.Bind(_orderOptions)
+				.For(v => v.AnimatedVisibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[]
+				{
+					HomeViewModelState.Initial,
+					HomeViewModelState.AddressSearch,
+					HomeViewModelState.AirportSearch,
+					HomeViewModelState.BookATaxi, 
+					HomeViewModelState.Review, 
+					HomeViewModelState.PickDate, 
+					HomeViewModelState.TrainStationSearch, 
+				});
+
+			set.Bind(_orderStatus)
+				.For(v => v.AnimatedVisibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+
 			set.Bind(_searchAddress)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
@@ -502,13 +520,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			else if (state == HomeViewModelState.Review)
             {	
 				_orderReview.ShowIfNeeded(_orderOptions.Height);
-				_orderOptions.ShowIfNeeded();
 				_orderEdit.HideIfNeeded(_frameLayout.Width);
             }
 			else if (state == HomeViewModelState.Edit)
             {
 				_orderReview.HideIfNeeded(_frameLayout.Height - _orderOptions.Height);
-				_orderOptions.HideIfNeeded();
 				_orderEdit.ShowIfNeeded();
             }
 			else if (state == HomeViewModelState.AddressSearch)
@@ -526,13 +542,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			else if (state == HomeViewModelState.BookingStatus)
 			{
 				_orderReview.HideIfNeeded(_frameLayout.Height - _orderOptions.Height);
-				_orderOptions.HideIfNeeded();
 				_orderEdit.HideIfNeeded(_frameLayout.Width);
 			}
 			else if (state == HomeViewModelState.Initial)
             {
 				_orderReview.HideIfNeeded(_frameLayout.Height - _orderOptions.Height);
-				_orderOptions.ShowIfNeeded();
                 _orderEdit.HideIfNeeded(_frameLayout.Width);
 				
                 _searchAddress.Close();
