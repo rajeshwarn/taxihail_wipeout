@@ -48,28 +48,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 
 		public void Init()
 		{
-            try
-            {
-                _facebookApplicationID = Mvx.Resolve<apcurium.MK.Common.Configuration.IAppSettings>().Data.FacebookAppId;
+            _facebookApplicationID = Mvx.Resolve<apcurium.MK.Common.Configuration.IAppSettings>().Data.FacebookAppId;
 
-                Facebook.CoreKit.Settings.AppID = _facebookApplicationID;
-                Facebook.CoreKit.Settings.AppUrlSchemeSuffix = Mvx.Resolve<IAppSettings>().Data.TaxiHail.ApplicationName.ToLower().Replace (" ", string.Empty);
-                Profile.EnableUpdatesOnAccessTokenChange(true);
-
-                if (AccessToken.CurrentAccessToken == null
-                    || (AccessToken.CurrentAccessToken != null
-						&& NSDate.Now.SecondsSinceReferenceDate >= AccessToken.CurrentAccessToken.ExpirationDate.AddSeconds(-MinimumTimeTokenStayActive).SecondsSinceReferenceDate))
-                {
-                    LoginManager loginManager = new LoginManager();
-                    loginManager.LoginBehavior = LoginBehavior.Native;
-                    loginManager.LogInWithReadPermissions(new string[] { "public_profile", "email" }, (LoginManagerLoginResult result, NSError error) => {});
-                }
-            }
-            catch(Exception ex)
-            {
-                Logger.LogMessage("Facebook Init failed");
-                Logger.LogError(ex);
-            }
+            Facebook.CoreKit.Settings.AppID = _facebookApplicationID;
+            Facebook.CoreKit.Settings.AppUrlSchemeSuffix = Mvx.Resolve<IAppSettings>().Data.TaxiHail.ApplicationName.ToLower().Replace (" ", string.Empty);
+            Profile.EnableUpdatesOnAccessTokenChange(true);
 		}
 
 		public void PublishInstall()
