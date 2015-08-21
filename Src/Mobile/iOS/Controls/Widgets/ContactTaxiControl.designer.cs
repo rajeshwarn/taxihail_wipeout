@@ -16,6 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		UIKit.UIButton btnCallDriver { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnMessageDriver { get; set; }
+
+		[Outlet]
 		UIKit.UIImageView imgPhone { get; set; }
 
 		[Outlet]
@@ -29,9 +32,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblMedallionTitle != null) {
-				lblMedallionTitle.Dispose ();
-				lblMedallionTitle = null;
+			if (btnMessageDriver != null) {
+				btnMessageDriver.Dispose ();
+				btnMessageDriver = null;
 			}
 
 			if (btnCallDriver != null) {
@@ -47,6 +50,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (lblMedallion != null) {
 				lblMedallion.Dispose ();
 				lblMedallion = null;
+			}
+
+			if (lblMedallionTitle != null) {
+				lblMedallionTitle.Dispose ();
+				lblMedallionTitle = null;
 			}
 
 			if (view != null) {

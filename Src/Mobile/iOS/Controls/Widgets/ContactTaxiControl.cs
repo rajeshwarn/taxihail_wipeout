@@ -37,7 +37,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             lblMedallion.TextColor = Theme.LabelTextColor;
 
             btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
+            btnMessageDriver.SetImage(UIImage.FromFile("message.png"), UIControlState.Normal);
+
             FlatButtonStyle.Clear.ApplyTo(btnCallDriver);
+            FlatButtonStyle.Clear.ApplyTo(btnMessageDriver);
         }
 
         private void InitializeBinding()
@@ -50,15 +53,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(btnCallDriver)
                 .For("TouchUpInside")
-                .To(vm => vm.CallTaxi);
+                .To(vm => vm.CallTaxiCommand);
+
+            set.Bind(btnMessageDriver)
+                .For("TouchUpInside")
+                .To(vm => vm.SendMessageToDriverCommand);
 
             set.Bind(btnCallDriver)
                 .For(v => v.Hidden)
                 .To(vm => vm.IsCallTaxiVisible)
                 .WithConversion("BoolInverter");
 
+            set.Bind(btnMessageDriver)
+                .For(v => v.Hidden)
+                .To(vm => vm.IsMessageTaxiVisible)
+                .WithConversion("BoolInverter");
+
             set.Apply();
         }
     } 
 }
-
