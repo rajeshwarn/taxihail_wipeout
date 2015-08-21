@@ -62,7 +62,8 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
             Sut.Handle(new CreditCardRemoved
             {
                 SourceId = _accountId,
-                CreditCardId = _creditCardId
+                CreditCardId = _creditCardId,
+                NewDefaultCreditCardId = null
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -77,7 +78,8 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
         {
             Sut.Handle(new CreditCardDeactivated
             {
-                SourceId = _accountId
+                SourceId = _accountId,
+                IsOutOfAppPaymentDisabled = false
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -92,7 +94,8 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
         {
             Sut.Handle(new OverduePaymentSettled
             {
-                SourceId = _accountId
+                SourceId = _accountId,
+                IsPayInTaxiEnabled = true,
             });
 
             using (var context = new BookingDbContext(DbName))
