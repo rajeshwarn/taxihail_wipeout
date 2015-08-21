@@ -33,14 +33,20 @@ namespace apcurium.MK.Events.Migration.Projections
                 @event.Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryISOCode;
             }
 
-            @event.NbPassengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger;
+            if (@event.NbPassengers == null)
+            {
+                @event.NbPassengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger;
+            }
 
             return @event;
         }
 
         public CreditCardDeactivated Migrate(CreditCardDeactivated @event)
         {
-            @event.IsOutOfAppPaymentDisabled = _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
+            if (@event.IsOutOfAppPaymentDisabled == null)
+            {
+                @event.IsOutOfAppPaymentDisabled = _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
+            }
             return @event;
         }
 
@@ -73,7 +79,10 @@ namespace apcurium.MK.Events.Migration.Projections
 
         public OverduePaymentSettled Migrate(OverduePaymentSettled @event)
         {
-            @event.IsPayInTaxiEnabled = _serverSettings.GetPaymentSettings().IsPayInTaxiEnabled;
+            if (@event.IsPayInTaxiEnabled == null)
+            {
+                @event.IsPayInTaxiEnabled = _serverSettings.GetPaymentSettings().IsPayInTaxiEnabled;
+            }
             return @event;
         }
 
@@ -85,7 +94,8 @@ namespace apcurium.MK.Events.Migration.Projections
                         .FirstOrDefault(x => x.AccountId == @event.SourceId 
                                         && x.CreditCardId != @event.CreditCardId);
 
-                if (otherCreditCardForAccount != null)
+                if (otherCreditCardForAccount != null
+                    && @event.NewDefaultCreditCardId == null)
                 {
                     @event.NewDefaultCreditCardId = otherCreditCardForAccount.CreditCardId;
                 }

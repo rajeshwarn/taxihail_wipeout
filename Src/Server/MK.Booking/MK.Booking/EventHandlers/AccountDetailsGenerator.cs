@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     Name = account.Name,
                     NumberOfTaxi = 1,
-                    Passengers = @event.NbPassengers,
+                    Passengers = @event.NbPassengers.Value,
                     Country = @event.Country,
                     Phone = @event.Phone,
                     PayBack = @event.PayBack
@@ -212,7 +212,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardDeactivated @event)
         {
-            if (!@event.IsOutOfAppPaymentDisabled)
+            if (!@event.IsOutOfAppPaymentDisabled.Value)
             {
                 using (var context = _contextFactory.Invoke())
                 {
@@ -292,7 +292,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OverduePaymentSettled @event)
         {
-            if (@event.IsPayInTaxiEnabled)
+            if (@event.IsPayInTaxiEnabled.Value)
             {
                 using (var context = _contextFactory.Invoke())
                 {

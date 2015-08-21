@@ -36,6 +36,6 @@ namespace apcurium.MK.Booking.Events
 
         public string PayBack { get; set; }
 
-        public int NbPassengers { get; set; }
+        public int? NbPassengers { get; set; }
     }
 }

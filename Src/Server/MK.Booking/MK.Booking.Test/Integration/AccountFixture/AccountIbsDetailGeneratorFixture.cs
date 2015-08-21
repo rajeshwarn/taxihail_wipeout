@@ -83,6 +83,13 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 CompanyKey = "test"
             });
 
+            Sut.Handle(new AccountLinkedToIbs
+            {
+                SourceId = _accountId,
+                IbsAccountId = 556,
+                CompanyKey = "test2"
+            });
+
             Sut.Handle(new AccountUnlinkedFromIbs
             {
                 SourceId = _accountId
@@ -90,8 +97,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
             using (var context = new BookingDbContext(DbName))
             {
-                var accountIbsDetail = context.Query<AccountIbsDetail>().FirstOrDefault(x => x.AccountId == _accountId && x.CompanyKey == "test");
-                Assert.Null(accountIbsDetail);
+                var accountIbsDetail = context.Query<AccountIbsDetail>().Where(x => x.AccountId == _accountId && x.CompanyKey == "test").ToList();
+                Assert.IsEmpty(accountIbsDetail);
             }
         }
     }

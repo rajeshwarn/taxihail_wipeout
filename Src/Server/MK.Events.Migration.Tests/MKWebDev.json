@@ -1,0 +1,52 @@
+{
+   "DefaultBookingSettings.ChargeTypeId" : "1",
+   "DefaultBookingSettings.NbPassenger" : "1",
+   "DefaultBookingSettings.VehicleTypeId" : "1",
+   "Direction.FlateRate" : "3.45",
+   "Direction.RatePerKm" : "1.70",
+   "Direction.TarifMode" : "Ibs",
+   "Direction.NeedAValidTarif" : "true",   
+
+   "DistanceFormat" : "Km",
+   "Email.NoReply" : "noreply@apcurium.com",  
+   "GeoLoc.DefaultLatitude" : "45.516667",
+   "GeoLoc.DefaultLongitude" : "-73.65",
+   "GeoLoc.SearchFilter" : "{0},ottawa,on,canada&region=ca",
+   "IBS.AutoDispatch" : "true",   
+   
+   "DefaultBookingSettings.ProviderId" : "1",
+   "IBS.WebServicesUrl": "http://apcurium.drivelinq.com:16928/IBSCab/IBSCab.dll/soap/",             
+   
+   "IBS.WebServicesUserName" : "taxi",
+   "IBS.WebServicesPassword" : "test",
+   "IBS.DefaultAccountPassword" : "password",
+
+   "IBS.RestApiUrl" : "http://cabmatedemo.drivelinq.com:8889/",
+   "IBS.RestApiUser" : "EUGENE",   
+   "IBS.RestApiSecret" : "T!?_asF", 
+   
+   "IBS.ExcludedVehicleTypeId" : "22;21",
+   "Map.PlacesApiKey" : "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
+   "NearbyPlacesService.DefaultRadius" : "500",
+   "PriceFormat" : "en-US",
+   "Smtp.Credentials.Password" : "2wsxCDE#",
+   "Smtp.Credentials.Username" : "donotreply@apcurium.com",
+   "Smtp.DeliveryMethod" : "Network",
+   "Smtp.EnableSsl" : "true",
+   "Smtp.Host" : "smtp.gmail.com",
+   "Smtp.Port" : "587",
+   "Smtp.UseDefaultCredentials" : "false",
+   "TaxiHail.ApplicationName" : "Taxi Hail",
+   "TaxiHail.ApplicationKey" : "TaxiHail",
+   "TaxiHail.AccentColor" : "#0057a3",
+   "TaxiHail.EmailFontColor" : "#000",
+   "TaxiHail.SiteName" : "Dev",
+   "Receipt.Note": "Thank You!<br>The Taxi Hail Team",
+   "GeoLoc.PlacesTypes":"airport,amusement_park,art_gallery,bank,bar,bus_station,cafe,casino,clothing_store,convenience_store,courthouse,department_store,doctor,embassy,food,gas_station,hospital,lawyer,grocery_or_supermarket,library,liquor_store,lodging,local_government_office,movie_theater,moving_company,musem,night_club,park,parking,pharmacy,police,physiotherapist",
+
+   "FoursquareClientId" : "ZBALTMPLRQURC5BAVHJWXSGBVAPGXYQBMJ24Z1K4RHYP31YW",
+   "FoursquareClientSecret" : "L3AEJBI3JJILNLWTWZNVCDUIIZZ0RV3EO3RX3M44RTFKC0VM",
+   "FoursquarePlacesTypes": "",
+
+   "IsTaxiHailPro": "true"
+}
