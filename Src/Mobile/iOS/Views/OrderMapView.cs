@@ -493,10 +493,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             if (_mapBlurOverlay == null)
             {
-                var _size = this.Bounds.Size;
+                var _size = UIScreen.MainScreen.Bounds.Size;
                 _mapBlurOverlay = new UIImageView(new CGRect(new CGPoint(0, 0), new CGSize(_size.Width, _size.Height)));
                 _mapBlurOverlay.ContentMode = UIViewContentMode.ScaleToFill;
-                _mapBlurOverlay.Frame = this.Frame;
                 this.AddSubview(_mapBlurOverlay);
             }
 
