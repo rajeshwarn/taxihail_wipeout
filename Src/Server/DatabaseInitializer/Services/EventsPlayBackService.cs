@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using Infrastructure.EventSourcing;
@@ -9,7 +10,7 @@ using Infrastructure.Messaging;
 using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using ServiceStack.Text;
-using System.Diagnostics;
+using apcurium.MK.Events.Migration;
 
 #endregion
 
@@ -20,13 +21,15 @@ namespace DatabaseInitializer.Services
         private readonly Func<EventStoreDbContext> _contextFactory;
         private readonly IEventBus _eventBus;
         private readonly ITextSerializer _serializer;
+        private readonly EventMigrator _migrator;
 
         public EventsPlayBackService(Func<EventStoreDbContext> contextFactory, IEventBus eventBus,
-            ITextSerializer serializer)
+            ITextSerializer serializer, EventMigrator migrator)
         {
             _contextFactory = contextFactory;
             _eventBus = eventBus;
             _serializer = serializer;
+            _migrator = migrator;
         }
 
         public int CountEvent(string aggregateType)
@@ -49,8 +52,9 @@ namespace DatabaseInitializer.Services
             Console.WriteLine("Replaying event since {0}", after);
             
             int eCount = 0;
+            int migratedEventCount = 0;
 
-            while(hasMore)
+            while (hasMore)
             {
                 List<Event> events;
                 
@@ -89,6 +93,22 @@ namespace DatabaseInitializer.Services
                         {
                             var ev = Deserialize(@event);
 
+                            //migration
+                            var migratedEvent = _migrator.MigrateEvent(ev);
+                            if (migratedEvent != null)
+                            {
+                                migratedEventCount++;
+                                ev = (IVersionedEvent) migratedEvent;
+                                @event.Payload = _serializer.Serialize(migratedEvent);
+                                using (var context = _contextFactory.Invoke())
+                                {
+                                    context.Set<Event>().Attach(@event);
+                                    context.Entry(@event).State = EntityState.Modified;
+                                    context.Entry(@event).Property(u => u.Payload).IsModified = true;
+                                    context.SaveChanges();
+                                }
+                            }
+
                             _eventBus.Publish(new Envelope<IEvent>(ev)
                             {
                                 CorrelationId = @event.CorrelationId
@@ -99,6 +119,7 @@ namespace DatabaseInitializer.Services
                             if ( eCount % 5000 == 0)
                             {
                                 Console.Write("{0} events played" , eCount);
+                                Console.Write("{0} events migrated", migratedEventCount);
                             }                            
                         }
                         catch

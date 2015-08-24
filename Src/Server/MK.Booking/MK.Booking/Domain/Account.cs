@@ -3,10 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -51,6 +49,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<OverduePaymentLogged>(NoAction);
             Handles<OverduePaymentSettled>(NoAction);
             Handles<AccountAnswersAddedUpdated>(NoAction);
+            Handles<PaymentProfileUpdated>(NoAction);
+
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)

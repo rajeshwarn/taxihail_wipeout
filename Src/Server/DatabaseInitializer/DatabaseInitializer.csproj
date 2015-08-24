@@ -241,6 +241,10 @@
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
       <Name>MK.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MK.Events.Migration\MK.Events.Migration.csproj">
+      <Project>{a49e7882-15e6-420a-a372-d11b74609b04}</Project>
+      <Name>MK.Events.Migration</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="dev.params">

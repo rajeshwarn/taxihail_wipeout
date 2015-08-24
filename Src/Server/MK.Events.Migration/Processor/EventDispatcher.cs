@@ -34,7 +34,8 @@ namespace apcurium.MK.Events.Migration.Processor
                 interfaces
                     .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMigrateEvent<>))
                     .Select(i => new { HandlerInterface = i, EventType = i.GetGenericArguments()[0] })
-                    .Select(e => new Tuple<Type, IMigrateEvent>(e.EventType, handler));
+                    .Select(e => new Tuple<Type, IMigrateEvent>(e.EventType, handler))
+                    .ToList();
 
             foreach (var eventHandled in eventsHandled)
             {
@@ -61,7 +62,7 @@ namespace apcurium.MK.Events.Migration.Processor
                     var interfaceType = typeof (IMigrateEvent<>);
                     var genericInterfaceType = interfaceType.MakeGenericType(eventType);
                     var migrateMethod = genericInterfaceType.GetMethod("Migrate");
-                    migratedEvent = migrateMethod.Invoke(migrator, new object[] { @event });
+                    migratedEvent = migrateMethod.Invoke(migrator, new object[] {@event});
                 }
             }
 

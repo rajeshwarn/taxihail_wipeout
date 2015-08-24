@@ -7,6 +7,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Events.Migration;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
 using DatabaseInitializer.Services;
@@ -36,11 +37,17 @@ namespace DatabaseInitializer
             new apcurium.MK.Booking.Api.Module().Init(container);
             new apcurium.MK.Booking.MapDataProvider.Module().Init(container);
             new apcurium.MK.Booking.Maps.Module().Init(container);
+            new apcurium.MK.Events.Migration.Module().Init(container);
 
             RegisterTaxiHailNetwork(container);
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
-            
+
+            //ReplayEventService
+            container.RegisterInstance<IEventsPlayBackService>(
+                new EventsPlayBackService(() => container.Resolve<EventStoreDbContext>(), container.Resolve<IEventBus>(),
+                    container.Resolve<ITextSerializer>(), container.Resolve<EventMigrator>()));
+
             container.RegisterInstance<IEventsMigrator>(
                 new EventsMigrator(() => container.Resolve<EventStoreDbContext>(),
                                    new ServerSettings(() => new ConfigurationDbContext(oldConnectionString), container.Resolve<ILogger>())));
@@ -76,11 +83,6 @@ namespace DatabaseInitializer
             var eventBus = new SynchronousMemoryEventBus();
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
-
-            //ReplayEventService
-            container.RegisterInstance<IEventsPlayBackService>(
-                new EventsPlayBackService(() => container.Resolve<EventStoreDbContext>(), eventBus,
-                    container.Resolve<ITextSerializer>()));
         }
 
         private static void RegisterCommandHandlers(IUnityContainer unityContainer)
