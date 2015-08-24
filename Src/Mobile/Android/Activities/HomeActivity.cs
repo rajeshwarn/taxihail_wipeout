@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -16,17 +15,13 @@ using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
@@ -291,7 +286,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Review });
 
 			set.Bind(_orderEdit)
-				.For(v => v.AnimatedVisibiity)
+				.For(v => v.AnimatedVisibility)
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Edit });
 

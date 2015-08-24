@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private Button _btnPromo;
         private LinearLayout _bottomPadding;
 
-	    private bool isShown;
+	    private bool _isShown;
 	    private ViewStates _animatedVisibility;
 
 	    public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
@@ -91,12 +91,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 	    public void ShowIfNeeded()
 	    {
-			if (isShown)
+			if (_isShown)
 			{
 				return;
 			}
 
-		    isShown = true;
+		    _isShown = true;
 
 			var animation = AnimationHelper.GetForYTranslation(this, OrderReviewShownHeightProvider());
             animation.AnimationStart += (sender, e) =>
@@ -114,12 +114,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 	    public void HideIfNeeded()
 	    {
-		    if (!isShown)
+		    if (!_isShown)
 		    {
 			    return;
 		    }
 
-		    isShown = false;
+		    _isShown = false;
 
 
 			var animation = AnimationHelper.GetForYTranslation(this, ScreenSize.Y);

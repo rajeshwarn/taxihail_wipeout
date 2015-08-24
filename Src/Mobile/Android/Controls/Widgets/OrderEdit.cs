@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private LinearLayout _bottomPadding;
 
 	    private bool _isShown;
-	    private ViewStates _animatedVisibiity;
+	    private ViewStates _animatedVisibility;
 
 	    public OrderEdit(Context context, IAttributeSet attrs) : base(LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderEdit, context), context, attrs)
         {
@@ -73,12 +73,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public FrameLayout ParentFrameLayout{ get; set; }
 
-	    public ViewStates AnimatedVisibiity
+	    public ViewStates AnimatedVisibility
 	    {
-		    get { return _animatedVisibiity; }
+		    get { return _animatedVisibility; }
 		    set
 		    {
-			    _animatedVisibiity = value;
+			    _animatedVisibility = value;
 			    if (value == ViewStates.Visible)
 			    {
 					ShowIfNeeded();
