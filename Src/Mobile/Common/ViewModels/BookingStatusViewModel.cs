@@ -255,6 +255,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _orderStatusDetail; }
 			set {
 				_orderStatusDetail = value;
+
+
+				RaisePropertyChanged(() => IsCallTaxiVisible);
+
 				RaisePropertyChanged(() => OrderStatusDetail);
 				RaisePropertyChanged(() => CompanyHidden);
 				RaisePropertyChanged(() => VehicleDriverHidden);
@@ -265,7 +269,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged(() => VehicleColorHidden);
                 RaisePropertyChanged(() => DriverPhotoHidden);
 				RaisePropertyChanged(() => IsDriverInfoAvailable);
-				RaisePropertyChanged(() => IsCallTaxiVisible);
 				RaisePropertyChanged(() => IsContactTaxiVisible);
 				RaisePropertyChanged(() => CanGoBack);
 			}

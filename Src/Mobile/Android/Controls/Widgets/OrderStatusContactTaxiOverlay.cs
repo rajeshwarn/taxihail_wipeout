@@ -1,8 +1,11 @@
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
+using Android.Widget;
+using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -40,15 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 			_isShown = true;
 
+			((MarginLayoutParams)LayoutParameters).TopMargin = -Height;
+
 			var animation = AnimationHelper.GetForYTranslation(this, 0);
-			animation.AnimationStart += (sender, args) =>
-			{
-				Visibility = ViewStates.Visible;
-				if (((MarginLayoutParams)LayoutParameters).TopMargin != -Height)
-				{
-					((MarginLayoutParams)LayoutParameters).TopMargin = -Height;
-				}
-			};
 
 			StartAnimation(animation);
 		}
@@ -66,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			animation.AnimationEnd += (sender, args) =>
 			{
-				Visibility = ViewStates.Invisible;
+				//Visibility = ViewStates.Invisible;
 			};
 
 			StartAnimation(animation);

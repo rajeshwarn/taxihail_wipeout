@@ -1,5 +1,6 @@
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
@@ -23,9 +24,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			this.DelayBind(() =>
 			{
 				_contactTaxiOverlay = FindViewById<OrderStatusContactTaxiOverlay>(Resource.Id.ContactTaxiOverlay);
-
-				_contactTaxiOverlay.Visibility = ViewStates.Invisible;
-				((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = -1000;
 				
 				var set = this.CreateBindingSet<OrderStatusView, BookingStatusViewModel>();
 
@@ -37,6 +35,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					.For(v => v.AnimatedVisibility)
 					.To(vm => vm.IsContactTaxiVisible)
 					.WithConversion("Visibility");
+
+				set.Bind(_contactTaxiOverlay)
+					.For(v => v.Visibility)
+					.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
+					.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus }); ;
 
 				set.Apply();
 			});
@@ -78,6 +81,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				}
 			};
 
+			animation.AnimationEnd += (sender, args) =>
+			{
+				if (((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin != -Height)
+				{
+					((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = -Height;
+				}
+			};
+
 			StartAnimation(animation);
 		}
 
@@ -90,7 +101,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			_isShown = false;
 
-			StartAnimation(AnimationHelper.GetForYTranslation(this, -Height));
+			var animation = AnimationHelper.GetForYTranslation(this, -Height);
+
+			animation.AnimationEnd += (sender, args) =>
+			{
+				((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = -1000;
+			};
+
+			StartAnimation(animation);
 		}
 	}
 }
