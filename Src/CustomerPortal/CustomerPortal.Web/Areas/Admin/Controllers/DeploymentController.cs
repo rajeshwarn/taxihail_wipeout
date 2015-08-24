@@ -455,7 +455,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     deploy.Android = model.Android;
                     deploy.CallBox = model.CallBox;
                     deploy.IosAdhoc = model.IosAdhoc;
-                    deploy.IosAppStore = (model.ServerUrlOptions == ServerUrlOptions.Production) && model.IosAppStore;
+                    deploy.IosAppStore = model.IosAppStore;
                 }
 
 
