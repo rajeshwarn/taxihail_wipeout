@@ -18,9 +18,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class MapViewModel: BaseViewModel
     {
-		// seconds
-		static readonly int TimeToKeepVehiclesOnMapWhenResultNull = 10;
-		DateTime? KeepVehiclesWhenResultNullStartTime = null;
+		
+		private static readonly int TimeToKeepVehiclesOnMapWhenResultNull = 10; // In seconds
+		private DateTime? _keepVehiclesWhenResultNullStartTime = null;
        
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IVehicleService _vehicleService;
@@ -104,18 +104,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     && _availableVehicles != null
                     && _availableVehicles.Count > 0)
 				{
-					if (KeepVehiclesWhenResultNullStartTime == null)
+					if (_keepVehiclesWhenResultNullStartTime == null)
 					{
-						KeepVehiclesWhenResultNullStartTime = DateTime.Now;
+						_keepVehiclesWhenResultNullStartTime = DateTime.Now;
 						return;
 					}
-					if ((DateTime.Now - KeepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TimeToKeepVehiclesOnMapWhenResultNull)
+					if ((DateTime.Now - _keepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TimeToKeepVehiclesOnMapWhenResultNull)
 					{
 						return;
 					}
 				}
 
-				KeepVehiclesWhenResultNullStartTime = null;
+				_keepVehiclesWhenResultNullStartTime = null;
 
 				_availableVehicles = value;
 				RaisePropertyChanged();
