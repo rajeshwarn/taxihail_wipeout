@@ -790,17 +790,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public ICommand EditAutoTipCommand
-		{
-			get
-			{
-				return this.GetCommand(() =>
-				{
-					ShowViewModel<EditAutoTipViewModel>();
-				});
-			}
-		}
-
 	    public ICommand SendMessageToDriverCommand
 	    {
 	        get
@@ -823,19 +812,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-        private bool _canEditAutoTip;
-        public bool CanEditAutoTip
-		{
-			get { return _canEditAutoTip; }
-			set
-			{
-				if (_canEditAutoTip != value)
-				{
-					_canEditAutoTip = value;
-					RaisePropertyChanged();
-				}
-			}
-		}
 	    #endregion
     }
 }
