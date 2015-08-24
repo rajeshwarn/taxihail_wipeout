@@ -9,8 +9,6 @@
 	</item>
 	<item>
 		<shape xmlns:android="http://schemas.android.com/apk/res/android">
-			<stroke android:width="0.5dp" android:color="@null" />
-			<corners android:radius="3dp" />
 			<solid android:color="@null" />
 		</shape>
 	</item>
