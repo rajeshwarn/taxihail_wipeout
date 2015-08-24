@@ -470,7 +470,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         [Test]
         public void when_creditcard_deactivated_then_dto_updated()
         {
-            Sut.Handle(new CreditCardDeactivated { SourceId = _accountId });
+            Sut.Handle(new CreditCardDeactivated { SourceId = _accountId, IsOutOfAppPaymentDisabled = false});
 
             using (var context = new BookingDbContext(DbName))
             {

@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Test;
 using apcurium.MK.Common;
+using apcurium.MK.Events.Migration;
 using apcurium.MK.Events.Migration.Projections;
 using NUnit.Framework;
 

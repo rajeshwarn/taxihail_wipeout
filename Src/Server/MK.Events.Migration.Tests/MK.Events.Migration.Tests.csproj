@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountDetailsMigratorFixture.cs" />
+    <Compile Include="EventProcessorFixture.cs" />
     <Compile Include="given_a_read_model_database.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestServerSettings.cs" />
