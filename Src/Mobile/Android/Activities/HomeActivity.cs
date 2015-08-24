@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
@@ -257,6 +258,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			_orderEdit.ScreenSize = screenSize;
 	        _orderEdit.ParentFrameLayout = _frameLayout;
 
+	        _orderAirport.Frame = _frameLayout;
+	        _orderAirport.ScreenSize = screenSize;
+
             SetupHomeViewBinding();
 
 	        PanelMenuInit();
@@ -287,6 +291,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			    .To(vm => vm.BookingStatus.MapCenter);
 
 			//Setup Visibility
+			set.Bind(_orderAirport)
+				.For(v => v.AnimatedVisibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.AirportDetails });
+
 			set.Bind(_orderReview)
 				.For(v => v.AnimatedVisibility)
 				.To(vm => vm.CurrentViewState)
@@ -552,17 +561,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     () => { ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(); },
                     localize["BookItLaterButton"],
                     () => { ViewModel.BottomBar.BookLater.ExecuteIfPossible(); });
-				// Order Airport: Hidden
-                var animation4 = AnimationHelper.GetForXTranslation(_orderAirport, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
-                animation4.AnimationStart += (sender, e) =>
-                {
-                    if (((LinearLayout.MarginLayoutParams)_orderAirport.LayoutParameters).Width != _frameLayout.Width)
-                    {
-                        ((LinearLayout.MarginLayoutParams)_orderAirport.LayoutParameters).Width = _frameLayout.Width;
-                    }
-                };
-
-                _orderAirport.StartAnimation(animation4);
             }
 			else if (state == HomeViewModelState.AddressSearch)
             {
@@ -578,42 +576,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 			else if (state == HomeViewModelState.Initial)
             {			
-                // Order Aiport; Hidden
-                var animation4 = AnimationHelper.GetForXTranslation(_orderAirport, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
-                _orderAirport.StartAnimation(animation4);
                 _searchAddress.Close();
 
                 SetSelectedOnBookLater(false);
             }
             else if(state == HomeViewModelState.AirportDetails)
             {
-                // Order Options: Hidden
-                // Order Review: Hidden
-                // Order Edit: Hidden
-                // Date Picker: Hidden
-                // Order Airport: Visible
-
-                var animation = AnimationHelper.GetForYTranslation(_orderReview, WindowManager.DefaultDisplay.Height);
-                animation.AnimationEnd += (sender, e) =>
-                {
-                    // reset to a fix height in order to have a smooth translation animation next time we show the review screen
-                    var desiredHeight = _frameLayout.Height - _orderOptions.Height;
-                    if (((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
-                    {
-                        ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
-                    }
-                };
-
-                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
-                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, -_orderOptions.Height);
-
-                var animation4 = AnimationHelper.GetForXTranslation(_orderAirport, 0, this.Services().Localize.IsRightToLeft);
-
-                _orderReview.StartAnimation(animation);
-                _orderEdit.StartAnimation(animation2);
-                _orderOptions.StartAnimation(animation3);
-                _orderAirport.StartAnimation(animation4);
-
                 _searchAddress.Close();
             }
         }

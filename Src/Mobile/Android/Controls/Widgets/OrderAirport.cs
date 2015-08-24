@@ -1,16 +1,14 @@
-using System;
 using Android.Content;
 using Android.Util;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Views;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 using System.Collections.Generic;
+using Android.Graphics;
 using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -26,7 +24,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private EditTextEntry _txtEditNote;
         private LinearLayout _bottomPadding;
 
-        public OrderAirport(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderAirport, context), context, attrs)
+		private bool _isShown;
+		private ViewStates _animatedVisibility;
+
+		public OrderAirport(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderAirport, context), context, attrs)
 		{
             this.DelayBind(() => 
             {
@@ -56,6 +57,62 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
 
         private OrderAirportViewModel ViewModel { get { return (OrderAirportViewModel)DataContext; } }
+
+		public Point ScreenSize { get; set; }
+
+		public FrameLayout Frame { get; set; }
+
+		public ViewStates AnimatedVisibility
+		{
+			get { return _animatedVisibility; }
+			set
+			{
+				_animatedVisibility = value;
+				if (value == ViewStates.Visible)
+				{
+					ShowIfNeeded();
+					return;
+				}
+
+				HideIfNeeded();
+			}
+		}
+
+		private void ShowIfNeeded()
+		{
+			if (_isShown)
+			{
+				return;
+			}
+
+			_isShown = false;
+
+			var animation = AnimationHelper.GetForXTranslation(this, 0, this.Services().Localize.IsRightToLeft);
+
+			StartAnimation(animation);
+		}
+
+		private void HideIfNeeded()
+		{
+			if (!_isShown)
+			{
+				return;
+			}
+
+			_isShown = true;
+
+			var animation = AnimationHelper.GetForXTranslation(this, ScreenSize.X, this.Services().Localize.IsRightToLeft);
+			animation.AnimationStart += (sender, e) =>
+			{
+				if (((MarginLayoutParams)LayoutParameters).Width != Frame.Width)
+				{
+					((MarginLayoutParams)LayoutParameters).Width = Frame.Width;
+				}
+			};
+
+			StartAnimation(animation);
+		}
+
 
         void InitializeBinding()
 		{
