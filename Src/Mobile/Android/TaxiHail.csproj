@@ -851,6 +851,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\message.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\phone.png" />
     <AndroidResource Include="Resources\Drawable\button_action_borderlessgray_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\drop_shadow_opaque.xml" />
     <AndroidResource Include="Resources\Drawable\cluster_wheelchair.png" />
     <AndroidResource Include="Resources\Drawable\nearby_wheelchair.png" />
     <AndroidResource Include="Resources\Drawable\wheelchair_assigned.png" />
