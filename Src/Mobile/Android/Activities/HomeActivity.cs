@@ -251,7 +251,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			MapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
 
 	        _orderReview.ScreenSize = screenSize;
-	        _orderEdit.ScreenSize = screenSize;
+	        _orderReview.OrderReviewHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
+	        _orderReview.OrderReviewShownHeightProvider = () => _orderOptions.Height;
+			_orderEdit.ScreenSize = screenSize;
+	        _orderEdit.ParentFrameLayout = _frameLayout;
 
             SetupHomeViewBinding();
 
@@ -282,6 +285,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			    .To(vm => vm.BookingStatus.MapCenter);
 
 			//Setup Visibility
+			set.Bind(_orderReview)
+				.For(v => v.AnimatedVisibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Review });
+
+			set.Bind(_orderEdit)
+				.For(v => v.AnimatedVisibiity)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Edit });
+
 			set.Bind(_orderOptions)
 				.For(v => v.AnimatedVisibility)
 				.To(vm => vm.CurrentViewState)
@@ -517,16 +530,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var intent = new Intent(this, typeof (OrderBookingOptionsDialogActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.BookATaxi);
             }
-			else if (state == HomeViewModelState.Review)
-            {	
-				_orderReview.ShowIfNeeded(_orderOptions.Height);
-				_orderEdit.HideIfNeeded(_frameLayout.Width);
-            }
-			else if (state == HomeViewModelState.Edit)
-            {
-				_orderReview.HideIfNeeded(_frameLayout.Height - _orderOptions.Height);
-				_orderEdit.ShowIfNeeded();
-            }
 			else if (state == HomeViewModelState.AddressSearch)
             {
                 _searchAddress.Open(AddressLocationType.Unspeficied);
@@ -539,16 +542,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 _searchAddress.Open(AddressLocationType.Train);
             }
-			else if (state == HomeViewModelState.BookingStatus)
-			{
-				_orderReview.HideIfNeeded(_frameLayout.Height - _orderOptions.Height);
-				_orderEdit.HideIfNeeded(_frameLayout.Width);
-			}
 			else if (state == HomeViewModelState.Initial)
-            {
-				_orderReview.HideIfNeeded(_frameLayout.Height - _orderOptions.Height);
-                _orderEdit.HideIfNeeded(_frameLayout.Width);
-				
+            {			
                 _searchAddress.Close();
 
                 SetSelectedOnBookLater(false);

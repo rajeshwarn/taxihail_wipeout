@@ -1,3 +1,4 @@
+using System;
 using Android.Content;
 using Android.Util;
 using Android.Views;
@@ -32,8 +33,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private LinearLayout _bottomPadding;
 
 	    private bool isShown;
-                
-        public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
+	    private ViewStates _animatedVisibility;
+
+	    public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
         {
             this.DelayBind (() => 
 			{
@@ -67,7 +69,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 	    public Point ScreenSize { get; set; }
 
-	    public void ShowIfNeeded(int y)
+		public Func<int> OrderReviewShownHeightProvider { get; set; }
+
+		public Func<int> OrderReviewHiddenHeightProvider { get; set; }
+
+
+	    public ViewStates AnimatedVisibility
+	    {
+		    get { return _animatedVisibility; }
+		    set
+		    {
+			    _animatedVisibility = value;
+			    if (value == ViewStates.Visible)
+			    {
+				    ShowIfNeeded();
+				    return;
+			    }
+			    HideIfNeeded();
+		    }
+	    }
+
+	    public void ShowIfNeeded()
 	    {
 			if (isShown)
 			{
@@ -76,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		    isShown = true;
 
-		    var animation = AnimationHelper.GetForYTranslation(this, y);
+			var animation = AnimationHelper.GetForYTranslation(this, OrderReviewShownHeightProvider());
             animation.AnimationStart += (sender, e) =>
             {
                 // set it to fill_parent to allow the subview to take the remaining space in the screen 
@@ -90,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			StartAnimation(animation);
 	    }
 
-	    public void HideIfNeeded(int desiredHeight)
+	    public void HideIfNeeded()
 	    {
 		    if (!isShown)
 		    {
@@ -103,6 +125,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			var animation = AnimationHelper.GetForYTranslation(this, ScreenSize.Y);
 			animation.AnimationEnd += (sender, e) =>
 			{
+				var desiredHeight = OrderReviewHiddenHeightProvider();
 				// reset to a fix height in order to have a smooth translation animation next time we show the review screen
 				if (((MarginLayoutParams)LayoutParameters).Height != desiredHeight)
 				{

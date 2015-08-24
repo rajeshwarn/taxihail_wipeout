@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Android.Content;
 using Android.Util;
@@ -35,8 +36,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private LinearLayout _bottomPadding;
 
 	    private bool _isShown;
+	    private ViewStates _animatedVisibiity;
 
-		public OrderEdit(Context context, IAttributeSet attrs) : base(LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderEdit, context), context, attrs)
+	    public OrderEdit(Context context, IAttributeSet attrs) : base(LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderEdit, context), context, attrs)
         {
             this.DelayBind(() => 
             {
@@ -69,6 +71,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 	    public Point ScreenSize { get; set; }
 
+		public FrameLayout ParentFrameLayout{ get; set; }
+
+	    public ViewStates AnimatedVisibiity
+	    {
+		    get { return _animatedVisibiity; }
+		    set
+		    {
+			    _animatedVisibiity = value;
+			    if (value == ViewStates.Visible)
+			    {
+					ShowIfNeeded();
+				    return;
+			    }
+				HideIfNeeded();
+		    }
+	    }
+
 	    public void ShowIfNeeded()
 	    {
 		    if (_isShown)
@@ -82,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			StartAnimation(animation);
 	    }
 
-	    public void HideIfNeeded(int desiredWidth)
+	    public void HideIfNeeded()
 	    {
 			if (!_isShown)
 		    {
@@ -94,9 +113,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			var animation = AnimationHelper.GetForXTranslation(this, ScreenSize.X, this.Services().Localize.IsRightToLeft);
 			animation.AnimationStart += (sender, e) =>
 			{
-				if (((MarginLayoutParams) LayoutParameters).Width != desiredWidth)
+				if (((MarginLayoutParams)LayoutParameters).Width != ParentFrameLayout.Width)
 				{
-					((MarginLayoutParams) LayoutParameters).Width = desiredWidth;
+					((MarginLayoutParams)LayoutParameters).Width = ParentFrameLayout.Width;
 				}
 
 			};
