@@ -23,6 +23,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 	    public Button BigInvisibleButton { get; set; }
 
+		/// Added to prevent the ETA from becoming visible in during booking status in certain scenarios.
+		private const int HIDDEN_HIGHT_OFFSET = -50;
+
         public OrderOptions(Context context, IAttributeSet attrs) : base (Resource.Layout.SubView_OrderOptions, context, attrs)
         {
             this.DelayBind(() => 
@@ -70,7 +73,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		    _isShown = false;
 
-			StartAnimation(AnimationHelper.GetForYTranslation(this, -Height));
+		    var translationOffset = -Height + HIDDEN_HIGHT_OFFSET;
+
+			StartAnimation(AnimationHelper.GetForYTranslation(this, translationOffset));
 	    }
 	    public void ShowIfNeeded()
 	    {
