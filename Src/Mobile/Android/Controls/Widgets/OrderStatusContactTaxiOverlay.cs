@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public OrderStatusContactTaxiOverlay(Context context, IAttributeSet attrs) : base(Resource.Layout.SubView_ContactTaxiOverlay,context, attrs)
 		{
+			this.DelayBind(() => ((MarginLayoutParams)LayoutParameters).TopMargin = -1000);
 		}
 
 		public ViewStates AnimatedVisibility
