@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
             if (!viewRectAboveKeyboard.Contains(activeFieldAbsoluteFrame))
             {
                 // Scroll to the activeField Y position + activeField.Height + current scrollView.ContentOffset.Y - the keyboard Height
-                var scrollPoint = new CGPoint(0.0f, activeFieldAbsoluteFrame.Location.Y + activeFieldAbsoluteFrame.Height + scrollView.ContentOffset.Y - viewRectAboveKeyboard.Height);
+                var scrollPoint = new CGPoint(0.0f, NMath.Min(activeFieldAbsoluteFrame.Location.Y + activeFieldAbsoluteFrame.Height + scrollView.ContentOffset.Y - viewRectAboveKeyboard.Height, activeView.Frame.Y));
                 scrollView.SetContentOffset(scrollPoint, true);
             }
         }

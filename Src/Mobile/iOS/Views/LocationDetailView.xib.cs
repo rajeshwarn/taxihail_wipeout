@@ -43,6 +43,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtRingCode.ShouldReturn = HandleShouldReturn;
             txtName.ShouldReturn = HandleShouldReturn;
 
+            txtName.Placeholder = Localize.GetValue("LocationDetailNameLabel");;
+            txtName.AccessibilityLabel = txtName.Placeholder;
+
+            txtAddress.Placeholder = Localize.GetValue("LocationDetailAddressLabel");
+            txtAddress.AccessibilityLabel = txtAddress.Placeholder;
+
+            txtAptNumber.Placeholder = Localize.GetValue("LocationDetailApartmentLabel");
+            txtAptNumber.AccessibilityLabel = txtAptNumber.Placeholder;
+
+            txtRingCode.Placeholder = Localize.GetValue("LocationDetailRingCodeLabel");
+            txtRingCode.AccessibilityLabel = txtRingCode.Placeholder;
+
+
             if ( !ViewModel.Settings.ShowRingCodeField )
             {
 				lblRingCode.Hidden = true;

@@ -90,7 +90,6 @@
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="16" customClass="FlatButton">
                                     <rect key="frame" x="35" y="301" width="304" height="41"/>
-                                    <accessibility key="accessibilityConfiguration" label="Save"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="304" id="PNk-Cl-FpT"/>
                                         <constraint firstAttribute="height" constant="41" id="zdI-yb-3qB"/>
@@ -104,7 +103,6 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28" customClass="FlatButton">
                                     <rect key="frame" x="35" y="247" width="304" height="41"/>
-                                    <accessibility key="accessibilityConfiguration" label="Save"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="6cc-0D-3g1"/>
                                         <constraint firstAttribute="width" constant="304" id="xGT-8q-Eix"/>

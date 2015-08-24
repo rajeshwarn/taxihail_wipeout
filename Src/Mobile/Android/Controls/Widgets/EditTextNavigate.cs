@@ -13,7 +13,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     {
         private TextView _label;
         private string _text;
-        private ITransformationMethod _transformationMethod;
+		private Button _button;
+		private ITransformationMethod _transformationMethod;
 
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
         public EditTextNavigate(Context context)
@@ -68,8 +69,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (_text != null) _label.Text = _text;
             if (_transformationMethod != null) _label.TransformationMethod = TransformationMethod;
 
-            var button = (Button) layout.FindViewById(Resource.Id.navigateButton);
-            button.Click += (sender, e) =>
+			_button = (Button)layout.FindViewById(Resource.Id.navigateButton);
+
+			_button.ContentDescription = this.ContentDescription;
+
+			_button.Click += (sender, e) =>
             {
                     NavigateCommand.ExecuteIfPossible();                
             };

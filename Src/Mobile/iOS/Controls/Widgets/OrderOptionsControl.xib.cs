@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -65,6 +66,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(viewPickup)
                 .For(v => v.UserInputDisabled)
                 .To(vm => vm.PickupInputDisabled);
+            set.Bind(viewPickup.AddressButton)
+                .For(ve => ve.AccessibilityLabel)
+                .To(vm => vm.PickupAddress.DisplayAddress);
+
+            viewPickup.AddressButton.AccessibilityHint = Localize.GetValue("PickupTextPlaceholder");
 
             set.Bind(viewDestination)
                 .For(v => v.Hidden)
@@ -82,6 +88,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             
             set.Bind(viewDestination.AddressTextView)
                 .To(vm => vm.DestinationAddress.DisplayAddress);
+
+            set.Bind(viewDestination.AddressButton)
+                .For(ve => ve.AccessibilityLabel)
+                .To(vm => vm.DestinationAddress.DisplayAddress);
+
+            viewDestination.AddressButton.AccessibilityHint = Localize.GetValue("DestinationTextPlaceholder");
 
             set.Bind(viewDestination)
                 .For(v => v.UserInputDisabled)

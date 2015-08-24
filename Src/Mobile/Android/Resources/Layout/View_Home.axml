@@ -85,7 +85,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="center"
-                            android:src="@drawable/menu_icon" />
+                            android:src="@drawable/menu_icon"
+                            android:contentDescription="@string/MenuButton" />
                     </LinearLayout>
                 <!-- Locate Me button -->
                     <LinearLayout
@@ -103,7 +104,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="center"
-                            android:src="@drawable/location_icon" />
+                            android:src="@drawable/location_icon"
+                            android:contentDescription="@string/LocateMeButton" />
                     </LinearLayout>
                 <!-- Airport Button -->
                     <LinearLayout
@@ -121,7 +123,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="center"
-                            android:src="@drawable/airport" />
+                            android:src="@drawable/airport"
+                            android:contentDescription="@string/AirportsButton" />
                     </LinearLayout>
                 <!-- Train station Button -->
                     <LinearLayout
@@ -139,7 +142,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="center"
-                            android:src="@drawable/train" />
+                            android:src="@drawable/train"
+                            android:contentDescription="@string/TrainStationsButton" />
                     </LinearLayout>
                 <!-- Order Review -->
                     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderReview

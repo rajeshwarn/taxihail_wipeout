@@ -6,7 +6,7 @@ using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-	[Activity(Label = "UpdatePasswordActivity", 
+	[Activity(Label = "@string/UpdatePasswordActivityName", 
         Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait,
         WindowSoftInputMode = Android.Views.SoftInput.AdjustResize

@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.IBS
 
         public DateTime PositionDate { get; set; }
 
-        public int FleetId { get; set; }
+        public int? FleetId { get; set; }
+
+        public int? VehicleType { get; set; }
     }
 }

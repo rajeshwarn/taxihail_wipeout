@@ -7,7 +7,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "BookingRateActivity", Theme = "@style/MainTheme",
+	[Activity(Label = "@string/BookingRateActivityName", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class BookingRateActivity : BaseBindingActivity<BookRatingViewModel>
     {

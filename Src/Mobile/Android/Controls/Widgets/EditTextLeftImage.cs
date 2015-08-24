@@ -85,6 +85,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _textViewLabel.InputType = InputTypes.ClassNumber;
             _textViewLabel.SetSelectAllOnFocus (true);
 
+			_textViewLabel.ContentDescription = this.ContentDescription;
+
             _imageLeftView = (ImageView) layout.FindViewById(Resource.Id.CreditCardImagePath);
             if (LeftImage != null)
             {

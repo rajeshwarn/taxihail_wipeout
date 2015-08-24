@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -437,17 +438,26 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             InitializeServiceClient();
 
+            MerchantAuthorizationRequest merchantRequest = null;
+
             var serverPaymentSettings = _serverSettings.GetPaymentSettings();
 
             if (!serverPaymentSettings.CmtPaymentSettings.SubmitAsFleetAuthorization)
             {
-                request = new MerchantAuthorizationRequest(request, serverPaymentSettings.CmtPaymentSettings.MerchantToken);
+                merchantRequest = new MerchantAuthorizationRequest(request)
+                {
+                    MerchantToken = serverPaymentSettings.CmtPaymentSettings.MerchantToken
+                };
             }
 
             AuthorizationResponse response;
+
             try
             {
-                var responseTask = _cmtPaymentServiceClient.PostAsync(request);
+                var responseTask = merchantRequest != null
+                    ? _cmtPaymentServiceClient.PostAsync(merchantRequest)
+                    : _cmtPaymentServiceClient.PostAsync(request);
+                
                 responseTask.Wait();
                 response = responseTask.Result;
             }

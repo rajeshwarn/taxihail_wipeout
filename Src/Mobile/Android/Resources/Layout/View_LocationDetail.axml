@@ -68,7 +68,8 @@
                             android:id="@+id/LocationFriendlyName"
                             android:layout_width="fill_parent"
                             android:layout_height="@dimen/HeightEditTextFlat"
-                            local:MvxBind="Text FriendlyName" />
+                            local:MvxBind="Text FriendlyName"
+                            android:hint="@string/LocationDetailNameLabel" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
@@ -88,7 +89,8 @@
                             android:id="@+id/LocationAddress"
                             android:layout_width="fill_parent"
                             android:layout_height="@dimen/HeightEditTextFlat"
-                            local:MvxBind="Text BookAddress, Mode=OneWay; NavigateCommand NavigateToSearch" />
+                            local:MvxBind="Text BookAddress, Mode=OneWay; NavigateCommand NavigateToSearch"
+                            android:contentDescription="@string/LocationDetailAddressLabel" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="fill_parent"
@@ -117,7 +119,8 @@
                                 android:lines="0"
                                 android:singleLine="true"
                                 android:ellipsize="end"
-                                local:MvxBind="Text Apartment" />
+                                local:MvxBind="Text Apartment"
+                                android:hint="@string/LocationDetailApartmentLabel" />
                         </LinearLayout>
                         <View
                             android:layout_height="1dip"
@@ -145,7 +148,8 @@
                                 android:singleLine="true"
                                 android:ellipsize="end"
                                 android:inputType="text"
-                                local:MvxBind="Text RingCode" />
+                                local:MvxBind="Text RingCode"
+                                android:hint="@string/LocationDetailRingCodeLabel" />
                         </LinearLayout>
                     </LinearLayout>
                     <LinearLayout

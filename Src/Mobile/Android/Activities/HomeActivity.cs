@@ -26,7 +26,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "Home", 
+	[Activity(Label = "@string/HomeActivityName", 
         Theme = "@style/MainTheme", 
         ScreenOrientation = ScreenOrientation.Portrait, 
         ClearTaskOnLaunch = true, 

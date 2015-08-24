@@ -56,6 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddressTextView.SetSingleLine(true);
             AddressTextView.InputType = InputTypes.ClassText | InputTypes.TextFlagNoSuggestions;
             AddressTextView.ImeOptions = ImeAction.Go;
+			AddressTextView.Hint = this.ContentDescription;
 
             SetBehavior();
 

@@ -60,9 +60,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Xamarin.Facebook">
-      <HintPath>..\Libraries\Monodroid\Xamarin.Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="System.Json" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -275,9 +272,6 @@
     <Compile Include="AppServices\IVehicleService.cs" />
     <Compile Include="AppServices\Social\IFacebookService.cs" />
     <Compile Include="AppServices\Social\FacebookUserInfo.cs" />
-    <Compile Include="AppServices\Social\FacebookUserInfo.android.cs">
-      <DependentUpon>FacebookUserInfo.cs</DependentUpon>
-    </Compile>
     <Compile Include="AppServices\Social\ITwitterService.cs" />
     <Compile Include="AppServices\Social\TwitterServiceBase.cs" />
     <Compile Include="AppServices\Social\OAuth\OAuthAuthorizer.cs" />
