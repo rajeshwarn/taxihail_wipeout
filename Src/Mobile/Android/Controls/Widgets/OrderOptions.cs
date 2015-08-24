@@ -1,3 +1,4 @@
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Android.Content;
@@ -23,7 +24,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private VehicleTypeControl _etaBadgeImage;
 		private AutoResizeTextView _etaLabelInVehicleSelection;
 
-        public Button BigInvisibleButton { get; set; }
+	    private bool _isShown = true;
+	    private ViewStates _animatedVisibility;
+
+	    public Button BigInvisibleButton { get; set; }
 
         public OrderOptions(Context context, IAttributeSet attrs) : base (Resource.Layout.SubView_OrderOptions, context, attrs)
         {
@@ -54,6 +58,44 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
 
         private OrderOptionsViewModel ViewModel { get { return (OrderOptionsViewModel)DataContext; } }
+
+	    public ViewStates AnimatedVisibility
+	    {
+		    get { return _animatedVisibility; }
+		    set
+		    {
+			    _animatedVisibility = value;
+			    if (value == ViewStates.Visible)
+			    {
+					ShowIfNeeded();
+				    return;
+			    }
+				HideIfNeeded();
+		    }
+	    }
+
+	    public void HideIfNeeded()
+	    {
+		    if (!_isShown)
+		    {
+			    return;
+		    }
+
+		    _isShown = false;
+
+			StartAnimation(AnimationHelper.GetForYTranslation(this, -Height));
+	    }
+	    public void ShowIfNeeded()
+	    {
+			if (_isShown)
+			{
+				return;
+			}
+
+			_isShown = true;
+
+			StartAnimation(AnimationHelper.GetForYTranslation(this, 0));
+	    }
 
         void InitializeBinding()
 		{
@@ -164,42 +206,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Apply ();
 		}
-		
-	private void ChangeState(HomeViewModelPresentationHint hint)
-        {
-            switch (hint.State)
-            {
-                case HomeViewModelState.Review:
-                    _viewPickup.IsSelected = false;
-                    _viewPickup.UserInputDisabled = true;
-                    _viewDestination.IsSelected = false;
-                    _viewDestination.UserInputDisabled = true;
-                    _viewVehicleType.IsReadOnly = true;
-                    break;
-                case HomeViewModelState.PickDate:
-                    _viewPickup.IsSelected = false;
-                    _viewPickup.UserInputDisabled = true;
-                    _viewDestination.IsSelected = false;
-                    _viewDestination.UserInputDisabled = true;
-                    _viewVehicleType.IsReadOnly = true;
-                    break;
-                case HomeViewModelState.Initial:
-                    _viewPickup.IsSelected = ViewModel.AddressSelectionMode == AddressSelectionMode.PickupSelection;
-                    _viewPickup.UserInputDisabled = false;
-                    _viewDestination.IsSelected = ViewModel.AddressSelectionMode == AddressSelectionMode.DropoffSelection;
-                    _viewDestination.UserInputDisabled = false;
-                    _viewVehicleType.IsReadOnly = false;
-                    break;
-            }
-        }
-
-        public void ChangePresentation(ChangePresentationHint hint)
-        {
-            if (hint is HomeViewModelPresentationHint)
-            {
-                ChangeState((HomeViewModelPresentationHint)hint);
-            }
-        }
     }
 }
       

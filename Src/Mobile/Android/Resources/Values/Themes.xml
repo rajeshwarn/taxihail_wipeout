@@ -191,9 +191,9 @@
       <item name="android:textColor">@drawable/button_action_gray_text_selector</item>      
     </style>
 
-		<style name="ButtonActionWhiteStyle" parent="@style/custom_ButtonStyle">
-			<item name="android:background">@drawable/button_action_white_selector</item>
-			<item name="android:textColor">@drawable/button_action_white_text_selector</item>
+		<style name="ButtonActionBorderlessGrayStyle" parent="@style/custom_ButtonStyle">
+			<item name="android:background">@drawable/button_action_borderlessgray_selector</item>
+			<item name="android:textColor">@drawable/button_action_gray_text_selector</item>
 		</style>
 
     <style name="ButtonActionBlackStyle" parent="@style/custom_ButtonStyle">

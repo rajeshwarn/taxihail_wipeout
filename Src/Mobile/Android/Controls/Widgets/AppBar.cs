@@ -6,6 +6,7 @@ using Android.Util;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Runtime;
+using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -26,21 +27,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var airportButtons = Content.FindViewById(Resource.Id.airport_buttons);
 
 	        var set = this.CreateBindingSet<AppBar, BottomBarViewModel>();
-                airportButtons.Visibility = ViewStates.Gone;
-                airportButtons.Visibility = ViewStates.Gone;
-                airportButtons.Visibility = ViewStates.Gone;
-  	}
-            else if ((hint.State == HomeViewModelState.PickDate)||(hint.State == HomeViewModelState.AirportPickDate))
-            {
-		// Do nothing
-                // this state does not affect this control
-            }
-            else if( hint.State == HomeViewModelState.AirportDetails )
-            {
-                airportButtons.Visibility = ViewStates.Visible;
-                bookButtons.Visibility = ViewStates.Gone;
-                reviewButtons.Visibility = ViewStates.Gone;
-                editButtons.Visibility = ViewStates.Gone;
+
+			set.Bind(airportButtons)
+				.For(v => v.Visibility)
+				.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.AirportDetails });
 
 	        set.Bind(bookButtons)
 		        .For(v => v.Visibility)

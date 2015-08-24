@@ -707,8 +707,6 @@
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
-    <AndroidResource Include="Resources\Drawable\button_action_white_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_white_text_selector.xml" />
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -851,6 +849,8 @@
     <AndroidResource Include="Resources\Drawable\button_action_blue_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\message.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\message.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\phone.png" />
+    <AndroidResource Include="Resources\Drawable\button_action_borderlessgray_selector.xml" />
     <AndroidResource Include="Resources\Drawable\cluster_wheelchair.png" />
     <AndroidResource Include="Resources\Drawable\nearby_wheelchair.png" />
     <AndroidResource Include="Resources\Drawable\wheelchair_assigned.png" />
