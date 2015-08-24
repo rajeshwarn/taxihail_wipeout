@@ -187,5 +187,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				}
 			}
 		}
+
+		public ICommand EditAutoTipCommand
+		{
+			get
+			{
+				return this.GetCommand(() =>
+				{
+					ShowViewModel<EditAutoTipViewModel>();
+				});
+			}
+		}
 	}
 }

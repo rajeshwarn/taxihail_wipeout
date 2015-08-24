@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             FlatButtonStyle.Red.ApplyTo(btnCancel);
             FlatButtonStyle.Red.ApplyTo(btnUnpair);
             FlatButtonStyle.Silver.ApplyTo(btnCall);
+            FlatButtonStyle.Silver.ApplyTo(btnEditTip);
         }
 
         private void InitializeBinding()
@@ -70,42 +71,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.Settings.HideCallDispatchButton);
 
+            set.Bind(btnEditTip)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.CanEditAutoTip)
+                .WithConversion("BoolInverter");
+            
+            set.Bind(btnEditTip)
+                .For(v => v.Command)
+                .To(vm => vm.EditAutoTipCommand);
+
             set.Apply();
-        }
-
-        private NSLayoutConstraint[] _hiddenContraints { get; set; }
-
-        public bool HiddenWithConstraints
-        {
-            get
-            {
-                return base.Hidden;
-            }
-            set
-            {
-                if (base.Hidden != value)
-                {
-                    base.Hidden = value;
-                    if (value)
-                    {
-                        _hiddenContraints = this.Superview.Constraints != null 
-                            ? this.Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
-                            : null;
-                        if (_hiddenContraints != null)
-                        {
-                            this.Superview.RemoveConstraints(_hiddenContraints);
-                        }
-                    }
-                    else
-                    {
-                        if (_hiddenContraints != null)
-                        {
-                            this.Superview.AddConstraints(_hiddenContraints);
-                            _hiddenContraints = null;
-                        }
-                    }
-                }
-            }
         }
     }
 }
