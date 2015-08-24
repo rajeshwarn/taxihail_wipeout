@@ -14,6 +14,7 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         Production = 2,
         Dev = 3,
         Other = 4,
+        Arro = 5,
     }
 
     public class AddDeploymentJobModel

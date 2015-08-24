@@ -519,6 +519,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             {
                 return string.Format("http://test.taxihail.biz:8181/{0}/api/", company.CompanyKey);
             }
+            if (model.ServerUrlOptions == ServerUrlOptions.Arro)
+            {
+                return string.Format("http://api.goarro.com/{0}/api/", company.CompanyKey);
+            }
             return null;
         }
     }
