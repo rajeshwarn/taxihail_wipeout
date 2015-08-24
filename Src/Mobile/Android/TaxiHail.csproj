@@ -845,6 +845,7 @@
     <AndroidResource Include="Resources\Drawable\button_action_blue_text_selector.xml" />
     <AndroidResource Include="Resources\drawable-xxhdpi\phone.png" />
     <AndroidResource Include="Resources\Drawable\button_action_borderlessgray_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\drop_shadow_opaque.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
