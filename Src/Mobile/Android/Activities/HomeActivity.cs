@@ -1,7 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Android.App;
@@ -23,13 +21,8 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
-using Cirrious.CrossCore;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
