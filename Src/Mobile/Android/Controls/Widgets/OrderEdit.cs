@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Android.Content;
 using Android.Util;
@@ -8,13 +7,11 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using Android.Graphics;
 using Android.Runtime;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
