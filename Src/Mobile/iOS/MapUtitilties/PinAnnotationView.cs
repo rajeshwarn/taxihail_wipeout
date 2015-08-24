@@ -57,8 +57,8 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin) 
             {
                 var lblVehicleNumber = new UILabel (new CGRect (0, -23, Image.Size.Width, 20));
-                lblVehicleNumber.BackgroundColor = UIColor.White;
-                lblVehicleNumber.TextColor = Theme.CompanyColor;
+                lblVehicleNumber.BackgroundColor = UIColor.DarkGray;
+                lblVehicleNumber.TextColor = UIColor.White;
                 lblVehicleNumber.TextAlignment = UITextAlignment.Center;
                 lblVehicleNumber.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 30 / 2);
                 lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
