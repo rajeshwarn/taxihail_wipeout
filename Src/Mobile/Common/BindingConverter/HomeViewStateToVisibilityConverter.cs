@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 			var typedValue = value as HomeViewModelState?;
 			var typedParameter = parameter as HomeViewModelState[];
 
-			if (typedParameter == null || !typedValue.HasValue)
+			if (typedParameter == null || typedValue == null)
 			{
 				return MvxVisibility.Collapsed;
 			}
