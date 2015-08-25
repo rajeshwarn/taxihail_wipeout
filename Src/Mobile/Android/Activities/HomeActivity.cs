@@ -108,24 +108,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ViewModel.Panel.PropertyChanged -= PanelMenuPropertyChanged;
             ViewModel.Panel.PropertyChanged += PanelMenuPropertyChanged;
-
-            var listContainer = FindViewById<ViewGroup>(Resource.Id.listContainer);
-
-            for (var i = 0; i < listContainer.ChildCount; i++)
-            {
-                if (listContainer.GetChildAt(i).GetType() == typeof(Button))
-                {
-                    try
-                    {
-                        var child = (Button) listContainer.GetChildAt(i);
-                        child.SetTypeface(Typeface.Create("sans-serif-light", TypefaceStyle.Normal), TypefaceStyle.Normal);
-                    }
-                    catch(Exception ex)
-                    {
-                        Logger.LogError(ex);
-                    }
-                }
-            }
         }
 
         private void PanelMenuSignOutClick(object sender, EventArgs e)

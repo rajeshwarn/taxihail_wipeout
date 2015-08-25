@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		    }
 	    }
 
-	    public void HideIfNeeded()
+		private void HideIfNeeded()
 	    {
 		    if (!_isShown)
 		    {
@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			StartAnimation(AnimationHelper.GetForYTranslation(this, translationOffset));
 	    }
-	    public void ShowIfNeeded()
+		private void ShowIfNeeded()
 	    {
 			if (_isShown)
 			{
