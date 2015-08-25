@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-	[Activity(Label = "Book", Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait,
+	[Activity(Label = "@string/BookSummaryActivityName", Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait,
         ClearTaskOnLaunch = true, FinishOnTaskLaunch = true)]
     public class RideSummaryActivity : BaseBindingActivity<RideSummaryViewModel>
     {

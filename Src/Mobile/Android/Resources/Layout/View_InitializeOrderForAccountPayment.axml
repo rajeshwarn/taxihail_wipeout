@@ -69,7 +69,8 @@
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[0].Model.Answer;Hint Questions[0].QuestionPlaceholder" />
+                            local:MvxBind="Text Questions[0].Model.Answer;Hint Questions[0].QuestionPlaceholder"
+                            android:hint="Question #1" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
@@ -90,7 +91,8 @@
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[1].Model.Answer;Hint Questions[1].QuestionPlaceholder" />
+                            local:MvxBind="Text Questions[1].Model.Answer;Hint Questions[1].QuestionPlaceholder"
+                            android:hint="Question #2" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
@@ -111,7 +113,8 @@
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[2].Model.Answer;Hint Questions[2].QuestionPlaceholder" />
+                            local:MvxBind="Text Questions[2].Model.Answer;Hint Questions[2].QuestionPlaceholder"
+                            android:hint="Question #3" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
@@ -132,7 +135,8 @@
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[3].Model.Answer;Hint Questions[3].QuestionPlaceholder" />
+                            local:MvxBind="Text Questions[3].Model.Answer;Hint Questions[3].QuestionPlaceholder"
+                            android:hint="Question #4" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
@@ -153,7 +157,8 @@
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[4].Model.Answer;Hint Questions[4].QuestionPlaceholder" />
+                            local:MvxBind="Text Questions[4].Model.Answer;Hint Questions[4].QuestionPlaceholder"
+                            android:hint="Question #5" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
@@ -174,7 +179,8 @@
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[5].Model.Answer;Hint Questions[5].QuestionPlaceholder" />
+                            local:MvxBind="Text Questions[5].Model.Answer;Hint Questions[5].QuestionPlaceholder"
+                            android:hint="Question #6" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
@@ -195,7 +201,8 @@
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[6].Model.Answer;Hint Questions[6].QuestionPlaceholder" />
+                            local:MvxBind="Text Questions[6].Model.Answer;Hint Questions[6].QuestionPlaceholder"
+                            android:hint="Question #7" />
                     </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
@@ -216,7 +223,8 @@
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:singleLine="true"
-                            local:MvxBind="Text Questions[7].Model.Answer;Hint Questions[7].QuestionPlaceholder" />
+                            local:MvxBind="Text Questions[7].Model.Answer;Hint Questions[7].QuestionPlaceholder"
+                            android:hint="Question #8" />
                     </LinearLayout>
                     <Button
                         style="@style/ButtonActionGreenStyle"

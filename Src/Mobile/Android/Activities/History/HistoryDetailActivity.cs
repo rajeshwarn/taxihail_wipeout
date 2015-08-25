@@ -9,7 +9,7 @@ using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
-	[Activity(Label = "History Details", Theme = "@style/MainTheme",
+	[Activity(Label = "@string/HistoryDetailsActivityName", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class HistoryDetailActivity : BaseBindingActivity<HistoryDetailViewModel>
     {

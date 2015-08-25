@@ -2,8 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Android.App;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
-using Xamarin.FacebookBinding;
-using Xamarin.FacebookBinding.Model;
 using Android.Content.PM;
 using Java.Security;
 using Android.Util;
@@ -11,213 +9,173 @@ using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore.Droid.Platform;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using Xamarin.Facebook;
+using Xamarin.Facebook.Login;
+using Android.OS;
+using System.Collections.Generic;
+using Xamarin.Facebook.AppEvents;
 
 namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 {
-	public class FacebookService: IFacebookService
+	public class FacebookService : IFacebookService
 	{
-		private readonly string _appId;
-        private readonly Func<Activity> _mainActivity;
-        private readonly MyStatusCallback _statusCallback;
+		// milliseconds
+		private static readonly long MinimumTimeTokenStayActive = 60 * 60 * 1000; 
+		
+		private static string _facebookApplicationID;
+		ICallbackManager _facebookCallbackManager;
+		FacebookCallback<Java.Lang.Object> _facebookCallback = new FacebookCallback<Java.Lang.Object>();
 
-		public FacebookService()
+		public void ActivityOnActivityResult(int requestCode, Result resultCode, Intent data)
 		{
-			this._mainActivity = () => TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
-			this._appId = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().Data.FacebookAppId;
-			this._statusCallback = new MyStatusCallback();
+			_facebookCallbackManager.OnActivityResult(requestCode, (int)resultCode, data);
 		}
 
 		public void Init()
 		{
+			if (!FacebookSdk.IsInitialized)
+			{
+				IAppSettings appSettings = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>();
 
+				_facebookApplicationID = appSettings.Data.FacebookAppId;
+				FacebookSdk.ApplicationId = _facebookApplicationID;
+				FacebookSdk.ApplicationName = appSettings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty);
+				FacebookSdk.SdkInitialize(Application.Context);
+				_facebookCallbackManager = CallbackManagerFactory.Create();
+				LoginManager.Instance.RegisterCallback(_facebookCallbackManager, _facebookCallback);
+			}
 		}
 
-		public void PublishInstall()
-		{
-            try
-            {
-                Xamarin.FacebookBinding.Settings.PublishInstallAsync(TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity.ApplicationContext , _appId );
-            }
-            catch(Exception ex)
-            {
-                Logger.LogMessage("Facebook PublishInstall failed");
-                Logger.LogError(ex);
-            }
-		}
-
+		/// <summary>
+		/// For ANDROID: you have to implement override void OnActivityResult(int requestCode, Result resultCode, Intent data) in the Activity class where you call this method
+		/// and call FacebookService.ActivityOnActivityResult(requestCode, resultCode, data) inside OnActivityResult
+		/// </summary>
 		public Task Connect()
 		{
-			// If the session state is any of the two "open" states when the button is clicked
-			if (Session.ActiveSession != null 
-				&& (Session.ActiveSession.State == SessionState.Opened
-					|| Session.ActiveSession.State == SessionState.OpenedTokenUpdated))
+			var loginTaskCompletionSource = new TaskCompletionSource<object>();
+
+			if (FacebookSdk.IsInitialized)
 			{
-				// Close the session and remove the access token from the cache
-				// The session state handler (in the app delegate) will be called automatically
-				Session.ActiveSession.CloseAndClearTokenInformation();
-			}
-
-			// Open a session showing the user the login UI
-			// You must ALWAYS ask for basic_info permissions when opening a session
-			Session session = new Session.Builder(_mainActivity()).SetApplicationId(_appId).Build();
-			Session.ActiveSession = session;
-
-			var tcs = new TaskCompletionSource<object>();
-			if (!session.IsOpened)
-			{
-				_statusCallback.SetTaskCompletionSource(tcs, session);
-				Session.OpenRequest openRequest = null;
-
-				openRequest = new Session.OpenRequest(_mainActivity());
-
-				if (openRequest != null)
+				if (AccessToken.CurrentAccessToken == null
+						|| (AccessToken.CurrentAccessToken != null
+							&& (new Java.Util.Date()).CompareTo(new Java.Util.Date(AccessToken.CurrentAccessToken.Expires.Time - MinimumTimeTokenStayActive)) > 0))
 				{
-					//Ugly hack until we upgrade the facebook sdk.
-					if (IsFacebookInstalled ()) 
-                    { 
-						openRequest.SetPermissions (new [] { "basic_info", "email" });
-					} else 
-                    {
-						openRequest.SetPermissions (new [] { "public_profile", "email"  });
-					}
-					openRequest.SetLoginBehavior(SessionLoginBehavior.SsoWithFallback);
-					openRequest.SetDefaultAudience (SessionDefaultAudience.Friends);
+					Activity currentActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
+					_facebookCallback.SetTaskCompletionSource(loginTaskCompletionSource);
 
-					session.OpenForRead(openRequest);
+					LoginManager.Instance.SetLoginBehavior(LoginBehavior.NativeWithFallback);
+					LoginManager.Instance.LogInWithReadPermissions(currentActivity, new string[] { "public_profile", "email" });
 				}
 				else
 				{
-					tcs.SetException(new Exception("Could not open request"));
+					loginTaskCompletionSource.TrySetResult(new LoginResult(AccessToken.CurrentAccessToken, AccessToken.CurrentAccessToken.Permissions, AccessToken.CurrentAccessToken.DeclinedPermissions));
 				}
 			}
 			else
 			{
-				tcs.SetResult(null);
+				loginTaskCompletionSource.TrySetException(new FacebookException("SDK not initialized"));
 			}
-			return tcs.Task;
-		}
 
-		private bool IsFacebookInstalled()
-		{
-			try
-            {
-				var dataUri = Android.Net.Uri.Parse("fb://....");
-				var  receiverIntent = new Intent(Intent.ActionView, dataUri);
-				var packageManager =  TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity.PackageManager;
-				var activities = packageManager.QueryIntentActivities(receiverIntent, (PackageInfoFlags) 0);
-
-				return activities.Count  > 0;
-			}
-			catch
-			{
-				return false;
-			}
+			return loginTaskCompletionSource.Task;
 		}
 
 		public void Disconnect()
 		{
-			if (Session.ActiveSession != null
-				&& (Session.ActiveSession.State == SessionState.Opened
-					|| Session.ActiveSession.State == SessionState.OpenedTokenUpdated))
-			{
-
-				// Close the session and remove the access token from the cache
-				Session.ActiveSession.CloseAndClearTokenInformation();
-			}
+			LoginManager.Instance.LogOut();
 		}
 
 		public Task<FacebookUserInfo> GetUserInfo()
 		{
-			var tcs = new TaskCompletionSource<FacebookUserInfo>();
-			var currentSession = Session.ActiveSession;
-			if (currentSession != null)
-			{
-				var request = Request.NewMeRequest(currentSession, new MyGraphUserCallback(tcs));
-				Request.ExecuteBatchAsync(request);
-			}
-			else
-			{
-				throw new InvalidOperationException("No active session");
-			}
+			var _taskCompletionSource = new TaskCompletionSource<FacebookUserInfo>();
 
-			return tcs.Task;
+			Bundle parameters = new Bundle();
+			parameters.PutString("fields", "id,first_name,last_name,email");
+
+			GraphRequest graphRequestData = new GraphRequest();
+			GraphRequest userInfoGraphRequest = new GraphRequest(AccessToken.CurrentAccessToken, "me", parameters, graphRequestData.HttpMethod, new GetUserInfoCallback(_taskCompletionSource), graphRequestData.Version);
+
+			userInfoGraphRequest.ExecuteAsync();
+			
+			return _taskCompletionSource.Task;
 		}
 
-		public Session.IStatusCallback StatusCallback
+		public void PublishInstall()
 		{
-			get
-			{
-				return _statusCallback;
-			}
+			AppEventsLogger.ActivateApp(Application.Context, _facebookApplicationID);
 		}
 
-		private class MyStatusCallback : Java.Lang.Object, Session.IStatusCallback
+		class GetUserInfoCallback : Java.Lang.Object, GraphRequest.ICallback
 		{
-			readonly object _gate = new object();
-			private TaskCompletionSource<object> _tcs;
-			private Session _currentTaskSession;
+			TaskCompletionSource<FacebookUserInfo> _taskCompletionSource;
 
-			public MyStatusCallback ()
+			public GetUserInfoCallback(TaskCompletionSource<FacebookUserInfo> taskCompletionSource)
 			{
+				_taskCompletionSource = taskCompletionSource;
 			}
 
-			public void Call (Session session, SessionState status, Java.Lang.Exception exception)
-			{
-				bool connected = status == SessionState.Opened
-					|| status == SessionState.OpenedTokenUpdated;
-
-
-				if (!connected && ( _currentTaskSession == null || _currentTaskSession != session))
-				{
-					return;
-				}
-
-				if (_tcs != null)
-				{
-					if (connected)
-					{
-						_tcs.TrySetResult(null);
-					}
-					else if (exception != null)
-					{
-						_tcs.TrySetException(exception);
-					}
-				}
-			}
-
-			public void SetTaskCompletionSource(TaskCompletionSource<object> tcs, Session session)
-			{
-				lock (_gate)
-				{
-					if (_tcs != null)
-					{
-						_tcs.TrySetCanceled();
-					}
-					_tcs = tcs;
-					_currentTaskSession = session;
-				}
-			}
-		}
-
-		private class MyGraphUserCallback: Java.Lang.Object, Request.IGraphUserCallback
-		{
-			readonly TaskCompletionSource<FacebookUserInfo> _tcs;
-			public MyGraphUserCallback (TaskCompletionSource<FacebookUserInfo> tcs)
-			{
-				_tcs = tcs;
-			}
-			public void OnCompleted(IGraphUser user, Response response)
+			public void OnCompleted(GraphResponse response)
 			{
 				if (response.Error == null)
 				{
-					_tcs.TrySetResult(FacebookUserInfo.CreateFrom(user));
+					Org.Json.JSONArray userInfoKeys = response.JSONObject.Names();
+
+					Dictionary<string, string> userInfo = new Dictionary<string, string>();
+
+					for (int i = 0; i < userInfoKeys.Length(); i++)
+					{
+						userInfo.Add(userInfoKeys.Get(i).ToString(), response.JSONObject.GetString(userInfoKeys.Get(i).ToString()));
+					}
+
+					_taskCompletionSource.TrySetResult(FacebookUserInfo.CreateFrom(userInfo));
 				}
 				else
 				{
-					_tcs.TrySetException(response.Error.Exception);
+					_taskCompletionSource.TrySetException(response.Error.Exception);
+				}
+			}
+		}
+
+		class FacebookCallback<TResult> : Java.Lang.Object, IFacebookCallback where TResult : Java.Lang.Object
+		{
+			private static object _exclusiveAccess = new object();
+			private TaskCompletionSource<object> _loginTaskCompletionSource;
+
+			public void SetTaskCompletionSource(TaskCompletionSource<object> taskCompletionSource)
+			{
+				lock (_exclusiveAccess)
+				{
+					if (_loginTaskCompletionSource != null)
+					{
+						_loginTaskCompletionSource.TrySetCanceled();
+					}
+
+					_loginTaskCompletionSource = taskCompletionSource;
+				}
+			}
+
+			public void OnCancel()
+			{
+				if (_loginTaskCompletionSource != null)
+				{
+					_loginTaskCompletionSource.TrySetCanceled();
+				}
+			}
+
+			public void OnError(FacebookException error)
+			{
+				if (_loginTaskCompletionSource != null)
+				{
+					_loginTaskCompletionSource.TrySetException(error);
+				}
+			}
+
+			public void OnSuccess(Java.Lang.Object result)
+			{
+				if (_loginTaskCompletionSource != null)
+				{
+					_loginTaskCompletionSource.TrySetResult(result);
 				}
 			}
 		}
 	}
 }
-

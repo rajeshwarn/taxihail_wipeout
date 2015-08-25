@@ -3,6 +3,7 @@ using Android.Util;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using Android.Runtime;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Runtime;
 

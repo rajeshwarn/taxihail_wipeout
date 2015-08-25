@@ -172,7 +172,11 @@ namespace CMTServices
 
             if (fleetIds != null)
             {
-                @params.AddRange(fleetIds.Select(fleetId => new KeyValuePair<string, object>("fleets", fleetId.ToString())));
+	            var fleetIdsArray = fleetIds
+					.Select(fleet => fleet.ToString())
+					.ToArray();
+
+				@params.Add(new KeyValuePair<string, object>("fleets", fleetIdsArray));
             }
 
             return @params;

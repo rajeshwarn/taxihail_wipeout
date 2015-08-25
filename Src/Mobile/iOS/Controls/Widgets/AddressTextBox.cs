@@ -7,6 +7,7 @@ using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -21,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private FlatTextField StreetNumberTextView { get; set; }
         public FlatTextField AddressTextView { get; set; }
-        private UIButton AddressButton { get; set; }
+        public UIButton AddressButton { get; set; }
         private UIActivityIndicatorView LoadingWheel  { get; set; }
         private UIView VerticalDivider { get; set; }
         private UIView HorizontalDividerTop { get; set; }
@@ -48,6 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             StreetNumberTextView.BackgroundColor = UIColor.Clear;
             StreetNumberTextView.ClearButtonMode = UITextFieldViewMode.Never;
             StreetNumberTextView.Placeholder = "#";
+            StreetNumberTextView.AccessibilityLabel = Localize.GetValue("StreetNumber");
             StreetNumberTextView.SetPadding(15, 0);
             StreetNumberTextView.KeyboardType = UIKeyboardType.NumberPad;
             StreetNumberTextView.ShowCloseButtonOnKeyboard();
@@ -89,12 +91,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
 
 		public bool UserInputDisabled { get; set; }
-
-        public string Address
-        {
-            get { return AddressTextView.Text; }
-            set { AddressTextView.Text = value; }
-        }
 
         private NSLayoutConstraint[] _hiddenContraints { get; set; }
         public override bool Hidden

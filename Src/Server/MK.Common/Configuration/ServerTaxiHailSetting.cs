@@ -198,5 +198,9 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Cancellation Fees Window", Description = "Window (in seconds) where the user can cancel an order without being charged cancellation fees. Window starts when taxi gets assigned.")]
         public int CancellationFeesWindow { get; protected set; }
+        
+        [CustomizableByCompany]
+        [Display(Name = "Hide Fare Estimate From IBS", Description = "Prevent sending fare estimate to IBS when creating an order. DO NOT enable this setting if the fare estimate is the real/flat ride fare.")]
+        public bool HideFareEstimateFromIBS { get; protected set; }
     }
 }

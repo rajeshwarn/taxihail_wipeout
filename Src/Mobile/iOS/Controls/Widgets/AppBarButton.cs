@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _label.SetWidth(width);
             _label.BackgroundColor = UIColor.Clear;
             _label.TextAlignment = UITextAlignment.Center;
+            AccessibilityLabel = text;
 
             AddSubviews ( _label);
         }

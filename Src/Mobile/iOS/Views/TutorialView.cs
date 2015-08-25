@@ -6,6 +6,7 @@ using Cirrious.MvvmCross.Touch.Views;
 using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -159,6 +160,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             pageControl.Hidden = false;
             pageControl.Pages = PageCount;
+
+            btnClose.AccessibilityLabel = Localize.GetValue("CloseTutorial");
         }
 
         private void ScrollViewScrolled (object sender, EventArgs e)

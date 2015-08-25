@@ -543,9 +543,6 @@
   <data name="DriverInfoTaxiType" xml:space="preserve">
     <value>Type de véhicule:</value>
   </data>
-  <data name="dummyaaa" xml:space="preserve">
-    <value>xaaa</value>
-  </data>
   <data name="Edit" xml:space="preserve">
     <value>Editer</value>
   </data>
@@ -1971,15 +1968,33 @@
   </data>
   <data name="ManualRideLinqStatus_Extra" xml:space="preserve">
     <value>Extra:</value>
+   </data>
+  <data name="MenuButton" xml:space="preserve">
+    <value>Menu</value>
   </data>
   <data name="StatusEditAutoTipButton" xml:space="preserve">
     <value>Pourboire</value>
+    </data>
+  <data name="LocateMeButton" xml:space="preserve">
+    <value>Localiser moi</value>
   </data>
   <data name="ManualRideLinqStatus_Toll" xml:space="preserve">
     <value>Péage:</value>
+    </data>
+  <data name="AirportsButton" xml:space="preserve">
+    <value>Aéroports</value>
   </data>
   <data name="View_EditAutoTip" xml:space="preserve">
     <value>Modifier Pourboire</value>
+    </data>
+   <data name="TrainStationsButton" xml:space="preserve">
+    <value>Stations de trains</value>
+  </data>
+  <data name="StreetNumber" xml:space="preserve">
+    <value>Numéro d'immeuble</value>
+  </data>
+  <data name="CloseTutorial" xml:space="preserve">
+    <value>Fermer l'aide</value>
   </data>
   <data name="Error_EditAutoTipMessage" xml:space="preserve">
     <value>Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</value>
@@ -2047,5 +2062,164 @@
   </data>
   <data name="PanelMenuViewSignOutPopupLogout" xml:space="preserve">
     <value>Déconnexion</value>
+  </data>
+	<data name="AddressSearch" xml:space="preserve">
+    <value>Address search</value>
+  </data>
+	<data name="PickupAddress" xml:space="preserve">
+    <value>Pickup address</value>
+  </data>
+	<data name="DestinationAddress" xml:space="preserve">
+    <value>Destination address</value>
+  </data>
+	<data name="CallDriver" xml:space="preserve">
+    <value>Call driver</value>
+  </data>
+	<data name="BookingAirportTitle" xml:space="preserve">
+    <value>Airport</value>
+  </data>
+	<data name="BookingAirportAirlineslbl" xml:space="preserve">
+    <value>Airlines</value>
+  </data>
+	<data name="BookingAirportFlightNumlbl" xml:space="preserve">
+    <value>Flight Number</value>
+  </data>
+	<data name="BookingAirportPUPointslbl" xml:space="preserve">
+    <value>Pickup Point</value>
+  </data>
+	<data name="BookingAirportPUDatelbl" xml:space="preserve">
+    <value>Pickup Date</value>
+  </data>
+	<data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+	<data name="BookingAirportPickupPointFee" xml:space="preserve">
+    <value>Selecting Pickup Point {0} will incurr an additional Fee of {1}</value>
+  </data>
+	<data name="BookingAirportDetails" xml:space="preserve">
+    <value>Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</value>
+  </data>
+	<data name="BookingAirportDetailsFee" xml:space="preserve">
+    <value>, (Pickup Fee: {0})</value>
+  </data>
+	<data name="ManualRideLinqStatus_Cancelled" xml:space="preserve">
+    <value>You have been unpaired from RideLinQ. Please type in the pairing code again.</value>
+  </data>
+	<data name="TutorialActivityName" xml:space="preserve">
+    <value>Tutorial</value>
+  </data>
+	<data name="HomeActivityName" xml:space="preserve">
+    <value>Home</value>
+  </data>
+	<data name="PasswordRecoveryActivityName" xml:space="preserve">
+    <value>Password recovery</value>
+  </data>
+	<data name="LocationDetailsActivityName" xml:space="preserve">
+    <value>Location Details</value>
+  </data>
+	<data name="LoginActivityName" xml:space="preserve">
+    <value>Login</value>
+  </data>
+	<data name="LocationsActivityName" xml:space="preserve">
+    <value>Favorite locations</value>
+  </data>
+	<data name="PromotionActivityName" xml:space="preserve">
+    <value>Promotion</value>
+  </data>
+	<data name="BookingRateActivityName" xml:space="preserve">
+    <value>Booking rate</value>
+  </data>
+	<data name="AboutActivityName" xml:space="preserve">
+    <value>About</value>
+  </data>
+	<data name="HistoryActivityName" xml:space="preserve">
+    <value>History</value>
+  </data>
+	<data name="HistoryDetailsActivityName" xml:space="preserve">
+    <value>History details</value>
+  </data>
+	<data name="TermsAndConditionsActivityName" xml:space="preserve">
+    <value>Terms and conditions</value>
+  </data>
+	<data name="CreditCardAddingActivityName" xml:space="preserve">
+    <value>Add or edit credit card</value>
+  </data>
+	<data name="AccountCreationActivityName" xml:space="preserve">
+    <value>Account creation</value>
+  </data>
+	<data name="OverduePaymentActivityName" xml:space="preserve">
+    <value>Overdue payment</value>
+  </data>
+	<data name="ProfileSettingsActivityName" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+	<data name="NotificationSettingsActivityName" xml:space="preserve">
+    <value>Notification setting</value>
+  </data>
+	<data name="InitializeOrderForAccountPaymentActivityName" xml:space="preserve">
+    <value>Initialition of order of account payment</value>
+  </data>
+	<data name="AccountConfirmationActivityName" xml:space="preserve">
+    <value>Account confirmation</value>
+  </data>
+	<data name="UpdatePasswordActivityName" xml:space="preserve">
+    <value>Update password</value>
+  </data>
+	<data name="UserTaxiHailNetworkSettingsActivityName" xml:space="preserve">
+    <value>User TaxiHail network settings</value>
+  </data>
+	<data name="ManualPairingForRideLinqActivityName" xml:space="preserve">
+    <value>Manual pairing for RideLinq</value>
+  </data>
+	<data name="ManualRideLinqStatusActivityName" xml:space="preserve">
+    <value>Manual RideLinq Status</value>
+  </data>
+	<data name="MessageActivityName" xml:space="preserve">
+    <value>Message</value>
+  </data>
+	<data name="BookSummaryActivityName" xml:space="preserve">
+    <value>Book summary</value>
+  </data>
+	<data name="BookStatusActivityName" xml:space="preserve">
+    <value>Booking status</value>
+  </data>
+	<data name="CallDriver" xml:space="preserve">
+    <value>Appeler chauffeur</value>
+ </data>
+	<data name="Rating1" xml:space="preserve">
+    <value>Terrible</value>
+  </data>
+	<data name="Rating2" xml:space="preserve">
+    <value>Mauvais</value>
+  </data>
+	<data name="Rating3" xml:space="preserve">
+    <value>Moyenne</value>
+  </data>
+	<data name="Rating4" xml:space="preserve">
+    <value>Bien</value>
+  </data>
+	<data name="Rating5" xml:space="preserve">
+    <value>Excellent</value>
+  </data>
+ <data name="CallDriver" xml:space="preserve">
+    <value>Appeler chauffeur</value>
+ </data>
+ <data name="SendMessageDriver" xml:space="preserve">
+    <value>Envoyer message au chauffeur</value>
+  </data>
+  <data name="Rating1" xml:space="preserve">
+    <value>Terrible</value>
+  </data>
+  <data name="Rating2" xml:space="preserve">
+    <value>Mauvais</value>
+  </data>
+  <data name="Rating3" xml:space="preserve">
+    <value>Moyenne</value>
+  </data>
+  <data name="Rating4" xml:space="preserve">
+    <value>Bien</value>
+  </data>
+  <data name="Rating5" xml:space="preserve">
+    <value>Excellent</value>
   </data>
 </root>

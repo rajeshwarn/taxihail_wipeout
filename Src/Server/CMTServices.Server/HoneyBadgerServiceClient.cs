@@ -38,7 +38,12 @@ namespace CMTServices
             }
             var appendToExistingParams = Settings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
 
-            var queryString = BuildQueryString(@params, appendToExistingParams);
+            var searchRadiusInKm = (searchRadius ?? Settings.ServerData.AvailableVehicles.Radius) / 1000;
+
+            var honeyBadgerUrlParts = Settings.ServerData.HoneyBadger.ServiceUrl.Split('?');
+            var urlParamsFromSetting = honeyBadgerUrlParts.Length > 1 ? honeyBadgerUrlParts[1] : null;
+
+            var queryString = BuildQueryString(@params, urlParamsFromSetting);
 
             HoneyBadgerResponse response = null;
 
@@ -60,6 +65,7 @@ namespace CMTServices
                 var orderedVehicleList = response.Entities.OrderBy(v => v.Medallion);
                 var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
                 return ToVehicleResponse(entities);
+
             }
 
             return new List<VehicleResponse>();
@@ -94,9 +100,10 @@ namespace CMTServices
                 @params.AddRange(fleetIds.Select(fleetId => new KeyValuePair<string, string>("fleet", fleetId.ToString())));
             }
 
-            var appendToExistingParams = Settings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
+            var honeyBadgerUrlParts = Settings.ServerData.HoneyBadger.ServiceUrl.Split('?');
+            var urlParamsFromSetting = honeyBadgerUrlParts.Length > 1 ? honeyBadgerUrlParts[1] : null;
 
-            var queryString = BuildQueryString(@params, appendToExistingParams);
+            var queryString = BuildQueryString(@params, urlParamsFromSetting);
 
             HoneyBadgerResponse response = null;
 
