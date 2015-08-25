@@ -651,7 +651,7 @@
   <string name="AddressSearch">Address search</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="DestinationAddress">Destination address</string>
-  <string name="CallDriver">Appeler chauffeur</string>
+  <string name="CallDriver">Call driver</string>
   <string name="BookingAirportTitle">Airport</string>
   <string name="BookingAirportAirlineslbl">Airlines</string>
   <string name="BookingAirportFlightNumlbl">Flight Number</string>
@@ -694,5 +694,8 @@
   <string name="Rating4">Bien</string>
   <string name="Rating5">Excellent</string>
   <string name="SendMessageDriver">Envoyer message au chauffeur</string>
+  <string name="Error_EditAutoTipTitle">Error</string>
+  <string name="View_RideLinqSummary">Order summary</string>
+  <string name="View_RideLinqStatus">Status</string>
   <string name="OrderStatus_Medallion">Medallion</string>
 </resources>

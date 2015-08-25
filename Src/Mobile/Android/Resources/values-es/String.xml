@@ -686,5 +686,16 @@
   <string name="MessageActivityName">Message</string>
   <string name="BookSummaryActivityName">Book summary</string>
   <string name="BookStatusActivityName">Booking status</string>
+  <string name="Error_EditAutoTipTitle">Error</string>
+  <string name="View_RideLinqSummary">Order summary</string>
+  <string name="View_RideLinqStatus">Status</string>
+  <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
+  <string name="NetworkTimeOutPopupAlways">Always Accept</string>
+  <string name="TaxiHailNetworkTimeOutErrorTitle">Error</string>
+  <string name="DriverInfoCompany">Company:</string>
+  <string name="TaxiHailNetworkTimeOutPopupRefuse">Ignore</string>
+  <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
+  <string name="TaxiHailNetworkTimeOutPopupMessage">Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?</string>
+  <string name="TaxiHailNetworkTimeOutPopupTitle">Switch company?</string>
   <string name="OrderStatus_Medallion">Medallion</string>
 </resources>

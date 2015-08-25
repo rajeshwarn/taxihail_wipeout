@@ -2183,9 +2183,6 @@
 	<data name="BookStatusActivityName" xml:space="preserve">
     <value>Booking status</value>
   </data>
-	<data name="CallDriver" xml:space="preserve">
-    <value>Appeler chauffeur</value>
- </data>
 	<data name="Rating1" xml:space="preserve">
     <value>Terrible</value>
   </data>
@@ -2201,29 +2198,19 @@
 	<data name="Rating5" xml:space="preserve">
     <value>Excellent</value>
   </data>
- <data name="CallDriver" xml:space="preserve">
-    <value>Appeler chauffeur</value>
- </data>
  <data name="SendMessageDriver" xml:space="preserve">
     <value>Envoyer message au chauffeur</value>
   </data>
-  <data name="Rating1" xml:space="preserve">
-    <value>Terrible</value>
+	<data name="Error_EditAutoTipTitle" xml:space="preserve">
+    <value>Error</value>
+    </data>
+	<data name="View_RideLinqSummary" xml:space="preserve">
+    <value>Order summary</value>
   </data>
-  <data name="Rating2" xml:space="preserve">
-    <value>Mauvais</value>
-  </data>
-  <data name="Rating3" xml:space="preserve">
-    <value>Moyenne</value>
-  </data>
-  <data name="Rating4" xml:space="preserve">
-    <value>Bien</value>
-  </data>
-  <data name="Rating5" xml:space="preserve">
-    <value>Excellent</value>
+	<data name="View_RideLinqStatus" xml:space="preserve">
+    <value>Status</value>
   </data>
 	<data name="OrderStatus_Medallion" xml:space="preserve">
 		<value>Medallion</value>
 	</data>
-  </data>
 </root>

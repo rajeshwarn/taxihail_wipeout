@@ -261,6 +261,7 @@
     <Compile Include="Controls\Dialog\PhoneEditorElement.cs" />
     <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
+    <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
     <Compile Include="Controls\Widgets\OrderAirport.cs" />
     <Compile Include="Controls\Widgets\OrderStatusView.cs" />
     <Compile Include="Controls\Widgets\OrderStatusContactTaxiOverlay.cs" />
@@ -981,5 +982,8 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\SubView_OrderAirport.axml" />
+    <AndroidResource Include="Resources\Layout\VehicleInfoWindow.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
 </Project>
