@@ -8101,9 +8101,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0702cb
 			public const int ManualRideLinqStatus_Unpair = 2131165899;
 			
-			// aapt resource value: 0x7f070332
-			public const int ManualRideLinqSummaryActivityName = 2131166002;
-			
 			// aapt resource value: 0x7f0702d1
 			public const int ManualRideLinqSummary_Done = 2131165905;
 			
@@ -8281,8 +8278,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0701fb
 			public const int OrderNumber = 2131165691;
 			
-			// aapt resource value: 0x7f070333
-			public const int OrderStatus_Medallion = 2131166003;
+			// aapt resource value: 0x7f070332
+			public const int OrderStatus_Medallion = 2131166002;
 			
 			// aapt resource value: 0x7f0702fd
 			public const int OtherListItemLabel = 2131165949;

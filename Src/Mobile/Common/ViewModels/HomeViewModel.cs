@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
@@ -56,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IMvxLifetime mvxLifetime,
             IPromotionService promotionService,
             IBookingService bookingService,
-            IMetricsService metricsService) : base()
+            IMetricsService metricsService)
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -519,11 +518,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						case HomeViewModelState.AddressSearch:
 						case HomeViewModelState.AirportSearch:
 						case HomeViewModelState.TrainStationSearch:
+						case HomeViewModelState.BookATaxi:
+						case HomeViewModelState.AirportDetails:
 						case HomeViewModelState.BookingStatus:
 							CurrentViewState = HomeViewModelState.Initial;
 							break;
 						case HomeViewModelState.Edit:
 							CurrentViewState = HomeViewModelState.Review;
+							break;
+						case HomeViewModelState.AirportPickDate:
+							CurrentViewState = HomeViewModelState.AirportDetails;
 							break;
 						default:
 							base.CloseCommand.ExecuteIfPossible();
@@ -596,7 +600,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
 					// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
-					this.ChangePresentation(new ZoomToStreetLevelPresentationHint(_locationService.LastKnownPosition.Latitude, _locationService.LastKnownPosition.Longitude, initialZoom));
+					ChangePresentation(new ZoomToStreetLevelPresentationHint(_locationService.LastKnownPosition.Latitude, _locationService.LastKnownPosition.Longitude, initialZoom));
 
 					// do the uber zoom
 					try 
