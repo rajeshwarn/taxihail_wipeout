@@ -653,5 +653,6 @@
 "UserTaxiHailNetworkSettingsActivityName"="User TaxiHail network settings";
 "ManualPairingForRideLinqActivityName"="Manual pairing for RideLinq";
 "ManualRideLinqStatusActivityName"="Manual RideLinq Status";
+"ManualRideLinqSummaryActivityName"="Manual Ridelinq summary";
 "BookSummaryActivityName"="Book summary";
 "MessageActivityName"="Message";

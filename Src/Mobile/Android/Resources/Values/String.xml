@@ -655,6 +655,7 @@
   <string name="UserTaxiHailNetworkSettingsActivityName">User TaxiHail network settings</string>
   <string name="ManualPairingForRideLinqActivityName">Manual pairing for RideLinq</string>
   <string name="ManualRideLinqStatusActivityName">Manual RideLinq Status</string>
+  <string name="ManualRideLinqSummaryActivityName">Manual Ridelinq summary</string>
   <string name="BookSummaryActivityName">Book summary</string>
   <string name="MessageActivityName">Message</string>
 </resources>

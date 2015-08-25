@@ -634,4 +634,5 @@
   <string name="PasswordRecoveryActivityName">Password recovery</string>
   <string name="LocationDetailsActivityName">Location Details</string>
   <string name="LoginActivityName">Login</string>
+  <string name="ManualRideLinqSummaryActivityName">Manual Ridelinq summary</string>
 </resources>
