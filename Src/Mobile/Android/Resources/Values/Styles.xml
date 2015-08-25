@@ -208,6 +208,7 @@
   <style name="SettingItemTitle">
     <item name="android:textColor">@color/setting_menu_text_color</item>    
     <item name="android:textSize">@dimen/setting_menu_text_size</item>
+		<item name="android:fontFamily">sans-serif-light</item>
   </style>
   <style name="TopTitleText">
     <item name="android:textSize">@dimen/top_bar_title_font_size</item>
