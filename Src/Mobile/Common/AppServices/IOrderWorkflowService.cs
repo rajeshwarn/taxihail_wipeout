@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
 
-		void SetSelectionModeToNone();
+		void SetAddressSelectionMode(AddressSelectionMode mode = AddressSelectionMode.None);
 
 		Task ToggleIsDestinationModeOpened(bool? forceValue = null);
 

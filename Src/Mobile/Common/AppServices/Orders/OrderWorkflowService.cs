@@ -161,9 +161,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				: AddressSelectionMode.PickupSelection);
 		}
 
-		public void SetSelectionModeToNone()
+		public void SetAddressSelectionMode(AddressSelectionMode mode = AddressSelectionMode.None)
 		{
-			_addressSelectionModeSubject.OnNext(AddressSelectionMode.None);
+			_addressSelectionModeSubject.OnNext(mode);
 		}
 
 		public async Task ValidatePickupTime()
