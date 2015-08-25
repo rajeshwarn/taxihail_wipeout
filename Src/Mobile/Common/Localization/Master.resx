@@ -2085,6 +2085,9 @@
 	<data name="ManualRideLinqStatusActivityName" xml:space="preserve">
     <value>Manual RideLinq Status</value>
   </data>
+	<data name="ManualRideLinqSummaryActivityName" xml:space="preserve">
+    <value>Manual Ridelinq summary</value>
+  </data>
 	<data name="BookSummaryActivityName" xml:space="preserve">
     <value>Book summary</value>
   </data>
