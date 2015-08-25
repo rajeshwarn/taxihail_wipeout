@@ -393,6 +393,7 @@
     <None Include="Localization\Taxi303.resx" />
     <None Include="Localization\Sherbet London.resx" />
     <None Include="Localization\BlackCabNow.resx" />
+    <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
