@@ -355,12 +355,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			set.Bind(_btnLocation)
 				.For(v => v.Enabled)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("EnumToBool", HomeViewModelState.Initial);
+				.WithConversion("EnumToBool", HomeViewModelState.Initial.ToString());
 		    
 			set.Bind(_btnSettings)
 				.For(v => v.Enabled)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("EnumToBool", HomeViewModelState.Initial);
+				.WithConversion("EnumToBool", HomeViewModelState.Initial.ToString());
 			
 		    set.Apply();
 	    }
