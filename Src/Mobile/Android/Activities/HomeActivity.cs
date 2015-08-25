@@ -315,7 +315,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			set.Bind(_appBar)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Initial, HomeViewModelState.Review, HomeViewModelState.Edit, HomeViewModelState.BookATaxi });
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Initial, HomeViewModelState.Review, HomeViewModelState.Edit, HomeViewModelState.BookATaxi, HomeViewModelState.AirportDetails });
 
 			set.Bind(_appBarBookingStatus)
 				.For(v => v.Visibility)

@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				return;
 			}
 
-			_isShown = false;
+			_isShown = true;
 
 			var animation = AnimationHelper.GetForXTranslation(this, 0, this.Services().Localize.IsRightToLeft);
 
@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				return;
 			}
 
-			_isShown = true;
+			_isShown = false;
 
 			var animation = AnimationHelper.GetForXTranslation(this, ScreenSize.X, this.Services().Localize.IsRightToLeft);
 			animation.AnimationStart += (sender, e) =>
