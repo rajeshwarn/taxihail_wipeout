@@ -95,6 +95,7 @@ namespace DatabaseInitializer.Services
 
                             //migration
                             var migratedEvent = _migrator.MigrateEvent(ev);
+                            //TODO find a way to be more subtil to detect if an event needs to be migrated
                             if (migratedEvent != null)
                             {
                                 migratedEventCount++;
@@ -102,6 +103,7 @@ namespace DatabaseInitializer.Services
                                 @event.Payload = _serializer.Serialize(migratedEvent);
                                 using (var context = _contextFactory.Invoke())
                                 {
+                                    //TODO should we save it in another table ?
                                     context.Set<Event>().Attach(@event);
                                     context.Entry(@event).State = EntityState.Modified;
                                     context.Entry(@event).Property(u => u.Payload).IsModified = true;
