@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RideSettingsView">
             <connections>
+                <outlet property="imgFacebook" destination="Ihc-b5-yfN" id="xRI-An-z0R"/>
                 <outlet property="lblAccountNumber" destination="UEE-OH-9iy" id="ZoF-06-Qpo"/>
                 <outlet property="lblChargeType" destination="LEQ-dq-bRV" id="yP7-hg-oui"/>
                 <outlet property="lblCustomerNumber" destination="2e2-xv-Uxd" id="3Sz-Aw-Z1h"/>
@@ -202,16 +203,7 @@
                                         <constraint firstAttribute="height" constant="21" id="6f1-oa-156"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQ4-d7-o7A">
-                                    <rect key="frame" x="15" y="117" width="39" height="41"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="41" id="qJg-Yv-JcL"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qvL-aD-nFd" customClass="FlatTextField">
@@ -222,6 +214,23 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                                 </textField>
+                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ihc-b5-yfN">
+                                    <rect key="frame" x="286" y="125" width="26" height="26"/>
+                                    <color key="backgroundColor" red="0.40784313725490196" green="0.45098039215686275" blue="0.6705882352941176" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="26" id="BZg-Zg-oiP"/>
+                                        <constraint firstAttribute="height" constant="26" id="eLQ-8x-ZZn"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQ4-d7-o7A">
+                                    <rect key="frame" x="15" y="117" width="263" height="41"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="41" id="qJg-Yv-JcL"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="OTC-ob-qkx" firstAttribute="top" secondItem="o6C-2X-Wpz" secondAttribute="bottom" constant="6" id="6NS-oR-7fn"/>
@@ -232,9 +241,12 @@
                                 <constraint firstAttribute="trailing" secondItem="sJG-fE-KIw" secondAttribute="trailing" constant="8" id="9aG-u0-HsE"/>
                                 <constraint firstItem="Gk7-FK-bNN" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="9sv-vo-YwW"/>
                                 <constraint firstItem="UEE-OH-9iy" firstAttribute="top" secondItem="qOe-Cq-18G" secondAttribute="bottom" constant="12" id="AGn-E2-eqt"/>
+                                <constraint firstItem="Ihc-b5-yfN" firstAttribute="leading" secondItem="RQ4-d7-o7A" secondAttribute="trailing" constant="8" id="BEj-kB-apT"/>
+                                <constraint firstItem="Ihc-b5-yfN" firstAttribute="top" secondItem="xfR-9q-5zy" secondAttribute="bottom" constant="14" id="CUI-BM-xm9"/>
                                 <constraint firstItem="JGJ-v2-jC5" firstAttribute="top" secondItem="UEE-OH-9iy" secondAttribute="bottom" constant="8" id="Cgs-EB-KMf"/>
                                 <constraint firstItem="xfR-9q-5zy" firstAttribute="top" secondItem="1fn-yd-ctg" secondAttribute="bottom" constant="12" id="CmO-ot-lse"/>
                                 <constraint firstItem="RQ4-d7-o7A" firstAttribute="top" secondItem="xfR-9q-5zy" secondAttribute="bottom" constant="6" id="DtF-RC-rHu"/>
+                                <constraint firstAttribute="trailing" secondItem="Ihc-b5-yfN" secondAttribute="trailing" constant="8" id="Eoh-PN-fQB"/>
                                 <constraint firstAttribute="trailing" secondItem="mLf-L5-n69" secondAttribute="trailing" constant="8" id="Eyl-FA-wQG"/>
                                 <constraint firstItem="qvL-aD-nFd" firstAttribute="top" secondItem="o6C-2X-Wpz" secondAttribute="bottom" constant="6" id="FEh-lu-qHZ"/>
                                 <constraint firstItem="1fn-yd-ctg" firstAttribute="top" secondItem="HWN-Pq-yPZ" secondAttribute="bottom" constant="8" id="FoB-q7-AKY"/>
@@ -308,6 +320,9 @@
             <point key="canvasLocation" x="339" y="574.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="facebook_icon.png" width="14" height="26"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

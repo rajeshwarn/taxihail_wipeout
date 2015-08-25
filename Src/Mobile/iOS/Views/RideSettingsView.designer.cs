@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class RideSettingsView
 	{
 		[Outlet]
+		UIKit.UIImageView imgFacebook { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblAccountNumber { get; set; }
 
 		[Outlet]
@@ -77,14 +80,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblEmailTitle != null) {
-				lblEmailTitle.Dispose ();
-				lblEmailTitle = null;
-			}
-
-			if (lblEmail != null) {
-				lblEmail.Dispose ();
-				lblEmail = null;
+			if (imgFacebook != null) {
+				imgFacebook.Dispose ();
+				imgFacebook = null;
 			}
 
 			if (lblAccountNumber != null) {
@@ -105,6 +103,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblDialCode != null) {
 				lblDialCode.Dispose ();
 				lblDialCode = null;
+			}
+
+			if (lblEmail != null) {
+				lblEmail.Dispose ();
+				lblEmail = null;
+			}
+
+			if (lblEmailTitle != null) {
+				lblEmailTitle.Dispose ();
+				lblEmailTitle = null;
 			}
 
 			if (lblName != null) {

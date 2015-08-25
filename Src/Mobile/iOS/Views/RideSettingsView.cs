@@ -58,6 +58,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 txtVehicleType.RemoveFromSuperview();
             }
 
+            if (!ViewModel.IsLinkedWithFacebook)
+            {
+                imgFacebook.RemoveFromSuperview();
+            }
+
             lblName.Text = Localize.GetValue("RideSettingsName");
             lblEmailTitle.Text = Localize.GetValue("RideSettingsEmailTitle");
             lblPhone.Text = Localize.GetValue("RideSettingsPhone");
