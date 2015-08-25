@@ -22,7 +22,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblCustomerNumber { get; set; }
 
 		[Outlet]
-        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.CountrySelector lblDialCode { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.CountrySelector lblDialCode { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblEmail { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblEmailTitle { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblName { get; set; }
@@ -71,6 +77,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblEmailTitle != null) {
+				lblEmailTitle.Dispose ();
+				lblEmailTitle = null;
+			}
+
+			if (lblEmail != null) {
+				lblEmail.Dispose ();
+				lblEmail = null;
+			}
+
 			if (lblAccountNumber != null) {
 				lblAccountNumber.Dispose ();
 				lblAccountNumber = null;
@@ -84,6 +100,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblCustomerNumber != null) {
 				lblCustomerNumber.Dispose ();
 				lblCustomerNumber = null;
+			}
+
+			if (lblDialCode != null) {
+				lblDialCode.Dispose ();
+				lblDialCode = null;
 			}
 
 			if (lblName != null) {
@@ -159,11 +180,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtVehicleType != null) {
 				txtVehicleType.Dispose ();
 				txtVehicleType = null;
-			}
-
-			if (lblDialCode != null) {
-				lblDialCode.Dispose ();
-				lblDialCode = null;
 			}
 		}
 	}

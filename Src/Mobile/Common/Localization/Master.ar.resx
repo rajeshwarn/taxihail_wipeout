@@ -1051,6 +1051,9 @@
   <data name="RideSettingsVehiculeType" xml:space="preserve">
     <value>نوع السیارة</value>
   </data>
+  <data name="RideSettingsEmailTitle" xml:space="preserve">
+    <value>Email</value>
+  </data>
   <data name="RideSummarySubTitleText" xml:space="preserve">
     <value>شكرا لاختيارك {0} لرحلتك، نتطلع لخدمتك مرة أخرى قريبا.</value>
   </data>

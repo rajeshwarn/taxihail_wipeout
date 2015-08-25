@@ -58,8 +58,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 txtVehicleType.RemoveFromSuperview();
             }
 
-
             lblName.Text = Localize.GetValue("RideSettingsName");
+            lblEmailTitle.Text = Localize.GetValue("RideSettingsEmailTitle");
             lblPhone.Text = Localize.GetValue("RideSettingsPhone");
             lblVehicleType.Text = Localize.GetValue("RideSettingsVehiculeType");
             lblChargeType.Text = Localize.GetValue("RideSettingsChargeType");
@@ -131,6 +131,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtName)
 				.For(v => v.Text)
 				.To(vm => vm.Name);
+
+            set.Bind(lblEmail)
+                .For(v => v.Text)
+                .To(vm => vm.Email);
 
 			set.Bind(txtPhone)
 				.For(v => v.Text)
