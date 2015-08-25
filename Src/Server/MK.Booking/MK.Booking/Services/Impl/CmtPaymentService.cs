@@ -540,38 +540,6 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 ResponseCode = 1
             };
-            /*
-            InitializeServiceClient();
-
-            TokenizeDeleteResponse response;
-
-            try
-            {
-                var responseTask = _cmtPaymentServiceClient.DeleteAsync(request);
-                responseTask.Wait();
-                response = responseTask.Result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-
-                var aggregateException = ex as AggregateException;
-                if (aggregateException == null)
-                {
-                    throw ex;
-                }
-
-                var webServiceException = aggregateException.InnerException as WebServiceException;
-                if (webServiceException == null)
-                {
-                    throw ex;
-                }
-
-                response = JsonConvert.DeserializeObject<TokenizeDeleteResponse>(webServiceException.ResponseBody);
-            }
-            
-            return response;
-             */
         }
 
         private ReverseResponse Reverse(ReverseRequest request)
