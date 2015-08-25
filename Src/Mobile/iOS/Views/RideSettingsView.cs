@@ -74,6 +74,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
 			lblPayBack.Text = Localize.GetValue("RideSettingsPayBack");
 
+            lblEmail.AccessibilityLabel = Localize.GetValue("RideSettingsEmailTitle");
+            lblEmailTitle.AccessibilityLabel = Localize.GetValue("RideSettingsEmailTitle");
+
             txtName.Placeholder = Localize.GetValue("RideSettingsName");
             txtName.AccessibilityLabel = txtName.Placeholder;
 
