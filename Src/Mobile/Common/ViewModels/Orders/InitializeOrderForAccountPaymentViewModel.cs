@@ -69,13 +69,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								return;
 							}
 
-							var result = await _orderWorkflowService.ConfirmOrder();
+							await _orderWorkflowService.ConfirmOrder();
 
-                            ShowViewModelAndClearHistory<BookingStatusViewModel>(new
-							{
-								order = result.Item1.ToJson(),
-								orderStatus = result.Item2.ToJson()
-							});
+							Close(this);
 						}
 					}
 					catch(OrderCreationException e)

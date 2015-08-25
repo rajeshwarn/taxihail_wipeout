@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public OrderStatusContactTaxiOverlay(Context context, IAttributeSet attrs) : base(Resource.Layout.SubView_ContactTaxiOverlay,context, attrs)
 		{
-			this.DelayBind(() => ((MarginLayoutParams)LayoutParameters).TopMargin = -1000);
+			this.DelayBind(() => ((MarginLayoutParams) LayoutParameters).TopMargin = -1000 );
 		}
 
 		public ViewStates AnimatedVisibility
@@ -44,7 +44,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 			_isShown = true;
 
-			((MarginLayoutParams)LayoutParameters).TopMargin = -Height;
+			var desigredHeight = -(Height + 1);
+
+			if (((MarginLayoutParams) LayoutParameters).TopMargin != desigredHeight)
+			{
+				((MarginLayoutParams)LayoutParameters).TopMargin = desigredHeight;
+			}
 
 			var animation = AnimationHelper.GetForYTranslation(this, 0);
 
@@ -60,12 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_isShown = false;
 
 
-			var animation = AnimationHelper.GetForYTranslation(this, -Height);
-
-			animation.AnimationEnd += (sender, args) =>
-			{
-				//Visibility = ViewStates.Invisible;
-			};
+			var animation = AnimationHelper.GetForYTranslation(this, -(Height + 1));
 
 			StartAnimation(animation);
 		}

@@ -83,9 +83,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			animation.AnimationEnd += (sender, args) =>
 			{
-				if (((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin != -Height)
+				if (((BookingStatusViewModel) DataContext).IsContactTaxiVisible)
 				{
-					((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = -Height;
+					return;
+				}
+
+				var desiredHeight = -(_contactTaxiOverlay.Height + 1);
+
+				if (((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin != desiredHeight)
+				{
+					((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = desiredHeight;
 				}
 			};
 
