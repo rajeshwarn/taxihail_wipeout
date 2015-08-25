@@ -2899,4 +2899,7 @@
 	<data name="OrderStatus_Medallion" xml:space="preserve">
 		<value>Medallion</value>
 	</data>
+	<data name="ManualRideLinqSummaryActivityName" xml:space="preserve">
+    <value>Manual ridelinq summary</value>
+  </data>
 </root>

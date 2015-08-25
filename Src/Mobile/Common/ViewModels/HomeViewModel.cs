@@ -566,11 +566,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				if (value == HomeViewModelState.BookingStatus)
 				{
-					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode(AddressSelectionMode.None);
+					_orderWorkflowService.SetSelectionModeToNone();
 				}
 				else if (value == HomeViewModelState.Initial && _currentViewState == HomeViewModelState.BookingStatus)
 				{
-					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode(AddressSelectionMode.PickupSelection);
+					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
 					_bottomBar.EstimateSelected = false;
 				}
 

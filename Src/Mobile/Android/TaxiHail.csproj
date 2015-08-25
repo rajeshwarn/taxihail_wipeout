@@ -748,9 +748,6 @@
     <AndroidResource Include="Resources\Layout\SpinnerCell.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_BookingStatus.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_DateTimePicker.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>

@@ -63,14 +63,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(viewPickup.AddressTextView)
                 .To(vm => vm.PickupAddress.DisplayAddress);
 
+            set.Bind(viewPickup)
+                .For(v => v.UserInputDisabled)
+                .To(vm => vm.PickupInputDisabled);
             set.Bind(viewPickup.AddressButton)
                 .For(ve => ve.AccessibilityLabel)
                 .To(vm => vm.PickupAddress.DisplayAddress);
                 
-            set.Bind(viewPickup)
-                .For(v => v.UserInputDisabled)
-                .To(vm => vm.PickupInputDisabled);
-
             viewPickup.AddressButton.AccessibilityHint = Localize.GetValue("PickupTextPlaceholder");
 
             set.Bind(viewDestination)

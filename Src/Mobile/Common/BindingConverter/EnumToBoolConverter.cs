@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Cirrious.CrossCore.Converters;
 
 namespace apcurium.MK.Booking.Mobile.BindingConverter
@@ -31,10 +32,21 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 			}
 
 			var paramArray = parameter as IEnumerable;
+			var paramString = parameter as string;
 
-			var result = !(parameter is string) && paramArray != null
-				? paramArray.Cast<object>().Where(item => item != null).Select(item => item.ToString()).Any(item => item.Equals(name))
-				: name.Equals(parameter.ToString());
+			var result = false;
+
+			if (paramString.HasValue())
+			{
+				result = name.Equals(parameter.ToString());
+			}
+			else if (paramArray != null)
+			{
+				result = paramArray.Cast<object>()
+					.Where(item => item != null)
+					.Select(item => item.ToString())
+					.Any(item => item.Equals(name));
+			}
 
 			return InvertResultIfNecessary(result);
 		}
