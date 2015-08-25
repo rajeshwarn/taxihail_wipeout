@@ -465,6 +465,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							if ((questions != null) && (questions.Length > 0))
 							{
 								((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+
+								
+
 								ShowViewModel<InitializeOrderForAccountPaymentViewModel>();
 							}
 							else
@@ -496,10 +499,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 										var orderInfos = await GetOrderInfos(pendingOrderId);
 
 										var parent = ((HomeViewModel)Parent);
-										parent.CurrentViewState = HomeViewModelState.Initial;
-										parent.AutomaticLocateMeAtPickup.ExecuteIfPossible();
 
-										ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new {order = orderInfos.Item1, orderStatus = orderInfos.Item2});
+										parent.BookingStatus.StartBookingStatus(orderInfos.Item1, orderInfos.Item2);
+
+										parent.CurrentViewState = HomeViewModelState.BookingStatus;
+										parent.AutomaticLocateMeAtPickup.ExecuteIfPossible();
 									},
                                         this.Services().Localize["Cancel"], () => {});
                                 }
@@ -766,7 +770,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        private async Task<Tuple<string, string>> GetOrderInfos(Guid pendingOrderId)
+        private async Task<Tuple<Order, OrderStatusDetail>> GetOrderInfos(Guid pendingOrderId)
         {
             var order = await _accountService.GetHistoryOrderAsync(pendingOrderId);
 
@@ -781,7 +785,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 VehicleLongitude = null
             };
 
-            return Tuple.Create(order.ToJson(), orderStatus.ToJson());
+            return Tuple.Create(order, orderStatus);
         }
     }
 }
