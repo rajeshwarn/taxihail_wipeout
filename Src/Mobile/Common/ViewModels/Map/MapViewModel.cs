@@ -19,9 +19,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class MapViewModel: BaseViewModel
     {
-		// seconds
-		private const int TIME_TO_KEEP_VEHICLES_ON_MAP_WHEN_RESULT_NULL = 10;
-		private DateTime? _keepVehiclesWhenResultNullStartTime;
+		
+		private static readonly int TimeToKeepVehiclesOnMapWhenResultNull = 10; // In seconds
+		private DateTime? _keepVehiclesWhenResultNullStartTime = null;
        
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IVehicleService _vehicleService;
@@ -154,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						_keepVehiclesWhenResultNullStartTime = DateTime.Now;
 						return;
 					}
-					else if ((DateTime.Now - _keepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TIME_TO_KEEP_VEHICLES_ON_MAP_WHEN_RESULT_NULL)
+					if ((DateTime.Now - _keepVehiclesWhenResultNullStartTime.Value).TotalSeconds <= TimeToKeepVehiclesOnMapWhenResultNull)
 					{
 						return;
 					}

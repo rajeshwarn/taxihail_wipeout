@@ -26,6 +26,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private bool _destinationInputDisabled;
 		private bool _vehicleTypeInputDisabled;
 
+		private static readonly int TimeBeforeUpdatingEtaWhenNoVehicle = 10;  // In seconds
+		private DateTime? _keepEtaWhenNoVehicleStartTime = null;
+
         private string _hashedMarket;
 
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
@@ -48,6 +51,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             Observe (_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
             Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
+			Observe(_vehicleService.GetAndObserveAvailableVehicles(), vehicles => _availableVehicles = vehicles);
 		}
 
 		public override void Start()
@@ -97,6 +101,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					break;
 			}
 		}
+
+		private AvailableVehicle[] _availableVehicles;
 
 	    public async Task StartAsync()
 	    {
@@ -308,6 +314,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				RaisePropertyChanged(() => ShowEta);
 				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
 				RaisePropertyChanged(() => FormattedEta);
+
+				if (!_keepEtaWhenNoVehicleStartTime.HasValue
+					|| (_keepEtaWhenNoVehicleStartTime.HasValue
+						&& (DateTime.Now - _keepEtaWhenNoVehicleStartTime.Value).TotalSeconds > TimeBeforeUpdatingEtaWhenNoVehicle))
+				{
+					RaisePropertyChanged(() => FormattedEta);
+				}
 			}
 		}
 
@@ -315,15 +328,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
+				if (_availableVehicles == null || !_availableVehicles.Any())
+				{
+					_keepEtaWhenNoVehicleStartTime = DateTime.Now;
+					return this.Services ().Localize ["EtaNoTaxiAvailable"];
+				}
+
                 if (Eta == null || (Eta != null && !Eta.IsValidEta()))
 			    {
-					return this.Services ().Localize ["EtaNoTaxiAvailable"];;
+					return this.Services ().Localize ["EtaNoTaxiAvailable"];
 			    }
 
 			    if (Eta.Duration > 30) 
 			    {
-			        return this.Services ().Localize ["EtaNotAvailable"];
+					return this.Services ().Localize ["EtaNotAvailable"];
 			    }
+
+				_keepEtaWhenNoVehicleStartTime = null;
 
                 var durationUnit = Eta.Duration <= 1 ? this.Services().Localize["EtaDurationUnit"] : this.Services().Localize["EtaDurationUnitPlural"];
 
