@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-		public void ShowIfNeeded()
+		private void ShowIfNeeded()
 		{
 			if (_isShown)
 			{
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			StartAnimation(animation);
 		}
 
-		public void HideIfNeeded()
+		private void HideIfNeeded()
 		{
 			if (!_isShown)
 			{
