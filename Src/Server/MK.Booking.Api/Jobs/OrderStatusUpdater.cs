@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly ICreditCardDao _creditCardDao;
         private readonly IFeeService _feeService;
         private readonly IOrderNotificationsDetailDao _orderNotificationsDetailDao;
+        private readonly CmtGeoServiceClient _cmtGeoServiceClient;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -68,6 +69,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             ICreditCardDao creditCardDao,
             IFeeService feeService,
             IOrderNotificationsDetailDao orderNotificationsDetailDao,
+            CmtGeoServiceClient cmtGeoServiceClient,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -85,6 +87,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _commandBus = commandBus;
             _paymentDao = paymentDao;
             _orderNotificationsDetailDao = orderNotificationsDetailDao;
+            _cmtGeoServiceClient = cmtGeoServiceClient;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -404,8 +407,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (isUsingGeo)
             {
                 var orderDetail = _orderDao.FindById(orderStatus.OrderId);
-                var vehicleStatus = new CmtGeoServiceClient(_serverSettings, _logger)
-                    .GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleRegistration);
+                var vehicleStatus = _cmtGeoServiceClient.GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleRegistration);
 
                 if (vehicleStatus.Latitude != 0.0f && vehicleStatus.Longitude != 0.0f)
                 {
