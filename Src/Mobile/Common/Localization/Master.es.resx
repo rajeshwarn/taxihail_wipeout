@@ -1310,7 +1310,7 @@
     <comment>View Tutorial</comment>
   </data>
   <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
-    <value>Actualizar cuenta</value>
+    <value>Perfil</value>
     <comment>Update Account</comment>
   </data>
   <data name="ParameterButton" xml:space="preserve">
@@ -1564,6 +1564,9 @@
   <data name="RideSettingsVehiculeType" xml:space="preserve">
     <value>Tipo de Vehículo</value>
     <comment>Vehicle type</comment>
+  </data>
+  <data name="RideSettingsEmailTitle" xml:space="preserve">
+    <value>Email</value>
   </data>
   <data name="RideSummarySubTitleText" xml:space="preserve">
     <value>Gracias por viajar con {0}, esperamos pronto poder volver servirle</value>
