@@ -38,8 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     {
         private Button _bigButton;     
         private TouchableMap _touchMap;
-        private LinearLayout _mapOverlay;
-        private OrderReview _orderReview;
+		private OrderReview _orderReview;
         private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
         private AddressPicker _searchAddress;
@@ -143,8 +142,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             animation.AnimationStart += (sender, e) =>
             {
-                if (ViewModel.Panel.MenuIsOpen)
-                    menu.Visibility = ViewStates.Visible;
+	            if (ViewModel.Panel.MenuIsOpen)
+	            {
+					menu.Visibility = ViewStates.Visible;
+	            }
+                  
             };
 
             animation.AnimationEnd += (sender, e) =>
@@ -201,7 +203,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _searchAddress = (AddressPicker) FindViewById(Resource.Id.searchAddressControl);
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
             _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
-            _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
 			_btnSettings = FindViewById<LinearLayout>(Resource.Id.btnSettings);
 			_btnLocation = FindViewById<LinearLayout>(Resource.Id.btnLocation);
 	        _appBarBookingStatus = FindViewById<AppBarBookingStatus>(Resource.Id.appBarBookingStatus);
