@@ -204,9 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded;
-				var hasDriverInformation = OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue ()
-					|| OrderStatusDetail.DriverInfos.LastName.HasValue ()
-					|| OrderStatusDetail.DriverInfos.FirstName.HasValue ();
+				var hasDriverInformation = OrderStatusDetail.DriverInfos.FullVehicleInfo.HasValue();
 
 				return showVehicleInformation && isOrderStatusValid && hasDriverInformation;
 			}

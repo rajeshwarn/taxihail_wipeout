@@ -22,10 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             Initialize();
 
-            this.DelayBind (() =>
-            {
-                InitializeBinding();
-            });
+            this.DelayBind (InitializeBinding);
         }
 
         private void Initialize()

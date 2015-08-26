@@ -53,8 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			set.Bind(viewPickup)
 				.For(v => v.IsSelected)
-				.To(vm => vm.AddressSelectionMode)
-				.WithConversion("EnumToBool", AddressSelectionMode.PickupSelection);
+				.To(vm => vm.IsPickupSelected);
             
             set.Bind(viewPickup)
                 .For(v => v.IsLoadingAddress)
@@ -79,8 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             
 			set.Bind(viewDestination)
 				.For(v => v.IsSelected)
-				.To(vm => vm.AddressSelectionMode)
-				.WithConversion("EnumToBool", AddressSelectionMode.DropoffSelection);
+				.To(vm => vm.IsDestinationSelected);
             
             set.Bind(viewDestination)
                 .For(v => v.IsLoadingAddress)

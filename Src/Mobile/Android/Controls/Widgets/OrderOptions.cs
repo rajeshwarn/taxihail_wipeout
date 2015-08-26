@@ -118,10 +118,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel> ();
 
-			set.Bind (_viewPickup)
-				.For(v => v.IsSelected)
-				.To(vm => vm.AddressSelectionMode)
-				.WithConversion("EnumToBool", AddressSelectionMode.PickupSelection);
+	        set.Bind(_viewPickup)
+		        .For(v => v.IsSelected)
+		        .To(vm => vm.IsPickupSelected);
 
 			set.Bind (_viewPickup)
                 .For (v => v.IsLoadingAddress)
@@ -138,10 +137,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				.For(v => v.UserInputDisabled)
 				.To(vm => vm.DestinationInputDisabled);
 
-			set.Bind(_viewDestination)
-				.For(v => v.IsSelected)
-				.To(vm => vm.AddressSelectionMode)
-				.WithConversion("EnumToBool", AddressSelectionMode.DropoffSelection);
+	        set.Bind(_viewDestination)
+		        .For(v => v.IsSelected)
+		        .To(vm => vm.IsDestinationSelected);
 
 			set.Bind (_viewDestination)
                 .For (v => v.Visibility)
