@@ -562,9 +562,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			StopBookingStatus();
 
-			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (@params.ToSimplePropertyDictionary());
+			ShowViewModel<RideSummaryViewModel> (@params.ToSimplePropertyDictionary());
 
-			((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+			var homeViewModel = ((HomeViewModel)Parent);
+			
+			homeViewModel.CurrentViewState = HomeViewModelState.Initial;
+
+			homeViewModel.LocateMe.ExecuteIfPossible();
 		}
 
         private async void GoToBookingScreen()
