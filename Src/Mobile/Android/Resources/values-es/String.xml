@@ -299,7 +299,7 @@
   <string name="PanelMenuViewReportProblemText">Reportar problema</string>
   <string name="PanelMenuViewSignOutText">Cerrar Sesión</string>
   <string name="PanelMenuViewTutorialText">Ver tutorial</string>
-  <string name="PanelMenuViewUpdateProfileText">Actualizar cuenta</string>
+  <string name="PanelMenuViewUpdateProfileText">Perfil</string>
   <string name="ParameterButton">Paramétros</string>
   <string name="PassengerNameLabel">Nombre</string>
   <string name="PassengerNumberLabel">Pasajeros</string>
@@ -363,6 +363,7 @@
   <string name="RideSettingsPassword">Contraseña</string>
   <string name="RideSettingsPhone">Celular</string>
   <string name="RideSettingsVehiculeType">Tipo de Vehículo</string>
+  <string name="RideSettingsEmailTitle">Email</string>
   <string name="RideSummarySubTitleText">Gracias por viajar con {0}, esperamos pronto poder volver servirle</string>
   <string name="RideSummaryTitleText">Muchas Gracias</string>
   <string name="RingCode">Código de entrada</string>
@@ -686,4 +687,15 @@
   <string name="MessageActivityName">Message</string>
   <string name="BookSummaryActivityName">Book summary</string>
   <string name="BookStatusActivityName">Booking status</string>
+  <string name="Error_EditAutoTipTitle">Error</string>
+  <string name="View_RideLinqSummary">Order summary</string>
+  <string name="View_RideLinqStatus">Status</string>
+  <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
+  <string name="NetworkTimeOutPopupAlways">Always Accept</string>
+  <string name="TaxiHailNetworkTimeOutErrorTitle">Error</string>
+  <string name="DriverInfoCompany">Company:</string>
+  <string name="TaxiHailNetworkTimeOutPopupRefuse">Ignore</string>
+  <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
+  <string name="TaxiHailNetworkTimeOutPopupMessage">Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?</string>
+  <string name="TaxiHailNetworkTimeOutPopupTitle">Switch company?</string>
 </resources>
