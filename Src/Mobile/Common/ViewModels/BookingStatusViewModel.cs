@@ -568,7 +568,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			
 			homeViewModel.CurrentViewState = HomeViewModelState.Initial;
 
-			homeViewModel.LocateMe.ExecuteIfPossible();
+			homeViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
 		}
 
         private async void GoToBookingScreen()
