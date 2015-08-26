@@ -20,6 +20,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
+using CMTServices;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 
@@ -94,7 +95,9 @@ namespace apcurium.MK.Booking.Api.Jobs
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail);
 
             if (orderFromIbs.IsLoaded)
+            {
                 SendChargeTypeMessageToDriver(orderStatusDetail);
+            }
 
             if (orderFromIbs.IsWaitingToBeAssigned)
             {
@@ -390,11 +393,32 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus)
         {
-            if (orderStatus.VehicleLatitude != ibsOrderInfo.VehicleLatitude
-                || orderStatus.VehicleLongitude != ibsOrderInfo.VehicleLongitude)
+            // Use IBS vehicle position by default
+            var vehicleLatitude = ibsOrderInfo.VehicleLatitude;
+            var vehicleLongitude = ibsOrderInfo.VehicleLongitude;
+
+            var isUsingGeo = (!orderStatus.Market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo)
+                || (orderStatus.Market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo);
+
+            // Override with Geo position if enabled
+            if (isUsingGeo)
             {
-                _orderDao.UpdateVehiclePosition(orderStatus.OrderId, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
-                _notificationService.SendTaxiNearbyPush(orderStatus.OrderId, ibsOrderInfo.Status, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
+                var orderDetail = _orderDao.FindById(orderStatus.OrderId);
+                var vehicleStatus = new CmtGeoServiceClient(_serverSettings, _logger)
+                    .GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleRegistration);
+
+                if (vehicleStatus.Latitude != 0.0f && vehicleStatus.Longitude != 0.0f)
+                {
+                    vehicleLatitude = vehicleStatus.Latitude;
+                    vehicleLongitude = vehicleStatus.Longitude;
+                }
+            }
+
+            if (orderStatus.VehicleLatitude != vehicleLatitude
+                 || orderStatus.VehicleLongitude != vehicleLongitude)
+            {
+                _orderDao.UpdateVehiclePosition(orderStatus.OrderId, vehicleLatitude, vehicleLongitude);
+                _notificationService.SendTaxiNearbyPush(orderStatus.OrderId, ibsOrderInfo.Status, vehicleLatitude, vehicleLongitude);
 
                 _logger.LogMessage("Vehicle position updated. New position: ({0}, {1}).", ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
             }

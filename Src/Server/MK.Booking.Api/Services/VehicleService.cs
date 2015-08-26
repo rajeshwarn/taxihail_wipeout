@@ -413,7 +413,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (market.HasValue())
             {
                 // External market
-                switch ( _serverSettings.ServerData.ExternalAvailableVehiclesMode)
+                switch (_serverSettings.ServerData.ExternalAvailableVehiclesMode)
                 {
                     case ExternalAvailableVehiclesModes.Geo:
                         {
