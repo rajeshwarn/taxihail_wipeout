@@ -83,16 +83,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					PickupInputDisabled = true;
 					DestinationInputDisabled = true;
 					VehicleTypeInputDisabled = true;
+					IsDestinationSelected = false;
+					IsPickupSelected = false;
 					break;
 				case HomeViewModelState.PickDate:
 					PickupInputDisabled  = true;
 					DestinationInputDisabled = true;
 					VehicleTypeInputDisabled = true;
+					IsDestinationSelected = false;
+					IsPickupSelected = false;
 					break;
 				case HomeViewModelState.Initial:
 					PickupInputDisabled = false;
 					DestinationInputDisabled = false;
 					VehicleTypeInputDisabled = false;
+					IsDestinationSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
+					IsPickupSelected = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
 					break;
 			}
 		}
@@ -234,6 +240,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		public bool IsPickupSelected
+		{
+			get { return _isPickupSelected; }
+			set
+			{
+				_isPickupSelected = value; 
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool IsDestinationSelected
+		{
+			get { return _isDestinationSelected; }
+			set
+			{
+				_isDestinationSelected = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		private AddressSelectionMode _addressSelectionMode;
 		public AddressSelectionMode AddressSelectionMode
 		{
@@ -244,8 +270,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					_addressSelectionMode = value;
 					RaisePropertyChanged();
+
+					//We need to update if the street number is accessible.
+					UpdatePickupAndDestinationSelectionIfNeeded();
 				}
 			} 
+		}
+
+
+		private void UpdatePickupAndDestinationSelectionIfNeeded()
+		{
+			if (((HomeViewModel) Parent).CurrentViewState != HomeViewModelState.Initial)
+			{
+				return;
+			}
+
+			IsPickupSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
+			IsDestinationSelected = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
 		}
 
 		private bool _isLoadingAddress;
@@ -297,6 +338,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		}
 
 		private Direction _eta;
+		private bool _isPickupSelected;
+		private bool _isDestinationSelected;
+
 		public Direction Eta
 		{
 			get{ return _eta; }

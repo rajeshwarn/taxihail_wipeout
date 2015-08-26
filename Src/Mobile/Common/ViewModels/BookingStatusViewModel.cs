@@ -215,13 +215,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-				bool showVehicleInformation = Settings.ShowVehicleInformation;
-				bool isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+				var showVehicleInformation = Settings.ShowVehicleInformation;
+				var isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded;
-				bool hasDriverInformation = OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue ()
-					|| OrderStatusDetail.DriverInfos.LastName.HasValue ()
-					|| OrderStatusDetail.DriverInfos.FirstName.HasValue ();
+				var hasDriverInformation = OrderStatusDetail.DriverInfos.FullVehicleInfo.HasValue();
 
 				return showVehicleInformation && isOrderStatusValid && hasDriverInformation;
 			}
