@@ -16,6 +16,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
+using CMTServices;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -67,7 +68,6 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
             var orderPaymentDao = new OrderPaymentDao(() => new BookingDbContext(DbName));
 
             var notificationDetailsDaoMock = new Mock<IOrderNotificationsDetailDao>(MockBehavior.Loose);
-           
 
             Sut = new Api.Jobs.OrderStatusUpdater(ConfigurationManager,
                 bus.Object,
@@ -82,7 +82,8 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 PaymentServiceMock.Object,
                 new CreditCardDao(() => new BookingDbContext(DbName)),
                 new FeeService(PaymentServiceMock.Object, accountDao, new FeesDao(() => new BookingDbContext(DbName)), orderDao, orderPaymentDao, bus.Object, ConfigurationManager, LoggerMock.Object),
-                notificationDetailsDaoMock.Object, 
+                notificationDetailsDaoMock.Object,
+                new CmtGeoServiceClient(ConfigurationManager, LoggerMock.Object), 
                 LoggerMock.Object);
         }
         
