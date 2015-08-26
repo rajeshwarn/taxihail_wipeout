@@ -6,8 +6,6 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Messages;
 using Java.Lang;
-using TinyIoC;
-using TinyMessenger;
 using Boolean = Java.Lang.Boolean;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
@@ -15,9 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     [Activity(Label = "@string/DateTimePickerPickTitle", Theme = "@android:style/Theme.Dialog")]
     public class DateTimePickerActivity : Activity
     {
-        private static int TIME_PICKER_INTERVAL = 5;
+	    private const int TIME_PICKER_INTERVAL = 5;
 
-        private bool _ignoreEvent;
+	    private bool _ignoreEvent;
         private int _lastMinutes;
 
         protected override void OnCreate(Bundle bundle)
@@ -40,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<TimePicker>(Resource.Id.timePickerCtl).TimeChanged += TimeOnTimeChanged;
             FindViewById<DatePicker>(Resource.Id.datePickerCtl).UpdateDate(selected.Year, selected.Month - 1, selected.Day);
             FindViewById<Button>(Resource.Id.DoneButton).Click += DoneOnClick;
-            //FindViewById<Button>(Resource.Id.NowButton).Click += TimeOnClick;
 
             var useAmPm = Intent.GetBooleanExtra("UseAmPmFormat", true);
 
@@ -55,12 +52,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private DateTime GetNowWithInterval()
         {
             var now = DateTime.Now;
-            var i = GetNextIntervalMinutes(now.Minute);
-            if (i < now.Minute)
-            {
-                return new DateTime(now.Year, now.Month, now.Day, now.Hour + 1, 0, 0);
-            }
-            return new DateTime(now.Year, now.Month, now.Day, now.Hour, i, 0);
+            var nextIntervalMinutes = GetNextIntervalMinutes(now.Minute);
+            return nextIntervalMinutes < now.Minute 
+				? new DateTime(now.Year, now.Month, now.Day, now.Hour + 1, 0, 0) 
+				: new DateTime(now.Year, now.Month, now.Day, now.Hour, nextIntervalMinutes, 0);
         }
 
         private void DoneOnClick(object sender, EventArgs eventArgs)
@@ -70,20 +65,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             dcl.ClearFocus();
             tcl.ClearFocus();
 
-            var result = new DateTime(dcl.Year, dcl.Month + 1, dcl.DayOfMonth, tcl.CurrentHour.IntValue(),
-                tcl.CurrentMinute.IntValue(), 0);
+            var dateTime = new DateTime(dcl.Year, dcl.Month + 1, dcl.DayOfMonth, tcl.CurrentHour.IntValue(), tcl.CurrentMinute.IntValue(), 0);
 
-            if (result > DateTime.Now)
+            if (dateTime > DateTime.Now)
             {
-                var _result = new Intent();              
-                _result.PutExtra("DateTimeResult", result.Ticks);
-                SetResult(Android.App.Result.Ok, _result);
+                var result = new Intent();              
+                result.PutExtra("DateTimeResult", dateTime.Ticks);
+                SetResult(Android.App.Result.Ok, result);
                 Finish();
             }
             else
             {
-                this.ShowAlert(Resource.String.DateTimePickerPickInvalidDateTitle,
-                    Resource.String.DateTimePickerPickInvalidDateMessage);
+                this.ShowAlert(Resource.String.DateTimePickerPickInvalidDateTitle, Resource.String.DateTimePickerPickInvalidDateMessage);
             }
         }
 
@@ -95,15 +88,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 return;
 
 
-            bool goingUp = e.Minute > _lastMinutes;
+            var goingUp = e.Minute > _lastMinutes;
 
-            int i = GetNextIntervalMinutes(e.Minute);
+            var nextIntervalMinutes = GetNextIntervalMinutes(e.Minute);
 
-            _lastMinutes = i == 0 ? 60 : i;
+            _lastMinutes = nextIntervalMinutes == 0 ? 60 : nextIntervalMinutes;
 
             _ignoreEvent = true;
 
-            if (goingUp && (i < e.Minute))
+            if (goingUp && (nextIntervalMinutes < e.Minute))
             {
                 var h = FindViewById<TimePicker>(Resource.Id.timePickerCtl).CurrentHour.IntValue();
                 h ++;
@@ -113,22 +106,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 }
                 FindViewById<TimePicker>(Resource.Id.timePickerCtl).CurrentHour = new Integer(h);
             }
-            FindViewById<TimePicker>(Resource.Id.timePickerCtl).CurrentMinute = new Integer(i);
+            FindViewById<TimePicker>(Resource.Id.timePickerCtl).CurrentMinute = new Integer(nextIntervalMinutes);
             _ignoreEvent = false;
         }
 
         private int GetNextIntervalMinutes(int minute)
         {
-            if (minute%TIME_PICKER_INTERVAL != 0)
-            {
-                int minuteFloor = minute - (minute%TIME_PICKER_INTERVAL);
-                minute = minuteFloor + (minute == minuteFloor + 1 ? TIME_PICKER_INTERVAL : 0);
-                if (minute == 60)
-                {
-                    minute = 0;
-                }
-            }
-            return minute;
+	        if (minute%TIME_PICKER_INTERVAL == 0)
+	        {
+		        return minute;
+	        }
+	        var minuteFloor = minute - (minute%TIME_PICKER_INTERVAL);
+	        minute = minuteFloor + (minute == minuteFloor + 1 ? TIME_PICKER_INTERVAL : 0);
+	        if (minute == 60)
+	        {
+		        minute = 0;
+	        }
+	        return minute;
         }
 
         public override void OnBackPressed()
