@@ -525,6 +525,9 @@
   <data name="RideSettingsVehiculeType" xml:space="preserve">
     <value>Vehicle type</value>
   </data>
+  <data name="RideSettingsEmailTitle" xml:space="preserve">
+    <value>Email</value>
+  </data>
   <data name="RideSettingsCompany" xml:space="preserve">
     <value>Company</value>
   </data>
@@ -925,7 +928,7 @@
     <value>History</value>
   </data>
   <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
-    <value>Update Account</value>
+    <value>Profile</value>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
     <value>Payment</value>

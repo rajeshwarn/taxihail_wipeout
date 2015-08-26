@@ -1074,6 +1074,9 @@
   <data name="RideSettingsVehiculeType" xml:space="preserve">
     <value>Type de véhicule</value>
   </data>
+  <data name="RideSettingsEmailTitle" xml:space="preserve">
+    <value>Courriel</value>
+  </data>
   <data name="RideSummarySubTitleText" xml:space="preserve">
     <value>Merci d'avoir choisi {0} pour votre trajet, nous espérons vous revoir bientôt.</value>
   </data>

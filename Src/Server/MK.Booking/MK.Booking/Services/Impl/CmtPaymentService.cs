@@ -538,36 +538,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private TokenizeDeleteResponse DeleteCreditCard(TokenizeDeleteRequest request)
         {
-            InitializeServiceClient();
-
-            TokenizeDeleteResponse response;
-
-            try
+            return new TokenizeDeleteResponse
             {
-                var responseTask = _cmtPaymentServiceClient.DeleteAsync(request);
-                responseTask.Wait();
-                response = responseTask.Result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-
-                var aggregateException = ex as AggregateException;
-                if (aggregateException == null)
-                {
-                    throw ex;
-                }
-
-                var webServiceException = aggregateException.InnerException as WebServiceException;
-                if (webServiceException == null)
-                {
-                    throw ex;
-                }
-
-                response = JsonConvert.DeserializeObject<TokenizeDeleteResponse>(webServiceException.ResponseBody);
-            }
-            
-            return response;
+                ResponseCode = 1
+            };
         }
 
         private ReverseResponse Reverse(ReverseRequest request)

@@ -66,6 +66,36 @@
                         local:MvxBind="Text Name"
                         android:hint="@string/RideSettingsName" />
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dip"
+                        android:text="@string/RideSettingsEmailTitle"
+                        style="@style/BlackTextLabel" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/facebookLinked"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center_vertical"
+                            android:src="@drawable/facebook_account_icon"
+                            android:layout_gravity="center_vertical"
+                            android:hint="@string/RideSettingsName"
+                            local:MvxBind="Visibility IsLinkedWithFacebook, Converter=Visibility" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:textSize="18dp"
+                            style="@style/BlackTextLabel"
+                            android:text="thony@apcurium.com"
+                            local:MvxBind="Text Email"
+                            android:gravity="center_vertical" />
+                    </LinearLayout>
+                    <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="5dip"
@@ -91,8 +121,8 @@
                             local:MvxBind="Text Phone"
                             android:maxLines="1"
                             android:inputType="phone"
-                        android:singleLine="true"
-                        android:hint="@string/RideSettingsPhone" />
+                            android:singleLine="true"
+                            android:hint="@string/RideSettingsPhone" />
                     </LinearLayout>
                     <TextView
                         android:layout_width="fill_parent"
