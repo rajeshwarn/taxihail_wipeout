@@ -214,9 +214,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 			((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = screenSize.Y;
 
-			if (this.Services ().Localize.IsRightToLeft) {
+			if (this.Services ().Localize.IsRightToLeft) 
+			{
 				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).RightMargin = screenSize.X;
-			} else {
+			} else 
+			{
 				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = screenSize.X;
 			}
 
@@ -290,7 +292,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			set.Bind(_orderStatus)
 				.For(v => v.AnimatedVisibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq });
 
 			set.Bind(_searchAddress)
 				.For(v => v.Visibility)
@@ -305,7 +307,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			set.Bind(_appBarBookingStatus)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq });
 
 			var settingsAndLocationVisibleStates = new[]
 		    {
@@ -333,7 +335,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		    set.Bind(_touchMap)
 			    .For(v => v.IsMapGestuesEnabled)
 			    .To(vm => vm.CurrentViewState)
-				.WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus });
+				.WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq });
 
 			set.Bind(_btnLocation)
 				.For(v => v.Enabled)
