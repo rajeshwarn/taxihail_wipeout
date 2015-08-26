@@ -40,7 +40,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<SaveTemporaryOrderPaymentInfo>,
         ICommandHandler<UpdateAutoTip>,
         ICommandHandler<LogOriginalEta>,
-        ICommandHandler<UpdateOrderNotificationDetail>
+        ICommandHandler<UpdateOrderNotificationDetail>,
+		ICommandHandler<CreateReportOrder>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -57,7 +58,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             order.Cancel();
             _repository.Save(order, command.Id.ToString());
         }
-        
+
         public void Handle(ChangeOrderStatus command)
         {
             var order = _repository.Find(command.Status.OrderId);
@@ -76,11 +77,40 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreateOrder command)
         {
-            var order = new Order(command.OrderId, command.AccountId, command.PickupDate,
-                command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
-                command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
-                command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-                command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees);
+			var order = _repository.Find(command.OrderId);
+
+			if (order == null)
+			{
+				order = new Order(command.OrderId, command.AccountId, command.PickupDate,
+					command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
+					command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
+					command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
+					command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees);
+			}
+			else
+			{
+				order.AccountId = command.AccountId;
+				order.PickupDate = command.PickupDate;
+				order.PickupAddress = command.PickupAddress;
+				order.DropOffAddress = command.DropOffAddress;
+				order.Settings = command.Settings;
+				order.EstimatedFare = command.EstimatedFare;
+				order.UserAgent = command.UserAgent;
+				order.ClientLanguageCode = command.ClientLanguageCode;
+				order.UserLatitude = command.UserLatitude;
+				order.UserLongitude = command.UserLongitude;
+				order.UserNote = command.UserNote;
+				order.ClientVersion = command.ClientVersion;
+				order.IsChargeAccountPaymentWithCardOnFile = command.IsChargeAccountPaymentWithCardOnFile;
+				order.CompanyKey = command.CompanyKey;
+				order.CompanyName = command.CompanyName;
+				order.Market = command.Market;
+				order.IsPrepaid = command.IsPrepaid;
+				order.BookingFees = command.BookingFees;
+			}
+
+
+			order.UpdateOrderCreated();
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -90,6 +120,51 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             _repository.Save(order, command.Id.ToString());
         }
+
+		public void Handle(CreateReportOrder command)
+		{
+			var order = _repository.Find(command.OrderId);
+
+			if (order == null)
+			{
+				order = new Order(command.OrderId, command.AccountId, command.PickupDate,
+				command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
+				command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
+				command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
+				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees);
+			}
+			else
+			{
+				order.AccountId = command.AccountId;
+				order.PickupDate = command.PickupDate;
+				order.PickupAddress = command.PickupAddress;
+				order.DropOffAddress = command.DropOffAddress;
+				order.Settings = command.Settings;
+				order.EstimatedFare = command.EstimatedFare;
+				order.UserAgent = command.UserAgent;
+				order.ClientLanguageCode = command.ClientLanguageCode;
+				order.UserLatitude = command.UserLatitude;
+				order.UserLongitude = command.UserLongitude;
+				order.UserNote = command.UserNote;
+				order.ClientVersion = command.ClientVersion;
+				order.IsChargeAccountPaymentWithCardOnFile = command.IsChargeAccountPaymentWithCardOnFile;
+				order.CompanyKey = command.CompanyKey;
+				order.CompanyName = command.CompanyName;
+				order.Market = command.Market;
+				order.IsPrepaid = command.IsPrepaid;
+				order.BookingFees = command.BookingFees;
+			}
+
+			order.UpdateOrderReportCreated(command.Error);
+
+			if (command.Payment.PayWithCreditCard)
+			{
+				var payment = Mapper.Map<PaymentInformation>(command.Payment);
+				order.SetPaymentInformation(payment);
+			}
+
+			_repository.Save(order, command.Id.ToString());
+		}
 
         public void Handle(PairForPayment command)
         {

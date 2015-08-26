@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<AutoTipUpdated>(NoAction);
             Handles<OriginalEtaLogged>(NoAction);
             Handles<OrderNotificationDetailUpdated>(NoAction);
+			Handles<OrderReportCreated>(OnOrderReportCreated);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -96,6 +97,42 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+		public Guid AccountId { get; set; }
+
+		public DateTime PickupDate { get; set; }
+
+		public Address PickupAddress { get; set; }
+
+		public Address DropOffAddress { get; set; }
+
+		public BookingSettings Settings { get; set; }
+
+		public double? EstimatedFare { get; set; }
+
+		public string UserAgent { get; set; }
+
+		public string ClientLanguageCode { get; set; }
+
+		public double? UserLatitude { get; set; }
+
+		public double? UserLongitude { get; set; }
+
+		public string UserNote { get; set; }
+
+		public string ClientVersion { get; set; }
+
+		public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
+
+		public string CompanyKey { get; set; }
+
+		public string CompanyName { get; set; }
+
+		public string Market { get; set; }
+
+		public bool IsPrepaid { get; set; }
+
+		public decimal BookingFees { get; set; }
+
         public Order(Guid id, Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
             double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
             bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees)
@@ -107,29 +144,79 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Missing required fields");
             }
 
-            Update(new OrderCreated
-            {
-                AccountId = accountId,
-                PickupDate = pickupDate,
-                PickupAddress = pickupAddress,
-                DropOffAddress = dropOffAddress,
-                Settings = settings,
-                EstimatedFare = estimatedFare,
-                CreatedDate = DateTime.Now,
-                UserAgent = userAgent,
-                ClientLanguageCode = clientLanguageCode,
-                UserLatitude = userLatitude,
-                UserLongitude = userLongitude,
-                UserNote = userNote,
-                ClientVersion = clientVersion,
-                IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
-                CompanyKey = companyKey,
-                CompanyName = companyName,
-                Market = market,
-                IsPrepaid = isPrepaid,
-                BookingFees = bookingFees
-            });
+			AccountId = accountId;
+			PickupDate = pickupDate;
+			PickupAddress = pickupAddress;
+			DropOffAddress = dropOffAddress;
+			Settings = settings;
+			EstimatedFare = estimatedFare;
+			UserAgent = userAgent;
+			ClientLanguageCode = clientLanguageCode;
+			UserLatitude = userLatitude;
+			UserLongitude = userLongitude;
+			UserNote = userNote;
+			ClientVersion = clientVersion;
+			IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile;
+			CompanyKey = companyKey;
+			CompanyName = companyName;
+			Market = market;
+			IsPrepaid = isPrepaid;
+			BookingFees = bookingFees;
         }
+
+
+		public void UpdateOrderCreated()
+		{
+			Update(new OrderCreated
+			{
+				AccountId = AccountId,
+				PickupDate = PickupDate,
+				PickupAddress = PickupAddress,
+				DropOffAddress = DropOffAddress,
+				Settings = Settings,
+				EstimatedFare = EstimatedFare,
+				CreatedDate = DateTime.Now,
+				UserAgent = UserAgent,
+				ClientLanguageCode = ClientLanguageCode,
+				UserLatitude = UserLatitude,
+				UserLongitude = UserLongitude,
+				UserNote = UserNote,
+				ClientVersion = ClientVersion,
+				IsChargeAccountPaymentWithCardOnFile = IsChargeAccountPaymentWithCardOnFile,
+				CompanyKey = CompanyKey,
+				CompanyName = CompanyName,
+				Market = Market,
+				IsPrepaid = IsPrepaid,
+				BookingFees = BookingFees
+			});
+		}
+
+		public void UpdateOrderReportCreated(string error)
+		{
+			Update(new OrderReportCreated
+			{
+				AccountId = AccountId,
+				PickupDate = PickupDate,
+				PickupAddress = PickupAddress,
+				DropOffAddress = DropOffAddress,
+				Settings = Settings,
+				EstimatedFare = EstimatedFare,
+				CreatedDate = DateTime.Now,
+				UserAgent = UserAgent,
+				ClientLanguageCode = ClientLanguageCode,
+				UserLatitude = UserLatitude,
+				UserLongitude = UserLongitude,
+				UserNote = UserNote,
+				ClientVersion = ClientVersion,
+				IsChargeAccountPaymentWithCardOnFile = IsChargeAccountPaymentWithCardOnFile,
+				CompanyKey = CompanyKey,
+				CompanyName = CompanyName,
+				Market = Market,
+				IsPrepaid = IsPrepaid,
+				BookingFees = BookingFees,
+				Error = error
+			});
+		}
 
         public void AddIbsOrderInfo(int ibsOrderId)
         {
@@ -384,6 +471,11 @@ namespace apcurium.MK.Booking.Domain
         {
             _status = OrderStatus.Created;
         }
+
+		public void OnOrderReportCreated(OrderReportCreated obj)
+		{
+			_status = OrderStatus.Unknown;
+		}
 
         private void OnOrderCancelled(OrderCancelled obj)
         {
