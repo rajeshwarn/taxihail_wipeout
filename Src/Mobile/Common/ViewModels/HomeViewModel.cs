@@ -150,10 +150,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    {
                     var orderManualRideLinqDetail = await _bookingService.GetTripInfoFromManualRideLinq(lastOrder.Item1.Id);
 
-                    ShowViewModelAndRemoveFromHistory<ManualRideLinqStatusViewModel>(new
-                    {
-                        orderManualRideLinqDetail = orderManualRideLinqDetail.ToJson()
-                    });
+                    GoToManualRideLinq(orderManualRideLinqDetail);
 			    }
 			    else
 			    {
@@ -342,7 +339,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			CurrentViewState = HomeViewModelState.ManualRidelinq;
 
-
+			BookingStatus.StartBookingStatus(detail);
 		}
 
 		public PanelMenuViewModel Panel { get; set; }

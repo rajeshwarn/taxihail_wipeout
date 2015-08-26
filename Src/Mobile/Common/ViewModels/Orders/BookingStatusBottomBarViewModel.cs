@@ -59,6 +59,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		public void NotifyIsCallCompanyHiddenChanged()
+		{
+			RaisePropertyChanged(() => IsCallCompanyHidden);
+		}
+
+		public bool IsCallCompanyHidden
+		{
+			get { return Settings.HideCallDispatchButton || ParentViewModel.ManualRideLinqDetail != null; }
+		}
+
 		public ICommand CancelOrder
 		{
 			get

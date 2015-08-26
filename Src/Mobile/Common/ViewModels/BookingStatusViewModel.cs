@@ -75,6 +75,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatusDetail = orderStatusDetail;
 			DisplayOrderNumber();
 
+			BottomBar.NotifyIsCallCompanyHiddenChanged();
+
 			StatusInfoText = string.Format(this.Services().Localize["Processing"]);
 
 			BottomBar.IsCancelButtonVisible = false;
@@ -88,6 +90,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void StartBookingStatus(OrderManualRideLinqDetail orderManualRideLinqDetail)
 		{
 			ManualRideLinqDetail = orderManualRideLinqDetail;
+
+			BottomBar.NotifyIsCallCompanyHiddenChanged();
 
 			_subscriptions.Disposable = GetTimerObservable()
 				.SelectMany(_ => RefreshManualRideLinqDetails())
