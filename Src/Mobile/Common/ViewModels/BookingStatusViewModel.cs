@@ -5,7 +5,6 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -17,11 +16,11 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Maps;
 using System.Net;
+using System.Reactive;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Platform;
 using ServiceStack.ServiceClient.Web;
-using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -31,6 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IBookingService _bookingService;
 		private readonly IVehicleService _vehicleService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly SerialDisposable _subscriptions = new SerialDisposable();
 
         private int _refreshPeriod = 5;              // in seconds
         private bool _waitingToNavigateAfterTimeOut;
@@ -45,6 +45,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set
 			{
 				_bottomBar = value; 
+				RaisePropertyChanged();
+			}
+		}
+
+		public OrderManualRideLinqDetail ManualRideLinqDetail
+		{
+			get { return _manualRideLinqDetail; }
+			set
+			{
+				_manualRideLinqDetail = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -72,19 +82,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
 
-			_refreshPeriod = Settings.OrderStatus.ClientPollingInterval;
-
-			_subscriptions.Disposable = Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshPeriod))
-				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(_ => RefreshStatus(), Logger.LogError);
+			_subscriptions.Disposable = GetTimerObservable().Subscribe(_ => RefreshStatus(), Logger.LogError);
 		}
 
-		public void StopBookingStatus()
+		public void StartBookingStatus(OrderManualRideLinqDetail orderManualRideLinqDetail)
+		{
+			ManualRideLinqDetail = orderManualRideLinqDetail;
+
+			_subscriptions.Disposable = GetTimerObservable()
+				.SelectMany(_ => RefreshManualRideLinqDetails())
+				.Where(orderDetails => orderDetails.EndTime.HasValue)
+				.Take(1) // trigger only once
+				.Subscribe(ToRideSummary, Logger.LogError);
+		}
+
+		private IObservable<Unit> GetTimerObservable()
+		{
+			_refreshPeriod = Settings.OrderStatus.ClientPollingInterval;
+
+			return Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshPeriod))
+				.ObserveOn(SynchronizationContext.Current)
+				.Select(_ => Unit.Default);
+		}
+		
+
+		private void StopBookingStatus()
 		{
 			_subscriptions.Disposable = null;
 
 			Order = null;
 			OrderStatusDetail = null;
+
+			ManualRideLinqDetail = null;
 
 			_orderWorkflowService.PrepareForNewOrder();
 
@@ -93,7 +122,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			MapCenter = null;
 		}
 
-		private readonly SerialDisposable _subscriptions = new SerialDisposable();
+		private async Task<OrderManualRideLinqDetail> RefreshManualRideLinqDetails()
+		{
+			var manualRideLinqDetails =  await _bookingService.GetTripInfoFromManualRideLinq(ManualRideLinqDetail.OrderId);
+
+			ManualRideLinqDetail = manualRideLinqDetails;
+
+			var localize = this.Services().Localize;
+
+			var driver = "{0}: {1}".InvariantCultureFormat(localize["DriverInfoDriver"], manualRideLinqDetails.DriverId);
+
+			var pairingCode = "{0}: {1}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingCode"], manualRideLinqDetails.PairingCode);
+
+			StatusInfoText = driver + "\n\r" + pairingCode;
+
+			return manualRideLinqDetails;
+		}
+
+		private void ToRideSummary(OrderManualRideLinqDetail orderManualRideLinqDetail)
+		{
+			_bookingService.ClearLastOrder();
+
+			var orderSummary = orderManualRideLinqDetail.ToJson();
+
+			StopBookingStatus();
+
+			ShowViewModel<ManualRideLinqSummaryViewModel>(new { orderManualRideLinqDetail = orderSummary });
+		}
 
 		#region Bindings
 
@@ -354,6 +409,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _refreshStatusIsExecuting;
 		private BookingStatusBottomBarViewModel _bottomBar;
+		private OrderManualRideLinqDetail _manualRideLinqDetail;
 
 		public async void RefreshStatus()
         {

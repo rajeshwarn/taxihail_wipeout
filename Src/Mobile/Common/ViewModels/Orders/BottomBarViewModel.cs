@@ -703,19 +703,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
                     var localize = this.Services().Localize;
 
-                    if (_accountService.CurrentAccount.DefaultCreditCard == null
-						|| _accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
+                    if (_accountService.CurrentAccount.DefaultCreditCard == null || _accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
                     {
-                        this.Services().Message.ShowMessage(
-                            localize["ErrorCreatingOrderTitle"],
-                            localize["ManualRideLinqNoCardOnFile"]);
+                        this.Services().Message.ShowMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqNoCardOnFile"]);
                         return;
                     }
-
-                    ShowViewModel<ManualPairingForRideLinqViewModel>();
+	                var homeViewModel = (HomeViewModel) Parent;
+					ShowSubViewModel<ManualPairingForRideLinqViewModel, OrderManualRideLinqDetail>(null, homeViewModel.GoToManualRideLinq);
                 });
             }
         }
+
+
+	    
 
 	    private async Task ShowFareEstimateAlertDialogIfNecessary()
         {

@@ -338,6 +338,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BookingStatus.StartBookingStatus(order, orderStatusDetail);
 		}
 
+		public void GoToManualRideLinq(OrderManualRideLinqDetail detail)
+		{
+			CurrentViewState = HomeViewModelState.ManualRidelinq;
+
+
+		}
+
 		public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
