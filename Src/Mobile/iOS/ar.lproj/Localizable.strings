@@ -632,4 +632,5 @@
 "PasswordRecoveryActivityName"="Password recovery";
 "LocationDetailsActivityName"="Location Details";
 "LoginActivityName"="Login";
-"ManualRideLinqSummaryActivityName"="Manual Ridelinq summary";
+"OrderStatus_Medallion"="Medallion";
+"ManualRideLinqSummaryActivityName"="Manual ridelinq summary";

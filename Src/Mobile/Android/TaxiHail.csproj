@@ -261,7 +261,10 @@
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\Behavior\PairingCodeBehavior.cs" />
+    <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
+    <Compile Include="Controls\Widgets\OrderStatusView.cs" />
+    <Compile Include="Controls\Widgets\OrderStatusContactTaxiOverlay.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
@@ -344,7 +347,6 @@
     <AndroidResource Include="Resources\Layout\Control_EditTextLeftImage.axml" />
     <Compile Include="Binding\EditTextCreditCardNumberBinding.cs" />
     <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
-    <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Services\Social\FacebookService.cs" />
     <Compile Include="Services\Social\TwitterService.cs" />
     <AndroidResource Include="Resources\Drawable\edit_text_rounded.xml" />
@@ -389,7 +391,6 @@
     <Compile Include="Controls\Widgets\EditTextSpinner.cs" />
     <Compile Include="Controls\Widgets\PictureListViewCell.cs" />
     <Compile Include="Controls\Widgets\SlidingPanel.cs" />
-    <Compile Include="Controls\Widgets\TouchMap.cs" />
     <Compile Include="Controls\Widgets\HorizontalPager.cs" />
     <AndroidResource Include="Resources\Drawable\button_action_black_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
@@ -457,7 +458,9 @@
     <Compile Include="Activities\Location\LocationDetailActivity.cs" />
     <Compile Include="Activities\Location\LocationListActivity.cs" />
     <Compile Include="Activities\HomeActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_Home.axml" />
+    <AndroidResource Include="Resources\Layout\View_Home.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <Compile Include="Controls\Widgets\IMvxBindable.cs" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_old.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
@@ -741,9 +744,6 @@
     <AndroidResource Include="Resources\Layout\SpinnerCell.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_BookingStatus.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_DateTimePicker.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -840,6 +840,9 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\train.png" />
     <AndroidResource Include="Resources\Drawable\button_action_blue_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_blue_text_selector.xml" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\phone.png" />
+    <AndroidResource Include="Resources\Drawable\button_action_borderlessgray_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\drop_shadow_opaque.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
@@ -930,6 +933,15 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_ManualRideLinqStatus.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\SubView_BookingStatus.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\SubView_Appbar_BookingStatus.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\SubView_ContactTaxiOverlay.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

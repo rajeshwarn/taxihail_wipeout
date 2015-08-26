@@ -34,6 +34,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         /// Book a taxi dialog.
         /// </summary>
         BookATaxi,
+		/// <summary>
+		/// Booking Status mode (replaces the old booking status page).
+		/// </summary>
+		BookingStatus
     }
 }
 

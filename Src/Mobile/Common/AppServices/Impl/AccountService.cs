@@ -241,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				try
 				{
 					var oldDeprecatedAccount = UserCache.Get<DeprecatedAccount>("LoggedUser");
-					if(oldDeprecatedAccount.DefaultCreditCard.HasValue)
+					if(oldDeprecatedAccount != null && oldDeprecatedAccount.DefaultCreditCard.HasValue)
 					{
 						// there's an old account cached, force logout to set the new account object in cache
 						return null;

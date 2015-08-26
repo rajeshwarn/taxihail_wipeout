@@ -652,7 +652,9 @@
 "BookStatusActivityName"="Booking status";
 "UserTaxiHailNetworkSettingsActivityName"="User TaxiHail network settings";
 "ManualPairingForRideLinqActivityName"="Manual pairing for RideLinq";
+"ManualRideLinqSummaryActivityName"="Manual ridelinq summary";
 "ManualRideLinqStatusActivityName"="Manual RideLinq Status";
 "ManualRideLinqSummaryActivityName"="Manual Ridelinq summary";
 "BookSummaryActivityName"="Book summary";
 "MessageActivityName"="Message";
+"OrderStatus_Medallion"="Medallion";

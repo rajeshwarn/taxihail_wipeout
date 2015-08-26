@@ -140,6 +140,7 @@
     <Compile Include="AppServices\INetworkRoamingService.cs" />
     <Compile Include="AppServices\IPromotionService.cs" />
     <Compile Include="AsyncCommand.cs" />
+    <Compile Include="BindingConverter\HomeViewStateToVisibilityConverter.cs" />
     <Compile Include="Extensions\DisposableExtensions.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
@@ -211,6 +212,7 @@
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
     <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Orders\BookingStatusBottomBarViewModel.cs" />
     <Compile Include="ViewModels\PromotionItemViewModel.cs" />
     <Compile Include="ViewModels\PromotionViewModel.cs" />
     <Compile Include="ViewModels\SelectableItemViewModel.cs" />
@@ -325,7 +327,6 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="ViewModels\UpdatedTermsAndConditionsViewModel.cs" />
     <Compile Include="ViewModels\IRequestPresentationState.cs" />
-    <Compile Include="ViewModels\Orders\HomeViewModelStateRequestedEventArgs.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="ViewModels\ISubViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />

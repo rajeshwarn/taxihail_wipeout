@@ -1,12 +1,16 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Cirrious.CrossCore.Converters;
 
 namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
 	public class EnumToBoolConverter: MvxValueConverter
 	{
-		private bool _inverted;
+		private readonly bool _inverted;
 
 		public EnumToBoolConverter(bool inverted = false)
 		{
@@ -15,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 
 		public override object Convert (object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value == null)
+			if (value == null || parameter == null)
 			{
 				return InvertResultIfNecessary (false);
 			}
@@ -26,7 +30,25 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 			{
 				return InvertResultIfNecessary (false);
 			}
-			return InvertResultIfNecessary(name.Equals(parameter.ToString()));
+
+			var paramArray = parameter as IEnumerable;
+			var paramString = parameter as string;
+
+			var result = false;
+
+			if (paramString.HasValue())
+			{
+				result = name.Equals(parameter.ToString());
+			}
+			else if (paramArray != null)
+			{
+				result = paramArray.Cast<object>()
+					.Where(item => item != null)
+					.Select(item => item.ToString())
+					.Any(item => item.Equals(name));
+			}
+
+			return InvertResultIfNecessary(result);
 		}
 
 		private bool InvertResultIfNecessary(bool value)

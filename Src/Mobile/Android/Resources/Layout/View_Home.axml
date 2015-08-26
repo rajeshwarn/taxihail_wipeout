@@ -65,6 +65,11 @@
                         android:layout_width="fill_parent"
                         android:id="@+id/orderOptions"
                         android:layout_height="wrap_content" />
+										<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusView
+											  android:layout_width="fill_parent"
+												android:layout_height="wrap_content"
+												android:id="@+id/orderStatus"
+												android:layout_gravity="top"/>
                 <!-- Menu button -->
                     <LinearLayout
                         android:clickable="true"
@@ -86,6 +91,7 @@
                 <!-- Locate Me button -->
                     <LinearLayout
                         android:clickable="true"
+												android:id="@+id/btnLocation"
                         local:MvxBind="Click LocateMe"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
@@ -95,7 +101,6 @@
                         android:layout_gravity="right|bottom">
                         <ImageView
                             android:clickable="false"
-                            android:id="@+id/btnLocation"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="center"
@@ -105,7 +110,7 @@
                 <!-- Airport Button -->
                     <LinearLayout
                         android:clickable="true"
-                        local:MvxBind="Click AirportSearch; Visibility Settings.IsAirportButtonEnabled, Converter=Visibility"
+                        local:MvxBind="Click AirportSearch; Visibility IsAirportButtonHidden, Converter=InvertedVisibility; Enabled CurrentViewState, Converter=EnumToBool, ConverterParameter=Initial"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -124,7 +129,7 @@
                 <!-- Train station Button -->
                     <LinearLayout
                         android:clickable="true"
-                        local:MvxBind="Click TrainStationSearch; Visibility Settings.IsTrainStationButtonEnabled, Converter=Visibility"
+                        local:MvxBind="Click TrainStationSearch; Visibility IsTrainButtonHidden, Converter=InvertedVisibility; Enabled CurrentViewState, Converter=EnumToBool, ConverterParameter=Initial"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -163,6 +168,12 @@
                     android:id="@+id/appBar"
                     android:layout_height="wrap_content"
                     android:background="@color/setting_menu_color" />
+							<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarBookingStatus
+									android:layout_width="fill_parent"
+									android:layout_height="wrap_content"
+									android:id="@+id/appBarBookingStatus"
+									android:background="@color/setting_menu_color" />
+									
             </LinearLayout>
         <!-- Address Search -->
             <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressPicker

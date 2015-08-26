@@ -24,6 +24,11 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using System.ComponentModel;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Common;
+using TinyIoC;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -40,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private readonly SerialDisposable _userMovedMapSubsciption = new SerialDisposable();
 
         private bool _useThemeColorForPickupAndDestinationMapIcons;
+        private bool _showAssignedVehicleNumberOnPin;
 
         public OrderMapView(IntPtr handle) :base(handle)
         {
@@ -61,7 +67,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
              
 			this.RegionChanged += (s, e) => 
 			{
-				ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray () : null, GetMapBoundsFromProjection()));
+                // If no pending orders or status is not assigned yet
+                if (_orderStatusDetail == null
+                    || _orderStatusDetail.IBSStatusId == null
+                    || (_orderStatusDetail != null && _orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting))
+                {
+                    ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray () : null, GetMapBoundsFromProjection()));
+                }
 			};
         }
 
@@ -81,7 +93,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void Initialize()
         {
-			_useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+            _showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
+            _useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
 
             this.DelayBind(() => 
             {
@@ -103,6 +117,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     .For("AvailableVehicles")
                     .To(vm => vm.AvailableVehicles);
 
+                set.Bind()
+                   .For("IsMapDisabled")
+                   .To(vm => vm.IsMapDisabled);
+
                 set.Apply();
             });
 
@@ -111,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             InitializeGesture();
         }
-            
+
         private void InitializeGesture()
         {
             // disable on map since we're handling gestures ourselves
@@ -219,6 +237,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+        private bool _isMapDisabled;
+        public bool IsMapDisabled
+        {
+            get { return _isMapDisabled; }
+            set
+            {
+                _isMapDisabled = value;
+                SetEnabled(!value);
+
+                if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
+                {
+                    // Hide movable pickup pin
+                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
+                    SetOverlay(_pickupCenterPin, false);
+
+                    // Hide movable dropoff pin
+                    SetAnnotation(PickupAddress, _destinationAnnotation, false);
+                    SetOverlay(_dropoffCenterPin, false);
+
+                    // Show static pickup pic
+                    SetAnnotation(PickupAddress, _pickupAnnotation, true);
+
+                    // Show static dropoff pic
+                    SetAnnotation(DestinationAddress, _destinationAnnotation, true);
+                }
+            }
+        }
+
         private void OnPickupAddressChanged()
         {
             ShowMarkers();
@@ -301,19 +347,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             else
             {
-                SetAnnotation(PickupAddress, _pickupAnnotation, false);
-				SetOverlay(_dropoffCenterPin, false);
-				SetOverlay(_pickupCenterPin, true);
-
-                if (DestinationAddress.HasValidCoordinate())
+                if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
                 {
-                    SetAnnotation(DestinationAddress, _destinationAnnotation, true);
+                    return;
+
                 }
                 else
                 {
-                    SetAnnotation(DestinationAddress, _destinationAnnotation, false);
+                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
+                    SetOverlay(_dropoffCenterPin, false);
+                    SetOverlay(_pickupCenterPin, true);
+
+                    if (DestinationAddress.HasValidCoordinate())
+                    {
+                        SetAnnotation(DestinationAddress, _destinationAnnotation, true);
+                    }
+                    else
+                    {
+                        SetAnnotation(DestinationAddress, _destinationAnnotation, false);
+                    }
                 }
-            }            
+            }
         }
                      
         private void HandleTouchBegin (object sender, EventArgs e)
@@ -360,7 +414,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             });
         }
 
-        private void ClearAllAnnotations()
+        private void ClearAvailableVehiclesAnnotations()
         {
             foreach (var vehicleAnnotation in _availableVehicleAnnotations)
             {
@@ -399,7 +453,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             if (vehicles == null)
             {
-                ClearAllAnnotations ();
+                ClearAvailableVehiclesAnnotations();
                 return;
             }
 
@@ -432,17 +486,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        public void SetEnabled(bool enabled)
+        private void SetEnabled(bool enabled)
         {
             this.ScrollEnabled = enabled;
             this.UserInteractionEnabled = enabled;                       
 
             if (_mapBlurOverlay == null)
             {
-                var _size = this.Bounds.Size;
+                var _size = UIScreen.MainScreen.Bounds.Size;
                 _mapBlurOverlay = new UIImageView(new CGRect(new CGPoint(0, 0), new CGSize(_size.Width, _size.Height)));
                 _mapBlurOverlay.ContentMode = UIViewContentMode.ScaleToFill;
-                _mapBlurOverlay.Frame = this.Frame;
                 this.AddSubview(_mapBlurOverlay);
             }
 
@@ -470,26 +523,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _userMovedMapSubsciption.Disposable = null;
         }
 
-        private void ChangeState(HomeViewModelPresentationHint hint)
-        {
-            switch (hint.State)
-            {
-                case HomeViewModelState.Initial:
-                    SetEnabled(true);
-                    break;
-                default:
-                    SetEnabled(false);
-                    break;
-            }
-        }
-
         public void ChangePresentation(ChangePresentationHint hint)
         {
-            if (hint is HomeViewModelPresentationHint)
-            {
-                ChangeState((HomeViewModelPresentationHint)hint);
-            }
-
             var streetLevelZoomHint = hint as ZoomToStreetLevelPresentationHint;
 			if (streetLevelZoomHint != null)
             {
@@ -526,5 +561,184 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 this.SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(centerHint.Latitude, centerHint.Longitude), Region.Span), true);
             }
         }
+
+        #region OrderStatus
+
+        private MKAnnotation _taxiLocationPin;
+
+        private OrderStatusDetail _orderStatusDetail;
+        public OrderStatusDetail OrderStatusDetail
+        {
+            get { return _orderStatusDetail; }
+            set
+            {
+                _orderStatusDetail = value;
+
+                if (_taxiLocationPin != null)
+                {
+                    RemoveAnnotation(_taxiLocationPin);
+                    _taxiLocationPin = null;
+                }
+
+                if (value != null)
+                {
+                    var coord = new CLLocationCoordinate2D(0,0);            
+                    if (value.VehicleLatitude.HasValue
+                        && value.VehicleLongitude.HasValue
+                        && value.VehicleLongitude.Value != 0
+                        && value.VehicleLatitude.Value != 0
+                        && !string.IsNullOrEmpty(value.VehicleNumber) 
+                        && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
+                    {
+                        coord = new CLLocationCoordinate2D(value.VehicleLatitude.Value, value.VehicleLongitude.Value);
+                    }
+                    _taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, _useThemeColorForPickupAndDestinationMapIcons, _showAssignedVehicleNumberOnPin);
+                    AddAnnotation(_taxiLocationPin);
+
+                    if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned)
+                    {
+                        ClearAvailableVehiclesAnnotations();
+                    }
+
+                    if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)
+                    {
+                        RemoveAnnotation (_pickupAnnotation);
+                    }
+                }
+                SetNeedsDisplay();
+            }
+        }
+
+        private IEnumerable<CoordinateViewModel> _center;
+        public IEnumerable<CoordinateViewModel> MapCenter
+        {
+            get { return _center; }
+            set
+            {
+                _center = value;                
+                SetZoom(value);                   
+            }
+        }
+
+	    private double GetLatitudeDeltaThreshold()
+	    {
+		    return UIHelper.Is35InchDisplay
+				? 0.001
+				: 0.004;
+	    }
+
+        private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
+        {
+            var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.ToArray();
+            if(addresseesToDisplay == null || !coordinateViewModels.Any())
+            {
+                return;
+            }
+
+            var region = new MKCoordinateRegion();
+            double? deltaLat = null;
+            double? deltaLng = null;
+            CLLocationCoordinate2D center;
+
+            if (coordinateViewModels.Count() == 1)
+            {
+                var lat = coordinateViewModels.ElementAt(0).Coordinate.Latitude;
+                var lon = coordinateViewModels.ElementAt(0).Coordinate.Longitude;
+
+                if (coordinateViewModels.ElementAt(0).Zoom == ZoomLevel.DontChange)
+                {
+                    region = Region;
+                }
+                else
+                {
+                    deltaLat = 0.004;
+                    deltaLng = 0.004;
+                }
+
+                center = new CLLocationCoordinate2D(lat, lon);
+            }
+            else
+            {
+	            if (ViewModel == null)
+	            {
+		            return;
+	            }
+
+	            var settings = ViewModel.Settings;
+
+                var minLat = coordinateViewModels.Min(a => a.Coordinate.Latitude);
+                var maxLat = coordinateViewModels.Max(a => a.Coordinate.Latitude);
+                var minLon = coordinateViewModels.Min(a => a.Coordinate.Longitude);
+                var maxLon = coordinateViewModels.Max(a => a.Coordinate.Longitude);
+
+				const double statusOffset = .0045;
+	            const double vehicleInformationOffset = 0.0007;
+
+	            double latitudeOffset = 0;
+				// Changes the map zoom to prevent hiding the pin under the booking status.
+				if (Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
+				{
+					latitudeOffset += statusOffset;
+
+                    var bookingStatusViewModel = ((HomeViewModel)ViewModel.Parent).BookingStatus;
+
+					if (settings.ShowCallDriver)
+					{
+						latitudeOffset += statusOffset;
+					}
+
+					if (settings.ShowVehicleInformation)
+					{
+						if (bookingStatusViewModel.VehicleDriverHidden)
+						{
+							latitudeOffset += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.VehicleLicenceHidden)
+						{
+							latitudeOffset += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.VehicleColorHidden)
+						{
+							latitudeOffset += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.VehicleMakeHidden)
+						{
+							latitudeOffset += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.VehicleModelHidden)
+						{
+							latitudeOffset += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.VehicleTypeHidden)
+						{
+							latitudeOffset += vehicleInformationOffset;
+						}
+						if (bookingStatusViewModel.CompanyHidden)
+						{
+							latitudeOffset += vehicleInformationOffset;
+						}
+					}
+				}
+
+				deltaLat = (Math.Abs(maxLat - minLat)) * 1.5;
+                deltaLng = (Math.Abs(maxLon - minLon)) * 1.5;
+				center = new CLLocationCoordinate2D(((maxLat + minLat) / 2) + latitudeOffset, (maxLon + minLon) / 2);
+            }
+
+            SetRegionAndZoom(region, center, deltaLat, deltaLng);
+        }
+
+        private void SetRegionAndZoom(MKCoordinateRegion region, CLLocationCoordinate2D center, double? deltaLat, double? deltaLng)
+        {
+            region.Center = center;
+            if (deltaLat.HasValue && deltaLng.HasValue)
+            {
+                region.Span = new MKCoordinateSpan(deltaLat.Value, deltaLng.Value);
+            }
+            SetRegion(region, true);
+            RegionThatFits(region);
+        }
+
+        #endregion
     }
 }

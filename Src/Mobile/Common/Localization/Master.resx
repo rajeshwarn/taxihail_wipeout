@@ -2079,6 +2079,9 @@
 	<data name="ManualPairingForRideLinqActivityName" xml:space="preserve">
     <value>Manual pairing for RideLinq</value>
   </data>
+	<data name="ManualRideLinqSummaryActivityName" xml:space="preserve">
+    <value>Manual ridelinq summary</value>
+  </data>
 	<data name="ManualRideLinqStatusActivityName" xml:space="preserve">
     <value>Manual RideLinq Status</value>
   </data>
@@ -2091,4 +2094,7 @@
 	<data name="MessageActivityName" xml:space="preserve">
     <value>Message</value>
   </data>
+	<data name="OrderStatus_Medallion" xml:space="preserve">
+		<value>Medallion</value>
+	</data>
 </root>

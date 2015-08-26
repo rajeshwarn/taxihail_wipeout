@@ -122,6 +122,7 @@
     <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\CurrencyFormatConverter.cs" />
+    <Compile Include="BindingConverter\HomeViewStateToVisibilityConverter.cs" />
     <Compile Include="BindingConverter\NoValueToVisibilityConverter.cs" />
     <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
     <Compile Include="ViewModels\ManualRideLinqStatusViewModel.cs" />
     <Compile Include="ViewModels\ManualRideLinqSummaryViewModel.cs" />
+    <Compile Include="ViewModels\Orders\BookingStatusBottomBarViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
@@ -319,7 +321,6 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="ViewModels\UpdatedTermsAndConditionsViewModel.cs" />
     <Compile Include="ViewModels\IRequestPresentationState.cs" />
-    <Compile Include="ViewModels\Orders\HomeViewModelStateRequestedEventArgs.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="ViewModels\ISubViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />

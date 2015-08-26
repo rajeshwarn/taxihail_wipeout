@@ -36,5 +36,13 @@ namespace apcurium.MK.Common.Entity
         public string MobilePhone { get; set; }
 
         public string DriverPhotoUrl { get; set; }
+
+        public string FullVehicleInfo
+        {
+            get
+            {
+                return Params.Get(VehicleMake, VehicleModel, VehicleType, VehicleColor).Where(s => s.HasValue()).JoinBy(" ");
+            }
+        }
     }
 }

@@ -120,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                                 _bookingService.ClearLastOrder();
 
-                                ShowViewModelAndRemoveFromHistory<HomeViewModel>(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                                ShowViewModelAndRemoveFromHistory<HomeViewModel>();
                             } 
                         }
                     }

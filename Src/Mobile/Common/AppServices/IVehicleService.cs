@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		MapBounds GetBoundsForNearestVehicles(Address pickup, IEnumerable<AvailableVehicle> cars);
 		IObservable<Direction> GetAndObserveEta();
 		Task<Direction> GetEtaBetweenCoordinates (double fromLat, double fromLng, double toLat, double toLng);
+
+		void SetAvailableVehicle(bool enable);
 	}
 }
 

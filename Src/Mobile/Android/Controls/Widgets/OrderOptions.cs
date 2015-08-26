@@ -1,168 +1,194 @@
-using System;
-using Android.Content;
-using Android.Util;
-using Android.Widget;
-using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using Android.Content;
+using Android.Runtime;
+using Android.Util;
+using Android.Views;
+using Android.Widget;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
-using Android.Views;
-using apcurium.MK.Booking.Mobile.Data;
-using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptions")]
-    public class OrderOptions : MvxFrameControl, IChangePresentation
+    public class OrderOptions : MvxFrameControl
     {
-        private AddressTextBox ViewPickup;
-        private AddressTextBox ViewDestination;
-        private VehicleTypeAndEstimateControl ViewVehicleType;
+        private AddressTextBox _viewPickup;
+        private AddressTextBox _viewDestination;
+        private VehicleTypeAndEstimateControl _viewVehicleType;
 
-        public Button BigInvisibleButton { get; set; }
+	    private bool _isShown = true;
+	    private ViewStates _animatedVisibility;
+
+	    public Button BigInvisibleButton { get; set; }
+
+		/// Added to prevent the ETA from becoming visible in during booking status in certain scenarios.
+		private const int HIDDEN_HIGHT_OFFSET = -50;
 
         public OrderOptions(Context context, IAttributeSet attrs) : base (Resource.Layout.SubView_OrderOptions, context, attrs)
         {
             this.DelayBind(() => 
             {
-                ViewPickup = Content.FindViewById<AddressTextBox>(Resource.Id.viewPickup);
-                ViewDestination = Content.FindViewById<AddressTextBox>(Resource.Id.viewDestination);
-                ViewVehicleType = Content.FindViewById<VehicleTypeAndEstimateControl>(Resource.Id.viewEstimate);
+                _viewPickup = Content.FindViewById<AddressTextBox>(Resource.Id.viewPickup);
+                _viewDestination = Content.FindViewById<AddressTextBox>(Resource.Id.viewDestination);
+                _viewVehicleType = Content.FindViewById<VehicleTypeAndEstimateControl>(Resource.Id.viewEstimate);
 
-                ViewDestination.IsDestination = true;
-                ViewPickup.IsDestination = false;
+                _viewDestination.IsDestination = true;
+                _viewPickup.IsDestination = false;
 
-                ViewPickup.SetInvisibleButton(BigInvisibleButton);
-                ViewDestination.SetInvisibleButton(BigInvisibleButton);
+                _viewPickup.SetInvisibleButton(BigInvisibleButton);
+                _viewDestination.SetInvisibleButton(BigInvisibleButton);
 
-                ViewVehicleType.Visibility = ViewStates.Gone;
+                _viewVehicleType.Visibility = ViewStates.Gone;
 
                 InitializeBinding();
+
             });
         }
 
         private OrderOptionsViewModel ViewModel { get { return (OrderOptionsViewModel)DataContext; } }
 
+	    public ViewStates AnimatedVisibility
+	    {
+		    get { return _animatedVisibility; }
+		    set
+		    {
+			    _animatedVisibility = value;
+			    if (value == ViewStates.Visible)
+			    {
+					ShowIfNeeded();
+				    return;
+			    }
+				HideIfNeeded();
+		    }
+	    }
+
+		private void HideIfNeeded()
+	    {
+		    if (!_isShown)
+		    {
+			    return;
+		    }
+
+		    _isShown = false;
+
+		    var translationOffset = -Height + HIDDEN_HIGHT_OFFSET;
+
+			StartAnimation(AnimationHelper.GetForYTranslation(this, translationOffset));
+	    }
+		private void ShowIfNeeded()
+	    {
+			if (_isShown)
+			{
+				return;
+			}
+
+			_isShown = true;
+
+			StartAnimation(AnimationHelper.GetForYTranslation(this, 0));
+	    }
+
         void InitializeBinding()
 		{
-			ViewPickup.AddressUpdated = streetNumber => {
+			_viewPickup.AddressUpdated = streetNumber => {
 				ViewModel.PickupAddress.ChangeStreetNumber(streetNumber);
 				ViewModel.SetAddress.Execute (ViewModel.PickupAddress);
 			};
 
-			ViewDestination.AddressUpdated = streetNumber => {
+			_viewDestination.AddressUpdated = streetNumber => {
 				ViewModel.DestinationAddress.ChangeStreetNumber(streetNumber);
 				ViewModel.SetAddress.Execute (ViewModel.DestinationAddress);
 			};
 
-			ViewVehicleType.VehicleSelected = vehicleType => ViewModel.SetVehicleType.Execute (vehicleType);
+			_viewVehicleType.VehicleSelected = vehicleType => ViewModel.SetVehicleType.Execute (vehicleType);
 
 			var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel> ();
 
-			set.Bind (ViewPickup)
-                .For (v => v.IsSelected)
-				.To (vm => vm.AddressSelectionMode)
+			set.Bind(_viewPickup)
+				.For(v => v.IsSelected)
+				.To(vm => vm.AddressSelectionMode)
 				.WithConversion("EnumToBool", AddressSelectionMode.PickupSelection);
-			set.Bind (ViewPickup)
+
+			set.Bind (_viewPickup)
                 .For (v => v.IsLoadingAddress)
                 .To (vm => vm.IsLoadingAddress);
 
-			set.Bind (ViewPickup.AddressTextView)
+			set.Bind (_viewPickup.AddressTextView)
                 .To (vm => vm.PickupAddress.DisplayAddress);
 
-			set.Bind (ViewDestination)
-				.For (v => v.IsSelected)
-				.To (vm => vm.AddressSelectionMode)
+			set.Bind(_viewPickup)
+				.For(v => v.UserInputDisabled)
+				.To(vm => vm.PickupInputDisabled);
+
+			set.Bind(_viewDestination)
+				.For(v => v.UserInputDisabled)
+				.To(vm => vm.DestinationInputDisabled);
+
+			set.Bind(_viewDestination)
+				.For(v => v.IsSelected)
+				.To(vm => vm.AddressSelectionMode)
 				.WithConversion("EnumToBool", AddressSelectionMode.DropoffSelection);
-			set.Bind (ViewDestination)
+
+			set.Bind (_viewDestination)
                 .For (v => v.Visibility)
                 .To (vm => vm.ShowDestination)
                 .WithConversion ("Visibility");
-			set.Bind (ViewDestination)
+
+			set.Bind (_viewDestination)
                 .For (v => v.IsLoadingAddress)
                 .To (vm => vm.IsLoadingAddress);
 
-			set.Bind (ViewDestination.AddressTextView)
+			set.Bind (_viewDestination.AddressTextView)
                 .To (vm => vm.DestinationAddress.DisplayAddress);
 
-			set.Bind (ViewVehicleType)
+			set.Bind (_viewVehicleType)
                 .For (v => v.EstimatedFare)
                 .To (vm => vm.EstimatedFare);
-			set.Bind (ViewVehicleType)
+
+			set.Bind (_viewVehicleType)
                 .For (v => v.Visibility)
 				.To (vm => vm.VehicleAndEstimateBoxIsVisible)
                 .WithConversion ("Visibility");
 
-			set.Bind (ViewVehicleType)
+			set.Bind (_viewVehicleType)
 				.For (v => v.ShowEstimate)
 				.To (vm => vm.ShowEstimate);
 
-			set.Bind (ViewVehicleType)
+			set.Bind (_viewVehicleType)
 				.For (v => v.Vehicles)
 				.To (vm => vm.VehicleTypes);
 
-			set.Bind (ViewVehicleType)
+			set.Bind (_viewVehicleType)
 				.For (v => v.SelectedVehicle)
 				.To (vm => vm.SelectedVehicleType);
 
-			set.Bind (ViewPickup)
+			set.Bind(_viewVehicleType)
+				.For(v => v.IsReadOnly)
+				.To(vm => vm.VehicleTypeInputDisabled);
+
+			set.Bind (_viewPickup)
                 .For ("AddressClicked")
                 .To (vm => vm.ShowPickUpSearchAddress);
 
-			set.Bind (ViewDestination)
+			set.Bind (_viewDestination)
                 .For ("AddressClicked")
                 .To (vm => vm.ShowDestinationSearchAddress);
 
-			set.Bind (ViewVehicleType)
+			set.Bind (_viewVehicleType)
 				.For (v => v.ShowEta)
 				.To (vm => vm.ShowEta);
 
-			set.Bind (ViewVehicleType)
+			set.Bind (_viewVehicleType)
 				.For (v => v.ShowVehicleSelection)
 				.To (vm => vm.ShowVehicleSelection);
 
-			set.Bind (ViewVehicleType)
+			set.Bind (_viewVehicleType)
 				.For (v => v.Eta)
 				.To (vm => vm.FormattedEta);
 
 			set.Apply ();
 		}
-
-        private void ChangeState(HomeViewModelPresentationHint hint)
-        {
-            switch (hint.State)
-            {
-                case HomeViewModelState.Review:
-                    ViewPickup.IsSelected = false;
-                    ViewPickup.UserInputDisabled = true;
-                    ViewDestination.IsSelected = false;
-                    ViewDestination.UserInputDisabled = true;
-                    ViewVehicleType.IsReadOnly = true;
-                    break;
-                case HomeViewModelState.PickDate:
-                    ViewPickup.IsSelected = false;
-                    ViewPickup.UserInputDisabled = true;
-                    ViewDestination.IsSelected = false;
-                    ViewDestination.UserInputDisabled = true;
-                    ViewVehicleType.IsReadOnly = true;
-                    break;
-                case HomeViewModelState.Initial:
-                    ViewPickup.IsSelected = ViewModel.AddressSelectionMode == AddressSelectionMode.PickupSelection;
-                    ViewPickup.UserInputDisabled = false;
-                    ViewDestination.IsSelected = ViewModel.AddressSelectionMode == AddressSelectionMode.DropoffSelection;
-                    ViewDestination.UserInputDisabled = false;
-                    ViewVehicleType.IsReadOnly = false;
-                    break;
-            }
-        }
-
-        public void ChangePresentation(ChangePresentationHint hint)
-        {
-            if (hint is HomeViewModelPresentationHint)
-            {
-                ChangeState((HomeViewModelPresentationHint)hint);
-            }
-        }
     }
 }
       

@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         private ScrollView _scrollView;
         private Button _cancelButton;
 
-        private CompositeDisposable _subscriptions = new CompositeDisposable();
+        private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
         private AddressPickerViewModel ViewModel 
         { 
             get { return (AddressPickerViewModel)DataContext; } 
@@ -90,6 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                 {                    
                     SelectedCommand.Execute(address);
                 };
+
             });
         }
 
@@ -181,18 +182,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             await ViewModel.LoadAddresses(filterAddresses).HandleErrors();
 			if (filterAddresses == AddressLocationType.Unspeficied || ViewModel.AllAddresses.Count > 1)
             {
-                Visibility = ViewStates.Visible;
                 FocusOnTextField();
             }
         } 
 
         public void Close()
         {
-            Visibility = ViewStates.Gone;
-            _addressEditText.HideKeyboard();
-            _favoriteAddressList.Collapse();
-            _recentAddressList.Collapse();
-            _nearbyAddressList.Collapse();
+			_addressEditText.HideKeyboard();
+			_favoriteAddressList.Collapse();
+			_recentAddressList.Collapse();
+			_nearbyAddressList.Collapse();
+            
         }
 
 		public void FocusOnTextField()

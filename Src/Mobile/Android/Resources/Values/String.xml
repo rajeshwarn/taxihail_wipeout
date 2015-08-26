@@ -654,8 +654,10 @@
   <string name="BookStatusActivityName">Booking status</string>
   <string name="UserTaxiHailNetworkSettingsActivityName">User TaxiHail network settings</string>
   <string name="ManualPairingForRideLinqActivityName">Manual pairing for RideLinq</string>
+  <string name="ManualRideLinqSummaryActivityName">Manual ridelinq summary</string>
   <string name="ManualRideLinqStatusActivityName">Manual RideLinq Status</string>
   <string name="ManualRideLinqSummaryActivityName">Manual Ridelinq summary</string>
   <string name="BookSummaryActivityName">Book summary</string>
   <string name="MessageActivityName">Message</string>
+  <string name="OrderStatus_Medallion">Medallion</string>
 </resources>
