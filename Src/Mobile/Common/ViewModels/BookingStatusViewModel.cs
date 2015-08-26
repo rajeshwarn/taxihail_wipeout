@@ -697,15 +697,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 
-		public async void GoToSummary()
+		public void GoToSummary()
 		{
 			Logger.LogMessage ("GoToSummary");
 
-			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (new { orderId = Order.Id});
+			ShowViewModel<RideSummaryViewModel>(new { orderId = Order.Id });
 
 			StopBookingStatus();
 
-			((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+			var homeViewModel = ((HomeViewModel)Parent);
+			
+			homeViewModel.CurrentViewState = HomeViewModelState.Initial;
+
+			homeViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
 		}
 
         private async void GoToBookingScreen()

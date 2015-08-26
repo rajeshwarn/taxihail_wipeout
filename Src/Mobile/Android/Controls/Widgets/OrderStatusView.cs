@@ -18,7 +18,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private bool _isShown;
 		private ViewStates _animatedVisibility;
 
-
 		public OrderStatusView(Context context, IAttributeSet attrs) : base(Resource.Layout.SubView_BookingStatus, context, attrs)
 		{
 			this.DelayBind(() =>
@@ -113,6 +112,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			animation.AnimationEnd += (sender, args) =>
 			{
 				((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = -1000;
+
+				//Ensures that the status view is hidden correctly.
+				if (((MarginLayoutParams) LayoutParameters).TopMargin != -Height)
+				{
+					((MarginLayoutParams) LayoutParameters).TopMargin = -Height;
+				}
 			};
 
 			StartAnimation(animation);
