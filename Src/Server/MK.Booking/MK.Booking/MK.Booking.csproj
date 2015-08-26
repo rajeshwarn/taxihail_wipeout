@@ -292,6 +292,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Aexid.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\CheckerYellowCabPalmetto.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CheckerYellowCabPalmetto.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Global.ar.Designer.cs">
       <DependentUpon>Global.ar.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -438,6 +443,11 @@
     <EmbeddedResource Include="Resources\Aexid.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Aexid.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\CheckerYellowCabPalmetto.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CheckerYellowCabPalmetto.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.ar.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
