@@ -56,6 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				_manualRideLinqDetail = value;
 				RaisePropertyChanged();
+				BottomBar.NotifyIsCallCompanyHiddenChanged();
 			}
 		}
 
@@ -97,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.Take(1) // trigger only once
 				.Subscribe(ToRideSummary, Logger.LogError);
 
-			BottomBar.NotifyIsCallCompanyHiddenChanged();
+			
 		}
 
 		private IObservable<Unit> GetTimerObservable()
@@ -142,6 +143,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var pairingCode = "{0} {1}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingCode"], manualRideLinqDetails.PairingCode);
 
 			StatusInfoText = driver + "\n\r" + pairingCode;
+
 		}
 
 		private void ToRideSummary(OrderManualRideLinqDetail orderManualRideLinqDetail)

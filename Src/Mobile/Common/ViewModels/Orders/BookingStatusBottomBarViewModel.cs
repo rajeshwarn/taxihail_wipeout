@@ -156,7 +156,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								}
 								else
 								{
-									this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"]);
+									this.Services().Message
+										.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"])
+										.FireAndForget();
 								}
 							}
 							catch (Exception ex)
