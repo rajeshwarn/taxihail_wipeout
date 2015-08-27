@@ -262,7 +262,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             bookingStatusControl.SetNeedsDisplay();
         }
-
+			
         private void ChangeState(HomeViewModelState state)
         {
 			if (state == HomeViewModelState.PickDate)
@@ -366,7 +366,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         ctrlOrderOptions.SetNeedsDisplay();
                     }, () => orderEdit.SetNeedsDisplay());
             }
-            else if (state == HomeViewModelState.BookingStatus)
+			else if (state == HomeViewModelState.BookingStatus || state == HomeViewModelState.ManualRidelinq)
             {
                 // Order Options: Hidden
                 // Order Review: Hidden
