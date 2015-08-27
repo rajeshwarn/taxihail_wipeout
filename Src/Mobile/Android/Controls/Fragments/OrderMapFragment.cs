@@ -705,11 +705,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					{
 						maxLat += 0.0007;
 					}
-					if (!bookingStatusViewModel.VehicleColorHidden)
-					{
-						maxLat += 0.0007;
-					}
-					if (!bookingStatusViewModel.VehicleMakeHidden || bookingStatusViewModel.VehicleModelHidden)
+					if (!bookingStatusViewModel.VehicleFullInfoHidden)
 					{
 						maxLat += 0.0007;
 					}
