@@ -693,23 +693,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						{
 							latitudeOffset += vehicleInformationOffset;
 						}
-						if (bookingStatusViewModel.VehicleLicenceHidden)
-						{
-							latitudeOffset += vehicleInformationOffset;
-						}
-						if (bookingStatusViewModel.VehicleColorHidden)
-						{
-							latitudeOffset += vehicleInformationOffset;
-						}
-						if (bookingStatusViewModel.VehicleMakeHidden)
-						{
-							latitudeOffset += vehicleInformationOffset;
-						}
-						if (bookingStatusViewModel.VehicleModelHidden)
-						{
-							latitudeOffset += vehicleInformationOffset;
-						}
-						if (bookingStatusViewModel.VehicleTypeHidden)
+						if (bookingStatusViewModel.VehicleFullInfoHidden) 
 						{
 							latitudeOffset += vehicleInformationOffset;
 						}
