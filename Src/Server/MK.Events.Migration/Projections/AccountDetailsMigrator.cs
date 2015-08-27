@@ -26,8 +26,10 @@ namespace apcurium.MK.Events.Migration.Projections
 
         public AccountRegistered Migrate(AccountRegistered @event)
         {
+            var wasMigrated = false;
             if (@event.Country == null || (@event.Country != null && string.IsNullOrEmpty(@event.Country.Code)))
             {
+                wasMigrated = true;
                 var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
                 var countryCode = (new RegionInfo(currentCultureInfo.LCID)).TwoLetterISORegionName;
                 @event.Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryISOCode;
@@ -35,10 +37,11 @@ namespace apcurium.MK.Events.Migration.Projections
 
             if (@event.NbPassengers == null)
             {
+                wasMigrated = true;
                 @event.NbPassengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger;
             }
 
-            return @event;
+            return wasMigrated ? @event : null;
         }
 
         public CreditCardDeactivated Migrate(CreditCardDeactivated @event)
@@ -46,25 +49,34 @@ namespace apcurium.MK.Events.Migration.Projections
             if (@event.IsOutOfAppPaymentDisabled == null)
             {
                 @event.IsOutOfAppPaymentDisabled = _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
+                return @event;
             }
-            return @event;
+            else
+            {
+                return null;
+            }
+            
         }
 
         public BookingSettingsUpdated Migrate(BookingSettingsUpdated @event)
         {
+            var wasMigrated = false;
             if (@event.ChargeTypeId == _serverSettings.ServerData.DefaultBookingSettings.ChargeTypeId)
             {
                 @event.ChargeTypeId = null;
+                wasMigrated = true;
             }
 
             if (@event.VehicleTypeId == _serverSettings.ServerData.DefaultBookingSettings.VehicleTypeId)
             {
                 @event.VehicleTypeId = null;
+                wasMigrated = true;
             }
 
             if (@event.ProviderId == _serverSettings.ServerData.DefaultBookingSettings.ProviderId)
             {
                 @event.ProviderId = null;
+                wasMigrated = true;
             }
 
             if (@event.Country == null || (@event.Country != null && string.IsNullOrEmpty(@event.Country.Code)))
@@ -72,9 +84,10 @@ namespace apcurium.MK.Events.Migration.Projections
                 var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
                 var countryCode = (new RegionInfo(currentCultureInfo.LCID)).TwoLetterISORegionName;
                 @event.Country = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryCode)).CountryISOCode;
+                wasMigrated = true;
             }
 
-            return @event;
+            return wasMigrated ? @event : null;
         }
 
         public OverduePaymentSettled Migrate(OverduePaymentSettled @event)
@@ -82,8 +95,13 @@ namespace apcurium.MK.Events.Migration.Projections
             if (@event.IsPayInTaxiEnabled == null)
             {
                 @event.IsPayInTaxiEnabled = _serverSettings.GetPaymentSettings().IsPayInTaxiEnabled;
+                return @event;
             }
-            return @event;
+            else
+            {
+                return null;
+            }
+            
         }
 
         public CreditCardRemoved Migrate(CreditCardRemoved @event)
@@ -98,8 +116,12 @@ namespace apcurium.MK.Events.Migration.Projections
                     && @event.NewDefaultCreditCardId == null)
                 {
                     @event.NewDefaultCreditCardId = otherCreditCardForAccount.CreditCardId;
+                    return @event;
                 }
-                return @event;
+                else
+                {
+                    return null;
+                }
             }
         }
     }

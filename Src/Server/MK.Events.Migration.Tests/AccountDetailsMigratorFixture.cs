@@ -48,9 +48,7 @@ namespace MK.Events.Migration.Tests
 
             @event = Sut.Migrate(@event);
 
-            Assert.AreEqual("FR", @event.Country.Code);
-            Assert.AreEqual(8596, @event.NbPassengers);
-
+            Assert.IsNull(@event);
         }
 
         [Test]
@@ -76,7 +74,7 @@ namespace MK.Events.Migration.Tests
 
             @event = Sut.Migrate(@event);
 
-            Assert.AreEqual(false, @event.IsOutOfAppPaymentDisabled);
+            Assert.IsNull(@event);
 
         }
 
@@ -103,7 +101,7 @@ namespace MK.Events.Migration.Tests
 
             @event = Sut.Migrate(@event);
 
-            Assert.AreEqual(false, @event.IsPayInTaxiEnabled);
+            Assert.IsNull(@event);
 
         }
 
@@ -140,11 +138,7 @@ namespace MK.Events.Migration.Tests
 
             @event = Sut.Migrate(@event);
 
-            Assert.IsNotNull(@event.ChargeTypeId);
-            Assert.IsNotNull(@event.VehicleTypeId);
-            Assert.IsNotNull(@event.ProviderId);
-
-            Assert.AreEqual("FR", @event.Country.Code);
+            Assert.IsNull(@event);
 
         }
 
@@ -204,7 +198,7 @@ namespace MK.Events.Migration.Tests
 
             @event = Sut.Migrate(@event);
 
-            Assert.AreNotEqual(creditCardId, @event.NewDefaultCreditCardId);
+            Assert.IsNull(@event);
 
         }
 
