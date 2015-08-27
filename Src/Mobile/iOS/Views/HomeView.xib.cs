@@ -158,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnLocateMe)
                 .For(v => v.Hidden)
                 .To(vm => vm.CurrentViewState)
-                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus });
+                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq });
 
             set.Bind(mapView)
                 .For(v => v.DataContext)
@@ -206,7 +206,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.BookingStatus);
 
-            set.Bind(this.mapView)
+            set.Bind(mapView)
                 .For(v => v.OrderStatusDetail)
                 .To(vm => vm.BookingStatus.OrderStatusDetail);
 

@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(btnCall)
                 .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.Settings.HideCallDispatchButton);
+                .To(vm => vm.IsCallCompanyHidden);
 
             set.Apply();
         }
