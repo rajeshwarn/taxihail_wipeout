@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnMenu)
                 .For(v => v.Hidden)
                 .To(vm => vm.CurrentViewState)
-                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus });
+                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq});
 
 			set.Bind(btnAirport)
 				.For(v => v.Command)
