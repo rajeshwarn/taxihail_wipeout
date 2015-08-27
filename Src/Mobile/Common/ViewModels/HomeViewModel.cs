@@ -339,6 +339,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			CurrentViewState = HomeViewModelState.ManualRidelinq;
 
+			_orderWorkflowService.SetAddresses(new Address(), new Address());
+
 			BookingStatus.StartBookingStatus(detail);
 		}
 
@@ -536,11 +538,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _currentViewState; }
 			set
 			{
-				if (value == HomeViewModelState.BookingStatus)
+				var disableAddressSelectionMode = value == HomeViewModelState.BookingStatus 
+					|| value == HomeViewModelState.ManualRidelinq;
+
+				var isCurrentStateSelectionModeOff = _currentViewState == HomeViewModelState.BookingStatus 
+					|| _currentViewState == HomeViewModelState.ManualRidelinq;
+
+				if (disableAddressSelectionMode)
 				{
 					_orderWorkflowService.SetAddressSelectionMode();
 				}
-				else if (value == HomeViewModelState.Initial && _currentViewState == HomeViewModelState.BookingStatus)
+				else if (value == HomeViewModelState.Initial && isCurrentStateSelectionModeOff)
 				{
 					_orderWorkflowService.SetAddressSelectionMode(AddressSelectionMode.PickupSelection);
 					_bottomBar.EstimateSelected = false;
