@@ -131,7 +131,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			try
 			{
 				return await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
-					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude, vehicleTypeId))
+					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude,vehicleTypeId),
+					(ex) =>
+					{
+						// Do not use the default event handler because we do not want to show the
+						// connection error message for GAV requests
+						Logger.LogMessage("Error while trying to get available vehicles");
+						Logger.LogError(ex);
+					})
 					.ConfigureAwait(false);
 			}
 			catch (Exception e)
