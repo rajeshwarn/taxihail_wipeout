@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				_manualRideLinqDetail = value;
 				RaisePropertyChanged();
-				BottomBar.NotifyIsCallCompanyHiddenChanged();
+				BottomBar.NotifyBookingStatusAppbarChanged();
 			}
 		}
 
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatusDetail = orderStatusDetail;
 			DisplayOrderNumber();
 
-			BottomBar.NotifyIsCallCompanyHiddenChanged();
+			BottomBar.NotifyBookingStatusAppbarChanged();
 
 			StatusInfoText = string.Format(this.Services().Localize["Processing"]);
 
@@ -97,8 +97,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.Where(orderDetails => orderDetails.EndTime.HasValue)
 				.Take(1) // trigger only once
 				.Subscribe(ToRideSummary, Logger.LogError);
-
-			
 		}
 
 		private IObservable<Unit> GetTimerObservable()
