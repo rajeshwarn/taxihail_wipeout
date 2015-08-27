@@ -25,7 +25,6 @@ using MK.Common.Configuration;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Extensions;
 using Android.Graphics;
 using Android.Text;
 using Color = Android.Graphics.Color;
