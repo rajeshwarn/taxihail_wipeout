@@ -37,6 +37,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public ActionResult Index()
         {
+            ValidateFakeIBS();
             return View(GetAvailableSettingsForUser());
         }
 
@@ -224,6 +225,16 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             }
 
             return companySettings;
+        }
+
+        private void ValidateFakeIBS()
+        {
+            var isfakeIBS = _serverSettings.ServerData.IBS.FakeOrderStatusUpdate;
+
+            if (isfakeIBS)
+            {
+                TempData["FakeIBSErrors"] = "WARNING: Site is running in Fake IBS Mode";
+            }
         }
     }
 }
