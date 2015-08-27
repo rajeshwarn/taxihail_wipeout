@@ -562,10 +562,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                 }
 
-				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) 
-					&& status.VehicleNumber.HasValue() 
-					&& status.VehicleLatitude.HasValue 
-					&& status.VehicleLongitude.HasValue)
+				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned))
 				{
 					_vehicleService.SetAvailableVehicle(false);
 				}
@@ -727,7 +724,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_bookingService.ClearLastOrder();
 
-			var homeViewModel = Parent as HomeViewModel;
+			var homeViewModel = (HomeViewModel)Parent;
 
 			homeViewModel.CurrentViewState = HomeViewModelState.Initial;
 			homeViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
@@ -801,7 +798,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var message = await this.Services().Message.ShowPromptDialog(
                         this.Services().Localize["MessageToDriverTitle"],
                         string.Empty,
-						() => { return; });
+						() => { });
 
 	                var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber);
 	                if (!messageSent)

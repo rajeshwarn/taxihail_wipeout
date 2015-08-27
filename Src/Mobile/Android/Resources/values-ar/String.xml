@@ -311,6 +311,7 @@
   <string name="RideSettingsPassword">كلمة السر</string>
   <string name="RideSettingsPhone">الهاتف الجوال</string>
   <string name="RideSettingsVehiculeType">نوع السیارة</string>
+  <string name="RideSettingsEmailTitle">Email</string>
   <string name="RideSummarySubTitleText">شكرا لاختيارك {0} لرحلتك، نتطلع لخدمتك مرة أخرى قريبا.</string>
   <string name="RideSummaryTitleText">شكرا لك</string>
   <string name="RingCode">رمز الدخول</string>

@@ -1,34 +1,34 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Input;
-using Android.Content.Res;
-using Google.Android.M4b.Maps;
-using Google.Android.M4b.Maps.Model;
-using Android.Views;
-using Android.Widget;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using Android.Content.Res;
+using Android.Graphics;
+using Android.Text;
+using Android.Views;
+using Android.Widget;
 using Cirrious.MvvmCross.Binding.Attributes;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using Google.Android.M4b.Maps;
+using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
-using apcurium.MK.Booking.Maps.Geo;
-using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Common;
-using apcurium.MK.Common.Extensions;
-using Android.Graphics;
-using Android.Text;
-using Color = Android.Graphics.Color;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -377,7 +377,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var bounds = Map.Projection.VisibleRegion.LatLngBounds;
 
-            var newMapBounds = new MapBounds()
+            var newMapBounds = new MapBounds
             { 
                 SouthBound = bounds.Southwest.Latitude, 
                 WestBound = bounds.Southwest.Longitude, 
@@ -442,7 +442,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
             {
-                var position = new Position(){ Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
+                var position = new Position { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
 
                 _destinationPin.Visible = false;
                 _pickupOverlay.Visibility = ViewStates.Invisible;
@@ -466,7 +466,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 if (DestinationAddress.HasValidCoordinate())
                 {
-                    var position = new Position(){ Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
+                    var position = new Position { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
                     _destinationPin.Visible = true;
                     _destinationPin.Position = new LatLng(position.Latitude, position.Longitude);             
                 }
@@ -483,7 +483,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 	            if (PickupAddress.HasValidCoordinate())
 	            {
-					var position = new Position() { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
+					var position = new Position { Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
 					_pickupPin.Visible = true;
 					_pickupPin.Position = new LatLng(position.Latitude, position.Longitude);  
 	            }
@@ -494,7 +494,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 	            if (DestinationAddress.HasValidCoordinate())
 	            {
-					var position = new Position() { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
+					var position = new Position { Latitude = DestinationAddress.Latitude, Longitude = DestinationAddress.Longitude };
 					_destinationPin.Visible = true;
 					_destinationPin.Position = new LatLng(position.Latitude, position.Longitude); 
 	            }
@@ -508,7 +508,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private void OnCameraChanged(System.Reactive.EventPattern<GoogleMap.CameraChangeEventArgs> e)
+        private void OnCameraChanged(EventPattern<GoogleMap.CameraChangeEventArgs> e)
         {
             if (_bypassCameraChangeEvent)
             {
@@ -569,7 +569,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 return;
             }
 
-            var vehicleNumbersToBeShown = vehicles.Select (x => x.VehicleNumber.ToString());
+	        var vehicleArray = vehicles.ToArray();
+
+			var vehicleNumbersToBeShown = vehicleArray.Select(x => x.VehicleNumber.ToString(CultureInfo.InvariantCulture));
 
             // check for markers that needs to be removed
             var markersToRemove = _availableVehicleMarkers.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
@@ -579,9 +581,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
             // check for updated or new
-            foreach (var vehicle in vehicles)
+			foreach (var vehicle in vehicleArray)
             {
-                var existingMarkerForVehicle = _availableVehicleMarkers.FirstOrDefault (x => x.Title == vehicle.VehicleNumber.ToString());
+                var existingMarkerForVehicle = _availableVehicleMarkers.FirstOrDefault (x => x.Title == vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture));
                 if (existingMarkerForVehicle != null)
                 {
                     if (existingMarkerForVehicle.Position.Latitude == vehicle.Latitude && existingMarkerForVehicle.Position.Longitude == vehicle.Longitude)
@@ -629,7 +631,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			if (zoomHint != null) 
 			{
 				var newBounds = zoomHint.Bounds;
-				var currentBounds = this.GetMapBoundsFromProjection();
+				var currentBounds = GetMapBoundsFromProjection();
 
 				if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
 				{

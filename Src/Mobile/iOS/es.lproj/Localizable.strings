@@ -297,7 +297,7 @@
 "PanelMenuViewReportProblemText"="Reportar problema";
 "PanelMenuViewSignOutText"="Cerrar Sesión";
 "PanelMenuViewTutorialText"="Ver tutorial";
-"PanelMenuViewUpdateProfileText"="Actualizar cuenta";
+"PanelMenuViewUpdateProfileText"="Perfil";
 "ParameterButton"="Paramétros";
 "PassengerNameLabel"="Nombre";
 "PassengerNumberLabel"="Pasajeros";
@@ -361,6 +361,7 @@
 "RideSettingsPassword"="Contraseña";
 "RideSettingsPhone"="Celular";
 "RideSettingsVehiculeType"="Tipo de Vehículo";
+"RideSettingsEmailTitle"="Email";
 "RideSummarySubTitleText"="Gracias por viajar con {0}, esperamos pronto poder volver servirle";
 "RideSummaryTitleText"="Muchas Gracias";
 "RingCode"="Código de entrada";

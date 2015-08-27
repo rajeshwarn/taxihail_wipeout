@@ -309,6 +309,7 @@
 "RideSettingsPassword"="كلمة السر";
 "RideSettingsPhone"="الهاتف الجوال";
 "RideSettingsVehiculeType"="نوع السیارة";
+"RideSettingsEmailTitle"="Email";
 "RideSummarySubTitleText"="شكرا لاختيارك {0} لرحلتك، نتطلع لخدمتك مرة أخرى قريبا.";
 "RideSummaryTitleText"="شكرا لك";
 "RingCode"="رمز الدخول";

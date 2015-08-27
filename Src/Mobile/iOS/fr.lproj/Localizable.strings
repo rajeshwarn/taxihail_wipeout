@@ -317,6 +317,7 @@
 "RideSettingsPassword"="Mot de passe";
 "RideSettingsPhone"="Ligne mobile";
 "RideSettingsVehiculeType"="Type de véhicule";
+"RideSettingsEmailTitle"="Courriel";
 "RideSummarySubTitleText"="Merci d'avoir choisi {0} pour votre trajet, nous espérons vous revoir bientôt.";
 "RideSummaryTitleText"="Merci";
 "RingCode"="Saisissez un code";

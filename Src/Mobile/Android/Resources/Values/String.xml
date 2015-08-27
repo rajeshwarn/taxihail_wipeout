@@ -136,6 +136,7 @@
   <string name="RideSettingsPhone">Mobile</string>
   <string name="RideSettingsPassengers">Passengers</string>
   <string name="RideSettingsVehiculeType">Vehicle type</string>
+  <string name="RideSettingsEmailTitle">Email</string>
   <string name="RideSettingsCompany">Company</string>
   <string name="HistoryDetailDestinationLabel">Destination:</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
@@ -269,7 +270,7 @@
   <string name="View_RideSettings">Profile</string>
   <string name="PanelMenuViewLocationsText">Locations</string>
   <string name="PanelMenuViewOrderHistoryText">History</string>
-  <string name="PanelMenuViewUpdateProfileText">Update Account</string>
+  <string name="PanelMenuViewUpdateProfileText">Profile</string>
   <string name="PanelMenuViewPaymentInfoText">Payment</string>
   <string name="PanelMenuViewTutorialText">View Tutorial</string>
   <string name="PanelMenuViewCallDispatchText">Call</string>

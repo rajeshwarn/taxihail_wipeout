@@ -319,6 +319,7 @@
   <string name="RideSettingsPassword">Mot de passe</string>
   <string name="RideSettingsPhone">Ligne mobile</string>
   <string name="RideSettingsVehiculeType">Type de véhicule</string>
+  <string name="RideSettingsEmailTitle">Courriel</string>
   <string name="RideSummarySubTitleText">Merci d\'avoir choisi {0} pour votre trajet, nous espérons vous revoir bientôt.</string>
   <string name="RideSummaryTitleText">Merci</string>
   <string name="RingCode">Saisissez un code</string>

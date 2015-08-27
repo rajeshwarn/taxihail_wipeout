@@ -134,6 +134,7 @@
 "RideSettingsPhone"="Mobile";
 "RideSettingsPassengers"="Passengers";
 "RideSettingsVehiculeType"="Vehicle type";
+"RideSettingsEmailTitle"="Email";
 "RideSettingsCompany"="Company";
 "HistoryDetailDestinationLabel"="Destination:";
 "HistoryDetailRequestedLabel"="Requested:";
@@ -267,7 +268,7 @@
 "View_RideSettings"="Profile";
 "PanelMenuViewLocationsText"="Locations";
 "PanelMenuViewOrderHistoryText"="History";
-"PanelMenuViewUpdateProfileText"="Update Account";
+"PanelMenuViewUpdateProfileText"="Profile";
 "PanelMenuViewPaymentInfoText"="Payment";
 "PanelMenuViewTutorialText"="View Tutorial";
 "PanelMenuViewCallDispatchText"="Call";
