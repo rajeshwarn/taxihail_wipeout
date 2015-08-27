@@ -1,10 +1,8 @@
 ﻿using System;
-using Foundation;
 using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {

@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				set.Bind(_contactTaxiOverlay)
 					.For(v => v.Visibility)
 					.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
-					.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus }); ;
+					.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
 
 				set.Apply();
 			});

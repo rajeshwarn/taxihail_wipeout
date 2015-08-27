@@ -9,6 +9,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Helper;
@@ -37,10 +38,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
     {
         private AddressAnnotation _pickupAnnotation;
         private AddressAnnotation _destinationAnnotation;
-        private UIImageView _pickupCenterPin;
-        private UIImageView _dropoffCenterPin;
+        private readonly UIImageView _pickupCenterPin;
+        private readonly UIImageView _dropoffCenterPin;
         private UIImageView _mapBlurOverlay;
-        private List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
+        private readonly List<AddressAnnotation> _availableVehicleAnnotations = new List<AddressAnnotation> ();
         private TouchGesture _gesture;
         private readonly SerialDisposable _userMovedMapSubsciption = new SerialDisposable();
 
@@ -354,16 +355,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				SetAnnotation (DestinationAddress, _destinationAnnotation, false);
 				SetOverlay(_pickupCenterPin, false);
 				SetOverlay(_dropoffCenterPin, true);
-                
 
-                if (PickupAddress.HasValidCoordinate())
-                {
-                    SetAnnotation(PickupAddress, _pickupAnnotation, true);
-                }
-                else
-                {
-                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
-                }
+
+	            SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
             }
             else
             {
@@ -417,19 +411,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void HandleTouchEnded(object sender, EventArgs e)
         {
-            _userMovedMapSubsciption.Disposable = Observable.FromEventPattern<MKMapViewChangeEventArgs>(eh =>  RegionChanged += eh, eh => RegionChanged -= eh)
+            _userMovedMapSubsciption.Disposable = Observable
+				.FromEventPattern<MKMapViewChangeEventArgs>(eh =>  RegionChanged += eh, eh => RegionChanged -= eh)
                 .Throttle(TimeSpan.FromMilliseconds(1000))
                 .Take(1)
                 .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(ep =>
-            {
-                var bounds = GetMapBoundsFromProjection();
-                
-                ViewModel.UserMovedMap.ExecuteIfPossible(bounds);                
-            });
+				.Subscribe(ep => HandleUserMovedMap(), Logger.LogError);
         }
 
-        private void ClearAvailableVehiclesAnnotations()
+	    private void HandleUserMovedMap()
+	    {
+		    var bounds = GetMapBoundsFromProjection();
+
+		    ViewModel.UserMovedMap.ExecuteIfPossible(bounds);
+	    }
+
+	    private void ClearAvailableVehiclesAnnotations()
         {
             foreach (var vehicleAnnotation in _availableVehicleAnnotations)
             {
@@ -511,9 +508,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (_mapBlurOverlay == null)
             {
                 var size = UIScreen.MainScreen.Bounds.Size;
-                _mapBlurOverlay = new UIImageView(new CGRect(new CGPoint(0, 0), new CGSize(size.Width, size.Height)));
-                _mapBlurOverlay.ContentMode = UIViewContentMode.ScaleToFill;
-                AddSubview(_mapBlurOverlay);
+	            _mapBlurOverlay = new UIImageView(new CGRect(new CGPoint(0, 0), new CGSize(size.Width, size.Height)))
+	            {
+		            ContentMode = UIViewContentMode.ScaleToFill
+	            };
+	            AddSubview(_mapBlurOverlay);
             }
 
             if (!enabled)
@@ -534,11 +533,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void CancelAddressSearch()
         {
-            if (!((HomeViewModel)(ViewModel.Parent)).FirstTime)
+            if (!((HomeViewModel)ViewModel.Parent).FirstTime)
             {
-                ((HomeViewModel)(ViewModel.Parent)).AutomaticLocateMeAtPickup.Cancel();
+                ((HomeViewModel)ViewModel.Parent).AutomaticLocateMeAtPickup.Cancel();
             }
-            ((HomeViewModel)(ViewModel.Parent)).LocateMe.Cancel();
+            ((HomeViewModel)ViewModel.Parent).LocateMe.Cancel();
             ViewModel.UserMovedMap.Cancel();
             _userMovedMapSubsciption.Disposable = null;
         }
@@ -602,16 +601,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 if (value != null)
                 {
-                    var coord = new CLLocationCoordinate2D(0,0);            
-                    if (value.VehicleLatitude.HasValue
-                        && value.VehicleLongitude.HasValue
-                        && value.VehicleLongitude.Value != 0
-                        && value.VehicleLatitude.Value != 0
-                        && !string.IsNullOrEmpty(value.VehicleNumber) 
-                        && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
+                    var coord = new CLLocationCoordinate2D(0,0);
+
+	                var vehicleLatitude = value.VehicleLatitude ?? 0;
+	                var vehicleLongitude = value.VehicleLongitude ?? 0;
+
+                    if (vehicleLatitude > 0 && vehicleLongitude > 0 && !string.IsNullOrEmpty(value.VehicleNumber) && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
                     {
-                        coord = new CLLocationCoordinate2D(value.VehicleLatitude.Value, value.VehicleLongitude.Value);
+						coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
                     }
+
                     _taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, _useThemeColorForPickupAndDestinationMapIcons, _showAssignedVehicleNumberOnPin);
                     AddAnnotation(_taxiLocationPin);
 
