@@ -126,8 +126,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             var address = await SearchAddressForCoordinate(position);
 			cancellationToken.ThrowIfCancellationRequested();
-			await SetAddressToCurrentSelection(address);
+			await SetAddressToCurrentSelection(address, cancellationToken);
 			return address;
+		}
+
+		public void SetAddresses(Address pickupAddress, Address destinationAddress)
+		{
+			_pickupAddressSubject.OnNext(pickupAddress);
+			_destinationAddressSubject.OnNext(destinationAddress);
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
@@ -157,14 +163,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
 
-			if (currentSelectionMode == AddressSelectionMode.PickupSelection)
-			{
-				_addressSelectionModeSubject.OnNext (AddressSelectionMode.DropoffSelection);
-			} 
-			else 
-			{
-				_addressSelectionModeSubject.OnNext (AddressSelectionMode.PickupSelection);
-			}
+			_addressSelectionModeSubject.OnNext(currentSelectionMode == AddressSelectionMode.PickupSelection
+				? AddressSelectionMode.DropoffSelection
+				: AddressSelectionMode.PickupSelection);
+		}
+
+		public void SetAddressSelectionMode(AddressSelectionMode mode = AddressSelectionMode.None)
+		{
+			_addressSelectionModeSubject.OnNext(mode);
 		}
 
 		public async Task ValidatePickupTime()
@@ -272,8 +278,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					Settings = order.Settings,
 					PromoCode = order.PromoCode
 				};
-
-				PrepareForNewOrder();
 
 				// TODO: Refactor so we don't have to return two distinct objects
 				return Tuple.Create(orderCreated, orderStatus);

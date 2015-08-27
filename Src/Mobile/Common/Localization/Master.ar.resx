@@ -2161,4 +2161,7 @@
 	<data name="EstimateFareCalculating" xml:space="preserve">
     <value>Calculating...</value>
   </data>
+	<data name="OrderStatus_Medallion" xml:space="preserve">
+		<value>Medallion</value>
+	</data>
 </root>

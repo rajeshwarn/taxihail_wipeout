@@ -679,3 +679,4 @@
 "View_RideLinqStatus"="Status";
 "NetworkTimeOutPopupAlways"="Always Accept";
 "EstimateFareCalculating"="Calculating...";
+"OrderStatus_Medallion"="Medallion";

@@ -697,3 +697,4 @@
 "ManualRideLinqStatusActivityName"="Manual RideLinq Status";
 "BookSummaryActivityName"="Book summary";
 "MessageActivityName"="Message";
+"OrderStatus_Medallion"="Medallion";

@@ -2213,4 +2213,7 @@
 	<data name="View_RideLinqStatus" xml:space="preserve">
     <value>Status</value>
   </data>
+	<data name="OrderStatus_Medallion" xml:space="preserve">
+		<value>Medallion</value>
+	</data>
 </root>

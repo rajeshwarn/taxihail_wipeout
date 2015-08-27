@@ -2818,4 +2818,7 @@
 	<data name="TaxiHailNetworkTimeOutPopupTitle" xml:space="preserve">
     <value>Switch company?</value>
   </data>
+	<data name="OrderStatus_Medallion" xml:space="preserve">
+		<value>Medallion</value>
+	</data>
 </root>

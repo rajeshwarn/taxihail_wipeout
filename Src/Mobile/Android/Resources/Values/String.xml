@@ -699,4 +699,5 @@
   <string name="ManualRideLinqStatusActivityName">Manual RideLinq Status</string>
   <string name="BookSummaryActivityName">Book summary</string>
   <string name="MessageActivityName">Message</string>
+  <string name="OrderStatus_Medallion">Medallion</string>
 </resources>

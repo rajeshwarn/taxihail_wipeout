@@ -86,6 +86,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             _shadowView.Frame = Frame.Copy().Shrink(1);
         }
+
+        public override bool Hidden
+        {
+            get { return base.Hidden; }
+            set
+            {
+                base.Hidden = value;
+
+                if (Hidden)
+                {
+                    // Remove dropshadow
+                    _shadowView.RemoveFromSuperview();
+                    _shadowView = null;
+                }
+            }
+        }
     }
 }
 
