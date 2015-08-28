@@ -7,9 +7,14 @@ using System.IO;
 using System.Linq;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.Entity.Core.Common.EntitySql;
+using System.Data.Entity.Core.EntityClient;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
+using System.Data.Entity.Migrations.Infrastructure;
 using System.Threading;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.Migrations;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration.Impl;
@@ -25,7 +30,7 @@ namespace DatabaseInitializer.Sql
 {
     public class DatabaseCreator
     {
-        ILog _logger = LogManager.GetLogger("DatabaseInitializer");
+        private ILog _logger = LogManager.GetLogger("DatabaseInitializer");
 
         public void DropDatabase(string connStringMaster, string database, bool setoffline = true)
         {
@@ -42,7 +47,8 @@ namespace DatabaseInitializer.Sql
         public void DropSchema(string connString, string databaseName)
         {
             string procedureName = "MkDropSchema_" + databaseName;
-            DatabaseHelper.ExecuteNonQuery(connString, "IF OBJECT_ID('" + procedureName + "') IS NOT NULL DROP PROCEDURE " + procedureName);
+            DatabaseHelper.ExecuteNonQuery(connString,
+                "IF OBJECT_ID('" + procedureName + "') IS NOT NULL DROP PROCEDURE " + procedureName);
             string dropTablesCreateProcSql = @"
                 CREATE PROCEDURE " + procedureName + @" AS
                 BEGIN 
@@ -78,7 +84,9 @@ namespace DatabaseInitializer.Sql
         public bool IsMirroringSet(string connStringMaster, string companyName)
         {
 
-            var isMirrored = "SELECT mirroring_role     FROM sys.database_mirroring     WHERE DB_NAME(database_id) = N'" + companyName + "'";
+            var isMirrored =
+                "SELECT mirroring_role     FROM sys.database_mirroring     WHERE DB_NAME(database_id) = N'" +
+                companyName + "'";
 
             var result = DatabaseHelper.ExecuteNullableScalarQuery<byte>(connStringMaster, isMirrored);
 
@@ -87,18 +95,22 @@ namespace DatabaseInitializer.Sql
 
         public void InitMirroring(string connStringMaster, string companyName)
         {
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET AUTO_CLOSE OFF", companyName));
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET RECOVERY FULL", companyName));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                string.Format(@"ALTER DATABASE {0} SET AUTO_CLOSE OFF", companyName));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                string.Format(@"ALTER DATABASE {0} SET RECOVERY FULL", companyName));
         }
 
         public void SetMirroringPartner(string connStringMaster, string companyName, string partner)
         {
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
         }
 
         public void CompleteMirroring(string connStringMaster, string companyName, string partner, string witness)
         {
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
             if (witness.HasValue())
             {
                 DatabaseHelper.ExecuteNonQuery(connStringMaster,
@@ -108,19 +120,28 @@ namespace DatabaseInitializer.Sql
 
         public void BackupDatabase(string connStringMaster, string backupFolder, string databaseName)
         {
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"BACKUP DATABASE {0} TO DISK='{1}\{0}.bak'  WITH FORMAT", databaseName, backupFolder));
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"BACKUP LOG {0} TO DISK='{1}\{0}_log.bak'  WITH FORMAT", databaseName, backupFolder));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                string.Format(@"BACKUP DATABASE {0} TO DISK='{1}\{0}.bak'  WITH FORMAT", databaseName, backupFolder));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                string.Format(@"BACKUP LOG {0} TO DISK='{1}\{0}_log.bak'  WITH FORMAT", databaseName, backupFolder));
         }
 
         public void RestoreToDeleteDatabase(string connStringMaster, string backupFolder, string databaseName)
         {
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE DATABASE {0} FROM DISK = '{1}\{0}.bak'  WITH REPLACE, RECOVERY", databaseName, backupFolder));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                string.Format(@"RESTORE DATABASE {0} FROM DISK = '{1}\{0}.bak'  WITH REPLACE, RECOVERY", databaseName,
+                    backupFolder));
         }
+
         public void RestoreDatabase(string connStringMaster, string backupFolder, string databaseName)
         {
             // Ensuring that nothing is connected to the database.
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE DATABASE {0} FROM DISK = '{1}\{0}.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"RESTORE LOG {0} FROM DISK = '{1}\{0}_log.bak'  WITH REPLACE, NORECOVERY", databaseName, backupFolder));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                string.Format(@"RESTORE DATABASE {0} FROM DISK = '{1}\{0}.bak'  WITH REPLACE, NORECOVERY", databaseName,
+                    backupFolder));
+            DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                string.Format(@"RESTORE LOG {0} FROM DISK = '{1}\{0}_log.bak'  WITH REPLACE, NORECOVERY", databaseName,
+                    backupFolder));
         }
 
         public void TurnOffMirroring(string connStringMaster, string companyName)
@@ -258,7 +279,8 @@ namespace DatabaseInitializer.Sql
 
             string unorderedEvents = ";WITH cte AS ";
             unorderedEvents += "( ";
-            unorderedEvents += "SELECT *, ROW_NUMBER() OVER (PARTITION BY AggregateId ORDER BY [EventDate], [VERSION] ASC) AS rn ";
+            unorderedEvents +=
+                "SELECT *, ROW_NUMBER() OVER (PARTITION BY AggregateId ORDER BY [EventDate], [VERSION] ASC) AS rn ";
             unorderedEvents += "FROM [Events].[Events]  ";
             unorderedEvents += ") ";
             unorderedEvents += "SELECT [AggregateId] ";
@@ -273,7 +295,8 @@ namespace DatabaseInitializer.Sql
             {
                 Console.WriteLine("Found " + invalidAggregateId.Count().ToString() + " events in invalid order");
 
-                string fixEvents = "update [Events].[Events] set EventDate =  DATEADD(MINUTE, [Version] , (select top 1 EventDate from [Events].[Events] where AggregateId='{0}')) where AggregateId='{0}'";
+                string fixEvents =
+                    "update [Events].[Events] set EventDate =  DATEADD(MINUTE, [Version] , (select top 1 EventDate from [Events].[Events] where AggregateId='{0}')) where AggregateId='{0}'";
 
                 foreach (var invalidId in invalidAggregateId)
                 {
@@ -288,29 +311,38 @@ namespace DatabaseInitializer.Sql
 
         public void CreateIndexes(string connString, string newDatabase)
         {
-            var createIndexForEventDate = string.Format("IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'EventDateVersionIdx' AND object_id = OBJECT_ID('[{0}].[Events].[Events]')) " +
-                                                 "CREATE NONCLUSTERED INDEX [EventDateVersionIdx] ON [{0}].[Events].[Events] " +
-                                                 "([EventDate] ASC, [Version] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, " +
-                                                 "DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)", newDatabase);
+            var createIndexForEventDate =
+                string.Format(
+                    "IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'EventDateVersionIdx' AND object_id = OBJECT_ID('[{0}].[Events].[Events]')) " +
+                    "CREATE NONCLUSTERED INDEX [EventDateVersionIdx] ON [{0}].[Events].[Events] " +
+                    "([EventDate] ASC, [Version] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, " +
+                    "DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)", newDatabase);
 
             DatabaseHelper.ExecuteNonQuery(connString, createIndexForEventDate);
 
-            var rebuildEventDateIndex = string.Format("ALTER INDEX [EventDateVersionIdx] ON [{0}].[Events].[Events] REBUILD PARTITION = ALL WITH (PAD_INDEX = OFF, " +
-                                             "STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON);", newDatabase);
+            var rebuildEventDateIndex =
+                string.Format(
+                    "ALTER INDEX [EventDateVersionIdx] ON [{0}].[Events].[Events] REBUILD PARTITION = ALL WITH (PAD_INDEX = OFF, " +
+                    "STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON);",
+                    newDatabase);
 
             DatabaseHelper.ExecuteNonQuery(connString, rebuildEventDateIndex);
 
-            var createIndexForOrderVehiclePosition = string.Format("IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'OrderIdIdx' AND object_id = OBJECT_ID('[{0}].[Booking].[OrderVehiclePositionDetail]')) " +
-                                                 "CREATE NONCLUSTERED INDEX [OrderIdIdx] ON [{0}].[Booking].[OrderVehiclePositionDetail] " +
-                                                 "([OrderId] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, " +
-                                                 "DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)", newDatabase);
+            var createIndexForOrderVehiclePosition =
+                string.Format(
+                    "IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'OrderIdIdx' AND object_id = OBJECT_ID('[{0}].[Booking].[OrderVehiclePositionDetail]')) " +
+                    "CREATE NONCLUSTERED INDEX [OrderIdIdx] ON [{0}].[Booking].[OrderVehiclePositionDetail] " +
+                    "([OrderId] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, " +
+                    "DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)", newDatabase);
 
             DatabaseHelper.ExecuteNonQuery(connString, createIndexForOrderVehiclePosition);
 
-            var createIndexForPromoIdUsage = string.Format("IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'PromoIdIdx' AND object_id = OBJECT_ID('[{0}].[Booking].[PromotionUsageDetail]')) " +
-                                                 "CREATE NONCLUSTERED INDEX [PromoIdIdx] ON [{0}].[Booking].[PromotionUsageDetail] " +
-                                                 "([PromoId] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, " +
-                                                 "DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)", newDatabase);
+            var createIndexForPromoIdUsage =
+                string.Format(
+                    "IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'PromoIdIdx' AND object_id = OBJECT_ID('[{0}].[Booking].[PromotionUsageDetail]')) " +
+                    "CREATE NONCLUSTERED INDEX [PromoIdIdx] ON [{0}].[Booking].[PromotionUsageDetail] " +
+                    "([PromoId] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, " +
+                    "DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)", newDatabase);
 
             DatabaseHelper.ExecuteNonQuery(connString, createIndexForPromoIdUsage);
         }
@@ -320,9 +352,10 @@ namespace DatabaseInitializer.Sql
             const int pageSize = 100000;
 
             //get the last events from the new database
-            var lastProcessedEventTime = DatabaseHelper.ExecuteScalarQuery<DateTime?>(connString, string.Format("Select max([EventDate]) from [{0}].[Events].[Events]", newDatabase));
+            var lastProcessedEventTime = DatabaseHelper.ExecuteScalarQuery<DateTime?>(connString,
+                string.Format("Select max([EventDate]) from [{0}].[Events].[Events]", newDatabase));
 
-            var sqlDateTime = (DateTime)(lastProcessedEventTime ?? SqlDateTime.MinValue);
+            var sqlDateTime = (DateTime) (lastProcessedEventTime ?? SqlDateTime.MinValue);
 
             Console.WriteLine("Counting number of events");
 
@@ -332,11 +365,13 @@ namespace DatabaseInitializer.Sql
             var queryNumberEvents = string.Format(
                 @"Select Count(1)
                 FROM [{0}].[Events].[Events]
-                WHERE [EventType] <> 'apcurium.MK.Booking.Events.OrderVehiclePositionChanged' AND [EventDate] > '{1}'", oldDatabase, sqlDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+                WHERE [EventType] <> 'apcurium.MK.Booking.Events.OrderVehiclePositionChanged' AND [EventDate] > '{1}'",
+                oldDatabase, sqlDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
 
             var nbEvents = DatabaseHelper.ExecuteScalarQuery<int>(connString, queryNumberEvents, 3600);
 
-            Console.WriteLine("Original database has {0} events to copy (Duration: {1}) ", nbEvents, (DateTime.Now - start).TotalSeconds);
+            Console.WriteLine("Original database has {0} events to copy (Duration: {1}) ", nbEvents,
+                (DateTime.Now - start).TotalSeconds);
 
             if (nbEvents > 0)
             {
@@ -348,8 +383,9 @@ namespace DatabaseInitializer.Sql
                     @"INSERT INTO [{0}].[Events].[Events] ([AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate]) " +
                     "SELECT item.AggregateId as AggregateId, item.AggregateType as AggregateType, item.Version as Version, item.Payload as Payload, item.CorrelationId as CorrelationId, item.EventType as EventType, item.EventDate as EventDate " +
                     "FROM (SELECT [AggregateId],[AggregateType],[Version],[Payload],[CorrelationId],[EventType],[EventDate], ROW_NUMBER() OVER(ORDER BY [EventDate]) as rownumber " +
-                        "FROM [{1}].[Events].[Events] " +
-                        "WHERE [EventType] <> 'apcurium.MK.Booking.Events.OrderVehiclePositionChanged' AND [EventDate] > '{2}') as item " +// delete OrderVehiclePositionChanged events
+                    "FROM [{1}].[Events].[Events] " +
+                    "WHERE [EventType] <> 'apcurium.MK.Booking.Events.OrderVehiclePositionChanged' AND [EventDate] > '{2}') as item " +
+                    // delete OrderVehiclePositionChanged events
                     "WHERE rownumber >= {3} AND rownumber <= {4}";
 
                 while (nbEvents > startRow)
@@ -360,9 +396,11 @@ namespace DatabaseInitializer.Sql
 
                     startRow++;
 
-                    var queryForEvents = string.Format(queryBase, newDatabase, oldDatabase, sqlDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"), startRow, endRow);
+                    var queryForEvents = string.Format(queryBase, newDatabase, oldDatabase,
+                        sqlDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"), startRow, endRow);
 
-                    Console.WriteLine("Copying events from row {0} to row {1}: (Timeout: 3600 seconds)", startRow, endRow);
+                    Console.WriteLine("Copying events from row {0} to row {1}: (Timeout: 3600 seconds)", startRow,
+                        endRow);
                     DatabaseHelper.ExecuteNonQuery(connString, queryForEvents, 3600);
 
                     startRow = endRow;
@@ -375,9 +413,11 @@ namespace DatabaseInitializer.Sql
             // copy cache table except the static data
             var queryForCache = string.Format("INSERT INTO [{0}].[Cache].[Items]([Key],[Value],[ExpiresAt]) " +
                                               "SELECT [Key],[Value],[ExpiresAt] " +
-                                              "FROM [{1}].[Cache].[Items] WHERE [Key] <> 'IBS.StaticData'", newDatabase, oldDatabase);
+                                              "FROM [{1}].[Cache].[Items] WHERE [Key] <> 'IBS.StaticData'", newDatabase,
+                oldDatabase);
 
-            DatabaseHelper.ExecuteNonQuery(connString, string.Format("TRUNCATE Table [{0}].[Cache].[Items]", newDatabase));
+            DatabaseHelper.ExecuteNonQuery(connString,
+                string.Format("TRUNCATE Table [{0}].[Cache].[Items]", newDatabase));
             DatabaseHelper.ExecuteNonQuery(connString, queryForCache);
 
             return lastProcessedEventTime;
@@ -393,7 +433,8 @@ namespace DatabaseInitializer.Sql
 
             try
             {
-                DatabaseHelper.ExecuteNonQuery(connString, string.Format("TRUNCATE Table [{0}].[Booking].[AppStartUpLogDetail]", newDatabase));
+                DatabaseHelper.ExecuteNonQuery(connString,
+                    string.Format("TRUNCATE Table [{0}].[Booking].[AppStartUpLogDetail]", newDatabase));
                 DatabaseHelper.ExecuteNonQuery(connString, query);
             }
             catch (Exception)
@@ -423,7 +464,7 @@ namespace DatabaseInitializer.Sql
             {
                 foreach (var context in contexts)
                 {
-                    var adapter = (IObjectContextAdapter)context;
+                    var adapter = (IObjectContextAdapter) context;
 
                     var script = adapter.ObjectContext.CreateDatabaseScript();
 
@@ -432,10 +473,43 @@ namespace DatabaseInitializer.Sql
                     context.Dispose();
                 }
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+                // ReSharper disable once EmptyGeneralCatchClause
             catch (Exception e)
             {
                 _logger.Error("Error during Database Create Schema", e);
+            }
+        }
+
+        public void UpdateSchemas(ConnectionStringSettings connectionString)
+        {
+            try
+            {
+                var configuration = new BookingDbMigrationConfiguration();
+                configuration.TargetDatabase = new DbConnectionInfo(connectionString.ConnectionString,
+                    "System.Data.SqlClient");
+                var migrator = new DbMigrator(configuration);
+
+
+                var scriptor = new MigratorScriptingDecorator(migrator);
+                var script = scriptor.ScriptUpdate(sourceMigration: null, targetMigration: null);
+                Console.WriteLine(script);
+
+                //list tables from the script
+                
+
+                //run the script
+
+                //truncate tables
+
+                //get event handler from the tables and so the list of events
+
+                //register event handler
+
+                //replay only some events 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
     }

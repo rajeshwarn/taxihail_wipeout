@@ -109,6 +109,8 @@ namespace DatabaseInitializer
 
                     PerformUpdate(param, creatorDb, param.CompanyName, temporaryDatabaseName);
 
+                    return 0;
+
                     if (param.ReuseTemporaryDb)
                     {
                         // the idea behind reuse of temp db is that account doesn't have permission to rename db 
@@ -272,38 +274,47 @@ namespace DatabaseInitializer
         {
             Console.WriteLine("Update");
 
-            var temporaryDatabaseName = targetDatabaseName;
+            //we don' t use a new database anymore
             var builder = new SqlConnectionStringBuilder(param.MkWebConnectionString);
-            builder.InitialCatalog = temporaryDatabaseName;
+            builder.InitialCatalog = sourceDatabaseName;
 
-            var temporaryDbExists = creatorDb.DatabaseExists(param.MasterConnectionString, temporaryDatabaseName);
-            if (temporaryDbExists && param.ReuseTemporaryDb)
-            {
-                creatorDb.DropSchema(builder.ConnectionString, temporaryDatabaseName);
-            }
-            else
-            {
-                Console.WriteLine("Create Empty Database");
-                creatorDb.DropDatabase(param.MasterConnectionString, temporaryDatabaseName);
-                creatorDb.CreateDatabase(param.MasterConnectionString, temporaryDatabaseName, param.SqlServerDirectory);
-            }
-            creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", builder.ConnectionString));
+            //var temporaryDatabaseName = targetDatabaseName;
+            //var builder = new SqlConnectionStringBuilder(param.MkWebConnectionString);
+            //builder.InitialCatalog = temporaryDatabaseName;
 
-            Console.WriteLine("Copy Events to the Empty Database");
-            creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
-            creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
-            creatorDb.FixUnorderedEvents(builder.ConnectionString);
+            //var temporaryDbExists = creatorDb.DatabaseExists(param.MasterConnectionString, temporaryDatabaseName);
+            //if (temporaryDbExists && param.ReuseTemporaryDb)
+            //{
+            //    creatorDb.DropSchema(builder.ConnectionString, temporaryDatabaseName);
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Create Empty Database");
+            //    creatorDb.DropDatabase(param.MasterConnectionString, temporaryDatabaseName);
+            //    creatorDb.CreateDatabase(param.MasterConnectionString, temporaryDatabaseName, param.SqlServerDirectory);
+            //}
+            //creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", builder.ConnectionString));
+
+            //creatorDb.UpdateSchemas(new ConnectionStringSettings("MkWeb", param.MkWebConnectionString));
+
+            //Console.WriteLine("Copy Events to the Empty Database");
+            //creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
+            //creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
+            //creatorDb.FixUnorderedEvents(builder.ConnectionString);
 
             var container = new UnityContainer();
             var module = new Module();
             module.Init(container, new ConnectionStringSettings("MkWeb", builder.ConnectionString), param.MkWebConnectionString);
 
-            Console.WriteLine("Creating index...");
-            creatorDb.CreateIndexes(param.MasterConnectionString, temporaryDatabaseName);
+            //Console.WriteLine("Creating index...");
+            //creatorDb.CreateIndexes(param.MasterConnectionString, temporaryDatabaseName);
 
-            Console.WriteLine("Migrating events...");
-            var migrator = container.Resolve<IEventsMigrator>();
-            migrator.Do();
+           // Console.WriteLine("Migrating events...");
+           // var migrator = container.Resolve<IEventsMigrator>();
+            //migrator.Do();
+
+            //truncate AccountDetails table TODO Remove
+            //DatabaseHelper.ExecuteNonQuery(builder.ConnectionString, "Truncate Table [Booking].[AccountDetail]");
 
             Console.WriteLine("Replaying events...");
             var replayService = container.Resolve<IEventsPlayBackService>();
@@ -312,16 +323,16 @@ namespace DatabaseInitializer
 
             StopAppPools(param);
 
-            var lastEventCopyDateTime = creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
+            //var lastEventCopyDateTime = creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
 
-            Console.WriteLine("Migrating Events Raised Since the Copy...");
-            migrator.Do(lastEventCopyDateTime);
+            //Console.WriteLine("Migrating Events Raised Since the Copy...");
+            //migrator.Do(lastEventCopyDateTime);
 
-            Console.WriteLine("Replaying Events Raised Since the Copy...");
-            
+            //Console.WriteLine("Replaying Events Raised Since the Copy...");
 
-            replayService.ReplayAllEvents(lastEventCopyDateTime);
-            creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
+
+            //replayService.ReplayAllEvents(lastEventCopyDateTime);
+            //creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
 
             Console.WriteLine("Rename Previous Database...");
             var mirrored = creatorDb.IsMirroringSet(param.MasterConnectionString, sourceDatabaseName);

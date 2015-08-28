@@ -3,6 +3,7 @@
 using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -46,7 +47,7 @@ namespace DatabaseInitializer
             //ReplayEventService
             container.RegisterInstance<IEventsPlayBackService>(
                 new EventsPlayBackService(() => container.Resolve<EventStoreDbContext>(), container.Resolve<IEventBus>(),
-                    container.Resolve<ITextSerializer>(), container.Resolve<EventMigrator>()));
+                    container.Resolve<ITextSerializer>(), container.Resolve<EventMigrator>(), container.Resolve<ILogger>()));
 
             container.RegisterInstance<IEventsMigrator>(
                 new EventsMigrator(() => container.Resolve<EventStoreDbContext>(),
@@ -108,16 +109,19 @@ namespace DatabaseInitializer
 
             // Filter out Integration Event Handlers
             // They should never replay events
-            var eventHandlerRegistrations = unityContainer.Registrations
-                .Where(x => x.RegisteredType == typeof(IEventHandler) 
-                        && !x.MappedToType.GetInterfaces().Contains(typeof(IIntegrationEventHandler)))
-                .ToArray();
+            //var eventHandlerRegistrations = unityContainer.Registrations
+            //    .Where(x => x.RegisteredType == typeof(IEventHandler) 
+            //            && !x.MappedToType.GetInterfaces().Contains(typeof(IIntegrationEventHandler)))
+            //    .ToArray();
 
-            foreach (var eventHandlerRegistration in eventHandlerRegistrations)
-            {
-                var eventHandler = (IEventHandler) unityContainer.Resolve(eventHandlerRegistration.MappedToType);
-                eventHandlerRegistry.Register(eventHandler);
-            }
+            //foreach (var eventHandlerRegistration in eventHandlerRegistrations)
+            //{
+            //    var eventHandler = (IEventHandler) unityContainer.Resolve(eventHandlerRegistration.MappedToType);
+            //    eventHandlerRegistry.Register(eventHandler);
+            //}
+
+            var eventHandler = (IEventHandler)unityContainer.Resolve(typeof(AccountDetailsGenerator));
+            eventHandlerRegistry.Register(eventHandler);
         }
     }
 }
