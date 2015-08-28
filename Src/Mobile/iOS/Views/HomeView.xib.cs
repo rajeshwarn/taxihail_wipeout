@@ -90,9 +90,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private IDisposable ObserveIsDriverInfoAvailable()
         {
             return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-                h => ViewModel.BookingStatus.PropertyChanged += h,
-                h => ViewModel.BookingStatus.PropertyChanged -= h
-            )
+	                h => ViewModel.BookingStatus.PropertyChanged += h,
+	                h => ViewModel.BookingStatus.PropertyChanged -= h
+	            )
                 .Where(args => args.EventArgs.PropertyName.Equals("IsDriverInfoAvailable"))
                 .Select(_ => ViewModel.BookingStatus.IsDriverInfoAvailable)
                 .DistinctUntilChanged()
@@ -379,6 +379,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 CloseBookATaxiDialog();
                 constraintAppBarBookingStatus.Constant = 0;
                 constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstrainValue;
+
+				if (state == HomeViewModelState.ManualRidelinq) 
+				{
+					ResizeBookingStatusControl(false);
+				}
 
                 homeView.LayoutIfNeeded();
 
