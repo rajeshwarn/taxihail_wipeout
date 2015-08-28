@@ -109,11 +109,11 @@
     <Reference Include="Cirrious.MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.WebBrowser.Touch.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.Touch.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
@@ -121,20 +121,17 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Visibility.Touch.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.Touch.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.WebBrowser.Touch.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Touch.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoTouch.FacebookConnect">
-      <HintPath>..\Components\facebookios-3.22.0\lib\ios-unified\MonoTouch.FacebookConnect.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +143,7 @@
     <Compile Include="AppServices\IPromotionService.cs" />
     <Compile Include="AppServices\IMetricsService.cs" />
     <Compile Include="AsyncCommand.cs" />
+    <Compile Include="BindingConverter\HomeViewStateToVisibilityConverter.cs" />
     <Compile Include="Extensions\DisposableExtensions.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
@@ -220,6 +218,7 @@
     <Compile Include="ViewModels\EditAutoTipViewModel.cs" />
     <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
     <Compile Include="ViewModels\Orders\OrderAirportViewModel.cs" />
+    <Compile Include="ViewModels\Orders\BookingStatusBottomBarViewModel.cs" />
     <Compile Include="ViewModels\PromotionItemViewModel.cs" />
     <Compile Include="ViewModels\PromotionViewModel.cs" />
     <Compile Include="ViewModels\SelectableItemViewModel.cs" />
@@ -284,9 +283,6 @@
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="AppServices\IVehicleService.cs" />
     <Compile Include="AppServices\Impl\VehicleService.cs" />
-    <Compile Include="AppServices\Social\FacebookUserInfo.iOS.cs">
-      <DependentUpon>FacebookUserInfo.cs</DependentUpon>
-    </Compile>
     <Compile Include="AppServices\Social\FacebookUserInfo.cs" />
     <Compile Include="AppServices\Social\IFacebookService.cs" />
     <Compile Include="AppServices\Social\ITwitterService.cs" />
@@ -297,8 +293,6 @@
     <Compile Include="AppServices\Social\OAuth\OAuthConfig.cs" />
     <Compile Include="AppServices\Social\OAuth\OAuthEncoder.cs" />
     <Compile Include="AppServices\Social\OAuth\Punycode.cs" />
-    <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
-    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Extensions\ICommandExtensions.cs" />
     <Compile Include="IoC\TinyIoC.cs" />
     <Compile Include="IoC\TinyIoCProvider.cs" />
@@ -307,7 +301,6 @@
     <Compile Include="AppServices\Auth\AuthException.cs" />
     <Compile Include="AppServices\Auth\AuthFailure.cs" />
     <Compile Include="ViewModels\PanelMenuViewModel.cs" />
-    <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <Compile Include="Settings\AppSettingsService.cs" />
     <Compile Include="ViewModels\HistoryListViewModel.cs" />
     <Compile Include="ViewModels\LocationListViewModel.cs" />
@@ -337,7 +330,6 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="ViewModels\UpdatedTermsAndConditionsViewModel.cs" />
     <Compile Include="ViewModels\IRequestPresentationState.cs" />
-    <Compile Include="ViewModels\Orders\HomeViewModelStateRequestedEventArgs.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="ViewModels\ISubViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
@@ -361,6 +353,9 @@
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
     <Compile Include="ViewModels\ManualRideLinqStatusViewModel.cs" />
     <Compile Include="BindingConverter\DialCodeConverter.cs" />
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -398,6 +393,7 @@
     <None Include="Localization\Taxi303.resx" />
     <None Include="Localization\Sherbet London.resx" />
     <None Include="Localization\BlackCabNow.resx" />
+    <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
@@ -414,6 +410,7 @@
     <None Include="Localization\Master.es.resx">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -425,7 +422,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Localization\TaxiHail NYC.resx" />
-    <None Include="packages.config" />
     <None Include="Localization\Master.ar.resx">
       <SubType>Designer</SubType>
     </None>
@@ -452,10 +448,6 @@
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="facebookios">
-      <Version>3.22.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

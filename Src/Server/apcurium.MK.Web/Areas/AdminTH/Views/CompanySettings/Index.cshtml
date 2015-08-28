@@ -16,6 +16,14 @@
     </div>
 }
 
+@if (@TempData["FakeIBSErrors"] != null)
+{
+    <div class="alert alert-error" style="margin-top: 10px;">
+        @TempData["FakeIBSErrors"]
+    </div>
+}
+
+
 @using (Html.BeginForm("Update", "CompanySettings", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
@@ -53,8 +61,10 @@
         {
             <h5>No settings available</h5>
         }
+        
+        var sortedSetting = from temp in settings orderby temp.Value.GetDisplayName() ascending select temp;
 
-        foreach (var setting in settings)
+        foreach (var setting in sortedSetting)
         {
             var settingType = setting.Value.PropertyType;
             var settingValue = Model.Settings.GetNestedPropertyValue(setting.Key);
@@ -64,7 +74,7 @@
             <div class="control-group">
                 @if (Model.IsSuperAdmin)
                 {
-                    <div class="control-group left-control-group" style="width: 50%">
+                    <div class="control-group left-control-group" style="width: 60%">
                         <label class="checkbox">
                             @Html.CheckBox("CheckBox_" + setting.Key, isAvailableToAdmin, new { @class = "checkbox inline", @title = "Check to make setting available to Admin" })
                             @Html.Label(setting.Value.GetDisplayName(), new { @class = "control-label", @style = "margin-right:200px; white-space:nowrap;", @title = setting.Value.GetDisplayDescription() })
@@ -76,7 +86,7 @@
                     @Html.Label(setting.Value.GetDisplayName(), new { @class = "control-label", @style = "margin-right:200px; white-space:nowrap;", @title = setting.Value.GetDisplayDescription() })
                 }
 
-                <div class="control-group right-control-group" style="width: 50%">
+                <div class="control-group right-control-group" style="width: 40%">
                     @if (settingType == typeof(bool))
                     {
                         var boolValue = Convert.ToBoolean(settingValue);

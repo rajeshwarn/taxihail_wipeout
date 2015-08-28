@@ -13,7 +13,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
             IsSuperAdmin = isSuperAdmin;
             SuperAdminSettings = new Dictionary<string, PropertyInfo>();
             AdminSettings = new Dictionary<string, PropertyInfo>();
-        }
+      }
 
         public ServerTaxiHailSetting Settings { get; set; }
 

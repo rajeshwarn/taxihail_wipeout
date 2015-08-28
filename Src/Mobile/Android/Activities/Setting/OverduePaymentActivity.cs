@@ -15,7 +15,7 @@ using Android.Content.PM;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-	[Activity(Label = "OverduePaymentActivity",
+	[Activity(Label = "@string/OverduePaymentActivityName",
 		Theme = "@style/MainTheme",
 		ScreenOrientation = ScreenOrientation.Portrait)]			
 	public class OverduePaymentActivity : BaseBindingActivity<OverduePaymentViewModel>

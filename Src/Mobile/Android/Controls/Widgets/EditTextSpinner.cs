@@ -15,7 +15,7 @@ using Android.Content.Res;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    [Register("apcurium.mk.booking.mobile.client.controls.EditTextSpinner")] 
+    [Register("apcurium.mk.booking.mobile.client.controls.EditTextSpinner")]
     public class EditTextSpinner : LinearLayout
     {
         private ListItemAdapter _adapter;
@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private int _selectedKey = int.MinValue;
         private Spinner _spinner;
         private string _text;
+		private Button _button;
 		private bool _allowEmptySelection = false;
 
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
@@ -66,7 +67,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 _text = value;
-                if (_label != null) _label.Text = value;
+				if (_label != null)
+				{
+					_label.Text = value;
+					_button.ContentDescription = this.ContentDescription + " " + Text;
+				}
             }
         }
 
@@ -180,15 +185,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					}
                 }
             }
-            var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);
 
-            button.Click += (sender, e) =>
+			_button = (Button)layout.FindViewById(Resource.Id.openSpinnerButton);
+
+			_button.ContentDescription = this.ContentDescription + " " + Text;
+
+			_button.Click += (sender, e) =>
             {
                 if (Enabled)
                 {
 					if (OnTouch != null)
 					{
-						OnTouch.Invoke(button, new TouchEventArgs(true, null));
+						OnTouch.Invoke(_button, new TouchEventArgs(true, null));
 
 					    Task.Delay(1000);
 					}

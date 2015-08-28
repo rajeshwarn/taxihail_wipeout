@@ -166,7 +166,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					_horizontalDivider.SetBackgroundColor(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider));
 				}
 
-				if (ShowVehicleSelection) {
+				if (ShowVehicleSelection && Vehicles != null) {
 
 					foreach (var vehicle in Vehicles) {
 						var vehicleView = new VehicleTypeControl (base.Context, vehicle, SelectedVehicle == null ? false : vehicle.Id == SelectedVehicle.Id);

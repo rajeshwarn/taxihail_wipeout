@@ -15,25 +15,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
 			_inputType = inputType;
 		}
 
-		protected override void UpdateDetailDisplay (View cell)
-		{
-			base.UpdateDetailDisplay (cell);
-			if (cell != null) 
+        protected override void UpdateDetailDisplay(View cell)
+        {
+            base.UpdateDetailDisplay(cell);
+            if (cell != null)
             {
-				//hard coded but since we are getting rid of dialog, no need to abstract this s**t
-				var editText = cell.FindViewById<EditTextEntry> (Resource.Id.dialog_ValueField);
+                //hard coded but since we are getting rid of dialog, no need to abstract this s**t
+                var editText = cell.FindViewById<EditTextEntry>(Resource.Id.dialog_ValueField);
 
-				if (_inputType != null) 
+                if (_inputType != null)
                 {
-					editText.InputType = _inputType.Value;
-				}
+                    editText.InputType = _inputType.Value;
+                }
 
-				if(this.Services().Localize.IsRightToLeft)
-				{
-					editText.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
-				}
-			}
-		}
+                if (this.Services().Localize.IsRightToLeft)
+                {
+                    editText.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
+                }
+            }
+        }
 	}
 }
 

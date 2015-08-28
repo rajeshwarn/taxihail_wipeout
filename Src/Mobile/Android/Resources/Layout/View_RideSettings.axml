@@ -63,7 +63,38 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:singleLine="true"
                         android:inputType="textCapWords"
-                        local:MvxBind="Text Name" />
+                        local:MvxBind="Text Name"
+                        android:hint="@string/RideSettingsName" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dip"
+                        android:text="@string/RideSettingsEmailTitle"
+                        style="@style/BlackTextLabel" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/facebookLinked"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center_vertical"
+                            android:src="@drawable/facebook_account_icon"
+                            android:layout_gravity="center_vertical"
+                            android:hint="@string/RideSettingsName"
+                            local:MvxBind="Visibility IsLinkedWithFacebook, Converter=Visibility" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:textSize="18dp"
+                            style="@style/BlackTextLabel"
+                            android:text="thony@apcurium.com"
+                            local:MvxBind="Text Email"
+                            android:gravity="center_vertical" />
+                    </LinearLayout>
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -90,7 +121,8 @@
                             local:MvxBind="Text Phone"
                             android:maxLines="1"
                             android:inputType="phone"
-                            android:singleLine="true" />
+                            android:singleLine="true"
+                            android:hint="@string/RideSettingsPhone" />
                     </LinearLayout>
                     <TextView
                         android:layout_width="fill_parent"
@@ -104,7 +136,8 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
                         android:id="@+id/rideSettingsPassword"
-                        local:MvxBind="NavigateCommand NavigateToUpdatePassword" />
+                        local:MvxBind="NavigateCommand NavigateToUpdatePassword"
+                        android:contentDescription="@string/RideSettingsPassword" />
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -117,6 +150,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
+                        android:contentDescription="@string/RideSettingsVehiculeType"
                         local:MvxBind="Text VehicleTypeName; Data Vehicles; SelectedItem VehicleTypeId; Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility; Enabled IsVehicleTypeSelectionEnabled" />
                     <TextView
                         android:singleLine="true"
@@ -130,6 +164,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
+                        android:contentDescription="@string/RideSettingsChargeType"
                         local:MvxBind="Text ChargeTypeName; Data Payments; SelectedItem ChargeTypeId; Enabled IsChargeTypesEnabled" />
                     <TextView
                         android:layout_width="fill_parent"
@@ -145,7 +180,8 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         local:MvxBind="Text AccountNumber; Visibility IsChargeAccountPaymentEnabled, Converter=Visibility"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:hint="@string/RideSettingsAccountNumber" />
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -160,7 +196,8 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         local:MvxBind="Text CustomerNumber; Visibility IsChargeAccountPaymentEnabled, Converter=Visibility"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:hint="@string/RideSettingsCustomerNumber" />
                     <TextView
                         android:id="@+id/tipAmountLabel"
                         android:text="@string/PaymentDetails.TipAmountLabel"
@@ -175,7 +212,8 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
                         local:allowOtherSelection="true"
-                        local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip" />
+                        local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip"
+                        android:contentDescription="@string/PaymentDetails.TipAmountLabel" />
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -191,7 +229,8 @@
                         android:maxLines="1"
                         android:inputType="number"
                         android:singleLine="true"
-                        local:MvxBind="Text PayBack; Visibility IsPayBackFieldEnabled, Converter=Visibility" />
+                        local:MvxBind="Text PayBack; Visibility IsPayBackFieldEnabled, Converter=Visibility"
+                        android:hint="@string/RideSettingsPayBack" />
                     <Button
                         style="@style/ButtonActionGreenStyle"
                         android:layout_marginTop="8dip"

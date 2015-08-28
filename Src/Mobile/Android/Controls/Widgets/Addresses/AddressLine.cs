@@ -40,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 			_nameTextView.Text = _address.DisplayLine1;
 			_addressTextView.Text = _address.DisplayLine2;
 
+			_button.ContentDescription = _address.DisplayLine1 + " " + _address.DisplayLine2;
            
             var imageSrc = AddressTypeToDrawableConverter.GetDrawable(_address.Type);
             _imageView.SetImageResource(imageSrc);

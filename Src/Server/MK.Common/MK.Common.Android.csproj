@@ -11,7 +11,7 @@
     <AssemblyName>MK.Common.Android</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
+    <Compile Include="Configuration\Attributes\HiddenAttribute.cs" />
     <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />
     <Compile Include="Configuration\Attributes\SendToClientAttribute.cs" />
     <Compile Include="Configuration\Helpers\SettingsLoader.cs" />

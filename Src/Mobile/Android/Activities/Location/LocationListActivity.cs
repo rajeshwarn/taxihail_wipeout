@@ -10,7 +10,7 @@ using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 {
-	[Activity(Label = "Locations", Theme = "@style/MainTheme",
+	[Activity(Label = "@string/LocationsActivityName", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class LocationListActivity : BaseBindingActivity<LocationListViewModel>
     {

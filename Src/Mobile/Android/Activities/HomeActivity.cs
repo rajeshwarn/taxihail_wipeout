@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Android.App;
 using Android.Content;
@@ -14,20 +14,19 @@ using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Common.Entity;
-using Cirrious.CrossCore;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "Home", 
+	[Activity(Label = "@string/HomeActivityName", 
         Theme = "@style/MainTheme", 
         ScreenOrientation = ScreenOrientation.Portrait, 
         ClearTaskOnLaunch = true, 
@@ -45,39 +44,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private OrderOptions _orderOptions;
         private OrderAirport _orderAirport;
         private AddressPicker _searchAddress;
-        private ImageView _btnLocation; 
+	    private AppBarBookingStatus _appBarBookingStatus;
+		private OrderStatusView _orderStatus;
+		private LinearLayout _btnLocation; 
 		private LinearLayout _btnSettings;
         private AppBar _appBar;
         private FrameLayout _frameLayout;
-        private HomeViewModelState _presentationState = HomeViewModelState.Initial;
-
         private int _menuWidth = 400;
-
         private Bundle _mainBundle;
+		private readonly SerialDisposable _subscription = new SerialDisposable();
 
-        protected override void OnCreate(Bundle bundle)
+	    protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             _mainBundle = bundle;
 
-            var errorCode = GooglePlayServicesUtil.IsGooglePlayServicesAvailable(ApplicationContext);
-            if (errorCode == ConnectionResult.ServiceMissing
-                || errorCode == ConnectionResult.ServiceVersionUpdateRequired
-                || errorCode == ConnectionResult.ServiceDisabled)
+			var errorCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(ApplicationContext);
+
+            if (errorCode == ConnectionResult.ServiceMissing || errorCode == ConnectionResult.ServiceVersionUpdateRequired || errorCode == ConnectionResult.ServiceDisabled)
             {
-                var dialog = GooglePlayServicesUtil.GetErrorDialog(errorCode, this, 0);
+				var dialog = GoogleApiAvailability.Instance.GetErrorDialog(this,errorCode, 0);
                 dialog.Show();
                 dialog.DismissEvent += (s, e) => Finish();
             }    
         }
 
-        public OrderMapFragment _mapFragment; 
+		public OrderMapFragment MapFragment { get; set; }
 
-        void PanelMenuInit()
+        private void PanelMenuInit()
         {
             var menu = FindViewById(Resource.Id.PanelMenu);
             menu.Visibility = ViewStates.Gone;
-            _menuWidth = WindowManager.DefaultDisplay.Width - 100;
+
+	        var defaultDisplaySize = new Point();
+
+			WindowManager.DefaultDisplay.GetSize(defaultDisplaySize);
+
+	        _menuWidth = defaultDisplaySize.X - 100;
 
             _btnSettings.Click -= PanelMenuToggle;
             _btnSettings.Click += PanelMenuToggle;
@@ -105,24 +108,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ViewModel.Panel.PropertyChanged -= PanelMenuPropertyChanged;
             ViewModel.Panel.PropertyChanged += PanelMenuPropertyChanged;
-
-            var _listContainer = FindViewById<ViewGroup>(Resource.Id.listContainer);
-
-            for (int i = 0; i < _listContainer.ChildCount; i++)
-            {
-                if (_listContainer.GetChildAt(i).GetType() == typeof(Button))
-                {
-                    try
-                    {
-                        var child = (Button) _listContainer.GetChildAt(i);
-                        child.SetTypeface(Typeface.Create("sans-serif-light", TypefaceStyle.Normal), TypefaceStyle.Normal);
-                    }
-                    catch
-                    {
-                        
-                    }
-                }
-            }
         }
 
         private void PanelMenuSignOutClick(object sender, EventArgs e)
@@ -202,6 +187,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 ViewModel.SubscribeLifetimeChangedIfNecessary ();
 			}
 
+			var screenSize = new Point();
+
+			WindowManager.DefaultDisplay.GetSize(screenSize);
+
             SetContentView(Resource.Layout.View_Home);
 
             _bigButton = (Button) FindViewById(Resource.Id.BigButtonTransparent);
@@ -215,58 +204,173 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
             _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
 			_btnSettings = FindViewById<LinearLayout>(Resource.Id.btnSettings);
-            _btnLocation = FindViewById<ImageView>(Resource.Id.btnLocation);
+			_btnLocation = FindViewById<LinearLayout>(Resource.Id.btnLocation);
+	        _appBarBookingStatus = FindViewById<AppBarBookingStatus>(Resource.Id.appBarBookingStatus);
+	        _orderStatus = FindViewById<OrderStatusView>(Resource.Id.orderStatus);
 
             // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside
             _orderOptions.BigInvisibleButton = _bigButton;
 
-            ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
-            ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = WindowManager.DefaultDisplay.Height;
+            ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+			((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = screenSize.Y;
 
 			if (this.Services ().Localize.IsRightToLeft) 
             {
-				((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).RightMargin = WindowManager.DefaultDisplay.Width;
-                ((LinearLayout.MarginLayoutParams)_orderAirport.LayoutParameters).RightMargin = WindowManager.DefaultDisplay.Width;
+				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).RightMargin = screenSize.X;
+	            ((ViewGroup.MarginLayoutParams) _orderAirport.LayoutParameters).RightMargin = screenSize.X;
             } 
             else 
             {
-				((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = WindowManager.DefaultDisplay.Width;
-                ((LinearLayout.MarginLayoutParams)_orderAirport.LayoutParameters).LeftMargin = WindowManager.DefaultDisplay.Width;
+				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = screenSize.X;
+				((ViewGroup.MarginLayoutParams)_orderAirport.LayoutParameters).LeftMargin = screenSize.X;
 			}
-            
-            _orderReview.Visibility = ViewStates.Gone;
-            _orderEdit.Visibility = ViewStates.Gone;
-            _searchAddress.Visibility = ViewStates.Gone;
+
             _orderAirport.Visibility = ViewStates.Gone;
+	        ((ViewGroup.MarginLayoutParams) _orderStatus.LayoutParameters).TopMargin = -screenSize.Y;
 
             // Creating a view controller for MapFragment
-            Bundle mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
-			_touchMap = (TouchableMap)FragmentManager.FindFragmentById(Resource.Id.mapPickup);
+            var mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
+            _touchMap = (TouchableMap)FragmentManager.FindFragmentById(Resource.Id.mapPickup);
             _touchMap.OnCreate(mapViewSavedInstanceState);
-			_mapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
+			MapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
 
-            // Home View Bindings
-            var set = this.CreateBindingSet<HomeActivity, HomeViewModel>();
+	        _orderReview.ScreenSize = screenSize;
+	        _orderReview.OrderReviewHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
+	        _orderReview.OrderReviewShownHeightProvider = () => _orderOptions.Height;
+			_orderEdit.ScreenSize = screenSize;
+	        _orderEdit.ParentFrameLayout = _frameLayout;
 
-            set.Bind(_mapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
-            set.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // OrderOptions View Bindings
-            set.Bind(_orderEdit).For("DataContext").To(vm => vm.OrderEdit); // OrderEdit View Bindings
-            set.Bind(_orderAirport).For("DataContext").To(vm => vm.OrderAirport); // OrderAirport View Bindings
-            set.Bind(_orderReview).For("DataContext").To(vm => vm.OrderReview); // OrderReview View Bindings
-            set.Bind(_searchAddress).For("DataContext").To(vm => vm.AddressPicker); // OrderReview View Bindings
-            set.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
+	        _orderAirport.Frame = _frameLayout;
+	        _orderAirport.ScreenSize = screenSize;
 
-            set.Apply();
+            SetupHomeViewBinding();
 
-            PanelMenuInit();
+	        PanelMenuInit();
         }
 
-        protected override void OnRestart ()
+	    private void SetupHomeViewBinding()
+	    {
+		    var set = this.CreateBindingSet<HomeActivity, HomeViewModel>();
+			
+			// Setup DataContext
+		    set.Bind(MapFragment).For("DataContext").To(vm => vm.Map); // Map Fragment View Bindings
+		    set.Bind(_orderOptions).For("DataContext").To(vm => vm.OrderOptions); // OrderOptions View Bindings
+		    set.Bind(_orderEdit).For("DataContext").To(vm => vm.OrderEdit); // OrderEdit View Bindings
+            set.Bind(_orderAirport).For("DataContext").To(vm => vm.OrderAirport); // OrderAirport View Bindings
+		    set.Bind(_orderReview).For("DataContext").To(vm => vm.OrderReview); // OrderReview View Bindings
+		    set.Bind(_searchAddress).For("DataContext").To(vm => vm.AddressPicker); // OrderReview View Bindings
+		    set.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
+		    set.Bind(_appBarBookingStatus).For("DataContext").To(vm => vm.BookingStatus.BottomBar);
+		    set.Bind(_orderStatus).For("DataContext").To(vm => vm.BookingStatus);
+
+			// Setup bookingStatusMode
+		    set.Bind(MapFragment)
+			    .For(v => v.TaxiLocation)
+			    .To(vm => vm.BookingStatus.OrderStatusDetail);
+
+		    set.Bind(MapFragment)
+			    .For(v => v.Center)
+			    .To(vm => vm.BookingStatus.MapCenter);
+
+			//Setup Visibility
+			set.Bind(_orderAirport)
+				.For(v => v.AnimatedVisibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.AirportDetails });
+
+			set.Bind(_orderReview)
+				.For(v => v.AnimatedVisibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Review });
+
+			set.Bind(_orderEdit)
+				.For(v => v.AnimatedVisibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Edit });
+
+			set.Bind(_orderOptions)
+				.For(v => v.AnimatedVisibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[]
+				{
+					HomeViewModelState.Initial,
+					HomeViewModelState.AddressSearch,
+					HomeViewModelState.AirportSearch,
+					HomeViewModelState.BookATaxi, 
+					HomeViewModelState.Review, 
+					HomeViewModelState.PickDate, 
+					HomeViewModelState.TrainStationSearch, 
+				});
+
+			set.Bind(_orderStatus)
+				.For(v => v.AnimatedVisibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+
+			set.Bind(_searchAddress)
+				.For(v => v.Visibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch });
+			
+			set.Bind(_appBar)
+				.For(v => v.Visibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Initial, HomeViewModelState.Review, HomeViewModelState.Edit, HomeViewModelState.BookATaxi, HomeViewModelState.AirportDetails });
+
+			set.Bind(_appBarBookingStatus)
+				.For(v => v.Visibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+
+			var settingsAndLocationVisibleStates = new[]
+		    {
+			    HomeViewModelState.Initial,
+			    HomeViewModelState.PickDate,
+			    HomeViewModelState.BookATaxi,
+			    HomeViewModelState.Edit,
+			    HomeViewModelState.AddressSearch,
+			    HomeViewModelState.AirportSearch,
+			    HomeViewModelState.TrainStationSearch,
+			    HomeViewModelState.Review
+		    };
+
+			set.Bind(_btnLocation)
+				.For(v => v.Visibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", settingsAndLocationVisibleStates);
+
+			set.Bind(_btnSettings)
+				.For(v => v.Visibility)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("HomeViewStateToVisibility", settingsAndLocationVisibleStates);
+
+			//Setup Map enabled state.
+		    set.Bind(_touchMap)
+			    .For(v => v.IsMapGestuesEnabled)
+			    .To(vm => vm.CurrentViewState)
+				.WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus });
+
+			set.Bind(_btnLocation)
+				.For(v => v.Enabled)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("EnumToBool", HomeViewModelState.Initial.ToString());
+		    
+			set.Bind(_btnSettings)
+				.For(v => v.Enabled)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("EnumToBool", HomeViewModelState.Initial.ToString());
+			
+		    set.Apply();
+	    }
+
+	    protected override void OnRestart ()
         {
             // when we come back to Home, resubscribe before calling base.OnRestart();
             if (ViewModel != null)
             {
                 ViewModel.SubscribeLifetimeChangedIfNecessary ();
+
+				_subscription.Disposable = ObserveCurrentViewState();
             }
             base.OnRestart ();
         }
@@ -279,12 +383,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnResume();
         }
 
-        protected override void OnPause()
+	    private IDisposable ObserveCurrentViewState()
+	    {
+		    return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+			    h => ViewModel.PropertyChanged += h,
+			    h => ViewModel.PropertyChanged -= h
+			    )
+			    .Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+			    .Select(_ => ViewModel.CurrentViewState)
+			    .DistinctUntilChanged()
+			    .Subscribe(ChangeState, Logger.LogError);
+	    }
+
+	    protected override void OnPause()
         {
             base.OnPause();	        
             if (ViewModel != null)
             {
-                ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
+	            ViewModel.UnsubscribeLifetimeChangedIfNecessary();
             }
         }
 
@@ -296,6 +412,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (ViewModel != null)
             {
                 ViewModel.Start();
+
+				_subscription.Disposable = ObserveCurrentViewState();
 
                 if (_locateUserOnStart)
                 {
@@ -314,8 +432,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ViewModel.UnsubscribeLifetimeChangedIfNecessary ();
             }
-            _mapFragment.Dispose();
-            //_touchMap.OnDestroy();
+            MapFragment.Dispose();
+
+			_subscription.Disposable = null;
         }
 
         protected override void OnSaveInstanceState(Bundle outState)
@@ -323,7 +442,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             // See http://code.google.com/p/gmaps-api-issues/issues/detail?id=6237 Comment #9
             // TODO: Adapt solution to C#/mvvm. Currently help to avoid a crash after tombstone but map state isn't saved
 
-            Bundle mapViewSaveState = new Bundle(outState);
+            var mapViewSaveState = new Bundle(outState);
             _touchMap.OnSaveInstanceState(mapViewSaveState);
             outState.PutBundle("mapViewSaveState", mapViewSaveState);
             base.OnSaveInstanceState(outState);
@@ -332,12 +451,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void SetSelectedOnBookLater(bool selected)
         {
-            var _btnBookLater = (ImageView) FindViewById(Resource.Id.btnBookLater);
-            var _txtBookLater = (TextView) FindViewById(Resource.Id.txtBookLater);
-            var _btnBookLaterLayout = (LinearLayout) FindViewById(Resource.Id.btnBookLaterLayout);
-            _btnBookLater.Selected = selected;
-            _txtBookLater.Selected = selected;
-            _btnBookLaterLayout.Selected = selected;
+            var btnBookLater = (ImageView) FindViewById(Resource.Id.btnBookLater);
+            var txtBookLater = (TextView) FindViewById(Resource.Id.txtBookLater);
+            var btnBookLaterLayout = (LinearLayout) FindViewById(Resource.Id.btnBookLaterLayout);
+            btnBookLater.Selected = selected;
+            txtBookLater.Selected = selected;
+            btnBookLaterLayout.Selected = selected;
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -349,7 +468,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
                 var dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
-                if (_presentationState == HomeViewModelState.PickDate)
+                if (ViewModel.CurrentViewState == HomeViewModelState.PickDate)
                 {
 	                ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(dt);
 	            }
@@ -376,7 +495,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else
             {
-                ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible(null);
+                ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible();
             }
         }
 
@@ -386,69 +505,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnLowMemory();
         }
 
-        private void SetMapEnabled(bool enabled)
+		private void ChangeState(HomeViewModelState state)
         {
-            // TODO this should be done on the ChangePresentation of the map itself, like iOS
-            _touchMap.Map.UiSettings.SetAllGesturesEnabled(enabled);
-            _btnLocation.Enabled = enabled;
-            _btnSettings.Enabled = enabled;
-
-            if (!enabled)
-            {                
-                _mapOverlay.Visibility = ViewStates.Visible;
-                ViewGroup parent = (ViewGroup)_mapOverlay.Parent;               
-                parent.RemoveView(_mapOverlay);
-                parent.AddView(_mapOverlay, 1);
-            }
-            else
+			if (state == HomeViewModelState.PickDate)
             {
-                _mapOverlay.Visibility = ViewStates.Gone;
-            }
-        }
-
-        private void ChangeState(HomeViewModelPresentationHint hint)
-        {
-            if (_presentationState == hint.State)
-            {
-                return;
-            }
-
-            _presentationState = hint.State;
-
-            if (_presentationState == HomeViewModelState.PickDate)
-            {
-                SetMapEnabled(false);
-                // Order Options: Visible
-                // Order Review: Hidden
-                // Order Edit: Hidden
-                // Date Picker: Visible
-
-                ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+                ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 
                 SetSelectedOnBookLater(true);
 
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
             }
-            else if (_presentationState == HomeViewModelState.AirportPickDate)
+            else if (state == HomeViewModelState.AirportPickDate)
             {
-                SetMapEnabled(false);
-                // Order Options: Visible
-                // Order Review: Hidden
-                // Order Edit: Hidden
-                // Date Picker: Visible
-
-                ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+                ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 
                 SetSelectedOnBookLater(true);
 
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
             }
-            else if (_presentationState == HomeViewModelState.BookATaxi)
+            else if (state == HomeViewModelState.BookATaxi)
             {
-                SetMapEnabled(false);
-
                 var localize = this.Services().Localize;
 
                 this.Services().Message.ShowMessage(null, localize["BookATaxi_Message"],
@@ -459,164 +537,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     localize["BookItLaterButton"],
                     () => { ViewModel.BottomBar.BookLater.ExecuteIfPossible(); });
             }
-            else if (_presentationState == HomeViewModelState.Review)
+			else if (state == HomeViewModelState.AddressSearch)
             {
-                SetMapEnabled(false);
-                // Order Options: Visible
-                // Order Review: Visible
-                // Order Edit: Hidden
-                // Date Picker: Hidden
-                // Order Airport: Hidden
-
-                var animation = AnimationHelper.GetForYTranslation(_orderReview, _orderOptions.Height);
-                animation.AnimationStart += (sender, e) =>
-                {
-                    // set it to fill_parent to allow the subview to take the remaining space in the screen 
-                    // and to allow the view to resize when keyboard is up
-                    if (((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != LinearLayout.MarginLayoutParams.FillParent)
-                    {
-                        ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = LinearLayout.MarginLayoutParams.FillParent;
-                    }
-                };
-
-				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
-                animation2.AnimationStart += (sender, e) =>
-                {
-                    if (((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).Width != _frameLayout.Width)
-                    {
-                        ((LinearLayout.MarginLayoutParams)_orderEdit.LayoutParameters).Width = _frameLayout.Width;
-                    }
-                };
-
-                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, 0);
-
-                var animation4 = AnimationHelper.GetForXTranslation(_orderAirport, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
-                animation4.AnimationStart += (sender, e) =>
-                {
-                    if (((LinearLayout.MarginLayoutParams)_orderAirport.LayoutParameters).Width != _frameLayout.Width)
-                    {
-                        ((LinearLayout.MarginLayoutParams)_orderAirport.LayoutParameters).Width = _frameLayout.Width;
-                    }
-                };
-
-                _orderReview.StartAnimation(animation);
-                _orderEdit.StartAnimation(animation2);
-                _orderOptions.StartAnimation(animation3);
-                _orderAirport.StartAnimation(animation4);
-            }
-            else if (_presentationState == HomeViewModelState.Edit)
-            {
-                SetMapEnabled(false);
-
-                // Order Options: Hidden
-                // Order Review: Hidden
-                // Order Edit: Visible
-                // Date Picker: Hidden
-                // Order Airport: Hidden
-
-                var animation = AnimationHelper.GetForYTranslation(_orderReview, WindowManager.DefaultDisplay.Height);
-                animation.AnimationEnd += (sender, e) =>
-                {
-                    // reset to a fix height in order to have a smooth translation animation next time we show the review screen
-                    var desiredHeight = _frameLayout.Height - _orderOptions.Height;
-                    if (((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
-                    {
-                        ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
-                    }
-                };
-
-				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, 0, this.Services().Localize.IsRightToLeft);
-                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, -_orderOptions.Height);
-
-                var animation4 = AnimationHelper.GetForXTranslation(_orderAirport, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
-
-                _orderReview.StartAnimation(animation);
-                _orderEdit.StartAnimation(animation2);
-                _orderOptions.StartAnimation(animation3);
-                _orderAirport.StartAnimation(animation4);
-            }
-            else if (_presentationState == HomeViewModelState.AddressSearch)
-            {
-                SetMapEnabled(false);
                 _searchAddress.Open(AddressLocationType.Unspeficied);
             }
-            else if (_presentationState == HomeViewModelState.AirportSearch)
+			else if (state == HomeViewModelState.AirportSearch)
             {
-                SetMapEnabled(false);
                 _searchAddress.Open(AddressLocationType.Airport);
             }
-            else if (_presentationState == HomeViewModelState.TrainStationSearch)
+			else if (state == HomeViewModelState.TrainStationSearch)
             {
-                SetMapEnabled(false);
                 _searchAddress.Open(AddressLocationType.Train);
             }
-            else if(_presentationState == HomeViewModelState.Initial)
-            {
-                SetMapEnabled(true);
-                // Order Options: Visible
-                // Order Review: Hidden
-                // Order Edit: Hidden
-                // Date Picker: Hidden
-                // Order Aiport; Hidden
-
-                var animation = AnimationHelper.GetForYTranslation(_orderReview, WindowManager.DefaultDisplay.Height);
-                animation.AnimationEnd += (sender, e) =>
-                {
-                    // reset to a fix height in order to have a smooth translation animation next time we show the review screen
-                    var desiredHeight = _frameLayout.Height - _orderOptions.Height;
-                    if (((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
-                    {
-                        ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
-                    }
-                };
-
-				var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
-                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, 0);
-                var animation4 = AnimationHelper.GetForXTranslation(_orderAirport, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
-
-                _orderReview.StartAnimation(animation);
-                _orderEdit.StartAnimation(animation2);
-                _orderOptions.StartAnimation(animation3);
-                _orderAirport.StartAnimation(animation4);
-
+			else if (state == HomeViewModelState.Initial)
+            {			
                 _searchAddress.Close();
 
                 SetSelectedOnBookLater(false);
-
-                if (hint.IsNewOrder)
-                {
-                    _locateUserOnStart = true;
-                }
             }
-            else if(_presentationState == HomeViewModelState.AirportDetails)
+            else if(state == HomeViewModelState.AirportDetails)
             {
-                // Order Options: Hidden
-                // Order Review: Hidden
-                // Order Edit: Hidden
-                // Date Picker: Hidden
-                // Order Airport: Visible
-
-                var animation = AnimationHelper.GetForYTranslation(_orderReview, WindowManager.DefaultDisplay.Height);
-                animation.AnimationEnd += (sender, e) =>
-                {
-                    // reset to a fix height in order to have a smooth translation animation next time we show the review screen
-                    var desiredHeight = _frameLayout.Height - _orderOptions.Height;
-                    if (((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height != desiredHeight)
-                    {
-                        ((LinearLayout.MarginLayoutParams)_orderReview.LayoutParameters).Height = desiredHeight;
-                    }
-                };
-
-                var animation2 = AnimationHelper.GetForXTranslation(_orderEdit, WindowManager.DefaultDisplay.Width, this.Services().Localize.IsRightToLeft);
-                var animation3 = AnimationHelper.GetForYTranslation(_orderOptions, -_orderOptions.Height);
-
-                var animation4 = AnimationHelper.GetForXTranslation(_orderAirport, 0, this.Services().Localize.IsRightToLeft);
-
-                _orderReview.StartAnimation(animation);
-                _orderEdit.StartAnimation(animation2);
-                _orderOptions.StartAnimation(animation3);
-                _orderAirport.StartAnimation(animation4);
-
                 _searchAddress.Close();
             }
         }
@@ -628,23 +568,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 return false;
             }
 
-            if (keyCode == Keycode.Back)
+			if (keyCode == Keycode.Back && ViewModel.CanUseCloseCommand())
             {
-                switch (_presentationState)
-                {
-                    case HomeViewModelState.Review:
-                    case HomeViewModelState.PickDate:
-                    case HomeViewModelState.AddressSearch:
-                    case HomeViewModelState.AirportSearch:
-                    case HomeViewModelState.TrainStationSearch:
-                        ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
-                        return false;
-                    case HomeViewModelState.Edit:
-                        ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Review));
-                        return false;
-                    default:
-                        break;
-                }
+	            ViewModel.CloseCommand.ExecuteIfPossible();
+
+	            return false;
             }
 
             return base.OnKeyDown(keyCode, e);
@@ -652,14 +580,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void ChangePresentation(ChangePresentationHint hint)
         {
-            if (hint is HomeViewModelPresentationHint)
-            {
-                ChangeState((HomeViewModelPresentationHint)hint);
-            }
-
-            _mapFragment.ChangePresentation(hint);
-            _appBar.ChangePresentation(hint);
-            _orderOptions.ChangePresentation(hint);
+            MapFragment.ChangePresentation(hint);
         }
     }
 }

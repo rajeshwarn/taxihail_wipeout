@@ -20,19 +20,15 @@ using Newtonsoft.Json;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class OrderAirportViewModel : BaseViewModel, IRequestPresentationState<HomeViewModelStateRequestedEventArgs>
+	public class OrderAirportViewModel : BaseViewModel
 	{
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IAccountService _accountService;
         private readonly IPaymentService _paymentService;
 
-        public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
-#region Const and ReadOnly
         private const string NoAirlines = "No Airline";
-
         private const string PUCurbSide = "Curb Side";
 
-#endregion
 
         public class PointsItems
         {
@@ -432,7 +428,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                             sb.Append(this.Services().Localize["BookingAirportDetailsFee"], pItem.Fee);
                         }
                         Note = sb.ToString();
-                        PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Review));
+
+						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
 
                         // Clear all values...
                         AirlineId = 0;
@@ -454,10 +451,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(() =>
                 {
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AirportPickDate));
+					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportPickDate;
                 });
             }
         }
     }
 }
-

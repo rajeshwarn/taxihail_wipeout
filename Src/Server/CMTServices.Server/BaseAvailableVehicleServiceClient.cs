@@ -33,12 +33,12 @@ namespace CMTServices
 
         public abstract IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false);
 
-        protected static string BuildQueryString(IEnumerable<KeyValuePair<string, string>> @params, bool appendToExistingParams = false)
-        {
-            var requestPrefix = appendToExistingParams ? "&" : "?";
+		protected static string BuildQueryString(IEnumerable<KeyValuePair<string, string>> @params, string paramsFromSetting = null)
+		{
+			var requestPrefix = paramsFromSetting != null ? "&" : string.Empty;
 
-            return requestPrefix + string.Join("&", @params.Select(x => string.Join("=", x.Key, x.Value)));
-        }
+			return "?" + paramsFromSetting + requestPrefix + string.Join("&", @params.Select(x => string.Join("=", x.Key, x.Value)));
+		}
 
         protected IEnumerable<VehicleResponse> ToVehicleResponse(IEnumerable<BaseAvailableVehicleContent> entities)
         {
@@ -54,6 +54,7 @@ namespace CMTServices
                 Longitude = entity.Longitude,
                 Medallion = entity.Medallion,
                 FleetId = entity.FleetId,
+				VehicleType = entity.VehicleType
             };
         }
     }

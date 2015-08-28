@@ -58,8 +58,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 txtVehicleType.RemoveFromSuperview();
             }
 
+            if (!ViewModel.IsLinkedWithFacebook)
+            {
+                imgFacebook.RemoveFromSuperview();
+            }
 
             lblName.Text = Localize.GetValue("RideSettingsName");
+            lblEmailTitle.Text = Localize.GetValue("RideSettingsEmailTitle");
             lblPhone.Text = Localize.GetValue("RideSettingsPhone");
             lblVehicleType.Text = Localize.GetValue("RideSettingsVehiculeType");
             lblChargeType.Text = Localize.GetValue("RideSettingsChargeType");
@@ -68,6 +73,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblCustomerNumber.Text = Localize.GetValue("RideSettingsCustomerNumber");
             lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
 			lblPayBack.Text = Localize.GetValue("RideSettingsPayBack");
+
+            lblEmail.AccessibilityLabel = Localize.GetValue("RideSettingsEmailTitle");
+            lblEmailTitle.AccessibilityLabel = Localize.GetValue("RideSettingsEmailTitle");
+
+            txtName.Placeholder = Localize.GetValue("RideSettingsName");
+            txtName.AccessibilityLabel = txtName.Placeholder;
+
+            txtPhone.Placeholder = Localize.GetValue("RideSettingsPhone");
+            txtPhone.AccessibilityLabel = txtPhone.Placeholder;
+
+            txtVehicleType.Placeholder = Localize.GetValue("RideSettingsVehiculeType");
+            txtVehicleType.AccessibilityLabel = txtVehicleType.Placeholder;
+
+            txtChargeType.Placeholder = Localize.GetValue("RideSettingsChargeType");
+            txtChargeType.AccessibilityLabel = txtChargeType.Placeholder;
+
+            txtPassword.Placeholder = Localize.GetValue("RideSettingsPassword");
+            txtPassword.AccessibilityLabel = txtPassword.Placeholder;
+
+            txtAccountNumber.Placeholder = Localize.GetValue("RideSettingsAccountNumber");
+            txtAccountNumber.AccessibilityLabel = txtAccountNumber.Placeholder;
+
+            txtCustomerNumber.Placeholder = Localize.GetValue("RideSettingsCustomerNumber");
+            txtCustomerNumber.AccessibilityLabel = txtCustomerNumber.Placeholder;
+
+            txtTip.Placeholder = Localize.GetValue("PaymentDetails.TipAmountLabel");
+            txtTip.AccessibilityLabel = txtTip.Placeholder;
+
+            txtPayBack.Placeholder = Localize.GetValue("RideSettingsPayBack");
+            txtPayBack.AccessibilityLabel = txtPayBack.Placeholder;
 
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
@@ -104,6 +139,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtName)
 				.For(v => v.Text)
 				.To(vm => vm.Name);
+
+            set.Bind(lblEmail)
+                .For(v => v.Text)
+                .To(vm => vm.Email);
 
 			set.Bind(txtPhone)
 				.For(v => v.Text)

@@ -41,6 +41,8 @@
     <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
+    <Debugger>Xamarin</Debugger>
+    <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -79,9 +81,6 @@
     <Reference Include="PushSharp.Client.MonoForAndroid">
       <HintPath>..\Libraries\Monodroid\PushSharp.Client.MonoForAndroid.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Facebook">
-      <HintPath>..\Libraries\Monodroid\Xamarin.Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -97,17 +96,17 @@
     <Reference Include="PaypalSdkDroid">
       <HintPath>..\Libraries\Monodroid\PaypalSdkDroid.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.CrossCore.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.CrossCore.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Binding.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.CrossCore">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.CrossCore.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.CrossCore.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.CrossCore.Droid.dll</HintPath>
+    </Reference>
     <Reference Include="Cirrious.MvvmCross.Binding">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Binding.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Binding.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Localization">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
@@ -118,17 +117,11 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.File.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.File.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.File.Droid.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Plugins.DownloadCache">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.DownloadCache.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.DownloadCache.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Plugins.DownloadCache.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.DownloadCache.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.DownloadCache.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
@@ -139,29 +132,35 @@
     <Reference Include="Cirrious.MvvmCross.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Droid.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
+    </Reference>
     <Reference Include="Cirrious.MvvmCross">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
     </Reference>
     <Reference Include="CrossUI.Core">
       <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\CrossUI.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
     <Reference Include="CrossUI.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\CrossUI.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Dialog.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Dialog.Droid.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Droid.FullFragging">
-      <HintPath>..\packages\MvvmCross.HotTuna.Droid.FullFragging.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Droid.FullFragging.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.DownloadCache">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.DownloadCache.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.DownloadCache.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.DownloadCache.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.DownloadCache.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.DownloadCache.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.v4">
       <HintPath>..\packages\Xamarin.Android.Support.v4.22.2.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Droid.FullFragging">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.FullFragging.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Droid.FullFragging.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v13">
       <HintPath>..\packages\Xamarin.Android.Support.v13.22.2.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v13.dll</HintPath>
@@ -171,6 +170,9 @@
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
       <HintPath>..\packages\Xamarin.Android.Support.v7.MediaRouter.22.2.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Facebook">
+      <HintPath>..\packages\Xamarin.Facebook.Android.4.4.0.1\lib\MonoAndroid403\Xamarin.Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Base">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Base.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
@@ -257,8 +259,12 @@
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\Behavior\PairingCodeBehavior.cs" />
     <Compile Include="Controls\Dialog\PhoneEditorElement.cs" />
+    <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
+    <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
     <Compile Include="Controls\Widgets\OrderAirport.cs" />
+    <Compile Include="Controls\Widgets\OrderStatusView.cs" />
+    <Compile Include="Controls\Widgets\OrderStatusContactTaxiOverlay.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
@@ -341,7 +347,6 @@
     <AndroidResource Include="Resources\Layout\Control_EditTextLeftImage.axml" />
     <Compile Include="Binding\EditTextCreditCardNumberBinding.cs" />
     <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
-    <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Services\Social\FacebookService.cs" />
     <Compile Include="Services\Social\TwitterService.cs" />
     <AndroidResource Include="Resources\Drawable\edit_text_rounded.xml" />
@@ -385,7 +390,6 @@
     <Compile Include="Controls\Widgets\EditTextNavigate.cs" />
     <Compile Include="Controls\Widgets\EditTextSpinner.cs" />
     <Compile Include="Controls\Widgets\SlidingPanel.cs" />
-    <Compile Include="Controls\Widgets\TouchMap.cs" />
     <Compile Include="Controls\Widgets\HorizontalPager.cs" />
     <AndroidResource Include="Resources\Drawable\button_action_black_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
@@ -453,7 +457,9 @@
     <Compile Include="Activities\Location\LocationDetailActivity.cs" />
     <Compile Include="Activities\Location\LocationListActivity.cs" />
     <Compile Include="Activities\HomeActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_Home.axml" />
+    <AndroidResource Include="Resources\Layout\View_Home.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <Compile Include="Controls\Widgets\IMvxBindable.cs" />
     <AndroidResource Include="Resources\Drawable\drop_shadow_old.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
@@ -703,6 +709,7 @@
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
+    <AndroidResource Include="Resources\Drawable\facebook_account_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -742,9 +749,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\SpinnerCell.axml">
       <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_BookingStatus.axml">
-      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_DateTimePicker.axml">
       <SubType>AndroidResource</SubType>
@@ -844,6 +848,9 @@
     <AndroidResource Include="Resources\Drawable\button_action_blue_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\message.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\message.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\phone.png" />
+    <AndroidResource Include="Resources\Drawable\button_action_borderlessgray_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\drop_shadow_opaque.xml" />
     <AndroidResource Include="Resources\Drawable\cluster_wheelchair.png" />
     <AndroidResource Include="Resources\Drawable\nearby_wheelchair.png" />
     <AndroidResource Include="Resources\Drawable\wheelchair_assigned.png" />
@@ -913,6 +920,10 @@
       <Version>2.2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+    <XamarinComponentReference Include="facebookandroid">
+      <Version>4.4.0.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
@@ -947,6 +958,15 @@
     <AndroidResource Include="Resources\Layout\CountryCodeItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\SubView_BookingStatus.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\SubView_Appbar_BookingStatus.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\SubView_ContactTaxiOverlay.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Layout\CountryCodeItemDropDown.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -963,5 +983,8 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\SubView_OrderAirport.axml" />
+    <AndroidResource Include="Resources\Layout\VehicleInfoWindow.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
 </Project>

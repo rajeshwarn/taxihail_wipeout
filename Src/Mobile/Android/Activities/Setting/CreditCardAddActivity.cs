@@ -23,7 +23,7 @@ using Android.Views.InputMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-    [Activity(Label = "CreditCardAddActivity", 
+	[Activity(Label = "@string/CreditCardAddingActivityName", 
         Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait
     )]

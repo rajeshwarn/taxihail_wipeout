@@ -14,7 +14,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-    [Activity(Label = "PushSettingsActivity",
+	[Activity(Label = "@string/NotificationSettingsActivityName",
         Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class NotificationSettingsActivity : BaseBindingActivity<NotificationSettingsViewModel>

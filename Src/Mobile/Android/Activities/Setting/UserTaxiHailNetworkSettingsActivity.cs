@@ -5,7 +5,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-    [Activity(Label = "UserTaxiHailNetworkSettingsActivity",
+	[Activity(Label = "@string/UserTaxiHailNetworkSettingsActivityName",
         Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class UserTaxiHailNetworkSettingsActivity : BaseBindingActivity<UserTaxiHailNetworkSettingsViewModel>

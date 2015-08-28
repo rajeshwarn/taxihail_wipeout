@@ -13,8 +13,8 @@ using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-	[Register("apcurium.mk.booking.mobile.client.controls.TouchableMap")]
-	public class TouchableMap : MapFragment
+    [Register("apcurium.mk.booking.mobile.client.controls.TouchableMap")]
+    public class TouchableMap : MapFragment
     {
         public View mOriginalContentView;
 
@@ -47,7 +47,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             return Surface;                          
         }
 
-        public override View View
+	    public bool IsMapGestuesEnabled
+	    {
+		    get { return Surface.IsGestuesEnabled; } 
+		    set { Surface.IsGestuesEnabled = value; }
+	    }
+
+	    public override View View
         {
             get
             {
@@ -61,13 +67,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private GestureDetector _gestureDetector;
         private ScaleGestureDetector _scaleDetector;
 
-        private static DateTime BlockScrollUntilDate = DateTime.MinValue;
+        private static DateTime _blockScrollUntilDate = DateTime.MinValue;
 
         public event EventHandler<MotionEvent> Touched;
         public Action<bool, float> ZoomBy;
         public Action<float, float> MoveBy;
+	    private bool _isGestuesEnabled;
 
-        public TouchableWrapper(Context context) :
+	    public bool IsGestuesEnabled
+	    {
+		    get { return _isGestuesEnabled; }
+		    set
+		    {
+			    _isGestuesEnabled = value;
+
+			    Alpha = value ? 1f : .3f;
+		    }
+	    }
+
+	    public TouchableWrapper(Context context) :
         base(context)
         {
             Initialize ();
@@ -89,13 +107,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             _gestureDetector = new GestureDetector (Context, new GestureListener (this));
             _scaleDetector = new ScaleGestureDetector (Context, new ScaleListener (this));
+
+	        IsGestuesEnabled = true;
         }
 
         public override bool DispatchTouchEvent(MotionEvent e)
         {
-            if (this.Touched != null)
+	        if (!IsGestuesEnabled)
+	        {
+				// Map control disabled.
+		        return true;
+	        }
+
+            if (Touched != null)
             {
-                this.Touched(this, e);
+                Touched(this, e);
             }
 
             _gestureDetector.OnTouchEvent (e);
@@ -120,7 +146,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     return false;
                 }
 
-                if (BlockScrollUntilDate >= DateTime.Now)
+                if (_blockScrollUntilDate >= DateTime.Now)
                 {
                     return false;
                 }
@@ -157,7 +183,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             public override bool OnScale (ScaleGestureDetector detector)
             {
                 _view.ZoomBy.Invoke (false, (detector.ScaleFactor - 1f) * 4);
-                BlockScrollUntilDate = DateTime.Now.AddMilliseconds (500);
+                _blockScrollUntilDate = DateTime.Now.AddMilliseconds (500);
                 return true;
             }
         }

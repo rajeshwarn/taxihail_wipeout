@@ -12,6 +12,8 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -20,14 +22,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IBookingService _bookingService;
 		private readonly IAccountService _accountService;
+		private readonly IPaymentService _paymentSettings;
+
+		private ClientPaymentSettings _clientPaymentSettings;
 
 		public HistoryDetailViewModel(IOrderWorkflowService orderWorkflowService, 
 			IBookingService bookingService, 
-			IAccountService accountService)
+			IAccountService accountService,
+			IPaymentService paymentSettings)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_bookingService = bookingService;
 			_accountService = accountService;
+			_paymentSettings = paymentSettings;
 		}
 
 		public async void Init(string orderId)
@@ -40,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					await LoadOrder();
 					await LoadStatus();
-
+					_clientPaymentSettings = await _paymentSettings.GetPaymentSettings();
 					RaisePropertyChanged(() => StatusDescription); 
 				}
 			}
@@ -264,8 +271,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 			    if (Status.FareAvailable)
 			    {
-                    var amount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
-			        return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(amount.Value));
+					// this fix is due to info in database when [OrderDetail].[Fare] includes [OrderDetail].[Tip]
+					double? paymentAmount;
+					if (_clientPaymentSettings.PaymentMode == PaymentMethod.Cmt || _clientPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
+					{
+						paymentAmount = Order.Fare;
+					}
+					else
+					{
+						paymentAmount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
+					}
+
+					return string.Format("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(paymentAmount.Value));
 			    }
 			    else if (Status.IsManualRideLinq)
 			    {

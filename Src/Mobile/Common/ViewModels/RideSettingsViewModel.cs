@@ -249,6 +249,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public string Email
+		{
+			get { return _accountService.CurrentAccount.Email; }
+		}
+
+		public bool IsLinkedWithFacebook
+		{
+			get
+			{
+				return _accountService.CurrentAccount.FacebookId.HasValue();
+			}
+		}
+
         public PhoneNumberModel PhoneNumber { get; set; }
 
         public CountryCode[] CountryCodes

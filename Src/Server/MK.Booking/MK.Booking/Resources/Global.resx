@@ -655,7 +655,7 @@
     <value>Credit Card was declined</value>
   </data>
   <data name="OrderStatus_PairingFailed" xml:space="preserve">
-    <value>Unable to pair. Please pay to your driver at the end of the ride</value>
+    <value>Unable to pair you to the car. Please pay your driver at the end of the ride.</value>
   </data>
   <data name="PhoneNumberFormat" xml:space="preserve">
     <value>The phone number is invalid. It must have format {0}</value>
