@@ -13,6 +13,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
 using Newtonsoft.Json;
@@ -28,18 +29,21 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICacheClient _cacheClient;
         private readonly IServerSettings _serverSettings;
         private readonly IIBSServiceProvider _ibsServiceProvider;
-        private readonly CmtDataService _cmtDataService;
+        private readonly IAirlineDao _airlineDao;
+        private readonly IPickupPointDao _pickupPointDao;
 
         public ReferenceDataService(
             IIBSServiceProvider ibsServiceProvider,
             ICacheClient cacheClient,
             IServerSettings serverSettings,
-            CmtDataService cmtDataService)
+            IAirlineDao airlineDao,
+            IPickupPointDao pickupPointDao)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _cacheClient = cacheClient;
             _serverSettings = serverSettings;
-            _cmtDataService = cmtDataService;
+            _airlineDao = airlineDao;
+            _pickupPointDao = pickupPointDao;
         }
 
         public object Get(ReferenceDataRequest request)
@@ -87,13 +91,29 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ReferenceListRequest request)
         {
-            return _cmtDataService.Get(new apcurium.MK.Booking.Api.Services.CmtDataService.ReferenceListRequest
+            if (request.ListName.Equals("airline", StringComparison.InvariantCultureIgnoreCase)) {
+                if (request.SearchText.IsNullOrEmpty())
+                {
+                    return _airlineDao.GetAll();
+                }
+                else
+                {
+                    return _airlineDao.FindByName(request.SearchText);
+                }
+            }
+            else if (request.ListName.Equals("pickuppoint", StringComparison.InvariantCultureIgnoreCase))
             {
-                ListName = request.ListName,
-                SearchText = request.SearchText,
-                coreFieldsOnly = request.coreFieldsOnly,
-                size = request.size
-            });
+                if (request.SearchText.IsNullOrEmpty())
+                {
+                    return _pickupPointDao.GetAll();
+                }
+                else
+                {
+                    return _pickupPointDao.FindByName(request.SearchText);
+                }
+            }
+
+            throw new InvalidOperationException("Unknown list " + request.ListName);
         }
 
         private ReferenceData GetReferenceData(string companyKey)
