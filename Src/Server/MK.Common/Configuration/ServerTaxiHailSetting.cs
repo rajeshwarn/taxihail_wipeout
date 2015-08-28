@@ -106,11 +106,6 @@ namespace MK.Common.Configuration
                 ServiceUrl = "http://geo-sandbox.cmtapi.com"
             };
 
-            Gds = new CmtGdsSettingContainer()
-            {
-                ServiceUrl = "http://gds1.staging.aws.cmt.local:8180"
-            };
-
         }
 
         public SmtpSettingContainer Smtp { get; protected set; }
@@ -124,7 +119,6 @@ namespace MK.Common.Configuration
         public NetworkSettingContainer Network { get; protected set; }
         public HoneyBadgerSettingContainer HoneyBadger { get; protected set; }
         public CmtGeoSettingContainer CmtGeo { get; protected set; }
-        public CmtGdsSettingContainer Gds { get; protected set; }
 
         public bool IsWebSignupHidden { get; protected set; }
 
