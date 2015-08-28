@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 				{
 					using (var reader = new StreamReader(stream))
 					{
-						string serializedData = reader.ReadToEnd();
+						var serializedData = reader.ReadToEnd();
 						Dictionary<string,string> values = JsonObject.Parse(serializedData);
 						SettingsLoader.InitializeDataObjects (Data, values, _logger);
 					}
@@ -121,7 +121,14 @@ namespace apcurium.MK.Booking.Mobile.Settings
 		private static bool IsNullableType(Type type)
 		{
 			return type.IsGenericType 
-				&& type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+				&& type.GetGenericTypeDefinition() == typeof(Nullable<>);
 		}
+
+	    public void SetAppleTestAccountMode(bool isAppleTestAccountUsed)
+	    {
+		    Data.AppleTestAccountUsed = isAppleTestAccountUsed;
+
+			SaveSettings();
+	    }
     }
 }

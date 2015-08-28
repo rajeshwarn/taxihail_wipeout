@@ -347,30 +347,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     try
                     {
+#if __IOS__
+						if (!facebookId.HasValue() && !twitterId.HasValue())
+						{
+							await HandleAppleCredentialsIfNeeded(data.Email, data.Password);
+						}
+#endif
+
                         if (facebookId.HasValue())
                         {						
-							Func<Task> loginAction = () =>
-							{
-								return _accountService.GetFacebookAccount(facebookId);
-							};
+							Func<Task> loginAction = () => _accountService.GetFacebookAccount(facebookId);
 							await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side						
                         }
                         else if (twitterId.HasValue())
                         {
-							Func<Task> loginAction = () =>
-							{
-								return _accountService.GetTwitterAccount(twitterId);
-							};
+							Func<Task> loginAction = () => _accountService.GetTwitterAccount(twitterId);
 							await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
                         }
                         else
                         {
                             Email = data.Email;
                             Password = data.Password;
-                            Func<Task> loginAction = () =>
-                            {
-                                return _accountService.SignIn(data.Email, data.Password);
-                            };
+                            Func<Task> loginAction = () => _accountService.SignIn(data.Email, data.Password);
                             await loginAction.Retry(TimeSpan.FromSeconds(1), 5); //retry because the account is maybe not yet created server-side
                         }
 
@@ -388,7 +386,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void HandleTwitterConnectionStatusChanged(object sender, TwitterStatus e)
+#if __IOS__
+		private async Task HandleAppleCredentialsIfNeeded(string email, string password)
+		{
+			var settings = Container.Resolve<IAppSettings>();
+			if (email.HasValue() && email.Equals("appletest@taxihail.com") && password.HasValue())
+			{
+				var serverUrl = settings.Data.ServiceUrl;
+
+				if (serverUrl.Contains("//staging.") && settings.Data.AppleTestAccountUsed)
+				{
+					//We have nothing to do here.
+					return;
+				}
+
+				//Change server Url to use the staging server.
+				serverUrl = serverUrl.Replace("//services.","//staging.").Replace("//api.", "//staging.");
+
+				await InnerSetServerUrl(serverUrl);
+
+				settings.SetAppleTestAccountMode(true);
+
+				return;
+			}
+			if (settings.Data.AppleTestAccountUsed)
+			{
+				//Reset back to normal server.
+				var serverUrl = settings.Data.ServiceUrl;
+				
+				serverUrl = serverUrl.Replace("//staging.", "//api.");
+
+				await InnerSetServerUrl(serverUrl);
+
+				settings.SetAppleTestAccountMode(false);
+			}
+		}
+#endif
+		
+		private void HandleTwitterConnectionStatusChanged(object sender, TwitterStatus e)
         {
             if (e.IsConnected)
             {
@@ -400,11 +435,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			using (this.Services().Message.ShowProgress())
 			{
-				await this.Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl);
-				this.Services().ApplicationInfo.ClearAppInfo();
-				_accountService.ClearReferenceData();
+				await InnerSetServerUrl(serverUrl);
 			}
         }
+
+		private async Task InnerSetServerUrl(string serverUrl)
+		{
+			await Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl);
+			this.Services().ApplicationInfo.ClearAppInfo();
+			_accountService.ClearReferenceData();
+		}
 
 		private async Task OnLoginSuccess()
         {
