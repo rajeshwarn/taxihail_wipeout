@@ -329,45 +329,52 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void ShowMarkers()
         {
-            if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
-            {
-				SetAnnotation (DestinationAddress, _destinationAnnotation, false);
+			if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
+			{
+				SetAnnotation(DestinationAddress, _destinationAnnotation, false);
 				SetOverlay(_pickupCenterPin, false);
 				SetOverlay(_dropoffCenterPin, true);
                 
 
-                if (PickupAddress.HasValidCoordinate())
-                {
-                    SetAnnotation(PickupAddress, _pickupAnnotation, true);
-                }
-                else
-                {
-                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
-                }
-            }
-            else
-            {
-                if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
-                {
-                    return;
+				if (PickupAddress.HasValidCoordinate())
+				{
+					SetAnnotation(PickupAddress, _pickupAnnotation, true);
+				}
+				else
+				{
+					SetAnnotation(PickupAddress, _pickupAnnotation, false);
+				}
+			}
+			else if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
+			{
+				if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
+				{
+					return;
 
-                }
-                else
-                {
-                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
-                    SetOverlay(_dropoffCenterPin, false);
-                    SetOverlay(_pickupCenterPin, true);
+				}
+				else
+				{
+					SetAnnotation(PickupAddress, _pickupAnnotation, false);
+					SetOverlay(_dropoffCenterPin, false);
+					SetOverlay(_pickupCenterPin, true);
 
-                    if (DestinationAddress.HasValidCoordinate())
-                    {
-                        SetAnnotation(DestinationAddress, _destinationAnnotation, true);
-                    }
-                    else
-                    {
-                        SetAnnotation(DestinationAddress, _destinationAnnotation, false);
-                    }
-                }
-            }
+					if (DestinationAddress.HasValidCoordinate())
+					{
+						SetAnnotation(DestinationAddress, _destinationAnnotation, true);
+					}
+					else
+					{
+						SetAnnotation(DestinationAddress, _destinationAnnotation, false);
+					}
+				}
+			}
+			else
+			{
+				SetOverlay(_pickupCenterPin, false);
+				SetOverlay(_dropoffCenterPin, false);
+                SetAnnotation(DestinationAddress, _destinationAnnotation, false);
+                SetAnnotation(PickupAddress, _pickupAnnotation, false);
+			}
         }
                      
         private void HandleTouchBegin (object sender, EventArgs e)
@@ -407,11 +414,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .Take(1)
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(ep =>
-            {
-                var bounds = GetMapBoundsFromProjection();
-                
-                ViewModel.UserMovedMap.ExecuteIfPossible(bounds);                
-            });
+	            {
+	                var bounds = GetMapBoundsFromProjection();
+	                
+	                ViewModel.UserMovedMap.ExecuteIfPossible(bounds);                
+	            });
         }
 
         private void ClearAvailableVehiclesAnnotations()
