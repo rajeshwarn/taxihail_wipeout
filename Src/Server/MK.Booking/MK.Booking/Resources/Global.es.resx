@@ -721,9 +721,11 @@
   </data>
   <data name="Email_Body_CreditCardDeactivatedLine" xml:space="preserve">
     <value>Su tarjeta de crédito &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; con termiación en &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; ha sido desactivada debido a que el pago de su ultimo servicio fue declinado. Para poder utilizarla nuevamente, abra la aplicación {{ ApplicationName }} en su teléfono y acceda a la pantalla de Pago para efectuar el pago adeudado.</value>
-  </data>
+    <comment>Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment.</comment>
+	</data>
   <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
     <value>{{ ApplicationName }} - Su tarjeta de crédito se ha desactivado como forma de pago</value>
+    <comment>{{ ApplicationName }} - Your credit card has been deactivated</comment>
   </data>
   <data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
     <value>You need an estimated fare to prepay your ride. Please select a destination address to get one.</value>
