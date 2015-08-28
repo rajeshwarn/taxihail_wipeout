@@ -91,29 +91,21 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ReferenceListRequest request)
         {
-            if (request.ListName.Equals("airline", StringComparison.InvariantCultureIgnoreCase)) {
-                if (request.SearchText.IsNullOrEmpty())
-                {
-                    return _airlineDao.GetAll();
-                }
-                else
-                {
-                    return _airlineDao.FindByName(request.SearchText);
-                }
-            }
-            else if (request.ListName.Equals("pickuppoint", StringComparison.InvariantCultureIgnoreCase))
+            if (request.ListName.Equals("airline", StringComparison.InvariantCultureIgnoreCase))
             {
-                if (request.SearchText.IsNullOrEmpty())
-                {
-                    return _pickupPointDao.GetAll();
-                }
-                else
-                {
-                    return _pickupPointDao.FindByName(request.SearchText);
-                }
+	            return request.SearchText.HasValue()
+		            ? _airlineDao.FindByName(request.SearchText)
+		            : _airlineDao.GetAll();
             }
 
-            throw new InvalidOperationException("Unknown list " + request.ListName);
+	        if (request.ListName.Equals("pickuppoint", StringComparison.InvariantCultureIgnoreCase))
+	        {
+		        return request.SearchText.HasValue()
+			        ? _pickupPointDao.FindByName(request.SearchText)
+			        : _pickupPointDao.GetAll();
+	        }
+
+	        throw new InvalidOperationException("Unknown list " + request.ListName);
         }
 
         private ReferenceData GetReferenceData(string companyKey)
