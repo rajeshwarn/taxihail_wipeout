@@ -127,7 +127,7 @@ namespace MK.Common.Configuration
 
         [RequiredAtStartup, SendToClient, CustomizableByCompany]
         [Display(Name = "Twitter - Consumer Key", Description="Twitter API Consumer Key")]
-		public string erConsumerKey{ get; protected set; }
+		public string TwitterConsumerKey{ get; protected set; }
 
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Use single button for now and later booking", Description = "Replace book now and book later buttons with a single button that will display both options in a popup. (This feature does not work with manual CMT ridelinq pairing.)")]
