@@ -570,11 +570,11 @@
     <comment>Cannot save credit card</comment>
   </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
-    <value>Fecha de expiración</value>
+    <value>Mes de expiración</value>
     <comment>Exp. Month</comment>
   </data>
   <data name="CreditCardExpYear" xml:space="preserve">
-    <value>Mes de expiración</value>
+    <value>Año de expiración</value>
     <comment>Exp. Year</comment>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
@@ -1726,7 +1726,7 @@
     <comment>Address Details</comment>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Pagar en Efectivo y Terminar</value>
+    <value>Calificar Servicio y Terminar</value>
     <comment>Submit Rating</comment>
   </data>
   <data name="SupportEmail" xml:space="preserve">
