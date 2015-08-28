@@ -311,6 +311,7 @@
   <string name="RideSettingsPassword">كلمة السر</string>
   <string name="RideSettingsPhone">الهاتف الجوال</string>
   <string name="RideSettingsVehiculeType">نوع السیارة</string>
+  <string name="RideSettingsEmailTitle">Email</string>
   <string name="RideSummarySubTitleText">شكرا لاختيارك {0} لرحلتك، نتطلع لخدمتك مرة أخرى قريبا.</string>
   <string name="RideSummaryTitleText">شكرا لك</string>
   <string name="RingCode">رمز الدخول</string>
@@ -632,7 +633,7 @@
   <string name="AddressSearch">Address search</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="DestinationAddress">Destination address</string>
-  <string name="CallDriver">Call Driver</string>
+  <string name="CallDriver">Call driver</string>
   <string name="BookingAirportTitle">Airport</string>
   <string name="BookingAirportAirlineslbl">Airlines</string>
   <string name="BookingAirportFlightNumlbl">Flight Number</string>
@@ -675,4 +676,10 @@
   <string name="Rating4">Good</string>
   <string name="Rating5">Excellent</string>
   <string name="SendMessageDriver">Send Message to Driver</string>
+  <string name="Error_EditAutoTipTitle">Error</string>
+  <string name="View_RideLinqSummary">Order summary</string>
+  <string name="View_RideLinqStatus">Status</string>
+  <string name="NetworkTimeOutPopupAlways">Always Accept</string>
+  <string name="EstimateFareCalculating">Calculating...</string>
+  <string name="OrderStatus_Medallion">Medallion</string>
 </resources>

@@ -126,81 +126,84 @@ namespace MK.Common.Configuration
         public CmtGeoSettingContainer CmtGeo { get; protected set; }
         public CmtGdsSettingContainer Gds { get; protected set; }
 
+        [Display(Name = "Website - Hide Web signup button", Description = "Hide Sign Up button on web site")]
         public bool IsWebSignupHidden { get; protected set; }
 
+        [Display(Name = "Payment - PayPal Region Info Override", Description = "Secret Paypal Setting (See Mathieu S.)")]
         public string PayPalRegionInfoOverride { get; protected set; }
 
+        [Display(Name = "Payment - PayPal Conversion Rate", Description = "Paypal conversion rate to US dollar")]
         public decimal PayPalConversionRate { get; protected set; }
 
-        [Display(Name = "Hide fare info when Pay in Car", Description = "Hide fare information in receipt when user choose to pay in car.")]
+        [Display(Name = "Configuration - Hide fare info when Pay in Car", Description = "Hide fare information in receipt when user choose to pay in car.")]
         public bool HideFareInfoInReceipt { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Minimum Required App Version", Description = "Minimum required app version to create an order.")]
+        [Display(Name = "Configuration - Minimum Required App Version", Description = "Minimum required app version to create an order.")]
         public string MinimumRequiredAppVersion { get; private set; }
 
         [CustomizableByCompany, RequiresTaxiHailPro]
-        [Display(Name = "Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
+        [Display(Name = "Configuration - Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
 
-        [Display(Name = "Disable Newer Version Popup", Description = "Disables the popup on the application telling the user that a new version is available")]
+        [Display(Name = "Configuration - Disable Newer Version Popup", Description = "Disables the popup on the application telling the user that a new version is available")]
         public bool DisableNewerVersionPopup { get; private set; }
 
-	    [Display(Name = "Base Url Override", Description = "Overrides the base url of the application (ex: In account confirmation email)")]
+	    [Display(Name = "Configuration - Base Url Override", Description = "Overrides the base url of the application (ex: In account confirmation email)")]
         public string BaseUrl { get; private set; }
 
-        [Display(Name = "TaxiHail Pro", Description = "Company has access to TaxiHail Pro features")]
+        [Display(Name = "Configuration - TaxiHail Pro", Description = "Company has access to TaxiHail Pro features")]
         public bool IsTaxiHailPro { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Driver Eta Notification Mode", Description = "Configures the notification mode to the driver for it's estimated time of arrival to the pickup location.")]
+        [Display(Name = "Configuration - Driver Eta Notification Mode", Description = "Configures the notification mode to the driver for it's estimated time of arrival to the pickup location.")]
         public DriverEtaNotificationModes DriverEtaNotificationMode { get; protected set; }
 
         [Hidden]
-        [Display(Name = "Settings Available to Admin", Description = "Comma delimited list of settings that are available to admins")]
+        [Display(Name = "Configuration - Available to Admin (Hidden)", Description = "Comma delimited list of settings that are available to admins")]
         public string SettingsAvailableToAdmin { get; private set; }
 
         [Hidden]
-        [Display(Name = "Target", Description = "Deployment target server")]
+        [Display(Name = "Configuration - Target", Description = "Deployment target server")]
         public DeploymentTargets Target { get; set; }
 
-        [Display(Name = "Social Media Website Links Toggle", Description = "Displays the Social Media links for the website")]
+        [Display(Name = "Website - Display Social Media Links", Description = "Displays the Social Media links on the website")]
         public bool IsWebSocialMediaVisible { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Social Media Website Facebook URL", Description = "Adds the link to the Facebook address")]
+        [Display(Name = "Website - Social Media URL (Website)", Description = "Adds the link to the Facebook address. If empty, no button will appear. Requires: Website - Display Social Media link")]
         public string SocialMediaFacebookURL { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Social Media Website Twitter URL", Description = "Adds the link to the Twitter address")]
+        [Display(Name = "Website - Social Media URL (Website)", Description = "Adds the link to the Twitter address. If empty, no button will appear. Requires: Website - Display Social Media link")]
         public string SocialMediaTwitterURL { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Social Media Website Google+ URL", Description = "Adds the link to the Google+ address")]
+        [Display(Name = "Website - Google+ URL (Website)", Description = "Adds the link to the Google+ address. If empty, no button will appear. Requires: Website - Display Social Media link")]
         public string SocialMediaGoogleURL { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Social Media Website Pinterest URL", Description = "Adds the link to the Facebook address")]
+        [Display(Name = "Website - Pinterest URL (Website)", Description = "Adds the link to the Pinterest address. If empty, no button will appear. Requires: Website - Display Social Media link")]
         public string SocialMediaPinterestURL { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
+        [Display(Name = "Configuration - Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
         public bool ValidateAdminRulesForExternalMarket { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Use Pairing Code When RideLinq Payment", Description = "Use Pairing Code When Using RideLinq Cmt Payment")]
+        [Display(Name = "Configuration - Use Pairing Code When RideLinq Payment", Description = "If enable, will wait for Pairing Code from IBS before processing Cmt Payment")]
         public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; protected set; }        
         
         [CustomizableByCompany]
-        [Display(Name = "Company's time zone", Description = "Used to properly show dates in the correct time zone")]
+        [Display(Name = "Configuration - Company's time zone", Description = "Used to properly show dates in the correct time zone")]
         public TimeZones CompanyTimeZone { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Cancellation Fees Window", Description = "Window (in seconds) where the user can cancel an order without being charged cancellation fees. Window starts when taxi gets assigned.")]
+        [Display(Name = "Configuration - Cancellation Fees Window", Description = "Window (in seconds) where the user can cancel an order without being charged cancellation fees. Window starts when taxi gets assigned.")]
         public int CancellationFeesWindow { get; protected set; }
         
         [CustomizableByCompany]
-        [Display(Name = "Hide Fare Estimate From IBS", Description = "Prevent sending fare estimate to IBS when creating an order. DO NOT enable this setting if the fare estimate is the real/flat ride fare.")]
+        [Display(Name = "Configuration - Hide Fare Estimate From IBS", Description = "Prevent sending fare estimate to IBS when creating an order. DO NOT enable this setting if the fare estimate is the real/flat ride fare.")]
         public bool HideFareEstimateFromIBS { get; protected set; }
     }
 }

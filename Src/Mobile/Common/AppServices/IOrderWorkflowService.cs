@@ -37,6 +37,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
 
+		void SetAddressSelectionMode(AddressSelectionMode mode = AddressSelectionMode.None);
+
 		Task ToggleIsDestinationModeOpened(bool? forceValue = null);
 
 		Task ValidatePickupTime();
@@ -88,6 +90,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<string> GetAndObserveHashedMarket();
 
         IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
+
+		void SetAddresses(Address pickupAddress, Address destinationAddress);
 
 		IObservable<bool> GetAndObserveIsDestinationModeOpened();
 

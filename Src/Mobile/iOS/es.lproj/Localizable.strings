@@ -297,7 +297,7 @@
 "PanelMenuViewReportProblemText"="Reportar problema";
 "PanelMenuViewSignOutText"="Cerrar Sesión";
 "PanelMenuViewTutorialText"="Ver tutorial";
-"PanelMenuViewUpdateProfileText"="Actualizar cuenta";
+"PanelMenuViewUpdateProfileText"="Perfil";
 "ParameterButton"="Paramétros";
 "PassengerNameLabel"="Nombre";
 "PassengerNumberLabel"="Pasajeros";
@@ -361,6 +361,7 @@
 "RideSettingsPassword"="Contraseña";
 "RideSettingsPhone"="Celular";
 "RideSettingsVehiculeType"="Tipo de Vehículo";
+"RideSettingsEmailTitle"="Email";
 "RideSummarySubTitleText"="Gracias por viajar con {0}, esperamos pronto poder volver servirle";
 "RideSummaryTitleText"="Muchas Gracias";
 "RingCode"="Código de entrada";
@@ -684,3 +685,15 @@
 "MessageActivityName"="Message";
 "BookSummaryActivityName"="Book summary";
 "BookStatusActivityName"="Booking status";
+"Error_EditAutoTipTitle"="Error";
+"View_RideLinqSummary"="Order summary";
+"View_RideLinqStatus"="Status";
+"TaxiHailNetworkTimeOutPopupAlways"="Always Accept";
+"NetworkTimeOutPopupAlways"="Always Accept";
+"TaxiHailNetworkTimeOutErrorTitle"="Error";
+"DriverInfoCompany"="Company:";
+"TaxiHailNetworkTimeOutPopupRefuse"="Ignore";
+"TaxiHailNetworkTimeOutPopupAccept"="Accept";
+"TaxiHailNetworkTimeOutPopupMessage"="Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?";
+"TaxiHailNetworkTimeOutPopupTitle"="Switch company?";
+"OrderStatus_Medallion"="Medallion";

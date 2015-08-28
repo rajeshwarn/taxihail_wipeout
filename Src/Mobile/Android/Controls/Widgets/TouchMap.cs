@@ -13,6 +13,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
@@ -21,6 +22,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using Android.Runtime;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using Android.App;
 using Color = Android.Graphics.Color;
 using Android.Runtime;
 
@@ -148,7 +150,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             .SetTitle(value.VehicleNumber)
                             .Visible(true));
                             
+                        if (_showVehicleNumber)
+                        {
+                            var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
+                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
+
                             _taxiLocationPin.ShowInfoWindow();
+                        }
 
                         if (_taxiLocation.IBSStatusId == VehicleStatuses.Common.Loaded)
                         {

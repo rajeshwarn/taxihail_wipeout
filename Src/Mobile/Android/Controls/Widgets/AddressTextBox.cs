@@ -19,12 +19,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public event EventHandler AddressClicked;
 
-        private Color SelectedColor;
+        private Color _selectedColor;
         public EditText AddressTextView;
-        private EditText StreetNumberTextView;
-        private LinearLayout LoadingWheel;
-        private ImageView Dot;
-        private View HorizontalDivider;
+        private EditText _streetNumberTextView;
+        private LinearLayout _loadingWheel;
+        private ImageView _dot;
+        private View _horizontalDivider;
 
         public AddressTextBox(Context c, IAttributeSet attr) : base(c, attr)
         {
@@ -37,20 +37,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
             var layout = inflater.Inflate(Resource.Layout.Control_AddressTextBox, this, true);
 
-            SelectedColor = Resources.GetColor(Resource.Color.orderoptions_pickup_address_color);
+            _selectedColor = Resources.GetColor(Resource.Color.orderoptions_pickup_address_color);
 
-            StreetNumberTextView = (EditText)layout.FindViewById(Resource.Id.StreetNumberTextView);
+            _streetNumberTextView = (EditText)layout.FindViewById(Resource.Id.StreetNumberTextView);
             AddressTextView = (EditText)layout.FindViewById(Resource.Id.AddressTextView);
-            LoadingWheel = (LinearLayout)layout.FindViewById(Resource.Id.ProgressBar);
-            Dot = (ImageView)layout.FindViewById(Resource.Id.Dot);
-            HorizontalDivider = (View)layout.FindViewById(Resource.Id.HorizontalDivider);
+            _loadingWheel = (LinearLayout)layout.FindViewById(Resource.Id.ProgressBar);
+            _dot = (ImageView)layout.FindViewById(Resource.Id.Dot);
+            _horizontalDivider = layout.FindViewById(Resource.Id.HorizontalDivider);
 
-            StreetNumberTextView.SetSelectAllOnFocus(true);
-            StreetNumberTextView.ImeOptions = ImeAction.Done;
-            StreetNumberTextView.SetSingleLine(true);
-            StreetNumberTextView.Hint = "#";
-            StreetNumberTextView.Gravity = GravityFlags.Center;
-            StreetNumberTextView.InputType = StreetNumberTextView.InputType | InputTypes.ClassNumber;
+            _streetNumberTextView.SetSelectAllOnFocus(true);
+            _streetNumberTextView.ImeOptions = ImeAction.Done;
+            _streetNumberTextView.SetSingleLine(true);
+            _streetNumberTextView.Hint = "#";
+            _streetNumberTextView.Gravity = GravityFlags.Center;
+            _streetNumberTextView.InputType = _streetNumberTextView.InputType | InputTypes.ClassNumber;
 
             AddressTextView.SetSelectAllOnFocus(true);
             AddressTextView.SetSingleLine(true);
@@ -63,9 +63,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             IsSelected = true;
         }
 
-        public bool UserInputDisabled { get; set; }
+	    public bool UserInputDisabled
+	    {
+		    get { return _userInputDisabled; }
+		    set
+		    {
+			    _userInputDisabled = value;
 
-        bool _isLoadingAddress;
+			    _streetNumberTextView.Enabled = !_userInputDisabled;
+		    }
+	    }
+
+	    bool _isLoadingAddress;
         public bool IsLoadingAddress
         {
             get
@@ -92,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private bool? _isDestination;  //Needs to be nullable because by default it's false and the code in the setter was never called for the pickup.
         public bool IsDestination
         {
-            get { return _isDestination.HasValue || _isDestination.Value; }        
+            get { return _isDestination.HasValue && _isDestination.Value; }        
             set
             {
                 if ( !_isDestination.HasValue  || (_isDestination.Value != value))
@@ -100,27 +109,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     _isDestination = value;
                     if (value)
                     {
-                        SelectedColor = Resources.GetColor(Resource.Color.orderoptions_destination_address_color);
+                        _selectedColor = Resources.GetColor(Resource.Color.orderoptions_destination_address_color);
                     }                       
-                    Dot.SetColorFilter(SelectedColor, PorterDuff.Mode.SrcAtop);
-                    HorizontalDivider.Visibility = value.ToVisibility();
+                    _dot.SetColorFilter(_selectedColor, PorterDuff.Mode.SrcAtop);
+                    _horizontalDivider.Visibility = value.ToVisibility();
                 }
             }
         }
 
         private void ShowLoadingWheel()
         {
-            LoadingWheel.Visibility = ViewStates.Visible;
-            StreetNumberTextView.ClearFocus();
-            StreetNumberTextView.LayoutParameters.Width = 0; //not using visibility to avoid triggering focus change
+            _loadingWheel.Visibility = ViewStates.Visible;
+            _streetNumberTextView.ClearFocus();
+            _streetNumberTextView.LayoutParameters.Width = 0; //not using visibility to avoid triggering focus change
         }
 
         private void HideLoadingWheel()
         {
-            LoadingWheel.Visibility = ViewStates.Gone;
+            _loadingWheel.Visibility = ViewStates.Gone;
             //not using visibility to avoid triggering focus change
-            StreetNumberTextView.LayoutParameters.Width = IsSelected 
-                ? LinearLayout.MarginLayoutParams.WrapContent 
+            _streetNumberTextView.LayoutParameters.Width = IsSelected 
+                ? ViewGroup.LayoutParams.WrapContent 
                 : 0;
         }
 
@@ -141,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void SetBehavior()
         {
             //Order is important
-            NumberAndAddressTextFieldBehavior.ApplyTo(AddressTextView, StreetNumberTextView, number => 
+            NumberAndAddressTextFieldBehavior.ApplyTo(AddressTextView, _streetNumberTextView, number => 
             {
                 if (AddressUpdated != null)
                 {
@@ -157,13 +166,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             };
 
-            StreetNumberTextView.FocusChange += (sender, e) => 
+            _streetNumberTextView.FocusChange += (sender, e) => 
             {
                 if(e.HasFocus)
                 {
-                    if(string.IsNullOrWhiteSpace(StreetNumberTextView.Text))
+                    if(string.IsNullOrWhiteSpace(_streetNumberTextView.Text))
                     {
-                        StreetNumberTextView.ClearFocus();
+                        _streetNumberTextView.ClearFocus();
                         if(AddressClicked != null)
                         {
                             AddressClicked(this, EventArgs.Empty);
@@ -172,8 +181,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     }
 
                     Resize();
-                    StreetNumberTextView.SetTextColor(Color.White);
-                    StreetNumberTextView.SetBackgroundColor(SelectedColor);
+                    _streetNumberTextView.SetTextColor(Color.White);
+                    _streetNumberTextView.SetBackgroundColor(_selectedColor);
                     if(_giantInvisibleButton != null)
                     {
                         _giantInvisibleButton.Visibility = ViewStates.Visible;
@@ -182,8 +191,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 else
                 {                    
                     Resize();
-                    StreetNumberTextView.SetTextColor(Resources.GetColor(Resource.Color.edit_text_foreground_color));
-                    StreetNumberTextView.SetBackgroundColor(Color.Transparent);
+                    _streetNumberTextView.SetTextColor(Resources.GetColor(Resource.Color.edit_text_foreground_color));
+                    _streetNumberTextView.SetBackgroundColor(Color.Transparent);
                     if(_giantInvisibleButton != null)
                     {
                         _giantInvisibleButton.Visibility = ViewStates.Gone;
@@ -193,13 +202,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
 
         private Button _giantInvisibleButton;
-        public void SetInvisibleButton(Button giantInvisibleButton)
+	    private bool _userInputDisabled;
+
+	    public void SetInvisibleButton(Button giantInvisibleButton)
         {
             giantInvisibleButton.Touch += (sender, e) => 
             {
                 if(e.Event.Action == MotionEventActions.Up)
                 {
-                    StreetNumberTextView.ClearFocus();
+                    _streetNumberTextView.ClearFocus();
                 }
             };
 
@@ -211,14 +222,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             if (!IsSelected)
             {
                 //not using visibility to avoid triggering focus change
-                StreetNumberTextView.LayoutParameters.Width = 0;
-                Dot.Visibility = ViewStates.Visible;
+                _streetNumberTextView.LayoutParameters.Width = 0;
+                _dot.Visibility = ViewStates.Visible;
             }
             else
             {
                 //not using visibility to avoid triggering focus change
-                StreetNumberTextView.LayoutParameters.Width = LinearLayout.MarginLayoutParams.WrapContent;
-                Dot.Visibility = ViewStates.Gone;
+                _streetNumberTextView.LayoutParameters.Width = ViewGroup.LayoutParams.WrapContent;
+                _dot.Visibility = ViewStates.Gone;
             }
         }
     }

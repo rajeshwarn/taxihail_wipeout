@@ -1310,7 +1310,7 @@
     <comment>View Tutorial</comment>
   </data>
   <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
-    <value>Actualizar cuenta</value>
+    <value>Perfil</value>
     <comment>Update Account</comment>
   </data>
   <data name="ParameterButton" xml:space="preserve">
@@ -1564,6 +1564,9 @@
   <data name="RideSettingsVehiculeType" xml:space="preserve">
     <value>Tipo de Vehículo</value>
     <comment>Vehicle type</comment>
+  </data>
+  <data name="RideSettingsEmailTitle" xml:space="preserve">
+    <value>Email</value>
   </data>
   <data name="RideSummarySubTitleText" xml:space="preserve">
     <value>Gracias por viajar con {0}, esperamos pronto poder volver servirle</value>
@@ -2560,14 +2563,8 @@
     <value>Editar propina</value>
     <comment>Edit tip</comment>
     </data>
-  <data name="Error_EditAutoTipMessage" xml:space="preserve">
-    <value>An error occurred while trying to update the tip. Please try again.</value>
-  </data>
   <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
     <value>You're checked into taxi #{0}.</value>
-  </data>
-  <data name="Error_EditAutoTipMessage" xml:space="preserve">
-    <value>An error occurred while trying to update the tip. Please try again.</value>
   </data>
   <data name="ManualRideLinqStatus_Payment" xml:space="preserve">
     <value>Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</value>
@@ -2680,9 +2677,6 @@
 	<data name="DestinationAddress" xml:space="preserve">
     <value>Destination address</value>
   </data>
-	<data name="CallDriver" xml:space="preserve">
-    <value>Call driver</value>
-  </data>
 	<data name="BookingAirportTitle" xml:space="preserve">
     <value>Airport</value>
   </data>
@@ -2791,109 +2785,40 @@
 	<data name="BookStatusActivityName" xml:space="preserve">
     <value>Booking status</value>
   </data>
-	<data name="CallDriver" xml:space="preserve">
-    <value>Call Driver</value>
+	<data name="Error_EditAutoTipTitle" xml:space="preserve">
+    <value>Error</value>
+    </data>
+	<data name="View_RideLinqSummary" xml:space="preserve">
+    <value>Order summary</value>
   </data>
-	<data name="Rating1" xml:space="preserve">
-    <value>Awful</value>
+	<data name="View_RideLinqStatus" xml:space="preserve">
+    <value>Status</value>
   </data>
-	<data name="Rating2" xml:space="preserve">
-    <value>Poor</value>
+	<data name="TaxiHailNetworkTimeOutPopupAlways" xml:space="preserve">
+    <value>Always Accept</value>
   </data>
-	<data name="Rating3" xml:space="preserve">
-    <value>Average</value>
+	<data name="NetworkTimeOutPopupAlways" xml:space="preserve">
+    <value>Always Accept</value>
   </data>
-	<data name="Rating4" xml:space="preserve">
-    <value>Good</value>
+	<data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
+    <value>Error</value>
   </data>
-	<data name="Rating5" xml:space="preserve">
-    <value>Excellent</value>
+	<data name="DriverInfoCompany" xml:space="preserve">
+    <value>Company:</value>
   </data>
-	<data name="MessageActivityName" xml:space="preserve">
-    <value>Message</value>
+	<data name="TaxiHailNetworkTimeOutPopupRefuse" xml:space="preserve">
+    <value>Ignore</value>
   </data>
-	<data name="BookSummaryActivityName" xml:space="preserve">
-    <value>Book summary</value>
+	<data name="TaxiHailNetworkTimeOutPopupAccept" xml:space="preserve">
+    <value>Accept</value>
   </data>
-	<data name="ManualRideLinqStatusActivityName" xml:space="preserve">
-    <value>Manual RideLinq Status</value>
+	<data name="TaxiHailNetworkTimeOutPopupMessage" xml:space="preserve">
+    <value>Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?</value>
   </data>
-	<data name="ManualPairingForRideLinqActivityName" xml:space="preserve">
-    <value>Manual pairing for RideLinq</value>
+	<data name="TaxiHailNetworkTimeOutPopupTitle" xml:space="preserve">
+    <value>Switch company?</value>
   </data>
-	<data name="UserTaxiHailNetworkSettingsActivityName" xml:space="preserve">
-    <value>User TaxiHail network settings</value>
-  </data>
-	<data name="BookStatusActivityName" xml:space="preserve">
-    <value>Booking status</value>
-  </data>
-	<data name="UpdatePasswordActivityName" xml:space="preserve">
-    <value>Update password</value>
-  </data>
-	<data name="AccountConfirmationActivityName" xml:space="preserve">
-    <value>Account confirmation</value>
-  </data>
-	<data name="InitializeOrderForAccountPaymentActivityName" xml:space="preserve">
-    <value>Initialition of order of account payment</value>
-  </data>
-	<data name="NotificationSettingsActivityName" xml:space="preserve">
-    <value>Notification setting</value>
-  </data>
-	<data name="ProfileSettingsActivityName" xml:space="preserve">
-    <value>Profile</value>
-  </data>
-	<data name="OverduePaymentActivityName" xml:space="preserve">
-    <value>Overdue payment</value>
-  </data>
-	<data name="AccountCreationActivityName" xml:space="preserve">
-    <value>Account creation</value>
-  </data>
-	<data name="CreditCardAddingActivityName" xml:space="preserve">
-    <value>Add or edit credit card</value>
-  </data>
-	<data name="TermsAndConditionsActivityName" xml:space="preserve">
-    <value>Terms and conditions</value>
-  </data>
-	<data name="HistoryDetailsActivityName" xml:space="preserve">
-    <value>History details</value>
-  </data>
-	<data name="HistoryActivityName" xml:space="preserve">
-    <value>History</value>
-  </data>
-	<data name="AboutActivityName" xml:space="preserve">
-    <value>About</value>
-  </data>
-	<data name="BookingRateActivityName" xml:space="preserve">
-    <value>Booking rate</value>
-  </data>
-	<data name="PromotionActivityName" xml:space="preserve">
-    <value>Promotion</value>
-  </data>
-	<data name="LocationsActivityName" xml:space="preserve">
-    <value>Favorite locations</value>
-  </data>
-	<data name="AddressSearch" xml:space="preserve">
-    <value>Address search</value>
-  </data>
-	<data name="PickupAddress" xml:space="preserve">
-    <value>Pickup address</value>
-  </data>
-	<data name="DestinationAddress" xml:space="preserve">
-    <value>Destination address</value>
-  </data>
-	<data name="TutorialActivityName" xml:space="preserve">
-    <value>Tutorial</value>
-  </data>
-	<data name="HomeActivityName" xml:space="preserve">
-    <value>Home</value>
-  </data>
-	<data name="PasswordRecoveryActivityName" xml:space="preserve">
-    <value>Password recovery</value>
-  </data>
-	<data name="LocationDetailsActivityName" xml:space="preserve">
-    <value>Location Details</value>
-  </data>
-	<data name="LoginActivityName" xml:space="preserve">
-    <value>Login</value>
-  </data>
+	<data name="OrderStatus_Medallion" xml:space="preserve">
+		<value>Medallion</value>
+	</data>
 </root>

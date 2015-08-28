@@ -16,6 +16,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.NSLayoutConstraint _constraintOrderBookinOptionsTopSpace { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarBookingStatus bookingStatusBottomBar { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.BookingStatusControl bookingStatusControl { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint bookingStatusTopSpaceConstraint { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarView bottomBar { get; set; }
 
 		[Outlet]
@@ -29,6 +38,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnTrain { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintAppBarBookingStatus { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarBookingStatus constraintAppBarBookingStatusBottomSpace { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintAppBarBookingStatusTopSpace { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintAppBarBookingStatusVerticalSpace { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintAppBarStatusBottomSpace { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintBookingStatusHeight { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintContactTaxiTopSpace { get; set; }
 
 		[Outlet]
 		UIKit.NSLayoutConstraint constraintHomeLeadingSpace { get; set; }
@@ -50,6 +80,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.NSLayoutConstraint constraintOrderReviewTopSpace { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ContactTaxiControl contactTaxiControl { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.AddressPicker.AddressPickerView ctrlAddressPicker { get; set; }
@@ -80,9 +113,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (constraintBookingStatusHeight != null) {
+				constraintBookingStatusHeight.Dispose ();
+				constraintBookingStatusHeight = null;
+			}
+
 			if (_constraintOrderBookinOptionsTopSpace != null) {
 				_constraintOrderBookinOptionsTopSpace.Dispose ();
 				_constraintOrderBookinOptionsTopSpace = null;
+			}
+
+			if (bookingStatusBottomBar != null) {
+				bookingStatusBottomBar.Dispose ();
+				bookingStatusBottomBar = null;
+			}
+
+			if (bookingStatusControl != null) {
+				bookingStatusControl.Dispose ();
+				bookingStatusControl = null;
+			}
+
+			if (bookingStatusTopSpaceConstraint != null) {
+				bookingStatusTopSpaceConstraint.Dispose ();
+				bookingStatusTopSpaceConstraint = null;
 			}
 
 			if (bottomBar != null) {
@@ -108,6 +161,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnTrain != null) {
 				btnTrain.Dispose ();
 				btnTrain = null;
+			}
+
+			if (constraintAppBarBookingStatus != null) {
+				constraintAppBarBookingStatus.Dispose ();
+				constraintAppBarBookingStatus = null;
+			}
+
+			if (constraintAppBarBookingStatusBottomSpace != null) {
+				constraintAppBarBookingStatusBottomSpace.Dispose ();
+				constraintAppBarBookingStatusBottomSpace = null;
+			}
+
+			if (constraintAppBarBookingStatusTopSpace != null) {
+				constraintAppBarBookingStatusTopSpace.Dispose ();
+				constraintAppBarBookingStatusTopSpace = null;
+			}
+
+			if (constraintAppBarBookingStatusVerticalSpace != null) {
+				constraintAppBarBookingStatusVerticalSpace.Dispose ();
+				constraintAppBarBookingStatusVerticalSpace = null;
+			}
+
+			if (constraintAppBarStatusBottomSpace != null) {
+				constraintAppBarStatusBottomSpace.Dispose ();
+				constraintAppBarStatusBottomSpace = null;
+			}
+
+			if (constraintContactTaxiTopSpace != null) {
+				constraintContactTaxiTopSpace.Dispose ();
+				constraintContactTaxiTopSpace = null;
 			}
 
 			if (constraintHomeLeadingSpace != null) {
@@ -143,6 +226,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (constraintOrderReviewTopSpace != null) {
 				constraintOrderReviewTopSpace.Dispose ();
 				constraintOrderReviewTopSpace = null;
+			}
+
+			if (contactTaxiControl != null) {
+				contactTaxiControl.Dispose ();
+				contactTaxiControl = null;
 			}
 
 			if (ctrlAddressPicker != null) {

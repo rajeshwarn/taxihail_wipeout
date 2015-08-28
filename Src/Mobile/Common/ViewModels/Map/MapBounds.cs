@@ -68,24 +68,24 @@ namespace apcurium.MK.Booking.Maps.Geo
 
 			Position north, south, east, west;
 
-			double distance = 0f;
+			double distance;
 
 			{
-				bool foundMax = false;
-				double foundMinLngDiff = 0;
-				double assumedLngDiff = ASSUMED_INIT_LATLNG_DIFF;
+				var foundMax = false;
+				var foundMinLngDiff = 0d;
+				var assumedLngDiff = ASSUMED_INIT_LATLNG_DIFF;
 
 				do {
 
 					distance = Position.CalculateDistance(centerLatitude, centerLongitude, centerLatitude, centerLongitude + assumedLngDiff);
 
-					double distanceDiff = distance - lngRadiusInMeters;
+					var distanceDiff = distance - lngRadiusInMeters;
 					if (distanceDiff < 0) {
 						if (!foundMax) {
 							foundMinLngDiff = assumedLngDiff;
 							assumedLngDiff *= 2;
 						} else {
-							double tmp = assumedLngDiff;
+							var tmp = assumedLngDiff;
 							assumedLngDiff += (assumedLngDiff - foundMinLngDiff) / 2;
 							foundMinLngDiff = tmp;
 						}
@@ -100,9 +100,9 @@ namespace apcurium.MK.Booking.Maps.Geo
 			}
 
 			{
-				bool foundMax = false;
-				double foundMinLatDiff = 0;
-				double assumedLatDiffNorth = ASSUMED_INIT_LATLNG_DIFF;
+				var foundMax = false;
+				var foundMinLatDiff = 0d;
+				var assumedLatDiffNorth = ASSUMED_INIT_LATLNG_DIFF;
 
 				do {
 
@@ -129,9 +129,9 @@ namespace apcurium.MK.Booking.Maps.Geo
 			}
 
 			{
-				bool foundMax = false;
-				double foundMinLatDiff = 0;
-				double assumedLatDiffSouth = ASSUMED_INIT_LATLNG_DIFF;
+				var foundMax = false;
+				var foundMinLatDiff = 0d;
+				var assumedLatDiffSouth = ASSUMED_INIT_LATLNG_DIFF;
 
 				do {
 

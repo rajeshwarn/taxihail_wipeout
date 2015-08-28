@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (CanUserLeaveScreen ())
 					{
 						PrepareNewOrder.ExecuteIfPossible();
-                        ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true });
+						Close(this);
 					}
 	            });
 	        }
@@ -183,6 +183,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (RatingList == null)
 			{
 				Logger.LogMessage("RatingList is null");
+
+				// Prevent the user from getting stuck on this screen
+				HasRated = true;
+
 			    return;
 			}
 

@@ -309,6 +309,7 @@
 "RideSettingsPassword"="كلمة السر";
 "RideSettingsPhone"="الهاتف الجوال";
 "RideSettingsVehiculeType"="نوع السیارة";
+"RideSettingsEmailTitle"="Email";
 "RideSummarySubTitleText"="شكرا لاختيارك {0} لرحلتك، نتطلع لخدمتك مرة أخرى قريبا.";
 "RideSummaryTitleText"="شكرا لك";
 "RingCode"="رمز الدخول";
@@ -630,7 +631,7 @@
 "AddressSearch"="Address search";
 "PickupAddress"="Pickup address";
 "DestinationAddress"="Destination address";
-"CallDriver"="Call Driver";
+"CallDriver"="Call driver";
 "BookingAirportTitle"="Airport";
 "BookingAirportAirlineslbl"="Airlines";
 "BookingAirportFlightNumlbl"="Flight Number";
@@ -673,3 +674,9 @@
 "Rating4"="Good";
 "Rating5"="Excellent";
 "SendMessageDriver"="Send Message to Driver";
+"Error_EditAutoTipTitle"="Error";
+"View_RideLinqSummary"="Order summary";
+"View_RideLinqStatus"="Status";
+"NetworkTimeOutPopupAlways"="Always Accept";
+"EstimateFareCalculating"="Calculating...";
+"OrderStatus_Medallion"="Medallion";

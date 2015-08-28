@@ -317,6 +317,7 @@
 "RideSettingsPassword"="Mot de passe";
 "RideSettingsPhone"="Ligne mobile";
 "RideSettingsVehiculeType"="Type de véhicule";
+"RideSettingsEmailTitle"="Courriel";
 "RideSummarySubTitleText"="Merci d'avoir choisi {0} pour votre trajet, nous espérons vous revoir bientôt.";
 "RideSummaryTitleText"="Merci";
 "RingCode"="Saisissez un code";
@@ -649,7 +650,7 @@
 "AddressSearch"="Address search";
 "PickupAddress"="Pickup address";
 "DestinationAddress"="Destination address";
-"CallDriver"="Appeler chauffeur";
+"CallDriver"="Call driver";
 "BookingAirportTitle"="Airport";
 "BookingAirportAirlineslbl"="Airlines";
 "BookingAirportFlightNumlbl"="Flight Number";
@@ -692,3 +693,7 @@
 "Rating4"="Bien";
 "Rating5"="Excellent";
 "SendMessageDriver"="Envoyer message au chauffeur";
+"Error_EditAutoTipTitle"="Error";
+"View_RideLinqSummary"="Order summary";
+"View_RideLinqStatus"="Status";
+"OrderStatus_Medallion"="Medallion";

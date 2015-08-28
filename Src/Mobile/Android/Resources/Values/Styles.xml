@@ -208,6 +208,7 @@
   <style name="SettingItemTitle">
     <item name="android:textColor">@color/setting_menu_text_color</item>    
     <item name="android:textSize">@dimen/setting_menu_text_size</item>
+		<item name="android:fontFamily">sans-serif-light</item>
   </style>
   <style name="TopTitleText">
     <item name="android:textSize">@dimen/top_bar_title_font_size</item>
@@ -235,6 +236,22 @@
     <item name="android:singleLine">true</item>
     <item name="android:ellipsize">end</item>
   </style>
+
+	<style name="LightGrayText" >
+		<item name="android:textSize">14dip</item>
+		<item name="android:textColor">#A8A8A8</item>
+		<item name="android:lines">1</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:ellipsize">end</item>
+	</style>
+
+	<style name="WhiteText" >
+		<item name="android:textSize">14dip</item>
+		<item name="android:textColor">#FFFFFF</item>
+		<item name="android:lines">1</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:ellipsize">end</item>
+	</style>
 
   <style name="BlackTextLabel" >
     <item name="android:textSize">14dip</item>
