@@ -445,11 +445,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	
 		private void CreateButtonsForAirportBooking()
 		{
-			// - Cancel - Confirm - Edit 
-
+			// - Destination - Confirm - Edit 
 			_airportOrderButtons = new UIView() { Hidden = true };
 			_airportOrderButtons.TranslatesAutoresizingMaskIntoConstraints = false;
 			Add(_airportOrderButtons);
+
+			var btnEstimate = GenerateEstimateButton();
 
 			var btnCancel = new AppBarLabelButton(Localize.GetValue("Cancel"));
 			btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
@@ -462,7 +463,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			var btnBookLater = new AppBarButton(Localize.GetValue("BookItLaterButton"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "later_icon.png", "later_icon_pressed.png");
 			btnBookLater.TranslatesAutoresizingMaskIntoConstraints = false;
 
-			_airportOrderButtons.AddSubviews(btnCancel, btnConfirm, btnBookLater);
+			_airportOrderButtons.AddSubviews(btnEstimate, btnConfirm, btnBookLater);
 
 			// Constraints for Container
 			_airportOrderButtons.Superview.AddConstraints(new []
@@ -473,28 +474,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					NSLayoutConstraint.Create(_airportOrderButtons, NSLayoutAttribute.Height, NSLayoutRelation.Equal, _airportOrderButtons.Superview, NSLayoutAttribute.Height, 1, 0f),
 				});
 
-			// Constraints for Cancel button
-			_airportOrderButtons.AddConstraints(new []
-				{
-					NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.Leading, 1, 8f),
-					NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 70f),
-					NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterY, 1, 0),
-				});
-
-//			// Constraints for Confirm button
-//			_airportOrderButtons.AddConstraints(new []
-//				{
-//					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterX, 1, 0),
-//					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterY, 1, 0),
-//					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Width, NSLayoutRelation.Equal, _airportOrderButtons.Subviews[1], NSLayoutAttribute.Width, 1, 0f),
-//					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41),
-//				});
+			// Constraints for Estimate button
+			_airportOrderButtons.AddConstraints(GenerateEstimateButtonConstraints(btnEstimate, _airportOrderButtons));
 
 			// Constraints for Confirm button
 			_airportOrderButtons.AddConstraints(new []
 				{
 					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterY, 1, 0),
-					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnCancel, NSLayoutAttribute.Trailing, 1, 20f),
+					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnEstimate, NSLayoutAttribute.Trailing, 1, 20f),
 					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, btnBookLater, NSLayoutAttribute.Leading, 1, -20f),
 					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41),
 				});
@@ -508,6 +495,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				});
 			
 			var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
+
+			set.Bind(btnEstimate)
+				.For(v => v.Command)
+				.To(vm => vm.ChangeAddressSelectionMode);
+
+			set.Bind(btnEstimate)
+				.For(v => v.Selected)
+				.To(vm => vm.EstimateSelected);
+
+			set.Bind(btnEstimate)
+				.For(v => v.Hidden)
+				.To(vm => vm.Settings.HideDestination);
 
 			set.Bind(btnCancel)
 				.For(v => v.Command)

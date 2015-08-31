@@ -422,7 +422,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         {
                             sb.Append("{0}\n", Note );
                         }
-                        sb.Append(this.Services().Localize["BookingAirportDetails"], _pickupAddress.FriendlyName, AirlineName, FlightNum, PUPointsName);
+						sb.Append(this.Services().Localize["BookingAirportDetails"], _pickupAddress.FullAddress, AirlineName, FlightNum, PUPointsName);
                         if (pItem != null && pItem.Fee != string.Empty && fee > 0 )
                         {
                             sb.Append(this.Services().Localize["BookingAirportDetailsFee"], pItem.Fee);

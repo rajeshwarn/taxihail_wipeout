@@ -31,6 +31,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private const int BookingStatusHeight = 75;
         private const int BookingStatusAndDriverInfosHeight = 158;
 
+		private HomeViewModelState _presentationState = HomeViewModelState.Initial;
+
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
@@ -72,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             )
                 .Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
                 .Select(_ => ViewModel.CurrentViewState)
-                .DistinctUntilChanged()
+                //.DistinctUntilChanged()
                 .Subscribe(ChangeState, Logger.LogError);
         }
 
@@ -122,6 +124,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnTrain.AccessibilityLabel = Localize.GetValue("TrainStationsButton");
 
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
+			ChangeState( HomeViewModelState.Initial );
 
             set.Bind(panelMenu)
                 .For(v => v.DataContext)
@@ -270,7 +273,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void ChangeState(HomeViewModelState state)
         {
-			if (state == HomeViewModelState.PickDate)
+			if (_presentationState == HomeViewModelState.AirportDetails && state == HomeViewModelState.AddressSearch) 
+			{
+				_presentationState = HomeViewModelState.AirportAddressSearch;
+			} 
+			else
+			{
+				_presentationState = state;
+			}
+			if (_presentationState == HomeViewModelState.PickDate)
 			{
 				// Order Options: Visible
 				// Order Review: Hidden
@@ -282,12 +293,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				_datePicker.ViewState = state;
 				_datePicker.Show ();
 			}
-            else if (state == HomeViewModelState.AirportPickDate)
+			else if (_presentationState == HomeViewModelState.AirportPickDate)
             {
 				_datePicker.ViewState = state;
 				_datePicker.Show();
 			}
-			else if (state == HomeViewModelState.Initial)
+			else if (_presentationState == HomeViewModelState.Initial)
 			{
 				// Order Options: Visible
 				// Order Review: Hidden
@@ -311,7 +322,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         constraintOrderOptionsTopSpace.Constant = 22;
                         constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
-						constraintOrderAirportTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width; 
+						constraintOrderAirportTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 22;
+						constraintOrderAirportBottomSpace.Constant = constraintOrderAirportBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         homeView.LayoutIfNeeded();
                         _datePicker.Hide();  
                     }, () =>
@@ -320,7 +332,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     });
 			}
 
-            else if (state == HomeViewModelState.BookATaxi)
+			else if (_presentationState == HomeViewModelState.BookATaxi)
             {
                 this.Services().Message.ShowMessage(null, Localize.GetValue("BookATaxi_Message"),
                     Localize.GetValue("Cancel"),
@@ -330,7 +342,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     Localize.GetValue("BookItLaterButton"),
                     () => { ViewModel.BottomBar.BookLater.ExecuteIfPossible(); });
             }
-            else if (state == HomeViewModelState.Review)
+			else if (_presentationState == HomeViewModelState.Review)
             {
                 // Order Options: Visible
                 // Order Review: Visible
@@ -348,7 +360,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         constraintOrderReviewBottomSpace.Constant = -65;
                         constraintOrderOptionsTopSpace.Constant = 22;
                         constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
-                        constraintOrderAirportTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+						constraintOrderAirportTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 22;
+						constraintOrderAirportBottomSpace.Constant = constraintOrderAirportBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
 
                         _datePicker.Hide();
 
@@ -356,7 +369,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     },
                     RedrawSubViews);
             }
-            else if (state == HomeViewModelState.Edit)
+			else if (_presentationState == HomeViewModelState.Edit)
             {
                 // Order Options: Hidden
                 // Order Review: Hidden
@@ -370,13 +383,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f;
                         constraintOrderEditTrailingSpace.Constant = 8;
-						constraintOrderAirportTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+						constraintOrderAirportTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 22;
+						constraintOrderAirportBottomSpace.Constant = constraintOrderAirportBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         homeView.LayoutIfNeeded();
                         ctrlOrderReview.SetNeedsDisplay();
                         ctrlOrderOptions.SetNeedsDisplay();
                     }, () => orderEdit.SetNeedsDisplay());
             }
-            else if (state == HomeViewModelState.BookingStatus)
+			else if (_presentationState == HomeViewModelState.BookingStatus)
             {
                 // Order Options: Hidden
                 // Order Review: Hidden
@@ -403,7 +417,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f;
                         constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
-			            constraintOrderAirportTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+						constraintOrderAirportTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 22;
+						constraintOrderAirportBottomSpace.Constant = constraintOrderAirportBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         bookingStatusTopSpaceConstraint.Constant = 22f;
 
                         homeView.LayoutIfNeeded();
@@ -413,7 +428,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         RedrawSubViews();
                     });
 			}
-            else if (state == HomeViewModelState.AirportDetails)
+			else if (_presentationState == HomeViewModelState.AirportDetails)
             {
 				// Order Options: Hidden
 				// Order Review: Hidden
@@ -422,22 +437,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				// Order Airport: Visable
 				CloseBookATaxiDialog ();
                  
-				UIView.Animate (
+				UIView.Animate(
 					0.6f, 
-					() => {
+					() =>
+					{
 						ctrlAddressPicker.Close ();
 						constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
-						constraintOrderReviewBottomSpace.Constant = -65;
 						constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
-						constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f; 
-						constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
-						constraintOrderAirportTrailingSpace.Constant = 8;
-						homeView.LayoutIfNeeded ();  
-						ctrlOrderReview.SetNeedsDisplay ();
-						ctrlOrderOptions.SetNeedsDisplay ();
-						_datePicker.Hide ();
+						constraintOrderOptionsTopSpace.Constant = 22;
+						constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;       
+						constraintOrderAirportTopSpace.Constant = 10;
+						constraintOrderAirportBottomSpace.Constant = -65;
 
-					}, () => orderAirport.SetNeedsDisplay ());
+						ctrlOrderOptions.SetNeedsLayout();
+						_datePicker.Hide();
+
+					},
+					RedrawSubViews);
             }
 			// We consider any other options as one of the search options.
 			else 
@@ -448,22 +464,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					() =>
 					{
 						constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f;
+						constraintOrderAirportTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 22;
+						constraintOrderAirportBottomSpace.Constant = constraintOrderAirportBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
 						homeView.LayoutIfNeeded();
 					}, () =>
 					{
 						RedrawSubViews();
 					});
                 
-				switch (state)
+				switch (_presentationState)
 				{
+					case HomeViewModelState.AirportAddressSearch:
+						ctrlAddressPicker.Open(AddressLocationType.Unspeficied, HomeViewModelState.AirportDetails);
+						break;
 					case HomeViewModelState.AddressSearch:
-						ctrlAddressPicker.Open(AddressLocationType.Unspeficied);
+						ctrlAddressPicker.Open(AddressLocationType.Unspeficied, HomeViewModelState.Initial);
 						break;
 					case HomeViewModelState.AirportSearch:
-						ctrlAddressPicker.Open(AddressLocationType.Airport);
+						ctrlAddressPicker.Open(AddressLocationType.Airport, HomeViewModelState.Initial);
 						break;
 					case HomeViewModelState.TrainStationSearch:
-						ctrlAddressPicker.Open(AddressLocationType.Train);
+						ctrlAddressPicker.Open(AddressLocationType.Train, HomeViewModelState.Initial);
 						break;
 				}
 			}

@@ -92,6 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					IsPickupSelected = false;
 					break;
 				case HomeViewModelState.PickDate:
+				case HomeViewModelState.AirportPickDate:
 					PickupInputDisabled  = true;
 					DestinationInputDisabled = true;
 					VehicleTypeInputDisabled = true;
@@ -104,6 +105,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					VehicleTypeInputDisabled = false;
 					IsDestinationSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
 					IsPickupSelected = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
+					break;
+			case HomeViewModelState.AirportDetails:
+					PickupInputDisabled = true;
+					DestinationInputDisabled = false;
+					VehicleTypeInputDisabled = false;
+					IsDestinationSelected = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
+					IsPickupSelected = false;
 					break;
 			}
 		}
@@ -287,12 +295,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private void UpdatePickupAndDestinationSelectionIfNeeded()
 		{
-			if (((HomeViewModel) Parent).CurrentViewState != HomeViewModelState.Initial)
+			if (((HomeViewModel) Parent).CurrentViewState != HomeViewModelState.Initial && ((HomeViewModel) Parent).CurrentViewState != HomeViewModelState.AirportDetails)
 			{
 				return;
 			}
 
-			IsPickupSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
+			if (((HomeViewModel)Parent).CurrentViewState != HomeViewModelState.Initial) 
+			{
+				IsPickupSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
+			}
 			IsDestinationSelected = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
 		}
 
@@ -365,6 +376,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					RaisePropertyChanged(() => FormattedEta);
 				}
+			}
+		}
+
+
+		private HomeViewModelState _state;
+		public HomeViewModelState State
+		{
+			get { return _state; }
+			set
+			{
+				_state = value;
+				RaisePropertyChanged();
 			}
 		}
 
@@ -526,6 +549,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
 				}
             }
+			((HomeViewModel)Parent).CurrentViewState = ((HomeViewModel)Parent).CurrentViewState;
 		}
 	}
 }
