@@ -785,7 +785,7 @@
     <comment>Estimating your fare...</comment>
   </data>
   <data name="Eta" xml:space="preserve">
-    <value>El taxi más cercano esta a {0} {1} de distancia</value>
+    <value>El taxi más cercano esta a {0} {1} {2} de distancia</value>
     <comment>Nearest taxi is {0} {1} away</comment>
   </data>
   <data name="EtaDurationUnit" xml:space="preserve">
