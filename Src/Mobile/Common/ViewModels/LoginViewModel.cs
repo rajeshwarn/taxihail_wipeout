@@ -236,6 +236,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
+					#if __IOS__
+					await HandleAppleCredentialsIfNeeded(Email, Password);
+					#endif
+
 					await _accountService.SignIn(Email, Password);   
                     Password = string.Empty;                    
 					await OnLoginSuccess();
@@ -347,13 +351,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     try
                     {
-#if __IOS__
-						if (!facebookId.HasValue() && !twitterId.HasValue())
-						{
-							await HandleAppleCredentialsIfNeeded(data.Email, data.Password);
-						}
-#endif
-
                         if (facebookId.HasValue())
                         {						
 							Func<Task> loginAction = () => _accountService.GetFacebookAccount(facebookId);
