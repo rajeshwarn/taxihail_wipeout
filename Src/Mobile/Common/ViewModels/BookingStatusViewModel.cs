@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IBookingService _bookingService;
 		private readonly IVehicleService _vehicleService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly ILocationService _locationService;
 		private readonly SerialDisposable _subscriptions = new SerialDisposable();
 
         private int _refreshPeriod = 5;              // in seconds
@@ -72,12 +73,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public BookingStatusViewModel(IPhoneService phoneService, IBookingService bookingService, IVehicleService vehicleService, IOrderWorkflowService orderWorkflowService)
+		public BookingStatusViewModel(IPhoneService phoneService, IBookingService bookingService, IVehicleService vehicleService, IOrderWorkflowService orderWorkflowService, ILocationService locationService)
 		{
 		    _phoneService = phoneService;
 			_bookingService = bookingService;
 		    _vehicleService = vehicleService;
 			_orderWorkflowService = orderWorkflowService;
+			_locationService = locationService;
 
 			BottomBar = AddChild<BookingStatusBottomBarViewModel>();
 		}
@@ -97,18 +99,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
 
-			_subscriptions.Disposable = GetTimerObservable().Subscribe(_ => RefreshStatus(), Logger.LogError);
+			_subscriptions.Disposable = GetTimerObservable()
+				.ObserveOn(SynchronizationContext.Current)
+				.Subscribe(_ => RefreshStatus(), Logger.LogError);
 		}
 
 		public void StartBookingStatus(OrderManualRideLinqDetail orderManualRideLinqDetail)
 		{
-			_subscriptions.Disposable = GetTimerObservable()
+			var subscriptions = new CompositeDisposable();
+
+			GetTimerObservable()
 				.SelectMany(_ => GetManualRideLinqDetails())
 				.StartWith(orderManualRideLinqDetail)
+				.ObserveOn(SynchronizationContext.Current)
 				.Do(RefreshManualRideLinqDetails)
 				.Where(orderDetails => orderDetails.EndTime.HasValue)
 				.Take(1) // trigger only once
-				.Subscribe(ToRideSummary, Logger.LogError);
+				.Subscribe(ToRideSummary, Logger.LogError)
+				.DisposeWith(subscriptions);
+
+			_locationService.Start();
+
+			Disposable.Create(_locationService.Stop).DisposeWith(subscriptions);
+
+			_subscriptions.Disposable = subscriptions;
 		}
 
 		private IObservable<Unit> GetTimerObservable()
@@ -116,7 +130,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_refreshPeriod = Settings.OrderStatus.ClientPollingInterval;
 
 			return Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshPeriod))
-				.ObserveOn(SynchronizationContext.Current)
 				.Select(_ => Unit.Default);
 		}
 		
@@ -139,9 +152,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			MapCenter = null;
 		}
 
-		private Task<OrderManualRideLinqDetail> GetManualRideLinqDetails()
+		private async Task<OrderManualRideLinqDetail> GetManualRideLinqDetails()
 		{
-			return _bookingService.GetTripInfoFromManualRideLinq(ManualRideLinqDetail.OrderId);
+			var manualRideLinqDetails = await _bookingService.GetTripInfoFromManualRideLinq(ManualRideLinqDetail.OrderId);
+
+			var lastKnownPosition = _locationService.LastKnownPosition;
+
+			AssignedTaxiLocation = new AssignedTaxiLocation
+			{
+				Longitude = lastKnownPosition.Longitude,
+				Latitude = lastKnownPosition.Latitude,
+				VehicleNumber = "DeviceName"
+			};
+			
+			return manualRideLinqDetails;
 		}
 
 		private void RefreshManualRideLinqDetails(OrderManualRideLinqDetail manualRideLinqDetails)
