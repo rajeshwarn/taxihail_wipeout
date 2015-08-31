@@ -26,9 +26,11 @@ using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using System.ComponentModel;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Common;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -573,7 +575,53 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private MKAnnotation _taxiLocationPin;
 
-        private OrderStatusDetail _orderStatusDetail;
+		private AssignedTaxiLocation _assignedTaxiLocation;
+	    public AssignedTaxiLocation AssignedTaxiLocation
+	    {
+		    get { return _assignedTaxiLocation; }
+		    set
+		    {
+			    _assignedTaxiLocation = value;
+			    UpdateTaxiLocation(value);
+		    }
+	    }
+
+	    private void UpdateTaxiLocation(AssignedTaxiLocation value)
+	    {
+			if (_taxiLocationPin != null)
+			{
+				RemoveAnnotation(_taxiLocationPin);
+				_taxiLocationPin = null;
+			}
+
+			if (value != null)
+			{
+				var coord = new CLLocationCoordinate2D(0, 0);
+				if (value.Latitude.HasValue && value.Longitude.HasValue && value.VehicleNumber.HasValue())
+				{
+					coord = new CLLocationCoordinate2D(value.Longitude.Value, value.Longitude.Value);
+				}
+
+				_taxiLocationPin = new AddressAnnotation(
+					coord, 
+					AddressAnnotationType.Taxi,
+					Localize.GetValue("TaxiMapTitle"), 
+					value.VehicleNumber, 
+					_useThemeColorForPickupAndDestinationMapIcons, 
+					_showAssignedVehicleNumberOnPin);
+
+				AddAnnotation(_taxiLocationPin);
+
+				if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned)
+				{
+					ClearAvailableVehiclesAnnotations();
+				}
+			}
+			SetNeedsDisplay();
+	    }
+
+
+	    private OrderStatusDetail _orderStatusDetail;
         public OrderStatusDetail OrderStatusDetail
         {
             get { return _orderStatusDetail; }
@@ -581,43 +629,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 _orderStatusDetail = value;
 
-                if (_taxiLocationPin != null)
-                {
-                    RemoveAnnotation(_taxiLocationPin);
-                    _taxiLocationPin = null;
-                }
+				
 
-                if (value != null)
-                {
-                    var coord = new CLLocationCoordinate2D(0,0);            
-                    if (value.VehicleLatitude.HasValue
-                        && value.VehicleLongitude.HasValue
-                        && value.VehicleLongitude.Value != 0
-                        && value.VehicleLatitude.Value != 0
-                        && !string.IsNullOrEmpty(value.VehicleNumber) 
-                        && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
-                    {
-                        coord = new CLLocationCoordinate2D(value.VehicleLatitude.Value, value.VehicleLongitude.Value);
-                    }
-                    _taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, _useThemeColorForPickupAndDestinationMapIcons, _showAssignedVehicleNumberOnPin);
-                    AddAnnotation(_taxiLocationPin);
-
-                    if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned)
-                    {
-                        ClearAvailableVehiclesAnnotations();
-                    }
-
-                    if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)
-                    {
-                        RemoveAnnotation (_pickupAnnotation);
-                    }
-                }
-                SetNeedsDisplay();
+				if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)
+				{
+					RemoveAnnotation(_pickupAnnotation);
+				}
             }
         }
 
         private IEnumerable<CoordinateViewModel> _center;
-        public IEnumerable<CoordinateViewModel> MapCenter
+	    
+
+	    public IEnumerable<CoordinateViewModel> MapCenter
         {
             get { return _center; }
             set

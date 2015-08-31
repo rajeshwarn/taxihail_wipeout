@@ -213,6 +213,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(contactTaxiControl)
                 .For(v => v.DataContext)
                 .To(vm => vm.BookingStatus);
+
+	        set.Bind(mapView)
+		        .For(v => v.AssignedTaxiLocation)
+		        .To(vm => vm.BookingStatus.AssignedTaxiLocation);
             
             #endregion
 
