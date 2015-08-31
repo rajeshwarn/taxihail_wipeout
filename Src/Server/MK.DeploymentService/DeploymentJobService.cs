@@ -384,10 +384,8 @@ namespace MK.DeploymentService
             var stringBuilder = new StringBuilder();
             jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
             File.WriteAllText(fileSettings, stringBuilder.ToString());
- 
 
-
-            var p = new DatabaseInitializerParams
+	        var p = new DatabaseInitializerParams
             {
                 CompanyName = companyName,
                 BackupFolder = Settings.Default.BackupFolder,
@@ -399,6 +397,7 @@ namespace MK.DeploymentService
                 MirroringWitness = Settings.Default.MirroringWitness,
                 MirroringPrincipalPartner = Settings.Default.MirroringPrincipalPartner,
                 MirrorMasterConnectionString = Settings.Default.MirrorMasterConnectionString,
+				IsStaging = Settings.Default.ServerName.Equals("Staging"),
                 AppPoolName = appPoolName,
                 SecondWebServerName = Settings.Default.SecondWebServerName
             };
