@@ -98,6 +98,7 @@ namespace MK.Common.Configuration
             InitialZoomLevel = 14;            
 		}
 
+		[Hidden]
 		public bool AppleTestAccountUsed { get; set; }
 
         public TaxiHailSettingContainer TaxiHail { get; protected set; }
