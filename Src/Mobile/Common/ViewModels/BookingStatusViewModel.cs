@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    private readonly IMetricsService _metricsService;
 		private readonly IPaymentService _paymentService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
+		private readonly IOrientationService _orientationService;
 
 	    private int _refreshPeriod = 5;              // in seconds
         private bool _waitingToNavigateAfterTimeOut;
@@ -44,7 +45,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IBookingService bookingService,
 			IPaymentService paymentService,
 			IVehicleService vehicleService,
-		    IMetricsService metricsService)
+		    IMetricsService metricsService,
+			IOrientationService orientationService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_phoneService = phoneService;
@@ -52,10 +54,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 			_vehicleService = vehicleService;
 			_metricsService = metricsService;
+			_orientationService = orientationService;
 
 			BottomBar = AddChild<BookingStatusBottomBarViewModel>();
 
 			GetIsCmtRideLinq();
+
+			_orientationService.SubscribeToOrientationChange(DeviceOrientationChanged);
+			_orientationService.Initialize(new DeviceOrientation[] { DeviceOrientation.Right, DeviceOrientation.Left });
 		}
 
 		private async void GetIsCmtRideLinq()
@@ -581,6 +587,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     GoToBookingScreen();
                 }
+
+				if (!string.IsNullOrWhiteSpace(status.VehicleNumber)
+					&& (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
+				{
+					_orientationService.Start();
+				}
+
+				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Done)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.NoShow)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Cancelled)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
+				{
+					_orientationService.Stop();
+					wp.Cls();
+					wp = null;
+				}
             } 
 			catch (Exception ex) 
 			{
@@ -592,6 +615,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_refreshStatusIsExecuting = false;
 			}
         }
+
+		WaitingCarLandscapeViewModelParameters wp;
+
+		void DeviceOrientationChanged(DeviceOrientation deviceOrientation)
+		{
+			if (deviceOrientation == DeviceOrientation.Left || deviceOrientation == DeviceOrientation.Right)
+			{
+				if (wp == null || wp.recycled == true)
+				{
+					wp = new WaitingCarLandscapeViewModelParameters() { CarNumber = _vehicleNumber, DeviceOrientation = deviceOrientation };
+					ShowViewModel<WaitingCarLandscapeViewModel>(wp);
+				}
+				else
+				{
+					wp.Upd(deviceOrientation);
+				}
+			}
+		}
 
 	    private void SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
 	    {

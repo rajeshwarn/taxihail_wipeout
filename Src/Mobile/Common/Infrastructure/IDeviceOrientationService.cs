@@ -1,0 +1,27 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+
+namespace apcurium.MK.Booking.Mobile.AppServices
+{
+	public interface IDeviceOrientationService
+	{
+		bool IsAvailable();
+
+		bool Start();
+
+		bool Stop();
+
+		void SubscribeToAngleChange(Action<int> eventHandler);
+
+		void UnSubscribeToAngleChange(Action<int> eventHandler);
+	}
+}
