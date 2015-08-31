@@ -1670,7 +1670,7 @@
     <comment>Cannot get status. Please call provider.</comment>
   </data>
   <data name="StatusConfirmCancelRide" xml:space="preserve">
-    <value>Are you sure you want to cancel?</value>
+    <value>Esta seguro que desea cancelar el servicio?</value>
     <comment>Are you sure you want to cancel?</comment>
   </data>
   <data name="StatusConfirmCancelRideError" xml:space="preserve">
@@ -1690,7 +1690,7 @@
     <comment>Order #{0}</comment>
   </data>
   <data name="StatusEta" xml:space="preserve">
-    <value>y está a {0} {1} de distancia</value>
+    <value>y está a {0} {1} {2} de distancia</value>
     <comment>and is {0} {1} away</comment>
   </data>
   <data name="StatusInvalid" xml:space="preserve">
@@ -2539,7 +2539,8 @@
     <comment>Error</comment>
   </data>
   <data name="CallDriverUsingProxyPrompt" xml:space="preserve">
-    <value>Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</value>
+    <value>Esta seguro que desea llame al conductor?</value>
+    <comment>Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</comment>
   </data>
   <data name="ManualRideLinqStatus_Extra" xml:space="preserve">
     <value>Extra:</value>
@@ -2614,13 +2615,14 @@
     <value>Nearest taxi is less than a minute away</value>
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
-    <value>Tip cannot be over 100%</value>
+    <value>Propina no puede ser superior al 100%</value>
+    <comment>Tip cannot be over 100%</comment>
   </data>
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
-    <value>Sorry, no taxis currently available nearby.</value>
+    <value>No hay vehículo disponibles en la actualidad cerca.</value>
   </data>
   <data name="PanelMenuViewSignOutPopupMessage" xml:space="preserve">
-    <value>Are you sure you want to sign out?</value>
+    <value>Esta seguro que desea Cerrar Sesión?</value>
   </data>
   <data name="PanelMenuViewSignOutPopupLogout" xml:space="preserve">
     <value>Cerrar Sesión</value>
@@ -2633,123 +2635,134 @@
     <value>Locate Me</value>
   </data>
   <data name="AirportsButton" xml:space="preserve">
-    <value>Airports</value>
+    <value>Aeropuertos</value>
+    <comment>Airports</comment>
   </data>
-   <data name="TrainStationsButton" xml:space="preserve">
-    <value>Train Stations</value>
+  <data name="TrainStationsButton" xml:space="preserve">
+    <value>Estación de Ferrocarriles</value>
+    <comment>Train station</comment>
   </data>
   <data name="StreetNumber" xml:space="preserve">
-    <value>Street Number</value>
+    <value>Número de calle</value>
+    <comment>Street Number</comment>
   </data>
   <data name="CloseTutorial" xml:space="preserve">
-    <value>Close Tutorial</value>
+    <value>Cerca tutorial</value>
+    <comment>Close Tutorial</comment>
   </data>
-	<data name="CallDriver" xml:space="preserve">
-    <value>Call Driver</value>
+  <data name="CallDriver" xml:space="preserve">
+    <value>Llame al conductor</value>
+    <comment>Call driver</comment>
   </data>
-	<data name="Rating1" xml:space="preserve">
+  <data name="Rating1" xml:space="preserve">
     <value>Awful</value>
   </data>
-	<data name="Rating2" xml:space="preserve">
+  <data name="Rating2" xml:space="preserve">
     <value>Poor</value>
   </data>
-	<data name="Rating3" xml:space="preserve">
+  <data name="Rating3" xml:space="preserve">
     <value>Average</value>
   </data>
-	<data name="Rating4" xml:space="preserve">
+  <data name="Rating4" xml:space="preserve">
     <value>Good</value>
   </data>
-	<data name="Rating5" xml:space="preserve">
+  <data name="Rating5" xml:space="preserve">
     <value>Excellent</value>
   </data>
-	<data name="MessageActivityName" xml:space="preserve">
+  <data name="MessageActivityName" xml:space="preserve">
     <value>Message</value>
   </data>
-	<data name="BookSummaryActivityName" xml:space="preserve">
+  <data name="BookSummaryActivityName" xml:space="preserve">
     <value>Book summary</value>
   </data>
-	<data name="ManualRideLinqStatusActivityName" xml:space="preserve">
+  <data name="ManualRideLinqStatusActivityName" xml:space="preserve">
     <value>Manual RideLinq Status</value>
   </data>
-	<data name="ManualPairingForRideLinqActivityName" xml:space="preserve">
+  <data name="ManualPairingForRideLinqActivityName" xml:space="preserve">
     <value>Manual pairing for RideLinq</value>
   </data>
-	<data name="UserTaxiHailNetworkSettingsActivityName" xml:space="preserve">
+  <data name="UserTaxiHailNetworkSettingsActivityName" xml:space="preserve">
     <value>User TaxiHail network settings</value>
   </data>
-	<data name="BookStatusActivityName" xml:space="preserve">
+  <data name="BookStatusActivityName" xml:space="preserve">
     <value>Booking status</value>
   </data>
-	<data name="UpdatePasswordActivityName" xml:space="preserve">
-    <value>Update password</value>
+  <data name="UpdatePasswordActivityName" xml:space="preserve">
+    <value>Actualizar contraseña</value>
+    <comment>Update password</comment>
   </data>
-	<data name="AccountConfirmationActivityName" xml:space="preserve">
+  <data name="AccountConfirmationActivityName" xml:space="preserve">
     <value>Account confirmation</value>
   </data>
-	<data name="InitializeOrderForAccountPaymentActivityName" xml:space="preserve">
+  <data name="InitializeOrderForAccountPaymentActivityName" xml:space="preserve">
     <value>Initialition of order of account payment</value>
   </data>
-	<data name="NotificationSettingsActivityName" xml:space="preserve">
+  <data name="NotificationSettingsActivityName" xml:space="preserve">
     <value>Notification setting</value>
   </data>
-	<data name="ProfileSettingsActivityName" xml:space="preserve">
+  <data name="ProfileSettingsActivityName" xml:space="preserve">
     <value>Profile</value>
   </data>
-	<data name="OverduePaymentActivityName" xml:space="preserve">
+  <data name="OverduePaymentActivityName" xml:space="preserve">
     <value>Overdue payment</value>
   </data>
-	<data name="AccountCreationActivityName" xml:space="preserve">
+  <data name="AccountCreationActivityName" xml:space="preserve">
     <value>Account creation</value>
   </data>
-	<data name="CreditCardAddingActivityName" xml:space="preserve">
+  <data name="CreditCardAddingActivityName" xml:space="preserve">
     <value>Add or edit credit card</value>
   </data>
-	<data name="TermsAndConditionsActivityName" xml:space="preserve">
-    <value>Terms and conditions</value>
+  <data name="TermsAndConditionsActivityName" xml:space="preserve">
+    <value>Términos y condiciones</value>
+    <comment>Terms and conditions</comment>
   </data>
-	<data name="HistoryDetailsActivityName" xml:space="preserve">
-    <value>History details</value>
+  <data name="HistoryDetailsActivityName" xml:space="preserve">
+    <value>Detalles del historia</value>
+    <comment>History details</comment>
   </data>
-	<data name="HistoryActivityName" xml:space="preserve">
-    <value>History</value>
+  <data name="HistoryActivityName" xml:space="preserve">
+    <value>Historia</value>
+    <comment>History</comment>
   </data>
-	<data name="AboutActivityName" xml:space="preserve">
+  <data name="AboutActivityName" xml:space="preserve">
     <value>About</value>
   </data>
-	<data name="BookingRateActivityName" xml:space="preserve">
+  <data name="BookingRateActivityName" xml:space="preserve">
     <value>Booking rate</value>
   </data>
-	<data name="PromotionActivityName" xml:space="preserve">
-    <value>Promotion</value>
+  <data name="PromotionActivityName" xml:space="preserve">
+    <value>Promoción</value>
+    <comment>Promotion</comment>
   </data>
-	<data name="LocationsActivityName" xml:space="preserve">
+  <data name="LocationsActivityName" xml:space="preserve">
     <value>Favorite locations</value>
   </data>
-	<data name="AddressSearch" xml:space="preserve">
+  <data name="AddressSearch" xml:space="preserve">
     <value>Address search</value>
   </data>
-	<data name="PickupAddress" xml:space="preserve">
-    <value>Pickup address</value>
+  <data name="PickupAddress" xml:space="preserve">
+    <value>Ubicación dirección</value>
   </data>
-	<data name="DestinationAddress" xml:space="preserve">
+  <data name="DestinationAddress" xml:space="preserve">
     <value>Destination address</value>
   </data>
-	<data name="TutorialActivityName" xml:space="preserve">
+  <data name="TutorialActivityName" xml:space="preserve">
     <value>Tutorial</value>
+    <comment>Tutorial</comment>
   </data>
-	<data name="HomeActivityName" xml:space="preserve">
+  <data name="HomeActivityName" xml:space="preserve">
     <value>Home</value>
   </data>
-	<data name="PasswordRecoveryActivityName" xml:space="preserve">
+  <data name="PasswordRecoveryActivityName" xml:space="preserve">
     <value>Password recovery</value>
   </data>
-	<data name="LocationDetailsActivityName" xml:space="preserve">
+  <data name="LocationDetailsActivityName" xml:space="preserve">
     <value>Location Details</value>
   </data>
-	<data name="LoginActivityName" xml:space="preserve">
+  <data name="LoginActivityName" xml:space="preserve">
     <value>Login</value>
   </data>
-	<data name="ManualRideLinqSummaryActivityName" xml:space="preserve">
+  <data name="ManualRideLinqSummaryActivityName" xml:space="preserve">
     <value>Manual Ridelinq summary</value>
   </data>
 </root>
