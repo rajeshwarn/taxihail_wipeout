@@ -389,19 +389,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #if __IOS__
 		private async Task HandleAppleCredentialsIfNeeded(string email, string password)
 		{
+			const string staging = "//staging.";
+			const string api = "//api.";
+			const string services = "//services.";
+
+
 			var settings = Container.Resolve<IAppSettings>();
 			if (email.HasValue() && email.Equals("appletest@taxihail.com") && password.HasValue())
 			{
 				var serverUrl = settings.Data.ServiceUrl;
 
-				if (serverUrl.Contains("//staging.") && settings.Data.AppleTestAccountUsed)
+				if (serverUrl.Contains(staging) && settings.Data.AppleTestAccountUsed)
 				{
 					//We have nothing to do here.
 					return;
 				}
 
 				//Change server Url to use the staging server.
-				serverUrl = serverUrl.Replace("//services.","//staging.").Replace("//api.", "//staging.");
+				// We must also change https to http since staging does not support HTTPS
+				serverUrl = serverUrl.Replace("https://", "http://").Replace(services, staging).Replace(api, staging);
 
 				await InnerSetServerUrl(serverUrl);
 
@@ -413,8 +419,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				//Reset back to normal server.
 				var serverUrl = settings.Data.ServiceUrl;
-				
-				serverUrl = serverUrl.Replace("//staging.", "//api.");
+
+				serverUrl = serverUrl.Replace("http://", "https://").Replace(staging, api);
 
 				await InnerSetServerUrl(serverUrl);
 
