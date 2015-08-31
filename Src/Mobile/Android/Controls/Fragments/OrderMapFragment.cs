@@ -24,7 +24,8 @@ using Cirrious.MvvmCross.Binding.Droid.Views;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Common;
+using apcurium.MK.Booking.Mobile.ViewModels.Map;
+using apcurium.MK.Common.Extensions;
 using Android.Graphics;
 using Android.Text;
 using Color = Android.Graphics.Color;
@@ -155,36 +156,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 		}
 
-		public OrderStatusDetail TaxiLocation
-		{
-			get { return _taxiLocation; }
-			set
-			{
-				_taxiLocation = value;
-
-				UpdateTaxiLocation(value);
-			}
-		}
-
-
-	    private void UpdateTaxiLocation(OrderStatusDetail value)
+	    public AssignedTaxiLocation AssignedTaxiLocation
 	    {
-			if (_taxiLocationPin != null)
-			{
-				_taxiLocationPin.Remove();
-			}
+		    get { return _assignedTaxiLocation; }
+		    set
+		    {
+			    _assignedTaxiLocation = value;
+			    UpdateTaxiLocaiton(value);
+		    }
+	    }
 
-			if (value != null
-				&& value.VehicleLatitude.HasValue
-				&& value.VehicleLongitude.HasValue
-				&& !string.IsNullOrEmpty(value.VehicleNumber)
-				&& VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
-			{
+	    private void UpdateTaxiLocaiton(AssignedTaxiLocation value)
+	    {
+		    if (_taxiLocationPin != null)
+		    {
+			    _taxiLocationPin.Remove();
+		    }
+
+		    if (value != null
+		        && value.Latitude.HasValue
+		        && value.Longitude.HasValue
+		        && value.VehicleNumber.HasValue())
+		    {
 				try
 				{
 					_taxiLocationPin = Map.AddMarker(new MarkerOptions()
 						.Anchor(.5f, 1f)
-						.SetPosition(new LatLng(value.VehicleLatitude.Value, value.VehicleLongitude.Value))
+						.SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
 						.InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap(value.VehicleNumber)))
 						.Visible(true));
 				}
@@ -196,14 +194,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				_isBookingMode = true;
 
 				ShowAvailableVehicles(null);
-			}
+		    }
 			else
 			{
 				_isBookingMode = false;
 			}
 	    }
 
-		private Bitmap CreateTaxiBitmap(string vehicleNumber)
+
+	    private Bitmap CreateTaxiBitmap(string vehicleNumber)
 		{
 			var taxiIcon = DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
 
@@ -252,6 +251,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public IMvxBindingContext BindingContext { get; set; }
 
         private bool _lockGeocoding;
+	    private OrderManualRideLinqDetail _manualPairedTaxi;
+	    private AssignedTaxiLocation _assignedTaxiLocation;
 
 	    [MvxSetToNullAfterBinding]
         public object DataContext

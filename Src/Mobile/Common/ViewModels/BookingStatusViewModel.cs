@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
@@ -18,6 +19,7 @@ using apcurium.MK.Booking.Maps;
 using System.Net;
 using System.Reactive;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Platform;
 using ServiceStack.ServiceClient.Web;
@@ -57,6 +59,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_manualRideLinqDetail = value;
 				RaisePropertyChanged();
 				BottomBar.NotifyBookingStatusAppbarChanged();
+			}
+		}
+
+		public AssignedTaxiLocation AssignedTaxiLocation
+		{
+			get { return _assignedTaxiLocation; }
+			set
+			{
+				_assignedTaxiLocation = value;
+				RaisePropertyChanged();
 			}
 		}
 
@@ -117,6 +129,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatusDetail = null;
 
 			ManualRideLinqDetail = null;
+
+			AssignedTaxiLocation = null;
 
 			_orderWorkflowService.PrepareForNewOrder();
 
@@ -402,6 +416,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _refreshStatusIsExecuting;
 		private BookingStatusBottomBarViewModel _bottomBar;
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
+		private AssignedTaxiLocation _assignedTaxiLocation;
 
 		public async void RefreshStatus()
         {
@@ -457,22 +472,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					
 				var statusInfoText = status.IBSStatusDescription;
 
+				var hasVehicleInfo = status.VehicleNumber.HasValue()
+					&& status.VehicleLatitude.HasValue
+					&& status.VehicleLongitude.HasValue;
+
 				if(Settings.ShowEta 
 					&& status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) 
-					&& status.VehicleNumber.HasValue()
-					&& status.VehicleLatitude.HasValue
-					&& status.VehicleLongitude.HasValue)
+					&& hasVehicleInfo )
 				{
 					var d =  await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ConfigureAwait(false);
 					statusInfoText += " " + FormatEta(d);						
 				}
 
-				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) 
-					&& status.VehicleNumber.HasValue() 
-					&& status.VehicleLatitude.HasValue 
-					&& status.VehicleLongitude.HasValue)
+				if (VehicleStatuses.ShowOnMapStatuses.Any(vehicle => vehicle.SoftEqual(status.IBSStatusId)) && hasVehicleInfo)
 				{
 					_vehicleService.SetAvailableVehicle(false);
+
+					AssignedTaxiLocation = new AssignedTaxiLocation
+					{
+						Latitude = status.VehicleLatitude,
+						Longitude = status.VehicleLongitude,
+						VehicleNumber = status.VehicleNumber
+					};
 				}
 
 				StatusInfoText = statusInfoText;

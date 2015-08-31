@@ -220,6 +220,7 @@
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
     <Compile Include="ViewModels\ManualRideLinqStatusViewModel.cs" />
     <Compile Include="ViewModels\ManualRideLinqSummaryViewModel.cs" />
+    <Compile Include="ViewModels\Map\AssignedTaxiLocation.cs" />
     <Compile Include="ViewModels\Orders\BookingStatusBottomBarViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
