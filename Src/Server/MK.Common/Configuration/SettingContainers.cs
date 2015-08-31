@@ -346,6 +346,7 @@ namespace apcurium.MK.Common.Configuration
         [Display(Name = "Available Vehicle - CMT Geo Service URL", Description = "Cmt geo Service Url. N.B.: Market request parameter is added automatically by the middleware, no need to add it here.")]
         public string ServiceUrl { get; protected internal set; }
 
+        [Hidden]
         [Display(Name = "Available Vehicle - CMT Geo API Key", Description = "The API key for geo services")]
         public string AppKey { get; protected internal set; }
 
@@ -356,9 +357,4 @@ namespace apcurium.MK.Common.Configuration
         public int? AvailableVehiclesFleetId { get; protected internal set; }
     }
 
-    public class CmtGdsSettingContainer
-    {
-        [Display(Name = "Configuration - GDS Service Url", Description = "Global Data Service (GDS) Service Url. N.B.: Just the base URL most likely just server and port, should not end in /")]
-        public string ServiceUrl { get; protected internal set; }
-    }
 }

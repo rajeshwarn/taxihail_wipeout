@@ -82,6 +82,9 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<TemporaryOrderCreationInfoDetail>().ToTable("TemporaryOrderCreationInfoDetail", SchemaName);
             modelBuilder.Entity<TemporaryOrderPaymentInfoDetail>().ToTable("TemporaryOrderPaymentInfoDetail", SchemaName);
             modelBuilder.Entity<AccountChargeQuestionAnswer>().ToTable("AccountChargeQuestionAnswer", SchemaName);
+
+            modelBuilder.Entity<Airline>().ToTable("Airline", SchemaName);
+            modelBuilder.Entity<PickupPoint>().ToTable("PickupPoint", SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class

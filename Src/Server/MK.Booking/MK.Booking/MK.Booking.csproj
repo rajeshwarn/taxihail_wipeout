@@ -229,6 +229,8 @@
     <Compile Include="ReadModel\PromotionDetail.cs" />
     <Compile Include="ReadModel\PromotionUsageDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
+    <Compile Include="ReadModel\Query\PickupPointDao.cs" />
+    <Compile Include="ReadModel\Query\AirlineDao.cs" />
     <Compile Include="ReadModel\Query\AppStartUpLogDao.cs" />
     <Compile Include="ReadModel\Query\CompanyDao.cs" />
     <Compile Include="ReadModel\Query\ConfigurationDao.cs" />
@@ -236,6 +238,8 @@
     <Compile Include="ReadModel\OrderDetailWithAccount.cs" />
     <Compile Include="ReadModel\PaymentInformationDetails.cs" />
     <Compile Include="ReadModel\Query\Contract\IAccountChargeDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IPickupPointDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IAirlineDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IAppStartUpLogDao.cs" />
     <Compile Include="ReadModel\Query\Contract\ICompanyDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
