@@ -8,6 +8,8 @@
 
         public double VehicleNumber { get; set; }
 
+		public string VehicleName { get; set; }
+
         public string LogoName { get; set; }
 
         public int? FleetId { get; set; }
