@@ -134,6 +134,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			var lastKnownPosition = _locationService.LastKnownPosition;
 
+
+			if (AssignedTaxiLocation != null && AssignedTaxiLocation.Latitude == lastKnownPosition.Latitude && AssignedTaxiLocation.Longitude == lastKnownPosition)
+			{
+				//Nothing to update.
+				return;
+			}
+
 			AssignedTaxiLocation = new AssignedTaxiLocation
 			{
 				Longitude = lastKnownPosition.Longitude,
