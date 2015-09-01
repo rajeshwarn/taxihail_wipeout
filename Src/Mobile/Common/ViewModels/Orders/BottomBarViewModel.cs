@@ -464,11 +464,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							var questions = await _orderWorkflowService.GetAccountPaymentQuestions();
 							if ((questions != null) && (questions.Length > 0))
 							{
-								((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+								((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;								
 
-								
-
-								ShowViewModel<InitializeOrderForAccountPaymentViewModel>();
+								ShowSubViewModel<InitializeOrderForAccountPaymentViewModel, Tuple<Order, OrderStatusDetail>>(
+									null, 
+									result => ((HomeViewModel)Parent).GotoBookingStatus(result.Item1, result.Item2)
+								);
 							}
 							else
 							{
