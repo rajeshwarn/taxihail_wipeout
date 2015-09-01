@@ -336,16 +336,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				SetAnnotation(DestinationAddress, _destinationAnnotation, false);
 				SetOverlay(_pickupCenterPin, false);
 				SetOverlay(_dropoffCenterPin, true);
-                
 
-				if (PickupAddress.HasValidCoordinate())
-				{
-					SetAnnotation(PickupAddress, _pickupAnnotation, true);
-				}
-				else
-				{
-					SetAnnotation(PickupAddress, _pickupAnnotation, false);
-				}
+
+				SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
 			}
 			else if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
 			{
@@ -360,22 +353,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					SetOverlay(_dropoffCenterPin, false);
 					SetOverlay(_pickupCenterPin, true);
 
-					if (DestinationAddress.HasValidCoordinate())
-					{
-						SetAnnotation(DestinationAddress, _destinationAnnotation, true);
-					}
-					else
-					{
-						SetAnnotation(DestinationAddress, _destinationAnnotation, false);
-					}
+					SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
 				}
 			}
 			else
 			{
 				SetOverlay(_pickupCenterPin, false);
 				SetOverlay(_dropoffCenterPin, false);
-                SetAnnotation(DestinationAddress, _destinationAnnotation, false);
-                SetAnnotation(PickupAddress, _pickupAnnotation, false);
+
+				SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
+
+				SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
 			}
         }
                      
