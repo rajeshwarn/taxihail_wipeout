@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public abstract class CommonDeviceOrientationService
 	{
-		event Action<int> NotifyAngleChanged;
+		public event Action<int> NotifyAngleChanged;
 		bool started = false;
 
 		public bool Start()
@@ -38,16 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		protected abstract bool StartService();
 
 		protected abstract bool StopService();
-
-		public void SubscribeToAngleChange(Action<int> eventHandler)
-		{
-			NotifyAngleChanged += eventHandler;
-		}
-
-		public void UnSubscribeToAngleChange(Action<int> eventHandler)
-		{
-			NotifyAngleChanged -= eventHandler;
-		}
 
 		public void AngleChangedEvent(int angle)
 		{

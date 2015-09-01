@@ -19,9 +19,5 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		bool Start();
 
 		bool Stop();
-
-		void SubscribeToAngleChange(Action<int> eventHandler);
-
-		void UnSubscribeToAngleChange(Action<int> eventHandler);
 	}
 }

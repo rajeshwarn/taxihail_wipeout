@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -51,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			if (initialized && !started && IsAvailable())
 			{
 				started = true;
-				deviceOrientationService.SubscribeToAngleChange(AngleChanged);
+				((CommonDeviceOrientationService)deviceOrientationService).NotifyAngleChanged += AngleChanged;
 				started = deviceOrientationService.Start();
 
 				return started;
@@ -66,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				started = false;
 				deviceOrientationService.Stop();
-				deviceOrientationService.UnSubscribeToAngleChange(AngleChanged);
+				((CommonDeviceOrientationService)deviceOrientationService).NotifyAngleChanged -= AngleChanged;
 
 				return true;
 			}
