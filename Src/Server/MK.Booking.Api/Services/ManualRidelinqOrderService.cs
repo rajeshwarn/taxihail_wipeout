@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Api.Services
                     Surcharge = Math.Round(((double)trip.Surcharge / 100), 2),
                     Total = Math.Round(((double)trip.Total / 100), 2),
                     FareAtAlternateRate = Math.Round(((double)trip.FareAtAlternateRate / 100), 2),
-                    Medallion = trip.Medallion,
+                    Medallion = trip.Medallion??response.Medallion,
                     RateAtTripStart = trip.RateAtTripStart,
                     RateAtTripEnd = trip.RateAtTripEnd,
                     RateChangeTime = trip.RateChangeTime,

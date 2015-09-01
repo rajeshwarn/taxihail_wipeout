@@ -132,6 +132,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
 				.ObserveOn(SynchronizationContext.Current)
+				.Where(_ => ManualRideLinqDetail != null && ManualRideLinqDetail.Medallion.HasValue())
 				.Subscribe(_ => UpdatePosition(), Logger.LogError)
 				.DisposeWith(subscriptions);
 
@@ -157,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				Longitude = lastKnownPosition.Longitude,
 				Latitude = lastKnownPosition.Latitude,
-				VehicleNumber = "DeviceName"
+				VehicleNumber = ManualRideLinqDetail.Medallion
 			};
 		}
 
@@ -188,13 +189,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			MapCenter = null;
 		}
 
-		private async Task<OrderManualRideLinqDetail> GetManualRideLinqDetails()
+		private Task<OrderManualRideLinqDetail> GetManualRideLinqDetails()
 		{
-			var manualRideLinqDetails = await _bookingService.GetTripInfoFromManualRideLinq(ManualRideLinqDetail.OrderId);
-
-
-			
-			return manualRideLinqDetails;
+			return _bookingService.GetTripInfoFromManualRideLinq(ManualRideLinqDetail.OrderId);
 		}
 
 		private void RefreshManualRideLinqDetails(OrderManualRideLinqDetail manualRideLinqDetails)
