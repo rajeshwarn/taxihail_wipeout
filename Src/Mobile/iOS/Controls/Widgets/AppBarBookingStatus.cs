@@ -1,11 +1,9 @@
 ﻿using System;
-using Foundation;
-using UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -96,32 +94,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Apply();
         }
+
+	    private NSLayoutConstraint[] _hiddenContraints;
+
         public bool HiddenWithConstraints
         {
             get
             {
-                return base.Hidden;
+                return Hidden;
             }
             set
             {
-                if (base.Hidden != value)
+                if (Hidden != value)
                 {
-                    base.Hidden = value;
+                    Hidden = value;
                     if (value)
                     {
-                        _hiddenContraints = this.Superview.Constraints != null 
-                            ? this.Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
+                        _hiddenContraints = Superview.Constraints != null 
+                            ? Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
                             : null;
                         if (_hiddenContraints != null)
                         {
-                            this.Superview.RemoveConstraints(_hiddenContraints);
+                            Superview.RemoveConstraints(_hiddenContraints);
                         }
                     }
                     else
                     {
                         if (_hiddenContraints != null)
                         {
-                            this.Superview.AddConstraints(_hiddenContraints);
+                            Superview.AddConstraints(_hiddenContraints);
                             _hiddenContraints = null;
                         }
                     }

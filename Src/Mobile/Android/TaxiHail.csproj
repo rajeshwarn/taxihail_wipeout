@@ -948,13 +948,12 @@
     <AndroidResource Include="Resources\Layout\View_ManualPairingForRideLinq.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_ManualRideLinqStatus.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_EditAutoTip.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\CountryCodeItem.axml">
+			<SubType>AndroidResource</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Layout\SubView_BookingStatus.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>

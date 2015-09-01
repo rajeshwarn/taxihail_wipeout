@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -65,7 +66,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public BookingStatusViewModel(IPhoneService phoneService, IBookingService bookingService, IVehicleService vehicleService, IOrderWorkflowService orderWorkflowService, ILocationService locationService)
+		public BookingStatusViewModel(
+			IPhoneService phoneService, 
+			IBookingService bookingService,
+			IVehicleService vehicleService, 
+			IPaymentService paymentService,
+			IMetricsService metricsService,
+			IOrderWorkflowService orderWorkflowService,
+			ILocationService locationService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_phoneService = phoneService;
@@ -216,7 +224,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			StopBookingStatus();
 
-			ShowViewModel<ManualRideLinqSummaryViewModel>(new { orderManualRideLinqDetail = orderSummary });
+			//ShowViewModel<>(new { orderManualRideLinqDetail = orderSummary });
 
 			ResetToInitialState();
 		}
@@ -443,12 +451,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        RaisePropertyChanged(() => VehicleMedallionHidden);
 	    }
 
-	    public ICommand CallTaxiCommand
+		public bool IsConfirmationNoHidden
 		{
 			get { return !ConfirmationNoTxt.HasValue(); }
 		}
 
-        {
+	    public ICommand CallTaxiCommand
+		{
             get 
 			{ 
 				return this.GetCommand(async () =>

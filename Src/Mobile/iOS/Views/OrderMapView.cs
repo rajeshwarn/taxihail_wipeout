@@ -350,43 +350,44 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        private void ShowMarkers()
-        {
-			if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
-			{
-				SetAnnotation(DestinationAddress, _destinationAnnotation, false);
-				SetOverlay(_pickupCenterPin, false);
-				SetOverlay(_dropoffCenterPin, true);
+	    private void ShowMarkers()
+	    {
+		    if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
+		    {
+			    SetAnnotation(DestinationAddress, _destinationAnnotation, false);
+			    SetOverlay(_pickupCenterPin, false);
+			    SetOverlay(_dropoffCenterPin, true);
 
 
-				SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
-			}
-			else if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
-			{
-				if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
-				{
-					return;
-				}
-				else
-				{
-					SetAnnotation(PickupAddress, _pickupAnnotation, false);
-					SetOverlay(_dropoffCenterPin, false);
-					SetOverlay(_pickupCenterPin, true);
+			    SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
+		    }
+		    else if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
+		    {
+			    if (((HomeViewModel) ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
+			    {
+				    return;
+			    }
+			    else
+			    {
+				    SetAnnotation(PickupAddress, _pickupAnnotation, false);
+				    SetOverlay(_dropoffCenterPin, false);
+				    SetOverlay(_pickupCenterPin, true);
 
-					SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
-				}
-			}
-			else
-			{
-				SetOverlay(_pickupCenterPin, false);
-				SetOverlay(_dropoffCenterPin, false);
+				    SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
+			    }
+		    }
+		    else
+		    {
+			    SetOverlay(_pickupCenterPin, false);
+			    SetOverlay(_dropoffCenterPin, false);
 
-				SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
+			    SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
 
-				SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
-			}
-                     
-        private void HandleTouchBegin (object sender, EventArgs e)
+			    SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
+		    }
+	    }
+
+	    private void HandleTouchBegin (object sender, EventArgs e)
         {
             CancelAddressSearch();
         }
@@ -617,12 +618,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			{
 				var coord = new CLLocationCoordinate2D(0, 0);
 
-	                var vehicleLatitude = value.VehicleLatitude ?? 0;
-	                var vehicleLongitude = value.VehicleLongitude ?? 0;
+	            var vehicleLatitude = value.Latitude ?? 0;
+	            var vehicleLongitude = value.Longitude ?? 0;
 
-                    if (vehicleLatitude > 0 && vehicleLongitude > 0 && !string.IsNullOrEmpty(value.VehicleNumber) && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
+                if (vehicleLatitude > 0 && vehicleLongitude > 0 && !string.IsNullOrEmpty(value.VehicleNumber))
 				{
-						coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
+					coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
 				}
 
 				_taxiLocationPin = new AddressAnnotation(
