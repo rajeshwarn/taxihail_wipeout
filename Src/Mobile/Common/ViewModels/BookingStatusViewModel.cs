@@ -702,7 +702,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_bookingService.ClearLastOrder();
 
-			var homeViewModel = Parent as HomeViewModel;
+			var homeViewModel = (HomeViewModel)Parent;
 
 			homeViewModel.CurrentViewState = HomeViewModelState.Initial;
 			homeViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
