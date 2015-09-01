@@ -325,7 +325,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var menuButtonWidth = 39;
                 legalView
                     .SetX(leftMargin + menuButtonWidth + 15)
-                    .SetY(this.Frame.Bottom - legalView.Frame.Height - bottomMargin); 
+                    .SetY(Frame.Bottom - legalView.Frame.Height - bottomMargin); 
             }
         }
 
