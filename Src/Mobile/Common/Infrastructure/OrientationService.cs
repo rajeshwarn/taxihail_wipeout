@@ -18,11 +18,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		IDeviceOrientationService deviceOrientationService;
 		DeviceOrientation currentOrientation = DeviceOrientation.Up;
 
-		//int[] axes = { 45, 135, 225, 315 };
+		int[] Axes = { 45, 135, 225, 315 };
 		int Deviation = 20;
 
-		event Action<DeviceOrientation> NotifyOrientationChanged;
-		event Action<int> NotifyAngleChanged;
+		public event Action<DeviceOrientation> NotifyOrientationChanged;
+		public event Action<int> NotifyAngleChanged;
 
 		int exclusiveAccess = 0;
 		bool initialized = false, started = false;
@@ -76,7 +76,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		DeviceOrientation GetOrientationByAngle(int angle, DeviceOrientation currentDeviceOrientation)
 		{
-			int[] axes = { 45, 135, 225, 315 };
+			int[] axes = new int[4];
+			Array.Copy(Axes, axes, 4);
 
 			switch (currentDeviceOrientation)
 			{
@@ -120,44 +121,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			if (NotifyAngleChanged != null)
 				NotifyAngleChanged(angle);
-	
+
 			DeviceOrientation deviceOrientation = GetOrientationByAngle(angle, currentOrientation);
 
-			if (currentOrientation != deviceOrientation && deviceOrientationNotifications.Contains(deviceOrientation))
+			if (currentOrientation != deviceOrientation)
 			{
 				if (System.Threading.Interlocked.CompareExchange(ref exclusiveAccess, 1, 0) == 0)
 				{
-					if (currentOrientation != deviceOrientation && deviceOrientationNotifications.Contains(deviceOrientation))
+					if (currentOrientation != deviceOrientation)
 					{
 						currentOrientation = deviceOrientation;
 
-						if (NotifyOrientationChanged != null)
+						if (NotifyOrientationChanged != null && deviceOrientationNotifications.Contains(deviceOrientation))
 							NotifyOrientationChanged(currentOrientation);
 					}
 
 					exclusiveAccess = 0;
 				}
 			}
-		}
-
-		public void SubscribeToOrientationChange(Action<DeviceOrientation> eventHandler)
-		{
-			NotifyOrientationChanged += eventHandler;
-		}
-
-		public void UnSubscribeToOrientationChange(Action<DeviceOrientation> eventHandler)
-		{
-			NotifyOrientationChanged -= eventHandler;
-		}
-
-		public void SubscribeToAngleChange(Action<int> eventHandler)
-		{
-			NotifyAngleChanged += eventHandler;
-		}
-
-		public void UnSubscribeToAngleChange(Action<int> eventHandler)
-		{
-			NotifyAngleChanged -= eventHandler;
 		}
 	}
 }

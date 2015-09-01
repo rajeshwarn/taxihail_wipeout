@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -40,6 +41,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _isCmtRideLinq;
 
+		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
+
 		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
 			IPhoneService phoneService,
 			IBookingService bookingService,
@@ -60,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			GetIsCmtRideLinq();
 
-			_orientationService.SubscribeToOrientationChange(DeviceOrientationChanged);
+			((OrientationService)_orientationService).NotifyOrientationChanged += DeviceOrientationChanged;
 			_orientationService.Initialize(new DeviceOrientation[] { DeviceOrientation.Right, DeviceOrientation.Left });
 		}
 
@@ -591,7 +594,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (!string.IsNullOrWhiteSpace(status.VehicleNumber)
 					&& (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
 				{
-					_orientationService.Start();
+					if (_orientationService.Start())
+					{
+						WaitingCarLandscapeViewModelParameters = null;
+					}
 				}
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
@@ -600,9 +606,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Cancelled)
 					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
 				{
-					_orientationService.Stop();
-					wp.Cls();
-					wp = null;
+
+					if (_orientationService.Stop())
+					{
+						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+						WaitingCarLandscapeViewModelParameters = null;
+					}
 				}
             } 
 			catch (Exception ex) 
@@ -616,20 +625,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		WaitingCarLandscapeViewModelParameters wp;
-
 		void DeviceOrientationChanged(DeviceOrientation deviceOrientation)
 		{
 			if (deviceOrientation == DeviceOrientation.Left || deviceOrientation == DeviceOrientation.Right)
 			{
-				if (wp == null || wp.recycled == true)
+				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed == true))
 				{
-					wp = new WaitingCarLandscapeViewModelParameters() { CarNumber = _vehicleNumber, DeviceOrientation = deviceOrientation };
-					ShowViewModel<WaitingCarLandscapeViewModel>(wp);
+					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters() { CarNumber = _vehicleNumber, DeviceOrientation = deviceOrientation };
+					ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
 				}
 				else
 				{
-					wp.Upd(deviceOrientation);
+					WaitingCarLandscapeViewModelParameters.UpdateDeviceOrientation(deviceOrientation);
 				}
 			}
 		}
