@@ -118,11 +118,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.Subscribe(ToRideSummary, Logger.LogError)
 				.DisposeWith(subscriptions);
 
+			Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
+				.ObserveOn(SynchronizationContext.Current)
+				.Subscribe(_ => UpdatePosition(), Logger.LogError)
+				.DisposeWith(subscriptions);
+
 			_locationService.Start();
 
 			Disposable.Create(_locationService.Stop).DisposeWith(subscriptions);
 
 			_subscriptions.Disposable = subscriptions;
+		}
+		
+		private void UpdatePosition()
+		{
+			var lastKnownPosition = _locationService.LastKnownPosition;
+
+			AssignedTaxiLocation = new AssignedTaxiLocation
+			{
+				Longitude = lastKnownPosition.Longitude,
+				Latitude = lastKnownPosition.Latitude,
+				VehicleNumber = "DeviceName"
+			};
 		}
 
 		private IObservable<Unit> GetTimerObservable()
@@ -156,14 +173,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			var manualRideLinqDetails = await _bookingService.GetTripInfoFromManualRideLinq(ManualRideLinqDetail.OrderId);
 
-			var lastKnownPosition = _locationService.LastKnownPosition;
 
-			AssignedTaxiLocation = new AssignedTaxiLocation
-			{
-				Longitude = lastKnownPosition.Longitude,
-				Latitude = lastKnownPosition.Latitude,
-				VehicleNumber = "DeviceName"
-			};
 			
 			return manualRideLinqDetails;
 		}
