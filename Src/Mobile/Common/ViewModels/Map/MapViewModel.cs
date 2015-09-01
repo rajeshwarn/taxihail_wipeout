@@ -50,9 +50,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private IObservable<HomeViewModelState> ObserveCurrentHomeViewModelState()
 		{
 			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-				h => Parent.PropertyChanged += h,
-				h => Parent.PropertyChanged -= h
-			)
+					h => Parent.PropertyChanged += h,
+					h => Parent.PropertyChanged -= h
+				)
 				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
 				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
 				.DistinctUntilChanged();
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void HomeViewModelStateChanged(HomeViewModelState state)
 		{
-			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus)
+			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus || state == HomeViewModelState.ManualRidelinq)
 			{
 				IsMapDisabled = false;
 			}

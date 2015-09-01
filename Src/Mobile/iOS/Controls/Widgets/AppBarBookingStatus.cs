@@ -25,10 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             Initialize();
 
-            this.DelayBind (() =>
-            {
-                InitializeBinding();
-            });
+            this.DelayBind (InitializeBinding);
         }
 
         private void Initialize()
@@ -39,6 +36,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             FlatButtonStyle.Red.ApplyTo(btnUnpair);
             FlatButtonStyle.Silver.ApplyTo(btnCall);
             FlatButtonStyle.Silver.ApplyTo(btnEditTip);
+			FlatButtonStyle.Red.ApplyTo(btnUnpairFromRideLinq);
+           
+            var localize = this.Services().Localize;
+
+            btnUnpairFromRideLinq.SetTitle(localize["UnpairPayInCar"], UIControlState.Normal);
+            btnUnpair.SetTitle(localize["UnpairPayInCar"], UIControlState.Normal);
+            btnCall.SetTitle(localize["CallButton"], UIControlState.Normal);
+            btnCancel.SetTitle(localize["StatusCancelButton"], UIControlState.Normal);
         }
 
         private void InitializeBinding()
@@ -69,7 +74,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(btnCall)
                 .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.Settings.HideCallDispatchButton);
+                .To(vm => vm.IsCallCompanyHidden);
+
+			set.Bind (btnUnpairFromRideLinq)
+				.For (v => v.Command)
+				.To (vm => vm.UnpairFromRideLinq);
+
+			set.Bind(btnUnpairFromRideLinq)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.IsUnpairFromManualRideLinqVisible)
+				.WithConversion ("BoolInverter");
 
             set.Bind(btnEditTip)
                 .For(v => v.HiddenWithConstraints)
@@ -82,6 +96,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Apply();
         }
+        public bool HiddenWithConstraints
+        {
+            get
+            {
+                return base.Hidden;
+            }
+            set
+            {
+                if (base.Hidden != value)
+                {
+                    base.Hidden = value;
+                    if (value)
+                    {
+                        _hiddenContraints = this.Superview.Constraints != null 
+                            ? this.Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
+                            : null;
+                        if (_hiddenContraints != null)
+                        {
+                            this.Superview.RemoveConstraints(_hiddenContraints);
+                        }
+                    }
+                    else
+                    {
+                        if (_hiddenContraints != null)
+                        {
+                            this.Superview.AddConstraints(_hiddenContraints);
+                            _hiddenContraints = null;
+                        }
+                    }
+                }
+            }
+         }
     }
 }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -60,6 +61,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				IsUnpairButtonVisible = false;
 			}
+		}
+
+		public void NotifyBookingStatusAppbarChanged()
+		{
+			RaisePropertyChanged(() => IsCallCompanyHidden);
+			RaisePropertyChanged(() => IsUnpairFromManualRideLinqVisible);
+		}
+
+		public bool IsCallCompanyHidden
+		{
+			get { return Settings.HideCallDispatchButton || ParentViewModel.ManualRideLinqDetail != null; }
 		}
 
 		public ICommand CancelOrder
@@ -149,7 +161,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								}
 								else
 								{
-									this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"]);
+									this.Services().Message
+										.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"])
+										.FireAndForget();
 								}
 							}
 							catch (Exception ex)
@@ -161,6 +175,54 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						this.Services().Localize["Cancel"], () => { });
 				});
 			}
+		}
+
+		public ICommand UnpairFromRideLinq
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+				{
+					try
+					{
+
+						var shouldUnpair = new TaskCompletionSource<bool>();
+
+						this.Services().Message.ShowMessage(
+							this.Services().Localize["WarningTitle"],
+							this.Services().Localize["UnpairWarningMessage"],
+							this.Services().Localize["UnpairWarningCancelButton"],
+							() => shouldUnpair.SetResult(true),
+							this.Services().Localize["Cancel"],
+							() => shouldUnpair.SetResult(false));
+
+						if (await shouldUnpair.Task)
+						{
+							using (this.Services().Message.ShowProgress())
+							{
+								var orderId = ParentViewModel.ManualRideLinqDetail.OrderId;
+
+								await _bookingService.UnpairFromManualRideLinq(orderId);
+
+								_bookingService.ClearLastOrder();
+
+								ParentViewModel.ReturnToInitialState();
+							}
+						}
+					}
+					catch (Exception)
+					{
+						this.Services().Message.ShowMessage(
+										this.Services().Localize["ManualPairingForRideLinQ_Error_Title"],
+										this.Services().Localize["ManualUnPairingForRideLinQ_Error_Message"]);
+					}
+				});
+			}
+		}
+
+		public bool IsUnpairFromManualRideLinqVisible
+		{
+			get { return ParentViewModel != null && ParentViewModel.ManualRideLinqDetail != null; }
 		}
 
 		private bool _isUnpairButtonVisible;

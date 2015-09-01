@@ -160,10 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    {
                     var orderManualRideLinqDetail = await _bookingService.GetTripInfoFromManualRideLinq(lastOrder.Item1.Id);
 
-                    ShowViewModelAndRemoveFromHistory<ManualRideLinqStatusViewModel>(new
-                    {
-                        orderManualRideLinqDetail = orderManualRideLinqDetail.ToJson()
-                    });
+                    GoToManualRideLinq(orderManualRideLinqDetail);
 			    }
 			    else
 			    {
@@ -348,6 +345,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			CurrentViewState = HomeViewModelState.BookingStatus;
 
 			BookingStatus.StartBookingStatus(order, orderStatusDetail);
+		}
+
+		public void GoToManualRideLinq(OrderManualRideLinqDetail detail)
+		{
+			CurrentViewState = HomeViewModelState.ManualRidelinq;
+
+			_orderWorkflowService.SetAddresses(new Address(), new Address());
+
+			BookingStatus.StartBookingStatus(detail);
 		}
 
 		public PanelMenuViewModel Panel { get; set; }
@@ -555,12 +561,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool IsAirportButtonHidden
 		{
-			get { return !Settings.IsAirportButtonEnabled || CurrentViewState == HomeViewModelState.BookingStatus; }
+			get { return !Settings.IsAirportButtonEnabled || CurrentViewState == HomeViewModelState.BookingStatus || CurrentViewState == HomeViewModelState.ManualRidelinq; }
 		}
 
 		public bool IsTrainButtonHidden
 		{
-			get { return !Settings.IsTrainStationButtonEnabled || CurrentViewState == HomeViewModelState.BookingStatus; }
+			get { return !Settings.IsTrainStationButtonEnabled || CurrentViewState == HomeViewModelState.BookingStatus || CurrentViewState == HomeViewModelState.ManualRidelinq; }
 		}
 
 		public HomeViewModelState CurrentViewState
@@ -568,11 +574,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _currentViewState; }
 			set
 			{
-				if (value == HomeViewModelState.BookingStatus)
+				var disableAddressSelectionMode = value == HomeViewModelState.BookingStatus 
+					|| value == HomeViewModelState.ManualRidelinq;
+
+				var isCurrentStateSelectionModeOff = _currentViewState == HomeViewModelState.BookingStatus 
+					|| _currentViewState == HomeViewModelState.ManualRidelinq;
+
+				if (disableAddressSelectionMode)
 				{
 					_orderWorkflowService.SetAddressSelectionMode();
 				}
-				else if (value == HomeViewModelState.Initial && _currentViewState == HomeViewModelState.BookingStatus)
+				else if (value == HomeViewModelState.Initial && isCurrentStateSelectionModeOff)
 				{
 					_orderWorkflowService.SetAddressSelectionMode(AddressSelectionMode.PickupSelection);
 					_bottomBar.EstimateSelected = false;

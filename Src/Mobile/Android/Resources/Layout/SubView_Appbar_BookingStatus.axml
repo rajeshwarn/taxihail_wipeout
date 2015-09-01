@@ -31,6 +31,17 @@
         android:layout_gravity="center_vertical"
         android:text="@string/UnpairPayInCar"
         local:MvxBind="Click Unpair; Visibility IsUnpairButtonVisible, Converter=Visibility" />
+			<Button
+		        android:layout_width="wrap_content"
+				    android:layout_height="@dimen/HeightButton"
+		        android:layout_weight="1"
+						android:layout_marginTop="13dip"
+				    android:layout_marginLeft="8dip"
+		        android:layout_marginRight="8dip"
+						android:layout_gravity="center_vertical"
+            android:text="@string/ManualRideLinqStatus_Unpair"
+            style="@style/ButtonActionRedStyle"
+            local:MvxBind="Click UnpairFromRideLinq;Visibility IsUnpairFromManualRideLinqVisible, Converter=Visibility" />
     <Button
         android:id="@+id/CallBtn"
         style="@style/ButtonActionGrayStyle"
@@ -42,5 +53,5 @@
         android:layout_marginRight="8dip"
         android:layout_gravity="center_vertical"
         android:text="@string/StatusCallButton"
-        local:MvxBind="Click CallCompany; Visibility Settings.HideCallDispatchButton, Converter=InvertedVisibility" />
+        local:MvxBind="Click CallCompany; Visibility IsCallCompanyHidden, Converter=InvertedVisibility" />
 </LinearLayout>

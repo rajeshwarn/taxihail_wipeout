@@ -23,9 +23,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpairFromRideLinq { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnUnpairFromRideLinq != null) {
+				btnUnpairFromRideLinq.Dispose ();
+				btnUnpairFromRideLinq = null;
+			}
+
 			if (btnCall != null) {
 				btnCall.Dispose ();
 				btnCall = null;
@@ -40,7 +48,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				btnUnpair.Dispose ();
 				btnUnpair = null;
 			}
-
 			if (btnEditTip != null) {
 				btnEditTip.Dispose ();
 				btnEditTip = null;

@@ -20,9 +20,11 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using CoreGraphics;
 using CoreLocation;
@@ -350,34 +352,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void ShowMarkers()
         {
-            if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
-            {
-				SetAnnotation (DestinationAddress, _destinationAnnotation, false);
+			if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
+			{
+				SetAnnotation(DestinationAddress, _destinationAnnotation, false);
 				SetOverlay(_pickupCenterPin, false);
 				SetOverlay(_dropoffCenterPin, true);
 
 
-	            SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
-            }
-            else
-            {
-                if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
-                {
-                }
-	            SetAnnotation(PickupAddress, _pickupAnnotation, false);
-	            SetOverlay(_dropoffCenterPin, false);
-	            SetOverlay(_pickupCenterPin, true);
+				SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
+			}
+			else if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
+			{
+				if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
+				{
+					return;
+				}
+				else
+				{
+					SetAnnotation(PickupAddress, _pickupAnnotation, false);
+					SetOverlay(_dropoffCenterPin, false);
+					SetOverlay(_pickupCenterPin, true);
 
-	            if (DestinationAddress.HasValidCoordinate())
-	            {
-		            SetAnnotation(DestinationAddress, _destinationAnnotation, true);
-	            }
-	            else
-	            {
-		            SetAnnotation(DestinationAddress, _destinationAnnotation, false);
-	            }
-            }
-        }
+					SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
+				}
+			}
+			else
+			{
+				SetOverlay(_pickupCenterPin, false);
+				SetOverlay(_dropoffCenterPin, false);
+
+				SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
+
+				SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
+			}
                      
         private void HandleTouchBegin (object sender, EventArgs e)
         {
@@ -585,7 +592,56 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private MKAnnotation _taxiLocationPin;
 
-        private OrderStatusDetail _orderStatusDetail;
+		private AssignedTaxiLocation _assignedTaxiLocation;
+	    public AssignedTaxiLocation AssignedTaxiLocation
+	    {
+		    get { return _assignedTaxiLocation; }
+		    set
+		    {
+			    _assignedTaxiLocation = value;
+			    UpdateTaxiLocation(value);
+
+                ClearAvailableVehiclesAnnotations();
+		    }
+	    }
+
+	    private void UpdateTaxiLocation(AssignedTaxiLocation value)
+	    {
+			if (_taxiLocationPin != null)
+			{
+				RemoveAnnotation(_taxiLocationPin);
+				_taxiLocationPin = null;
+			}
+
+			if (value != null)
+			{
+				var coord = new CLLocationCoordinate2D(0, 0);
+
+	                var vehicleLatitude = value.VehicleLatitude ?? 0;
+	                var vehicleLongitude = value.VehicleLongitude ?? 0;
+
+                    if (vehicleLatitude > 0 && vehicleLongitude > 0 && !string.IsNullOrEmpty(value.VehicleNumber) && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
+				{
+						coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
+				}
+
+				_taxiLocationPin = new AddressAnnotation(
+					coord, 
+					AddressAnnotationType.Taxi,
+					Localize.GetValue("TaxiMapTitle"), 
+					value.VehicleNumber, 
+					_useThemeColorForPickupAndDestinationMapIcons, 
+					_showAssignedVehicleNumberOnPin);
+
+				AddAnnotation(_taxiLocationPin);
+
+				
+			}
+			SetNeedsDisplay();
+	    }
+
+
+	    private OrderStatusDetail _orderStatusDetail;
         public OrderStatusDetail OrderStatusDetail
         {
             get { return _orderStatusDetail; }
@@ -593,43 +649,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 _orderStatusDetail = value;
 
-                if (_taxiLocationPin != null)
+				
+
+				if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)
+				{
+					RemoveAnnotation(_pickupAnnotation);
+				}
+
+                if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned)
                 {
-                    RemoveAnnotation(_taxiLocationPin);
-                    _taxiLocationPin = null;
+                    ClearAvailableVehiclesAnnotations();
                 }
-
-                if (value != null)
-                {
-                    var coord = new CLLocationCoordinate2D(0,0);
-
-	                var vehicleLatitude = value.VehicleLatitude ?? 0;
-	                var vehicleLongitude = value.VehicleLongitude ?? 0;
-
-                    if (vehicleLatitude > 0 && vehicleLongitude > 0 && !string.IsNullOrEmpty(value.VehicleNumber) && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
-                    {
-						coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
-                    }
-
-                    _taxiLocationPin = new AddressAnnotation(coord, AddressAnnotationType.Taxi, Localize.GetValue("TaxiMapTitle"), value.VehicleNumber, _useThemeColorForPickupAndDestinationMapIcons, _showAssignedVehicleNumberOnPin);
-                    AddAnnotation(_taxiLocationPin);
-
-                    if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned)
-                    {
-                        ClearAvailableVehiclesAnnotations();
-                    }
-
-                    if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)
-                    {
-                        RemoveAnnotation (_pickupAnnotation);
-                    }
-                }
-                SetNeedsDisplay();
             }
         }
 
         private IEnumerable<CoordinateViewModel> _center;
-        public IEnumerable<CoordinateViewModel> MapCenter
+	    
+
+	    public IEnumerable<CoordinateViewModel> MapCenter
         {
             get { return _center; }
             set
@@ -712,23 +749,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						{
 							latitudeOffset += vehicleInformationOffset;
 						}
-						if (bookingStatusViewModel.VehicleLicenceHidden)
-						{
-							latitudeOffset += vehicleInformationOffset;
-						}
-						if (bookingStatusViewModel.VehicleColorHidden)
-						{
-							latitudeOffset += vehicleInformationOffset;
-						}
-						if (bookingStatusViewModel.VehicleMakeHidden)
-						{
-							latitudeOffset += vehicleInformationOffset;
-						}
-						if (bookingStatusViewModel.VehicleModelHidden)
-						{
-							latitudeOffset += vehicleInformationOffset;
-						}
-						if (bookingStatusViewModel.VehicleTypeHidden)
+						if (bookingStatusViewModel.VehicleFullInfoHidden) 
 						{
 							latitudeOffset += vehicleInformationOffset;
 						}
