@@ -530,6 +530,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _hashedMarketSubject;
 		}
 
+		public IObservable<bool> GetAndObserveIsUsingGeo()
+		{
+			return _hashedMarketSubject
+				.Select(hashedMarket => hashedMarket.HasValue()
+					? _appSettings.Data.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo
+					: _appSettings.Data.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
+				);
+		}
+
 	    public IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes()
 	    {
 	        return _networkVehiclesSubject;

@@ -76,11 +76,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 .Where(x => x.address.HasValidCoordinate())
                 .SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId));
 
-		    _isUsingGeoServicesObservable = orderWorkflowService.GetAndObserveHashedMarket()
-                .Select(hashedMarket => !hashedMarket.HasValue()
-                    ? _settings.Data.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
-                    : _settings.Data.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo
-                );
+			_isUsingGeoServicesObservable = orderWorkflowService.GetAndObserveIsUsingGeo();
 
             _etaObservable = _availableVehiclesObservable
 				.Where (_ => _settings.Data.ShowEta)

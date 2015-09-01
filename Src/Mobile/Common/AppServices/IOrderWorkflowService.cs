@@ -89,7 +89,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<string> GetAndObserveHashedMarket();
 
-        IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
+		IObservable<bool> GetAndObserveIsUsingGeo();
+		IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
 
 		void SetAddresses(Address pickupAddress, Address destinationAddress);
 
