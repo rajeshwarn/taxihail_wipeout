@@ -355,6 +355,51 @@ namespace apcurium.MK.Booking.Api.Services
             return referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value)).Select(x => new { x.Id, x.Display }).ToArray();
         }
 
+	    public object Get(TaxiLocationRequest request)
+	    {
+			var order = _orderDao.FindById(request.OrderId);
+		    if (order == null)
+		    {
+				return new HttpResult(HttpStatusCode.NotFound, "No available vehicle found.");
+		    }
+
+			var market = string.Empty;
+			try
+			{
+				market = _taxiHailNetworkServiceClient.GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+			}
+			catch
+			{
+				// Do nothing. If we fail to contact Customer Portal, we continue as if we are in a local market.
+				_logger.LogMessage("VehicleService: Error while trying to get company Market to compute ETA.");
+			}
+
+		    int[] fleetIds = null;
+			if (_serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId.HasValue)
+			{
+				fleetIds = new[] { _serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId.Value };
+			}
+
+			var geoService = GetAvailableVehiclesServiceClient(market) as CmtGeoServiceClient;
+
+		    if (geoService == null)
+		    {
+				return new HttpResult(HttpStatusCode.BadRequest, "This call is only supported when using Geo.");
+		    }
+#if DEBUG
+			var availableVehicle = geoService.GetAvailableVehicle(request.Medallion, _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket, 40.700729, -73.989513, fleetIds: fleetIds);
+#else
+			var availableVehicle = geoService.GetAvailableVehicle(request.Medallion, _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket, order.PickupAddress.Latitude, order.PickupAddress.Longitude, fleetIds: fleetIds);
+#endif
+			if (availableVehicle == null)
+		    {
+				return new HttpResult(HttpStatusCode.NotFound, "No available vehicle found.");
+		    }
+
+		    return availableVehicle;
+
+	    }
+
         public object Post(EtaForPickupRequest request)
         {
             if (!request.Latitude.HasValue || !request.Longitude.HasValue || !request.VehicleRegistration.HasValue())
