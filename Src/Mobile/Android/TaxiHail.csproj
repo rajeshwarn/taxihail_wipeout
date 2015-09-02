@@ -952,7 +952,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\CountryCodeItem.axml">
-			<SubType>AndroidResource</SubType>
+      <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\SubView_BookingStatus.axml">
       <SubType>AndroidResource</SubType>

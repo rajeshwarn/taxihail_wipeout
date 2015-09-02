@@ -220,8 +220,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		        Eta = etaFromGeo.Eta / 60,
                 Latitude = etaFromGeo.Latitude,
                 Longitude = etaFromGeo.Longitude
-        };
+			};
 	    }
+
+		private Task<AvailableVehicle> GetVehiclePositionFromGeo(Guid orderId, string medallion)
+		{
+			return UseServiceClientAsync<IVehicleClient, AvailableVehicle>(service => service.GetTaxiLocation(orderId, medallion));
+		}
+
 
 		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
 		{
@@ -252,6 +258,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				_timerSubject.OnNext(Observable.Never<long>());
 				_isStarted = false;
 			}
+		}
+
+		public IObservable<AvailableVehicle> GetAndObserveCurrentTaxiLocation(string medallion, Guid orderId)
+		{
+			return _timerSubject.Switch()
+				.SelectMany(_ => _availableVehicleEnabled.DistinctUntilChanged())
+				.Where(enabled => enabled)
+				.SelectMany(_ => GetVehiclePositionFromGeo(orderId, medallion));
 		}
 
 		public IObservable<AvailableVehicle[]> GetAndObserveAvailableVehicles()

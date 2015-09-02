@@ -21,7 +21,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -138,11 +137,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.Subscribe(ToRideSummary, Logger.LogError)
 				.DisposeWith(subscriptions);
 
-			Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
-				.ObserveOn(SynchronizationContext.Current)
+
+			var deviceLocationObservable = Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
 				.Where(_ => ManualRideLinqDetail != null && ManualRideLinqDetail.Medallion.HasValue())
-				.Subscribe(_ => UpdatePosition(), Logger.LogError)
+				.SelectMany(_ => _locationService.GetUserPosition());
+
+			var medallion = orderManualRideLinqDetail.Medallion;
+			var orderId = orderManualRideLinqDetail.OrderId;
+
+			var taxilocationViaGeo = _vehicleService.GetAndObserveCurrentTaxiLocation(medallion, orderId)
+				.Where(vehicles => vehicles != null)
+				.Select(vehicle => new Position
+				{
+					Longitude = vehicle.Longitude,
+					Latitude = vehicle.Latitude
+				});
+
+			_orderWorkflowService.GetAndObserveIsUsingGeo()
+				.DistinctUntilChanged()
+				.SelectMany(isUsingGeo => isUsingGeo
+					? taxilocationViaGeo
+					: deviceLocationObservable
+				)
+				.ObserveOn(SynchronizationContext.Current)
+				.Subscribe(UpdatePosition, Logger.LogError)
 				.DisposeWith(subscriptions);
+			
 
 			_locationService.Start();
 
@@ -151,12 +171,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_subscriptions.Disposable = subscriptions;
 		}
 		
-		private void UpdatePosition()
+		private void UpdatePosition(Position position)
 		{
-			var lastKnownPosition = _locationService.LastKnownPosition;
-
-
-			if (AssignedTaxiLocation != null && AssignedTaxiLocation.Latitude == lastKnownPosition.Latitude && AssignedTaxiLocation.Longitude == lastKnownPosition.Longitude)
+			if (AssignedTaxiLocation != null && AssignedTaxiLocation.Latitude == position.Latitude && AssignedTaxiLocation.Longitude == position.Longitude)
 			{
 				//Nothing to update.
 				return;
@@ -164,8 +181,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			AssignedTaxiLocation = new AssignedTaxiLocation
 			{
-				Longitude = lastKnownPosition.Longitude,
-				Latitude = lastKnownPosition.Latitude,
+				Longitude = position.Longitude,
+				Latitude = position.Latitude,
 				VehicleNumber = ManualRideLinqDetail.Medallion
 			};
 		}
@@ -220,11 +237,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_bookingService.ClearLastOrder();
 
-			var orderSummary = orderManualRideLinqDetail.ToJson();
-
 			StopBookingStatus();
 
-			//ShowViewModel<>(new { orderManualRideLinqDetail = orderSummary });
+			ShowViewModel<RideSummaryViewModel>(new { orderId = orderManualRideLinqDetail.OrderId });
 
 			ResetToInitialState();
 		}
