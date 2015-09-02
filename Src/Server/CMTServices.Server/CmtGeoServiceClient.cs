@@ -82,7 +82,7 @@ namespace CMTServices
             return new List<VehicleResponse>();
         }
 
-	    public VehicleResponse GetAvailableVehicle(string medallion, string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
+	    public VehicleResponse GetPairedVehicle(string medallion, string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
 	    {
 			var @params = GetAvailableVehicleParams(market, latitude, longitude,searchRadius,fleetIds,returnAll,wheelchairAccessibleOnly, hired: true);
 			if (@params == null)

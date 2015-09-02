@@ -386,11 +386,9 @@ namespace apcurium.MK.Booking.Api.Services
 		    {
 				return new HttpResult(HttpStatusCode.BadRequest, "This call is only supported when using Geo.");
 		    }
-#if DEBUG
-			var availableVehicle = geoService.GetAvailableVehicle(request.Medallion, _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket, 40.700729, -73.989513, fleetIds: fleetIds);
-#else
-			var availableVehicle = geoService.GetAvailableVehicle(request.Medallion, _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket, order.PickupAddress.Latitude, order.PickupAddress.Longitude, fleetIds: fleetIds);
-#endif
+
+			var availableVehicle = geoService.GetPairedVehicle(request.Medallion, _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket, order.PickupAddress.Latitude, order.PickupAddress.Longitude, fleetIds: fleetIds);
+
 			if (availableVehicle == null)
 		    {
 				return new HttpResult(HttpStatusCode.NotFound, "No available vehicle found.");
