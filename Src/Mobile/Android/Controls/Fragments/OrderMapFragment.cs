@@ -661,8 +661,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
 		{
-			var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.ToArray();
-            if(addresseesToDisplay == null || !coordinateViewModels.Any())
+			var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.SelectOrDefault(addresses => addresses.ToArray(), new CoordinateViewModel[0]);
+            if(!coordinateViewModels.Any())
             {
                 return;
             }
