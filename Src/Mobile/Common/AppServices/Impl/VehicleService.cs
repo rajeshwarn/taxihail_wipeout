@@ -223,9 +223,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			};
 	    }
 
-		private Task<AvailableVehicle> GetVehiclePositionFromGeo(Guid orderId, string medallion)
+		private async Task<AvailableVehicle> GetVehiclePositionFromGeo(Guid orderId, string medallion)
 		{
-			return UseServiceClientAsync<IVehicleClient, AvailableVehicle>(service => service.GetTaxiLocation(orderId, medallion));
+			try
+			{
+				return await UseServiceClientAsync<IVehicleClient, AvailableVehicle>(service => service.GetTaxiLocation(orderId, medallion));
+			}
+			catch (Exception ex)
+			{
+				Logger.LogError(ex);
+				return null;
+			}
 		}
 
 
@@ -265,7 +273,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return _timerSubject.Switch()
 				.SelectMany(_ => _availableVehicleEnabled.DistinctUntilChanged())
 				.Where(enabled => enabled)
-				.SelectMany(_ => GetVehiclePositionFromGeo(orderId, medallion));
+				.SelectMany(_ => GetVehiclePositionFromGeo(orderId, medallion))
+				.Where(vehicle => vehicle != null);
 		}
 
 		public IObservable<AvailableVehicle[]> GetAndObserveAvailableVehicles()
