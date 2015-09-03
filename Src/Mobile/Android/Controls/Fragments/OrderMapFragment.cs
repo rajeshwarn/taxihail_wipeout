@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
@@ -31,6 +32,8 @@ using Google.Android.M4b.Maps;
 using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
+using Android.App;
+using Android.Content;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -186,12 +189,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 						.Anchor(.5f, 1f)
 						.SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
 						.InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
-						.SetTitle(value.VehicleNumber)
 						.Visible(true);
+
+
+					if (_showVehicleNumber)
+					{
+						var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
+						Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
+
+						mapOptions.SetTitle(value.VehicleNumber);
+					}
 
 					_taxiLocationPin = Map.AddMarker(mapOptions);
 
-					_taxiLocationPin.ShowInfoWindow();
+					if (_showVehicleNumber)
+					{
+						_taxiLocationPin.ShowInfoWindow();
+					}
 				}
 				catch (Exception ex)
 				{
