@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					return;
 				}
 
-				var desiredHeight = -(_contactTaxiOverlay.Height + 1);
+				var desiredHeight = -_contactTaxiOverlay.Height;
 
 				if (((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin != desiredHeight)
 				{
