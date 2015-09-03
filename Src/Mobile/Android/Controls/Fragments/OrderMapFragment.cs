@@ -166,38 +166,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		    set
 		    {
 			    _assignedTaxiLocation = value;
-			    UpdateTaxiLocaiton(value);
+			    UpdateTaxiLocation(value);
 		    }
 	    }
 
-	    private void UpdateTaxiLocaiton(AssignedTaxiLocation value)
+	    private void UpdateTaxiLocation(AssignedTaxiLocation value)
 	    {
 		    if (_taxiLocationPin != null)
 		    {
 			    _taxiLocationPin.Remove();
 		    }
 
-		    if (value != null
-		        && value.Latitude.HasValue
-		        && value.Longitude.HasValue
-		        && value.VehicleNumber.HasValue())
+		    if (value != null && value.Latitude.HasValue && value.Longitude.HasValue && value.VehicleNumber.HasValue())
 		    {
+				ShowAvailableVehicles(null);
 				try
 				{
-					_taxiLocationPin = Map.AddMarker(new MarkerOptions()
+					var mapOptions = new MarkerOptions()
 						.Anchor(.5f, 1f)
 						.SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
-						.InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap(value.VehicleNumber)))
-						.Visible(true));
+						.InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
+						.SetTitle(value.VehicleNumber)
+						.Visible(true);
+
+					_taxiLocationPin = Map.AddMarker(mapOptions);
+
+					_taxiLocationPin.ShowInfoWindow();
 				}
 				catch (Exception ex)
 				{
 					Logger.LogError(ex);
 				}
 
-				_isBookingMode = true;
-
-				ShowAvailableVehicles(null);
+				_isBookingMode = true;				
 		    }
 			else
 			{
@@ -206,34 +207,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	    }
 
 
-	    private Bitmap CreateTaxiBitmap(string vehicleNumber)
-		{
-			var taxiIcon = DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
-
-			if (!_showVehicleNumber)
-			{
-				return taxiIcon;
-			}
-
-			var textSize = DrawHelper.GetPixels(11);
-			var textVerticalOffset = DrawHelper.GetPixels(12);
-
-			/* Find the width and height of the title*/
-			var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
-			paintText.SetARGB(255, 0, 0, 0);
-			paintText.SetTypeface(Typeface.DefaultBold);
-			paintText.TextSize = textSize;
-			paintText.TextAlign = Paint.Align.Center;
-
-			var rect = new Rect();
-			paintText.GetTextBounds(vehicleNumber, 0, vehicleNumber.Length, rect);
-
-			var mutableBitmap = taxiIcon.Copy(taxiIcon.GetConfig(), true);
-			var canvas = new Canvas(mutableBitmap);
-			// ReSharper disable once PossibleLossOfFraction
-			canvas.DrawText(vehicleNumber, canvas.Width / 2, rect.Height() + textVerticalOffset, paintText);
-			return mutableBitmap;
-		}
+	    private Bitmap CreateTaxiBitmap()
+	    {
+		    return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
+	    }
 
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IList<AvailableVehicle> AvailableVehicles
