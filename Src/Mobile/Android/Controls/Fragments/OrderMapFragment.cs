@@ -192,7 +192,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 						.Visible(true);
 
 
-					if (_showVehicleNumber)
+					if (_showVehicleNumber && value.VehicleNumber.HasValue())
 					{
 						var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
 						Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
