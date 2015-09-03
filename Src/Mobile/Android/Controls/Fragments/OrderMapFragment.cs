@@ -192,7 +192,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 						.Visible(true);
 
 
-					if (_showVehicleNumber && value.VehicleNumber.HasValue())
+					if (_showVehicleNumber)
 					{
 						var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
 						Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
@@ -202,7 +202,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 					_taxiLocationPin = Map.AddMarker(mapOptions);
 
-					if (_showVehicleNumber && value.VehicleNumber.HasValue())
+					if (_showVehicleNumber)
 					{
 						_taxiLocationPin.ShowInfoWindow();
 					}
