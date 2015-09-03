@@ -32,6 +32,10 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		protected abstract bool StopService();
 
+		/// <summary>
+		/// Angles the changed event.
+		/// </summary>
+		/// <param name="angle">Angle is in degrees and assumed to be from 0 to 359 clockwise direction</param>
 		public void AngleChangedEvent(int angle)
 		{
 			if (NotifyAngleChanged != null)

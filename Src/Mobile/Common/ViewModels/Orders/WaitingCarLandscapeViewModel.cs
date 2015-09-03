@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public ICommand ReturnToBookView
+		public ICommand CloseView
 		{
 			get
 			{

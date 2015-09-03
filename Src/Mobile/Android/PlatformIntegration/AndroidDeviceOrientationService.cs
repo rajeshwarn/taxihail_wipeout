@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 
 		protected override bool StartService()
 		{
-			if (androidOrientationListener != null)
+            if (IsAvailable())
 			{
 				androidOrientationListener.NotifyOrientationChanged += AngleChangedEvent;
 				androidOrientationListener.Enable();
@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 
 		protected override bool StopService()
 		{
-			if (androidOrientationListener != null)
+            if (IsAvailable())
 			{
 				androidOrientationListener.Disable();
 				androidOrientationListener.NotifyOrientationChanged -= AngleChangedEvent;

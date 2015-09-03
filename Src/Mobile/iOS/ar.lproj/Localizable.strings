@@ -680,4 +680,6 @@
 "NetworkTimeOutPopupAlways"="Always Accept";
 "EstimateFareCalculating"="Calculating...";
 "OrderStatus_Medallion"="Medallion";
-"WaitingCarLandscapeViewBackButtonText"="Back";
+"WaitingCarLandscapeViewCloseButtonText"="Back";
+"WaitingCarLandscapeViewCarNumber"="Car Number";
+"WaitingCarLandscapeActivityName"="Car Number";

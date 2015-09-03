@@ -712,6 +712,7 @@
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <AndroidResource Include="Resources\Drawable\facebook_account_icon.png" />
+    <AndroidResource Include="Resources\Drawable\waitingcarclosebutton.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -865,7 +866,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_available.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge_selected.png" />
-    <AndroidResource Include="Resources\Drawable\waitingcarbackbutton.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

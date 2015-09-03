@@ -699,5 +699,7 @@
   <string name="TaxiHailNetworkTimeOutPopupMessage">Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?</string>
   <string name="TaxiHailNetworkTimeOutPopupTitle">Switch company?</string>
   <string name="OrderStatus_Medallion">Medallion</string>
-  <string name="WaitingCarLandscapeViewBackButtonText">Back</string>
+  <string name="WaitingCarLandscapeViewCloseButtonText">Back</string>
+  <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
+  <string name="WaitingCarLandscapeActivityName">Car Number</string>
 </resources>

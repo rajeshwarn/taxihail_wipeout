@@ -606,8 +606,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Cancelled)
 					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
 				{
+					_orientationService.Stop();
 
-					if (_orientationService.Stop())
+					if (WaitingCarLandscapeViewModelParameters != null)
 					{
 						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
 						WaitingCarLandscapeViewModelParameters = null;

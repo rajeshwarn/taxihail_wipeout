@@ -698,4 +698,6 @@
 "BookSummaryActivityName"="Book summary";
 "MessageActivityName"="Message";
 "OrderStatus_Medallion"="Medallion";
-"WaitingCarLandscapeViewBackButtonText"="Back";
+"WaitingCarLandscapeViewCloseButtonText"="Back";
+"WaitingCarLandscapeViewCarNumber"="Car Number";
+"WaitingCarLandscapeActivityName"="Car Number";

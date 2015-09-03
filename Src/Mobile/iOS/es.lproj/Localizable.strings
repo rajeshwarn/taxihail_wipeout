@@ -697,4 +697,6 @@
 "TaxiHailNetworkTimeOutPopupMessage"="Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?";
 "TaxiHailNetworkTimeOutPopupTitle"="Switch company?";
 "OrderStatus_Medallion"="Medallion";
-"WaitingCarLandscapeViewBackButtonText"="Back";
+"WaitingCarLandscapeViewCloseButtonText"="Back";
+"WaitingCarLandscapeViewCarNumber"="Car Number";
+"WaitingCarLandscapeActivityName"="Car Number";

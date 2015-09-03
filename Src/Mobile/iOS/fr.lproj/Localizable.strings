@@ -697,4 +697,6 @@
 "View_RideLinqSummary"="Order summary";
 "View_RideLinqStatus"="Status";
 "OrderStatus_Medallion"="Medallion";
-"WaitingCarLandscapeViewBackButtonText"="Retour";
+"WaitingCarLandscapeViewCloseButtonText"="Retour";
+"WaitingCarLandscapeViewCarNumber"="Numéro de voiture";
+"WaitingCarLandscapeActivityName"="Numéro de voiture";

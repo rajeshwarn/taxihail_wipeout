@@ -6,17 +6,19 @@
     android:orientation="horizontal"
     android:background="@color/WaitingCarLandscapeBackground">
     <TextView
+        android:id="@+id/CarNumberTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="160sp"
         android:textColor="@color/WaitingCarLandscapeText"
         android:layout_centerInParent="true"
-        local:MvxBind="Text CarNumber" />
+        local:MvxBind="Text CarNumber"
+        android:contentDescription="@string/WaitingCarLandscapeViewCarNumber" />
     <Button
-        android:text="@string/WaitingCarLandscapeViewBackButtonText"
+        android:text="@string/WaitingCarLandscapeViewCloseButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/waitingcarbackbutton"
+        android:background="@drawable/waitingcarclosebutton"
         android:textColor="@color/WaitingCarLandscapeText"
         android:textSize="20sp"
         android:layout_alignParentBottom="true"
@@ -29,5 +31,5 @@
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        local:MvxBind="Click ReturnToBookView" />
+        local:MvxBind="Click CloseView" />
 </RelativeLayout>

@@ -85,12 +85,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					axes[2] += Deviation;
 					break;
 
-				case DeviceOrientation.Left:
+                case DeviceOrientation.Right:
 					axes[0] -= Deviation;
 					axes[1] += Deviation;
 					break;
 
-				case DeviceOrientation.Right:
+                case DeviceOrientation.Left:
 					axes[2] -= Deviation;
 					axes[3] += Deviation;
 					break;
@@ -100,13 +100,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return DeviceOrientation.Up;
 
 			if (angle > axes[0] && angle <= axes[1])
-				return DeviceOrientation.Left;
+                return DeviceOrientation.Right;
 
 			if (angle > axes[1] && angle < axes[2])
 				return DeviceOrientation.Down;
 
 			if (angle >= axes[2] && angle < axes[3])
-				return DeviceOrientation.Right;
+                return DeviceOrientation.Left;
 
 			return DeviceOrientation.Up;
 		}

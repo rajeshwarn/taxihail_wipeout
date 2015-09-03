@@ -2216,7 +2216,13 @@
 	<data name="OrderStatus_Medallion" xml:space="preserve">
 		<value>Medallion</value>
 	</data>
-	<data name="WaitingCarLandscapeViewBackButtonText" xml:space="preserve">
+	<data name="WaitingCarLandscapeViewCloseButtonText" xml:space="preserve">
 		<value>Retour</value>
+	</data>
+	<data name="WaitingCarLandscapeViewCarNumber" xml:space="preserve">
+		<value>Numéro de voiture</value>
+	</data>
+	<data name="WaitingCarLandscapeActivityName" xml:space="preserve">
+    	<value>Numéro de voiture</value>
 	</data>
 </root>
