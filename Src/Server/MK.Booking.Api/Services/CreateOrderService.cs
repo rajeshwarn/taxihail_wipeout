@@ -105,11 +105,9 @@ namespace apcurium.MK.Booking.Api.Services
             _resources = new Resources.Resources(_serverSettings);
         }
 
-        public object Post(CreateOrder request)
-        {
-			var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-
-			CreateReportOrder createReportOrder = new CreateReportOrder()
+		private CreateReportOrder CreateReportOrder(CreateOrder request, AccountDetail account)
+		{
+			return new CreateReportOrder()
 			{
 				PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : DateTime.Now,
 				UserNote = request.Note,
@@ -126,6 +124,13 @@ namespace apcurium.MK.Booking.Api.Services
 				UserAgent = Request.UserAgent,
 				ClientVersion = Request.Headers.Get("ClientVersion")
 			};
+		}
+
+        public object Post(CreateOrder request)
+        {
+			var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
+			CreateReportOrder createReportOrder = CreateReportOrder(request, account);
 
 			Exception createOrderException = null;
 

@@ -86,9 +86,13 @@ namespace apcurium.MK.Booking.ReadModel
 			get
 			{
 				if (_pickupDateTime == null || (_pickupDateTime != null && _pickupDateTime >= apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime))
+				{
 					return _pickupDateTime;
+				}
 				else
+				{
 					return apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime;
+				}
 			}
 
 			set
@@ -102,9 +106,13 @@ namespace apcurium.MK.Booking.ReadModel
 			get
 			{
 				if (_createDateTime == null || (_createDateTime != null && _createDateTime >= apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime))
+				{
 					return _createDateTime;
+				}
 				else
+				{
 					return apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime;
+				}
 			}
 
 			set
