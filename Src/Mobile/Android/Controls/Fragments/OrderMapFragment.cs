@@ -202,7 +202,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 					_taxiLocationPin = Map.AddMarker(mapOptions);
 
-					if (_showVehicleNumber)
+					if (_showVehicleNumber && value.VehicleNumber.HasValue())
 					{
 						_taxiLocationPin.ShowInfoWindow();
 					}
