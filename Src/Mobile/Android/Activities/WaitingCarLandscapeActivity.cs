@@ -14,6 +14,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
     [Activity(Label = "@string/WaitingCarLandscapeActivityName", Theme = "@android:style/Theme.NoTitleBar.Fullscreen", ScreenOrientation = ScreenOrientation.Landscape)]
 	public class WaitingCarLandscapeActivity:MvxActivity
     {
+		TextView _carNumberTextView;
+		string _initialContentDescription;
+
 		public new WaitingCarLandscapeViewModel ViewModel
 		{
 			get
@@ -26,9 +29,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 		{
 			base.OnViewModelSet();
 
-            ViewModel_PropertyChanged(null, null);
-
             SetContentView(Resource.Layout.View_WaitingCarLandscape);
+
+			_carNumberTextView = FindViewById<TextView>(Resource.Id.CarNumberTextView);
+			_initialContentDescription = _carNumberTextView.ContentDescription;
+
+			ViewModel_PropertyChanged(null, null);
 			ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
 
@@ -38,6 +44,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
                 RequestedOrientation = ScreenOrientation.Landscape;
 			else if (ViewModel.DeviceOrientation == AppServices.DeviceOrientation.Right)
                 RequestedOrientation = ScreenOrientation.ReverseLandscape;
+
+			_carNumberTextView.ContentDescription = _initialContentDescription + " " + ViewModel.CarNumber;
 		}
     }
 }
