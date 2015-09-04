@@ -64,7 +64,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.NSLayoutConstraint constraintHomeLeadingSpace { get; set; }
 
 		[Outlet]
-		UIKit.NSLayoutConstraint constraintOrderAirportTrailingSpace { get; set; }
+		UIKit.NSLayoutConstraint constraintOrderAirportBottomSpace { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintOrderAirportTopSpace { get; set; }
 
 		[Outlet]
 		UIKit.NSLayoutConstraint constraintOrderBookinOptionsTopSpace { get; set; }
@@ -113,11 +116,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (constraintBookingStatusHeight != null) {
-				constraintBookingStatusHeight.Dispose ();
-				constraintBookingStatusHeight = null;
-			}
-
 			if (_constraintOrderBookinOptionsTopSpace != null) {
 				_constraintOrderBookinOptionsTopSpace.Dispose ();
 				_constraintOrderBookinOptionsTopSpace = null;
@@ -188,6 +186,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				constraintAppBarStatusBottomSpace = null;
 			}
 
+			if (constraintBookingStatusHeight != null) {
+				constraintBookingStatusHeight.Dispose ();
+				constraintBookingStatusHeight = null;
+			}
+
 			if (constraintContactTaxiTopSpace != null) {
 				constraintContactTaxiTopSpace.Dispose ();
 				constraintContactTaxiTopSpace = null;
@@ -208,11 +211,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				constraintOrderEditTrailingSpace = null;
 			}
 
-			if (constraintOrderAirportTrailingSpace != null) {
-				constraintOrderAirportTrailingSpace.Dispose ();
-				constraintOrderAirportTrailingSpace = null;
-			}
-
 			if (constraintOrderOptionsTopSpace != null) {
 				constraintOrderOptionsTopSpace.Dispose ();
 				constraintOrderOptionsTopSpace = null;
@@ -226,6 +224,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (constraintOrderReviewTopSpace != null) {
 				constraintOrderReviewTopSpace.Dispose ();
 				constraintOrderReviewTopSpace = null;
+			}
+
+			if (constraintOrderAirportTopSpace != null) {
+				constraintOrderAirportTopSpace.Dispose ();
+				constraintOrderAirportTopSpace = null;
+			}
+
+			if (constraintOrderAirportBottomSpace != null) {
+				constraintOrderAirportBottomSpace.Dispose ();
+				constraintOrderAirportBottomSpace = null;
 			}
 
 			if (contactTaxiControl != null) {

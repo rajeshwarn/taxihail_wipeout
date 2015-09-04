@@ -139,6 +139,7 @@ namespace CMTServices
             {
                 new KeyValuePair<string, object>("lat", latitude),
                 new KeyValuePair<string, object>("lon", longitude),
+				new KeyValuePair<string, object>("includeMapMatch", "true"),
                 new KeyValuePair<string, object>("deviceName", vehicleRegistration)
             };
 

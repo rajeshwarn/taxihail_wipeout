@@ -47,11 +47,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		/// Manual ridelinq mode (replaces the old manual ridelinq status page).
 		/// </summary>
 		ManualRidelinq,
-		
         /// <summary>
         /// Airport Details selection
         /// </summary>
-        AirportDetails
+        AirportDetails,
+		/// <summary>
+		/// Addresss search (favorites, history, etc...)
+		/// </summary>
+		AirportAddressSearch
 
     }
 }

@@ -205,7 +205,7 @@ namespace apcurium.MK.Common.Configuration
         [CustomizableByCompany]
         public long TimeDifference { get; set; }
 
-        [Display(Name = "IBS -  Fake Order Status Update", Description = "Put IBS in fake mode")]
+        [Display(Name = "IBS - Fake Order Status Update", Description = "Put IBS in fake mode")]
         public bool FakeOrderStatusUpdate { get; protected internal set; }
 
         [CustomizableByCompany]

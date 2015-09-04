@@ -20,6 +20,9 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
+using Android.App;
+using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
 using Android.Text;
@@ -220,10 +223,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 	    }
 
-
-	    private Bitmap CreateTaxiBitmap()
-	    {
-		    return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
+		private Bitmap CreateTaxiBitmap()
+		{
+			return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
 	    }
 
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();

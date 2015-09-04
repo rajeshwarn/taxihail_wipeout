@@ -322,8 +322,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return Settings.ShowMessageDriver
-                    && IsDriverInfoAvailable
-                    && OrderStatusDetail.VehicleNumber.HasValue()
+					&& OrderStatusDetail.DriverInfos != null
+					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue()
                     && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                         || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
             }
@@ -339,7 +339,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-			var showVehicleInformation = Settings.ShowVehicleInformation;
+				var showVehicleInformation = Settings.ShowVehicleInformation;
 				var isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded;
@@ -640,17 +640,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) 
 					&& hasVehicleInfo )
 				{
-					long? eta;
+					long? eta =null;
 
 					if(isUsingGeoServices)
                     {
 						var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, status.OrderId);
-                        eta = geoData.Eta;
+                        
+						if(geoData != null)
+						{
+							eta = geoData.Eta;
 
-						if(geoData.IsPositionValid)
-                        {
+							if(geoData.IsPositionValid)
+							{
 							UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber);
-                        }
+							}
+						}
 					}
 					else
 					{
@@ -664,12 +668,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 						eta = direction.Duration;
 					}                       
-
 					if(eta.HasValue)
 					{
 						statusInfoText += " " + FormatEta(eta);
 					}
-				    
 				}
 
                 // Needed to do this here since cmtGeoService needs the device's location to calculate the Eta and does not have the ability to get the position of a specific vehicle(or a bach of vehicle) without the device location.
@@ -679,7 +681,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     //refresh vehicle position on the map from the geo data
                     var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, Order.Id);
-					if(geoData.IsPositionValid)
+					if(geoData != null && geoData.IsPositionValid)
                     {
 						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber);
                     }

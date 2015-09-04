@@ -48,7 +48,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			var isUnPairPossible = DateTime.UtcNow <= ParentViewModel.OrderStatusDetail.UnpairingTimeOut;
 
 			if (arePassengersOnBoard
-				&& isUnPairPossible
 				&& (ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
 				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
 			{

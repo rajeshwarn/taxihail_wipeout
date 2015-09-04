@@ -10,13 +10,13 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 using System.Collections.Generic;
 using Android.Graphics;
 using Android.Runtime;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	[Register("apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderAirport")]
     public class OrderAirport : MvxFrameControl
     {
-        private TextView _lblAirport;
         private TextView _txtDateTime;
 		private EditTextSpinner _txtAirlines;
         private EditTextSpinner _txtPUPoints;
@@ -26,12 +26,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private bool _isShown;
 		private ViewStates _animatedVisibility;
+		public int CurrentHeight { get; set; }
 
 		public OrderAirport(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderAirport, context), context, attrs)
 		{
             this.DelayBind(() => 
             {
-				_lblAirport = Content.FindViewById<TextView>(Resource.Id.lblAirport);
 				_txtPUPoints = Content.FindViewById<EditTextSpinner>(Resource.Id.txtPUPoints);
                 _txtAirlines = Content.FindViewById<EditTextSpinner>(Resource.Id.txtAirlines);
                 _txtFlightNum = Content.FindViewById<EditText>(Resource.Id.txtFlightNum);
@@ -60,7 +60,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public Point ScreenSize { get; set; }
 
-		public FrameLayout Frame { get; set; }
+		public Func<int> OrderAirportShownHeightProvider { get; set; }
+
+		public Func<int> OrderAirportHiddenHeightProvider { get; set; }
+
 
 		public ViewStates AnimatedVisibility
 		{
@@ -80,14 +83,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private void ShowIfNeeded()
 		{
-			if (_isShown)
-			{
-				return;
-			}
-
 			_isShown = true;
 
-			var animation = AnimationHelper.GetForXTranslation(this, 0, this.Services().Localize.IsRightToLeft);
+			var animation = AnimationHelper.GetForYTranslation(this, OrderAirportShownHeightProvider());
+			animation.AnimationStart += (sender, e) =>
+			{
+				// set it to fill_parent to allow the subview to take the remaining space in the screen 
+				// and to allow the view to resize when keyboard is up
+				if (((MarginLayoutParams)LayoutParameters).Height != ViewGroup.LayoutParams.MatchParent)
+				{
+					((MarginLayoutParams)LayoutParameters).Height = ViewGroup.LayoutParams.MatchParent;
+				}
+			};
 
 			StartAnimation(animation);
 		}
@@ -101,12 +108,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			_isShown = false;
 
-			var animation = AnimationHelper.GetForXTranslation(this, ScreenSize.X, this.Services().Localize.IsRightToLeft);
-			animation.AnimationStart += (sender, e) =>
+			var animation = AnimationHelper.GetForYTranslation(this, ScreenSize.Y);
+			animation.AnimationEnd += (sender, e) =>
 			{
-				if (((MarginLayoutParams)LayoutParameters).Width != Frame.Width)
+				var desiredHeight = OrderAirportHiddenHeightProvider();
+				// reset to a fix height in order to have a smooth translation animation next time we show the review screen
+				if (((MarginLayoutParams)LayoutParameters).Height != desiredHeight)
 				{
-					((MarginLayoutParams)LayoutParameters).Width = Frame.Width;
+					((MarginLayoutParams)LayoutParameters).Height = desiredHeight;
 				}
 			};
 
@@ -125,10 +134,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(_txtDateTime)
                 .For("Click")
                 .To(vm => vm.NavigateToDatePicker);
-
-            set.Bind(_lblAirport)
-                .For(v => v.Text)
-                .To(vm => vm.Title);
 
             set.Bind(_txtFlightNum)
                 .For(v => v.Text)
