@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 	partial class OrderAirportView
 	{
 		[Outlet]
+		UIKit.NSLayoutConstraint contraintHeight { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblAirlines { get; set; }
 
 		[Outlet]
@@ -44,6 +47,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (lblAirlines != null) {
 				lblAirlines.Dispose ();
 				lblAirlines = null;
+			}
+
+			if (contraintHeight != null) {
+				contraintHeight.Dispose ();
+				contraintHeight = null;
 			}
 
 			if (lblAirport != null) {

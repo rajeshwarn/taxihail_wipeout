@@ -43,11 +43,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		/// Booking Status mode (replaces the old booking status page).
 		/// </summary>
 		BookingStatus,
-		
         /// <summary>
         /// Airport Details selection
         /// </summary>
-        AirportDetails
+        AirportDetails,
+		/// <summary>
+		/// Addresss search (favorites, history, etc...)
+		/// </summary>
+		AirportAddressSearch
 
     }
 }

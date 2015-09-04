@@ -422,14 +422,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task POIRefPickupList(string textMatch, int maxRespSize)
         {
-            var pObject = await _poiProvider.GetPOIRefPickupList(_appSettings.Data.TaxiHail.ApplicationKey, textMatch, maxRespSize);
+			var pObject = await _poiProvider.GetPOIRefPickupList(String.Empty, textMatch, maxRespSize);
             _objPOIRefPickupListSubject.OnNext(pObject);
 
         }
 
         public async Task POIRefAirLineList(string textMatch, int maxRespSize)
         {
-            var pObject = await _poiProvider.GetPOIRefAirLineList(_appSettings.Data.TaxiHail.ApplicationKey, textMatch, maxRespSize);
+			var pObject = await _poiProvider.GetPOIRefAirLineList(String.Empty, textMatch, maxRespSize);
             _objPOIRefAirlineListSubject.OnNext(pObject);
         }
 
