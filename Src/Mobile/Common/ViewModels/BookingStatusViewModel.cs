@@ -639,8 +639,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 						if(geoData.IsPositionValid)
                         {
-                            status.VehicleLatitude = geoData.Latitude;
-                            status.VehicleLongitude = geoData.Longitude;
+							AssignedTaxiLocation = new AssignedTaxiLocation
+								{
+									Latitude = geoData.Latitude,
+									Longitude = geoData.Longitude,
+									VehicleNumber = status.VehicleNumber
+								};
                         }
 					}
 					else
