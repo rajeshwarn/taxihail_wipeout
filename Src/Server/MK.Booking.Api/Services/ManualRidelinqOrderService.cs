@@ -141,7 +141,7 @@ namespace apcurium.MK.Booking.Api.Services
                     Surcharge = command.Surcharge,
                     Total = command.Total,
                     FareAtAlternateRate = command.FareAtAlternateRate,
-                    Medallion = trip.Medallion,
+					Medallion = trip.Medallion??response.Medallion,
                     RateAtTripStart = command.RateAtTripStart,
                     RateAtTripEnd = command.RateAtTripEnd,
                     RateChangeTime = trip.RateChangeTime,
