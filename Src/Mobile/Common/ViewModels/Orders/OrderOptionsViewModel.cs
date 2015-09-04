@@ -300,7 +300,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				return;
 			}
 
-			if (((HomeViewModel)Parent).CurrentViewState != HomeViewModelState.Initial) 
+			if (((HomeViewModel)Parent).CurrentViewState == HomeViewModelState.Initial) 
 			{
 				IsPickupSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
 			}

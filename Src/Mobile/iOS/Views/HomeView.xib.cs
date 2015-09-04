@@ -1,4 +1,4 @@
-using Cirrious.MvvmCross.Binding.BindingContext;
+the state change to be called using Cirrious.MvvmCross.Binding.BindingContext;
 using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
@@ -74,7 +74,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             )
                 .Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
                 .Select(_ => ViewModel.CurrentViewState)
-                //.DistinctUntilChanged()
                 .Subscribe(ChangeState, Logger.LogError);
         }
 
