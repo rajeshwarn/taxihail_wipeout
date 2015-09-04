@@ -10,7 +10,6 @@
                 <outlet property="btnCancel" destination="ipp-gG-QLh" id="w1w-Ik-WgT"/>
                 <outlet property="btnEditTip" destination="gaG-h3-5Da" id="dpW-nH-gUZ"/>
                 <outlet property="btnUnpair" destination="OSF-Ez-zc4" id="6iv-xv-lRe"/>
-                <outlet property="btnUnpairFromRideLinq" destination="bbP-DX-bFq" id="Kv4-BX-AWO"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -60,17 +59,6 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbP-DX-bFq" userLabel="UnpairFromRideLinq" customClass="FlatButton">
-                    <rect key="frame" x="8" y="7" width="304" height="41"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="304" id="MfR-b8-J4w"/>
-                        <constraint firstAttribute="height" constant="41" id="tY4-SQ-F8b"/>
-                    </constraints>
-                    <state key="normal" title="UnpairFromRideLinq">
-                        <color key="titleColor" red="1" green="0.010051519906342232" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -78,16 +66,12 @@
                 <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="gaG-h3-5Da" secondAttribute="trailing" constant="8" id="7ip-0L-YXh"/>
                 <constraint firstItem="gaG-h3-5Da" firstAttribute="leading" secondItem="OSF-Ez-zc4" secondAttribute="trailing" constant="8" id="Asv-u6-Bnt"/>
                 <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="500" constant="8" id="MgF-QT-pa1"/>
-                <constraint firstAttribute="trailing" secondItem="bbP-DX-bFq" secondAttribute="trailing" constant="8" id="TsX-qz-q31"/>
-                <constraint firstItem="bbP-DX-bFq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="7" id="ZIc-KD-Qhz"/>
                 <constraint firstItem="OSF-Ez-zc4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="cyW-Nv-Hhe"/>
                 <constraint firstItem="ipp-gG-QLh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="dr4-yU-CCs"/>
                 <constraint firstItem="7Bx-XG-5tK" firstAttribute="leading" secondItem="ipp-gG-QLh" secondAttribute="trailing" constant="8" id="eHn-il-JuG"/>
                 <constraint firstAttribute="trailing" secondItem="OSF-Ez-zc4" secondAttribute="trailing" priority="500" constant="8" id="lVK-yc-aBu"/>
-                <constraint firstItem="bbP-DX-bFq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="kRr-Bl-mM9"/>
                 <constraint firstAttribute="trailing" secondItem="ipp-gG-QLh" secondAttribute="trailing" priority="900" constant="8" id="mC0-3U-kvY"/>
                 <constraint firstItem="gaG-h3-5Da" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="mPG-wx-Urq"/>
-                <constraint firstAttribute="bottom" secondItem="bbP-DX-bFq" secondAttribute="bottom" constant="8" id="nVf-KE-dfd"/>
                 <constraint firstItem="7Bx-XG-5tK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="pUs-0k-SdO"/>
                 <constraint firstAttribute="trailing" secondItem="gaG-h3-5Da" secondAttribute="trailing" priority="900" constant="8" id="uWD-nd-1ym"/>
                 <constraint firstAttribute="trailing" secondItem="7Bx-XG-5tK" secondAttribute="trailing" constant="8" id="uXx-dc-Eto"/>

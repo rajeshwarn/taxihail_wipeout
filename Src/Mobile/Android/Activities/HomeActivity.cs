@@ -266,8 +266,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			// Setup bookingStatusMode
 		    set.Bind(MapFragment)
-			    .For(v => v.AssignedTaxiLocation)
-			    .To(vm => vm.BookingStatus.AssignedTaxiLocation);
+			    .For(v => v.TaxiLocation)
+			    .To(vm => vm.BookingStatus.TaxiLocation);
 
 		    set.Bind(MapFragment)
 			    .For(v => v.Center)

@@ -593,20 +593,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private MKAnnotation _taxiLocationPin;
 
-		private AssignedTaxiLocation _assignedTaxiLocation;
-	    public AssignedTaxiLocation AssignedTaxiLocation
+		private TaxiLocation _taxiLocation;
+	    public TaxiLocation TaxiLocation
 	    {
-		    get { return _assignedTaxiLocation; }
+		    get { return _taxiLocation; }
 		    set
 		    {
-			    _assignedTaxiLocation = value;
+			    _taxiLocation = value;
 			    UpdateTaxiLocation(value);
 
                 ClearAvailableVehiclesAnnotations();
 		    }
 	    }
 
-	    private void UpdateTaxiLocation(AssignedTaxiLocation value)
+	    private void UpdateTaxiLocation(TaxiLocation value)
 	    {
 			if (_taxiLocationPin != null)
 			{

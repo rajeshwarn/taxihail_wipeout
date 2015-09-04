@@ -34,11 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             FlatButtonStyle.Red.ApplyTo(btnUnpair);
             FlatButtonStyle.Silver.ApplyTo(btnCall);
             FlatButtonStyle.Silver.ApplyTo(btnEditTip);
-			FlatButtonStyle.Red.ApplyTo(btnUnpairFromRideLinq);
            
             var localize = this.Services().Localize;
 
-            btnUnpairFromRideLinq.SetTitle(localize["UnpairPayInCar"], UIControlState.Normal);
             btnUnpair.SetTitle(localize["UnpairPayInCar"], UIControlState.Normal);
             btnCall.SetTitle(localize["CallButton"], UIControlState.Normal);
             btnCancel.SetTitle(localize["StatusCancelButton"], UIControlState.Normal);
@@ -73,15 +71,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(btnCall)
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.IsCallCompanyHidden);
-
-			set.Bind (btnUnpairFromRideLinq)
-				.For (v => v.Command)
-				.To (vm => vm.UnpairFromRideLinq);
-
-			set.Bind(btnUnpairFromRideLinq)
-				.For(v => v.HiddenWithConstraints)
-				.To(vm => vm.IsUnpairFromManualRideLinqVisible)
-				.WithConversion ("BoolInverter");
 
             set.Bind(btnEditTip)
                 .For(v => v.HiddenWithConstraints)

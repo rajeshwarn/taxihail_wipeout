@@ -55,12 +55,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public AssignedTaxiLocation AssignedTaxiLocation
+		public TaxiLocation TaxiLocation
 		{
-			get { return _assignedTaxiLocation; }
+			get { return _taxiLocation; }
 			set
 			{
-				_assignedTaxiLocation = value;
+				_taxiLocation = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					: deviceLocationObservable
 				)
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(UpdatePosition, Logger.LogError)
+				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, medallion), Logger.LogError)
 				.DisposeWith(subscriptions);
 			
 
@@ -171,20 +171,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_subscriptions.Disposable = subscriptions;
 		}
 		
-		private void UpdatePosition(Position position)
+		private void UpdatePosition(double latitude, double longitude, string medallion)
 		{
-			if (AssignedTaxiLocation != null && AssignedTaxiLocation.Latitude == position.Latitude && AssignedTaxiLocation.Longitude == position.Longitude)
+			if (TaxiLocation != null && TaxiLocation.Latitude == latitude && TaxiLocation.Longitude == longitude)
 			{
 				//Nothing to update.
 				return;
 			}
 
-			AssignedTaxiLocation = new AssignedTaxiLocation
+			if (TaxiLocation == null)
 			{
-				Longitude = position.Longitude,
-				Latitude = position.Latitude,
-				VehicleNumber = ManualRideLinqDetail.Medallion
-			};
+				TaxiLocation = new TaxiLocation
+				{
+					Longitude = longitude,
+					Latitude = latitude,
+					VehicleNumber = medallion
+				};
+			}
+			else
+			{
+				TaxiLocation.Latitude = latitude;
+				TaxiLocation.Longitude = longitude;
+			}
+
+
 		}
 
 		private IObservable<Unit> GetTimerObservable()
@@ -205,7 +215,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			ManualRideLinqDetail = null;
 
-			AssignedTaxiLocation = null;
+			TaxiLocation = null;
 
 			_orderWorkflowService.PrepareForNewOrder();
 
@@ -557,7 +567,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _refreshStatusIsExecuting;
 		private BookingStatusBottomBarViewModel _bottomBar;
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
-		private AssignedTaxiLocation _assignedTaxiLocation;
+		private TaxiLocation _taxiLocation;
 
 		public async void RefreshStatus()
         {
@@ -639,12 +649,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 						if(geoData.IsPositionValid)
                         {
-							AssignedTaxiLocation = new AssignedTaxiLocation
-								{
-									Latitude = geoData.Latitude,
-									Longitude = geoData.Longitude,
-									VehicleNumber = status.VehicleNumber
-								};
+							UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber);
                         }
 					}
 					else
@@ -657,10 +662,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             _metricsService.LogOriginalRideEta(Order.Id, direction.Duration);
 					    }
 
-					    eta = direction.Duration;
+						eta = direction.Duration;
 					}                       
 
-				    statusInfoText += " " + FormatEta(eta);
+					if(eta.HasValue)
+					{
+						statusInfoText += " " + FormatEta(eta);
+					}
+				    
 				}
 
                 // Needed to do this here since cmtGeoService needs the device's location to calculate the Eta and does not have the ability to get the position of a specific vehicle(or a bach of vehicle) without the device location.
@@ -672,21 +681,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, Order.Id);
 					if(geoData.IsPositionValid)
                     {
-                        status.VehicleLatitude = geoData.Latitude;
-                        status.VehicleLongitude = geoData.Longitude;
+						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber);
                     }
                 }
-
-				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned))
+				else if(!isUsingGeoServices && status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned))
 				{
 					_vehicleService.SetAvailableVehicle(false);
-
-					AssignedTaxiLocation = new AssignedTaxiLocation
-					{
-						Latitude = status.VehicleLatitude,
-						Longitude = status.VehicleLongitude,
-						VehicleNumber = status.VehicleNumber
-					};
+					UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber);
 				}
 
 				StatusInfoText = statusInfoText;
