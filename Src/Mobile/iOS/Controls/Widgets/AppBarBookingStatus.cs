@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             btnUnpair.SetTitle(localize["UnpairPayInCar"], UIControlState.Normal);
             btnCall.SetTitle(localize["CallButton"], UIControlState.Normal);
             btnCancel.SetTitle(localize["StatusCancelButton"], UIControlState.Normal);
-
+            btnEditTip.SetTitle(localize["StatusEditAutoTipButton"], UIControlState.Normal);
         }
 
         private void InitializeBinding()

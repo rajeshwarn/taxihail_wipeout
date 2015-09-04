@@ -177,8 +177,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return Settings.ShowMessageDriver
-                    && IsDriverInfoAvailable
-                    && OrderStatusDetail.VehicleNumber.HasValue()
+					&& OrderStatusDetail.DriverInfos != null
+					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue()
                     && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                         || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
             }
@@ -194,7 +194,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-			var showVehicleInformation = Settings.ShowVehicleInformation;
+				var showVehicleInformation = Settings.ShowVehicleInformation;
 				var isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded;
