@@ -53,6 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private int _menuWidth = 400;
         private Bundle _mainBundle;
 		private readonly SerialDisposable _subscription = new SerialDisposable();
+		private HomeViewModelState _presentationState = HomeViewModelState.Initial;
 
 	    protected override void OnCreate(Bundle bundle)
         {
@@ -213,19 +214,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 			((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = screenSize.Y;
+			((ViewGroup.MarginLayoutParams)_orderAirport.LayoutParameters).TopMargin = screenSize.Y;
 
 			if (this.Services ().Localize.IsRightToLeft) 
             {
 				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).RightMargin = screenSize.X;
-	            ((ViewGroup.MarginLayoutParams) _orderAirport.LayoutParameters).RightMargin = screenSize.X;
             } 
             else 
             {
 				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = screenSize.X;
-				((ViewGroup.MarginLayoutParams)_orderAirport.LayoutParameters).LeftMargin = screenSize.X;
 			}
 
-            _orderAirport.Visibility = ViewStates.Gone;
 	        ((ViewGroup.MarginLayoutParams) _orderStatus.LayoutParameters).TopMargin = -screenSize.Y;
 
             // Creating a view controller for MapFragment
@@ -240,10 +239,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			_orderEdit.ScreenSize = screenSize;
 	        _orderEdit.ParentFrameLayout = _frameLayout;
 
-	        _orderAirport.Frame = _frameLayout;
-	        _orderAirport.ScreenSize = screenSize;
+			_orderAirport.ScreenSize = screenSize;
+			_orderAirport.OrderAirportHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
+			_orderAirport.OrderAirportShownHeightProvider = () => _orderOptions.Height;
 
             SetupHomeViewBinding();
+
+			_orderOptions.LayoutChange += (sender, e) => {
+				if (_orderOptions.Height != _orderOptions.CurrentHeight)
+				{
+					ViewModel.CurrentViewState = _presentationState;
+					_orderOptions.CurrentHeight = _orderOptions.Height;
+				}
+			};
 
 	        PanelMenuInit();
         }
@@ -300,6 +308,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 					HomeViewModelState.Review, 
 					HomeViewModelState.PickDate, 
 					HomeViewModelState.TrainStationSearch, 
+					HomeViewModelState.AirportDetails,
 				});
 
 			set.Bind(_orderStatus)
@@ -310,7 +319,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			set.Bind(_searchAddress)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch });
+				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch, HomeViewModelState.AirportAddressSearch });
 			
 			set.Bind(_appBar)
 				.For(v => v.Visibility)
@@ -507,7 +516,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 		private void ChangeState(HomeViewModelState state)
         {
-			if (state == HomeViewModelState.PickDate)
+			// Double check if current state is AirportDetails.
+			if (_presentationState == HomeViewModelState.AirportDetails && state == HomeViewModelState.AddressSearch) 
+			{
+				_presentationState = HomeViewModelState.AirportAddressSearch;
+			} 
+			else 
+			{
+				_presentationState = state;
+			}
+			if (_presentationState == HomeViewModelState.PickDate)
             {
                 ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 
@@ -516,7 +534,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
             }
-            else if (state == HomeViewModelState.AirportPickDate)
+			else if (_presentationState == HomeViewModelState.AirportPickDate)
             {
                 ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 
@@ -525,7 +543,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
             }
-            else if (state == HomeViewModelState.BookATaxi)
+			else if (_presentationState == HomeViewModelState.BookATaxi)
             {
                 var localize = this.Services().Localize;
 
@@ -537,18 +555,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     localize["BookItLaterButton"],
                     () => { ViewModel.BottomBar.BookLater.ExecuteIfPossible(); });
             }
-			else if (state == HomeViewModelState.AddressSearch)
+			else if (_presentationState == HomeViewModelState.AddressSearch)
             {
-                _searchAddress.Open(AddressLocationType.Unspeficied);
+				_searchAddress.Open(AddressLocationType.Unspeficied, HomeViewModelState.Initial);
             }
-			else if (state == HomeViewModelState.AirportSearch)
+			else if (_presentationState == HomeViewModelState.AirportSearch)
             {
-                _searchAddress.Open(AddressLocationType.Airport);
+				_searchAddress.Open(AddressLocationType.Airport, HomeViewModelState.Initial);
             }
-			else if (state == HomeViewModelState.TrainStationSearch)
+			else if (_presentationState == HomeViewModelState.TrainStationSearch)
             {
-                _searchAddress.Open(AddressLocationType.Train);
+				_searchAddress.Open(AddressLocationType.Train, HomeViewModelState.Initial);
             }
+			else if (_presentationState == HomeViewModelState.AirportAddressSearch)
+			{
+				_searchAddress.Open(AddressLocationType.Unspeficied, HomeViewModelState.AirportDetails);
+			}			
 			else if (state == HomeViewModelState.Initial)
             {			
                 _searchAddress.Close();

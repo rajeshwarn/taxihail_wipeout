@@ -96,7 +96,12 @@ namespace apcurium.MK.Booking.Test
             throw new NotImplementedException();
         }
 
-        public void SetPaymentSettings(string companyKey, ServerPaymentSettings settings)
+	    public void SetAppleTestAccountMode(bool isAppleTestAccountUsed)
+	    {
+		    throw new NotImplementedException();
+	    }
+
+	    public void SetPaymentSettings(string companyKey, ServerPaymentSettings settings)
         {
             companyKey = companyKey ?? string.Empty;
             if (_serverPaymentSettings.ContainsKey(companyKey))

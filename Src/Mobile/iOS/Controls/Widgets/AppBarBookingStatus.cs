@@ -39,6 +39,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             FlatButtonStyle.Red.ApplyTo(btnUnpair);
             FlatButtonStyle.Silver.ApplyTo(btnCall);
             FlatButtonStyle.Silver.ApplyTo(btnEditTip);
+
+            var localize = this.Services().Localize;
+
+            btnUnpair.SetTitle(localize["UnpairPayInCar"], UIControlState.Normal);
+            btnCall.SetTitle(localize["CallButton"], UIControlState.Normal);
+            btnCancel.SetTitle(localize["StatusCancelButton"], UIControlState.Normal);
+
         }
 
         private void InitializeBinding()

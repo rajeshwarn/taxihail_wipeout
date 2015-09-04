@@ -87,5 +87,10 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             throw new NotImplementedException();
         }
+
+	    public void SetAppleTestAccountMode(bool isAppleTestAccountUsed)
+	    {
+		    throw new NotSupportedException("This call is only supported on mobile.");
+	    }
     }
 }

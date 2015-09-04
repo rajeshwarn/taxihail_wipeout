@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
@@ -18,6 +19,9 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
+using Android.App;
+using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
 using Android.Text;
@@ -185,11 +189,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			{
 				try
 				{
-					_taxiLocationPin = Map.AddMarker(new MarkerOptions()
+					var mapOptions = new MarkerOptions()
 						.Anchor(.5f, 1f)
 						.SetPosition(new LatLng(value.VehicleLatitude.Value, value.VehicleLongitude.Value))
-						.InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap(value.VehicleNumber)))
-						.Visible(true));
+						.InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
+						.Visible(true);
+					if (_showVehicleNumber)
+					{
+						mapOptions.SetTitle(value.VehicleNumber);
+					}
+
+					_taxiLocationPin = Map.AddMarker(mapOptions);
+
+					if (_showVehicleNumber)
+					{
+						var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
+						Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
+
+						_taxiLocationPin.ShowInfoWindow();
+					}
+
 				}
 				catch (Exception ex)
 				{
@@ -206,33 +225,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 	    }
 
-		private Bitmap CreateTaxiBitmap(string vehicleNumber)
+		private Bitmap CreateTaxiBitmap()
 		{
-			var taxiIcon = DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
-
-			if (!_showVehicleNumber)
-			{
-				return taxiIcon;
-			}
-
-			var textSize = DrawHelper.GetPixels(11);
-			var textVerticalOffset = DrawHelper.GetPixels(12);
-
-			/* Find the width and height of the title*/
-			var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
-			paintText.SetARGB(255, 0, 0, 0);
-			paintText.SetTypeface(Typeface.DefaultBold);
-			paintText.TextSize = textSize;
-			paintText.TextAlign = Paint.Align.Center;
-
-			var rect = new Rect();
-			paintText.GetTextBounds(vehicleNumber, 0, vehicleNumber.Length, rect);
-
-			var mutableBitmap = taxiIcon.Copy(taxiIcon.GetConfig(), true);
-			var canvas = new Canvas(mutableBitmap);
-			// ReSharper disable once PossibleLossOfFraction
-			canvas.DrawText(vehicleNumber, canvas.Width / 2, rect.Height() + textVerticalOffset, paintText);
-			return mutableBitmap;
+			return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
 		}
 
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
