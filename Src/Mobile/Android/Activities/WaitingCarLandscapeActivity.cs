@@ -41,9 +41,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 		void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			if (ViewModel.DeviceOrientation == AppServices.DeviceOrientation.Left)
-                RequestedOrientation = ScreenOrientation.Landscape;
+			{
+				RequestedOrientation = ScreenOrientation.Landscape;
+			}
 			else if (ViewModel.DeviceOrientation == AppServices.DeviceOrientation.Right)
-                RequestedOrientation = ScreenOrientation.ReverseLandscape;
+			{
+				RequestedOrientation = ScreenOrientation.ReverseLandscape;
+			}
 
 			_carNumberTextView.ContentDescription = _initialContentDescription + " " + ViewModel.CarNumber;
 		}

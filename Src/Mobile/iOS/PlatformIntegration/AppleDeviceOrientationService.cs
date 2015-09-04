@@ -9,33 +9,39 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class AppleDeviceOrientationService: CommonDeviceOrientationService, IDeviceOrientationService
     {
-        const double radiansToDegrees = 360 / (2 * Math.PI);
-        const double accelerometerUpdateInterval = 1 / 3; // 3 Hz
+        const double RadiansToDegrees = 360 / (2 * Math.PI);
+        const double AccelerometerUpdateInterval = 1 / 3; // 3 Hz
 
-        CMMotionManager motionManager;
-        NSOperationQueue accelerometerUpdateQueue;
+        CMMotionManager _motionManager;
+        NSOperationQueue _accelerometerUpdateQueue;
 
         public AppleDeviceOrientationService()
         {
-            if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.DEVICE)
-                motionManager = new CMMotionManager();
+			if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.DEVICE)
+			{
+				_motionManager = new CMMotionManager();
+			}
         }
 
         public override bool IsAvailable()
         {
-            if (motionManager != null)
-                return motionManager.DeviceMotionAvailable && motionManager.AccelerometerAvailable;
-            else
-                return false;
+			if (_motionManager != null)
+			{
+				return _motionManager.DeviceMotionAvailable && _motionManager.AccelerometerAvailable;
+			}
+			else
+			{
+				return false;
+			}
         }
 
         protected override bool StartService()
         {
-            if (motionManager != null && IsAvailable())
+            if (_motionManager != null && IsAvailable())
             {
-                accelerometerUpdateQueue = new NSOperationQueue();
-                motionManager.AccelerometerUpdateInterval = accelerometerUpdateInterval;
-                motionManager.StartAccelerometerUpdates(accelerometerUpdateQueue, AngleChangedEvent);
+                _accelerometerUpdateQueue = new NSOperationQueue();
+                _motionManager.AccelerometerUpdateInterval = AccelerometerUpdateInterval;
+                _motionManager.StartAccelerometerUpdates(_accelerometerUpdateQueue, AngleChangedEvent);
                 return true;
             }
 
@@ -44,9 +50,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         protected override bool StopService()
         {
-            if (motionManager != null && IsAvailable())
+            if (_motionManager != null && IsAvailable())
             {
-                motionManager.StopAccelerometerUpdates();
+                _motionManager.StopAccelerometerUpdates();
                 return true;
             }
 
@@ -59,13 +65,17 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 if ((data.Acceleration.X * data.Acceleration.X + data.Acceleration.Y * data.Acceleration.Y) * 4 >= data.Acceleration.Z * data.Acceleration.Z)
                 {
-                    int angle = 90 - (int)Math.Round(Math.Atan2(-data.Acceleration.Y, data.Acceleration.X) * radiansToDegrees);
+                    int angle = 90 - (int)Math.Round(Math.Atan2(-data.Acceleration.Y, data.Acceleration.X) * RadiansToDegrees);
 
-                    while (angle >= 360)
-                        angle -= 360;
+					while (angle >= 360)
+					{
+						angle -= 360;
+					}
 
-                    while (angle < 0)
-                        angle += 360;
+					while (angle < 0)
+					{
+						angle += 360;
+					}
 
                     AngleChangedEvent(angle);
                 }

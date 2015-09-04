@@ -18,18 +18,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool WaitingWindowClosed = false;
 
+		public object _exclusiveAccess = new object();
+
 		public void UpdateDeviceOrientation(DeviceOrientation deviceOrientation)
 		{
-			lock (this)
+			lock (_exclusiveAccess)
 			{
 				if (UpdateDeviceOrientationEvent != null && !WaitingWindowClosed)
+				{
 					UpdateDeviceOrientationEvent(deviceOrientation);
+				}
 			}
 		}
 
 		public void CloseWaitingWindow()
 		{
-			lock (this)
+			lock (_exclusiveAccess)
 			{
 				if (СloseWaitingWindowEvent != null && !WaitingWindowClosed)
 				{
@@ -73,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		void СloseWaitingWindowEvent()
 		{
 			BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.UnSubscribe(UpdateDeviceOrientationEvent, СloseWaitingWindowEvent);
-			this.Close(this);
+			Close(this);
 		}
 
 		public string CarNumber

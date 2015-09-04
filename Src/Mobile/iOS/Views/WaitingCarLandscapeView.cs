@@ -13,8 +13,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class WaitingCarLandscapeView : BaseViewController<WaitingCarLandscapeViewModel>
     {
-        const double leftRotation = (Math.PI / 180) * 90;
-        const double rightRotation = (Math.PI / 180) * -90;
+        private const double LeftRotation = (Math.PI / 180) * 90;
+		private const double RightRotation = (Math.PI / 180) * -90;
 
         public WaitingCarLandscapeView() : base("WaitingCarLandscapeView", null)
         {
@@ -46,10 +46,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (ViewModel.DeviceOrientation == DeviceOrientation.Left)
-                mainView.Transform = CGAffineTransform.MakeRotation(new nfloat(leftRotation));
-            else if (ViewModel.DeviceOrientation == DeviceOrientation.Right)
-                mainView.Transform = CGAffineTransform.MakeRotation(new nfloat(rightRotation));
+			if (ViewModel.DeviceOrientation == DeviceOrientation.Left)
+			{
+				mainView.Transform = CGAffineTransform.MakeRotation(new nfloat(LeftRotation));
+			}
+			else if (ViewModel.DeviceOrientation == DeviceOrientation.Right)
+			{
+				mainView.Transform = CGAffineTransform.MakeRotation(new nfloat(RightRotation));
+			}
         }
     }
 }

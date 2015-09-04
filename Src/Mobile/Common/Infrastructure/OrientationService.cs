@@ -8,47 +8,48 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class OrientationService : IOrientationService
 	{
-		DeviceOrientation[] deviceOrientationNotifications;
-		IDeviceOrientationService deviceOrientationService;
-		DeviceOrientation currentOrientation = DeviceOrientation.Up;
+		private DeviceOrientation[] _deviceOrientationNotifications;
+		private IDeviceOrientationService _deviceOrientationService;
+		private DeviceOrientation _currentOrientation = DeviceOrientation.Up;
 
-		int[] Axes = { 45, 135, 225, 315 };
-		int Deviation = 20;
+		int[] _axes = { 45, 135, 225, 315 };
+		const int Deviation = 20;
 
 		public event Action<DeviceOrientation> NotifyOrientationChanged;
 		public event Action<int> NotifyAngleChanged;
 
-		int exclusiveAccess = 0;
-		bool initialized = false, started = false;
+		int _exclusiveAccess = 0;
+		bool _initialized = false;
+		bool _started = false;
 
 		public OrientationService(IDeviceOrientationService deviceOrientationService)
 		{
-			this.deviceOrientationService = deviceOrientationService;
+			this._deviceOrientationService = deviceOrientationService;
 		}
 
 		public void Initialize(DeviceOrientation[] deviceOrientationNotifications)
 		{
-			if (!initialized)
+			if (!_initialized)
 			{
-				this.deviceOrientationNotifications = deviceOrientationNotifications;
-				initialized = true;
+				this._deviceOrientationNotifications = deviceOrientationNotifications;
+				_initialized = true;
 			}
 		}
 
 		public bool IsAvailable()
 		{
-			return deviceOrientationService.IsAvailable();
+			return _deviceOrientationService.IsAvailable();
 		}
 
 		public bool Start()
 		{
-			if (initialized && !started && IsAvailable())
+			if (_initialized && !_started && IsAvailable())
 			{
-				started = true;
-				((CommonDeviceOrientationService)deviceOrientationService).NotifyAngleChanged += AngleChanged;
-				started = deviceOrientationService.Start();
+				_started = true;
+				((CommonDeviceOrientationService)_deviceOrientationService).NotifyAngleChanged += AngleChanged;
+				_started = _deviceOrientationService.Start();
 
-				return started;
+				return _started;
 			}
 
 			return false;
@@ -56,11 +57,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public bool Stop()
 		{
-			if (initialized && started)
+			if (_initialized && _started)
 			{
-				started = false;
-				deviceOrientationService.Stop();
-				((CommonDeviceOrientationService)deviceOrientationService).NotifyAngleChanged -= AngleChanged;
+				_started = false;
+				_deviceOrientationService.Stop();
+				((CommonDeviceOrientationService)_deviceOrientationService).NotifyAngleChanged -= AngleChanged;
 
 				return true;
 			}
@@ -70,8 +71,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		DeviceOrientation GetOrientationByAngle(int angle, DeviceOrientation currentDeviceOrientation)
 		{
-			int[] axes = new int[4];
-			Array.Copy(Axes, axes, 4);
+			var axes = new int[4];
+			Array.Copy(_axes, axes, 4);
 
 			switch (currentDeviceOrientation)
 			{
@@ -97,16 +98,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 
 			if (angle >= axes[3] && angle <= axes[0])
+			{
 				return DeviceOrientation.Up;
+			}
 
 			if (angle > axes[0] && angle <= axes[1])
-                return DeviceOrientation.Right;
+			{
+				return DeviceOrientation.Right;
+			}
 
 			if (angle > axes[1] && angle < axes[2])
+			{
 				return DeviceOrientation.Down;
+			}
 
 			if (angle >= axes[2] && angle < axes[3])
-                return DeviceOrientation.Left;
+			{
+				return DeviceOrientation.Left;
+			}
 
 			return DeviceOrientation.Up;
 		}
@@ -114,23 +123,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public void AngleChanged(int angle)
 		{
 			if (NotifyAngleChanged != null)
-				NotifyAngleChanged(angle);
-
-			DeviceOrientation deviceOrientation = GetOrientationByAngle(angle, currentOrientation);
-
-			if (currentOrientation != deviceOrientation)
 			{
-				if (System.Threading.Interlocked.CompareExchange(ref exclusiveAccess, 1, 0) == 0)
-				{
-					if (currentOrientation != deviceOrientation)
-					{
-						currentOrientation = deviceOrientation;
+				NotifyAngleChanged(angle);
+			}
 
-						if (NotifyOrientationChanged != null && deviceOrientationNotifications.Contains(deviceOrientation))
-							NotifyOrientationChanged(currentOrientation);
+			DeviceOrientation deviceOrientation = GetOrientationByAngle(angle, _currentOrientation);
+
+			if (_currentOrientation != deviceOrientation)
+			{
+				if (System.Threading.Interlocked.CompareExchange(ref _exclusiveAccess, 1, 0) == 0)
+				{
+					if (_currentOrientation != deviceOrientation)
+					{
+						_currentOrientation = deviceOrientation;
+
+						if (NotifyOrientationChanged != null && _deviceOrientationNotifications.Contains(deviceOrientation))
+						{
+							NotifyOrientationChanged(_currentOrientation);
+						}
 					}
 
-					exclusiveAccess = 0;
+					_exclusiveAccess = 0;
 				}
 			}
 		}

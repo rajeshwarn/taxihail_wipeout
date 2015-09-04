@@ -71,7 +71,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 		public override void OnOrientationChanged(int angle)
 		{
 			if (NotifyOrientationChanged != null)
+			{
 				NotifyOrientationChanged(angle);
+			}
 		}
 	}
 }

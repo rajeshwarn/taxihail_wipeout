@@ -8,22 +8,26 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 	public abstract class CommonDeviceOrientationService
 	{
 		public event Action<int> NotifyAngleChanged;
-		bool started = false;
+		bool _isStarted = false;
 
 		public bool Start()
 		{
-			if (!started && IsAvailable())
-				started = StartService();
+			if (!_isStarted && IsAvailable())
+			{
+				_isStarted = StartService();
+			}
 
-			return started;
+			return _isStarted;
 		}
 
 		public bool Stop()
 		{
-			if (started && IsAvailable())
-				started = !StopService();
+			if (_isStarted && IsAvailable())
+			{
+				_isStarted = !StopService();
+			}
 
-			return !started;
+			return !_isStarted;
 		}
 
 		public abstract bool IsAvailable();
@@ -39,7 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		public void AngleChangedEvent(int angle)
 		{
 			if (NotifyAngleChanged != null)
+			{
 				NotifyAngleChanged(angle);
+			}
 		}
 	}
 }
