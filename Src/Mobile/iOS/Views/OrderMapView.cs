@@ -363,6 +363,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
                 {
+                    // Don't display movable pickup or dropoff pins
                     return;
                 }
                 else
