@@ -357,26 +357,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				SetOverlay(_pickupCenterPin, false);
 				SetOverlay(_dropoffCenterPin, true);
 
-
 	            SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
             }
             else
             {
                 if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
                 {
+                    return;
                 }
-	            SetAnnotation(PickupAddress, _pickupAnnotation, false);
-	            SetOverlay(_dropoffCenterPin, false);
-	            SetOverlay(_pickupCenterPin, true);
+                else
+                {
+                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
+                    SetOverlay(_dropoffCenterPin, false);
+                    SetOverlay(_pickupCenterPin, true);
 
-	            if (DestinationAddress.HasValidCoordinate())
-	            {
-		            SetAnnotation(DestinationAddress, _destinationAnnotation, true);
-	            }
-	            else
-	            {
-		            SetAnnotation(DestinationAddress, _destinationAnnotation, false);
-	            }
+                    SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
+                }
             }
         }
                      
@@ -607,8 +603,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	                var vehicleLatitude = value.VehicleLatitude ?? 0;
 	                var vehicleLongitude = value.VehicleLongitude ?? 0;
 
-                    if (value.VehicleLatitude != 0 && value.VehicleLongitude != 0 && value.VehicleNumber.HasValue() && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
+                    if (vehicleLatitude != 0
+                        && vehicleLongitude != 0
+                        && value.VehicleNumber.HasValue()
+                        && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
                     {
+                        // Refresh vehicle position
 						coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
                     }
 
