@@ -63,12 +63,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public AssignedTaxiLocation AssignedTaxiLocation
+		public TaxiLocation TaxiLocation
 		{
-			get { return _assignedTaxiLocation; }
+			get { return _taxiLocation; }
 			set
 			{
-				_assignedTaxiLocation = value;
+				_taxiLocation = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -137,17 +137,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		
 		private void UpdatePosition(double latitude, double longitude, string medallion)
 		{
-			if (AssignedTaxiLocation != null 
-				&& AssignedTaxiLocation.Latitude ==  latitude 
-				&& AssignedTaxiLocation.Longitude == longitude)
+			if (TaxiLocation != null 
+				&& TaxiLocation.Latitude ==  latitude 
+				&& TaxiLocation.Longitude == longitude)
 			{
 				//Nothing to update.
 				return;
 			}
 
-			if (AssignedTaxiLocation == null)
+			if (TaxiLocation == null)
 			{
-				AssignedTaxiLocation = new AssignedTaxiLocation
+				TaxiLocation = new TaxiLocation
 				{
 					Longitude = longitude,
 					Latitude = latitude,
@@ -156,8 +156,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			else
 			{
-				AssignedTaxiLocation.Latitude = latitude;
-				AssignedTaxiLocation.Longitude = longitude;
+				TaxiLocation.Latitude = latitude;
+				TaxiLocation.Longitude = longitude;
 			}
 
 
@@ -181,7 +181,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			ManualRideLinqDetail = null;
 
-			AssignedTaxiLocation = null;
+			TaxiLocation = null;
 
 			_orderWorkflowService.PrepareForNewOrder();
 
@@ -467,7 +467,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _refreshStatusIsExecuting;
 		private BookingStatusBottomBarViewModel _bottomBar;
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
-		private AssignedTaxiLocation _assignedTaxiLocation;
+		private TaxiLocation _taxiLocation;
 
 		public async void RefreshStatus()
         {

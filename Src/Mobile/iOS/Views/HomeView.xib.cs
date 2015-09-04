@@ -215,8 +215,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.BookingStatus);
 
 	        set.Bind(mapView)
-		        .For(v => v.AssignedTaxiLocation)
-		        .To(vm => vm.BookingStatus.AssignedTaxiLocation);
+		        .For(v => v.TaxiLocation)
+		        .To(vm => vm.BookingStatus.TaxiLocation);
             
             #endregion
 

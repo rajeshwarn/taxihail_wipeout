@@ -75,15 +75,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.IsCallCompanyHidden);
 
-			set.Bind (btnUnpairFromRideLinq)
-				.For (v => v.Command)
-				.To (vm => vm.UnpairFromRideLinq);
-
-			set.Bind(btnUnpairFromRideLinq)
-				.For(v => v.HiddenWithConstraints)
-				.To(vm => vm.IsUnpairFromManualRideLinqVisible)
-				.WithConversion ("BoolInverter");
-
             set.Apply();
         }
 

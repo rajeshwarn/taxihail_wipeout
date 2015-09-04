@@ -63,7 +63,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public void NotifyBookingStatusAppbarChanged()
 		{
 			RaisePropertyChanged(() => IsCallCompanyHidden);
-			RaisePropertyChanged(() => IsUnpairFromManualRideLinqVisible);
 		}
 
 		public bool IsCallCompanyHidden
@@ -172,54 +171,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						this.Services().Localize["Cancel"], () => { });
 				});
 			}
-		}
-
-		public ICommand UnpairFromRideLinq
-		{
-			get
-			{
-				return this.GetCommand(async () =>
-				{
-					try
-					{
-
-						var shouldUnpair = new TaskCompletionSource<bool>();
-
-						this.Services().Message.ShowMessage(
-							this.Services().Localize["WarningTitle"],
-							this.Services().Localize["UnpairWarningMessage"],
-							this.Services().Localize["UnpairWarningCancelButton"],
-							() => shouldUnpair.SetResult(true),
-							this.Services().Localize["Cancel"],
-							() => shouldUnpair.SetResult(false));
-
-						if (await shouldUnpair.Task)
-						{
-							using (this.Services().Message.ShowProgress())
-							{
-								var orderId = ParentViewModel.ManualRideLinqDetail.OrderId;
-
-								await _bookingService.UnpairFromManualRideLinq(orderId);
-
-								_bookingService.ClearLastOrder();
-
-								ParentViewModel.ReturnToInitialState();
-							}
-						}
-					}
-					catch (Exception)
-					{
-						this.Services().Message.ShowMessage(
-										this.Services().Localize["ManualPairingForRideLinQ_Error_Title"],
-										this.Services().Localize["ManualUnPairingForRideLinQ_Error_Message"]);
-					}
-				});
-			}
-		}
-
-		public bool IsUnpairFromManualRideLinqVisible
-		{
-			get { return ParentViewModel != null && ParentViewModel.ManualRideLinqDetail != null; }
 		}
 
 		bool _isUnpairButtonVisible;

@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private IEnumerable<CoordinateViewModel> _center;
 
-		private OrderStatusDetail _taxiLocation;
+		private OrderStatusDetail _orderStatusDetail;
 		private Marker _taxiLocationPin;
 
         private readonly List<Marker> _availableVehicleMarkers = new List<Marker> ();
@@ -156,17 +156,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 		}
 
-	    public AssignedTaxiLocation AssignedTaxiLocation
+	    public TaxiLocation TaxiLocation
 	    {
-		    get { return _assignedTaxiLocation; }
+		    get { return _taxiLocation; }
 		    set
 		    {
-			    _assignedTaxiLocation = value;
-			    UpdateTaxiLocaiton(value);
+				_taxiLocation = value;
+			    UpdateTaxiLocation(value);
 		    }
 	    }
 
-	    private void UpdateTaxiLocaiton(AssignedTaxiLocation value)
+	    private void UpdateTaxiLocation(TaxiLocation value)
 	    {
 		    if (_taxiLocationPin != null)
 		    {
@@ -252,7 +252,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private bool _lockGeocoding;
 	    private OrderManualRideLinqDetail _manualPairedTaxi;
-	    private AssignedTaxiLocation _assignedTaxiLocation;
+	    private TaxiLocation _taxiLocation;
 
 	    [MvxSetToNullAfterBinding]
         public object DataContext

@@ -1,6 +1,6 @@
 namespace apcurium.MK.Booking.Mobile.ViewModels.Map
 {
-	public class AssignedTaxiLocation
+	public class TaxiLocation
 	{
 		public double? Latitude { get; set; }
 		public double? Longitude { get; set; }
