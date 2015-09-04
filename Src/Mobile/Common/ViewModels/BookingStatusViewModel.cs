@@ -513,18 +513,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& status.VehicleLatitude.HasValue
 					&& status.VehicleLongitude.HasValue)
 				{
-					long? eta;
+					long? eta =null;
 
 					if(isUsingGeoServices)
                     {
 						var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, status.OrderId);
-                        eta = geoData.Eta;
+                        
+						if(geoData != null)
+						{
+							eta = geoData.Eta;
 
-						if(geoData.IsPositionValid)
-                        {
-                            status.VehicleLatitude = geoData.Latitude;
-                            status.VehicleLongitude = geoData.Longitude;
-                        }
+							if(geoData.IsPositionValid)
+							{
+								status.VehicleLatitude = geoData.Latitude;
+								status.VehicleLongitude = geoData.Longitude;
+							}
+						}
 					}
 					else
 					{
@@ -538,8 +542,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					    eta = direction.Duration;
 					}                       
-
-				    statusInfoText += " " + FormatEta(eta);
+					if(eta.HasValue)
+					{
+						statusInfoText += " " + FormatEta(eta);
+					}
 				}
 
                 // Needed to do this here since cmtGeoService needs the device's location to calculate the Eta and does not have the ability to get the position of a specific vehicle(or a bach of vehicle) without the device location.
@@ -549,7 +555,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     //refresh vehicle position on the map from the geo data
                     var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, Order.Id);
-					if(geoData.IsPositionValid)
+					if(geoData != null && geoData.IsPositionValid)
                     {
                         status.VehicleLatitude = geoData.Latitude;
                         status.VehicleLongitude = geoData.Longitude;

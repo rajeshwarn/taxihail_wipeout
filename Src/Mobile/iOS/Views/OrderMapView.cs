@@ -30,6 +30,7 @@ using Foundation;
 using MapKit;
 using TinyIoC;
 using UIKit;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -606,7 +607,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	                var vehicleLatitude = value.VehicleLatitude ?? 0;
 	                var vehicleLongitude = value.VehicleLongitude ?? 0;
 
-                    if (vehicleLatitude > 0 && vehicleLongitude > 0 && !string.IsNullOrEmpty(value.VehicleNumber) && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
+                    if (vehicleLatitude > 0 && vehicleLongitude > 0 && value.VehicleNumber.HasValue() && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
                     {
 						coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
                     }
