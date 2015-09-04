@@ -607,7 +607,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	                var vehicleLatitude = value.VehicleLatitude ?? 0;
 	                var vehicleLongitude = value.VehicleLongitude ?? 0;
 
-                    if (vehicleLatitude > 0 && vehicleLongitude > 0 && value.VehicleNumber.HasValue() && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
+                    if (value.VehicleLatitude != 0 && value.VehicleLongitude != 0 && value.VehicleNumber.HasValue() && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
                     {
 						coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
                     }
