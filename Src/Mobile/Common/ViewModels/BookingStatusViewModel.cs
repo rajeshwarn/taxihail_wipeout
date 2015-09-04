@@ -121,7 +121,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
 				.ObserveOn(SynchronizationContext.Current)
 				.Where(_ => ManualRideLinqDetail != null && ManualRideLinqDetail.Medallion.HasValue())
-				.Subscribe(_ => UpdatePosition(), Logger.LogError)
+				.Select(_ =>  _locationService.LastKnownPosition)
+				.Subscribe(
+					pos => UpdatePosition(pos.Latitude, pos.Longitude, ManualRideLinqDetail.Medallion), 
+					Logger.LogError
+				)
 				.DisposeWith(subscriptions);
 
 			_locationService.Start();
@@ -131,23 +135,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_subscriptions.Disposable = subscriptions;
 		}
 		
-		private void UpdatePosition()
+		private void UpdatePosition(double latitude, double longitude, string medallion)
 		{
-			var lastKnownPosition = _locationService.LastKnownPosition;
-
-
-			if (AssignedTaxiLocation != null && AssignedTaxiLocation.Latitude == lastKnownPosition.Latitude && AssignedTaxiLocation.Longitude == lastKnownPosition.Longitude)
+			if (AssignedTaxiLocation != null 
+				&& AssignedTaxiLocation.Latitude ==  latitude 
+				&& AssignedTaxiLocation.Longitude == longitude)
 			{
 				//Nothing to update.
 				return;
 			}
 
-			AssignedTaxiLocation = new AssignedTaxiLocation
+			if (AssignedTaxiLocation == null)
 			{
-				Longitude = lastKnownPosition.Longitude,
-				Latitude = lastKnownPosition.Latitude,
-				VehicleNumber = ManualRideLinqDetail.Medallion
-			};
+				AssignedTaxiLocation = new AssignedTaxiLocation
+				{
+					Longitude = longitude,
+					Latitude = latitude,
+					VehicleNumber = medallion
+				};
+			}
+			else
+			{
+				AssignedTaxiLocation.Latitude = latitude;
+				AssignedTaxiLocation.Longitude = longitude;
+			}
+
+
 		}
 
 		private IObservable<Unit> GetTimerObservable()
@@ -522,16 +535,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					statusInfoText += " " + FormatEta(d);						
 				}
 
-				if (VehicleStatuses.ShowOnMapStatuses.Any(vehicle => vehicle.SoftEqual(status.IBSStatusId)) && hasVehicleInfo)
+				if (VehicleStatuses.ShowOnMapStatuses.Any(vehicle => vehicle.SoftEqual(status.IBSStatusId)) 
+					&& hasVehicleInfo
+					&& status.VehicleLatitude.HasValue
+					&& status.VehicleLongitude.HasValue
+				)
 				{
 					_vehicleService.SetAvailableVehicle(false);
-
-					AssignedTaxiLocation = new AssignedTaxiLocation
-					{
-						Latitude = status.VehicleLatitude,
-						Longitude = status.VehicleLongitude,
-						VehicleNumber = status.VehicleNumber
-					};
+					UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber);
 				}
 
 				StatusInfoText = statusInfoText;
