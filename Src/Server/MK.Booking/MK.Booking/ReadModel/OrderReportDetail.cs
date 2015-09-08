@@ -58,8 +58,8 @@ namespace apcurium.MK.Booking.ReadModel
 
     public class OrderReportOrder
     {
-		DateTime? _pickupDateTime;
-		DateTime? _createDateTime;
+		private DateTime? _pickupDateTime;
+		private DateTime? _createDateTime;
 
 		public OrderReportOrder()
         {
@@ -97,7 +97,14 @@ namespace apcurium.MK.Booking.ReadModel
 
 			set
 			{
-				_pickupDateTime = value;
+				if (value == null || (value != null && value >= apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime))
+				{
+					_pickupDateTime = value;
+				}
+				else
+				{
+					_pickupDateTime = apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime;
+				}
 			}
 		}
 
@@ -117,7 +124,14 @@ namespace apcurium.MK.Booking.ReadModel
 
 			set
 			{
-				_createDateTime = value;
+				if (value == null || (value != null && value >= apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime))
+				{
+					_createDateTime = value;
+				}
+				else
+				{
+					_createDateTime = apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime;
+				}
 			}
 		}
 
