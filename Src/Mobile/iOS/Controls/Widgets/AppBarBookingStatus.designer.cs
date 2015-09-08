@@ -23,6 +23,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnCall != null) {
+				btnCall.Dispose ();
+				btnCall = null;
+			}
+
 			if (btnCancel != null) {
 				btnCancel.Dispose ();
 				btnCancel = null;
@@ -31,11 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (btnUnpair != null) {
 				btnUnpair.Dispose ();
 				btnUnpair = null;
-			}
-
-			if (btnCall != null) {
-				btnCall.Dispose ();
-				btnCall = null;
 			}
 		}
 	}

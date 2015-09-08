@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 			_isShown = true;
 
-			var desigredHeight = -(Height + 1);
+			var desigredHeight = -Height;
 
 			if (((MarginLayoutParams) LayoutParameters).TopMargin != desigredHeight)
 			{
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_isShown = false;
 
 
-			var animation = AnimationHelper.GetForYTranslation(this, -(Height + 1));
+			var animation = AnimationHelper.GetForYTranslation(this, -Height);
 
 			StartAnimation(animation);
 		}

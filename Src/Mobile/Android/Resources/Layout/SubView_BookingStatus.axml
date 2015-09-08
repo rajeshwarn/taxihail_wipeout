@@ -7,6 +7,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+				android:minHeight="75dip"
         android:orientation="vertical"
         android:id="@+id/statusLayout"
         android:elevation="1dp"
@@ -19,10 +20,11 @@
             android:layout_marginRight="6dp"
             android:layout_marginBottom="0dp"
             android:orientation="vertical"
-            android:gravity="center_horizontal|center_vertical">
+            android:gravity="center_horizontal|center_vertical"
+						>
             <TextView
                 style="@style/BlackTextLabel"
-                local:MvxBind="Text ConfirmationNoTxt"
+                local:MvxBind="Text ConfirmationNoTxt;Visibility IsConfirmationNoHidden, Converter=InvertedVisibility"
                 android:gravity="center_horizontal|top"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
@@ -109,7 +111,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/driverLayout"
-                    local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility">
+                    local:MvxBind="Visibility VehicleFullInfoHidden, Converter=InvertedVisibility">
                     <TextView
                         android:id="@+id/modelValue"
                         style="@style/BlackTextLabel"
@@ -125,7 +127,7 @@
 
 	<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusContactTaxiOverlay
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dip"
         android:id="@+id/ContactTaxiOverlay"
         android:background="@drawable/drop_shadow_opaque" />
 	

@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(() =>
 				{
-						ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true});
+					Close(this);
 				});
 			}
 		}

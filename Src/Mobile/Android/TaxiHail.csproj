@@ -248,7 +248,6 @@
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Book\PromotionActivity.cs" />
     <Compile Include="Activities\ManualPairingForRideLinqActivity.cs" />
-    <Compile Include="Activities\ManualRideLinqStatusActivity.cs" />
     <Compile Include="Activities\ManualRideLinqSummaryActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\Setting\NotificationSettingsActivity.cs" />
@@ -930,9 +929,6 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_ManualRideLinqSummary.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_ManualRideLinqStatus.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\SubView_BookingStatus.axml">

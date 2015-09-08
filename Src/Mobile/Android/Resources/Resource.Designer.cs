@@ -6826,46 +6826,43 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int View_ManualPairingForRideLinq = 2130903163;
 			
 			// aapt resource value: 0x7f03007c
-			public const int View_ManualRideLinqStatus = 2130903164;
+			public const int View_ManualRideLinqSummary = 2130903164;
 			
 			// aapt resource value: 0x7f03007d
-			public const int View_ManualRideLinqSummary = 2130903165;
+			public const int View_NotificationSettings = 2130903165;
 			
 			// aapt resource value: 0x7f03007e
-			public const int View_NotificationSettings = 2130903166;
+			public const int View_OrderBookingOptionsDialog = 2130903166;
 			
 			// aapt resource value: 0x7f03007f
-			public const int View_OrderBookingOptionsDialog = 2130903167;
+			public const int View_OverduePayment = 2130903167;
 			
 			// aapt resource value: 0x7f030080
-			public const int View_OverduePayment = 2130903168;
+			public const int View_PasswordRecovery = 2130903168;
 			
 			// aapt resource value: 0x7f030081
-			public const int View_PasswordRecovery = 2130903169;
+			public const int View_Payments_CreditCardAdd = 2130903169;
 			
 			// aapt resource value: 0x7f030082
-			public const int View_Payments_CreditCardAdd = 2130903170;
+			public const int View_Promotion = 2130903170;
 			
 			// aapt resource value: 0x7f030083
-			public const int View_Promotion = 2130903171;
+			public const int View_RideSettings = 2130903171;
 			
 			// aapt resource value: 0x7f030084
-			public const int View_RideSettings = 2130903172;
+			public const int View_TermsAndConditions = 2130903172;
 			
 			// aapt resource value: 0x7f030085
-			public const int View_TermsAndConditions = 2130903173;
+			public const int View_Tutorial = 2130903173;
 			
 			// aapt resource value: 0x7f030086
-			public const int View_Tutorial = 2130903174;
+			public const int View_UpdatedTermsAndConditions = 2130903174;
 			
 			// aapt resource value: 0x7f030087
-			public const int View_UpdatedTermsAndConditions = 2130903175;
+			public const int View_UpdatePassword = 2130903175;
 			
 			// aapt resource value: 0x7f030088
-			public const int View_UpdatePassword = 2130903176;
-			
-			// aapt resource value: 0x7f030089
-			public const int View_UserTaxiHailNetworkSettings = 2130903177;
+			public const int View_UserTaxiHailNetworkSettings = 2130903176;
 			
 			static Layout()
 			{

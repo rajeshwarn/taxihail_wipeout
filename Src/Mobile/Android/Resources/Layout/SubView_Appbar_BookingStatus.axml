@@ -42,5 +42,5 @@
         android:layout_marginRight="8dip"
         android:layout_gravity="center_vertical"
         android:text="@string/StatusCallButton"
-        local:MvxBind="Click CallCompany; Visibility Settings.HideCallDispatchButton, Converter=InvertedVisibility" />
+        local:MvxBind="Click CallCompany; Visibility IsCallCompanyHidden, Converter=InvertedVisibility" />
 </LinearLayout>

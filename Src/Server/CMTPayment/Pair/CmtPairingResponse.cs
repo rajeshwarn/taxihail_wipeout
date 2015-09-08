@@ -8,5 +8,6 @@
         public int TripId { get; set; }
         public int DriverId { get; set; }
         public long TimeoutSeconds { get; set; }
+	    public string DeviceName { get; set; }
     }
 }

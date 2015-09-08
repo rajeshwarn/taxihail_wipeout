@@ -464,11 +464,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							var questions = await _orderWorkflowService.GetAccountPaymentQuestions();
 							if ((questions != null) && (questions.Length > 0))
 							{
-								((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+								((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;								
 
-								
-
-								ShowViewModel<InitializeOrderForAccountPaymentViewModel>();
+								ShowSubViewModel<InitializeOrderForAccountPaymentViewModel, Tuple<Order, OrderStatusDetail>>(
+									null, 
+									result => ((HomeViewModel)Parent).GotoBookingStatus(result.Item1, result.Item2)
+								);
 							}
 							else
 							{
@@ -703,19 +704,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
                     var localize = this.Services().Localize;
 
-                    if (_accountService.CurrentAccount.DefaultCreditCard == null
-						|| _accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
+                    if (_accountService.CurrentAccount.DefaultCreditCard == null || _accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
                     {
-                        this.Services().Message.ShowMessage(
-                            localize["ErrorCreatingOrderTitle"],
-                            localize["ManualRideLinqNoCardOnFile"]);
+                        this.Services().Message.ShowMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqNoCardOnFile"]);
                         return;
                     }
-
-                    ShowViewModel<ManualPairingForRideLinqViewModel>();
+	                var homeViewModel = (HomeViewModel) Parent;
+					ShowSubViewModel<ManualPairingForRideLinqViewModel, OrderManualRideLinqDetail>(null, homeViewModel.GoToManualRideLinq);
                 });
             }
         }
+
+
+	    
 
 	    private async Task ShowFareEstimateAlertDialogIfNecessary()
         {

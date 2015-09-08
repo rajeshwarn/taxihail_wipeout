@@ -37,7 +37,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		/// <summary>
 		/// Booking Status mode (replaces the old booking status page).
 		/// </summary>
-		BookingStatus
+		BookingStatus,
+		/// <summary>
+		/// Manual ridelinq mode (replaces the old manual ridelinq status page).
+		/// </summary>
+		ManualRidelinq
     }
 }
 

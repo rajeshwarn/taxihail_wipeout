@@ -25,10 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             Initialize();
 
-            this.DelayBind (() =>
-            {
-                InitializeBinding();
-            });
+            this.DelayBind (InitializeBinding);
         }
 
         private void Initialize()
@@ -38,6 +35,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             FlatButtonStyle.Red.ApplyTo(btnCancel);
             FlatButtonStyle.Red.ApplyTo(btnUnpair);
             FlatButtonStyle.Silver.ApplyTo(btnCall);
+           
+            var localize = this.Services().Localize;
+
+            btnUnpair.SetTitle(localize["UnpairPayInCar"], UIControlState.Normal);
+            btnCall.SetTitle(localize["CallButton"], UIControlState.Normal);
+            btnCancel.SetTitle(localize["StatusCancelButton"], UIControlState.Normal);
         }
 
         private void InitializeBinding()
@@ -68,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(btnCall)
                 .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.Settings.HideCallDispatchButton);
+                .To(vm => vm.IsCallCompanyHidden);
 
             set.Apply();
         }
@@ -79,28 +82,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             get
             {
-                return base.Hidden;
+                return Hidden;
             }
             set
             {
-                if (base.Hidden != value)
+                if (Hidden != value)
                 {
-                    base.Hidden = value;
+                    Hidden = value;
                     if (value)
                     {
-                        _hiddenContraints = this.Superview.Constraints != null 
-                            ? this.Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
+                        _hiddenContraints = Superview.Constraints != null 
+                            ? Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
                             : null;
                         if (_hiddenContraints != null)
                         {
-                            this.Superview.RemoveConstraints(_hiddenContraints);
+                            Superview.RemoveConstraints(_hiddenContraints);
                         }
                     }
                     else
                     {
                         if (_hiddenContraints != null)
                         {
-                            this.Superview.AddConstraints(_hiddenContraints);
+                            Superview.AddConstraints(_hiddenContraints);
                             _hiddenContraints = null;
                         }
                     }

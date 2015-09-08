@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -57,6 +58,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				IsUnpairButtonVisible = false;
 			}
+		}
+
+		public void NotifyBookingStatusAppbarChanged()
+		{
+			RaisePropertyChanged(() => IsCallCompanyHidden);
+		}
+
+		public bool IsCallCompanyHidden
+		{
+			get { return Settings.HideCallDispatchButton || ParentViewModel.ManualRideLinqDetail != null; }
 		}
 
 		public ICommand CancelOrder
@@ -146,7 +157,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								}
 								else
 								{
-									this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"]);
+									this.Services().Message
+										.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"])
+										.FireAndForget();
 								}
 							}
 							catch (Exception ex)
