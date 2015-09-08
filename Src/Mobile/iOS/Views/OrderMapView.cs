@@ -379,6 +379,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	    {
 		    if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
 		    {
+                var currentState = ((HomeViewModel)ViewModel.Parent).CurrentViewState;
+
+                if (currentState == HomeViewModelState.BookingStatus || currentState == HomeViewModelState.ManualRidelinq)
+                {
+                    return;
+
+                }
+
 			    SetAnnotation(DestinationAddress, _destinationAnnotation, false);
 			    SetOverlay(_pickupCenterPin, false);
 			    SetOverlay(_dropoffCenterPin, true);
@@ -387,20 +395,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		    }
 		    else if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
 		    {
-			    if (((HomeViewModel) ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
+                var currentState = ((HomeViewModel)ViewModel.Parent).CurrentViewState;
+
+                if (currentState == HomeViewModelState.BookingStatus || currentState == HomeViewModelState.ManualRidelinq)
 			    {
                     // Don't display movable pickup or dropoff pins
                     return;
 			    }
-			    else
-			    {
-				    SetAnnotation(PickupAddress, _pickupAnnotation, false);
-				    SetOverlay(_dropoffCenterPin, false);
-				    SetOverlay(_pickupCenterPin, true);
 
-				    SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
-			    }
-		    }
+                SetAnnotation(PickupAddress, _pickupAnnotation, false);
+                SetOverlay(_dropoffCenterPin, false);
+                SetOverlay(_pickupCenterPin, true);
+
+                SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
+			}
 		    else
 		    {
 			    SetOverlay(_pickupCenterPin, false);
