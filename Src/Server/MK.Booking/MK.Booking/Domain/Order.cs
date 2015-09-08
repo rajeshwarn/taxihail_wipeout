@@ -94,12 +94,6 @@ namespace apcurium.MK.Booking.Domain
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
 			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, string error)
 		{
-			if ((settings == null) || pickupAddress == null ||
-				(Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
-			{
-				throw new InvalidOperationException("Missing required fields");
-			}
-
 			Update(new OrderReportCreated
 			{
 				AccountId = accountId,

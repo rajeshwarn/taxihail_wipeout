@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
 			var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-			CreateReportOrder createReportOrder = CreateReportOrder(request, account);
+			var createReportOrder = CreateReportOrder(request, account);
 
 			Exception createOrderException = null;
 
