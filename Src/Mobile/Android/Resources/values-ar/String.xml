@@ -682,4 +682,7 @@
   <string name="NetworkTimeOutPopupAlways">Always Accept</string>
   <string name="EstimateFareCalculating">Calculating...</string>
   <string name="OrderStatus_Medallion">Medallion</string>
+  <string name="WaitingCarLandscapeViewCloseButtonText">Back</string>
+  <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
+  <string name="WaitingCarLandscapeActivityName">Car Number</string>
 </resources>

@@ -27,6 +27,7 @@ using apcurium.MK.Booking.MapDataProvider.Google;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 using MK.Booking.MapDataProvider.Foursquare;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -108,6 +109,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 						return new AppleDirectionProvider( c.Resolve<ILogger>());
                 }
             });
+
+            container.Register<IDeviceOrientationService, AppleDeviceOrientationService>();
 
 			InitializeSocialNetwork ();
 		}

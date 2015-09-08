@@ -251,6 +251,7 @@
     <Compile Include="Activities\Setting\NotificationSettingsActivity.cs" />
     <Compile Include="Activities\Setting\UserTaxiHailNetworkSettingsActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
+    <Compile Include="Activities\WaitingCarLandscapeActivity.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
@@ -276,6 +277,7 @@
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
     <Compile Include="Models\BookATaxiDialogResult.cs" />
+    <Compile Include="PlatformIntegration\AndroidDeviceOrientationService.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
@@ -710,6 +712,7 @@
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <AndroidResource Include="Resources\Drawable\facebook_account_icon.png" />
+    <AndroidResource Include="Resources\Drawable\waitingcarclosebutton.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -984,6 +987,9 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\SubView_OrderAirport.axml" />
     <AndroidResource Include="Resources\Layout\VehicleInfoWindow.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_WaitingCarLandscape.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
