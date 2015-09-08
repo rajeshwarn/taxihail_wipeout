@@ -81,36 +81,14 @@ namespace apcurium.MK.Booking.CommandHandlers
 
 			if (order == null)
 			{
-				order = new Order(command.OrderId, command.AccountId, command.PickupDate,
+				order = new Order(command.OrderId);
+			}
+
+			order.UpdateOrderCreated(command.AccountId, command.PickupDate,
 					command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
 					command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
 					command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
 					command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees);
-			}
-			else
-			{
-				order.AccountId = command.AccountId;
-				order.PickupDate = command.PickupDate;
-				order.PickupAddress = command.PickupAddress;
-				order.DropOffAddress = command.DropOffAddress;
-				order.Settings = command.Settings;
-				order.EstimatedFare = command.EstimatedFare;
-				order.UserAgent = command.UserAgent;
-				order.ClientLanguageCode = command.ClientLanguageCode;
-				order.UserLatitude = command.UserLatitude;
-				order.UserLongitude = command.UserLongitude;
-				order.UserNote = command.UserNote;
-				order.ClientVersion = command.ClientVersion;
-				order.IsChargeAccountPaymentWithCardOnFile = command.IsChargeAccountPaymentWithCardOnFile;
-				order.CompanyKey = command.CompanyKey;
-				order.CompanyName = command.CompanyName;
-				order.Market = command.Market;
-				order.IsPrepaid = command.IsPrepaid;
-				order.BookingFees = command.BookingFees;
-			}
-
-
-			order.UpdateOrderCreated();
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -127,35 +105,14 @@ namespace apcurium.MK.Booking.CommandHandlers
 
 			if (order == null)
 			{
-				order = new Order(command.OrderId, command.AccountId, command.PickupDate,
+				order = new Order(command.OrderId);
+			}
+
+			order.UpdateOrderReportCreated(command.AccountId, command.PickupDate,
 				command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
 				command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
 				command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees);
-			}
-			else
-			{
-				order.AccountId = command.AccountId;
-				order.PickupDate = command.PickupDate;
-				order.PickupAddress = command.PickupAddress;
-				order.DropOffAddress = command.DropOffAddress;
-				order.Settings = command.Settings;
-				order.EstimatedFare = command.EstimatedFare;
-				order.UserAgent = command.UserAgent;
-				order.ClientLanguageCode = command.ClientLanguageCode;
-				order.UserLatitude = command.UserLatitude;
-				order.UserLongitude = command.UserLongitude;
-				order.UserNote = command.UserNote;
-				order.ClientVersion = command.ClientVersion;
-				order.IsChargeAccountPaymentWithCardOnFile = command.IsChargeAccountPaymentWithCardOnFile;
-				order.CompanyKey = command.CompanyKey;
-				order.CompanyName = command.CompanyName;
-				order.Market = command.Market;
-				order.IsPrepaid = command.IsPrepaid;
-				order.BookingFees = command.BookingFees;
-			}
-
-			order.UpdateOrderReportCreated(command.Error);
+				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.Error);
 
 			if (command.Payment.PayWithCreditCard)
 			{
@@ -279,7 +236,9 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreateOrderForManualRideLinqPair command)
         {
-            var order = new Order(command.OrderId, command.AccountId, command.PairingDate, command.PairingCode, command.PairingToken,
+			var order = new Order(command.OrderId);
+
+			order.UpdateOrderManuallyPairedForRideLinq(command.AccountId, command.PairingDate, command.PairingCode, command.PairingToken,
                 command.PickupAddress, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
                 command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
                 command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.TripId,
