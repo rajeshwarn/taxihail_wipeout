@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -16,12 +15,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IPhoneService _phoneService;
 		private readonly IBookingService _bookingService;
 		private readonly IPaymentService _paymentService;
+		private readonly IAccountService _accountService;
 
-		public BookingStatusBottomBarViewModel(IPhoneService phoneService, IBookingService bookingService, IPaymentService paymentService)
+		public BookingStatusBottomBarViewModel(IPhoneService phoneService, IBookingService bookingService, IPaymentService paymentService, IAccountService accountService)
 		{
 			_phoneService = phoneService;
 			_bookingService = bookingService;
 			_paymentService = paymentService;
+			_accountService = accountService;
 		}
 
 		bool _isCancelButtonVisible;
@@ -42,32 +43,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private async void UpdateActionsPossibleOnOrder()
 		{
-			
-			IsCancelButtonVisible = ParentViewModel.ManualRideLinqDetail == null 
-				&&  _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
-
-			var arePassengersOnBoard = ParentViewModel.ManualRideLinqDetail != null
-				|| ParentViewModel.OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
-			
-			var isUnPairPossible = ParentViewModel.ManualRideLinqDetail != null 
-				&& DateTime.UtcNow <= ParentViewModel.OrderStatusDetail.UnpairingTimeOut;
-
-			if (arePassengersOnBoard && IsPayWithAccount())
+			try
 			{
-				var isPaired = ParentViewModel.ManualRideLinqDetail != null || await _bookingService.IsPaired(ParentViewModel.Order.Id);
+				IsCancelButtonVisible = ParentViewModel.ManualRideLinqDetail == null
+				&& _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
 
-				CanEditAutoTip = isPaired;
-				IsUnpairButtonVisible = isPaired && isUnPairPossible;
+				var arePassengersOnBoard = ParentViewModel.ManualRideLinqDetail != null
+					|| ParentViewModel.OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
+
+				var isUnPairPossible = ParentViewModel.ManualRideLinqDetail == null
+					&& DateTime.UtcNow <= ParentViewModel.OrderStatusDetail.UnpairingTimeOut;
+
+				if (arePassengersOnBoard && IsPayWithAccount())
+				{
+					var isPaired = ParentViewModel.ManualRideLinqDetail != null || await _bookingService.IsPaired(ParentViewModel.Order.Id);
+
+					CanEditAutoTip = isPaired;
+					IsUnpairButtonVisible = isPaired && isUnPairPossible;
+				}
+				else
+				{
+					IsUnpairButtonVisible = false;
+				}
 			}
-			else
+			catch (Exception ex)
 			{
-				IsUnpairButtonVisible = false;
+				Logger.LogError(ex);
 			}
 		}
 
 		private bool IsPayWithAccount()
 		{
-			return ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+			return ParentViewModel.ManualRideLinqDetail != null
+				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
 				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
 		}
 
@@ -210,13 +218,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		private int? _currentTip;
+		private int GetTip()
+		{
+			return _currentTip ?? _accountService.CurrentAccount.DefaultTipPercent ?? Settings.DefaultTipPercentage;
+		}
+
 		public ICommand EditAutoTipCommand
 		{
 			get
 			{
 				return this.GetCommand(() =>
 				{
-					ShowViewModel<EditAutoTipViewModel>();
+					ShowSubViewModel<EditAutoTipViewModel, int>(new { tip = GetTip()}, tip => _currentTip = tip);
 				});
 			}
 		}

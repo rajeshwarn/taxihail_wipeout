@@ -63,26 +63,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                        var activeOrder = await _orderWorkflowService.GetLastActiveOrder();
 	                        if (activeOrder != null)
 	                        {
-	                            bool autoTipUpdated;
-								
-								if (activeOrder.Item1.IsManualRideLinq)
-								{
-									// Manual ride linq rides
-									autoTipUpdated = await _bookingService.UpdateAutoTipForManualRideLinq(activeOrder.Item1.Id, PaymentPreferences.Tip);
-									if(autoTipUpdated)
-									{
-										this.ReturnResult(PaymentPreferences.Tip);
-									}
-								}	
-								else
-								{
-									// Normal rides
-									autoTipUpdated = await _paymentService.UpdateAutoTip(activeOrder.Item1.Id, PaymentPreferences.Tip);
-								}
+	                            var autoTipUpdated = activeOrder.Item1.IsManualRideLinq
+									? await _bookingService.UpdateAutoTipForManualRideLinq(activeOrder.Item1.Id, PaymentPreferences.Tip) 
+									: await _paymentService.UpdateAutoTip(activeOrder.Item1.Id, PaymentPreferences.Tip);
 
 								if (autoTipUpdated)
 								{
-									Close(this);
+									this.ReturnResult(PaymentPreferences.Tip);
 								}
 								else
 								{

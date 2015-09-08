@@ -14,18 +14,15 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Android.App;
 using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
-using Android.Text;
 using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Binding.Attributes;
@@ -35,8 +32,6 @@ using Google.Android.M4b.Maps;
 using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
-using Android.App;
-using Android.Content;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
