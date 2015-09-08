@@ -10,16 +10,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
     {
 		public static TranslateAnimation GetForXTranslation(View view, float desiredX, bool isRTL = false)
         {
-            return PlatformHelper.IsAndroid23 
-				? GetAnimationFor23(view, desiredX, null, isRTL)
-					: GetAnimationFor(view, desiredX, null, isRTL);
+            return GetAnimationFor(view, desiredX, null, isRTL);
         }
 
         public static TranslateAnimation GetForYTranslation(View view, float desiredY)
         {
-            return PlatformHelper.IsAndroid23
-				? GetAnimationFor23(view, null, desiredY)
-                : GetAnimationFor(view, null, desiredY);
+            return GetAnimationFor(view, null, desiredY);
         }
 
 		private static TranslateAnimation GetAnimationFor23(View view, float? desiredX, float? desiredY, bool isRTL = false)

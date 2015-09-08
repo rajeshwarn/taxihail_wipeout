@@ -699,4 +699,7 @@
   <string name="View_RideLinqSummary">Order summary</string>
   <string name="View_RideLinqStatus">Status</string>
   <string name="OrderStatus_Medallion">Medallion</string>
+  <string name="WaitingCarLandscapeViewCloseButtonText">Retour</string>
+  <string name="WaitingCarLandscapeViewCarNumber">Numéro de voiture</string>
+  <string name="WaitingCarLandscapeActivityName">Numéro de voiture</string>
 </resources>

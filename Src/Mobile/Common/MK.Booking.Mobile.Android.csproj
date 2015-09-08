@@ -185,10 +185,14 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
+    <Compile Include="Infrastructure\CommonDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
+    <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
+    <Compile Include="Infrastructure\OrientationService.cs" />
     <Compile Include="Localization\Taxiworld.Designer.cs">
       <DependentUpon>Taxiworld.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -238,6 +242,7 @@
     <Compile Include="ViewModels\Orders\OrderAirportViewModel.cs" />
     <Compile Include="ViewModels\Map\TaxiLocation.cs" />
     <Compile Include="ViewModels\Orders\BookingStatusBottomBarViewModel.cs" />
+    <Compile Include="ViewModels\Orders\WaitingCarLandscapeViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />

@@ -356,6 +356,11 @@
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <Compile Include="Infrastructure\OrientationService.cs" />
+    <Compile Include="Infrastructure\CommonDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\IOrientationService.cs" />
+    <Compile Include="ViewModels\Orders\WaitingCarLandscapeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

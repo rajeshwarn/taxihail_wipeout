@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -33,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly ILocationService _locationService;
+		private readonly IOrientationService _orientationService;
 		private readonly SerialDisposable _subscriptions = new SerialDisposable();
 
 	    private int _refreshPeriod = 5;              // in seconds
@@ -43,6 +45,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private int? _currentIbsOrderId;
 
 		private bool _isCmtRideLinq;
+
+		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
 		public OrderManualRideLinqDetail ManualRideLinqDetail
 		{
@@ -72,6 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService,
 			IMetricsService metricsService,
 			IOrderWorkflowService orderWorkflowService,
+			IOrientationService orientationService,
 			ILocationService locationService)
 		{
 			_orderWorkflowService = orderWorkflowService;
@@ -81,10 +86,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_metricsService = metricsService;
 			_locationService = locationService;
+			_orientationService = orientationService;
 
 			BottomBar = AddChild<BookingStatusBottomBarViewModel>();
 
 			GetIsCmtRideLinq();
+
+			((OrientationService)_orientationService).NotifyOrientationChanged += DeviceOrientationChanged;
+			_orientationService.Initialize(new DeviceOrientation[] { DeviceOrientation.Right, DeviceOrientation.Left });
 		}
 
 		private async void GetIsCmtRideLinq()
@@ -723,6 +732,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     GoToBookingScreen();
                 }
+
+				if (!string.IsNullOrWhiteSpace(status.VehicleNumber)
+					&& (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
+				{
+					if (_orientationService.Start())
+					{
+						WaitingCarLandscapeViewModelParameters = null;
+					}
+				}
+
+				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Done)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.NoShow)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Cancelled)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
+				{
+					_orientationService.Stop();
+
+					if (WaitingCarLandscapeViewModelParameters != null)
+					{
+						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+						WaitingCarLandscapeViewModelParameters = null;
+					}
+				}
             } 
 			catch (Exception ex) 
 			{
@@ -734,6 +767,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_refreshStatusIsExecuting = false;
 			}
         }
+
+		void DeviceOrientationChanged(DeviceOrientation deviceOrientation)
+		{
+			if (deviceOrientation == DeviceOrientation.Left || deviceOrientation == DeviceOrientation.Right)
+			{
+				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed == true))
+				{
+					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters() { CarNumber = _vehicleNumber, DeviceOrientation = deviceOrientation };
+					ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
+				}
+				else
+				{
+					WaitingCarLandscapeViewModelParameters.UpdateDeviceOrientation(deviceOrientation);
+				}
+			}
+		}
 
 	    private void SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
 	    {

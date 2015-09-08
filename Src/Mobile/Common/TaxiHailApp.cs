@@ -99,6 +99,7 @@ namespace apcurium.MK.Booking.Mobile
 
             _container.Register<IPostalCodeService, CraftyClicksService>();
 
+
             // ***** PayPal *****
 			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
@@ -118,6 +119,7 @@ namespace apcurium.MK.Booking.Mobile
 			lifeTimeMonitor.LifetimeChanged += TaxiHailApp_LifetimeChanged;
 
 			_container.Register<IErrorHandler, ErrorHandler>();
+			_container.Register<IOrientationService, OrientationService>();
 
             RefreshAppData();
         }

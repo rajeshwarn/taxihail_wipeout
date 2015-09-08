@@ -285,6 +285,7 @@
     <None Include="features\support\env.rb" />
     <None Include="features\my_first.feature" />
     <InterfaceDefinition Include="Views\Order\OrderAirportView.xib" />
+    <InterfaceDefinition Include="Views\WaitingCarLandscapeView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -641,6 +642,11 @@
       <DependentUpon>ContactTaxiControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
+    <Compile Include="PlatformIntegration\AppleDeviceOrientationService.cs" />
+    <Compile Include="Views\WaitingCarLandscapeView.cs" />
+    <Compile Include="Views\WaitingCarLandscapeView.designer.cs">
+      <DependentUpon>WaitingCarLandscapeView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
