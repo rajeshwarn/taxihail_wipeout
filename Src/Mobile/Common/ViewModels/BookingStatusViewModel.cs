@@ -194,9 +194,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				TaxiLocation.Latitude = latitude;
 				TaxiLocation.Longitude = longitude;
+
+				RaisePropertyChanged(() => TaxiLocation);
 			}
-
-
 		}
 
 		private IObservable<Unit> GetTimerObservable()
@@ -640,7 +640,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 if (Settings.ShowEta 
 					&& status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) 
-					&& hasVehicleInfo )
+					&& (hasVehicleInfo || isUsingGeoServices) )
 				{
 					long? eta =null;
 
@@ -654,7 +654,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if(geoData.IsPositionValid)
 							{
-							UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber);
+								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber);
 							}
 						}
 					}
@@ -669,6 +669,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					    }
 
 						eta = direction.Duration;
+
+						UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber);
 					}                       
 					if(eta.HasValue)
 					{
@@ -688,10 +690,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber);
                     }
                 }
-				else if(!isUsingGeoServices && status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned))
+				else if (!isUsingGeoServices &&
+					hasVehicleInfo &&
+					(status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
+						|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
+				{
+					UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber);
+				}
+
+				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned))
 				{
 					_vehicleService.SetAvailableVehicle(false);
-					UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber);
 				}
 
 				StatusInfoText = statusInfoText;
