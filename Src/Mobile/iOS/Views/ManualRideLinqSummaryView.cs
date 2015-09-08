@@ -34,12 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblTipLabel.Text = localize["ManualRideLinqStatus_Tip"];
 			lblDriverId.Text = localize["ManualRideLinqStatus_Driver"];
 
-			lblThanks.Text = String.Format(localize["RideSummarySubTitleText"], this.Services().Settings.TaxiHail.ApplicationName);
-
-			NavigationItem.RightBarButtonItem = new UIBarButtonItem()
-				{
-					Title = localize["ManualRideLinqSummary_Done"]
-				};
+            lblThanks.Text = String.Format(localize["RideSummarySubTitleText"], this.Services().Settings.TaxiHail.ApplicationName);           
 
 			var bindingSet = this.CreateBindingSet<ManualRideLinqSummaryView, ManualRideLinqSummaryViewModel>();
 
