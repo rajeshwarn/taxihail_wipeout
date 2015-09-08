@@ -40,7 +40,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<SaveTemporaryOrderPaymentInfo>,
         ICommandHandler<UpdateAutoTip>,
         ICommandHandler<LogOriginalEta>,
-        ICommandHandler<UpdateOrderNotificationDetail>
+        ICommandHandler<UpdateOrderNotificationDetail>,
+		ICommandHandler<CreateReportOrder>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -57,7 +58,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             order.Cancel();
             _repository.Save(order, command.Id.ToString());
         }
-        
+
         public void Handle(ChangeOrderStatus command)
         {
             var order = _repository.Find(command.Status.OrderId);
@@ -76,11 +77,18 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreateOrder command)
         {
-            var order = new Order(command.OrderId, command.AccountId, command.PickupDate,
-                command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
-                command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
-                command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-                command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees);
+			var order = _repository.Find(command.OrderId);
+
+			if (order == null)
+			{
+				order = new Order(command.OrderId);
+			}
+
+			order.UpdateOrderCreated(command.AccountId, command.PickupDate,
+					command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
+					command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
+					command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
+					command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees);
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -90,6 +98,30 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             _repository.Save(order, command.Id.ToString());
         }
+
+		public void Handle(CreateReportOrder command)
+		{
+			var order = _repository.Find(command.OrderId);
+
+			if (order == null)
+			{
+				order = new Order(command.OrderId);
+			}
+
+			order.UpdateOrderReportCreated(command.AccountId, command.PickupDate,
+				command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
+				command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
+				command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
+				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.Error);
+
+			if (command.Payment.PayWithCreditCard)
+			{
+				var payment = Mapper.Map<PaymentInformation>(command.Payment);
+				order.SetPaymentInformation(payment);
+			}
+
+			_repository.Save(order, command.Id.ToString());
+		}
 
         public void Handle(PairForPayment command)
         {
@@ -204,7 +236,9 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreateOrderForManualRideLinqPair command)
         {
-            var order = new Order(command.OrderId, command.AccountId, command.PairingDate, command.PairingCode, command.PairingToken,
+			var order = new Order(command.OrderId);
+
+			order.UpdateOrderManuallyPairedForRideLinq(command.AccountId, command.PairingDate, command.PairingCode, command.PairingToken,
                 command.PickupAddress, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
                 command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
                 command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.TripId,
