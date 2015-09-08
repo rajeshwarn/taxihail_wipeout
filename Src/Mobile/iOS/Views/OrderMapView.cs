@@ -30,6 +30,7 @@ using Foundation;
 using MapKit;
 using TinyIoC;
 using UIKit;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -108,9 +109,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void Initialize()
         {
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
             _showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
             _useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
+
+            var coordonates = new CoordinateViewModel[] 
+            {
+                    CoordinateViewModel.Create(settings.UpperRightLatitude??0, settings.UpperRightLongitude??0, true),
+                    CoordinateViewModel.Create(settings.LowerLeftLatitude??0, settings.LowerLeftLongitude??0, true),
+            };
+            
+
+
+            if (!coordonates.Any(p => p.Coordinate.Latitude == 0 || p.Coordinate.Longitude == 0))
+            {
+                var minLat = coordonates.Min(a => a.Coordinate.Latitude);
+                var maxLat = coordonates.Max(a => a.Coordinate.Latitude);
+                var minLon = coordonates.Min(a => a.Coordinate.Longitude);
+                var maxLon = coordonates.Max(a => a.Coordinate.Longitude);
+
+                var center = new CLLocationCoordinate2D(((maxLat + minLat) / 2), (maxLon + minLon) / 2);
+
+                var region = new MKCoordinateRegion(center, new MKCoordinateSpan(0.1, 0.1));
+
+                Region = region;
+            }
+
+
 
             this.DelayBind(() => 
             {
@@ -356,26 +381,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				SetOverlay(_pickupCenterPin, false);
 				SetOverlay(_dropoffCenterPin, true);
 
-
 	            SetAnnotation(PickupAddress, _pickupAnnotation, PickupAddress.HasValidCoordinate());
             }
             else
             {
                 if (((HomeViewModel)ViewModel.Parent).CurrentViewState == HomeViewModelState.BookingStatus)
                 {
+                    // Don't display movable pickup or dropoff pins
+                    return;
                 }
-	            SetAnnotation(PickupAddress, _pickupAnnotation, false);
-	            SetOverlay(_dropoffCenterPin, false);
-	            SetOverlay(_pickupCenterPin, true);
+                else
+                {
+                    SetAnnotation(PickupAddress, _pickupAnnotation, false);
+                    SetOverlay(_dropoffCenterPin, false);
+                    SetOverlay(_pickupCenterPin, true);
 
-	            if (DestinationAddress.HasValidCoordinate())
-	            {
-		            SetAnnotation(DestinationAddress, _destinationAnnotation, true);
-	            }
-	            else
-	            {
-		            SetAnnotation(DestinationAddress, _destinationAnnotation, false);
-	            }
+                    SetAnnotation(DestinationAddress, _destinationAnnotation, DestinationAddress.HasValidCoordinate());
+                }
             }
         }
                      
@@ -606,8 +628,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	                var vehicleLatitude = value.VehicleLatitude ?? 0;
 	                var vehicleLongitude = value.VehicleLongitude ?? 0;
 
-                    if (vehicleLatitude > 0 && vehicleLongitude > 0 && !string.IsNullOrEmpty(value.VehicleNumber) && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
+                    if (vehicleLatitude != 0
+                        && vehicleLongitude != 0
+                        && value.VehicleNumber.HasValue()
+                        && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
                     {
+                        // Refresh vehicle position
 						coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
                     }
 
