@@ -29,7 +29,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kO3-nq-PfR" userLabel="Car Number">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="70" translatesAutoresizingMaskIntoConstraints="NO" id="kO3-nq-PfR" userLabel="Car Number">
                     <rect key="frame" x="34" y="70" width="500" height="180"/>
                     <fontDescription key="fontDescription" type="system" pointSize="150"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
