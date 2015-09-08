@@ -169,6 +169,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Disposable.Create(_locationService.Stop).DisposeWith(subscriptions);
 
 			_subscriptions.Disposable = subscriptions;
+
+			BottomBar.NotifyBookingStatusAppbarChanged();
 		}
 		
 		private void UpdatePosition(double latitude, double longitude, string medallion)
@@ -697,7 +699,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 CenterMapIfNeeded ();
 
-                BottomBar.UpdateActionsPossibleOnOrder(status.IBSStatusId);
+				BottomBar.NotifyBookingStatusAppbarChanged();
 
                 DisplayOrderNumber();
 

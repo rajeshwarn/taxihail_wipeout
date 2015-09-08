@@ -40,18 +40,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return (BookingStatusViewModel) Parent; }
 		}
 
-		public async void UpdateActionsPossibleOnOrder(string statusId)
+		private async void UpdateActionsPossibleOnOrder()
 		{
-			IsCancelButtonVisible = _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
+			
+			IsCancelButtonVisible = ParentViewModel.ManualRideLinqDetail == null 
+				&&  _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
 
-			var arePassengersOnBoard = ParentViewModel.OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
-			var isUnPairPossible = DateTime.UtcNow <= ParentViewModel.OrderStatusDetail.UnpairingTimeOut;
+			var arePassengersOnBoard = ParentViewModel.ManualRideLinqDetail != null
+				|| ParentViewModel.OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
+			
+			var isUnPairPossible = ParentViewModel.ManualRideLinqDetail != null 
+				&& DateTime.UtcNow <= ParentViewModel.OrderStatusDetail.UnpairingTimeOut;
 
-			if (arePassengersOnBoard
-				&& (ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
+			if (arePassengersOnBoard && IsPayWithAccount())
 			{
-				var isPaired = await _bookingService.IsPaired(ParentViewModel.Order.Id);
+				var isPaired = ParentViewModel.ManualRideLinqDetail != null || await _bookingService.IsPaired(ParentViewModel.Order.Id);
 
 				CanEditAutoTip = isPaired;
 				IsUnpairButtonVisible = isPaired && isUnPairPossible;
@@ -62,8 +65,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		private bool IsPayWithAccount()
+		{
+			return ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+		}
+
 		public void NotifyBookingStatusAppbarChanged()
 		{
+			UpdateActionsPossibleOnOrder();
 			RaisePropertyChanged(() => IsCallCompanyHidden);
 		}
 
