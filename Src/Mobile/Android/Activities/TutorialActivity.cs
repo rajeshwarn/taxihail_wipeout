@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             lp = ((View)containerLayout).LayoutParameters;
 
-            lp.Width = maxWidth - (_tutorialInsetPixels * (PlatformHelper.IsAndroid23 ? 2 : 1));
+            lp.Width = maxWidth - _tutorialInsetPixels;
             lp.Height = WindowManagerLayoutParams.MatchParent;
             ((View)containerLayout).LayoutParameters = lp;
 

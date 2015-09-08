@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		{
 			base.OnViewModelSet ();
 
-            SetContentView(Resource.Layout.View_Login);           
+            SetContentView(Resource.Layout.View_Login);		    
 
             DrawHelper.SupportLoginTextColor(FindViewById<TextView>(Resource.Id.ForgotPasswordButton));
             DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.SignUpButton));
@@ -93,17 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 .Subscribe(_ => Observable.Timer(TimeSpan.FromSeconds(2))
                     .Subscribe(__ => RunOnUiThread(Finish)));
 
-            var username = FindViewById<EditText>(Resource.Id.Username);
-            var password = FindViewById<EditText>(Resource.Id.Password);
-			password.SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
-
-			if(this.Services().Localize.IsRightToLeft)
-			{
-				password.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
-			}
-
-            ApplyKeyboardEnabler(username);
-            ApplyKeyboardEnabler(password);
+            InitializeSoftKeyboardNavigation();
 
 			ViewModel.SignInCommand.CanExecuteChanged += (sender, e) => {
 				//just for the first one, it's a nudge to highlight the button as the next step
@@ -114,27 +104,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			};
         }
 
-        public bool ShouldUseClipboardManager()
-        {
-            return PlatformHelper.IsAndroid23;
-        }
+	    private void InitializeSoftKeyboardNavigation()
+	    {
+            var userNameTextView = FindViewById<EditText>(Resource.Id.Username);
+            var passwordTextView = FindViewById<EditText>(Resource.Id.Password);
+            
+            userNameTextView.NextFocusDownId = Resource.Id.Password;
+            passwordTextView.NextFocusUpId = Resource.Id.Username;
+            passwordTextView.NextFocusDownId = Resource.Id.SignInButton;
 
-        public void ApplyKeyboardEnabler(EditText view)
-        {
-            InputMethodManager mImm = (InputMethodManager)GetSystemService(Context.InputMethodService);  
-
-            view.Click += (sender, e) =>
+            passwordTextView.EditorAction += (sender, e) =>
             {
-                if (ShouldUseClipboardManager())
+                e.Handled = false;
+                if (e.ActionId == ImeAction.Done)
                 {
-
-                    ClipboardManager cm = (ClipboardManager)GetSystemService(Context.ClipboardService);
-                    cm.Text = ((EditText)sender).Text;
+                    if (ViewModel.SignInCommand.CanExecute())
+                    {
+                        ViewModel.SignInCommand.Execute();
+                    }
+                    e.Handled = true;
                 }
-
-                mImm.ShowSoftInput(((EditText)sender), Android.Views.InputMethods.ShowFlags.Implicit);  
             };
-        }
+
+            passwordTextView.SetTypeface(Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
+
+            if (this.Services().Localize.IsRightToLeft)
+            {
+                passwordTextView.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
+            }
+	    }
 
         private async void PromptServer()
         {

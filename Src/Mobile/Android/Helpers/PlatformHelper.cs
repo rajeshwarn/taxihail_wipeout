@@ -16,23 +16,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             }
         }
 
-        public static bool IsAndroid23
-        {
-            get
-            {
-                return APILevel <= 10;
-            }
-        }
-
 		static System.Timers.Timer timer = new System.Timers.Timer ();
 
 		public static void BenchMarkStart()
 		{
-			timer = new System.Timers.Timer ();
-			timer.Interval = 250;
-			timer.AutoReset = true;
-			timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) => {
-				readUsage();
+		    timer = new System.Timers.Timer
+		    {
+		        Interval = 250,
+		        AutoReset = true
+		    };
+		    timer.Elapsed += (sender, e) => {
+				ReadUsage();
 			};
 			timer.Start ();
 		}
@@ -46,11 +40,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 			}
 		}
 
-		private static float[] cpuStack = new float[] { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f };
+		private static readonly float[] CpuStack = { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f };
 
-		private static int cpuStackPointer = 0;
+		private static int _cpuStackPointer = 0;
 
-		private static void readUsage() {
+		private static void ReadUsage() {
 			try {
 				var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity> (); 
 				RandomAccessFile reader = new RandomAccessFile ("/proc/stat", "r");
@@ -78,12 +72,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 					+ float.Parse (toks [6]) + float.Parse (toks [7]) + float.Parse (toks [8]);
 
 				float cpuValue = ((cpu2 - cpu1) * 100f / ((cpu2 + idle2) - (cpu1 + idle1)));
-				cpuStack [cpuStackPointer++] = cpuValue;
+				CpuStack [_cpuStackPointer++] = cpuValue;
 
-				if (cpuStackPointer == 10) {
-					cpuStackPointer = 0;
+				if (_cpuStackPointer == 10) {
+					_cpuStackPointer = 0;
 				}
-				var averageTxt = ((int)cpuStack.Take(10).Average()).ToString ().PadLeft(2,'0');
+				var averageTxt = ((int)CpuStack.Take(10).Average()).ToString ().PadLeft(2,'0');
 
 				TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
 
