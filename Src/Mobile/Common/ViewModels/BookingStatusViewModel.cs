@@ -41,6 +41,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _isCmtRideLinq;
 
+		private bool _isStarted;
+
 		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
 		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
@@ -85,11 +87,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	
 		public void StartBookingStatus(Order order, OrderStatusDetail orderStatusDetail)
 		{
+			if (_isStarted)
+			{
+				return;
+			}
+			_isStarted = true;
+
 			Order = order;
 			OrderStatusDetail = orderStatusDetail;
 			DisplayOrderNumber();
 
-			StatusInfoText = string.Format(this.Services().Localize["Processing"]);
+			StatusInfoText = orderStatusDetail.IBSStatusId == null 
+				? string.Format(this.Services().Localize["Processing"]) 
+				: orderStatusDetail.IBSStatusDescription;
 
 			BottomBar.IsCancelButtonVisible = false;
 			_waitingToNavigateAfterTimeOut = false;
@@ -115,6 +125,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService.SetAvailableVehicle(true);
 
 			MapCenter = null;
+
+			_isStarted = false;
 		}
 
 		private readonly SerialDisposable _subscriptions = new SerialDisposable();
