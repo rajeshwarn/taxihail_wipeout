@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -40,6 +40,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private int? _currentIbsOrderId;
 
 		private bool _isCmtRideLinq;
+
+		private bool _isStarted;
 
 		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
@@ -85,11 +87,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	
 		public void StartBookingStatus(Order order, OrderStatusDetail orderStatusDetail)
 		{
+			if (_isStarted)
+			{
+				return;
+			}
+			_isStarted = true;
+
 			Order = order;
 			OrderStatusDetail = orderStatusDetail;
 			DisplayOrderNumber();
 
-			StatusInfoText = string.Format(this.Services().Localize["Processing"]);
+			StatusInfoText = orderStatusDetail.IBSStatusId == null 
+				? this.Services().Localize["Processing"]
+				: orderStatusDetail.IBSStatusDescription;
 
 			BottomBar.IsCancelButtonVisible = false;
 			_waitingToNavigateAfterTimeOut = false;
@@ -123,6 +133,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
 				WaitingCarLandscapeViewModelParameters = null;
 			}
+			_isStarted = false;
 		}
 
 		private readonly SerialDisposable _subscriptions = new SerialDisposable();
