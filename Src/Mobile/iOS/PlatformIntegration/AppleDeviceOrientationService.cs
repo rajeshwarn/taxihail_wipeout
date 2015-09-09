@@ -9,7 +9,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class AppleDeviceOrientationService: CommonDeviceOrientationService, IDeviceOrientationService
     {
-        const double RadiansToDegrees = 360 / (2 * Math.PI);
         const double AccelerometerUpdateInterval = 1 / 3; // 3 Hz
 
         CMMotionManager _motionManager;
@@ -63,21 +62,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             if (error == null)
             {
-                if ((data.Acceleration.X * data.Acceleration.X + data.Acceleration.Y * data.Acceleration.Y) * 4 >= data.Acceleration.Z * data.Acceleration.Z)
+                if (TrustZRotation(data.Acceleration.X, data.Acceleration.Y, data.Acceleration.Z))
                 {
-                    int angle = 90 - (int)Math.Round(Math.Atan2(-data.Acceleration.Y, data.Acceleration.X) * RadiansToDegrees);
-
-					while (angle >= 360)
-					{
-						angle -= 360;
-					}
-
-					while (angle < 0)
-					{
-						angle += 360;
-					}
-
-                    AngleChangedEvent(angle);
+                    AngleChangedEvent(GetZRotationAngle(data.Acceleration.X, data.Acceleration.Y, data.Acceleration.Z));
                 }
             }
         }
