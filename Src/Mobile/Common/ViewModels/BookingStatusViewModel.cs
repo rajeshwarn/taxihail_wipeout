@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			StatusInfoText = string.Format(this.Services().Localize["Processing"]);
 
-			BottomBar.IsCancelButtonVisible = false;
+			BottomBar.ResetButtonsVisibility();
 			_waitingToNavigateAfterTimeOut = false;
 
 			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
