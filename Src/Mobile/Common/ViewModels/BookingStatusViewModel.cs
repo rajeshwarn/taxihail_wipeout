@@ -115,6 +115,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService.SetAvailableVehicle(true);
 
 			MapCenter = null;
+
+			_orientationService.Stop();
+
+			if (WaitingCarLandscapeViewModelParameters != null)
+			{
+				WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+				WaitingCarLandscapeViewModelParameters = null;
+			}
 		}
 
 		private readonly SerialDisposable _subscriptions = new SerialDisposable();
