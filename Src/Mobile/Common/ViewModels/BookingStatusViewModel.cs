@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			DisplayOrderNumber();
 
 			StatusInfoText = orderStatusDetail.IBSStatusId == null 
-				? string.Format(this.Services().Localize["Processing"]) 
+				? this.Services().Localize["Processing"]
 				: orderStatusDetail.IBSStatusDescription;
 
 			BottomBar.IsCancelButtonVisible = false;
