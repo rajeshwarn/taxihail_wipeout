@@ -76,18 +76,23 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 			List<Venue> venuesExplore = new List<Venue>();
 
+			uint maximumPagesByDemand = (uint)(Math.Ceiling((double)maximumNumberOfPlaces / (double)MaximumPageLength));
+
 			do
 			{
 				exploreAnswer = client.Get<FoursquareVenuesResponse<ExploreResponse>>(exploreQuery + "&offset=" + ((page++) * MaximumPageLength).ToString());
 
-				uint maximumPagesByDemand = (uint)(Math.Ceiling((double)maximumNumberOfPlaces / (double)MaximumPageLength));
+				if (!exploreAnswer.IsValid())
+				{
+					throw new WebServiceException("Code " + exploreAnswer.Meta.Code.ToString() + " error type: " + exploreAnswer.Meta.ErrorType + " error details: " + exploreAnswer.Meta.ErrorDetail);
+				}
+
 				uint maximumPagesByResponse = (uint)(Math.Ceiling((double)exploreAnswer.Response.TotalResults / (double)MaximumPageLength));
 				pages = Math.Min(Math.Min(maximumPagesByResponse, maximumPagesByDemand), MaximumPagesLimit);
 
-				venuesExplore.AddRange(
-						from gr in exploreAnswer.Response.Groups
-						from it in gr.Items
-						select it.Venue);
+				venuesExplore.AddRange(from gr in exploreAnswer.Response.Groups
+										from it in gr.Items
+										select it.Venue);
 
 			}
 			while (page < pages && exploreAnswer.Response.Groups != null && exploreAnswer.Response.Groups.Length > 0);
@@ -109,8 +114,13 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 		    searchQueryString = string.Format("{0}&query={1}", searchQueryString, name);
 
-		    var client = new JsonServiceClient(ApiUrl);
+			var client = new JsonServiceClient(ApiUrl);
             var venues = client.Get<FoursquareVenuesResponse<SearchResponse>>(searchQueryString);
+
+			if (!venues.IsValid())
+			{
+				throw new WebServiceException("Code " + venues.Meta.Code.ToString() + " error type: " + venues.Meta.ErrorType + " error details: " + venues.Meta.ErrorDetail);
+			}
 
             return venues.Response.Venues.Select(ToPlace).ToArray();
 		}
@@ -156,7 +166,13 @@ namespace MK.Booking.MapDataProvider.Foursquare
 		{
             var client = new JsonServiceClient(ApiUrl);
 			var venue = client.Get<FoursquareVenuesResponse<VenueResponse>>(string.Format(VenueDetails, id, _settings.Data.FoursquareClientId, _settings.Data.FoursquareClientSecret));
-	        var location = venue.Response.Venue.location;
+
+			if (!venue.IsValid())
+			{
+				throw new WebServiceException("Code " + venue.Meta.Code.ToString() + " error type: " + venue.Meta.ErrorType + " error details: " + venue.Meta.ErrorDetail);
+			}
+			
+			var location = venue.Response.Venue.location;
 			string street = null;
 			string streetNumber = null;
 			if (!string.IsNullOrEmpty (location.address) && (char.IsNumber (location.address.FirstOrDefault ())) && location.address.Any( c=> c==' ' )) {

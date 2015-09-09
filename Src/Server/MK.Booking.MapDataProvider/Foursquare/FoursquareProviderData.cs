@@ -9,10 +9,30 @@ namespace MK.Booking.MapDataProvider.Foursquare
     /// </summary>
     public class FoursquareVenuesResponse<T>
     {
-        public string Meta { get; set; }
+		public Meta Meta { get; set; }
         public T Response { get; set; }
+
+		public bool IsValid()
+		{
+			if (Meta == null || (Meta != null && Meta.Code == 200))
+			{
+				return true;
+			}
+
+			return false;
+		}
     }
 
+	public class Meta
+	{
+		public int Code { get; set; }
+
+		public string RequestId { get; set; }
+
+		public string ErrorType { get; set; }
+
+		public string ErrorDetail { get; set; }
+	}
 
 	public class SuggestedFilter
 	{
