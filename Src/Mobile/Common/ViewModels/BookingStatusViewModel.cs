@@ -144,6 +144,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void StartBookingStatus(OrderManualRideLinqDetail orderManualRideLinqDetail)
 		{
+			if (_isStarted)
+			{
+				return;
+			}
+			_isStarted = true;
+
 			var subscriptions = new CompositeDisposable();
 
 			GetTimerObservable()
