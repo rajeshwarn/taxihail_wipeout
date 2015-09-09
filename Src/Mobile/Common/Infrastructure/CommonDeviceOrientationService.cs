@@ -7,6 +7,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public abstract class CommonDeviceOrientationService
 	{
+		const double RadiansToDegrees = 360 / (2 * Math.PI);
+		const double thetaTrustedAngle = 40;
+
 		public event Action<int> NotifyAngleChanged;
 		bool _isStarted = false;
 
@@ -28,6 +31,52 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			}
 
 			return !_isStarted;
+		}
+
+		protected int GetZRotationAngle(double x, double y, double z)
+		{
+			int angle = 90 - (int)Math.Round(Math.Atan2(-y, x) * RadiansToDegrees);
+
+			while (angle >= 360)
+			{
+				angle -= 360;
+			}
+
+			while (angle < 0)
+			{
+				angle += 360;
+			}
+
+			return angle;
+		}
+
+		protected bool TrustZRotation(double x, double y, double z)
+		{
+			double theta = Math.Asin(ClampToOne(z)) * RadiansToDegrees;
+
+			if (Math.Abs(theta) < thetaTrustedAngle)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		double ClampToOne(double value)
+		{
+			if (value > 1)
+			{
+				value = 1;
+			}
+
+			if (value < -1)
+			{
+				value = -1;
+			}
+
+			return value;
 		}
 
 		public abstract bool IsAvailable();
