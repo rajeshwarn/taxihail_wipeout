@@ -40,7 +40,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-						android:layout_marginBottom="5dip">
+            android:layout_marginBottom="5dip">
             <RelativeLayout
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
@@ -48,7 +48,13 @@
                 android:layout_weight="0.25"
                 android:gravity="center"
                 local:MvxBind="Visibility DriverPhotoHidden, Converter=InvertedVisibility">
-                <Mvx.MvxImageView
+            <!--<Mvx.MvxImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:id="@+id/driverPhotoView"
+                    local:MvxBind="ImageUrl OrderStatusDetail.DriverInfos.DriverPhotoUrl" /> -->
+                <apcurium.mk.booking.mobile.client.controls.RoundedMvxImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
@@ -122,11 +128,9 @@
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
-
-	<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusContactTaxiOverlay
+    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusContactTaxiOverlay
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ContactTaxiOverlay"
         android:background="@drawable/drop_shadow_opaque" />
-	
 </LinearLayout>

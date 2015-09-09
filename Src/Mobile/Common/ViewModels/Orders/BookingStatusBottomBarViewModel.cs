@@ -54,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				CanEditAutoTip = isPaired;
 				IsUnpairButtonVisible = isPaired && isUnPairPossible;
+				IsUnpairButtonVisible = true;
 			}
 			else
 			{
