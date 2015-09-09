@@ -39,6 +39,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return (BookingStatusViewModel) Parent; }
 		}
 
+		public void ResetButtonsVisibility()
+		{
+			IsCancelButtonVisible = false;
+			CanEditAutoTip = false;
+			IsUnpairButtonVisible = false;
+		}
+
 		public async void UpdateActionsPossibleOnOrder(string statusId)
 		{
 			IsCancelButtonVisible = _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
@@ -58,6 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			else
 			{
 				IsUnpairButtonVisible = false;
+				CanEditAutoTip = false;
 			}
 		}
 
