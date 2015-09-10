@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				var isUnPairPossible = ParentViewModel.ManualRideLinqDetail == null
 					&& DateTime.UtcNow <= ParentViewModel.OrderStatusDetail.UnpairingTimeOut;
 
-				if (arePassengersOnBoard && IsPayWithAccount())
+				if (arePassengersOnBoard && IsUsingPaymentMethodOnFile())
 				{
 					var isPaired = ParentViewModel.ManualRideLinqDetail != null || await _bookingService.IsPaired(ParentViewModel.Order.Id);
 
@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private bool IsPayWithAccount()
+		private bool IsUsingPaymentMethodOnFile()
 		{
 			return ParentViewModel.ManualRideLinqDetail != null
 				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
