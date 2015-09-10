@@ -659,7 +659,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 
-				if (!string.IsNullOrWhiteSpace(status.VehicleNumber)
+				if (!string.IsNullOrWhiteSpace(_vehicleNumber)
 					&& (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
 				{
 					if (_orientationService.Start())
