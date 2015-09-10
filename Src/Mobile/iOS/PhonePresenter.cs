@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using Cirrious.MvvmCross.ViewModels;
 using UIKit;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -56,7 +58,19 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        private void ClearNavigationStack()
+	    public override void Close(IMvxViewModel viewModel)
+	    {
+			base.Close(viewModel);
+
+			if (viewModel is TutorialViewModel)
+			{
+				var tutorialService = Mvx.Resolve<ITutorialService>();
+
+				tutorialService.NotifyTutorialEnded();
+			}
+	    }
+
+	    private void ClearNavigationStack()
         {
             var navController = Mvx.Resolve<UINavigationController>();
 

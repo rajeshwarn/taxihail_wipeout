@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -38,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _isShowingTermsAndConditions;
 		private bool _isShowingCreditCardExpiredPrompt;
 		private bool _locateUser;
+		private bool _isShowingTutorial;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
 		private HomeViewModelState _currentViewState = HomeViewModelState.Initial;
@@ -131,16 +133,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
-
-				_tutorialService.DisplayTutorialToNewUser();
+				_isShowingTutorial = _tutorialService.DisplayTutorialToNewUser(() =>
+				{
+					_isShowingTutorial = false;
+					LocateUserIfNeeded();
+				});
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 			}
 
-			if (_locateUser)
-			{
-				AutomaticLocateMeAtPickup.Execute (null);
-				_locateUser = false;
-			}
+			LocateUserIfNeeded();
 
 			if (_defaultHintZoomLevel != null)
 			{
@@ -149,6 +150,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 
 			_vehicleService.Start();
+		}
+
+		private void LocateUserIfNeeded()
+		{
+			if (_locateUser && !_isShowingTutorial)
+			{
+				AutomaticLocateMeAtPickup.Execute(null);
+				_locateUser = false;
+			}
 		}
 
 		public async void CheckActiveOrderAsync(bool firstTime)
@@ -245,11 +255,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					},
 					(locateUser, defaultHintZoomLevel) => 
 					{
-						_isShowingTermsAndConditions = false;
-
 						// reset the viewmodel to the state it was before calling CheckTermsAsync()
 						_locateUser = locateUser;
 						_defaultHintZoomLevel = defaultHintZoomLevel;
+
+						_isShowingTermsAndConditions = false;
 					},
 					_locateUser, 
 					_defaultHintZoomLevel
@@ -446,19 +456,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					LocateMe.Cancel();
 					Map.UserMovedMap.Cancel();
 
-					var addressSelectionMode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
+					var addressSelectionMode = await _orderWorkflowService.GetAndObserveAddressSelectionMode().Take(1).ToTask();
 					if (CurrentViewState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-						if (_firstTime)
-						{
-							// Do not allow to cancel first locate me zoom
-							SetMapCenterToUserLocation(true, CancellationToken.None);
-						}
-						else
-						{
-							SetMapCenterToUserLocation(true, token);
-						}
+						// if we are entering for the first time in HomeViewModel, do not allow interuption on zoom.
+						var ct = _firstTime 
+							? CancellationToken.None 
+							: token;
+
+						await SetMapCenterToUserLocation(true, ct);
 					}									
 				}));
 			}
@@ -478,7 +485,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					AutomaticLocateMeAtPickup.Cancel();
 					Map.UserMovedMap.Cancel();
 
-					SetMapCenterToUserLocation(false, token);
+					return SetMapCenterToUserLocation(false, token);
 				}));
 			}
 		}
@@ -603,7 +610,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return CurrentViewState != HomeViewModelState.Initial && BookingStatus.CanGoBack;
 		}
 
-		private async void SetMapCenterToUserLocation(bool initialZoom, CancellationToken cancellationToken = default(CancellationToken))
+		private async Task SetMapCenterToUserLocation(bool initialZoom, CancellationToken cancellationToken)
 		{
 			try
 			{
@@ -618,9 +625,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					try 
 					{
 						var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles()
-							.Timeout(TimeSpan.FromSeconds (5))
+							.Timeout(TimeSpan.FromSeconds(5))
 							.Where(x => x.Any())
-							.Take (1)
+							.Take(1)
 							.ToTask(cancellationToken);
 
 						ZoomOnNearbyVehiclesIfPossible(availableVehicles);

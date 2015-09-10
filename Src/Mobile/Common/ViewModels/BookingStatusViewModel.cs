@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -107,10 +107,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar.NotifyBookingStatusAppbarChanged();
 
 			StatusInfoText = orderStatusDetail.IBSStatusId == null 
-				? string.Format(this.Services().Localize["Processing"]) 
+				? this.Services().Localize["Processing"]
 				: orderStatusDetail.IBSStatusDescription;
 
-			BottomBar.IsCancelButtonVisible = false;
+			BottomBar.ResetButtonsVisibility();
 			_waitingToNavigateAfterTimeOut = false;
 
 			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
@@ -228,6 +228,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			MapCenter = null;
 
+			_orientationService.Stop();
+
+			if (WaitingCarLandscapeViewModelParameters != null)
+			{
+				WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+				WaitingCarLandscapeViewModelParameters = null;
+			}
 			_isStarted = false;
 		}
 
@@ -648,7 +655,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					AddReminder(status);
 				}
-					
+
+
+				if (!string.IsNullOrWhiteSpace(status.VehicleNumber)
+					&& (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
+				{
+					if (_orientationService.Start())
+					{
+						WaitingCarLandscapeViewModelParameters = null;
+					}
+				}
+
+				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Done)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.NoShow)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Cancelled)
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
+				{
+					_orientationService.Stop();
+
+					if (WaitingCarLandscapeViewModelParameters != null)
+					{
+						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+						WaitingCarLandscapeViewModelParameters = null;
+					}
+				}
+
 				var statusInfoText = status.IBSStatusDescription;
 
                 var isLocalMarket = await _orderWorkflowService.GetAndObserveHashedMarket()
@@ -748,30 +780,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     GoToBookingScreen();
                 }
-
-				if (!string.IsNullOrWhiteSpace(status.VehicleNumber)
-					&& (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
-				{
-					if (_orientationService.Start())
-					{
-						WaitingCarLandscapeViewModelParameters = null;
-					}
-				}
-
-				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Done)
-					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.NoShow)
-					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Cancelled)
-					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
-				{
-					_orientationService.Stop();
-
-					if (WaitingCarLandscapeViewModelParameters != null)
-					{
-						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
-						WaitingCarLandscapeViewModelParameters = null;
-					}
-				}
             } 
 			catch (Exception ex) 
 			{

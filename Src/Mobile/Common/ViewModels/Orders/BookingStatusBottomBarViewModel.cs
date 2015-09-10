@@ -25,20 +25,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_accountService = accountService;
 		}
 
-		bool _isCancelButtonVisible;
-		public bool IsCancelButtonVisible
-		{
-			get { return _isCancelButtonVisible; }
-			set
-			{
-				_isCancelButtonVisible = value;
-				RaisePropertyChanged();
-			}
-		}
-
 		public BookingStatusViewModel ParentViewModel
 		{
 			get { return (BookingStatusViewModel) Parent; }
+		}
+
+		public void ResetButtonsVisibility()
+		{
+			IsCancelButtonVisible = false;
+			CanEditAutoTip = false;
+			IsUnpairButtonVisible = false;
 		}
 
 		private async void UpdateActionsPossibleOnOrder()
@@ -64,6 +60,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				else
 				{
 					IsUnpairButtonVisible = false;
+				CanEditAutoTip = false;
 				}
 			}
 			catch (Exception ex)
@@ -200,6 +197,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			set
 			{
 				_isUnpairButtonVisible = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		bool _isCancelButtonVisible;
+		public bool IsCancelButtonVisible
+		{
+			get { return _isCancelButtonVisible; }
+			set
+			{
+				_isCancelButtonVisible = value;
 				RaisePropertyChanged();
 			}
 		}
