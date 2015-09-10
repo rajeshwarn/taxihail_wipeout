@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
@@ -50,27 +49,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
-		public OrderManualRideLinqDetail ManualRideLinqDetail
-		{
-			get { return _manualRideLinqDetail; }
-			set
-			{
-				_manualRideLinqDetail = value;
-				RaisePropertyChanged();
-				BottomBar.NotifyBookingStatusAppbarChanged();
-			}
-		}
-
-		public TaxiLocation TaxiLocation
-		{
-			get { return _taxiLocation; }
-			set
-			{
-				_taxiLocation = value;
-				RaisePropertyChanged();
-			}
-		}
-
 		public BookingStatusViewModel(
 			IPhoneService phoneService, 
 			IBookingService bookingService,
@@ -95,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			GetIsCmtRideLinq();
 
 			((OrientationService)_orientationService).NotifyOrientationChanged += DeviceOrientationChanged;
-			_orientationService.Initialize(new DeviceOrientation[] { DeviceOrientation.Right, DeviceOrientation.Left });
+			_orientationService.Initialize(new [] { DeviceOrientation.Right, DeviceOrientation.Left });
 		}
 
 		private async void GetIsCmtRideLinq()
@@ -268,7 +246,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			var pairingCode = "{0} {1}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingCode"], manualRideLinqDetails.PairingCode);
 
-			StatusInfoText = driver + "\n\r" + pairingCode;
+			StatusInfoText = driver + Environment.NewLine + pairingCode;
 
 		}
 
@@ -284,6 +262,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		#region Bindings
+		public OrderManualRideLinqDetail ManualRideLinqDetail
+		{
+			get { return _manualRideLinqDetail; }
+			set
+			{
+				_manualRideLinqDetail = value;
+				RaisePropertyChanged();
+				BottomBar.NotifyBookingStatusAppbarChanged();
+			}
+		}
+
+		public TaxiLocation TaxiLocation
+		{
+			get { return _taxiLocation; }
+			set
+			{
+				_taxiLocation = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public BookingStatusBottomBarViewModel BottomBar
 		{
@@ -790,7 +788,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (deviceOrientation == DeviceOrientation.Left || deviceOrientation == DeviceOrientation.Right)
 			{
-				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed == true))
+				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 				{
 					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters() { CarNumber = _vehicleNumber, DeviceOrientation = deviceOrientation };
 					ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
