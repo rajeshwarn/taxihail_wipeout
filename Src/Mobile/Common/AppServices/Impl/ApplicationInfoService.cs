@@ -54,8 +54,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task CheckVersionAsync(VersionCheck versionCheck)
         {
-			apcurium.MK.Common.Diagnostic.ILogger log = TinyIoC.TinyIoCContainer.Current.Resolve<apcurium.MK.Common.Diagnostic.ILogger>();
-
 			if (versionCheck == VersionCheck.CheckUpdates)
 			{
 				if (!updatesChecked)
