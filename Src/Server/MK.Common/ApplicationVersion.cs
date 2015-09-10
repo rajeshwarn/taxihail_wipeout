@@ -121,8 +121,7 @@ namespace apcurium.MK.Common
 		{
 			if (obj != null && obj.GetType() == typeof(ApplicationVersion))
 			{
-				ApplicationVersion v1 = (ApplicationVersion)obj;
-				Compare(this, v1);
+				Compare(this, (ApplicationVersion)obj);
 			}
 
 			return 1;
