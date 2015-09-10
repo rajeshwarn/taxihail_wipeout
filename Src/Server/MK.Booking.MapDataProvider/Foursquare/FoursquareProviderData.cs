@@ -9,17 +9,14 @@ namespace MK.Booking.MapDataProvider.Foursquare
     /// </summary>
     public class FoursquareVenuesResponse<T>
     {
+		const int HTTPOKResponse = 200;
+
 		public Meta Meta { get; set; }
         public T Response { get; set; }
 
 		public bool IsValid()
 		{
-			if (Meta == null || (Meta != null && Meta.Code == 200))
-			{
-				return true;
-			}
-
-			return false;
+			return Meta == null || (Meta != null && Meta.Code == HTTPOKResponse);
 		}
     }
 

@@ -84,7 +84,11 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 				if (!exploreAnswer.IsValid())
 				{
-					throw new WebServiceException("Code " + exploreAnswer.Meta.Code.ToString() + " error type: " + exploreAnswer.Meta.ErrorType + " error details: " + exploreAnswer.Meta.ErrorDetail);
+					Exception ex = new WebServiceException("Code " + exploreAnswer.Meta.Code.ToString() + " error type: " + exploreAnswer.Meta.ErrorType + " error details: " + exploreAnswer.Meta.ErrorDetail);
+
+					_logger.LogError(ex);
+
+					throw ex;
 				}
 
 				uint maximumPagesByResponse = (uint)(Math.Ceiling((double)exploreAnswer.Response.TotalResults / (double)MaximumPageLength));
@@ -119,7 +123,11 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 			if (!venues.IsValid())
 			{
-				throw new WebServiceException("Code " + venues.Meta.Code.ToString() + " error type: " + venues.Meta.ErrorType + " error details: " + venues.Meta.ErrorDetail);
+				Exception ex = new WebServiceException("Code " + venues.Meta.Code.ToString() + " error type: " + venues.Meta.ErrorType + " error details: " + venues.Meta.ErrorDetail);
+
+				_logger.LogError(ex);
+
+				throw ex;
 			}
 
             return venues.Response.Venues.Select(ToPlace).ToArray();
@@ -169,7 +177,11 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 			if (!venue.IsValid())
 			{
-				throw new WebServiceException("Code " + venue.Meta.Code.ToString() + " error type: " + venue.Meta.ErrorType + " error details: " + venue.Meta.ErrorDetail);
+				Exception ex = new WebServiceException("Code " + venue.Meta.Code.ToString() + " error type: " + venue.Meta.ErrorType + " error details: " + venue.Meta.ErrorDetail);
+
+				_logger.LogError(ex);
+
+				throw ex;
 			}
 			
 			var location = venue.Response.Venue.location;
