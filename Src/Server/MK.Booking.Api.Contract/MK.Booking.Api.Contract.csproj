@@ -171,6 +171,7 @@
     <Compile Include="Requests\SendReceipt.cs" />
     <Compile Include="Requests\EmailTemplateNamesRequest.cs" />
     <Compile Include="Requests\PrivacyPolicyRequest.cs" />
+    <Compile Include="Requests\TaxiLocationRequest.cs" />
     <Compile Include="Requests\UnassignedNetworkVehicleTypeRequest.cs" />
     <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />

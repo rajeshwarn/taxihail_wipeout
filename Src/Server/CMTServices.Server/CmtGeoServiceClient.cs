@@ -11,6 +11,7 @@ using apcurium.MK.Common.Http.Extensions;
 using CMTServices.Enums;
 using CMTServices.Responses;
 using ServiceStack.Common;
+using ServiceStack.Text;
 
 namespace CMTServices
 {
@@ -43,6 +44,12 @@ namespace CMTServices
                 return new List<VehicleResponse>();
             }
 
+			@params.AddRange(new []
+			{
+				new KeyValuePair<string, object>("availState", ((int)AvailabilityStates.Available).ToString()),
+				new KeyValuePair<string, object>("includeETA", "true")
+			});
+
             CmtGeoResponse response = null;
             try
             {
@@ -74,6 +81,43 @@ namespace CMTServices
 
             return new List<VehicleResponse>();
         }
+
+	    public VehicleResponse GetPairedVehicle(string medallion, string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
+	    {
+			var @params = GetAvailableVehicleParams(market, latitude, longitude,searchRadius,fleetIds,returnAll,wheelchairAccessibleOnly, hired: true);
+			if (@params == null)
+			{
+				return null;
+			}
+
+			@params.Add(new KeyValuePair<string, object>("eHailSate", ((int)EHailStates.PairedWithRL).ToString()));
+			@params.Add(new KeyValuePair<string, object>("medallions", new[]{medallion}));
+
+			CmtGeoResponse response = null;
+			try
+			{
+				response = Client.Post("/availability", ToDictionary(@params))
+					.Deserialize<CmtGeoResponse>()
+					.Result;
+			}
+			catch (Exception ex)
+			{
+				Logger.LogMessage("An error occured when trying to contact Geo service");
+				Logger.LogError(ex);
+
+				return null;
+			}
+
+		    if (response == null || response.Entities == null)
+		    {
+			    return null;
+		    }
+
+		    var entity = response.Entities.FirstOrDefault(item => item.Medallion == medallion);
+
+			return ToVehicleResponse(entity);
+
+	    }
 
         protected IEnumerable<VehicleResponse> ToVehicleResponse(IEnumerable<CmtGeoContent> entities)
         {
@@ -135,7 +179,15 @@ namespace CMTServices
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
-        protected List<KeyValuePair<string, object>> GetAvailableVehicleParams(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
+        protected List<KeyValuePair<string, object>> GetAvailableVehicleParams(
+			string market, 
+			double latitude, 
+			double longitude, 
+			int? searchRadius = null, 
+			IList<int> fleetIds = null, 
+			bool returnAll = false, 
+			bool wheelchairAccessibleOnly = false,
+			bool hired = false)
         {
             if (fleetIds != null && !fleetIds.Any())
             {
@@ -143,9 +195,15 @@ namespace CMTServices
                 return null;
             }
 
+	        var meterState = hired
+		        ? MeterStates.Hired
+		        : MeterStates.ForHire;
+
+			
+
             var @params = new List<KeyValuePair<string, object>>
                 {
-                    new KeyValuePair<string, object>("meterState", ((int)MeterStates.ForHire).ToString()),
+                    new KeyValuePair<string, object>("meterState", ((int)meterState).ToString()),
                     new KeyValuePair<string, object>("logonState", ((int)LogonStates.LoggedOn).ToString()),
                     new KeyValuePair<string, object>("lat", latitude.ToString(CultureInfo.InvariantCulture)),
                     new KeyValuePair<string, object>("lon", longitude.ToString(CultureInfo.InvariantCulture)),
@@ -153,11 +211,9 @@ namespace CMTServices
 
                     // the following have different defaults from badger service
                     new KeyValuePair<string, object>("includeMapMatch", "true"),
-                    new KeyValuePair<string, object>("includeETA", "true"),
 
                     // required for geo service
-                    new KeyValuePair<string, object>("limit", "10"),
-                    new KeyValuePair<string, object>("availState", ((int)AvailabilityStates.Available).ToString())
+                    new KeyValuePair<string, object>("limit", "10")
                 };
 
             if (market.HasValue())

@@ -595,10 +595,6 @@
     <Compile Include="Views\ManualPairingForRideLinqView.designer.cs">
       <DependentUpon>ManualPairingForRideLinqView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ManualRideLinqStatusView.cs" />
-    <Compile Include="Views\ManualRideLinqStatusView.designer.cs">
-      <DependentUpon>ManualRideLinqStatusView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Order\OrderBookingOptions.cs" />
     <Compile Include="Views\Order\OrderBookingOptions.designer.cs">
       <DependentUpon>OrderBookingOptions.cs</DependentUpon>
@@ -699,7 +695,6 @@
     <InterfaceDefinition Include="Views\PromotionCell.xib" />
     <InterfaceDefinition Include="Views\Payments\OverduePaymentView.xib" />
     <InterfaceDefinition Include="Views\ManualPairingForRideLinqView.xib" />
-    <InterfaceDefinition Include="Views\ManualRideLinqStatusView.xib" />
     <InterfaceDefinition Include="Views\Order\OrderBookingOptions.xib" />
     <InterfaceDefinition Include="Views\EditAutoTipView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\AppBarBookingStatus.xib" />
