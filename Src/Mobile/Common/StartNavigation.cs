@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Mobile
                 facebookService.PublishInstall();
             }
 
+			await TinyIoC.TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersionAsync(VersionCheck.CheckMinimumSupportedVersion);
+
 			Mvx.Resolve<IAnalyticsService>().ReportConversion();
 
             if (accountService.CurrentAccount == null

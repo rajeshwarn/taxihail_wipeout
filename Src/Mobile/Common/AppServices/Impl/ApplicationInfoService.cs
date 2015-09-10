@@ -5,6 +5,8 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -17,6 +19,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IPackageInfo _packageInfo;
 		readonly ICacheService _cacheService;
 
+		bool updatesChecked = false;
+		DateTime minimalVersionChecked;
+		const int CheckMinimumSupportedVersionWhenIntervalExpired = 6; // hours
+
 		public ApplicationInfoService(ILocalization localize, 
 									IMessageService messageService, 
 									IPackageInfo packageInfo,
@@ -28,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_cacheService = cacheService;
 		}
 
-        public async Task<ApplicationInfo> GetAppInfoAsync( )
+        public async Task<ApplicationInfo> GetAppInfoAsync()
         {
 			var cached = _cacheService.Get<ApplicationInfo>(AppInfoCacheKey);
             if (cached == null)
@@ -44,51 +50,74 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			_cacheService.Clear (AppInfoCacheKey);
         }
-        
-        
-        public async void CheckVersionAsync()
+
+
+		public async Task CheckVersionAsync(VersionCheck versionCheck)
         {
+			apcurium.MK.Common.Diagnostic.ILogger log = TinyIoC.TinyIoCContainer.Current.Resolve<apcurium.MK.Common.Diagnostic.ILogger>();
+
+			if (versionCheck == VersionCheck.CheckUpdates)
+			{
+				if (!updatesChecked)
+				{
+					updatesChecked = true;
+				}
+				else
+				{
+					return;
+				}
+			}
+
+			if (versionCheck == VersionCheck.CheckMinimumSupportedVersion)
+			{
+				if ((DateTime.Now - minimalVersionChecked).TotalHours >= CheckMinimumSupportedVersionWhenIntervalExpired)
+				{
+					minimalVersionChecked = DateTime.Now;
+				}
+				else
+				{
+					return;
+				}
+			}
+
 			var isUpToDate = true;
-            try
+			var isSupported = true;
+            
+			try
             {
                 var app = await GetAppInfoAsync();
-				if ( _packageInfo.Version.Count( c=>  c == '.' ) == 2 )
+
+				ApplicationVersion mobileVersion = new ApplicationVersion(_packageInfo.Version);
+				ApplicationVersion serverVersion = new ApplicationVersion(app.Version);
+				ApplicationVersion minimumRequiredVersion = new ApplicationVersion(app.MinimumRequiredAppVersion);
+
+				if (mobileVersion < serverVersion)
 				{
-
-
-					if ( ( app.Version.Count( c=>  c == '.' ) >= 2 ) &&
-						( _packageInfo.Version.Split( '.' ).Take(2).All( s=> s.All(c=> char.IsDigit(c) ) ) )  && 
-						( app.Version.Split( '.' ).Take(2).All( s=> s.All(c=> char.IsDigit(c) ) ) ) )
-					{
-						var packageNumber =  int.Parse( _packageInfo.Version.Split( '.' ).ElementAt(0) ) * 10000 + int.Parse( _packageInfo.Version.Split( '.' ).ElementAt(1) ) * 100;
-
-							var appNumber =  int.Parse( app.Version.Split( '.' ).ElementAt(0) ) * 10000 + int.Parse( app.Version.Split( '.' ).ElementAt(1) ) * 100;
-						isUpToDate = packageNumber >=  appNumber;
-
-
-
-					}
-					else 
-					{
-						var v = _packageInfo.Version.Split( '.' ).Take(2).JoinBy(".")+".";
-						isUpToDate = app.Version.StartsWith(v);
-					}
+					isUpToDate = false;
 				}
 
+				if (mobileVersion < minimumRequiredVersion)
+				{
+					isSupported = false;
+				}
             }
             catch
             {
-                isUpToDate = true;
             }
 
-            if (!isUpToDate)
+            if (versionCheck == VersionCheck.CheckUpdates && !isUpToDate)
             {
-
 				var title = _localize["AppNeedUpdateTitle"];
 				var msg = _localize["AppNeedUpdateMessage"];
 				await _messageService.ShowMessage(title, msg);
             }
-        }
+			
+			if (versionCheck == VersionCheck.CheckMinimumSupportedVersion && !isSupported)
+			{
+				var title = _localize["UpdateNoticeTitle"];
+				var msg = _localize["UpdateNoticeText"];
+				await _messageService.ShowMessage(title, msg);
+			}
+		}
     }
 }
-

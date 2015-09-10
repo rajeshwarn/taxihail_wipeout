@@ -136,6 +136,7 @@ namespace apcurium.MK.Booking.Mobile
 				case MvxLifetimeEvent.ActivatedFromMemory:
 				case MvxLifetimeEvent.ActivatedFromDisk:
 					RefreshAppData();
+					TinyIoC.TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersionAsync(VersionCheck.CheckMinimumSupportedVersion);
 #if !MONOTOUCH
 					TryFacebookInitAndPublish();
 #endif

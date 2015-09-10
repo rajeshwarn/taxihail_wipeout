@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationVersion.cs" />
     <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
     <Compile Include="Configuration\Attributes\HiddenAttribute.cs" />
     <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />

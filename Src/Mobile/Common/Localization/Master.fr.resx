@@ -2225,4 +2225,10 @@
 	<data name="WaitingCarLandscapeActivityName" xml:space="preserve">
     	<value>Numéro de voiture</value>
 	</data>
+	<data name="UpdateNoticeTitle" xml:space="preserve">
+    	<value>Update Notice</value>
+	</data>
+	<data name="UpdateNoticeText" xml:space="preserve">
+    	<value>Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît</value>
+	</data>
 </root>

@@ -132,7 +132,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
 
-				this.Services().ApplicationInfo.CheckVersionAsync();
+				this.Services().ApplicationInfo.CheckVersionAsync(VersionCheck.CheckMinimumSupportedVersion);
+				this.Services().ApplicationInfo.CheckVersionAsync(VersionCheck.CheckUpdates);
+				
 				_isShowingTutorial = _tutorialService.DisplayTutorialToNewUser(() =>
 				{
 					_isShowingTutorial = false;

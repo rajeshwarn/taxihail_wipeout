@@ -702,4 +702,6 @@
   <string name="WaitingCarLandscapeViewCloseButtonText">Retour</string>
   <string name="WaitingCarLandscapeViewCarNumber">Numéro de voiture</string>
   <string name="WaitingCarLandscapeActivityName">Numéro de voiture</string>
+  <string name="UpdateNoticeTitle">Update Notice</string>
+  <string name="UpdateNoticeText">Désolé, cette version d\'application n\'est plus maintenue. Mettez à jour l\'application s\'il vous plaît</string>
 </resources>

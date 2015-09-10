@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_locationService.Start();
 
-			CheckVersion();
+			this.Services().ApplicationInfo.CheckVersionAsync(VersionCheck.CheckUpdates);
 
             if (_executeOnStart != null)
             {
@@ -96,12 +96,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_locationService.Stop();
             }
         }
-        private void CheckVersion()
-        {
-            this.Services().ApplicationInfo.CheckVersionAsync();
-        }
 
-        public bool DisplayReportProblem
+		public bool DisplayReportProblem
 	    {
             get
             {
