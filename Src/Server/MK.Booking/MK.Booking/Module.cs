@@ -99,7 +99,8 @@ namespace apcurium.MK.Booking
         {
             Mapper.CreateMap<UpdateBookingSettings, BookingSettings>();
             Mapper.CreateMap<CreateOrder.PaymentInformation, PaymentInformation>();
-            Mapper.CreateMap<Address, AddressDetails>();
+            Mapper.CreateMap<Address, AddressDetails>()
+				.ForMember(x => x.PlaceReference, opt => opt.MapFrom(x => x.PlaceId));
 
             Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
                 .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
@@ -111,8 +112,11 @@ namespace apcurium.MK.Booking
 
             Mapper.CreateMap<Address, DefaultAddressDetails>();
 
-            Mapper.CreateMap<Address, PopularAddressDetails>();
-            Mapper.CreateMap<PopularAddressDetails, Address>();
+            Mapper.CreateMap<Address, PopularAddressDetails>()
+				.ForMember(x => x.PlaceReference, opt => opt.MapFrom(x => x.PlaceId));
+            Mapper.CreateMap<PopularAddressDetails, Address>()
+				.ForMember(x => x.PlaceId, opt => opt.MapFrom(x => x.PlaceReference)); 
+
             Mapper.CreateMap<TariffDetail, Tariff>();
             Mapper.CreateMap<RuleDetail, Rule>();
             Mapper.CreateMap<CreditCardAddedOrUpdated, CreditCardDetails>()
