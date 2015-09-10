@@ -357,4 +357,16 @@ namespace apcurium.MK.Common.Configuration
         public int? AvailableVehiclesFleetId { get; protected internal set; }
     }
 
+
+	public class FlightStatsSettingsContainer
+	{
+		[Hidden]
+		[Display(Name = "FlightStatus - App Id", Description = "Application id for flight stats API")]
+		public string AppId { get; set; }
+
+		[Hidden]
+		[Display(Name = "FlightStatus - Application key", Description = "Application keys for flight stats API.")]
+		public string ApplicationKeys { get; set; }
+	}
+
 }

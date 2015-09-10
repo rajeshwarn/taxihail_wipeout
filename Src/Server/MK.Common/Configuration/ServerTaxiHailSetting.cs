@@ -106,6 +106,12 @@ namespace MK.Common.Configuration
                 ServiceUrl = "http://geo-sandbox.cmtapi.com"
             };
 
+	        FlightStats = new FlightStatsSettingsContainer
+	        {
+				AppId = "59e6fed3",
+				ApplicationKeys = "94705638689d77a3aff2526332969395"
+	        };
+
         }
 
         public SmtpSettingContainer Smtp { get; protected set; }
@@ -119,6 +125,7 @@ namespace MK.Common.Configuration
         public NetworkSettingContainer Network { get; protected set; }
         public HoneyBadgerSettingContainer HoneyBadger { get; protected set; }
         public CmtGeoSettingContainer CmtGeo { get; protected set; }
+		public FlightStatsSettingsContainer FlightStats { get; set; }
 
         [Display(Name = "Website - Hide Web signup button", Description = "Hide Sign Up button on web site")]
         public bool IsWebSignupHidden { get; protected set; }
