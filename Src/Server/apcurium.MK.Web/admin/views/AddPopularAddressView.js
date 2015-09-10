@@ -6,7 +6,8 @@
 
         events: {
             'click [data-action=destroy]': 'destroyAddress',
-            'click [data-action=cancel]': 'cancel'
+            'click [data-action=cancel]': 'cancel',
+            'change [name=addressLocationType]': 'onAddressLocationTypeChanged',
         },
 
         initialize: function () {
@@ -18,6 +19,7 @@
             var html = this.renderTemplate(data);
             this.$el.html(html);
 
+            this.$("[name=addressLocationType] option[value=" + data.addressLocationType + "]").attr("selected", "selected");
             this.$("[name=addressLocationType] option[value=" + data.addressLocationType + "]").attr("selected", "selected");
 
             this.validate({
@@ -53,6 +55,17 @@
             });
 
             return this;
+        },
+
+        onAddressLocationTypeChanged: function() {
+        	var addressLocationType = this.$("[name = addressLocationType]");
+        	var airportReferenceDiv = this.$("[name = airportReferenceDiv]");
+
+        	if (addressLocationType.val() == "1") {
+		        airportReferenceDiv.show();
+        	} else {
+        		airportReferenceDiv.hide();
+	        }
         },
 
         save: function (form) {
