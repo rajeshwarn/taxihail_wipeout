@@ -128,6 +128,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			_isStarted = true;
 
+			BottomBar.ResetButtonsVisibility();
+
 			var subscriptions = new CompositeDisposable();
 
 			GetTimerObservable()

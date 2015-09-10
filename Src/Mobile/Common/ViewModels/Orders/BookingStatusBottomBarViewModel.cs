@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				else
 				{
 					IsUnpairButtonVisible = false;
-				CanEditAutoTip = false;
+					CanEditAutoTip = false;
 				}
 			}
 			catch (Exception ex)
