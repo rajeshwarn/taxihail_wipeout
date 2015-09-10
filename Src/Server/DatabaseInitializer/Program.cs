@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -108,41 +110,14 @@ namespace DatabaseInitializer
                 {
                     var temporaryDatabaseName = param.CompanyName + "_New";
 
-                    PerformUpdate(param, creatorDb, param.CompanyName, temporaryDatabaseName);
+                    PerformUpdate(param, param.CompanyName);
 
                     if (param.ReuseTemporaryDb)
                     {
                         // the idea behind reuse of temp db is that account doesn't have permission to rename db 
                         // so we instead we need to re-migrate from the temp db to the actual name
-                        PerformUpdate(param, creatorDb, temporaryDatabaseName, param.CompanyName);
+                        PerformUpdate(param, param.CompanyName);
                     }
-                    else
-                    {
-                        var oldDatabase = creatorDb.RenameDatabase(param.MasterConnectionString, param.CompanyName);
-
-                        Console.WriteLine("Rename New Database to use Company Name...");
-                        creatorDb.RenameDatabase(param.MasterConnectionString, temporaryDatabaseName, param.CompanyName);
-
-                        if (param.MkWebConnectionString.ToLower().Contains("integrated security=true"))
-                        {
-                            creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
-                                "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
-                        }
-
-                        SetupMirroring(param);
-
-                        if (!string.IsNullOrEmpty(param.BackupFolder))
-                        {
-                            Console.WriteLine("Backup of old database...");
-                            var backupFolder = Path.Combine(param.BackupFolder, param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
-                            Directory.CreateDirectory(backupFolder);
-                            creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, oldDatabase);
-
-                            Console.WriteLine("Dropping of old database...");
-                            creatorDb.DropDatabase(param.MasterConnectionString, oldDatabase);
-                        }
-                    }
-
 
                 }
                 else
@@ -275,69 +250,47 @@ namespace DatabaseInitializer
             // ReSharper restore LocalizableElement
         }
 
-        public static void PerformUpdate(DatabaseInitializerParams param, DatabaseCreator creatorDb, string sourceDatabaseName, string targetDatabaseName)
+        public static void PerformUpdate(DatabaseInitializerParams param, string sourceDatabaseName)
         {
-            Console.WriteLine("Update");
-
-
-            var temporaryDatabaseName = targetDatabaseName;
+            Console.WriteLine("Update Schemas");
             var builder = new SqlConnectionStringBuilder(param.MkWebConnectionString);
-            builder.InitialCatalog = temporaryDatabaseName;
-
-            var temporaryDbExists = creatorDb.DatabaseExists(param.MasterConnectionString, temporaryDatabaseName);
-            if (temporaryDbExists && param.ReuseTemporaryDb)
-            {
-                creatorDb.DropSchema(builder.ConnectionString, temporaryDatabaseName);
-            }
-            else
-            {
-                Console.WriteLine("Create Empty Database");
-                creatorDb.DropDatabase(param.MasterConnectionString, temporaryDatabaseName);
-                creatorDb.CreateDatabase(param.MasterConnectionString, temporaryDatabaseName, param.SqlServerDirectory);
-            }
-            creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", builder.ConnectionString));
-
-            Console.WriteLine("Copy Events to the Empty Database");
-            creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
-            creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
-            creatorDb.FixUnorderedEvents(builder.ConnectionString);
-
-            var container = new UnityContainer();
-            var module = new Module();
-            module.Init(container, new ConnectionStringSettings("MkWeb", builder.ConnectionString), param.MkWebConnectionString);
-
-            Console.WriteLine("Creating index...");
-            creatorDb.CreateIndexes(param.MasterConnectionString, temporaryDatabaseName);
-
-            Console.WriteLine("Migrating events...");
-            var migrator = container.Resolve<IEventsMigrator>();
-            migrator.Do();
-
-            Console.WriteLine("Replaying events...");
-            var replayService = container.Resolve<IEventsPlayBackService>();
-            replayService.ReplayAllEvents();
-            Console.WriteLine("Done playing events...");
+            builder.InitialCatalog = sourceDatabaseName;
 
             StopAppPools(param);
 
-            var lastEventCopyDateTime = creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
+            DbMigrationsConfiguration configuration = new apcurium.MK.Booking.Migrations.ConfigMigrationBookingContext();
+            configuration.TargetDatabase = new DbConnectionInfo(builder.ConnectionString, "System.Data.SqlClient");
 
-            Console.WriteLine("Migrating Events Raised Since the Copy...");
-            migrator.Do(lastEventCopyDateTime);
-
-            Console.WriteLine("Replaying Events Raised Since the Copy...");
+            var migrator = new DbMigrator(configuration);
+            DisplayPendingMigrations(migrator);
+            migrator.Update();
             
 
-            replayService.ReplayAllEvents(lastEventCopyDateTime);
-            creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
-
-            Console.WriteLine("Rename Previous Database...");
-            var mirrored = creatorDb.IsMirroringSet(param.MasterConnectionString, sourceDatabaseName);
-            if (mirrored)
+            configuration = new apcurium.MK.Common.Migrations.ConfigMigrationConfigurationContext
             {
-                Console.WriteLine("Turning off database mirroring...");
-                creatorDb.TurnOffMirroring(param.MasterConnectionString, sourceDatabaseName);
-                Console.WriteLine("Database mirroring turned off.");
+                TargetDatabase = new DbConnectionInfo(builder.ConnectionString, "System.Data.SqlClient")
+            };
+
+            migrator = new DbMigrator(configuration);
+            DisplayPendingMigrations(migrator);
+            migrator.Update();
+            Console.WriteLine("Update Schemas Done");
+        }
+
+        private static void DisplayPendingMigrations(DbMigrator migrator)
+        {
+            var pendingMigrations = migrator.GetPendingMigrations().ToList();
+            if (pendingMigrations.Any())
+            {
+                Console.WriteLine("Migration(s) To Be Applied on {0} context", migrator.Configuration.GetType().Name);
+                foreach (var migration in pendingMigrations)
+                {
+                    Console.WriteLine(migration);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No Pending Migration To Be Applied for {0} context", migrator.Configuration.GetType().Name);
             }
         }
 
