@@ -15,23 +15,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IPhoneService _phoneService;
 		private readonly IBookingService _bookingService;
 		private readonly IPaymentService _paymentService;
+		private readonly IAccountService _accountService;
 
-		public BookingStatusBottomBarViewModel(IPhoneService phoneService, IBookingService bookingService, IPaymentService paymentService)
+		public BookingStatusBottomBarViewModel(IPhoneService phoneService, IBookingService bookingService, IPaymentService paymentService, IAccountService accountService)
 		{
 			_phoneService = phoneService;
 			_bookingService = bookingService;
 			_paymentService = paymentService;
-		}
-
-		bool _isCancelButtonVisible;
-		public bool IsCancelButtonVisible
-		{
-			get { return _isCancelButtonVisible; }
-			set
-			{
-				_isCancelButtonVisible = value;
-				RaisePropertyChanged();
-			}
+			_accountService = accountService;
 		}
 
 		public BookingStatusViewModel ParentViewModel
@@ -46,27 +37,54 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			IsUnpairButtonVisible = false;
 		}
 
-		public async void UpdateActionsPossibleOnOrder(string statusId)
+		private async void UpdateActionsPossibleOnOrder()
 		{
-			IsCancelButtonVisible = _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
-
-			var arePassengersOnBoard = ParentViewModel.OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
-			var isUnPairPossible = DateTime.UtcNow <= ParentViewModel.OrderStatusDetail.UnpairingTimeOut;
-
-			if (arePassengersOnBoard
-				&& (ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
+			try
 			{
-				var isPaired = await _bookingService.IsPaired(ParentViewModel.Order.Id);
+				IsCancelButtonVisible = ParentViewModel.ManualRideLinqDetail == null
+				&& _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
 
-				CanEditAutoTip = isPaired;
-				IsUnpairButtonVisible = isPaired && isUnPairPossible;
-			}
-			else
-			{
-				IsUnpairButtonVisible = false;
+				var arePassengersOnBoard = ParentViewModel.ManualRideLinqDetail != null
+					|| ParentViewModel.OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
+
+				var isUnPairPossible = ParentViewModel.ManualRideLinqDetail == null
+					&& DateTime.UtcNow <= ParentViewModel.OrderStatusDetail.UnpairingTimeOut;
+
+				if (arePassengersOnBoard && IsUsingPaymentMethodOnFile())
+				{
+					var isPaired = ParentViewModel.ManualRideLinqDetail != null || await _bookingService.IsPaired(ParentViewModel.Order.Id);
+
+					CanEditAutoTip = isPaired;
+					IsUnpairButtonVisible = isPaired && isUnPairPossible;
+				}
+				else
+				{
+					IsUnpairButtonVisible = false;
 				CanEditAutoTip = false;
+				}
 			}
+			catch (Exception ex)
+			{
+				Logger.LogError(ex);
+			}
+		}
+
+		private bool IsUsingPaymentMethodOnFile()
+		{
+			return ParentViewModel.ManualRideLinqDetail != null
+				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+		}
+
+		public void NotifyBookingStatusAppbarChanged()
+		{
+			UpdateActionsPossibleOnOrder();
+			RaisePropertyChanged(() => IsCallCompanyHidden);
+		}
+
+		public bool IsCallCompanyHidden
+		{
+			get { return Settings.HideCallDispatchButton || ParentViewModel.ManualRideLinqDetail != null; }
 		}
 
 		public ICommand CancelOrder
@@ -156,7 +174,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								}
 								else
 								{
-									this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"]);
+									this.Services().Message
+										.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"])
+										.FireAndForget();
 								}
 							}
 							catch (Exception ex)
@@ -181,6 +201,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		bool _isCancelButtonVisible;
+		public bool IsCancelButtonVisible
+		{
+			get { return _isCancelButtonVisible; }
+			set
+			{
+				_isCancelButtonVisible = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		private bool _canEditAutoTip;
 		public bool CanEditAutoTip
 		{
@@ -195,13 +226,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		private int? _currentTip;
+		private int GetTip()
+		{
+			return _currentTip ?? _accountService.CurrentAccount.DefaultTipPercent ?? Settings.DefaultTipPercentage;
+		}
+
 		public ICommand EditAutoTipCommand
 		{
 			get
 			{
 				return this.GetCommand(() =>
 				{
-					ShowViewModel<EditAutoTipViewModel>();
+					ShowSubViewModel<EditAutoTipViewModel, int>(new { tip = GetTip()}, tip => _currentTip = tip);
 				});
 			}
 		}

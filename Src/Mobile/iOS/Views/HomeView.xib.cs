@@ -92,9 +92,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private IDisposable ObserveIsDriverInfoAvailable()
         {
             return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-                h => ViewModel.BookingStatus.PropertyChanged += h,
-                h => ViewModel.BookingStatus.PropertyChanged -= h
-            )
+	                h => ViewModel.BookingStatus.PropertyChanged += h,
+	                h => ViewModel.BookingStatus.PropertyChanged -= h
+	            )
                 .Where(args => args.EventArgs.PropertyName.Equals("IsDriverInfoAvailable"))
                 .Select(_ => ViewModel.BookingStatus.IsDriverInfoAvailable)
                 .DistinctUntilChanged()
@@ -136,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnMenu)
                 .For(v => v.Hidden)
                 .To(vm => vm.CurrentViewState)
-                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus });
+                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq});
 
 			set.Bind(btnAirport)
 				.For(v => v.Command)
@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnLocateMe)
                 .For(v => v.Hidden)
                 .To(vm => vm.CurrentViewState)
-                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus });
+                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq });
 
             set.Bind(mapView)
                 .For(v => v.DataContext)
@@ -213,13 +213,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.BookingStatus);
 
-            set.Bind(this.mapView)
+            set.Bind(mapView)
                 .For(v => v.OrderStatusDetail)
                 .To(vm => vm.BookingStatus.OrderStatusDetail);
 
             set.Bind(contactTaxiControl)
                 .For(v => v.DataContext)
                 .To(vm => vm.BookingStatus);
+
+	        set.Bind(mapView)
+		        .For(v => v.TaxiLocation)
+		        .To(vm => vm.BookingStatus.TaxiLocation);
             
             #endregion
 
@@ -269,7 +273,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             bookingStatusControl.SetNeedsDisplay();
         }
-
+			
         private void ChangeState(HomeViewModelState state)
         {
 			if (_presentationState == HomeViewModelState.AirportDetails && state == HomeViewModelState.AddressSearch) 
@@ -389,7 +393,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         ctrlOrderOptions.SetNeedsDisplay();
                     }, () => orderEdit.SetNeedsDisplay());
             }
-			else if (_presentationState == HomeViewModelState.BookingStatus)
+            else if (_presentationState == HomeViewModelState.BookingStatus || _presentationState == HomeViewModelState.ManualRidelinq)
             {
                 // Order Options: Hidden
                 // Order Review: Hidden
@@ -402,6 +406,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 CloseBookATaxiDialog();
                 constraintAppBarBookingStatus.Constant = 0;
                 constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstrainValue;
+
+                if (_presentationState == HomeViewModelState.ManualRidelinq) 
+				{
+					ResizeBookingStatusControl(false);
+				}
 
                 homeView.LayoutIfNeeded();
 

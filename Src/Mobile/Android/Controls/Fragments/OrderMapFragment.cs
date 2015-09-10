@@ -17,14 +17,12 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Android.App;
 using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
-using Android.Text;
 using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Binding.Attributes;
@@ -33,6 +31,7 @@ using Cirrious.MvvmCross.Binding.Droid.Views;
 using Google.Android.M4b.Maps;
 using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.ViewModels.Map;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -49,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private IEnumerable<CoordinateViewModel> _center;
 
-		private OrderStatusDetail _taxiLocation;
+		private OrderStatusDetail _orderStatusDetail;
 		private Marker _taxiLocationPin;
 
         private readonly List<Marker> _availableVehicleMarkers = new List<Marker> ();
@@ -162,40 +161,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 		}
 
-		public OrderStatusDetail TaxiLocation
-		{
-			get { return _taxiLocation; }
-			set
-			{
-				_taxiLocation = value;
-
-				UpdateTaxiLocation(value);
-			}
-		}
-
-
-	    private void UpdateTaxiLocation(OrderStatusDetail value)
+	    public TaxiLocation TaxiLocation
 	    {
-			if (_taxiLocationPin != null)
-			{
-				_taxiLocationPin.Remove();
-			}
+		    get { return _taxiLocation; }
+		    set
+		    {
+				_taxiLocation = value;
+			    UpdateTaxiLocation(value);
+		    }
+	    }
 
-			if (value != null
-				&& value.VehicleLatitude.HasValue
-				&& value.VehicleLongitude.HasValue
-				&& !string.IsNullOrEmpty(value.VehicleNumber)
-				&& VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
-			{
+	    private void UpdateTaxiLocation(TaxiLocation value)
+	    {
+		    if (_taxiLocationPin != null)
+		    {
+			    _taxiLocationPin.Remove();
+		    }
+
+		    if (value != null && value.Latitude.HasValue && value.Longitude.HasValue && value.VehicleNumber.HasValue())
+		    {
+				ShowAvailableVehicles(null);
 				try
 				{
 					var mapOptions = new MarkerOptions()
 						.Anchor(.5f, 1f)
-						.SetPosition(new LatLng(value.VehicleLatitude.Value, value.VehicleLongitude.Value))
+						.SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
 						.InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
 						.Visible(true);
+
+
 					if (_showVehicleNumber)
 					{
+						var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
+						Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
+
 						mapOptions.SetTitle(value.VehicleNumber);
 					}
 
@@ -203,22 +202,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 					if (_showVehicleNumber)
 					{
-						var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
-						Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
-
 						_taxiLocationPin.ShowInfoWindow();
 					}
-
 				}
 				catch (Exception ex)
 				{
 					Logger.LogError(ex);
 				}
 
-				_isBookingMode = true;
-
-				ShowAvailableVehicles(null);
-			}
+				_isBookingMode = true;				
+		    }
 			else
 			{
 				_isBookingMode = false;
@@ -228,7 +221,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		private Bitmap CreateTaxiBitmap()
 		{
 			return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
-		}
+	    }
 
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IList<AvailableVehicle> AvailableVehicles
@@ -255,6 +248,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public IMvxBindingContext BindingContext { get; set; }
 
         private bool _lockGeocoding;
+	    private OrderManualRideLinqDetail _manualPairedTaxi;
+	    private TaxiLocation _taxiLocation;
 
 	    [MvxSetToNullAfterBinding]
         public object DataContext
@@ -654,8 +649,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
 		{
-			var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.ToArray();
-            if(addresseesToDisplay == null || !coordinateViewModels.Any())
+			var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.SelectOrDefault(addresses => addresses.ToArray(), new CoordinateViewModel[0]);
+            if(!coordinateViewModels.Any())
             {
                 return;
             }
@@ -715,11 +710,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					{
 						maxLat += 0.0007;
 					}
-					if (!bookingStatusViewModel.VehicleColorHidden)
-					{
-						maxLat += 0.0007;
-					}
-					if (!bookingStatusViewModel.VehicleMakeHidden || bookingStatusViewModel.VehicleModelHidden)
+					if (!bookingStatusViewModel.VehicleFullInfoHidden)
 					{
 						maxLat += 0.0007;
 					}

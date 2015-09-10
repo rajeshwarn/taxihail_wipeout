@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				_cacheService.Set("TutorialDisplayed", new object());
 				_messageService.ShowDialog(typeof(TutorialViewModel));
 				
-				_onEndedTutorial = onEndedTutorial;
+				_onEndedTutorial = onEndedTutorial; //Needed in android to, for instance, correctly zoom on first login.
 
 				return true;
 			}

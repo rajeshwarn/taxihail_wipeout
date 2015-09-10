@@ -38,8 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     {
         private Button _bigButton;     
         private TouchableMap _touchMap;
-        private LinearLayout _mapOverlay;
-        private OrderReview _orderReview;
+		private OrderReview _orderReview;
         private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
         private OrderAirport _orderAirport;
@@ -144,8 +143,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             animation.AnimationStart += (sender, e) =>
             {
-                if (ViewModel.Panel.MenuIsOpen)
-                    menu.Visibility = ViewStates.Visible;
+	            if (ViewModel.Panel.MenuIsOpen)
+	            {
+					menu.Visibility = ViewStates.Visible;
+	            }
+                  
             };
 
             animation.AnimationEnd += (sender, e) =>
@@ -203,7 +205,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _searchAddress = (AddressPicker) FindViewById(Resource.Id.searchAddressControl);
             _appBar = (AppBar) FindViewById(Resource.Id.appBar);
             _frameLayout = (FrameLayout) FindViewById(Resource.Id.RelInnerLayout);
-            _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
 			_btnSettings = FindViewById<LinearLayout>(Resource.Id.btnSettings);
 			_btnLocation = FindViewById<LinearLayout>(Resource.Id.btnLocation);
 	        _appBarBookingStatus = FindViewById<AppBarBookingStatus>(Resource.Id.appBarBookingStatus);
@@ -217,7 +218,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			((ViewGroup.MarginLayoutParams)_orderAirport.LayoutParameters).TopMargin = screenSize.Y;
 
 			if (this.Services ().Localize.IsRightToLeft) 
-            {
+			{
 				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).RightMargin = screenSize.X;
             } 
             else 
@@ -274,7 +275,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			// Setup bookingStatusMode
 		    set.Bind(MapFragment)
 			    .For(v => v.TaxiLocation)
-			    .To(vm => vm.BookingStatus.OrderStatusDetail);
+			    .To(vm => vm.BookingStatus.TaxiLocation);
 
 		    set.Bind(MapFragment)
 			    .For(v => v.Center)
@@ -314,7 +315,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			set.Bind(_orderStatus)
 				.For(v => v.AnimatedVisibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq });
 
 			set.Bind(_searchAddress)
 				.For(v => v.Visibility)
@@ -329,7 +330,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			set.Bind(_appBarBookingStatus)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq });
 
 			var settingsAndLocationVisibleStates = new[]
 		    {
@@ -357,7 +358,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		    set.Bind(_touchMap)
 			    .For(v => v.IsMapGestuesEnabled)
 			    .To(vm => vm.CurrentViewState)
-				.WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus });
+				.WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq });
 
 			set.Bind(_btnLocation)
 				.For(v => v.Enabled)
