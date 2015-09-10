@@ -26,18 +26,25 @@
         </div>
       </div>
     </div>
-      <div class="control-group" name="addressLocationTypeDiv">
-          <label class="control-label">{{localize "Type"}}</label>
-          <div class="controls">
-              <select name="addressLocationType" class="settingsBox">
-                  <option value="0">{{localize "Unspecified"}}</option>
-                  <option value="1">{{localize "Airport"}}</option>
-                  <option value="2">{{localize "Train station"}}</option>
-              </select>
-          </div>
-      </div>
+	  <div class="control-group left-control-group" name="addressLocationTypeDiv">
+		  <label class="control-label">{{localize "Type"}}</label>
+		  <div class="controls">
+			  <select name="addressLocationType" class="settingsBox">
+				  <option value="0">{{localize "Unspecified"}}</option>
+				  <option value="1">{{localize "Airport"}}</option>
+				  <option value="2">{{localize "Train station"}}</option>
+			  </select>
+		  </div>
+	  </div>
 
-    <h4 style="text-align: center">{{localize "Give it a name"}}</h4>
+  	<div class="control-group right-control-group" name="airportReference">
+  		<label class="control-label">{{localize "Airport Id"}}</label>
+		  <div class="controls">
+	  		<input type="text" name="placeId" value="{{placeId}}" class='input-block-level'>
+		  </div>
+  	</div>
+
+	  <h4 style="text-align: center">{{localize "Give it a name"}}</h4>
     <div class="control-group no-label">
         <div class="controls">
             <input type="text" id="inputFriendlyName" name="friendlyName" value="{{friendlyName}}" class='input-block-level'>
