@@ -184,7 +184,8 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.Payment.Type = null;
-                orderReport.Payment.IsPaired = true;
+                orderReport.Payment.IsPaired = false;
+                orderReport.Payment.WasUnpaired = true;
                 orderReport.Order.ChargeType = ChargeTypes.PaymentInCar.Display;
                 context.Save(orderReport);
             }

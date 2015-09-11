@@ -16,7 +16,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             IsPayInTaxiEnabled = false;
             IsOutOfAppPaymentDisabled = false;
             AskForCVVAtBooking = false;
-            CancelOrderOnUnpair = true;
+            CancelOrderOnUnpair = false;
         }
 
         public PaymentMethod PaymentMode { get; set; }

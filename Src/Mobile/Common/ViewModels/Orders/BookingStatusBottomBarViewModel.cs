@@ -7,7 +7,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -17,6 +16,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IBookingService _bookingService;
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
+
+	    private bool _orderWasUnpaired;
 
 		public BookingStatusBottomBarViewModel(IPhoneService phoneService, IBookingService bookingService, IPaymentService paymentService, IAccountService accountService)
 		{
@@ -56,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					var isPaired = ParentViewModel.ManualRideLinqDetail != null || await _bookingService.IsPaired(ParentViewModel.Order.Id);
 
 					CanEditAutoTip = isPaired;
-					IsUnpairButtonVisible = isPaired && isUnPairPossible;
+                    IsUnpairButtonVisible = isPaired && isUnPairPossible && !_orderWasUnpaired;
 				}
 				else
 				{
@@ -162,65 +163,58 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					this.Services().Message.ShowMessage(
 						this.Services().Localize["WarningTitle"],
 						message,
-						this.Services().Localize["UnpairWarningCancelButton"],
+                        this.Services().Localize["UnpairWarningOkButton"],
 						async () =>
 						{
 							try
 							{
-								BasePaymentResponse unpairingResponse;
-
 								using (this.Services().Message.ShowProgress())
 								{
-									unpairingResponse = await _paymentService.Unpair(ParentViewModel.Order.Id);
-								}
+									var unpairingResponse = await _paymentService.Unpair(ParentViewModel.Order.Id);
+		
+								    if (unpairingResponse.IsSuccessful)
+								    {
+                                        _orderWasUnpaired = true;
+								        IsUnpairButtonVisible = false;
 
-								if (unpairingResponse.IsSuccessful)
-								{
-									var paymentSettings = await _paymentService.GetPaymentSettings();
-									if (paymentSettings.CancelOrderOnUnpair)
-									{
-										// Cancel order
-										bool isSuccess;
-										using (this.Services().Message.ShowProgress())
-										{
-											isSuccess = await _bookingService.CancelOrder(ParentViewModel.Order.Id);
-										}
-										if (isSuccess)
-										{
-											this.Services().Analytics.LogEvent("BookCancelled");
-											_bookingService.ClearLastOrder();
-											ParentViewModel.ReturnToInitialState();
-										}
-										else
-										{
-											this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], this.Services().Localize["StatusConfirmCancelRideError"]).FireAndForget();
-										}
-									}
-									else
-									{
-										ParentViewModel.RefreshStatus();
-									}
-								}
-								else
-								{
-									this.Services().Message
-										.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"])
-										.FireAndForget();
-								}
+									    var paymentSettings = await _paymentService.GetPaymentSettings();
+									    if (paymentSettings.CancelOrderOnUnpair)
+									    {
+										    // Cancel order
+                                            var isSuccess = await _bookingService.CancelOrder(ParentViewModel.Order.Id);
+                                            if (isSuccess)
+                                            {
+                                                this.Services().Analytics.LogEvent("BookCancelled");
+                                                _bookingService.ClearLastOrder();
+                                                ParentViewModel.ReturnToInitialState();
+                                            }
+                                            else
+                                            {
+                                                this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], this.Services().Localize["StatusConfirmCancelRideError"]).FireAndForget();
+                                            }
+									    }
+									    else
+									    {
+                                            // Continue order
+										    ParentViewModel.RefreshStatus();
+									    }
+								    }
+								    else
+								    {
+									    this.Services().Message
+										    .ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"])
+										    .FireAndForget();
+								    }
+                                }
 							}
 							catch (Exception ex)
 							{
 								Logger.LogError(ex);
 							}
 						},
-						this.Services().Localize["Cancel"], () => { });
+                        this.Services().Localize["UnpairWarningCancelButton"], () => { });
 				});
 			}
-		}
-
-		private void Cancel()
-		{
-			
 		}
 
 		private bool _isUnpairButtonVisible;
