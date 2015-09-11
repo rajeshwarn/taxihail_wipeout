@@ -512,6 +512,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 AddressPicker.SelectAddress(address);
 
+				if (filter == AddressLocationType.Airport && AddressPicker.AddressSelectionMode == AddressSelectionMode.PickupSelection)
+				{
+					CurrentViewState = HomeViewModelState.AirportDetails;
+				}
+
                 return;
             }
 
