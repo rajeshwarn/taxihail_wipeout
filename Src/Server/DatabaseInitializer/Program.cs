@@ -108,8 +108,6 @@ namespace DatabaseInitializer
 
                 if (isUpdate)
                 {
-                    var temporaryDatabaseName = param.CompanyName + "_New";
-
                     PerformUpdate(param, param.CompanyName);
 
                     if (param.ReuseTemporaryDb)
