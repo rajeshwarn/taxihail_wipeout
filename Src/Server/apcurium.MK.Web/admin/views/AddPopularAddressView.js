@@ -15,11 +15,13 @@
         },
 
         render: function () {
-            var data = this.model.toJSON();
+        	var data = this.model.toJSON();
+
+			//Ensure that airportId is correctly displayed.
+	        data.placeId = data.placeReference;
             var html = this.renderTemplate(data);
             this.$el.html(html);
 
-            this.$("[name=addressLocationType] option[value=" + data.addressLocationType + "]").attr("selected", "selected");
             this.$("[name=addressLocationType] option[value=" + data.addressLocationType + "]").attr("selected", "selected");
 
             this.validate({
