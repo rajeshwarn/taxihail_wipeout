@@ -24,6 +24,8 @@
 
             this.$("[name=addressLocationType] option[value=" + data.addressLocationType + "]").attr("selected", "selected");
 
+	        this.onAddressLocationTypeChanged();
+
             this.validate({
                 rules: {
                     friendlyName: "required",
