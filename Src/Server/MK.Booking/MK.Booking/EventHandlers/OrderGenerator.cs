@@ -624,8 +624,6 @@ namespace apcurium.MK.Booking.EventHandlers
                         orderStatusDetails.Status = OrderStatus.Completed;
                     }
 
-                    orderStatusDetails.VehicleNumber = @event.Medallion;
-
                     context.Save(orderStatusDetails);
                 }
 
@@ -653,7 +651,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.RateAtTripStart = @event.RateAtTripStart;
                 rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
                 rideLinqDetails.RateChangeTime = @event.RateChangeTime;
-                rideLinqDetails.Medallion = @event.Medallion;
                 rideLinqDetails.AccessFee = @event.AccessFee;
                 rideLinqDetails.LastFour = @event.LastFour;
 
