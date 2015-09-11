@@ -1,14 +1,11 @@
 #region
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Entity;
 using System;
 using System.Text;
-using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -25,11 +22,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             var sb = new StringBuilder();
             sb.Append("/references/pickuppoint");
-            if( company != null && company != string.Empty )
+            if(company.HasValue())
             {
                 sb.Append(string.Format( "_{0}", company));
             }
-            if( textMatch != null && textMatch != string.Empty )
+            if(textMatch.HasValue())
             {
                 sb.Append(string.Format("/{0}", textMatch));
             }
@@ -48,11 +45,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             var sb = new StringBuilder();
             sb.Append("/references/airline");
-            if (company != null && company != string.Empty)
+			if (company.HasValue())
             {
                 sb.Append(string.Format("_{0}", company));
             }
-            if (textMatch != null && textMatch != string.Empty)
+			if (textMatch.HasValue())
             {
                 sb.Append(string.Format("/{0}", textMatch));
             }
@@ -61,7 +58,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             {
                 sb.Append(string.Format("&size={0}", maxRespSize));
             }
-            sb.Append(string.Format("&coreFieldsOnly=true"));
+            sb.Append("&coreFieldsOnly=true");
             var req = sb.ToString();
 			Console.WriteLine (req);
             var pObject = Client.GetAsync<string>(req);
