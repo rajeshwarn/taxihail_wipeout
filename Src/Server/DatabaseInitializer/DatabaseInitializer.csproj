@@ -187,6 +187,10 @@
     <Compile Include="Migrations\201509101522344_Booking_3_1.Designer.cs">
       <DependentUpon>201509101522344_Booking_3_1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509101523153_Configuration_3_1.cs" />
+    <Compile Include="Migrations\201509101523153_Configuration_3_1.Designer.cs">
+      <DependentUpon>201509101523153_Configuration_3_1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ConfigMigrationBookingContext.cs" />
     <Compile Include="Migrations\ConfigMigrationConfigurationContext.cs" />
     <Compile Include="OldEvents\FavoriteAddressv1.cs" />
@@ -307,6 +311,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509101522344_Booking_3_1.resx">
       <DependentUpon>201509101522344_Booking_3_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509101523153_Configuration_3_1.resx">
+      <DependentUpon>201509101523153_Configuration_3_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
