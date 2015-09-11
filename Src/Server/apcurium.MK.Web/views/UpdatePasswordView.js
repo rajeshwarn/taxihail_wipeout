@@ -17,8 +17,9 @@
                 rules: {
                     password: "required",
                     'new-password': {
-                        required: true
-                    },
+                        required: true,
+                        minlength: 6
+                },
                     'confirm-password': {
                         required: true,
                         equalTo: "#newPassword"
@@ -29,7 +30,8 @@
                         required : TaxiHail.localize('Password required')
                     },
                     'new-password' : {
-                        required: TaxiHail.localize('Password required')
+                        required: TaxiHail.localize('Password required'),
+                        minlength: TaxiHail.localize('Password length')
                     },
                     'confirm-password': {
                         required: TaxiHail.localize('Password required'),
