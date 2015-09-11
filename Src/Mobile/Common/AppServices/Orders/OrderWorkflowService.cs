@@ -8,7 +8,6 @@ using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
@@ -586,7 +585,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			// Needs to run in a background thread to prevent a potential deadlock issue.
 			await Task.Run(async () =>
 				{
-					var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask();
+					var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask(token);
 					if (selectionMode == AddressSelectionMode.PickupSelection)
 					{
 						_pickupAddressSubject.OnNext (address);
@@ -599,8 +598,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					}
 				}, token);
 
-			// do NOT await this
-			CalculateEstimatedFare (token);
+			// Do NOT await this
+			CalculateEstimatedFare(token).FireAndForget();
 		}
 
 		private CancellationTokenSource _calculateFareCancellationTokenSource = new CancellationTokenSource();
@@ -609,12 +608,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			if (!_calculateFareCancellationTokenSource.IsCancellationRequested)
 			{
-				this.Logger.LogMessage("Fare Estimate - CANCEL");
+				Logger.LogMessage("Fare Estimate - CANCEL");
 				_calculateFareCancellationTokenSource.Cancel ();
 			}
-			_calculateFareCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(new [] { token });
+			_calculateFareCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(token);
 
-			this.Logger.LogMessage("Fare Estimate - START");
+			Logger.LogMessage("Fare Estimate - START");
 
 			var newCancelToken = _calculateFareCancellationTokenSource.Token;
 
@@ -628,7 +627,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				return;
 			}
 
-			this.Logger.LogMessage("Fare Estimate - DONE");
+			Logger.LogMessage("Fare Estimate - DONE");
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
 		}
@@ -932,12 +931,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     if (hashedMarket.HasValue())
                     {
                         // Set vehicles list with data from external market
-                        SetMarketVehicleTypes(currentPosition);
+                        await SetMarketVehicleTypes(currentPosition);
                     }
                     else
                     {
                         // Load and cache local vehicle types
-                        SetLocalVehicleTypes();
+                        await SetLocalVehicleTypes();
                     }
 	            }
 
@@ -958,7 +957,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	            selectedVehicleId = networkVehicles.First().ReferenceDataVehicleId;
 	        }
 
-            SetVehicleType(selectedVehicleId);
+            await SetVehicleType(selectedVehicleId);
 	    }
 
 	    private async Task SetLocalVehicleTypes()
@@ -978,12 +977,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     : localVehicles.First().ReferenceDataVehicleId;
             }
 
-	        SetVehicleType(selectedVehicleId);
+	        await SetVehicleType(selectedVehicleId);
 	    }
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)
 		{
-			bool currentValue = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+			var currentValue = await _isDestinationModeOpenedSubject.Take(1).ToTask();
 			_isDestinationModeOpenedSubject.OnNext(forceValue ?? !currentValue);
 		}
 			
