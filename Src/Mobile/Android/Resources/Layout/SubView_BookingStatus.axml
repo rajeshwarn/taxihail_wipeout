@@ -40,7 +40,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dip">
+            android:layout_marginBottom="5dip"
+            android:background="@color/button_red_border_color"
+            local:MvxBind="Visibility IsDriverInfoAvailable, Converter=Visibility">
             <RelativeLayout
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
@@ -63,8 +65,8 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="60dip"
-                android:layout_height="wrap_content"
-                local:MvxBind="Visibility DriverPhotoHidden, Converter=Visibility" />
+                android:layout_height="wrap_content" />
+        <!-- local:MvxBind="Visibility DriverPhotoHidden, Converter=Visibility" -->
             <RelativeLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
@@ -94,8 +96,7 @@
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/companyLayout"
-                    local:MvxBind="Visibility VehicleDriverHidden, Converter=InvertedVisibility">
+                    android:layout_below="@id/companyLayout">
                     <TextView
                         android:id="@+id/driverValue"
                         style="@style/BlackTextLabel"
@@ -114,8 +115,7 @@
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/driverLayout"
-                    local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility">
+                    android:layout_below="@id/driverLayout">
                     <TextView
                         android:id="@+id/modelValue"
                         style="@style/BlackTextLabel"
