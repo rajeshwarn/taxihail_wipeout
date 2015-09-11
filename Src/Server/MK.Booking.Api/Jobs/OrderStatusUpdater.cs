@@ -140,7 +140,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            if (orderStatusDetail.UnpairingTimeOut != null)
+            var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
+
+            if (orderStatusDetail.UnpairingTimeOut != null && !paymentSettings.CancelOrderOnUnpair)
             {
                 if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(timeBetweenPaymentChangeAndSaveInDB))
                 {
@@ -919,17 +921,12 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsLoaded)
             {
-                if (orderDetail != null)
+                if (orderDetail != null
+                    && _serverSettings.GetPaymentSettings(orderDetail.CompanyKey).IsUnpairingDisabled
+                    && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                        || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
                 {
-                    var paymentSettings = _serverSettings.GetPaymentSettings(orderDetail.CompanyKey);
-
-                    if (paymentSettings.IsUnpairingDisabled
-                        && !paymentSettings.CancelOrderOnUnpair
-                        && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                            || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
-                    {
-                        description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
-                    }
+                    description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);
                 }
             }
 
