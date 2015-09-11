@@ -82,11 +82,11 @@ namespace DatabaseInitializer
                 Module module;
 
                 var creatorDb = new DatabaseCreator();
-                var isUpdate = creatorDb.DatabaseExists(param.MasterConnectionString, param.CompanyName);
+                IsUpdate = creatorDb.DatabaseExists(param.MasterConnectionString, param.CompanyName);
                 IDictionary<string, string> appSettings;
 
                 //for dev company, delete old database to prevent keeping too many databases
-                if (param.CompanyName == LocalDevProjectName && isUpdate)
+                if (param.CompanyName == LocalDevProjectName && IsUpdate)
                 {
 #if DEBUG
                     Console.WriteLine("Drop Existing Database? Y or N");
@@ -101,20 +101,20 @@ namespace DatabaseInitializer
                         {
                             creatorDb.DropDatabase(param.MasterConnectionString, param.CompanyName);
                         }
-                        isUpdate = false;
+                        IsUpdate = false;
                     }
 #endif
                 }
 
-                if (isUpdate)
+                if (IsUpdate)
                 {
-                    PerformUpdate(param, param.CompanyName);
+                    UpdateSchema(param);
 
                     if (param.ReuseTemporaryDb)
                     {
                         // the idea behind reuse of temp db is that account doesn't have permission to rename db 
                         // so we instead we need to re-migrate from the temp db to the actual name
-                        PerformUpdate(param, param.CompanyName);
+                        UpdateSchema(param);
                     }
 
                 }
@@ -126,6 +126,9 @@ namespace DatabaseInitializer
                         creatorDb.CreateDatabase(param.MasterConnectionString, param.CompanyName, param.SqlServerDirectory);
                     }
                     creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", param.MkWebConnectionString));
+
+                    UpdateSchema(param);
+
                     creatorDb.CreateIndexes(param.MasterConnectionString, param.CompanyName);
 
                     Console.WriteLine("Add user for IIS...");
@@ -149,7 +152,7 @@ namespace DatabaseInitializer
                 Console.WriteLine("Checking Company Created...");
                 CheckCompanyCreated(container, commandBus);
 
-                if (!isUpdate)
+                if (!IsUpdate)
                 {
                     appSettings = GetCompanySettings(param.CompanyName);
 
@@ -248,16 +251,16 @@ namespace DatabaseInitializer
             // ReSharper restore LocalizableElement
         }
 
-        public static void PerformUpdate(DatabaseInitializerParams param, string sourceDatabaseName)
+        public static bool IsUpdate { get; set; }
+
+        public static void UpdateSchema(DatabaseInitializerParams param)
         {
             Console.WriteLine("Update Schemas");
-            var builder = new SqlConnectionStringBuilder(param.MkWebConnectionString);
-            builder.InitialCatalog = sourceDatabaseName;
 
             StopAppPools(param);
 
             DbMigrationsConfiguration configuration = new apcurium.MK.Booking.Migrations.ConfigMigrationBookingContext();
-            configuration.TargetDatabase = new DbConnectionInfo(builder.ConnectionString, "System.Data.SqlClient");
+            configuration.TargetDatabase = new DbConnectionInfo(param.MkWebConnectionString, "System.Data.SqlClient");
 
             var migrator = new DbMigrator(configuration);
             DisplayPendingMigrations(migrator);
@@ -266,7 +269,7 @@ namespace DatabaseInitializer
 
             configuration = new apcurium.MK.Common.Migrations.ConfigMigrationConfigurationContext
             {
-                TargetDatabase = new DbConnectionInfo(builder.ConnectionString, "System.Data.SqlClient")
+                TargetDatabase = new DbConnectionInfo(param.MkWebConnectionString, "System.Data.SqlClient")
             };
 
             migrator = new DbMigrator(configuration);
