@@ -53,7 +53,7 @@ namespace CMTServices
             CmtGeoResponse response = null;
             try
             {
-                response = Client.Post("/availability", ToDictionary(@params))
+				response = Client.Post("/availability", ToDictionary(@params))
                     .Deserialize<CmtGeoResponse>()
                     .Result;
             }
@@ -81,43 +81,6 @@ namespace CMTServices
 
             return new List<VehicleResponse>();
         }
-
-	    public VehicleResponse GetPairedVehicle(string medallion, string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
-	    {
-			var @params = GetAvailableVehicleParams(market, latitude, longitude,searchRadius,fleetIds,returnAll,wheelchairAccessibleOnly, hired: true);
-			if (@params == null)
-			{
-				return null;
-			}
-
-			@params.Add(new KeyValuePair<string, object>("eHailSate", ((int)EHailStates.PairedWithRL).ToString()));
-			@params.Add(new KeyValuePair<string, object>("medallions", new[]{medallion}));
-
-			CmtGeoResponse response = null;
-			try
-			{
-				response = Client.Post("/availability", ToDictionary(@params))
-					.Deserialize<CmtGeoResponse>()
-					.Result;
-			}
-			catch (Exception ex)
-			{
-				Logger.LogMessage("An error occured when trying to contact Geo service");
-				Logger.LogError(ex);
-
-				return null;
-			}
-
-		    if (response == null || response.Entities == null)
-		    {
-			    return null;
-		    }
-
-		    var entity = response.Entities.FirstOrDefault(item => item.Medallion == medallion);
-
-			return ToVehicleResponse(entity);
-
-	    }
 
         protected IEnumerable<VehicleResponse> ToVehicleResponse(IEnumerable<CmtGeoContent> entities)
         {
