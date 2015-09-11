@@ -42,8 +42,7 @@ namespace HoneyBadger
 
             var @params = new List<KeyValuePair<string, string>>
                 {
-                    new KeyValuePair<string, string>("includeEntities", "true"),
-                    new KeyValuePair<string, string>("market", market),
+                    new KeyValuePair<string, string>("includeEntities", "true"),                    
                     new KeyValuePair<string, string>("meterState", ((int)MeterStates.ForHire).ToString()),
                     new KeyValuePair<string, string>("logonState", ((int)LogonStates.LoggedOn).ToString())
                 };
