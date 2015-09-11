@@ -170,7 +170,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 								if (response.IsSuccessful)
 								{
-									ParentViewModel.RefreshStatus();
+									var paymentSettings = await _paymentService.GetPaymentSettings();
+									if (paymentSettings.CancelOrderOnUnpair)
+									{
+										// Cancel order
+										bool isSuccess;
+										using (this.Services().Message.ShowProgress())
+										{
+											isSuccess = await _bookingService.CancelOrder(ParentViewModel.Order.Id);
+										}
+										if (isSuccess)
+										{
+											this.Services().Analytics.LogEvent("BookCancelled");
+											_bookingService.ClearLastOrder();
+											ParentViewModel.ReturnToInitialState();
+										}
+										else
+										{
+											this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], this.Services().Localize["StatusConfirmCancelRideError"]).FireAndForget();
+										}
+									}
+									else
+									{
+										ParentViewModel.RefreshStatus();
+									}
 								}
 								else
 								{
@@ -188,6 +211,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						this.Services().Localize["Cancel"], () => { });
 				});
 			}
+		}
+
+		private void Cancel()
+		{
+			
 		}
 
 		private bool _isUnpairButtonVisible;

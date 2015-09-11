@@ -16,6 +16,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             IsPayInTaxiEnabled = false;
             IsOutOfAppPaymentDisabled = false;
             AskForCVVAtBooking = false;
+            CancelOrderOnUnpair = true;
         }
 
         public PaymentMethod PaymentMode { get; set; }
@@ -36,6 +37,8 @@ namespace apcurium.MK.Common.Configuration.Impl
         public bool AutomaticPaymentPairing { get; set; }
 
         public bool AskForCVVAtBooking { get; set; }
+
+        public bool CancelOrderOnUnpair { get; set; }
 
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
