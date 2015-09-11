@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Api.Services
 			};
 		}
 
-		public object Get(FlightInformationRequest request)
+		public object Post(FlightInformationRequest request)
 		{
 			var direction = request.IsPickup
 				? "arr"

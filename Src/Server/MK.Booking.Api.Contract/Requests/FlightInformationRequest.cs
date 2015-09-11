@@ -6,7 +6,7 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
 	[Authenticate]
-	[Route("/flightInfo/", "GET")]
+	[Route("/flightInfo/", "POST")]
 	public class FlightInformationRequest : IReturn<FlightInformation>
 	{
 		public DateTime Date { get; set; }
