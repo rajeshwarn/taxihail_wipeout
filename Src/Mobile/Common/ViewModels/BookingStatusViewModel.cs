@@ -148,13 +148,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var medallion = orderManualRideLinqDetail.Medallion;
 			var orderId = orderManualRideLinqDetail.OrderId;
 
-			var taxilocationViaGeo = _vehicleService.GetAndObserveCurrentTaxiLocation(medallion, orderId)
-				.Where(vehicles => vehicles != null)
-				.Select(vehicle => new Position
-				{
-					Longitude = vehicle.Longitude,
-					Latitude = vehicle.Latitude
-				});
+			var taxilocationViaGeo = GetAndObserveTaxiLocationViaGeo(medallion, orderId);
 
 			_orderWorkflowService.GetAndObserveIsUsingGeo()
 				.DistinctUntilChanged()
@@ -175,7 +169,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			BottomBar.NotifyBookingStatusAppbarChanged();
 		}
-		
+
+		private IObservable<Position> GetAndObserveTaxiLocationViaGeo(string medallion, Guid orderId)
+		{
+			return _vehicleService.GetAndObserveCurrentTaxiLocation(medallion, orderId)
+				.Materialize()
+				.SelectMany(async notif =>
+				{
+					//Fallback in case of errors from the GeoService call
+					if ((notif.Kind == NotificationKind.OnError) || (notif.Kind == NotificationKind.OnNext && notif.Value == null))
+					{
+						var fallbackPosition = await _locationService.GetUserPosition();
+
+						return Notification.CreateOnNext(fallbackPosition);
+					}
+
+					if(notif.Kind == NotificationKind.OnNext && notif.Value != null)
+					{
+						var position = new Position
+						{
+							Longitude = notif.Value.Longitude,
+							Latitude = notif.Value.Latitude
+						};
+
+
+						return Notification.CreateOnNext(position);
+					}
+
+					return Notification.CreateOnCompleted<Position>();
+				})
+				.Dematerialize();
+		}
+
 		private void UpdatePosition(double latitude, double longitude, string medallion)
 		{
 			if (TaxiLocation != null && TaxiLocation.Latitude == latitude && TaxiLocation.Longitude == longitude)
