@@ -106,6 +106,7 @@
     <Compile Include="TaxiHail\BaseServiceClient.cs" />
     <Compile Include="TaxiHail\CompanyServiceClient.cs" />
     <Compile Include="TaxiHail\ConfigurationClientService.cs" />
+    <Compile Include="TaxiHail\FlightInformationServiceClient.cs" />
     <Compile Include="TaxiHail\IbsFareServiceClient.cs" />
     <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationAdministrationServiceClient.cs" />
