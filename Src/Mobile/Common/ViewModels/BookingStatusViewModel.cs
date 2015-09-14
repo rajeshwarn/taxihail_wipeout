@@ -268,8 +268,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_bookingService.ClearLastOrder();
 
-			StopBookingStatus();
-
 			ShowViewModel<RideSummaryViewModel>(new { orderId = orderManualRideLinqDetail.OrderId });
 
 			ResetToInitialState();
@@ -920,8 +918,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Logger.LogMessage ("GoToSummary");
 
 			ShowViewModel<RideSummaryViewModel>(new { orderId = Order.Id });
-
-			StopBookingStatus();
 
 			ResetToInitialState();
 		}
