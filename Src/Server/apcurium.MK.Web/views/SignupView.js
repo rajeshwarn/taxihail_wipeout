@@ -71,7 +71,8 @@
                     required: true
                 },
                 password: {
-                    required: true
+                    required: true,
+                    regex: /^.{6,}$/ // Min 6 chars
                 },
                 confirmPassword: {
                     required: true,
@@ -125,10 +126,11 @@
                         required: TaxiHail.localize('error.NameRequired')
                     },
                     phone: {
-                        required: TaxiHail.localize('error.PhoneRequired'),
+                        required: TaxiHail.localize('error.PhoneRequired')
                     },
                     password: {
-                        required: TaxiHail.localize('Password required')
+                        required: TaxiHail.localize('Password required'),
+                        regex: TaxiHail.localize('Password length')
                     },
                     confirmPassword: {
                         required: TaxiHail.localize('Password required'),
