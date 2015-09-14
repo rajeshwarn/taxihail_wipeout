@@ -560,6 +560,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         RateAtTripEnd = @event.RateAtTripEnd,
                         RateChangeTime = @event.RateChangeTime,
                         Medallion = @event.Medallion,
+						DeviceName = @event.DeviceName,
                         TripId = @event.TripId,
                         DriverId = @event.DriverId,
                         LastFour = @event.LastFour,

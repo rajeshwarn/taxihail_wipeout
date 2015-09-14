@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Domain
 			string userAgent, string clientLanguageCode, string clientVersion, double? distance,
 			double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
 			double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion,
-			int tripId, int driverId, double? accessFee, string lastFour)
+			string deviceName, int tripId, int driverId, double? accessFee, string lastFour)
 		{
 			Update(new OrderManuallyPairedForRideLinq
 			{
@@ -156,6 +156,7 @@ namespace apcurium.MK.Booking.Domain
 				RateChangeTime = rateChangeTime,
 				Distance = distance,
 				Medallion = medallion,
+				DeviceName = deviceName,
 				TripId = tripId,
 				DriverId = driverId,
 				AccessFee = accessFee,
