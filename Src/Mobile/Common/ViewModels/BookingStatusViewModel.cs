@@ -954,9 +954,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 
 			if (VehicleStatuses.Common.Assigned.Equals(OrderStatusDetail.IBSStatusId) 
-				&& OrderStatusDetail.VehicleLatitude.HasValue 
-				&& OrderStatusDetail.VehicleLongitude.HasValue
-				&& MapCenter == null)
+				&& TaxiLocation != null
+				&& !MapCenter.HasValue())
 			{
 				var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
 				var vehicle = CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value);
