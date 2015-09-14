@@ -270,7 +270,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			ShowViewModel<RideSummaryViewModel>(new { orderId = orderManualRideLinqDetail.OrderId });
 
-			ResetToInitialState();
+			ReturnToInitialState();
 		}
 
 		#region Bindings
@@ -917,18 +917,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			Logger.LogMessage ("GoToSummary");
 
+
 			ShowViewModel<RideSummaryViewModel>(new { orderId = Order.Id });
 
-			ResetToInitialState();
-		}
-
-		private void ResetToInitialState()
-		{
-			var homeViewModel = ((HomeViewModel) Parent);
-
-			homeViewModel.CurrentViewState = HomeViewModelState.Initial;
-
-			homeViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
+			ReturnToInitialState();
 		}
 
 		private async Task GoToBookingScreen()
