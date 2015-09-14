@@ -391,7 +391,7 @@
     <value>Données invalides</value>
   </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
-    <value>Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.</value>
+    <value>Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit contenir au minimum 6 caractères.</value>
   </data>
   <data name="CreateAccountLanguageEnglish" xml:space="preserve">
     <value>English</value>
