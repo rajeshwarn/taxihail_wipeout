@@ -140,7 +140,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            if (orderStatusDetail.UnpairingTimeOut != null)
+            var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
+
+            if (orderStatusDetail.UnpairingTimeOut != null && !paymentSettings.CancelOrderOnUnpair)
             {
                 if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(timeBetweenPaymentChangeAndSaveInDB))
                 {
@@ -797,7 +799,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
 
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
-            if (pairingInfo == null)
+            if (pairingInfo == null || pairingInfo.WasUnpaired)
             {
                 _logger.LogMessage("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
                 return;
@@ -906,7 +908,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsLoaded)
             {
-                if (orderDetail != null 
+                if (orderDetail != null
                     && _serverSettings.GetPaymentSettings(orderDetail.CompanyKey).IsUnpairingDisabled
                     && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
