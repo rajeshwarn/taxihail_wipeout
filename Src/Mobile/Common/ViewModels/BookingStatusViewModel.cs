@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
@@ -37,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly SerialDisposable _subscriptions = new SerialDisposable();
 
 	    private int _refreshPeriod = 5;              // in seconds
-        private bool _waitingToNavigateAfterTimeOut;
         private string _vehicleNumber;
         private bool _isDispatchPopupVisible;
         private bool _isContactingNextCompany;
@@ -111,7 +111,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				: orderStatusDetail.IBSStatusDescription;
 
 			BottomBar.ResetButtonsVisibility();
-			_waitingToNavigateAfterTimeOut = false;
 
 			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
 
@@ -127,6 +126,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return;
 			}
 			_isStarted = true;
+
+			BottomBar.ResetButtonsVisibility();
 
 			var subscriptions = new CompositeDisposable();
 
@@ -238,6 +239,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void StopBookingStatus()
 		{
+			if (!_isStarted)
+			{
+				return;
+			}
+
 			_subscriptions.Disposable = null;
 
 			Order = null;
@@ -247,6 +253,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			TaxiLocation = null;
 
+			_bookingService.ClearLastOrder();
 			_orderWorkflowService.PrepareForNewOrder();
 
 			_vehicleService.SetAvailableVehicle(true);
@@ -286,11 +293,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_bookingService.ClearLastOrder();
 
-			StopBookingStatus();
-
 			ShowViewModel<RideSummaryViewModel>(new { orderId = orderManualRideLinqDetail.OrderId });
 
-			ResetToInitialState();
+			ReturnToInitialState();
 		}
 
 		#region Bindings
@@ -353,7 +358,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return IsCallTaxiVisible
+				return (IsCallTaxiVisible || IsMessageTaxiVisible)
 					&& (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 						|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
@@ -368,11 +373,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-				bool isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
-				                          || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
-				                          || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded;
-
-				return Settings.ShowCallDriver && isOrderStatusValid && OrderStatusDetail.DriverInfos.MobilePhone.HasValue();
+				return Settings.ShowCallDriver 
+					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue()
+					&& (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+						|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
 		}
 				
@@ -380,9 +384,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
+				if (OrderStatusDetail == null)
+				{
+					return false;
+				}
+
                 return Settings.ShowMessageDriver
-					&& OrderStatusDetail.DriverInfos != null
-					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue()
+					&& OrderStatusDetail.VehicleNumber.HasValue()
                     && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                         || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
             }
@@ -525,7 +533,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        RaisePropertyChanged(() => OrderStatusDetail);
 	        RaisePropertyChanged(() => CompanyHidden);
 	        RaisePropertyChanged(() => VehicleDriverHidden);
-				RaisePropertyChanged(() => VehicleFullInfoHidden);
+			RaisePropertyChanged(() => VehicleFullInfoHidden);
 	        RaisePropertyChanged(() => DriverPhotoHidden);
 	        RaisePropertyChanged(() => IsDriverInfoAvailable);
 	        RaisePropertyChanged(() => IsCallTaxiVisible);
@@ -682,7 +690,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 
-				if (!string.IsNullOrWhiteSpace(status.VehicleNumber)
+				if (!string.IsNullOrWhiteSpace(_vehicleNumber)
 					&& (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
 				{
 					if (_orientationService.Start())
@@ -798,12 +806,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     this.Services().MessengerHub.Publish(new OrderStatusChanged(this, status.OrderId, OrderStatus.Completed, null));
 					GoToSummary();
+
+	                return;
                 }
 
-				if (_bookingService.IsStatusTimedOut(status.IBSStatusId)
-					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
+				//This is to prevent issue where taxi pin would still stay shown if the taxi driver bailed.
+				if (VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
+				{
+					TaxiLocation = null;
+				}
+
+				if (VehicleStatuses.CancelStatuses.Any(cancelledStatuses=> cancelledStatuses.Equals(status.IBSStatusId)))
                 {
-                    GoToBookingScreen();
+                    await GoToBookingScreen();
                 }
             } 
 			catch (Exception ex) 
@@ -824,6 +839,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 				{
 					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters() { CarNumber = _vehicleNumber, DeviceOrientation = deviceOrientation };
+
 					ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
 				}
 				else
@@ -930,38 +946,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			Logger.LogMessage ("GoToSummary");
 
+
 			ShowViewModel<RideSummaryViewModel>(new { orderId = Order.Id });
 
-			StopBookingStatus();
-
-			ResetToInitialState();
+			ReturnToInitialState();
 		}
 
-		private void ResetToInitialState()
+		private async Task GoToBookingScreen()
 		{
-			var homeViewModel = ((HomeViewModel) Parent);
-
-			homeViewModel.CurrentViewState = HomeViewModelState.Initial;
-
-			homeViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
-		}
-
-		private async void GoToBookingScreen()
-		{
-            if (!_waitingToNavigateAfterTimeOut)
-            {
-				_waitingToNavigateAfterTimeOut = true;
-				await Task.Delay (TimeSpan.FromSeconds (10));
-				ReturnToInitialState();
-
-            }
+			await Task.Delay(TimeSpan.FromSeconds(10));
+			ReturnToInitialState();
         }
 
 		public void ReturnToInitialState()
 		{
 			StopBookingStatus();
-
-			_bookingService.ClearLastOrder();
 
 			var homeViewModel = (HomeViewModel)Parent;
 
@@ -977,9 +976,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 
 			if (VehicleStatuses.Common.Assigned.Equals(OrderStatusDetail.IBSStatusId) 
-				&& OrderStatusDetail.VehicleLatitude.HasValue 
-				&& OrderStatusDetail.VehicleLongitude.HasValue
-				&& MapCenter == null)
+				&& TaxiLocation != null
+				&& !MapCenter.HasValue())
 			{
 				var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
 				var vehicle = CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value);

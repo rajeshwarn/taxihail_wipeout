@@ -18,8 +18,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OSF-Ez-zc4" customClass="FlatButton">
-                    <rect key="frame" x="8" y="8" width="188" height="41"/>
+                    <rect key="frame" x="8" y="8" width="200" height="41"/>
                     <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="H6b-NN-Ne4"/>
                         <constraint firstAttribute="height" constant="41" id="Lro-bV-BtH"/>
                     </constraints>
                     <state key="normal" title="Pay in Car">
@@ -37,6 +38,17 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gaG-h3-5Da" customClass="FlatButton">
+                    <rect key="frame" x="216" y="8" width="38" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="ZDs-dm-2qT"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="600" constant="50" id="miX-9A-sr2"/>
+                    </constraints>
+                    <state key="normal" title="Tip">
+                        <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Bx-XG-5tK" customClass="FlatButton">
                     <rect key="frame" x="262" y="8" width="50" height="41"/>
                     <constraints>
@@ -44,17 +56,6 @@
                         <constraint firstAttribute="height" constant="41" id="c1M-hR-PvD"/>
                     </constraints>
                     <state key="normal" title="Call">
-                        <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gaG-h3-5Da" customClass="FlatButton">
-                    <rect key="frame" x="204" y="8" width="50" height="41"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="41" id="ZDs-dm-2qT"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="miX-9A-sr2"/>
-                    </constraints>
-                    <state key="normal" title="Tip">
                         <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>

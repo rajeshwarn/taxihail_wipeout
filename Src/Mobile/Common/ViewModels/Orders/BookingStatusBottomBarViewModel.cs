@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -60,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				else
 				{
 					IsUnpairButtonVisible = false;
-				CanEditAutoTip = false;
+					CanEditAutoTip = false;
 				}
 			}
 			catch (Exception ex)
@@ -166,9 +167,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						{
 							try
 							{
-								var response = await _paymentService.Unpair(ParentViewModel.Order.Id);
+								BasePaymentResponse unpairingResponse;
 
-								if (response.IsSuccessful)
+								using (this.Services().Message.ShowProgress())
+								{
+									unpairingResponse = await _paymentService.Unpair(ParentViewModel.Order.Id);
+								}
+
+								if (unpairingResponse.IsSuccessful)
 								{
 									ParentViewModel.RefreshStatus();
 								}
@@ -183,7 +189,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							{
 								Logger.LogError(ex);
 							}
-
 						},
 						this.Services().Localize["Cancel"], () => { });
 				});

@@ -506,7 +506,7 @@
     <comment>Invalid account info</comment>
   </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
-    <value>La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.</value>
+    <value>La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.</value>
     <comment>The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</comment>
   </data>
   <data name="CreateAccountLanguageEnglish" xml:space="preserve">
