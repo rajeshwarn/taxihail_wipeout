@@ -18,8 +18,8 @@
                     password: "required",
                     'new-password': {
                         required: true,
-                        minlength: 6
-                },
+                        regex: /^.{6,}$/ // Min 6 chars
+                    },
                     'confirm-password': {
                         required: true,
                         equalTo: "#newPassword"
@@ -31,7 +31,7 @@
                     },
                     'new-password' : {
                         required: TaxiHail.localize('Password required'),
-                        minlength: TaxiHail.localize('Password length')
+                        regex: TaxiHail.localize('Password length')
                     },
                     'confirm-password': {
                         required: TaxiHail.localize('Password required'),
