@@ -146,10 +146,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.Where(_ => ManualRideLinqDetail != null && ManualRideLinqDetail.Medallion.HasValue())
 				.SelectMany(_ => _locationService.GetUserPosition());
 
-			var medallion = orderManualRideLinqDetail.Medallion;
 			var orderId = orderManualRideLinqDetail.OrderId;
 
-			var taxilocationViaGeo = GetAndObserveTaxiLocationViaGeo(medallion, orderId);
+			var taxilocationViaGeo = GetAndObserveTaxiLocationViaGeo(orderManualRideLinqDetail.DeviceName, orderId);
 
 			_orderWorkflowService.GetAndObserveIsUsingGeo()
 				.DistinctUntilChanged()
@@ -158,7 +157,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					: deviceLocationObservable
 				)
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, medallion), Logger.LogError)
+				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, orderManualRideLinqDetail.Medallion), Logger.LogError)
 				.DisposeWith(subscriptions);
 			
 
