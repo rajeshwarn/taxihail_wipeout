@@ -213,6 +213,7 @@
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var isUnpairingDisabledDiv = this.$("#isUnpairingDisabledDiv");
             var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
+            var cancelOrderOnUnpairDiv = this.$("#cancelOrderOnUnpairDiv");
 
             var newIsPayPalEnabled = this.$("[id=isPayPalEnabled]").val() == 'true';
             var newIsSandboxValue = this.$("[id=isSandbox]").val() == 'true';
@@ -248,11 +249,13 @@
                 preAuthAmountDiv.hide();
                 isUnpairingDisabledDiv.hide();
                 unpairingTimeOutDiv.hide();
+                cancelOrderOnUnpairDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 isUnpairingDisabledDiv.show();
                 unpairingTimeOutDiv.show();
+                cancelOrderOnUnpairDiv.show();
             }
         },
 
@@ -272,6 +275,7 @@
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var isUnpairingDisabledDiv = this.$("#isUnpairingDisabledDiv");
             var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
+            var cancelOrderOnUnpairDiv = this.$("#cancelOrderOnUnpairDiv");
 
             var currentPaymentMode = this.updatedModel.paymentMode;
 
@@ -321,11 +325,13 @@
                 preAuthAmountDiv.hide();
                 isUnpairingDisabledDiv.hide();
                 unpairingTimeOutDiv.hide();
+                cancelOrderOnUnpairDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 isUnpairingDisabledDiv.show();
                 unpairingTimeOutDiv.show();
+                cancelOrderOnUnpairDiv.show();
             }
         }
     });
