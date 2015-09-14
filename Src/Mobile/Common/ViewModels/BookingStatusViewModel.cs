@@ -330,7 +330,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return IsCallTaxiVisible
+				return (IsCallTaxiVisible || IsMessageTaxiVisible)
 					&& (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 						|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
@@ -345,11 +345,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-				bool isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
-				                          || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
-				                          || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded;
-
-				return Settings.ShowCallDriver && isOrderStatusValid && OrderStatusDetail.DriverInfos.MobilePhone.HasValue();
+				return Settings.ShowCallDriver 
+					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue()
+					&& (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+						|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
 			}
 		}
 				
@@ -357,9 +356,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
+				if (OrderStatusDetail == null)
+				{
+					return false;
+				}
+
                 return Settings.ShowMessageDriver
-					&& OrderStatusDetail.DriverInfos != null
-					&& OrderStatusDetail.DriverInfos.MobilePhone.HasValue()
+					&& OrderStatusDetail.VehicleNumber.HasValue()
                     && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                         || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
             }

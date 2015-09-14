@@ -355,7 +355,7 @@
 "RideSettingsAccountNumber"="Account Number";
 "CreateAccountPasswordPlaceHolder"="Password";
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";
-"CreateAccountInvalidPassword"="The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.";
+"CreateAccountInvalidPassword"="The password is invalid.  The password and confirmation must be the same.  The password must also contain at least 6 characters.";
 "WarningTitle"="Warning";
 "TrainStationsButton"="Train Stations";
 "PaymentDetails.CreditCardLabel"="Cards";
