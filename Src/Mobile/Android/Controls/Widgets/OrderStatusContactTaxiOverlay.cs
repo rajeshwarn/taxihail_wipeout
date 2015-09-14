@@ -64,6 +64,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 			_isShown = false;
 
+			// If the Contact Taxi Overlay already at -1000, then this animation is not needed.
+			if(((MarginLayoutParams) LayoutParameters).TopMargin == -1000)
+			{
+				return;
+			}
 
 			var animation = AnimationHelper.GetForYTranslation(this, -Height);
 

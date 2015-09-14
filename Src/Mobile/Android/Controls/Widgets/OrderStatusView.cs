@@ -111,8 +111,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			animation.AnimationEnd += (sender, args) =>
 			{
-				((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = -1000;
+				if (_contactTaxiOverlay.Animation.HasStarted)
+				{
+					_contactTaxiOverlay.Animation.Cancel();
+				}
 
+				((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = -1000;
+				
 				//Ensures that the status view is hidden correctly.
 				if (((MarginLayoutParams) LayoutParameters).TopMargin != -Height)
 				{
