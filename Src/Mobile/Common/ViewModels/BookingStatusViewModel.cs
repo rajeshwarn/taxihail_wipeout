@@ -505,7 +505,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        RaisePropertyChanged(() => OrderStatusDetail);
 	        RaisePropertyChanged(() => CompanyHidden);
 	        RaisePropertyChanged(() => VehicleDriverHidden);
-				RaisePropertyChanged(() => VehicleFullInfoHidden);
+			RaisePropertyChanged(() => VehicleFullInfoHidden);
 	        RaisePropertyChanged(() => DriverPhotoHidden);
 	        RaisePropertyChanged(() => IsDriverInfoAvailable);
 	        RaisePropertyChanged(() => IsCallTaxiVisible);
@@ -804,6 +804,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 				{
 					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters() { CarNumber = _vehicleNumber, DeviceOrientation = deviceOrientation };
+
 					ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
 				}
 				else
