@@ -116,7 +116,7 @@
 "Tuto05Top"="Toque “Reservar ya” y se le asignará un vehiculo lo más pronto posible";
 "FilteredAddresses_Error_Message"="No existen actualmente entradas para este filtro.";
 "RideSettingsChargeType"="Tipo de Cargo";
-"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.";
+"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.";
 "BookRatingErrorTitle"="Aviso";
 "CloseTutorial"="Close Tutorial";
 "Error_AccountPaymentMessage"="Cuenta o reservación inválida.";

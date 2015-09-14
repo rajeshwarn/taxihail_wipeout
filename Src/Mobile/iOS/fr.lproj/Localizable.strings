@@ -115,7 +115,7 @@
 "Tuto05Top"="Sélectionner 'Commander maintenant' afin que nous puissions vous attribuer un véhicule dans les meilleurs délais";
 "FilteredAddresses_Error_Message"="There is currently no entries for this filter.";
 "RideSettingsChargeType"="Type de facturation";
-"CreateAccountInvalidPassword"="Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.";
+"CreateAccountInvalidPassword"="Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit contenir au minimum 6 caractères.";
 "BookRatingErrorTitle"="Attention";
 "CloseTutorial"="Fermer l'aide";
 "Error_AccountPaymentMessage"="Le numéro de compte ou de client semble invalide";
