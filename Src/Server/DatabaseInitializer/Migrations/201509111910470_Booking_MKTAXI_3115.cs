@@ -7,8 +7,8 @@ namespace apcurium.MK.Booking.Migrations
     {
         public override void Up()
         {
-            AddColumn("Booking.OrderPairingDetail", "WasUnpaired", c => c.Boolean(nullable: false));
-            AddColumn("Booking.OrderReportDetail", "Payment_WasUnpaired", c => c.Boolean(nullable: false));
+            AddColumn("Booking.OrderPairingDetail", "WasUnpaired", c => c.Boolean(nullable: false, defaultValue: false));
+            AddColumn("Booking.OrderReportDetail", "Payment_WasUnpaired", c => c.Boolean(nullable: false, defaultValue: false));
         }
         
         public override void Down()
