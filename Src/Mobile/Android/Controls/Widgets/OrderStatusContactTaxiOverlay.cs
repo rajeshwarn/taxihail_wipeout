@@ -14,11 +14,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	public class OrderStatusContactTaxiOverlay : MvxFrameControl
 	{
 		private ViewStates _animatedVisibility;
-		private bool _isShown = false;
+		private bool _isShown;
+
+		public const int CONTACT_TAXI_HIDDEN_Y_OFFSET = -1000;
 
 		public OrderStatusContactTaxiOverlay(Context context, IAttributeSet attrs) : base(Resource.Layout.SubView_ContactTaxiOverlay,context, attrs)
 		{
-			this.DelayBind(() => ((MarginLayoutParams) LayoutParameters).TopMargin = -1000 );
+			this.DelayBind(() => ((MarginLayoutParams)LayoutParameters).TopMargin = CONTACT_TAXI_HIDDEN_Y_OFFSET);
 		}
 
 		public ViewStates AnimatedVisibility
@@ -65,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_isShown = false;
 
 			// If the Contact Taxi Overlay already at -1000, then this animation is not needed.
-			if(((MarginLayoutParams) LayoutParameters).TopMargin == -1000)
+			if (((MarginLayoutParams)LayoutParameters).TopMargin == CONTACT_TAXI_HIDDEN_Y_OFFSET)
 			{
 				return;
 			}
