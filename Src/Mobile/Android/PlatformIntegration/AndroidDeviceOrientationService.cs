@@ -18,35 +18,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 {
 	public class AndroidDeviceOrientationService : CommonDeviceOrientationService, IDeviceOrientationService
 	{
-		class AccelerometerSensorListener : Java.Lang.Object, ISensorEventListener
-		{
-			public event Action<double, double, double, long> NotifyOrientationChanged;
+		private SensorManager _sensorManager;
+		private Sensor _accelerometer;
+		private AccelerometerSensorListener _accelerometerSensorListener;
+		private bool _enabled = false;
 
-			public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy)
-			{
-			}
-
-			public void OnSensorChanged(SensorEvent e)
-			{
-				if (e.Accuracy == SensorStatus.AccuracyHigh || e.Accuracy == SensorStatus.AccuracyMedium || e.Accuracy == SensorStatus.AccuracyLow)
-				{
-					if (e.Sensor.Type == SensorType.Accelerometer)
-					{
-						if (NotifyOrientationChanged != null)
-						{
-							NotifyOrientationChanged(e.Values[0], e.Values[1], e.Values[2], (long)(e.Timestamp / 1000000));
-						}
-					}
-				}
-			}
-		}
-
-		SensorManager _sensorManager;
-		Sensor _accelerometer;
-		AccelerometerSensorListener _accelerometerSensorListener;
-		bool _enabled = false;
-
-		public AndroidDeviceOrientationService():base(CoordinateSystemOrientation.LeftHanded)
+		public AndroidDeviceOrientationService()
 		{
 			_sensorManager = (SensorManager)Application.Context.GetSystemService(Context.SensorService);
 			_accelerometer = _sensorManager.GetDefaultSensor(SensorType.Accelerometer);
@@ -88,9 +65,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 		}
 	}
 
+	class AccelerometerSensorListener : Java.Lang.Object, ISensorEventListener
+	{
+		public event Action<double, double, double, long> NotifyOrientationChanged;
+
+		public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy)
+		{
+		}
+
+		public void OnSensorChanged(SensorEvent e)
+		{
+			if (e.Sensor.Type == SensorType.Accelerometer && (e.Accuracy == SensorStatus.AccuracyHigh || e.Accuracy == SensorStatus.AccuracyMedium || e.Accuracy == SensorStatus.AccuracyLow))
+			{
+				if (NotifyOrientationChanged != null)
+				{
+					NotifyOrientationChanged(e.Values[0], e.Values[1], e.Values[2], (long)(e.Timestamp / 1000000));
+				}
+			}
+		}
+	}
+
+
 /*
-
-
 	public class AndroidDeviceOrientationService : CommonDeviceOrientationService, IDeviceOrientationService
 	{
 		AndroidOrientationListener androidOrientationListener;

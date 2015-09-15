@@ -148,6 +148,7 @@
     <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
     <Compile Include="Resources\PairingResponse.cs" />
     <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
+    <Compile Include="Vector3.cs" />
     <Compile Include="VehicleStatuses.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
