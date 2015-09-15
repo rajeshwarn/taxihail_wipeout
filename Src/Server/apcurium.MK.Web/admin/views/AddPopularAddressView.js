@@ -17,8 +17,10 @@
         render: function () {
         	var data = this.model.toJSON();
 
-			//Ensure that airportId is correctly displayed.
-	        data.placeId = data.placeReference;
+        	//Ensure that airportId is correctly displayed.
+        	if (data.placeReference) {
+        		data.placeId = data.placeReference;
+	        }
             var html = this.renderTemplate(data);
             this.$el.html(html);
 
