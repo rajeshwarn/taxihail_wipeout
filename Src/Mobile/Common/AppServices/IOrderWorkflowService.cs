@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         IObservable<string> GetAndObservePOIRefPickupList();
 
-        IObservable<string> GetAndObservePOIRefAirlineList();
+        IObservable<Airline[]> GetAndObservePOIRefAirlineList();
 
         IObservable<int?> GetAndObserveVehicleType();
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Input;
@@ -15,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	public class OrderAirportViewModel : BaseViewModel
 	{
         private readonly IOrderWorkflowService _orderWorkflowService;
+		//private IAirportInformationService _airportInformationService;
 
 		private const string NoAirlines = "No Airline";
         private const string PUCurbSide = "Curb Side";
@@ -35,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
             Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
             Observe(_orderWorkflowService.GetAndObservePOIRefPickupList(), pObject => POIPickup = pObject);
-            Observe(_orderWorkflowService.GetAndObservePOIRefAirlineList(), pObject => POIAirline = pObject);
+            Observe(_orderWorkflowService.GetAndObservePOIRefAirlineList(), poiAirline => POIAirline = poiAirline);
             Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
 
             //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
@@ -45,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
         public void Init()
         {
-            _airlines = new List<ListItem>
+            Airlines = new List<ListItem>
             {
 				new ListItem {Display = NoAirlines, Id = 0},
             };
@@ -119,8 +121,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					: vehicle.Display;
             }
         }
-
-
 
         private List<ListItem> _airlines;
         public List<ListItem> Airlines
@@ -196,7 +196,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 }
             }
         }
-
         
         private string _flightNum;
 		public string FlightNum
@@ -216,7 +215,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get { return _pickupAddress.FullAddress; }
         }
-
 
         private void DateUpdated(DateTime? date)
         {
@@ -283,18 +281,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        private string _pOIPickup;
+        private string _poiPickup;
         public string POIPickup
         {
-            get { return _pOIPickup; }
+            get { return _poiPickup; }
             set
             {
-	            if (value == _pOIPickup || value == null)
+	            if (value == _poiPickup || value == null)
 	            {
 		            return;
 	            }
 
-	            _pOIPickup = value;
+	            _poiPickup = value;
 	            if (value == string.Empty)
 	            {
 		            return;
@@ -332,53 +330,57 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	            RaisePropertyChanged(() => PUPointsName);
             }
         }
-        
-        private string _poiAirline;
-        public string POIAirline
+
+		private KeyValuePair<int, Airline>[] _carrierCodes;
+
+		private Airline[] _poiAirline;
+        public Airline[] POIAirline
         {
             get { return _poiAirline; }
             set
             {
-	            if (value == _poiAirline || value == null)
+				if (value == null || value.SequenceEqual(_poiAirline))
 	            {
 		            return;
 	            }
 
 	            _poiAirline = value;
-	            if (value == string.Empty)
+	            if (value.Any())
 	            {
 		            return;
 	            }
 
-	            var pArray = JArray.Parse(value);
+	            UpdateAirlines(value);
 
-	            _airlines.Clear();
-	            var index = 0;
-	            foreach (var pItem in pArray)
-	            {
-		            var addItem = false;
-		            var name = string.Empty;
-		            foreach (var x in pItem)
-		            {
-			            if ((((JProperty)x).Name == "type") && (((string)((JProperty)x).Value).IndexOf("airline", StringComparison.Ordinal) != -1 ))
-			            {
-				            addItem = true;
-			            }
-			            else if (((JProperty)x).Name == "name")
-			            {
-				            name = ((string)((JProperty)x).Value);
-			            }
-		            }
-		            if (addItem)
-		            {
-			            _airlines.Add(new ListItem { Display = name, Id = index++ });
-		            }
-	            }
 	            AirlineId = 0;
 	            RaisePropertyChanged(() => Airlines);
 	            RaisePropertyChanged(() => AirlineName);
             }
         }
+
+		private void UpdateAirlines(IEnumerable<Airline> airlines)
+		{
+			_carrierCodes = airlines
+				.Select((airline, index) => new KeyValuePair<int, Airline>(index, airline))
+				.ToArray();
+
+			_airlines.AddRange(_carrierCodes.Select(carrier => new ListItem { Display = carrier.Value.Name, Id = carrier.Key }));
+		}
+
+		public IObservable<string> GetTerminals()
+		{
+			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+					h => PropertyChanged += h,
+					h => PropertyChanged -= h
+				)
+				.Where(args => args.EventArgs.PropertyName.Equals("AirlineId")
+				    || args.EventArgs.PropertyName.Equals("PickupTimeStamp")
+				    || args.EventArgs.PropertyName.Equals("FlightNum")
+				)
+				.Where(_ => AirlineId.HasValue && PickupTimeStamp.HasValue() && FlightNum.HasValue())
+				//.SelectMany(_ => );
+				.Select(_ => string.Empty);
+		}
 
         public ICommand NextCommand
         {

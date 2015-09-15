@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System;
 using System.Text;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 
 #endregion
@@ -41,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return pObject;
         }
 
-        public Task<string> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
+		public Task<Airline[]> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
         {
             var sb = new StringBuilder();
             sb.Append("/references/airline");
@@ -61,8 +62,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             sb.Append("&coreFieldsOnly=true");
             var req = sb.ToString();
 			Console.WriteLine (req);
-            var pObject = Client.GetAsync<string>(req);
-            return pObject;
+
+            return Client.GetAsync<Airline[]>(req);
         }
     }
 }

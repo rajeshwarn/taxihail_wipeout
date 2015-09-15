@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
         readonly ISubject<string> _objPOIRefPickupListSubject = new BehaviorSubject<string>(string.Empty);
-        readonly ISubject<string> _objPOIRefAirlineListSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<Airline[]> _objPOIRefAirlineListSubject = new BehaviorSubject<Airline[]>(new Airline[0]);
 
         private bool _isOrderRebooked;
 
@@ -428,8 +428,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task POIRefAirLineList(string textMatch, int maxRespSize)
         {
-			var pObject = await _poiProvider.GetPOIRefAirLineList(String.Empty, textMatch, maxRespSize);
-            _objPOIRefAirlineListSubject.OnNext(pObject);
+			var airlines = await _poiProvider.GetPOIRefAirLineList(string.Empty, textMatch, maxRespSize);
+            _objPOIRefAirlineListSubject.OnNext(airlines);
         }
 
         public Guid? GetLastUnratedRide()
@@ -461,7 +461,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             return _objPOIRefPickupListSubject;
         }
 
-        public IObservable<string> GetAndObservePOIRefAirlineList()
+		public IObservable<Airline[]> GetAndObservePOIRefAirlineList()
         {
             return _objPOIRefAirlineListSubject;
         }
@@ -674,7 +674,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_loadingAddressSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
             _objPOIRefPickupListSubject.OnNext(string.Empty);
-            _objPOIRefAirlineListSubject.OnNext(string.Empty);
+            _objPOIRefAirlineListSubject.OnNext(new Airline[0]);
         }
 
 		public void BeginCreateOrder()
