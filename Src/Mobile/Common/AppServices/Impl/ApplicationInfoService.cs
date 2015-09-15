@@ -18,7 +18,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly ICacheService _cacheService;
         private readonly ILogger _logger;
 
-        private bool _didCheckForUpdates;
 		private DateTime _minimalVersionChecked;
 		private const int CheckMinimumSupportedVersionWhenIntervalExpired = 6; // hours
 
@@ -55,15 +54,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public async Task CheckVersionAsync()
         {
-            if (!_didCheckForUpdates)
-            {
-                _didCheckForUpdates = true;
-            }
-            else
-            {
-                return;
-            }
-
 			if ((DateTime.Now - _minimalVersionChecked).TotalHours >= CheckMinimumSupportedVersionWhenIntervalExpired)
 			{
 				_minimalVersionChecked = DateTime.Now;
@@ -105,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 // App is not supported anymore (also means that an update is available so don't display the other pop-up)
                 await _messageService.ShowMessage(_localize["UpdateNoticeTitle"], _localize["UpdateNoticeText"]);
             }
-            else if (!isUpToDate && !_didCheckForUpdates)
+            else if (!isUpToDate)
             {
                 // App is still supported but an update is available
                 await _messageService.ShowMessage(_localize["AppNeedUpdateTitle"], _localize["AppNeedUpdateMessage"]);
