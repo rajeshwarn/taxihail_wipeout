@@ -167,7 +167,8 @@ namespace apcurium.MK.Booking.Api.Services
                     VehicleNumber = v.Medallion,
                     FleetId = v.FleetId,
                     Eta = (int?)v.Eta,
-                    VehicleType = v.VehicleType
+                    VehicleType = v.VehicleType,
+                    CompassCourse = v.CompassCourse,
                 }).ToArray();
             }
 
