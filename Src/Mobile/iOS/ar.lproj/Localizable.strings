@@ -684,3 +684,5 @@
 "WaitingCarLandscapeViewCloseButtonText"="Back";
 "WaitingCarLandscapeViewCarNumber"="Car Number";
 "WaitingCarLandscapeActivityName"="Car Number";
+"UpdateNoticeTitle"="Update Notice";
+"UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";

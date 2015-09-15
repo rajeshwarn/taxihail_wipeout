@@ -5,6 +5,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -53,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_registrationService.PrepareNewRegistration ();
         }
 
-        public override void OnViewStarted(bool firstTime)
+        public override async void OnViewStarted(bool firstTime)
         {
             base.OnViewStarted(firstTime);
 
@@ -76,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_locationService.Start();
 
-			CheckVersion();
+            this.Services().ApplicationInfo.CheckVersionAsync();
 
             if (_executeOnStart != null)
             {
@@ -96,12 +97,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_locationService.Stop();
             }
         }
-        private void CheckVersion()
-        {
-            this.Services().ApplicationInfo.CheckVersionAsync();
-        }
 
-        public bool DisplayReportProblem
+		public bool DisplayReportProblem
 	    {
             get
             {

@@ -8998,6 +8998,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07015a
 			public const int UpdateBookingSettingsInvalidDataTitle = 2131165530;
 			
+			// aapt resource value: 0x7f070339
+			public const int UpdateNoticeText = 2131166009;
+			
+			// aapt resource value: 0x7f070338
+			public const int UpdateNoticeTitle = 2131166008;
+			
 			// aapt resource value: 0x7f07032d
 			public const int UpdatePasswordActivityName = 2131165997;
 			

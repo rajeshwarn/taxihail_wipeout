@@ -2176,4 +2176,10 @@
 	<data name="WaitingCarLandscapeActivityName" xml:space="preserve">
     	<value>Car Number</value>
 	</data>
+	<data name="UpdateNoticeTitle" xml:space="preserve">
+    	<value>Update Notice</value>
+	</data>
+	<data name="UpdateNoticeText" xml:space="preserve">
+    	<value>Sorry, this version of the app is no longer supported. Please update the app</value>
+	</data>
 </root>

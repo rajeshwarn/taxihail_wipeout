@@ -192,7 +192,7 @@
   <string name="RideSettingsPassword">Password</string>
   <string name="RideSettingsAccountNumber">Account Number</string>
   <string name="RideSettingsCustomerNumber">Account Rider Number</string>
-  <string name="CreateAccountInvalidPassword">The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</string>
+  <string name="CreateAccountInvalidPassword">The password is invalid.  The password and confirmation must be the same.  The password must also contain at least 6 characters.</string>
   <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must have format {0}</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
   <string name="CreateAccountInvalidDataTitle">Invalid account info</string>
@@ -704,4 +704,6 @@
   <string name="WaitingCarLandscapeViewCloseButtonText">Back</string>
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
+  <string name="UpdateNoticeTitle">Update Notice</string>
+  <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
 </resources>
