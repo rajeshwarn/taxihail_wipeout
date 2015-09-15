@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         CMMotionManager _motionManager;
         NSOperationQueue _accelerometerUpdateQueue;
 
-        public AppleDeviceOrientationService()
+        public AppleDeviceOrientationService():base(CoordinateSystemOrientation.RightHanded)
         {
 			if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.DEVICE)
 			{
@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             if (error == null)
             {
-				OrientationChanged(data.Acceleration.X, data.Acceleration.Y, data.Acceleration.Z, (long)data.Timestamp);
+                OrientationChanged(data.Acceleration.X, data.Acceleration.Y, data.Acceleration.Z, (long)(data.Timestamp * 1000));
             }
         }
     }
