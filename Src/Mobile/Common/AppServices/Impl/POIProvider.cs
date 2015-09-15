@@ -28,11 +28,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-				return await UseServiceClientAsync<POIServiceClient, Airline>(service => service.GetPOIRefAirLineList(company, textMatch, maxRespSize));
+				return await UseServiceClientAsync<POIServiceClient, Airline[]>(service => service.GetPOIRefAirLineList(company, textMatch, maxRespSize));
             }
             catch(Exception ex)
             {
 				Logger.LogError(ex);
+
+	            return new Airline[0];
             }
         }
     }

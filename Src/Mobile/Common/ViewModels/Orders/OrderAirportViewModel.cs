@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -16,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	public class OrderAirportViewModel : BaseViewModel
 	{
         private readonly IOrderWorkflowService _orderWorkflowService;
-		//private IAirportInformationService _airportInformationService;
+		private IAirportInformationService _airportInformationService;
 
 		private const string NoAirlines = "No Airline";
         private const string PUCurbSide = "Curb Side";
@@ -30,9 +31,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
         public List<PointsItems> PickupPoints { get; set; }
 
-        public OrderAirportViewModel(IOrderWorkflowService orderWorkflowService)
+        public OrderAirportViewModel(IOrderWorkflowService orderWorkflowService, IAirportInformationService airportInformationService)
 		{
 			_orderWorkflowService = orderWorkflowService;
+	        _airportInformationService = airportInformationService;
 
 	        Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
             Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
@@ -43,9 +45,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
             Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
 
+			Observe(GetTerminals(), terminal => Terminal = terminal);
         }
 
-        public void Init()
+		public string Terminal
+		{
+			get { return _terminal; }
+			set
+			{
+				_terminal = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public void Init()
         {
             Airlines = new List<ListItem>
             {
@@ -334,7 +347,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private KeyValuePair<int, Airline>[] _carrierCodes;
 
 		private Airline[] _poiAirline;
-        public Airline[] POIAirline
+		private string _terminal;
+
+		public Airline[] POIAirline
         {
             get { return _poiAirline; }
             set
@@ -377,9 +392,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				    || args.EventArgs.PropertyName.Equals("PickupTimeStamp")
 				    || args.EventArgs.PropertyName.Equals("FlightNum")
 				)
-				.Where(_ => AirlineId.HasValue && PickupTimeStamp.HasValue() && FlightNum.HasValue())
-				//.SelectMany(_ => );
-				.Select(_ => string.Empty);
+				.Where(_ => AirlineId.HasValue 
+					&& PickupTimeStamp.HasValue() 
+					&& FlightNum.HasValue() 
+					&& _pickupAddress.SelectOrDefault(addr => addr.PlaceId.HasValue())
+				)
+				.SelectMany(async _ =>
+				{
+					var date = await _orderWorkflowService.GetAndObservePickupDate().Take(1).ToTask();
+
+					return date.Value;
+				})
+				.SelectMany(date =>
+				{
+					var carrier = _carrierCodes.FirstOrDefault(c => c.Key == AirlineId);
+
+					var carrierCode = carrier.Value.Id.Replace("utog.", "");
+
+					return _airportInformationService.GetTerminal(date, FlightNum, carrierCode, _pickupAddress.PlaceId);
+				});
 		}
 
         public ICommand NextCommand
