@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class AppleDeviceOrientationService: CommonDeviceOrientationService, IDeviceOrientationService
     {
-        const double AccelerometerUpdateInterval = 1 / 3; // 3 Hz
+        const double AccelerometerUpdateInterval = 1 / 5; // 5 Hz
 
         CMMotionManager _motionManager;
         NSOperationQueue _accelerometerUpdateQueue;
