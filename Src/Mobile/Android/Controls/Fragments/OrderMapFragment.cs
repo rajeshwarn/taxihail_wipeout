@@ -544,14 +544,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";
-            var logoKey = isCluster
-                                ? string.Format("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
-                                : string.Format("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
+			var logoKey = isCluster
+				? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
+				: string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
 
-            var vehicleMarker = Map.AddMarker(new MarkerOptions()
-                .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
-                .Anchor(.5f, 1f)
-                .InvokeIcon(_vehicleIcons[logoKey]));
+			var vehicleMarker = Map.AddMarker(new MarkerOptions()
+				.SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
+				.Anchor(.5f, 1f)
+				.InvokeIcon(isCluster
+					? _vehicleIcons [logoKey]
+					: BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees (Resource.Drawable.nearby_orientated_available, vehicle.CompassCourse))));
 
             _availableVehicleMarkers.Add (vehicleMarker);
         }

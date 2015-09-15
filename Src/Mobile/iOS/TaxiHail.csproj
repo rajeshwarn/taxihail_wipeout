@@ -286,6 +286,9 @@
     <None Include="features\my_first.feature" />
     <InterfaceDefinition Include="Views\Order\OrderAirportView.xib" />
     <InterfaceDefinition Include="Views\WaitingCarLandscapeView.xib" />
+    <None Include="Resources\nearby_orientated_available.png" />
+    <None Include="Resources\nearby_orientated_available%402x.png" />
+    <None Include="Resources\nearby_orientated_available%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
