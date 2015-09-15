@@ -242,9 +242,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		protected abstract bool StopService();
 
 
-
-		apcurium.MK.Common.Diagnostic.ILogger l = TinyIoC.TinyIoCContainer.Current.Resolve<apcurium.MK.Common.Diagnostic.ILogger>();
-
 		/// <summary>
 		/// timestamp of the event in milliseconds
 		/// </summary>
@@ -261,13 +258,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			{
 				int rotation = GetZRotationAngle(v);
 
-
-
 				_filter.AddValue(rotation, (long)(DateTime.Now.Ticks / 10000));
 
 				int filteredAngle = _filter.StatisticalFilter();
-
-				l.LogMessage("@@@@@@@# ########### " + " " + rotation.ToString() + " "  +filteredAngle.ToString() + " " +  v.x.ToString() + " " + v.y.ToString() + " " + v.z.ToString());
 
 				if (NotifyAngleChanged != null && filteredAngle != -1)
 				{
