@@ -170,6 +170,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar.NotifyBookingStatusAppbarChanged();
 		}
 
+		/// <summary>
+		/// Gets and observe the taxilocation via Geo when using Manual Pairing.
+		/// </summary>
+		/// <remarks>
+		/// Must only use this via manual pairing.
+		/// 
+		/// This observable will also fallback to the device's location if Geo is not available for any reason.
+		/// </remarks>
 		private IObservable<Position> GetAndObserveTaxiLocationViaGeo(string medallion, Guid orderId)
 		{
 			return _vehicleService.GetAndObserveCurrentTaxiLocation(medallion, orderId)
