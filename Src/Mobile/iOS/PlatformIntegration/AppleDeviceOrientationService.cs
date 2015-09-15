@@ -62,10 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             if (error == null)
             {
-                if (TrustZRotation(data.Acceleration.X, data.Acceleration.Y, data.Acceleration.Z))
-                {
-                    AngleChangedEvent(GetZRotationAngle(data.Acceleration.X, data.Acceleration.Y, data.Acceleration.Z));
-                }
+				OrientationChanged(data.Acceleration.X, data.Acceleration.Y, data.Acceleration.Z, (long)data.Timestamp);
             }
         }
     }
