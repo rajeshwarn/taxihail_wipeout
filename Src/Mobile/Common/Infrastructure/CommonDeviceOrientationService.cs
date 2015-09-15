@@ -71,27 +71,23 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			{
 				FilterValue result = new FilterValue();
 
-				if (System.Threading.Interlocked.CompareExchange(ref _exclusiveAccess, 1, 0) == 0)
+				while (position >= _bufferLength)
 				{
-					while (position >= _bufferLength)
-					{
-						position -= _bufferLength;
-					}
-
-					while (position < 0)
-					{
-						position += _bufferLength;
-					}
-
-					int positionFromBufferStartPointer = _pointer - position;
-
-					if (positionFromBufferStartPointer < 0)
-						positionFromBufferStartPointer += _bufferLength;
-
-					result = _buffer[positionFromBufferStartPointer];
-
-					_exclusiveAccess = 0;
+					position -= _bufferLength;
 				}
+
+				while (position < 0)
+				{
+					position += _bufferLength;
+				}
+
+				int positionFromBufferStartPointer = _pointer - position;
+
+				if (positionFromBufferStartPointer < 0)
+					positionFromBufferStartPointer += _bufferLength;
+
+				result = _buffer[positionFromBufferStartPointer];
+
 
 				return result;
 			}
@@ -245,6 +241,10 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		protected abstract bool StopService();
 
+
+
+		apcurium.MK.Common.Diagnostic.ILogger l = TinyIoC.TinyIoCContainer.Current.Resolve<apcurium.MK.Common.Diagnostic.ILogger>();
+
 		/// <summary>
 		/// timestamp of the event in milliseconds
 		/// </summary>
@@ -261,9 +261,13 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			{
 				int rotation = GetZRotationAngle(v);
 
+
+
 				_filter.AddValue(rotation, (long)(DateTime.Now.Ticks / 10000));
 
 				int filteredAngle = _filter.StatisticalFilter();
+
+				l.LogMessage("@@@@@@@# ########### " + " " + rotation.ToString() + " "  +filteredAngle.ToString() + " " +  v.x.ToString() + " " + v.y.ToString() + " " + v.z.ToString());
 
 				if (NotifyAngleChanged != null && filteredAngle != -1)
 				{
