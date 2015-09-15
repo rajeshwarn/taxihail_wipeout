@@ -32,7 +32,6 @@
 "BookItButtonImageName"="Assets/Button/btnBookIt_en.png";
 "BookItLaterButton"="Plus tard";
 "BookPickupLabel"="Confirmer votre adresse de départ";
-"CreateAccountInvalidPassword"="Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit contenir au minimum 6 caractères.";
 "BookPickupLocationButtonTitle"="Départ";
 "BookPickupLocationEmptyPlaceholder"="Choisissez votre lieu de départ sur la carte";
 "BookRatingErrorMessage"="Merci de noter la qualité de votre dernier trajet";
@@ -90,7 +89,7 @@
 "CreateAccountErrorTitle"="Erreur";
 "CreateAccountFullNamePlaceHolder"="Nom complet";
 "CreateAccountInvalidDataTitle"="Données invalides";
-"CreateAccountInvalidPassword"="Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.";
+"CreateAccountInvalidPassword"="Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit contenir au minimum 6 caractères.";
 "CreateAccountLanguageEnglish"="English";
 "CreateAccountLanguageFrench"="Français";
 "CreateAccountPasswordConfirmationPlaceHolder"="Confirmation du mot de passe";
@@ -702,3 +701,5 @@
 "WaitingCarLandscapeViewCloseButtonText"="Retour";
 "WaitingCarLandscapeViewCarNumber"="Numéro de voiture";
 "WaitingCarLandscapeActivityName"="Numéro de voiture";
+"UpdateNoticeTitle"="Update Notice";
+"UpdateNoticeText"="Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît";

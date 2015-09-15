@@ -95,7 +95,7 @@
 "CreateAccountErrorTitle"="Error";
 "CreateAccountFullNamePlaceHolder"="Nombre completo";
 "CreateAccountInvalidDataTitle"="Información de cuenta inválida";
-"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.";
+"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.";
 "CreateAccountLanguageEnglish"="Inglés";
 "CreateAccountLanguageFrench"="Francés";
 "CreateAccountPasswordConfirmationPlaceHolder"="Confirme contraseña";
@@ -701,3 +701,5 @@
 "WaitingCarLandscapeViewCloseButtonText"="Back";
 "WaitingCarLandscapeViewCarNumber"="Car Number";
 "WaitingCarLandscapeActivityName"="Car Number";
+"UpdateNoticeTitle"="Update Notice";
+"UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";

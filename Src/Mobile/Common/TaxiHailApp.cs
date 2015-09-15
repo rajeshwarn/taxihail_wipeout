@@ -23,6 +23,7 @@ using TinyMessenger;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.CraftyClicks;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.Data;
 
 
 namespace apcurium.MK.Booking.Mobile
@@ -136,6 +137,7 @@ namespace apcurium.MK.Booking.Mobile
 				case MvxLifetimeEvent.ActivatedFromMemory:
 				case MvxLifetimeEvent.ActivatedFromDisk:
 					RefreshAppData();
+                    Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync();
 #if !MONOTOUCH
 					TryFacebookInitAndPublish();
 #endif

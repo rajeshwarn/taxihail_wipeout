@@ -190,7 +190,7 @@
 "RideSettingsPassword"="Password";
 "RideSettingsAccountNumber"="Account Number";
 "RideSettingsCustomerNumber"="Account Rider Number";
-"CreateAccountInvalidPassword"="The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.";
+"CreateAccountInvalidPassword"="The password is invalid.  The password and confirmation must be the same.  The password must also contain at least 6 characters.";
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must have format {0}";
 "CreateAccountEmptyField"="The data is invalid, all the fields are required.";
 "CreateAccountInvalidDataTitle"="Invalid account info";
@@ -702,3 +702,5 @@
 "WaitingCarLandscapeViewCloseButtonText"="Back";
 "WaitingCarLandscapeViewCarNumber"="Car Number";
 "WaitingCarLandscapeActivityName"="Car Number";
+"UpdateNoticeTitle"="Update Notice";
+"UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";
