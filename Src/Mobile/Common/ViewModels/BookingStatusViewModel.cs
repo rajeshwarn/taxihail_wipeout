@@ -230,6 +230,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			MapCenter = null;
 
+			_vehicleNumber = null;
 			_orientationService.Stop();
 
 			if (WaitingCarLandscapeViewModelParameters != null)
@@ -674,6 +675,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Cancelled)
 					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
 				{
+					_vehicleNumber = null;
 					_orientationService.Stop();
 
 					if (WaitingCarLandscapeViewModelParameters != null)
