@@ -77,6 +77,7 @@
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\AddressLocationType.cs" />
+    <Compile Include="Entity\Airline.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />

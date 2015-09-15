@@ -98,6 +98,7 @@
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
     <Compile Include="CountryCode.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
+    <Compile Include="Entity\Airline.cs" />
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
     <Compile Include="Entity\RatingTypeWrapper.cs" />
