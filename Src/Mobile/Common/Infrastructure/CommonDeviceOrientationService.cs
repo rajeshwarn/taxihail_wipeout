@@ -69,22 +69,31 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 			FilterValue ReadValueFromEnd(int position)
 			{
-				while (position >= _bufferLength)
+				FilterValue result = new FilterValue();
+
+				if (System.Threading.Interlocked.CompareExchange(ref _exclusiveAccess, 1, 0) == 0)
 				{
-					position -= _bufferLength;
+					while (position >= _bufferLength)
+					{
+						position -= _bufferLength;
+					}
+
+					while (position < 0)
+					{
+						position += _bufferLength;
+					}
+
+					int positionFromBufferStartPointer = _pointer - position;
+
+					if (positionFromBufferStartPointer < 0)
+						positionFromBufferStartPointer += _bufferLength;
+
+					result = _buffer[positionFromBufferStartPointer];
+
+					_exclusiveAccess = 0;
 				}
 
-				while (position < 0)
-				{
-					position += _bufferLength;
-				}
-
-				int positionFromBufferStartPointer = _pointer - position;
-
-				if (positionFromBufferStartPointer < 0)
-					positionFromBufferStartPointer += _bufferLength;
-
-				return _buffer[positionFromBufferStartPointer];
+				return result;
 			}
 
 			public int StatisticalFilter()
@@ -152,6 +161,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 							result = -1;
 						}
 					}
+
 					_exclusiveAccess = 0;
 				}
 
@@ -160,16 +170,16 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		}
 
 		const double RadiansToDegrees = 360 / (2 * Math.PI);
-		const double thetaTrustedAngle = 40;
+		const double ThetaTrustedAngle = 40;
 
 		public event Action<int> NotifyAngleChanged;
 		bool _isStarted = false;
-		Filter filter = new Filter();
-		CoordinateSystemOrientation _coordinateSystemOrientation;
+		Filter _filter = new Filter();
+		CoordinateSystemOrientation _deviceCoordinateSystemOrientation; // device is in vertical position screen faced user
 
 		public CommonDeviceOrientationService(CoordinateSystemOrientation coordinateSystemOrientation)
 		{
-			_coordinateSystemOrientation = coordinateSystemOrientation;
+			_deviceCoordinateSystemOrientation = coordinateSystemOrientation;
 		}
 
 		public bool Start()
@@ -196,7 +206,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		{
 			int orientation = 1;
 
-			if (_coordinateSystemOrientation == CoordinateSystemOrientation.LeftHanded)
+			if (_deviceCoordinateSystemOrientation == CoordinateSystemOrientation.LeftHanded)
 				orientation = -1;
 
 			int angle = 90 - (int)Math.Round(Math.Atan2(-vector.y * orientation, vector.x * orientation) * RadiansToDegrees);
@@ -219,7 +229,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			vector.Normalize();
 			double theta = Math.Asin(vector.z) * RadiansToDegrees;
 
-			if (Math.Abs(theta) < thetaTrustedAngle)
+			if (Math.Abs(theta) < ThetaTrustedAngle)
 			{
 				return true;
 			}
@@ -251,9 +261,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			{
 				int rotation = GetZRotationAngle(v);
 
-				filter.AddValue(rotation, (long)(DateTime.Now.Ticks / 10000));
+				_filter.AddValue(rotation, (long)(DateTime.Now.Ticks / 10000));
 
-				int filteredAngle = filter.StatisticalFilter();
+				int filteredAngle = _filter.StatisticalFilter();
 
 				if (NotifyAngleChanged != null && filteredAngle != -1)
 				{

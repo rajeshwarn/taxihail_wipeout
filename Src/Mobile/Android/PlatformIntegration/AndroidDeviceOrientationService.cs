@@ -41,34 +41,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 			}
 		}
 
-		SensorManager sensorManager;
-		Sensor accelerometer;
-		AccelerometerSensorListener accelerometerSensorListener;
-		bool enabled = false;
+		SensorManager _sensorManager;
+		Sensor _accelerometer;
+		AccelerometerSensorListener _accelerometerSensorListener;
+		bool _enabled = false;
 
 		public AndroidDeviceOrientationService():base(CoordinateSystemOrientation.LeftHanded)
 		{
-			sensorManager = (SensorManager)Application.Context.GetSystemService(Context.SensorService);
-			accelerometer = sensorManager.GetDefaultSensor(SensorType.Accelerometer);
+			_sensorManager = (SensorManager)Application.Context.GetSystemService(Context.SensorService);
+			_accelerometer = _sensorManager.GetDefaultSensor(SensorType.Accelerometer);
 
-			if (accelerometer != null)
+			if (_accelerometer != null)
 			{
-				accelerometerSensorListener = new AccelerometerSensorListener();
-				accelerometerSensorListener.NotifyOrientationChanged += OrientationChanged;
+				_accelerometerSensorListener = new AccelerometerSensorListener();
+				_accelerometerSensorListener.NotifyOrientationChanged += OrientationChanged;
 			}
 		}
 
 		public override bool IsAvailable()
 		{
-			return accelerometer != null;
+			return _accelerometer != null;
 		}
 
 		protected override bool StartService()
 		{
-			if (IsAvailable() && !enabled)
+			if (IsAvailable() && !_enabled)
 			{
-				sensorManager.RegisterListener(accelerometerSensorListener, accelerometer, SensorDelay.Normal);
-				enabled = true;
+				_sensorManager.RegisterListener(_accelerometerSensorListener, _accelerometer, SensorDelay.Normal);
+				_enabled = true;
 				return true;
 			}
 
@@ -77,10 +77,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 
 		protected override bool StopService()
 		{
-			if (IsAvailable() && enabled)
+			if (IsAvailable() && _enabled)
 			{
-				sensorManager.UnregisterListener(accelerometerSensorListener);
-				enabled = false;
+				_sensorManager.UnregisterListener(_accelerometerSensorListener);
+				_enabled = false;
 				return true;
 			}
 
