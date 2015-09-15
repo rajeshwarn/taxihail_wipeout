@@ -42,6 +42,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 				public long timestamp;
 			}
 
+			int _exclusiveAccess = 0;
+
 			FilterValue[] _buffer = new FilterValue[1000];
 			int _pointer = -1;
 			int _bufferLength = 0;
@@ -49,15 +51,20 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 			public void AddValue(int value, long time)
 			{
-				_pointer++;
-				if (_pointer == 1000)
-					_pointer = 0;
+				if (System.Threading.Interlocked.CompareExchange(ref _exclusiveAccess, 1, 0) == 0)
+				{
+					_pointer++;
+					if (_pointer == 1000)
+						_pointer = 0;
 
-				_buffer[_pointer].value = value;
-				_buffer[_pointer].timestamp = time;
+					_buffer[_pointer].value = value;
+					_buffer[_pointer].timestamp = time;
 
-				if (_bufferLength < 1000)
-					_bufferLength++;
+					if (_bufferLength < 1000)
+						_bufferLength++;
+
+					_exclusiveAccess = 0;
+				}
 			}
 
 			FilterValue ReadValueFromEnd(int position)
@@ -82,65 +89,73 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 			public int StatisticalFilter()
 			{
-				if (_bufferLength == 0)
-					return -1;
+				int result = -1;
 
-				bool timeAchieved = false;
-				long time = 0;
-
-				FilterValue fv1 = ReadValueFromEnd(0);
-				FilterValue fv2 = ReadValueFromEnd(0);
-
-				int maximumValueDifference = 0;
-
-				for (int i = 0; i < _bufferLength; i++)
+				if (System.Threading.Interlocked.CompareExchange(ref _exclusiveAccess, 1, 0) == 0)
 				{
-					fv2 = ReadValueFromEnd(i);
-
-					time += fv1.timestamp - fv2.timestamp;
-
-					int valueDifference = Math.Abs(fv2.value - fv1.value);
-
-					if (valueDifference > 180)
-						valueDifference = 360 - valueDifference;
-
-					maximumValueDifference = Math.Max(maximumValueDifference, valueDifference);
-
-					fv1 = fv2;
-
-					if (time > 250)
+					if (_bufferLength > 0)
 					{
-						timeAchieved = true;
-						break;
+						bool timeAchieved = false;
+						long time = 0;
+
+						FilterValue fv1 = ReadValueFromEnd(0);
+						FilterValue fv2 = ReadValueFromEnd(0);
+
+						int maximumValueDifference = 0;
+
+						for (int i = 0; i < _bufferLength; i++)
+						{
+							fv2 = ReadValueFromEnd(i);
+
+							time += fv1.timestamp - fv2.timestamp;
+
+							int valueDifference = Math.Abs(fv2.value - fv1.value);
+
+							if (valueDifference > 180)
+								valueDifference = 360 - valueDifference;
+
+							maximumValueDifference = Math.Max(maximumValueDifference, valueDifference);
+
+							fv1 = fv2;
+
+							if (time > 250)
+							{
+								timeAchieved = true;
+								break;
+							}
+						}
+
+						if (!timeAchieved)
+						{
+							fv1 = ReadValueFromEnd(0);
+							fv2 = ReadValueFromEnd(0);
+
+							for (int i = 0; i < Math.Min(_bufferLength, 5); i++)
+							{
+								fv2 = ReadValueFromEnd(i);
+
+								int valDiff2 = Math.Abs(fv2.value - fv1.value);
+
+								if (valDiff2 > 180)
+									valDiff2 = 360 - valDiff2;
+
+								maximumValueDifference = Math.Max(maximumValueDifference, valDiff2);
+							}
+						}
+
+						if (maximumValueDifference <= MaximumRandomDeviation)
+						{
+							result = ReadValueFromEnd(0).value;
+						}
+						else
+						{
+							result = -1;
+						}
 					}
+					_exclusiveAccess = 0;
 				}
 
-				if (!timeAchieved)
-				{
-					fv1 = ReadValueFromEnd(0);
-					fv2 = ReadValueFromEnd(0);
-
-					for (int i = 0; i < Math.Min(_bufferLength, 5); i++)
-					{
-						fv2 = ReadValueFromEnd(i);
-
-						int valDiff2 = Math.Abs(fv2.value - fv1.value);
-
-						if (valDiff2 > 180)
-							valDiff2 = 360 - valDiff2;
-
-						maximumValueDifference = Math.Max(maximumValueDifference, valDiff2);
-					}
-				}
-
-				if (maximumValueDifference <= MaximumRandomDeviation)
-				{
-					return ReadValueFromEnd(0).value;
-				}
-				else
-				{
-					return -1;
-				}
+				return result;
 			}
 		}
 
@@ -236,7 +251,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			{
 				int rotation = GetZRotationAngle(v);
 
-				filter.AddValue(rotation, timestamp);
+				filter.AddValue(rotation, (long)(DateTime.Now.Ticks / 10000));
 
 				int filteredAngle = filter.StatisticalFilter();
 
