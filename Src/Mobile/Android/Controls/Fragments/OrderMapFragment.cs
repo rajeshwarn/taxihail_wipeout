@@ -176,6 +176,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		    if (_taxiLocationPin != null)
 		    {
 			    _taxiLocationPin.Remove();
+
+				_taxiLocationPin = null;
 		    }
 
 		    if (value != null && value.Latitude.HasValue && value.Longitude.HasValue && value.VehicleNumber.HasValue())
@@ -210,12 +212,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					Logger.LogError(ex);
 				}
 
-				_isBookingMode = true;				
+				_isBookingMode = true;
+
+			    return;
 		    }
-			else
-			{
+
+		    if (value == null)
+		    {
 				_isBookingMode = false;
-			}
+		    }
 	    }
 
 		private Bitmap CreateTaxiBitmap()

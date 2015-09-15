@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	partial class ContactTaxiControl
 	{
 		[Outlet]
-		UIKit.UIButton btnCallDriver { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCallDriver { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnMessageDriver { get; set; }
@@ -32,14 +32,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (btnMessageDriver != null) {
-				btnMessageDriver.Dispose ();
-				btnMessageDriver = null;
-			}
-
 			if (btnCallDriver != null) {
 				btnCallDriver.Dispose ();
 				btnCallDriver = null;
+			}
+
+			if (btnMessageDriver != null) {
+				btnMessageDriver.Dispose ();
+				btnMessageDriver = null;
 			}
 
 			if (imgPhone != null) {

@@ -405,7 +405,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 CloseBookATaxiDialog();
                 constraintAppBarBookingStatus.Constant = 0;
-                constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstrainValue;
+
+                if (ViewModel.BookingStatus != null && !ViewModel.BookingStatus.IsContactTaxiVisible)
+                {
+                    constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstrainValue;
+                }
 
                 if (_presentationState == HomeViewModelState.ManualRidelinq) 
 				{

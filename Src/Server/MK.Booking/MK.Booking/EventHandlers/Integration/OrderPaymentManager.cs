@@ -208,7 +208,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 // we have to void the amount that was preauthorized
                 if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode != PaymentMethod.RideLinqCmt
                     && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
-                    && pairingInfo == null
+                    && (pairingInfo == null || pairingInfo.WasUnpaired)
                     && !orderStatus.IsPrepaid) //prepaid order will never have a pairing info
                 {
                     // void the preauthorization to prevent misuse fees

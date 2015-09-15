@@ -197,6 +197,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsPaired { get; set; }
 
+        public bool WasUnpaired { get; set; }
+
         public bool IsCompleted { get; set; }
 
         public bool IsCancelled { get; set; }

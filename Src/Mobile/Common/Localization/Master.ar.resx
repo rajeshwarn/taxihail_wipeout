@@ -1645,8 +1645,11 @@
   <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>If you decide to pay in car, you will not be able to use the promotion</value>
   </data>
-  <data name="UnpairWarningCancelButton" xml:space="preserve">
+  <data name="UnpairWarningOkButton" xml:space="preserve">
     <value>Pay in car</value>
+  </data>
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
+    <value>Cancel</value>
   </data>
   <data name="View_Promotions" xml:space="preserve">
     <value>Promotions</value>

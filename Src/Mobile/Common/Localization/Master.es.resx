@@ -506,7 +506,7 @@
     <comment>Invalid account info</comment>
   </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
-    <value>La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.</value>
+    <value>La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.</value>
     <comment>The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</comment>
   </data>
   <data name="CreateAccountLanguageEnglish" xml:space="preserve">
@@ -2191,13 +2191,16 @@
     <value>Si usted decide pagar en el carro, usted no podrá utilizar la promoción</value>
     <comment>If you decide to pay in car, you will not be able to use the promotion</comment>
   </data>
-  <data name="UnpairWarningCancelButton" xml:space="preserve">
+  <data name="UnpairWarningOkButton" xml:space="preserve">
     <value>Pago en carro</value>
     <comment>Pay in car</comment>
   </data>
   <data name="View_Promotions" xml:space="preserve">
     <value>Promociones</value>
     <comment>Promotions</comment>
+  </data>
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
   <data name="PromoExpiringIn1DayMessage" xml:space="preserve">
     <value>Expira en 1 día</value>

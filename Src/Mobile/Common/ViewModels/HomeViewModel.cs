@@ -528,6 +528,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					switch (CurrentViewState)
 					{
+						case HomeViewModelState.BookingStatus:
+						case HomeViewModelState.ManualRidelinq:
+							_bookingStatus.ReturnToInitialState();
+							break;
 						case HomeViewModelState.Review:
 						case HomeViewModelState.PickDate:
 						case HomeViewModelState.AddressSearch:
@@ -535,7 +539,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						case HomeViewModelState.TrainStationSearch:
 						case HomeViewModelState.BookATaxi:
 						case HomeViewModelState.AirportDetails:
-						case HomeViewModelState.BookingStatus:
 							CurrentViewState = HomeViewModelState.Initial;
 							break;
 						case HomeViewModelState.Edit:

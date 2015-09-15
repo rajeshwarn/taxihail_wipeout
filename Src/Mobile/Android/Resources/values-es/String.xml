@@ -520,8 +520,9 @@
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="UnpairWarningMessage">¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?</string>
   <string name="UnpairWarningMessageWithPromo">Si usted decide pagar en el carro, usted no podrá utilizar la promoción</string>
-  <string name="UnpairWarningCancelButton">Pago en carro</string>
+  <string name="UnpairWarningOkButton">Pago en carro</string>
   <string name="View_Promotions">Promociones</string>
+  <string name="UnpairWarningCancelButton">Cancelar</string>
   <string name="PromoExpiringIn1DayMessage">Expira en 1 día</string>
   <string name="PromoExpiringSoonMessage">Expira en {0} dias</string>
   <string name="PromoExpiringToday">Expira hoy!</string>

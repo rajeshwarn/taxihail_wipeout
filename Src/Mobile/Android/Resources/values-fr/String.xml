@@ -527,7 +527,8 @@
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="UnpairWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
   <string name="UnpairWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
-  <string name="UnpairWarningCancelButton">Payer dans le taxi</string>
+  <string name="UnpairWarningOkButton">Payer dans le taxi</string>
+  <string name="UnpairWarningCancelButton">Annuler</string>
   <string name="View_Promotions">Promotions</string>
   <string name="PromoExpiringIn1DayMessage">Expire dans 1 jour</string>
   <string name="PromoExpiringSoonMessage">Expire dans {0} jours</string>
