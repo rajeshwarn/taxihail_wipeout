@@ -1,3 +1,4 @@
+using apcurium.MK.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,35 +6,8 @@ using System.Text;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
-	public enum CoordinateSystemOrientation
-	{
-		LeftHanded,
-		RightHanded
-	}
-
 	public abstract class CommonDeviceOrientationService
 	{
-		public struct Vector3
-		{
-			public double x, y, z;
-
-			public Vector3(double x, double y, double z)
-			{
-				this.x = x;
-				this.y = y;
-				this.z = z;
-			}
-
-			public void Normalize()
-			{
-				double vectorLength = Math.Pow(x * x + y * y + z * z, 0.5);
-
-				x /= vectorLength;
-				y /= vectorLength;
-				z /= vectorLength;
-			}
-		}
-
 		class Filter
 		{
 			struct FilterValue
@@ -42,26 +16,32 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 				public long timestamp;
 			}
 
-			int _exclusiveAccess = 0;
+			private const int BufferCapacity = 10;
+			private const int MaximumRandomDeviation = 10;
 
-			FilterValue[] _buffer = new FilterValue[1000];
-			int _pointer = -1;
-			int _bufferLength = 0;
-			const int MaximumRandomDeviation = 10;
+			private FilterValue[] _buffer = new FilterValue[BufferCapacity];
+			private int _bufferTopPointer = -1;
+			private int _bufferLength = 0;
+			private int _exclusiveAccess = 0;
 
 			public void AddValue(int value, long time)
 			{
 				if (System.Threading.Interlocked.CompareExchange(ref _exclusiveAccess, 1, 0) == 0)
 				{
-					_pointer++;
-					if (_pointer == 1000)
-						_pointer = 0;
+					_bufferTopPointer++;
 
-					_buffer[_pointer].value = value;
-					_buffer[_pointer].timestamp = time;
+					if (_bufferTopPointer == BufferCapacity)
+					{
+						_bufferTopPointer = 0;
+					}
 
-					if (_bufferLength < 1000)
+					_buffer[_bufferTopPointer].value = value;
+					_buffer[_bufferTopPointer].timestamp = time;
+
+					if (_bufferLength < BufferCapacity)
+					{
 						_bufferLength++;
+					}
 
 					_exclusiveAccess = 0;
 				}
@@ -81,10 +61,12 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 					position += _bufferLength;
 				}
 
-				int positionFromBufferStartPointer = _pointer - position;
+				int positionFromBufferStartPointer = _bufferTopPointer - position;
 
 				if (positionFromBufferStartPointer < 0)
+				{
 					positionFromBufferStartPointer += _bufferLength;
+				}
 
 				result = _buffer[positionFromBufferStartPointer];
 
@@ -92,7 +74,12 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 				return result;
 			}
 
-			public int StatisticalFilter()
+			/// <summary>
+			/// Takes the events of the last ~250 milliseconds or, if this time is not be able to gather, the last 5 events,
+			/// if deviation between neighbour events in this set is less or equal MaximumRandomDeviation - returns value of the last event, otherwise [-1]
+			/// </summary>
+			/// <returns></returns>
+			public int StatisticalFilter(int timeIntervalToGatherEventsSet)
 			{
 				int result = -1;
 
@@ -117,13 +104,15 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 							int valueDifference = Math.Abs(fv2.value - fv1.value);
 
 							if (valueDifference > 180)
+							{
 								valueDifference = 360 - valueDifference;
+							}
 
 							maximumValueDifference = Math.Max(maximumValueDifference, valueDifference);
 
 							fv1 = fv2;
 
-							if (time > 250)
+							if (time > timeIntervalToGatherEventsSet)
 							{
 								timeAchieved = true;
 								break;
@@ -139,12 +128,14 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 							{
 								fv2 = ReadValueFromEnd(i);
 
-								int valDiff2 = Math.Abs(fv2.value - fv1.value);
+								int valueDifference = Math.Abs(fv2.value - fv1.value);
 
-								if (valDiff2 > 180)
-									valDiff2 = 360 - valDiff2;
+								if (valueDifference > 180)
+								{
+									valueDifference = 360 - valueDifference;
+								}
 
-								maximumValueDifference = Math.Max(maximumValueDifference, valDiff2);
+								maximumValueDifference = Math.Max(maximumValueDifference, valueDifference);
 							}
 						}
 
@@ -165,18 +156,14 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			}
 		}
 
-		const double RadiansToDegrees = 360 / (2 * Math.PI);
-		const double ThetaTrustedAngle = 40;
+		private const double RadiansToDegrees = 360 / (2 * Math.PI);
+		private const double ThetaTrustedAngle = 40; // maximum angle in PI space between z axis of device and horizontal x-z plane when orientation events will be generated
+		private const int TimeIntervalToGatherEventsSet = 250;
+
+		private bool _isStarted = false;
+		private Filter _filter = new Filter();
 
 		public event Action<int> NotifyAngleChanged;
-		bool _isStarted = false;
-		Filter _filter = new Filter();
-		CoordinateSystemOrientation _deviceCoordinateSystemOrientation; // device is in vertical position screen faced user
-
-		public CommonDeviceOrientationService(CoordinateSystemOrientation coordinateSystemOrientation)
-		{
-			_deviceCoordinateSystemOrientation = coordinateSystemOrientation;
-		}
 
 		public bool Start()
 		{
@@ -198,14 +185,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			return !_isStarted;
 		}
 
-		protected int GetZRotationAngle(Vector3 vector)
+		protected int GetZRotationAngle(Vector3 deviceOrientation)
 		{
-			int orientation = 1;
-
-			if (_deviceCoordinateSystemOrientation == CoordinateSystemOrientation.LeftHanded)
-				orientation = -1;
-
-			int angle = 90 - (int)Math.Round(Math.Atan2(-vector.y * orientation, vector.x * orientation) * RadiansToDegrees);
+			int angle = 90 - (int)Math.Round(Math.Atan2(-deviceOrientation.y, deviceOrientation.x) * RadiansToDegrees);
 
 			while (angle >= 360)
 			{
@@ -220,10 +202,15 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			return angle;
 		}
 
-		protected bool TrustZRotation(Vector3 vector)
+		/// <summary>
+		/// When angle mesured in PI space between z axis and x-z plane is less then 40 degrees - returns true, otherwise false
+		/// </summary>
+		/// <param name="deviceOrientation">device spherical coordinates vector</param>
+		/// <returns></returns>
+		protected bool TrustZRotation(Vector3 deviceOrientation)
 		{
-			vector.Normalize();
-			double theta = Math.Asin(vector.z) * RadiansToDegrees;
+			deviceOrientation.Normalize();
+			double theta = Math.Asin(deviceOrientation.z) * RadiansToDegrees;
 
 			if (Math.Abs(theta) < ThetaTrustedAngle)
 			{
@@ -240,7 +227,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		protected abstract bool StartService();
 
 		protected abstract bool StopService();
-
 
 		/// <summary>
 		/// timestamp of the event in milliseconds
@@ -260,7 +246,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 				_filter.AddValue(rotation, (long)(DateTime.Now.Ticks / 10000));
 
-				int filteredAngle = _filter.StatisticalFilter();
+				int filteredAngle = _filter.StatisticalFilter(TimeIntervalToGatherEventsSet);
 
 				if (NotifyAngleChanged != null && filteredAngle != -1)
 				{
