@@ -146,16 +146,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.Where(_ => ManualRideLinqDetail != null && ManualRideLinqDetail.Medallion.HasValue())
 				.SelectMany(_ => _locationService.GetUserPosition());
 
-			var medallion = orderManualRideLinqDetail.Medallion;
 			var orderId = orderManualRideLinqDetail.OrderId;
 
-			var taxilocationViaGeo = _vehicleService.GetAndObserveCurrentTaxiLocation(medallion, orderId)
-				.Where(vehicles => vehicles != null)
-				.Select(vehicle => new Position
-				{
-					Longitude = vehicle.Longitude,
-					Latitude = vehicle.Latitude
-				});
+			var taxilocationViaGeo = GetAndObserveTaxiLocationViaGeo(orderManualRideLinqDetail.DeviceName, orderId);
 
 			_orderWorkflowService.GetAndObserveIsUsingGeo()
 				.DistinctUntilChanged()
@@ -164,7 +157,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					: deviceLocationObservable
 				)
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, medallion), Logger.LogError)
+				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, orderManualRideLinqDetail.Medallion), Logger.LogError)
 				.DisposeWith(subscriptions);
 			
 
@@ -176,7 +169,46 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			BottomBar.NotifyBookingStatusAppbarChanged();
 		}
-		
+
+		/// <summary>
+		/// Gets and observe the taxilocation via Geo when using Manual Pairing.
+		/// </summary>
+		/// <remarks>
+		/// Must only use this via manual pairing.
+		/// 
+		/// This observable will also fallback to the device's location if Geo is not available for any reason.
+		/// </remarks>
+		private IObservable<Position> GetAndObserveTaxiLocationViaGeo(string medallion, Guid orderId)
+		{
+			return _vehicleService.GetAndObserveCurrentTaxiLocation(medallion, orderId)
+				.Materialize()
+				.SelectMany(async notif =>
+				{
+					//Fallback in case of errors from the GeoService call
+					if ((notif.Kind == NotificationKind.OnError) || (notif.Kind == NotificationKind.OnNext && notif.Value == null))
+					{
+						var fallbackPosition = await _locationService.GetUserPosition();
+
+						return Notification.CreateOnNext(fallbackPosition);
+					}
+
+					if(notif.Kind == NotificationKind.OnNext && notif.Value != null)
+					{
+						var position = new Position
+						{
+							Longitude = notif.Value.Longitude,
+							Latitude = notif.Value.Latitude
+						};
+
+
+						return Notification.CreateOnNext(position);
+					}
+
+					return Notification.CreateOnCompleted<Position>();
+				})
+				.Dematerialize();
+		}
+
 		private void UpdatePosition(double latitude, double longitude, string medallion)
 		{
 			if (TaxiLocation != null && TaxiLocation.Latitude == latitude && TaxiLocation.Longitude == longitude)

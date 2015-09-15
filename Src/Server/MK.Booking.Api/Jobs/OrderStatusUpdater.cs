@@ -192,18 +192,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             _logger.LogMessage("Sending Trip update command for trip {0} (order {1}; pairing token {2})", tripInfo.TripId, orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
             _logger.LogMessage("Trip end time is {0}.", tripInfo.EndTime.HasValue ? tripInfo.EndTime.Value.ToString(CultureInfo.CurrentCulture) : "Not set yet");
 
-            var tolls = new List<TollDetail>();
-
-            if (tripInfo.TollHistory != null)
-            {
-                tolls.AddRange(tripInfo.TollHistory.Select(toll =>
-                    new TollDetail
-                    {
-                        TollName = toll.TollName,
-                        TollAmount = toll.TollAmount
-                    }));
-            }
-
             _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
             {
                 StartTime = tripInfo.StartTime,
@@ -213,11 +201,10 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Fare = Math.Round(((double)tripInfo.Fare / 100), 2),
                 Tax = Math.Round(((double)tripInfo.Tax / 100), 2),
                 Tip = Math.Round(((double)tripInfo.Tip / 100), 2),
-                TollTotal = tripInfo.TollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2)),
+				TollTotal = tripInfo.TollHistory.SelectOrDefault(tollHistory => tollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2))),
                 Surcharge = Math.Round(((double)tripInfo.Surcharge / 100), 2),
                 Total = Math.Round(((double)tripInfo.Total / 100), 2),
                 FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
-                Medallion = tripInfo.Medallion,
                 RateAtTripStart = tripInfo.RateAtTripStart,
                 RateAtTripEnd = tripInfo.RateAtTripEnd,
                 RateChangeTime = tripInfo.RateChangeTime,
@@ -227,7 +214,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 DriverId = tripInfo.DriverId,
                 AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
                 LastFour = tripInfo.LastFour,
-                Tolls = tolls.ToArray(),
+				Tolls = tripInfo.TollHistory.SelectOrDefault(tollHistory => tollHistory.ToArray(), new TollDetail[0]),
                 LastLatitudeOfVehicle = tripInfo.Lat,
                 LastLongitudeOfVehicle = tripInfo.Lon,
             });
