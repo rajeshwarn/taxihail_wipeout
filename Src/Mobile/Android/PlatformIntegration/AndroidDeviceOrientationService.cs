@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 			if (IsAvailable() && enabled)
 			{
 				sensorManager.UnregisterListener(accelerometerSensorListener);
-				enabled = true;
+				enabled = false;
 				return true;
 			}
 
