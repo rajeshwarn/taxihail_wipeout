@@ -144,6 +144,7 @@
     <Compile Include="AppServices\IMetricsService.cs" />
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="BindingConverter\HomeViewStateToVisibilityConverter.cs" />
+    <Compile Include="Data\VersionCheckTypes.cs" />
     <Compile Include="Extensions\DisposableExtensions.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />

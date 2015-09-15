@@ -11,6 +11,7 @@ using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -39,7 +40,11 @@ namespace apcurium.MK.Booking.Mobile
                 facebookService.PublishInstall();
             }
 
-			await TinyIoC.TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersionAsync(VersionCheck.CheckMinimumSupportedVersion);
+            // No need to await this
+		    Task.Run(() =>
+		    {
+                Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync(VersionCheckTypes.CheckForMinimumSupportedVersion);
+		    });
 
 			Mvx.Resolve<IAnalyticsService>().ReportConversion();
 

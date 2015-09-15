@@ -1,12 +1,11 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -14,24 +13,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
         private const string AppInfoCacheKey = "ApplicationInfo";
 
-		readonly ILocalization _localize;
-		readonly IMessageService _messageService;
-		readonly IPackageInfo _packageInfo;
-		readonly ICacheService _cacheService;
+		private readonly ILocalization _localize;
+		private readonly IMessageService _messageService;
+		private readonly IPackageInfo _packageInfo;
+		private readonly ICacheService _cacheService;
+        private readonly ILogger _logger;
 
-		bool updatesChecked = false;
-		DateTime minimalVersionChecked;
-		const int CheckMinimumSupportedVersionWhenIntervalExpired = 6; // hours
+        private bool _didCheckForUpdates;
+		private DateTime _minimalVersionChecked;
+		private const int CheckMinimumSupportedVersionWhenIntervalExpired = 6; // hours
 
-		public ApplicationInfoService(ILocalization localize, 
-									IMessageService messageService, 
-									IPackageInfo packageInfo,
-									ICacheService cacheService)
+		public ApplicationInfoService(ILocalization localize,
+            IMessageService messageService,
+            IPackageInfo packageInfo,
+            ICacheService cacheService,
+            ILogger logger)
 		{
 			_packageInfo = packageInfo;
 			_messageService = messageService;
 			_localize = localize;
 			_cacheService = cacheService;
+		    _logger = logger;
 		}
 
         public async Task<ApplicationInfo> GetAppInfoAsync()
@@ -52,13 +54,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
 
-		public async Task CheckVersionAsync(VersionCheck versionCheck)
+        public async Task CheckVersionAsync(VersionCheckTypes versionCheckType)
         {
-			if (versionCheck == VersionCheck.CheckUpdates)
+            if (versionCheckType == VersionCheckTypes.CheckForUpdates)
 			{
-				if (!updatesChecked)
+                if (!_didCheckForUpdates)
 				{
-					updatesChecked = true;
+                    _didCheckForUpdates = true;
 				}
 				else
 				{
@@ -66,11 +68,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				}
 			}
 
-			if (versionCheck == VersionCheck.CheckMinimumSupportedVersion)
+            if (versionCheckType == VersionCheckTypes.CheckForMinimumSupportedVersion)
 			{
-				if ((DateTime.Now - minimalVersionChecked).TotalHours >= CheckMinimumSupportedVersionWhenIntervalExpired)
+				if ((DateTime.Now - _minimalVersionChecked).TotalHours >= CheckMinimumSupportedVersionWhenIntervalExpired)
 				{
-					minimalVersionChecked = DateTime.Now;
+					_minimalVersionChecked = DateTime.Now;
 				}
 				else
 				{
@@ -85,9 +87,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 var app = await GetAppInfoAsync();
 
-				ApplicationVersion mobileVersion = new ApplicationVersion(_packageInfo.Version);
-				ApplicationVersion serverVersion = new ApplicationVersion(app.Version);
-				ApplicationVersion minimumRequiredVersion = new ApplicationVersion(app.MinimumRequiredAppVersion);
+				var mobileVersion = new ApplicationVersion(_packageInfo.Version);
+				var serverVersion = new ApplicationVersion(app.Version);
+				var minimumRequiredVersion = new ApplicationVersion(app.MinimumRequiredAppVersion);
 
 				if (mobileVersion < serverVersion)
 				{
@@ -99,22 +101,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					isSupported = false;
 				}
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogMessage("An error occured when trying to check the minimum app version.");
+                _logger.LogError(ex);
             }
 
-            if (versionCheck == VersionCheck.CheckUpdates && !isUpToDate)
+            if (versionCheckType == VersionCheckTypes.CheckForUpdates && !isUpToDate)
             {
-				var title = _localize["AppNeedUpdateTitle"];
-				var msg = _localize["AppNeedUpdateMessage"];
-				await _messageService.ShowMessage(title, msg);
+				await _messageService.ShowMessage(_localize["AppNeedUpdateTitle"], _localize["AppNeedUpdateMessage"]);
             }
-			
-			if (versionCheck == VersionCheck.CheckMinimumSupportedVersion && !isSupported)
+
+            if (versionCheckType == VersionCheckTypes.CheckForMinimumSupportedVersion && !isSupported)
 			{
-				var title = _localize["UpdateNoticeTitle"];
-				var msg = _localize["UpdateNoticeText"];
-				await _messageService.ShowMessage(title, msg);
+				await _messageService.ShowMessage(_localize["UpdateNoticeTitle"], _localize["UpdateNoticeText"]);
 			}
 		}
     }
