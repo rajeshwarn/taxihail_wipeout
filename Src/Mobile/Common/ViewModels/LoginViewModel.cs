@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_registrationService.PrepareNewRegistration ();
         }
 
-        public override void OnViewStarted(bool firstTime)
+        public override async void OnViewStarted(bool firstTime)
         {
             base.OnViewStarted(firstTime);
 
@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_locationService.Start();
 
-            this.Services().ApplicationInfo.CheckVersionAsync(VersionCheckTypes.CheckForUpdates);
+            this.Services().ApplicationInfo.CheckVersionAsync();
 
             if (_executeOnStart != null)
             {

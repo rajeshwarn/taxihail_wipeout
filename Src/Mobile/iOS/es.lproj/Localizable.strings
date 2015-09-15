@@ -95,7 +95,7 @@
 "CreateAccountErrorTitle"="Error";
 "CreateAccountFullNamePlaceHolder"="Nombre completo";
 "CreateAccountInvalidDataTitle"="Información de cuenta inválida";
-"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.";
+"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.";
 "CreateAccountLanguageEnglish"="Inglés";
 "CreateAccountLanguageFrench"="Francés";
 "CreateAccountPasswordConfirmationPlaceHolder"="Confirme contraseña";
@@ -518,8 +518,9 @@
 "PanelMenuViewPromotionsText"="Promotions";
 "UnpairWarningMessage"="¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?";
 "UnpairWarningMessageWithPromo"="Si usted decide pagar en el carro, usted no podrá utilizar la promoción";
-"UnpairWarningCancelButton"="Pago en carro";
+"UnpairWarningOkButton"="Pago en carro";
 "View_Promotions"="Promociones";
+"UnpairWarningCancelButton"="Cancelar";
 "PromoExpiringIn1DayMessage"="Expira en 1 día";
 "PromoExpiringSoonMessage"="Expira en {0} dias";
 "PromoExpiringToday"="Expira hoy!";

@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -10,6 +9,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         void ClearAppInfo();
 
-        Task CheckVersionAsync(VersionCheckTypes versionCheckType);
+        Task CheckVersionAsync();
     }
 }

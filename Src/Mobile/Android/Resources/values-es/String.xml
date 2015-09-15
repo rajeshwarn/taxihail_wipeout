@@ -97,7 +97,7 @@
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountFullNamePlaceHolder">Nombre completo</string>
   <string name="CreateAccountInvalidDataTitle">Información de cuenta inválida</string>
-  <string name="CreateAccountInvalidPassword">La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.</string>
+  <string name="CreateAccountInvalidPassword">La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.</string>
   <string name="CreateAccountLanguageEnglish">Inglés</string>
   <string name="CreateAccountLanguageFrench">Francés</string>
   <string name="CreateAccountPasswordConfirmationPlaceHolder">Confirme contraseña</string>

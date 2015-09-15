@@ -146,7 +146,6 @@
     <Compile Include="Data\ListItemValue.cs" />
     <Compile Include="Data\TutorialContent.cs" />
     <Compile Include="Data\TutorialItem.cs" />
-    <Compile Include="Data\VersionCheckTypes.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
     <Compile Include="Framework\DisposableAction.cs" />
     <Compile Include="Framework\Extensions\ActionExtensions.cs" />

@@ -40,12 +40,6 @@ namespace apcurium.MK.Booking.Mobile
                 facebookService.PublishInstall();
             }
 
-            // No need to await this
-		    Task.Run(() =>
-		    {
-                Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync(VersionCheckTypes.CheckForMinimumSupportedVersion);
-		    });
-
 			Mvx.Resolve<IAnalyticsService>().ReportConversion();
 
             if (accountService.CurrentAccount == null
@@ -56,6 +50,8 @@ namespace apcurium.MK.Booking.Mobile
 				{
                     accountService.SignOut();
 				}
+
+                // Don't check the app version here since it's done in the LoginViewModel
 
 				ShowViewModel<LoginViewModel>();
             }
@@ -69,6 +65,7 @@ namespace apcurium.MK.Booking.Mobile
                 await accountService.GetNotificationSettings(true);
                 await accountService.GetUserTaxiHailNetworkSettings(true);
 				await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
+                await Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync();
                 
                 try
                 {
@@ -95,6 +92,7 @@ namespace apcurium.MK.Booking.Mobile
                     // Make sure to refresh notification/payment settings even if the user has killed the app
                     accountService.GetNotificationSettings(true);
                     Mvx.Resolve<IPaymentService>().GetPaymentSettings();
+                    Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync();
                 });
 
                 // Log user session start

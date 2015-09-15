@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Common
 {
 	public struct ApplicationVersion : IComparable, IComparable<ApplicationVersion>, IEquatable<ApplicationVersion>
 	{
-		ushort[] versionNumbers;
+	    readonly ushort[] _versionNumbers;
 
 		public ApplicationVersion(string version)
 		{
 			if (version != null)
 			{
-				versionNumbers = version.Split('.').Select(
+				_versionNumbers = version.Split('.').Select(
 					(string c) =>
 					{
 						ushort v;
@@ -28,13 +26,13 @@ namespace apcurium.MK.Common
 			}
 			else
 			{
-				versionNumbers = new ushort[0];
+				_versionNumbers = new ushort[0];
 			}
 		}
 
 		public ushort[] GetVersionNumbers()
 		{
-			return versionNumbers;
+			return _versionNumbers;
 		}
 
 		public static int Compare(ApplicationVersion v1, ApplicationVersion v2)
@@ -130,11 +128,11 @@ namespace apcurium.MK.Common
 		public override string ToString()
 		{
 			StringBuilder appv = new StringBuilder();
-			for (int i = 0; i < versionNumbers.Length; i++)
+			for (int i = 0; i < _versionNumbers.Length; i++)
 			{
-				appv.Append(versionNumbers[i].ToString());
+				appv.Append(_versionNumbers[i].ToString());
 
-				if (i < versionNumbers.Length - 1)
+				if (i < _versionNumbers.Length - 1)
 				{
 					appv.Append('.');
 				}

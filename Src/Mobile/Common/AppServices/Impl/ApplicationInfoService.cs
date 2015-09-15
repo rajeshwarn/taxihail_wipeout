@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
@@ -54,30 +53,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
 
-        public async Task CheckVersionAsync(VersionCheckTypes versionCheckType)
+        public async Task CheckVersionAsync()
         {
-            if (versionCheckType == VersionCheckTypes.CheckForUpdates)
-			{
-                if (!_didCheckForUpdates)
-				{
-                    _didCheckForUpdates = true;
-				}
-				else
-				{
-					return;
-				}
-			}
+            if (!_didCheckForUpdates)
+            {
+                _didCheckForUpdates = true;
+            }
+            else
+            {
+                return;
+            }
 
-            if (versionCheckType == VersionCheckTypes.CheckForMinimumSupportedVersion)
+			if ((DateTime.Now - _minimalVersionChecked).TotalHours >= CheckMinimumSupportedVersionWhenIntervalExpired)
 			{
-				if ((DateTime.Now - _minimalVersionChecked).TotalHours >= CheckMinimumSupportedVersionWhenIntervalExpired)
-				{
-					_minimalVersionChecked = DateTime.Now;
-				}
-				else
-				{
-					return;
-				}
+				_minimalVersionChecked = DateTime.Now;
+			}
+			else
+			{
+				return;
 			}
 
 			var isUpToDate = true;
@@ -85,11 +78,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
 			try
             {
-                var app = await GetAppInfoAsync();
+                var appInfo = await GetAppInfoAsync();
 
 				var mobileVersion = new ApplicationVersion(_packageInfo.Version);
-				var serverVersion = new ApplicationVersion(app.Version);
-				var minimumRequiredVersion = new ApplicationVersion(app.MinimumRequiredAppVersion);
+                var serverVersion = new ApplicationVersion(appInfo.Version);
+                var minimumRequiredVersion = new ApplicationVersion(appInfo.MinimumRequiredAppVersion);
 
 				if (mobileVersion < serverVersion)
 				{
@@ -107,15 +100,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 _logger.LogError(ex);
             }
 
-            if (versionCheckType == VersionCheckTypes.CheckForUpdates && !isUpToDate)
+            if (!isSupported)
             {
-				await _messageService.ShowMessage(_localize["AppNeedUpdateTitle"], _localize["AppNeedUpdateMessage"]);
+                // App is not supported anymore (also means that an update is available so don't display the other pop-up)
+                await _messageService.ShowMessage(_localize["UpdateNoticeTitle"], _localize["UpdateNoticeText"]);
             }
-
-            if (versionCheckType == VersionCheckTypes.CheckForMinimumSupportedVersion && !isSupported)
-			{
-				await _messageService.ShowMessage(_localize["UpdateNoticeTitle"], _localize["UpdateNoticeText"]);
-			}
+            else if (!isUpToDate && !_didCheckForUpdates)
+            {
+                // App is still supported but an update is available
+                await _messageService.ShowMessage(_localize["AppNeedUpdateTitle"], _localize["AppNeedUpdateMessage"]);
+            }
 		}
     }
 }

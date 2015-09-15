@@ -507,7 +507,8 @@
 "PanelMenuViewPromotionsText"="Promotions";
 "UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
-"UnpairWarningCancelButton"="Pay in car";
+"UnpairWarningOkButton"="Pay in car";
+"UnpairWarningCancelButton"="Cancel";
 "View_Promotions"="Promotions";
 "PromoExpiringIn1DayMessage"="Expires in 1 day";
 "PromoExpiringSoonMessage"="Expires in {0} days";
