@@ -767,14 +767,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 double zoomOffset = InitialZoomOffset;
 
-                var settings = ViewModel.Settings;
-                var contactBarIsDisplayed = settings.ShowCallDriver || settings.ShowMessageDriver;
+                var bookingStatusViewModel = ((HomeViewModel)ViewModel.Parent).BookingStatus;
 				// Changes the map zoom to prevent hiding the pin under the booking status.
 				if (Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
 				{
-                    var bookingStatusViewModel = ((HomeViewModel)ViewModel.Parent).BookingStatus;
-
-                    if (contactBarIsDisplayed)
+                    if (bookingStatusViewModel.IsContactTaxiVisible)
 					{
                         zoomOffset += StatusOffset;
 					}
@@ -791,7 +788,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var latOffset = 0d;
 
                 //Moves the center to avoid having to zoom out too mutch.
-                if (contactBarIsDisplayed && Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
+                if (bookingStatusViewModel.IsContactTaxiVisible && Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
                 {
                     latOffset = deltaLat.Value/4;
                 }
