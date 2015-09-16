@@ -20,6 +20,4 @@
  <color name="orderoptions_destination_address_color">#FF0000</color>
  <color name="ordereditbackgroundfield">#f2f2f2</color>
  <color name="drivernode_hint_color">#505050</color>
- <color name="WaitingCarLandscapeBackground">#ff073E6A</color>
- <color name="WaitingCarLandscapeText">#ffffffff</color>
 </resources>
