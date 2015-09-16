@@ -553,7 +553,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				.Anchor(.5f, 1f)
 				.InvokeIcon(isCluster
 					? _vehicleIcons [logoKey]
-					: BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees (Resource.Drawable.nearby_orientated_available, vehicle.CompassCourse))));
+					: BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees (Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))));
 
             _availableVehicleMarkers.Add (vehicleMarker);
         }
