@@ -788,6 +788,12 @@
   <data name="OrderStatus_PairingFailed" xml:space="preserve">
     <value>Unable to pair. Please pay to your driver at the end of the ride</value>
   </data>
+  <data name="OrderStatus_PairingSuccess" xml:space="preserve">
+    <value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
+  </data>
+  <data name="OrderStatus_MeterOn" xml:space="preserve">
+    <value>Meter is on. Checking you in now...</value>
+  </data>
   <data name="PhoneNumberFormat" xml:space="preserve">
     <value>The phone number is invalid. It must have format {0}</value>
   </data>

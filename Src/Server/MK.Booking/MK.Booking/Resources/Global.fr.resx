@@ -657,7 +657,13 @@
   <data name="OrderStatus_PairingFailed" xml:space="preserve">
     <value>Erreur lors de l'association. Veuillez payer à votre chauffeur à la fin de la course</value>
   </data>
+  <data name="OrderStatus_PairingSuccess" xml:space="preserve">
+    <value>Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</value>
+  </data>
+  <data name="OrderStatus_MeterOn" xml:space="preserve">
+    <value>Le compteur est en marche. Association en cours...</value>
+  </data>
   <data name="PhoneNumberFormat" xml:space="preserve">
     <value>Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</value>
   </data>
-</root>
+</root> 
