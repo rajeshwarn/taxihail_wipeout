@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 				public long timestamp;
 			}
 
-			private const int BufferCapacity = 10;
+			private const int BufferCapacity = 1000;
 			private const int MaximumRandomDeviation = 10;
 
 			private FilterValue[] _buffer = new FilterValue[BufferCapacity];
@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 							fv1 = ReadValueFromEnd(0);
 							fv2 = ReadValueFromEnd(0);
 
-							for (int i = 0; i < Math.Min(_bufferLength, 5); i++)
+							for (int i = 0; i < Math.Min(_bufferLength, 10); i++)
 							{
 								fv2 = ReadValueFromEnd(i);
 
