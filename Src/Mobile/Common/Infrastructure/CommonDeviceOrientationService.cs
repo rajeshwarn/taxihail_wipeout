@@ -162,8 +162,14 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		private bool _isStarted = false;
 		private Filter _filter = new Filter();
+		CoordinateSystemOrientation _coordinateSystemOrientation;
 
 		public event Action<int> NotifyAngleChanged;
+
+		public CommonDeviceOrientationService(CoordinateSystemOrientation coordinateSystemOrientation)
+		{
+			_coordinateSystemOrientation = coordinateSystemOrientation;
+		}
 
 		public bool Start()
 		{
@@ -187,7 +193,12 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		protected int GetZRotationAngle(Vector3 deviceOrientation)
 		{
-			int angle = 90 - (int)Math.Round(Math.Atan2(-deviceOrientation.y, deviceOrientation.x) * RadiansToDegrees);
+			int orientation = 1;
+
+			if (_coordinateSystemOrientation == CoordinateSystemOrientation.LeftHanded)
+				orientation = -1;
+
+			int angle = 90 - (int)Math.Round(Math.Atan2(-deviceOrientation.y * orientation, deviceOrientation.x * orientation) * RadiansToDegrees);
 
 			while (angle >= 360)
 			{
