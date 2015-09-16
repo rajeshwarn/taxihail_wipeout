@@ -205,8 +205,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 									    }
 									    else
 									    {
-                                            // Continue order
-										    ParentViewModel.RefreshStatus(CancellationToken.None).FireAndForget();
+										    NotifyBookingStatusAppbarChanged();
 									    }
 								    }
 								    else
