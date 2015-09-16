@@ -2234,4 +2234,7 @@
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît</value>
 	</data>
+	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
+ 		<value>Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</value>
+  	</data>
 </root>

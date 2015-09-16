@@ -2839,4 +2839,7 @@
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Sorry, this version of the app is no longer supported. Please update the app</value>
 	</data>
+  <data name="OrderStatus_PairingSuccess" xml:space="preserve">
+    <value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
+  </data>
 </root>
