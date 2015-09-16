@@ -235,7 +235,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			MapCenter = null;
 
-			_vehicleNumber = null;
 			_orientationService.Stop();
 
 			if (WaitingCarLandscapeViewModelParameters != null)
@@ -665,9 +664,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					AddReminder(status);
 				}
 
-
-				if (!string.IsNullOrWhiteSpace(_vehicleNumber)
-					&& (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
+				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived))
 				{
 					if (_orientationService.Start())
 					{
@@ -681,7 +678,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Cancelled)
 					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
 				{
-					_vehicleNumber = null;
 					_orientationService.Stop();
 
 					if (WaitingCarLandscapeViewModelParameters != null)
@@ -707,7 +703,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 if (Settings.ShowEta 
 					&& status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) 
-					&& (hasVehicleInfo || isUsingGeoServices) )
+					&& (hasVehicleInfo || isUsingGeoServices))
 				{
 					long? eta =null;
 
@@ -811,17 +807,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		void DeviceOrientationChanged(DeviceOrientation deviceOrientation)
 		{
-			if (deviceOrientation == DeviceOrientation.Left || deviceOrientation == DeviceOrientation.Right)
+			if ((deviceOrientation == DeviceOrientation.Left || deviceOrientation == DeviceOrientation.Right) && !string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber))
 			{
+				string carMumber = OrderStatusDetail.VehicleNumber;
+
 				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 				{
-					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters() { CarNumber = _vehicleNumber, DeviceOrientation = deviceOrientation };
-
-					ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
+					if (!string.IsNullOrWhiteSpace(carMumber))
+					{
+						WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters() { CarNumber = carMumber, DeviceOrientation = deviceOrientation };
+						ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
+					}
 				}
 				else
 				{
-					WaitingCarLandscapeViewModelParameters.UpdateDeviceOrientation(deviceOrientation);
+					if (!string.IsNullOrWhiteSpace(carMumber))
+					{
+						WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carMumber);
+					}
+					else
+					{
+						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+						WaitingCarLandscapeViewModelParameters = null;
+					}
 				}
 			}
 		}
