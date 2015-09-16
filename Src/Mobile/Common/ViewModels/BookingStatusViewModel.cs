@@ -128,13 +128,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				);
 		}
 
-		public async Task TestForCancel()
-		{
-			Logger.LogMessage("******************************************************************** started to wait");
-			await Task.Delay(TimeSpan.FromSeconds(10));
-			Logger.LogMessage("******************************************************************** Resuming");
-		}
-
 		public void StartBookingStatus(OrderManualRideLinqDetail orderManualRideLinqDetail)
 		{
 			if (_isStarted)
@@ -657,17 +650,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				|| status.IBSStatusId.HasValue();	// or if we get an IBSStatusId
 		}
 
-		private bool _refreshStatusIsExecuting;
 		private BookingStatusBottomBarViewModel _bottomBar;
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
 		private TaxiLocation _taxiLocation;
 
 		public async Task RefreshStatus(CancellationToken cancellationToken)
         {
+			if (cancellationToken.IsCancellationRequested)
+			{
+				return;
+			}
+
 			try
 			{
 				Logger.LogMessage("RefreshStatus starts");
-				_refreshStatusIsExecuting = true;
 
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
 
@@ -682,7 +678,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						Logger.LogMessage("Received Ibs Order Id: {0}", status.IBSOrderId.Value);
 					}
 				}
+
 				cancellationToken.ThrowIfCancellationRequested();
+
 				if (status.VehicleNumber != null)
 				{
 					_vehicleNumber = status.VehicleNumber;
@@ -861,7 +859,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			catch (OperationCanceledException)
 			{
-				Logger.LogMessage("RefreshStatus ended: Task was cancelled.");
+				Logger.LogMessage("RefreshStatus ended: BookingStatusView was stopped.");
 			}
 			catch (Exception ex) 
 			{
