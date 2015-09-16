@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -43,18 +44,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			try
 			{
+
 				IsCancelButtonVisible = ParentViewModel.ManualRideLinqDetail == null
-				&& _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
+					&& ParentViewModel.OrderStatusDetail != null
+					&& _bookingService.IsOrderCancellable(ParentViewModel.OrderStatusDetail);
 
 				var arePassengersOnBoard = ParentViewModel.ManualRideLinqDetail != null
-					|| ParentViewModel.OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
+					|| ParentViewModel.OrderStatusDetail.SelectOrDefault(orderStatus => orderStatus.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded));
 
 				var isUnPairPossible = ParentViewModel.ManualRideLinqDetail == null
+					&& ParentViewModel.OrderStatusDetail != null
 					&& DateTime.UtcNow <= ParentViewModel.OrderStatusDetail.UnpairingTimeOut;
 
 				if (arePassengersOnBoard && IsUsingPaymentMethodOnFile())
 				{
-					var isPaired = ParentViewModel.ManualRideLinqDetail != null || await _bookingService.IsPaired(ParentViewModel.Order.Id);
+					var isPaired = ParentViewModel.ManualRideLinqDetail != null 
+						|| await _bookingService.IsPaired(ParentViewModel.Order.SelectOrDefault(order => order.Id, Guid.Empty));
 
 					CanEditAutoTip = isPaired;
                     IsUnpairButtonVisible = isPaired && isUnPairPossible && !_orderWasUnpaired;
@@ -73,6 +78,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private bool IsUsingPaymentMethodOnFile()
 		{
+			if (ParentViewModel.ManualRideLinqDetail == null && ParentViewModel.Order == null)
+			{
+				return false;
+			}
+
 			return ParentViewModel.ManualRideLinqDetail != null
 				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
 				|| ParentViewModel.Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
