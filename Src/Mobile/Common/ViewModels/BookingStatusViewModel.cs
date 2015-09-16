@@ -116,9 +116,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_subscriptions.Disposable = GetTimerObservable()
 				.ObserveOn(SynchronizationContext.Current)
-				.SelectMany(async (_, ct) =>
+				.SelectMany(async (_, cancellationToken) =>
 				{
-					await RefreshStatus(ct);
+					await RefreshStatus(cancellationToken);
 
 					return Unit.Default;
 				})
@@ -654,6 +654,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
 		private TaxiLocation _taxiLocation;
 
+
 		public async Task RefreshStatus(CancellationToken cancellationToken)
         {
 			if (cancellationToken.IsCancellationRequested)
@@ -748,7 +749,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var isUsingGeoServices = isLocalMarket
 					? Settings.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
 					: Settings.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo;
-
+				
 				cancellationToken.ThrowIfCancellationRequested();
 				if (Settings.ShowEta
 				    && status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned)
