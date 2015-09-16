@@ -16,9 +16,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		private NSOperationQueue _accelerometerUpdateQueue;
 
 		// we don't use exclusive access here because the consequences are negligible - may cause one additional OrientationChanged event after stop service
-		private bool _isStarted = false;
-
-		private Thread orientationUpdateThread;
+		private bool _isOrientationUpdateThreadActive = false;
+		private Thread _orientationUpdateThread;
 
 		public AppleDeviceOrientationService():base(Common.CoordinateSystemOrientation.RightHanded)
         {
@@ -44,17 +43,17 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             if (_motionManager != null && IsAvailable())
             {
-                if (orientationUpdateThread != null && orientationUpdateThread.IsAlive)
+                if (_orientationUpdateThread != null && _orientationUpdateThread.IsAlive)
                 {
                     return false;
                 }
 
 				_motionManager.StartAccelerometerUpdates();
 
-				_isStarted = true;
-				orientationUpdateThread = new Thread(OrientationUpdateThread);
-				orientationUpdateThread.Priority = ThreadPriority.BelowNormal;
-				orientationUpdateThread.Start();
+				_isOrientationUpdateThreadActive = true;
+				_orientationUpdateThread = new Thread(OrientationUpdateThread);
+				_orientationUpdateThread.Priority = ThreadPriority.BelowNormal;
+				_orientationUpdateThread.Start();
 
                 return true;
             }
@@ -64,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         protected override bool StopService()
         {
-            _isStarted = false;
+            _isOrientationUpdateThreadActive = false;
 
             if (_motionManager != null && IsAvailable())
             {
@@ -77,14 +76,14 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		void OrientationUpdateThread()
 		{
-			while (_isStarted)
+			while (_isOrientationUpdateThreadActive)
 			{
                 if (_motionManager.AccelerometerData != null)
                 {
                     OrientationChanged(_motionManager.AccelerometerData.Acceleration.X, _motionManager.AccelerometerData.Acceleration.Y, _motionManager.AccelerometerData.Acceleration.Z, (long)(_motionManager.AccelerometerData.Timestamp * 1000));
                 }
 
-                if (!_isStarted)
+                if (!_isOrientationUpdateThreadActive)
                 {
                     break;
                 }
