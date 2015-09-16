@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 		private AccelerometerSensorListener _accelerometerSensorListener;
 		private bool _enabled = false;
 
-		public AndroidDeviceOrientationService()
+		public AndroidDeviceOrientationService():base(Common.CoordinateSystemOrientation.LeftHanded)
 		{
 			_sensorManager = (SensorManager)Application.Context.GetSystemService(Context.SensorService);
 			_accelerometer = _sensorManager.GetDefaultSensor(SensorType.Accelerometer);

@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         private CMMotionManager _motionManager;
 		private NSOperationQueue _accelerometerUpdateQueue;
 
-        public AppleDeviceOrientationService()
+		public AppleDeviceOrientationService():base(Common.CoordinateSystemOrientation.RightHanded)
         {
 			if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.DEVICE)
 			{
