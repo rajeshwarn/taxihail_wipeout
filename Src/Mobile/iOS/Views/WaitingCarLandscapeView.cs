@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using CoreGraphics;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -23,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+
+            View.BackgroundColor = Theme.CompanyColor;
 			
             closeButton.SetTitle(Localize.GetValue("WaitingCarLandscapeViewCloseButtonText"), UIControlState.Normal);
             carNumberLabel.AccessibilityLabel = Localize.GetValue("WaitingCarLandscapeViewCarNumber");

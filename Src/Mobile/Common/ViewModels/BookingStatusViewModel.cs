@@ -845,7 +845,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (deviceOrientation == DeviceOrientation.Left || deviceOrientation == DeviceOrientation.Right)
 			{
-				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+				if (WaitingCarLandscapeViewModelParameters == null
+					|| (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 				{
 					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters() { CarNumber = _vehicleNumber, DeviceOrientation = deviceOrientation };
 
