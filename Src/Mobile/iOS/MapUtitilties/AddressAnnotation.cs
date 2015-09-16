@@ -77,7 +77,14 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                         ? ImageHelper.ApplyThemeColorToMapIcon("destination_icon.png", true)
                         : ImageHelper.ApplyColorToMapIcon("destination_icon.png", Red, true);
                 case AddressAnnotationType.Taxi:
-                    return ImageHelper.ApplyThemeColorToMapIcon("taxi_icon.png", true);
+                    if (degrees != 0)
+                    {
+                        return ImageHelper.ImageToOrientedMapIcon("nearby_oriented_passenger.png", degrees, false);
+                    }
+                    else
+                    {
+                        return ImageHelper.ApplyThemeColorToMapIcon("taxi_icon.png", true);
+                    }
                 case AddressAnnotationType.NearbyTaxi:
                     if (degrees != 0)
                     {

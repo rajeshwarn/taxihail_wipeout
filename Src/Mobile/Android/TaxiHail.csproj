@@ -715,6 +715,9 @@
     <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_available.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_available.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_available.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_passenger.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_passenger.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

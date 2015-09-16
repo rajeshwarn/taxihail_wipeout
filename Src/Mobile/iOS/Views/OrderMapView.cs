@@ -669,7 +669,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					Localize.GetValue("TaxiMapTitle"), 
 					value.VehicleNumber, 
 					_useThemeColorForPickupAndDestinationMapIcons, 
-					_showAssignedVehicleNumberOnPin);
+					_showAssignedVehicleNumberOnPin,
+                    null,
+                    value.CompassCourse);
 
 				AddAnnotation(_taxiLocationPin);
 

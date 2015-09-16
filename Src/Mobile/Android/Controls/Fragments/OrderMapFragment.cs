@@ -180,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				_taxiLocationPin = null;
 		    }
 
-		    if (value != null && value.Latitude.HasValue && value.Longitude.HasValue && value.VehicleNumber.HasValue())
+            if (value != null && value.Latitude.HasValue && value.Longitude.HasValue && value.VehicleNumber.HasValue())
 		    {
 				ShowAvailableVehicles(null);
 				try
@@ -188,7 +188,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					var mapOptions = new MarkerOptions()
 						.Anchor(.5f, 1f)
 						.SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
-						.InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
+                        .InvokeIcon(
+                            value.CompassCourse == 0 
+                            ? BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()) 
+                            : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees (Resource.Drawable.nearby_oriented_passenger, value.CompassCourse)))
 						.Visible(true);
 
 

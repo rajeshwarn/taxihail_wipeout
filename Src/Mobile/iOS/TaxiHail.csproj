@@ -650,6 +650,9 @@
     <BundleResource Include="Resources\nearby_oriented_available.png" />
     <BundleResource Include="Resources\nearby_oriented_available%402x.png" />
     <BundleResource Include="Resources\nearby_oriented_available%403x.png" />
+    <BundleResource Include="Resources\nearby_oriented_passenger.png" />
+    <BundleResource Include="Resources\nearby_oriented_passenger%402x.png" />
+    <BundleResource Include="Resources\nearby_oriented_passenger%403x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
