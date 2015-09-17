@@ -445,7 +445,8 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 Eta = result.Eta,
                 Latitude = result.Latitude,
-                Longitude = result.Longitude
+                Longitude = result.Longitude,
+                CompassCourse = result.CompassCourse,
             };
         }
 
