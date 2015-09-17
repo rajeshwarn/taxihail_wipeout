@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
 	public class PinAnnotationView : MKAnnotationView
     {   
-        UILabel _lblVehicleNumber;
+        private UILabel _lblVehicleNumber;
 
 		[Export( "initWithCoder:" )]
 		public PinAnnotationView ( NSCoder coder ) : base( coder )
@@ -47,7 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public void HideMedaillon()
         {
-            var ann = (AddressAnnotation)Annotation;
             _lblVehicleNumber.Hidden = true; 
         }
 

@@ -504,11 +504,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     {
                         if(ann != vehicleAnnotation)
                         {
-                            var v = ViewForAnnotation(ann);
-                            var view = v as PinAnnotationView;
-                            if(view != null)
+                            var anv = ViewForAnnotation(ann);
+                            var panv = anv as PinAnnotationView;
+                            if(panv != null)
                             {
-                                view.HideMedaillon();
+                                panv.HideMedaillon();
                             }
                         }
                     }
