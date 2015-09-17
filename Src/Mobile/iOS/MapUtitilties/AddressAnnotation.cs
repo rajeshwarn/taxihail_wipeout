@@ -2,6 +2,7 @@ using CoreLocation;
 using MapKit;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Helper;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
@@ -43,6 +44,12 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         public override void SetCoordinate(CLLocationCoordinate2D value)
         {
             _coordinate = value;
+        }
+
+        public ICommand HideMedaillonsCommand
+        {
+            get;
+            set; 
         }
 
         private readonly string _title;

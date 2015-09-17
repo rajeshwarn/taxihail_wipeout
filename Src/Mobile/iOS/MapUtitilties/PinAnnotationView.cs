@@ -33,9 +33,11 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         {
             base.TouchesBegan(touches, evt);
 
-            ClearMedaillons.ExecuteIfPossible();
+            var ann = (AddressAnnotation)Annotation;
 
-            var addressType = ((AddressAnnotation)Annotation).AddressType;
+            ann.HideMedaillonsCommand.ExecuteIfPossible();
+
+            var addressType = ann.AddressType;
             if (addressType == AddressAnnotationType.NearbyTaxi
                 || addressType == AddressAnnotationType.Taxi)
             {
@@ -47,12 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         {
             var ann = (AddressAnnotation)Annotation;
             _lblVehicleNumber.Hidden = true; 
-        }
-
-        public ICommand ClearMedaillons
-        {
-            get;
-            set; 
         }
 
         public override IMKAnnotation Annotation
