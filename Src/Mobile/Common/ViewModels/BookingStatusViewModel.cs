@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _isContactingNextCompany;
         private int? _currentIbsOrderId;
 		private bool _canAutoFollowTaxi;
-		private bool _autofollowTaxi;
+		private bool _autoFollowTaxi;
 
 		private bool _isCmtRideLinq;
 
@@ -257,7 +257,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_subscriptions.Disposable = null;
 
 			_canAutoFollowTaxi = false;
-			_autofollowTaxi = false;
+			_autoFollowTaxi = false;
 
 			Order = null;
 			OrderStatusDetail = null;
@@ -811,12 +811,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded) && !_canAutoFollowTaxi)
 				{
 					_canAutoFollowTaxi = true;
-					_autofollowTaxi = true;
+					_autoFollowTaxi = true;
 				}
 				else if (VehicleStatuses.CompletedStatuses.Any(ibsStatus => ibsStatus.Equals(status.IBSStatusId)))
 				{
 					_canAutoFollowTaxi = false;
-					_autofollowTaxi = false;
+					_autoFollowTaxi = false;
 				}
 
                 CenterMapIfNeeded ();
@@ -1025,7 +1025,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return;
 			}
 
-			if (TaxiLocation != null && _canAutoFollowTaxi && _autofollowTaxi && hasValidVehiclePosition)
+			if (TaxiLocation != null && _canAutoFollowTaxi && _autoFollowTaxi && hasValidVehiclePosition)
 			{
 				var vehicle = CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value);
 				MapCenter = new[] { vehicle };
@@ -1046,13 +1046,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand(() => _autofollowTaxi = false, CanCancelAutoFollowTaxi);
+				return this.GetCommand(() => _autoFollowTaxi = false, CanCancelAutoFollowTaxi);
 			}
 		}
 
 		private bool CanCancelAutoFollowTaxi()
 		{
-			return _canAutoFollowTaxi && _autofollowTaxi;
+			return _canAutoFollowTaxi && _autoFollowTaxi;
 		}
 
 		public ICommand NewRide

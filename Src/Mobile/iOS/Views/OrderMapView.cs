@@ -657,11 +657,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		    }
 	    }
 
-        public ICommand CancelAutoFollow
-        {
-            get;
-            set;
-        }
+        public ICommand CancelAutoFollow { get; set; }
 
 	    private void UpdateTaxiLocation(TaxiLocation value)
 	    {

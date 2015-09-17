@@ -61,11 +61,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private IDictionary<string, BitmapDescriptor> _vehicleIcons; 
 
-		private const int MAP_PADDING = 60;
+		private const int MapPadding = 60;
 
 		private readonly bool _showVehicleNumber;
 
 	    private bool _isBookingMode;
+
+		private bool _lockGeocoding;
+		private TaxiLocation _taxiLocation;
+		private OrderStatusDetail _orderStatusDetail;
 
 		public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
@@ -265,11 +269,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         public IMvxBindingContext BindingContext { get; set; }
-
-        private bool _lockGeocoding;
-	    private TaxiLocation _taxiLocation;
-	    private bool _loadedInATaxi;
-	    private OrderStatusDetail _orderStatusDetail;
 
 	    public ICommand CancelAutoFollow { get; set; }
 
@@ -649,7 +648,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
 				{
 					// add a negative padding to counterbalance the map padding done for the "Google" legal logo on the map
-					Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds (GetRegionFromMapBounds(newBounds), -MAP_PADDING.ToPixels())); 
+					Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds (GetRegionFromMapBounds(newBounds), -MapPadding.ToPixels())); 
 				}
 			}
 
