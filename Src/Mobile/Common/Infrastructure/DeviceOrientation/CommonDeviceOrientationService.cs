@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 
 		public event Action<int> NotifyAngleChanged;
 
-	    protected CommonDeviceOrientationService(CoordinateSystemOrientation coordinateSystemOrientation)
+	    public CommonDeviceOrientationService(CoordinateSystemOrientation coordinateSystemOrientation)
 		{
 			_coordinateSystemOrientation = coordinateSystemOrientation;
 		}
