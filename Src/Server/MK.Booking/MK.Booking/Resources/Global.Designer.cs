@@ -1123,15 +1123,6 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Meter is on. Checking you in now....
-        /// </summary>
-        public static string OrderStatus_MeterOn {
-            get {
-                return ResourceManager.GetString("OrderStatus_MeterOn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Unable to pair you to the car. Please pay your driver at the end of the ride..
         /// </summary>
         public static string OrderStatus_PairingFailed {

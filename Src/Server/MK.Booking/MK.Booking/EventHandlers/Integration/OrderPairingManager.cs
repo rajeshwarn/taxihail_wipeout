@@ -86,8 +86,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var cardToken = creditCard != null ? creditCard.Token : null;
                         var defaultTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
 
-                        UpdateIBSStatusDescription(order.Id, account.Language, "OrderStatus_MeterOn");
-
                         var response = _paymentFacadeService.Pair(order.CompanyKey, @event.SourceId, cardToken, defaultTipPercentage);
 
                         if (!response.IsSuccessful)
