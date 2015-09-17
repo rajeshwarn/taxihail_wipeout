@@ -46,11 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             _coordinate = value;
         }
 
-        public ICommand HideMedaillonsCommand
-        {
-            get;
-            set; 
-        }
+        public ICommand HideMedaillonsCommand { get; set; }
 
         private readonly string _title;
 		public override string Title {

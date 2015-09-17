@@ -500,15 +500,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
             vehicleAnnotation.HideMedaillonsCommand = new AsyncCommand(() =>
                 {
-                    foreach(var ann in Annotations)
+                    foreach(var annotation in Annotations)
                     {
-                        if(ann != vehicleAnnotation)
+                        if(annotation != vehicleAnnotation)
                         {
-                            var anv = ViewForAnnotation(ann);
-                            var panv = anv as PinAnnotationView;
-                            if(panv != null)
+                            var annotationView = ViewForAnnotation(annotation);
+                            var pinAnnotationView = annotationView as PinAnnotationView;
+                            if(pinAnnotationView != null)
                             {
-                                panv.HideMedaillon();
+                                pinAnnotationView.HideMedaillon();
                             }
                         }
                     }
