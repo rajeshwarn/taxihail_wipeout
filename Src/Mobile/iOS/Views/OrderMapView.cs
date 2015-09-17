@@ -497,7 +497,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
                                 vehicle.LogoName);
-
+            
+            vehicleAnnotation.HideMedaillonsCommand = new AsyncCommand(() =>
+                {
+                    foreach(var annotation in Annotations)
+                    {
+                        if(annotation != vehicleAnnotation)
+                        {
+                            var annotationView = ViewForAnnotation(annotation);
+                            var pinAnnotationView = annotationView as PinAnnotationView;
+                            if(pinAnnotationView != null)
+                            {
+                                pinAnnotationView.HideMedaillon();
+                            }
+                        }
+                    }
+                });
+            
             AddAnnotation (vehicleAnnotation);
             _availableVehicleAnnotations.Add (vehicleAnnotation);
         }
