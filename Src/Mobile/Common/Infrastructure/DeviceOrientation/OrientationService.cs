@@ -1,33 +1,31 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.AppServices;
 
-namespace apcurium.MK.Booking.Mobile.AppServices.Impl
+namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 {
 	public class OrientationService : IOrientationService
 	{
-		private DeviceOrientation[] _deviceOrientationNotifications;
-		private IDeviceOrientationService _deviceOrientationService;
-		private DeviceOrientation _currentOrientation = DeviceOrientation.Up;
+		private AppServices.DeviceOrientation[] _deviceOrientationNotifications;
+		private readonly IDeviceOrientationService _deviceOrientationService;
+		private AppServices.DeviceOrientation _currentOrientation = AppServices.DeviceOrientation.Up;
 
-		int[] _axes = { 45, 135, 225, 315 };
-		const int Deviation = 20;
+	    private readonly int[] _axes = { 45, 135, 225, 315 };
+		private const int Deviation = 20;
 
-		public event Action<DeviceOrientation> NotifyOrientationChanged;
-		public event Action<int> NotifyAngleChanged;
+        private int _exclusiveAccess;
+        private bool _initialized;
+        private bool _started;
 
-		int _exclusiveAccess = 0;
-		bool _initialized = false;
-		bool _started = false;
+        public event Action<AppServices.DeviceOrientation> NotifyOrientationChanged;
+        public event Action<int> NotifyAngleChanged;
 
 		public OrientationService(IDeviceOrientationService deviceOrientationService)
 		{
 			this._deviceOrientationService = deviceOrientationService;
 		}
 
-		public void Initialize(DeviceOrientation[] deviceOrientationNotifications)
+		public void Initialize(AppServices.DeviceOrientation[] deviceOrientationNotifications)
 		{
 			if (!_initialized)
 			{
@@ -69,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return false;
 		}
 
-		DeviceOrientation GetOrientationByAngle(int angle, DeviceOrientation currentDeviceOrientation)
+		AppServices.DeviceOrientation GetOrientationByAngle(int angle, AppServices.DeviceOrientation currentDeviceOrientation)
 		{
 			int axe1, axe2, axe3, axe4;
 
@@ -80,22 +78,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			switch (currentDeviceOrientation)
 			{
-				case DeviceOrientation.Up:
+				case AppServices.DeviceOrientation.Up:
 					axe1 += Deviation;
 					axe4 -= Deviation;
 					break;
 
-				case DeviceOrientation.Down:
+				case AppServices.DeviceOrientation.Down:
 					axe2 -= Deviation;
 					axe3 += Deviation;
 					break;
 
-                case DeviceOrientation.Right:
+                case AppServices.DeviceOrientation.Right:
 					axe1 -= Deviation;
 					axe2 += Deviation;
 					break;
 
-                case DeviceOrientation.Left:
+                case AppServices.DeviceOrientation.Left:
 					axe3 -= Deviation;
 					axe4 += Deviation;
 					break;
@@ -103,25 +101,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			if (angle >= axe4 && angle <= axe1)
 			{
-				return DeviceOrientation.Up;
+				return AppServices.DeviceOrientation.Up;
 			}
 
 			if (angle > axe1 && angle <= axe2)
 			{
-				return DeviceOrientation.Right;
+				return AppServices.DeviceOrientation.Right;
 			}
 
 			if (angle > axe2 && angle < axe3)
 			{
-				return DeviceOrientation.Down;
+				return AppServices.DeviceOrientation.Down;
 			}
 
 			if (angle >= axe3 && angle < axe4)
 			{
-				return DeviceOrientation.Left;
+				return AppServices.DeviceOrientation.Left;
 			}
 
-			return DeviceOrientation.Up;
+			return AppServices.DeviceOrientation.Up;
 		}
 
 		public void AngleChanged(int angle)
@@ -131,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				NotifyAngleChanged(angle);
 			}
 
-			DeviceOrientation deviceOrientation = GetOrientationByAngle(angle, _currentOrientation);
+			AppServices.DeviceOrientation deviceOrientation = GetOrientationByAngle(angle, _currentOrientation);
 
 			if (_currentOrientation != deviceOrientation)
 			{

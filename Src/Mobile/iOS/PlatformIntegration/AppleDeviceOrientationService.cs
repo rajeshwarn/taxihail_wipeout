@@ -1,10 +1,8 @@
-﻿using System;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.AppServices;
-using UIKit;
+﻿using apcurium.MK.Booking.Mobile.AppServices;
 using Foundation;
 using CoreMotion;
 using System.Threading;
+using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -12,31 +10,27 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     {
 		private const double AccelerometerUpdateInterval = 1 / 20; // 20 Hz
 
-        private CMMotionManager _motionManager;
-		private NSOperationQueue _accelerometerUpdateQueue;
+        private readonly CMMotionManager _motionManager;
 
 		// we don't use exclusive access here because the consequences are negligible - may cause one additional OrientationChanged event after stop service
-		private bool _isOrientationUpdateThreadActive = false;
+		private bool _isOrientationUpdateThreadActive;
 		private Thread _orientationUpdateThread;
 
-		public AppleDeviceOrientationService():base(Common.CoordinateSystemOrientation.RightHanded)
-        {
-			if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.DEVICE)
+		public AppleDeviceOrientationService(NSOperationQueue accelerometerUpdateQueue) : base(Common.CoordinateSystemOrientation.RightHanded)
+		{
+		    if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.DEVICE)
 			{
 				_motionManager = new CMMotionManager();
 			}
-        }
+		}
 
         public override bool IsAvailable()
         {
-			if (_motionManager != null)
+            if (_motionManager != null)
 			{
 				return _motionManager.DeviceMotionAvailable && _motionManager.AccelerometerAvailable;
 			}
-			else
-			{
-				return false;
-			}
+            return false;
         }
 
         protected override bool StartService()

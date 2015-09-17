@@ -22,6 +22,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
