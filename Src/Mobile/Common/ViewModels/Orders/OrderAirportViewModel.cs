@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Text;
+using MK.Common.Android.Helpers;
 using Newtonsoft.Json.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
@@ -229,7 +230,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             get { return _pickupAddress.FullAddress; }
         }
 
-        private void DateUpdated(DateTime? date)
+		public DateTime? PickupDateTime
+		{
+			get { return _pickupDateTime; }
+			set
+			{
+				_pickupDateTime = value; 
+				DateUpdated(value);
+
+				RaisePropertyChanged();
+			}
+		}
+
+
+		private void DateUpdated(DateTime? date)
         {
             PickupTimeStamp = date.HasValue
                 ? date.Value.ToShortDateString() + " " + date.Value.ToShortTimeString()
@@ -344,23 +358,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-		private KeyValuePair<int, Airline>[] _carrierCodes;
+		private KeyValuePair<int, Airline>[] _carrierCodes = new KeyValuePair<int, Airline>[0];
 
-		private Airline[] _poiAirline;
 		private string _terminal;
+		private Airline[] _poiAirline = new Airline[0];
+		private DateTime? _pickupDateTime;
 
 		public Airline[] POIAirline
         {
             get { return _poiAirline; }
             set
             {
-				if (value == null || value.SequenceEqual(_poiAirline))
+				if (value == null || value.SequenceEqual(_poiAirline, new AirlineComparer()))
 	            {
 		            return;
 	            }
 
 	            _poiAirline = value;
-	            if (value.Any())
+	            if (value.None())
 	            {
 		            return;
 	            }
@@ -389,31 +404,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					h => PropertyChanged -= h
 				)
 				.Where(args => args.EventArgs.PropertyName.Equals("AirlineId")
-				    || args.EventArgs.PropertyName.Equals("PickupTimeStamp")
+					|| args.EventArgs.PropertyName.Equals("PickupDateTime")
 				    || args.EventArgs.PropertyName.Equals("FlightNum")
 				)
-				.Where(_ => AirlineId.HasValue 
-					&& PickupTimeStamp.HasValue() 
-					&& FlightNum.HasValue() 
-					&& _pickupAddress.SelectOrDefault(addr => addr.PlaceId.HasValue())
-				)
-				.SelectMany(async _ =>
-				{
-					var date = await _orderWorkflowService.GetAndObservePickupDate().Take(1).ToTask();
-
-					return date.Value;
-				})
+				.Where(_ => CanGetTerminal())
 				.SelectMany(date =>
 				{
 					var carrier = _carrierCodes.FirstOrDefault(c => c.Key == AirlineId);
 
 					var carrierCode = carrier.Value.Id.Replace("utog.", "");
 
-					return _airportInformationService.GetTerminal(date, FlightNum, carrierCode, _pickupAddress.PlaceId);
+					return _airportInformationService.GetTerminal(PickupDateTime.Value, FlightNum, carrierCode, _pickupAddress.PlaceId);
 				});
 		}
 
-        public ICommand NextCommand
+		private bool CanGetTerminal()
+		{
+			return AirlineId.HasValue
+				   && PickupDateTime.HasValue
+			       && FlightNum.HasValue() 
+			       && _pickupAddress.SelectOrDefault(addr => addr.PlaceId.HasValue())
+			       && _carrierCodes.Any(c => c.Key == AirlineId);
+		}
+
+		public ICommand NextCommand
         {
             get
             {

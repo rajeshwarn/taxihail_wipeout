@@ -96,6 +96,8 @@ namespace apcurium.MK.Booking.Mobile
             _container.Register<IPOIProvider, POIProvider>();
 			_container.Register<ITariffProvider, TariffProvider>();
 
+			_container.Register<IAirportInformationService, AirportInformationService>();
+
             _container.Register<IPostalCodeService, CraftyClicksService>();
 
 
