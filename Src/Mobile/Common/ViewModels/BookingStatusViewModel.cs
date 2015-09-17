@@ -256,12 +256,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			var localize = this.Services().Localize;
 
-			var driver = "{0} {1}".InvariantCultureFormat(localize["DriverInfoDriver"], manualRideLinqDetails.DriverId);
-
-			var pairingCode = "{0} {1}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingCode"], manualRideLinqDetails.PairingCode);
-
-			StatusInfoText = driver + Environment.NewLine + pairingCode;
-
+			StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
 		}
 
 		private void ToRideSummary(OrderManualRideLinqDetail orderManualRideLinqDetail)
