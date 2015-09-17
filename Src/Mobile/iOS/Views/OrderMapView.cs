@@ -50,6 +50,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private bool _useThemeColorForPickupAndDestinationMapIcons;
         private bool _showAssignedVehicleNumberOnPin;
+        private bool _automatedMapChanged;
+
 
         private const double StatusOffset = 1;
         private const double VehicleInformationOffset = 0.7;
@@ -82,6 +84,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 {
                     ShowAvailableVehicles(VehicleClusterHelper.Clusterize(AvailableVehicles != null ? AvailableVehicles.ToArray() : null, GetMapBoundsFromProjection()));
                 }
+
+                if (TaxiLocation != null && !_automatedMapChanged)
+                {
+                    CancelAutoFollow.ExecuteIfPossible();
+                }
+                else if(_automatedMapChanged)
+                {
+                    _automatedMapChanged = false;
+                }
+
 			};
         }
 
@@ -449,6 +461,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				new MKCoordinateSpan (bounds.LatitudeDelta, bounds.LongitudeDelta));
 		}
 
+
+
         private void HandleTouchMove (object sender, EventArgs e)
         {
             CancelAddressSearch();
@@ -643,6 +657,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		    }
 	    }
 
+        public ICommand CancelAutoFollow
+        {
+            get;
+            set;
+        }
+
 	    private void UpdateTaxiLocation(TaxiLocation value)
 	    {
 			if (_taxiLocationPin != null)
@@ -806,6 +826,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 region.Span = new MKCoordinateSpan(deltaLat.Value, deltaLng.Value);
             }
+            _automatedMapChanged = true;
             SetRegion(region, true);
             RegionThatFits(region);
         }
