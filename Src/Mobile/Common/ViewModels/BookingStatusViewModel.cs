@@ -116,7 +116,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_subscriptions.Disposable = GetTimerObservable()
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(_ => RefreshStatus(), Logger.LogError);
+				.SelectMany(async (_, cancellationToken) =>
+				{
+					await RefreshStatus(cancellationToken);
+
+					return Unit.Default;
+				})
+				.Subscribe(
+					_ => { }, 
+					Logger.LogError
+				);
 		}
 
 		public void StartBookingStatus(OrderManualRideLinqDetail orderManualRideLinqDetail)
@@ -157,7 +166,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					: deviceLocationObservable
 				)
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, orderManualRideLinqDetail.Medallion), Logger.LogError)
+				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, orderManualRideLinqDetail.Medallion, CancellationToken.None), Logger.LogError)
 				.DisposeWith(subscriptions);
 			
 
@@ -209,8 +218,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.Dematerialize();
 		}
 
-		private void UpdatePosition(double latitude, double longitude, string medallion)
+		private void UpdatePosition(double latitude, double longitude, string medallion, CancellationToken token)
 		{
+			token.ThrowIfCancellationRequested();
+
 			if (TaxiLocation != null && TaxiLocation.Latitude == latitude && TaxiLocation.Longitude == longitude)
 			{
 				//Nothing to update.
@@ -638,60 +649,61 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				|| status.IBSStatusId.HasValue();	// or if we get an IBSStatusId
 		}
 
-		private bool _refreshStatusIsExecuting;
 		private BookingStatusBottomBarViewModel _bottomBar;
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
 		private TaxiLocation _taxiLocation;
 
-		public async void RefreshStatus()
-        {
-            try 
-			{
-				if(_refreshStatusIsExecuting)
-				{
-					return;
-				}
 
-				Logger.LogMessage ("RefreshStatus starts");
-				_refreshStatusIsExecuting = true;
+		public async Task RefreshStatus(CancellationToken cancellationToken)
+        {
+			if (cancellationToken.IsCancellationRequested)
+			{
+				return;
+			}
+
+			try
+			{
+				Logger.LogMessage("RefreshStatus starts");
 
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
 
-				while(!CanRefreshStatus(status))
+				while (!CanRefreshStatus(status))
 				{
-					Logger.LogMessage ("Waiting for Ibs Order Creation (ibs order id)");
+					Logger.LogMessage("Waiting for Ibs Order Creation (ibs order id)");
 					await Task.Delay(TimeSpan.FromSeconds(1));
 					status = await _bookingService.GetOrderStatusAsync(Order.Id);
 
-					if(status.IBSOrderId.HasValue)
+					if (status.IBSOrderId.HasValue)
 					{
 						Logger.LogMessage("Received Ibs Order Id: {0}", status.IBSOrderId.Value);
 					}
 				}
 
-				if(status.VehicleNumber != null)
+				cancellationToken.ThrowIfCancellationRequested();
+
+				if (status.VehicleNumber != null)
 				{
 					_vehicleNumber = status.VehicleNumber;
 				}
 				else
-                {
+				{
 					status.VehicleNumber = _vehicleNumber;
 				}
 
-                if (_isContactingNextCompany && status.IBSOrderId == _currentIbsOrderId)
-                {
-                    // Don't update status when we're contacting a new dispatch company (switch)
-                    return;
-                }
+				if (_isContactingNextCompany && status.IBSOrderId == _currentIbsOrderId)
+				{
+					// Don't update status when we're contacting a new dispatch company (switch)
+					return;
+				}
 
-                _currentIbsOrderId = status.IBSOrderId;
-                _isContactingNextCompany = false;
+				_currentIbsOrderId = status.IBSOrderId;
+				_isContactingNextCompany = false;
 
-                SwitchDispatchCompanyIfNecessary(status);
+				SwitchDispatchCompanyIfNecessary(status);
 
 				var isDone = _bookingService.IsStatusDone(status.IBSStatusId);
 
-				if(status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled))
+				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled))
 				{
 					AddReminder(status);
 				}
@@ -705,10 +717,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Done)
-					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.NoShow)
-					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Cancelled)
-					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
+				    || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Done)
+				    || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.NoShow)
+				    || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Cancelled)
+				    || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
 				{
 					_orientationService.Stop();
 
@@ -721,77 +733,91 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				var statusInfoText = status.IBSStatusDescription;
 
-                var isLocalMarket = await _orderWorkflowService.GetAndObserveHashedMarket()
-                    .Select(hashedMarket => !hashedMarket.HasValue())
-                    .Take(1);
+				var isLocalMarket = await _orderWorkflowService.GetAndObserveHashedMarket()
+					.Select(hashedMarket => !hashedMarket.HasValue())
+					.Take(1);
 				var hasVehicleInfo = status.VehicleNumber.HasValue()
-					&& status.VehicleLatitude.HasValue
-					&& status.VehicleLongitude.HasValue;
+				                     && status.VehicleLatitude.HasValue
+				                     && status.VehicleLongitude.HasValue;
 
-                var isUsingGeoServices = isLocalMarket
-                    ? Settings.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
-                    : Settings.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo;
-
-
-                if (Settings.ShowEta 
-					&& status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) 
-					&& (hasVehicleInfo || isUsingGeoServices))
+				var isUsingGeoServices = isLocalMarket
+					? Settings.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
+					: Settings.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo;
+				
+				cancellationToken.ThrowIfCancellationRequested();
+				if (Settings.ShowEta
+				    && status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned)
+				    && (hasVehicleInfo || isUsingGeoServices))
 				{
-					long? eta =null;
+					long? eta = null;
 
-					if(isUsingGeoServices)
-                    {
-						var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, status.OrderId);
-                        
-						if(geoData != null)
+					if (isUsingGeoServices)
+					{
+						var geoData =
+							await
+								_vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude,
+									status.DriverInfos.VehicleRegistration, status.OrderId);
+
+						if (geoData != null)
 						{
 							eta = geoData.Eta;
 
-							if(geoData.IsPositionValid)
+							if (geoData.IsPositionValid)
 							{
-								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber);
+								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken);
 							}
 						}
 					}
 					else
 					{
-						var direction = await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+						var direction =
+							await
+								_vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value,
+									Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
 
-                        // Log original eta value
-					    if (direction.IsValidEta())
-					    {
-                            _metricsService.LogOriginalRideEta(Order.Id, direction.Duration);
-					    }
+						// Log original eta value
+						if (direction.IsValidEta())
+						{
+							_metricsService.LogOriginalRideEta(Order.Id, direction.Duration);
+						}
 
 						eta = direction.Duration;
 
-						UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber);
-					}                       
-					if(eta.HasValue)
+						UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber, cancellationToken);
+					}
+					if (eta.HasValue)
 					{
 						statusInfoText += " " + FormatEta(eta);
 					}
 				}
 
-                // Needed to do this here since cmtGeoService needs the device's location to calculate the Eta and does not have the ability to get the position of a specific vehicle(or a bach of vehicle) without the device location.
+				cancellationToken.ThrowIfCancellationRequested();
+
+				// Needed to do this here since cmtGeoService needs the device's location to calculate the Eta and does not have the ability to get the position of a specific vehicle(or a bach of vehicle) without the device location.
 				if (isUsingGeoServices &&
-					(status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-						|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
-                {
-                    //refresh vehicle position on the map from the geo data
-                    var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, Order.Id);
-					if(geoData != null && geoData.IsPositionValid)
-                    {
-						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber);
-                    }
-                }
-				else if (!isUsingGeoServices &&
-					hasVehicleInfo &&
-					(status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-						|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
+				    (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
+				     || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
 				{
-					UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber);
+					//refresh vehicle position on the map from the geo data
+					var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(
+						Order.PickupAddress.Latitude, 
+						Order.PickupAddress.Longitude,
+						status.DriverInfos.VehicleRegistration,
+						Order.Id);
+
+					if (geoData != null && geoData.IsPositionValid)
+					{
+						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken);
+					}
 				}
+				else if (!isUsingGeoServices && hasVehicleInfo &&
+				         (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
+				          || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
+				{
+					UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber, cancellationToken);
+				}
+
+				cancellationToken.ThrowIfCancellationRequested();
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned))
 				{
@@ -799,21 +825,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 				StatusInfoText = statusInfoText;
-                OrderStatusDetail = status;
+				OrderStatusDetail = status;
 
-                CenterMapIfNeeded ();
+				CenterMapIfNeeded();
 
 				BottomBar.NotifyBookingStatusAppbarChanged();
 
-                DisplayOrderNumber();
+				DisplayOrderNumber();
 
-                if (isDone) 
-                {
-                    this.Services().MessengerHub.Publish(new OrderStatusChanged(this, status.OrderId, OrderStatus.Completed, null));
+				if (isDone)
+				{
+					this.Services().MessengerHub.Publish(new OrderStatusChanged(this, status.OrderId, OrderStatus.Completed, null));
 					GoToSummary();
 
-	                return;
-                }
+					return;
+				}
 
 				//This is to prevent issue where taxi pin would still stay shown if the taxi driver bailed.
 				if (VehicleStatuses.Common.Waiting.Equals(status.IBSStatusId))
@@ -821,11 +847,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					TaxiLocation = null;
 				}
 
-				if (VehicleStatuses.CancelStatuses.Any(cancelledStatuses=> cancelledStatuses.Equals(status.IBSStatusId)))
-                {
-                    await GoToBookingScreen();
-                }
-            } 
+				if (VehicleStatuses.CancelStatuses.Any(cancelledStatuses => cancelledStatuses.Equals(status.IBSStatusId)))
+				{
+					await GoToBookingScreen();
+				}
+			}
+			catch (OperationCanceledException)
+			{
+				Logger.LogMessage("RefreshStatus ended: BookingStatusView was stopped.");
+			}
 			catch (Exception ex) 
 			{
                 Logger.LogError (ex);
@@ -833,7 +863,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			finally
 			{			
 				Logger.LogMessage("RefreshStatus ends");
-				_refreshStatusIsExecuting = false;
 			}
         }
 
