@@ -65,6 +65,7 @@
     <Compile Include="Authorization\MerchantAuthorizationRequest.cs" />
     <Compile Include="Authorization\OAuthAuthorizer.cs" />
     <Compile Include="BaseServiceClient.cs" />
+    <Compile Include="CmtErrorCodes.cs" />
     <Compile Include="CmtMobileServiceClient.cs" />
     <Compile Include="CmtPaymentServiceClient.cs" />
     <Compile Include="CmtTripInfoServiceHelper.cs" />

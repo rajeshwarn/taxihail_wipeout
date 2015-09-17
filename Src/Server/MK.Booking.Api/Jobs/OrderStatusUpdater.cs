@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.EventHandlers.Integration;
@@ -20,9 +19,11 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
+using CMTPayment.Pair;
 using CMTServices;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -174,7 +175,29 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             InitializeCmtServiceClient();
 
-            var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
+            Trip tripInfo = null;
+
+            try
+            {
+                tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
+            }
+            catch (WebServiceException ex)
+            {
+                if (ex.StatusCode == CmtErrorCodes.CardDeclined)
+                {
+                    _commandBus.Send(new ReactToPaymentFailure
+                    {
+                        AccountId = orderstatusDetail.AccountId,
+                        OrderId = orderstatusDetail.OrderId,
+                        IBSOrderId = orderstatusDetail.IBSOrderId,
+                        OverdueAmount = Convert.ToDecimal(rideLinqDetails.Total),
+                        TransactionDate = rideLinqDetails.EndTime
+                    });
+
+                    return;
+                }
+            }
+
             if (tripInfo == null)
             {
                 var errorMessage = string.Format("No Trip information found for order {0} (pairing token {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
