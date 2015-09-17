@@ -32,6 +32,7 @@ using Google.Android.M4b.Maps;
 using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -160,6 +161,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 		}
 
+	    public OrderStatusDetail OrderStatusDetail
+	    {
+		    get { return _orderStatusDetail; }
+		    set
+		    {
+			    _orderStatusDetail = value;
+
+			    if (value != null && _orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
+			    {
+				    _pickupPin.Visible = false;
+			    }
+		    }
+	    }
+
 	    public TaxiLocation TaxiLocation
 	    {
 		    get { return _taxiLocation; }
@@ -253,6 +268,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private bool _lockGeocoding;
 	    private TaxiLocation _taxiLocation;
+	    private bool _loadedInATaxi;
+	    private OrderStatusDetail _orderStatusDetail;
 
 	    public ICommand CancelAutoFollow { get; set; }
 
