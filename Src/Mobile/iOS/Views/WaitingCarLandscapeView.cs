@@ -1,14 +1,11 @@
-﻿
-using System;
-
-using Foundation;
+﻿using System;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using CoreGraphics;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -49,11 +46,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-			if (ViewModel.DeviceOrientation == DeviceOrientation.Left)
+			if (ViewModel.DeviceOrientation == DeviceOrientations.Left)
 			{
 				mainView.Transform = CGAffineTransform.MakeRotation(new nfloat(LeftRotation));
 			}
-			else if (ViewModel.DeviceOrientation == DeviceOrientation.Right)
+			else if (ViewModel.DeviceOrientation == DeviceOrientations.Right)
 			{
 				mainView.Transform = CGAffineTransform.MakeRotation(new nfloat(RightRotation));
 			}

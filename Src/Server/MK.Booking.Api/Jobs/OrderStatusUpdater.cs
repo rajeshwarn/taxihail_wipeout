@@ -909,7 +909,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             else if (ibsOrderInfo.IsLoaded)
             {
                 if (orderDetail != null
-                    && _serverSettings.GetPaymentSettings(orderDetail.CompanyKey).IsUnpairingDisabled
                     && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
                 {
