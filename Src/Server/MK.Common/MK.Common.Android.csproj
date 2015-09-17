@@ -74,6 +74,7 @@
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
+    <Compile Include="CoordinateSystemOrientation.cs" />
     <Compile Include="CountryCode.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />

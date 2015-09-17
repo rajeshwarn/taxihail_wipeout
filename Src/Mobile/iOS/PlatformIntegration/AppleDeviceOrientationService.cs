@@ -4,17 +4,22 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using UIKit;
 using Foundation;
 using CoreMotion;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class AppleDeviceOrientationService: CommonDeviceOrientationService, IDeviceOrientationService
     {
-		private const double AccelerometerUpdateInterval = 1 / 5; // 5 Hz
+		private const double AccelerometerUpdateInterval = 1 / 20; // 20 Hz
 
         private CMMotionManager _motionManager;
 		private NSOperationQueue _accelerometerUpdateQueue;
 
-        public AppleDeviceOrientationService()
+		// we don't use exclusive access here because the consequences are negligible - may cause one additional OrientationChanged event after stop service
+		private bool _isOrientationUpdateThreadActive = false;
+		private Thread _orientationUpdateThread;
+
+		public AppleDeviceOrientationService():base(Common.CoordinateSystemOrientation.RightHanded)
         {
 			if (ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.DEVICE)
 			{
@@ -38,9 +43,18 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             if (_motionManager != null && IsAvailable())
             {
-                _accelerometerUpdateQueue = new NSOperationQueue();
-                _motionManager.AccelerometerUpdateInterval = AccelerometerUpdateInterval;
-                _motionManager.StartAccelerometerUpdates(_accelerometerUpdateQueue, AngleChangedEvent);
+                if (_orientationUpdateThread != null && _orientationUpdateThread.IsAlive)
+                {
+                    return false;
+                }
+
+				_motionManager.StartAccelerometerUpdates();
+
+				_isOrientationUpdateThreadActive = true;
+				_orientationUpdateThread = new Thread(OrientationUpdateThread);
+				_orientationUpdateThread.Priority = ThreadPriority.BelowNormal;
+				_orientationUpdateThread.Start();
+
                 return true;
             }
 
@@ -49,21 +63,33 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         protected override bool StopService()
         {
+            _isOrientationUpdateThreadActive = false;
+
             if (_motionManager != null && IsAvailable())
             {
                 _motionManager.StopAccelerometerUpdates();
-                return true;
+				return true;
             }
 
-            return true;
+            return false;
         }
 
-        void AngleChangedEvent(CMAccelerometerData data, NSError error)
-        {
-            if (error == null)
-            {
-                OrientationChanged(data.Acceleration.X, data.Acceleration.Y, data.Acceleration.Z, (long)(data.Timestamp * 1000));
-            }
-        }
+		void OrientationUpdateThread()
+		{
+			while (_isOrientationUpdateThreadActive)
+			{
+                if (_motionManager.AccelerometerData != null)
+                {
+                    OrientationChanged(_motionManager.AccelerometerData.Acceleration.X, _motionManager.AccelerometerData.Acceleration.Y, _motionManager.AccelerometerData.Acceleration.Z, (long)(_motionManager.AccelerometerData.Timestamp * 1000));
+                }
+
+                if (!_isOrientationUpdateThreadActive)
+                {
+                    break;
+                }
+
+				Thread.Sleep((int)(1000 * AccelerometerUpdateInterval));
+			}
+		}
     }
 }

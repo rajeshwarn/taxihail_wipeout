@@ -514,9 +514,6 @@
   <data name="DriverInfoColor" xml:space="preserve">
     <value>اللون:</value>
   </data>
-  <data name="DriverInfoDriver" xml:space="preserve">
-    <value>السائق:</value>
-  </data>
   <data name="DriverInfoLicence" xml:space="preserve">
     <value>رقم الرخصة:</value>
   </data>
@@ -1837,9 +1834,6 @@
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Fare meter:</value>
   </data>
-  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
-    <value>Pairing Code:</value>
-  </data>
   <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
     <value>Tax amount:</value>
   </data>
@@ -2182,4 +2176,7 @@
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Sorry, this version of the app is no longer supported. Please update the app</value>
 	</data>
+	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
+ 		<value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
+  	</data>
 </root>
