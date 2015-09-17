@@ -27,6 +27,8 @@ namespace MapKit
             anv.Enabled = false; //disables the popup when you tap the annotation
             anv.CanShowCallout = ann.AddressType != AddressAnnotationType.Taxi;
 
+            anv.HideMedaillon();
+
             return anv;
         }
     }
