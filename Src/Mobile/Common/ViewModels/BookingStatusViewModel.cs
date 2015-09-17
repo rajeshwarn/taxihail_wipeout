@@ -21,7 +21,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -74,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			GetIsCmtRideLinq();
 
 			((OrientationService)_orientationService).NotifyOrientationChanged += DeviceOrientationChanged;
-			_orientationService.Initialize(new [] { DeviceOrientation.Right, DeviceOrientation.Left });
+			_orientationService.Initialize(new [] { DeviceOrientations.Right, DeviceOrientations.Left });
 		}
 
 		private async void GetIsCmtRideLinq()
@@ -867,9 +866,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		void DeviceOrientationChanged(DeviceOrientation deviceOrientation)
+		void DeviceOrientationChanged(DeviceOrientations deviceOrientations)
 		{
-			if ((deviceOrientation == DeviceOrientation.Left || deviceOrientation == DeviceOrientation.Right) && !string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber))
+			if ((deviceOrientations == DeviceOrientations.Left || deviceOrientations == DeviceOrientations.Right) && !string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber))
 			{
 				string carMumber = OrderStatusDetail.VehicleNumber;
 
@@ -877,7 +876,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					if (!string.IsNullOrWhiteSpace(carMumber))
 					{
-						WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters() { CarNumber = carMumber, DeviceOrientation = deviceOrientation };
+						WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
+						{
+						    CarNumber = carMumber,
+                            DeviceOrientations = deviceOrientations
+						};
+
 						ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
 					}
 				}
@@ -885,7 +889,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					if (!string.IsNullOrWhiteSpace(carMumber))
 					{
-						WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carMumber);
+						WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientations, carMumber);
 					}
 					else
 					{
