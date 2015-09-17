@@ -332,6 +332,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     }, () =>
                     {
                         RedrawSubViews();
+                        ctrlAddressPicker.ResignFirstResponderOnSubviews();
                     });
 			}
 
