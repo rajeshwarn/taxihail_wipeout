@@ -528,9 +528,6 @@
   <data name="DriverInfoColor" xml:space="preserve">
     <value>Coloris:</value>
   </data>
-  <data name="DriverInfoDriver" xml:space="preserve">
-    <value>Chauffeur:</value>
-  </data>
   <data name="DriverInfoLicence" xml:space="preserve">
     <value>Licence:</value>
   </data>
@@ -1887,9 +1884,6 @@
   </data>
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Tarif:</value>
-  </data>
-  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
-    <value>Code d'association:</value>
   </data>
   <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
     <value>Taxes:</value>

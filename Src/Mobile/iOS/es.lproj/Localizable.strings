@@ -192,7 +192,7 @@
 "ResetPasswordEmailPlaceHolder"="Email";
 "PendingOrderMessage"="No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación ?";
 "AddPaymentMethod_CreditCard"="Agregar tarjeta de crédito";
-"ErrorCreatingOrderTitle"="La reservación no puede ser completada";
+"TutorialActivityName"="Tutorial";
 "TAXI"="TAXI";
 "View_UpdatePassword"="Actualizar contraseña";
 "StreetNumberSearchBt"="Usar una dirección diferente";
@@ -277,6 +277,7 @@
 "PromoDescriptionCode"="Ingrese el código {0} o pulse el botón de abajo";
 "Overdue_Retry"="Pagar ahora";
 "CmtChangePaymentInfo"="Cambiar ajustes de pago";
+"ErrorCreatingOrderTitle"="La reservación no puede ser completada";
 "Next"="Next";
 "CreditCardCCV"="CVV";
 "View_BookingStatus"="Estado";
@@ -408,11 +409,10 @@
 "BookStatusActivityName"="Booking status";
 "Notification_DriverAssignedPush"="Chofer asignado";
 "Tuto07Top"="En la pantalla de estado verá su número de reservación. Una vez que el vehículo sea asignado, usted podrá ver como el vehículo se acerca a su ubicación.";
-"CreditCardAddingActivityName"="Add or edit credit card";
 "RideSettingsName"="Nombre";
 "MarketChangedMessage"="Usted está saliendo de su área de servicio local. Si usted decide reservar, su pedido será enviado a una empresa de taxis de esta zona.";
 "Continue"="Continuar";
-"ManualRideLinqStatus_PairingCode"="Código de emparejamiento:";
+"CreditCardAddingActivityName"="Add or edit credit card";
 "DateTimePickerPickInvalidDateMessage"="La fecha y hora del servicio deben ser en el futuro";
 "HistoryDetailBuildingNameNotSpecified"="No Especificado";
 "ReSendConfirmation"="Notificar al chofer del pago";
@@ -458,7 +458,6 @@
 "Destination"="Destino";
 "Tuto04Top"="Si quiere, puede también especificar su destino";
 "DateTimePickerPickInvalidDateTitle"="Fecha / Hora Inválida";
-"TutorialActivityName"="Tutorial";
 "Knowledgabledriver"="Chofer experimentado:";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Estas seguro que quieres cancelar? Un vehículo está en camino para pasar por usted. {0} se reserva el derecho a cobrar a los clientes un cargo por cancelación si consideramos que el usuario está abusando del servicio.";
 "Notification_BookingConfirmationEmail"="Confirmación de reservación (email)";
@@ -593,7 +592,6 @@
 "AcceptButton"="Aceptar";
 "CmtRideLinqCancelChanges"="Cancelar";
 "DeleteCreditCardTitle"="Eliminar tarjeta de crédito";
-"DriverInfoDriver"="Chofer:";
 "DateTimePickerPickDate"="Seleccione la fecha del servicio:";
 "View_BookRating"="Califique su servicio";
 "TermsAndConditionsActivityName"="Terms and conditions";

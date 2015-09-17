@@ -311,7 +311,6 @@
 "DateToday"="اليوم";
 "DestinationTextPlaceholder"="عنوان شارع الوصول";
 "DeleteCreditCard"="حذف بطاقة الائتمان المسجلة في هذا الحساب؟";
-"OrderStatus_Medallion"="Medallion";
 "StatusCannotBeDisplayed"="لا يمكننا الحصول على الحالة. رجاء الاتصال بمورد الخدمة.";
 "ConfirmRideInformationTitle"="بيانات المشوار";
 "InvalidChargeTypeTitle"="Invalid Charge Type";
@@ -496,7 +495,7 @@
 "UpdatedTermsAndConditionsAcceptButton"="موافق";
 "Cancel"="إلغاء";
 "ChooseProviderDialogTitle"="اختر مورد خدمة";
-"ManualRideLinqStatus_PairingCode"="Pairing Code:";
+"OrderStatus_Medallion"="Medallion";
 "LanguageCode"="ar";
 "DateTimePickerSetButton"="احجز";
 "HistoryDetailRequestedLabel"="وقت المشوار:";
@@ -581,7 +580,6 @@
 "AcceptButton"="موافق";
 "CmtRideLinqCancelChanges"="إلغاء";
 "DeleteCreditCardTitle"="حذف بطاقة الائتمان";
-"DriverInfoDriver"="السائق:";
 "DateTimePickerPickDate"="اختر تاريخ الإلتقاء:";
 "View_BookRating"="قم بتقييم مشوارك";
 "BookItButton"="احجز الآن";

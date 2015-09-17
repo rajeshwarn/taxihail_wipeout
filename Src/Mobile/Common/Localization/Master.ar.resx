@@ -514,9 +514,6 @@
   <data name="DriverInfoColor" xml:space="preserve">
     <value>اللون:</value>
   </data>
-  <data name="DriverInfoDriver" xml:space="preserve">
-    <value>السائق:</value>
-  </data>
   <data name="DriverInfoLicence" xml:space="preserve">
     <value>رقم الرخصة:</value>
   </data>
@@ -1836,9 +1833,6 @@
   </data>
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Fare meter:</value>
-  </data>
-  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
-    <value>Pairing Code:</value>
   </data>
   <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
     <value>Tax amount:</value>

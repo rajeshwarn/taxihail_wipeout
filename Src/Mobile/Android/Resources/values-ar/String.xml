@@ -313,7 +313,6 @@
   <string name="DateToday">اليوم</string>
   <string name="DestinationTextPlaceholder">عنوان شارع الوصول</string>
   <string name="DeleteCreditCard">حذف بطاقة الائتمان المسجلة في هذا الحساب؟</string>
-  <string name="OrderStatus_Medallion">Medallion</string>
   <string name="StatusCannotBeDisplayed">لا يمكننا الحصول على الحالة. رجاء الاتصال بمورد الخدمة.</string>
   <string name="ConfirmRideInformationTitle">بيانات المشوار</string>
   <string name="InvalidChargeTypeTitle">Invalid Charge Type</string>
@@ -498,7 +497,7 @@
   <string name="UpdatedTermsAndConditionsAcceptButton">موافق</string>
   <string name="Cancel">إلغاء</string>
   <string name="ChooseProviderDialogTitle">اختر مورد خدمة</string>
-  <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
+  <string name="OrderStatus_Medallion">Medallion</string>
   <string name="LanguageCode">ar</string>
   <string name="DateTimePickerSetButton">احجز</string>
   <string name="HistoryDetailRequestedLabel">وقت المشوار:</string>
@@ -583,7 +582,6 @@
   <string name="AcceptButton">موافق</string>
   <string name="CmtRideLinqCancelChanges">إلغاء</string>
   <string name="DeleteCreditCardTitle">حذف بطاقة الائتمان</string>
-  <string name="DriverInfoDriver">السائق:</string>
   <string name="DateTimePickerPickDate">اختر تاريخ الإلتقاء:</string>
   <string name="View_BookRating">قم بتقييم مشوارك</string>
   <string name="BookItButton">احجز الآن</string>

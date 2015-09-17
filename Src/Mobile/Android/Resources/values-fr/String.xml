@@ -410,11 +410,10 @@
   <string name="BookStatusActivityName">Booking status</string>
   <string name="Notification_DriverAssignedPush">Chauffeur assigné</string>
   <string name="Tuto07Top">Sur l\'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu\'un véhicule sera assigné, vous pouvez suivre sa position jusqu\'à ce qu\'il arrive à vous.</string>
-  <string name="CreditCardAddingActivityName">Add or edit credit card</string>
   <string name="RideSettingsName">Nom</string>
   <string name="MarketChangedMessage">Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.</string>
   <string name="Continue">Continuer</string>
-  <string name="ManualRideLinqStatus_PairingCode">Code d\'association:</string>
+  <string name="CreditCardAddingActivityName">Add or edit credit card</string>
   <string name="DateTimePickerPickInvalidDateMessage">La date de départ ne peut pas être antérieure à la date de commande</string>
   <string name="HistoryDetailBuildingNameNotSpecified">Non spécifié</string>
   <string name="ReSendConfirmation">Signaler le paiement</string>
@@ -596,7 +595,6 @@
   <string name="AcceptButton">Accepter</string>
   <string name="CmtRideLinqCancelChanges">Annuler</string>
   <string name="DeleteCreditCardTitle">Supprimer la carte</string>
-  <string name="DriverInfoDriver">Chauffeur:</string>
   <string name="DateTimePickerPickDate">Sélectionner la date de départ:</string>
   <string name="View_BookRating">Noter votre trajet</string>
   <string name="TermsAndConditionsActivityName">Terms and conditions</string>

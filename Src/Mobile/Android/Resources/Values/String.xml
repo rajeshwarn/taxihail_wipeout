@@ -192,6 +192,7 @@
   <string name="ResetPasswordEmailPlaceHolder">Email</string>
   <string name="PendingOrderMessage">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="AddPaymentMethod_CreditCard">Add credit card</string>
+  <string name="ServerInfo">({0} v{1})</string>
   <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
   <string name="TAXI">TAXI</string>
   <string name="View_UpdatePassword">Update Password</string>
@@ -371,7 +372,7 @@
   <string name="DriverInfoMake">Make:</string>
   <string name="InitializeOrderForAccountPaymentActivityName">Initialition of order of account payment</string>
   <string name="NotesToDriveLabel">Notes to driver (Name of business, specific entrance, ...)</string>
-  <string name="ServerInfo">({0} v{1})</string>
+  <string name="AccountConfirmation_ErrorTitle">Cannot confirm account</string>
   <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="NbPassenger"> ({0} passenger)</string>
@@ -406,11 +407,10 @@
   <string name="BookStatusActivityName">Booking status</string>
   <string name="Notification_DriverAssignedPush">Driver Assigned</string>
   <string name="Tuto07Top">On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.</string>
-  <string name="CreditCardAddingActivityName">Add or edit credit card</string>
   <string name="RideSettingsName">Name</string>
   <string name="MarketChangedMessage">You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</string>
   <string name="Continue">Continue</string>
-  <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
+  <string name="CreditCardAddingActivityName">Add or edit credit card</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
   <string name="HistoryDetailBuildingNameNotSpecified">Not specified</string>
   <string name="ReSendConfirmation">Notify driver of payment</string>
@@ -535,7 +535,6 @@
   <string name="HistoryInfo">Displaying trips from the last month</string>
   <string name="UpdatePasswordActivityName">Update password</string>
   <string name="ManualRideLinqSummary_Done">Done</string>
-  <string name="AccountConfirmation_ErrorTitle">Cannot confirm account</string>
   <string name="RideSettingsCannotLoadListTitle">Server error</string>
   <string name="SendErrorLogButton">Send error log</string>
   <string name="Eta">Nearest taxi is {0} {1} away</string>
@@ -597,7 +596,6 @@
   <string name="AcceptButton">Accept</string>
   <string name="CmtRideLinqCancelChanges">Cancel</string>
   <string name="LoginViewPasswordPlaceHolder">Password</string>
-  <string name="DriverInfoDriver">Driver:</string>
   <string name="DateTimePickerPickDate">Select your pickup date:</string>
   <string name="View_BookRating">Rate Your Trip</string>
   <string name="BookItButton">Book Now</string>

@@ -194,7 +194,7 @@
   <string name="ResetPasswordEmailPlaceHolder">Email</string>
   <string name="PendingOrderMessage">No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación ?</string>
   <string name="AddPaymentMethod_CreditCard">Agregar tarjeta de crédito</string>
-  <string name="ErrorCreatingOrderTitle">La reservación no puede ser completada</string>
+  <string name="TutorialActivityName">Tutorial</string>
   <string name="TAXI">TAXI</string>
   <string name="View_UpdatePassword">Actualizar contraseña</string>
   <string name="StreetNumberSearchBt">Usar una dirección diferente</string>
@@ -279,6 +279,7 @@
   <string name="PromoDescriptionCode">Ingrese el código {0} o pulse el botón de abajo</string>
   <string name="Overdue_Retry">Pagar ahora</string>
   <string name="CmtChangePaymentInfo">Cambiar ajustes de pago</string>
+  <string name="ErrorCreatingOrderTitle">La reservación no puede ser completada</string>
   <string name="Next">Next</string>
   <string name="CreditCardCCV">CVV</string>
   <string name="View_BookingStatus">Estado</string>
@@ -410,11 +411,10 @@
   <string name="BookStatusActivityName">Booking status</string>
   <string name="Notification_DriverAssignedPush">Chofer asignado</string>
   <string name="Tuto07Top">En la pantalla de estado verá su número de reservación. Una vez que el vehículo sea asignado, usted podrá ver como el vehículo se acerca a su ubicación.</string>
-  <string name="CreditCardAddingActivityName">Add or edit credit card</string>
   <string name="RideSettingsName">Nombre</string>
   <string name="MarketChangedMessage">Usted está saliendo de su área de servicio local. Si usted decide reservar, su pedido será enviado a una empresa de taxis de esta zona.</string>
   <string name="Continue">Continuar</string>
-  <string name="ManualRideLinqStatus_PairingCode">Código de emparejamiento:</string>
+  <string name="CreditCardAddingActivityName">Add or edit credit card</string>
   <string name="DateTimePickerPickInvalidDateMessage">La fecha y hora del servicio deben ser en el futuro</string>
   <string name="HistoryDetailBuildingNameNotSpecified">No Especificado</string>
   <string name="ReSendConfirmation">Notificar al chofer del pago</string>
@@ -460,7 +460,6 @@
   <string name="Destination">Destino</string>
   <string name="Tuto04Top">Si quiere, puede también especificar su destino</string>
   <string name="DateTimePickerPickInvalidDateTitle">Fecha / Hora Inválida</string>
-  <string name="TutorialActivityName">Tutorial</string>
   <string name="Knowledgabledriver">Chofer experimentado:</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Estas seguro que quieres cancelar? Un vehículo está en camino para pasar por usted. {0} se reserva el derecho a cobrar a los clientes un cargo por cancelación si consideramos que el usuario está abusando del servicio.</string>
   <string name="Notification_BookingConfirmationEmail">Confirmación de reservación (email)</string>
@@ -595,7 +594,6 @@
   <string name="AcceptButton">Aceptar</string>
   <string name="CmtRideLinqCancelChanges">Cancelar</string>
   <string name="DeleteCreditCardTitle">Eliminar tarjeta de crédito</string>
-  <string name="DriverInfoDriver">Chofer:</string>
   <string name="DateTimePickerPickDate">Seleccione la fecha del servicio:</string>
   <string name="View_BookRating">Califique su servicio</string>
   <string name="TermsAndConditionsActivityName">Terms and conditions</string>

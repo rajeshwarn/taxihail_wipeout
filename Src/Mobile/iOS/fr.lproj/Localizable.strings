@@ -408,11 +408,10 @@
 "BookStatusActivityName"="Booking status";
 "Notification_DriverAssignedPush"="Chauffeur assigné";
 "Tuto07Top"="Sur l'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu'un véhicule sera assigné, vous pouvez suivre sa position jusqu'à ce qu'il arrive à vous.";
-"CreditCardAddingActivityName"="Add or edit credit card";
 "RideSettingsName"="Nom";
 "MarketChangedMessage"="Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.";
 "Continue"="Continuer";
-"ManualRideLinqStatus_PairingCode"="Code d'association:";
+"CreditCardAddingActivityName"="Add or edit credit card";
 "DateTimePickerPickInvalidDateMessage"="La date de départ ne peut pas être antérieure à la date de commande";
 "HistoryDetailBuildingNameNotSpecified"="Non spécifié";
 "ReSendConfirmation"="Signaler le paiement";
@@ -594,7 +593,6 @@
 "AcceptButton"="Accepter";
 "CmtRideLinqCancelChanges"="Annuler";
 "DeleteCreditCardTitle"="Supprimer la carte";
-"DriverInfoDriver"="Chauffeur:";
 "DateTimePickerPickDate"="Sélectionner la date de départ:";
 "View_BookRating"="Noter votre trajet";
 "TermsAndConditionsActivityName"="Terms and conditions";

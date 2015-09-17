@@ -190,6 +190,7 @@
 "ResetPasswordEmailPlaceHolder"="Email";
 "PendingOrderMessage"="You cannot book this ride since an order is already pending. View the order status?";
 "AddPaymentMethod_CreditCard"="Add credit card";
+"ServerInfo"="({0} v{1})";
 "ErrorCreatingOrderTitle"="Booking cannot be completed";
 "TAXI"="TAXI";
 "View_UpdatePassword"="Update Password";
@@ -369,7 +370,7 @@
 "DriverInfoMake"="Make:";
 "InitializeOrderForAccountPaymentActivityName"="Initialition of order of account payment";
 "NotesToDriveLabel"="Notes to driver (Name of business, specific entrance, ...)";
-"ServerInfo"="({0} v{1})";
+"AccountConfirmation_ErrorTitle"="Cannot confirm account";
 "UpdateBookingSettingsEmptyField"="The data is invalid, all the fields are required.";
 "ManualRideLinqStatus_Distance"="Distance:";
 "NbPassenger"=" ({0} passenger)";
@@ -404,11 +405,10 @@
 "BookStatusActivityName"="Booking status";
 "Notification_DriverAssignedPush"="Driver Assigned";
 "Tuto07Top"="On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.";
-"CreditCardAddingActivityName"="Add or edit credit card";
 "RideSettingsName"="Name";
 "MarketChangedMessage"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.";
 "Continue"="Continue";
-"ManualRideLinqStatus_PairingCode"="Pairing Code:";
+"CreditCardAddingActivityName"="Add or edit credit card";
 "DateTimePickerPickInvalidDateMessage"="The pickup date must be in the future.";
 "HistoryDetailBuildingNameNotSpecified"="Not specified";
 "ReSendConfirmation"="Notify driver of payment";
@@ -533,7 +533,6 @@
 "HistoryInfo"="Displaying trips from the last month";
 "UpdatePasswordActivityName"="Update password";
 "ManualRideLinqSummary_Done"="Done";
-"AccountConfirmation_ErrorTitle"="Cannot confirm account";
 "RideSettingsCannotLoadListTitle"="Server error";
 "SendErrorLogButton"="Send error log";
 "Eta"="Nearest taxi is {0} {1} away";
@@ -595,7 +594,6 @@
 "AcceptButton"="Accept";
 "CmtRideLinqCancelChanges"="Cancel";
 "LoginViewPasswordPlaceHolder"="Password";
-"DriverInfoDriver"="Driver:";
 "DateTimePickerPickDate"="Select your pickup date:";
 "View_BookRating"="Rate Your Trip";
 "BookItButton"="Book Now";
