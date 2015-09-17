@@ -839,7 +839,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					TaxiLocation = null;
 				}
 
-				if (VehicleStatuses.CancelStatuses.Any(cancelledStatuses=> cancelledStatuses.Equals(status.IBSStatusId)))
+				if (VehicleStatuses.CancelStatuses.Any(ibsStatus=> ibsStatus.Equals(status.IBSStatusId)))
                 {
                     await GoToBookingScreen();
                 }
