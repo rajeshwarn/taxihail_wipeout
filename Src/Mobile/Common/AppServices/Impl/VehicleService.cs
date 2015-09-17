@@ -219,7 +219,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		    {
 		        Eta = etaFromGeo.Eta / 60,
                 Latitude = etaFromGeo.Latitude,
-                Longitude = etaFromGeo.Longitude
+                Longitude = etaFromGeo.Longitude,
+                CompassCourse = etaFromGeo.CompassCourse,
 			};
 	    }
 
@@ -300,6 +301,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public double? Latitude { get; set; }
 
         public double? Longitude { get; set; }
+
+        public double? CompassCourse { get; set; }
 
 		public bool IsPositionValid
 		{

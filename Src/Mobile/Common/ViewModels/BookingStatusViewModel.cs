@@ -177,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar.NotifyBookingStatusAppbarChanged();
 		}
 		
-		private void UpdatePosition(double latitude, double longitude, string medallion)
+        private void UpdatePosition(double latitude, double longitude, string medallion, double compassCourse = 0)
 		{
 			if (TaxiLocation != null && TaxiLocation.Latitude == latitude && TaxiLocation.Longitude == longitude)
 			{
@@ -191,13 +191,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					Longitude = longitude,
 					Latitude = latitude,
-					VehicleNumber = medallion
+					VehicleNumber = medallion,
+                    CompassCourse = compassCourse,
 				};
 			}
 			else
 			{
 				TaxiLocation.Latitude = latitude;
 				TaxiLocation.Longitude = longitude;
+                TaxiLocation.CompassCourse = compassCourse;
 
 				RaisePropertyChanged(() => TaxiLocation);
 			}
@@ -719,7 +721,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if(geoData.IsPositionValid)
 							{
-								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber);
+                                UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, geoData.CompassCourse.Value);
 							}
 						}
 					}
@@ -752,7 +754,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, Order.Id);
 					if(geoData != null && geoData.IsPositionValid)
                     {
-						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber);
+                        UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, geoData.CompassCourse.Value);
                     }
                 }
 				else if (!isUsingGeoServices &&

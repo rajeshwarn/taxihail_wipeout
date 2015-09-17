@@ -712,9 +712,12 @@
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <AndroidResource Include="Resources\Drawable\facebook_account_icon.png" />
     <AndroidResource Include="Resources\Drawable\waitingcarclosebutton.xml" />
-    <AndroidResource Include="Resources\drawable-mdpi\nearby_orientated_available.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\nearby_orientated_available.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\nearby_orientated_available.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_available.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_available.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_available.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_passenger.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_passenger.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

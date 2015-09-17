@@ -496,7 +496,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
-                                vehicle.LogoName);
+                                vehicle.LogoName,
+                                vehicle.CompassCourse);
 
             AddAnnotation (vehicleAnnotation);
             _availableVehicleAnnotations.Add (vehicleAnnotation);
@@ -668,7 +669,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					Localize.GetValue("TaxiMapTitle"), 
 					value.VehicleNumber, 
 					_useThemeColorForPickupAndDestinationMapIcons, 
-					_showAssignedVehicleNumberOnPin);
+					_showAssignedVehicleNumberOnPin,
+                    null,
+                    value.CompassCourse);
 
 				AddAnnotation(_taxiLocationPin);
 
