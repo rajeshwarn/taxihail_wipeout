@@ -5,7 +5,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using MK.Common.iOS.Enumeration;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
