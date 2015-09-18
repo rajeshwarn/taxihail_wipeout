@@ -281,6 +281,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			    .For(v => v.Center)
 			    .To(vm => vm.BookingStatus.MapCenter);
 
+		    set.Bind(MapFragment)
+			    .For(v => v.OrderStatusDetail)
+			    .To(vm => vm.BookingStatus.OrderStatusDetail);
+
+            set.Bind(MapFragment)
+                .For(v => v.CancelAutoFollow)
+                .To(vm => vm.BookingStatus.CancelAutoFollow);
+
 			//Setup Visibility
 			set.Bind(_orderAirport)
 				.For(v => v.AnimatedVisibility)

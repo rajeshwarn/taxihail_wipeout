@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace apcurium.MK.Common
 {
@@ -15,7 +12,6 @@ namespace apcurium.MK.Common
 			this.y = y;
 			this.z = z;
 		}
-
 		public void Normalize()
 		{
 			double vectorLength = Math.Pow(x * x + y * y + z * z, 0.5);

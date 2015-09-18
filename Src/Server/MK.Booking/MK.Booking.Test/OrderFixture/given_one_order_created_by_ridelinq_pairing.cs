@@ -99,7 +99,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 TollTotal = 1f,
                 Extra = .5f,
                 EndTime = endTime,
-                Medallion = "MD25"
             });
 
 
@@ -110,7 +109,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(1.5f, @event.Tip);
             Assert.AreEqual(25d, @event.Distance);
             Assert.AreEqual(endTime, @event.EndTime);
-            Assert.AreEqual("MD25", @event.Medallion);
         }
     }
 }
