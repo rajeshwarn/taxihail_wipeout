@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Windows.Input;
@@ -10,8 +11,10 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Text;
+using System.Threading.Tasks;
 using MK.Common.Android.Helpers;
 using Newtonsoft.Json.Linq;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -46,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
             Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
 
-			Observe(GetTerminals(), terminal => Terminal = terminal);
+			Observe(ObserveViewModelStateAndGetTermnial(), terminal => Terminal = terminal);
         }
 
 		public string Terminal
@@ -63,9 +66,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             Airlines = new List<ListItem>
             {
-				new ListItem {Display = NoAirlines, Id = 0},
+				new ListItem {Display = NoAirlines, Id = -1},
             };
-            AirlineId = 0;
+            AirlineId = -1;
             RaisePropertyChanged(() => AirlineName);
 
 	        PickupPoints = new List<PointsItems>
@@ -229,19 +232,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get { return _pickupAddress.FullAddress; }
         }
-
-		public DateTime? PickupDateTime
-		{
-			get { return _pickupDateTime; }
-			set
-			{
-				_pickupDateTime = value; 
-				DateUpdated(value);
-
-				RaisePropertyChanged();
-			}
-		}
-
+		
 
 		private void DateUpdated(DateTime? date)
         {
@@ -299,7 +290,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		            _orderWorkflowService.POIRefPickupList(string.Empty, 0);
 
 		            // Clear/default any previous data
-		            AirlineId = 0;
+		            AirlineId = -1;
 		            RaisePropertyChanged(() => AirlineName);
 		            FlightNum = string.Empty;
 		            PUPointsId = 0;
@@ -362,7 +353,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private string _terminal;
 		private Airline[] _poiAirline = new Airline[0];
-		private DateTime? _pickupDateTime;
 
 		public Airline[] POIAirline
         {
@@ -382,7 +372,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	            UpdateAirlines(value);
 
-	            AirlineId = 0;
+	            AirlineId = -1;
 	            RaisePropertyChanged(() => Airlines);
 	            RaisePropertyChanged(() => AirlineName);
             }
@@ -397,34 +387,71 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_airlines.AddRange(_carrierCodes.Select(carrier => new ListItem { Display = carrier.Value.Name, Id = carrier.Key }));
 		}
 
-		public IObservable<string> GetTerminals()
+		public IObservable<string> ObserveViewModelStateAndGetTermnial()
 		{
 			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-					h => PropertyChanged += h,
-					h => PropertyChanged -= h
+				h => PropertyChanged += h,
+				h => PropertyChanged -= h
 				)
 				.Where(args => args.EventArgs.PropertyName.Equals("AirlineId")
-					|| args.EventArgs.PropertyName.Equals("PickupDateTime")
-				    || args.EventArgs.PropertyName.Equals("FlightNum")
+				               || args.EventArgs.PropertyName.Equals("PickupTimeStamp")
+				               || args.EventArgs.PropertyName.Equals("FlightNum")
 				)
+				.Throttle(TimeSpan.FromSeconds(1))
 				.Where(_ => CanGetTerminal())
-				.SelectMany(date =>
+				.SelectMany(async _ =>
 				{
-					var carrier = _carrierCodes.FirstOrDefault(c => c.Key == AirlineId);
+					var date = await _orderWorkflowService
+						.GetAndObservePickupDate()
+						.Take(1)
+						.ToTask();
 
-					var carrierCode = carrier.Value.Id.Replace("utog.", "");
+					return date ?? DateTime.Now;
+				})
+				.SelectMany(GetTerminal);
+		}
 
-					return _airportInformationService.GetTerminal(PickupDateTime.Value, FlightNum, carrierCode, _pickupAddress.PlaceId);
-				});
+		private async Task<string> GetTerminal(DateTime date)
+		{
+			try
+			{
+				var carrier = _carrierCodes.FirstOrDefault(c => c.Key == AirlineId);
+
+				var carrierCode = carrier.Value.Id.Replace("utog.", "").ToLowerInvariant();
+
+				return await _airportInformationService.GetTerminal(date, FlightNum, carrierCode, _pickupAddress.PlaceId, true);
+			}
+			catch (WebServiceException ex)
+			{
+				if (ex.StatusCode == (int) HttpStatusCode.NotFound)
+				{
+					this.Services().Message.ShowMessage("No flights", "No flights found with the provided information").FireAndForget();
+
+					return string.Empty;
+				}
+				if (ex.StatusCode == (int) HttpStatusCode.NoContent)
+				{
+					return "N/A";
+				}
+
+				Logger.LogMessage("An error has occurred while attempting to get the airport terminal.");
+				Logger.LogError(ex);
+			}
+			catch (Exception ex)
+			{
+				Logger.LogMessage("An error has occurred while attempting to get the airport terminal.");
+				Logger.LogError(ex);
+			}
+
+			return string.Empty;
 		}
 
 		private bool CanGetTerminal()
 		{
 			return AirlineId.HasValue
-				   && PickupDateTime.HasValue
-			       && FlightNum.HasValue() 
-			       && _pickupAddress.SelectOrDefault(addr => addr.PlaceId.HasValue())
-			       && _carrierCodes.Any(c => c.Key == AirlineId);
+			    && FlightNum.HasValue() 
+			    && _pickupAddress.SelectOrDefault(addr => addr.PlaceId.HasValue())
+			    && _carrierCodes.Any(c => c.Key == AirlineId);
 		}
 
 		public ICommand NextCommand
