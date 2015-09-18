@@ -172,54 +172,68 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		    }
 	    }
 
-	    private void UpdateTaxiLocation(TaxiLocation value)
-	    {
-		    if (_taxiLocationPin != null)
-		    {
-			    _taxiLocationPin.Remove();
-
-				_taxiLocationPin = null;
-		    }
-
+        private async Task UpdateTaxiLocation(TaxiLocation value)
+        {
             if (value != null && value.Latitude.HasValue && value.Longitude.HasValue && value.VehicleNumber.HasValue())
-		    {
-				ShowAvailableVehicles(null);
-				try
-				{
-					var mapOptions = new MarkerOptions()
-						.Anchor(.5f, 1f)
-						.SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
-                        .InvokeIcon(
-                            value.CompassCourse == 0 
-                            ? BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()) 
-                            : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees (Resource.Drawable.nearby_oriented_passenger, value.CompassCourse)))
-						.Visible(true);
+            {
+                ShowAvailableVehicles(null);
+
+                if (_taxiLocationPin != null)
+                {
+                    var icon = value.CompassCourse == 0 
+                        ? BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()) 
+                        : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse));
+                    
+                    _taxiLocationPin.SetIcon(icon);
+
+                    for (var percent = 0.05; percent < 1.00; percent += 0.05)
+                    {
+                        await Task.Delay(250);
+
+                        var intermediaryLat = _taxiLocationPin.Position.Latitude + (percent * (value.Latitude.Value - _taxiLocationPin.Position.Latitude));
+                        var intermediaryLng = _taxiLocationPin.Position.Longitude + (percent * (value.Longitude.Value - _taxiLocationPin.Position.Longitude));
+                        _taxiLocationPin.Position = new LatLng(intermediaryLat, intermediaryLng);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        var mapOptions = new MarkerOptions()
+                            .Anchor(.5f, 1f)
+                            .SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
+                            .InvokeIcon(
+                                value.CompassCourse == 0 
+                                ? BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()) 
+                                : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees (Resource.Drawable.nearby_oriented_passenger, value.CompassCourse)))
+                            .Visible(true);
 
 
-					if (_showVehicleNumber)
-					{
-						var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
-						Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
+                        if (_showVehicleNumber)
+                        {
+                            var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
+                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
 
-						mapOptions.SetTitle(value.VehicleNumber);
-					}
+                            mapOptions.SetTitle(value.VehicleNumber);
+                        }
 
-					_taxiLocationPin = Map.AddMarker(mapOptions);
+                        _taxiLocationPin = Map.AddMarker(mapOptions);
 
-					if (_showVehicleNumber)
-					{
-						_taxiLocationPin.ShowInfoWindow();
-					}
-				}
-				catch (Exception ex)
-				{
-					Logger.LogError(ex);
-				}
+                        if (_showVehicleNumber)
+                        {
+                            _taxiLocationPin.ShowInfoWindow();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(ex);
+                    }
 
-				_isBookingMode = true;
+                    _isBookingMode = true;
 
-			    return;
-		    }
+                    return;
+                }
+            }
 
 		    if (value == null)
 		    {
@@ -575,10 +589,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 ? _vehicleIcons[logoKey]
                 : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse));
             
-            markerToUpdate.SetAnchor(.5f, 1f);
-            markerToUpdate.SetIcon(isCluster
-                ? _vehicleIcons[logoKey]
-                : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse)));
+            markerToUpdate.SetIcon(icon);
 
             for (var percent = 0.05; percent < 1.00; percent += 0.05)
             {

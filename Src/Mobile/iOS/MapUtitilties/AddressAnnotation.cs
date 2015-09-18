@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 			get { return _subtitle; }
         }
 
-        public AddressAnnotationType AddressType { get; private set; }
+        public AddressAnnotationType AddressType { get; set; }
 
         public static bool UseThemeColorForIcons { get; private set; }
 
