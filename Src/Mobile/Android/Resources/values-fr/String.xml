@@ -702,4 +702,5 @@
   <string name="WaitingCarLandscapeViewCloseButtonText">Retour</string>
   <string name="WaitingCarLandscapeViewCarNumber">Numéro de voiture</string>
   <string name="WaitingCarLandscapeActivityName">Numéro de voiture</string>
+  <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
 </resources>

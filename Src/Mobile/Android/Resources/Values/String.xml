@@ -662,6 +662,7 @@
   <string name="BookingAirportPickupPointFee">Selecting Pickup Point {0} will incurr an additional Fee of {1}</string>
   <string name="BookingAirportDetails">Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</string>
   <string name="BookingAirportDetailsFee">, (Pickup Fee: {0})</string>
+  <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
   <string name="ManualRideLinqStatus_Cancelled">You have been unpaired from RideLinQ. Please type in the pairing code again.</string>
   <string name="CallDriver">Call Driver</string>
   <string name="AddressSearch">Address search</string>

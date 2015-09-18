@@ -2103,6 +2103,9 @@
   <data name="BookingAirportDetailsFee" xml:space="preserve">
     <value>, (Pickup Fee: {0})</value>
   </data>
+	<data name="BookingAirportDetailsTerminal" xml:space="preserve">
+		<value>, \nTerminal: {0}</value>
+	</data>
   <data name="ManualRideLinqStatus_Cancelled" xml:space="preserve">
     <value>You have been unpaired from RideLinQ. Please type in the pairing code again.</value>
   </data>

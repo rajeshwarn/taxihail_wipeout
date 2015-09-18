@@ -2173,4 +2173,7 @@
 	<data name="WaitingCarLandscapeActivityName" xml:space="preserve">
     	<value>Car Number</value>
 	</data>
+	<data name="BookingAirportDetailsTerminal">
+		<value>, \nTerminal: {0}</value>
+	</data>
 </root>
