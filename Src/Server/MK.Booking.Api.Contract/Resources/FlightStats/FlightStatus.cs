@@ -3,7 +3,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources.FlightStats
 {
 	public class FlightStatus
 	{
-		public AirportResource AirportResource { get; set; }
+		public AirportResource AirportResources { get; set; }
 		public string ArrivalAirportFsCode { get; set; }
 		public string CarrierFsCode { get; set; }
 		public string DepartureAirportFsCode { get; set; }

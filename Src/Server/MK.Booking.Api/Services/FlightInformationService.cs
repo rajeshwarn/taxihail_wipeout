@@ -66,9 +66,9 @@ namespace apcurium.MK.Booking.Api.Services
 
 			var terminal = GetTerminal(flightStatsResponse.FlightStatuses, request.IsPickup, request.AirportId);
 
-			if (terminal.HasValue())
+			if (!terminal.HasValue())
 			{
-				throw new HttpError(HttpStatusCode.NotFound,"No flight found.");
+				throw new HttpError(HttpStatusCode.NoContent,"No terminal found.");
 			}
 
 			return new FlightInformation
@@ -83,13 +83,13 @@ namespace apcurium.MK.Booking.Api.Services
 			{
 				return flightStatuses
 					.Where(fs => fs.ArrivalAirportFsCode.SoftEqual(airportId))
-					.Select(fs => fs.AirportResource.ArrivalTerminal)
+					.Select(fs => fs.AirportResources.ArrivalTerminal)
 					.FirstOrDefault();
 			}
 
 			return flightStatuses
 				.Where(fs => fs.DepartureAirportFsCode.SoftEqual(airportId))
-				.Select(fs => fs.AirportResource.DepartureTerminal)
+				.Select(fs => fs.AirportResources.DepartureTerminal)
 				.FirstOrDefault();
 		}
 	}
