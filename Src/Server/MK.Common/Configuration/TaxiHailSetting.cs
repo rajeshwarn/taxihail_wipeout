@@ -75,6 +75,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehicles = false;
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
+            ShowOrientedPins = false;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
 			
