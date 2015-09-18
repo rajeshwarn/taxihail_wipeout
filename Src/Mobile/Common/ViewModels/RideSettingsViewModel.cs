@@ -445,6 +445,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					                        .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
 					                            this.Services().Localize["UpdateBookingSettingsInvalidAccount"]);
 					                    break;
+
+									case "EmailUsedMessage":
+											this.Services()
+												.Message.ShowMessage(this.Services().Localize["EmailUsedMessageTitle"],
+													this.Services().Localize["EmailUsedMessage"]);
+										break;
+
 					                default:
 					                    this.Services()
 					                        .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
@@ -524,7 +531,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         return false;
                     }
                 }
-                catch
+				catch
                 {
                     this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
                         this.Services().Localize["UpdateBookingSettingsInvalidAccount"]).HandleErrors();

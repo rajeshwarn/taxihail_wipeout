@@ -2237,4 +2237,10 @@
 	<data name="AccountLinkedWithFAcebook" xml:space="preserve">
     	<value>Ce compte est associé avec un compte Facebook</value>
 	</data>
+   <data name="EmailUsedMessageTitle" xml:space="preserve">
+    <value>Email occupé</value>
+  </data>
+   <data name="EmailUsedMessage" xml:space="preserve">
+        <value>Cet email est déjà utilisé par une autre personne</value>
+  </data>
 </root>

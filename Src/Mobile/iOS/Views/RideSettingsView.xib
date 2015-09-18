@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -11,7 +11,7 @@
                 <outlet property="lblChargeType" destination="LEQ-dq-bRV" id="yP7-hg-oui"/>
                 <outlet property="lblCustomerNumber" destination="2e2-xv-Uxd" id="3Sz-Aw-Z1h"/>
                 <outlet property="lblDialCode" destination="OTC-ob-qkx" id="bPt-ta-meT"/>
-                <outlet property="lblEmail" destination="RQ4-d7-o7A" id="PEr-GS-cQ6"/>
+                <outlet property="txtEmail" destination="RQ4-d7-o7A" id="PEr-GS-cQ6"/>
                 <outlet property="lblEmailTitle" destination="xfR-9q-5zy" id="48Z-cU-3UB"/>
                 <outlet property="lblName" destination="HWN-Pq-yPZ" id="K04-uw-tT9"/>
                 <outlet property="lblPassword" destination="m1K-K7-Ypz" id="vB7-U6-P2V"/>
@@ -214,15 +214,15 @@
                                         <constraint firstAttribute="height" constant="26" id="eLQ-8x-ZZn"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RQ4-d7-o7A">
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RQ4-d7-o7A" customClass="FlatTextField">
                                     <rect key="frame" x="49" y="117" width="263" height="41"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="qJg-Yv-JcL"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="19"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="19"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qvL-aD-nFd" customClass="FlatTextField">
                                     <rect key="frame" x="74" y="189" width="238" height="41"/>
                                     <constraints>

@@ -29,7 +29,8 @@
         RatingType_DuplicateName,
         IBSAccountNotFound,
         ManualRideLinq_NoCardOnFile,
-        ManualRideLinq_CardOnFileDeactivated
+        ManualRideLinq_CardOnFileDeactivated,
+        EmailUsedMessage
  // ReSharper restore InconsistentNaming
     }
 }

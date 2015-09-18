@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Api.Services
 
 			if (accountDetail != null && accountDetail.Id != accountID && accountDetail.Email == request.Email)
 			{
-				throw new HttpError(_resources.Get("EmailUsedMessage"));
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.EmailUsedMessage.ToString(), _resources.Get("EmailUsedMessage"));
 			}
 
             CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
