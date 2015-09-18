@@ -85,13 +85,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                     if (order.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
                     {
+                        // HOTPATCH: temporarily don't send receipt for pay in car rides
+
                         // Send receipt for Pay in Car
-                        SendTripReceipt(@event.SourceId,
-                            Convert.ToDecimal(@event.Fare ?? 0),
-                            Convert.ToDecimal(@event.Tip ?? 0),
-                            Convert.ToDecimal(@event.Tax ?? 0),
-                            toll: Convert.ToDecimal(@event.Toll ?? 0),
-                            surcharge: Convert.ToDecimal(@event.Surcharge ?? 0));
+                        //SendTripReceipt(@event.SourceId,
+                        //    Convert.ToDecimal(@event.Fare ?? 0),
+                        //    Convert.ToDecimal(@event.Tip ?? 0),
+                        //    Convert.ToDecimal(@event.Tax ?? 0),
+                        //    toll: Convert.ToDecimal(@event.Toll ?? 0),
+                        //    surcharge: Convert.ToDecimal(@event.Surcharge ?? 0));
                     }
                     else if (pairingInfo != null && pairingInfo.DriverId.HasValue() && pairingInfo.Medallion.HasValue() && pairingInfo.PairingToken.HasValue())
                     {
