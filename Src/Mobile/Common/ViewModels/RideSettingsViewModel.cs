@@ -13,6 +13,7 @@ using apcurium.MK.Common.Helpers;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 using apcurium.MK.Common;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -39,13 +40,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             PhoneNumber = new PhoneNumberModel();
 		}
 
-		public async void Init(string bookingSettings)
+		public async void Init()
         {
 		    using (this.Services ().Message.ShowProgress ())
 			{
 			    try
 			    {
-                    _bookingSettings = bookingSettings.FromJson<BookingSettings>();
+					_bookingSettings = _accountService.CurrentAccount.Settings;
+					_bookingSettings.Email = _accountService.CurrentAccount.Email;
                     _paymentSettings = await _paymentService.GetPaymentSettings();
 
 					PhoneNumber.Country = _bookingSettings.Country;
@@ -61,6 +63,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     RaisePropertyChanged(() => IsChargeTypesEnabled);
                     RaisePropertyChanged(() => IsChargeAccountPaymentEnabled);
                     RaisePropertyChanged(() => IsPayBackFieldEnabled);
+					RaisePropertyChanged(() => Email);
+					RaisePropertyChanged(() => PhoneNumber);
+					RaisePropertyChanged(() => SelectedCountryCode);
 
                     // this should be called last since it calls the server, we don't want to slow down other controls
                     var v = await _accountService.GetVehiclesList();
@@ -68,8 +73,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     RaisePropertyChanged(() => Vehicles);
                     RaisePropertyChanged(() => VehicleTypeId);
                     RaisePropertyChanged(() => VehicleTypeName);
-                    RaisePropertyChanged(() => PhoneNumber);
-                    RaisePropertyChanged(() => SelectedCountryCode);
 			    }
 			    catch (Exception ex)
 			    {
@@ -251,7 +254,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public string Email
 		{
-			get { return _accountService.CurrentAccount.Email; }
+			get
+			{
+				return _bookingSettings.Email;
+			}
+			set
+			{
+				_bookingSettings.Email = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool EditEmailAccessible
+		{
+			get
+			{
+				return !IsLinkedWithFacebook;
+			}
 		}
 
 		public bool IsLinkedWithFacebook
@@ -441,6 +460,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public async Task<bool> ValidateRideSettings()
         {
+			if (!EmailHelper.IsEmail(Email))
+			{
+				await this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
+				return false;
+			}
+
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Phone))
             {
                 await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyField"]);

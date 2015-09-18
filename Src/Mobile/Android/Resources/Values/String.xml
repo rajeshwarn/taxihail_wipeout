@@ -706,4 +706,5 @@
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
+  <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
 </resources>

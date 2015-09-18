@@ -1069,6 +1069,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This email is used already by another person.
+        /// </summary>
+        public static string EmailUsedMessage {
+            get {
+                return ResourceManager.GetString("EmailUsedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ETA displayed to client is {0} and {1} min.
         /// </summary>
         public static string EtaMessageToDriver {
@@ -1123,7 +1132,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to pair. Please pay to your driver at the end of the ride.
+        ///   Looks up a localized string similar to Unable to pair you to the car. Please pay your driver at the end of the ride..
         /// </summary>
         public static string OrderStatus_PairingFailed {
             get {
@@ -1681,7 +1690,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WARNING: The client will NOT be charged at the end of the ride.
+        ///   Looks up a localized string similar to The customer will be paying in the car at the end of the ride.
         /// </summary>
         public static string UnpairingConfirmationToDriver {
             get {

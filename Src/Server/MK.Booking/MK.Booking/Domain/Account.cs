@@ -166,6 +166,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new BookingSettingsUpdated
             {
                 SourceId = Id,
+				Email = settings.Email,
                 Name = settings.Name,
                 ChargeTypeId = settings.ChargeTypeId,
                 NumberOfTaxi = settings.NumberOfTaxi,

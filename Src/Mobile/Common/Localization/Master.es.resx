@@ -2839,4 +2839,7 @@
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Sorry, this version of the app is no longer supported. Please update the app</value>
 	</data>
+	<data name="AccountLinkedWithFacebook" xml:space="preserve">
+    	<value>Account is linked with Facebook account</value>
+	</data>
 </root>

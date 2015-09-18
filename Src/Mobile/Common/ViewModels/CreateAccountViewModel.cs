@@ -60,18 +60,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			#endif
 		}
 
-		private bool IsEmail(string inputEmail)
-		{
-			inputEmail = inputEmail.ToSafeString();
-			const string strRegex = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" + @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" + @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
-			var re = new Regex(strRegex);
-		    if (re.IsMatch(inputEmail))
-		    {
-		        return (true);
-		    }
-		    return (false);
-		}
-
 		private bool _termsAndConditionsAcknowledged;
 		public bool TermsAndConditionsAcknowledged 
 		{
@@ -100,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     Data.Phone = PhoneNumber.PhoneNumber;
                     Data.Country = PhoneNumber.Country;
 
-					if (!IsEmail(Data.Email))
+					if (!EmailHelper.IsEmail(Data.Email))
 					{
                         await this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
 						return;

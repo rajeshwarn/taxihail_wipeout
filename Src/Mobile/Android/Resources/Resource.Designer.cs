@@ -7123,6 +7123,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070174
 			public const int AccountDisabled_NoCall = 2131165556;
 			
+			// aapt resource value: 0x7f07033b
+			public const int AccountLinkedWithFAcebook = 2131166011;
+			
+			// aapt resource value: 0x7f07033a
+			public const int AccountLinkedWithFacebook = 2131166010;
+			
 			// aapt resource value: 0x7f0700a5
 			public const int AccountNotActivated = 2131165349;
 			

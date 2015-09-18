@@ -660,4 +660,7 @@
   <data name="PhoneNumberFormat" xml:space="preserve">
     <value>Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</value>
   </data>
+	<data name="EmailUsedMessage" xml:space="preserve">
+    <value>Cet email est déjà utilisé par une autre personne</value>
+  </data>
 </root>

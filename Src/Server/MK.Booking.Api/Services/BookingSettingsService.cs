@@ -16,6 +16,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Helpers;
+using apcurium.MK.Booking.ReadModel;
 
 #endregion
 
@@ -24,14 +25,16 @@ namespace apcurium.MK.Booking.Api.Services
     public class BookingSettingsService : Service
     {
         private readonly IAccountChargeDao _accountChargeDao;
-        private readonly ICommandBus _commandBus;
+		private readonly IAccountDao _accountDao;
+		private readonly ICommandBus _commandBus;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IServerSettings _serverSettings;
         private readonly Resources.Resources _resources;
 
-        public BookingSettingsService(IAccountChargeDao accountChargeDao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings)
+		public BookingSettingsService(IAccountChargeDao accountChargeDao, IAccountDao accountDao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings)
         {
             _accountChargeDao = accountChargeDao;
+			_accountDao = accountDao;
             _commandBus = commandBus;
             _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
@@ -40,6 +43,15 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Put(BookingSettingsRequest request)
         {
+			Guid accountID = Guid.Parse(request.AccountId);
+
+			AccountDetail accountDetail = _accountDao.FindByEmail(request.Email);
+
+			if (accountDetail != null && accountDetail.Id != accountID && accountDetail.Email == request.Email)
+			{
+				throw new HttpError(_resources.Get("EmailUsedMessage"));
+			}
+
             CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
 
             if (countryCode.IsNumberPossible(request.Phone))
