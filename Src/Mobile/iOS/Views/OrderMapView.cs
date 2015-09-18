@@ -33,6 +33,8 @@ using MapKit;
 using TinyIoC;
 using UIKit;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -503,6 +505,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _availableVehicleAnnotations.Add (vehicleAnnotation);
         }
 
+        private async Task UpdateAnnotation(AddressAnnotation annotationToUpdate, AvailableVehicle vehicle, Position oldPosition = null)
+        {
+            var annotationType = (vehicle is AvailableVehicleCluster) 
+                ? AddressAnnotationType.NearbyTaxiCluster 
+                : AddressAnnotationType.NearbyTaxi;
+
+            annotationToUpdate.Degrees = vehicle.CompassCourse;
+            annotationToUpdate.AddressType = annotationType;
+            var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
+            annotationToUpdateView.RefreshPinImage();
+
+            for (var percent = 0.05; percent < 1.00; percent += 0.05)
+            {
+                await Task.Delay(250);
+
+                var intermediaryLat = oldPosition.Latitude + (percent * (vehicle.Latitude - oldPosition.Latitude));
+                var intermediaryLng = oldPosition.Longitude + (percent * (vehicle.Longitude - oldPosition.Longitude));
+
+                annotationToUpdate.SetCoordinate(new CLLocationCoordinate2D(intermediaryLat, intermediaryLng));
+            }
+        }
+
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
         {
             if (vehicles == null)
@@ -534,11 +558,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         continue;
                     }
 
-                    // coordinates were updated, remove and add later with new position
-                    DeleteAnnotation (existingAnnotationForVehicle);
-                }
+                    var oldPosition = new Position()
+                        {
+                            Latitude = existingAnnotationForVehicle.Coordinate.Latitude,
+                            Longitude = existingAnnotationForVehicle.Coordinate.Longitude,
+                        };
 
-                CreateAnnotation (vehicle);
+                    // coordinates were updated, remove and add later with new position
+                    UpdateAnnotation(existingAnnotationForVehicle, vehicle, oldPosition);
+                }
+                else
+                {
+                    CreateAnnotation(vehicle);
+                }
             }
         }
 
@@ -640,44 +672,56 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		    }
 	    }
 
-	    private void UpdateTaxiLocation(TaxiLocation value)
+        private async Task UpdateTaxiLocation(TaxiLocation value)
 	    {
-			if (_taxiLocationPin != null)
-			{
-				RemoveAnnotation(_taxiLocationPin);
-				_taxiLocationPin = null;
-			}
+            if (_taxiLocationPin != null)
+            {
+                var taxiLocationPin = _taxiLocationPin as AddressAnnotation;
+                taxiLocationPin.Degrees = value.CompassCourse;
+                var annotationToUpdateView = ViewForAnnotation(taxiLocationPin) as PinAnnotationView;
+                annotationToUpdateView.RefreshPinImage();
 
-			if (value != null)
-			{
-				var coord = new CLLocationCoordinate2D(0, 0);
+                for (var percent = 0.05; percent < 1.00; percent += 0.05)
+                {
+                    await Task.Delay(250);
 
-	            var vehicleLatitude = value.Latitude ?? 0;
-	            var vehicleLongitude = value.Longitude ?? 0;
+                    var intermediaryLat = taxiLocationPin.Coordinate.Latitude + (percent * (value.Latitude.Value - taxiLocationPin.Coordinate.Latitude));
+                    var intermediaryLng = taxiLocationPin.Coordinate.Longitude + (percent * (value.Longitude.Value - taxiLocationPin.Coordinate.Longitude));
+
+                    taxiLocationPin.SetCoordinate(new CLLocationCoordinate2D(intermediaryLat, intermediaryLng));
+                }
+            }
+            else
+            {
+                if (value != null)
+                {
+                    var coord = new CLLocationCoordinate2D(0, 0);
+
+                    var vehicleLatitude = value.Latitude ?? 0;
+                    var vehicleLongitude = value.Longitude ?? 0;
 
                     if (vehicleLatitude != 0
                         && vehicleLongitude != 0
                         && value.VehicleNumber.HasValue())
-				{
+                    {
                         // Refresh vehicle position
-					coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
-				}
+                        coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
+                    }
 
-				_taxiLocationPin = new AddressAnnotation(
-					coord, 
-					AddressAnnotationType.Taxi,
-					Localize.GetValue("TaxiMapTitle"), 
-					value.VehicleNumber, 
-					_useThemeColorForPickupAndDestinationMapIcons, 
-					_showAssignedVehicleNumberOnPin,
-                    null,
-                    value.CompassCourse);
+                    _taxiLocationPin = new AddressAnnotation(
+                        coord, 
+                        AddressAnnotationType.Taxi,
+                        Localize.GetValue("TaxiMapTitle"), 
+                        value.VehicleNumber, 
+                        _useThemeColorForPickupAndDestinationMapIcons, 
+                        _showAssignedVehicleNumberOnPin,
+                        null,
+                        value.CompassCourse);
 
-				AddAnnotation(_taxiLocationPin);
-
-				
-			}
-			SetNeedsDisplay();
+                    AddAnnotation(_taxiLocationPin);
+                    SetNeedsDisplay();
+                }
+            }
 	    }
 
 
