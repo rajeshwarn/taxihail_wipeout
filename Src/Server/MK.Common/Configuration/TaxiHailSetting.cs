@@ -74,6 +74,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehicles = false;
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
+            ShowOrientedPins = false;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
 			
@@ -469,6 +470,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - Show Message Driver", Description = "Show button on the status screen to text message the driver")]
         public bool ShowMessageDriver { get; set; }
+        
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Map - Oriented Pins", Description = "Pins show vehicles orientation")]
+        public bool ShowOrientedPins { get; protected set; }
     }
 }
 
