@@ -703,4 +703,8 @@
   <string name="WaitingCarLandscapeViewCarNumber">Numéro de voiture</string>
   <string name="WaitingCarLandscapeActivityName">Numéro de voiture</string>
   <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
+  <string name="BookingAirportNoFlights_Title">Aucun vol</string>
+  <string name="BookingAirportNoFlights_Message">Nous avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exacte? \nCompagnie aérienne: {0}\nNuméros de vol: {1}\nDate: {2}</string>
+  <string name="BookingAirportMissingInfo_Title">Informations manquantes</string>
+  <string name="BookingAirportMissingInfo_Message">Le numéro de vol et la compagnie aérienne sont nécessaire.</string>
 </resources>

@@ -701,3 +701,7 @@
 "WaitingCarLandscapeViewCarNumber"="Numéro de voiture";
 "WaitingCarLandscapeActivityName"="Numéro de voiture";
 "BookingAirportDetailsTerminal"=", \nTerminal: {0}";
+"BookingAirportNoFlights_Title"="Aucun vol";
+"BookingAirportNoFlights_Message"="Nous avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exacte? \nCompagnie aérienne: {0}\nNuméros de vol: {1}\nDate: {2}";
+"BookingAirportMissingInfo_Title"="Informations manquantes";
+"BookingAirportMissingInfo_Message"="Le numéro de vol et la compagnie aérienne sont nécessaire.";

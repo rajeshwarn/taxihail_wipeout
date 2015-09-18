@@ -659,6 +659,10 @@
   <string name="BookingAirportPUPointslbl">Pickup Point</string>
   <string name="BookingAirportPUDatelbl">Pickup Date</string>
   <string name="Next">Next</string>
+  <string name="BookingAirportNoFlights_Title">No flights</string>
+  <string name="BookingAirportMissingInfo_Title">Missing information</string>
+  <string name="BookingAirportMissingInfo_Message">The airline and the flight number are madatory.</string>
+  <string name="BookingAirportNoFlights_Message">No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}</string>
   <string name="BookingAirportPickupPointFee">Selecting Pickup Point {0} will incurr an additional Fee of {1}</string>
   <string name="BookingAirportDetails">Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</string>
   <string name="BookingAirportDetailsFee">, (Pickup Fee: {0})</string>

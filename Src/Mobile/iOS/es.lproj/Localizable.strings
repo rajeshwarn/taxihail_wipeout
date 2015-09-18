@@ -701,3 +701,7 @@
 "WaitingCarLandscapeViewCarNumber"="Car Number";
 "WaitingCarLandscapeActivityName"="Car Number";
 "BookingAirportDetailsTerminal"=", \nTerminal: {0}";
+"BookingAirportNoFlights_Title"="No flights";
+"BookingAirportNoFlights_Message"="No flights found with the provided information";
+"BookingAirportMissingInfo_Title"="Missing information";
+"BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";

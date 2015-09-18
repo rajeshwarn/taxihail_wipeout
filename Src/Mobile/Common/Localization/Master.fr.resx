@@ -2228,4 +2228,16 @@
 	<data name="BookingAirportDetailsTerminal">
 		<value>, \nTerminal: {0}</value>
 	</data>
+	<data name="BookingAirportNoFlights_Title" xml:space="preserve">
+    <value>Aucun vol</value>
+  </data>
+	<data name="BookingAirportNoFlights_Message" xml:space="preserve">
+    <value>Nous avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exacte? \nCompagnie aérienne: {0}\nNuméros de vol: {1}\nDate: {2}</value>
+  </data>
+	<data name="BookingAirportMissingInfo_Title" xml:space="preserve">
+    <value>Informations manquantes</value>
+  </data>
+	<data name="BookingAirportMissingInfo_Message" xml:space="preserve">
+    <value>Le numéro de vol et la compagnie aérienne sont nécessaire.</value>
+  </data>
 </root>

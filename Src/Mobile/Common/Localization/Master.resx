@@ -2094,6 +2094,18 @@
   <data name="Next" xml:space="preserve">
     <value>Next</value>
   </data>
+	<data name="BookingAirportNoFlights_Title" xml:space="preserve">
+    <value>No flights</value>
+  </data>
+	<data name="BookingAirportMissingInfo_Title" xml:space="preserve">
+    <value>Missing information</value>
+  </data>
+	<data name="BookingAirportMissingInfo_Message" xml:space="preserve">
+    <value>The airline and the flight number are madatory.</value>
+  </data>
+	<data name="BookingAirportNoFlights_Message" xml:space="preserve">
+    <value>No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}</value>
+  </data>
   <data name="BookingAirportPickupPointFee" xml:space="preserve">
     <value>Selecting Pickup Point {0} will incurr an additional Fee of {1}</value>
   </data>
