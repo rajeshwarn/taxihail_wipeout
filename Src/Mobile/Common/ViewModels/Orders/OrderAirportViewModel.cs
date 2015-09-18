@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Net;
-using System.Reactive;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -25,10 +22,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	{
         private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAirportInformationService _airportInformationService;
-
-		private ISubject<Unit> _terminalWaiter = new Subject<Unit>();
-
-		private bool _isGetTerminalStarted;
 
 		private const string NoAirlines = "No Airline";
         private const string PUCurbSide = "Curb Side";
@@ -55,20 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
             //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
             Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
-
-			Observe(ObserveViewModelStateAndGetTermnial(), terminal => Terminal = terminal);
         }
-
-		public string Terminal
-		{
-			get { return _terminal; }
-			set
-			{
-				_terminal = value;
-				_terminalWaiter.OnNext(Unit.Default);
-				RaisePropertyChanged();
-			}
-		}
 
 		public void Init()
         {
@@ -358,8 +338,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         }
 
 		private KeyValuePair<int, Airline>[] _carrierCodes = new KeyValuePair<int, Airline>[0];
-
-		private string _terminal;
 		private Airline[] _poiAirline = new Airline[0];
 
 		public Airline[] POIAirline
@@ -389,30 +367,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private void UpdateAirlines(IEnumerable<Airline> airlines)
 		{
 			_carrierCodes = airlines
+				.OrderBy(item => item.Name)
 				.Select((airline, index) => new KeyValuePair<int, Airline>(index, airline))
 				.ToArray();
 
 			_airlines.AddRange(_carrierCodes.Select(carrier => new ListItem { Display = carrier.Value.Name, Id = carrier.Key }));
-		}
-
-		public IObservable<string> ObserveViewModelStateAndGetTermnial()
-		{
-			
-
-			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-					h => PropertyChanged += h,
-					h => PropertyChanged -= h
-				)
-				.Where(args => args.EventArgs.PropertyName.Equals("AirlineId")
-					|| args.EventArgs.PropertyName.Equals("PickupTimeStamp")
-					|| args.EventArgs.PropertyName.Equals("FlightNum")
-				)
-				.Where(_ => CanGetTerminal())
-				.Throttle(TimeSpan.FromSeconds(1))
-				.SkipWhile(_ => _isGetTerminalStarted)
-				.Do(_ => _isGetTerminalStarted = true)
-				.SelectMany(_ => GetTerminal())
-				.Do(_ => _isGetTerminalStarted = false);
 		}
 
 		private async Task<string> GetTerminal()
@@ -434,8 +393,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				if (ex.StatusCode == (int) HttpStatusCode.NotFound)
 				{
-					this.Services().Message.ShowMessage("No flights", "No flights found with the provided information").FireAndForget();
-
 					return string.Empty;
 				}
 				if (ex.StatusCode == (int) HttpStatusCode.NoContent)
@@ -493,18 +450,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						() => { });
 				}
 			}
+
+			if (!CanGetTerminal())
+			{
+				await this.Services().Message.ShowMessage(localize["BookingAirportMissingInfo_Title"], localize["BookingAirportMissingInfo_Message"]);
+
+				return;
+			}
+
 			if (accepted)
 			{
-				// We wait until the process to get the terminal ends.
-				if (_isGetTerminalStarted)
+				var terminal = await GetTerminal().ShowProgress();
+
+				if (!terminal.HasValue())
 				{
-					using (this.Services().Message.ShowProgress())
+					var cancel = false;
+
+					await this.Services().Message.ShowMessage(
+							localize["BookingAirportNoFlights_Title"],
+							string.Format(localize["BookingAirportNoFlights_Message"], AirlineName, FlightNum, PickupTimeStamp),
+							localize["YesButton"],
+							() => { },
+							localize["NoButton"],
+							() => cancel = true);
+
+					if (cancel)
 					{
-						await _terminalWaiter.Take(1).ToTask();
+						return;
 					}
 				}
 
-				UpdateDriverNoteWithAirportInformation(localize, pickupPoint, fee);
+				UpdateDriverNoteWithAirportInformation(localize, pickupPoint, fee, terminal);
 
 				((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
 
@@ -520,7 +496,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private void UpdateDriverNoteWithAirportInformation(ILocalization localize, PointsItems pickupPoint, int fee)
+		private void UpdateDriverNoteWithAirportInformation(ILocalization localize, PointsItems pickupPoint, int fee, string terminal)
 		{
 			var sb = new StringBuilder();
 
@@ -536,9 +512,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				sb.Append(localize["BookingAirportDetailsFee"], pickupPoint.Fee);
 			}
 
-			if (Terminal.HasValue())
+			if (terminal.HasValue())
 			{
-				sb.Append(localize["BookingAirportDetailsTerminal"], Terminal);
+				sb.Append(localize["BookingAirportDetailsTerminal"], terminal);
 			}
 
 			Note = sb.ToString();
