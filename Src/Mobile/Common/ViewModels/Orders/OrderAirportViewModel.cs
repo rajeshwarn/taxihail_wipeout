@@ -389,37 +389,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public IObservable<string> ObserveViewModelStateAndGetTermnial()
 		{
+			var running = false;
+
 			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-				h => PropertyChanged += h,
-				h => PropertyChanged -= h
+					h => PropertyChanged += h,
+					h => PropertyChanged -= h
 				)
 				.Where(args => args.EventArgs.PropertyName.Equals("AirlineId")
-				               || args.EventArgs.PropertyName.Equals("PickupTimeStamp")
-				               || args.EventArgs.PropertyName.Equals("FlightNum")
+					|| args.EventArgs.PropertyName.Equals("PickupTimeStamp")
+					|| args.EventArgs.PropertyName.Equals("FlightNum")
 				)
-				.Throttle(TimeSpan.FromSeconds(1))
 				.Where(_ => CanGetTerminal())
-				.SelectMany(async _ =>
-				{
-					var date = await _orderWorkflowService
-						.GetAndObservePickupDate()
-						.Take(1)
-						.ToTask();
-
-					return date ?? DateTime.Now;
-				})
-				.SelectMany(GetTerminal);
+				.Throttle(TimeSpan.FromSeconds(1))
+				.SkipWhile(_ => running)
+				.Do(_ => running = true)
+				.SelectMany(_ => GetTerminal())
+				.Do(_ => running = false);
 		}
 
-		private async Task<string> GetTerminal(DateTime date)
+		private async Task<string> GetTerminal()
 		{
 			try
 			{
+				var date = await _orderWorkflowService
+						.GetAndObservePickupDate()
+						.Take(1)
+						.ToTask();
+				
 				var carrier = _carrierCodes.FirstOrDefault(c => c.Key == AirlineId);
 
 				var carrierCode = carrier.Value.Id.Replace("utog.", "").ToLowerInvariant();
 
-				return await _airportInformationService.GetTerminal(date, FlightNum, carrierCode, _pickupAddress.PlaceId, true);
+				return await _airportInformationService.GetTerminal(date ?? DateTime.Now, FlightNum, carrierCode, _pickupAddress.PlaceId, true);
 			}
 			catch (WebServiceException ex)
 			{
@@ -506,7 +507,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
 
                         // Clear all values...
-                        AirlineId = 0;
+                        AirlineId = -1;
                         FlightNum = string.Empty;
                     }
                     else
