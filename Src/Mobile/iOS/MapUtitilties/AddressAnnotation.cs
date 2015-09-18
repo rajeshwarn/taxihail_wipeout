@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		{
 			AddressType = type;
 			_coordinate = coord;
-            _degrees = degrees;
+            Degrees = degrees;
 			_title = t;
 			_subtitle = s;
             UseThemeColorForIcons = useThemeColorForIcons;
@@ -33,7 +33,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		
 		private CLLocationCoordinate2D _coordinate;
         private string _vehicleTypeLogoName;
-        private double _degrees;
 
 		public bool ShowSubtitleOnPin = true;
 
@@ -44,7 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public override void SetCoordinate(CLLocationCoordinate2D value)
         {
+            WillChangeValue ("coordinate");
             _coordinate = value;
+            DidChangeValue ("coordinate");
         }
 
         private readonly string _title;
@@ -61,9 +62,11 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public static bool UseThemeColorForIcons { get; private set; }
 
+        public double Degrees { get; set; }
+
         public UIImage GetImage()
         {
-            return GetImage(AddressType, _vehicleTypeLogoName, _degrees);
+            return GetImage(AddressType, _vehicleTypeLogoName, Degrees);
         }
 
         public static UIImage GetImage(AddressAnnotationType addressType, string vehicleTypeLogoName = null, double degrees = 0)

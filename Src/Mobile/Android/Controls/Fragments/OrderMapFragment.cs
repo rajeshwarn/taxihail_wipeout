@@ -32,6 +32,7 @@ using Google.Android.M4b.Maps;
 using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -543,7 +544,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _availableVehicleMarkers.Remove (markerToRemove);
         }
 
-        private void CreateMarker(AvailableVehicle vehicle)
+        private async Task CreateMarker(AvailableVehicle vehicle, Position oldPosition = null)
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";
@@ -551,14 +552,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
 				: string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
 
-			var vehicleMarker = Map.AddMarker(new MarkerOptions()
-				.SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
-				.Anchor(.5f, 1f)
-				.InvokeIcon(isCluster
-					? _vehicleIcons [logoKey]
-					: BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees (Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))));
+            var vehicleMarker = Map.AddMarker(new MarkerOptions()
+                .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
+                .SetTitle(vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture))
+                .Anchor(.5f, 1f)
+                .InvokeIcon(isCluster
+                    ? _vehicleIcons[logoKey]
+                    : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))));
 
-            _availableVehicleMarkers.Add (vehicleMarker);
+            _availableVehicleMarkers.Add(vehicleMarker);
+        }
+
+        private async Task UpdateMarker(Marker markerToUpdate, AvailableVehicle vehicle, Position oldPosition = null)
+        {
+            var isCluster = vehicle is AvailableVehicleCluster;
+            const string defaultLogoName = "taxi";
+            var logoKey = isCluster
+                ? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
+                : string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
+
+            var icon = isCluster
+                ? _vehicleIcons[logoKey]
+                : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse));
+            
+            markerToUpdate.SetAnchor(.5f, 1f);
+            markerToUpdate.SetIcon(isCluster
+                ? _vehicleIcons[logoKey]
+                : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse)));
+
+            for (var percent = 0.05; percent < 1.00; percent += 0.05)
+            {
+                await Task.Delay(250);
+
+                var intermediaryLat = oldPosition.Latitude + (percent * (vehicle.Latitude - oldPosition.Latitude));
+                var intermediaryLng = oldPosition.Longitude + (percent * (vehicle.Longitude - oldPosition.Longitude));
+
+                markerToUpdate.Position = new LatLng(intermediaryLat, intermediaryLng);
+            }
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
@@ -584,6 +614,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			foreach (var vehicle in vehicleArray)
             {
                 var existingMarkerForVehicle = _availableVehicleMarkers.FirstOrDefault (x => x.Title == vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture));
+
                 if (existingMarkerForVehicle != null)
                 {
                     if (existingMarkerForVehicle.Position.Latitude == vehicle.Latitude && existingMarkerForVehicle.Position.Longitude == vehicle.Longitude)
@@ -592,11 +623,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         continue;
                     }
 
+                    var oldPosition = new Position()
+                    {
+                        Latitude = existingMarkerForVehicle.Position.Latitude,
+                        Longitude = existingMarkerForVehicle.Position.Longitude,
+                    };
+                    
                     // coordinates were updated, remove and add later with new position
-                    DeleteMarker (existingMarkerForVehicle);
+                    UpdateMarker(existingMarkerForVehicle, vehicle, oldPosition);
                 }
-
-                CreateMarker (vehicle);
+                else
+                {
+                    CreateMarker(vehicle);
+                }
             }
         }
 
