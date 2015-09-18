@@ -499,7 +499,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
                                 vehicle.LogoName,
-                                vehicle.CompassCourse);
+                                ViewModel.Settings.ShowOrientedPins 
+                                    ? vehicle.CompassCourse
+                                    : 0);
 
             AddAnnotation (vehicleAnnotation);
             _availableVehicleAnnotations.Add (vehicleAnnotation);
@@ -511,7 +513,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ? AddressAnnotationType.NearbyTaxiCluster 
                 : AddressAnnotationType.NearbyTaxi;
 
-            annotationToUpdate.Degrees = vehicle.CompassCourse;
+            annotationToUpdate.Degrees = ViewModel.Settings.ShowOrientedPins 
+                                            ? vehicle.CompassCourse
+                                            : 0;
             annotationToUpdate.AddressType = annotationType;
             var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
             annotationToUpdateView.RefreshPinImage();
@@ -716,7 +720,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         _useThemeColorForPickupAndDestinationMapIcons, 
                         _showAssignedVehicleNumberOnPin,
                         null,
-                        value.CompassCourse);
+                        ViewModel.Settings.ShowOrientedPins 
+                            ? value.CompassCourse
+                            : 0);
 
                     AddAnnotation(_taxiLocationPin);
                     SetNeedsDisplay();

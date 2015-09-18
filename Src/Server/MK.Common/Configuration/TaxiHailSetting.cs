@@ -58,6 +58,7 @@ namespace MK.Common.Configuration
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
+            ShowOrientedPins = false;
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
@@ -469,6 +470,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - Show Message Driver", Description = "Show button on the status screen to text message the driver")]
         public bool ShowMessageDriver { get; set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Map - Oriented Pins", Description = "Pins show vehicles orientation")]
+        public bool ShowOrientedPins { get; protected set; }
     }
 }
 

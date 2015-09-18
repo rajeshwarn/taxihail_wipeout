@@ -180,9 +180,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 if (_taxiLocationPin != null)
                 {
-                    var icon = value.CompassCourse == 0 
-                        ? BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()) 
-                        : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse));
+                    var icon = ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
+                        ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+                        : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap());
                     
                     _taxiLocationPin.SetIcon(icon);
 
@@ -203,9 +203,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             .Anchor(.5f, 1f)
                             .SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
                             .InvokeIcon(
-                                value.CompassCourse == 0 
-                                ? BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()) 
-                                : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees (Resource.Drawable.nearby_oriented_passenger, value.CompassCourse)))
+                                ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
+                                ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+                                : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
                             .Visible(true);
 
 
@@ -558,7 +558,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _availableVehicleMarkers.Remove (markerToRemove);
         }
 
-        private async Task CreateMarker(AvailableVehicle vehicle, Position oldPosition = null)
+        private async Task CreateMarker(AvailableVehicle vehicle)
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";
@@ -570,9 +570,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
                 .SetTitle(vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture))
                 .Anchor(.5f, 1f)
-                .InvokeIcon(isCluster
-                    ? _vehicleIcons[logoKey]
-                    : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))));
+                .InvokeIcon(ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
+                    ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
+                    : _vehicleIcons[logoKey]));
 
             _availableVehicleMarkers.Add(vehicleMarker);
         }
@@ -585,9 +585,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 ? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
                 : string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
 
-            var icon = isCluster
-                ? _vehicleIcons[logoKey]
-                : BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse));
+            var icon = ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
+                ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
+                : _vehicleIcons[logoKey];
             
             markerToUpdate.SetIcon(icon);
 
