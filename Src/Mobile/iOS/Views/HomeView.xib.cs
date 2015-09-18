@@ -224,6 +224,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	        set.Bind(mapView)
 		        .For(v => v.TaxiLocation)
 		        .To(vm => vm.BookingStatus.TaxiLocation);
+
+            set.Bind(mapView)
+                .For(v => v.CancelAutoFollow)
+                .To(vm => vm.BookingStatus.CancelAutoFollow);
             
             #endregion
 

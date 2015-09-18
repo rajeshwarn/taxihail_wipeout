@@ -111,9 +111,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			animation.AnimationEnd += (sender, args) =>
 			{
-				if (_contactTaxiOverlay.Animation.HasStarted)
+				var contactAnimation = _contactTaxiOverlay.Animation;
+
+				if (contactAnimation != null && contactAnimation.HasStarted)
 				{
-					_contactTaxiOverlay.Animation.Cancel();
+					contactAnimation.Cancel();
 				}
 
 				((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = OrderStatusContactTaxiOverlay.CONTACT_TAXI_HIDDEN_Y_OFFSET;
