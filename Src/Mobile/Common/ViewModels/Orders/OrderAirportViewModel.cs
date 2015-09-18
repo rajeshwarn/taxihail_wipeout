@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -12,6 +14,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using MK.Common.Android.Helpers;
 using Newtonsoft.Json.Linq;
 using ServiceStack.ServiceClient.Web;
@@ -21,7 +24,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	public class OrderAirportViewModel : BaseViewModel
 	{
         private readonly IOrderWorkflowService _orderWorkflowService;
-		private IAirportInformationService _airportInformationService;
+		private readonly IAirportInformationService _airportInformationService;
+
+		private ISubject<Unit> _terminalWaiter = new Subject<Unit>();
+
+		private bool _isGetTerminalStarted;
 
 		private const string NoAirlines = "No Airline";
         private const string PUCurbSide = "Curb Side";
@@ -58,6 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			set
 			{
 				_terminal = value;
+				_terminalWaiter.OnNext(Unit.Default);
 				RaisePropertyChanged();
 			}
 		}
@@ -389,7 +397,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public IObservable<string> ObserveViewModelStateAndGetTermnial()
 		{
-			var running = false;
+			
 
 			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
 					h => PropertyChanged += h,
@@ -401,10 +409,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				)
 				.Where(_ => CanGetTerminal())
 				.Throttle(TimeSpan.FromSeconds(1))
-				.SkipWhile(_ => running)
-				.Do(_ => running = true)
+				.SkipWhile(_ => _isGetTerminalStarted)
+				.Do(_ => _isGetTerminalStarted = true)
 				.SelectMany(_ => GetTerminal())
-				.Do(_ => running = false);
+				.Do(_ => _isGetTerminalStarted = false);
 		}
 
 		private async Task<string> GetTerminal()
@@ -455,72 +463,97 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			    && _carrierCodes.Any(c => c.Key == AirlineId);
 		}
 
+		private async Task ExecuteNext()
+		{
+			var localize = this.Services().Localize;
+
+			// check if additional fee is accepted
+			var pickupPoint = PickupPoints[PUPointsId];
+			var accepted = true;
+			var fee = 0;
+			if (pickupPoint != null && pickupPoint.Fee != string.Empty)
+			{
+				foreach (var c in pickupPoint.Fee.Where(char.IsDigit))
+				{
+					fee *= 10;
+					// When converting, subtract 0x30 to get true value between 0 - 9
+					fee += Convert.ToInt32(c - 0x30);
+				}
+
+				if (fee > 0)
+				{
+					accepted = false;
+					var feeWarning = string.Format(localize["BookingAirportPickupPointFee"], pickupPoint.Name, pickupPoint.Fee);
+					await this.Services().Message.ShowMessage(
+						localize["WarningTitle"],
+						feeWarning,
+						localize["OkButtonText"],
+						() => accepted = true,
+						localize["Cancel"],
+						() => { });
+				}
+			}
+			if (accepted)
+			{
+				// We wait until the process to get the terminal ends.
+				if (_isGetTerminalStarted)
+				{
+					using (this.Services().Message.ShowProgress())
+					{
+						await _terminalWaiter.Take(1).ToTask();
+					}
+				}
+
+				UpdateDriverNoteWithAirportInformation(localize, pickupPoint, fee);
+
+				((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
+
+				// Clear all values...
+				AirlineId = -1;
+				FlightNum = string.Empty;
+			}
+			else
+			{
+				PUPointsId = 0;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => PUPointsName);
+			}
+		}
+
+		private void UpdateDriverNoteWithAirportInformation(ILocalization localize, PointsItems pickupPoint, int fee)
+		{
+			var sb = new StringBuilder();
+
+			if (Note.Length > 0)
+			{
+				sb.Append("{0}\n", Note);
+			}
+
+			sb.Append(localize["BookingAirportDetails"], _pickupAddress.FullAddress, AirlineName, FlightNum, PUPointsName);
+
+			if (pickupPoint != null && pickupPoint.Fee != string.Empty && fee > 0)
+			{
+				sb.Append(localize["BookingAirportDetailsFee"], pickupPoint.Fee);
+			}
+
+			if (Terminal.HasValue())
+			{
+				sb.Append(localize["BookingAirportDetailsTerminal"], Terminal);
+			}
+
+			Note = sb.ToString();
+		}
+
+
 		public ICommand NextCommand
         {
             get
             {
-                return this.GetCommand(async () =>
-                {
-                    // check if additional fee is accepted
-                    var pItem = PickupPoints[PUPointsId];
-                    var accepted = true;
-                    var fee = 0;
-                    if (pItem != null && pItem.Fee != string.Empty)
-                    {
-	                    foreach (var c in pItem.Fee.Where(char.IsDigit))
-	                    {
-		                    fee *= 10;
-		                    // When converting, subtract 0x30 to get true value between 0 - 9
-		                    fee += Convert.ToInt32(c - 0x30);
-	                    }
-
-	                    if( fee > 0 )
-						{
-	                        accepted = false;
-	                        var feeWarning = string.Format(this.Services().Localize["BookingAirportPickupPointFee"], pItem.Name, pItem.Fee);
-	                        await this.Services().Message.ShowMessage(
-	                            this.Services().Localize["WarningTitle"],
-	                            feeWarning,
-	                            this.Services().Localize["OkButtonText"],
-	                            () =>
-	                            {
-	                                accepted = true;
-	                            },
-	                            this.Services().Localize["Cancel"],
-	                            () => { });
-						}
-                    }
-	                if (accepted)
-                    {
-                        var sb = new StringBuilder();
-                        if( Note.Length > 0 )
-                        {
-                            sb.Append("{0}\n", Note );
-                        }
-						sb.Append(this.Services().Localize["BookingAirportDetails"], _pickupAddress.FullAddress, AirlineName, FlightNum, PUPointsName);
-                        if (pItem != null && pItem.Fee != string.Empty && fee > 0 )
-                        {
-                            sb.Append(this.Services().Localize["BookingAirportDetailsFee"], pItem.Fee);
-                        }
-                        Note = sb.ToString();
-
-						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
-
-                        // Clear all values...
-                        AirlineId = -1;
-                        FlightNum = string.Empty;
-                    }
-                    else
-                    {
-                        PUPointsId = 0;
-                        RaisePropertyChanged();
-                        RaisePropertyChanged(() => PUPointsName);
-                    }
-                });
+                return this.GetCommand(() => ExecuteNext());
             }
         }
 
-        public ICommand NavigateToDatePicker
+		public ICommand NavigateToDatePicker
         {
             get
             {
