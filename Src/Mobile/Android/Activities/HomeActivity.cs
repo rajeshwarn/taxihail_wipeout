@@ -502,9 +502,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         break;
                 }
             }
+			else if (requestCode == (int) ActivityEnum.DateTimePicked 
+				&& ViewModel.CurrentViewState == HomeViewModelState.AirportPickDate)
+			{
+				ViewModel.CloseCommand.ExecuteIfPossible();
+			}
             else
             {
-                ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible();
+				ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible();
             }
         }
 

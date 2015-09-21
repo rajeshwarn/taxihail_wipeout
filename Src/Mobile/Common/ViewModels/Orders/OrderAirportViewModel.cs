@@ -494,7 +494,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				var terminal = await GetTerminal().ShowProgress();
 
-				if (terminal.HasValue())
+				if (!terminal.HasValue())
 				{
 					return;
 				}

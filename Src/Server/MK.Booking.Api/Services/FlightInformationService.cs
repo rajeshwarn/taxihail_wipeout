@@ -76,14 +76,12 @@ namespace apcurium.MK.Booking.Api.Services
 				throw new HttpError(HttpStatusCode.NotFound, "No flight found.");
 			}
 
-
 			var terminal = GetTerminal(flightStatsResponse.FlightStatuses, request.IsPickup, request.AirportId);
 
 			if (!terminal.HasValue())
 			{
 				throw new HttpError(HttpStatusCode.NoContent,"No terminal found.");
 			}
-
 
 			return new FlightInformation
 			{
