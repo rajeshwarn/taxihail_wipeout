@@ -43,13 +43,19 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Put(BookingSettingsRequest request)
         {
-			Guid accountID = Guid.Parse(request.AccountId);
+			Guid accountID = new Guid(this.GetSession().UserAuthId);
 
-			AccountDetail accountDetail = _accountDao.FindByEmail(request.Email);
+			AccountDetail accountDetailWithEmail = _accountDao.FindByEmail(request.Email);
+			AccountDetail accountDetailWithID = _accountDao.FindById(accountID);
 
-			if (accountDetail != null && accountDetail.Id != accountID && accountDetail.Email == request.Email)
+			if (accountDetailWithID.Email != request.Email && !string.IsNullOrWhiteSpace(accountDetailWithID.FacebookId))
 			{
-                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.EmailUsedMessage.ToString(), _resources.Get("EmailUsedMessage"));
+				request.Email = accountDetailWithID.Email;
+			}
+
+			if (accountDetailWithEmail != null && accountDetailWithEmail.Email == request.Email && accountDetailWithEmail.Id != accountID)
+			{
+				throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.EmailUsedMessage.ToString(), _resources.Get("EmailUsedMessage"));
 			}
 
             CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
@@ -91,7 +97,7 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new UpdateBookingSettings();
             Mapper.Map(request, command);
 
-            command.AccountId = new Guid(this.GetSession().UserAuthId);
+			command.AccountId = accountID;
 
             _commandBus.Send(command);
 
