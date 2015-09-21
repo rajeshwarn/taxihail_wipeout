@@ -473,7 +473,7 @@ namespace MK.Common.Configuration
         public bool ShowMessageDriver { get; set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Map - Oriented Pins", Description = "Pins show vehicles orientation")]
+        [Display(Name = "Display - Use vehicle direction", Description = "Available only with GEO. When enabled, the marked will be oriented according to the vehicle direction information")]
         public bool ShowOrientedPins { get; protected set; }
     }
 }
