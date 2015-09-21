@@ -11,7 +11,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Text;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using MK.Common.Android.Helpers;
 using Newtonsoft.Json.Linq;
 using ServiceStack.ServiceClient.Web;
@@ -376,6 +375,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private async Task<string> GetTerminal()
 		{
+			var localize = this.Services().Localize;
+
 			try
 			{
 				var date = await _orderWorkflowService
@@ -391,25 +392,57 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			catch (WebServiceException ex)
 			{
-				if (ex.StatusCode == (int) HttpStatusCode.NotFound)
-				{
-					return string.Empty;
-				}
+				var showMessage = false;
+
 				if (ex.StatusCode == (int) HttpStatusCode.NoContent)
 				{
 					return "N/A";
 				}
 
+				if (ex.StatusCode == (int) HttpStatusCode.BadRequest)
+				{
+					this.Services().Message
+						.ShowMessage(localize["Error"], string.Format(localize[ex.ErrorCode], AirlineName, FlightNum, PickupTimeStamp))
+						.FireAndForget();
+
+					return string.Empty;
+				}
+
+				if (ex.StatusCode == (int) HttpStatusCode.NotFound)
+				{
+					showMessage = true;
+				}
+
 				Logger.LogMessage("An error has occurred while attempting to get the airport terminal.");
 				Logger.LogError(ex);
+
+				if (!showMessage)
+				{
+					return string.Empty;
+				}
 			}
 			catch (Exception ex)
 			{
 				Logger.LogMessage("An error has occurred while attempting to get the airport terminal.");
 				Logger.LogError(ex);
+
+				return string.Empty;
 			}
 
-			return string.Empty;
+			var cancel = false;
+
+			await this.Services().Message.ShowMessage(
+						localize["BookingAirportNoFlights_Title"],
+						string.Format(localize["BookingAirportNoFlights_Message"], AirlineName, FlightNum, PickupTimeStamp),
+						localize["YesButton"],
+						() => { },
+						localize["NoButton"],
+						() => cancel = true);
+
+
+			return cancel 
+				? string.Empty 
+				: "N/A";
 		}
 
 		private bool CanGetTerminal()
@@ -462,25 +495,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				var terminal = await GetTerminal().ShowProgress();
 
-				if (!terminal.HasValue())
+				if (terminal.HasValue())
 				{
-					var cancel = false;
-
-					await this.Services().Message.ShowMessage(
-							localize["BookingAirportNoFlights_Title"],
-							string.Format(localize["BookingAirportNoFlights_Message"], AirlineName, FlightNum, PickupTimeStamp),
-							localize["YesButton"],
-							() => { },
-							localize["NoButton"],
-							() => cancel = true);
-
-					if (cancel)
-					{
-						return;
-					}
+					return;
 				}
 
-				UpdateDriverNoteWithAirportInformation(localize, pickupPoint, fee, terminal);
+				UpdateDriverNoteWithAirportInformation(pickupPoint, fee, terminal);
 
 				((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
 
@@ -496,8 +516,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private void UpdateDriverNoteWithAirportInformation(ILocalization localize, PointsItems pickupPoint, int fee, string terminal)
+		private void UpdateDriverNoteWithAirportInformation(PointsItems pickupPoint, int fee, string terminal)
 		{
+			var localize = this.Services().Localize;
+
 			var sb = new StringBuilder();
 
 			if (Note.Length > 0)
