@@ -137,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(_txtFlightNum)
                 .For(v => v.Text)
-                .To(vm => vm.FlightNum );
+                .To(vm => vm.FlightNumber );
 
             set.Bind(_txtAirlines)
                 .For("Text")

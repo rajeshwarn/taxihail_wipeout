@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				.To(vm => vm.PickupTimeStamp);
 					
 			set.BindSafe (txtFlightNum)
-				.To (vm => vm.FlightNum);
+				.To (vm => vm.FlightNumber);
 
 			set.BindSafe (txtAirlines)
 				.To (vm => vm.AirlineName);
