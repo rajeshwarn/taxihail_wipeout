@@ -146,9 +146,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.SelectMany(_ => GetManualRideLinqDetails())
 				.StartWith(orderManualRideLinqDetail)
 				.ObserveOn(SynchronizationContext.Current)
-                .Do(/*RefreshManualRideLinqDetails*/async rideLinqDetails =>
+                .SelectMany(async rideLinqDetails =>
                 {
                     await RefreshManualRideLinqDetails(rideLinqDetails);
+                    return rideLinqDetails;
                 })
 				.Where(orderDetails => orderDetails.EndTime.HasValue)
 				.Take(1) // trigger only once
