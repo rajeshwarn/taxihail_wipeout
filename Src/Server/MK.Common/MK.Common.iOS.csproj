@@ -97,12 +97,14 @@
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
+    <Compile Include="CoordinateSystemOrientation.cs" />
     <Compile Include="CountryCode.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
     <Compile Include="Entity\RatingTypeWrapper.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
+    <Compile Include="Enumeration\DeviceOrientations.cs" />
     <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\LocalAvailableVehiclesModes.cs" />

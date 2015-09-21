@@ -172,9 +172,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				return _userMovedMap ?? (_userMovedMap = new CancellableCommand<MapBounds>(SetAddressToCoordinate, _ => true));
+				return _userMovedMap ?? (_userMovedMap = new CancellableCommand<MapBounds>(SetAddressToCoordinate, _ => CanExecuteUserMovedMap()));
             }
         }
+
+		private bool CanExecuteUserMovedMap()
+		{
+			return ((HomeViewModel)Parent).CurrentViewState == HomeViewModelState.Initial;
+		}
 
 		private async Task SetAddressToCoordinate(MapBounds bounds, CancellationToken token)
 		{
