@@ -189,6 +189,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired))
             {
                 orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_PairingFailed", _languageCode);
+                orderStatusDetail.PairingError = string.Format("CMT Pairing Error Code: {0}", tripInfo.ErrorCode);
             }
         }
 

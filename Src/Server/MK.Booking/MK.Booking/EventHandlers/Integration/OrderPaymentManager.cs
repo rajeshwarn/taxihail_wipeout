@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
@@ -220,6 +221,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             AccountId = order.AccountId,
                             OrderId = order.Id,
                             IBSOrderId = order.IBSOrderId,
+                            TransactionId = orderStatus.OrderId.ToString().Split('-').FirstOrDefault(), // Use first part of GUID to display to user
                             OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
                             TransactionDate = @event.EventDate
                         });
@@ -263,6 +265,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             AccountId = orderStatus.AccountId,
                             OrderId = orderStatus.OrderId,
                             IBSOrderId = orderStatus.IBSOrderId,
+                            TransactionId = orderStatus.OrderId.ToString().Split('-').FirstOrDefault(), // Use first part of GUID to display to user
                             OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
                             TransactionDate = @event.EventDate
                         });

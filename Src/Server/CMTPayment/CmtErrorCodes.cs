@@ -16,7 +16,7 @@ namespace CMTPayment
 
         public const int CardDeclined = 114;
 
-        public const int TripEndError = 115;
+        public const int PaymentProcessingError = 115;
         // TripInfo Codes
     }
 }
