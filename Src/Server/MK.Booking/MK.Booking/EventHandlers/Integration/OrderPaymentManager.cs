@@ -210,25 +210,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // Check if card declined
                     InitializeCmtServiceClient();
 
-                    try
+                    var trip = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
+                    if (trip != null && trip.ErrorCode == CmtErrorCodes.CardDeclined)
                     {
-                        _cmtTripInfoServiceHelper.GetTripInfo(orderStatus.RideLinqPairingCode);
-                    }
-                    catch (WebServiceException ex)
-                    {
-                        if (ex.StatusCode == CmtErrorCodes.CardDeclined)
+                        _commandBus.Send(new ReactToPaymentFailure
                         {
-                            _commandBus.Send(new ReactToPaymentFailure
-                            {
-                                AccountId = order.AccountId,
-                                OrderId = order.Id,
-                                IBSOrderId = order.IBSOrderId,
-                                OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
-                                TransactionDate = @event.EventDate
-                            });
+                            AccountId = order.AccountId,
+                            OrderId = order.Id,
+                            IBSOrderId = order.IBSOrderId,
+                            OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
+                            TransactionDate = @event.EventDate
+                        });
 
-                            return;
-                        }
+                        return;
                     }
 
                     // Since RideLinqCmt payment is processed automatically by CMT, we have to charge booking fees separately

@@ -108,6 +108,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                 CheckForOrderTimeOut(orderStatusDetail);
             }
 
+            CheckForRideLinqCmtPairingErrors(orderStatusDetail);
+
             if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
             {
                 _logger.LogMessage("Skipping order update");
@@ -143,7 +145,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
 
-            if (orderStatusDetail.UnpairingTimeOut != null && !paymentSettings.CancelOrderOnUnpair)
+            if (orderStatusDetail.UnpairingTimeOut != null && !paymentSettings.CancelOrderOnUnpair && orderStatusDetail.UnpairingTimeOut.Value != DateTime.MaxValue)
             {
                 if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(timeBetweenPaymentChangeAndSaveInDB))
                 {
@@ -163,6 +165,33 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
+        public void CheckForRideLinqCmtPairingErrors(OrderStatusDetail orderStatusDetail)
+        {
+            var paymentMode = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey).PaymentMode;
+            if (paymentMode != PaymentMethod.RideLinqCmt)
+            {
+                // Only for CMT RideLinQ
+                return;
+            }
+
+            var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
+            if (pairingInfo == null)
+            {
+                // Order not paired
+                return;
+            }
+
+            InitializeCmtServiceClient();
+
+            var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
+            if (tripInfo != null
+                && (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair
+                    || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired))
+            {
+                orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_PairingFailed", _languageCode);
+            }
+        }
+
         public void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)
         {
             var rideLinqDetails = _orderDao.GetManualRideLinqById(orderstatusDetail.OrderId);
@@ -175,28 +204,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             InitializeCmtServiceClient();
 
-            Trip tripInfo = null;
-
-            try
-            {
-                tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
-            }
-            catch (WebServiceException ex)
-            {
-                if (ex.StatusCode == CmtErrorCodes.CardDeclined)
-                {
-                    _commandBus.Send(new ReactToPaymentFailure
-                    {
-                        AccountId = orderstatusDetail.AccountId,
-                        OrderId = orderstatusDetail.OrderId,
-                        IBSOrderId = orderstatusDetail.IBSOrderId,
-                        OverdueAmount = Convert.ToDecimal(rideLinqDetails.Total),
-                        TransactionDate = rideLinqDetails.EndTime
-                    });
-
-                    return;
-                }
-            }
+            var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
 
             if (tripInfo == null)
             {
@@ -207,6 +215,20 @@ namespace apcurium.MK.Booking.Api.Jobs
                 _commandBus.Send(new UnpairOrderForManualRideLinq
                 {
                     OrderId = rideLinqDetails.OrderId
+                });
+
+                return;
+            }
+
+            if (tripInfo.ErrorCode == CmtErrorCodes.CardDeclined)
+            {
+                _commandBus.Send(new ReactToPaymentFailure
+                {
+                    AccountId = orderstatusDetail.AccountId,
+                    OrderId = orderstatusDetail.OrderId,
+                    IBSOrderId = orderstatusDetail.IBSOrderId,
+                    OverdueAmount = Convert.ToDecimal(rideLinqDetails.Total),
+                    TransactionDate = rideLinqDetails.EndTime
                 });
 
                 return;
