@@ -1,12 +1,8 @@
-using System.Linq;
 using Android.App;
 using Android.Content.PM;
-using Android.Graphics.Drawables;
-using Android.Views;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Common.Enumeration;
 using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
@@ -40,11 +36,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
 		void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-			if (ViewModel.DeviceOrientation == AppServices.DeviceOrientation.Left)
+			if (ViewModel.DeviceOrientation == DeviceOrientations.Left)
 			{
 				RequestedOrientation = ScreenOrientation.Landscape;
 			}
-			else if (ViewModel.DeviceOrientation == AppServices.DeviceOrientation.Right)
+			else if (ViewModel.DeviceOrientation == DeviceOrientations.Right)
 			{
 				RequestedOrientation = ScreenOrientation.ReverseLandscape;
 			}

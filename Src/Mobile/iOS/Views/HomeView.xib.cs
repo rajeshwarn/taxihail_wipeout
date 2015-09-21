@@ -224,6 +224,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	        set.Bind(mapView)
 		        .For(v => v.TaxiLocation)
 		        .To(vm => vm.BookingStatus.TaxiLocation);
+
+            set.Bind(mapView)
+                .For(v => v.CancelAutoFollow)
+                .To(vm => vm.BookingStatus.CancelAutoFollow);
             
             #endregion
 
@@ -332,6 +336,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     }, () =>
                     {
                         RedrawSubViews();
+                        ctrlAddressPicker.ResignFirstResponderOnSubviews();
                     });
 			}
 
@@ -405,7 +410,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 CloseBookATaxiDialog();
                 constraintAppBarBookingStatus.Constant = 0;
-                constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstrainValue;
+
+                if (ViewModel.BookingStatus != null && !ViewModel.BookingStatus.IsContactTaxiVisible)
+                {
+                    constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstrainValue;
+                }
 
                 if (_presentationState == HomeViewModelState.ManualRidelinq) 
 				{

@@ -392,12 +392,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         ResetToInitialState.ExecuteIfPossible();
                         return;
                     }
-					
-					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportDetails;
+
                     await _orderWorkflowService.ResetOrderSettings();
                     await ShowFareEstimateAlertDialogIfNecessary();
                     await ValidateCardOnFile();
                     await PreValidateOrder();
+                    ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportDetails;
                 });
             }
         }
@@ -405,10 +405,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         public async void ReviewOrderDetails()
 	    {
             await _orderWorkflowService.ResetOrderSettings();
-			((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
             await ShowFareEstimateAlertDialogIfNecessary();
             await ValidateCardOnFile();
             await PreValidateOrder();
+            ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
 	    }
 
         public ICommand ConfirmOrder

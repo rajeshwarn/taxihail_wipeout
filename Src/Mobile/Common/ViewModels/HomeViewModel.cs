@@ -126,13 +126,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 AddressPicker.RefreshFilteredAddress();
 
-				CheckTermsAsync();
+			    this.Services().ApplicationInfo.CheckVersionAsync();
 
-				CheckCreditCardExpiration();
+                CheckTermsAsync();
+
+                CheckCreditCardExpiration();
 
                 BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
-
-				this.Services().ApplicationInfo.CheckVersionAsync();
+				
 				_isShowingTutorial = _tutorialService.DisplayTutorialToNewUser(() =>
 				{
 					_isShowingTutorial = false;
@@ -533,6 +534,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					switch (CurrentViewState)
 					{
+						case HomeViewModelState.BookingStatus:
+						case HomeViewModelState.ManualRidelinq:
+							_bookingStatus.ReturnToInitialState();
+							break;
 						case HomeViewModelState.Review:
 						case HomeViewModelState.PickDate:
 						case HomeViewModelState.AddressSearch:
@@ -540,7 +545,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						case HomeViewModelState.TrainStationSearch:
 						case HomeViewModelState.BookATaxi:
 						case HomeViewModelState.AirportDetails:
-						case HomeViewModelState.BookingStatus:
 							CurrentViewState = HomeViewModelState.Initial;
 							break;
 						case HomeViewModelState.Edit:

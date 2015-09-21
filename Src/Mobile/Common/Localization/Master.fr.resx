@@ -391,7 +391,7 @@
     <value>Données invalides</value>
   </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
-    <value>Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.</value>
+    <value>Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit contenir au minimum 6 caractères.</value>
   </data>
   <data name="CreateAccountLanguageEnglish" xml:space="preserve">
     <value>English</value>
@@ -527,9 +527,6 @@
   </data>
   <data name="DriverInfoColor" xml:space="preserve">
     <value>Coloris:</value>
-  </data>
-  <data name="DriverInfoDriver" xml:space="preserve">
-    <value>Chauffeur:</value>
   </data>
   <data name="DriverInfoLicence" xml:space="preserve">
     <value>Licence:</value>
@@ -1699,8 +1696,11 @@
   <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
   </data>
-  <data name="UnpairWarningCancelButton" xml:space="preserve">
+  <data name="UnpairWarningOkButton" xml:space="preserve">
     <value>Payer dans le taxi</value>
+  </data>
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
+    <value>Annuler</value>
   </data>
   <data name="View_Promotions" xml:space="preserve">
     <value>Promotions</value>
@@ -1884,9 +1884,6 @@
   </data>
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Tarif:</value>
-  </data>
-  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
-    <value>Code d'association:</value>
   </data>
   <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
     <value>Taxes:</value>
@@ -2228,12 +2225,21 @@
 	<data name="BookingAirportDetailsTerminal">
 		<value>, \nTerminal: {0}</value>
 	</data>
+	<data name="UpdateNoticeTitle" xml:space="preserve">
+    		<value>Update Notice</value>
+	</data>
 	<data name="BookingAirportNoFlights_Title" xml:space="preserve">
     <value>Aucun vol</value>
   </data>
 	<data name="BookingAirportNoFlights_Message" xml:space="preserve">
     <value>Nous avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exacte? \nCompagnie aérienne: {0}\nNuméros de vol: {1}\nDate: {2}</value>
   </data>
+	<data name="UpdateNoticeText" xml:space="preserve">
+    	<value>Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît</value>
+	</data>
+	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
+ 		<value>Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</value>
+  	</data>
 	<data name="BookingAirportMissingInfo_Title" xml:space="preserve">
     <value>Informations manquantes</value>
   </data>

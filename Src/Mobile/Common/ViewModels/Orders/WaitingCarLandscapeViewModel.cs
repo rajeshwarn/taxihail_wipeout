@@ -1,32 +1,93 @@
-﻿using apcurium.MK.Booking.Mobile.AppServices;
+﻿using System;
 using System.Windows.Input;
-
 using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.ViewModels;
-using System;
+using apcurium.MK.Common.Enumeration;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels
+namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
+	public class WaitingCarLandscapeViewModel : PageViewModel
+	{
+		private string _carNumber;
+		private DeviceOrientations _deviceOrientation;
+
+		public void Init(WaitingCarLandscapeViewModelParameters waitingCarLandscapeViewModelParameters)
+		{
+			CarNumber = waitingCarLandscapeViewModelParameters.CarNumber;
+			DeviceOrientation = waitingCarLandscapeViewModelParameters.DeviceOrientations;
+
+			BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.Subscribe(UpdateModelParametersEvent, СloseWaitingWindowEvent);
+		}
+
+		private void UpdateModelParametersEvent(DeviceOrientations deviceOrientation, string carNumber)
+		{
+			DeviceOrientation = deviceOrientation;
+			CarNumber = carNumber;
+		}
+
+		private void СloseWaitingWindowEvent()
+		{
+			BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.UnSubscribe(UpdateModelParametersEvent, СloseWaitingWindowEvent);
+			Close(this);
+		}
+
+		public string CarNumber
+		{
+			get { return _carNumber; }
+			set
+			{
+				if (_carNumber != value)
+				{
+					_carNumber = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+
+		public DeviceOrientations DeviceOrientation
+		{
+			get { return _deviceOrientation; }
+			set
+			{
+				if (_deviceOrientation != value)
+				{
+					_deviceOrientation = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+
+		public ICommand CloseView
+		{
+			get
+			{
+				return this.GetCommand(() =>
+					{
+						BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+					});
+			}
+		}
+	}
+
 	public class WaitingCarLandscapeViewModelParameters
 	{
-		public event Action<DeviceOrientation> UpdateDeviceOrientationEvent;
+		public event Action<DeviceOrientations, string> UpdateModelParametersEvent;
 		public event Action СloseWaitingWindowEvent;
 
 		public string CarNumber { get; set; }
 
-		public DeviceOrientation DeviceOrientation { get; set; }
+		public DeviceOrientations DeviceOrientations { get; set; }
 
 		public bool WaitingWindowClosed = false;
 
-		public object _exclusiveAccess = new object();
+		private object _exclusiveAccess = new object();
 
-		public void UpdateDeviceOrientation(DeviceOrientation deviceOrientation)
+		public void UpdateModelParameters(DeviceOrientations deviceOrientations, string carMumber)
 		{
 			lock (_exclusiveAccess)
 			{
-				if (UpdateDeviceOrientationEvent != null && !WaitingWindowClosed)
+				if (UpdateModelParametersEvent != null && !WaitingWindowClosed)
 				{
-					UpdateDeviceOrientationEvent(deviceOrientation);
+					UpdateModelParametersEvent(deviceOrientations, carMumber);
 				}
 			}
 		}
@@ -43,80 +104,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public void Subscribe(Action<DeviceOrientation> updateDeviceOrientationEvent, Action closeWaitingWindowEvent)
+		public void Subscribe(Action<DeviceOrientations, string> updateModelParametersEvent, Action closeWaitingWindowEvent)
 		{
-			UpdateDeviceOrientationEvent += updateDeviceOrientationEvent;
+			UpdateModelParametersEvent += updateModelParametersEvent;
 			СloseWaitingWindowEvent += closeWaitingWindowEvent;
 		}
 
-		public void UnSubscribe(Action<DeviceOrientation> updateDeviceOrientationEvent, Action closeWaitingWindowEvent)
+		public void UnSubscribe(Action<DeviceOrientations, string> updateModelParametersEvent, Action closeWaitingWindowEvent)
 		{
-			UpdateDeviceOrientationEvent -= updateDeviceOrientationEvent;
+			UpdateModelParametersEvent -= updateModelParametersEvent;
 			СloseWaitingWindowEvent -= closeWaitingWindowEvent;
 		}
 	}
-
-	public class WaitingCarLandscapeViewModel:PageViewModel
-    {
-		string _carNumber;
-		DeviceOrientation _deviceOrientation;
-
-		public void Init(WaitingCarLandscapeViewModelParameters waitingCarLandscapeViewModelParameters)
-		{
-			CarNumber = waitingCarLandscapeViewModelParameters.CarNumber;
-			DeviceOrientation = waitingCarLandscapeViewModelParameters.DeviceOrientation;
-
-			BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.Subscribe(UpdateDeviceOrientationEvent, СloseWaitingWindowEvent);
-		}
-
-		void UpdateDeviceOrientationEvent(DeviceOrientation deviceOrientation)
-		{
-			DeviceOrientation = deviceOrientation;
-		}
-
-		void СloseWaitingWindowEvent()
-		{
-			BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.UnSubscribe(UpdateDeviceOrientationEvent, СloseWaitingWindowEvent);
-			Close(this);
-		}
-
-		public string CarNumber
-		{
-			get
-			{
-				return _carNumber;
-			}
-			
-			set
-			{
-				_carNumber = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public DeviceOrientation DeviceOrientation
-		{
-			get
-			{
-				return _deviceOrientation;
-			}
-
-			set
-			{
-				_deviceOrientation = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public ICommand CloseView
-		{
-			get
-			{
-				return this.GetCommand(() =>
-				{
-					BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
-				});
-			}
-		}
-    }
 }

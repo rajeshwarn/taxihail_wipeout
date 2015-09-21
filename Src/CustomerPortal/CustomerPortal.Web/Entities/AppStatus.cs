@@ -10,5 +10,6 @@
         Production,
         TestingNewVersion,
         DemoSystem,
+        Inactive,
     }
 }

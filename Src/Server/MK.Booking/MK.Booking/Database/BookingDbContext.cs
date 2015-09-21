@@ -18,6 +18,11 @@ namespace apcurium.MK.Booking.Database
     {
         public const string SchemaName = "Booking";
 
+        public BookingDbContext()
+        {
+            
+        }
+
         public BookingDbContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
