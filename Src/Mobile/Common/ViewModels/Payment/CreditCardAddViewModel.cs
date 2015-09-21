@@ -52,6 +52,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         private const string VisaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
         private const string MasterPattern = "^5[1-5][0-9]{14}$";
         private const string AmexPattern = "^3[47][0-9]{13}$";
+        private const int TipMaxPercent = 100;
 #endregion
 
         public class DummyVisa
@@ -410,7 +411,57 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
 				return IsEditing ? this.Services().Localize["Modify"] : this.Services().Localize["Save"];
 			}
-		}	
+		}
+
+		public bool ShouldDisplayTip
+		{
+			get
+			{
+				return _paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled;
+			}
+		}
+
+		private PaymentDetailsViewModel _paymentPreferences;
+		public PaymentDetailsViewModel PaymentPreferences
+		{
+			get
+			{
+				if (_paymentPreferences == null)
+				{
+					_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
+					_paymentPreferences.Start();
+					_paymentPreferences.ActionOnTipSelected = SaveTip;
+				}
+				return _paymentPreferences;
+			}
+		}
+
+		public ICommand SaveTip 
+		{ 
+			get
+			{
+				return this.GetCommand<int>(async tip =>
+					{
+                        if (PaymentPreferences.Tip > TipMaxPercent)
+                        {
+                            await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
+                            return;
+                        }
+
+                        try
+                        {
+                            await _accountService.UpdateSettings(_accountService.CurrentAccount.Settings, PaymentPreferences.Tip);
+                        }
+                        catch (WebServiceException ex)
+                        {
+                            this.Services()
+                                .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                                    this.Services().Localize["UpdateBookingSettingsGenericError"]);
+                        }
+					});
+			} 
+		} 
+
 		public ICommand SaveCreditCardCommand 
         { 
             get
