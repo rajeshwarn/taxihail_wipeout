@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 
 			txtAirlines.Configure (Localize.GetValue ("BookingAirportAirlineslbl"), () => ViewModel.Airlines.ToArray (), () => ViewModel.AirlineId, x => ViewModel.AirlineId = x.Id ?? 0);
-			txtPUPoints.Configure (Localize.GetValue ("BookingAirportPUPointslbl"), () => ViewModel.PUPoints.ToArray (), () => ViewModel.PUPointsId, x => ViewModel.PUPointsId = x.Id ?? 0);
+			txtPUPoints.Configure (Localize.GetValue ("BookingAirportPUPointslbl"), () => ViewModel.PickupPoints.ToArray (), () => ViewModel.SelectedPickupPointsId, x => ViewModel.SelectedPickupPointsId = x.Id ?? 0);
 
 			Foundation.NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, ObserveKeyboardShown);
 		}
@@ -111,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				.To (vm => vm.AirlineName);
 
 			set.BindSafe (txtPUPoints)
-				.To (vm => vm.PUPointsName);
+				.To (vm => vm.SelectedPickupPointName);
 			
 			set.Apply();
 		}

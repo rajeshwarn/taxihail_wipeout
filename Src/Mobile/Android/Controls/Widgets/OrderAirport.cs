@@ -157,15 +157,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(_txtPUPoints)
                 .For("Text")
-                .To(vm => vm.PUPointsName);
+                .To(vm => vm.SelectedPickupPointName);
 
             set.Bind(_txtPUPoints)
                 .For("Data")
-                .To(vm => vm.PUPoints);
+                .To(vm => vm.PickupPoints);
 
             set.Bind(_txtPUPoints)
                 .For("SelectedItem")
-                .To(vm => vm.PUPointsId);
+                .To(vm => vm.SelectedPickupPointsId);
             
             set.Apply();
 		}

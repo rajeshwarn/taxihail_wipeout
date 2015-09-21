@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
-        readonly ISubject<string> _objPOIRefPickupListSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<PickupPoint[]> _objPOIRefPickupListSubject = new BehaviorSubject<PickupPoint[]>(new PickupPoint[0]);
 		readonly ISubject<Airline[]> _objPOIRefAirlineListSubject = new BehaviorSubject<Airline[]>(new Airline[0]);
 
         private bool _isOrderRebooked;
@@ -388,32 +388,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                         return null;
                     }
                 }
-                else
-                {
-                    try
-                    {
-                        var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
-                        if (order.IsRated)
-                        {
-                            _bookingService.ClearLastOrder();
-                        }
-                        else
-                        {
-                            if (!order.IsManualRideLinq)
-                            {
-                                // Rating only for "normal" rides
-                                _bookingService.SetLastUnratedOrderId(status.OrderId);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogMessage(string.Format("Error trying to get status of order {0}", status.OrderId));
-                        _logger.LogError(ex);
 
-                        return null;
-                    }
-                }
+				try
+				{
+					var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
+					if (order.IsRated)
+					{
+						_bookingService.ClearLastOrder();
+					}
+					else
+					{
+						if (!order.IsManualRideLinq)
+						{
+							// Rating only for "normal" rides
+							_bookingService.SetLastUnratedOrderId(status.OrderId);
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					_logger.LogMessage(string.Format("Error trying to get status of order {0}", status.OrderId));
+					_logger.LogError(ex);
+
+					return null;
+				}
 			}
 
 			return null;
@@ -421,7 +419,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task POIRefPickupList(string textMatch, int maxRespSize)
         {
-			var pObject = await _poiProvider.GetPOIRefPickupList(String.Empty, textMatch, maxRespSize);
+			var pObject = await _poiProvider.GetPOIRefPickupList(string.Empty, textMatch, maxRespSize);
             _objPOIRefPickupListSubject.OnNext(pObject);
 
         }
@@ -456,7 +454,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _addressSelectionModeSubject;
 		}
 
-        public IObservable<string> GetAndObservePOIRefPickupList()
+		public IObservable<PickupPoint[]> GetAndObservePOIRefPickupList()
         {
             return _objPOIRefPickupListSubject;
         }
@@ -673,7 +671,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_orderValidationResultSubject.OnNext(null);
 			_loadingAddressSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
-            _objPOIRefPickupListSubject.OnNext(string.Empty);
+            _objPOIRefPickupListSubject.OnNext(new PickupPoint[0]);
             _objPOIRefAirlineListSubject.OnNext(new Airline[0]);
         }
 

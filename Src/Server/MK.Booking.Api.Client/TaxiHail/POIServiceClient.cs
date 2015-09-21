@@ -19,51 +19,51 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public Task<string> GetPOIRefPickupList(string company, string textMatch, int maxRespSize)
+        public Task<PickupPoint[]> GetPOIRefPickupList(string company, string textMatch, int maxRespSize)
         {
-            var sb = new StringBuilder();
-            sb.Append("/references/pickuppoint");
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append("/references/pickuppoint");
             if(company.HasValue())
             {
-                sb.Append(string.Format( "_{0}", company));
+                stringBuilder.Append(string.Format( "_{0}", company));
             }
             if(textMatch.HasValue())
             {
-                sb.Append(string.Format("/{0}", textMatch));
+                stringBuilder.Append(string.Format("/{0}", textMatch));
             }
-            sb.Append("?format=json");
+            stringBuilder.Append("?format=json");
             if( maxRespSize > 0 )
             {
-                sb.Append(string.Format("&size={0}", maxRespSize));
+                stringBuilder.Append(string.Format("&size={0}", maxRespSize));
             }
-            var req = sb.ToString();
-			Console.WriteLine (req);
-            var pObject = Client.GetAsync<string>(req);
-            return pObject;
+            var request = stringBuilder.ToString();
+			Console.WriteLine (request);
+
+			return Client.GetAsync<PickupPoint[]>(request);
         }
 
 		public Task<Airline[]> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
         {
-            var sb = new StringBuilder();
-            sb.Append("/references/airline");
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append("/references/airline");
 			if (company.HasValue())
             {
-                sb.Append(string.Format("_{0}", company));
+                stringBuilder.Append(string.Format("_{0}", company));
             }
 			if (textMatch.HasValue())
             {
-                sb.Append(string.Format("/{0}", textMatch));
+                stringBuilder.Append(string.Format("/{0}", textMatch));
             }
-            sb.Append("?format=json");
+            stringBuilder.Append("?format=json");
             if (maxRespSize > 0)
             {
-                sb.Append(string.Format("&size={0}", maxRespSize));
+                stringBuilder.Append(string.Format("&size={0}", maxRespSize));
             }
-            sb.Append("&coreFieldsOnly=true");
-            var req = sb.ToString();
-			Console.WriteLine (req);
+            
+            var request = stringBuilder.Append("&coreFieldsOnly=true").ToString();
+			Console.WriteLine (request);
 
-            return Client.GetAsync<Airline[]>(req);
+            return Client.GetAsync<Airline[]>(request);
         }
     }
 }

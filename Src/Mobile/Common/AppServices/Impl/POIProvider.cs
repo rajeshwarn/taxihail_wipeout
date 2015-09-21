@@ -8,20 +8,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class POIProvider : BaseService, IPOIProvider
     {
-        public async Task<string> GetPOIRefPickupList(string company, string textMatch, int maxRespSize)
+		public async Task<PickupPoint[]> GetPOIRefPickupList(string company, string textMatch, int maxRespSize)
         {
-            var result = string.Empty;
             try
             {
-                result = await UseServiceClientAsync<POIServiceClient, string>(service => service.GetPOIRefPickupList(company, textMatch, maxRespSize ));
+                return await UseServiceClientAsync<POIServiceClient, PickupPoint[]>(service => service.GetPOIRefPickupList(company, textMatch, maxRespSize ));
             }
-            catch
+            catch(Exception ex)
             {
-#if DEBUG
-                result = "[{\"additionalFee\":\"0.00\",\"name\":\"Curbside\",\"id\":\"utog.Curbside\",\"type\":\"pickuppoint_utog\"},{\"additionalFee\":\"15.00\",\"name\":\"Meet and Greet\",\"id\":\"utog.Meet and Greet\",\"type\":\"pickuppoint_utog\"}]";
-#endif
+				Logger.LogError(ex);
+
+	            return new PickupPoint[0];
             }
-            return result;
         }
 
 		public async Task<Airline[]> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
