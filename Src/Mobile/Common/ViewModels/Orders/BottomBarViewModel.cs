@@ -12,7 +12,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
-using ServiceStack.Text;
 using System.ComponentModel;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
@@ -74,11 +73,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private IObservable<HomeViewModelState> ObserveHomeViewModelState()
 		{
 			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-				h => Parent.PropertyChanged += h,
-				h => Parent.PropertyChanged -= h
-			).Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
-			.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
-			.DistinctUntilChanged();
+					h => Parent.PropertyChanged += h,
+					h => Parent.PropertyChanged -= h
+				)
+				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
+				.DistinctUntilChanged();
 		}
 
         public async void CheckManualRideLinqEnabledAsync(bool isInMarket)
