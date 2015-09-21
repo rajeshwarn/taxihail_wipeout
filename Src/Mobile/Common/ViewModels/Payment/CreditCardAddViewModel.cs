@@ -452,7 +452,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         {
                             await _accountService.UpdateSettings(_accountService.CurrentAccount.Settings, PaymentPreferences.Tip);
                         }
-                        catch (WebServiceException ex)
+                        catch (WebServiceException)
                         {
                             this.Services()
                                 .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
