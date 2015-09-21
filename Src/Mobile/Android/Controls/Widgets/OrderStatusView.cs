@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 set.Bind()
                     .For(v => v.ShowAnimation)
-                    .To(vm => vm.ShowAnimation);
+                    .To(vm => vm.ShowProgress);
                     
 				set.Bind(_contactTaxiOverlay)
 					.For(v => v.Visibility)
