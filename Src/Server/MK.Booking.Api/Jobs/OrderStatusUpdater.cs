@@ -220,18 +220,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            if (tripInfo.ErrorCode == CmtErrorCodes.CardDeclined)
-            {
-                _commandBus.Send(new ReactToPaymentFailure
-                {
-                    AccountId = orderstatusDetail.AccountId,
-                    OrderId = orderstatusDetail.OrderId,
-                    IBSOrderId = orderstatusDetail.IBSOrderId,
-                    OverdueAmount = Convert.ToDecimal(rideLinqDetails.Total),
-                    TransactionDate = rideLinqDetails.EndTime
-                });
+            string pairingError = null;
 
-                return;
+            if (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired)
+            {
+                pairingError = tripInfo.ErrorCode.ToString();
             }
 
             _logger.LogMessage("Sending Trip update command for trip {0} (order {1}; pairing token {2})", tripInfo.TripId, orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
@@ -262,6 +255,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 				Tolls = tripInfo.TollHistory.SelectOrDefault(tollHistory => tollHistory.ToArray(), new TollDetail[0]),
                 LastLatitudeOfVehicle = tripInfo.Lat,
                 LastLongitudeOfVehicle = tripInfo.Lon,
+                PairingError = pairingError
             });
         }
 

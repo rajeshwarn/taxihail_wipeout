@@ -298,6 +298,9 @@
   <data name="CmtRideLinqSaveChanges" xml:space="preserve">
     <value>حفظ</value>
   </data>
+  <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
+    <value>An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</value>
+  </data>
   <data name="UnpairPayInCar" xml:space="preserve">
     <value>Pay in Car</value>
   </data>

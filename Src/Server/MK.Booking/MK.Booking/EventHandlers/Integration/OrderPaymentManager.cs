@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
@@ -210,7 +211,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // Check if card declined
                     InitializeCmtServiceClient();
 
-                    var trip = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
+                    //var trip = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
+                    var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(pairingInfo.PairingToken);
+
                     if (trip != null && trip.ErrorCode == CmtErrorCodes.CardDeclined)
                     {
                         _commandBus.Send(new ReactToPaymentFailure
@@ -249,6 +252,27 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
                 if (orderStatus != null)
                 {
+                    // Check if card declined
+                    InitializeCmtServiceClient();
+
+                    //var trip = _cmtTripInfoServiceHelper.GetTripInfo(@event.PairingToken);
+
+                    var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(@event.PairingToken);
+
+                    if (trip != null && trip.ErrorCode == CmtErrorCodes.CardDeclined)
+                    {
+                        _commandBus.Send(new ReactToPaymentFailure
+                        {
+                            AccountId = orderStatus.AccountId,
+                            OrderId = orderStatus.OrderId,
+                            IBSOrderId = orderStatus.IBSOrderId,
+                            OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
+                            TransactionDate = @event.EventDate
+                        });
+
+                        return;
+                    }
+
                     // Since RideLinqCmt payment is processed automatically by CMT, we have to charge booking fees separately
                     _feeService.ChargeBookingFeesIfNecessary(orderStatus);
                 }

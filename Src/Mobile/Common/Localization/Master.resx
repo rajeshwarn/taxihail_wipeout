@@ -1905,6 +1905,9 @@
   <data name="ManualRideLinqStatus_Unpair" xml:space="preserve">
     <value>Unpair</value>
   </data>
+  <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
+    <value>An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</value>
+  </data>
   <data name="ManualPairingForRideLinQ_Error_Title" xml:space="preserve">
     <value>Error</value>
   </data>

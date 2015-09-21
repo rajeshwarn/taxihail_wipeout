@@ -115,6 +115,30 @@ namespace CMTPayment
             }
         }
 
+        public Trip CheckForTripEndErrors(string pairingToken)
+        {
+            var timeToWaitForErrors = 45; // In seconds
+
+            var watch = new Stopwatch();
+            watch.Start();
+            var trip = GetTripInfo(pairingToken);
+
+            while (trip != null && !trip.ErrorCode.HasValue)
+            {
+                Thread.Sleep(2000);
+                trip = GetTripInfo(pairingToken);
+
+                if (watch.Elapsed.TotalSeconds >= timeToWaitForErrors)
+                {
+                    // No errors found
+                    return trip;
+                }
+            }
+
+            // Errors found
+            return trip;
+        }
+
         public void WaitForTipUpdated(string pairingToken, int updatedTipPercentage, long timeoutSeconds)
         {
             var watch = new Stopwatch();
