@@ -59,10 +59,23 @@ namespace apcurium.MK.Booking.Api.Services
 				.Deserialize<FlightStatsResponse>()
 				.Result;
 
-			if (flightStatsResponse == null || flightStatsResponse.FlightStatuses == null ||  flightStatsResponse.FlightStatuses.None())
+			if (flightStatsResponse == null)
 			{
-				throw new HttpError(HttpStatusCode.NotFound,"No flight found.");
+				throw new HttpError(HttpStatusCode.NotFound, "No flight found.");
 			}
+
+			var error = flightStatsResponse.Error;
+
+			if (error != null)
+			{
+				throw new HttpError(HttpStatusCode.BadRequest, "OrderAirportView_" + error.ErrorCode);
+			}
+
+			if (flightStatsResponse.FlightStatuses == null ||  flightStatsResponse.FlightStatuses.None())
+			{
+				throw new HttpError(HttpStatusCode.NotFound, "No flight found.");
+			}
+
 
 			var terminal = GetTerminal(flightStatsResponse.FlightStatuses, request.IsPickup, request.AirportId);
 
@@ -71,10 +84,16 @@ namespace apcurium.MK.Booking.Api.Services
 				throw new HttpError(HttpStatusCode.NoContent,"No terminal found.");
 			}
 
+
 			return new FlightInformation
 			{
 				Terminal = terminal
 			};
+		}
+
+		private string GetErrorMessageFromCode(FlightStatsError error)
+		{
+			
 		}
 
 		private string GetTerminal(IEnumerable<FlightStatus> flightStatuses, bool isPickup, string airportId)

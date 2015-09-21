@@ -195,6 +195,7 @@
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\FlightInformation.cs" />
     <Compile Include="Resources\FlightStats\AirportResource.cs" />
+    <Compile Include="Resources\FlightStats\FlightStatsError.cs" />
     <Compile Include="Resources\FlightStats\FlightStatsResponse.cs" />
     <Compile Include="Resources\FlightStats\FlightStatus.cs" />
     <Compile Include="Resources\IbsChargeAccountImportReport.cs" />
