@@ -225,15 +225,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				this.Services().Localize.IsRightToLeft ? screenSize.X : orderEditLayout.RightMargin,
 				orderEditLayout.TopMargin, orderEditLayout.BottomMargin, orderEditLayout.Gravity);
 
-			/*if (this.Services().Localize.IsRightToLeft)
-			{
-				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).RightMargin = screenSize.X;
-            } 
-            else 
-            {
-				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = screenSize.X;
-			}*/
-
 	        ((ViewGroup.MarginLayoutParams) _orderStatus.LayoutParameters).TopMargin = -screenSize.Y;
 
             // Creating a view controller for MapFragment
