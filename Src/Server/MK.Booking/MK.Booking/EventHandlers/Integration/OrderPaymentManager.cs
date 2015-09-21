@@ -211,7 +211,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // Check if card declined
                     InitializeCmtServiceClient();
 
-                    //var trip = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
                     var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(pairingInfo.PairingToken);
 
                     if (trip != null && trip.ErrorCode == CmtErrorCodes.CardDeclined)
@@ -254,8 +253,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     // Check if card declined
                     InitializeCmtServiceClient();
-
-                    //var trip = _cmtTripInfoServiceHelper.GetTripInfo(@event.PairingToken);
 
                     var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(@event.PairingToken);
 
