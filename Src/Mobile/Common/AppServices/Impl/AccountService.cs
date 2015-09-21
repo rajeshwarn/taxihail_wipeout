@@ -342,6 +342,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						{
 							throw new AuthException ("Account not validated", AuthFailure.AccountNotActivated, e);
 						}
+						else if(e.Message == AuthFailure.FacebookLogin.ToString())
+						{
+							throw new AuthException("Facebook Login", AuthFailure.FacebookLogin, e);
+						}
 						else
 						{
 							throw new AuthException ("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);

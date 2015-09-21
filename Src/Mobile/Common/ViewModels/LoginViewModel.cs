@@ -297,6 +297,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 }
 							}
 							break;
+						case AuthFailure.FacebookLogin:
+							{
+								this.Services().Message.ShowMessage("Facebook Login", "Please log in using facebook");
+							}
+							break;
                     }
                 }
                 catch (Exception e)
