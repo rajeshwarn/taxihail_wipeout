@@ -388,6 +388,10 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide Rebook Order", Description="Hide Rebook button in app history view")]
         public bool HideRebookOrder { get; protected set; }
 
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Configuration - Use airport details screen", Description = "Display the airport details screen before the order review screen to allow the user to send airport related information to the driver.")]
+		public bool UseAirportDetails { get; set; }
+
         [Hidden]
         [SendToClient]
         [Display(Name = "Card IO Token", Description="Token for the Card.IO API (If empty, hides the button)")]
