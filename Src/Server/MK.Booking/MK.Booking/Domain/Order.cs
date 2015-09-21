@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Domain
 			string userAgent, string clientLanguageCode, string clientVersion, double? distance,
 			double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
 			double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion,
-			int tripId, int driverId, double? accessFee, string lastFour)
+			string deviceName, int tripId, int driverId, double? accessFee, string lastFour)
 		{
 			Update(new OrderManuallyPairedForRideLinq
 			{
@@ -156,6 +156,7 @@ namespace apcurium.MK.Booking.Domain
 				RateChangeTime = rateChangeTime,
 				Distance = distance,
 				Medallion = medallion,
+				DeviceName = deviceName,
 				TripId = tripId,
 				DriverId = driverId,
 				AccessFee = accessFee,
@@ -165,7 +166,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
             double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, DateTime? startTime,
-            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId, double? accessFee, string lastFour, TollDetail[] tolls, double? lat, double? lon)
+            DateTime? endTime, string pairingToken, int tripId, int driverId, double? accessFee, string lastFour, TollDetail[] tolls, double? lat, double? lon)
         {
             Update(new ManualRideLinqTripInfoUpdated
             {
@@ -184,7 +185,6 @@ namespace apcurium.MK.Booking.Domain
                 StartTime = startTime,
                 EndTime = endTime,
                 PairingToken = pairingToken,
-                Medallion = medallion,
                 TripId = tripId,
                 DriverId = driverId,
                 AccessFee = accessFee,

@@ -1197,9 +1197,6 @@
   <data name="DriverInfoColor" xml:space="preserve">
     <value>Color:</value>
   </data>
-  <data name="DriverInfoDriver" xml:space="preserve">
-    <value>Driver:</value>
-  </data>
   <data name="DriverInfoLicence" xml:space="preserve">
     <value>Licence #:</value>
   </data>
@@ -1890,9 +1887,6 @@
   <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
     <value>Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</value>
   </data>
-  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
-    <value>Pairing Code:</value>
-  </data>
   <data name="ManualRideLinqStatus_Distance" xml:space="preserve">
     <value>Distance:</value>
   </data>
@@ -2244,4 +2238,7 @@
    <data name="EmailUsedMessage" xml:space="preserve">
     <value>This email is already used by another person</value>
   </data>
+	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
+ 		<value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
+  	</data>
 </root>

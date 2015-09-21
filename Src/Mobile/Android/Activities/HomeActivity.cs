@@ -23,6 +23,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Common.Entity;
+using Android.Views.InputMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -234,6 +235,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnCreate(mapViewSavedInstanceState);
 			MapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
 
+            var inputManager = (InputMethodManager)ApplicationContext.GetSystemService(Context.InputMethodService);
+            MapFragment.TouchableMap.Surface.Touched += (sender, e) => 
+                {
+                    inputManager.HideSoftInputFromWindow(Window.DecorView.RootView.WindowToken, HideSoftInputFlags.None);
+                };
+
 	        _orderReview.ScreenSize = screenSize;
 	        _orderReview.OrderReviewHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
 	        _orderReview.OrderReviewShownHeightProvider = () => _orderOptions.Height;
@@ -280,6 +287,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		    set.Bind(MapFragment)
 			    .For(v => v.Center)
 			    .To(vm => vm.BookingStatus.MapCenter);
+
+		    set.Bind(MapFragment)
+			    .For(v => v.OrderStatusDetail)
+			    .To(vm => vm.BookingStatus.OrderStatusDetail);
+
+            set.Bind(MapFragment)
+                .For(v => v.CancelAutoFollow)
+                .To(vm => vm.BookingStatus.CancelAutoFollow);
 
 			//Setup Visibility
 			set.Bind(_orderAirport)

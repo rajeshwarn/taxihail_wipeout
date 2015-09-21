@@ -713,10 +713,6 @@
     <value>Color:</value>
     <comment>Color:</comment>
   </data>
-  <data name="DriverInfoDriver" xml:space="preserve">
-    <value>Chofer:</value>
-    <comment>Driver:</comment>
-  </data>
   <data name="DriverInfoLicence" xml:space="preserve">
     <value># de Placa:</value>
     <comment>Licence #:</comment>
@@ -2442,10 +2438,6 @@
     <value>Medidor de tarifa:</value>
     <comment>Fare meter:</comment>
 	</data>
-  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
-    <value>Código de emparejamiento:</value>
-    <comment>Pairing Code:</comment>
-  </data>
   <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
     <value>Impuesto:</value>
     <comment>Tax amount:</comment>
@@ -2847,5 +2839,8 @@
   </data>
    <data name="EmailUsedMessage" xml:space="preserve">
     <value>This email is already used by another person</value>
+	 </data>
+  <data name="OrderStatus_PairingSuccess" xml:space="preserve">
+    <value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
   </data>
 </root>
