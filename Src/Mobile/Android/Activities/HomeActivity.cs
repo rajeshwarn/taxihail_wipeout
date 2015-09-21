@@ -218,14 +218,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = screenSize.Y;
 			((ViewGroup.MarginLayoutParams)_orderAirport.LayoutParameters).TopMargin = screenSize.Y;
 
-			if (this.Services ().Localize.IsRightToLeft) 
+			var orderEditLayout = _orderEdit.GetLayoutParameters();
+
+			_orderEdit.SetLayoutParameters(screenSize.X, orderEditLayout.Height,
+				this.Services().Localize.IsRightToLeft ? orderEditLayout.LeftMargin : screenSize.X,
+				this.Services().Localize.IsRightToLeft ? screenSize.X : orderEditLayout.RightMargin,
+				orderEditLayout.TopMargin, orderEditLayout.BottomMargin, orderEditLayout.Gravity);
+
+			/*if (this.Services().Localize.IsRightToLeft)
 			{
 				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).RightMargin = screenSize.X;
             } 
             else 
             {
 				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = screenSize.X;
-			}
+			}*/
 
 	        ((ViewGroup.MarginLayoutParams) _orderStatus.LayoutParameters).TopMargin = -screenSize.Y;
 
