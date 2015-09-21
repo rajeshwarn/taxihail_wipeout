@@ -185,6 +185,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap());
                     
                     _taxiLocationPin.SetIcon(icon);
+                    _taxiLocationPin.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
+                        ? .5f
+                        : 1f);
 
                     for (var percent = 0.05; percent < 1.00; percent += 0.05)
                     {
@@ -200,7 +203,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     try
                     {
                         var mapOptions = new MarkerOptions()
-                            .Anchor(.5f, 1f)
+                            .Anchor(.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
+                                ? .5f
+                                : 1f)
                             .SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
                             .InvokeIcon(
                                 ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
@@ -569,7 +574,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var vehicleMarker = Map.AddMarker(new MarkerOptions()
                 .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
                 .SetTitle(vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture))
-                .Anchor(.5f, 1f)
+                .Anchor(.5f, ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
+                    ? .5f
+                    : 1f)
                 .InvokeIcon(ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
                     ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
                     : _vehicleIcons[logoKey]));
@@ -590,6 +597,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 : _vehicleIcons[logoKey];
             
             markerToUpdate.SetIcon(icon);
+            markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
+                ? .5f
+                : 1f);
 
             for (var percent = 0.05; percent < 1.00; percent += 0.05)
             {
