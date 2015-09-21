@@ -707,4 +707,8 @@
   <string name="BookingAirportNoFlights_Message">No flights found with the provided information</string>
   <string name="BookingAirportMissingInfo_Title">Missing information</string>
   <string name="BookingAirportMissingInfo_Message">The airline and the flight number are madatory.</string>
+  <string name="OrderAirportView_BAD_FLIGHT_NUMBER">Invalid flight number</string>
+  <string name="OrderAirportView_BAD_AIRPORT_CODE">An error occurred with the flight status provider.</string>
+  <string name="OrderAirportView_DATE_OUT_OF_RANGE">Provided date is out of range.</string>
+  <string name="OrderAirportView_BAD_AIRLINE_CODE">An error occurred with the flight status provider.</string>
 </resources>

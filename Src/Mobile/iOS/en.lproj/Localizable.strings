@@ -706,3 +706,7 @@
 "WaitingCarLandscapeViewCloseButtonText"="Back";
 "WaitingCarLandscapeViewCarNumber"="Car Number";
 "WaitingCarLandscapeActivityName"="Car Number";
+"OrderAirportView_BAD_FLIGHT_NUMBER"="Invalid flight number";
+"OrderAirportView_BAD_AIRPORT_CODE"="An error occurred with the flight status provider. Airport code might not be set.";
+"OrderAirportView_DATE_OUT_OF_RANGE"="Provided date is out of range.";
+"OrderAirportView_BAD_AIRLINE_CODE"="An error occurred with the flight status provider.";

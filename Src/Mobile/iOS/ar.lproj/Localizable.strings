@@ -688,3 +688,7 @@
 "BookingAirportNoFlights_Message"="No flights found with the provided information";
 "BookingAirportMissingInfo_Title"="Missing information";
 "BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";
+"OrderAirportView_BAD_FLIGHT_NUMBER"="Invalid flight number";
+"OrderAirportView_BAD_AIRPORT_CODE"="An error occurred with the flight status provider.";
+"OrderAirportView_DATE_OUT_OF_RANGE"="Provided date is out of range.";
+"OrderAirportView_BAD_AIRLINE_CODE"="An error occurred with the flight status provider.";

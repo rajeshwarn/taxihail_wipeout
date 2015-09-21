@@ -2240,4 +2240,16 @@
 	<data name="BookingAirportMissingInfo_Message" xml:space="preserve">
     <value>Le numéro de vol et la compagnie aérienne sont nécessaire.</value>
   </data>
+	<data name="OrderAirportView_BAD_FLIGHT_NUMBER" xml:space="preserve">
+			<value>Numéro de vol invalide</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRPORT_CODE" xml:space="preserve">
+			<value>Un erreur est arrivé avec le fournisseur d'informations de vol.</value>
+	</data>
+	<data name="OrderAirportView_DATE_OUT_OF_RANGE" xml:space="preserve">
+			<value>La date fournis est a l'extérieur des limites du fournisseur.</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRLINE_CODE" xml:space="preserve">
+			<value>Un erreur est arriver avec le fournisseur d'information de vol.</value>
+	</data>
 </root>

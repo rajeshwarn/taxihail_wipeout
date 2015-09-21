@@ -705,3 +705,7 @@
 "BookingAirportNoFlights_Message"="Nous avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exacte? \nCompagnie aérienne: {0}\nNuméros de vol: {1}\nDate: {2}";
 "BookingAirportMissingInfo_Title"="Informations manquantes";
 "BookingAirportMissingInfo_Message"="Le numéro de vol et la compagnie aérienne sont nécessaire.";
+"OrderAirportView_BAD_FLIGHT_NUMBER"="Numéro de vol invalide";
+"OrderAirportView_BAD_AIRPORT_CODE"="Un erreur est arrivé avec le fournisseur d'informations de vol.";
+"OrderAirportView_DATE_OUT_OF_RANGE"="La date fournis est a l'extérieur des limites du fournisseur.";
+"OrderAirportView_BAD_AIRLINE_CODE"="Un erreur est arriver avec le fournisseur d'information de vol.";

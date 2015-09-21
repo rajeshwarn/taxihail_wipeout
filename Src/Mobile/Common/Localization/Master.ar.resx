@@ -2188,4 +2188,16 @@
 	<data name="BookingAirportMissingInfo_Message" xml:space="preserve">
     <value>The airline and the flight number are madatory.</value>
   </data>
+	<data name="OrderAirportView_BAD_FLIGHT_NUMBER" xml:space="preserve">
+			<value>Invalid flight number</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRPORT_CODE" xml:space="preserve">
+			<value>An error occurred with the flight status provider.</value>
+	</data>
+	<data name="OrderAirportView_DATE_OUT_OF_RANGE" xml:space="preserve">
+			<value>Provided date is out of range.</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRLINE_CODE" xml:space="preserve">
+			<value>An error occurred with the flight status provider.</value>
+	</data>
 </root>
