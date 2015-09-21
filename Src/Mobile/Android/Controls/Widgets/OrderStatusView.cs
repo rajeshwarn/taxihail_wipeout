@@ -35,6 +35,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					.To(vm => vm.IsContactTaxiVisible)
 					.WithConversion("Visibility");
 
+                set.Bind()
+                    .For(v => v.ShowAnimation)
+                    .To(vm => vm.ShowAnimation);
+                    
 				set.Bind(_contactTaxiOverlay)
 					.For(v => v.Visibility)
 					.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
@@ -43,6 +47,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				set.Apply();
 			});
 		}
+
+        private bool _showAnnimation;
+        public bool ShowAnimation
+        {
+            get
+            {
+                return _showAnnimation;
+            }
+            set
+            {
+                if (_showAnnimation != value)
+                {
+                    _showAnnimation = value;
+                    if (ShowAnimation)
+                    {
+                    }
+                    else
+                    {
+                    }
+                }
+
+            }
+        }
 
 		public ViewStates AnimatedVisibility
 		{

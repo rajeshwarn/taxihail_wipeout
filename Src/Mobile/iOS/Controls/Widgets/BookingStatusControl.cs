@@ -3,6 +3,7 @@ using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -12,14 +13,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
         }
 
+        LoadingStatusBarView _annimationView;
+
         public override void AwakeFromNib()
         {
             base.AwakeFromNib();
             var nib = UINib.FromName ("BookingStatusControl", null);
             AddSubview((UIView)nib.Instantiate (this, null)[0]);
-
             Initialize();
-
+           
             this.DelayBind (InitializeBinding);
         }
 
@@ -60,8 +62,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(lblVehicleInfos)
                 .For(v => v.Text)
                 .To(vm => vm.OrderStatusDetail.DriverInfos.FullVehicleInfo);
-
+            
+            set.Bind()
+                .For(v => v.ShowAnimation)
+                .To(vm => vm.ShowProgress);
+            
             set.Apply();
+        }
+
+        private bool _showAnnimation;
+        public bool ShowAnimation
+        {
+            get { return _showAnnimation; }
+            set
+            {
+                if (_showAnnimation != value)
+                {
+                    _showAnnimation = value;
+                    if (ShowAnimation)
+                    {
+                        _annimationView = new LoadingStatusBarView(new CGRect(0, 0, viewStatus.Superview.Frame.Width, viewStatus.Superview.Frame.Height));
+                        viewStatus.InsertSubview(_annimationView, 0);
+                    }
+                    else
+                    {
+                        _annimationView.RemoveFromSuperview();
+                    }
+                }
+
+            }
         }
     } 
 }

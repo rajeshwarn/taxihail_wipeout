@@ -105,7 +105,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = order;
 			OrderStatusDetail = orderStatusDetail;
 			DisplayOrderNumber();
-
 			BottomBar.NotifyBookingStatusAppbarChanged();
 
 			StatusInfoText = orderStatusDetail.IBSStatusId == null 
@@ -543,7 +542,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set
 			{
 			    _orderStatusDetail = value;
-			    RefreshView();
+				RefreshView();
 			}
         }
 
@@ -560,7 +559,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RaisePropertyChanged(() => IsContactTaxiVisible);
 	        RaisePropertyChanged(() => CanGoBack);
 	        RaisePropertyChanged(() => VehicleMedallionHidden);
+
+			ShowProgress = OrderStatusDetail != null && (string.IsNullOrEmpty(OrderStatusDetail.IBSStatusId) 
+					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting 
+					|| OrderStatusDetail.Status == OrderStatus.Created);
 	    }
+
+		private bool _showProgress = false;
+		public bool ShowProgress
+		{
+			get{ return _showProgress; }
+			set
+			{
+				_showProgress = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public bool IsConfirmationNoHidden
 		{
