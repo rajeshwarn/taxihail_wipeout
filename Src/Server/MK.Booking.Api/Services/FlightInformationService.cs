@@ -91,11 +91,6 @@ namespace apcurium.MK.Booking.Api.Services
 			};
 		}
 
-		private string GetErrorMessageFromCode(FlightStatsError error)
-		{
-			
-		}
-
 		private string GetTerminal(IEnumerable<FlightStatus> flightStatuses, bool isPickup, string airportId)
 		{
 			if (isPickup)
