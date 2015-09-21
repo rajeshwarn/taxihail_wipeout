@@ -21,7 +21,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
@@ -428,7 +427,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 if (_locateUserOnStart)
                 {
                     // this happens ONLY when returning from a ride
-                    ViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible(null);
+                    ViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
                     _locateUserOnStart = false;
                 }
             }

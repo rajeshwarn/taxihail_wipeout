@@ -285,7 +285,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				await _orderWorkflowService.SetAddress(detailedAddress);
 
-				if (_currentActiveFilter == AddressLocationType.Airport && AddressSelectionMode == AddressSelectionMode.PickupSelection )
+				if (_currentActiveFilter == AddressLocationType.Airport 
+					&& Settings.UseAirportDetails
+					&& AddressSelectionMode == AddressSelectionMode.PickupSelection )
                 {
 					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportDetails;
                 }
