@@ -81,6 +81,11 @@ namespace apcurium.MK.Booking.Api.Security
 
                 if (!account.IsConfirmed)
                 {
+                    if (account.FacebookId != null)
+                    {
+                        throw HttpError.Unauthorized(AuthenticationErrorCode.FacebookLogin);
+                    }
+                    
                     var aspnetReq = (HttpRequest) authService.RequestContext.Get<IHttpRequest>().OriginalRequest;
                     var root = new Uri(aspnetReq.Url, VirtualPathUtility.ToAbsolute("~")).ToString();
 
