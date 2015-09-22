@@ -703,7 +703,7 @@
 "BookingAirportDetailsTerminal"=", \nTerminal: {0}";
 "UpdateNoticeTitle"="Update Notice";
 "BookingAirportNoFlights_Title"="Aucun vol";
-"BookingAirportNoFlights_Message"="Nous avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}";
+"BookingAirportNoFlights_Message"="Nous n'avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}";
 "UpdateNoticeText"="Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît";
 "OrderStatus_PairingSuccess"="Association effectuée. Le paiement sera fait automatiquement à la fin de la course.";
 "BookingAirportMissingInfo_Title"="Informations manquantes";

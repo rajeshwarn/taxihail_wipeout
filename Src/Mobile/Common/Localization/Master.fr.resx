@@ -2235,7 +2235,7 @@
     <value>Aucun vol</value>
   </data>
 	<data name="BookingAirportNoFlights_Message" xml:space="preserve">
-    <value>Nous avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}</value>
+    <value>Nous n'avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}</value>
   </data>
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît</value>

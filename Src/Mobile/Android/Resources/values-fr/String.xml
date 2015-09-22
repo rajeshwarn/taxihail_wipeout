@@ -705,7 +705,7 @@
   <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="BookingAirportNoFlights_Title">Aucun vol</string>
-  <string name="BookingAirportNoFlights_Message">Nous avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}</string>
+  <string name="BookingAirportNoFlights_Message">Nous n\'avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}</string>
   <string name="UpdateNoticeText">Désolé, cette version d\'application n\'est plus maintenue. Mettez à jour l\'application s\'il vous plaît</string>
   <string name="OrderStatus_PairingSuccess">Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</string>
   <string name="BookingAirportMissingInfo_Title">Informations manquantes</string>
