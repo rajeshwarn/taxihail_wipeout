@@ -13,6 +13,10 @@ namespace apcurium.MK.Booking.IBS
     {
         int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare));
 
+        IbsHailResponse Hail(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare));
+
+        int? ConfirmHail(IbsOrderKey orderKey, IbsVehicleCandidate selectedVehicle);
+
         IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone);
 
         IbsOrderDetails GetOrderDetails(int orderId, int accountId, string contactPhone);

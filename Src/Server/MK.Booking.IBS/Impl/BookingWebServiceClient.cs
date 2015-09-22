@@ -393,85 +393,12 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             return result;
         }
-        
+
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
         {
-            Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
-
-            var order = new TBookOrder_8
-            {
-                ServiceProviderID = providerId.GetValueOrDefault(),
-                AccountID = accountId,                
-                Customer = passengerName,
-                Phone = CleanPhone(phone),
-                AccountNum = accountNumber          
-            };
-
-            if (!_serverSettings.ServerData.HideFareEstimateFromIBS)
-            {
-                order.Fare = Convert.ToDouble(fare.AmountExclTax);
-                order.VAT = Convert.ToDouble(fare.TaxAmount);
-            }
-            
-            order.DispByAuto = _ibsSettings.AutoDispatch;
-            order.Priority = _ibsSettings.OrderPriority 
-                ? 1 
-                : 0;
-            
-            order.PickupDate = new TWEBTimeStamp
-            {
-                Year = pickupDateTime.Year,
-                Month = pickupDateTime.Month,
-                Day = pickupDateTime.Day
-            };
-            order.PickupTime = new TWEBTimeStamp
-            {
-                Hour = pickupDateTime.Hour,
-                Minute = pickupDateTime.Minute,
-                Second = 0,
-                Fractions = 0
-            };
-
-            order.AccountNum = accountNumber;
-            
-            if (accountNumber.HasValue() && customerNumber.HasValue)
-            {
-                order.CustomerNum = customerNumber.Value;
-            }
-            else
-            {
-                order.CustomerNum = -1;
-            }
-            
-            order.ChargeTypeID = chargeTypeId ?? -1;
-            var aptRing = Params.Get(pickup.Apartment, pickup.RingCode).Where(s => s.HasValue()).JoinBy(" / ");
-
-            order.PickupAddress = new TWEBAddress
-            {
-                StreetPlace = pickup.FullAddress,
-                AptBaz = aptRing,
-                Longitude = pickup.Longitude,
-                Latitude = pickup.Latitude,
-                Postal = pickup.ZipCode
-            };
-            order.DropoffAddress = dropoff == null
-                ? new TWEBAddress()
-                : new TWEBAddress
-                {
-                    StreetPlace = dropoff.FullAddress,
-                    AptBaz = dropoff.Apartment,
-                    Longitude = dropoff.Longitude,
-                    Latitude = dropoff.Latitude,
-                    Postal = dropoff.ZipCode
-                };
-
-            order.Passengers = nbPassengers;
-            order.VehicleTypeID = vehicleTypeId ?? -1;
-            order.Note = note;
-            order.ContactPhone = CleanPhone( phone );
-            order.OrderStatus = TWEBOrderStatusValue.wosPost;
-
-            SetPrompts(order, prompts, promptsLength);
+            var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
+                chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
+                promptsLength, false, fare);
 
             int? orderId = null;
 
@@ -488,6 +415,84 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
             return orderId;
+        }
+
+        public IbsHailResponse Hail(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
+        {
+            var order = (TBookOrder_11)CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
+                chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
+                promptsLength, false, fare);
+
+            TBookOrderKey orderKey = null;
+            var vehicleCandidates = new TVehicleComp[0];
+
+            UseService(service =>
+            {
+                Logger.LogMessage("WebService Creating IBS Hail : " +
+                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_11)));
+                Logger.LogMessage("WebService Creating IBS Hail pickup : " +
+                                  JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
+                Logger.LogMessage("WebService Creating IBS Hail dest : " +
+                                  JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
+
+                orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, ref vehicleCandidates);
+                Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey.OrderID + ", orderGUID received : " + orderKey.GUID);
+            });
+
+            return new IbsHailResponse
+            {
+                OrderKey = new IbsOrderKey
+                {
+                    Guid = Guid.Parse(orderKey.GUID),
+                    OrderId = orderKey.OrderID
+                },
+                VehicleCandidates = Mapper.Map<IbsVehicleCandidate[]>(vehicleCandidates)
+            };
+        }
+
+        public int? ConfirmHail(IbsOrderKey orderKey, IbsVehicleCandidate selectedVehicle)
+        {
+            int? result = null;
+            var ibsOrderKey = new TBookOrderKey
+            {
+                GUID = orderKey.Guid.ToString(),
+                OrderID = orderKey.OrderId
+            };
+
+            var ibsVehicleCandidate = Mapper.Map<TVehicleComp>(selectedVehicle);
+
+            //TVehicleCompType compType;
+
+            //switch (selectedVehicle.CandidateType)
+            //{
+            //    case IbsVehicleCandidate.Type.VctNumber:
+            //        compType = TVehicleCompType.vctNumber;
+            //        break;
+            //    case IbsVehicleCandidate.Type.VctPimId:
+            //        compType = TVehicleCompType.vctPimID;
+            //        break;
+            //    case IbsVehicleCandidate.Type.VctMedallion:
+            //        compType = TVehicleCompType.vctMedallion;
+            //        break;
+            //    default:
+            //        throw new ArgumentOutOfRangeException("Invalid type for vehicle candidate");
+            //}
+
+            //var ibsVehicleCandidate = new TVehicleComp
+            //{
+            //    VehicleCompType = compType, VehicleID = selectedVehicle.VehicleId, ETADistance = selectedVehicle.ETADistance, ETATime = selectedVehicle.ETATime, Rating = selectedVehicle.Rating
+            //};
+
+            UseService(service =>
+            {
+                Logger.LogMessage("WebService Confirming Hail for orderkey: " + JsonSerializer.SerializeToString(orderKey, typeof (TBookOrderKey)));
+                Logger.LogMessage("WebService Confirming Hail for vehicle: " + JsonSerializer.SerializeToString(selectedVehicle, typeof (TVehicleComp)));
+
+                result = service.UpdateJobToVehicle(UserNameApp, PasswordApp, ibsOrderKey, ibsVehicleCandidate);
+                Logger.LogMessage("WebService Confirm Hail, orderid : " + ibsOrderKey.OrderID + ", orderGUID : " + ibsOrderKey.GUID);
+            });
+
+            return result;
         }
 
         public bool CancelOrder(int orderId, int accountId, string contactPhone)
@@ -520,9 +525,73 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
+        private TBookOrder_8 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, bool isHailRequest, Fare fare = default(Fare))
+        {
+            Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
+
+            var order = isHailRequest ? new TBookOrder_11() : new TBookOrder_8();
+
+            order.ServiceProviderID = providerId.GetValueOrDefault();
+            order.AccountID = accountId;
+            order.Customer = passengerName;
+            order.Phone = CleanPhone(phone);
+            order.AccountNum = accountNumber;
+
+            if (!_serverSettings.ServerData.HideFareEstimateFromIBS)
+            {
+                order.Fare = Convert.ToDouble(fare.AmountExclTax);
+                order.VAT = Convert.ToDouble(fare.TaxAmount);
+            }
+
+            order.DispByAuto = _ibsSettings.AutoDispatch;
+            order.Priority = _ibsSettings.OrderPriority ? 1 : 0;
+
+            order.PickupDate = new TWEBTimeStamp
+            {
+                Year = pickupDateTime.Year, Month = pickupDateTime.Month, Day = pickupDateTime.Day
+            };
+            order.PickupTime = new TWEBTimeStamp
+            {
+                Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0
+            };
+
+            order.AccountNum = accountNumber;
+
+            if (accountNumber.HasValue() && customerNumber.HasValue)
+            {
+                order.CustomerNum = customerNumber.Value;
+            }
+            else
+            {
+                order.CustomerNum = -1;
+            }
+
+            order.ChargeTypeID = chargeTypeId ?? -1;
+            var aptRing = Params.Get(pickup.Apartment, pickup.RingCode).Where(s => s.HasValue()).JoinBy(" / ");
+
+            order.PickupAddress = new TWEBAddress
+            {
+                StreetPlace = pickup.FullAddress, AptBaz = aptRing, Longitude = pickup.Longitude, Latitude = pickup.Latitude, Postal = pickup.ZipCode
+            };
+            order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress
+            {
+                StreetPlace = dropoff.FullAddress, AptBaz = dropoff.Apartment, Longitude = dropoff.Longitude, Latitude = dropoff.Latitude, Postal = dropoff.ZipCode
+            };
+
+            order.Passengers = nbPassengers;
+            order.VehicleTypeID = vehicleTypeId ?? -1;
+            order.Note = note;
+            order.ContactPhone = CleanPhone(phone);
+            order.OrderStatus = TWEBOrderStatusValue.wosPost;
+
+            SetPrompts(order, prompts, promptsLength);
+
+            return order;
+        }
+
         private int ToCents(decimal dollarAmout)
         {
-            return Convert.ToInt32(dollarAmout * 100);
+            return Convert.ToInt32(dollarAmout*100);
         }
 
         private string CleanPhone(string phone)
@@ -535,70 +604,70 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             if (prompts != null)
             {
-                if (prompts.Count() >= 1)
+                if (prompts.Length >= 1)
                 {
                     order.Prompt1 = prompts[0];
                 }
-                if (prompts.Count() >= 2)
+                if (prompts.Length >= 2)
                 {
                     order.Prompt2 = prompts[1];
                 }
-                if (prompts.Count() >= 3)
+                if (prompts.Length >= 3)
                 {
                     order.Prompt3 = prompts[2];
                 }
-                if (prompts.Count() >= 4)
+                if (prompts.Length >= 4)
                 {
                     order.Prompt4 = prompts[3];
                 }
-                if (prompts.Count() >= 5)
+                if (prompts.Length >= 5)
                 {
                     order.Prompt5 = prompts[4];
                 }
-                if (prompts.Count() >= 6)
+                if (prompts.Length >= 6)
                 {
                     order.Prompt6 = prompts[5];
                 }
-                if (prompts.Count() >= 7)
+                if (prompts.Length >= 7)
                 {
                     order.Prompt7 = prompts[6];
                 }
-                if (prompts.Count() >= 8)
+                if (prompts.Length >= 8)
                 {
                     order.Prompt8 = prompts[7];
                 }
             }
             if (promptsLength != null)
             {
-                if (promptsLength.Count() >= 1)
+                if (promptsLength.Length >= 1)
                 {
                     order.Field1 = ConvertToString(promptsLength[0]);
                 }
-                if (promptsLength.Count() >= 2)
+                if (promptsLength.Length >= 2)
                 {
                     order.Field2 = ConvertToString(promptsLength[1]);
                 }
-                if (promptsLength.Count() >= 3)
+                if (promptsLength.Length >= 3)
                 {
                     order.Field3 = ConvertToString(promptsLength[2]);
                 }
-                if (promptsLength.Count() >= 4)
+                if (promptsLength.Length >= 4)
                 {
                     order.Field4 = ConvertToString(promptsLength[3]);
                 }
-                if (promptsLength.Count() >= 5)
+                if (promptsLength.Length >= 5)
                 {
                     order.Field5 = ConvertToString(promptsLength[4]);
                 }
-                if (promptsLength.Count() >= 6)
+                if (promptsLength.Length >= 6)
                 {
                     order.Field6 = ConvertToString(promptsLength[5]);
                 }
-                if (promptsLength.Count() >= 7)
+                if (promptsLength.Length >= 7)
                 {
                     order.Field7 = ConvertToString(promptsLength[6]);
                 }
-                if (promptsLength.Count() >= 8)
+                if (promptsLength.Length >= 8)
                 {
                     order.Field8 = ConvertToString(promptsLength[7]);
                 }

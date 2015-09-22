@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Requests.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Calculator;
@@ -105,28 +106,19 @@ namespace apcurium.MK.Booking.Api.Services
             _resources = new Resources.Resources(_serverSettings);
         }
 
-		private CreateReportOrder CreateReportOrder(CreateOrder request, AccountDetail account)
-		{
-			return new CreateReportOrder()
-			{
-				PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : DateTime.Now,
-				UserNote = request.Note,
-				PickupAddress = request.PickupAddress,
-				DropOffAddress = request.DropOffAddress,
-				Settings = request.Settings,
-				ClientLanguageCode = request.ClientLanguageCode,
-				UserLatitude = request.UserLatitude,
-				UserLongitude = request.UserLongitude,
-				CompanyKey = request.OrderCompanyKey,
-				AccountId = account.Id,
-				OrderId = request.Id,
-				EstimatedFare = request.Estimate.Price,
-				UserAgent = Request.UserAgent,
-				ClientVersion = Request.Headers.Get("ClientVersion")
-			};
-		}
+        public object Post(HailRequest request)
+        {
+            var createOrderRequest = Mapper.Map<CreateOrder>(request);
+
+            return CreaterOrder(createOrderRequest, true);
+        }
 
         public object Post(CreateOrder request)
+        {
+            return CreaterOrder(request, false);
+        }
+
+        private object CreaterOrder(CreateOrder request, bool isVts)
         {
 			var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
@@ -402,11 +394,20 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Create order on IBS
-            Task.Run(() =>
-                CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account,
-                    request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
-                    accountValidationResult.Prompts, accountValidationResult.PromptsLength,
-                    bestAvailableCompany, applyPromoCommand, market, isPrepaid));
+            if (!isVts)
+            {
+                Task.Run(() =>
+                    CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account,
+                        request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
+                        accountValidationResult.Prompts, accountValidationResult.PromptsLength,
+                        bestAvailableCompany, applyPromoCommand, market, isPrepaid));
+
+            }
+            else
+            {
+                // TODO
+                throw new NotImplementedException();
+            }
 
             if (request.QuestionsAndAnswers.HasValue())
             {
@@ -1634,6 +1635,27 @@ namespace apcurium.MK.Booking.Api.Services
 				_commandBus.Send(createReportOrder);
 				throw createOrderException;
 			}
+        }
+
+        private CreateReportOrder CreateReportOrder(CreateOrder request, AccountDetail account)
+        {
+            return new CreateReportOrder
+            {
+                PickupDate = request.PickupDate ?? DateTime.Now,
+                UserNote = request.Note,
+                PickupAddress = request.PickupAddress,
+                DropOffAddress = request.DropOffAddress,
+                Settings = request.Settings,
+                ClientLanguageCode = request.ClientLanguageCode,
+                UserLatitude = request.UserLatitude,
+                UserLongitude = request.UserLongitude,
+                CompanyKey = request.OrderCompanyKey,
+                AccountId = account.Id,
+                OrderId = request.Id,
+                EstimatedFare = request.Estimate.Price,
+                UserAgent = Request.UserAgent,
+                ClientVersion = Request.Headers.Get("ClientVersion")
+            };
         }
 
         private class BestAvailableCompany
