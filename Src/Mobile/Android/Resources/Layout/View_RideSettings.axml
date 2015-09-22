@@ -92,7 +92,7 @@
                             android:textSize="18dp"
                             style="@style/BlackTextLabel"
                             android:text="thony@apcurium.com"
-                            local:MvxBind="Text Email; Visibility EditEmailAccessible, Converter=InvertedVisibility"
+                            local:MvxBind="Text Email; Visibility CanEditEmail, Converter=InvertedVisibility"
                             android:gravity="center_vertical" />
                         <EditText
                             android:layout_width="fill_parent"
@@ -101,7 +101,7 @@
                             android:singleLine="true"
                             android:maxLines="1"
                             android:inputType="textEmailAddress"
-                            local:MvxBind="Text Email; Visibility EditEmailAccessible, Converter=Visibility"
+                            local:MvxBind="Text Email; Visibility CanEditEmail, Converter=Visibility"
                             android:hint="@string/EmailLabel" />
                     </LinearLayout>
                     <TextView

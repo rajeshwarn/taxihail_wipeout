@@ -265,7 +265,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public bool EditEmailAccessible
+		public bool CanEditEmail
 		{
 			get
 			{
@@ -446,7 +446,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					                            this.Services().Localize["UpdateBookingSettingsInvalidAccount"]);
 					                    break;
 
-									case "EmailUsedMessage":
+									case "EmailAlreadyUsed":
 											this.Services()
 												.Message.ShowMessage(this.Services().Localize["EmailUsedMessageTitle"],
 													this.Services().Localize["EmailUsedMessage"]);

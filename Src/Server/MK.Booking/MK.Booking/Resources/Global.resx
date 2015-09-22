@@ -664,6 +664,6 @@
     <value>The phone number is invalid. It must have format {0}</value>
   </data>
 	<data name="EmailUsedMessage" xml:space="preserve">
-    <value>This email is already used by another person</value>
+    <value>This email is already used by another account</value>
   </data>
 </root>

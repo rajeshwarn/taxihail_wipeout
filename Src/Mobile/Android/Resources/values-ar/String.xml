@@ -132,7 +132,6 @@
   <string name="Done">تم</string>
   <string name="DontHaveAnAccountLabel">ليس لديك حساب؟</string>
   <string name="DriverInfoColor">اللون:</string>
-  <string name="DriverInfoDriver">السائق:</string>
   <string name="DriverInfoLicence">رقم الرخصة:</string>
   <string name="DriverInfoMake">الصنع:</string>
   <string name="DriverInfoModel">الموديل:</string>
@@ -573,7 +572,6 @@
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Driver">Driver id:</string>
   <string name="ManualRideLinqStatus_Fare">Fare meter:</string>
-  <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="ManualRideLinqStatus_Total">Total cost:</string>
@@ -689,4 +687,7 @@
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
   <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
+  <string name="EmailUsedMessageTitle">Email already used</string>
+  <string name="EmailUsedMessage">This email is already used by another account</string>
+  <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
 </resources>

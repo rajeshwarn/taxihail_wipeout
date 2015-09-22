@@ -360,7 +360,6 @@
   <string name="NoPreference">No preference</string>
   <string name="StreetNumberPlacesBt">Search for places</string>
   <string name="DriverInfoColor">Color:</string>
-  <string name="DriverInfoDriver">Driver:</string>
   <string name="DriverInfoLicence">Licence #:</string>
   <string name="DriverInfoMake">Make:</string>
   <string name="DriverInfoModel">Model:</string>
@@ -591,7 +590,6 @@
   <string name="ManualPairingForRideLinQ_Pair">CHECK IN</string>
   <string name="PaymentLoadError">Unable to load the payment details. Please try again later.</string>
   <string name="ManualPairingForRideLinQ_Instructions">Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</string>
-  <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Total">Total cost:</string>
   <string name="ManualRideLinqStatus_Fare">Fare meter:</string>
@@ -707,4 +705,7 @@
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
   <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
+  <string name="EmailUsedMessageTitle">Email already used</string>
+  <string name="EmailUsedMessage">This email is already used by another account</string>
+  <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
 </resources>

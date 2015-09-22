@@ -2232,10 +2232,10 @@
     	<value>Ce compte est associé avec un compte Facebook</value>
 	</data>
    <data name="EmailUsedMessageTitle" xml:space="preserve">
-    <value>Email occupé</value>
+    <value>Courriel déjà utilisé</value>
   </data>
    <data name="EmailUsedMessage" xml:space="preserve">
-        <value>Cet email est déjà utilisé par une autre personne</value>
+        <value>Ce courriel est déjà utilisé par un autre compte</value>
   </data>
 	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
  		<value>Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</value>

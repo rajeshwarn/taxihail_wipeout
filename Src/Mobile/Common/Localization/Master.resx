@@ -2233,10 +2233,10 @@
     	<value>Account is linked with Facebook account</value>
 	</data>
    <data name="EmailUsedMessageTitle" xml:space="preserve">
-    <value>Email occupied</value>
+    <value>Email already used</value>
   </data>
    <data name="EmailUsedMessage" xml:space="preserve">
-    <value>This email is already used by another person</value>
+    <value>This email is already used by another account</value>
   </data>
 	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
  		<value>OK you're checked in. Payment will be automatic at the end of your trip.</value>

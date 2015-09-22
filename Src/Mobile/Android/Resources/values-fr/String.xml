@@ -137,7 +137,6 @@
   <string name="Done">Terminé</string>
   <string name="DontHaveAnAccountLabel">Souhaitez-vous créer un compte?</string>
   <string name="DriverInfoColor">Coloris:</string>
-  <string name="DriverInfoDriver">Chauffeur:</string>
   <string name="DriverInfoLicence">Licence:</string>
   <string name="DriverInfoMake">Marque:</string>
   <string name="DriverInfoModel">Modèle:</string>
@@ -590,7 +589,6 @@
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Driver">Chauffeur #:</string>
   <string name="ManualRideLinqStatus_Fare">Tarif:</string>
-  <string name="ManualRideLinqStatus_PairingCode">Code d\'association:</string>
   <string name="ManualRideLinqStatus_Tax">Taxes:</string>
   <string name="ManualRideLinqStatus_Tip">Pourboire:</string>
   <string name="ManualRideLinqStatus_Total">Coût Total:</string>
@@ -706,4 +704,7 @@
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="UpdateNoticeText">Désolé, cette version d\'application n\'est plus maintenue. Mettez à jour l\'application s\'il vous plaît</string>
   <string name="AccountLinkedWithFAcebook">Ce compte est associé avec un compte Facebook</string>
+  <string name="EmailUsedMessageTitle">Courriel déjà utilisé</string>
+  <string name="EmailUsedMessage">Ce courriel est déjà utilisé par un autre compte</string>
+  <string name="OrderStatus_PairingSuccess">Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</string>
 </resources>

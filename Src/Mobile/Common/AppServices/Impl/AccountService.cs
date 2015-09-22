@@ -281,7 +281,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             var bsr = new BookingSettingsRequest
             {
-				AccountId = CurrentAccount.Id.ToString(),
 				Email = settings.Email,
                 Name = settings.Name,
                 Country = settings.Country,
@@ -300,12 +299,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			// Update cached account
             var account = CurrentAccount;
             account.Settings = settings;
-
-			if (!string.IsNullOrWhiteSpace(settings.Email) && EmailHelper.IsEmail(settings.Email))
-			{
-				account.Email = settings.Email;
-			}
-            
+			account.Email = settings.Email;
 			account.DefaultTipPercent = tipPercent;
             CurrentAccount = account;
         }

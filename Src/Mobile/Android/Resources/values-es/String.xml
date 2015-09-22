@@ -149,7 +149,6 @@
   <string name="DontAsk">No preguntar</string>
   <string name="DontHaveAnAccountLabel">No tiene cuenta?</string>
   <string name="DriverInfoColor">Color:</string>
-  <string name="DriverInfoDriver">Chofer:</string>
   <string name="DriverInfoLicence"># de Placa:</string>
   <string name="DriverInfoMake">Marca:</string>
   <string name="DriverInfoModel">Modelo:</string>
@@ -583,7 +582,6 @@
   <string name="ManualRideLinqStatus_Distance">Distancia:</string>
   <string name="ManualRideLinqStatus_Driver">Id de Conductor:</string>
   <string name="ManualRideLinqStatus_Fare">Medidor de tarifa:</string>
-  <string name="ManualRideLinqStatus_PairingCode">Código de emparejamiento:</string>
   <string name="ManualRideLinqStatus_Tax">Impuesto:</string>
   <string name="ManualRideLinqStatus_Tip">Propina:</string>
   <string name="ManualRideLinqStatus_Total">Costo Total:</string>
@@ -706,4 +704,7 @@
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
   <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
+  <string name="EmailUsedMessageTitle">Email already used</string>
+  <string name="EmailUsedMessage">This email is already used by another account</string>
+  <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
 </resources>

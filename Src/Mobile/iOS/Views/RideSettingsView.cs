@@ -148,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Bind(txtEmail)
                 .For(v => v.Enabled)
-                .To(vm => vm.IsLinkedWithFacebook)
+                .To(vm => vm..CanEditEmail)
                 .WithConversion("BoolInverter");
 
 			set.Bind(txtPhone)

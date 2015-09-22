@@ -43,19 +43,19 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Put(BookingSettingsRequest request)
         {
-			Guid accountID = new Guid(this.GetSession().UserAuthId);
+			Guid accountId = new Guid(this.GetSession().UserAuthId);
 
-			AccountDetail accountDetailWithEmail = _accountDao.FindByEmail(request.Email);
-			AccountDetail accountDetailWithID = _accountDao.FindById(accountID);
+			AccountDetail accountDetail = _accountDao.FindByEmail(request.Email);
+			AccountDetail existingEmailAccountDetail = _accountDao.FindById(accountId);
 
-			if (accountDetailWithID.Email != request.Email && !string.IsNullOrWhiteSpace(accountDetailWithID.FacebookId))
+			if (existingEmailAccountDetail.Email != request.Email && existingEmailAccountDetail.FacebookId.HasValue())
 			{
-				request.Email = accountDetailWithID.Email;
+				throw new HttpError(HttpStatusCode.BadRequest, "Change email in the account linked with Facebook is not possible");
 			}
 
-			if (accountDetailWithEmail != null && accountDetailWithEmail.Email == request.Email && accountDetailWithEmail.Id != accountID)
+			if (accountDetail != null && accountDetail.Email == request.Email && accountDetail.Id != accountId)
 			{
-				throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.EmailUsedMessage.ToString(), _resources.Get("EmailUsedMessage"));
+				throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.EmailAlreadyUsed.ToString(), _resources.Get("EmailUsedMessage"));
 			}
 
             CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new UpdateBookingSettings();
             Mapper.Map(request, command);
 
-			command.AccountId = accountID;
+			command.AccountId = accountId;
 
             _commandBus.Send(command);
 
