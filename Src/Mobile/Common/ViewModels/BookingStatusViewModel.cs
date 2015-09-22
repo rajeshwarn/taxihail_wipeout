@@ -148,7 +148,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.ObserveOn(SynchronizationContext.Current)
                 .SelectMany(async rideLinqDetails =>
                 {
-                    await RefreshManualRideLinqDetails(rideLinqDetails);
+                    var hasErrors = RefreshManualRideLinqDetails(rideLinqDetails);
+                    if (hasErrors)
+                    {
+                        await GoToHomeScreen();
+                    }
                     return rideLinqDetails;
                 })
 				.Where(orderDetails => orderDetails.EndTime.HasValue)
@@ -303,7 +307,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return _bookingService.GetTripInfoFromManualRideLinq(ManualRideLinqDetail.OrderId);
 		}
 
-		private async Task RefreshManualRideLinqDetails(OrderManualRideLinqDetail manualRideLinqDetails)
+		private bool RefreshManualRideLinqDetails(OrderManualRideLinqDetail manualRideLinqDetails)
 		{
 			ManualRideLinqDetail = manualRideLinqDetails;
 
@@ -312,12 +316,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    if (manualRideLinqDetails.PairingError.HasValue())
 		    {
                 StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError"]);
-                await GoToHomeScreen();
+		        return false;
 		    }
-		    else
-		    {
-                StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
-		    }
+
+		    StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
+		    return true;
 		}
 
 		private void ToRideSummary(OrderManualRideLinqDetail orderManualRideLinqDetail)
