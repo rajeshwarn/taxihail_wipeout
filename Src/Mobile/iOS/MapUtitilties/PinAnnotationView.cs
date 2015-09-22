@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		{
 			Annotation = annotation;
 			RefreshPinImage();
-            CreateMedailonView(annotation.Title);
+            CreateMedailonView(annotation.Title, hidden:true);
 		}
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             }
         }
 
-        private void CreateMedailonView(string text)
+        private void CreateMedailonView(string text, bool hidden)
         {
             var lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
             lblVehicleNumber.BackgroundColor = UIColor.DarkGray;
@@ -81,8 +81,8 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             lblVehicleNumber.TextAlignment = UITextAlignment.Center;
             lblVehicleNumber.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 30 / 2);
             lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
-            lblVehicleNumber.Text = ((AddressAnnotation) Annotation).Title; 
-            lblVehicleNumber.Hidden = true;
+            lblVehicleNumber.Text = text; 
+            lblVehicleNumber.Hidden = hidden;
             AddSubview(lblVehicleNumber);
 
             _lblVehicleNumber = lblVehicleNumber;
@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
             if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin) 
             {
-                CreateMedailonView(((AddressAnnotation)Annotation).Subtitle);
+                CreateMedailonView(((AddressAnnotation)Annotation).Subtitle, hidden: false);
             }
 
             CenterOffset = new CGPoint (0, -Image.Size.Height / 2);
