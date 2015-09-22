@@ -425,7 +425,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					    {
 					        try
 					        {
-								await _accountService.UpdateSettings(_bookingSettings, Email, PaymentPreferences.Tip);
+								await _accountService.UpdateSettings(_bookingSettings, Email, _accountService.CurrentAccount.DefaultTipPercent);
 					            _orderWorkflowService.SetAccountNumber(_bookingSettings.AccountNumber, _bookingSettings.CustomerNumber);
 					            Close(this);
 					        }
