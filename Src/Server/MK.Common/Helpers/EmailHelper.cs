@@ -8,7 +8,7 @@ namespace apcurium.MK.Common.Helpers
 	{
 		private const string EmailValidator = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" + @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" + @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
 
-		private static Regex _emailValidator = new Regex(EmailValidator);
+		private static readonly Regex _emailValidator = new Regex(EmailValidator);
 
 		public static bool IsEmail(string email)
 		{
