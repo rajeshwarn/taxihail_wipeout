@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		{
 			Annotation = annotation;
 			RefreshPinImage();
-            CreateMedailonView();
+            CreateMedailonView(annotation.Title);
 		}
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -73,17 +73,19 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             }
         }
 
-        private void CreateMedailonView()
+        private void CreateMedailonView(string text)
         {
-            _lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
-            _lblVehicleNumber.BackgroundColor = UIColor.DarkGray;
-            _lblVehicleNumber.TextColor = UIColor.White;
-            _lblVehicleNumber.TextAlignment = UITextAlignment.Center;
-            _lblVehicleNumber.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 30 / 2);
-            _lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
-            _lblVehicleNumber.Text = ((AddressAnnotation) Annotation).Title; 
-            _lblVehicleNumber.Hidden = true;
-            AddSubview(_lblVehicleNumber);
+            var lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
+            lblVehicleNumber.BackgroundColor = UIColor.DarkGray;
+            lblVehicleNumber.TextColor = UIColor.White;
+            lblVehicleNumber.TextAlignment = UITextAlignment.Center;
+            lblVehicleNumber.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 30 / 2);
+            lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
+            lblVehicleNumber.Text = ((AddressAnnotation) Annotation).Title; 
+            lblVehicleNumber.Hidden = true;
+            AddSubview(lblVehicleNumber);
+
+            _lblVehicleNumber = lblVehicleNumber;
         }
 
 		public void RefreshPinImage ()
@@ -95,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
             if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin) 
             {
-                _lblVehicleNumber.Text = ((AddressAnnotation) Annotation).Subtitle;
+                CreateMedailonView(((AddressAnnotation)Annotation).Subtitle);
             }
 
             CenterOffset = new CGPoint (0, -Image.Size.Height / 2);
