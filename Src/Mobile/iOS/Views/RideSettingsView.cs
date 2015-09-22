@@ -148,8 +148,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Bind(txtEmail)
                 .For(v => v.Enabled)
-                .To(vm => vm..CanEditEmail)
-                .WithConversion("BoolInverter");
+                .To(vm => vm.CanEditEmail)
+                .WithConversion("Bool");
 
 			set.Bind(txtPhone)
 				.For(v => v.Text)
