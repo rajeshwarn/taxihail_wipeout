@@ -60,8 +60,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
-		readonly ISubject<PickupPoint[]> _objPOIRefPickupListSubject = new BehaviorSubject<PickupPoint[]>(new PickupPoint[0]);
-		readonly ISubject<Airline[]> _objPOIRefAirlineListSubject = new BehaviorSubject<Airline[]>(new Airline[0]);
+		readonly ISubject<PickupPoint[]> _poiRefPickupListSubject = new BehaviorSubject<PickupPoint[]>(new PickupPoint[0]);
+		readonly ISubject<Airline[]> _poiRefAirlineListSubject = new BehaviorSubject<Airline[]>(new Airline[0]);
 
         private bool _isOrderRebooked;
 
@@ -419,15 +419,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task POIRefPickupList(string textMatch, int maxRespSize)
         {
-			var pObject = await _poiProvider.GetPOIRefPickupList(string.Empty, textMatch, maxRespSize);
-            _objPOIRefPickupListSubject.OnNext(pObject);
+			var pickupPointLists = await _poiProvider.GetPOIRefPickupList(string.Empty, textMatch, maxRespSize);
+			_poiRefPickupListSubject.OnNext(pickupPointLists);
 
         }
 
         public async Task POIRefAirLineList(string textMatch, int maxRespSize)
         {
 			var airlines = await _poiProvider.GetPOIRefAirLineList(string.Empty, textMatch, maxRespSize);
-            _objPOIRefAirlineListSubject.OnNext(airlines);
+			_poiRefAirlineListSubject.OnNext(airlines);
         }
 
         public Guid? GetLastUnratedRide()
@@ -456,12 +456,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public IObservable<PickupPoint[]> GetAndObservePOIRefPickupList()
         {
-            return _objPOIRefPickupListSubject;
+            return _poiRefPickupListSubject;
         }
 
 		public IObservable<Airline[]> GetAndObservePOIRefAirlineList()
         {
-            return _objPOIRefAirlineListSubject;
+            return _poiRefAirlineListSubject;
         }
 
         public async Task<Address> GetCurrentAddress()
@@ -671,8 +671,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_orderValidationResultSubject.OnNext(null);
 			_loadingAddressSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
-            _objPOIRefPickupListSubject.OnNext(new PickupPoint[0]);
-            _objPOIRefAirlineListSubject.OnNext(new Airline[0]);
+            _poiRefPickupListSubject.OnNext(new PickupPoint[0]);
+            _poiRefAirlineListSubject.OnNext(new Airline[0]);
         }
 
 		public void BeginCreateOrder()
