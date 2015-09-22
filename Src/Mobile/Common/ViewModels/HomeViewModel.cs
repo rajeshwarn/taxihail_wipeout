@@ -514,7 +514,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 AddressPicker.SelectAddress(address);
 
 				if (filter == AddressLocationType.Airport 
-					&& Settings.UseAirportDetails
+					&& Settings.FlightStats.UseAirportDetails
 					&& AddressPicker.AddressSelectionMode == AddressSelectionMode.PickupSelection)
 				{
 					CurrentViewState = HomeViewModelState.AirportDetails;

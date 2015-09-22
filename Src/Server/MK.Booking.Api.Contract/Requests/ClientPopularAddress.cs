@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Security;
-using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
 
 #region
 
 #if !CLIENT
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.Security;
 #endif
 
 #endregion
 
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
