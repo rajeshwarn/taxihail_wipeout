@@ -28,6 +28,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
 
+		private string _email;
+
 		public RideSettingsViewModel(IAccountService accountService, 
 			IPaymentService paymentService,
             IAccountPaymentService accountPaymentService,
@@ -47,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    try
 			    {
 					_bookingSettings = _accountService.CurrentAccount.Settings;
-					_bookingSettings.Email = _accountService.CurrentAccount.Email;
+					_email = _accountService.CurrentAccount.Email;
                     _paymentSettings = await _paymentService.GetPaymentSettings();
 
 					PhoneNumber.Country = _bookingSettings.Country;
@@ -256,11 +258,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return _bookingSettings.Email;
+				return _email;
 			}
 			set
 			{
-				_bookingSettings.Email = value;
+				_email = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -432,7 +434,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					    {
 					        try
 					        {
-					            await _accountService.UpdateSettings(_bookingSettings, PaymentPreferences.Tip);
+					            await _accountService.UpdateSettings(_bookingSettings, Email, PaymentPreferences.Tip);
 					            _orderWorkflowService.SetAccountNumber(_bookingSettings.AccountNumber, _bookingSettings.CustomerNumber);
 					            Close(this);
 					        }

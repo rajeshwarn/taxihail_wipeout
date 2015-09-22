@@ -8,8 +8,6 @@ namespace apcurium.MK.Common.Entity
             Country = new CountryISOCode();
         }
 
-		public string Email { get; set; }
-
         public string Name { get; set; }
 
         public CountryISOCode Country { get; set; }
