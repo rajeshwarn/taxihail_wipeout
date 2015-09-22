@@ -220,9 +220,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			var orderEditLayout = _orderEdit.GetLayoutParameters();
 
+			bool IsRightToLeftLanguage = this.Services().Localize.IsRightToLeft;
+
 			_orderEdit.SetLayoutParameters(screenSize.X, orderEditLayout.Height,
-				this.Services().Localize.IsRightToLeft ? orderEditLayout.LeftMargin : screenSize.X,
-				this.Services().Localize.IsRightToLeft ? screenSize.X : orderEditLayout.RightMargin,
+				IsRightToLeftLanguage ? orderEditLayout.LeftMargin : screenSize.X,
+				IsRightToLeftLanguage ? screenSize.X : orderEditLayout.RightMargin,
 				orderEditLayout.TopMargin, orderEditLayout.BottomMargin, orderEditLayout.Gravity);
 
 	        ((ViewGroup.MarginLayoutParams) _orderStatus.LayoutParameters).TopMargin = -screenSize.Y;
