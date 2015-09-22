@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -23,7 +23,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 	    private readonly IAccountPaymentService _accountPaymentService;
 	    private readonly IOrderWorkflowService _orderWorkflowService;
-		private const int TipMaxPercent = 100;
 
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
@@ -83,14 +82,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    }
 			}
 		}
-
-        public bool ShouldDisplayTip
-        {
-            get
-            {
-                return _paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled;
-            }
-        }
 
 	    public bool IsChargeTypesEnabled
 	    {
@@ -434,7 +425,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					    {
 					        try
 					        {
-					            await _accountService.UpdateSettings(_bookingSettings, Email, PaymentPreferences.Tip);
+								await _accountService.UpdateSettings(_bookingSettings, Email, PaymentPreferences.Tip);
 					            _orderWorkflowService.SetAccountNumber(_bookingSettings.AccountNumber, _bookingSettings.CustomerNumber);
 					            Close(this);
 					        }
@@ -493,11 +484,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyAccount"]);
                 return false;
             }
-			if (PaymentPreferences.Tip > TipMaxPercent)
-			{
-				await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
-				return false;
-			}
 
             if (Settings.IsPayBackRegistrationFieldRequired == true && !PayBack.HasValue())
             {

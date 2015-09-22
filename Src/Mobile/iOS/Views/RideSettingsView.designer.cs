@@ -46,9 +46,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblPhone { get; set; }
 
 		[Outlet]
-		UIKit.UILabel lblTip { get; set; }
-
-		[Outlet]
 		UIKit.UILabel lblVehicleType { get; set; }
 
 		[Outlet]
@@ -71,9 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPhone { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtTip { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtVehicleType { get; set; }
@@ -135,11 +129,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblPhone = null;
 			}
 
-			if (lblTip != null) {
-				lblTip.Dispose ();
-				lblTip = null;
-			}
-
 			if (lblVehicleType != null) {
 				lblVehicleType.Dispose ();
 				lblVehicleType = null;
@@ -178,11 +167,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtPhone != null) {
 				txtPhone.Dispose ();
 				txtPhone = null;
-			}
-
-			if (txtTip != null) {
-				txtTip.Dispose ();
-				txtTip = null;
 			}
 
 			if (txtVehicleType != null) {

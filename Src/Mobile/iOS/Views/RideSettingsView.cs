@@ -40,12 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 txtCustomerNumber.RemoveFromSuperview();
 			}
 
-			if (!ViewModel.ShouldDisplayTip)
-            {
-                lblTip.RemoveFromSuperview();
-                txtTip.RemoveFromSuperview();
-			}
-
 			if (!ViewModel.IsPayBackFieldEnabled)
 			{
 				lblPayBack.RemoveFromSuperview();
@@ -71,7 +65,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblPassword.Text = Localize.GetValue("RideSettingsPassword");
 			lblAccountNumber.Text = Localize.GetValue("RideSettingsAccountNumber");
             lblCustomerNumber.Text = Localize.GetValue("RideSettingsCustomerNumber");
-            lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
 			lblPayBack.Text = Localize.GetValue("RideSettingsPayBack");
 
             txtEmail.Placeholder = Localize.GetValue("RideSettingsEmailTitle");
@@ -100,9 +93,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtCustomerNumber.Placeholder = Localize.GetValue("RideSettingsCustomerNumber");
             txtCustomerNumber.AccessibilityLabel = txtCustomerNumber.Placeholder;
 
-            txtTip.Placeholder = Localize.GetValue("PaymentDetails.TipAmountLabel");
-            txtTip.AccessibilityLabel = txtTip.Placeholder;
-
             txtPayBack.Placeholder = Localize.GetValue("RideSettingsPayBack");
             txtPayBack.AccessibilityLabel = txtPayBack.Placeholder;
 
@@ -127,8 +117,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.Vehicles, () => ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.ExecuteIfPossible(x.Id));
             txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.Payments, () => ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.ExecuteIfPossible(x.Id));
-            txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, () => ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id, true);
-            txtTip.TextAlignment = UITextAlignment.Right;
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
 
@@ -178,10 +166,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtPassword)
 				.For(v => v.NavigateCommand)
 				.To(vm => vm.NavigateToUpdatePassword);
-
-            set.Bind(txtTip)
-                .For(v => v.Text)
-                .To(vm => vm.PaymentPreferences.TipAmount);
 
 			set.Bind(txtPayBack)
 				.For(v => v.Text)
