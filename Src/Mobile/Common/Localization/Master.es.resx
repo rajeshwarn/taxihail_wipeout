@@ -1489,11 +1489,11 @@
     <value>Email</value>
     <comment>Email</comment>
   </data>
-  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+  <data name="InvalidEmailMessage" xml:space="preserve">
     <value>Este email es inválido</value>
     <comment>The email is invalid.</comment>
   </data>
-  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+  <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Email inválido</value>
     <comment>Invalid email</comment>
   </data>

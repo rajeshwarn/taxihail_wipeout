@@ -666,4 +666,7 @@
 <data name="EmailUsedMessage" xml:space="preserve">
     <value>Ce courriel est déjà utilisé par un autre compte</value>
   </data>
+	<data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
+    <value>Il est impossible de changer le courriel du compte lié avec Facebook</value>
+  </data>
 </root> 

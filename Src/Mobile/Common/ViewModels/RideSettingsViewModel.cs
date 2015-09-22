@@ -469,7 +469,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			if (!EmailHelper.IsEmail(Email))
 			{
-				await this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
+				await this.Services().Message.ShowMessage(this.Services().Localize["InvalidEmailTitle"], this.Services().Localize["InvalidEmailMessage"]);
 				return false;
 			}
 

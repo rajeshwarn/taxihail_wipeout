@@ -994,10 +994,10 @@
   <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
     <value>البريد الإلكتروني</value>
   </data>
-  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+  <data name="InvalidEmailMessage" xml:space="preserve">
     <value>البريد الإلكتروني غير صحيح</value>
   </data>
-  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+  <data name="InvalidEmailTitle" xml:space="preserve">
     <value>عنوان البريد الإلكتروني غير صحيح</value>
   </data>
   <data name="ResetPasswordSubtitleText" xml:space="preserve">

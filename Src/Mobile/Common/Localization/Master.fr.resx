@@ -1017,10 +1017,10 @@
   <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
     <value>Email (adresse électronique)</value>
   </data>
-  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+  <data name="InvalidEmailMessage" xml:space="preserve">
     <value>Désolé, cet email n'est pas valide</value>
   </data>
-  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+  <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Cet email n'est pas valide</value>
   </data>
   <data name="ResetPasswordSubtitleText" xml:space="preserve">

@@ -45,15 +45,15 @@ namespace apcurium.MK.Booking.Api.Services
         {
 			Guid accountId = new Guid(this.GetSession().UserAuthId);
 
-			AccountDetail accountDetail = _accountDao.FindByEmail(request.Email);
-			AccountDetail existingEmailAccountDetail = _accountDao.FindById(accountId);
+			AccountDetail existingEmailAccountDetail = _accountDao.FindByEmail(request.Email);
+			AccountDetail currentAccountDetail = _accountDao.FindById(accountId);
 
-			if (existingEmailAccountDetail.Email != request.Email && existingEmailAccountDetail.FacebookId.HasValue())
+			if (currentAccountDetail.Email != request.Email && currentAccountDetail.FacebookId.HasValue())
 			{
-				throw new HttpError(HttpStatusCode.BadRequest, "Change email in the account linked with Facebook is not possible");
+				throw new HttpError(HttpStatusCode.BadRequest, _resources.Get("EmailChangeWithFacebookAccountErrorMessage"));
 			}
 
-			if (accountDetail != null && accountDetail.Email == request.Email && accountDetail.Id != accountId)
+			if (existingEmailAccountDetail != null && existingEmailAccountDetail.Email == request.Email && existingEmailAccountDetail.Id != accountId)
 			{
 				throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.EmailAlreadyUsed.ToString(), _resources.Get("EmailUsedMessage"));
 			}

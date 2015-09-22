@@ -1069,6 +1069,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot change the email of an account linked with Facebook.
+        /// </summary>
+        public static string EmailChangeWithFacebookAccountErrorMessage {
+            get {
+                return ResourceManager.GetString("EmailChangeWithFacebookAccountErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This email is already used by another account.
         /// </summary>
         public static string EmailUsedMessage {
