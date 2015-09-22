@@ -658,6 +658,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.RateChangeTime = @event.RateChangeTime;
                 rideLinqDetails.AccessFee = @event.AccessFee;
                 rideLinqDetails.LastFour = @event.LastFour;
+                rideLinqDetails.PairingError = @event.PairingError;
 
                 context.Save(rideLinqDetails);
             }

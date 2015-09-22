@@ -17,7 +17,9 @@ namespace apcurium.MK.Booking.Events
         public double? Toll { get; set; }
 
         public double? Extra { get; set; }
+
         public double? LastLatitudeOfVehicle { get; set; }
+
         public double? LastLongitudeOfVehicle { get; set; }
 
         public double? Tip { get; set; }
@@ -47,5 +49,7 @@ namespace apcurium.MK.Booking.Events
         public double? AccessFee { get; set; }
 
         public TollDetail[] Tolls { get; set; }
+
+        public string PairingError { get; set; }
     }
 }

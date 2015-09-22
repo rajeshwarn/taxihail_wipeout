@@ -142,14 +142,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			var subscriptions = new CompositeDisposable();
 
+            // Manual RideLinQ status observable
 			GetTimerObservable()
 				.SelectMany(_ => GetManualRideLinqDetails())
 				.StartWith(orderManualRideLinqDetail)
 				.ObserveOn(SynchronizationContext.Current)
-				.Do(RefreshManualRideLinqDetails)
-				.Where(orderDetails => orderDetails.EndTime.HasValue)
+                .Do(RefreshManualRideLinqDetails)
+				.Where(orderDetails => orderDetails.EndTime.HasValue || orderDetails.PairingError.HasValue())
 				.Take(1) // trigger only once
-				.Subscribe(ToRideSummary, Logger.LogError)
+				.Subscribe(async orderDetails =>
+				{
+				    if (orderDetails.PairingError.HasValue())
+				    {
+				        await GoToHomeScreen();
+				    }
+				    else
+				    {
+                        ToRideSummary(orderDetails);
+				    }
+				}, Logger.LogError)
 				.DisposeWith(subscriptions);
 
 
@@ -305,7 +316,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			var localize = this.Services().Localize;
 
-			StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
+		    if (manualRideLinqDetails.PairingError.HasValue())
+		    {
+                StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError"]);
+		    }
+
+		    StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
 		}
 
 		private void ToRideSummary(OrderManualRideLinqDetail orderManualRideLinqDetail)
@@ -862,7 +878,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if (VehicleStatuses.CancelStatuses.Any(cancelledStatus => cancelledStatus.Equals(status.IBSStatusId)))
 				{
-					await GoToBookingScreen();
+					await GoToHomeScreen();
 				}
 			}
 			catch (OperationCanceledException)
@@ -1015,7 +1031,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ReturnToInitialState();
 		}
 
-		private async Task GoToBookingScreen()
+		private async Task GoToHomeScreen()
 		{
 			await Task.Delay(TimeSpan.FromSeconds(10));
 			ReturnToInitialState();

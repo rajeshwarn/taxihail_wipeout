@@ -180,14 +180,23 @@ namespace apcurium.MK.Booking.Api.Services
             }
             catch (WebServiceException ex)
             {
-                _logger.LogMessage(string.Format("An WebServiceException occured while trying to manually pair with CMT with pairing code: {0}", request.PairingCode));
+                _logger.LogMessage(string.Format("A WebServiceException occured while trying to manually pair with CMT with pairing code: {0}", request.PairingCode));
                 _logger.LogError(ex);
+
+                ErrorResponse errorResponse = null;
+
+                if (ex.ResponseBody != null)
+                {
+                    _logger.LogMessage("Error Response: {0}", ex.ResponseBody);
+
+                    errorResponse = ex.ResponseBody.FromJson<ErrorResponse>();
+                }
 
                 return new ManualRideLinqResponse
                 {
                     IsSuccessful = false,
-                    Message = ex.ErrorMessage,
-                    ErrorCode = ex.ErrorCode
+                    Message = errorResponse != null ? errorResponse.Message : ex.ErrorMessage,
+                    ErrorCode = errorResponse != null ? errorResponse.ResponseCode.ToString() : ex.ErrorCode
                 };
             }
             catch (Exception ex)
@@ -217,23 +226,46 @@ namespace apcurium.MK.Booking.Api.Services
                 var account = _accountDao.FindById(accountId);
                 var orderDetail = _orderDao.FindById(request.OrderId);
 
-                var response = _cmtMobileServiceClient.Put(string.Format("init/pairing/{0}", ridelinqOrderDetail.PairingToken),
-                    new CMTPayment.Pair.ManualRideLinqPairingRequest
-                    {
-                        AutoTipPercentage = request.AutoTipPercentage,
-                        CustomerId = accountId.ToString(),
-                        CustomerName = account.Name,
-                        Latitude = orderDetail.PickupAddress.Latitude,
-                        Longitude = orderDetail.PickupAddress.Longitude,
-                        AutoCompletePayment = true
-                    });
+                var response =
+                    _cmtMobileServiceClient.Put(string.Format("init/pairing/{0}", ridelinqOrderDetail.PairingToken),
+                        new CMTPayment.Pair.ManualRideLinqPairingRequest
+                        {
+                            AutoTipPercentage = request.AutoTipPercentage,
+                            CustomerId = accountId.ToString(),
+                            CustomerName = account.Name,
+                            Latitude = orderDetail.PickupAddress.Latitude,
+                            Longitude = orderDetail.PickupAddress.Longitude,
+                            AutoCompletePayment = true
+                        });
 
                 // Wait for trip to be updated
-                _cmtTripInfoServiceHelper.WaitForTipUpdated(ridelinqOrderDetail.PairingToken, request.AutoTipPercentage, response.TimeoutSeconds);
+                _cmtTripInfoServiceHelper.WaitForTipUpdated(ridelinqOrderDetail.PairingToken, request.AutoTipPercentage,
+                    response.TimeoutSeconds);
 
                 return new ManualRideLinqResponse
                 {
                     IsSuccessful = true
+                };
+            }
+            catch (WebServiceException ex)
+            {
+                _logger.LogMessage(string.Format("A WebServiceException occured while trying to update CMT pairing for OrderId: {0} with pairing token: {1}", request.OrderId, ridelinqOrderDetail.PairingToken));
+                _logger.LogError(ex);
+
+                ErrorResponse errorResponse = null;
+
+                if (ex.ResponseBody != null)
+                {
+                    _logger.LogMessage("Error Response: {0}", ex.ResponseBody);
+
+                    errorResponse = ex.ResponseBody.FromJson<ErrorResponse>();
+                }
+
+                return new ManualRideLinqResponse
+                {
+                    IsSuccessful = false,
+                    Message = errorResponse != null ? errorResponse.Message : ex.ErrorMessage,
+                    ErrorCode = errorResponse != null ? errorResponse.ResponseCode.ToString() : ex.ErrorCode
                 };
             }
             catch (Exception ex)
@@ -259,12 +291,29 @@ namespace apcurium.MK.Booking.Api.Services
 
             try
             {
-                var response = _cmtMobileServiceClient.Delete<CmtUnpairingResponse>(string.Format("init/pairing/{0}", order.PairingToken));
+                var response =
+                    _cmtMobileServiceClient.Delete<CmtUnpairingResponse>(string.Format("init/pairing/{0}",
+                        order.PairingToken));
 
                 // Wait for trip to be updated
                 _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(order.PairingToken, response.TimeoutSeconds);
 
-                _commandBus.Send(new UnpairOrderForManualRideLinq { OrderId = request.OrderId });
+                _commandBus.Send(new UnpairOrderForManualRideLinq {OrderId = request.OrderId});
+            }
+            catch (WebServiceException ex)
+            {
+                _logger.LogMessage(string.Format("A WebServiceException occured while trying to manually unpair with CMT for OrderId: {0} with pairing token: {1}", request.OrderId, order.PairingToken));
+                _logger.LogError(ex);
+
+                string errorResponse = null;
+
+                if (ex.ResponseBody != null)
+                {
+                    errorResponse = ex.ResponseBody;
+                    _logger.LogMessage("Error Response: {0}", errorResponse);
+                }
+
+                throw new HttpError(HttpStatusCode.InternalServerError, errorResponse ?? ex.Message);
             }
             catch (Exception ex)
             {
