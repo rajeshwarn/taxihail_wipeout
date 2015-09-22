@@ -51,10 +51,13 @@ namespace CMTPayment
                     ex.ErrorCode ?? "Unknown",
                     ex.StatusCode,
                     pairingToken);
-                
+
                 if (ex.ResponseBody != null)
                 {
                     _logger.LogMessage("Error Response: {0}", ex.ResponseBody);
+
+                    var errorResponse = ex.ResponseBody.FromJson<ErrorResponse>();
+                    return new Trip { ErrorCode = errorResponse.ResponseCode };
                 }
 
                 _logger.LogError(ex);
@@ -79,7 +82,7 @@ namespace CMTPayment
             watch.Start();
             var trip = GetTripInfo(pairingToken);
 
-            while (trip == null)
+            while (trip == null || trip.ErrorCode.HasValue)
             {
                 Thread.Sleep(2000);
                 trip = GetTripInfo(pairingToken);
@@ -100,7 +103,7 @@ namespace CMTPayment
             watch.Start();
             var trip = GetTripInfo(pairingToken);
 
-            while (trip != null)
+            while (trip != null && !trip.ErrorCode.HasValue)
             {
                 Thread.Sleep(2000);
                 trip = GetTripInfo(pairingToken);
@@ -110,6 +113,30 @@ namespace CMTPayment
                     throw new TimeoutException("Could not be unpaired of vehicle");
                 }
             }
+        }
+
+        public Trip CheckForTripEndErrors(string pairingToken)
+        {
+            var timeToWaitForErrors = 45; // In seconds
+
+            var watch = new Stopwatch();
+            watch.Start();
+            var trip = GetTripInfo(pairingToken);
+
+            while (trip != null && !trip.ErrorCode.HasValue)
+            {
+                Thread.Sleep(2000);
+                trip = GetTripInfo(pairingToken);
+
+                if (watch.Elapsed.TotalSeconds >= timeToWaitForErrors)
+                {
+                    // No errors found
+                    return trip;
+                }
+            }
+
+            // Errors found
+            return trip;
         }
 
         public void WaitForTipUpdated(string pairingToken, int updatedTipPercentage, long timeoutSeconds)

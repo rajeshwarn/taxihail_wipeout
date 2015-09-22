@@ -38,13 +38,20 @@ namespace CMTPayment.Pair
         public string CustomerName { get; set; }
         public string LastFour { get; set; }
         public int AccessFee { get; set; }
+        public int? ErrorCode { get; set; }
 
         public bool Compare(Trip otherTrip)
         {
             if (otherTrip.AutoTipPercentage != AutoTipPercentage)
+            {
                 return false;
+            }
+
             if (otherTrip.AutoTipAmount != AutoTipAmount)
+            {
                 return false;
+            }
+                
             return true;
         }
     }
