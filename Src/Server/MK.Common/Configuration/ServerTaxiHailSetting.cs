@@ -125,7 +125,6 @@ namespace MK.Common.Configuration
         public NetworkSettingContainer Network { get; protected set; }
         public HoneyBadgerSettingContainer HoneyBadger { get; protected set; }
         public CmtGeoSettingContainer CmtGeo { get; protected set; }
-		public FlightStatsSettingsContainer FlightStats { get; set; }
 
         [Display(Name = "Website - Hide Web signup button", Description = "Hide Sign Up button on web site")]
         public bool IsWebSignupHidden { get; protected set; }

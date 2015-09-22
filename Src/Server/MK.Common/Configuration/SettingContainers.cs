@@ -367,6 +367,10 @@ namespace apcurium.MK.Common.Configuration
 		[Hidden]
 		[Display(Name = "FlightStatus - Application key", Description = "Application keys for flight stats API.")]
 		public string ApplicationKeys { get; set; }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Configuration - Use airport details screen", Description = "Display the airport details screen before the order review screen to allow the user to send airport related information to the driver.")]
+		public bool UseAirportDetails { get; set; }
 	}
 
 }
