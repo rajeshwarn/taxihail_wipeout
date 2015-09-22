@@ -142,22 +142,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			var subscriptions = new CompositeDisposable();
 
+            // Manual RideLinQ status observable
 			GetTimerObservable()
 				.SelectMany(_ => GetManualRideLinqDetails())
 				.StartWith(orderManualRideLinqDetail)
 				.ObserveOn(SynchronizationContext.Current)
-                .SelectMany(async rideLinqDetails =>
-                {
-                    var hasErrors = RefreshManualRideLinqDetails(rideLinqDetails);
-                    if (hasErrors)
-                    {
-                        await GoToHomeScreen();
-                    }
-                    return rideLinqDetails;
-                })
-				.Where(orderDetails => orderDetails.EndTime.HasValue)
+                .Do(RefreshManualRideLinqDetails)
+				.Where(orderDetails => orderDetails.EndTime.HasValue || orderDetails.PairingError.HasValue())
 				.Take(1) // trigger only once
-				.Subscribe(ToRideSummary, Logger.LogError)
+				.Subscribe(async orderDetails =>
+				{
+				    if (orderDetails.PairingError.HasValue())
+				    {
+				        await GoToHomeScreen();
+				    }
+				    else
+				    {
+                        ToRideSummary(orderDetails);
+				    }
+				}, Logger.LogError)
 				.DisposeWith(subscriptions);
 
 
@@ -307,7 +310,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return _bookingService.GetTripInfoFromManualRideLinq(ManualRideLinqDetail.OrderId);
 		}
 
-		private bool RefreshManualRideLinqDetails(OrderManualRideLinqDetail manualRideLinqDetails)
+		private void RefreshManualRideLinqDetails(OrderManualRideLinqDetail manualRideLinqDetails)
 		{
 			ManualRideLinqDetail = manualRideLinqDetails;
 
@@ -316,11 +319,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    if (manualRideLinqDetails.PairingError.HasValue())
 		    {
                 StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError"]);
-		        return false;
 		    }
 
 		    StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
-		    return true;
 		}
 
 		private void ToRideSummary(OrderManualRideLinqDetail orderManualRideLinqDetail)
