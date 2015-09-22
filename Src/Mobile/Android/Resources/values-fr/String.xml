@@ -91,7 +91,7 @@
   <string name="CreateAccountErrorTitle">Erreur</string>
   <string name="CreateAccountFullNamePlaceHolder">Nom complet</string>
   <string name="CreateAccountInvalidDataTitle">Données invalides</string>
-  <string name="CreateAccountInvalidPassword">Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.</string>
+  <string name="CreateAccountInvalidPassword">Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit contenir au minimum 6 caractères.</string>
   <string name="CreateAccountLanguageEnglish">English</string>
   <string name="CreateAccountLanguageFrench">Français</string>
   <string name="CreateAccountPasswordConfirmationPlaceHolder">Confirmation du mot de passe</string>
@@ -137,7 +137,6 @@
   <string name="Done">Terminé</string>
   <string name="DontHaveAnAccountLabel">Souhaitez-vous créer un compte?</string>
   <string name="DriverInfoColor">Coloris:</string>
-  <string name="DriverInfoDriver">Chauffeur:</string>
   <string name="DriverInfoLicence">Licence:</string>
   <string name="DriverInfoMake">Marque:</string>
   <string name="DriverInfoModel">Modèle:</string>
@@ -527,7 +526,8 @@
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="UnpairWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
   <string name="UnpairWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
-  <string name="UnpairWarningCancelButton">Payer dans le taxi</string>
+  <string name="UnpairWarningOkButton">Payer dans le taxi</string>
+  <string name="UnpairWarningCancelButton">Annuler</string>
   <string name="View_Promotions">Promotions</string>
   <string name="PromoExpiringIn1DayMessage">Expire dans 1 jour</string>
   <string name="PromoExpiringSoonMessage">Expire dans {0} jours</string>
@@ -589,12 +589,12 @@
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Driver">Chauffeur #:</string>
   <string name="ManualRideLinqStatus_Fare">Tarif:</string>
-  <string name="ManualRideLinqStatus_PairingCode">Code d\'association:</string>
   <string name="ManualRideLinqStatus_Tax">Taxes:</string>
   <string name="ManualRideLinqStatus_Tip">Pourboire:</string>
   <string name="ManualRideLinqStatus_Total">Coût Total:</string>
   <string name="ManualRideLinqStatus_Unpair">Dissocier</string>
   <string name="ManualRideLinqSummary_Done">Ok</string>
+  <string name="ManualRideLinqStatus_PairingError">Une erreur est survenue. Veuillez essayer de vous connecter de nouveau en utilisant le code affiché sur l\'écran dans le taxi.</string>
   <string name="ManualUnPairingForRideLinQ_Error_Message">Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Êtes-vous sûr de vouloir annuler? Des frais d\'annulation peuvent être appliqués.</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">Vous ne pouvez pas effacer une carte de crédit s\'il y a une commande en cours.</string>
@@ -702,4 +702,7 @@
   <string name="WaitingCarLandscapeViewCloseButtonText">Retour</string>
   <string name="WaitingCarLandscapeViewCarNumber">Numéro de voiture</string>
   <string name="WaitingCarLandscapeActivityName">Numéro de voiture</string>
+  <string name="UpdateNoticeTitle">Update Notice</string>
+  <string name="UpdateNoticeText">Désolé, cette version d\'application n\'est plus maintenue. Mettez à jour l\'application s\'il vous plaît</string>
+  <string name="OrderStatus_PairingSuccess">Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</string>
 </resources>

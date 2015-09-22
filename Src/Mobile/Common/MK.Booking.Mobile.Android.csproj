@@ -185,14 +185,15 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
-    <Compile Include="Infrastructure\CommonDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\CommonDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\DeviceOrientationFilter.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\OrientationService.cs" />
     <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
-    <Compile Include="Infrastructure\OrientationService.cs" />
     <Compile Include="Localization\Taxiworld.Designer.cs">
       <DependentUpon>Taxiworld.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -239,8 +240,8 @@
     <Compile Include="ViewModels\enum\ColorEnum.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
-    <Compile Include="ViewModels\ManualRideLinqStatusViewModel.cs" />
     <Compile Include="ViewModels\Orders\OrderAirportViewModel.cs" />
+    <Compile Include="ViewModels\Map\TaxiLocation.cs" />
     <Compile Include="ViewModels\Orders\BookingStatusBottomBarViewModel.cs" />
     <Compile Include="ViewModels\Orders\WaitingCarLandscapeViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
@@ -395,6 +396,8 @@
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
+    <EmbeddedResource Include="Localization\Arro.resx" />
+    <EmbeddedResource Include="Localization\ArroDemo.resx" />
     <EmbeddedResource Include="Localization\BlackCabNow.resx" />
     <EmbeddedResource Include="Localization\Master.es.resx">
       <SubType>Designer</SubType>

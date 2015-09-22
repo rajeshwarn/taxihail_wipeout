@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 					
-					if (!HasSocialInfo && ((Data.Password != ConfirmPassword) || (Data.Password.Length < 6 || Data.Password.Length > 10)))
+					if (!HasSocialInfo && ((Data.Password != ConfirmPassword) || (Data.Password.Length <= 6)))
 					{
                         await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountInvalidPassword"]);
 						return;

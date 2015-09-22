@@ -1,8 +1,6 @@
-using System;
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
-using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets

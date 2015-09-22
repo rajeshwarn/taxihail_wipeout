@@ -71,48 +71,52 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		DeviceOrientation GetOrientationByAngle(int angle, DeviceOrientation currentDeviceOrientation)
 		{
-			var axes = new int[4];
-			Array.Copy(_axes, axes, 4);
+			int axe1, axe2, axe3, axe4;
+
+			axe1 = _axes[0];
+			axe2 = _axes[1];
+			axe3 = _axes[2];
+			axe4 = _axes[3];
 
 			switch (currentDeviceOrientation)
 			{
 				case DeviceOrientation.Up:
-					axes[0] += Deviation;
-					axes[3] -= Deviation;
+					axe1 += Deviation;
+					axe4 -= Deviation;
 					break;
 
 				case DeviceOrientation.Down:
-					axes[1] -= Deviation;
-					axes[2] += Deviation;
+					axe2 -= Deviation;
+					axe3 += Deviation;
 					break;
 
                 case DeviceOrientation.Right:
-					axes[0] -= Deviation;
-					axes[1] += Deviation;
+					axe1 -= Deviation;
+					axe2 += Deviation;
 					break;
 
                 case DeviceOrientation.Left:
-					axes[2] -= Deviation;
-					axes[3] += Deviation;
+					axe3 -= Deviation;
+					axe4 += Deviation;
 					break;
 			}
 
-			if (angle >= axes[3] && angle <= axes[0])
+			if (angle >= axe4 && angle <= axe1)
 			{
 				return DeviceOrientation.Up;
 			}
 
-			if (angle > axes[0] && angle <= axes[1])
+			if (angle > axe1 && angle <= axe2)
 			{
 				return DeviceOrientation.Right;
 			}
 
-			if (angle > axes[1] && angle < axes[2])
+			if (angle > axe2 && angle < axe3)
 			{
 				return DeviceOrientation.Down;
 			}
 
-			if (angle >= axes[2] && angle < axes[3])
+			if (angle >= axe3 && angle < axe4)
 			{
 				return DeviceOrientation.Left;
 			}

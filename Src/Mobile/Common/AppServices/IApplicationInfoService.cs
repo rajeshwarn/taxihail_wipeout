@@ -9,8 +9,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         void ClearAppInfo();
 
-        void CheckVersionAsync();
-        
+        Task CheckVersionAsync();
     }
 }
-

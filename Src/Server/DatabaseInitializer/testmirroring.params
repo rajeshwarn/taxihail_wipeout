@@ -1,1 +1,12 @@
-{"CompanyName":"","MkWebConnectionString":"Data Source=Taxihail01;Initial Catalog=BlueCab;Integrated Security=True;MultipleActiveResultSets=True","MasterConnectionString":"Data Source=Taxihail01;Initial Catalog=master;Integrated Security=True; MultipleActiveResultSets=True","SqlInstanceName":"MSSQL11.MSSQLSERVER","BackupFolder":"","MirroringSharedFolder":"\\\\TAXIHAIL01\\MirroringBackup","MirrorMasterConnectionString":"Data Source=Taxihail02;Initial Catalog=master;Integrated Security=True; MultipleActiveResultSets=True","MirroringMirrorPartner":"TCP://taxihail01.apcurium.local:5022","MirroringPrincipalPartner":"TCP://TAXIHAIL02.apcurium.local:5022","MirroringWitness":""}
+{
+  "CompanyName": "Arro",
+  "MkWebConnectionString": "Data Source=Taxihail01;Initial Catalog=Arro;Integrated Security=True;MultipleActiveResultSets=True",
+  "MasterConnectionString": "Data Source=Taxihail01;Initial Catalog=master;Integrated Security=True; MultipleActiveResultSets=True",
+  "SqlInstanceName": "MSSQL11.MSSQLSERVER",
+  "BackupFolder": "",
+  "MirroringSharedFolder": "\\\\TAXIHAIL01\\MirroringBackup",
+  "MirrorMasterConnectionString": "Data Source=Taxihail02;Initial Catalog=master;Integrated Security=True; MultipleActiveResultSets=True",
+  "MirroringMirrorPartner": "TCP://taxihail01.apcurium.local:5022",
+  "MirroringPrincipalPartner": "TCP://TAXIHAIL02.apcurium.local:5022",
+  "MirroringWitness": ""
+}

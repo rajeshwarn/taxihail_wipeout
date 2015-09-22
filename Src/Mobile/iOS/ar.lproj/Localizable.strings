@@ -1,5 +1,6 @@
 "LocationDetailRingCodeLabel"="رمز الدخول";
 "Error_AccountPaymentQuestionRequiredMessage"="يجب الإجابة على جميع الأسئلة للإستمرار";
+"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "UnpairErrorMessage"="حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.";
 "View_BookingDetail_TitlePickupDetails"="تفاصيل الإلتقاء";
 "Time"="الوقت";

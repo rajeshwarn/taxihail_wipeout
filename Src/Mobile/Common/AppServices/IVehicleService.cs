@@ -22,6 +22,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		MapBounds GetBoundsForNearestVehicles(bool isUsingGeoServices, Address pickup, IEnumerable<AvailableVehicle> cars);
 
 		IObservable<Direction> GetAndObserveEta();
+
+		IObservable<AvailableVehicle> GetAndObserveCurrentTaxiLocation(string medallion, Guid orderId);
 		
 		Task<GeoDataEta> GetVehiclePositionInfoFromGeo(double fromLat, double fromLng, string vehicleRegistration, Guid orderId);
 

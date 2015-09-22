@@ -186,7 +186,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 return null;
             }
 
-            var isPastNoFeeCancellationWindow = orderStatusDetail.TaxiAssignedDate.HasValue
+            var pairingDetail = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
+
+            var isPastNoFeeCancellationWindow = !pairingDetail.WasUnpaired // No cancellation fee for unpaired rides because the rider is either: already in the car (pay cash) or had his car hijacked
+                && orderStatusDetail.TaxiAssignedDate.HasValue
                 && orderStatusDetail.TaxiAssignedDate.Value.AddSeconds(_serverSettings.ServerData.CancellationFeesWindow) < DateTime.UtcNow;
 
             var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;

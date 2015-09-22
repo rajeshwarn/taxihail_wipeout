@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
@@ -6,10 +8,13 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using CMTPayment;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -27,14 +32,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IServerSettings _serverSettings;
         private readonly IPaymentService _paymentService;
         private readonly IFeeService _feeService;
+        private readonly ILogger _logger;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
         private readonly ICommandBus _commandBus;
 
+        private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
+
         public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, IOrderDao orderDao, ICommandBus commandBus,
-            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService, IFeeService feeService)
+            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService, IFeeService feeService, ILogger logger)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
@@ -46,6 +54,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _serverSettings = serverSettings;
             _paymentService = paymentService;
             _feeService = feeService;
+            _logger = logger;
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
@@ -200,6 +209,26 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                 if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt)
                 {
+                    // Check if card declined
+                    InitializeCmtServiceClient();
+
+                    var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(pairingInfo.PairingToken);
+
+                    if (trip != null && trip.ErrorCode == CmtErrorCodes.CardDeclined)
+                    {
+                        _commandBus.Send(new ReactToPaymentFailure
+                        {
+                            AccountId = order.AccountId,
+                            OrderId = order.Id,
+                            IBSOrderId = order.IBSOrderId,
+                            TransactionId = orderStatus.OrderId.ToString().Split('-').FirstOrDefault(), // Use first part of GUID to display to user
+                            OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
+                            TransactionDate = @event.EventDate
+                        });
+
+                        return;
+                    }
+
                     // Since RideLinqCmt payment is processed automatically by CMT, we have to charge booking fees separately
                     _feeService.ChargeBookingFeesIfNecessary(orderStatus);
                 }
@@ -208,7 +237,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 // we have to void the amount that was preauthorized
                 if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode != PaymentMethod.RideLinqCmt
                     && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
-                    && pairingInfo == null
+                    && (pairingInfo == null || pairingInfo.WasUnpaired)
                     && !orderStatus.IsPrepaid) //prepaid order will never have a pairing info
                 {
                     // void the preauthorization to prevent misuse fees
@@ -224,10 +253,36 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
                 if (orderStatus != null)
                 {
+                    // Check if card declined
+                    InitializeCmtServiceClient();
+
+                    var trip = _cmtTripInfoServiceHelper.CheckForTripEndErrors(@event.PairingToken);
+
+                    if (trip != null && trip.ErrorCode == CmtErrorCodes.CardDeclined)
+                    {
+                        _commandBus.Send(new ReactToPaymentFailure
+                        {
+                            AccountId = orderStatus.AccountId,
+                            OrderId = orderStatus.OrderId,
+                            IBSOrderId = orderStatus.IBSOrderId,
+                            TransactionId = orderStatus.OrderId.ToString().Split('-').FirstOrDefault(), // Use first part of GUID to display to user
+                            OverdueAmount = Convert.ToDecimal(@event.Fare + @event.Tax + @event.Tip + @event.Toll),
+                            TransactionDate = @event.EventDate
+                        });
+
+                        return;
+                    }
+
                     // Since RideLinqCmt payment is processed automatically by CMT, we have to charge booking fees separately
                     _feeService.ChargeBookingFeesIfNecessary(orderStatus);
                 }
             }
+        }
+
+        private void InitializeCmtServiceClient()
+        {
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }
 }

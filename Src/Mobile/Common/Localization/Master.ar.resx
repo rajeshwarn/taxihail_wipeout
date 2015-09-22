@@ -298,6 +298,9 @@
   <data name="CmtRideLinqSaveChanges" xml:space="preserve">
     <value>حفظ</value>
   </data>
+  <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
+    <value>An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</value>
+  </data>
   <data name="UnpairPayInCar" xml:space="preserve">
     <value>Pay in Car</value>
   </data>
@@ -513,9 +516,6 @@
   </data>
   <data name="DriverInfoColor" xml:space="preserve">
     <value>اللون:</value>
-  </data>
-  <data name="DriverInfoDriver" xml:space="preserve">
-    <value>السائق:</value>
   </data>
   <data name="DriverInfoLicence" xml:space="preserve">
     <value>رقم الرخصة:</value>
@@ -1645,8 +1645,11 @@
   <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>If you decide to pay in car, you will not be able to use the promotion</value>
   </data>
-  <data name="UnpairWarningCancelButton" xml:space="preserve">
+  <data name="UnpairWarningOkButton" xml:space="preserve">
     <value>Pay in car</value>
+  </data>
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
+    <value>Cancel</value>
   </data>
   <data name="View_Promotions" xml:space="preserve">
     <value>Promotions</value>
@@ -1833,9 +1836,6 @@
   </data>
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Fare meter:</value>
-  </data>
-  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
-    <value>Pairing Code:</value>
   </data>
   <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
     <value>Tax amount:</value>
@@ -2173,4 +2173,13 @@
 	<data name="WaitingCarLandscapeActivityName" xml:space="preserve">
     	<value>Car Number</value>
 	</data>
+	<data name="UpdateNoticeTitle" xml:space="preserve">
+    	<value>Update Notice</value>
+	</data>
+	<data name="UpdateNoticeText" xml:space="preserve">
+    	<value>Sorry, this version of the app is no longer supported. Please update the app</value>
+	</data>
+	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
+ 		<value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
+  	</data>
 </root>

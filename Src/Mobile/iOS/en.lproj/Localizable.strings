@@ -413,6 +413,7 @@
 "View_UpdatedTermsAndConditions"="New Terms and Conditions";
 "TermsAndConditionsActivityName"="Terms and conditions";
 "Toggle_Off"="Off";
+"UnpairWarningCancelButton"="Cancel";
 "Processing"="Processing your order...";
 "ResetPasswordSucessMessage"="Password was reset successfully";
 "DestinationViewDestinationLabel"="Destination:";
@@ -600,6 +601,7 @@
 "ChangePasswordConfirmmation"="You password has been updated, please sign in.";
 "CreditCardNumber"="Card Number";
 "OrderNote"="Booked on mobile";
+"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
 "PickupViewPickupLabel"="Pickup:";
 "Done"="Done";

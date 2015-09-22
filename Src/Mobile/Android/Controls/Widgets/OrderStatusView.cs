@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					return;
 				}
 
-				var desiredHeight = -(_contactTaxiOverlay.Height + 1);
+				var desiredHeight = -_contactTaxiOverlay.Height;
 
 				if (((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin != desiredHeight)
 				{
@@ -111,8 +111,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			animation.AnimationEnd += (sender, args) =>
 			{
-				((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = -1000;
+				var contactAnimation = _contactTaxiOverlay.Animation;
 
+				if (contactAnimation != null && contactAnimation.HasStarted)
+				{
+					contactAnimation.Cancel();
+				}
+
+				((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = OrderStatusContactTaxiOverlay.CONTACT_TAXI_HIDDEN_Y_OFFSET;
+				
 				//Ensures that the status view is hidden correctly.
 				if (((MarginLayoutParams) LayoutParameters).TopMargin != -Height)
 				{

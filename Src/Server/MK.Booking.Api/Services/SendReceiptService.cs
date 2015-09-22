@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Api.Services
             else if (pairingInfo != null && pairingInfo.AutoTipPercentage.HasValue)
             {
                 var tripInfo = GetTripInfo(pairingInfo.PairingToken);
-                if (tripInfo != null && tripInfo.EndTime.HasValue)
+                if (tripInfo != null && !tripInfo.ErrorCode.HasValue && tripInfo.EndTime.HasValue)
                 {
                     // this is for CMT RideLinq only, no VAT
 

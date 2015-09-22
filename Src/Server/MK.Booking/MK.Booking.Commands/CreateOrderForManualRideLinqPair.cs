@@ -61,6 +61,8 @@ namespace apcurium.MK.Booking.Commands
 
         public string Medallion { get; set; }
 
+	    public string DeviceName { get; set; }
+
         public int TripId { get; set; }
 
         public int DriverId { get; set; }

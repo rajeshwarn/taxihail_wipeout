@@ -220,7 +220,10 @@ namespace apcurium.MK.Booking.EventHandlers
                     if (!paymentSettings.IsUnpairingDisabled)
                     {
                         // Unpair only available if automatic pairing is disabled
-                        orderStatus.UnpairingTimeOut = @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);
+                        orderStatus.UnpairingTimeOut = paymentSettings.UnpairingTimeOut == 0
+                            ? DateTime.MaxValue                                                 // Unpair will be available for the duration of the ride
+                            : @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);    // Unpair will be available until timeout reached
+                        
                         context.Save(orderStatus);
                     }
                 }
@@ -374,7 +377,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderPairingDetail = context.Find<OrderPairingDetail>(@event.SourceId);
                 if (orderPairingDetail != null)
                 {
-                    context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
+                    //context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
+                    orderPairingDetail.WasUnpaired = true;
                     context.Save(orderPairingDetail);
                 }
 
@@ -560,6 +564,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         RateAtTripEnd = @event.RateAtTripEnd,
                         RateChangeTime = @event.RateChangeTime,
                         Medallion = @event.Medallion,
+						DeviceName = @event.DeviceName,
                         TripId = @event.TripId,
                         DriverId = @event.DriverId,
                         LastFour = @event.LastFour,
@@ -624,8 +629,6 @@ namespace apcurium.MK.Booking.EventHandlers
                         orderStatusDetails.Status = OrderStatus.Completed;
                     }
 
-                    orderStatusDetails.VehicleNumber = @event.Medallion;
-
                     context.Save(orderStatusDetails);
                 }
 
@@ -653,9 +656,9 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.RateAtTripStart = @event.RateAtTripStart;
                 rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
                 rideLinqDetails.RateChangeTime = @event.RateChangeTime;
-                rideLinqDetails.Medallion = @event.Medallion;
                 rideLinqDetails.AccessFee = @event.AccessFee;
                 rideLinqDetails.LastFour = @event.LastFour;
+                rideLinqDetails.PairingError = @event.PairingError;
 
                 context.Save(rideLinqDetails);
             }

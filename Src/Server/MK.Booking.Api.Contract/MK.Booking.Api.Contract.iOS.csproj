@@ -94,6 +94,7 @@
     <Compile Include="Requests\Payment\UpdateAutoTipRequest.cs" />
     <Compile Include="Requests\SendMessageToDriverRequest.cs" />
     <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
+    <Compile Include="Requests\TaxiLocationRequest.cs" />
     <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\ActivePromotion.cs" />

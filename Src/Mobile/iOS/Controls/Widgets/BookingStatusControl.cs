@@ -40,6 +40,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Text)
                 .To(vm => vm.ConfirmationNoTxt);
 
+			set.Bind(lblOrderNumber)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsConfirmationNoHidden);
+
             set.Bind(lblOrderStatus)
                 .For(v => v.Text)
                 .To(vm => vm.StatusInfoText);

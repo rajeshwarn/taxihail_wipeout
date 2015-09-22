@@ -614,6 +614,7 @@
 "PayPalErrorTitle"="Erreur PayPal";
 "Overdue_Succeed_Title"="Compte Approuvé";
 "PanelMenuViewLocationsText"="Adresses Favorites";
+"ManualRideLinqStatus_PairingError"="Une erreur est survenue. Veuillez essayer de vous connecter de nouveau en utilisant le code affiché sur l'écran dans le taxi.";
 "ManualRideLinqCreditCardDisabled"="Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.";
 "InvalidAddressTitle"="Adresse invalide";
 "WarningEstimateTitle"="Signaler";

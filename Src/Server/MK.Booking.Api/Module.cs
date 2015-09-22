@@ -163,22 +163,18 @@ namespace apcurium.MK.Booking.Api
         {
             CreateMap<IbsVehiclePosition, AvailableVehicle>()
                 .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => GetNumberOnly(x.VehicleNumber)))
+				.ForMember(p => p.VehicleName, opt => opt.ResolveUsing(x => x.VehicleNumber))
                 .ForMember(p => p.LogoName, opt => opt.Ignore());
         }
 
         private object GetNumberOnly(string text)
         {
-            if ( !string.IsNullOrWhiteSpace(text) && text.Any(t=> Char.IsNumber(t) ) )
+	        if ( !string.IsNullOrWhiteSpace(text) && text.Any(char.IsNumber ) )
             {
-                var r = new string( text.Where(t => char.IsNumber(t)).ToArray());
+                var r = new string( text.Where(char.IsNumber).ToArray());
                 return r;
             }
-            else
-            {
-                return 0;
-            }
+	        return 0;
         }
-
-
     }
 }

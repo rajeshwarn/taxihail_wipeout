@@ -251,7 +251,7 @@
 "RideSettingsVehiculeType"="Tipo de Vehículo";
 "WarningPushServiceAction"="Gracias por informarme";
 "LoginForgotPasswordDetail"="Ingrese su email y le enviaremos una nueva contraseña";
-"UnpairWarningCancelButton"="Pago en carro";
+"UnpairWarningOkButton"="Pago en carro";
 "PassengerNumberLabel"="Pasajeros";
 "LocationServiceErrorTitle"="Error";
 "CmtTransactionSuccessTitle"="Pago recibido";
