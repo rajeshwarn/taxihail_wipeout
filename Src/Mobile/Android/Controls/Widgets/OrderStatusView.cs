@@ -7,6 +7,8 @@ using Android.Util;
 using Android.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using Android.Widget;
+using Android.Views.Animations;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -17,13 +19,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private bool _isShown;
 		private ViewStates _animatedVisibility;
+        private LinearLayout _statusLayout;
+        private ImageView _progressImage;
 
 		public OrderStatusView(Context context, IAttributeSet attrs) : base(Resource.Layout.SubView_BookingStatus, context, attrs)
 		{
 			this.DelayBind(() =>
 			{
 				_contactTaxiOverlay = FindViewById<OrderStatusContactTaxiOverlay>(Resource.Id.ContactTaxiOverlay);
-				
+                _statusLayout = FindViewById<LinearLayout>(Resource.Id.statusLayout);
+                    _progressImage = FindViewById<ImageView>(Resource.Id.progressImage);
+
 				var set = this.CreateBindingSet<OrderStatusView, BookingStatusViewModel>();
 
 				set.Bind(_contactTaxiOverlay)
@@ -37,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 set.Bind()
                     .For(v => v.ShowAnimation)
-                    .To(vm => vm.ShowProgress);
+                    .To(vm => vm.IsProgressVisible);
                     
 				set.Bind(_contactTaxiOverlay)
 					.For(v => v.Visibility)
@@ -62,13 +68,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     _showAnnimation = value;
                     if (ShowAnimation)
                     {
+                        _statusLayout.SetBackgroundColor(Resources.GetColor(Resource.Color.transparent));
+                        AnimateProgress(_progressImage);
                     }
                     else
                     {
+                        _statusLayout.Background = Resources.GetDrawable(Resource.Drawable.drop_shadow_opaque);
                     }
                 }
-
             }
+        }
+
+        private void AnimateProgress(View view)
+        {
+            view.SetX(-view.Width);
+            var animation = new TranslateAnimation(0, view.Width, 0, 0)
+                {
+                    Duration = 4000,
+                };
+            
+            animation.AnimationEnd += (sender, e) => 
+                {
+                    var animationEnd = new TranslateAnimation(view.Width, view.Width * 2, 0, 0)
+                    {
+                        Duration = 4000,
+                    };
+                    animationEnd.AnimationEnd += (sender1, e1) => AnimateProgress(view);
+                    view.StartAnimation(animationEnd);
+                };
+            view.StartAnimation(animation);
+
         }
 
 		public ViewStates AnimatedVisibility

@@ -556,24 +556,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        RaisePropertyChanged(() => IsDriverInfoAvailable);
 	        RaisePropertyChanged(() => IsCallTaxiVisible);
 	        RaisePropertyChanged(() => IsMessageTaxiVisible);
-			RaisePropertyChanged(() => IsContactTaxiVisible);
+            RaisePropertyChanged(() => IsContactTaxiVisible);
+            RaisePropertyChanged(() => IsProgressVisible);
 	        RaisePropertyChanged(() => CanGoBack);
 	        RaisePropertyChanged(() => VehicleMedallionHidden);
-
-			ShowProgress = OrderStatusDetail != null && (string.IsNullOrEmpty(OrderStatusDetail.IBSStatusId) 
-					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting 
-					|| OrderStatusDetail.Status == OrderStatus.Created);
 	    }
 
-		private bool _showProgress = false;
-		public bool ShowProgress
+		public bool IsProgressVisible
 		{
-			get{ return _showProgress; }
-			set
-			{
-				_showProgress = value;
-				RaisePropertyChanged();
-			}
+            get
+            { 
+                return OrderStatusDetail != null && (string.IsNullOrEmpty(OrderStatusDetail.IBSStatusId) 
+                || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting 
+                || OrderStatusDetail.Status == OrderStatus.Created); 
+            }
 		}
 
 		public bool IsConfirmationNoHidden

@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/topViewLayout">
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-				android:minHeight="75dip"
+        android:minHeight="75dip"
         android:orientation="vertical"
         android:id="@+id/statusLayout"
         android:elevation="1dp"
-        android:background="@drawable/drop_shadow_opaque">
+        android:background="@drawable/drop_shadow_opaque"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,8 +22,7 @@
             android:layout_marginRight="6dp"
             android:layout_marginBottom="0dp"
             android:orientation="vertical"
-            android:gravity="center_horizontal|center_vertical"
-						>
+            android:gravity="center_horizontal|center_vertical">
             <TextView
                 style="@style/BlackTextLabel"
                 local:MvxBind="Text ConfirmationNoTxt;Visibility IsConfirmationNoHidden, Converter=InvertedVisibility"
@@ -42,7 +43,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-						android:layout_marginBottom="5dip">
+            android:layout_marginBottom="5dip">
             <RelativeLayout
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
@@ -124,11 +125,25 @@
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
-
-	<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusContactTaxiOverlay
+    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusContactTaxiOverlay
         android:layout_width="fill_parent"
         android:layout_height="75dip"
         android:id="@+id/ContactTaxiOverlay"
-        android:background="@drawable/drop_shadow_opaque" />
-	
-</LinearLayout>
+        android:background="@drawable/drop_shadow_opaque"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/statusLayout" />
+    <FrameLayout
+        android:minHeight="75dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="@drawable/drop_shadow_opaque"
+        local:MvxBind="Visibility IsProgressVisible;">
+        <ImageView
+            android:src="@drawable/status_gradient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressImage"
+            android:scaleType="fitXY" />
+    </FrameLayout>
+</RelativeLayout>

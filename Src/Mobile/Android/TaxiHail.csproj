@@ -712,6 +712,7 @@
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <AndroidResource Include="Resources\Drawable\facebook_account_icon.png" />
     <AndroidResource Include="Resources\Drawable\waitingcarclosebutton.xml" />
+    <AndroidResource Include="Resources\drawable-xhdpi\status_gradient.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
