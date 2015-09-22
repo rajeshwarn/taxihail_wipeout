@@ -686,7 +686,7 @@
 "BookingAirportDetailsTerminal"=", \nTerminal: {0}";
 "UpdateNoticeTitle"="Update Notice";
 "BookingAirportNoFlights_Title"="No flights";
-"BookingAirportNoFlights_Message"="No flights found with the provided information";
+"BookingAirportNoFlights_Message"="No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}";
 "UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";
 "OrderStatus_PairingSuccess"="OK you're checked in. Payment will be automatic at the end of your trip.";
 "BookingAirportMissingInfo_Title"="Missing information";
