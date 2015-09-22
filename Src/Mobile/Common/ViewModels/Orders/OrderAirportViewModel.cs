@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -11,7 +10,6 @@ using apcurium.MK.Common.Extensions;
 using System.Text;
 using System.Threading.Tasks;
 using MK.Common.Android.Helpers;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -112,12 +110,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			set
 			{
-				if (value != _selectedPickupPointsId)
+				if (_selectedPickupPointsId == value)
 				{
-					_selectedPickupPointsId = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged(() => SelectedPickupPointName);
+					return;
 				}
+
+				_selectedPickupPointsId = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => SelectedPickupPointName);
 			}
 		}
 
@@ -162,12 +162,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			set
 			{
-				if (value != _airLineId)
+				if (_airLineId == value)
 				{
-					_airLineId = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged(() => AirlineName);
+					return;
 				}
+
+				_airLineId = value;
+				_airLineId = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => AirlineName);
 			}
 		}
 
@@ -198,11 +201,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return _bookingSettings; }
 			set
 			{
-				if (value != _bookingSettings)
+				if (_bookingSettings == value)
 				{
-					_bookingSettings = value;
-					RaisePropertyChanged();
+					return;
 				}
+
+				_bookingSettings = value;
+				RaisePropertyChanged();
 			}
 		}
 
@@ -211,11 +216,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return _flightNumber; }
 			set
 			{
-				if (value != _flightNumber)
+				if (_flightNumber == value)
 				{
-					_flightNumber = value;
-					RaisePropertyChanged();
+					return;
 				}
+
+				_flightNumber = value;
+				RaisePropertyChanged();
 			}
 		}
 
@@ -229,11 +236,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return _pickupTimeStamp; }
 			set
 			{
-				if (value != _pickupTimeStamp)
+				if (_pickupTimeStamp == value)
 				{
-					_pickupTimeStamp = value;
-					RaisePropertyChanged();
+					return;
 				}
+
+				_pickupTimeStamp = value;
+				RaisePropertyChanged();
 			}
 		}
 
@@ -242,12 +251,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return _note; }
 			set
 			{
-				if (_note != value)
+				if (_note == value)
 				{
-					_note = value;
-					_orderWorkflowService.SetNoteToDriver(value);
-					RaisePropertyChanged();
+					return;
 				}
+
+				_note = value;
+				_orderWorkflowService.SetNoteToDriver(value);
+				RaisePropertyChanged();
 			}
 		}
 
@@ -256,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return _pickupAddress; }
 			set
 			{
-				if (value == _pickupAddress)
+				if (_pickupAddress == value)
 				{
 					return;
 				}
@@ -264,7 +275,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				_pickupAddress = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => Title);
-				if ((_pickupAddress != null) && (_pickupAddress.AddressLocationType == AddressLocationType.Airport))
+
+				if (_pickupAddress != null && _pickupAddress.AddressLocationType == AddressLocationType.Airport)
 				{
 					_orderWorkflowService.POIRefAirLineList(string.Empty, 0);
 					_orderWorkflowService.POIRefPickupList(string.Empty, 0);
@@ -284,20 +296,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return _poiPickup; }
 			set
 			{
-				if (value == _poiPickup || value == null)
+				if (_poiPickup == value || value == null)
 				{
 					return;
 				}
 
 				_poiPickup = value;
-				if (value.None())
+				if (_poiPickup.None())
 				{
 					return;
 				}
 
 				PickupPointItems.Clear();
 
-				var pickupPoints = value
+				var pickupPoints = _poiPickup
 					.Select((point, index) => new KeyValuePair<int, PickupPoint>(index, point))
 					.ToArray();
 
@@ -348,8 +360,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_pickupDate = value;
 
-				PickupTimeStamp = value.HasValue
-					? value.Value.ToString("g")
+				PickupTimeStamp = _pickupDate.HasValue
+					? _pickupDate.Value.ToString("g")
 					: this.Services().Localize["TimeNow"];
 
 				RaisePropertyChanged();
@@ -370,48 +382,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private async Task<string> GetTerminal()
 		{
-			var localize = this.Services().Localize;
-
 			try
 			{		
 				var carrier = _carrierCodes.FirstOrDefault(c => c.Key == AirlineId);
 
-				var carrierCode = carrier.Value.Id.Replace("utog.", "").ToLowerInvariant();
-
-				return await _airportInformationService.GetTerminal(PickupDate ?? DateTime.Now, FlightNumber, carrierCode, _pickupAddress.PlaceId, true);
-			}
-			catch (WebServiceException ex)
-			{
-				var showMessage = false;
-
-				if (ex.StatusCode == (int) HttpStatusCode.NoContent)
-				{
-					return "N/A";
-				}
-
-				if (ex.StatusCode == (int) HttpStatusCode.BadRequest)
-				{
-					
-
-					this.Services().Message
-						.ShowMessage(localize["Error"], string.Format(localize[ex.ErrorCode], AirlineName, FlightNumber, PickupTimeStamp))
-						.FireAndForget();
-
-					return string.Empty;
-				}
-
-				if (ex.StatusCode == (int) HttpStatusCode.NotFound)
-				{
-					showMessage = true;
-				}
-
-				Logger.LogMessage("An error has occurred while attempting to get the airport terminal.");
-				Logger.LogError(ex);
-
-				if (!showMessage)
-				{
-					return string.Empty;
-				}
+				return await _airportInformationService.GetTerminal(PickupDate ?? DateTime.Now, FlightNumber, carrier.Value.Id, AirlineName, _pickupAddress.PlaceId, true);
 			}
 			catch (Exception ex)
 			{
@@ -420,21 +395,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				return string.Empty;
 			}
-
-			var cancel = false;
-
-			await this.Services().Message.ShowMessage(
-						localize["BookingAirportNoFlights_Title"],
-						string.Format(localize["BookingAirportNoFlights_Message"], AirlineName, FlightNumber, PickupTimeStamp),
-						localize["YesButton"],
-						() => { },
-						localize["NoButton"],
-						() => cancel = true);
-
-
-			return cancel 
-				? string.Empty 
-				: "N/A";
 		}
 
 		private bool CanGetTerminal()
