@@ -831,7 +831,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 if (bookingStatusViewModel.IsContactTaxiVisible && Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
                 {
                     var scale = UIHelper.Is35InchDisplay
-                        ? 1.5
+                        ? 1.25
                         : UIScreen.MainScreen.Scale;
 
                     centerLat += (maxLat - minLat) / scale;
