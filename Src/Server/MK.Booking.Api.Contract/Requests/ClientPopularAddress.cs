@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Http;
+using apcurium.MK.Booking.Api.Contract.Security;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
 
 #region
@@ -11,6 +13,7 @@ using apcurium.MK.Booking.ReadModel;
 #endregion
 
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
@@ -22,7 +25,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
 #if !CLIENT
 
-
+	[Authenticate]
+    [AuthorizationRequired(ApplyTo.Get, RoleName.Admin)]
 	[Route("/admin/popularaddresses", "GET")]
 	public class AdminPopularAddress : BaseDto
 	{
