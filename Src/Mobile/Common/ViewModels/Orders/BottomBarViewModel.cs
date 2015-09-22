@@ -13,6 +13,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using System.ComponentModel;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -817,23 +818,46 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
                     var localize = this.Services().Localize;
 
-                    if (_accountService.CurrentAccount.DefaultCreditCard == null || _accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
+                    if (_accountService.CurrentAccount.DefaultCreditCard == null)
                     {
                         this.Services().Message.ShowMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqNoCardOnFile"]);
                         return;
                     }
+
+                    if (_accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
+                    {
+                        this.Services().Message.ShowMessage(
+                            this.Services().Localize["View_Overdue"],
+                            this.Services().Localize["Overdue_OutstandingPaymentExists"],
+                            this.Services().Localize["OkButtonText"], async () =>
+                            {
+                                OverduePayment overduePayment;
+
+                                using (this.Services().Message.ShowProgress())
+                                {
+                                    overduePayment = await _paymentService.GetOverduePayment();
+                                }
+
+                                ShowViewModel<OverduePaymentViewModel>(new
+                                {
+                                    overduePayment = overduePayment.ToJson()
+                                });
+                            },
+                            this.Services().Localize["Cancel"],
+                            () => {});
+
+                        return;
+                    }
+
 	                var homeViewModel = (HomeViewModel) Parent;
 					ShowSubViewModel<ManualPairingForRideLinqViewModel, OrderManualRideLinqDetail>(null, homeViewModel.GoToManualRideLinq);
                 });
             }
         }
-
-
-	    
 
 	    private async Task ShowFareEstimateAlertDialogIfNecessary()
         {

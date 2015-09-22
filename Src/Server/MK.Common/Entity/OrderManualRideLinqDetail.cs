@@ -58,5 +58,7 @@ namespace apcurium.MK.Common.Entity
         public double? AccessFee { get; set; }
 
         public string LastFour { get; set; }
+
+        public string PairingError { get; set; }
     }
 }

@@ -80,9 +80,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _payPalSettings = paymentSettings.PayPalClientSettings;
 
             lblInstructions.Text = Localize.GetValue("CreditCardInstructions");
+
             if (!ViewModel.ShowInstructions)
             {
                 lblInstructions.RemoveFromSuperview();
+            }
+
+            if (!ViewModel.ShouldDisplayTip)
+            {
+                lblTip.RemoveFromSuperview();
+                txtTip.RemoveFromSuperview();
+            }
+            else
+            {
+                ConfigureTipSection();
             }
                 
             if (!ViewModel.IsPayPalOnly)
@@ -158,9 +169,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.ShowLinkedPayPalInfo)
                 .WithConversion("BoolInverter");
 
+            set.Bind(txtTip)
+                .For(v => v.Text)
+                .To(vm => vm.PaymentPreferences.TipAmount);
+
 			set.Apply ();   
 
             txtNameOnCard.ShouldReturn += GoToNext;
+        }
+
+        private void ConfigureTipSection()
+        {
+            lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
+
+            txtTip.Placeholder = Localize.GetValue("PaymentDetails.TipAmountLabel");
+            txtTip.AccessibilityLabel = txtTip.Placeholder;
+
+            txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, () => ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id, true);
+            txtTip.TextAlignment = UITextAlignment.Right;
         }
 
         private void ConfigureCreditCardSection()
