@@ -239,6 +239,7 @@
   <string name="LocalContactCannotBeResolverMessage">Cannot find the address associated to this contact.</string>
   <string name="July">Jul (07)</string>
   <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirm Payment Information</string>
+  <string name="FacebookLoginTitle">Email already used</string>
   <string name="AddCoFPayPalWarning">Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</string>
   <string name="AddReminderMessage">Would you like a reminder added to your calendar for this pick-up time?</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">You cannot delete your credit card when an order is scheduled or in progress.</string>
@@ -560,6 +561,7 @@
   <string name="NoFareText">Choose a destination to get a price estimate.</string>
   <string name="Notes">Notes</string>
   <string name="EstimatingFare">Estimating your fare...</string>
+  <string name="FacebookLoginMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
   <string name="OverduePaymentActivityName">Overdue payment</string>
   <string name="UpdateBookingSettingsGenericError">An error occured when updating the booking settings</string>
   <string name="TabHistory">History</string>
