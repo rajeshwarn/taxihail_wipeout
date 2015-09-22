@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	        get { return _accountService.CurrentAccount.IsPayPalAccountLinked; }
 	    }
 
-		private int _tip;
+		private int _tip = -1;
         public int Tip 
         { 
             get
@@ -130,10 +130,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
             set
 			{
-                _tip = value;
+				var doAction = true; 
+
+				if (_tip == -1 || _tip == value)
+				{
+					doAction = false;
+				}
+
+				_tip = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => TipAmount);
 				RaisePropertyChanged(() => TipAmountDisplay);
+				if (ActionOnTipSelected != null && doAction)
+				{
+					ActionOnTipSelected.Execute(Tip);
+				}
             }
         }
 
@@ -146,6 +157,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
         public bool TipListDisabled = false;
+
+		public ICommand ActionOnTipSelected;
 
         public string TipAmountDisplay
         {

@@ -23,12 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             var txtPassword = FindViewById<EditTextNavigate>(Resource.Id.rideSettingsPassword);
             txtPassword.TransformationMethod = PasswordTransformationMethod.Instance;
             txtPassword.Text = "my secure password"; /* fake password for display only */
-
-            if (!ViewModel.ShouldDisplayTip)
-            {
-                FindViewById<TextView>(Resource.Id.tipAmountLabel).Visibility = ViewStates.Gone;
-                FindViewById<EditTextRightSpinner>(Resource.Id.tipPicker).Visibility = ViewStates.Gone;
-            }
         }
     }
 }
