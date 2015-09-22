@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             
             set.Bind()
                 .For(v => v.ShowAnimation)
-                .To(vm => vm.ShowProgress);
+                .To(vm => vm.IsProgressVisible);
             
             set.Apply();
         }
@@ -89,7 +89,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         _annimationView.RemoveFromSuperview();
                     }
                 }
-
             }
         }
     } 

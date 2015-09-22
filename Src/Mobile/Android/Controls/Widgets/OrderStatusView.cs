@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			{
 				_contactTaxiOverlay = FindViewById<OrderStatusContactTaxiOverlay>(Resource.Id.ContactTaxiOverlay);
                 _statusLayout = FindViewById<LinearLayout>(Resource.Id.statusLayout);
-                    _progressImage = FindViewById<ImageView>(Resource.Id.progressImage);
+                _progressImage = FindViewById<ImageView>(Resource.Id.progressImage);
 
 				var set = this.CreateBindingSet<OrderStatusView, BookingStatusViewModel>();
 
@@ -42,8 +42,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					.WithConversion("Visibility");
 
                 set.Bind()
-                    .For(v => v.ShowAnimation)
-                    .To(vm => vm.IsProgressVisible);
+                        .For(v => v.ShowAnimation)
+                        .To(vm => vm.IsProgressVisible);
                     
 				set.Bind(_contactTaxiOverlay)
 					.For(v => v.Visibility)
