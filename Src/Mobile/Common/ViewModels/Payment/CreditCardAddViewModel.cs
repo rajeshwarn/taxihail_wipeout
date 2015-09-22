@@ -430,13 +430,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
 					_paymentPreferences.Start();
-					_paymentPreferences.ActionOnTipSelected = SaveTip;
+					_paymentPreferences.ActionOnTipSelected = _saveTip;
 				}
 				return _paymentPreferences;
 			}
 		}
 
-		public ICommand SaveTip 
+		private ICommand _saveTip 
 		{ 
 			get
 			{

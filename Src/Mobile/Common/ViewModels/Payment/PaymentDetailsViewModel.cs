@@ -130,23 +130,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
             set
 			{
+				var doAction = true; 
+
 				if (_tip == -1 || _tip == value)
 				{
-					_tip = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged(() => TipAmount);
-					RaisePropertyChanged(() => TipAmountDisplay);
+					doAction = false;
 				}
-				else
+
+				_tip = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => TipAmount);
+				RaisePropertyChanged(() => TipAmountDisplay);
+				if (ActionOnTipSelected != null && doAction)
 				{
-					_tip = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged(() => TipAmount);
-					RaisePropertyChanged(() => TipAmountDisplay);
-					if (ActionOnTipSelected != null)
-					{
-						ActionOnTipSelected.Execute(Tip);
-					}
+					ActionOnTipSelected.Execute(Tip);
 				}
             }
         }
