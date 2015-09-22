@@ -561,8 +561,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        RaisePropertyChanged(() => VehicleMedallionHidden);
 
 			ShowProgress = OrderStatusDetail != null && (string.IsNullOrEmpty(OrderStatusDetail.IBSStatusId) 
-					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting 
-					|| OrderStatusDetail.Status == OrderStatus.Created);
+					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting);
 	    }
 
 		private bool _showProgress = false;
@@ -571,8 +570,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get{ return _showProgress; }
 			set
 			{
-				_showProgress = value;
-				RaisePropertyChanged();
+				if (_showProgress != value)
+				{
+					_showProgress = value;
+					RaisePropertyChanged();
+				}
 			}
 		}
 
