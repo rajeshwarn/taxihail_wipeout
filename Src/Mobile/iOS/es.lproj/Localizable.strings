@@ -95,7 +95,7 @@
 "CreateAccountErrorTitle"="Error";
 "CreateAccountFullNamePlaceHolder"="Nombre completo";
 "CreateAccountInvalidDataTitle"="Información de cuenta inválida";
-"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.";
+"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.";
 "CreateAccountLanguageEnglish"="Inglés";
 "CreateAccountLanguageFrench"="Francés";
 "CreateAccountPasswordConfirmationPlaceHolder"="Confirme contraseña";
@@ -147,7 +147,6 @@
 "DontAsk"="No preguntar";
 "DontHaveAnAccountLabel"="No tiene cuenta?";
 "DriverInfoColor"="Color:";
-"DriverInfoDriver"="Chofer:";
 "DriverInfoLicence"="# de Placa:";
 "DriverInfoMake"="Marca:";
 "DriverInfoModel"="Modelo:";
@@ -518,8 +517,9 @@
 "PanelMenuViewPromotionsText"="Promotions";
 "UnpairWarningMessage"="¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?";
 "UnpairWarningMessageWithPromo"="Si usted decide pagar en el carro, usted no podrá utilizar la promoción";
-"UnpairWarningCancelButton"="Pago en carro";
+"UnpairWarningOkButton"="Pago en carro";
 "View_Promotions"="Promociones";
+"UnpairWarningCancelButton"="Cancelar";
 "PromoExpiringIn1DayMessage"="Expira en 1 día";
 "PromoExpiringSoonMessage"="Expira en {0} dias";
 "PromoExpiringToday"="Expira hoy!";
@@ -571,6 +571,7 @@
 "PaymentLoadError"="No se pueden cargar los datos de pago. Por favor, inténtelo de nuevo más tarde.";
 "ManualPairingForRideLinQ_Error_Message"="Ocurrió un error durante el registro.";
 "ManualPairingForRideLinQ_Error_Title"="Error";
+"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "ManualPairingForRideLinQ_Instructions"="Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.";
 "ManualPairingForRideLinQ_InvalidCode_Message"="El código de emparejamiento es inválido.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Código Inválido";
@@ -580,7 +581,6 @@
 "ManualRideLinqStatus_Distance"="Distancia:";
 "ManualRideLinqStatus_Driver"="Id de Conductor:";
 "ManualRideLinqStatus_Fare"="Medidor de tarifa:";
-"ManualRideLinqStatus_PairingCode"="Código de emparejamiento:";
 "ManualRideLinqStatus_Tax"="Impuesto:";
 "ManualRideLinqStatus_Tip"="Propina:";
 "ManualRideLinqStatus_Total"="Costo Total:";
@@ -701,8 +701,11 @@
 "WaitingCarLandscapeViewCarNumber"="Car Number";
 "WaitingCarLandscapeActivityName"="Car Number";
 "BookingAirportDetailsTerminal"=", \nTerminal: {0}";
+"UpdateNoticeTitle"="Update Notice";
 "BookingAirportNoFlights_Title"="No flights";
 "BookingAirportNoFlights_Message"="No flights found with the provided information";
+"UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";
+"OrderStatus_PairingSuccess"="OK you're checked in. Payment will be automatic at the end of your trip.";
 "BookingAirportMissingInfo_Title"="Missing information";
 "BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";
 "OrderAirportView_BAD_FLIGHT_NUMBER"="Invalid flight number";

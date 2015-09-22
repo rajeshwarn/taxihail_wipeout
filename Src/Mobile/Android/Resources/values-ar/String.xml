@@ -60,6 +60,7 @@
   <string name="CmtRideLinqErrorTitle">خطأ</string>
   <string name="CmtRideLinqGenericErrorMessage">حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.</string>
   <string name="CmtRideLinqSaveChanges">حفظ</string>
+  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="UnpairPayInCar">Pay in Car</string>
   <string name="UnpairErrorMessage">حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.</string>
   <string name="CmtTipAmount">قيمة الإكرامية:</string>
@@ -132,7 +133,6 @@
   <string name="Done">تم</string>
   <string name="DontHaveAnAccountLabel">ليس لديك حساب؟</string>
   <string name="DriverInfoColor">اللون:</string>
-  <string name="DriverInfoDriver">السائق:</string>
   <string name="DriverInfoLicence">رقم الرخصة:</string>
   <string name="DriverInfoMake">الصنع:</string>
   <string name="DriverInfoModel">الموديل:</string>
@@ -509,7 +509,8 @@
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
   <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
-  <string name="UnpairWarningCancelButton">Pay in car</string>
+  <string name="UnpairWarningOkButton">Pay in car</string>
+  <string name="UnpairWarningCancelButton">Cancel</string>
   <string name="View_Promotions">Promotions</string>
   <string name="PromoExpiringIn1DayMessage">Expires in 1 day</string>
   <string name="PromoExpiringSoonMessage">Expires in {0} days</string>
@@ -572,7 +573,6 @@
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Driver">Driver id:</string>
   <string name="ManualRideLinqStatus_Fare">Fare meter:</string>
-  <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="ManualRideLinqStatus_Total">Total cost:</string>
@@ -686,8 +686,11 @@
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
   <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
+  <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="BookingAirportNoFlights_Title">No flights</string>
   <string name="BookingAirportNoFlights_Message">No flights found with the provided information</string>
+  <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
+  <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
   <string name="BookingAirportMissingInfo_Title">Missing information</string>
   <string name="BookingAirportMissingInfo_Message">The airline and the flight number are madatory.</string>
   <string name="OrderAirportView_BAD_FLIGHT_NUMBER">Invalid flight number</string>

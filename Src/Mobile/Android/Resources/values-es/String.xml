@@ -97,7 +97,7 @@
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountFullNamePlaceHolder">Nombre completo</string>
   <string name="CreateAccountInvalidDataTitle">Información de cuenta inválida</string>
-  <string name="CreateAccountInvalidPassword">La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.</string>
+  <string name="CreateAccountInvalidPassword">La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.</string>
   <string name="CreateAccountLanguageEnglish">Inglés</string>
   <string name="CreateAccountLanguageFrench">Francés</string>
   <string name="CreateAccountPasswordConfirmationPlaceHolder">Confirme contraseña</string>
@@ -149,7 +149,6 @@
   <string name="DontAsk">No preguntar</string>
   <string name="DontHaveAnAccountLabel">No tiene cuenta?</string>
   <string name="DriverInfoColor">Color:</string>
-  <string name="DriverInfoDriver">Chofer:</string>
   <string name="DriverInfoLicence"># de Placa:</string>
   <string name="DriverInfoMake">Marca:</string>
   <string name="DriverInfoModel">Modelo:</string>
@@ -520,8 +519,9 @@
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="UnpairWarningMessage">¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?</string>
   <string name="UnpairWarningMessageWithPromo">Si usted decide pagar en el carro, usted no podrá utilizar la promoción</string>
-  <string name="UnpairWarningCancelButton">Pago en carro</string>
+  <string name="UnpairWarningOkButton">Pago en carro</string>
   <string name="View_Promotions">Promociones</string>
+  <string name="UnpairWarningCancelButton">Cancelar</string>
   <string name="PromoExpiringIn1DayMessage">Expira en 1 día</string>
   <string name="PromoExpiringSoonMessage">Expira en {0} dias</string>
   <string name="PromoExpiringToday">Expira hoy!</string>
@@ -573,6 +573,7 @@
   <string name="PaymentLoadError">No se pueden cargar los datos de pago. Por favor, inténtelo de nuevo más tarde.</string>
   <string name="ManualPairingForRideLinQ_Error_Message">Ocurrió un error durante el registro.</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
+  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="ManualPairingForRideLinQ_Instructions">Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">El código de emparejamiento es inválido.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Código Inválido</string>
@@ -582,7 +583,6 @@
   <string name="ManualRideLinqStatus_Distance">Distancia:</string>
   <string name="ManualRideLinqStatus_Driver">Id de Conductor:</string>
   <string name="ManualRideLinqStatus_Fare">Medidor de tarifa:</string>
-  <string name="ManualRideLinqStatus_PairingCode">Código de emparejamiento:</string>
   <string name="ManualRideLinqStatus_Tax">Impuesto:</string>
   <string name="ManualRideLinqStatus_Tip">Propina:</string>
   <string name="ManualRideLinqStatus_Total">Costo Total:</string>
@@ -703,8 +703,11 @@
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
   <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
+  <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="BookingAirportNoFlights_Title">No flights</string>
   <string name="BookingAirportNoFlights_Message">No flights found with the provided information</string>
+  <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
+  <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
   <string name="BookingAirportMissingInfo_Title">Missing information</string>
   <string name="BookingAirportMissingInfo_Message">The airline and the flight number are madatory.</string>
   <string name="OrderAirportView_BAD_FLIGHT_NUMBER">Invalid flight number</string>

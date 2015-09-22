@@ -58,6 +58,7 @@
 "CmtRideLinqErrorTitle"="خطأ";
 "CmtRideLinqGenericErrorMessage"="حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.";
 "CmtRideLinqSaveChanges"="حفظ";
+"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "UnpairPayInCar"="Pay in Car";
 "UnpairErrorMessage"="حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.";
 "CmtTipAmount"="قيمة الإكرامية:";
@@ -130,7 +131,6 @@
 "Done"="تم";
 "DontHaveAnAccountLabel"="ليس لديك حساب؟";
 "DriverInfoColor"="اللون:";
-"DriverInfoDriver"="السائق:";
 "DriverInfoLicence"="رقم الرخصة:";
 "DriverInfoMake"="الصنع:";
 "DriverInfoModel"="الموديل:";
@@ -507,7 +507,8 @@
 "PanelMenuViewPromotionsText"="Promotions";
 "UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
-"UnpairWarningCancelButton"="Pay in car";
+"UnpairWarningOkButton"="Pay in car";
+"UnpairWarningCancelButton"="Cancel";
 "View_Promotions"="Promotions";
 "PromoExpiringIn1DayMessage"="Expires in 1 day";
 "PromoExpiringSoonMessage"="Expires in {0} days";
@@ -570,7 +571,6 @@
 "ManualRideLinqStatus_Distance"="Distance:";
 "ManualRideLinqStatus_Driver"="Driver id:";
 "ManualRideLinqStatus_Fare"="Fare meter:";
-"ManualRideLinqStatus_PairingCode"="Pairing Code:";
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "ManualRideLinqStatus_Total"="Total cost:";
@@ -684,8 +684,11 @@
 "WaitingCarLandscapeViewCarNumber"="Car Number";
 "WaitingCarLandscapeActivityName"="Car Number";
 "BookingAirportDetailsTerminal"=", \nTerminal: {0}";
+"UpdateNoticeTitle"="Update Notice";
 "BookingAirportNoFlights_Title"="No flights";
 "BookingAirportNoFlights_Message"="No flights found with the provided information";
+"UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";
+"OrderStatus_PairingSuccess"="OK you're checked in. Payment will be automatic at the end of your trip.";
 "BookingAirportMissingInfo_Title"="Missing information";
 "BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";
 "OrderAirportView_BAD_FLIGHT_NUMBER"="Invalid flight number";
