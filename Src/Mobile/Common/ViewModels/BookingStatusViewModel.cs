@@ -567,8 +567,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             { 
                 return OrderStatusDetail != null && (string.IsNullOrEmpty(OrderStatusDetail.IBSStatusId) 
-                || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting 
-                || OrderStatusDetail.Status == OrderStatus.Created); 
+                || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting ); 
             }
 		}
 

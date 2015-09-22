@@ -138,7 +138,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:background="@drawable/drop_shadow_opaque"
-        local:MvxBind="Visibility IsProgressVisible;">
+        local:MvxBind="Visibility IsProgressVisible, Converter=Visibility;">
         <ImageView
             android:src="@drawable/status_gradient"
             android:layout_width="wrap_content"
