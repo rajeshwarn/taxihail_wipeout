@@ -529,7 +529,7 @@
     <value>Distance</value>
   </data>
   <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
-    <value>There is no promotion associated to this code</value>
+    <value>No existe promoción asociada a este código</value>
     <comment>There is no promotion associated to this code</comment>
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
@@ -537,22 +537,22 @@
     <comment>You must select Card On File to use a promotion.</comment>
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal" xml:space="preserve">
-    <value>You must select Card On File or PayPal to use a promotion.</value>
+    <value>Debe seleccionar la tarjeta de Pago o PayPal para utilizar una promoción.</value>
     <comment>You must select Card On File or PayPal to use a promotion.</comment>
   </data>
   <data name="CannotCreateOrder_PromotionMustUsePayPal" xml:space="preserve">
-    <value>You must select PayPal to use a promotion.</value>
+    <value>Seleccionar PayPal para utilizar una promoción..</value>
     <comment>You must select PayPal to use a promotion.</comment>
   </data>
   <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
-    <value>This promotion is not active</value>
+    <value>Promoción no está activo</value>
     <comment>This promotion is not active</comment>
   </data>
   <data name="CannotCreateOrder_PromotionIsDeleted" xml:space="preserve">
-    <value>This promotion is deleted</value>
+    <value>Se elimina Esta promoción</value>
   </data>
   <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
-    <value>Maximum number of uses has been reached for this promotion</value>
+    <value>Se ha rebasado el máximo número de usos para esta promoción</value>
     <comment>Maximum number of uses has been reached for this promotion</comment>
   </data>
   <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
@@ -572,18 +572,18 @@
     <comment>This promotion has not started yet</comment>
   </data>
   <data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
-    <value>This promotion has expired</value>
+    <value>Esta promoción ha expirado</value>
     <comment>This promotion has expired</comment>
   </data>
   <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
-    <value>This promotion is not available at this time</value>
+    <value>Esta promoción no está disponible en este momento</value>
     <comment>This promotion is not available at this time</comment>
   </data>
   <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
-    <value>There is no company serving this region</value>
+    <value>No hay empresa que sirve esta región</value>
   </data>
   <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
-    <value>You are not allowed to use this promotion</value>
+    <value>No se le permite utilizar esta promoción</value>
   </data>
   <data name="Email_Body_PromotionUnlockedLine1" xml:space="preserve">
     <value>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</value>
