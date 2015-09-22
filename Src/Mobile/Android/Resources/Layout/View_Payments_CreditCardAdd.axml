@@ -52,6 +52,33 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical">
+            <!-- Tip section -->
+                <LinearLayout
+                    android:paddingLeft="15dip"
+                    android:paddingRight="15dip"
+                    android:paddingTop="8dip"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    local:MvxBind="Visibility ShouldDisplayTip">
+                    <TextView
+                        android:id="@+id/tipAmountLabel"
+                        android:text="@string/PaymentDetails.TipAmountLabel"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dip"
+                        android:paddingBottom="5dip"
+                        style="@style/BlackTextLabel" />
+                    <apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner
+                        android:id="@+id/tipPicker"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_marginBottom="10dip"
+                        local:allowOtherSelection="true"
+                        local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip"
+                        android:contentDescription="@string/PaymentDetails.TipAmountLabel" />
+                </LinearLayout>
             <!-- Credit Card section -->
                 <LinearLayout
                     android:paddingLeft="15dip"

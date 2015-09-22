@@ -199,22 +199,6 @@
                         android:singleLine="true"
                         android:hint="@string/RideSettingsCustomerNumber" />
                     <TextView
-                        android:id="@+id/tipAmountLabel"
-                        android:text="@string/PaymentDetails.TipAmountLabel"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="5dip"
-                        android:paddingBottom="5dip"
-                        style="@style/BlackTextLabel" />
-                    <apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner
-                        android:id="@+id/tipPicker"
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:layout_marginBottom="10dip"
-                        local:allowOtherSelection="true"
-                        local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip"
-                        android:contentDescription="@string/PaymentDetails.TipAmountLabel" />
-                    <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="5dip"
