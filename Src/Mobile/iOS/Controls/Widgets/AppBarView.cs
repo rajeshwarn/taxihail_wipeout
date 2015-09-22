@@ -63,7 +63,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_manualPairingButtons.TranslatesAutoresizingMaskIntoConstraints = false;
 			Add(_manualPairingButtons);
 
-			var btnEstimate = GenerateEstimateButton();
+            bool hideDestination = TinyIoC.TinyIoCContainer.Current.Resolve<apcurium.MK.Common.Configuration.IAppSettings>().Data.HideDestination;
+
+            AppBarButton btnEstimate = null;
+
+            if (!hideDestination)
+                btnEstimate = GenerateEstimateButton();
 
 			var btnBookForManualRideLinq = GenerateBookButton();
             
@@ -77,24 +82,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			FlatButtonStyle.Blue.ApplyTo(btnManual);
 			btnManual.SetTitle(Localize.GetValue("HomeView_ManualPairing"), UIControlState.Normal);
 
-			_manualPairingButtons.AddSubviews(btnEstimate, btnManual, btnBookForManualRideLinq);
+            if (!hideDestination)
+            {
+                _manualPairingButtons.AddSubviews(btnEstimate);
+            }
 
-			_manualPairingButtons.AddConstraints(GenerateEstimateButtonConstraints(btnEstimate, _manualPairingButtons));
+            _manualPairingButtons.AddSubviews(btnManual, btnBookForManualRideLinq);
+
+            if (!hideDestination)
+            {
+                _manualPairingButtons.AddConstraints(GenerateEstimateButtonConstraints(btnEstimate, _manualPairingButtons));
+            }
 
 			btnBookForManualRideLinq.AddConstraints(GenerateImagePromoConstraints(_imagePromoForManual, btnBookForManualRideLinq));
 
 			_manualPairingButtons.Superview.AddConstraints(GenerateConstraintsForContainer(_manualPairingButtons));
 
-			// Constraints for Manual button
-			AddConstraints(new []
-			{
-				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnEstimate, NSLayoutAttribute.Trailing, 1, 10f),
-				NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnManual, NSLayoutAttribute.Trailing, 1, 10f),
-				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.CenterY, 1, 0f),
-				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
-				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Width, NSLayoutRelation.Equal, btnBookForManualRideLinq, NSLayoutAttribute.Width, 1, 0f),
-			});
 
+            // Constraints for Manual button
+            AddConstraints(new []
+                {
+                    NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
+                    NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Width, NSLayoutRelation.Equal, btnBookForManualRideLinq, NSLayoutAttribute.Width, 1, 0f),
+                    NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.CenterY, 1, 0f),
+                    NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnManual, NSLayoutAttribute.Trailing, 1, 10f),
+                });
+            
+            if (!hideDestination)
+               AddConstraints(new []
+                    {
+                        NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnEstimate, NSLayoutAttribute.Trailing, 1, 10f),
+                    });
+            else
+                AddConstraints(new []
+                    {
+                        NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.Leading, 1, 10f),
+                    });
+                
 
 			// Constraints for Book Now button
 			AddConstraints(new []
@@ -104,19 +128,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
 			});
 
+
 			var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
 
-			set.Bind(btnEstimate)
+
+            if (!hideDestination)
+            {
+                set.Bind(btnEstimate)
 				.For(v => v.Command)
 				.To(vm => vm.ChangeAddressSelectionMode);
 
-			set.Bind(btnEstimate)
+                set.Bind(btnEstimate)
 				.For(v => v.Selected)
 				.To(vm => vm.EstimateSelected);
 
-			set.Bind(btnEstimate)
-				.For(v => v.Hidden)
+                set.Bind(btnEstimate)
+                .For(v => v.Hidden)
 				.To(vm => vm.Settings.HideDestination);
+            }
 
 			set.Bind(btnBookForManualRideLinq)
 				.For(v => v.Command)
