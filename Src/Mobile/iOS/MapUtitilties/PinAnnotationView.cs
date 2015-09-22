@@ -26,6 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		{
 			Annotation = annotation;
 			RefreshPinImage();
+            _lblVehicleNumber = CreateMedalionView(annotation.Title, hidden: true);
+            AddSubview(_lblVehicleNumber);
 		}
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -46,7 +48,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public void HideMedaillon()
         {
-            CreateMedalionViewIfNeeded();
             _lblVehicleNumber.Hidden = true; 
         }
 
@@ -73,22 +74,17 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             }
         }
 
-        private void CreateMedalionViewIfNeeded()
+        private UILabel CreateMedalionView(string text, bool hidden)
         {
-            if (_lblVehicleNumber != null)
-            {
-                return;
-            }
-
-            _lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
-            _lblVehicleNumber.BackgroundColor = UIColor.DarkGray;
-            _lblVehicleNumber.TextColor = UIColor.White;
-            _lblVehicleNumber.TextAlignment = UITextAlignment.Center;
-            _lblVehicleNumber.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 30 / 2);
-            _lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
-            _lblVehicleNumber.Text = ((AddressAnnotation) Annotation).Title; 
-            _lblVehicleNumber.Hidden = true;
-            AddSubview(_lblVehicleNumber);
+            var lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
+            lblVehicleNumber.BackgroundColor = UIColor.DarkGray;
+            lblVehicleNumber.TextColor = UIColor.White;
+            lblVehicleNumber.TextAlignment = UITextAlignment.Center;
+            lblVehicleNumber.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 30 / 2);
+            lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
+            lblVehicleNumber.Text = text; 
+            lblVehicleNumber.Hidden = hidden;
+            return lblVehicleNumber;
         }
 
 		public void RefreshPinImage ()
@@ -100,9 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
             if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin) 
             {
-                CreateMedalionViewIfNeeded();
-                _lblVehicleNumber.Text = ann.Subtitle;
-                _lblVehicleNumber.Hidden = !ann.ShowMedallionOnStart;
+                AddSubview(CreateMedalionView(ann.Subtitle, hidden: false));
             }
 
             CenterOffset = new CGPoint (0, -Image.Size.Height / 2);
