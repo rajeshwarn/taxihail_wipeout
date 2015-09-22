@@ -514,6 +514,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
+                                false,
                                 vehicle.LogoName);
             
             vehicleAnnotation.HideMedaillonsCommand = new AsyncCommand(() =>
@@ -704,7 +705,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					Localize.GetValue("TaxiMapTitle"), 
 					value.VehicleNumber, 
 					_useThemeColorForPickupAndDestinationMapIcons, 
-					_showAssignedVehicleNumberOnPin);
+					_showAssignedVehicleNumberOnPin,
+                    true);
 
 				AddAnnotation(_taxiLocationPin);
 
@@ -751,9 +753,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 	    private double GetLatitudeDeltaThreshold()
 	    {
-		    return UIHelper.Is35InchDisplay
-				? 0.001
-				: 0.004;
+            if (UIHelper.Is35InchDisplay)
+            {
+                return 0.0003d;
+            }
+
+            return UIScreen.MainScreen.Scale == 2
+				? 0.0005d
+				: 0.001d;
 	    }
 
         private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
@@ -814,18 +821,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					}
 				}
 
-                deltaLat = (Math.Abs(maxLat - minLat)) * zoomOffset;
-                deltaLng = (Math.Abs(maxLon - minLon)) * zoomOffset;
+                deltaLat = Math.Abs(maxLat - minLat) * zoomOffset;
+                deltaLng = Math.Abs(maxLon - minLon) * zoomOffset;
 
-                var latOffset = 0d;
+                var centerLat = (maxLat + minLat) / 2;
+                var centerLng = (maxLon + minLon) / 2;
 
                 //Moves the center to avoid having to zoom out too mutch.
                 if (bookingStatusViewModel.IsContactTaxiVisible && Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
                 {
-                    latOffset = deltaLat.Value/4;
+                    var scale = UIHelper.Is35InchDisplay
+                        ? 1.5
+                        : UIScreen.MainScreen.Scale;
+
+                    centerLat += (maxLat - minLat) / scale;
                 }
 
-                center = new CLLocationCoordinate2D(((maxLat + minLat) / 2)+latOffset, (maxLon + minLon) / 2);
+                center = new CLLocationCoordinate2D(centerLat, centerLng);
             }
 
             SetRegionAndZoom(region, center, deltaLat, deltaLng);
