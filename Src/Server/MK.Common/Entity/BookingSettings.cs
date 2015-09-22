@@ -7,6 +7,7 @@ namespace apcurium.MK.Common.Entity
         {
             Country = new CountryISOCode();
         }
+
         public string Name { get; set; }
 
         public CountryISOCode Country { get; set; }

@@ -1017,10 +1017,10 @@
   <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
     <value>Email (adresse électronique)</value>
   </data>
-  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+  <data name="InvalidEmailMessage" xml:space="preserve">
     <value>Désolé, cet email n'est pas valide</value>
   </data>
-  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+  <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Cet email n'est pas valide</value>
   </data>
   <data name="ResetPasswordSubtitleText" xml:space="preserve">
@@ -1900,6 +1900,9 @@
   <data name="ManualRideLinqSummary_Done" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
+    <value>Une erreur est survenue. Veuillez essayer de vous connecter de nouveau en utilisant le code affiché sur l'écran dans le taxi.</value>
+  </data>
   <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
     <value>Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</value>
   </data>
@@ -2228,6 +2231,15 @@
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît</value>
 	</data>
+	<data name="AccountLinkedWithFAcebook" xml:space="preserve">
+    	<value>Ce compte est associé avec un compte Facebook</value>
+	</data>
+   <data name="EmailUsedMessageTitle" xml:space="preserve">
+    <value>Courriel déjà utilisé</value>
+  </data>
+   <data name="EmailUsedMessage" xml:space="preserve">
+        <value>Ce courriel est déjà utilisé par un autre compte</value>
+  </data>
 	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
  		<value>Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</value>
   	</data>

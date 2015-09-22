@@ -28,6 +28,7 @@ using MK.Common.Configuration;
 using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
+using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -271,7 +272,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 		
-        public async Task UpdateSettings (BookingSettings settings, int? tipPercent)
+        public async Task UpdateSettings (BookingSettings settings, string email, int? tipPercent)
         {
             //This is to make sure we only save the phone number
             var phoneNumberChars = settings.Phone
@@ -280,6 +281,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             var bsr = new BookingSettingsRequest
             {
+				Email = email,
                 Name = settings.Name,
                 Country = settings.Country,
                 Phone = new string(phoneNumberChars),
@@ -297,7 +299,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			// Update cached account
             var account = CurrentAccount;
             account.Settings = settings;
-            account.DefaultTipPercent = tipPercent;
+			account.Email = email;
+			account.DefaultTipPercent = tipPercent;
             CurrentAccount = account;
         }
 
@@ -308,7 +311,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			settings.CustomerNumber = customerNumber;
 
 			// no need to await since we're change it locally
-			UpdateSettings (settings, CurrentAccount.DefaultTipPercent);
+			UpdateSettings (settings, CurrentAccount.Email, CurrentAccount.DefaultTipPercent);
 		}
 
         public Task<string> UpdatePassword (Guid accountId, string currentPassword, string newPassword)

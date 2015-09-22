@@ -92,7 +92,6 @@
 "PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured as part of your account.";
 "Tuto08Bottom"="نأمل أن تجد الراحة و السهولة عند استخدام هذا التطبيق .";
 "ErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
-"ResetPasswordInvalidDataTitle"="عنوان البريد الإلكتروني غير صحيح";
 "HistoryActivityName"="History";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "View_AccountConfirmationTitle"="Account Confirmation";
@@ -127,7 +126,7 @@
 "Error_EditAutoTipTitle"="Error";
 "NoCardOnFileMessage"="You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.";
 "DriverInfoColor"="اللون:";
-"HomeActivityName"="Home";
+"NoFareTextIfDestinationIsRequired"="يجب أن تحدد الوجهة.";
 "Rebook"="إعادة حجز المشوار";
 "TermsAndConditionsActivityName"="Terms and conditions";
 "CreateAccountLanguageEnglish"="الإنجليزية";
@@ -206,7 +205,7 @@
 "HomeView_ManualPairing"="In A Taxi";
 "UnexpectedError"="خطأ غير متوقع";
 "BookRatingErrorMessage"="قم بتقييم مشوارك";
-"ResetPasswordInvalidDataMessage"="البريد الإلكتروني غير صحيح";
+"CreditCardNumber"="رقم البطاقة";
 "June"="يونيو (06)";
 "PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with your configured payment method.";
 "OrderNumber"="رقم الطلب";
@@ -293,6 +292,7 @@
 "EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
 "Rating3"="Average";
 "GenericErrorTitle"="Error";
+"VehicleNumberInfo"="رجاء تأكيد رقم سيارتك مع السائق";
 "CreditCardExpiredUpdateNow"="Update now";
 "CmtTransactionSuccessMessage"="تم إرسال التاكيد للسائق (رقم الترخيص: {0})";
 "SaveAddressEmptyFieldMessage"="البيانات غير صحيحة، يجب تعبئة خانات اسم المستخدم والعنوان.";
@@ -348,6 +348,7 @@
 "RideSettingsCannotLoadListMessage"="لا يمكن الاتصال بالسيرفر، حاول مجددا في وقت لاحق.";
 "GooglePlayServicesNotAvailableTitle"="مطلوب التحديث";
 "DestinationViewDestinationLabel"="الوجهة:";
+"EmailUsedMessage"="This email is already used by another account";
 "LocationAddFavoriteSubtitle"="اختر لإضافة موقع جديد";
 "RideSettingsAccountNumber"="رقم الحساب";
 "CreateAccountPasswordPlaceHolder"="كلمة السر";
@@ -372,6 +373,7 @@
 "ResetPasswordTitleText"="نسيت كلمة المرور؟";
 "March"="مارس (03)";
 "PromotionActivityName"="Promotion";
+"EmailUsedMessageTitle"="Email already used";
 "NoPayBackErrorMessage"="The PayBack field is required";
 "HistoryViewStatusButton"="رؤية حالة الطلب";
 "WarningPromoCodeDontShow"="لا تحذر";
@@ -389,6 +391,7 @@
 "View_AboutUs"="نبذة عنا";
 "Error_InvalidCvvMessage"="The CVV must be a number between 3 and 4 digits";
 "ScanCreditCard"="مسح بطاقة الائتمان";
+"HomeActivityName"="Home";
 "View_NotificationSettings"="Notifications";
 "InvalidPickupAddress"="رجاء إدخال عنوان صحيح لموقعك.";
 "NotNow"="Not now";
@@ -424,7 +427,7 @@
 "PasswordLabel"="كلمة المرور";
 "CmtCardNumber"="طريقة الدفع:";
 "SettingViewNotSignedIn"="لست متصلا في الوقت الحالي. يجب أن تقوم بالتسجيل لاستخدام هذا التطبيق.";
-"VehicleNumberInfo"="رجاء تأكيد رقم سيارتك مع السائق";
+"StreetNumberTitle"="تفاصيل العنوان";
 "NoCreditCardSelected"="الرجاء اختيار بطاقة الائتمان";
 "InvalidAddressTextEdit"="لا يمكن التعرف على العنوان";
 "AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";
@@ -458,10 +461,8 @@
 "BookingAirportDetailsFee"=", (Pickup Fee: {0})";
 "LocalContactCannotBeResolverTitle"="الإسم غير صحيح";
 "CreateAccountFullNamePlaceHolder"="الاسم الكامل";
-"NoFareTextIfDestinationIsRequired"="يجب أن تحدد الوجهة.";
 "EtaDurationUnit"="min";
 "RideHistoryButton"="حجوزات سابقة";
-"StreetNumberTitle"="تفاصيل العنوان";
 "View_SearchAddress"="البحث عن عنوان";
 "CreateAccountEmptyField"="البيانات غير صحيحة، يجب تعبئة كافة الخانات.";
 "ConfirmPassengerSettingsTitle"="إعدادات الركاب";
@@ -533,6 +534,7 @@
 "StatusNewRideButton"="رحلة جديدة";
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to enter a credit card as part of your account.";
 "DriverInfoCompany"="Company:";
+"InvalidEmailMessage"="البريد الإلكتروني غير صحيح";
 "LocationsActivityName"="Favorite locations";
 "searchHint"="بحث";
 "CreateAccountTitleMrs"="السيدة";
@@ -585,12 +587,12 @@
 "BookItButton"="احجز الآن";
 "PanelMenuViewPromotionsText"="Promotions";
 "ChangePasswordConfirmmation"="تم تحديث كلمة المرور الخاصة بك، رجاء تسجيل الدخول.";
-"CreditCardNumber"="رقم البطاقة";
 "OrderNote"="تم الحجز من خلال الهاتف الجوال";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
 "PickupViewPickupLabel"="الإلتقاء";
 "Done"="تم";
 "DriverInfoVehicleMedallion"="Medallion:";
+"InvalidEmailTitle"="عنوان البريد الإلكتروني غير صحيح";
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "PromoExpiringSoonMessage"="Expires in {0} days";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
@@ -626,6 +628,7 @@
 "PayNow"="ادفع الآن";
 "StatusActionCancelButton"="إلغاء هذا الطلب";
 "OtherListItemLabel"="Custom Percent";
+"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "StatusCancelButton"="إلغاء هذا الطلب";
 "Tuto05Bottom"="أو انقر زر لاحقا لحجز مشوارك في وقت أو تاريخ لاحق.";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
@@ -636,6 +639,7 @@
 "ManualRideLinqStatusActivityName"="Manual RideLinq Status";
 "View_History"="التاريخ";
 "Twitter"="الدخول عبر حساب تويتر";
+"AccountLinkedWithFacebook"="Account is linked with Facebook account";
 "View_CreditCard"="دفع";
 "GooglePlayServicesNotAvailableMessage"="يجب أن تقوم بتحديث خدمات Google Play لتتمكن من استخدام هذا التطبيق.";
 "DestinationAddress"="Destination address";

@@ -65,11 +65,11 @@
                         android:layout_width="fill_parent"
                         android:id="@+id/orderOptions"
                         android:layout_height="wrap_content" />
-										<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusView
-											  android:layout_width="fill_parent"
-												android:layout_height="wrap_content"
-												android:id="@+id/orderStatus"
-												android:layout_gravity="top"/>
+                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/orderStatus"
+                        android:layout_gravity="top" />
                 <!-- Menu button -->
                     <LinearLayout
                         android:clickable="true"
@@ -91,7 +91,7 @@
                 <!-- Locate Me button -->
                     <LinearLayout
                         android:clickable="true"
-												android:id="@+id/btnLocation"
+                        android:id="@+id/btnLocation"
                         local:MvxBind="Click LocateMe"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
@@ -153,10 +153,10 @@
                         android:id="@+id/orderReview" />
                 <!-- Order Edit -->
                     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderEdit
-                        android:layout_width="500dp"
+                        android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/orderEdit" />
-                  <!-- Order Airport Options -->
+                <!-- Order Airport Options -->
                     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderAirport
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
@@ -173,12 +173,11 @@
                     android:id="@+id/appBar"
                     android:layout_height="wrap_content"
                     android:background="@color/setting_menu_color" />
-							<apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarBookingStatus
-									android:layout_width="fill_parent"
-									android:layout_height="wrap_content"
-									android:id="@+id/appBarBookingStatus"
-									android:background="@color/setting_menu_color" />
-									
+                <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarBookingStatus
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/appBarBookingStatus"
+                    android:background="@color/setting_menu_color" />
             </LinearLayout>
         <!-- Address Search -->
             <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressPicker

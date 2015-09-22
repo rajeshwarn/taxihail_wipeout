@@ -97,7 +97,6 @@
 "Tuto08Bottom"="Nous espérons que la simplicité et l'efficacité de notre application vous aura convaincue.";
 "ErrorCreateOrder_PendingOrder"="La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?";
 "CardOnFile"="Paiement In App";
-"ResetPasswordInvalidDataTitle"="Cet email n'est pas valide";
 "HistoryActivityName"="History";
 "ManualRideLinqStatus_Tip"="Pourboire:";
 "View_AccountConfirmationTitle"="Confirmation de compte";
@@ -215,7 +214,7 @@
 "HomeView_ManualPairing"="Dans un Taxi";
 "UnexpectedError"="Erreur inattendue";
 "BookRatingErrorMessage"="Merci de noter la qualité de votre dernier trajet";
-"ResetPasswordInvalidDataMessage"="Désolé, cet email n'est pas valide";
+"CreditCardNumber"="Numéro de la carte";
 "June"="Juin (06)";
 "PromoMustUseCardOnFileMessage"="Pour utiliser un code promotionnel, vous devez payer avec la méthode de paiement configuré à l'intéreur de l'application.";
 "OrderNumber"="Commande n°";
@@ -360,6 +359,7 @@
 "RideSettingsCannotLoadListMessage"="Désolé, échec de la connexion, merci de réessayer ultérieurement";
 "GooglePlayServicesNotAvailableTitle"="Mise à jour requise";
 "DestinationViewDestinationLabel"="Destination:";
+"EmailUsedMessage"="Ce courriel est déjà utilisé par un autre compte";
 "LocationAddFavoriteSubtitle"="Ajouter une nouvelle adresse";
 "RideSettingsAccountNumber"="Numéro de compte entreprise (optionnel)";
 "CreateAccountPasswordPlaceHolder"="Mot de passe";
@@ -384,6 +384,7 @@
 "ResetPasswordTitleText"="Mot de passe oublié?";
 "March"="Mars (03)";
 "PromotionActivityName"="Promotion";
+"EmailUsedMessageTitle"="Courriel déjà utilisé";
 "NoPayBackErrorMessage"="Le champs PayBack est requis";
 "HistoryViewStatusButton"="Voir le statut";
 "WarningPromoCodeDontShow"="Ne pas signaler";
@@ -410,6 +411,7 @@
 "Tuto07Top"="Sur l'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu'un véhicule sera assigné, vous pouvez suivre sa position jusqu'à ce qu'il arrive à vous.";
 "RideSettingsName"="Nom";
 "MarketChangedMessage"="Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.";
+"AccountLinkedWithFAcebook"="Ce compte est associé avec un compte Facebook";
 "Continue"="Continuer";
 "CreditCardAddingActivityName"="Add or edit credit card";
 "DateTimePickerPickInvalidDateMessage"="La date de départ ne peut pas être antérieure à la date de commande";
@@ -547,6 +549,7 @@
 "WarningPushServiceMessage"="Nous avons remarqué que vous n'avez pas les notifications activées. En les activant, vous obtiendrez alors des mises à jour sur l'état de votre réservation, sans avoir à regarder l'application !";
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.";
 "DriverInfoCompany"="Compagnie:";
+"InvalidEmailMessage"="Désolé, cet email n'est pas valide";
 "LocationsActivityName"="Favorite locations";
 "searchHint"="Rechercher";
 "CreateAccountTitleMrs"="Mme";
@@ -599,12 +602,12 @@
 "BookItButton"="Commander";
 "PanelMenuViewPromotionsText"="Promotions";
 "ChangePasswordConfirmmation"="Votre mot de passe a été mis à jour, merci de vous connecter.";
-"CreditCardNumber"="Numéro de la carte";
 "OrderNote"="Réserver sur votre mobile";
 "CallDriverUsingProxyPrompt"="Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.";
 "PickupViewPickupLabel"="Départ:";
 "Done"="Terminé";
 "DriverInfoVehicleMedallion"="Medallion:";
+"InvalidEmailTitle"="Cet email n'est pas valide";
 "CreditCardBookingSettingsError"="Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.";
 "PromoExpiringSoonMessage"="Expire dans {0} jours";
 "ManualRideLinqNoCardOnFile"="Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ";
@@ -640,6 +643,7 @@
 "PayNow"="Payer maintenant!";
 "StatusActionCancelButton"="Annuler";
 "OtherListItemLabel"="Autre Pourcentage";
+"ManualRideLinqStatus_PairingError"="Une erreur est survenue. Veuillez essayer de vous connecter de nouveau en utilisant le code affiché sur l'écran dans le taxi.";
 "StatusCancelButton"="Annuler";
 "Tuto05Bottom"="Afin de convenir d'une date/heure de départ ultéreure, merci de sélectionner 'Plus tard' sur votre écran";
 "PanelMenuViewTaxiHailNetworkText"="Réseau TaxiHail";
