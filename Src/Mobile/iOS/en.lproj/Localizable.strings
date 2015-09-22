@@ -594,7 +594,6 @@
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "ManualRideLinqStatus_Unpair"="Unpair";
-"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "ManualPairingForRideLinQ_Error_Title"="Error";
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";
@@ -703,4 +702,7 @@
 "WaitingCarLandscapeActivityName"="Car Number";
 "UpdateNoticeTitle"="Update Notice";
 "UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";
+"AccountLinkedWithFacebook"="Account is linked with Facebook account";
+"EmailUsedMessageTitle"="Email already used";
+"EmailUsedMessage"="This email is already used by another account";
 "OrderStatus_PairingSuccess"="OK you're checked in. Payment will be automatic at the end of your trip.";

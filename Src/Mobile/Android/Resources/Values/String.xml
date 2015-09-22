@@ -596,7 +596,6 @@
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="ManualRideLinqStatus_Unpair">Unpair</string>
-  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
   <string name="ManualPairingForRideLinQ_Error_Message">An error occurred during check in.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Invalid code</string>
@@ -705,5 +704,8 @@
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
+  <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
+  <string name="EmailUsedMessageTitle">Email already used</string>
+  <string name="EmailUsedMessage">This email is already used by another account</string>
   <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
 </resources>

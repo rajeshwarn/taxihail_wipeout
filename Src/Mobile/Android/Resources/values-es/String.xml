@@ -573,7 +573,6 @@
   <string name="PaymentLoadError">No se pueden cargar los datos de pago. Por favor, inténtelo de nuevo más tarde.</string>
   <string name="ManualPairingForRideLinQ_Error_Message">Ocurrió un error durante el registro.</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
-  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="ManualPairingForRideLinQ_Instructions">Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">El código de emparejamiento es inválido.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Código Inválido</string>
@@ -704,5 +703,8 @@
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
+  <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
+  <string name="EmailUsedMessageTitle">Email already used</string>
+  <string name="EmailUsedMessage">This email is already used by another account</string>
   <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
 </resources>

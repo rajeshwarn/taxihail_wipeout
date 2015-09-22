@@ -58,7 +58,6 @@
 "CmtRideLinqErrorTitle"="خطأ";
 "CmtRideLinqGenericErrorMessage"="حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.";
 "CmtRideLinqSaveChanges"="حفظ";
-"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "UnpairPayInCar"="Pay in Car";
 "UnpairErrorMessage"="حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.";
 "CmtTipAmount"="قيمة الإكرامية:";
@@ -685,4 +684,7 @@
 "WaitingCarLandscapeActivityName"="Car Number";
 "UpdateNoticeTitle"="Update Notice";
 "UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";
+"AccountLinkedWithFacebook"="Account is linked with Facebook account";
+"EmailUsedMessageTitle"="Email already used";
+"EmailUsedMessage"="This email is already used by another account";
 "OrderStatus_PairingSuccess"="OK you're checked in. Payment will be automatic at the end of your trip.";

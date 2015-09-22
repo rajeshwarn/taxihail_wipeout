@@ -14,6 +14,7 @@ using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 using System.Globalization;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Helpers;
 
 #endregion
 
@@ -206,7 +207,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.AccountNumber = @event.AccountNumber;
                 settings.CustomerNumber = @event.CustomerNumber;
                 settings.PayBack = @event.PayBack;
-
+				account.Email = @event.Email;
                 account.DefaultTipPercent = @event.DefaultTipPercent;
 
                 account.Settings = settings;
