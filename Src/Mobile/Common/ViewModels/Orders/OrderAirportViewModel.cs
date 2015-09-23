@@ -483,7 +483,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			if (Note.Length > 0)
 			{
-				sb.Append("{0}\n", Note);
+				sb.AppendLine(Note);
 			}
 
 			sb.Append(localize["BookingAirportDetails"], _pickupAddress.FullAddress, AirlineName, FlightNumber, SelectedPickupPointName);

@@ -9,9 +9,7 @@ using apcurium.MK.Booking.Api.Contract.Resources.FlightStats;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client.Http.Extensions;
-using ServiceStack.Common.Extensions;
 using ServiceStack.Common.Web;
-using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
@@ -24,15 +22,13 @@ namespace apcurium.MK.Booking.Api.Services
 		// {carrier}/{flight}/{direction}/{year}/{month}/{day} 
 		private const string StatusEndPoint = "status/{0}/{1}/{2}/{3}/{4}/{5}?appId={6}&appKey={7}&utc=false&airport={8}";
 
-		private const string FlightStatsUrl = "https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/";
-
 
 		public FlightInformationService(IServerSettings serverSettings)
 		{
 			_serverSettings = serverSettings;
 			_client = new HttpClient()
 			{
-				BaseAddress = new Uri(FlightStatsUrl)
+				BaseAddress = new Uri(_serverSettings.ServerData.FlightStats.ApiUrl)
 			};
 		}
 
