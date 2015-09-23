@@ -672,10 +672,10 @@
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>Estimated fare not available</value>
   </data>
-  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+  <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Invalid email</value>
   </data>
-  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+  <data name="InvalidEmailMessage" xml:space="preserve">
     <value>The email is invalid.</value>
   </data>
   <data name="Create" xml:space="preserve">
@@ -2259,6 +2259,15 @@
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Sorry, this version of the app is no longer supported. Please update the app</value>
 	</data>
+	<data name="AccountLinkedWithFacebook" xml:space="preserve">
+    	<value>Account is linked with Facebook account</value>
+	</data>
+   <data name="EmailUsedMessageTitle" xml:space="preserve">
+    <value>Email already used</value>
+  </data>
+   <data name="EmailUsedMessage" xml:space="preserve">
+    <value>This email is already used by another account</value>
+  </data>
 	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
  		<value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
   	</data>

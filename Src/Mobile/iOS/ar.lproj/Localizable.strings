@@ -58,7 +58,6 @@
 "CmtRideLinqErrorTitle"="خطأ";
 "CmtRideLinqGenericErrorMessage"="حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.";
 "CmtRideLinqSaveChanges"="حفظ";
-"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "UnpairPayInCar"="Pay in Car";
 "UnpairErrorMessage"="حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.";
 "CmtTipAmount"="قيمة الإكرامية:";
@@ -688,6 +687,9 @@
 "BookingAirportNoFlights_Title"="No flights";
 "BookingAirportNoFlights_Message"="No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}";
 "UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";
+"AccountLinkedWithFacebook"="Account is linked with Facebook account";
+"EmailUsedMessageTitle"="Email already used";
+"EmailUsedMessage"="This email is already used by another account";
 "OrderStatus_PairingSuccess"="OK you're checked in. Payment will be automatic at the end of your trip.";
 "BookingAirportMissingInfo_Title"="Missing information";
 "BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";

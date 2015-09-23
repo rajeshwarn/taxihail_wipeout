@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.CountrySelector lblDialCode { get; set; }
 
 		[Outlet]
-		UIKit.UILabel lblEmail { get; set; }
+        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtEmail { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblEmailTitle { get; set; }
@@ -99,9 +99,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblDialCode = null;
 			}
 
-			if (lblEmail != null) {
-				lblEmail.Dispose ();
-				lblEmail = null;
+            if (txtEmail != null) {
+                txtEmail.Dispose ();
+                txtEmail = null;
 			}
 
 			if (lblEmailTitle != null) {

@@ -594,7 +594,6 @@
   <string name="ManualRideLinqStatus_Total">Coût Total:</string>
   <string name="ManualRideLinqStatus_Unpair">Dissocier</string>
   <string name="ManualRideLinqSummary_Done">Ok</string>
-  <string name="ManualRideLinqStatus_PairingError">Une erreur est survenue. Veuillez essayer de vous connecter de nouveau en utilisant le code affiché sur l\'écran dans le taxi.</string>
   <string name="ManualUnPairingForRideLinQ_Error_Message">Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Êtes-vous sûr de vouloir annuler? Des frais d\'annulation peuvent être appliqués.</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">Vous ne pouvez pas effacer une carte de crédit s\'il y a une commande en cours.</string>
@@ -707,6 +706,9 @@
   <string name="BookingAirportNoFlights_Title">Aucun vol</string>
   <string name="BookingAirportNoFlights_Message">Nous n\'avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}</string>
   <string name="UpdateNoticeText">Désolé, cette version d\'application n\'est plus maintenue. Mettez à jour l\'application s\'il vous plaît</string>
+  <string name="AccountLinkedWithFAcebook">Ce compte est associé avec un compte Facebook</string>
+  <string name="EmailUsedMessageTitle">Courriel déjà utilisé</string>
+  <string name="EmailUsedMessage">Ce courriel est déjà utilisé par un autre compte</string>
   <string name="OrderStatus_PairingSuccess">Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</string>
   <string name="BookingAirportMissingInfo_Title">Informations manquantes</string>
   <string name="BookingAirportMissingInfo_Message">Le numéro de vol et la compagnie aérienne sont nécessaires.</string>
