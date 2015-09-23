@@ -20,24 +20,24 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
 	    public Task<PickupPoint[]> GetPOIRefPickupList(string company, string textMatch, int maxRespSize)
         {
-			var request = GetParameters(company, textMatch, maxRespSize).ToString();
+			var request = GetParameters(company, textMatch, maxRespSize, "pickuppoint").ToString();
 
 			return Client.GetAsync<PickupPoint[]>(request);
         }
 
 		public Task<Airline[]> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
         {
-			var request = GetParameters(company, textMatch, maxRespSize)
+			var request = GetParameters(company, textMatch, maxRespSize, "airline")
 				.Append("&coreFieldsOnly=true")
 				.ToString();
 
             return Client.GetAsync<Airline[]>(request);
         }
 
-	    private static StringBuilder GetParameters(string company, string textMatch, int maxRespSize)
+	    private static StringBuilder GetParameters(string company, string textMatch, int maxRespSize,string endpoint)
 	    {
 		    var stringBuilder = new StringBuilder();
-		    stringBuilder.Append("/references/airline");
+			stringBuilder.Append("/references/").Append(endpoint);
 		    if (company.HasValue())
 		    {
 			    stringBuilder.Append(string.Format("_{0}", company));
