@@ -74,6 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     else
                     {
                         _statusLayout.Background = Resources.GetDrawable(Resource.Drawable.drop_shadow_opaque);
+                        _progressImage.ClearAnimation();
                     }
                 }
             }
