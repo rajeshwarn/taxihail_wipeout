@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Api.Security
                 {
                     if (account.FacebookId != null)
                     {
-                        throw HttpError.Unauthorized(AuthenticationErrorCode.FacebookEmailAlreadyUse);
+                        throw HttpError.Unauthorized(AuthenticationErrorCode.FacebookEmailAlreadyUsed);
                     }
                     
                     var aspnetReq = (HttpRequest) authService.RequestContext.Get<IHttpRequest>().OriginalRequest;

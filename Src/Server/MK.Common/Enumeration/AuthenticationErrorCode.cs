@@ -5,7 +5,6 @@
         public const string InvalidLoginMessage = "InvalidLoginMessage";
         public const string AccountDisabled = "AccountDisabled";
         public const string AccountNotActivated = "AccountNotActivated";
-        public const string FacebookEmailAlreadyUse = "FacebookEmailAlreadyUse";
-
+        public const string FacebookEmailAlreadyUsed = "FacebookEmailAlreadyUsed";
     }
 }
