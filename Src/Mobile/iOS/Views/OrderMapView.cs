@@ -507,7 +507,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _availableVehicleAnnotations.Add (vehicleAnnotation);
         }
 
-        private async Task UpdateAnnotation(AddressAnnotation annotationToUpdate, AvailableVehicle vehicle, Position oldPosition = null)
+        // Animate Annotation on the map between retrieving positions
+        private async Task AnimateAnnotationOnMap(AddressAnnotation annotationToUpdate, Position newPosition, Position oldPosition)
+        {
+            var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
+            annotationToUpdateView.RefreshPinImage();
+              
+            // We retrieve position each 5 seconds, so we doing 20 updates during these 5 seconds, one each 250 milliseconds
+            for (var percent = 0.05; percent < 1.00; percent += 0.05)
+            {
+                await Task.Delay(250);
+
+                var intermediaryLat = oldPosition.Latitude + (percent * (newPosition.Latitude - oldPosition.Latitude));
+                var intermediaryLng = oldPosition.Longitude + (percent * (newPosition.Longitude - oldPosition.Longitude));
+
+                annotationToUpdate.SetCoordinate(new CLLocationCoordinate2D(intermediaryLat, intermediaryLng));
+            }
+        }
+
+        // Update Annotation and Animate it to see it move on the map
+        private async Task UpdateAnnotation(AddressAnnotation annotationToUpdate, AvailableVehicle vehicle, Position oldPosition)
         {
             var annotationType = (vehicle is AvailableVehicleCluster) 
                 ? AddressAnnotationType.NearbyTaxiCluster 
@@ -517,18 +536,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                             ? vehicle.CompassCourse
                                             : 0;
             annotationToUpdate.AddressType = annotationType;
-            var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
-            annotationToUpdateView.RefreshPinImage();
 
-            for (var percent = 0.05; percent < 1.00; percent += 0.05)
-            {
-                await Task.Delay(250);
-
-                var intermediaryLat = oldPosition.Latitude + (percent * (vehicle.Latitude - oldPosition.Latitude));
-                var intermediaryLng = oldPosition.Longitude + (percent * (vehicle.Longitude - oldPosition.Longitude));
-
-                annotationToUpdate.SetCoordinate(new CLLocationCoordinate2D(intermediaryLat, intermediaryLng));
-            }
+            AnimateAnnotationOnMap(annotationToUpdate, new Position()
+                {
+                    Latitude = vehicle.Latitude,
+                    Longitude = vehicle.Longitude
+                },
+                oldPosition);
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
@@ -678,23 +692,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private async Task UpdateTaxiLocation(TaxiLocation value)
 	    {
+            // Update Marker and Animate it to see it move on the map
             if (_taxiLocationPin != null)
             {
                 var taxiLocationPin = _taxiLocationPin as AddressAnnotation;
                 taxiLocationPin.Degrees = value.CompassCourse;
-                var annotationToUpdateView = ViewForAnnotation(taxiLocationPin) as PinAnnotationView;
-                annotationToUpdateView.RefreshPinImage();
 
-                for (var percent = 0.05; percent < 1.00; percent += 0.05)
-                {
-                    await Task.Delay(250);
-
-                    var intermediaryLat = taxiLocationPin.Coordinate.Latitude + (percent * (value.Latitude.Value - taxiLocationPin.Coordinate.Latitude));
-                    var intermediaryLng = taxiLocationPin.Coordinate.Longitude + (percent * (value.Longitude.Value - taxiLocationPin.Coordinate.Longitude));
-
-                    taxiLocationPin.SetCoordinate(new CLLocationCoordinate2D(intermediaryLat, intermediaryLng));
-                }
+                AnimateAnnotationOnMap(taxiLocationPin, new Position()
+                    {
+                        Latitude = value.Latitude.Value,
+                        Longitude = value.Longitude.Value
+                    },
+                    new Position()
+                    {
+                        Latitude = taxiLocationPin.Coordinate.Latitude,
+                        Longitude = taxiLocationPin.Coordinate.Longitude
+                    });
             }
+            // Create Marker the first time
             else
             {
                 if (value != null)

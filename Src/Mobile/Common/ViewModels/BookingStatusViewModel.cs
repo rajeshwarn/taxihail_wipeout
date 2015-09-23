@@ -721,7 +721,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if(geoData.IsPositionValid)
 							{
-                                UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, geoData.CompassCourse.Value);
+								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, geoData.CompassCourse.HasValue ? geoData.CompassCourse.Value : 0);
 							}
 						}
 					}
@@ -754,7 +754,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, status.DriverInfos.VehicleRegistration, Order.Id);
 					if(geoData != null && geoData.IsPositionValid)
                     {
-                        UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, geoData.CompassCourse.Value);
+						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, geoData.CompassCourse.HasValue ? geoData.CompassCourse.Value : 0);
                     }
                 }
 				else if (!isUsingGeoServices &&

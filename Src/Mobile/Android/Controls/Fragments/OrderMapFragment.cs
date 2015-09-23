@@ -172,32 +172,46 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		    }
 	    }
 
-        private async Task UpdateTaxiLocation(TaxiLocation value)
+        // Animate Marker on the map between retrieving positions
+        private async Task AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double compassCourse, Position oldPosition)
+        {
+            markerToUpdate.SetIcon(icon);
+            markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && compassCourse != 0
+                ? .5f
+                : 1f);
+
+            // We retrieve position each 5 seconds, so we doing 20 updates during these 5 seconds, one each 250 milliseconds
+            for (var percent = 0.05; percent <= 1.05; percent += 0.05)
+            {
+                await Task.Delay(250);
+
+                var intermediaryLat = oldPosition.Latitude + (percent * (newPosition.Latitude - oldPosition.Latitude));
+                var intermediaryLng = oldPosition.Longitude + (percent * (newPosition.Longitude - oldPosition.Longitude));
+                markerToUpdate.Position = new LatLng(intermediaryLat, intermediaryLng);
+            }
+        }
+
+        private void UpdateTaxiLocation(TaxiLocation value)
         {
             if (value != null && value.Latitude.HasValue && value.Longitude.HasValue && value.VehicleNumber.HasValue())
             {
                 ShowAvailableVehicles(null);
 
+                // Update Marker and Animate it to see it move on the map
                 if (_taxiLocationPin != null)
                 {
                     var icon = ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
                         ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
                         : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap());
                     
-                    _taxiLocationPin.SetIcon(icon);
-                    _taxiLocationPin.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-                        ? .5f
-                        : 1f);
-
-                    for (var percent = 0.05; percent < 1.00; percent += 0.05)
-                    {
-                        await Task.Delay(250);
-
-                        var intermediaryLat = _taxiLocationPin.Position.Latitude + (percent * (value.Latitude.Value - _taxiLocationPin.Position.Latitude));
-                        var intermediaryLng = _taxiLocationPin.Position.Longitude + (percent * (value.Longitude.Value - _taxiLocationPin.Position.Longitude));
-                        _taxiLocationPin.Position = new LatLng(intermediaryLat, intermediaryLng);
-                    }
+                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
+                        {
+                            Latitude = value.Latitude.Value, 
+                            Longitude = value.Longitude.Value
+                        });
                 }
+
+                // Create Marker the first time
                 else
                 {
                     try
@@ -584,7 +598,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _availableVehicleMarkers.Add(vehicleMarker);
         }
 
-        private async Task UpdateMarker(Marker markerToUpdate, AvailableVehicle vehicle, Position oldPosition = null)
+        // Update Marker and Animate it to see it move on the map
+        private void UpdateMarker(Marker markerToUpdate, AvailableVehicle vehicle, Position oldPosition)
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";
@@ -595,21 +610,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var icon = ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
                 ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
                 : _vehicleIcons[logoKey];
-            
-            markerToUpdate.SetIcon(icon);
-            markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
-                ? .5f
-                : 1f);
 
-            for (var percent = 0.05; percent < 1.00; percent += 0.05)
-            {
-                await Task.Delay(250);
-
-                var intermediaryLat = oldPosition.Latitude + (percent * (vehicle.Latitude - oldPosition.Latitude));
-                var intermediaryLng = oldPosition.Longitude + (percent * (vehicle.Longitude - oldPosition.Longitude));
-
-                markerToUpdate.Position = new LatLng(intermediaryLat, intermediaryLng);
-            }
+            AnimateMarkerOnMap(icon, markerToUpdate, new LatLng(vehicle.Latitude, vehicle.Longitude), vehicle.CompassCourse, oldPosition);
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
