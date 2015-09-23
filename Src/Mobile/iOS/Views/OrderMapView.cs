@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 
         private const double StatusOffset = 1;
-        private const double VehicleInformationOffset = 0.7;
+        private const double VehicleInformationOffset = 1.75;
         private const double InitialZoomOffset = 1.5;
 
         public OrderMapView(IntPtr handle) :base(handle)
@@ -791,7 +791,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     deltaLng = 0.004;
                 }
 
-                center = new CLLocationCoordinate2D(lat, lon);
+                var latOffset = UIHelper.Is35InchDisplay
+                    ? .006
+                    : 0;
+
+                center = new CLLocationCoordinate2D(lat + latOffset, lon);
             }
             else
             {
