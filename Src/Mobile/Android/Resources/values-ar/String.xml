@@ -243,6 +243,7 @@
   <string name="OkButtonText">موافق</string>
   <string name="Order">طلب</string>
   <string name="OrderHistoryListTitle">طلبية #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
+  <string name="FacebookLoginErrorMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
   <string name="OrderNote">تم الحجز من خلال الهاتف الجوال</string>
   <string name="OrderNoteGPS">استخدام الGPS</string>
   <string name="OrderNoteGPSApproximate">(عنوان تقريبي)</string>
@@ -672,6 +673,7 @@
   <string name="Rating1">Awful</string>
   <string name="Rating2">Poor</string>
   <string name="Rating3">Average</string>
+  <string name="FacebookLoginErrorTitle">Email already used</string>
   <string name="Rating4">Good</string>
   <string name="Rating5">Excellent</string>
   <string name="SendMessageDriver">Send Message to Driver</string>

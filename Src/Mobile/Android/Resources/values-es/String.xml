@@ -285,6 +285,7 @@
   <string name="OkButtonText">OK</string>
   <string name="Order">Reservación</string>
   <string name="OrderHistoryListTitle">Reservación #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
+  <string name="FacebookLoginErrorMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
   <string name="OrderNote">Reservado por Móvil</string>
   <string name="OrderNoteGPS">Usando su GPS</string>
   <string name="OrderNoteGPSApproximate">(Dirección aproximada)</string>
@@ -692,6 +693,7 @@
   <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
   <string name="NetworkTimeOutPopupAlways">Always Accept</string>
   <string name="TaxiHailNetworkTimeOutErrorTitle">Error</string>
+  <string name="FacebookLoginErrorTitle">Email already used</string>
   <string name="DriverInfoCompany">Company:</string>
   <string name="TaxiHailNetworkTimeOutPopupRefuse">Ignore</string>
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>

@@ -34,6 +34,7 @@
   <string name="BookItButtonImageName">Assets/Button/btnBookIt_en.png</string>
   <string name="BookItLaterButton">Plus tard</string>
   <string name="BookPickupLabel">Confirmer votre adresse de départ</string>
+  <string name="FacebookLoginErrorMessage">Cet email est déjà utilisé pour un compte Facebook. Merci de vous enregistrer via Facebook ou d\'utiliser un autre email.</string>
   <string name="BookPickupLocationButtonTitle">Départ</string>
   <string name="BookPickupLocationEmptyPlaceholder">Choisissez votre lieu de départ sur la carte</string>
   <string name="BookRatingErrorMessage">Merci de noter la qualité de votre dernier trajet</string>
@@ -288,6 +289,7 @@
   <string name="PickupViewPickupLabel">Départ:</string>
   <string name="RateRide">Évaluer la course</string>
   <string name="Rebook">Réinitialiser le trajet</string>
+  <string name="DateTimePickerPickTitle">Date et heure de départ</string>
   <string name="ReceiptSent">Facture envoyée</string>
   <string name="RefineAddressTitle">Affiner l\'adresse</string>
   <string name="Register">Inscription</string>
@@ -459,6 +461,7 @@
   <string name="NoCardOnFileMessage">Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</string>
   <string name="CardExpiredMessage">Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.</string>
   <string name="CreditCardExpiredTitle">Carte Expirée</string>
+  <string name="FacebookLoginErrorTitle">Email déjà utilisé</string>
   <string name="CardExpiredNonMandatoryMessage">Votre carte a expiré. Votre compte est maintenant configuré pour le paiement à bord. Si vous désirez continuer d\'utiliser la carte de crédit, vous devrez la mettre à jour.</string>
   <string name="CreditCardExpiredUpdateNow">Mettre à jour</string>
   <string name="View_NotificationSettings">Notifications</string>
