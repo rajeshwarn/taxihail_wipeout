@@ -8,11 +8,13 @@ using apcurium.MK.Common.Entity;
 #if !CLIENT
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
+using ServiceStack.ServiceInterface;
 #endif
 
 #endregion
 
 using ServiceStack.ServiceHost;
+
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
