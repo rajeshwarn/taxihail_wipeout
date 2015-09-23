@@ -420,7 +420,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			var accepted = true;
 			var fee = 0;
-			if (pickupPointValue != null && pickupPointValue.AdditionalFee != string.Empty)
+			if (pickupPointValue != null && pickupPointValue.AdditionalFee.HasValue())
 			{
 				foreach (var c in pickupPointValue.AdditionalFee.Where(char.IsDigit))
 				{
