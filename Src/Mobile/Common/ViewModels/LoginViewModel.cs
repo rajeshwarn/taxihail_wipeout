@@ -297,7 +297,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 }
 							}
 							break;
-						case AuthFailure.FacebookEmailAlreadyUse:
+						case AuthFailure.FacebookEmailAlreadyUsed:
 							{
 								var title = localize["FacebookLoginErrorTitle"];
 								var message = localize["FacebookLoginErrorMessage"];

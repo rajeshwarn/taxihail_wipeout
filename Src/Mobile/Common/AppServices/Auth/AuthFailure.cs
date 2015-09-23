@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         InvalidUsernameOrPassword,
         AccountNotActivated,
 		AccountDisabled,
-		FacebookLogin,
+		FacebookEmailAlreadyUsed,
     }
 }
 
