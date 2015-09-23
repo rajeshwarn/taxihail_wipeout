@@ -106,25 +106,54 @@ namespace apcurium.MK.Booking.Api.Services
             _resources = new Resources.Resources(_serverSettings);
         }
 
-        public object Post(HailRequest request)
-        {
-            var createOrderRequest = Mapper.Map<CreateOrder>(request);
-
-            return CreaterOrder(createOrderRequest, true);
-        }
-
         public object Post(CreateOrder request)
         {
             return CreaterOrder(request, false);
         }
 
-        private object CreaterOrder(CreateOrder request, bool isVts)
+        public object Post(HailRequest request)
+        {
+            Log.Info(string.Format("Starting Hail. Request : {0}", request.ToJson()));
+
+            var createOrderRequest = Mapper.Map<CreateOrder>(request);
+
+            return CreaterOrder(createOrderRequest, true);
+        }
+
+        public object Post(ConfirmHailRequest request)
+        {
+            var orderDetail = _orderDao.FindById(request.TaxiHailOrderId);
+            if (orderDetail == null)
+            {
+                throw new HttpError(string.Format("Order {0} doesn't exist", request.TaxiHailOrderId));
+            }
+
+            Log.Info(string.Format("Trying to confirm Hail. Request : {0}", request.ToJson()));
+
+            var ibsOrderKey = Mapper.Map<IbsOrderKey>(request.OrderKey);
+            var ibsVehicleCandidate = Mapper.Map<IbsVehicleCandidate>(request.VehicleCandidate);
+
+            var confirmHailResult = _ibsServiceProvider.Booking(orderDetail.CompanyKey).ConfirmHail(ibsOrderKey, ibsVehicleCandidate);
+            if (confirmHailResult < 0)
+            {
+                var errorMessage = string.Format("Error while trying to confirm the hail. IBS response code : {0}", confirmHailResult);
+                Log.Error(errorMessage);
+
+                return new HttpResult(HttpStatusCode.InternalServerError, errorMessage);
+            }
+
+            Log.Info("Hail request confirmed");
+
+            return new HttpResult(HttpStatusCode.OK);
+        }
+
+        private object CreaterOrder(CreateOrder request, bool isHailRequest)
         {
 			var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
 			var createReportOrder = CreateReportOrder(request, account);
 
-			Exception createOrderException = null;
+			Exception createOrderException;
 
             Log.Info("Create order request : " + request.ToJson());
 
@@ -394,19 +423,21 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Create order on IBS
-            if (!isVts)
+            if (isHailRequest)
+            {
+                var result = CreateIBSHailOrder(orderCommand.OrderId, account, request, referenceData, chargeTypeIbs,
+                                accountValidationResult.Prompts, accountValidationResult.PromptsLength,
+                                bestAvailableCompany, market, isPrepaid).Result;
+
+                return result.HailResult;
+            }
+            else
             {
                 Task.Run(() =>
                     CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account,
                         request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
                         accountValidationResult.Prompts, accountValidationResult.PromptsLength,
                         bestAvailableCompany, applyPromoCommand, market, isPrepaid));
-
-            }
-            else
-            {
-                // TODO
-                throw new NotImplementedException();
             }
 
             if (request.QuestionsAndAnswers.HasValue())
@@ -599,7 +630,12 @@ namespace apcurium.MK.Booking.Api.Services
 
             ValidateProvider(newOrderRequest, newReferenceData, market.HasValue(), null);
 
-            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, market, request.NextDispatchCompanyKey);
+            var orderResult = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, market, false, request.NextDispatchCompanyKey);
+
+            var newIbsOrderId = orderResult.IsHailRequest
+                ? orderResult.HailResult.OrderKey.OrderId
+                : orderResult.CreateOrderResult;
+            
             if (!newIbsOrderId.HasValue || newIbsOrderId <= 0)
             {
                 var code = !newIbsOrderId.HasValue || (newIbsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(newIbsOrderId.Value);
@@ -731,40 +767,36 @@ namespace apcurium.MK.Booking.Api.Services
             return null;
         }
 
-        private async void CreateOrderOnIBSAndSendCommands(Guid orderId, AccountDetail account, CreateOrder request, ReferenceData referenceData, 
-            string chargeTypeIbs, string chargeTypeEmail, string vehicleType, string[] prompts, int?[] promptsLength, BestAvailableCompany bestAvailableCompany, 
-            ApplyPromotion applyPromoCommand, string market = null, bool isPrepaid = false)
+        private async Task<IBSOrderResult> CreateIBSHailOrder(Guid orderId, AccountDetail account, CreateOrder request,
+            ReferenceData referenceData, string chargeTypeIbs, string[] prompts, int?[] promptsLength,
+            BestAvailableCompany bestAvailableCompany, string market = null, bool isPrepaid = false)
         {
-            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, market, bestAvailableCompany.CompanyKey);
+            var orderResult = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, market, true, bestAvailableCompany.CompanyKey);
 
             // Wait for order creation to complete before sending other commands
             await Task.Delay(750);
 
-            if (!ibsOrderId.HasValue
-                || ibsOrderId <= 0)
+            ReactToIbsOrderCreation(orderId, orderResult.HailResult.OrderKey.OrderId, isPrepaid, request.ClientLanguageCode);
+
+            UpdateStatusAsync(orderId);
+
+            return orderResult;
+        }
+
+        private async void CreateOrderOnIBSAndSendCommands(Guid orderId, AccountDetail account, CreateOrder request, ReferenceData referenceData, 
+            string chargeTypeIbs, string chargeTypeEmail, string vehicleType, string[] prompts, int?[] promptsLength, BestAvailableCompany bestAvailableCompany, 
+            ApplyPromotion applyPromoCommand, string market = null, bool isPrepaid = false)
+        {
+            var orderResult = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, market, false, bestAvailableCompany.CompanyKey);
+
+            // Wait for order creation to complete before sending other commands
+            await Task.Delay(750);
+
+            var ibsOrderId = orderResult.CreateOrderResult;
+
+            var hasErrors = ReactToIbsOrderCreation(orderId, ibsOrderId, isPrepaid, request.ClientLanguageCode);
+            if (!hasErrors)
             {
-                var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? "" : "_" + Math.Abs(ibsOrderId.Value);
-                var errorCode = ErrorCode.CreateOrder_CannotCreateInIbs + code;
-
-                var errorCommand = new CancelOrderBecauseOfError
-                {
-                    OrderId = orderId,
-                    WasPrepaid = isPrepaid,
-                    ErrorCode = errorCode,
-                    ErrorDescription = _resources.Get(errorCode, request.ClientLanguageCode)
-                };
-
-                _commandBus.Send(errorCommand);
-            }
-            else
-            {
-                var ibsCommand = new AddIbsOrderInfoToOrder
-                {
-                    OrderId = orderId,
-                    IBSOrderId = ibsOrderId.Value
-                };
-                _commandBus.Send(ibsCommand);
-
                 var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
                 emailCommand.IBSOrderId = ibsOrderId.Value;
                 emailCommand.EmailAddress = account.Email;
@@ -777,8 +809,37 @@ namespace apcurium.MK.Booking.Api.Services
                     _commandBus.Send(applyPromoCommand);
                 }
             }
-            
+ 
             UpdateStatusAsync(orderId);
+        }
+
+        private bool ReactToIbsOrderCreation(Guid orderId, int? ibsOrderId, bool isPrepaid, string clientLanguageCode)
+        {
+            if (!ibsOrderId.HasValue || ibsOrderId <= 0)
+            {
+                var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? String.Empty : "_" + Math.Abs(ibsOrderId.Value);
+                var errorCode = ErrorCode.CreateOrder_CannotCreateInIbs + code;
+
+                var errorCommand = new CancelOrderBecauseOfError
+                {
+                    OrderId = orderId,
+                    WasPrepaid = isPrepaid,
+                    ErrorCode = errorCode,
+                    ErrorDescription = _resources.Get(errorCode, clientLanguageCode)
+                };
+
+                _commandBus.Send(errorCommand);
+                return false;
+            }
+
+            var ibsCommand = new AddIbsOrderInfoToOrder
+            {
+                OrderId = orderId,
+                IBSOrderId = ibsOrderId.Value
+            };
+            _commandBus.Send(ibsCommand);
+
+            return true;
         }
 
 		private void ValidateProvider(CreateOrder request, ReferenceData referenceData, bool isInExternalMarket, CreateReportOrder createReportOrder)
@@ -1088,12 +1149,16 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string[] prompts, int?[] promptsLength, string market, string companyKey = null)
+        private IBSOrderResult CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string[] prompts, int?[] promptsLength, string market, bool isHailRequest, string companyKey = null)
         {
             if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
             {
                 // Fake IBS order id
-                return new Random(Guid.NewGuid().GetHashCode()).Next(90000, 90000000);
+                return new IBSOrderResult
+                {
+                    CreateOrderResult = new Random(Guid.NewGuid().GetHashCode()).Next(90000, 90000000),
+                    IsHailRequest = isHailRequest
+                };
             }
 
             var defaultCompany = referenceData.CompaniesList.FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
@@ -1138,25 +1203,61 @@ namespace apcurium.MK.Booking.Api.Services
 
             var customerNumber = GetCustomerNumber(request.Settings.AccountNumber, request.Settings.CustomerNumber);
 
-	        var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
-                providerId,
-                ibsAccountId,
-                request.Settings.Name,
-                CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country)).CountryDialCode.ToString() + request.Settings.Phone,
-                request.Settings.Passengers,
-                request.Settings.VehicleTypeId,
-                ibsChargeTypeId,                    
-                note,
-                request.PickupDate.Value,
-                ibsPickupAddress,
-                ibsDropOffAddress,
-                request.Settings.AccountNumber,
-                customerNumber,
-                prompts,
-                promptsLength,
-                fare);
+            int? createOrderResult = null;
+            IbsHailResponse ibsHailResult = null;
 
-            return result;
+            if (isHailRequest)
+            {
+                ibsHailResult = _ibsServiceProvider.Booking(companyKey).Hail(
+                    providerId,
+                    ibsAccountId,
+                    request.Settings.Name,
+                    CountryCode.GetCountryCodeByIndex(
+                        CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country)).CountryDialCode +
+                    request.Settings.Phone,
+                    request.Settings.Passengers,
+                    request.Settings.VehicleTypeId,
+                    ibsChargeTypeId,
+                    note,
+                    request.PickupDate.Value,
+                    ibsPickupAddress,
+                    ibsDropOffAddress,
+                    request.Settings.AccountNumber,
+                    customerNumber,
+                    prompts,
+                    promptsLength,
+                    fare);
+            }
+            else
+            {
+                createOrderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+                    providerId,
+                    ibsAccountId,
+                    request.Settings.Name,
+                    CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country)).CountryDialCode + request.Settings.Phone,
+                    request.Settings.Passengers,
+                    request.Settings.VehicleTypeId,
+                    ibsChargeTypeId,                    
+                    note,
+                    request.PickupDate.Value,
+                    ibsPickupAddress,
+                    ibsDropOffAddress,
+                    request.Settings.AccountNumber,
+                    customerNumber,
+                    prompts,
+                    promptsLength,
+                    fare);
+            }
+
+            var hailResult = Mapper.Map<OrderHailResult>(ibsHailResult);
+            hailResult.TaxiHailOrderId = request.Id;
+
+            return new IBSOrderResult
+            {
+                CreateOrderResult = createOrderResult,
+                HailResult = hailResult,
+                IsHailRequest = isHailRequest
+            };
         }
 
         private int? GetCustomerNumber(string accountNumber, string customerNumber)
@@ -1656,6 +1757,15 @@ namespace apcurium.MK.Booking.Api.Services
                 UserAgent = Request.UserAgent,
                 ClientVersion = Request.Headers.Get("ClientVersion")
             };
+        }
+
+        private class IBSOrderResult
+        {
+            public int? CreateOrderResult { get; set; }
+
+            public OrderHailResult HailResult { get; set; }
+
+            public bool IsHailRequest { get; set; }
         }
 
         private class BestAvailableCompany

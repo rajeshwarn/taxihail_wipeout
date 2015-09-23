@@ -135,6 +135,8 @@
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
+    <Compile Include="Entity\OrderHailResult.cs" />
+    <Compile Include="Entity\OrderKey.cs" />
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\Airline.cs" />
     <Compile Include="Entity\VehicleCandidate.cs" />
