@@ -419,7 +419,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public IbsHailResponse Hail(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
         {
-            var order = (TBookOrder_11)CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
+            var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
                 promptsLength, false, fare);
 
@@ -525,17 +525,18 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        private TBookOrder_8 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, bool isHailRequest, Fare fare = default(Fare))
+        private TBookOrder_11 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, bool isHailRequest, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
-            var order = isHailRequest ? new TBookOrder_11() : new TBookOrder_8();
-
-            order.ServiceProviderID = providerId.GetValueOrDefault();
-            order.AccountID = accountId;
-            order.Customer = passengerName;
-            order.Phone = CleanPhone(phone);
-            order.AccountNum = accountNumber;
+            var order = new TBookOrder_11
+            {
+                ServiceProviderID = providerId.GetValueOrDefault(),
+                AccountID = accountId,
+                Customer = passengerName,
+                Phone = CleanPhone(phone),
+                AccountNum = accountNumber
+            };
 
             if (!_serverSettings.ServerData.HideFareEstimateFromIBS)
             {

@@ -9,8 +9,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Client
     [Route("/client/hail/{OrderId}", "POST")]
     public class ConfirmHailRequest
     {
-        public Guid TaxiHailOrderId { get; set; }
-
         public OrderKey OrderKey { get; set; }
 
         public VehicleCandidate VehicleCandidate { get; set; }

@@ -122,10 +122,10 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(ConfirmHailRequest request)
         {
-            var orderDetail = _orderDao.FindById(request.TaxiHailOrderId);
+            var orderDetail = _orderDao.FindById(request.OrderKey.Guid);
             if (orderDetail == null)
             {
-                throw new HttpError(string.Format("Order {0} doesn't exist", request.TaxiHailOrderId));
+                throw new HttpError(string.Format("Order {0} doesn't exist", request.OrderKey.Guid));
             }
 
             Log.Info(string.Format("Trying to confirm Hail. Request : {0}", request.ToJson()));
@@ -1250,7 +1250,6 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var hailResult = Mapper.Map<OrderHailResult>(ibsHailResult);
-            hailResult.TaxiHailOrderId = request.Id;
 
             return new IBSOrderResult
             {
