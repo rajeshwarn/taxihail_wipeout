@@ -434,10 +434,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool IsDriverInfoAvailable
         {
             get 
-            {
+			{
 				if (OrderStatusDetail == null)
 				{
-				
 					return false;
 				}
 
@@ -447,7 +446,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded;
 				var hasDriverInformation = OrderStatusDetail.DriverInfos.FullVehicleInfo.HasValue()
 					|| OrderStatusDetail.DriverInfos.FullName.HasValue();
-
+				
 				return showVehicleInformation && isOrderStatusValid && hasDriverInformation;
 			}
         }
@@ -456,6 +455,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get { return !IsDriverInfoAvailable || string.IsNullOrWhiteSpace(OrderStatusDetail.CompanyName); }
 		}
+
 		public bool VehicleDriverHidden
 		{
 		    get
@@ -472,9 +472,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	               || _isCmtRideLinq;
 	    }
 
-
-
-
 	    public bool VehicleMedallionHidden
 	    {
 	        get
@@ -485,9 +482,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| !_isCmtRideLinq;
 	        }
 	    }
-
-
-
 
 		public bool VehicleFullInfoHidden
 		{
@@ -501,7 +495,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return IsInformationHidden(OrderStatusDetail.DriverInfos.DriverPhotoUrl);
+				return !IsDriverInfoAvailable || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.DriverPhotoUrl);
             }
         }
         

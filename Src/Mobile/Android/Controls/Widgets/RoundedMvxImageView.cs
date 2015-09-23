@@ -10,8 +10,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     [Register("apcurium.mk.booking.mobile.client.controls.RoundedMvxImageView")]
     public class RoundedMvxImageView : MvxImageView
     {
-        public const float Radius = 18.0f;
-
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
         public RoundedMvxImageView(Context context)
             : base (context)
@@ -24,14 +22,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
         }
 
-        protected override void OnDraw(Android.Graphics.Canvas canvas)
+        public override void SetImageBitmap(Bitmap bm)
         {
-            var clipPath = new Path();
-            RectF rect = new RectF(0, 0, this.Width, this.Height);
-            clipPath.AddRoundRect(rect, Radius, Radius, Path.Direction.Cw);
-            canvas.ClipPath(clipPath);
+            if (bm != null)
+            {
+                var output = Bitmap.CreateBitmap(bm.Width, bm.Height, Bitmap.Config.Argb8888);
+                var canvas = new Canvas(output);
 
-            base.OnDraw(canvas);
+                var paint = new Paint();
+                paint.AntiAlias = true;
+                paint.Color = Color.Black;
+
+                canvas.DrawARGB(0, 0, 0, 0);
+                canvas.DrawCircle(bm.Width / 2, bm.Height / 2, bm.Width / 2, paint);
+                paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
+
+                var rect = new Rect(0, 0, bm.Width,bm.Height);
+                canvas.DrawBitmap(bm, rect, rect, paint);
+
+                base.SetImageBitmap(output);
+                return;
+            }
+
+            base.SetImageBitmap(bm);
         }
     }
 }
