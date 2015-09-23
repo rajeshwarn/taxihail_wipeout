@@ -9,11 +9,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public partial class BookingStatusControl : BaseBindableChildView<BookingStatusViewModel>
     {
+        private LoadingStatusBarView _annimationView;
+
         public BookingStatusControl (IntPtr handle) : base(handle)
         {
         }
-
-        LoadingStatusBarView _annimationView;
 
         public override void AwakeFromNib()
         {
