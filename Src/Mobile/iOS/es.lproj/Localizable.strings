@@ -21,6 +21,7 @@
 "Tuto03Top"="Puede seleccionar su lugar de abordaje tocando en el mapa la dirección.";
 "BookDateLabel"="Recogerme más tarde";
 "Overdue_IBSOrderId"="Reservación:";
+"UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";
 "CreditCardZipCode"="Codigo Postal";
 "PromotionButton"="Pulse para entrar o Ver Código de promoción";
 "LocationDetailApartmentLabel"="Departamento";
@@ -41,7 +42,7 @@
 "Tuto08Bottom"="Esperamos que usted encuentre esta aplicación conveniente e intuitiva";
 "CmtCarNumber"="Número de Taxi:";
 "Notification_PromotionUnlockedPush"="Promociones bloqueadas (Push)";
-"CreditCardNumber"="Número de tarjeta";
+"ManualRideLinqCreditCardDisabled"="Su tarjeta de crédito en el perfil tiene un cargo pendiente de un servicio anterior. Este pago vencido le impide el emparejamiento con RideLinQ";
 "StatusActionButton"="Llamar / Reservar / Cancelar";
 "TaxiHailNetworkTimeOutPopupMessage"="Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?";
 "ConfirmationOfPaymentSent"="Confirmación de pago enviada al chofer";
@@ -96,7 +97,6 @@
 "MarketChangedMessageTitle"="Se ha detectado una nueva área de servicio.";
 "ErrorCreateOrder_PendingOrder"="No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?";
 "CardOnFile"="Tarjeta en Archivo";
-"ResetPasswordInvalidDataTitle"="Email inválido";
 "HistoryActivityName"="History";
 "ManualRideLinqStatus_Tip"="Propina:";
 "View_AccountConfirmationTitle"="Confirmación de cuenta.";
@@ -116,7 +116,7 @@
 "Tuto05Top"="Toque “Reservar ya” y se le asignará un vehiculo lo más pronto posible";
 "FilteredAddresses_Error_Message"="No existen actualmente entradas para este filtro.";
 "RideSettingsChargeType"="Tipo de Cargo";
-"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.";
+"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.";
 "BookRatingErrorTitle"="Aviso";
 "CloseTutorial"="Close Tutorial";
 "Error_AccountPaymentMessage"="Cuenta o reservación inválida.";
@@ -127,6 +127,7 @@
 "CreditCardRequiredFields"="Todos los campos requeridos";
 "InvalidPassengersNumberTitle"="Número inválido de pasajeros";
 "ChargeAccount"="Cargar a cuenta";
+"OrderStatus_PairingSuccess"="OK you're checked in. Payment will be automatic at the end of your trip.";
 "InvalidLocalContactMessage"="La dirección asociada a este contacto no puede ser verificada";
 "Error_EditAutoTipTitle"="Error";
 "NoCardOnFileMessage"="Usted seleccionó pagar con la tarjeta de crédito en su archivo, pero no tiene tarjeta registrada por defecto. Agregue una tarjeta a su cuenta o cambie el método de pago para continuar.";
@@ -142,7 +143,7 @@
 "Delete"="Eliminar";
 "Notification_PromotionUnlockedEmail"="Promociones desbloqueadas (Email)";
 "Order"="Reservación";
-"DateTimePickerPickTitle"="Fecha y hora del servicio";
+"FacebookLoginErrorMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
 "HistoryDetailStatusLabel"="Estado:";
 "AddReminderTitle"="Servicio programado";
 "View_UserTaxiHailNetworkSettings"="TaxiHail Network";
@@ -206,6 +207,7 @@
 "RideSettingsPayBack"="PayBack";
 "ManualRideLinqStatus_Tax"="Impuesto:";
 "BookItButtonImageName"="Assets/Button/btnBookIt_en.png";
+"UnpairWarningOkButton"="Pago en carro";
 "Safety"="Seguridad";
 "ManualRideLinqStatus_Payment"="Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.";
 "NetworkContactingNextDispatchDescription"="Contactando {0} …";
@@ -213,7 +215,7 @@
 "HomeView_ManualPairing"="En un Taxi";
 "UnexpectedError"="Error inesperado";
 "BookRatingErrorMessage"="Usted necesita calificar su servicio";
-"ResetPasswordInvalidDataMessage"="Este email es inválido";
+"CreditCardNumber"="Número de tarjeta";
 "June"="Jun (06)";
 "PromoMustUseCardOnFileMessage"="Para utilizar un código de promoción, tiene que pagar con su método de pago configurado.";
 "OrderNumber"="Reservación#";
@@ -242,7 +244,6 @@
 "AddReminderMessage"="Le gustaria agregar un recordatorio en su calendario para esta reservación?";
 "CreditCardRemoveErrorScheduledOrderMessage"="No se puede eliminar tu tarjeta de crédito cuando una reservación está programada o en curso.";
 "RingCodeTextPlaceholder"="Código de entrada";
-"AccountDisabled"="Su cuenta ha sido deshabilitada, por favor contacte a {0} al {1} para re-activar su cuenta";
 "WarningLocationServiceDontShow"="No avisar";
 "TabFavorites"="Favoritos";
 "February"="Feb (02)";
@@ -251,7 +252,7 @@
 "RideSettingsVehiculeType"="Tipo de Vehículo";
 "WarningPushServiceAction"="Gracias por informarme";
 "LoginForgotPasswordDetail"="Ingrese su email y le enviaremos una nueva contraseña";
-"UnpairWarningOkButton"="Pago en carro";
+"UnpairWarningCancelButton"="Cancelar";
 "PassengerNumberLabel"="Pasajeros";
 "LocationServiceErrorTitle"="Error";
 "CmtTransactionSuccessTitle"="Pago recibido";
@@ -359,6 +360,7 @@
 "RideSettingsCannotLoadListMessage"="El servidor no puede ser contactado, por favor trate nuevamente más tarde.";
 "GooglePlayServicesNotAvailableTitle"="Actualizacion requerida";
 "DestinationViewDestinationLabel"="Destino:";
+"EmailUsedMessage"="This email is already used by another account";
 "LocationAddFavoriteSubtitle"="Seleccione para agregar nuevo lugar";
 "RideSettingsAccountNumber"="Número de cuenta";
 "CreateAccountPasswordPlaceHolder"="Contraseña";
@@ -383,6 +385,7 @@
 "ResetPasswordTitleText"="Olvidó su contraseña?";
 "March"="Mar (03)";
 "PromotionActivityName"="Promotion";
+"EmailUsedMessageTitle"="Email already used";
 "NoPayBackErrorMessage"="El campo PayBack es obligatorio.";
 "HistoryViewStatusButton"="Ver estado";
 "WarningPromoCodeDontShow"="No avisar";
@@ -406,11 +409,10 @@
 "BookStatusActivityName"="Booking status";
 "Notification_DriverAssignedPush"="Chofer asignado";
 "Tuto07Top"="En la pantalla de estado verá su número de reservación. Una vez que el vehículo sea asignado, usted podrá ver como el vehículo se acerca a su ubicación.";
-"CreditCardAddingActivityName"="Add or edit credit card";
 "RideSettingsName"="Nombre";
 "MarketChangedMessage"="Usted está saliendo de su área de servicio local. Si usted decide reservar, su pedido será enviado a una empresa de taxis de esta zona.";
 "Continue"="Continuar";
-"ManualRideLinqStatus_PairingCode"="Código de emparejamiento:";
+"CreditCardAddingActivityName"="Add or edit credit card";
 "DateTimePickerPickInvalidDateMessage"="La fecha y hora del servicio deben ser en el futuro";
 "HistoryDetailBuildingNameNotSpecified"="No Especificado";
 "ReSendConfirmation"="Notificar al chofer del pago";
@@ -501,6 +503,7 @@
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Tipo de Cargo";
 "ResetPasswordSubtitleText"="Ingrese su email y le enviaremos una nueva contraseña";
+"DateTimePickerPickTitle"="Fecha y hora del servicio";
 "UpdatedTermsAndConditionsAcceptButton"="Aceptar";
 "Cancel"="Cancelar";
 "ChooseProviderDialogTitle"="Seleccionar proveedor";
@@ -545,6 +548,7 @@
 "WarningPushServiceMessage"="Notamos que no tiene las “Notificaciones automáticas” encendidas. Queremos informarle que si las enciende podría obtener mensajes de estado de sus servicios sin tener que abrir la aplicación! Prometemos no le mandaremos información innecesaria";
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="Para utilizar un código de promoción, es necesario introducir una tarjeta de crédito como parte de su cuenta.";
 "NoFareTextIfDestinationIsRequired"="Necesita especificar su destino";
+"InvalidEmailMessage"="Este email es inválido";
 "LocationsActivityName"="Favorite locations";
 "searchHint"="Buscar";
 "CreateAccountTitleMrs"="Srta.";
@@ -591,7 +595,6 @@
 "AcceptButton"="Aceptar";
 "CmtRideLinqCancelChanges"="Cancelar";
 "DeleteCreditCardTitle"="Eliminar tarjeta de crédito";
-"DriverInfoDriver"="Chofer:";
 "DateTimePickerPickDate"="Seleccione la fecha del servicio:";
 "View_BookRating"="Califique su servicio";
 "TermsAndConditionsActivityName"="Terms and conditions";
@@ -600,9 +603,11 @@
 "ChangePasswordConfirmmation"="Su contraseña ha sido actualizada, por favor inicie sesión";
 "OrderNote"="Reservado por Móvil";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
+"FacebookLoginErrorTitle"="Email already used";
 "PickupViewPickupLabel"="Recoger:";
 "Done"="Terminado";
 "DriverInfoVehicleMedallion"="Medallion:";
+"InvalidEmailTitle"="Email inválido";
 "CreditCardBookingSettingsError"="Se produjo un error al actualizar la configuración de las reservaciones. Por favor, asegúrese de que el número de cuenta en su perfil es válido y vuelva a intentarlo.";
 "PromoExpiringSoonMessage"="Expira en {0} dias";
 "ManualRideLinqNoCardOnFile"="Usted necesita tener una tarjeta en el perfil para enparejarse con RideLinQ";
@@ -613,7 +618,7 @@
 "PayPalErrorTitle"="Error de PayPal";
 "Overdue_Succeed_Title"="Pago exitoso";
 "PanelMenuViewLocationsText"="Ubicaciones";
-"ManualRideLinqCreditCardDisabled"="Su tarjeta de crédito en el perfil tiene un cargo pendiente de un servicio anterior. Este pago vencido le impide el emparejamiento con RideLinQ";
+"AccountDisabled"="Su cuenta ha sido deshabilitada, por favor contacte a {0} al {1} para re-activar su cuenta";
 "InvalidAddressTitle"="Dirección inválida";
 "WarningEstimateTitle"="Aviso";
 "Create"="Crear";
@@ -639,6 +644,7 @@
 "PayNow"="Pagar con Aplicación";
 "StatusActionCancelButton"="Cancelar reservación";
 "OtherListItemLabel"="Porcentaje personalizada";
+"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "StatusCancelButton"="Cancelar reservación";
 "Tuto05Bottom"="O puede tocar el botón  de “Mas Tarde” para programar un servicio futuro";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
@@ -649,6 +655,7 @@
 "ManualRideLinqStatusActivityName"="Manual RideLinq Status";
 "View_History"="Historia";
 "Twitter"="Iniciar sesión con Twitter";
+"AccountLinkedWithFacebook"="Account is linked with Facebook account";
 "View_CreditCard"="Pago";
 "GooglePlayServicesNotAvailableMessage"="Usted necesita actualizar los servicios de “Google play” para poder utilizar esta aplicación";
 "AccountPaymentQuestionsRequired"="(requerido)";
@@ -674,6 +681,7 @@
 "Facebook"="Iniciar sesión con Facebook";
 "PanelMenuViewNotificationsText"="Notificaciones";
 "HistoryLoadError"="No se pudo cargar el historial. Favor de intenar más tarde.";
+"UpdateNoticeTitle"="Update Notice";
 "SendMessageToDriverErrorMessage"="An error occurred while trying to contact the driver. Please try again later.";
 "Edit"="Editar";
 "StatusConfirmCancelRideErrorTitle"="No de puede cancelar";

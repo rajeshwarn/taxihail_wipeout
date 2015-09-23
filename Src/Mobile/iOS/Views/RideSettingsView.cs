@@ -67,7 +67,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblCustomerNumber.Text = Localize.GetValue("RideSettingsCustomerNumber");
 			lblPayBack.Text = Localize.GetValue("RideSettingsPayBack");
 
-            lblEmail.AccessibilityLabel = Localize.GetValue("RideSettingsEmailTitle");
+            txtEmail.Placeholder = Localize.GetValue("RideSettingsEmailTitle");
+            txtEmail.AccessibilityLabel = txtEmail.Placeholder;
+
             lblEmailTitle.AccessibilityLabel = Localize.GetValue("RideSettingsEmailTitle");
 
             txtName.Placeholder = Localize.GetValue("RideSettingsName");
@@ -128,9 +130,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.Name);
 
-            set.Bind(lblEmail)
+            set.Bind(txtEmail)
                 .For(v => v.Text)
                 .To(vm => vm.Email);
+
+            set.Bind(txtEmail)
+                .For(v => v.Enabled)
+                .To(vm => vm.CanEditEmail)
+                .WithConversion("Bool");
 
 			set.Bind(txtPhone)
 				.For(v => v.Text)

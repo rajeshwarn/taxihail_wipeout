@@ -60,7 +60,6 @@
   <string name="CmtRideLinqErrorTitle">خطأ</string>
   <string name="CmtRideLinqGenericErrorMessage">حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.</string>
   <string name="CmtRideLinqSaveChanges">حفظ</string>
-  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="UnpairPayInCar">Pay in Car</string>
   <string name="UnpairErrorMessage">حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.</string>
   <string name="CmtTipAmount">قيمة الإكرامية:</string>
@@ -244,6 +243,7 @@
   <string name="OkButtonText">موافق</string>
   <string name="Order">طلب</string>
   <string name="OrderHistoryListTitle">طلبية #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
+  <string name="FacebookLoginErrorMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
   <string name="OrderNote">تم الحجز من خلال الهاتف الجوال</string>
   <string name="OrderNoteGPS">استخدام الGPS</string>
   <string name="OrderNoteGPSApproximate">(عنوان تقريبي)</string>
@@ -673,6 +673,7 @@
   <string name="Rating1">Awful</string>
   <string name="Rating2">Poor</string>
   <string name="Rating3">Average</string>
+  <string name="FacebookLoginErrorTitle">Email already used</string>
   <string name="Rating4">Good</string>
   <string name="Rating5">Excellent</string>
   <string name="SendMessageDriver">Send Message to Driver</string>
@@ -687,5 +688,8 @@
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
+  <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
+  <string name="EmailUsedMessageTitle">Email already used</string>
+  <string name="EmailUsedMessage">This email is already used by another account</string>
   <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
 </resources>

@@ -294,6 +294,11 @@
     <Compile Include="ReadModel\TemporaryOrderCreationInfo.cs" />
     <Compile Include="ReadModel\TemporaryOrderPaymentInfoDetail.cs" />
     <Compile Include="ReadModel\VehicleTypeDetail.cs" />
+    <Compile Include="Resources\Aeroport Taxi.Designer.cs">
+      <DependentUpon>Aeroport Taxi.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Resources\Aexid.fr.Designer.cs">
       <DependentUpon>Aexid.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -461,6 +466,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Aeroport Taxi.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Aeroport Taxi.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Aexid.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Aexid.fr.Designer.cs</LastGenOutput>
