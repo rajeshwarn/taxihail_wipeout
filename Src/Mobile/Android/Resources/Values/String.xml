@@ -208,6 +208,7 @@
   <string name="WarningEstimateDontShow">Don\'t warn</string>
   <string name="WarningLocationService">Please turn on location services to have your location show up in the map.</string>
   <string name="WarningLocationServiceTitle">Warning</string>
+  <string name="FacebookLoginErrorMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
   <string name="WarningLocationServiceDontShow">Don\'t warn</string>
   <string name="WarningLocationServiceCancel">Cancel</string>
   <string name="ResetPasswordConfirmationTitle">Password sent</string>
@@ -220,7 +221,6 @@
   <string name="ListPromptSelectOne">Select one</string>
   <string name="DateTimePickerPickDate">Select your pickup date:</string>
   <string name="DateTimePickerPickTime">Select your pickup time:</string>
-  <string name="DateTimePickerPickTitle">Pickup date and time</string>
   <string name="DateTimePickerPickInvalidDateTitle">Invalid date / time</string>
   <string name="InvalidChoiceTitle">Invalid Choice</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
@@ -436,6 +436,7 @@
   <string name="CmtRideLinqConfirmPairViewConfirmPairDetailText">Confirm that you are in the vehicle number indicated below.  By Tapping “Confirm”, this ride will automatically be paid by your credit card on file.</string>
   <string name="ViewAll">View All</string>
   <string name="Collapse">Collapse</string>
+  <string name="Collapse">Collapse</string>
   <string name="ScanCreditCard">Scan Credit Card</string>
   <string name="View_InitializeOrderForAccountPayment">Please answer these questions</string>
   <string name="Error_AccountPaymentTitle">Error</string>
@@ -522,6 +523,7 @@
   <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
   <string name="View_UserTaxiHailNetworkSettings">TaxiHail Network</string>
   <string name="PromoCodeLabel">Promo code</string>
+  <string name="DateTimePickerPickTitle">Pickup date and time</string>
   <string name="PromoMustUseCardOnFileMessage">In order to use a promo code, you need to pay with your configured payment method.</string>
   <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
   <string name="PromoMustHavePaymentMethodSetMessage_PayPal">In order to use a promo code, you need to have a PayPal account linked to your account.</string>
@@ -620,6 +622,7 @@
   <string name="GenericErrorTitle">Error</string>
   <string name="MenuButton">Menu</string>
   <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>
+  <string name="FacebookLoginErrorTitle">Email already used</string>
   <string name="LocateMeButton">Locate Me</string>
   <string name="StatusEditAutoTipButton">Tip</string>
   <string name="AirportsButton">Airports</string>

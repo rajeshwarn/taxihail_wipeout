@@ -322,6 +322,7 @@
 "StreetNumberLabel"="Refine your address";
 "StreetNumberSearchBt"="Use a different address";
 "StreetNumberDoneBt"="Use This Address";
+"FacebookLoginErrorTitle"="Email already used";
 "AddReminderMessage"="Would you like a reminder added to your calendar for this pick-up time?";
 "AddReminderTitle"="Scheduled Pick-Up";
 "View_PaymentPreference"="Payment Preference";
@@ -540,6 +541,7 @@
 "Processing"="Processing your order...";
 "Notification_PromotionUnlockedEmail"="Promotions unlocked (Email)";
 "Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
+"FacebookLoginErrorMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
 "PromoProgress"="Progress :";
 "ErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
 "LinkPayPal"="Link PayPal";
