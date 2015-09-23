@@ -372,7 +372,7 @@ namespace apcurium.MK.Common.Configuration
 		public string ApiUrl { get; set; }
 
 		[SendToClient, CustomizableByCompany]
-		[Display(Name = "Configuration - Use airport details screen", Description = "Display the airport details screen before the order review screen to allow the user to send airport related information to the driver.")]
+		[Display(Name = "FlightStatus - Use airport details screen", Description = "Display the airport details screen before the order review screen to allow the user to send airport related information to the driver.")]
 		public bool UseAirportDetails { get; set; }
 	}
 
