@@ -146,7 +146,7 @@
   <string name="Delete">Eliminar</string>
   <string name="Notification_PromotionUnlockedEmail">Promociones desbloqueadas (Email)</string>
   <string name="Order">Reservación</string>
-  <string name="DateTimePickerPickTitle">Fecha y hora del servicio</string>
+  <string name="FacebookLoginErrorMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
   <string name="HistoryDetailStatusLabel">Estado:</string>
   <string name="AddReminderTitle">Servicio programado</string>
   <string name="View_UserTaxiHailNetworkSettings">TaxiHail Network</string>
@@ -194,7 +194,7 @@
   <string name="ResetPasswordEmailPlaceHolder">Email</string>
   <string name="PendingOrderMessage">No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación ?</string>
   <string name="AddPaymentMethod_CreditCard">Agregar tarjeta de crédito</string>
-  <string name="TutorialActivityName">Tutorial</string>
+  <string name="ErrorCreatingOrderTitle">La reservación no puede ser completada</string>
   <string name="TAXI">TAXI</string>
   <string name="View_UpdatePassword">Actualizar contraseña</string>
   <string name="StreetNumberSearchBt">Usar una dirección diferente</string>
@@ -279,7 +279,6 @@
   <string name="PromoDescriptionCode">Ingrese el código {0} o pulse el botón de abajo</string>
   <string name="Overdue_Retry">Pagar ahora</string>
   <string name="CmtChangePaymentInfo">Cambiar ajustes de pago</string>
-  <string name="ErrorCreatingOrderTitle">La reservación no puede ser completada</string>
   <string name="Next">Next</string>
   <string name="CreditCardCCV">CVV</string>
   <string name="View_BookingStatus">Estado</string>
@@ -460,6 +459,7 @@
   <string name="Destination">Destino</string>
   <string name="Tuto04Top">Si quiere, puede también especificar su destino</string>
   <string name="DateTimePickerPickInvalidDateTitle">Fecha / Hora Inválida</string>
+  <string name="TutorialActivityName">Tutorial</string>
   <string name="Knowledgabledriver">Chofer experimentado:</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Estas seguro que quieres cancelar? Un vehículo está en camino para pasar por usted. {0} se reserva el derecho a cobrar a los clientes un cargo por cancelación si consideramos que el usuario está abusando del servicio.</string>
   <string name="Notification_BookingConfirmationEmail">Confirmación de reservación (email)</string>
@@ -504,6 +504,7 @@
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Tipo de Cargo</string>
   <string name="ResetPasswordSubtitleText">Ingrese su email y le enviaremos una nueva contraseña</string>
+  <string name="DateTimePickerPickTitle">Fecha y hora del servicio</string>
   <string name="UpdatedTermsAndConditionsAcceptButton">Aceptar</string>
   <string name="Cancel">Cancelar</string>
   <string name="ChooseProviderDialogTitle">Seleccionar proveedor</string>
@@ -603,6 +604,7 @@
   <string name="CreditCardNumber">Número de tarjeta</string>
   <string name="OrderNote">Reservado por Móvil</string>
   <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>
+  <string name="FacebookLoginErrorTitle">Email already used</string>
   <string name="PickupViewPickupLabel">Recoger:</string>
   <string name="Done">Terminado</string>
   <string name="DriverInfoVehicleMedallion">Medallion:</string>

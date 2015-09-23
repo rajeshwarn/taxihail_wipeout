@@ -146,7 +146,7 @@
   <string name="Delete">Supprimer</string>
   <string name="Notification_PromotionUnlockedEmail">Promotions déverrouillées (Email)</string>
   <string name="Order">Commander</string>
-  <string name="DateTimePickerPickTitle">Date et heure de départ</string>
+  <string name="FacebookLoginErrorMessage">Cet email est déjà utilisé pour un compte Facebook. Merci de vous enregistrer via Facebook ou d\'utiliser un autre email.</string>
   <string name="HistoryDetailStatusLabel">Statut:</string>
   <string name="AddReminderTitle">Départ(s) programmé(s)</string>
   <string name="View_UserTaxiHailNetworkSettings">Réseau TaxiHail</string>
@@ -505,6 +505,7 @@
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Type de facturation</string>
   <string name="ResetPasswordSubtitleText">Saisissez votre email pour recevoir votre nouveau mot de passe</string>
+  <string name="DateTimePickerPickTitle">Date et heure de départ</string>
   <string name="UpdatedTermsAndConditionsAcceptButton">Accepter</string>
   <string name="Cancel">Annuler</string>
   <string name="ChooseProviderDialogTitle">Choisissez un prestataire</string>
@@ -604,6 +605,7 @@
   <string name="CreditCardNumber">Numéro de la carte</string>
   <string name="OrderNote">Réserver sur votre mobile</string>
   <string name="CallDriverUsingProxyPrompt">Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.</string>
+  <string name="FacebookLoginErrorTitle">Email déjà utilisé</string>
   <string name="PickupViewPickupLabel">Départ:</string>
   <string name="Done">Terminé</string>
   <string name="DriverInfoVehicleMedallion">Medallion:</string>

@@ -237,7 +237,7 @@
 "LocalContactCannotBeResolverMessage"="Cannot find the address associated to this contact.";
 "July"="Jul (07)";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirm Payment Information";
-"FacebookLoginTitle"="Email already used";
+"FacebookLoginErrorTitle"="Email already used";
 "AddCoFPayPalWarning"="Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?";
 "AddReminderMessage"="Would you like a reminder added to your calendar for this pick-up time?";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";
@@ -559,7 +559,7 @@
 "NoFareText"="Choose a destination to get a price estimate.";
 "Notes"="Notes";
 "EstimatingFare"="Estimating your fare...";
-"FacebookLoginMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
+"FacebookLoginErrorMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
 "OverduePaymentActivityName"="Overdue payment";
 "UpdateBookingSettingsGenericError"="An error occured when updating the booking settings";
 "TabHistory"="History";
