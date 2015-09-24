@@ -51,7 +51,7 @@ namespace apcurium.MK.Common
             _code = null;
             Code = code;
         }
-    }
+	}
 
     public struct CountryCode
     {
@@ -72,7 +72,8 @@ namespace apcurium.MK.Common
         public string CountryName { get; set; }
 
         private CountryISOCode _countryIsoCode;
-        public CountryISOCode CountryISOCode
+        
+		public CountryISOCode CountryISOCode
         {
             get
             {
@@ -105,7 +106,7 @@ namespace apcurium.MK.Common
             }
         }
 
-        public CountryCode(string countryName, string countryISOCode):this()
+        private CountryCode(string countryName, string countryISOCode):this()
         {
             _countryIsoCode = new CountryISOCode();
             _countryDialCode = 0;
@@ -186,8 +187,13 @@ namespace apcurium.MK.Common
 
         public bool IsNumberPossible(string phoneNumber)
         {
-            return libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(phoneNumber, _countryIsoCode.Code);
+            return IsValid() && libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(phoneNumber, _countryIsoCode.Code);
         }
+
+		public bool IsValid()
+		{
+			return _countryIsoCode != null;
+		}
 
 		public override string ToString()
 		{

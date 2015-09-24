@@ -69,6 +69,36 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/HeightButton"
             style="@style/ButtonMainStyle" />
+        <View
+            android:orientation="vertical"
+            android:layout_height="12dip"
+            android:layout_width="fill_parent" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/HeightEditTextFlat">
+            <MvxSpinner
+                android:layout_width="60dp"
+                android:layout_height="@dimen/HeightEditTextFlat"
+                android:layout_marginBottom="10dip"
+                android:background="@drawable/edit_text_rounded"
+                style="@style/MainTheme"
+                local:MvxItemTemplate="@layout/countrycodeitemmvx"
+                local:MvxDropDownItemTemplate="@layout/countrycodeitemdropdownmvx"
+                local:MvxBind="ItemsSource CountryCodes;SelectedItem SelectedCountryCode" />
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_marginBottom="10dip"
+                android:layout_height="@dimen/HeightEditTextFlat"
+                android:maxLines="1"
+                android:inputType="phone"
+                android:singleLine="true"
+                android:hint="@string/RideSettingsPhone"
+                local:MvxBind="Text Phone" />
+        </LinearLayout>
+        <View
+            android:orientation="vertical"
+            android:layout_height="12dip"
+            android:layout_width="fill_parent" />
         <Button
             android:id="@+id/btnResend"
             local:MvxBind="Click ResendConfirmationCode"

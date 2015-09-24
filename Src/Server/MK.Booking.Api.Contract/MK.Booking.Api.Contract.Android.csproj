@@ -66,6 +66,7 @@
     <Compile Include="Requests\CreateOrder.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
+    <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\EtaForPickupRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />

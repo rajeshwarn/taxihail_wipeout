@@ -3,6 +3,8 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using System.Threading.Tasks;
 using System.Reactive.Subjects;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -37,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_account = data;
 		}
 
-		public async Task ConfirmAccount (string code)
+		public async Task ConfirmAccount(string code)
 		{
 			await _accountServiceClient.ConfirmAccount (new ConfirmAccountRequest 
 			{
@@ -47,12 +49,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			});
 		}
 
-        public async Task GetConfirmationCode()
+		public async Task GetConfirmationCode(CountryISOCode countryCode, string phoneNumber)
         {
-            await _accountServiceClient.GetConfirmationCode(new ConfirmationCodeRequest
-            {
-                Email = _account.Email
-            });
+			if (countryCode != null && phoneNumber.HasValue())
+			{
+				await _accountServiceClient.GetConfirmationCode(new ConfirmationCodeRequest
+				{
+					Email = _account.Email,
+					CountryCode = countryCode.Code,
+					PhoneNumber = phoneNumber
+				});
+			}
+			else
+			{
+				throw new ArgumentException("countryCode and phoneNumber should not be null or empty");
+			}
+
         }
 
 		public void RegistrationFinished ()
