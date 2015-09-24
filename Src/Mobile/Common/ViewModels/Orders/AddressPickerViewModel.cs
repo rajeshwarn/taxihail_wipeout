@@ -285,21 +285,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				await _orderWorkflowService.SetAddress(detailedAddress);
 
-				if (_currentActiveFilter == AddressLocationType.Airport 
-					&& Settings.FlightStats.UseAirportDetails
-					&& AddressSelectionMode == AddressSelectionMode.PickupSelection )
-                {
-					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportDetails;
-                }
-                else
-                {
-					if (returnToHome)
-					{
-						((HomeViewModel)Parent).CurrentViewState = _respState;
-					}
-	
-					ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+				if (returnToHome)
+				{
+					((HomeViewModel)Parent).CurrentViewState = _respState;
 				}
+
+				ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
 			}
 			catch(Exception ex)
 			{
