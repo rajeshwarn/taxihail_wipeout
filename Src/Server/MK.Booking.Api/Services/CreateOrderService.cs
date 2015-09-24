@@ -1209,6 +1209,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (isHailRequest)
             {
                 ibsHailResult = _ibsServiceProvider.Booking(companyKey).Hail(
+                    request.Id,
                     providerId,
                     ibsAccountId,
                     request.Settings.Name,
@@ -1227,6 +1228,17 @@ namespace apcurium.MK.Booking.Api.Services
                     prompts,
                     promptsLength,
                     fare);
+
+                // Fetch vehicle candidates only if order was successfully created on IBS
+                if (ibsHailResult.OrderKey.OrderId > -1)
+                {
+                    // TODO: replace hardcoded value by timeout returned by IBS
+                    // Need to wait for vehicles to receive hail request
+                    Thread.Sleep(20000);
+
+                    var candidates = _ibsServiceProvider.Booking(companyKey).GetVehicleCandidates(ibsHailResult.OrderKey);
+                    ibsHailResult.VehicleCandidates = candidates;
+                }
             }
             else
             {
