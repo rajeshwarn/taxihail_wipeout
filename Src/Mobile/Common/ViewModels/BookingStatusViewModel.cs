@@ -105,7 +105,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = order;
 			OrderStatusDetail = orderStatusDetail;
 			DisplayOrderNumber();
-
 			BottomBar.NotifyBookingStatusAppbarChanged();
 
 			StatusInfoText = orderStatusDetail.IBSStatusId == null 
@@ -434,10 +433,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool IsDriverInfoAvailable
         {
             get 
-            {
+			{
 				if (OrderStatusDetail == null)
 				{
-				
 					return false;
 				}
 
@@ -447,7 +445,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded;
 				var hasDriverInformation = OrderStatusDetail.DriverInfos.FullVehicleInfo.HasValue()
 					|| OrderStatusDetail.DriverInfos.FullName.HasValue();
-
+				
 				return showVehicleInformation && isOrderStatusValid && hasDriverInformation;
 			}
         }
@@ -456,6 +454,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get { return !IsDriverInfoAvailable || string.IsNullOrWhiteSpace(OrderStatusDetail.CompanyName); }
 		}
+
 		public bool VehicleDriverHidden
 		{
 		    get
@@ -472,9 +471,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	               || _isCmtRideLinq;
 	    }
 
-
-
-
 	    public bool VehicleMedallionHidden
 	    {
 	        get
@@ -485,9 +481,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| !_isCmtRideLinq;
 	        }
 	    }
-
-
-
 
 		public bool VehicleFullInfoHidden
 		{
@@ -501,7 +494,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return IsInformationHidden(OrderStatusDetail.DriverInfos.DriverPhotoUrl);
+				return !IsDriverInfoAvailable || string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.DriverPhotoUrl);
             }
         }
         
@@ -559,7 +552,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set
 			{
 			    _orderStatusDetail = value;
-			    RefreshView();
+				RefreshView();
 			}
         }
 
@@ -573,10 +566,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        RaisePropertyChanged(() => IsDriverInfoAvailable);
 	        RaisePropertyChanged(() => IsCallTaxiVisible);
 	        RaisePropertyChanged(() => IsMessageTaxiVisible);
-			RaisePropertyChanged(() => IsContactTaxiVisible);
+            RaisePropertyChanged(() => IsContactTaxiVisible);
+			RaisePropertyChanged(() => IsProgressVisible);
 	        RaisePropertyChanged(() => CanGoBack);
 	        RaisePropertyChanged(() => VehicleMedallionHidden);
 	    }
+
+		public bool IsProgressVisible
+		{
+			get{ return OrderStatusDetail != null && (string.IsNullOrEmpty(OrderStatusDetail.IBSStatusId) 
+				|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting); }
+		}
 
 		public bool IsConfirmationNoHidden
 		{

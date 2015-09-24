@@ -29,6 +29,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		[Outlet]
 		UIKit.UIView viewDriverInfos { get; set; }
+
+		[Outlet]
+		UIKit.UIView viewStatus { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -60,6 +63,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (viewDriverInfos != null) {
 				viewDriverInfos.Dispose ();
 				viewDriverInfos = null;
+			}
+
+			if (viewStatus != null) {
+				viewStatus.Dispose ();
+				viewStatus = null;
 			}
 		}
 	}

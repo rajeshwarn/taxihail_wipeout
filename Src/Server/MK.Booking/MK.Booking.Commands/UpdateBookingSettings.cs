@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
+		public string Email { get; set; }
+
         public string Name { get; set; }
 
         public CountryISOCode Country { get; set; }

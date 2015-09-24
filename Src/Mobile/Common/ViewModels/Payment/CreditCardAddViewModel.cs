@@ -450,7 +450,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                         try
                         {
-                            await _accountService.UpdateSettings(_accountService.CurrentAccount.Settings, PaymentPreferences.Tip);
+                            await _accountService.UpdateSettings(_accountService.CurrentAccount.Settings, _accountService.CurrentAccount.Email, PaymentPreferences.Tip);
                         }
                         catch (WebServiceException)
                         {

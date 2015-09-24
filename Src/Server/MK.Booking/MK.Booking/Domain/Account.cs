@@ -161,11 +161,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateBookingSettings(BookingSettings settings, int? defaultTipPercent)
+        public void UpdateBookingSettings(BookingSettings settings, string email, int? defaultTipPercent)
         {
             Update(new BookingSettingsUpdated
             {
                 SourceId = Id,
+				Email = email,
                 Name = settings.Name,
                 ChargeTypeId = settings.ChargeTypeId,
                 NumberOfTaxi = settings.NumberOfTaxi,

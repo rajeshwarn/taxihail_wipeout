@@ -138,6 +138,12 @@
   <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
     <value>Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide du SMS qui vient de vous être envoyé</value>
   </data>
+  <data name="FacebookLoginErrorTitle" xml:space="preserve">
+    <value>Email existant</value>
+  </data>
+  <data name="FacebookLoginErrorMessage" xml:space="preserve">
+    <value>Cet email est déjà utilisé pour un compte Facebook. Merci de vous enregistrer via Facebook ou d'utiliser un autre email.</value>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Merci de saisir un numéro de compte valide</value>
   </data>
@@ -1017,10 +1023,10 @@
   <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
     <value>Email (adresse électronique)</value>
   </data>
-  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+  <data name="InvalidEmailMessage" xml:space="preserve">
     <value>Désolé, cet email n'est pas valide</value>
   </data>
-  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+  <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Cet email n'est pas valide</value>
   </data>
   <data name="ResetPasswordSubtitleText" xml:space="preserve">
@@ -2231,6 +2237,15 @@
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît</value>
 	</data>
+	<data name="AccountLinkedWithFAcebook" xml:space="preserve">
+    	<value>Ce compte est associé avec un compte Facebook</value>
+	</data>
+   <data name="EmailUsedMessageTitle" xml:space="preserve">
+    <value>Courriel déjà utilisé</value>
+  </data>
+   <data name="EmailUsedMessage" xml:space="preserve">
+        <value>Ce courriel est déjà utilisé par un autre compte</value>
+  </data>
 	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
  		<value>Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</value>
   	</data>

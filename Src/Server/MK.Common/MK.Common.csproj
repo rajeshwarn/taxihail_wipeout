@@ -142,6 +142,7 @@
     <Compile Include="Entity\VehicleCandidate.cs" />
     <Compile Include="Entity\VehicleCandidateTypes.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="CountryCode.cs" />
     <Compile Include="CreditCard.cs" />
