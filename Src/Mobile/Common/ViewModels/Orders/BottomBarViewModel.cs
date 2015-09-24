@@ -394,10 +394,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         return;
                     }
 
-                    await _orderWorkflowService.ResetOrderSettings();
-                    await ShowFareEstimateAlertDialogIfNecessary();
-                    await ValidateCardOnFile();
-                    await PreValidateOrder();
+					ValidateOrderDetails();
                     ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportDetails;
                 });
             }
@@ -405,12 +402,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
         public async void ReviewOrderDetails()
 	    {
-            await _orderWorkflowService.ResetOrderSettings();
-            await ShowFareEstimateAlertDialogIfNecessary();
-            await ValidateCardOnFile();
-            await PreValidateOrder();
-            ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
+			ValidateOrderDetails();
+			((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
 	    }
+
+		private async Task ValidateOrderDetails()
+		{
+			using (this.Services().Message.ShowProgress())
+			{
+				await _orderWorkflowService.ResetOrderSettings();
+				await ShowFareEstimateAlertDialogIfNecessary();
+				await ValidateCardOnFile();
+				await PreValidateOrder();
+			}
+		}
 
         public ICommand ConfirmOrder
         {
@@ -890,6 +895,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         private async Task PreValidateOrder()
         {
             var validationInfo = await _orderWorkflowService.ValidateOrder();
+
             if (validationInfo.HasError)
             {
 	            this.Services().Message.ShowMessage(
