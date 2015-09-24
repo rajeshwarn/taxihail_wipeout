@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/topViewLayout">
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -11,7 +11,9 @@
         android:orientation="vertical"
         android:id="@+id/statusLayout"
         android:elevation="1dp"
-        android:background="@drawable/drop_shadow_opaque">
+        android:background="@drawable/drop_shadow_opaque"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,5 +127,21 @@
         android:layout_width="fill_parent"
         android:layout_height="75dip"
         android:id="@+id/ContactTaxiOverlay"
-        android:background="@drawable/drop_shadow_opaque" />
-</LinearLayout>
+        android:background="@drawable/drop_shadow_opaque"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/statusLayout" />
+    <FrameLayout
+        android:minHeight="75dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="@drawable/drop_shadow_opaque"
+        local:MvxBind="Visibility IsProgressVisible, Converter=Visibility;">
+        <ImageView
+            android:src="@drawable/status_gradient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressImage"
+            android:scaleType="fitXY" />
+    </FrameLayout>
+</RelativeLayout>
