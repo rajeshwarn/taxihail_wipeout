@@ -607,7 +607,7 @@
   <string name="ChangePasswordConfirmmation">Votre mot de passe a été mis à jour, merci de vous connecter.</string>
   <string name="OrderNote">Réserver sur votre mobile</string>
   <string name="CallDriverUsingProxyPrompt">Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.</string>
-  <string name="FacebookLoginErrorTitle">Email déjà utilisé</string>
+  <string name="FacebookLoginErrorTitle">Email existant</string>
   <string name="PickupViewPickupLabel">Départ:</string>
   <string name="Done">Terminé</string>
   <string name="DriverInfoVehicleMedallion">Medallion:</string>

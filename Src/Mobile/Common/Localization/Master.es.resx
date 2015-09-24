@@ -150,10 +150,10 @@
     <comment>Your account has not been activated. Another activation SMS was sent to you.</comment>
   </data>
   <data name="FacebookLoginErrorTitle" xml:space="preserve">
-    <value>Email already used</value>
+    <value>Correo electrónico existente</value>
   </data>
   <data name="FacebookLoginErrorMessage" xml:space="preserve">
-    <value>This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</value>
+    <value>Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.</value>
   </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Por favor introduzca un número de cuenta válido.</value>

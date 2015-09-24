@@ -145,7 +145,7 @@
   <string name="Delete">Eliminar</string>
   <string name="Notification_PromotionUnlockedEmail">Promociones desbloqueadas (Email)</string>
   <string name="Order">Reservación</string>
-  <string name="FacebookLoginErrorMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
+  <string name="FacebookLoginErrorMessage">Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.</string>
   <string name="HistoryDetailStatusLabel">Estado:</string>
   <string name="AddReminderTitle">Servicio programado</string>
   <string name="View_UserTaxiHailNetworkSettings">TaxiHail Network</string>
@@ -605,7 +605,7 @@
   <string name="ChangePasswordConfirmmation">Su contraseña ha sido actualizada, por favor inicie sesión</string>
   <string name="OrderNote">Reservado por Móvil</string>
   <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>
-  <string name="FacebookLoginErrorTitle">Email already used</string>
+  <string name="FacebookLoginErrorTitle">Correo electrónico existente</string>
   <string name="PickupViewPickupLabel">Recoger:</string>
   <string name="Done">Terminado</string>
   <string name="DriverInfoVehicleMedallion">Medallion:</string>
