@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 
         private const double StatusOffset = 1;
-        private const double VehicleInformationOffset = 1.75;
+        private const double VehicleInformationOffset = 3;
         private const double InitialZoomOffset = 1.5;
 
         public OrderMapView(IntPtr handle) :base(handle)
@@ -751,7 +751,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-	    private double GetLatitudeDeltaThreshold()
+        private double GetLatitudeDeltaThreshold()
 	    {
             if (UIHelper.Is35InchDisplay)
             {
@@ -759,8 +759,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
             return UIScreen.MainScreen.Scale == 2
-				? 0.0005d
-				: 0.001d;
+                ? 0.0005d
+                : 0.001d;
 	    }
 
         private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
@@ -812,14 +812,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 var bookingStatusViewModel = ((HomeViewModel)ViewModel.Parent).BookingStatus;
 				// Changes the map zoom to prevent hiding the pin under the booking status.
-				if (Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
+                if (Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
 				{
                     if (bookingStatusViewModel.IsContactTaxiVisible)
 					{
                         zoomOffset += StatusOffset;
 					}
 
-                    if (!bookingStatusViewModel.VehicleFullInfoHidden)
+                    if (bookingStatusViewModel.IsDriverInfoAvailable)
 					{
                         zoomOffset += VehicleInformationOffset;
 					}
@@ -827,6 +827,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 deltaLat = Math.Abs(maxLat - minLat) * zoomOffset;
                 deltaLng = Math.Abs(maxLon - minLon) * zoomOffset;
+
+                var delta = 0d;
 
                 var centerLat = (maxLat + minLat) / 2;
                 var centerLng = (maxLon + minLon) / 2;
@@ -838,10 +840,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         ? 1.25
                         : UIScreen.MainScreen.Scale;
 
-                    centerLat += (maxLat - minLat) / scale;
+                    delta += (maxLat - minLat) / scale;
                 }
 
-                center = new CLLocationCoordinate2D(centerLat, centerLng);
+                if (bookingStatusViewModel.IsDriverInfoAvailable && Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
+                {
+                    delta += (deltaLat??0)/4;
+                }
+
+                center = new CLLocationCoordinate2D(centerLat + delta, centerLng);
             }
 
             SetRegionAndZoom(region, center, deltaLat, deltaLng);
