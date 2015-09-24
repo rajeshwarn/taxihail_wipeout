@@ -21,9 +21,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task<IEnumerable<Address>> GetPopularAddresses()
         {
-            var req = string.Format("/popularaddresses");
-            var addresses = Client.GetAsync<IEnumerable<Address>>(req);
-            return addresses;
+            return Client.GetAsync<IEnumerable<Address>>("/popularaddresses");
         }
 
 #if  !CLIENT

@@ -22,17 +22,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
         public BookLaterDatePicker (IntPtr ptr):base(ptr)
         {
             Initialize ();    
-            this.DelayBind (() => {
-                InitializeBinding();
-            });
+            this.DelayBind (InitializeBinding);
         }
 
         public BookLaterDatePicker ()
         {
             Initialize ();
-            this.DelayBind (() => {
-                InitializeBinding();
-            });
+            this.DelayBind (InitializeBinding);
         }
 
         private void Initialize()
@@ -65,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
 
             set.Bind()
                 .For(v => v.Command)
-                .To(vm => vm.SetPickupDateAndReviewOrder);
+                .To(vm => vm.CreateOrder);
 
 			set.Bind ()
 				.For (v => v.AirportOrder)
@@ -78,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             set.Apply();
         }
 
-        nfloat _bottom = 0;
+        private nfloat _bottom = 0;
         public void UpdateView(nfloat bottom, nfloat width)
         {
             var buttonHorizontalPadding = 8f;
