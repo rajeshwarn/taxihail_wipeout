@@ -492,14 +492,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
                 var dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
-                if (ViewModel.CurrentViewState == HomeViewModelState.PickDate)
-                {
-	                ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(dt);
-	            }
-                else
-                {
-                    ViewModel.BottomBar.SetPickupDateAndReturnToAirport.ExecuteIfPossible(dt);
-                }
+				ViewModel.BottomBar.CreateOrder.ExecuteIfPossible(dt);
             }
             else if (requestCode == (int) ActivityEnum.BookATaxi && resultCode == Result.Ok)
             {
@@ -507,7 +500,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 switch (result)
                 {
                     case BookATaxiEnum.BookNow:
-                        ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible();
+						ViewModel.BottomBar.CreateOrder.ExecuteIfPossible();
                         break;
                     case BookATaxiEnum.BookLater:
                         ViewModel.BottomBar.BookLater.ExecuteIfPossible();
