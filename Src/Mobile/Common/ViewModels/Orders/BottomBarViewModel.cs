@@ -12,9 +12,10 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
-using ServiceStack.Text;
 using System.ComponentModel;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Common.Extensions;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -75,11 +76,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private IObservable<HomeViewModelState> ObserveHomeViewModelState()
 		{
 			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-				h => Parent.PropertyChanged += h,
-				h => Parent.PropertyChanged -= h
-			).Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
-			.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
-			.DistinctUntilChanged();
+					h => Parent.PropertyChanged += h,
+					h => Parent.PropertyChanged -= h
+				)
+				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
+				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
+				.DistinctUntilChanged();
 		}
 
         public async void CheckManualRideLinqEnabledAsync(bool isInMarket)
@@ -785,6 +787,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
+	    public ICommand CreateOrder
+	    {
+		    get
+		    {
+			    return this.GetCommand<DateTime?>(async dateTime =>
+			    {
+					var pickupAddress = await _orderWorkflowService.GetAndObservePickupAddress().Take(1);
+					// airport mode immediate booking
+				    if (!Settings.DisableImmediateBooking
+				        && Settings.FlightStats.UseAirportDetails
+				        && pickupAddress != null
+				        && pickupAddress.AddressLocationType == AddressLocationType.Airport
+				        && pickupAddress.PlaceId.HasValue())
+				    {
+						SetPickupDateAndReturnToAirport.ExecuteIfPossible(dateTime);
+				    }
+				    // immediate booking
+				    else
+					{
+						SetPickupDateAndReviewOrder.ExecuteIfPossible(dateTime);
+					}
+			    });
+		    }
+	    }
+
+
         public ICommand Book
         {
             get
@@ -798,11 +826,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						//We need to show the Book A Taxi popup.
 						Action onValidated = () => ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.BookATaxi;
 						await PrevalidatePickupAndDestinationRequired(onValidated);
+
+	                    return;
                     }
-					// immediate booking
-					else if (!Settings.DisableImmediateBooking)
+					if(!Settings.DisableImmediateBooking)
 					{
-						SetPickupDateAndReviewOrder.ExecuteIfPossible();
+						CreateOrder.ExecuteIfPossible();
 					}
 					// future booking
 					else if (!Settings.DisableFutureBooking)

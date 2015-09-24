@@ -10,7 +10,7 @@ namespace apcurium.MK.Common.Provider
 {
     public interface IPOIProvider
     {
-        Task<string> GetPOIRefPickupList(string company, string textMatch, int maxRespSize);
-        Task<string> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize);
+		Task<PickupPoint[]> GetPOIRefPickupList(string company, string textMatch, int maxRespSize);
+		Task<Airline[]> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize);
     }
 }

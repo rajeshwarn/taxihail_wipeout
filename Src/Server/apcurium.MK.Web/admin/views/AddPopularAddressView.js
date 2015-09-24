@@ -6,7 +6,8 @@
 
         events: {
             'click [data-action=destroy]': 'destroyAddress',
-            'click [data-action=cancel]': 'cancel'
+            'click [data-action=cancel]': 'cancel',
+            'change [name=addressLocationType]': 'onAddressLocationTypeChanged',
         },
 
         initialize: function () {
@@ -14,11 +15,18 @@
         },
 
         render: function () {
-            var data = this.model.toJSON();
+        	var data = this.model.toJSON();
+
+        	//Ensure that airportId is correctly displayed.
+        	if (data.placeReference) {
+        		data.placeId = data.placeReference;
+	        }
             var html = this.renderTemplate(data);
             this.$el.html(html);
 
             this.$("[name=addressLocationType] option[value=" + data.addressLocationType + "]").attr("selected", "selected");
+
+	        this.onAddressLocationTypeChanged();
 
             this.validate({
                 rules: {
@@ -53,6 +61,17 @@
             });
 
             return this;
+        },
+
+        onAddressLocationTypeChanged: function() {
+        	var addressLocationType = this.$("[name = addressLocationType]");
+        	var airportReferenceDiv = this.$("[name = airportReferenceDiv]");
+
+        	if (addressLocationType.val() == "1") {
+		        airportReferenceDiv.show();
+        	} else {
+        		airportReferenceDiv.hide();
+	        }
         },
 
         save: function (form) {
