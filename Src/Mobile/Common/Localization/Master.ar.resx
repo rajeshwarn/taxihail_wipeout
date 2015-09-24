@@ -138,6 +138,12 @@
   <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
     <value>Your account has not been activated. Another activation SMS was sent to you.</value>
   </data>
+  <data name="FacebookLoginErrorTitle" xml:space="preserve">
+    <value>Email already used</value>
+  </data>
+  <data name="FacebookLoginErrorMessage" xml:space="preserve">
+    <value>This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</value>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Please enter a valid account number</value>
   </data>

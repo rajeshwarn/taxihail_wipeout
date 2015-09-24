@@ -308,19 +308,19 @@ namespace apcurium.MK.Common.Configuration
 
     public class NetworkSettingContainer
     {
-        [CustomizableByCompany, RequiresTaxiHailPro]
+        [CustomizableByCompany]
         [Display(Name = "Network Setting - Primary Order Timeout", Description = "Time (in seconds) before swithching to secondary fleet")]
         public double PrimaryOrderTimeout { get; protected internal set; }
 
-        [CustomizableByCompany, RequiresTaxiHailPro]
+        [CustomizableByCompany]
         [Display(Name = "Network Setting - Secondary Order Timeout", Description = "Time (in seconds) before timing out on order")]
         public double SecondaryOrderTimeout { get; protected internal set; }
 
-        [CustomizableByCompany, RequiresTaxiHailPro, SendToClient]
+        [CustomizableByCompany, SendToClient]
         [Display(Name = "Network Setting - Hide Market Change Warning", Description = "Hide the warning that is displayed when entering a new market")]
         public bool HideMarketChangeWarning { get; protected internal set; }
 
-        [CustomizableByCompany, RequiresTaxiHailPro, SendToClient]
+        [CustomizableByCompany, SendToClient]
         [Display(Name = "Network Setting - Auto Confirm Fleet Change", Description = "Automatically change company if timeout occurs when trying to assing a taxi")]
         public bool AutoConfirmFleetChange { get; protected internal set; }
 

@@ -149,6 +149,12 @@
     <value>Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado</value>
     <comment>Your account has not been activated. Another activation SMS was sent to you.</comment>
   </data>
+  <data name="FacebookLoginErrorTitle" xml:space="preserve">
+    <value>Correo electrónico existente</value>
+  </data>
+  <data name="FacebookLoginErrorMessage" xml:space="preserve">
+    <value>Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.</value>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Por favor introduzca un número de cuenta válido.</value>
     <comment>Please enter a valid account number</comment>
