@@ -258,6 +258,12 @@
   <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
     <value>Your account has not been activated. Another activation SMS was sent to you.</value>
   </data>
+  <data name="FacebookLoginErrorTitle" xml:space="preserve">
+    <value>Email already used</value>
+  </data>
+  <data name="FacebookLoginErrorMessage" xml:space="preserve">
+    <value>This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</value>
+  </data>
   <data name="BookItButton" xml:space="preserve">
     <value>Book Now</value>
   </data>
@@ -672,10 +678,10 @@
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>Estimated fare not available</value>
   </data>
-  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+  <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Invalid email</value>
   </data>
-  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+  <data name="InvalidEmailMessage" xml:space="preserve">
     <value>The email is invalid.</value>
   </data>
   <data name="Create" xml:space="preserve">
@@ -1905,6 +1911,9 @@
   <data name="ManualRideLinqStatus_Unpair" xml:space="preserve">
     <value>Unpair</value>
   </data>
+  <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
+    <value>An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</value>
+  </data>
   <data name="ManualPairingForRideLinQ_Error_Title" xml:space="preserve">
     <value>Error</value>
   </data>
@@ -2229,6 +2238,15 @@
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Sorry, this version of the app is no longer supported. Please update the app</value>
 	</data>
+	<data name="AccountLinkedWithFacebook" xml:space="preserve">
+    	<value>Account is linked with Facebook account</value>
+	</data>
+   <data name="EmailUsedMessageTitle" xml:space="preserve">
+    <value>Email already used</value>
+  </data>
+   <data name="EmailUsedMessage" xml:space="preserve">
+    <value>This email is already used by another account</value>
+  </data>
 	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
  		<value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
   	</data>

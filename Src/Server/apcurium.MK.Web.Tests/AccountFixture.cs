@@ -126,6 +126,10 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void UpdateBookingSettingsAccountTest()
         {
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+
+            var initialAccount = await sut.GetMyAccount();
+
             var settings = new BookingSettingsRequest
             {
                 ChargeTypeId = 3,
@@ -136,25 +140,24 @@ namespace apcurium.MK.Web.Tests
                 Country = new CountryISOCode("CA"),
                 ProviderId = 13,
                 VehicleTypeId = 1,
-                DefaultTipPercent = 15
+                DefaultTipPercent = 15,
+                Email = initialAccount.Email
             };
-
-            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             await sut.UpdateBookingSettings(settings);
 
-            var account = await sut.GetMyAccount();
+            var updatedAccount = await sut.GetMyAccount();
 
-            Assert.AreEqual(settings.ChargeTypeId, account.Settings.ChargeTypeId);
-            Assert.AreEqual(settings.Name, account.Settings.Name);
-            Assert.AreEqual(settings.NumberOfTaxi, account.Settings.NumberOfTaxi);
-            Assert.AreEqual(settings.Passengers, account.Settings.Passengers);
-            Assert.AreEqual(settings.Phone, account.Settings.Phone);
-            Assert.AreEqual(settings.ProviderId, account.Settings.ProviderId);
-            Assert.AreEqual(settings.VehicleTypeId, account.Settings.VehicleTypeId);
-            Assert.AreEqual(settings.DefaultTipPercent, account.DefaultTipPercent);
-            Assert.AreEqual(settings.AccountNumber, account.Settings.AccountNumber);
-            Assert.AreEqual(settings.CustomerNumber, account.Settings.CustomerNumber);
+            Assert.AreEqual(settings.ChargeTypeId, updatedAccount.Settings.ChargeTypeId);
+            Assert.AreEqual(settings.Name, updatedAccount.Settings.Name);
+            Assert.AreEqual(settings.NumberOfTaxi, updatedAccount.Settings.NumberOfTaxi);
+            Assert.AreEqual(settings.Passengers, updatedAccount.Settings.Passengers);
+            Assert.AreEqual(settings.Phone, updatedAccount.Settings.Phone);
+            Assert.AreEqual(settings.ProviderId, updatedAccount.Settings.ProviderId);
+            Assert.AreEqual(settings.VehicleTypeId, updatedAccount.Settings.VehicleTypeId);
+            Assert.AreEqual(settings.DefaultTipPercent, updatedAccount.DefaultTipPercent);
+            Assert.AreEqual(settings.AccountNumber, updatedAccount.Settings.AccountNumber);
+            Assert.AreEqual(settings.CustomerNumber, updatedAccount.Settings.CustomerNumber);
         }
 
         [Test]

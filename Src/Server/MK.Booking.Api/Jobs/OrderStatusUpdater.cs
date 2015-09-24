@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.EventHandlers.Integration;
@@ -20,9 +19,11 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
+using CMTPayment.Pair;
 using CMTServices;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -107,6 +108,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                 CheckForOrderTimeOut(orderStatusDetail);
             }
 
+            CheckForRideLinqCmtPairingErrors(orderStatusDetail);
+
             if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
             {
                 _logger.LogMessage("Skipping order update");
@@ -142,7 +145,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
 
-            if (orderStatusDetail.UnpairingTimeOut != null && !paymentSettings.CancelOrderOnUnpair)
+            if (orderStatusDetail.UnpairingTimeOut != null && !paymentSettings.CancelOrderOnUnpair && orderStatusDetail.UnpairingTimeOut.Value != DateTime.MaxValue)
             {
                 if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(timeBetweenPaymentChangeAndSaveInDB))
                 {
@@ -162,6 +165,34 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
+        public void CheckForRideLinqCmtPairingErrors(OrderStatusDetail orderStatusDetail)
+        {
+            var paymentMode = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey).PaymentMode;
+            if (paymentMode != PaymentMethod.RideLinqCmt)
+            {
+                // Only for CMT RideLinQ
+                return;
+            }
+
+            var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
+            if (pairingInfo == null)
+            {
+                // Order not paired
+                return;
+            }
+
+            InitializeCmtServiceClient();
+
+            var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
+            if (tripInfo != null
+                && (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair
+                    || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired))
+            {
+                orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_PairingFailed", _languageCode);
+                orderStatusDetail.PairingError = string.Format("CMT Pairing Error Code: {0}", tripInfo.ErrorCode);
+            }
+        }
+
         public void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)
         {
             var rideLinqDetails = _orderDao.GetManualRideLinqById(orderstatusDetail.OrderId);
@@ -175,6 +206,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             InitializeCmtServiceClient();
 
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
+
             if (tripInfo == null)
             {
                 var errorMessage = string.Format("No Trip information found for order {0} (pairing token {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
@@ -187,6 +219,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                 });
 
                 return;
+            }
+
+            string pairingError = null;
+
+            if (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired)
+            {
+                pairingError = tripInfo.ErrorCode.ToString();
             }
 
             _logger.LogMessage("Sending Trip update command for trip {0} (order {1}; pairing token {2})", tripInfo.TripId, orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
@@ -217,6 +256,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 				Tolls = tripInfo.TollHistory.SelectOrDefault(tollHistory => tollHistory.ToArray(), new TollDetail[0]),
                 LastLatitudeOfVehicle = tripInfo.Lat,
                 LastLongitudeOfVehicle = tripInfo.Lon,
+                PairingError = pairingError
             });
         }
 

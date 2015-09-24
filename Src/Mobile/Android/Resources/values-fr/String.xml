@@ -99,7 +99,6 @@
   <string name="Tuto08Bottom">Nous espérons que la simplicité et l\'efficacité de notre application vous aura convaincue.</string>
   <string name="ErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
   <string name="CardOnFile">Paiement In App</string>
-  <string name="ResetPasswordInvalidDataTitle">Cet email n\'est pas valide</string>
   <string name="HistoryActivityName">History</string>
   <string name="ManualRideLinqStatus_Tip">Pourboire:</string>
   <string name="View_AccountConfirmationTitle">Confirmation de compte</string>
@@ -146,7 +145,7 @@
   <string name="Delete">Supprimer</string>
   <string name="Notification_PromotionUnlockedEmail">Promotions déverrouillées (Email)</string>
   <string name="Order">Commander</string>
-  <string name="DateTimePickerPickTitle">Date et heure de départ</string>
+  <string name="FacebookLoginErrorMessage">Cet email est déjà utilisé pour un compte Facebook. Merci de vous enregistrer via Facebook ou d\'utiliser un autre email.</string>
   <string name="HistoryDetailStatusLabel">Statut:</string>
   <string name="AddReminderTitle">Départ(s) programmé(s)</string>
   <string name="View_UserTaxiHailNetworkSettings">Réseau TaxiHail</string>
@@ -217,7 +216,7 @@
   <string name="HomeView_ManualPairing">Dans un Taxi</string>
   <string name="UnexpectedError">Erreur inattendue</string>
   <string name="BookRatingErrorMessage">Merci de noter la qualité de votre dernier trajet</string>
-  <string name="ResetPasswordInvalidDataMessage">Désolé, cet email n\'est pas valide</string>
+  <string name="CreditCardNumber">Numéro de la carte</string>
   <string name="June">Juin (06)</string>
   <string name="PromoMustUseCardOnFileMessage">Pour utiliser un code promotionnel, vous devez payer avec la méthode de paiement configuré à l\'intéreur de l\'application.</string>
   <string name="OrderNumber">Commande n°</string>
@@ -362,6 +361,7 @@
   <string name="RideSettingsCannotLoadListMessage">Désolé, échec de la connexion, merci de réessayer ultérieurement</string>
   <string name="GooglePlayServicesNotAvailableTitle">Mise à jour requise</string>
   <string name="DestinationViewDestinationLabel">Destination:</string>
+  <string name="EmailUsedMessage">Ce courriel est déjà utilisé par un autre compte</string>
   <string name="LocationAddFavoriteSubtitle">Ajouter une nouvelle adresse</string>
   <string name="RideSettingsAccountNumber">Numéro de compte entreprise (optionnel)</string>
   <string name="CreateAccountPasswordPlaceHolder">Mot de passe</string>
@@ -386,6 +386,7 @@
   <string name="ResetPasswordTitleText">Mot de passe oublié?</string>
   <string name="March">Mars (03)</string>
   <string name="PromotionActivityName">Promotion</string>
+  <string name="EmailUsedMessageTitle">Courriel déjà utilisé</string>
   <string name="NoPayBackErrorMessage">Le champs PayBack est requis</string>
   <string name="HistoryViewStatusButton">Voir le statut</string>
   <string name="WarningPromoCodeDontShow">Ne pas signaler</string>
@@ -412,6 +413,7 @@
   <string name="Tuto07Top">Sur l\'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu\'un véhicule sera assigné, vous pouvez suivre sa position jusqu\'à ce qu\'il arrive à vous.</string>
   <string name="RideSettingsName">Nom</string>
   <string name="MarketChangedMessage">Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.</string>
+  <string name="AccountLinkedWithFAcebook">Ce compte est associé avec un compte Facebook</string>
   <string name="Continue">Continuer</string>
   <string name="CreditCardAddingActivityName">Add or edit credit card</string>
   <string name="DateTimePickerPickInvalidDateMessage">La date de départ ne peut pas être antérieure à la date de commande</string>
@@ -505,6 +507,7 @@
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Type de facturation</string>
   <string name="ResetPasswordSubtitleText">Saisissez votre email pour recevoir votre nouveau mot de passe</string>
+  <string name="DateTimePickerPickTitle">Date et heure de départ</string>
   <string name="UpdatedTermsAndConditionsAcceptButton">Accepter</string>
   <string name="Cancel">Annuler</string>
   <string name="ChooseProviderDialogTitle">Choisissez un prestataire</string>
@@ -549,6 +552,7 @@
   <string name="WarningPushServiceMessage">Nous avons remarqué que vous n\'avez pas les notifications activées. En les activant, vous obtiendrez alors des mises à jour sur l\'état de votre réservation, sans avoir à regarder l\'application !</string>
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.</string>
   <string name="DriverInfoCompany">Compagnie:</string>
+  <string name="InvalidEmailMessage">Désolé, cet email n\'est pas valide</string>
   <string name="LocationsActivityName">Favorite locations</string>
   <string name="searchHint">Rechercher</string>
   <string name="CreateAccountTitleMrs">Mme</string>
@@ -601,12 +605,13 @@
   <string name="BookItButton">Commander</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="ChangePasswordConfirmmation">Votre mot de passe a été mis à jour, merci de vous connecter.</string>
-  <string name="CreditCardNumber">Numéro de la carte</string>
   <string name="OrderNote">Réserver sur votre mobile</string>
   <string name="CallDriverUsingProxyPrompt">Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.</string>
+  <string name="FacebookLoginErrorTitle">Email existant</string>
   <string name="PickupViewPickupLabel">Départ:</string>
   <string name="Done">Terminé</string>
   <string name="DriverInfoVehicleMedallion">Medallion:</string>
+  <string name="InvalidEmailTitle">Cet email n\'est pas valide</string>
   <string name="CreditCardBookingSettingsError">Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.</string>
   <string name="PromoExpiringSoonMessage">Expire dans {0} jours</string>
   <string name="ManualRideLinqNoCardOnFile">Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</string>
@@ -642,6 +647,7 @@
   <string name="PayNow">Payer maintenant!</string>
   <string name="StatusActionCancelButton">Annuler</string>
   <string name="OtherListItemLabel">Autre Pourcentage</string>
+  <string name="ManualRideLinqStatus_PairingError">Une erreur est survenue. Veuillez essayer de vous connecter de nouveau en utilisant le code affiché sur l\'écran dans le taxi.</string>
   <string name="StatusCancelButton">Annuler</string>
   <string name="Tuto05Bottom">Afin de convenir d\'une date/heure de départ ultéreure, merci de sélectionner \'Plus tard\' sur votre écran</string>
   <string name="PanelMenuViewTaxiHailNetworkText">Réseau TaxiHail</string>

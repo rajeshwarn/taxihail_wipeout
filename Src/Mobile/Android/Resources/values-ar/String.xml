@@ -94,7 +94,7 @@
   <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
   <string name="Tuto08Bottom">نأمل أن تجد الراحة و السهولة عند استخدام هذا التطبيق .</string>
   <string name="ErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
-  <string name="ResetPasswordInvalidDataTitle">عنوان البريد الإلكتروني غير صحيح</string>
+  <string name="CardOnFile">Card on File</string>
   <string name="HistoryActivityName">History</string>
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="View_AccountConfirmationTitle">Account Confirmation</string>
@@ -129,7 +129,7 @@
   <string name="Error_EditAutoTipTitle">Error</string>
   <string name="NoCardOnFileMessage">You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</string>
   <string name="DriverInfoColor">اللون:</string>
-  <string name="HomeActivityName">Home</string>
+  <string name="NoFareTextIfDestinationIsRequired">يجب أن تحدد الوجهة.</string>
   <string name="Rebook">إعادة حجز المشوار</string>
   <string name="TermsAndConditionsActivityName">Terms and conditions</string>
   <string name="CreateAccountLanguageEnglish">الإنجليزية</string>
@@ -140,7 +140,7 @@
   <string name="Delete">مسح</string>
   <string name="Notification_PromotionUnlockedEmail">Promotions unlocked (Email)</string>
   <string name="Order">طلب</string>
-  <string name="DateTimePickerPickTitle">تاريخ و وقت الإلتقاء</string>
+  <string name="FacebookLoginErrorMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
   <string name="HistoryDetailStatusLabel">الحالة:</string>
   <string name="AddReminderTitle">موعد الإلتقاء المحدد</string>
   <string name="View_UserTaxiHailNetworkSettings">TaxiHail Network</string>
@@ -156,7 +156,7 @@
   <string name="ResetPasswordConfirmationMessage">تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.</string>
   <string name="ApartmentLabel">شقة</string>
   <string name="HistoryDetailOrderLabel">الطلب:</string>
-  <string name="CardOnFile">Card on File</string>
+  <string name="CreditCardRemoveErrorMessage">عليك أن تدخل بطاقة إئتمانية واحدة على الأقل في حسابك، إن رغبت في إزالة بطاقة، ستحتاج لإضافة بطاقة أخرى قبل الإزالة.</string>
   <string name="DefaultRideSettingsViewTitle">إعدادات</string>
   <string name="TermsAndConditionsAcknowledgment">أقر بأني قد قرأت وفهمت الأحكام والشروط.</string>
   <string name="CreateAccount_AccountAlreadyExist">لا يمكن إنشاء حساب. هذا العنوان الإلكتروني مستخدم .</string>
@@ -208,7 +208,7 @@
   <string name="HomeView_ManualPairing">In A Taxi</string>
   <string name="UnexpectedError">خطأ غير متوقع</string>
   <string name="BookRatingErrorMessage">قم بتقييم مشوارك</string>
-  <string name="ResetPasswordInvalidDataMessage">البريد الإلكتروني غير صحيح</string>
+  <string name="CreditCardNumber">رقم البطاقة</string>
   <string name="June">يونيو (06)</string>
   <string name="PromoMustUseCardOnFileMessage">In order to use a promo code, you need to pay with your configured payment method.</string>
   <string name="OrderNumber">رقم الطلب</string>
@@ -295,6 +295,7 @@
   <string name="EtaNoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
   <string name="Rating3">Average</string>
   <string name="GenericErrorTitle">Error</string>
+  <string name="VehicleNumberInfo">رجاء تأكيد رقم سيارتك مع السائق</string>
   <string name="CreditCardExpiredUpdateNow">Update now</string>
   <string name="CmtTransactionSuccessMessage">تم إرسال التاكيد للسائق (رقم الترخيص: {0})</string>
   <string name="SaveAddressEmptyFieldMessage">البيانات غير صحيحة، يجب تعبئة خانات اسم المستخدم والعنوان.</string>
@@ -350,6 +351,7 @@
   <string name="RideSettingsCannotLoadListMessage">لا يمكن الاتصال بالسيرفر، حاول مجددا في وقت لاحق.</string>
   <string name="GooglePlayServicesNotAvailableTitle">مطلوب التحديث</string>
   <string name="DestinationViewDestinationLabel">الوجهة:</string>
+  <string name="EmailUsedMessage">This email is already used by another account</string>
   <string name="LocationAddFavoriteSubtitle">اختر لإضافة موقع جديد</string>
   <string name="RideSettingsAccountNumber">رقم الحساب</string>
   <string name="CreateAccountPasswordPlaceHolder">كلمة السر</string>
@@ -374,6 +376,7 @@
   <string name="ResetPasswordTitleText">نسيت كلمة المرور؟</string>
   <string name="March">مارس (03)</string>
   <string name="PromotionActivityName">Promotion</string>
+  <string name="EmailUsedMessageTitle">Email already used</string>
   <string name="NoPayBackErrorMessage">The PayBack field is required</string>
   <string name="HistoryViewStatusButton">رؤية حالة الطلب</string>
   <string name="WarningPromoCodeDontShow">لا تحذر</string>
@@ -391,6 +394,7 @@
   <string name="View_AboutUs">نبذة عنا</string>
   <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="ScanCreditCard">مسح بطاقة الائتمان</string>
+  <string name="HomeActivityName">Home</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="InvalidPickupAddress">رجاء إدخال عنوان صحيح لموقعك.</string>
   <string name="NotNow">Not now</string>
@@ -426,7 +430,7 @@
   <string name="PasswordLabel">كلمة المرور</string>
   <string name="CmtCardNumber">طريقة الدفع:</string>
   <string name="SettingViewNotSignedIn">لست متصلا في الوقت الحالي. يجب أن تقوم بالتسجيل لاستخدام هذا التطبيق.</string>
-  <string name="VehicleNumberInfo">رجاء تأكيد رقم سيارتك مع السائق</string>
+  <string name="StreetNumberTitle">تفاصيل العنوان</string>
   <string name="NoCreditCardSelected">الرجاء اختيار بطاقة الائتمان</string>
   <string name="InvalidAddressTextEdit">لا يمكن التعرف على العنوان</string>
   <string name="AccountPaymentCustomerNumberRequiredTitle">Account Rider Number required</string>
@@ -460,10 +464,8 @@
   <string name="BookingAirportDetailsFee">, (Pickup Fee: {0})</string>
   <string name="LocalContactCannotBeResolverTitle">الإسم غير صحيح</string>
   <string name="CreateAccountFullNamePlaceHolder">الاسم الكامل</string>
-  <string name="NoFareTextIfDestinationIsRequired">يجب أن تحدد الوجهة.</string>
   <string name="EtaDurationUnit">min</string>
   <string name="RideHistoryButton">حجوزات سابقة</string>
-  <string name="StreetNumberTitle">تفاصيل العنوان</string>
   <string name="View_SearchAddress">البحث عن عنوان</string>
   <string name="CreateAccountEmptyField">البيانات غير صحيحة، يجب تعبئة كافة الخانات.</string>
   <string name="ConfirmPassengerSettingsTitle">إعدادات الركاب</string>
@@ -493,6 +495,7 @@
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">طريقة الدفع :</string>
   <string name="ResetPasswordSubtitleText">أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.</string>
+  <string name="DateTimePickerPickTitle">تاريخ و وقت الإلتقاء</string>
   <string name="Tuto06Bottom">انقر تأكيد عندما تكون مستعد للذهاب.</string>
   <string name="UpdatedTermsAndConditionsAcceptButton">موافق</string>
   <string name="Cancel">إلغاء</string>
@@ -535,6 +538,7 @@
   <string name="StatusNewRideButton">رحلة جديدة</string>
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
   <string name="DriverInfoCompany">Company:</string>
+  <string name="InvalidEmailMessage">البريد الإلكتروني غير صحيح</string>
   <string name="LocationsActivityName">Favorite locations</string>
   <string name="searchHint">بحث</string>
   <string name="CreateAccountTitleMrs">السيدة</string>
@@ -549,7 +553,6 @@
   <string name="NoFareText">اختر وجهة للحصول على سعر تقريبي.</string>
   <string name="Notes">ملاحظات</string>
   <string name="EstimatingFare">جاري تقييم قيمة مشوارك...</string>
-  <string name="CreditCardRemoveErrorMessage">عليك أن تدخل بطاقة إئتمانية واحدة على الأقل في حسابك، إن رغبت في إزالة بطاقة، ستحتاج لإضافة بطاقة أخرى قبل الإزالة.</string>
   <string name="OverduePaymentActivityName">Overdue payment</string>
   <string name="UpdateBookingSettingsGenericError">An error occured when updating the booking settings</string>
   <string name="TabHistory">السجل</string>
@@ -587,12 +590,13 @@
   <string name="BookItButton">احجز الآن</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="ChangePasswordConfirmmation">تم تحديث كلمة المرور الخاصة بك، رجاء تسجيل الدخول.</string>
-  <string name="CreditCardNumber">رقم البطاقة</string>
   <string name="OrderNote">تم الحجز من خلال الهاتف الجوال</string>
   <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>
+  <string name="FacebookLoginErrorTitle">Email already used</string>
   <string name="PickupViewPickupLabel">الإلتقاء</string>
   <string name="Done">تم</string>
   <string name="DriverInfoVehicleMedallion">Medallion:</string>
+  <string name="InvalidEmailTitle">عنوان البريد الإلكتروني غير صحيح</string>
   <string name="CreditCardBookingSettingsError">An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</string>
   <string name="PromoExpiringSoonMessage">Expires in {0} days</string>
   <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
@@ -628,6 +632,7 @@
   <string name="PayNow">ادفع الآن</string>
   <string name="StatusActionCancelButton">إلغاء هذا الطلب</string>
   <string name="OtherListItemLabel">Custom Percent</string>
+  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="StatusCancelButton">إلغاء هذا الطلب</string>
   <string name="Tuto05Bottom">أو انقر زر لاحقا لحجز مشوارك في وقت أو تاريخ لاحق.</string>
   <string name="PanelMenuViewTaxiHailNetworkText">TaxiHail Network</string>
@@ -638,6 +643,7 @@
   <string name="ManualRideLinqStatusActivityName">Manual RideLinq Status</string>
   <string name="View_History">التاريخ</string>
   <string name="Twitter">الدخول عبر حساب تويتر</string>
+  <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
   <string name="View_CreditCard">دفع</string>
   <string name="GooglePlayServicesNotAvailableMessage">يجب أن تقوم بتحديث خدمات Google Play لتتمكن من استخدام هذا التطبيق.</string>
   <string name="DestinationAddress">Destination address</string>

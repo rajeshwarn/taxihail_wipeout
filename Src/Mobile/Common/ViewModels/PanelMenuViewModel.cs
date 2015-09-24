@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -312,7 +313,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(() =>
                 {
 					CloseMenu();
-					ShowViewModel<RideSettingsViewModel>(new { bookingSettings = _accountService.CurrentAccount.Settings.ToJson() });
+					ShowViewModel<RideSettingsViewModel>();
                 });
             }
         }

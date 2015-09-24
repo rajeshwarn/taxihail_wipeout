@@ -138,6 +138,7 @@
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\Airline.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="CountryCode.cs" />
     <Compile Include="CreditCard.cs" />

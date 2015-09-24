@@ -190,7 +190,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var settings = new BookingSettings();
             Mapper.Map(command, settings);
 
-            account.UpdateBookingSettings(settings, command.DefaultTipPercent);
+            account.UpdateBookingSettings(settings, command.Email, command.DefaultTipPercent);
 
             _repository.Save(account, command.Id.ToString());
         }

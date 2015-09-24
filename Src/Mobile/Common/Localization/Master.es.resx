@@ -149,6 +149,12 @@
     <value>Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado</value>
     <comment>Your account has not been activated. Another activation SMS was sent to you.</comment>
   </data>
+  <data name="FacebookLoginErrorTitle" xml:space="preserve">
+    <value>Correo electrónico existente</value>
+  </data>
+  <data name="FacebookLoginErrorMessage" xml:space="preserve">
+    <value>Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.</value>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Por favor introduzca un número de cuenta válido.</value>
     <comment>Please enter a valid account number</comment>
@@ -1489,11 +1495,11 @@
     <value>Email</value>
     <comment>Email</comment>
   </data>
-  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+  <data name="InvalidEmailMessage" xml:space="preserve">
     <value>Este email es inválido</value>
     <comment>The email is invalid.</comment>
   </data>
-  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+  <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Email inválido</value>
     <comment>Invalid email</comment>
   </data>
@@ -2402,6 +2408,9 @@
     <value>Error</value>
     <comment>Error</comment>
   </data>
+  <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
+    <value>An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</value>
+  </data>
   <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
     <value>Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.</value>
     <comment>Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</comment>
@@ -2831,6 +2840,15 @@
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Sorry, this version of the app is no longer supported. Please update the app</value>
 	</data>
+	<data name="AccountLinkedWithFacebook" xml:space="preserve">
+    	<value>Account is linked with Facebook account</value>
+	</data>
+   <data name="EmailUsedMessageTitle" xml:space="preserve">
+    <value>Email already used</value>
+  </data>
+   <data name="EmailUsedMessage" xml:space="preserve">
+    <value>This email is already used by another account</value>
+	 </data>
   <data name="OrderStatus_PairingSuccess" xml:space="preserve">
     <value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
   </data>

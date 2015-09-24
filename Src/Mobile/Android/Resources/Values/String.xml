@@ -20,7 +20,6 @@
   <string name="StatusViewTitle">Confirmed</string>
   <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
   <string name="BookPickupLabel">Confirm your pickup location</string>
-  <string name="Tuto02Top">We should be able to locate you using the GPS receiver in your mobile device.</string>
   <string name="Tuto03Top">You may also select your pickup location by tapping the pickup address.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
   <string name="Overdue_IBSOrderId">Order:</string>
@@ -84,7 +83,7 @@
   <string name="apcuriumUrl">http://www.apcurium.com/</string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
   <string name="NoMailClient">There are no email clients installed.</string>
-  <string name="AboutActivityName">About</string>
+  <string name="RemoveCreditCardMessage">Are you sure you want to remove this credit card ?</string>
   <string name="DateTimePickerPickTime">Select your pickup time:</string>
   <string name="CannotCancelOrderMessage">You can no longer cancel this order.</string>
   <string name="AccountCreationActivityName">Account creation</string>
@@ -100,7 +99,6 @@
   <string name="PromoMustHavePaymentMethodSetMessage_Multiple">In order to use a promo code, you need to have a payment method configured as part of your account.</string>
   <string name="Tuto08Bottom">We hope you find this application both convenient and intuitive.</string>
   <string name="ErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
-  <string name="ResetPasswordInvalidDataTitle">Invalid email</string>
   <string name="HistoryActivityName">History</string>
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="View_AccountConfirmationTitle">Account Confirmation</string>
@@ -145,7 +143,7 @@
   <string name="Delete">Delete</string>
   <string name="Notification_PromotionUnlockedEmail">Promotions unlocked (Email)</string>
   <string name="View_Payment">Payment Info</string>
-  <string name="DateTimePickerPickTitle">Pickup date and time</string>
+  <string name="FacebookLoginErrorMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
   <string name="HistoryDetailStatusLabel">Status:</string>
   <string name="RideSettingsPhone">Mobile</string>
   <string name="View_UserTaxiHailNetworkSettings">TaxiHail Network</string>
@@ -155,7 +153,6 @@
   <string name="PickupMapTitle">Pickup location</string>
   <string name="AccountNotActivatedCodeBySMS">Your account has not been activated. Another activation SMS was sent to you.</string>
   <string name="ManualRideLinqStatus_Driver">Driver id:</string>
-  <string name="Error_EditAutoTipMessage">An error occurred while trying to update the tip. Please try again.</string>
   <string name="OrderNoteGPSApproximate"> (approx. address)</string>
   <string name="Notification_ConfirmPairingPush">Confirm Pairing</string>
   <string name="ResetPasswordConfirmationMessage">A new password was send by email.</string>
@@ -194,6 +191,7 @@
   <string name="AddPaymentMethod_CreditCard">Add credit card</string>
   <string name="ServerInfo">({0} v{1})</string>
   <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
+  <string name="UnpairPayInCar">Pay in Car</string>
   <string name="TAXI">TAXI</string>
   <string name="View_UpdatePassword">Update Password</string>
   <string name="StreetNumberSearchBt">Use a different address</string>
@@ -215,7 +213,7 @@
   <string name="HomeView_ManualPairing">In a Taxi</string>
   <string name="UnexpectedError">Unexpected error</string>
   <string name="BookRatingErrorMessage">You need to rate your ride</string>
-  <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>
+  <string name="CreditCardNumber">Card Number</string>
   <string name="June">Jun (06)</string>
   <string name="PromoMustUseCardOnFileMessage">In order to use a promo code, you need to pay with your configured payment method.</string>
   <string name="Error_AccountPaymentTitle">Error</string>
@@ -224,7 +222,7 @@
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance or try again.</string>
   <string name="AddPaymentMethod_Multiple">Add payment method</string>
   <string name="PayPalLinked">Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</string>
-  <string name="RemoveCreditCardMessage">Are you sure you want to remove this credit card ?</string>
+  <string name="Error_EditAutoTipMessage">An error occurred while trying to update the tip. Please try again.</string>
   <string name="LoginSupport">Need support?</string>
   <string name="Politeness">Politeness</string>
   <string name="BookDropoffLocationButtonTitle">Destination</string>
@@ -339,7 +337,7 @@
   <string name="PayInCar">Pay Cash/Credit Card in Car</string>
   <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
   <string name="SaveAddressEmptyFieldTitle">Friendly name required</string>
-  <string name="UnpairPayInCar">Pay in Car</string>
+  <string name="Tuto02Top">We should be able to locate you using the GPS receiver in your mobile device.</string>
   <string name="Notification_VehicleAtPickupPush">Vehicle at Pickup</string>
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="NetworkErrorTitle">No network connection</string>
@@ -357,6 +355,7 @@
   <string name="View_ConfirmCarNumber">Confirmation</string>
   <string name="RideSettingsCannotLoadListMessage">The server cannot be contacted, try again later.</string>
   <string name="GooglePlayServicesNotAvailableTitle">Update required</string>
+  <string name="EmailUsedMessage">This email is already used by another account</string>
   <string name="LocationAddFavoriteSubtitle">Select to add a new location</string>
   <string name="RideSettingsAccountNumber">Account Number</string>
   <string name="CreateAccountPasswordPlaceHolder">Password</string>
@@ -379,10 +378,12 @@
   <string name="PromoExpiringIn1DayMessage">Expires in 1 day</string>
   <string name="LocationServiceErrorMessage">The location service is not enabled.</string>
   <string name="View_LocationDetail">Location Detail</string>
+  <string name="Collapse">Collapse</string>
   <string name="September">Sep (09)</string>
   <string name="ResetPasswordTitleText">Forgot your password?</string>
   <string name="March">Mar (03)</string>
   <string name="PromotionActivityName">Promotion</string>
+  <string name="EmailUsedMessageTitle">Email already used</string>
   <string name="NoPayBackErrorMessage">The PayBack field is required</string>
   <string name="HistoryViewStatusButton">View Status</string>
   <string name="WarningPromoCodeDontShow">Don\'t warn</string>
@@ -463,6 +464,7 @@
   <string name="InvalidLoginMessage">The email or/and password is invalid.</string>
   <string name="AccountActivationMessage">An email has been sent. Please follow the link in the email to confirm your address.</string>
   <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
+  <string name="AboutActivityName">About</string>
   <string name="PromotionViewNoPromotionLabel">No promotions available</string>
   <string name="Tuto01Bottom">Start by selecting your current position.</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
@@ -503,6 +505,7 @@
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Charge type</string>
   <string name="ResetPasswordSubtitleText">Enter your email and we\'ll send you a new one.</string>
+  <string name="DateTimePickerPickTitle">Pickup date and time</string>
   <string name="UpdatedTermsAndConditionsAcceptButton">Accept</string>
   <string name="Cancel">Cancel</string>
   <string name="ChooseProviderDialogTitle">Pick a provider</string>
@@ -546,6 +549,7 @@
   <string name="WarningPushServiceMessage">We noticed you do not have push notifications turned on. Just to let you know if you have them enabled then you get updates about the status of your booking without having to look at the app! We promise we will not spam you with useless information!</string>
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
   <string name="DriverInfoCompany">Company:</string>
+  <string name="InvalidEmailMessage">The email is invalid.</string>
   <string name="LocationsActivityName">Favorite locations</string>
   <string name="searchHint">Search</string>
   <string name="CreateAccountTitleMrs">Mrs</string>
@@ -601,12 +605,12 @@
   <string name="BookItButton">Book Now</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="ChangePasswordConfirmmation">You password has been updated, please sign in.</string>
-  <string name="CreditCardNumber">Card Number</string>
   <string name="OrderNote">Booked on mobile</string>
   <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>
   <string name="PickupViewPickupLabel">Pickup:</string>
   <string name="Done">Done</string>
   <string name="DriverInfoVehicleMedallion">Medallion:</string>
+  <string name="InvalidEmailTitle">Invalid email</string>
   <string name="CreditCardBookingSettingsError">An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</string>
   <string name="PromoExpiringSoonMessage">Expires in {0} days</string>
   <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
@@ -622,7 +626,7 @@
   <string name="WarningEstimateTitle">Warning</string>
   <string name="RateLastRide">Rate</string>
   <string name="MenuButton">Menu</string>
-  <string name="Collapse">Collapse</string>
+  <string name="FacebookLoginErrorTitle">Email already used</string>
   <string name="WarningEstimateDontShow">Don\'t warn</string>
   <string name="BookingAirportPUPointslbl">Pickup Point</string>
   <string name="CardExpiredNonMandatoryMessage">Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.</string>
@@ -642,6 +646,7 @@
   <string name="PayNow">Pay now</string>
   <string name="StatusActionCancelButton">Cancel this order</string>
   <string name="OtherListItemLabel">Custom Percent</string>
+  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="StatusCancelButton">Cancel this order</string>
   <string name="Tuto05Bottom">Or Tap the Later button to schedule your pickup for a future time or date.</string>
   <string name="PanelMenuViewTaxiHailNetworkText">TaxiHail Network</string>
@@ -654,6 +659,7 @@
   <string name="Create">Create</string>
   <string name="View_History">History</string>
   <string name="Twitter">Sign in with Twitter</string>
+  <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
   <string name="View_CreditCard">Payment</string>
   <string name="GooglePlayServicesNotAvailableMessage">You need to update Google Play Services in order to use this application.</string>
   <string name="AccountPaymentQuestionsRequired">(required)</string>

@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         InitializeCmtServiceClient(order.CompanyKey);
 
                         var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
-                        if (tripInfo != null && tripInfo.EndTime.HasValue)
+                        if (tripInfo != null && !tripInfo.ErrorCode.HasValue && tripInfo.EndTime.HasValue)
                         {
 							var tollHistory = tripInfo.TollHistory != null
 								? tripInfo.TollHistory.Sum(p => p.TollAmount)
