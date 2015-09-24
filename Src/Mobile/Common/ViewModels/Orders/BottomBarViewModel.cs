@@ -53,7 +53,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public override void Start()
 		{
 			base.Start();
-
 			Observe(ObserveHomeViewModelState(), RefreshAppBarViewState);
 		}
 

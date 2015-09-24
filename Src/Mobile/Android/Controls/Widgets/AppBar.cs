@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var reviewButtons = Content.FindViewById(Resource.Id.review_buttons);
             var editButtons = Content.FindViewById(Resource.Id.edit_buttons);
             var airportButtons = Content.FindViewById(Resource.Id.airport_buttons);
+            var bookButton = Content.FindViewById(Resource.Id.bookButton);
 
 	        var set = this.CreateBindingSet<AppBar, BottomBarViewModel>();
 
@@ -37,6 +38,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		        .For(v => v.Visibility)
 		        .To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
 		        .WithConversion("HomeViewStateToVisibility", new[] {HomeViewModelState.Initial});
+
+            set.Bind(bookButton)
+                .For(v => v.Enabled)
+                .To(vm => ((HomeViewModel)vm.Parent).Map.BookCannotExecute)
+                .WithConversion("BoolInverter");
 
 			set.Bind(editButtons)
 				.For(v => v.Visibility)

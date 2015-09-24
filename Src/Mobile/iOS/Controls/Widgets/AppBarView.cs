@@ -279,6 +279,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(btnBook)
                 .For(v => v.Command)
                 .To(vm => vm.Book);
+            
 			set.Bind(btnBook)
 				.For("Title")
 				.To(vm => vm.BookButtonText);
