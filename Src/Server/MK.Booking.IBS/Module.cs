@@ -30,8 +30,15 @@ namespace apcurium.MK.Booking.IBS
 
         private void RegisterMaps()
         {
-            Mapper.CreateMap<TVehicleComp, IbsVehicleCandidate>();
-            Mapper.CreateMap<IbsVehicleCandidate, TVehicleComp>();
+            Mapper.CreateMap<IbsOrderKey, TBookOrderKey>()
+                .ForMember(p => p.GUID, opt => opt.ResolveUsing(x => x.TaxiHailOrderId))
+                .ForMember(p => p.OrderID, opt => opt.ResolveUsing(x => x.IbsOrderId));
+
+            Mapper.CreateMap<TVehicleComp, IbsVehicleCandidate>()
+                .ForMember(p => p.CandidateType, opt => opt.ResolveUsing(x => x.VehicleCompType));
+
+            Mapper.CreateMap<IbsVehicleCandidate, TVehicleComp>()
+                .ForMember(p => p.VehicleCompType, opt => opt.ResolveUsing(x => x.CandidateType));
         }
     }
 }

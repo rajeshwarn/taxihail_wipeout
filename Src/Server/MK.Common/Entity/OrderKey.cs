@@ -4,8 +4,8 @@ namespace apcurium.MK.Common.Entity
 {
     public class OrderKey
     {
-        public Guid Guid { get; set; }
+        public Guid TaxiHailOrderId { get; set; }
 
-        public int OrderId { get; set; }
+        public int IbsOrderId { get; set; }
     }
 }

@@ -411,7 +411,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Creating IBS Order dest : " +
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
-                //orderId = service.SaveBookOrder_8(UserNameApp, PasswordApp, order);
+                orderId = service.SaveBookOrder_8(UserNameApp, PasswordApp, order);
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
             return orderId;
@@ -442,19 +442,10 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 OrderKey = new IbsOrderKey
                 {
-                    Guid = orderId,
-                    OrderId = ibsOrderId.Value
+                    TaxiHailOrderId = orderId,
+                    IbsOrderId = ibsOrderId ?? -9999
                 }
             };
-
-            //return new IbsHailResponse
-            //{
-            //    OrderKey = new IbsOrderKey
-            //    {
-            //        Guid = Guid.Parse(orderKey.GUID),
-            //        OrderId = orderKey.OrderID
-            //    }
-            //};
         }
 
         public IbsVehicleCandidate[] GetVehicleCandidates(IbsOrderKey orderKey)
@@ -465,7 +456,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 Logger.LogMessage("WebService Getting Vehicle Candidates : " + JsonSerializer.SerializeToString(orderKey, typeof(IbsOrderKey)));
 
-                vehicleCandidates = service.GetVehicleCandidates(UserNameApp, PasswordApp, new TBookOrderKey { GUID = orderKey.ToString(), OrderID = orderKey.OrderId });
+                vehicleCandidates = service.GetVehicleCandidates(UserNameApp, PasswordApp, new TBookOrderKey { GUID = orderKey.ToString(), OrderID = orderKey.IbsOrderId });
                 Logger.LogMessage("WebService Getting Vehicle Candidates, candidates received : " + JsonSerializer.SerializeToString(vehicleCandidates, typeof(TVehicleComp[])));
             });
 
@@ -474,36 +465,10 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public int? ConfirmHail(IbsOrderKey orderKey, IbsVehicleCandidate selectedVehicle)
         {
-            int? result = null;
-            var ibsOrderKey = new TBookOrderKey
-            {
-                GUID = orderKey.Guid.ToString(),
-                OrderID = orderKey.OrderId
-            };
-
+            var ibsOrderKey = Mapper.Map<TBookOrderKey>(orderKey);
             var ibsVehicleCandidate = Mapper.Map<TVehicleComp>(selectedVehicle);
 
-            //TVehicleCompType compType;
-
-            //switch (selectedVehicle.CandidateType)
-            //{
-            //    case IbsVehicleCandidate.Type.VctNumber:
-            //        compType = TVehicleCompType.vctNumber;
-            //        break;
-            //    case IbsVehicleCandidate.Type.VctPimId:
-            //        compType = TVehicleCompType.vctPimID;
-            //        break;
-            //    case IbsVehicleCandidate.Type.VctMedallion:
-            //        compType = TVehicleCompType.vctMedallion;
-            //        break;
-            //    default:
-            //        throw new ArgumentOutOfRangeException("Invalid type for vehicle candidate");
-            //}
-
-            //var ibsVehicleCandidate = new TVehicleComp
-            //{
-            //    VehicleCompType = compType, VehicleID = selectedVehicle.VehicleId, ETADistance = selectedVehicle.ETADistance, ETATime = selectedVehicle.ETATime, Rating = selectedVehicle.Rating
-            //};
+            int? result = null;
 
             UseService(service =>
             {

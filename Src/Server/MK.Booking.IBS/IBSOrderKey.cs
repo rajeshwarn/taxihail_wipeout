@@ -4,8 +4,8 @@ namespace apcurium.MK.Booking.IBS
 {
     public class IbsOrderKey
     {
-        public Guid Guid { get; set; }
+        public Guid TaxiHailOrderId { get; set; }
 
-        public int OrderId { get; set; }
+        public int IbsOrderId { get; set; }
     }
 }

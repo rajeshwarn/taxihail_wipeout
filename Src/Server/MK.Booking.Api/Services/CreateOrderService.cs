@@ -122,10 +122,10 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(ConfirmHailRequest request)
         {
-            var orderDetail = _orderDao.FindById(request.OrderKey.Guid);
+            var orderDetail = _orderDao.FindById(request.OrderKey.TaxiHailOrderId);
             if (orderDetail == null)
             {
-                throw new HttpError(string.Format("Order {0} doesn't exist", request.OrderKey.Guid));
+                throw new HttpError(string.Format("Order {0} doesn't exist", request.OrderKey.TaxiHailOrderId));
             }
 
             Log.Info(string.Format("Trying to confirm Hail. Request : {0}", request.ToJson()));
@@ -144,7 +144,15 @@ namespace apcurium.MK.Booking.Api.Services
 
             Log.Info("Hail request confirmed");
 
-            return new HttpResult(HttpStatusCode.OK);
+            return new OrderStatusDetail
+            {
+                OrderId = request.OrderKey.TaxiHailOrderId,
+                Status = OrderStatus.Created,
+                IBSStatusId = VehicleStatuses.Common.Assigned,
+                IBSStatusDescription = string.Format(
+                    _resources.Get("OrderStatus_CabDriverNumberAssigned", orderDetail.ClientLanguageCode),
+                    request.VehicleCandidate.VehicleId)
+            };
         }
 
         private object CreaterOrder(CreateOrder request, bool isHailRequest)
@@ -633,7 +641,7 @@ namespace apcurium.MK.Booking.Api.Services
             var orderResult = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, market, false, request.NextDispatchCompanyKey);
 
             var newIbsOrderId = orderResult.IsHailRequest
-                ? orderResult.HailResult.OrderKey.OrderId
+                ? orderResult.HailResult.OrderKey.IbsOrderId
                 : orderResult.CreateOrderResult;
             
             if (!newIbsOrderId.HasValue || newIbsOrderId <= 0)
@@ -776,7 +784,7 @@ namespace apcurium.MK.Booking.Api.Services
             // Wait for order creation to complete before sending other commands
             await Task.Delay(750);
 
-            ReactToIbsOrderCreation(orderId, orderResult.HailResult.OrderKey.OrderId, isPrepaid, request.ClientLanguageCode);
+            ReactToIbsOrderCreation(orderId, orderResult.HailResult.OrderKey.IbsOrderId, isPrepaid, request.ClientLanguageCode);
 
             UpdateStatusAsync(orderId);
 
@@ -1230,7 +1238,7 @@ namespace apcurium.MK.Booking.Api.Services
                     fare);
 
                 // Fetch vehicle candidates only if order was successfully created on IBS
-                if (ibsHailResult.OrderKey.OrderId > -1)
+                if (ibsHailResult.OrderKey.IbsOrderId > -1)
                 {
                     // TODO: replace hardcoded value by timeout returned by IBS
                     // Need to wait for vehicles to receive hail request
