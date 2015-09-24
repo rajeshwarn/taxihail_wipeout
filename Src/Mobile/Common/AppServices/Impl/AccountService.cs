@@ -345,6 +345,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						{
 							throw new AuthException ("Account not validated", AuthFailure.AccountNotActivated, e);
 						}
+						else if(e.Message == AuthFailure.FacebookEmailAlreadyUsed.ToString())
+						{
+							throw new AuthException("Facebook Email Already Used", AuthFailure.FacebookEmailAlreadyUsed, e);
+						}
 						else
 						{
 							throw new AuthException ("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);

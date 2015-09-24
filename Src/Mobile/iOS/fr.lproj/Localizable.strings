@@ -143,7 +143,7 @@
 "Delete"="Supprimer";
 "Notification_PromotionUnlockedEmail"="Promotions déverrouillées (Email)";
 "Order"="Commander";
-"DateTimePickerPickTitle"="Date et heure de départ";
+"FacebookLoginErrorMessage"="Cet email est déjà utilisé pour un compte Facebook. Merci de vous enregistrer via Facebook ou d'utiliser un autre email.";
 "HistoryDetailStatusLabel"="Statut:";
 "AddReminderTitle"="Départ(s) programmé(s)";
 "View_UserTaxiHailNetworkSettings"="Réseau TaxiHail";
@@ -505,6 +505,7 @@
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Type de facturation";
 "ResetPasswordSubtitleText"="Saisissez votre email pour recevoir votre nouveau mot de passe";
+"DateTimePickerPickTitle"="Date et heure de départ";
 "UpdatedTermsAndConditionsAcceptButton"="Accepter";
 "Cancel"="Annuler";
 "ChooseProviderDialogTitle"="Choisissez un prestataire";
@@ -604,6 +605,7 @@
 "ChangePasswordConfirmmation"="Votre mot de passe a été mis à jour, merci de vous connecter.";
 "OrderNote"="Réserver sur votre mobile";
 "CallDriverUsingProxyPrompt"="Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.";
+"FacebookLoginErrorTitle"="Email déjà utilisé";
 "PickupViewPickupLabel"="Départ:";
 "Done"="Terminé";
 "DriverInfoVehicleMedallion"="Medallion:";

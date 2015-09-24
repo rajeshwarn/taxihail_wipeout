@@ -92,6 +92,7 @@
 "PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured as part of your account.";
 "Tuto08Bottom"="نأمل أن تجد الراحة و السهولة عند استخدام هذا التطبيق .";
 "ErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
+"CardOnFile"="Card on File";
 "HistoryActivityName"="History";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "View_AccountConfirmationTitle"="Account Confirmation";
@@ -137,7 +138,7 @@
 "Delete"="مسح";
 "Notification_PromotionUnlockedEmail"="Promotions unlocked (Email)";
 "Order"="طلب";
-"DateTimePickerPickTitle"="تاريخ و وقت الإلتقاء";
+"FacebookLoginErrorMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
 "HistoryDetailStatusLabel"="الحالة:";
 "AddReminderTitle"="موعد الإلتقاء المحدد";
 "View_UserTaxiHailNetworkSettings"="TaxiHail Network";
@@ -153,7 +154,7 @@
 "ResetPasswordConfirmationMessage"="تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.";
 "ApartmentLabel"="شقة";
 "HistoryDetailOrderLabel"="الطلب:";
-"CardOnFile"="Card on File";
+"CreditCardRemoveErrorMessage"="عليك أن تدخل بطاقة إئتمانية واحدة على الأقل في حسابك، إن رغبت في إزالة بطاقة، ستحتاج لإضافة بطاقة أخرى قبل الإزالة.";
 "DefaultRideSettingsViewTitle"="إعدادات";
 "TermsAndConditionsAcknowledgment"="أقر بأني قد قرأت وفهمت الأحكام والشروط.";
 "CreateAccount_AccountAlreadyExist"="لا يمكن إنشاء حساب. هذا العنوان الإلكتروني مستخدم .";
@@ -492,6 +493,7 @@
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="طريقة الدفع :";
 "ResetPasswordSubtitleText"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";
+"DateTimePickerPickTitle"="تاريخ و وقت الإلتقاء";
 "Tuto06Bottom"="انقر تأكيد عندما تكون مستعد للذهاب.";
 "UpdatedTermsAndConditionsAcceptButton"="موافق";
 "Cancel"="إلغاء";
@@ -549,7 +551,6 @@
 "NoFareText"="اختر وجهة للحصول على سعر تقريبي.";
 "Notes"="ملاحظات";
 "EstimatingFare"="جاري تقييم قيمة مشوارك...";
-"CreditCardRemoveErrorMessage"="عليك أن تدخل بطاقة إئتمانية واحدة على الأقل في حسابك، إن رغبت في إزالة بطاقة، ستحتاج لإضافة بطاقة أخرى قبل الإزالة.";
 "OverduePaymentActivityName"="Overdue payment";
 "UpdateBookingSettingsGenericError"="An error occured when updating the booking settings";
 "TabHistory"="السجل";
@@ -589,6 +590,7 @@
 "ChangePasswordConfirmmation"="تم تحديث كلمة المرور الخاصة بك، رجاء تسجيل الدخول.";
 "OrderNote"="تم الحجز من خلال الهاتف الجوال";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
+"FacebookLoginErrorTitle"="Email already used";
 "PickupViewPickupLabel"="الإلتقاء";
 "Done"="تم";
 "DriverInfoVehicleMedallion"="Medallion:";

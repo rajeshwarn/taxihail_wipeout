@@ -28,6 +28,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void Initialize()
         {
             BackgroundColor = UIColor.White;
+
+            // Create rounded driver picture
+            driverPhoto.Layer.CornerRadius = driverPhoto.Frame.Size.Width / 2;
+            driverPhoto.ClipsToBounds = true;
         }
 
         private void InitializeBinding()

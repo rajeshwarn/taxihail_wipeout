@@ -143,7 +143,7 @@
 "Delete"="Eliminar";
 "Notification_PromotionUnlockedEmail"="Promociones desbloqueadas (Email)";
 "Order"="Reservación";
-"DateTimePickerPickTitle"="Fecha y hora del servicio";
+"FacebookLoginErrorMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
 "HistoryDetailStatusLabel"="Estado:";
 "AddReminderTitle"="Servicio programado";
 "View_UserTaxiHailNetworkSettings"="TaxiHail Network";
@@ -503,6 +503,7 @@
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Tipo de Cargo";
 "ResetPasswordSubtitleText"="Ingrese su email y le enviaremos una nueva contraseña";
+"DateTimePickerPickTitle"="Fecha y hora del servicio";
 "UpdatedTermsAndConditionsAcceptButton"="Aceptar";
 "Cancel"="Cancelar";
 "ChooseProviderDialogTitle"="Seleccionar proveedor";
@@ -602,6 +603,7 @@
 "ChangePasswordConfirmmation"="Su contraseña ha sido actualizada, por favor inicie sesión";
 "OrderNote"="Reservado por Móvil";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
+"FacebookLoginErrorTitle"="Email already used";
 "PickupViewPickupLabel"="Recoger:";
 "Done"="Terminado";
 "DriverInfoVehicleMedallion"="Medallion:";

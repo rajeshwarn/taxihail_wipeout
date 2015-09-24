@@ -713,6 +713,7 @@
     <AndroidResource Include="Resources\Drawable\facebook_account_icon.png" />
     <AndroidResource Include="Resources\Drawable\waitingcarclosebutton.xml" />
     <AndroidResource Include="Resources\drawable-xhdpi\status_gradient.png" />
+    <Compile Include="Controls\Widgets\RoundedMvxImageView.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

@@ -141,7 +141,7 @@
 "Delete"="Delete";
 "Notification_PromotionUnlockedEmail"="Promotions unlocked (Email)";
 "View_Payment"="Payment Info";
-"DateTimePickerPickTitle"="Pickup date and time";
+"FacebookLoginErrorMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
 "HistoryDetailStatusLabel"="Status:";
 "RideSettingsPhone"="Mobile";
 "View_UserTaxiHailNetworkSettings"="TaxiHail Network";
@@ -376,6 +376,7 @@
 "PromoExpiringIn1DayMessage"="Expires in 1 day";
 "LocationServiceErrorMessage"="The location service is not enabled.";
 "View_LocationDetail"="Location Detail";
+"Collapse"="Collapse";
 "September"="Sep (09)";
 "ResetPasswordTitleText"="Forgot your password?";
 "March"="Mar (03)";
@@ -502,6 +503,7 @@
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Charge type";
 "ResetPasswordSubtitleText"="Enter your email and we'll send you a new one.";
+"DateTimePickerPickTitle"="Pickup date and time";
 "UpdatedTermsAndConditionsAcceptButton"="Accept";
 "Cancel"="Cancel";
 "ChooseProviderDialogTitle"="Pick a provider";
@@ -622,7 +624,7 @@
 "WarningEstimateTitle"="Warning";
 "RateLastRide"="Rate";
 "MenuButton"="Menu";
-"Collapse"="Collapse";
+"FacebookLoginErrorTitle"="Email already used";
 "WarningEstimateDontShow"="Don't warn";
 "BookingAirportPUPointslbl"="Pickup Point";
 "CardExpiredNonMandatoryMessage"="Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.";
