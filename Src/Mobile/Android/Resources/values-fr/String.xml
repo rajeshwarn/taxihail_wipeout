@@ -7,6 +7,8 @@
   <string name="AccountDisabled_NoCall">Votre compte a été désactivé</string>
   <string name="AccountNotActivated">Votre compte n\'a pas pu être activé. Merci d\'activer le compte à l\'aide de l\'email qui vient de vous être envoyé</string>
   <string name="AccountNotActivatedCodeBySMS">Votre compte n\'a pas pu être activé. Merci d\'activer le compte à l\'aide du SMS qui vient de vous être envoyé</string>
+  <string name="FacebookLoginErrorTitle">Email existant</string>
+  <string name="FacebookLoginErrorMessage">Cet email est déjà utilisé pour un compte Facebook. Merci de vous enregistrer via Facebook ou d\'utiliser un autre email.</string>
   <string name="AccountPaymentNumberRequiredMessage">Merci de saisir un numéro de compte valide</string>
   <string name="AccountPaymentCustomerNumberRequiredMessage">Merci de saisir un numéro de client valide</string>
   <string name="AccountPaymentCustomerNumberRequiredTitle">Numéro de client du compte requis</string>
@@ -300,8 +302,8 @@
   <string name="ResetPasswordConfirmationMessage">Un nouveau mot de passe vous a été envoyé par email</string>
   <string name="ResetPasswordConfirmationTitle">Mot de passe envoyé</string>
   <string name="ResetPasswordEmailPlaceHolder">Email (adresse électronique)</string>
-  <string name="ResetPasswordInvalidDataMessage">Désolé, cet email n\'est pas valide</string>
-  <string name="ResetPasswordInvalidDataTitle">Cet email n\'est pas valide</string>
+  <string name="InvalidEmailMessage">Désolé, cet email n\'est pas valide</string>
+  <string name="InvalidEmailTitle">Cet email n\'est pas valide</string>
   <string name="ResetPasswordSubtitleText">Saisissez votre email pour recevoir votre nouveau mot de passe</string>
   <string name="ResetPasswordSucessMessage">Le mot de passe a été réinitialisé avec succès</string>
   <string name="ResetPasswordSucessTitle">Mot de passe réinitialisé</string>
@@ -594,6 +596,7 @@
   <string name="ManualRideLinqStatus_Total">Coût Total:</string>
   <string name="ManualRideLinqStatus_Unpair">Dissocier</string>
   <string name="ManualRideLinqSummary_Done">Ok</string>
+  <string name="ManualRideLinqStatus_PairingError">Une erreur est survenue. Veuillez essayer de vous connecter de nouveau en utilisant le code affiché sur l\'écran dans le taxi.</string>
   <string name="ManualUnPairingForRideLinQ_Error_Message">Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Êtes-vous sûr de vouloir annuler? Des frais d\'annulation peuvent être appliqués.</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">Vous ne pouvez pas effacer une carte de crédit s\'il y a une commande en cours.</string>

@@ -45,6 +45,8 @@
 "AccountDisabled"="Your account has been disabled, please contact {0} at {1} to activate your account.";
 "AccountNotActivated"="Your account has not been activated. Another activation email was sent to you.";
 "AccountNotActivatedCodeBySMS"="Your account has not been activated. Another activation SMS was sent to you.";
+"FacebookLoginErrorTitle"="Email already used";
+"FacebookLoginErrorMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
 "BookItButton"="Book Now";
 "BookPickupLabel"="Confirm your pickup location";
 "PickupTextPlaceholder"="Pickup street address";
@@ -183,8 +185,8 @@
 "CurrencyPriceFormat"="{0:C}";
 "NotAvailable"="N/A";
 "EstimatedFareNotAvailable"="Estimated fare not available";
-"ResetPasswordInvalidDataTitle"="Invalid email";
-"ResetPasswordInvalidDataMessage"="The email is invalid.";
+"InvalidEmailTitle"="Invalid email";
+"InvalidEmailMessage"="The email is invalid.";
 "Create"="Create";
 "RideSettingsChargeType"="Charge type";
 "RideSettingsPassword"="Password";
@@ -594,6 +596,7 @@
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "ManualRideLinqStatus_Unpair"="Unpair";
+"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "ManualPairingForRideLinQ_Error_Title"="Error";
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";

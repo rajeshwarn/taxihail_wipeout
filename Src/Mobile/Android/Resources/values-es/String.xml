@@ -8,6 +8,8 @@
   <string name="AccountDisabled_NoCall">Su cuenta ha sido deshabilitada</string>
   <string name="AccountNotActivated">Su cuenta no ha sido activada. Otro email de activación le ha sido enviado</string>
   <string name="AccountNotActivatedCodeBySMS">Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado</string>
+  <string name="FacebookLoginErrorTitle">Correo electrónico existente</string>
+  <string name="FacebookLoginErrorMessage">Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.</string>
   <string name="AccountPaymentNumberRequiredMessage">Por favor introduzca un número de cuenta válido.</string>
   <string name="AccountPaymentCustomerNumberRequiredMessage">Por favor introduzca un número de cliente válido.</string>
   <string name="AccountPaymentNumberRequiredTitle">Número de cuenta caducado.</string>
@@ -344,8 +346,8 @@
   <string name="ResetPasswordConfirmationMessage">Una nueva contraseña ha sido enviada a su email</string>
   <string name="ResetPasswordConfirmationTitle">Contraseña enviada</string>
   <string name="ResetPasswordEmailPlaceHolder">Email</string>
-  <string name="ResetPasswordInvalidDataMessage">Este email es inválido</string>
-  <string name="ResetPasswordInvalidDataTitle">Email inválido</string>
+  <string name="InvalidEmailMessage">Este email es inválido</string>
+  <string name="InvalidEmailTitle">Email inválido</string>
   <string name="ResetPasswordSubtitleText">Ingrese su email y le enviaremos una nueva contraseña</string>
   <string name="ResetPasswordSucessMessage">La contraseña ha sido restablecida exitosamente</string>
   <string name="ResetPasswordSucessTitle">Restablecer contraseña</string>
@@ -573,6 +575,7 @@
   <string name="PaymentLoadError">No se pueden cargar los datos de pago. Por favor, inténtelo de nuevo más tarde.</string>
   <string name="ManualPairingForRideLinQ_Error_Message">Ocurrió un error durante el registro.</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
+  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="ManualPairingForRideLinQ_Instructions">Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">El código de emparejamiento es inválido.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Código Inválido</string>

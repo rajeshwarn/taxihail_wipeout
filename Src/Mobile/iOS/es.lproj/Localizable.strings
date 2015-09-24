@@ -6,6 +6,8 @@
 "AccountDisabled_NoCall"="Su cuenta ha sido deshabilitada";
 "AccountNotActivated"="Su cuenta no ha sido activada. Otro email de activación le ha sido enviado";
 "AccountNotActivatedCodeBySMS"="Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado";
+"FacebookLoginErrorTitle"="Correo electrónico existente";
+"FacebookLoginErrorMessage"="Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.";
 "AccountPaymentNumberRequiredMessage"="Por favor introduzca un número de cuenta válido.";
 "AccountPaymentCustomerNumberRequiredMessage"="Por favor introduzca un número de cliente válido.";
 "AccountPaymentNumberRequiredTitle"="Número de cuenta caducado.";
@@ -342,8 +344,8 @@
 "ResetPasswordConfirmationMessage"="Una nueva contraseña ha sido enviada a su email";
 "ResetPasswordConfirmationTitle"="Contraseña enviada";
 "ResetPasswordEmailPlaceHolder"="Email";
-"ResetPasswordInvalidDataMessage"="Este email es inválido";
-"ResetPasswordInvalidDataTitle"="Email inválido";
+"InvalidEmailMessage"="Este email es inválido";
+"InvalidEmailTitle"="Email inválido";
 "ResetPasswordSubtitleText"="Ingrese su email y le enviaremos una nueva contraseña";
 "ResetPasswordSucessMessage"="La contraseña ha sido restablecida exitosamente";
 "ResetPasswordSucessTitle"="Restablecer contraseña";
@@ -571,6 +573,7 @@
 "PaymentLoadError"="No se pueden cargar los datos de pago. Por favor, inténtelo de nuevo más tarde.";
 "ManualPairingForRideLinQ_Error_Message"="Ocurrió un error durante el registro.";
 "ManualPairingForRideLinQ_Error_Title"="Error";
+"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "ManualPairingForRideLinQ_Instructions"="Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.";
 "ManualPairingForRideLinQ_InvalidCode_Message"="El código de emparejamiento es inválido.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Código Inválido";

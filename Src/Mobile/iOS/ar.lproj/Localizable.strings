@@ -5,6 +5,8 @@
 "AccountDisabled_NoCall"="تم إيقاف حسابك.";
 "AccountNotActivated"="لم يتم تفعيل حسابك. تم إرسال بريد الكتروني اخر للتنشيط";
 "AccountNotActivatedCodeBySMS"="Your account has not been activated. Another activation SMS was sent to you.";
+"FacebookLoginErrorTitle"="Email already used";
+"FacebookLoginErrorMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
 "AccountPaymentNumberRequiredMessage"="Please enter a valid account number";
 "AccountPaymentCustomerNumberRequiredMessage"="Please enter a valid rider number";
 "AccountPaymentNumberRequiredTitle"="مطلوب رقم الحساب";
@@ -58,6 +60,7 @@
 "CmtRideLinqErrorTitle"="خطأ";
 "CmtRideLinqGenericErrorMessage"="حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.";
 "CmtRideLinqSaveChanges"="حفظ";
+"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "UnpairPayInCar"="Pay in Car";
 "UnpairErrorMessage"="حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.";
 "CmtTipAmount"="قيمة الإكرامية:";
@@ -290,8 +293,8 @@
 "ResetPasswordConfirmationMessage"="تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.";
 "ResetPasswordConfirmationTitle"="تم إرسال كلمة المرور";
 "ResetPasswordEmailPlaceHolder"="البريد الإلكتروني";
-"ResetPasswordInvalidDataMessage"="البريد الإلكتروني غير صحيح";
-"ResetPasswordInvalidDataTitle"="عنوان البريد الإلكتروني غير صحيح";
+"InvalidEmailMessage"="البريد الإلكتروني غير صحيح";
+"InvalidEmailTitle"="عنوان البريد الإلكتروني غير صحيح";
 "ResetPasswordSubtitleText"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";
 "ResetPasswordSucessMessage"="تم إعادة ضبط كلمة المرور بنجاح";
 "ResetPasswordSucessTitle"="إعادة ضبط كلمة المرور";
