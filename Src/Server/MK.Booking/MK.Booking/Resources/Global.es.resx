@@ -800,7 +800,7 @@
 	<data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
     <value>Cannot change the email of an account linked with Facebook</value>
   </data>
-  <data name="CancelOrdeError_wosLOADED" xml:space="preserve">
+  <data name="CancelOrdeError" xml:space="preserve">
     <value>It is too late to cancel this order</value>
   </data>
 </root>

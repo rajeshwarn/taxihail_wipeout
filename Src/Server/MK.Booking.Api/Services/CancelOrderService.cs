@@ -62,15 +62,15 @@ namespace apcurium.MK.Booking.Api.Services
                 var orderDetail = _orderDao.FindOrderStatusById(order.Id);
                 var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
 
-                var canCancel = orderDetail.IBSStatusId == VehicleStatuses.Common.Loaded 
-                    && pairingInfo != null 
-                    && _serverSettings.GetPaymentSettings().CancelOrderOnUnpair;
+                var canCancelWhenPaired = orderDetail.IBSStatusId == VehicleStatuses.Common.Loaded
+                    && _serverSettings.GetPaymentSettings().CancelOrderOnUnpair
+                    && pairingInfo != null;
 
                 if (currentIbsAccountId.HasValue &&
                     (orderDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                     || orderDetail.IBSStatusId == VehicleStatuses.Common.Arrived
                     || orderDetail.IBSStatusId == VehicleStatuses.Common.Waiting
-                    || canCancel))
+                    || canCancelWhenPaired))
                 {
                     //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
                     Task.Factory.StartNew(() =>
@@ -86,7 +86,8 @@ namespace apcurium.MK.Booking.Api.Services
 
                     return new HttpResult(HttpStatusCode.OK);
                 }
-                throw new HttpError(HttpStatusCode.BadRequest, _resources.Get("CancelOrdeError_wosLOADED"));
+
+                throw new HttpError(HttpStatusCode.BadRequest, _resources.Get("CancelOrdeError"));
             }
 
             return new HttpResult(HttpStatusCode.BadRequest);

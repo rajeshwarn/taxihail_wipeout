@@ -72,9 +72,9 @@ namespace apcurium.MK.Booking.Resources {
         /// <summary>
         ///   Looks up a localized string similar to It is too late to cancel this order.
         /// </summary>
-        public static string CancelOrdeError_wosLOADED {
+        public static string CancelOrdeError {
             get {
-                return ResourceManager.GetString("CancelOrdeError_wosLOADED", resourceCulture);
+                return ResourceManager.GetString("CancelOrdeError", resourceCulture);
             }
         }
         

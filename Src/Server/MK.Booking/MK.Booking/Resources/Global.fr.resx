@@ -669,7 +669,7 @@
 	<data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
     <value>Il est impossible de changer le courriel du compte lié avec Facebook</value>
   </data>
-  <data name="CancelOrdeError_wosLOADED" xml:space="preserve">
+  <data name="CancelOrdeError" xml:space="preserve">
     <value>Il est trop tard pour annuler cette commande</value>
   </data>
 </root> 
