@@ -106,6 +106,13 @@ namespace MK.Common.Configuration
                 ServiceUrl = "http://geo-sandbox.cmtapi.com"
             };
 
+	        FlightStats = new FlightStatsSettingsContainer
+	        {
+				AppId = "59e6fed3",
+				ApplicationKeys = "94705638689d77a3aff2526332969395",
+				ApiUrl = "https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/"
+	        };
+
         }
 
         public SmtpSettingContainer Smtp { get; protected set; }

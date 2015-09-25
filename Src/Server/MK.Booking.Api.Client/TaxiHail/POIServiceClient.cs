@@ -1,14 +1,11 @@
 #region
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Entity;
-using System;
 using System.Text;
-using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -16,56 +13,45 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class POIServiceClient : BaseServiceClient
     {
-        public POIServiceClient(string url, string sessionId, IPackageInfo packageInfo)
+	    public POIServiceClient(string url, string sessionId, IPackageInfo packageInfo)
             : base(url, sessionId, packageInfo)
         {
         }
 
-        public Task<string> GetPOIRefPickupList(string company, string textMatch, int maxRespSize)
+	    public Task<PickupPoint[]> GetPOIRefPickupList(string company, string textMatch, int maxRespSize)
         {
-            var sb = new StringBuilder();
-            sb.Append("/references/pickuppoint");
-            if( company != null && company != string.Empty )
-            {
-                sb.Append(string.Format( "_{0}", company));
-            }
-            if( textMatch != null && textMatch != string.Empty )
-            {
-                sb.Append(string.Format("/{0}", textMatch));
-            }
-            sb.Append("?format=json");
-            if( maxRespSize > 0 )
-            {
-                sb.Append(string.Format("&size={0}", maxRespSize));
-            }
-            var req = sb.ToString();
-			Console.WriteLine (req);
-            var pObject = Client.GetAsync<string>(req);
-            return pObject;
+			var request = GetParameters(company, textMatch, maxRespSize, "pickuppoint").ToString();
+
+			return Client.GetAsync<PickupPoint[]>(request);
         }
 
-        public Task<string> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
+		public Task<Airline[]> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
         {
-            var sb = new StringBuilder();
-            sb.Append("/references/airline");
-            if (company != null && company != string.Empty)
-            {
-                sb.Append(string.Format("_{0}", company));
-            }
-            if (textMatch != null && textMatch != string.Empty)
-            {
-                sb.Append(string.Format("/{0}", textMatch));
-            }
-            sb.Append("?format=json");
-            if (maxRespSize > 0)
-            {
-                sb.Append(string.Format("&size={0}", maxRespSize));
-            }
-            sb.Append(string.Format("&coreFieldsOnly=true"));
-            var req = sb.ToString();
-			Console.WriteLine (req);
-            var pObject = Client.GetAsync<string>(req);
-            return pObject;
+			var request = GetParameters(company, textMatch, maxRespSize, "airline")
+				.Append("&coreFieldsOnly=true")
+				.ToString();
+
+            return Client.GetAsync<Airline[]>(request);
         }
+
+	    private static StringBuilder GetParameters(string company, string textMatch, int maxRespSize,string endpoint)
+	    {
+		    var stringBuilder = new StringBuilder();
+			stringBuilder.Append("/references/").Append(endpoint);
+		    if (company.HasValue())
+		    {
+			    stringBuilder.Append(string.Format("_{0}", company));
+		    }
+		    if (textMatch.HasValue())
+		    {
+			    stringBuilder.Append(string.Format("/{0}", textMatch));
+		    }
+		    stringBuilder.Append("?format=json");
+		    if (maxRespSize > 0)
+		    {
+			    stringBuilder.Append(string.Format("&size={0}", maxRespSize));
+		    }
+		    return stringBuilder;
+	    }
     }
 }

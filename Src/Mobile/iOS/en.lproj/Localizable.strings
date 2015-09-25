@@ -43,6 +43,7 @@
 "CmtCarNumber"="Car Number:";
 "Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
 "ManualRideLinqCreditCardDisabled"="Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ";
+"OrderAirportView_DATE_OUT_OF_RANGE"="Provided date is out of range.";
 "StatusActionButton"="Call / Book / Cancel";
 "TaxiHailNetworkTimeOutPopupMessage"="Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?";
 "ConfirmationOfPaymentSent"="Confirmation of payment has been sent to the driver.";
@@ -246,6 +247,7 @@
 "View_BookingDetail"="Booking Details";
 "RideSettingsVehiculeType"="Vehicle type";
 "WarningPushServiceAction"="Thanks for letting me know";
+"BookingAirportDetailsTerminal"=", \nTerminal: {0}";
 "LoginForgotPasswordDetail"="Enter your email and we'll send you a new one.";
 "UnpairWarningCancelButton"="Cancel";
 "PassengerNumberLabel"="Passengers";
@@ -396,6 +398,7 @@
 "BookItLaterButton"="Later";
 "RingCode"="Entry Code";
 "app_id"="134284363380764";
+"BookingAirportMissingInfo_Title"="Missing information";
 "View_AboutUs"="About Us";
 "Error_InvalidCvvMessage"="The CVV must be a number between 3 and 4 digits";
 "ScanCreditCard"="Scan Credit Card";
@@ -489,6 +492,7 @@
 "CmtTransactionResendConfirmationButtonText"="Resend";
 "StatusDescription"="Order #{0}";
 "Notification_ReceiptEmail"="Receipt (Email)";
+"OrderAirportView_BAD_FLIGHT_NUMBER"="Invalid flight number";
 "TaxiHailNetworkTimeOutErrorTitle"="Error";
 "InvalidAccountOnActivatedMessage"="Your account cannot be validated, you must log in to use this application";
 "Overdue_Date"="Transaction date:";
@@ -581,6 +585,7 @@
 "LinkPayPalConfirmation"="Link";
 "Notification_PaymentConfirmationPush"="Payment Confirmation";
 "HistoryDetailAuthorizationLabel"="Authorization:";
+"OrderAirportView_BAD_AIRPORT_CODE"="An error occurred with the flight status provider. Airport code might not be set.";
 "DestinationMapTitle"="Destination location";
 "CreateAccountPhonePlaceHolder"="Mobile";
 "CmtCancelPayment"="Cancel";
@@ -642,6 +647,7 @@
 "Notification_DriverAssignedEmail"="Driver Assigned (Email)";
 "May"="May (05)";
 "PayNow"="Pay now";
+"BookingAirportNoFlights_Message"="No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}";
 "StatusActionCancelButton"="Cancel this order";
 "OtherListItemLabel"="Custom Percent";
 "ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
@@ -662,6 +668,7 @@
 "GooglePlayServicesNotAvailableMessage"="You need to update Google Play Services in order to use this application.";
 "AccountPaymentQuestionsRequired"="(required)";
 "UpdatePasswordNewPasswordLabel"="New Password";
+"OrderAirportView_BAD_AIRLINE_CODE"="An error occurred with the flight status provider.";
 "ChargeTypeCreditCardFile"="Credit Card on File";
 "AccountDisabled_NoCall"="Your account has been disabled.";
 "View_AccountConfirmation_Button"="Confirm";
@@ -672,6 +679,7 @@
 "StatusActionBookButton"="Book another taxi";
 "WarningLocationServiceTitle"="Warning";
 "November"="Nov (11)";
+"BookingAirportNoFlights_Title"="No flights";
 "EstimatedFareNotAvailable"="Estimated fare not available";
 "RateLastRideTitle"="Rate last ride?";
 "Tuto02Bottom"="If it's a little off, simply reposition the map to your actual location.";
@@ -681,6 +689,7 @@
 "CreditCardExpYear"="Exp. Year";
 "WarningLocationService"="Please turn on location services to have your location show up in the map.";
 "Facebook"="Sign in with Facebook";
+"BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";
 "PanelMenuViewNotificationsText"="Notifications";
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "UpdateNoticeTitle"="Update Notice";
