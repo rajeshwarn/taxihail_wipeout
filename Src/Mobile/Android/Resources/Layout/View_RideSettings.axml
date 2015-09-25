@@ -119,11 +119,12 @@
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:layout_marginBottom="10dip"
                             android:background="@drawable/edit_text_flat"
+                            android:contentDescription="@string/DialCodeSelectorTitle"
                             style="@style/MainTheme"
                             local:MvxItemTemplate="@layout/countrycodeitemmvx"
                             local:MvxDropDownItemTemplate="@layout/countrycodeitemdropdownmvx"
                             local:MvxBind="ItemsSource CountryCodes;SelectedItem SelectedCountryCode" />
-                        <EditText
+                        <apcurium.mk.booking.mobile.client.controls.widgets.EditTextWithAccessibility
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
