@@ -67,150 +67,152 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(ManualRideLinqPairingRequest request)
         {
-            try
-            {
-                var accountId = new Guid(this.GetSession().UserAuthId);
-                var account = _accountDao.FindById(accountId);
+	        try
+	        {
+		        var accountId = new Guid(this.GetSession().UserAuthId);
+		        var account = _accountDao.FindById(accountId);
 
-				var currentRideLinq = _orderDao.GetCurrentManualRideLinq(request.PairingCode, account.Id);
+		        var currentRideLinq = _orderDao.GetCurrentManualRideLinq(request.PairingCode, account.Id);
 
-	            if (currentRideLinq != null)
-	            {
-					return new ManualRideLinqResponse
-					{
-						Data = currentRideLinq,
-						IsSuccessful = true,
-						Message = "Ok"
-					};
-	            }
+		        if (currentRideLinq != null)
+		        {
+			        return new ManualRideLinqResponse
+			        {
+				        Data = currentRideLinq,
+				        IsSuccessful = true,
+				        Message = "Ok"
+			        };
+		        }
 
-                var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
-                if (creditCard == null)
-                {
-                    throw new HttpError(HttpStatusCode.BadRequest,
-                        ErrorCode.ManualRideLinq_NoCardOnFile.ToString(),
-                        _resources.Get("ManualRideLinq_NoCardOnFile", account.Language));
-                }
+		        var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
+		        if (creditCard == null)
+		        {
+			        throw new HttpError(HttpStatusCode.BadRequest,
+				        ErrorCode.ManualRideLinq_NoCardOnFile.ToString(),
+				        _resources.Get("ManualRideLinq_NoCardOnFile", account.Language));
+		        }
 
-                if (creditCard.IsDeactivated)
-                {
-                    throw new HttpError(HttpStatusCode.BadRequest,
-                        ErrorCode.ManualRideLinq_CardOnFileDeactivated.ToString(),
-                        _resources.Get("ManualRideLinq_CreditCardDisabled", account.Language));
-                }
+		        if (creditCard.IsDeactivated)
+		        {
+			        throw new HttpError(HttpStatusCode.BadRequest,
+				        ErrorCode.ManualRideLinq_CardOnFileDeactivated.ToString(),
+				        _resources.Get("ManualRideLinq_CreditCardDisabled", account.Language));
+		        }
 
-                // Send pairing request to CMT API
-                var pairingRequest = new ManualRideLinqCoFPairingRequest
-                {
-                    AutoTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage,
-                    CustomerId = accountId.ToString(),
-                    CustomerName = account.Name,
-                    Latitude = request.PickupAddress.Latitude,
-                    Longitude = request.PickupAddress.Longitude,
-                    PairingCode = request.PairingCode,
-                    AutoCompletePayment = true,
-                    CardOnFileId = creditCard.Token
-                };
+		        // Send pairing request to CMT API
+		        var pairingRequest = new ManualRideLinqCoFPairingRequest
+		        {
+			        AutoTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage,
+			        CustomerId = accountId.ToString(),
+			        CustomerName = account.Name,
+			        Latitude = request.PickupAddress.Latitude,
+			        Longitude = request.PickupAddress.Longitude,
+			        PairingCode = request.PairingCode,
+			        AutoCompletePayment = true,
+			        CardOnFileId = creditCard.Token
+		        };
 
-                _logger.LogMessage("Pairing for manual RideLinq with Pairing Code {0}", request.PairingCode);
+		        _logger.LogMessage("Pairing for manual RideLinq with Pairing Code {0}", request.PairingCode);
 
-                var response = _cmtMobileServiceClient.Post(pairingRequest);
+		        var response = _cmtMobileServiceClient.Post(pairingRequest);
 
-                _logger.LogMessage("Pairing result: {0}", response.ToJson());
+		        _logger.LogMessage("Pairing result: {0}", response.ToJson());
 
-                var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+		        var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
 
-                var command = new CreateOrderForManualRideLinqPair
-                {
-                    OrderId = Guid.NewGuid(),
-                    AccountId = accountId,
-                    UserAgent = Request.UserAgent,
-                    ClientVersion = Request.Headers.Get("ClientVersion"),
-                    PairingCode = request.PairingCode,
-                    PickupAddress = request.PickupAddress,
-                    PairingToken = response.PairingToken,
-                    PairingDate = DateTime.Now,
-                    ClientLanguageCode = request.ClientLanguageCode,
-                    Distance = trip.Distance,
-                    StartTime = trip.StartTime,
-                    EndTime = trip.EndTime,
-                    Extra = Math.Round(((double)trip.Extra / 100), 2),
-                    Fare = Math.Round(((double)trip.Fare / 100), 2),
-                    Tax = Math.Round(((double)trip.Tax / 100), 2),
-                    Tip = Math.Round(((double)trip.Tip / 100), 2),
-                    Toll = trip.TollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2)),
-                    Surcharge = Math.Round(((double)trip.Surcharge / 100), 2),
-                    Total = Math.Round(((double)trip.Total / 100), 2),
-                    FareAtAlternateRate = Math.Round(((double)trip.FareAtAlternateRate / 100), 2),
-					Medallion = response.Medallion,
-					DeviceName = response.DeviceName,
-                    RateAtTripStart = trip.RateAtTripStart,
-                    RateAtTripEnd = trip.RateAtTripEnd,
-                    RateChangeTime = trip.RateChangeTime,
-                    TripId = trip.TripId,
-                    DriverId = trip.DriverId,
-                    LastFour = trip.LastFour,
-                    AccessFee = Math.Round(((double)trip.AccessFee / 100), 2)
-                };
+		        var command = new CreateOrderForManualRideLinqPair
+		        {
+			        OrderId = Guid.NewGuid(),
+			        AccountId = accountId,
+			        UserAgent = Request.UserAgent,
+			        ClientVersion = Request.Headers.Get("ClientVersion"),
+			        PairingCode = request.PairingCode,
+			        PickupAddress = request.PickupAddress,
+			        PairingToken = response.PairingToken,
+			        PairingDate = DateTime.Now,
+			        ClientLanguageCode = request.ClientLanguageCode,
+			        Distance = trip.Distance,
+			        StartTime = trip.StartTime,
+			        EndTime = trip.EndTime,
+			        Extra = Math.Round(((double) trip.Extra/100), 2),
+			        Fare = Math.Round(((double) trip.Fare/100), 2),
+			        Tax = Math.Round(((double) trip.Tax/100), 2),
+			        Tip = Math.Round(((double) trip.Tip/100), 2),
+			        Toll = trip.TollHistory.Sum(toll => Math.Round(((double) toll.TollAmount/100), 2)),
+			        Surcharge = Math.Round(((double) trip.Surcharge/100), 2),
+			        Total = Math.Round(((double) trip.Total/100), 2),
+			        FareAtAlternateRate = Math.Round(((double) trip.FareAtAlternateRate/100), 2),
+			        Medallion = response.Medallion,
+			        DeviceName = response.DeviceName,
+			        RateAtTripStart = trip.RateAtTripStart,
+			        RateAtTripEnd = trip.RateAtTripEnd,
+			        RateChangeTime = trip.RateChangeTime,
+			        TripId = trip.TripId,
+			        DriverId = trip.DriverId,
+			        LastFour = trip.LastFour,
+			        AccessFee = Math.Round(((double) trip.AccessFee/100), 2)
+		        };
 
-                _commandBus.Send(command);
+		        _commandBus.Send(command);
 
-                var data = new OrderManualRideLinqDetail
-                {
-                    OrderId = command.OrderId,
-                    Distance = trip.Distance,
-                    StartTime = trip.StartTime,
-                    EndTime = trip.EndTime,
-                    Extra = command.Extra,
-                    Fare = command.Fare,
-                    Tax = command.Tax,
-                    Tip = command.Tip,
-                    Toll = command.Toll,
-                    Surcharge = command.Surcharge,
-                    Total = command.Total,
-                    FareAtAlternateRate = command.FareAtAlternateRate,
-					Medallion = response.Medallion,
-					DeviceName = response.DeviceName,
-                    RateAtTripStart = command.RateAtTripStart,
-                    RateAtTripEnd = command.RateAtTripEnd,
-                    RateChangeTime = trip.RateChangeTime,
-                    AccountId = accountId,
-                    PairingDate = command.PairingDate,
-                    PairingCode = pairingRequest.PairingCode,
-                    PairingToken = trip.PairingToken,
-                    DriverId = trip.DriverId,
-                    LastFour = command.LastFour,
-                    AccessFee = command.AccessFee
-                };
+		        var data = new OrderManualRideLinqDetail
+		        {
+			        OrderId = command.OrderId,
+			        Distance = trip.Distance,
+			        StartTime = trip.StartTime,
+			        EndTime = trip.EndTime,
+			        Extra = command.Extra,
+			        Fare = command.Fare,
+			        Tax = command.Tax,
+			        Tip = command.Tip,
+			        Toll = command.Toll,
+			        Surcharge = command.Surcharge,
+			        Total = command.Total,
+			        FareAtAlternateRate = command.FareAtAlternateRate,
+			        Medallion = response.Medallion,
+			        DeviceName = response.DeviceName,
+			        RateAtTripStart = command.RateAtTripStart,
+			        RateAtTripEnd = command.RateAtTripEnd,
+			        RateChangeTime = trip.RateChangeTime,
+			        AccountId = accountId,
+			        PairingDate = command.PairingDate,
+			        PairingCode = pairingRequest.PairingCode,
+			        PairingToken = trip.PairingToken,
+			        DriverId = trip.DriverId,
+			        LastFour = command.LastFour,
+			        AccessFee = command.AccessFee
+		        };
 
-                return new ManualRideLinqResponse
-                {
-                    Data = data,
-                    IsSuccessful = true,
-                    Message = "Ok"
-                };
-            }
-            catch (WebServiceException ex)
-            {
-                _logger.LogMessage(string.Format("A WebServiceException occured while trying to manually pair with CMT with pairing code: {0}", request.PairingCode));
-                _logger.LogError(ex);
+		        return new ManualRideLinqResponse
+		        {
+			        Data = data,
+			        IsSuccessful = true,
+			        Message = "Ok"
+		        };
+	        }
+	        catch (WebServiceException ex)
+	        {
+		        _logger.LogMessage(
+			        string.Format("A WebServiceException occured while trying to manually pair with CMT with pairing code: {0}",
+				        request.PairingCode));
+		        _logger.LogError(ex);
 
-                ErrorResponse errorResponse = null;
+		        ErrorResponse errorResponse = null;
 
-                if (ex.ResponseBody != null)
-                {
-                    _logger.LogMessage("Error Response: {0}", ex.ResponseBody);
+		        if (ex.ResponseBody != null)
+		        {
+			        _logger.LogMessage("Error Response: {0}", ex.ResponseBody);
 
-                    errorResponse = ex.ResponseBody.FromJson<ErrorResponse>();
-                }
+			        errorResponse = ex.ResponseBody.FromJson<ErrorResponse>();
+		        }
 
-                return new ManualRideLinqResponse
-                {
-                    IsSuccessful = false,
-                    Message = errorResponse != null ? errorResponse.Message : ex.ErrorMessage,
-                    ErrorCode = errorResponse != null ? errorResponse.ResponseCode.ToString() : ex.ErrorCode
-                };
-            }
+		        return new ManualRideLinqResponse
+		        {
+			        IsSuccessful = false,
+			        Message = errorResponse != null ? errorResponse.Message : ex.ErrorMessage,
+			        ErrorCode = errorResponse != null ? errorResponse.ResponseCode.ToString() : ex.ErrorCode
+		        };
+	        }
             catch (Exception ex)
             {
                 _logger.LogMessage(string.Format("An error occured while trying to manually pair with CMT with pairing code: {0}", request.PairingCode));

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -343,9 +344,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             };
 	        try
 	        {
-				var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service =>
-				        service.Pair(request)
-						).Retry(TimeSpan.FromSeconds(10), IsExceptionStatusCodeBadRequest, int.MaxValue);
+
+				var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(
+					service => RunWithRetryAsync(() => service.Pair(request), TimeSpan.FromSeconds(10), IsExceptionStatusCodeBadRequest, 30));
 
 		        if (response.IsSuccessful)
 		        {
@@ -374,19 +375,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 	        }
         }
 
+		private bool IsExceptionStatusCodeBadRequest(Exception ex)
+		{
+			var webServiceException = ex as WebServiceException;
 
-	    private bool IsExceptionStatusCodeBadRequest(Exception ex)
-	    {
-		    var webServiceException = ex as WebServiceException;
+			if (webServiceException == null)
+			{
+				return false;
+			}
 
-		    if (webServiceException == null)
-		    {
-			    return false;
-		    }
+			return webServiceException.StatusCode == (int)HttpStatusCode.BadRequest;
 
-		    return webServiceException.StatusCode == (int) HttpStatusCode.BadRequest;
-
-	    }
+		}
 
         public Task UnpairFromManualRideLinq(Guid orderId)
         {
