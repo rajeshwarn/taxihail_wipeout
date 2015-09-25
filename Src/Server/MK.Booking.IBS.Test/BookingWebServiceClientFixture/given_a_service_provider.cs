@@ -30,7 +30,7 @@ namespace MK.Booking.IBS.Test.BookingWebServiceClientFixture
             Console.WriteLine(nbOfAvailableCars.Count);
 
             // IBS Fare Estimate
-            var fareEstimate = service.GetFareEstimate(45.498247, -73.656673, 45.4987, -73.658, null, null, null, null, null, null,null);
+            var fareEstimate = service.GetFareEstimate(45.498247, -73.656673, 45.4987, -73.658, null, null, null, null, null, null, null, 0);
             Console.WriteLine(fareEstimate.Distance);
             Console.WriteLine(fareEstimate.FareEstimate);
             Console.WriteLine(fareEstimate.Tolls);
