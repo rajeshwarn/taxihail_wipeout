@@ -72,6 +72,18 @@ namespace apcurium.MK.Booking.Api.Services
                 var accountId = new Guid(this.GetSession().UserAuthId);
                 var account = _accountDao.FindById(accountId);
 
+				var currentRideLinq = _orderDao.GetCurrentManualRideLinq(request.PairingCode, account.Id);
+
+	            if (currentRideLinq != null)
+	            {
+					return new ManualRideLinqResponse
+					{
+						Data = currentRideLinq,
+						IsSuccessful = true,
+						Message = "Ok"
+					};
+	            }
+
                 var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
                 if (creditCard == null)
                 {

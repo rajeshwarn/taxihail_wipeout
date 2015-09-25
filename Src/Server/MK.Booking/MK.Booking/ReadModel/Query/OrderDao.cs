@@ -169,5 +169,17 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return context.Query<OrderManualRideLinqDetail>().SingleOrDefault(c => c.OrderId == orderId);
             }
         }
+
+	    public OrderManualRideLinqDetail GetCurrentManualRideLinq(string pairingCode, Guid accountId)
+	    {
+		    using (var context = _contextFactory.Invoke())
+		    {
+			    return context
+				    .Query<OrderManualRideLinqDetail>()
+				    .Where(ridelinq => ridelinq.PairingCode.Equals(pairingCode))
+					.Where(ridelinq => ridelinq.AccountId == accountId)
+				    .SingleOrDefault(ridelinq => ridelinq.StartTime.Value.Date == DateTime.Now.Date);
+		    }
+	    }
     }
 }
