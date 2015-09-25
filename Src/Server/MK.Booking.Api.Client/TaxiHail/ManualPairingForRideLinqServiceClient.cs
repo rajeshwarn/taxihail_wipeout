@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
 		public Task<ManualRideLinqResponse> Pair(ManualRideLinqPairingRequest manualRideLinqPairingRequest)
         {
-            var req = string.Format("/account/manualridelinq/pair");
+            var req = "/account/manualridelinq/pair";
             return Client.PostAsync<ManualRideLinqResponse>(req, manualRideLinqPairingRequest);
         }
 
