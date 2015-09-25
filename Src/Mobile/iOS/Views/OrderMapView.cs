@@ -32,7 +32,6 @@ using Foundation;
 using MapKit;
 using TinyIoC;
 using UIKit;
-using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -126,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
             _useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
 
-            var coordonates = new CoordinateViewModel[] 
+            var coordonates = new[] 
             {
                     CoordinateViewModel.Create(settings.UpperRightLatitude??0, settings.UpperRightLongitude??0, true),
                     CoordinateViewModel.Create(settings.LowerLeftLatitude??0, settings.LowerLeftLongitude??0, true),
@@ -751,6 +750,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         }
 
         private const float PinHeight = 75;
+		private const float PinWidth = 95;
+		private const float BottomPadding = 10;
+		private const float RightPadding = 40;
+		private const float LeftPadding = 40;
 
         private void ShowPinsOnMap()
         {
@@ -781,24 +784,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 return;
             }
 
-            var annotationRect = annotations
+			var zoomRect = annotations
                 .Select(coordinateViewModel => new CLLocationCoordinate2D(coordinateViewModel.Coordinate.Latitude, coordinateViewModel.Coordinate.Longitude))
                 .Select(MKMapPoint.FromCoordinate)
-                .Select(coord => new MKMapRect(coord.X, coord.Y, 95,PinHeight));
-            
-            var zoomRect = MKMapRect.Null;
-            foreach (var rect in annotationRect)
-            {
-                zoomRect = MKMapRect.Union(zoomRect, rect);
-            }
+				.Select(coord => new MKMapRect(coord.X, coord.Y, PinWidth, PinHeight))
+				.Aggregate(MKMapRect.Null, MKMapRect.Union);
 
-            var overlayOffset = OverlayOffsetProvider != null
+	        var overlayOffset = OverlayOffsetProvider != null
                 ? OverlayOffsetProvider() + PinHeight
                 : 0;
 
-            this.SetVisibleMapRect(zoomRect, new UIEdgeInsets(overlayOffset, 40, 10, 40), true);
+			SetVisibleMapRect(zoomRect, new UIEdgeInsets(overlayOffset, LeftPadding, BottomPadding, RightPadding), true);
         }
 
-        #endregion
+	    #endregion
     }
 }
