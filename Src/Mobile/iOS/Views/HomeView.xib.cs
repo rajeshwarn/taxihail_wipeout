@@ -228,11 +228,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(mapView)
                 .For(v => v.CancelAutoFollow)
                 .To(vm => vm.BookingStatus.CancelAutoFollow);
+
+            mapView.OverlayOffsetProvider = GetOverlayOffset;
             
             #endregion
 
             set.Apply();
         }
+
+        private nfloat GetOverlayOffset()
+        {
+            var screenOffset = (nfloat)Math.Abs(UIScreen.MainScreen.ApplicationFrame.Height - UIScreen.MainScreen.Bounds.Height);
+
+            return ViewModel.BookingStatus.IsContactTaxiVisible
+                ? contactTaxiControl.Bounds.Height + bookingStatusControl.Bounds.Height + 16 + screenOffset
+                : bookingStatusControl.Bounds.Height + screenOffset;
+        }
+
 
         private void ToggleContactTaxiVisibility(bool isContactTaxiVisible)
         {

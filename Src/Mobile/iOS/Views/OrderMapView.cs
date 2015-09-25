@@ -52,11 +52,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private bool _showAssignedVehicleNumberOnPin;
         private bool _automatedMapChanged;
 
-
-        private const double StatusOffset = 1;
-        private const double VehicleInformationOffset = 3;
-        private const double InitialZoomOffset = 1.5;
-
         public OrderMapView(IntPtr handle) :base(handle)
         {
             Initialize();
@@ -738,6 +733,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+
+        public Func<nfloat> OverlayOffsetProvider { get; set; }
+
         private IEnumerable<CoordinateViewModel> _center;
 	    
 
@@ -747,123 +745,57 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set
             {
                 _center = value;                
-                SetZoom(value);                   
+                ShowPinsOnMap();                   
             }
         }
 
-        private double GetLatitudeDeltaThreshold()
-	    {
-            if (UIHelper.Is35InchDisplay)
-            {
-                return 0.0003d;
-            }
+        private const float PinHeight = 75;
 
-            return UIScreen.MainScreen.Scale == 2
-                ? 0.0005d
-                : 0.001d;
-	    }
-
-        private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
+        private void ShowPinsOnMap()
         {
-            var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.ToArray();
-            if(addresseesToDisplay == null || !coordinateViewModels.Any())
+            var annotations = _center.ToArray();
+
+            // There is nothing to do here
+            if (annotations.None())
             {
                 return;
             }
 
-            var region = new MKCoordinateRegion();
-            double? deltaLat = null;
-            double? deltaLng = null;
-            CLLocationCoordinate2D center;
-
-            if (coordinateViewModels.Count() == 1)
+            if (annotations.Length == 1)
             {
-                var lat = coordinateViewModels.ElementAt(0).Coordinate.Latitude;
-                var lon = coordinateViewModels.ElementAt(0).Coordinate.Longitude;
+                var lat = annotations[0].Coordinate.Latitude;
+                var lon = annotations[0].Coordinate.Longitude;
 
-                if (coordinateViewModels.ElementAt(0).Zoom == ZoomLevel.DontChange)
+                var region = new MKCoordinateRegion();
+
+                if (annotations[0].Zoom == ZoomLevel.DontChange)
                 {
                     region = Region;
                 }
-                else
-                {
-                    deltaLat = 0.004;
-                    deltaLng = 0.004;
-                }
 
-                var latOffset = UIHelper.Is35InchDisplay
-                    ? .006
-                    : 0;
+                region.Center = new CLLocationCoordinate2D(lat, lon);
 
-                center = new CLLocationCoordinate2D(lat + latOffset, lon);
+                SetRegion(region, true);
+
+                return;
             }
-            else
+
+            var annotationRect = annotations
+                .Select(coordinateViewModel => new CLLocationCoordinate2D(coordinateViewModel.Coordinate.Latitude, coordinateViewModel.Coordinate.Longitude))
+                .Select(MKMapPoint.FromCoordinate)
+                .Select(coord => new MKMapRect(coord.X, coord.Y, 95,PinHeight));
+            
+            var zoomRect = MKMapRect.Null;
+            foreach (var rect in annotationRect)
             {
-	            if (ViewModel == null)
-	            {
-		            return;
-	            }
-                var minLat = coordinateViewModels.Min(a => a.Coordinate.Latitude);
-                var maxLat = coordinateViewModels.Max(a => a.Coordinate.Latitude);
-                var minLon = coordinateViewModels.Min(a => a.Coordinate.Longitude);
-                var maxLon = coordinateViewModels.Max(a => a.Coordinate.Longitude);
-
-                double zoomOffset = InitialZoomOffset;
-
-                var bookingStatusViewModel = ((HomeViewModel)ViewModel.Parent).BookingStatus;
-				// Changes the map zoom to prevent hiding the pin under the booking status.
-                if (Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
-				{
-                    if (bookingStatusViewModel.IsContactTaxiVisible)
-					{
-                        zoomOffset += StatusOffset;
-					}
-
-                    if (bookingStatusViewModel.IsDriverInfoAvailable)
-					{
-                        zoomOffset += VehicleInformationOffset;
-					}
-				}
-
-                deltaLat = Math.Abs(maxLat - minLat) * zoomOffset;
-                deltaLng = Math.Abs(maxLon - minLon) * zoomOffset;
-
-                var delta = 0d;
-
-                var centerLat = (maxLat + minLat) / 2;
-                var centerLng = (maxLon + minLon) / 2;
-
-                //Moves the center to avoid having to zoom out too mutch.
-                if (bookingStatusViewModel.IsContactTaxiVisible && Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
-                {
-                    var scale = UIHelper.Is35InchDisplay
-                        ? 1.25
-                        : UIScreen.MainScreen.Scale;
-
-                    delta += (maxLat - minLat) / scale;
-                }
-
-                if (bookingStatusViewModel.IsDriverInfoAvailable && Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
-                {
-                    delta += (deltaLat??0)/4;
-                }
-
-                center = new CLLocationCoordinate2D(centerLat + delta, centerLng);
+                zoomRect = MKMapRect.Union(zoomRect, rect);
             }
 
-            SetRegionAndZoom(region, center, deltaLat, deltaLng);
-        }
+            var overlayOffset = OverlayOffsetProvider != null
+                ? OverlayOffsetProvider() + PinHeight
+                : 0;
 
-        private void SetRegionAndZoom(MKCoordinateRegion region, CLLocationCoordinate2D center, double? deltaLat, double? deltaLng)
-        {
-            region.Center = center;
-            if (deltaLat.HasValue && deltaLng.HasValue)
-            {
-                region.Span = new MKCoordinateSpan(deltaLat.Value, deltaLng.Value);
-            }
-            _automatedMapChanged = true;
-            SetRegion(region, true);
-            RegionThatFits(region);
+            this.SetVisibleMapRect(zoomRect, new UIEdgeInsets(overlayOffset, 40, 10, 40), true);
         }
 
         #endregion
