@@ -9,6 +9,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Diagnostic;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -24,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_registerService = registerService;
 			_accountServiceClient = accountServiceClient;
 			_logger = logger;
+			PhoneNumber = new PhoneNumberModel();
 		}
 
 
@@ -31,10 +33,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_account = _registerService.Account;
 
-			CurrentAccountPhoneResponse currentAccountPhone = await _accountServiceClient.GetAccountPhoneNumber(new CurrentAccountPhoneRequest() { Email = _account.Email });
+			CurrentAccountPhoneResponse currentAccountPhone = null;
+
+			try
+			{
+				currentAccountPhone = await _accountServiceClient.GetAccountPhoneNumber(new CurrentAccountPhoneRequest() { Email = _account.Email });
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex);
+
+				string countryISOCode = new RegionInfo(CultureProvider.CultureInfo.LCID).TwoLetterISORegionName;
+
+				CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryISOCode));
+
+				currentAccountPhone = new CurrentAccountPhoneResponse()
+				{
+					CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryISOCode)).CountryISOCode,
+					PhoneNumber = ""
+				};
+			}
 
 			_account.Country = currentAccountPhone.CountryCode;
 			_account.Phone = currentAccountPhone.PhoneNumber;
+
+			PhoneNumber.Country = currentAccountPhone.CountryCode;
+			PhoneNumber.PhoneNumber = currentAccountPhone.PhoneNumber;
 
 			RaisePropertyChanged(() => Phone);
 			RaisePropertyChanged(() => SelectedCountryCode);
