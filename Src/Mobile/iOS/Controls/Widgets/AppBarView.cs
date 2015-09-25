@@ -9,6 +9,8 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using Cirrious.CrossCore;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -63,12 +65,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_manualPairingButtons.TranslatesAutoresizingMaskIntoConstraints = false;
 			Add(_manualPairingButtons);
 
-            bool hideDestination = TinyIoC.TinyIoCContainer.Current.Resolve<apcurium.MK.Common.Configuration.IAppSettings>().Data.HideDestination;
+            bool hideDestination = Mvx.Resolve<IAppSettings>().Data.HideDestination;
 
             AppBarButton btnEstimate = null;
 
-            if (!hideDestination)
-                btnEstimate = GenerateEstimateButton();
+			if (!hideDestination)
+			{
+				btnEstimate = GenerateEstimateButton();
+			}
 
 			var btnBookForManualRideLinq = GenerateBookButton();
             
