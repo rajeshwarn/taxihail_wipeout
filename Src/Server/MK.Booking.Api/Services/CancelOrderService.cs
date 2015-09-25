@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IOrderDao _orderDao;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly Resources.Resources _resources;
+        private readonly IServerSettings _serverSettings;
 
         public CancelOrderService(ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider,
             IOrderDao orderDao, IAccountDao accountDao, IUpdateOrderStatusJob updateOrderStatusJob, IServerSettings serverSettings)
@@ -59,11 +60,17 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
                 var orderDetail = _orderDao.FindOrderStatusById(order.Id);
+                var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
+
+                var canCancel = orderDetail.IBSStatusId == VehicleStatuses.Common.Loaded 
+                    && pairingInfo != null 
+                    && _serverSettings.GetPaymentSettings().CancelOrderOnUnpair;
 
                 if (currentIbsAccountId.HasValue &&
                     (orderDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                     || orderDetail.IBSStatusId == VehicleStatuses.Common.Arrived
-                    || orderDetail.IBSStatusId == VehicleStatuses.Common.Waiting))
+                    || orderDetail.IBSStatusId == VehicleStatuses.Common.Waiting
+                    || canCancel))
                 {
                     //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
                     Task.Factory.StartNew(() =>
