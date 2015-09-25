@@ -150,10 +150,10 @@
     <comment>Your account has not been activated. Another activation SMS was sent to you.</comment>
   </data>
   <data name="FacebookLoginErrorTitle" xml:space="preserve">
-    <value>Email already used</value>
+    <value>Correo electrónico existente</value>
   </data>
   <data name="FacebookLoginErrorMessage" xml:space="preserve">
-    <value>This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</value>
+    <value>Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.</value>
   </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Por favor introduzca un número de cuenta válido.</value>
@@ -2277,7 +2277,7 @@
     <comment>Link</comment>
   </data>
   <data name="PayPalLinked" xml:space="preserve">
-    <value>Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \ "Pagar en vehículo \" en la pantalla de pago</value>
+    <value>Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</value>
     <comment>Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</comment>
   </data>
   <data name="PayPalLinkedInfo" xml:space="preserve">
@@ -2834,8 +2834,17 @@
 	<data name="WaitingCarLandscapeActivityName" xml:space="preserve">
     	<value>Car Number</value>
 	</data>
+	<data name="BookingAirportDetailsTerminal">
+		<value>, \nTerminal: {0}</value>
+	</data>
 	<data name="UpdateNoticeTitle" xml:space="preserve">
-    	<value>Update Notice</value>
+    		<value>Update Notice</value>
+	</data>
+	<data name="BookingAirportNoFlights_Title" xml:space="preserve">
+		<value>No flights</value>
+	</data>
+	<data name="BookingAirportNoFlights_Message" xml:space="preserve">
+		<value>No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}</value>
 	</data>
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Sorry, this version of the app is no longer supported. Please update the app</value>
@@ -2849,7 +2858,25 @@
    <data name="EmailUsedMessage" xml:space="preserve">
     <value>This email is already used by another account</value>
 	 </data>
-  <data name="OrderStatus_PairingSuccess" xml:space="preserve">
-    <value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
+	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
+		<value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
+	</data>
+	<data name="BookingAirportMissingInfo_Title" xml:space="preserve">
+    <value>Missing information</value>
   </data>
+	<data name="BookingAirportMissingInfo_Message" xml:space="preserve">
+    <value>The airline and the flight number are madatory.</value>
+  </data>
+	<data name="OrderAirportView_BAD_FLIGHT_NUMBER" xml:space="preserve">
+			<value>Invalid flight number</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRPORT_CODE" xml:space="preserve">
+			<value>An error occurred with the flight status provider.</value>
+	</data>
+	<data name="OrderAirportView_DATE_OUT_OF_RANGE" xml:space="preserve">
+			<value>Provided date is out of range.</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRLINE_CODE" xml:space="preserve">
+			<value>An error occurred with the flight status provider.</value>
+	</data>
 </root>

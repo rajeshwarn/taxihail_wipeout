@@ -49,13 +49,9 @@
                             <li><a href="@(ViewData["BaseUrl"] + "/admin/#rules")" class="navbar-brand">Booking Rules</a></li>
                             <li><a href="@(ViewData["BaseUrl"] + "/admin/#termsandconditions")" class="navbar-brand">Terms and Conditions</a></li>
                             <li>@Html.MenuLink("Privacy Policy", "Index", "Privacy")</li>
-
-                            @if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))
-                            {
-                                <li class="nav-header">TaxiHail Network</li>
-                                <li>@Html.MenuLink("Configure", "Index", "TaxiHailNetwork")</li>
-                            }
                             
+                            <li class="nav-header">TaxiHail Network</li>
+                            <li>@Html.MenuLink("Configure", "Index", "TaxiHailNetwork")</li>
                             <li>@Html.MenuLink("Fees", "Fees", "TaxiHailNetwork")</li>
                             
                             @if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))

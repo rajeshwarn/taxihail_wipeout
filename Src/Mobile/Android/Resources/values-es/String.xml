@@ -8,6 +8,8 @@
   <string name="AccountDisabled_NoCall">Su cuenta ha sido deshabilitada</string>
   <string name="AccountNotActivated">Su cuenta no ha sido activada. Otro email de activación le ha sido enviado</string>
   <string name="AccountNotActivatedCodeBySMS">Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado</string>
+  <string name="FacebookLoginErrorTitle">Correo electrónico existente</string>
+  <string name="FacebookLoginErrorMessage">Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.</string>
   <string name="AccountPaymentNumberRequiredMessage">Por favor introduzca un número de cuenta válido.</string>
   <string name="AccountPaymentCustomerNumberRequiredMessage">Por favor introduzca un número de cliente válido.</string>
   <string name="AccountPaymentNumberRequiredTitle">Número de cuenta caducado.</string>
@@ -285,7 +287,6 @@
   <string name="OkButtonText">OK</string>
   <string name="Order">Reservación</string>
   <string name="OrderHistoryListTitle">Reservación #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
-  <string name="FacebookLoginErrorMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
   <string name="OrderNote">Reservado por Móvil</string>
   <string name="OrderNoteGPS">Usando su GPS</string>
   <string name="OrderNoteGPSApproximate">(Dirección aproximada)</string>
@@ -345,8 +346,8 @@
   <string name="ResetPasswordConfirmationMessage">Una nueva contraseña ha sido enviada a su email</string>
   <string name="ResetPasswordConfirmationTitle">Contraseña enviada</string>
   <string name="ResetPasswordEmailPlaceHolder">Email</string>
-  <string name="ResetPasswordInvalidDataMessage">Este email es inválido</string>
-  <string name="ResetPasswordInvalidDataTitle">Email inválido</string>
+  <string name="InvalidEmailMessage">Este email es inválido</string>
+  <string name="InvalidEmailTitle">Email inválido</string>
   <string name="ResetPasswordSubtitleText">Ingrese su email y le enviaremos una nueva contraseña</string>
   <string name="ResetPasswordSucessMessage">La contraseña ha sido restablecida exitosamente</string>
   <string name="ResetPasswordSucessTitle">Restablecer contraseña</string>
@@ -574,6 +575,7 @@
   <string name="PaymentLoadError">No se pueden cargar los datos de pago. Por favor, inténtelo de nuevo más tarde.</string>
   <string name="ManualPairingForRideLinQ_Error_Message">Ocurrió un error durante el registro.</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
+  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="ManualPairingForRideLinQ_Instructions">Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">El código de emparejamiento es inválido.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Código Inválido</string>
@@ -693,7 +695,6 @@
   <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
   <string name="NetworkTimeOutPopupAlways">Always Accept</string>
   <string name="TaxiHailNetworkTimeOutErrorTitle">Error</string>
-  <string name="FacebookLoginErrorTitle">Email already used</string>
   <string name="DriverInfoCompany">Company:</string>
   <string name="TaxiHailNetworkTimeOutPopupRefuse">Ignore</string>
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
@@ -703,10 +704,19 @@
   <string name="WaitingCarLandscapeViewCloseButtonText">Back</string>
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
+  <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
   <string name="UpdateNoticeTitle">Update Notice</string>
+  <string name="BookingAirportNoFlights_Title">No flights</string>
+  <string name="BookingAirportNoFlights_Message">No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
   <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
   <string name="EmailUsedMessageTitle">Email already used</string>
   <string name="EmailUsedMessage">This email is already used by another account</string>
   <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
+  <string name="BookingAirportMissingInfo_Title">Missing information</string>
+  <string name="BookingAirportMissingInfo_Message">The airline and the flight number are madatory.</string>
+  <string name="OrderAirportView_BAD_FLIGHT_NUMBER">Invalid flight number</string>
+  <string name="OrderAirportView_BAD_AIRPORT_CODE">An error occurred with the flight status provider.</string>
+  <string name="OrderAirportView_DATE_OUT_OF_RANGE">Provided date is out of range.</string>
+  <string name="OrderAirportView_BAD_AIRLINE_CODE">An error occurred with the flight status provider.</string>
 </resources>

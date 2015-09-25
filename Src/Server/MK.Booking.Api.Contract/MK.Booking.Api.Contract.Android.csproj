@@ -69,6 +69,7 @@
     <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\EtaForPickupRequest.cs" />
+    <Compile Include="Requests\FlightInformationRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\LogOriginalEtaRequest.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\ActivePromotion.cs" />
     <Compile Include="Resources\AddressList.cs" />
+    <Compile Include="Resources\FlightInformation.cs" />
     <Compile Include="Resources\IbsFare.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />

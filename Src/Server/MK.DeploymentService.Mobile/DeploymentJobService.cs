@@ -71,7 +71,7 @@ namespace MK.DeploymentService.Mobile
 
 					_logger.Debug ("Begin work on " + job.Company.CompanyName);
 
-					UpdateJob ("Starting", JobStatus.Inprogress);
+					UpdateJob ("Starting at " + DateTime.Now, JobStatus.Inprogress);
 
                     var sourceDirectoryConfig =  System.Configuration.ConfigurationManager.AppSettings["CheckoutDir"];
 

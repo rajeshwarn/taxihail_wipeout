@@ -308,19 +308,19 @@ namespace apcurium.MK.Common.Configuration
 
     public class NetworkSettingContainer
     {
-        [CustomizableByCompany, RequiresTaxiHailPro]
+        [CustomizableByCompany]
         [Display(Name = "Network Setting - Primary Order Timeout", Description = "Time (in seconds) before swithching to secondary fleet")]
         public double PrimaryOrderTimeout { get; protected internal set; }
 
-        [CustomizableByCompany, RequiresTaxiHailPro]
+        [CustomizableByCompany]
         [Display(Name = "Network Setting - Secondary Order Timeout", Description = "Time (in seconds) before timing out on order")]
         public double SecondaryOrderTimeout { get; protected internal set; }
 
-        [CustomizableByCompany, RequiresTaxiHailPro, SendToClient]
+        [CustomizableByCompany, SendToClient]
         [Display(Name = "Network Setting - Hide Market Change Warning", Description = "Hide the warning that is displayed when entering a new market")]
         public bool HideMarketChangeWarning { get; protected internal set; }
 
-        [CustomizableByCompany, RequiresTaxiHailPro, SendToClient]
+        [CustomizableByCompany, SendToClient]
         [Display(Name = "Network Setting - Auto Confirm Fleet Change", Description = "Automatically change company if timeout occurs when trying to assing a taxi")]
         public bool AutoConfirmFleetChange { get; protected internal set; }
 
@@ -356,5 +356,24 @@ namespace apcurium.MK.Common.Configuration
         [Display(Name = "Available Vehicle - CMT Geo Fleet ID", Description = "Fleet ID used to find vehicles when Available Vehicles Mode is set to 'Geo'")]
         public int? AvailableVehiclesFleetId { get; protected internal set; }
     }
+
+
+	public class FlightStatsSettingsContainer
+	{
+		[Hidden]
+		[Display(Name = "FlightStatus - App Id", Description = "Application id for flight stats API")]
+		public string AppId { get; set; }
+
+		[Hidden]
+		[Display(Name = "FlightStatus - Application key", Description = "Application keys for flight stats API.")]
+		public string ApplicationKeys { get; set; }
+
+		[Display(Name = "FlightStatus - Api Url", Description = "Url to access the FlightStats api.")]
+		public string ApiUrl { get; set; }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "FlightStatus - Use airport details screen", Description = "Display the airport details screen before the order review screen to allow the user to send airport related information to the driver.")]
+		public bool UseAirportDetails { get; set; }
+	}
 
 }
