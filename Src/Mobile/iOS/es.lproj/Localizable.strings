@@ -143,7 +143,7 @@
 "Delete"="Eliminar";
 "Notification_PromotionUnlockedEmail"="Promociones desbloqueadas (Email)";
 "Order"="Reservación";
-"FacebookLoginErrorMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
+"FacebookLoginErrorMessage"="Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.";
 "HistoryDetailStatusLabel"="Estado:";
 "AddReminderTitle"="Servicio programado";
 "View_UserTaxiHailNetworkSettings"="TaxiHail Network";
@@ -224,7 +224,7 @@
 "EtaLessThanAMinute"="Nearest taxi is less than a minute away";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "AddPaymentMethod_Multiple"="Agregar método de pago";
-"PayPalLinked"="Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \ "Pagar en vehículo \" en la pantalla de pago";
+"PayPalLinked"="Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago";
 "RemoveCreditCardMessage"="Esta seguro que desea eliminar esta tarjeta de crédito?";
 "LoginSupport"="¿Necesita asistencia?";
 "Politeness"="Amabilidad";
@@ -603,7 +603,7 @@
 "ChangePasswordConfirmmation"="Su contraseña ha sido actualizada, por favor inicie sesión";
 "OrderNote"="Reservado por Móvil";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
-"FacebookLoginErrorTitle"="Email already used";
+"FacebookLoginErrorTitle"="Correo electrónico existente";
 "PickupViewPickupLabel"="Recoger:";
 "Done"="Terminado";
 "DriverInfoVehicleMedallion"="Medallion:";

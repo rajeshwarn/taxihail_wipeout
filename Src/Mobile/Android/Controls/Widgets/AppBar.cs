@@ -26,32 +26,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var editButtons = Content.FindViewById(Resource.Id.edit_buttons);
             var airportButtons = Content.FindViewById(Resource.Id.airport_buttons);
             var bookButton = Content.FindViewById(Resource.Id.bookButton);
+            var bookButtonNow = Content.FindViewById(Resource.Id.btnBookNow);
 
 	        var set = this.CreateBindingSet<AppBar, BottomBarViewModel>();
 
 			set.Bind(airportButtons)
 				.For(v => v.Visibility)
-				.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
+                .To(vm => vm.ParentViewModel.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.AirportDetails });
 
 	        set.Bind(bookButtons)
 		        .For(v => v.Visibility)
-		        .To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
+                .To(vm => vm.ParentViewModel.CurrentViewState)
 		        .WithConversion("HomeViewStateToVisibility", new[] {HomeViewModelState.Initial});
 
             set.Bind(bookButton)
                 .For(v => v.Enabled)
-                .To(vm => ((HomeViewModel)vm.Parent).Map.BookCannotExecute)
+                .To(vm => vm.ParentViewModel.Map.BookCannotExecute)
+                .WithConversion("BoolInverter");
+
+            set.Bind(bookButtonNow)
+                .For(v => v.Enabled)
+                .To(vm => vm.ParentViewModel.Map.BookCannotExecute)
                 .WithConversion("BoolInverter");
 
 			set.Bind(editButtons)
 				.For(v => v.Visibility)
-				.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
+                .To(vm => vm.ParentViewModel.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Edit });
 
 			set.Bind(reviewButtons)
 				.For(v => v.Visibility)
-				.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
+                .To(vm => vm.ParentViewModel.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Review });
 
 			set.Apply();
