@@ -719,4 +719,6 @@
   <string name="OrderAirportView_BAD_AIRPORT_CODE">Une erreur est survenue avec le fournisseur d\'informations de vol.</string>
   <string name="OrderAirportView_DATE_OUT_OF_RANGE">La date fournis est à l\'extérieur des limites du fournisseur.</string>
   <string name="OrderAirportView_BAD_AIRLINE_CODE">Une erreur est survenue avec le fournisseur d\'information de vol.</string>
+  <string name="ManualPairing_TimeOut_Title">Erreur de connection</string>
+  <string name="ManualPairing_TimeOut_Message">Un probleme de connexion est survenu lors de la tentative d\'obtenir l\'etat de votre course de taxi.</string>
 </resources>

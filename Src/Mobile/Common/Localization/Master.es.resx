@@ -2879,4 +2879,10 @@
 	<data name="OrderAirportView_BAD_AIRLINE_CODE" xml:space="preserve">
 			<value>An error occurred with the flight status provider.</value>
 	</data>
+	<data name="ManualPairing_TimeOut_Title" xml:space="preserve">
+		<value>Connection error</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
+		<value>There is a connection error preventing us from providing the status of your ride.</value>
+	</data>
 </root>
