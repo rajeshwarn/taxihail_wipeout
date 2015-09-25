@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -15,22 +17,26 @@ using Cirrious.CrossCore;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Resources;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class BookingService : BaseService, IBookingService
     {
-		readonly IAccountService _accountService;
-		readonly ILocalization _localize;
-		readonly IAppSettings _appSettings;
-		readonly IGeolocService _geolocService;
+		private readonly IAccountService _accountService;
+		private readonly ILocalization _localize;
+		private readonly IAppSettings _appSettings;
+		private readonly IGeolocService _geolocService;
+	    private readonly IMessageService _messageService;
 
 		public BookingService(IAccountService accountService,
 			ILocalization localize,
 			IAppSettings appSettings,
-			IGeolocService geolocService)
+			IGeolocService geolocService, 
+			IMessageService messageService)
 		{
 			_geolocService = geolocService;
+			_messageService = messageService;
 			_appSettings = appSettings;
 			_localize = localize;
 			_accountService = accountService;
@@ -57,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 UserCache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
 			}
 
-			Task.Run(() => _accountService.RefreshCache (true));
+			Task.Run(() => _accountService.RefreshCache (true)).FireAndForget();
 
             return orderDetail;
         }
@@ -213,7 +219,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				DirectionInfo directionInfo = null;
 			    if (tarifMode != TarifMode.AppTarif)
 			    {
-			        int? duration = null;
+			        int? duration;
 
 			        duration =
 			            (await
@@ -335,18 +341,52 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 PickupAddress = pickupAddress,
                 ClientLanguageCode = _localize.CurrentLanguage,
             };
+	        try
+	        {
+				var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service =>
+				        service.Pair(request)
+						).Retry(TimeSpan.FromSeconds(10), IsExceptionStatusCodeBadRequest, int.MaxValue);
 
-            var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.Pair(request));
+		        if (response.IsSuccessful)
+		        {
+			        UserCache.Set("LastOrderId", response.Data.OrderId.ToString());
 
-            if (response.IsSuccessful)
-            {
-                UserCache.Set("LastOrderId", response.Data.OrderId.ToString());
+			        return response.Data;
+		        }
 
-                return response.Data;
-            }
+		        throw new Exception(response.ErrorCode);
+	        }
+	        catch (AggregateException ex)
+	        {
+		        var badRequestException = ex.InnerExceptions
+					.Select(exception => exception as WebServiceException)
+					.Where(exception => exception != null)
+				    .LastOrDefault(webException => webException.StatusCode == (int) HttpStatusCode.BadRequest);
 
-            throw new Exception(response.ErrorCode);
+		        if (badRequestException != null)
+		        {
+			        throw badRequestException;
+		        }
+
+				_messageService.ShowMessage(_localize["ManualPairing_TimeOut_Title"], _localize["ManualPairing_TimeOut_Message"]).FireAndForget();
+
+		        throw new Exception();
+	        }
         }
+
+
+	    private bool IsExceptionStatusCodeBadRequest(Exception ex)
+	    {
+		    var webServiceException = ex as WebServiceException;
+
+		    if (webServiceException == null)
+		    {
+			    return false;
+		    }
+
+		    return webServiceException.StatusCode == (int) HttpStatusCode.BadRequest;
+
+	    }
 
         public Task UnpairFromManualRideLinq(Guid orderId)
         {
