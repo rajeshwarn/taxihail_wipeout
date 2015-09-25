@@ -22,6 +22,7 @@ namespace apcurium.MK.Web.Areas
             _cache = cache;
             ViewData["IsAuthenticated"] = AuthSession.IsAuthenticated;
             ViewData["IsSuperAdmin"] = AuthSession.HasPermission(RoleName.SuperAdmin);
+            ViewData["IsSupport"] = AuthSession.HasPermission(RoleName.Support);
         }
 
         protected IAuthSession AuthSession

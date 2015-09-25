@@ -6,7 +6,7 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [AuthorizationRequired(ApplyTo.All, RoleName.Admin)]
+    [AuthorizationRequired(ApplyTo.All, RoleName.Admin, RoleName.Support)]
     [Route("/account/unlink", "PUT")]
     public class UnlinkAccountByAdminRequest : BaseDto
     {

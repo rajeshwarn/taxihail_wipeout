@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
 #if !CLIENT
-    [AuthorizationRequired(ApplyTo.Post, RoleName.Admin)]
+    [AuthorizationRequired(ApplyTo.Post, RoleName.Admin, RoleName.Support)]
 #endif
     [Route("/admin/pushnotifications/{EmailAddress}", "POST")]
     public class PushNotificationAdministrationRequest

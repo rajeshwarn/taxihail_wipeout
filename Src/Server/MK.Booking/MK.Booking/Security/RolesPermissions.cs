@@ -10,6 +10,7 @@ namespace apcurium.MK.Booking.Security
     {
         public const string Admin = "Admin";
         public const string SuperAdmin = "SuperAdmin";
+        public const string Support = "Support";
     }
 
     [Flags]
@@ -17,5 +18,6 @@ namespace apcurium.MK.Booking.Security
     {
         Admin = 1,
         SuperAdmin = 3,
+        Support = 5,
     }
 }

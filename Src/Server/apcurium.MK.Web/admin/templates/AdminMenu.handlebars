@@ -4,6 +4,7 @@
     <li data-route=""><a href="#">{{localize "Default favorite addresses"}}</a></li>
     <li data-route="addresses/popular"><a href="#">{{localize "Popular addresses"}}</a></li>
 
+    {{#unless isSupport}}
     <li class="nav-header">{{localize "Settings"}}</li>
     <li><a href="../AdminTh/CompanySettings/">{{localize "Company Settings"}}</a></li>
     <li data-route="notificationSettings"><a href="#">{{localize "Notification Settings"}}</a></li>
@@ -23,6 +24,7 @@
     <li class="nav-header">{{localize "TaxiHail Network"}}</li>
     <li><a href="../AdminTh/TaxiHailNetwork/">{{localize "Configure"}}</a></li>
     <li><a href="../AdminTh/TaxiHailNetwork/Fees">{{localize "Fees"}}</a></li>
+    {{/unless}}
 
     {{#if isTaxiHailPro}}
         <li class="nav-header">{{localize "Promo Codes"}}</li>
@@ -31,10 +33,12 @@
     {{/if}}
 
     <li class="nav-header">{{localize "User Management"}}</li>
+    {{#unless isSupport}}
     <li data-route="security"><a href="#">{{localize "Grant access admin"}}</a></li>
+    {{/unless}}
     <li data-route="confirmemail"><a href="#">{{localize "Enable Disable Account"}}</a></li>
     <li data-route="signup"><a href="#">{{localize "Signup"}}</a></li>
-      
+
     <li class="nav-header">{{localize "Test Notifications"}}</li>  
     <li data-route="sendpushnotification"><a href="#">{{localize "Send Push"}}</a></li>
     <li data-route="sendtestemail"><a href="#">{{localize "Send Test Email"}}</a></li>
