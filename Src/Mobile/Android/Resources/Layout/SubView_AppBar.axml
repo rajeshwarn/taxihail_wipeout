@@ -200,6 +200,7 @@
                 android:layout_height="55dip"
                 android:layout_weight="1.5">
                 <Button
+                    android:id="@+id/bookButton"
                     style="@style/ButtonActionGreenStyle"
                     android:textSize="19dip"
                     android:layout_width="match_parent"

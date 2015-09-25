@@ -30,6 +30,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private const int BookingStatusHeight = 75;
         private const int BookingStatusAndDriverInfosHeight = 158;
 
+	    private const int MarginBetweenOverlay = 16;
+
 		private HomeViewModelState _presentationState = HomeViewModelState.Initial;
 
         public override void ViewWillAppear (bool animated)
@@ -227,11 +229,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(mapView)
                 .For(v => v.CancelAutoFollow)
                 .To(vm => vm.BookingStatus.CancelAutoFollow);
+
+            mapView.OverlayOffsetProvider = GetOverlayOffset;
             
             #endregion
 
             set.Apply();
         }
+
+        private nfloat GetOverlayOffset()
+        {
+            var screenOffset = (nfloat)Math.Abs(UIScreen.MainScreen.ApplicationFrame.Height - UIScreen.MainScreen.Bounds.Height);
+
+            return ViewModel.BookingStatus.IsContactTaxiVisible
+				? contactTaxiControl.Bounds.Height + bookingStatusControl.Bounds.Height + MarginBetweenOverlay + screenOffset
+                : bookingStatusControl.Bounds.Height + screenOffset;
+        }
+
 
         private void ToggleContactTaxiVisibility(bool isContactTaxiVisible)
         {
