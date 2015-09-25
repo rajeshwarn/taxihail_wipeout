@@ -542,7 +542,7 @@
   <string name="PayPalLinkError">No se puede vincular la cuenta de PayPal</string>
   <string name="PayPalUnlinkError">No se puede desvincular la cuenta de PayPal</string>
   <string name="LinkPayPalConfirmation">Vincular</string>
-  <string name="PayPalLinked">Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \ "Pagar en vehículo \" en la pantalla de pago</string>
+  <string name="PayPalLinked">Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
   <string name="PayPalLinkedInfo">Cuenta vinculada</string>
   <string name="NoPairingCreditCard">Ninguno</string>
   <string name="InvalidPassengersNumberTitle">Número inválido de pasajeros</string>

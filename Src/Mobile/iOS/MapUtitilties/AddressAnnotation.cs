@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         private static readonly UIColor Red = UIColor.FromRGB(255, 0, 23);
         private static readonly UIColor Green = UIColor.FromRGB(30, 192, 34);
 
-		public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s, bool useThemeColorForIcons, bool showSubtitleOnPin, string vehicleTypeLogoName = null)
+        public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s, bool useThemeColorForIcons, bool showSubtitleOnPin,bool showMedallion = false, string vehicleTypeLogoName = null)
 		{
 			AddressType = type;
 			_coordinate = coord;
@@ -29,7 +29,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             UseThemeColorForIcons = useThemeColorForIcons;
 			ShowSubtitleOnPin = showSubtitleOnPin;
             _vehicleTypeLogoName = vehicleTypeLogoName;
+            ShowMedallionOnStart = showMedallion;
 		}
+
+        public bool ShowMedallionOnStart { get; private set; }
 		
 		private CLLocationCoordinate2D _coordinate;
         private string _vehicleTypeLogoName;
