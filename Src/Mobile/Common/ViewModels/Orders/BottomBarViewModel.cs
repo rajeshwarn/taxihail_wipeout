@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 _isManualRidelinqEnabled = value;
 
-				RefreshAppBarViewState(((HomeViewModel)Parent).CurrentViewState);
+				RefreshAppBarViewState(_parentAsHomeViewModel.CurrentViewState);
 
                 RaisePropertyChanged();
                 RaisePropertyChanged(() => BookButtonText);
@@ -159,6 +159,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_bookButtonHidden = value;
 				RaisePropertyChanged(() => BookButtonHidden);
+			}
+		}
+
+		private HomeViewModel _parentAsHomeViewModel
+		{
+			get
+			{
+				return (HomeViewModel)Parent;
 			}
 		}
 
@@ -397,7 +405,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     await ShowFareEstimateAlertDialogIfNecessary();
                     await ValidateCardOnFile();
                     await PreValidateOrder();
-                    ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportDetails;
+					_parentAsHomeViewModel.CurrentViewState = HomeViewModelState.AirportDetails;
                 });
             }
         }
@@ -408,7 +416,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             await ShowFareEstimateAlertDialogIfNecessary();
             await ValidateCardOnFile();
             await PreValidateOrder();
-            ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
+			_parentAsHomeViewModel.CurrentViewState = HomeViewModelState.Review;
 	    }
 
         public ICommand ConfirmOrder
@@ -540,11 +548,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							var questions = await _orderWorkflowService.GetAccountPaymentQuestions();
 							if ((questions != null) && (questions.Length > 0))
 							{
-								((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;								
+								_parentAsHomeViewModel.CurrentViewState = HomeViewModelState.Initial;								
 
 								ShowSubViewModel<InitializeOrderForAccountPaymentViewModel, Tuple<Order, OrderStatusDetail>>(
 									null, 
-									result => ((HomeViewModel)Parent).GotoBookingStatus(result.Item1, result.Item2)
+									result => _parentAsHomeViewModel.GotoBookingStatus(result.Item1, result.Item2)
 								);
 							}
 							else
@@ -575,12 +583,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 									{
 										var orderInfos = await GetOrderInfos(pendingOrderId);
 
-										var parent = ((HomeViewModel)Parent);
+										_parentAsHomeViewModel.BookingStatus.StartBookingStatus(orderInfos.Item1, orderInfos.Item2);
 
-										parent.BookingStatus.StartBookingStatus(orderInfos.Item1, orderInfos.Item2);
-
-										parent.CurrentViewState = HomeViewModelState.BookingStatus;
-										parent.AutomaticLocateMeAtPickup.ExecuteIfPossible();
+										_parentAsHomeViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
+										_parentAsHomeViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
 									},
                                         this.Services().Localize["Cancel"], () => {});
                                 }
@@ -619,7 +625,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				var result = await _orderWorkflowService.ConfirmOrder();
 				this.Services().Analytics.LogEvent("Book");
-				((HomeViewModel)Parent).GotoBookingStatus(result.Item1, result.Item2);
+				_parentAsHomeViewModel.GotoBookingStatus(result.Item1, result.Item2);
 			}
 		}
 
@@ -630,7 +636,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(async () =>
                 {
-					Action onValidated = () => ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.PickDate;
+					Action onValidated = () => _parentAsHomeViewModel.CurrentViewState = HomeViewModelState.PickDate;
 					await PrevalidatePickupAndDestinationRequired(onValidated);
                 });
             }
@@ -642,7 +648,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
 				return this.GetCommand(() =>
 				{
-					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportPickDate;
+					_parentAsHomeViewModel.CurrentViewState = HomeViewModelState.AirportPickDate;
 				});
             }
         }
@@ -725,7 +731,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(() =>
                 {
-					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+					_parentAsHomeViewModel.CurrentViewState = HomeViewModelState.Initial;
                 });
             }
         }
@@ -755,7 +761,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     _orderWorkflowService.SetPickupDate(null);
                     _orderWorkflowService.CancelRebookOrder();
                     _orderWorkflowService.SetNoteToDriver(string.Empty);
-					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+					_parentAsHomeViewModel.CurrentViewState = HomeViewModelState.Initial;
                 });
             }
         }
@@ -795,7 +801,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						&& !Settings.DisableFutureBooking && !Settings.DisableImmediateBooking)
                     {
 						//We need to show the Book A Taxi popup.
-						Action onValidated = () => ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.BookATaxi;
+						Action onValidated = () => _parentAsHomeViewModel.CurrentViewState = HomeViewModelState.BookATaxi;
 						await PrevalidatePickupAndDestinationRequired(onValidated);
                     }
 					// immediate booking
@@ -806,7 +812,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					// future booking
 					else if (!Settings.DisableFutureBooking)
 					{
-						Action onValidated = () => ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.PickDate;
+						Action onValidated = () => _parentAsHomeViewModel.CurrentViewState = HomeViewModelState.PickDate;
 						await PrevalidatePickupAndDestinationRequired(onValidated);
 					}
                 });
@@ -878,11 +884,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
                     this.Services().Localize["AddACardButton"],
                     () => {
-						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+						_parentAsHomeViewModel.CurrentViewState = HomeViewModelState.Initial;
 						ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true });
                     },
                     this.Services().Localize["Cancel"],
-                    () => ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial);
+					() => _parentAsHomeViewModel.CurrentViewState = HomeViewModelState.Initial);
             }
         }
 
@@ -902,7 +908,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     this.Services().Message.ShowMessage(
                         this.Services().Localize["WarningTitle"], validationInfo.Message,
                         this.Services().Localize["Continue"], () => _orderWorkflowService.ConfirmValidationOrder(),
-                        this.Services().Localize["Cancel"], () => ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial);
+						this.Services().Localize["Cancel"], () => _parentAsHomeViewModel.CurrentViewState = HomeViewModelState.Initial);
                 }
                 else
                 {
