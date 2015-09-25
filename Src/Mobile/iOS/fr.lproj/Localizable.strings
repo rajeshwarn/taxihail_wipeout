@@ -605,7 +605,7 @@
 "ChangePasswordConfirmmation"="Votre mot de passe a été mis à jour, merci de vous connecter.";
 "OrderNote"="Réserver sur votre mobile";
 "CallDriverUsingProxyPrompt"="Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.";
-"FacebookLoginErrorTitle"="Email déjà utilisé";
+"FacebookLoginErrorTitle"="Email existant";
 "PickupViewPickupLabel"="Départ:";
 "Done"="Terminé";
 "DriverInfoVehicleMedallion"="Medallion:";
