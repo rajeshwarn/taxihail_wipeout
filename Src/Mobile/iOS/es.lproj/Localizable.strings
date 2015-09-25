@@ -225,7 +225,7 @@
 "EtaLessThanAMinute"="Nearest taxi is less than a minute away";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "AddPaymentMethod_Multiple"="Agregar método de pago";
-"PayPalLinked"="Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \ "Pagar en vehículo \" en la pantalla de pago";
+"PayPalLinked"="Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo \" en la pantalla de pago";
 "RemoveCreditCardMessage"="Esta seguro que desea eliminar esta tarjeta de crédito?";
 "LoginSupport"="¿Necesita asistencia?";
 "Politeness"="Amabilidad";
