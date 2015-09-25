@@ -398,7 +398,7 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
-                promptsLength, false, fare);
+                promptsLength, fare);
 
             int? orderId = null;
 
@@ -421,29 +421,29 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
-                promptsLength, false, fare);
+                promptsLength, fare, orderId);
 
-            int? ibsOrderId = null;
+            var orderKey = new TBookOrderKey();
 
             UseService(service =>
             {
                 Logger.LogMessage("WebService Creating IBS Hail : " +
-                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_6)));
+                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_11)));
                 Logger.LogMessage("WebService Creating IBS Hail pickup : " +
                                   JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Hail dest : " +
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
-                ibsOrderId = service.SaveBookOrder_6(UserNameApp, PasswordApp, order);
-                //Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey.OrderID + ", orderGUID received : " + orderKey.GUID);
+                orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, null);
+                Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey.OrderID + ", orderGUID received : " + orderKey.GUID);
             });
 
             return new IbsHailResponse
             {
                 OrderKey = new IbsOrderKey
                 {
-                    TaxiHailOrderId = orderId,
-                    IbsOrderId = ibsOrderId ?? -9999
+                    TaxiHailOrderId = orderKey.GUID.HasValue() ? Guid.Parse(orderKey.GUID) : Guid.Empty,
+                    IbsOrderId = orderKey.OrderID
                 }
             };
         }
@@ -512,11 +512,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        private TBookOrder_8 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, bool isHailRequest, Fare fare = default(Fare))
+        private TBookOrder_11 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
-            var order = new TBookOrder_8
+            var order = new TBookOrder_11
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,
@@ -524,6 +524,11 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Phone = CleanPhone(phone),
                 AccountNum = accountNumber
             };
+
+            if (taxiHailOrderId.HasValue)
+            {
+                order.GUID = taxiHailOrderId.ToString();
+            }
 
             if (!_serverSettings.ServerData.HideFareEstimateFromIBS)
             {

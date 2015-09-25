@@ -174,9 +174,8 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     private System.Threading.SendOrPostCallback UpdateJobToVehicleOperationCompleted;
     
     /// <remarks/>
-    public WebOrder7Service()
-    {
-        this.Url = "http://64.179.223.211/IBSCab/IBSCab.dll/soap/IWEBOrder_7";
+    public WebOrder7Service() {
+        this.Url = "http://54.84.8.232:16928/IBSCab/IBSCab.dll/soap/IWEBOrder_7";
     }
     
     /// <remarks/>
@@ -5921,7 +5920,7 @@ public partial class TOrderStatus_2 : TOrderStatus {
     private double vatField;
 
     public double VAT { get { return this.vatField; } set { this.vatField = value; } }
-
+    
     /// <remarks/>
     public string CallNumber {
         get {
@@ -7223,7 +7222,6 @@ public partial class TVehiclePosition {
 }
 
 /// <remarks/>
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_4))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -7250,7 +7248,7 @@ public partial class TVehiclePosition_2 : TVehiclePosition {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
-public partial class TVehiclePosition_4 : TVehiclePosition_2 {
+public partial class TVehiclePosition_4 : TVehiclePosition {
     
     private TVehicleTypeItem vehicleTypeField;
     
