@@ -21,7 +21,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Common.Entity;
 using Android.Views.InputMethods;
 
@@ -443,7 +442,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 if (_locateUserOnStart)
                 {
                     // this happens ONLY when returning from a ride
-                    ViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible(null);
+                    ViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
                     _locateUserOnStart = false;
                 }
             }
@@ -493,14 +492,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
                 var dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
-                if (ViewModel.CurrentViewState == HomeViewModelState.PickDate)
-                {
-	                ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(dt);
-	            }
-                else
-                {
-                    ViewModel.BottomBar.SetPickupDateAndReturnToAirport.ExecuteIfPossible(dt);
-                }
+				ViewModel.BottomBar.CreateOrder.ExecuteIfPossible(dt);
             }
             else if (requestCode == (int) ActivityEnum.BookATaxi && resultCode == Result.Ok)
             {
@@ -508,7 +500,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 switch (result)
                 {
                     case BookATaxiEnum.BookNow:
-                        ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible();
+						ViewModel.BottomBar.CreateOrder.ExecuteIfPossible();
                         break;
                     case BookATaxiEnum.BookLater:
                         ViewModel.BottomBar.BookLater.ExecuteIfPossible();
@@ -518,9 +510,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         break;
                 }
             }
+			else if (requestCode == (int) ActivityEnum.DateTimePicked 
+				&& ViewModel.CurrentViewState == HomeViewModelState.AirportPickDate)
+			{
+				ViewModel.CloseCommand.ExecuteIfPossible();
+			}
             else
             {
-                ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible();
+				ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible();
             }
         }
 

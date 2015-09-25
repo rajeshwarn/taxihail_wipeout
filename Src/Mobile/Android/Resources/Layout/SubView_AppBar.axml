@@ -151,6 +151,7 @@
                 android:paddingTop="10dp"
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical"
+                local:MvxBind="Visibility Settings.HideDestination, Converter=InvertedVisibility;Click ChangeAddressSelectionMode"
                 android:gravity="center_vertical">
                 <LinearLayout
                     android:paddingTop="5dp"
@@ -160,7 +161,6 @@
                     android:minWidth="55dip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    local:MvxBind="Visibility Settings.HideDestination, Converter=InvertedVisibility;Click ChangeAddressSelectionMode"
                     android:layout_gravity="start|center">
                     <ImageView
                         android:id="@+id/btnEstimate"

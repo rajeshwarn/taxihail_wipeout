@@ -43,6 +43,7 @@
 "CmtCarNumber"="Número de Taxi:";
 "Notification_PromotionUnlockedPush"="Promociones bloqueadas (Push)";
 "ManualRideLinqCreditCardDisabled"="Su tarjeta de crédito en el perfil tiene un cargo pendiente de un servicio anterior. Este pago vencido le impide el emparejamiento con RideLinQ";
+"OrderAirportView_DATE_OUT_OF_RANGE"="Provided date is out of range.";
 "StatusActionButton"="Llamar / Reservar / Cancelar";
 "TaxiHailNetworkTimeOutPopupMessage"="Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?";
 "ConfirmationOfPaymentSent"="Confirmación de pago enviada al chofer";
@@ -143,7 +144,7 @@
 "Delete"="Eliminar";
 "Notification_PromotionUnlockedEmail"="Promociones desbloqueadas (Email)";
 "Order"="Reservación";
-"FacebookLoginErrorMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
+"FacebookLoginErrorMessage"="Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.";
 "HistoryDetailStatusLabel"="Estado:";
 "AddReminderTitle"="Servicio programado";
 "View_UserTaxiHailNetworkSettings"="TaxiHail Network";
@@ -251,6 +252,7 @@
 "View_BookingDetail"="Detalles de la reservación";
 "RideSettingsVehiculeType"="Tipo de Vehículo";
 "WarningPushServiceAction"="Gracias por informarme";
+"BookingAirportDetailsTerminal"=", \nTerminal: {0}";
 "LoginForgotPasswordDetail"="Ingrese su email y le enviaremos una nueva contraseña";
 "UnpairWarningCancelButton"="Cancelar";
 "PassengerNumberLabel"="Pasajeros";
@@ -400,6 +402,7 @@
 "BookItLaterButton"="Mas Tarde";
 "RingCode"="Código de entrada";
 "app_id"="134284363380764";
+"BookingAirportMissingInfo_Title"="Missing information";
 "View_AboutUs"="Acerca de nosotros";
 "Error_InvalidCvvMessage"="El CVV debe ser un número entre 3 y 4 dígitos";
 "ScanCreditCard"="Escanear su Tarjeta de crédito";
@@ -489,6 +492,7 @@
 "CmtTransactionResendConfirmationButtonText"="Re-enviar";
 "StatusDescription"="Reservación #{0}";
 "Notification_ReceiptEmail"="Recibo (email)";
+"OrderAirportView_BAD_FLIGHT_NUMBER"="Invalid flight number";
 "TaxiHailNetworkTimeOutErrorTitle"="Error";
 "InvalidAccountOnActivatedMessage"="Su cuenta no se pudo validar, usted debe iniciar seción antes de usar esta aplicación";
 "Overdue_Date"="Fecha de la transacción:";
@@ -580,6 +584,7 @@
 "LinkPayPalConfirmation"="Vincular";
 "Notification_PaymentConfirmationPush"="Confirmación de pago";
 "HistoryDetailAuthorizationLabel"="Autorización";
+"OrderAirportView_BAD_AIRPORT_CODE"="An error occurred with the flight status provider.";
 "DestinationMapTitle"="Ubicacion de destino";
 "CreateAccountPhonePlaceHolder"="Celular";
 "HistoryDetailDestinationLabel"="Destino:";
@@ -603,7 +608,7 @@
 "ChangePasswordConfirmmation"="Su contraseña ha sido actualizada, por favor inicie sesión";
 "OrderNote"="Reservado por Móvil";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
-"FacebookLoginErrorTitle"="Email already used";
+"FacebookLoginErrorTitle"="Correo electrónico existente";
 "PickupViewPickupLabel"="Recoger:";
 "Done"="Terminado";
 "DriverInfoVehicleMedallion"="Medallion:";
@@ -642,6 +647,7 @@
 "Notification_DriverAssignedEmail"="Chofer asignado (email)";
 "May"="May (05)";
 "PayNow"="Pagar con Aplicación";
+"BookingAirportNoFlights_Message"="No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}";
 "StatusActionCancelButton"="Cancelar reservación";
 "OtherListItemLabel"="Porcentaje personalizada";
 "ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
@@ -660,6 +666,7 @@
 "GooglePlayServicesNotAvailableMessage"="Usted necesita actualizar los servicios de “Google play” para poder utilizar esta aplicación";
 "AccountPaymentQuestionsRequired"="(requerido)";
 "DestinationAddress"="Destination address";
+"OrderAirportView_BAD_AIRLINE_CODE"="An error occurred with the flight status provider.";
 "ChargeTypeCreditCardFile"="Tarjeta de crédito guardada";
 "AccountDisabled_NoCall"="Su cuenta ha sido deshabilitada";
 "View_AccountConfirmation_Button"="Confirmar";
@@ -670,6 +677,7 @@
 "StatusActionBookButton"="Reservar otro taxi";
 "WarningLocationServiceTitle"="Aviso";
 "November"="Nov (11)";
+"BookingAirportNoFlights_Title"="No flights";
 "EstimatedFareNotAvailable"="Costo estimado no disponible";
 "RateLastRideTitle"="¿Calificar su servicio?";
 "Tuto02Bottom"="Si esta un poco desplazada, simplemente mueva el mapa a su ubicación actual";
@@ -679,6 +687,7 @@
 "CreditCardExpYear"="Mes de expiración";
 "WarningLocationService"="Por favor encienda los servicios de ubicación para poder mostrar su posición en el mapa";
 "Facebook"="Iniciar sesión con Facebook";
+"BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";
 "PanelMenuViewNotificationsText"="Notificaciones";
 "HistoryLoadError"="No se pudo cargar el historial. Favor de intenar más tarde.";
 "UpdateNoticeTitle"="Update Notice";

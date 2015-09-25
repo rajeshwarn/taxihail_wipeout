@@ -120,8 +120,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppServices\IAirportInformationService.cs" />
     <Compile Include="AppServices\IGeolocService.cs" />
     <Compile Include="AppServices\IMetricsService.cs" />
+    <Compile Include="AppServices\Impl\AirportInformationService.cs" />
     <Compile Include="AppServices\Impl\MetricsService.cs" />
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
     <Compile Include="AppServices\Impl\POIProvider.cs" />
