@@ -113,16 +113,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 });
             
             if (!hideDestination)
-               AddConstraints(new []
+            {
+                AddConstraints(new []
                     {
                         NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnEstimate, NSLayoutAttribute.Trailing, 1, 10f),
                     });
+            }
             else
+            {
                 AddConstraints(new []
                     {
                         NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.Leading, 1, 10f),
-                    });
-                
+                    }); 
+            }
 
 			// Constraints for Book Now button
 			AddConstraints(new []
