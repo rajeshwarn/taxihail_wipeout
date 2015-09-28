@@ -434,10 +434,11 @@ namespace apcurium.MK.Booking.Api.Services
             if (isHailRequest)
             {
                 var result = CreateIBSHailOrder(orderCommand.OrderId, account, request, referenceData, chargeTypeIbs,
-                                accountValidationResult.Prompts, accountValidationResult.PromptsLength,
-                                bestAvailableCompany, market, isPrepaid).Result;
+                                        accountValidationResult.Prompts, accountValidationResult.PromptsLength,
+                                        bestAvailableCompany, market, isPrepaid);
 
                 return result.HailResult;
+                
             }
             else
             {
@@ -775,14 +776,14 @@ namespace apcurium.MK.Booking.Api.Services
             return null;
         }
 
-        private async Task<IBSOrderResult> CreateIBSHailOrder(Guid orderId, AccountDetail account, CreateOrder request,
+        private IBSOrderResult CreateIBSHailOrder(Guid orderId, AccountDetail account, CreateOrder request,
             ReferenceData referenceData, string chargeTypeIbs, string[] prompts, int?[] promptsLength,
             BestAvailableCompany bestAvailableCompany, string market = null, bool isPrepaid = false)
         {
             var orderResult = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, market, true, bestAvailableCompany.CompanyKey);
 
             // Wait for order creation to complete before sending other commands
-            await Task.Delay(750);
+            Thread.Sleep(750);
 
             ReactToIbsOrderCreation(orderId, orderResult.HailResult.OrderKey.IbsOrderId, isPrepaid, request.ClientLanguageCode);
 

@@ -457,7 +457,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Getting Vehicle Candidates : " + JsonSerializer.SerializeToString(orderKey, typeof(IbsOrderKey)));
 
                 vehicleCandidates = service.GetVehicleCandidates(UserNameApp, PasswordApp, new TBookOrderKey { GUID = orderKey.ToString(), OrderID = orderKey.IbsOrderId });
-                Logger.LogMessage("WebService Getting Vehicle Candidates, candidates received : " + JsonSerializer.SerializeToString(vehicleCandidates, typeof(TVehicleComp[])));
+                Logger.LogMessage("WebService Getting Vehicle Candidates, candidates received : " + JsonSerializer.SerializeToString(vehicleCandidates, typeof(TVehicleComp)));
             });
 
             return Mapper.Map<IbsVehicleCandidate[]>(vehicleCandidates);
