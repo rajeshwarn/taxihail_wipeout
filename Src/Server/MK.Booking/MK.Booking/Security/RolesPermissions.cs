@@ -16,8 +16,8 @@ namespace apcurium.MK.Booking.Security
     [Flags]
     public enum Roles
     {
-        Admin = 1,
-        SuperAdmin = 3,
-        Support = 5,
+        Support = 4,
+        Admin = 0xFF,
+        SuperAdmin = 0x1FF,
     }
 }

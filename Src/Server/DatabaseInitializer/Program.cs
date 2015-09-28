@@ -699,7 +699,7 @@ namespace DatabaseInitializer
             var admin = accounts.FindByEmail("taxihail@apcurium.com");
 
             if (admin != null
-                && (!admin.IsAdmin || !admin.IsConfirmed))
+                && (!admin.HasAdminAccess || !admin.IsConfirmed))
             {
                 commandBus.Send(new AddRoleToUserAccount
                 {
