@@ -2280,6 +2280,6 @@
 		<value>Erreur de connection</value>
 	</data>
 	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
-		<value>Un probleme de connexion est survenu lors de la tentative d'obtenir l'etat de votre course de taxi.</value>
+		<value>Un probleme de connexion est survenu lors de la tentative d'obtenir l'état de votre course de taxi.</value>
 	</data>
 </root>
