@@ -53,14 +53,19 @@ namespace apcurium.MK.Booking.Api.Services
         public object Put(GrantSupportRightRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
-            if (account == null) throw new HttpError(HttpStatusCode.BadRequest, "Bad request");
-
-            _commandBus.Send(new AddRoleToUserAccount
+            if (account != null)
             {
-                AccountId = account.Id,
-                RoleName = RoleName.Support
-            });
-            return new HttpResult(HttpStatusCode.OK, "OK");
+                _commandBus.Send(new AddRoleToUserAccount
+                {
+                    AccountId = account.Id,
+                    RoleName = RoleName.Support
+                });
+                return new HttpResult(HttpStatusCode.OK, "OK");
+            }
+            else
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, "Account not found");
+            }
         }
     }
 }
