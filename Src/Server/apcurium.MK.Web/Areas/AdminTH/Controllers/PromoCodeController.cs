@@ -19,7 +19,7 @@ using ServiceStack.ServiceModel.Extensions;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
-    [AuthorizationRequired(RoleName.Admin, RoleName.Support)]
+    [AuthorizationRequired(RoleName.Support)]
     public class PromoCodeController : ServiceStackController
     {
         private readonly IPromotionDao _promotionDao;

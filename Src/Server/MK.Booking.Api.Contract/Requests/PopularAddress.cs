@@ -12,7 +12,7 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [AuthorizationRequired(ApplyTo.All, RoleName.Admin, RoleName.Support)]
+    [AuthorizationRequired(ApplyTo.All, RoleName.Support)]
     [Route("/admin/popularaddresses", "POST")]
     [Route("/admin/popularaddresses/{Id}", "PUT, DELETE")]
     public class PopularAddress : BaseDto
