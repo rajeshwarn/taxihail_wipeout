@@ -540,7 +540,7 @@
 "PayPalLinkError"="No se puede vincular la cuenta de PayPal";
 "PayPalUnlinkError"="No se puede desvincular la cuenta de PayPal";
 "LinkPayPalConfirmation"="Vincular";
-"PayPalLinked"="Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo \" en la pantalla de pago";
+"PayPalLinked"="Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago";
 "PayPalLinkedInfo"="Cuenta vinculada";
 "NoPairingCreditCard"="Ninguno";
 "InvalidPassengersNumberTitle"="Número inválido de pasajeros";
