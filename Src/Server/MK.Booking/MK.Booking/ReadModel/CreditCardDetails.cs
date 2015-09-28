@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
 
 #endregion
 
@@ -10,6 +11,11 @@ namespace apcurium.MK.Booking.ReadModel
 {
     public class CreditCardDetails
     {
+        public CreditCardDetails()
+        {
+            Type = CreditCardConstants.Personal;
+        }
+
         [Key]
         public Guid CreditCardId { get; set; }
 
@@ -47,5 +53,7 @@ namespace apcurium.MK.Booking.ReadModel
 
             return false;
         }
+        
+        public string Type { get; set; }
     }
 }
