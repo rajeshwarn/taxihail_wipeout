@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.Security
     public enum Roles
     {
         Support = 4,
+        //We use those values in order to be able to add Roles before Admin (Support in the basic role)
+        //Admin has all Support permissions and SuperAdmin has both Support and Admin persmissions
         Admin = 0xFF,
         SuperAdmin = 0x1FF,
     }
