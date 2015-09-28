@@ -222,7 +222,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void AddOrUpdateCreditCard(string creditCardCompany, Guid creditCardId, string nameOnCard, 
-            string last4Digits, string expirationMonth, string expirationYear, string token)
+            string last4Digits, string expirationMonth, string expirationYear, string token, string label)
         {
             Update(new CreditCardAddedOrUpdated
             {
@@ -232,7 +232,8 @@ namespace apcurium.MK.Booking.Domain
                 Last4Digits = last4Digits,
                 ExpirationMonth = expirationMonth,
                 ExpirationYear = expirationYear,
-                Token = token
+                Token = token,
+                Label = label
             });
         }
 

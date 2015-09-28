@@ -57,7 +57,7 @@ namespace apcurium.MK.Web.admin
             GeolocSearchRegion = FindParam(filters, "region");
             GeolocSearchBounds = FindParam(filters, "bounds");
 
-            if (!base.UserSession.HasPermission(RoleName.Admin))
+            if (!base.UserSession.HasPermission(RoleName.Support))
             {
                 Response.Redirect("~");
             }

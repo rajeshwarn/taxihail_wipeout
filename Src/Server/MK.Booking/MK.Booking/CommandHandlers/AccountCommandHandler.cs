@@ -70,7 +70,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.Last4Digits,
                 command.ExpirationMonth,
                 command.ExpirationYear,
-                command.Token);
+                command.Token,
+                command.Label);
             _repository.Save(account, command.Id.ToString());
         }
 
