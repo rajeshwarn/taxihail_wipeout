@@ -181,6 +181,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return ((HomeViewModel)Parent).CurrentViewState == HomeViewModelState.Initial;
 		}
 
+		private bool _bookCannotExecute;
+		public bool BookCannotExecute
+		{
+			get 
+			{ 
+				return _bookCannotExecute; 
+			}
+			set
+			{
+				_bookCannotExecute = value;
+				RaisePropertyChanged();
+			}
+		}
+			
 		private async Task SetAddressToCoordinate(MapBounds bounds, CancellationToken token)
 		{
 			if (AddressSelectionMode == AddressSelectionMode.None)
@@ -193,8 +207,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Latitude = bounds.GetCenter().Latitude,
 				Longitude = bounds.GetCenter().Longitude
 			};
-
+			
 			await _orderWorkflowService.SetAddressToCoordinate(position, token);
+			BookCannotExecute = false;
 		}
     }
 }

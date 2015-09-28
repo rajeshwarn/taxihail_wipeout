@@ -9,8 +9,9 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
-using Cirrious.CrossCore;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -157,6 +158,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set.Bind(btnBookForManualRideLinq)
 				.For(v => v.Command)
 				.To(vm => vm.Book);
+
+            set.Bind(btnBookForManualRideLinq)
+                .For(v => v.Enabled)
+                .To(vm => vm.ParentViewModel.Map.BookCannotExecute)
+                .WithConversion("BoolInverter");
+            
 		    set.Bind(btnBookForManualRideLinq)
 		        .For("Title")
 		        .To(vm => vm.BookButtonText);
@@ -308,6 +315,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(btnBook)
                 .For(v => v.Command)
                 .To(vm => vm.Book);
+            
+            set.Bind(btnBook)
+                .For(v => v.Enabled)
+                .To(vm => vm.ParentViewModel.Map.BookCannotExecute)
+                .WithConversion("BoolInverter");
+            
 			set.Bind(btnBook)
 				.For("Title")
 				.To(vm => vm.BookButtonText);
