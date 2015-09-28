@@ -479,7 +479,7 @@ namespace MK.Common.Configuration
         public bool ShowMessageDriver { get; set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Display - Show Message Driver", Description = "Show button on the status screen to text message the driver")]
+        [Display(Name = "Display - Maximum number of Cards On File", Description = "Maximum number of Credit cards the client car add to his account")]
         public bool MaxNumberOfCardsOnFile { get; set; }
     }
 }
