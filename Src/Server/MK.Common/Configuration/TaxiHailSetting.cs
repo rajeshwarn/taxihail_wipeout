@@ -95,10 +95,11 @@ namespace MK.Common.Configuration
             TwitterCallback = "http://www.taxihail.com/oauth";
             TwitterRequestTokenUrl = "https://api.twitter.com/oauth/request_token";
             
-            InitialZoomLevel = 14;       
-     
+            InitialZoomLevel = 14;
 
-			FlightStats = new FlightStatsSettingsContainer
+            MaxNumberOfCardsOnFile = 1;
+
+            FlightStats = new FlightStatsSettingsContainer
 			{
 				UseAirportDetails = false
 			};
@@ -480,7 +481,7 @@ namespace MK.Common.Configuration
 
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - Maximum number of Cards On File", Description = "Maximum number of Credit cards the client car add to his account")]
-        public bool MaxNumberOfCardsOnFile { get; set; }
+        public int MaxNumberOfCardsOnFile { get; set; }
     }
 }
 
