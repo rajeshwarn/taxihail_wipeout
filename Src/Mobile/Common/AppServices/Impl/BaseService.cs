@@ -17,8 +17,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			Func<Task<TResult>> action,
 			TimeSpan retryInterval,
 			Func<Exception, bool> stopCondition,
-			int retryCount = 3)
-			where TResult : class
+			int retryCount = 3) where TResult : class
 		{
 			var exceptions = new List<Exception>();
 
