@@ -32,28 +32,31 @@
                             <li><a href="@(ViewData["BaseUrl"] + "/admin")" class="navbar-brand">Default favorite addresses</a></li>
                             <li><a href="@(ViewData["BaseUrl"] + "/admin/#addresses/popular")" class="navbar-brand">Popular addresses</a></li>
 
-                            <li class="nav-header">Settings</li>
-                            <li>@Html.MenuLink("Company Settings", "Index", "CompanySettings")</li>
-                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#notificationSettings")" class="navbar-brand">Notification Settings</a></li>
-                            @if (Convert.ToBoolean(ViewData["IsSuperAdmin"]))
+                            @if (Convert.ToBoolean(ViewData["IsAdmin"]))
                             {
-                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#paymentSettings")" class="navbar-brand">Payment Settings</a></li>
-                            }
-                            @if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))
-                            {
-                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#accounts")" class="navbar-brand">Charge Accounts</a></li>
-                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#vehicleTypes")" class="navbar-brand">Vehicle Types</a></li>
-                            }
-                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#tariffs")" class="navbar-brand">Ride Estimates</a></li>
-                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#ratings")" class="navbar-brand">Ride Ratings</a></li>
-                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#rules")" class="navbar-brand">Booking Rules</a></li>
-                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#termsandconditions")" class="navbar-brand">Terms and Conditions</a></li>
-                            <li>@Html.MenuLink("Privacy Policy", "Index", "Privacy")</li>
+                                <li class="nav-header">Settings</li>
+                                <li>@Html.MenuLink("Company Settings", "Index", "CompanySettings")</li>
+                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#notificationSettings")" class="navbar-brand">Notification Settings</a></li>
+                                if (Convert.ToBoolean(ViewData["IsSuperAdmin"]))
+                                {
+                                    <li><a href="@(ViewData["BaseUrl"] + "/admin/#paymentSettings")" class="navbar-brand">Payment Settings</a></li>
+                                }
+                                if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))
+                                {
+                                    <li><a href="@(ViewData["BaseUrl"] + "/admin/#accounts")" class="navbar-brand">Charge Accounts</a></li>
+                                    <li><a href="@(ViewData["BaseUrl"] + "/admin/#vehicleTypes")" class="navbar-brand">Vehicle Types</a></li>
+                                }
+                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#tariffs")" class="navbar-brand">Ride Estimates</a></li>
+                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#ratings")" class="navbar-brand">Ride Ratings</a></li>
+                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#rules")" class="navbar-brand">Booking Rules</a></li>
+                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#termsandconditions")" class="navbar-brand">Terms and Conditions</a></li>
+                                <li>@Html.MenuLink("Privacy Policy", "Index", "Privacy")</li>
                             
-                            <li class="nav-header">TaxiHail Network</li>
-                            <li>@Html.MenuLink("Configure", "Index", "TaxiHailNetwork")</li>
-                            <li>@Html.MenuLink("Fees", "Fees", "TaxiHailNetwork")</li>
-                            
+                                <li class="nav-header">TaxiHail Network</li>
+                                <li>@Html.MenuLink("Configure", "Index", "TaxiHailNetwork")</li>
+                                <li>@Html.MenuLink("Fees", "Fees", "TaxiHailNetwork")</li>
+                            }
+
                             @if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))
                             {
                                 <li class="nav-header">Promo Codes</li>
@@ -62,9 +65,13 @@
                             }
 
                             <li class="nav-header">User Management</li>
-                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#security")" class="navbar-brand">Grant access admin</a></li>
+                            @if (!Convert.ToBoolean(ViewData["IsAdmin"]))
+                            {
+                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#security")" class="navbar-brand">Grant access admin</a></li>
+                            }
                             <li><a href="@(ViewData["BaseUrl"] + "/admin/#confirmemail")" class="navbar-brand">Account Management</a></li>
                             <li><a href="@(ViewData["BaseUrl"] + "/admin/#signup")" class="navbar-brand">Signup</a></li>
+
 
                             <li class="nav-header">Test Notifications</li>
                             <li><a href="@(ViewData["BaseUrl"] + "/admin/#sendpushnotification")" class="navbar-brand">Send Push</a></li>

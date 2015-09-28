@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblNewPassword { get; set; }
 
 		[Outlet]
-		UIKit.UIScrollView scrollView { get; set; }
+		UIKit.UIScrollView ScrollView { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtConfirmation { get; set; }
@@ -35,9 +35,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (scrollView != null) {
-				scrollView.Dispose ();
-				scrollView = null;
+			if (ScrollView != null) {
+				ScrollView.Dispose ();
+				ScrollView = null;
+			}
+
+			if (lblConfirmation != null) {
+				lblConfirmation.Dispose ();
+				lblConfirmation = null;
 			}
 
 			if (lblCurrentPassword != null) {
@@ -50,9 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblNewPassword = null;
 			}
 
-			if (lblConfirmation != null) {
-				lblConfirmation.Dispose ();
-				lblConfirmation = null;
+			if (txtConfirmation != null) {
+				txtConfirmation.Dispose ();
+				txtConfirmation = null;
 			}
 
 			if (txtCurrentPassword != null) {
@@ -63,11 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtNewPassword != null) {
 				txtNewPassword.Dispose ();
 				txtNewPassword = null;
-			}
-
-			if (txtConfirmation != null) {
-				txtConfirmation.Dispose ();
-				txtConfirmation = null;
 			}
 		}
 	}
