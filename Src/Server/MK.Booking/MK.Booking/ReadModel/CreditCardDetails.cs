@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.ReadModel
     {
         public CreditCardDetails()
         {
-            Type = CreditCardConstants.Personal;
+            Label = CreditCardConstants.Personal;
         }
 
         [Key]
@@ -54,6 +54,6 @@ namespace apcurium.MK.Booking.ReadModel
             return false;
         }
         
-        public string Type { get; set; }
+        public string Label { get; set; }
     }
 }
