@@ -237,7 +237,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Sut.Handle(new RoleAddedToUserAccount
                 {
                     SourceId = _accountId,
-                    RoleName = "Admin",
+                    RoleName = "Support",
                 });
 
                 using (var context = new BookingDbContext(DbName))

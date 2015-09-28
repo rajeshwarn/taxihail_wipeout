@@ -26,7 +26,7 @@ namespace apcurium.MK.Web.admin
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
         protected bool IsTaxiHailPro { get; private set; }
-        protected bool IsSupport { get; private set; }
+        protected bool IsAdmin { get; private set; }
         protected bool IsNetworkEnabled { get; private set; }
         protected string Languages { get; private set; }
 
@@ -43,7 +43,7 @@ namespace apcurium.MK.Web.admin
 
             IsAuthenticated = base.UserSession.IsAuthenticated;
             IsSuperAdmin = UserSession.HasPermission(RoleName.SuperAdmin);
-            IsSupport = UserSession.HasPermission(RoleName.Support);
+            IsAdmin = UserSession.HasPermission(RoleName.Admin);
 
             IsNetworkEnabled = config.ServerData.Network.Enabled;
 

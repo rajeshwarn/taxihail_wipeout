@@ -20,4 +20,10 @@ namespace apcurium.MK.Booking.Security
         Admin = 0xFF,
         SuperAdmin = 0x1FF,
     }
+
+    public enum OldRoles
+    {
+        Admin = 1,
+        SuperAdmin = 3,
+    }
 }

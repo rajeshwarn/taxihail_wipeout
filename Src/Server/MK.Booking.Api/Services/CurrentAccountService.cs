@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Api.Services
                 TwitterId = account.TwitterId,
                 Settings = account.Settings,
                 Language = account.Language,
-                IsAdmin = account.HasAdminAccess,
+                HasAdminAccess = account.HasAdminAccess,
                 IsSuperAdmin = account.RoleNames.Contains(RoleName.SuperAdmin),
                 DefaultCreditCard = creditCardResource,
                 DefaultTipPercent = account.DefaultTipPercent,
