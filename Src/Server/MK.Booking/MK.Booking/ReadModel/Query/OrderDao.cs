@@ -176,10 +176,12 @@ namespace apcurium.MK.Booking.ReadModel.Query
 		    {
 				return context
 				    .Query<OrderManualRideLinqDetail>()
-					.Where(ridelinq => ridelinq.PairingCode.Equals(pairingCode))
-					.Where(ridelinq => ridelinq.AccountId == accountId)
 					.AsEnumerable()
-					.Where(ridelinq => ridelinq.StartTime.HasValue && ridelinq.StartTime.Value.Date == DateTime.Now.Date)
+					.Where(ridelinq => ridelinq.PairingCode.Equals(pairingCode) 
+						&& ridelinq.AccountId == accountId
+						&& ridelinq.StartTime.HasValue 
+						&& ridelinq.StartTime.Value.Date == DateTime.Now.Date
+					)
 					.OrderBy(ridelinq => ridelinq.StartTime)
 					.LastOrDefault();
 
