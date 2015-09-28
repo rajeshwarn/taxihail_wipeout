@@ -15,10 +15,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class AccountConfirmationViewModel : PageViewModel
 	{
-		readonly IRegisterWorkflowService _registerService;
+		private readonly IRegisterWorkflowService _registerService;
 		private IAccountServiceClient _accountServiceClient;
-		RegisterAccount _account;
-		ILogger _logger;
+		private RegisterAccount _account;
+		private ILogger _logger;
 
 		public AccountConfirmationViewModel(IRegisterWorkflowService registerService, IAccountServiceClient accountServiceClient, ILogger logger)
 		{

@@ -108,6 +108,7 @@
                         android:maxLines="1"
                         android:inputType="phone"
                         android:singleLine="true"
+                        android:layout_marginLeft="10dp"
                         android:hint="@string/RideSettingsPhone"
                         android:contentDescription="@string/RideSettingsPhone"
                         local:MvxBind="Text Phone" />
