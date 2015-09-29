@@ -96,6 +96,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
+		public ICommand NavigateToAddCard
+		{
+			get
+			{
+				return this.GetCommand(() =>
+					{
+						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true});
+					});
+			}
+		}
+
 		private ICommand SaveTip 
 		{ 
 			get
