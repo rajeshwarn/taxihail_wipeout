@@ -41,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
 		private bool _isFromPromotions;
+		private bool _isAddingNew;
 		
 #region Const and ReadOnly
         private const string Visa = "Visa";
@@ -63,12 +64,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null, bool isFromPromotions = false)
+		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null, bool isFromPromotions = false, bool isAddingNew = false)
 		{
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
 			
 			_isFromPromotions = isFromPromotions;
+			_isAddingNew = isAddingNew;
 
 			if (paymentToSettle != null)
 			{
