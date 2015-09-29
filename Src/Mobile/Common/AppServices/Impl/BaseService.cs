@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -11,6 +12,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class BaseService: IUseServiceClient
     {
+
+		protected static async Task<TResult> RunWithRetryAsync<TResult>(
+			Func<Task<TResult>> action,
+			TimeSpan retryInterval,
+			Func<Exception, bool> stopCondition,
+			int retryCount = 3) where TResult : class
+		{
+			var exceptions = new List<Exception>();
+
+			var stop = false;
+
+			for (var retry = 0; retry < retryCount && !stop; retry++)
+			{
+				try
+				{
+					var result = await Task.Run(action);
+					return result;
+				}
+				catch (Exception ex)
+				{
+					exceptions.Add(ex);
+
+					stop = stopCondition(ex);
+				}
+
+				await Task.Delay(retryInterval);
+			}
+
+			throw new AggregateException(exceptions);
+		}
+
 
 		protected async Task<TResult> UseServiceClientAsync<TService, TResult>(Func<TService, Task<TResult>> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where TResult : class  where TService : class
         {

@@ -2276,5 +2276,12 @@
   </data>
 	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
  		<value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
-  	</data>
+	</data>
+	<data name="ManualPairing_TimeOut_Title" xml:space="preserve">
+		<value>Connection error</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
+		<value>There is a connection error preventing us from providing the status of your ride.</value>
+	</data>
+	
 </root>
