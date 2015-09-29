@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Services
             _serverSettings = serverSettings;
             _logger = logger;
 
-            // TODO anything to do for manual ridelinq?  when we create an order we have no idea which company we are dispatched to
+            // Since CMT will handle the payment on their ends. We do not need to know the actual company of the cab from wich we do the manual pairing.
             _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, logger);
 
