@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Api.Services
                     && pairingInfo != null;
 
                 if (currentIbsAccountId.HasValue
-                    && (orderDetail.IBSStatusId == null
+                    && (!orderDetail.IBSStatusId.HasValue()
                         || orderDetail.IBSStatusId == VehicleStatuses.Common.Waiting
                         || orderDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                         || orderDetail.IBSStatusId == VehicleStatuses.Common.Arrived
