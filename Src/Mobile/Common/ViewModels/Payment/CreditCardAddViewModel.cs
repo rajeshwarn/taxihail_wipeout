@@ -139,7 +139,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                 try
                 {
-                    creditCard = await _accountService.GetCreditCard();
+                    creditCard = await _accountService.GetDefaultCreditCard();
                 }
                 catch (Exception ex)
                 {

@@ -12,7 +12,8 @@ namespace apcurium.MK.Booking.Mobile.Data
         public string CreditCardCompany { get; set; }
         public string ExpirationMonth { get; set; }        
         public string ExpirationYear { get; set; }        
-        public string CCV { get; set; }        
+		public string CCV { get; set; }        
+		public bool IsDefault { get; set; }        
     }
 }
 

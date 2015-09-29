@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Api.Client
         Task AddCreditCard(CreditCardRequest creditCardRequest);
         Task RemoveCreditCard();
         Task UpdateCreditCard(CreditCardRequest creditCardRequest);
+        Task UpdateDefaultCreditCard(DefaultCreditCardRequest defaultCreditCardRequest);
 
         Task<NotificationSettings> GetNotificationSettings(Guid accountId);
         Task UpdateNotificationSettings(NotificationSettingsRequest notificationSettingsRequest);

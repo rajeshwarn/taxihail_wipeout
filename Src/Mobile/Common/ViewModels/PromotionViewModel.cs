@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.OnViewStarted(firstTime);
 
-            var creditCard = await _accountService.GetCreditCard();
+            var creditCard = await _accountService.GetDefaultCreditCard();
 
             HasValidPaymentInformation = !(creditCard == null || creditCard.IsExpired() || creditCard.IsDeactivated);
         }
