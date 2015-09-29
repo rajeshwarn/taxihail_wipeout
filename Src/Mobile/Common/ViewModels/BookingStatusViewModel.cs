@@ -676,7 +676,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				while (!CanRefreshStatus(status))
 				{
 					Logger.LogMessage("Waiting for Ibs Order Creation (ibs order id)");
-					await Task.Delay(TimeSpan.FromSeconds(1));
+					await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
 					status = await _bookingService.GetOrderStatusAsync(Order.Id);
 
 					if (status.IBSOrderId.HasValue)
