@@ -134,7 +134,6 @@
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\OrderStatusUpdater.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
-    <Compile Include="Services\DefaultCreditCardRequest.cs" />
     <Compile Include="Services\DriverService.cs" />
     <Compile Include="Services\FlightInformationService.cs" />
     <Compile Include="Services\ManualRidelinqOrderService.cs" />

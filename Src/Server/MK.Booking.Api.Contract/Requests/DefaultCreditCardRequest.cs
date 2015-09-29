@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace apcurium.MK.Booking.Api.Services
+namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
     [Route("/account/creditcard/changedefault", "POST")]
