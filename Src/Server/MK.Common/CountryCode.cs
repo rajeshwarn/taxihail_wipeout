@@ -185,11 +185,6 @@ namespace apcurium.MK.Common
             return phoneNumberExampleText.Replace("+" + CountryDialCode, string.Empty);
         }
 
-        public bool IsNumberPossible(string phoneNumber)
-        {
-            return IsValid() && libphonenumber.PhoneNumberUtil.Instance.IsPossibleNumber(phoneNumber, _countryIsoCode.Code);
-        }
-
 		public bool IsValid()
 		{
 			return _countryIsoCode != null;

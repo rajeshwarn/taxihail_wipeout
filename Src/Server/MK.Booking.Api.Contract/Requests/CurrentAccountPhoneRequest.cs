@@ -1,16 +1,11 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Common;
 using ServiceStack.ServiceHost;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
 	[Route("/account/phone/{Email}", "GET")]
-	public class CurrentAccountPhoneRequest : BaseDto
+	public class CurrentAccountPhoneRequest:IReturn<CurrentAccountPhoneResponse>
 	{
 		public string Email { get; set; }
 	}

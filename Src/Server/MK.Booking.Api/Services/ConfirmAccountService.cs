@@ -17,6 +17,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Helpers;
 
 
 #endregion
@@ -110,18 +111,20 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 if (_serverSettings.ServerData.SMSConfirmationEnabled)
                 {
-					CountryISOCode countryCodeForSMS = account.Settings.Country;
+					var countryCodeForSMS = account.Settings.Country;
 					var phoneNumberForSMS = account.Settings.Phone;
 
 					CountryCode countryCodeFromRequest = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.CountryCode));
 
-					if (countryCodeFromRequest.IsValid() && request.PhoneNumber.HasValue() && countryCodeFromRequest.IsNumberPossible(request.PhoneNumber)
+					if (countryCodeFromRequest.IsValid()
+						&& request.PhoneNumber.HasValue()
+						&& PhoneHelper.IsNumberPossible(countryCodeFromRequest, request.PhoneNumber)
 						&& (account.Settings.Country.Code != countryCodeFromRequest.CountryISOCode.Code || account.Settings.Phone != request.PhoneNumber))
 					{
 						countryCodeForSMS = countryCodeFromRequest.CountryISOCode;
 						phoneNumberForSMS = request.PhoneNumber;
 
-						UpdateBookingSettings updateBookingSettings = new UpdateBookingSettings()
+						var updateBookingSettings = new UpdateBookingSettings()
 						{
 							AccountId = account.Id,
 							Email = account.Email,
