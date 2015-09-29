@@ -56,6 +56,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.Unauthorized, "Can't cancel another account's order");
             }
+
             if (order.IBSOrderId.HasValue)
             {
                 var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
@@ -66,11 +67,12 @@ namespace apcurium.MK.Booking.Api.Services
                     && _serverSettings.GetPaymentSettings().CancelOrderOnUnpair
                     && pairingInfo != null;
 
-                if (currentIbsAccountId.HasValue &&
-                    (orderDetail.IBSStatusId == VehicleStatuses.Common.Assigned
-                    || orderDetail.IBSStatusId == VehicleStatuses.Common.Arrived
-                    || orderDetail.IBSStatusId == VehicleStatuses.Common.Waiting
-                    || canCancelWhenPaired))
+                if (currentIbsAccountId.HasValue
+                    && (orderDetail.IBSStatusId == null
+                        || orderDetail.IBSStatusId == VehicleStatuses.Common.Waiting
+                        || orderDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+                        || orderDetail.IBSStatusId == VehicleStatuses.Common.Arrived
+                        || canCancelWhenPaired))
                 {
                     //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
                     Task.Factory.StartNew(() =>
