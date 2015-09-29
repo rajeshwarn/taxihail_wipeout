@@ -28,14 +28,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private ImageView _dot;
         private View _horizontalDivider;
 
-	    private readonly ILocalization _localization;
-
         public AddressTextBox(Context c, IAttributeSet attr) : base(c, attr)
         {
-			_localization = Mvx.Resolve<ILocalization>();
+
         }
-
-
 
         protected override void OnFinishInflate()
         {
@@ -57,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _streetNumberTextView.Hint = "#";
             _streetNumberTextView.Gravity = GravityFlags.Center;
             _streetNumberTextView.InputType = _streetNumberTextView.InputType | InputTypes.ClassNumber;
-			_streetNumberTextView.ContentDescription = ContentDescription + " " + _localization["StreetNumber"];
+			_streetNumberTextView.ContentDescription = ContentDescription + " " + this.Services().Localize["StreetNumber"];
 
             AddressTextView.SetSelectAllOnFocus(true);
             AddressTextView.SetSingleLine(true);
