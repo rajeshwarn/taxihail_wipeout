@@ -20,5 +20,7 @@ namespace CMTPayment.Pair
         public bool AutoCompletePayment { get; set; }
 
         public string CardOnFileId { get; set; }
+
+        public string LastFour { get; set; }
     }
 }
