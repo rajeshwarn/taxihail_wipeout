@@ -273,7 +273,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (!_isShowingCreditCardExpiredPrompt)
 			{
                 // Update cached credit card
-				await _accountService.GetCreditCard();
+				await _accountService.GetDefaultCreditCard();
 
 				if (!_accountService.CurrentAccount.IsPayPalAccountLinked
 					&& _accountService.CurrentAccount.DefaultCreditCard != null

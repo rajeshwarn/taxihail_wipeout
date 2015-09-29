@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                             if (overduePaymentResult.IsSuccessful)
                             {
                                 // Fire and forget to update creditcard cache, we do not need to wait for this.
-                                Task.Run(() => _accountService.GetCreditCard());
+                                Task.Run(() => _accountService.GetDefaultCreditCard());
 
                                 var message = string.Format(localize["Overdue_Succeed_Message"],
                                     string.Format(new CultureInfo(Settings.PriceFormat), localize["CurrencyPriceFormat"], _overduePayment.OverdueAmount));

@@ -12,5 +12,6 @@ namespace apcurium.MK.Booking.Events
         public string ExpirationMonth { get; set; }
         public string ExpirationYear { get; set; }
         public string CreditCardCompany { get; set; }
+        public string Label { get; set; }
     }
 }

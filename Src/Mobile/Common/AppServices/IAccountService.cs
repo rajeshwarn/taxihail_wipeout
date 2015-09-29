@@ -69,9 +69,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         void SignOut();
         
-		Task<CreditCardDetails> GetCreditCard ();
+		Task<CreditCardDetails> GetDefaultCreditCard ();
+		Task<IEnumerable<CreditCardDetails>> GetCreditCards ();
 		Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, bool isUpdate = false);
 		Task RemoveCreditCard (bool replacedByPayPal = false);
+		Task UpdateDefaultCreditCard(Guid creditCardId);
 
 		Task LinkPayPalAccount(string authCode);
 		Task UnlinkPayPalAccount (bool replacedByCreditCard = false);

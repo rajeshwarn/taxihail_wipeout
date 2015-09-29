@@ -19,5 +19,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string CreditCardCompany { get; set; }
         public string ExpirationMonth { get; set; }        
         public string ExpirationYear { get; set; }   
+        public string Label { get; set; }
     }
 }

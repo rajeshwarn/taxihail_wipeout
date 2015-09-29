@@ -41,10 +41,6 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                // remove any other credit cards that might have been added previously
-                context.RemoveWhere<CreditCardDetails>(cc => cc.AccountId == @event.SourceId && cc.CreditCardId != @event.CreditCardId);
-                context.SaveChanges();
-
                 var existingCreditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
                 var creditCard = existingCreditCard ?? new CreditCardDetails();
                 Mapper.Map(@event, creditCard);
