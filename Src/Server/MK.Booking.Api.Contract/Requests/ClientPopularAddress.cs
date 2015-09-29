@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 #if !CLIENT
 
 	[Authenticate]
-    [AuthorizationRequired(ApplyTo.Get, RoleName.Admin)]
+    [AuthorizationRequired(ApplyTo.Get, RoleName.Support)]
 	[Route("/admin/popularaddresses", "GET")]
 	public class AdminPopularAddress : BaseDto
 	{

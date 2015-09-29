@@ -542,7 +542,7 @@
   <string name="PayPalLinkError">No se puede vincular la cuenta de PayPal</string>
   <string name="PayPalUnlinkError">No se puede desvincular la cuenta de PayPal</string>
   <string name="LinkPayPalConfirmation">Vincular</string>
-  <string name="PayPalLinked">Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \ "Pagar en vehículo \" en la pantalla de pago</string>
+  <string name="PayPalLinked">Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
   <string name="PayPalLinkedInfo">Cuenta vinculada</string>
   <string name="NoPairingCreditCard">Ninguno</string>
   <string name="InvalidPassengersNumberTitle">Número inválido de pasajeros</string>
@@ -719,4 +719,6 @@
   <string name="OrderAirportView_BAD_AIRPORT_CODE">An error occurred with the flight status provider.</string>
   <string name="OrderAirportView_DATE_OUT_OF_RANGE">Provided date is out of range.</string>
   <string name="OrderAirportView_BAD_AIRLINE_CODE">An error occurred with the flight status provider.</string>
+  <string name="ManualPairing_TimeOut_Title">Connection error</string>
+  <string name="ManualPairing_TimeOut_Message">There is a connection error preventing us from providing the status of your ride.</string>
 </resources>

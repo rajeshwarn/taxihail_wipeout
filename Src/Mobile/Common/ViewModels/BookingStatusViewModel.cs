@@ -486,7 +486,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             get
             {
-                return IsInformationHidden(OrderStatusDetail.DriverInfos.VehicleColor);
+                return IsInformationHidden(OrderStatusDetail.DriverInfos.FullVehicleInfo);
             }
 		}
 

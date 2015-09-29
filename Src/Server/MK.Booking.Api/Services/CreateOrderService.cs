@@ -63,6 +63,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
+        private readonly IVehicleTypeDao _vehiculeTypeDao;
         private readonly Resources.Resources _resources;
 
         public CreateOrderService(ICommandBus commandBus,
@@ -82,7 +83,8 @@ namespace apcurium.MK.Booking.Api.Services
             IPaymentService paymentService,
             IPayPalServiceFactory payPalServiceFactory,
             IOrderPaymentDao orderPaymentDao,
-            IFeesDao feesDao)
+            IFeesDao feesDao,
+            IVehicleTypeDao vehiculeTypeDao)
         {
             _accountChargeDao = accountChargeDao;
             _creditCardDao = creditCardDao;
@@ -102,6 +104,7 @@ namespace apcurium.MK.Booking.Api.Services
             _payPalServiceFactory = payPalServiceFactory;
             _orderPaymentDao = orderPaymentDao;
             _feesDao = feesDao;
+            _vehiculeTypeDao = vehiculeTypeDao;
             _resources = new Resources.Resources(_serverSettings);
         }
 
@@ -1137,7 +1140,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             var customerNumber = GetCustomerNumber(request.Settings.AccountNumber, request.Settings.CustomerNumber);
 
-	        var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+            var defaultVehiculeType = _vehiculeTypeDao.GetAll().FirstOrDefault();
+
+            var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
                 providerId,
                 ibsAccountId,
                 request.Settings.Name,
@@ -1153,6 +1158,7 @@ namespace apcurium.MK.Booking.Api.Services
                 customerNumber,
                 prompts,
                 promptsLength,
+                defaultVehiculeType != null ? defaultVehiculeType.ReferenceDataVehicleId : -1,
                 fare);
 
             return result;
