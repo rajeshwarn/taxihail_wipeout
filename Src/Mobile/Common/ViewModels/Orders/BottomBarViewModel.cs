@@ -367,7 +367,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                     try
                     {
-                        await _orderWorkflowService.ValidatePickupTime();
+	                    await Task.WhenAll(
+		                    _orderWorkflowService.ValidatePickupAndDestination(),
+							_orderWorkflowService.ValidatePickupTime(),
+							_orderWorkflowService.ValidateNumberOfPassengers(null));
                     }
                     catch (OrderValidationException e)
                     {
@@ -403,7 +406,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         return;
                     }
 
-					ValidateOrderDetails();
+					await ValidateOrderDetails();
 					ParentViewModel.CurrentViewState = HomeViewModelState.AirportDetails;
                 });
             }
