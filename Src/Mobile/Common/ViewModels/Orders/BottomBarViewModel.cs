@@ -414,7 +414,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
         public async void ReviewOrderDetails()
 	    {
-			ValidateOrderDetails();
+			await ValidateOrderDetails();
 			ParentViewModel.CurrentViewState = HomeViewModelState.Review;
 	    }
 
