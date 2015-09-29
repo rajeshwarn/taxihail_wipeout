@@ -16,9 +16,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	public class AccountConfirmationViewModel : PageViewModel
 	{
 		private readonly IRegisterWorkflowService _registerService;
-		private IAccountServiceClient _accountServiceClient;
+		private readonly IAccountServiceClient _accountServiceClient;
+		private readonly ILogger _logger;
 		private RegisterAccount _account;
-		private ILogger _logger;
 
 		public AccountConfirmationViewModel(IRegisterWorkflowService registerService, IAccountServiceClient accountServiceClient, ILogger logger)
 		{
@@ -146,7 +146,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					try
 					{
-						await _registerService.GetConfirmationCode(SelectedCountryCode.CountryISOCode, Phone);
+						_registerService.GetConfirmationCode(SelectedCountryCode.CountryISOCode, Phone);
 						this.Services().Message.ShowMessage(this.Services().Localize["ResendConfirmationCodeTitle"],
 							this.Services().Localize["ResendConfirmationCodeText"]);
 					}

@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task RegisterAccount (RegisterAccount data);
 		Task ConfirmAccount(string code);
 
-        Task GetConfirmationCode(CountryISOCode countryCode, string phoneNumber);
+        void GetConfirmationCode(CountryISOCode countryCode, string phoneNumber);
 
         void RegistrationFinished();
         RegisterAccount Account { get; set; }

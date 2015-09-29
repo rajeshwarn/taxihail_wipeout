@@ -111,7 +111,7 @@ namespace apcurium.MK.Booking.Api.Services
                 if (_serverSettings.ServerData.SMSConfirmationEnabled)
                 {
 					CountryISOCode countryCodeForSMS = account.Settings.Country;
-					string phoneNumberForSMS = account.Settings.Phone;
+					var phoneNumberForSMS = account.Settings.Phone;
 
 					CountryCode countryCodeFromRequest = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.CountryCode));
 
