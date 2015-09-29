@@ -627,6 +627,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Token = creditCard.Token,
 				ExpirationMonth = creditCard.ExpirationMonth,
 				ExpirationYear = creditCard.ExpirationYear,
+				Label = creditCard.Label,
             };
 
 			await UseServiceClientAsync<IAccountServiceClient> (client => 

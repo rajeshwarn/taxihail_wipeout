@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
     {
         public CreditCardDetails()
         {
-            Type = CreditCardConstants.Personal;
+            Label = CreditCardConstants.Personal;
         }
 
         public Guid CreditCardId { get; set; }
@@ -48,6 +48,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
             return false;
         }
 
-        public string Type { get; set; }
+        public string Label { get; set; }
     }
 }
