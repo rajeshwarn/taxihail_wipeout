@@ -1294,39 +1294,23 @@ namespace apcurium.MK.Booking.Api.Services
             return null;
         }
 
+	    private bool IsCmtGeoServiceModeSet(string market)
+	    {
+		    var externalMarketMode = market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode ==ExternalAvailableVehiclesModes.Geo;
+
+		    var internalMarketMode = !market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo;
+
+		    return internalMarketMode || externalMarketMode;
+	    }
+
 		private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
 		{
-			if (market.HasValue())
+			if (IsCmtGeoServiceModeSet(market))
 			{
-				// External market
-				switch (_serverSettings.ServerData.ExternalAvailableVehiclesMode)
-				{
-					case ExternalAvailableVehiclesModes.Geo:
-						{
-							return new CmtGeoServiceClient(_serverSettings, _logger);
-						}
-					case ExternalAvailableVehiclesModes.HoneyBadger:
-						{
-							return new HoneyBadgerServiceClient(_serverSettings, _logger);
-						}
-					default: throw new InvalidOperationException("{0} is not a supported Vehicle provider"
-						.InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
-				}
+				return new CmtGeoServiceClient(_serverSettings, _logger);
 			}
-			// Local market
-			switch (_serverSettings.ServerData.LocalAvailableVehiclesMode)
-			{
-				case LocalAvailableVehiclesModes.Geo:
-					{
-						return new CmtGeoServiceClient(_serverSettings, _logger);
-					}
-				case LocalAvailableVehiclesModes.HoneyBadger:
-					{
-						return new HoneyBadgerServiceClient(_serverSettings, _logger);
-					}
-				default: throw new InvalidOperationException("{0} is not a supported Vehicle provider"
-					.InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
-			}
+
+			return new HoneyBadgerServiceClient(_serverSettings, _logger);
 		}
 
 
