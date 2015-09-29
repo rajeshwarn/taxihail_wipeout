@@ -4,13 +4,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal"
-    android:background="@color/WaitingCarLandscapeBackground">
+    android:background="@color/company_color">
     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
         android:id="@+id/CarNumberTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="160sp"
-        android:textColor="@color/WaitingCarLandscapeText"
+        android:textColor="@color/white"
         android:layout_centerInParent="true"
         local:MvxBind="Text CarNumber"
         android:contentDescription="@string/WaitingCarLandscapeViewCarNumber" />
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/waitingcarclosebutton"
-        android:textColor="@color/WaitingCarLandscapeText"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"

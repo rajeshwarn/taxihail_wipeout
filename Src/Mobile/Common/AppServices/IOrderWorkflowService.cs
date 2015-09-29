@@ -67,9 +67,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode();
 
-        IObservable<string> GetAndObservePOIRefPickupList();
+		IObservable<PickupPoint[]> GetAndObservePOIRefPickupList();
 
-        IObservable<string> GetAndObservePOIRefAirlineList();
+        IObservable<Airline[]> GetAndObservePOIRefAirlineList();
 
         IObservable<int?> GetAndObserveVehicleType();
 

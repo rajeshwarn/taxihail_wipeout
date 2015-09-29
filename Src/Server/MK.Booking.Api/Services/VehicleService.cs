@@ -367,12 +367,6 @@ namespace apcurium.MK.Booking.Api.Services
 
 			var market = GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
-		    int[] fleetIds = null;
-			if (_serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId.HasValue)
-			{
-				fleetIds = new[] { _serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId.Value };
-			}
-
 			var geoService = GetAvailableVehiclesServiceClient(market) as CmtGeoServiceClient;
 
 		    if (geoService == null)
@@ -380,14 +374,14 @@ namespace apcurium.MK.Booking.Api.Services
 				return new HttpResult(HttpStatusCode.BadRequest, "This call is only supported when using Geo.");
 		    }
 
-			var availableVehicle = geoService.GetPairedVehicle(request.Medallion, _serverSettings.ServerData.CmtGeo.AvailableVehiclesMarket, order.PickupAddress.Latitude, order.PickupAddress.Longitude, fleetIds: fleetIds);
+		    var taxiLocation = geoService.GetEta(order.PickupAddress.Latitude, order.PickupAddress.Longitude, request.Medallion);
 
-			if (availableVehicle == null)
+			if (taxiLocation == null)
 		    {
-				return new HttpResult(HttpStatusCode.NotFound, "No available vehicle found.");
+				return new HttpResult(HttpStatusCode.NotFound, "No vehicle found.");
 		    }
 
-		    return availableVehicle;
+		    return taxiLocation;
 
 	    }
 

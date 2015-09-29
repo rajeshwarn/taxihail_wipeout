@@ -12,6 +12,7 @@
                 <outlet property="lblOrderStatus" destination="KtK-9e-n0C" id="OeL-hT-CYu"/>
                 <outlet property="lblVehicleInfos" destination="chP-UF-A70" id="vgA-nc-Uvm"/>
                 <outlet property="viewDriverInfos" destination="kLg-86-8qE" id="HHg-xo-Z1t"/>
+                <outlet property="viewStatus" destination="QS4-3I-Wm4" id="1s4-AM-iAN"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

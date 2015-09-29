@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Distance = 0f,
                 OrderId = orderId,
                 Medallion = "3",
+				DeviceName = "EH1234",
                 Fare = 12f,
                 FareAtAlternateRate = 13f,
                 RateAtTripEnd = 99f,
@@ -69,6 +70,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(orderId, rideLinqPaired.SourceId);
             Assert.AreEqual(50f, rideLinqPaired.Extra);
             Assert.AreEqual("3", rideLinqPaired.Medallion);
+			Assert.AreEqual("EH1234", rideLinqPaired.DeviceName);
             Assert.AreEqual(0f, rideLinqPaired.Distance);
             Assert.AreEqual(12f, rideLinqPaired.Fare);
             Assert.AreEqual(13f, rideLinqPaired.FareAtAlternateRate);

@@ -120,8 +120,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppServices\IAirportInformationService.cs" />
     <Compile Include="AppServices\IGeolocService.cs" />
     <Compile Include="AppServices\IMetricsService.cs" />
+    <Compile Include="AppServices\Impl\AirportInformationService.cs" />
     <Compile Include="AppServices\Impl\MetricsService.cs" />
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
     <Compile Include="AppServices\Impl\POIProvider.cs" />
@@ -185,14 +187,15 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
-    <Compile Include="Infrastructure\CommonDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\CommonDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\DeviceOrientationFilter.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\OrientationService.cs" />
     <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
-    <Compile Include="Infrastructure\OrientationService.cs" />
     <Compile Include="Localization\Taxiworld.Designer.cs">
       <DependentUpon>Taxiworld.resx</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -48,6 +48,8 @@ namespace apcurium.MK.Booking.Events
 
         public string Medallion { get; set; }
 
+	    public string DeviceName { get; set; }
+
         public int TripId { get; set; }
 
         public int DriverId { get; set; }

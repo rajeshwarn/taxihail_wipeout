@@ -647,6 +647,10 @@
     <Compile Include="Views\WaitingCarLandscapeView.designer.cs">
       <DependentUpon>WaitingCarLandscapeView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Widgets\LoadingStatusBarView.cs" />
+    <BundleResource Include="Resources\status_gradient.png" />
+    <BundleResource Include="Resources\status_gradient%402x.png" />
+    <BundleResource Include="Resources\status_gradient%403x.png" />
     <BundleResource Include="Resources\nearby_oriented_available.png" />
     <BundleResource Include="Resources\nearby_oriented_available%402x.png" />
     <BundleResource Include="Resources\nearby_oriented_available%403x.png" />

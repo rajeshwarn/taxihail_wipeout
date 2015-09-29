@@ -262,6 +262,7 @@
     <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
     <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
+    <Compile Include="Controls\Widgets\EditBoxWithAccessibility.cs" />
     <Compile Include="Controls\Widgets\OrderAirport.cs" />
     <Compile Include="Controls\Widgets\OrderStatusView.cs" />
     <Compile Include="Controls\Widgets\OrderStatusContactTaxiOverlay.cs" />
@@ -712,6 +713,8 @@
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <AndroidResource Include="Resources\Drawable\facebook_account_icon.png" />
     <AndroidResource Include="Resources\Drawable\waitingcarclosebutton.xml" />
+    <AndroidResource Include="Resources\drawable-xhdpi\status_gradient.png" />
+    <Compile Include="Controls\Widgets\RoundedMvxImageView.cs" />
     <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_available.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_available.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_available.png" />

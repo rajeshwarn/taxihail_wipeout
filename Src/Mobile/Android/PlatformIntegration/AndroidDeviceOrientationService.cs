@@ -1,40 +1,42 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+using Android.Hardware;
 
-namespace apcurium.MK.Booking.Mobile.Client.Services
+namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
 	public class AndroidDeviceOrientationService : CommonDeviceOrientationService, IDeviceOrientationService
 	{
-		AndroidOrientationListener androidOrientationListener;
+		private readonly SensorManager _sensorManager;
+		private readonly Sensor _accelerometer;
+		private readonly AccelerometerSensorListener _accelerometerSensorListener;
+		private bool _enabled;
 
-		public AndroidDeviceOrientationService()
+		public AndroidDeviceOrientationService() : base(Common.CoordinateSystemOrientation.LeftHanded)
 		{
-			androidOrientationListener = new AndroidOrientationListener(Application.Context, Android.Hardware.SensorDelay.Normal);
+			_sensorManager = (SensorManager)Application.Context.GetSystemService(Context.SensorService);
+			_accelerometer = _sensorManager.GetDefaultSensor(SensorType.Accelerometer);
+
+			if (_accelerometer != null)
+			{
+				_accelerometerSensorListener = new AccelerometerSensorListener();
+				_accelerometerSensorListener.NotifyOrientationChanged += OrientationChanged;
+			}
 		}
 
 		public override bool IsAvailable()
 		{
-			return androidOrientationListener.CanDetectOrientation();
+			return _accelerometer != null;
 		}
 
 		protected override bool StartService()
 		{
-            if (IsAvailable())
+			if (IsAvailable() && !_enabled)
 			{
-				androidOrientationListener.NotifyOrientationChanged += AngleChangedEvent;
-				androidOrientationListener.Enable();
+				_sensorManager.RegisterListener(_accelerometerSensorListener, _accelerometer, SensorDelay.Normal);
+				_enabled = true;
 				return true;
 			}
 
@@ -43,10 +45,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 
 		protected override bool StopService()
 		{
-            if (IsAvailable())
+			if (IsAvailable() && _enabled)
 			{
-				androidOrientationListener.Disable();
-				androidOrientationListener.NotifyOrientationChanged -= AngleChangedEvent;
+				_sensorManager.UnregisterListener(_accelerometerSensorListener);
+				_enabled = false;
 				return true;
 			}
 
@@ -54,25 +56,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 		}
 	}
 
-	public class AndroidOrientationListener : OrientationEventListener
+	class AccelerometerSensorListener : Java.Lang.Object, ISensorEventListener
 	{
-		public event Action<int> NotifyOrientationChanged;
+		public event Action<double, double, double, long> NotifyOrientationChanged;
 
-		public AndroidOrientationListener(Context context)
-			: base(context)
+		public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy)
 		{
 		}
 
-		public AndroidOrientationListener(Context context, Android.Hardware.SensorDelay rate)
-			: base(context, rate)
+		public void OnSensorChanged(SensorEvent e)
 		{
-		}
-
-		public override void OnOrientationChanged(int angle)
-		{
-			if (NotifyOrientationChanged != null)
+			if (e.Sensor.Type == SensorType.Accelerometer
+                && (e.Accuracy == SensorStatus.AccuracyHigh
+                    || e.Accuracy == SensorStatus.AccuracyMedium
+                    || e.Accuracy == SensorStatus.AccuracyLow))
 			{
-				NotifyOrientationChanged(angle);
+				if (NotifyOrientationChanged != null)
+				{
+					NotifyOrientationChanged(e.Values[0], e.Values[1], e.Values[2], e.Timestamp / 1000000);
+				}
 			}
 		}
 	}

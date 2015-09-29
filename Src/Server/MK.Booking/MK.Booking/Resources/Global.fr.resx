@@ -657,7 +657,19 @@
   <data name="OrderStatus_PairingFailed" xml:space="preserve">
     <value>Erreur lors de l'association. Veuillez payer à votre chauffeur à la fin de la course</value>
   </data>
+  <data name="OrderStatus_PairingSuccess" xml:space="preserve">
+    <value>Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</value>
+  </data>
   <data name="PhoneNumberFormat" xml:space="preserve">
     <value>Le numéro de téléphone ne semble pas valide. Il doit avoir le format {0}</value>
   </data>
-</root>
+<data name="EmailUsedMessage" xml:space="preserve">
+    <value>Ce courriel est déjà utilisé par un autre compte</value>
+  </data>
+	<data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
+    <value>Il est impossible de changer le courriel du compte lié avec Facebook</value>
+  </data>
+  <data name="CancelOrdeError" xml:space="preserve">
+    <value>Il est trop tard pour annuler cette commande</value>
+  </data>
+</root> 

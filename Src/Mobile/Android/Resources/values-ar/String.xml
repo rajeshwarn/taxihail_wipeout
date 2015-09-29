@@ -7,6 +7,8 @@
   <string name="AccountDisabled_NoCall">تم إيقاف حسابك.</string>
   <string name="AccountNotActivated">لم يتم تفعيل حسابك. تم إرسال بريد الكتروني اخر للتنشيط</string>
   <string name="AccountNotActivatedCodeBySMS">Your account has not been activated. Another activation SMS was sent to you.</string>
+  <string name="FacebookLoginErrorTitle">Email already used</string>
+  <string name="FacebookLoginErrorMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
   <string name="AccountPaymentNumberRequiredMessage">Please enter a valid account number</string>
   <string name="AccountPaymentCustomerNumberRequiredMessage">Please enter a valid rider number</string>
   <string name="AccountPaymentNumberRequiredTitle">مطلوب رقم الحساب</string>
@@ -60,6 +62,7 @@
   <string name="CmtRideLinqErrorTitle">خطأ</string>
   <string name="CmtRideLinqGenericErrorMessage">حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.</string>
   <string name="CmtRideLinqSaveChanges">حفظ</string>
+  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="UnpairPayInCar">Pay in Car</string>
   <string name="UnpairErrorMessage">حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.</string>
   <string name="CmtTipAmount">قيمة الإكرامية:</string>
@@ -132,7 +135,6 @@
   <string name="Done">تم</string>
   <string name="DontHaveAnAccountLabel">ليس لديك حساب؟</string>
   <string name="DriverInfoColor">اللون:</string>
-  <string name="DriverInfoDriver">السائق:</string>
   <string name="DriverInfoLicence">رقم الرخصة:</string>
   <string name="DriverInfoMake">الصنع:</string>
   <string name="DriverInfoModel">الموديل:</string>
@@ -293,8 +295,8 @@
   <string name="ResetPasswordConfirmationMessage">تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.</string>
   <string name="ResetPasswordConfirmationTitle">تم إرسال كلمة المرور</string>
   <string name="ResetPasswordEmailPlaceHolder">البريد الإلكتروني</string>
-  <string name="ResetPasswordInvalidDataMessage">البريد الإلكتروني غير صحيح</string>
-  <string name="ResetPasswordInvalidDataTitle">عنوان البريد الإلكتروني غير صحيح</string>
+  <string name="InvalidEmailMessage">البريد الإلكتروني غير صحيح</string>
+  <string name="InvalidEmailTitle">عنوان البريد الإلكتروني غير صحيح</string>
   <string name="ResetPasswordSubtitleText">أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.</string>
   <string name="ResetPasswordSucessMessage">تم إعادة ضبط كلمة المرور بنجاح</string>
   <string name="ResetPasswordSucessTitle">إعادة ضبط كلمة المرور</string>
@@ -573,7 +575,6 @@
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Driver">Driver id:</string>
   <string name="ManualRideLinqStatus_Fare">Fare meter:</string>
-  <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="ManualRideLinqStatus_Total">Total cost:</string>
@@ -686,4 +687,19 @@
   <string name="WaitingCarLandscapeViewCloseButtonText">Back</string>
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
+  <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
+  <string name="UpdateNoticeTitle">Update Notice</string>
+  <string name="BookingAirportNoFlights_Title">No flights</string>
+  <string name="BookingAirportNoFlights_Message">No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}</string>
+  <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
+  <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
+  <string name="EmailUsedMessageTitle">Email already used</string>
+  <string name="EmailUsedMessage">This email is already used by another account</string>
+  <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
+  <string name="BookingAirportMissingInfo_Title">Missing information</string>
+  <string name="BookingAirportMissingInfo_Message">The airline and the flight number are madatory.</string>
+  <string name="OrderAirportView_BAD_FLIGHT_NUMBER">Invalid flight number</string>
+  <string name="OrderAirportView_BAD_AIRPORT_CODE">An error occurred with the flight status provider.</string>
+  <string name="OrderAirportView_DATE_OUT_OF_RANGE">Provided date is out of range.</string>
+  <string name="OrderAirportView_BAD_AIRLINE_CODE">An error occurred with the flight status provider.</string>
 </resources>

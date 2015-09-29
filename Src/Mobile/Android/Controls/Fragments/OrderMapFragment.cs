@@ -33,6 +33,7 @@ using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -49,8 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private IEnumerable<CoordinateViewModel> _center;
 
-		private OrderStatusDetail _orderStatusDetail;
-		private Marker _taxiLocationPin;
+	    private Marker _taxiLocationPin;
 
         private readonly List<Marker> _availableVehicleMarkers = new List<Marker> ();
 
@@ -62,11 +62,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private IDictionary<string, BitmapDescriptor> _vehicleIcons; 
 
-		private const int MAP_PADDING = 60;
+		private const int MapPadding = 60;
 
 		private readonly bool _showVehicleNumber;
 
 	    private bool _isBookingMode;
+
+		private bool _lockGeocoding;
+		private TaxiLocation _taxiLocation;
+		private OrderStatusDetail _orderStatusDetail;
 
 		public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
@@ -161,6 +165,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				SetZoom(value); 
 			}
 		}
+
+	    public OrderStatusDetail OrderStatusDetail
+	    {
+		    get { return _orderStatusDetail; }
+		    set
+		    {
+			    _orderStatusDetail = value;
+
+			    if (value != null && _orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
+			    {
+				    _pickupPin.Visible = false;
+			    }
+		    }
+	    }
 
 	    public TaxiLocation TaxiLocation
 	    {
@@ -289,9 +307,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public IMvxBindingContext BindingContext { get; set; }
 
-        private bool _lockGeocoding;
-	    private OrderManualRideLinqDetail _manualPairedTaxi;
-	    private TaxiLocation _taxiLocation;
+	    public ICommand CancelAutoFollow { get; set; }
 
 	    [MvxSetToNullAfterBinding]
         public object DataContext
@@ -341,6 +357,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             TouchableMap.Surface.MoveBy = (deltaX, deltaY) =>
             {
+                ViewModel.BookCannotExecute = true;
                 TouchableMap.Map.MoveCamera(CameraUpdateFactory.ScrollBy(deltaX, deltaY));
             };
 
@@ -534,9 +551,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	            {
 					_destinationPin.Visible = false;
 	            }
-
-
-				
             }
         }
 
@@ -559,6 +573,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 ShowAvailableVehicles(VehicleClusterHelper.Clusterize(AvailableVehicles, bounds)); 
             }
 
+	        if (TaxiLocation != null)
+	        {
+				CancelAutoFollow.ExecuteIfPossible();
+	        }	
         }
 
         private void ClearAllMarkers()
@@ -681,11 +699,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 if (_settings.DisableAutomaticZoomOnLocation && !streetLevelZoomHint.InitialZoom)
                 {
-                    Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude)));
+                    MoveCameraTo(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude);
                 }
                 else
                 {
-                    Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude), zoomLevel + 1));
+                    MoveCameraTo(streetLevelZoomHint.Latitude, streetLevelZoomHint.Longitude, zoomLevel + 1);
                 }
             }
 
@@ -698,23 +716,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
 				{
 					// add a negative padding to counterbalance the map padding done for the "Google" legal logo on the map
-					Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds (GetRegionFromMapBounds(newBounds), -MAP_PADDING.ToPixels())); 
+					Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds (GetRegionFromMapBounds(newBounds), -MapPadding.ToPixels())); 
 				}
 			}
 
             var centerHint = hint as CenterMapPresentationHint;
             if(centerHint != null)
             {
-                Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(centerHint.Latitude, centerHint.Longitude)));
+                MoveCameraTo(centerHint.Latitude, centerHint.Longitude);
             }
         }
 
-		private void AnimateTo(double lat, double lng, float zoom)
+		private void MoveCameraTo(double lat, double lng, float zoom)
 		{
 			Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(lat, lng), zoom));
 		}
 
-		private void AnimateTo(double lat, double lng)
+		private void MoveCameraTo(double lat, double lng)
 		{
 			Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(lat, lng)));
 		}
@@ -734,11 +752,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 				if (coordinateViewModels[0].Zoom != ZoomLevel.DontChange)
 				{
-					AnimateTo(lat, lon, 16);
+					MoveCameraTo(lat, lon, 16);
 				}
 				else
 				{
-					AnimateTo(lat, lon);
+					MoveCameraTo(lat, lon);
 				}
 				return;
 			}
@@ -760,7 +778,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 			if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
 			{
-				AnimateTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 16);
+				MoveCameraTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 16);
 				return;
 			}
 			

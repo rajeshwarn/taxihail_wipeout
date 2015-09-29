@@ -3,6 +3,9 @@
     public class ApplicationInfo : BaseDto
     {
         public string Version { get; set; }
-        public string SiteName { get; set; }
+        
+		public string SiteName { get; set; }
+
+		public string MinimumRequiredAppVersion { get; set; }
     }
 }

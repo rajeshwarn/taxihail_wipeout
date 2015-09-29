@@ -68,6 +68,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
         }
 
+		public FrameLayout.LayoutParams GetLayoutParameters()
+		{
+			return (FrameLayout.LayoutParams)LayoutParameters;
+		}
+
+		public void SetLayoutParameters(int width, int height, int leftMargin, int rigthMargin, int topMargin, int bottomMargin, GravityFlags gravityFlags)
+		{
+			LayoutParameters = new FrameLayout.LayoutParams(width, height, gravityFlags);
+
+			((ViewGroup.MarginLayoutParams)LayoutParameters).LeftMargin = leftMargin;
+			((ViewGroup.MarginLayoutParams)LayoutParameters).RightMargin = rigthMargin;
+			((ViewGroup.MarginLayoutParams)LayoutParameters).TopMargin = topMargin;
+			((ViewGroup.MarginLayoutParams)LayoutParameters).BottomMargin = bottomMargin;
+		}
+
         private OrderEditViewModel ViewModel { get { return (OrderEditViewModel)DataContext; } }
 
 	    public Point ScreenSize { get; set; }

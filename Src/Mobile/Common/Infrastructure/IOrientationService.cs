@@ -1,21 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using apcurium.MK.Common.Enumeration;
 
-namespace apcurium.MK.Booking.Mobile.AppServices
+namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
-	public enum DeviceOrientation
-	{
-		Up,
-		Down,
-		Left,
-		Right
-	}
-
 	public interface IOrientationService
 	{
-		void Initialize(DeviceOrientation[] deviceOrientationNotifications);
+		void Initialize(DeviceOrientations[] deviceOrientationsNotifications);
 
 		bool IsAvailable();
 

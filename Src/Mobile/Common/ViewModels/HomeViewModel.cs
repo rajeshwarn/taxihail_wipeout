@@ -126,13 +126,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 AddressPicker.RefreshFilteredAddress();
 
-				CheckTermsAsync();
+			    this.Services().ApplicationInfo.CheckVersionAsync();
 
-				CheckCreditCardExpiration();
+                CheckTermsAsync();
+
+                CheckCreditCardExpiration();
 
                 BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
-
-				this.Services().ApplicationInfo.CheckVersionAsync();
+				
 				_isShowingTutorial = _tutorialService.DisplayTutorialToNewUser(() =>
 				{
 					_isShowingTutorial = false;

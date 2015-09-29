@@ -14,9 +14,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		bool Stop();
 
 		/// <summary>
-		/// Angles the changed event.
+		/// timestamp of the event in milliseconds
 		/// </summary>
-		/// <param name="angle">Angle is in degrees and assumed to be from 0 to 359 clockwise direction</param>
-		void AngleChangedEvent(int angle);
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="z"></param>
+		/// <param name="timestamp"></param>
+		void OrientationChanged(double x, double y, double z, long timestamp);
 	}
 }

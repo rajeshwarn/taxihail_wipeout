@@ -23,6 +23,8 @@ using TinyMessenger;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.CraftyClicks;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 
 
 namespace apcurium.MK.Booking.Mobile
@@ -58,12 +60,11 @@ namespace apcurium.MK.Booking.Mobile
             _container.Register((c, p) => new POIServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 			_container.Register((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 			_container.Register((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
-
+			_container.Register((c, p) => new FlightInformationServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 			_container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
             _container.Register((c, p) => new CompanyServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ICacheService>()));
-            _container.Register((c, p) => new ManualPairingForRideLinqServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
-
+            _container.Register((c, p) => new ManualPairingForRideLinqServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));	        
 			_container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
             
 			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
@@ -96,6 +97,8 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IPopularAddressProvider, PopularAddressProvider>();
             _container.Register<IPOIProvider, POIProvider>();
 			_container.Register<ITariffProvider, TariffProvider>();
+
+			_container.Register<IAirportInformationService, AirportInformationService>();
 
             _container.Register<IPostalCodeService, CraftyClicksService>();
 
@@ -136,6 +139,7 @@ namespace apcurium.MK.Booking.Mobile
 				case MvxLifetimeEvent.ActivatedFromMemory:
 				case MvxLifetimeEvent.ActivatedFromDisk:
 					RefreshAppData();
+                    Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync();
 #if !MONOTOUCH
 					TryFacebookInitAndPublish();
 #endif
