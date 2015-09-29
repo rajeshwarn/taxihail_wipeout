@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<RoleUpdatedToUserAccount>,
         IEventHandler<PaymentProfileUpdated>,
         IEventHandler<CreditCardAddedOrUpdated>,
+        IEventHandler<DefaultCreditCardUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
         IEventHandler<CreditCardDeactivated>,
@@ -252,11 +253,22 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                if (!account.DefaultCreditCard.HasValue || @event.IsDefault)
+                if (!account.DefaultCreditCard.HasValue)
                 {
                     account.DefaultCreditCard = @event.CreditCardId;
                     account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                 }
+                context.Save(account);
+            }
+        }
+
+        public void Handle(DefaultCreditCardUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.DefaultCreditCard = @event.CreditCardId;
+                account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                 context.Save(account);
             }
         }

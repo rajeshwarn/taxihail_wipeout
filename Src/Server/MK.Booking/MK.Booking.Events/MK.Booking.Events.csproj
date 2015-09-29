@@ -70,6 +70,7 @@
     <Compile Include="CreditCardPaymentCaptured.cs" />
     <Compile Include="CreditCardPaymentCaptured_V2.cs" />
     <Compile Include="CreditCardPaymentInitiated.cs" />
+    <Compile Include="DefaultCreditCardUpdated.cs" />
     <Compile Include="DispatchCompanySwitchIgnored.cs" />
     <Compile Include="FeesUpdated.cs" />
     <Compile Include="IbsOrderInfoAddedToOrder.cs" />
