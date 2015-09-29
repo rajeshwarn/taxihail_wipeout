@@ -62,7 +62,8 @@
 
 					viewObject.findDisable.call(false);
 
-					if (data.status == 200) {
+					if (data.status == 200)
+					{
 						viewObject.updateAccountsList.call(viewObject, JSON.parse(data.responseText));
 					}
 				});
@@ -88,7 +89,16 @@
 			sendButton.disabled = true;
 
 			model.sendConfirmationCodeSMS(email, this, function (viewObject, data) {
-				sendButton.innerText = TaxiHail.localize("Sent");
+
+				if (data.status == 200)
+				{
+					sendButton.innerText = TaxiHail.localize("Sent");
+				}
+				else
+				{
+					sendButton.disabled = false;
+					viewObject.$('.errors').text(TaxiHail.localize('SendSMSError'))
+				}
 			});
 		},
 
@@ -127,7 +137,16 @@
 			unlinkIBSAccounButton.disabled = true;
 
 			model.unlinkAccount(email, this, function (viewObject, data) {
-				unlinkIBSAccounButton.innerText = TaxiHail.localize("IBS Account Unlinked");
+
+				if (data.status == 200)
+				{
+					unlinkIBSAccounButton.innerText = TaxiHail.localize("IBS Account Unlinked");
+				}
+				else
+				{
+					unlinkIBSAccounButton.disabled = false;
+					viewObject.$('.errors').text(TaxiHail.localize('unlinkAccountError'))
+				}
 			});
 		}
 	});

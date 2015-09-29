@@ -25,7 +25,7 @@
 		{
 			var accounts = this.get("accounts");
 
-			if (accounts != null && accounts != undefined)
+			if (accounts != undefined && accounts != null)
 			{
 				for (i = 0; i < accounts.length; i++)
 				{
@@ -66,7 +66,7 @@
 					data: { format: "json" },
 					dataType: "application/json",
 					complete: function (data) {
-						if (completeCallback != null && completeCallback != undefined)
+						if (completeCallback != undefined && completeCallback != null)
 						{
 							completeCallback(viewObject, data);
 						}
@@ -87,7 +87,7 @@
 					data: { format: "json" },
 					dataType: "application/json",
 					complete: function (data) {
-						if (completeCallback != null && completeCallback != undefined) {
+						if (completeCallback != undefined && completeCallback != null) {
 							completeCallback(viewObject, data);
 						}
 					}
@@ -107,7 +107,7 @@
 					data: { format: "json", accountEmail: email },
 					dataType: "application/json",
 					complete: function (data) {
-						if (completeCallback != null && completeCallback != undefined) {
+						if (completeCallback != undefined && completeCallback != null) {
 							completeCallback(viewObject, data);
 						}
 					}
@@ -147,7 +147,7 @@
 					data: { format: "json", accountEmail: email },
 					dataType: "application/json",
 					complete: function (data) {
-						if (completeCallback != null && completeCallback != undefined) {
+						if (completeCallback != undefined && completeCallback != null) {
 							completeCallback(viewObject, data);
 						}
 					}
@@ -184,31 +184,12 @@
 					data: { format: "json", accountEmail: email },
 					dataType: "application/json",
 					complete: function (data) {
-						if (completeCallback != null && completeCallback != undefined) {
+						if (completeCallback != undefined && completeCallback != null) {
 							completeCallback(viewObject, data);
 						}
 					}
 				});
 			}
-
-			/*
-            e.preventDefault();
-            var email = this.$('[name=email]').val();
-            return $.ajax({
-                type: 'PUT',
-                url: '../api/account/unlink',
-                data: {
-                    accountEmail: email
-                },
-                dataType: 'json',
-                success: _.bind(function () {
-                    this.$('.errors').text(TaxiHail.localize('unlinkAccountSuccess'));
-                }, this)
-            }).fail(_.bind(function (e) {
-                this.$('.errors').text(TaxiHail.localize('unlinkAccountError'));
-            }), this);
-			
-			*/
 		}
 	});
 }());
