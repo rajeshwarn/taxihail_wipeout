@@ -1,0 +1,59 @@
+﻿<div class='row'>
+    <div class='span6'>
+        <div class='well clearfix'>
+            <div class='errors'></div>
+			<div class="control-group">
+				<label class="control-label">{{localize "Search Criteria"}}</label>
+				<div class="controls">
+					<label class="control-label1" for="phonenumber">{{localize "Name/Email/Phone Number"}}</label>
+					<input type="text" id="phonenumber" autofocus name="settings.phone" value="{{settings.phone}}" class='input-block-level' data-action='findUserWithPhoneNumberEnterOnTextfield'>
+				</div>
+			</div>
+
+			<div class="control-group btn-right-alignment">
+				<button id="buttonFindUsers" {{#if findButtonDisable}} disabled {{/if}} type="submit" class='btn btn-primary span' data-action='findUserWithPhoneNumber' data-loading-text="{{localize 'Loading'}}">{{localize "Find user"}}</button>
+			</div>
+        </div>
+    </div>
+</div>
+
+{{#if accounts}}
+<div class='row'>
+	<div class='span12'>
+		<div class='well clearfix'>
+			<div class="control-group">
+				<table class="table1">
+					<thead>
+						<tr>
+							<th>{{ localize "Name"}}</th>
+							<th>{{ localize "Email"}}</th>
+							<th>{{ localize "Phone Number"}}</th>
+							<th>{{ localize "Confirmed"}}</th>
+							<th>{{ localize "Enabled"}}</th>
+							<th>{{ localize "Action"}}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each accounts}}
+						<tr>
+							<td>{{this.name}}</td>
+							<td>{{this.email}}</td>
+							<td>+{{this.dialCode}} {{this.settings.phone}}</td>
+							
+							<td>{{#if this.isConfirmed }} + {{else}} - {{/if}}</td>
+							<td>{{#if this.disabledByAdmin }} - {{else}} + {{/if}}</td>
+							
+							<td>
+								<button id="buttonSendSMS{{this.email}}" type="submit" class='btn btn-primary span buttontable1autocenter' data-action='sendConfirmationCodeSMS' email="{{this.email}}">{{localize "Send Account Confirmation Code via SMS"}}</button>
+								<button id="buttonEnableDisableAccount{{this.email}}" type="submit" class='btn btn-primary span buttontable1autocenter' data-action='enableDisableAccount' email="{{this.email}}">  {{#if this.disabledByAdmin }} {{ localize "Enable Account"}} {{else}} {{ localize "Disable Account"}} {{/if}}</button>
+								<button id="buttonUnlinkIBSAccount{{this.email}}" type="submit" class='btn btn-primary span buttontable1autocenter' data-action='unlinkIBSAccount' email="{{this.email}}">{{localize "Unlink IBS Account(s)"}}</button>
+							</td>
+						</tr>
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{{/if}}

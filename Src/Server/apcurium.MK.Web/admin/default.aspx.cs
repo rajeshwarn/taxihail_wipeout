@@ -8,6 +8,8 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using Microsoft.Practices.ServiceLocation;
 using ServiceStack.Text;
+using apcurium.MK.Common;
+using System.Globalization;
 
 #endregion
 
@@ -28,6 +30,10 @@ namespace apcurium.MK.Web.admin
         protected bool IsTaxiHailPro { get; private set; }
         protected bool IsNetworkEnabled { get; private set; }
         protected string Languages { get; private set; }
+
+		protected string CountryCodes { get; private set; }
+
+		protected string DefaultCountryCode { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -59,6 +65,20 @@ namespace apcurium.MK.Web.admin
             {
                 Response.Redirect("~");
             }
+
+
+			CountryCodes = Newtonsoft.Json.JsonConvert.SerializeObject(CountryCode.CountryCodes);
+
+			CultureInfo defaultCultureInfo = CultureInfo.GetCultureInfo(config.ServerData.PriceFormat);
+
+			if (defaultCultureInfo != null)
+			{
+				DefaultCountryCode = (new RegionInfo(defaultCultureInfo.LCID)).TwoLetterISORegionName;
+			}
+			else
+			{
+				DefaultCountryCode = "CA";
+			}
 
             IsTaxiHailPro = config.ServerData.IsTaxiHailPro;
         }
