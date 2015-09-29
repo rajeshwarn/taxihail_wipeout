@@ -18,8 +18,8 @@ namespace apcurium.MK.Booking.IBS.Impl
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
         private readonly IServerSettings _serverSettings;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
 
-        
         public BookingWebServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings.ServerData.IBS, logger)
         {
@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.IBS.Impl
         }
 
         public IbsFareEstimate GetFareEstimate( double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string pickupZipCode, string dropoffZipCode, string accountNumber, 
-            int? customerNumber, int? tripDurationInSeconds, int? providerId, int? vehicleType)
+            int? customerNumber, int? tripDurationInSeconds, int? providerId, int? vehicleType, int defaultVehiculeTypeId)
         {
             var result = new IbsFareEstimate();
             UseService(service =>
@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 }
 
                 tbook.AccountNum = accountNumber;
-                tbook.VehicleTypeID = vehicleType  ?? - 1;
+                tbook.VehicleTypeID = vehicleType ?? defaultVehiculeTypeId;
                 tbook.ChargeTypeID = -1;
 
                 tbook.ServiceProviderID = providerId ?? -1;
@@ -394,7 +394,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
         
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
@@ -466,7 +466,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 };
 
             order.Passengers = nbPassengers;
-            order.VehicleTypeID = vehicleTypeId ?? -1;
+            order.VehicleTypeID = vehicleTypeId ?? defaultVehiculeTypeId;
             order.Note = note;
             order.ContactPhone = CleanPhone( phone );
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
