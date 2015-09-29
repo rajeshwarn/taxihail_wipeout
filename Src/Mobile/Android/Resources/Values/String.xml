@@ -720,4 +720,6 @@
   <string name="EmailUsedMessageTitle">Email already used</string>
   <string name="EmailUsedMessage">This email is already used by another account</string>
   <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
+  <string name="ManualPairing_TimeOut_Title">Connection error</string>
+  <string name="ManualPairing_TimeOut_Message">There is a connection error preventing us from providing the status of your ride.</string>
 </resources>

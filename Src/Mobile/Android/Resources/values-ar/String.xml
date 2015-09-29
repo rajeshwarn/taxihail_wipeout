@@ -702,4 +702,6 @@
   <string name="OrderAirportView_BAD_AIRPORT_CODE">An error occurred with the flight status provider.</string>
   <string name="OrderAirportView_DATE_OUT_OF_RANGE">Provided date is out of range.</string>
   <string name="OrderAirportView_BAD_AIRLINE_CODE">An error occurred with the flight status provider.</string>
+  <string name="ManualPairing_TimeOut_Title">Connection error</string>
+  <string name="ManualPairing_TimeOut_Message">There is a connection error preventing us from providing the status of your ride.</string>
 </resources>
