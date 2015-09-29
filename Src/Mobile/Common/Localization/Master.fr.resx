@@ -2276,4 +2276,10 @@
 	<data name="OrderAirportView_BAD_AIRLINE_CODE" xml:space="preserve">
 			<value>Une erreur est survenue avec le fournisseur d'information de vol.</value>
 	</data>
+	<data name="ManualPairing_TimeOut_Title" xml:space="preserve">
+		<value>Erreur de connection</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
+		<value>Un probleme de connexion est survenu lors de la tentative d'obtenir l'état de votre course de taxi.</value>
+	</data>
 </root>

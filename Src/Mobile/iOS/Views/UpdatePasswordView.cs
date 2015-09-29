@@ -30,7 +30,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblCurrentPassword.Text = Localize.GetValue("UpdatePasswordCurrentPasswordLabel");
 			lblNewPassword.Text = Localize.GetValue("UpdatePasswordNewPasswordLabel");
 			lblConfirmation.Text = Localize.GetValue("UpdatePasswordConfirmationLabel");
-			
+
+            ScrollView.ContentSize = new CoreGraphics.CGSize(ScrollView.Frame.Width, ScrollView.Frame.Height);
+
             txtCurrentPassword.ShouldReturn = ShouldReturnDelegate;
 			txtNewPassword.ShouldReturn = ShouldReturnDelegate;
 			txtConfirmation.ShouldReturn = ShouldReturnDelegate;

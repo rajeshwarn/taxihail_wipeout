@@ -15,7 +15,7 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [AuthorizationRequired(ApplyTo.All, RoleName.Admin)]
+    [AuthorizationRequired(ApplyTo.All, RoleName.Support)]
     [Route("/admin/addresses", "GET")]
     [Route("/admin/addresses", "POST")]
     [Route("/admin/addresses/{Id}", "PUT, DELETE")]

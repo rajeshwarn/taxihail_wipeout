@@ -31,6 +31,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Client.Put<string>(req, request);
         }
 
+        public void GrantSupportAccess(GrantSupportRightRequest request)
+        {
+            var req = string.Format("/account/grantsupport");
+            Client.Put<string>(req, request);
+        }
+
         public void EnableAccount(EnableAccountByAdminRequest request)
         {
             var req = string.Format("/account/adminenable");
