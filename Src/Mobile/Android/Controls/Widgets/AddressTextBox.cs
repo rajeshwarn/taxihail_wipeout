@@ -1,7 +1,6 @@
 using System;
 using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
@@ -10,7 +9,6 @@ using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
-using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
