@@ -10,7 +10,7 @@ using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
-using TinyIoC;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -28,11 +28,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private ImageView _dot;
         private View _horizontalDivider;
 
-		ILocalization _localization = TinyIoCContainer.Current.Resolve<ILocalization>();
+	    private readonly ILocalization _localization;
 
         public AddressTextBox(Context c, IAttributeSet attr) : base(c, attr)
         {
-
+			_localization = Mvx.Resolve<ILocalization>();
         }
 
 
