@@ -461,23 +461,20 @@ namespace apcurium.MK.Booking.Api.Services
                         .InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
                 }
             }
-            else
-            {
-                // Local market
-                switch ( _serverSettings.ServerData.LocalAvailableVehiclesMode)
-                {
-                    case LocalAvailableVehiclesModes.Geo:
-                        {
-                            return new CmtGeoServiceClient(_serverSettings, _logger);
-                        }
-                    case LocalAvailableVehiclesModes.HoneyBadger:
-                        {
-                            return new HoneyBadgerServiceClient(_serverSettings, _logger);
-                        }
-                    default: throw new InvalidOperationException("{0} is not a supported Vehicle provider"
-                        .InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
-                }
-            }
+	        // Local market
+	        switch ( _serverSettings.ServerData.LocalAvailableVehiclesMode)
+	        {
+		        case LocalAvailableVehiclesModes.Geo:
+		        {
+			        return new CmtGeoServiceClient(_serverSettings, _logger);
+		        }
+		        case LocalAvailableVehiclesModes.HoneyBadger:
+		        {
+			        return new HoneyBadgerServiceClient(_serverSettings, _logger);
+		        }
+		        default: throw new InvalidOperationException("{0} is not a supported Vehicle provider"
+			        .InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
+	        }
         }
     }
 }
