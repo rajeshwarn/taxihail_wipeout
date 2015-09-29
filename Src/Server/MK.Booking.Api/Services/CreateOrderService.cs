@@ -1294,7 +1294,7 @@ namespace apcurium.MK.Booking.Api.Services
             return null;
         }
 
-	    private bool IsCmtGeoServiceModeSet(string market)
+	    private bool IsCmtGeoServiceMode(string market)
 	    {
 		    var externalMarketMode = market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode ==ExternalAvailableVehiclesModes.Geo;
 
@@ -1305,7 +1305,7 @@ namespace apcurium.MK.Booking.Api.Services
 
 		private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
 		{
-			if (IsCmtGeoServiceModeSet(market))
+			if (IsCmtGeoServiceMode(market))
 			{
 				return new CmtGeoServiceClient(_serverSettings, _logger);
 			}
