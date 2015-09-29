@@ -34,6 +34,7 @@ using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
+using Android.Animation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -191,21 +192,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	    }
 
         // Animate Marker on the map between retrieving positions
-        private async Task AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double compassCourse, Position oldPosition)
+        private void AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double compassCourse, Position oldPosition)
         {
             markerToUpdate.SetIcon(icon);
             markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && compassCourse != 0
                 ? .5f
                 : 1f);
 
-            // We retrieve position each 5 seconds, so we doing 20 updates during these 5 seconds, one each 250 milliseconds
-            for (var percent = 0.05; percent <= 1.05; percent += 0.05)
-            {
-                await Task.Delay(250);
+            var evaluator = new LatLngEvaluator ();
+            var objectAnimator = ObjectAnimator.OfObject (markerToUpdate, "position", evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
+            objectAnimator.SetAutoCancel(true);
+            objectAnimator.SetDuration (5000);
+            objectAnimator.SetInterpolator(new Android.Views.Animations.LinearInterpolator());
+            objectAnimator.Start();
+        }
 
-                var intermediaryLat = oldPosition.Latitude + (percent * (newPosition.Latitude - oldPosition.Latitude));
-                var intermediaryLng = oldPosition.Longitude + (percent * (newPosition.Longitude - oldPosition.Longitude));
-                markerToUpdate.Position = new LatLng(intermediaryLat, intermediaryLng);
+        private class LatLngEvaluator : Java.Lang.Object, ITypeEvaluator
+        {
+            public Java.Lang.Object Evaluate (float fraction, Java.Lang.Object startValue, Java.Lang.Object endValue)
+            {
+                var start = (LatLng)startValue;
+                var end = (LatLng)endValue;
+                return new LatLng (start.Latitude + fraction * (end.Latitude - start.Latitude),
+                    start.Longitude + fraction * (end.Longitude - start.Longitude));
             }
         }
 

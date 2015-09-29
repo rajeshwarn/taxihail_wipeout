@@ -538,25 +538,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         }
 
         // Animate Annotation on the map between retrieving positions
-        private async Task AnimateAnnotationOnMap(AddressAnnotation annotationToUpdate, Position newPosition, Position oldPosition)
+        private void AnimateAnnotationOnMap(AddressAnnotation annotationToUpdate, Position newPosition)
         {
             var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
             annotationToUpdateView.RefreshPinImage();
-              
-            // We retrieve position each 5 seconds, so we doing 20 updates during these 5 seconds, one each 250 milliseconds
-            for (var percent = 0.05; percent < 1.00; percent += 0.05)
-            {
-                await Task.Delay(250);
 
-                var intermediaryLat = oldPosition.Latitude + (percent * (newPosition.Latitude - oldPosition.Latitude));
-                var intermediaryLng = oldPosition.Longitude + (percent * (newPosition.Longitude - oldPosition.Longitude));
-
-                annotationToUpdate.SetCoordinate(new CLLocationCoordinate2D(intermediaryLat, intermediaryLng));
-            }
+            UIView.Animate(5, 0, UIViewAnimationOptions.CurveLinear, () =>
+                {
+                    annotationToUpdate.SetCoordinate(new CLLocationCoordinate2D(newPosition.Latitude, newPosition.Longitude));
+                }, () => {});
         }
 
         // Update Annotation and Animate it to see it move on the map
-        private async Task UpdateAnnotation(AddressAnnotation annotationToUpdate, AvailableVehicle vehicle, Position oldPosition)
+        private async Task UpdateAnnotation(AddressAnnotation annotationToUpdate, AvailableVehicle vehicle)
         {
             var annotationType = (vehicle is AvailableVehicleCluster) 
                 ? AddressAnnotationType.NearbyTaxiCluster 
@@ -571,8 +565,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 {
                     Latitude = vehicle.Latitude,
                     Longitude = vehicle.Longitude
-                },
-                oldPosition);
+                });
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
@@ -605,12 +598,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         // vehicle not updated, nothing to do
                         continue;
                     }
-
-                    var oldPosition = new Position()
-                        {
-                            Latitude = existingAnnotationForVehicle.Coordinate.Latitude,
-                            Longitude = existingAnnotationForVehicle.Coordinate.Longitude,
-                        };
 
                     // coordinates were updated, remove and add later with new position
                     UpdateAnnotation(existingAnnotationForVehicle, vehicle, oldPosition);
@@ -734,11 +721,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     {
                         Latitude = value.Latitude.Value,
                         Longitude = value.Longitude.Value
-                    },
-                    new Position()
-                    {
-                        Latitude = taxiLocationPin.Coordinate.Latitude,
-                        Longitude = taxiLocationPin.Coordinate.Longitude
                     });
             }
             // Create Marker the first time
