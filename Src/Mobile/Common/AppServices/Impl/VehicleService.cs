@@ -13,8 +13,6 @@ using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -128,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				return await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
 					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude,vehicleTypeId),
-					(ex) =>
+					ex =>
 					{
 						// Do not use the default event handler because we do not want to show the
 						// connection error message for GAV requests
