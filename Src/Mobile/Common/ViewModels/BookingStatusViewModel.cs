@@ -895,11 +895,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
+		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
-			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && !string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber))
+			if (OrderStatusDetail.VehicleNumber.HasValue()
+                && (deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right))
 			{
-				string carNumber = OrderStatusDetail.VehicleNumber;
+				var carNumber = OrderStatusDetail.VehicleNumber;
 
 				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 				{

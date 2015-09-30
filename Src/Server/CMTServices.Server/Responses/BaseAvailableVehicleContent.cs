@@ -46,5 +46,8 @@ namespace CMTServices.Responses
 
         [JsonProperty("vl")]
         public int VehicleType { get; set; }
+
+        [JsonProperty("mk")]
+        public string Market { get; set; }
     }
 }
