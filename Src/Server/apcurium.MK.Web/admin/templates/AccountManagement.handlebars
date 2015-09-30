@@ -5,13 +5,13 @@
 			<div class="control-group">
 				<label class="control-label">{{localize "Search Criteria"}}</label>
 				<div class="controls">
-					<label class="control-label1" for="phonenumber">{{localize "Name/Email/Phone Number"}}</label>
-					<input type="text" id="phonenumber" autofocus name="settings.phone" value="{{settings.phone}}" class='input-block-level' data-action='findUserWithPhoneNumberEnterOnTextfield'>
+					<label class="control-label1" for="searchcriteria">{{localize "Name/Email/Phone Number"}}</label>
+					<input type="text" id="searchcriteria" autofocus name="settings.phone" value="{{settings.phone}}" class='input-block-level' data-action='findUserWithSearchCriteriaEnterOnTextfield'>
 				</div>
 			</div>
 
 			<div class="control-group btn-right-alignment">
-				<button id="buttonFindUsers" {{#if findButtonDisable}} disabled {{/if}} type="submit" class='btn btn-primary span' data-action='findUserWithPhoneNumber' data-loading-text="{{localize 'Loading'}}">{{localize "Find user"}}</button>
+				<button id="buttonFindUsers" {{#if findButtonDisable}} disabled {{/if}} type="submit" class='btn btn-primary span' data-action='findUserWithSearchCriteria' data-loading-text="{{localize 'Loading'}}">{{localize "Find user"}}</button>
 			</div>
         </div>
     </div>
@@ -44,17 +44,20 @@
 							<td style="width:50px;">{{#if this.disabledByAdmin }} - {{else}} + {{/if}}</td>
 
 							<td style="width:260px;">
+								{{#if this.currentAccount }}
+								{{else}}
 								<div>
 									<button id="buttonSendSMS{{this.email}}" type="submit" class='btn btn-primary span buttontable1autocenter' data-action='sendConfirmationCodeSMS' email="{{this.email}}">{{localize "Send Account Confirmation Code via SMS"}}</button>
 								</div>
+
 								<div>
 									<button id="buttonEnableDisableAccount{{this.email}}" type="submit" class='btn btn-primary span buttontable1autocenter' data-action='enableDisableAccount' email="{{this.email}}">  {{#if this.disabledByAdmin }} {{ localize "Enable Account"}} {{else}} {{ localize "Disable Account"}} {{/if}}</button>
 								</div>
 								<div>
 									<button id="buttonUnlinkIBSAccount{{this.email}}" type="submit" class='btn btn-primary span buttontable1autocenter' data-action='unlinkIBSAccount' email="{{this.email}}">{{localize "Unlink IBS Account(s)"}}</button>
 								</div>
-
-</td>
+								{{/if}}
+							</td>
 						</tr>
 						{{/each}}
 					</tbody>

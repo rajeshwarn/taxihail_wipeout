@@ -36,6 +36,8 @@ namespace apcurium.MK.Web.admin
 
 		protected string DefaultCountryCode { get; private set; }
 
+		protected string CurrentAccountID { get; private set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var config = ServiceLocator.Current.GetInstance<IServerSettings>();
@@ -50,6 +52,7 @@ namespace apcurium.MK.Web.admin
             IsAuthenticated = base.UserSession.IsAuthenticated;
             IsSuperAdmin = UserSession.HasPermission(RoleName.SuperAdmin);
             IsAdmin = UserSession.HasPermission(RoleName.Admin);
+			CurrentAccountID = UserSession.UserAuthId;
 
             IsNetworkEnabled = config.ServerData.Network.Enabled;
 

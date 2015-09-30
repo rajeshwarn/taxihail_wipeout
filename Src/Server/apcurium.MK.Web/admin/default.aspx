@@ -61,6 +61,7 @@
         	TaxiHail.parameters.languages = <%= Languages %>;
         	TaxiHail.countryCodes = <%= CountryCodes %>;
         	TaxiHail.parameters.defaultCountryCode = "<%= DefaultCountryCode %>";
+        	TaxiHail.parameters.currentAccountID = "<%= CurrentAccountID %>";
         </script>
 
         <%: Scripts.Render("~/admin/bundles/app") %>

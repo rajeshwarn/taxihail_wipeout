@@ -9,8 +9,8 @@
 
 		events:
 		{
-			'click [data-action=findUserWithPhoneNumber]': 'findUserWithPhoneNumber',
-			'keyup [data-action=findUserWithPhoneNumberEnterOnTextfield]': 'findUserWithPhoneNumber',
+			'click [data-action=findUserWithSearchCriteria]': 'findUserWithSearchCriteria',
+			'keyup [data-action=findUserWithSearchCriteriaEnterOnTextfield]': 'findUserWithSearchCriteria',
 			'click [data-action=sendConfirmationCodeSMS]': 'sendConfirmationCodeSMS',
 			'click [data-action=enableDisableAccount]': 'enableDisableAccount',
 			'click [data-action=unlinkIBSAccount]': 'unlinkIBSAccount'
@@ -27,7 +27,7 @@
 
 			this.$el.html(this.renderTemplate(data));
 
-			this.$("#phonenumber").val(model.getPhoneNumber());
+			this.$("#searchcriteria").val(model.getSearchCriteria());
 
 			return this;
 		},
@@ -35,8 +35,8 @@
 		updateAccountsList: function (accountsList)
 		{
 			model.setAccounts(accountsList);
-			var phoneNumber = $("#phonenumber").val();
-			model.setPhoneNumber(phoneNumber);
+			var searchCriteria = $("#searchcriteria").val();
+			model.setSearchCriteria(searchCriteria);
 			this.render();
 		},
 
@@ -44,38 +44,44 @@
 		{
 			model.findButtonDisable(disable);
 			$("#buttonFindUsers").prop("disabled", disable);
-			$("#phonenumber").prop("disabled", disable);
+			$("#searchcriteria").prop("disabled", disable);
 		},
 
-		findUserWithPhoneNumberInternal: function ()
+		findUserWithSearchCriteriaInternal: function ()
 		{
-			var phoneNumber = $("#phonenumber").val();
-			model.setPhoneNumber(phoneNumber);
+			var searchCriteria = $("#searchcriteria").val();
+			model.setSearchCriteria(searchCriteria);
 
 			this.updateAccountsList([]);
 
-			if (phoneNumber.toString().length > 0)
+			if (searchCriteria.toString().length > 0)
 			{
 				this.findDisable(true);
 
-				model.getAccountsWithPhoneNumber(phoneNumber, this, function (viewObject, data) {
+				model.getAccountsWithSearchCriteria(searchCriteria, this, function (viewObject, data) {
 
-					viewObject.findDisable.call(false);
+					viewObject.findDisable.call(viewObject, false);
 
-					if (data.status == 200)
-					{
+					if (data.status == 200) {
 						viewObject.updateAccountsList.call(viewObject, JSON.parse(data.responseText));
+					}
+					else {
+						viewObject.$('.errors').text(TaxiHail.localize('Error during users search'))
 					}
 				});
 			}
+			else
+			{
+				this.$('.errors').text(TaxiHail.localize('Email should not be empty'))
+			}
 		},
 
-		findUserWithPhoneNumber: function (e)
+		findUserWithSearchCriteria: function (e)
 		{
 			if (e.type == "click")
 			{
 				e.preventDefault();
-				this.findUserWithPhoneNumberInternal(this);
+				this.findUserWithSearchCriteriaInternal(this);
 			}
 		},
 
@@ -85,21 +91,26 @@
 
 			var email = e.currentTarget.attributes.email.nodeValue;
 
-			var sendButton = document.getElementById("buttonSendSMS" + email);
-			sendButton.disabled = true;
+			if (email != undefined && email != null && email.toString().length > 0)
+			{
+				var sendButton = document.getElementById("buttonSendSMS" + email);
+				sendButton.disabled = true;
 
-			model.sendConfirmationCodeSMS(email, this, function (viewObject, data) {
+				model.sendConfirmationCodeSMS(email, this, function (viewObject, data) {
 
-				if (data.status == 200)
-				{
-					sendButton.innerText = TaxiHail.localize("Sent");
-				}
-				else
-				{
-					sendButton.disabled = false;
-					viewObject.$('.errors').text(TaxiHail.localize('SendSMSError'))
-				}
-			});
+					if (data.status == 200) {
+						sendButton.innerText = TaxiHail.localize("Sent");
+					}
+					else {
+						sendButton.disabled = false;
+						viewObject.$('.errors').text(TaxiHail.localize('SendSMSError'))
+					}
+				});
+			}
+			else
+			{
+				this.$('.errors').text(TaxiHail.localize('Email should not be empty'))
+			}
 		},
 
 		enableDisableAccount: function (e)
@@ -108,22 +119,29 @@
 
 			var email = e.currentTarget.attributes.email.nodeValue;
 
-			var enableDisableAccountButton = document.getElementById("buttonEnableDisableAccount" + email);
-			enableDisableAccountButton.disabled = true;
-
-			var account = model.getAccount(email);
-
-			if (!account.disabledByAdmin)
+			if (email != undefined && email != null && email.toString().length > 0)
 			{
-				model.disableEmail(email, this, function (viewObject, data) {
-					viewObject.findUserWithPhoneNumberInternal.call(viewObject);
-				});
+				var enableDisableAccountButton = document.getElementById("buttonEnableDisableAccount" + email);
+				enableDisableAccountButton.disabled = true;
+
+				var account = model.getAccount(email);
+
+				if (!account.disabledByAdmin)
+				{
+					model.disableEmail(email, this, function (viewObject, data) {
+						viewObject.findUserWithSearchCriteriaInternal.call(viewObject);
+					});
+				}
+				else
+				{
+					model.enableEmail(email, this, function (viewObject, data) {
+						viewObject.findUserWithSearchCriteriaInternal.call(viewObject);
+					});
+				}
 			}
 			else
 			{
-				model.enableEmail(email, this, function (viewObject, data) {
-					viewObject.findUserWithPhoneNumberInternal.call(viewObject);
-				});
+				this.$('.errors').text(TaxiHail.localize('Email should not be empty'))
 			}
 		},
 
@@ -133,21 +151,26 @@
 
 			var email = e.currentTarget.attributes.email.nodeValue;
 
-			var unlinkIBSAccounButton = document.getElementById("buttonUnlinkIBSAccount" + email);
-			unlinkIBSAccounButton.disabled = true;
+			if (email != undefined && email != null && email.toString().length > 0)
+			{
+				var unlinkIBSAccounButton = document.getElementById("buttonUnlinkIBSAccount" + email);
+				unlinkIBSAccounButton.disabled = true;
 
-			model.unlinkAccount(email, this, function (viewObject, data) {
+				model.unlinkAccount(email, this, function (viewObject, data) {
 
-				if (data.status == 200)
-				{
-					unlinkIBSAccounButton.innerText = TaxiHail.localize("IBS Account Unlinked");
-				}
-				else
-				{
-					unlinkIBSAccounButton.disabled = false;
-					viewObject.$('.errors').text(TaxiHail.localize('unlinkAccountError'))
-				}
-			});
+					if (data.status == 200) {
+						unlinkIBSAccounButton.innerText = TaxiHail.localize("IBS Account Unlinked");
+					}
+					else {
+						unlinkIBSAccounButton.disabled = false;
+						viewObject.$('.errors').text(TaxiHail.localize('unlinkAccountError'))
+					}
+				});
+			}
+			else
+			{
+				this.$('.errors').text(TaxiHail.localize('Email should not be empty'))
+			}
 		}
 	});
 }());

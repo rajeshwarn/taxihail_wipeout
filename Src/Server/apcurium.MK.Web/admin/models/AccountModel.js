@@ -6,8 +6,23 @@
 		{
 			var countryCodes = this.get("countryCodes");
 
+			var currentAccountID = this.get("currentAccountID").replace(/-/g, "").toLowerCase();
+
 			for (i = 0; i < accountsList.length; i++)
 			{
+				var id = accountsList[i].id.replace(/-/g, "").toLowerCase();
+
+				if (id != currentAccountID)
+				{
+					accountsList[i].currentAccount = false;
+				}
+				else
+				{
+					accountsList[i].currentAccount = true;
+				}
+
+
+
 				for (i1 = 0; i1 < countryCodes.length; i1++)
 				{
 					if (countryCodes[i1].CountryISOCode.Code == accountsList[i].settings.country.code)
@@ -39,14 +54,14 @@
 			return null;
 		},
 
-		setPhoneNumber: function (phoneNumber)
+		setSearchCriteria: function (criteria)
 		{
-			this.set("phoneNumber", phoneNumber);
+			this.set("criteria", criteria);
 		},
 
-		getPhoneNumber: function ()
+		getSearchCriteria: function ()
 		{
-			return this.get("phoneNumber");
+			return this.get("criteria");
 		},
 
 		findButtonDisable: function (disable)
@@ -54,15 +69,15 @@
 			this.set("findButtonDisable", disable);
 		},
 
-		getAccountsWithPhoneNumber: function (phoneNumber, viewObject, completeCallback)
+		getAccountsWithSearchCriteria: function (criteria, viewObject, completeCallback)
 		{
-			phoneNumber = phoneNumber.toString();
+			criteria = criteria.toString();
 
-			if (phoneNumber.length > 0)
+			if (criteria.length > 0)
 			{
 				$.ajax({
 					type: 'GET',
-					url: "../api/account/findaccounts/" + phoneNumber,
+					url: "../api/account/findaccounts/" + criteria,
 					data: { format: "json" },
 					dataType: "application/json",
 					complete: function (data) {
