@@ -230,7 +230,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.Dematerialize();
 		}
 
-		private void UpdatePosition(double latitude, double longitude, string medallion, CancellationToken token)
+		private void UpdatePosition(double latitude, double longitude, string medallion, CancellationToken token, double compassCourse = 0)
 		{
 			token.ThrowIfCancellationRequested();
 
@@ -246,13 +246,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					Longitude = longitude,
 					Latitude = latitude,
-					VehicleNumber = medallion
+					VehicleNumber = medallion,
+                    CompassCourse = compassCourse,
 				};
 			}
 			else
 			{
 				TaxiLocation.Latitude = latitude;
 				TaxiLocation.Longitude = longitude;
+                TaxiLocation.CompassCourse = compassCourse;
 
 				RaisePropertyChanged(() => TaxiLocation);
 			}
@@ -781,7 +783,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if (geoData.IsPositionValid)
 							{
-								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken);
+								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken, geoData.CompassCourse.HasValue ? geoData.CompassCourse.Value : 0);
 							}
 						}
 					}
@@ -824,7 +826,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					if (geoData != null && geoData.IsPositionValid)
 					{
-						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken);
+						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken, geoData.CompassCourse.HasValue ? geoData.CompassCourse.Value : 0);
 					}
 				}
 				else if (!isUsingGeoServices && hasVehicleInfo &&

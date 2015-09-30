@@ -32,6 +32,8 @@ using Foundation;
 using MapKit;
 using TinyIoC;
 using UIKit;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -510,7 +512,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
                                 false,
-                                vehicle.LogoName);
+                                vehicle.LogoName,
+                                ViewModel.Settings.ShowOrientedPins 
+                                    ? vehicle.CompassCourse
+                                    : 0);
             
             vehicleAnnotation.HideMedaillonsCommand = new AsyncCommand(() =>
                 {
@@ -530,6 +535,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
             AddAnnotation (vehicleAnnotation);
             _availableVehicleAnnotations.Add (vehicleAnnotation);
+        }
+
+        // Animate Annotation on the map between retrieving positions
+        private void AnimateAnnotationOnMap(AddressAnnotation annotationToUpdate, Position newPosition)
+        {
+            var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
+            annotationToUpdateView.RefreshPinImage();
+
+            UIView.Animate(5, 0, UIViewAnimationOptions.CurveLinear, () =>
+                {
+                    annotationToUpdate.SetCoordinate(new CLLocationCoordinate2D(newPosition.Latitude, newPosition.Longitude));
+                }, () => {});
+        }
+
+        // Update Annotation and Animate it to see it move on the map
+        private async Task UpdateAnnotation(AddressAnnotation annotationToUpdate, AvailableVehicle vehicle)
+        {
+            var annotationType = (vehicle is AvailableVehicleCluster) 
+                ? AddressAnnotationType.NearbyTaxiCluster 
+                : AddressAnnotationType.NearbyTaxi;
+
+            annotationToUpdate.Degrees = ViewModel.Settings.ShowOrientedPins 
+                                            ? vehicle.CompassCourse
+                                            : 0;
+            annotationToUpdate.AddressType = annotationType;
+
+            AnimateAnnotationOnMap(annotationToUpdate, new Position()
+                {
+                    Latitude = vehicle.Latitude,
+                    Longitude = vehicle.Longitude
+                });
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
@@ -564,10 +600,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     }
 
                     // coordinates were updated, remove and add later with new position
-                    DeleteAnnotation (existingAnnotationForVehicle);
+                    UpdateAnnotation(existingAnnotationForVehicle, vehicle);
                 }
-
-                CreateAnnotation (vehicle);
+                else
+                {
+                    CreateAnnotation(vehicle);
+                }
             }
         }
 
@@ -670,44 +708,56 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	    }
 
         public ICommand CancelAutoFollow { get; set; }
+        private async Task UpdateTaxiLocation(TaxiLocation value)
 
-	    private void UpdateTaxiLocation(TaxiLocation value)
 	    {
-			if (_taxiLocationPin != null)
-			{
-				RemoveAnnotation(_taxiLocationPin);
-				_taxiLocationPin = null;
-			}
+            // Update Marker and Animate it to see it move on the map
+            if (_taxiLocationPin != null)
+            {
+                var taxiLocationPin = _taxiLocationPin as AddressAnnotation;
+                taxiLocationPin.Degrees = value.CompassCourse;
 
-			if (value != null)
-			{
-				var coord = new CLLocationCoordinate2D(0, 0);
+                AnimateAnnotationOnMap(taxiLocationPin, new Position()
+                    {
+                        Latitude = value.Latitude.Value,
+                        Longitude = value.Longitude.Value
+                    });
+            }
+            // Create Marker the first time
+            else
+            {
+                if (value != null)
+                {
+                    var coord = new CLLocationCoordinate2D(0, 0);
 
-	            var vehicleLatitude = value.Latitude ?? 0;
-	            var vehicleLongitude = value.Longitude ?? 0;
+                    var vehicleLatitude = value.Latitude ?? 0;
+                    var vehicleLongitude = value.Longitude ?? 0;
 
                     if (vehicleLatitude != 0
                         && vehicleLongitude != 0
                         && value.VehicleNumber.HasValue())
-				{
+                    {
                         // Refresh vehicle position
-					coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
-				}
+                        coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
+                    }
 
-				_taxiLocationPin = new AddressAnnotation(
-					coord, 
-					AddressAnnotationType.Taxi,
-					Localize.GetValue("TaxiMapTitle"), 
-					value.VehicleNumber, 
-					_useThemeColorForPickupAndDestinationMapIcons, 
-					_showAssignedVehicleNumberOnPin,
-                    true);
+                    _taxiLocationPin = new AddressAnnotation(
+                        coord, 
+                        AddressAnnotationType.Taxi,
+                        Localize.GetValue("TaxiMapTitle"), 
+                        value.VehicleNumber, 
+                        _useThemeColorForPickupAndDestinationMapIcons, 
+                        _showAssignedVehicleNumberOnPin,
+                        true,
+                        null,
+                        ViewModel.Settings.ShowOrientedPins 
+                            ? value.CompassCourse
+                            : 0);
 
-				AddAnnotation(_taxiLocationPin);
-
-				
-			}
-			SetNeedsDisplay();
+                    AddAnnotation(_taxiLocationPin);
+                    SetNeedsDisplay();
+                }
+            }
 	    }
 
 
