@@ -17,6 +17,13 @@ namespace apcurium.MK.Booking.Api.Client
     public interface IAccountServiceClient
     {
         Task<Account> GetMyAccount();
+
+		/// <summary>
+		/// Get phone number without authorization
+		/// </summary>
+		/// <returns></returns>
+		Task<CurrentAccountPhoneResponse> GetAccountPhoneNumber(CurrentAccountPhoneRequest currentAccountPhoneRequest);
+
         Task RegisterAccount(RegisterAccount account);
 
         Task GetConfirmationCode(ConfirmationCodeRequest request);

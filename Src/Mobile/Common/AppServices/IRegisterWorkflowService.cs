@@ -3,6 +3,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using System.Threading.Tasks;
 using System.Reactive.Subjects;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -11,9 +12,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		void PrepareNewRegistration ();
 		IObservable<RegisterAccount> GetAndObserveRegistration();
 		Task RegisterAccount (RegisterAccount data);
-        Task ConfirmAccount (string code);
+		Task ConfirmAccount(string code);
 
-        Task GetConfirmationCode();
+        void GetConfirmationCode(CountryISOCode countryCode, string phoneNumber);
 
         void RegistrationFinished();
         RegisterAccount Account { get; set; }

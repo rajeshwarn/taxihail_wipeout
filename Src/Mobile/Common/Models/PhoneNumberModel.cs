@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -62,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool IsNumberPossible()
         {
             CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Country));
-            return countryCode.IsNumberPossible(PhoneNumber);
+            return PhoneHelper.IsNumberPossible(countryCode, PhoneNumber);
         }
 
         public string GetPhoneExample()
