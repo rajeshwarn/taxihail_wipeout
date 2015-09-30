@@ -36,7 +36,7 @@
 			this.set("accounts", accountsList);
 		},
 
-		getAccount:function(email)
+		getAccount:function(id)
 		{
 			var accounts = this.get("accounts");
 
@@ -44,7 +44,7 @@
 			{
 				for (i = 0; i < accounts.length; i++)
 				{
-					if (accounts[i].email == email)
+					if (accounts[i].id == id)
 					{
 						return accounts[i];
 					}
@@ -128,28 +128,7 @@
 					}
 				});
 			}
-
-			/*var email = this.$('[name=email]').val();
-			return $.ajax({
-				type: 'PUT',
-				url: '../api/account/adminenable',
-				data: {
-					accountEmail: email
-				},
-				dataType: 'json',
-				success: _.bind(function () {
-					this.$('.errors').text(TaxiHail.localize('confirmEmailSuccess'));
-				}, this)
-			}).fail(_.bind(function (e) {
-				this.$('.errors').text(TaxiHail.localize('confirmEmailError'));
-			}), this);*/
-
-
-
-
 		},
-
-
 
 		disableEmail: function (email, viewObject, completeCallback)
 		{
@@ -167,23 +146,6 @@
 						}
 					}
 				});
-
-
-				/*e.preventDefault();
-				var email = this.$('[name=email]').val();
-				return $.ajax({
-					type: 'PUT',
-					url: '../api/account/admindisable',
-					data: {
-						accountEmail: email
-					},
-					dataType: 'json',
-					success : _.bind(function() {
-						this.$('.errors').text(TaxiHail.localize('disableEmailSuccess'));
-					},this)
-				}).fail(_.bind(function (e) {
-					this.$('.errors').text(TaxiHail.localize('disableEmailError'));
-				}),this);*/
 			}
 		},
 

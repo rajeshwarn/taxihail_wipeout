@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Api.Services
     public class AdminAccountManagementService : Service
     {
         private readonly ICommandBus _commandBus;
-		protected IAccountDao _accountDao;
+		protected readonly IAccountDao _accountDao;
 
         public AdminAccountManagementService(IAccountDao dao, ICommandBus commandBus)
         {

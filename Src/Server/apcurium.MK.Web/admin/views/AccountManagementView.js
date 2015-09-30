@@ -62,10 +62,12 @@
 
 					viewObject.findDisable.call(viewObject, false);
 
-					if (data.status == 200) {
+					if (data.status == 200)
+					{
 						viewObject.updateAccountsList.call(viewObject, JSON.parse(data.responseText));
 					}
-					else {
+					else
+					{
 						viewObject.$('.errors').text(TaxiHail.localize('Error during users search'))
 					}
 				});
@@ -90,18 +92,21 @@
 			e.preventDefault();
 
 			var email = e.currentTarget.attributes.email.nodeValue;
+			var accid = e.currentTarget.attributes.accid.nodeValue;
 
 			if (email != undefined && email != null && email.toString().length > 0)
 			{
-				var sendButton = document.getElementById("buttonSendSMS" + email);
+				var sendButton = document.getElementById("buttonSendSMS" + accid);
 				sendButton.disabled = true;
 
 				model.sendConfirmationCodeSMS(email, this, function (viewObject, data) {
 
-					if (data.status == 200) {
+					if (data.status == 200)
+					{
 						sendButton.innerText = TaxiHail.localize("Sent");
 					}
-					else {
+					else
+					{
 						sendButton.disabled = false;
 						viewObject.$('.errors').text(TaxiHail.localize('SendSMSError'))
 					}
@@ -118,24 +123,43 @@
 			e.preventDefault();
 
 			var email = e.currentTarget.attributes.email.nodeValue;
+			var accid = e.currentTarget.attributes.accid.nodeValue;
 
 			if (email != undefined && email != null && email.toString().length > 0)
 			{
-				var enableDisableAccountButton = document.getElementById("buttonEnableDisableAccount" + email);
+				var enableDisableAccountButton = document.getElementById("buttonEnableDisableAccount" + accid);
 				enableDisableAccountButton.disabled = true;
 
-				var account = model.getAccount(email);
+				var account = model.getAccount(accid);
 
 				if (!account.disabledByAdmin)
 				{
 					model.disableEmail(email, this, function (viewObject, data) {
-						viewObject.findUserWithSearchCriteriaInternal.call(viewObject);
+
+						if (data.status == 200)
+						{
+							viewObject.findUserWithSearchCriteriaInternal.call(viewObject);
+						}
+						else
+						{
+							enableDisableAccountButton.disabled = false;
+							viewObject.$('.errors').text(TaxiHail.localize('Error during enable/disable account'))
+						}
 					});
 				}
 				else
 				{
 					model.enableEmail(email, this, function (viewObject, data) {
-						viewObject.findUserWithSearchCriteriaInternal.call(viewObject);
+
+						if (data.status == 200)
+						{
+							viewObject.findUserWithSearchCriteriaInternal.call(viewObject);
+						}
+						else
+						{
+							enableDisableAccountButton.disabled = false;
+							viewObject.$('.errors').text(TaxiHail.localize('Error during enable/disable account'))
+						}
 					});
 				}
 			}
@@ -150,18 +174,21 @@
 			e.preventDefault();
 
 			var email = e.currentTarget.attributes.email.nodeValue;
+			var accid = e.currentTarget.attributes.accid.nodeValue;
 
 			if (email != undefined && email != null && email.toString().length > 0)
 			{
-				var unlinkIBSAccounButton = document.getElementById("buttonUnlinkIBSAccount" + email);
+				var unlinkIBSAccounButton = document.getElementById("buttonUnlinkIBSAccount" + accid);
 				unlinkIBSAccounButton.disabled = true;
 
 				model.unlinkAccount(email, this, function (viewObject, data) {
 
-					if (data.status == 200) {
+					if (data.status == 200)
+					{
 						unlinkIBSAccounButton.innerText = TaxiHail.localize("IBS Account Unlinked");
 					}
-					else {
+					else
+					{
 						unlinkIBSAccounButton.disabled = false;
 						viewObject.$('.errors').text(TaxiHail.localize('unlinkAccountError'))
 					}
