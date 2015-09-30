@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 
@@ -27,7 +28,10 @@ namespace apcurium.MK.Booking.Api.Services
             try
             {
 	            var order = _orderDao.FindById(request.OrderId);
-
+	            if (order == null)
+	            {
+		            throw new Exception("Order Id: {0} does not exist".InvariantCultureFormat(request.OrderId));
+	            }
                 _ibsOrderService.SendMessageToDriver(request.Message, request.VehicleNumber, order.CompanyKey);
             }
             catch (Exception ex)
