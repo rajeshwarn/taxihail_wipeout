@@ -8,130 +8,187 @@ using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Mobile.Data;
 using System.Collections.Generic;
 using System.Linq;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Configuration;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-	public class CreditCardMultipleViewModel : PageViewModel
-	{
-		private readonly ILocationService _locationService;
-		private readonly IPaymentService _paymentService;
-		private readonly IAccountService _accountService;
+    public class CreditCardMultipleViewModel : PageViewModel
+    {
+        private readonly ILocationService _locationService;
+        private readonly IPaymentService _paymentService;
+        private readonly IAccountService _accountService;
+        private readonly IAppSettings _appSettings;
 
-		private const int TipMaxPercent = 100;
+        private ClientPaymentSettings _paymentSettings;
 
-		public CreditCardMultipleViewModel(
-			ILocationService locationService,
-			IPaymentService paymentService, 
-			IAccountService accountService)
-		{
-			_locationService = locationService;
-			_paymentService = paymentService;
-			_accountService = accountService;
-		}
+        private const int TipMaxPercent = 100;
 
-		public override void OnViewStarted(bool firstTime)
-		{
-			base.OnViewStarted(firstTime);
-			// we stop the service when the viewmodel starts because it stops after the homeviewmodel starts when we press back
-			// this ensures that we don't stop the service just after having started it in homeviewmodel
-			_locationService.Stop();
-		}
+        public CreditCardMultipleViewModel(
+            ILocationService locationService,
+            IPaymentService paymentService, 
+            IAccountService accountService,
+            IAppSettings appSettings)
+        {
+            this._appSettings = appSettings;
+            _locationService = locationService;
+            _paymentService = paymentService;
+            _accountService = accountService;
+        }
 
-		private ClientPaymentSettings _paymentSettings;
+        public override async void OnViewStarted(bool firstTime)
+        {
+            base.OnViewStarted(firstTime);
+            // we stop the service when the viewmodel starts because it stops after the homeviewmodel starts when we press back
+            // this ensures that we don't stop the service just after having started it in homeviewmodel
+            _locationService.Stop();
 
-		public override async void Start()
-		{
-			using (this.Services().Message.ShowProgress())
-			{
-				try
-				{
-					_paymentSettings = await _paymentService.GetPaymentSettings();
+            if (firstTime)
+            {
+                using (this.Services().Message.ShowProgress())
+                {
+                    await GetCreditCArds();
+                }   
+            }
+            else
+            {
+                await GetCreditCArds();
+            }
 
-					var creditCardsDetails = await _accountService.GetCreditCards();
+        }
 
-					CreditCards = creditCardsDetails.Select( cc => 
-						{
-							var cardNumber = string.Format("{0} **** {1} ", cc.Label, cc.Last4Digits);
+        public async override void Start()
+        {
+            base.Start();
 
-							if(cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId)
-							{
-								cardNumber += "(DEFAULT)";
-							}
-							return new CreditCardInfos()
-							{
-								CardNumber =cardNumber
-							};
-						}).ToList();
-				}
-				catch
-				{
-					// Do nothing
-				}
+            _paymentSettings = await _paymentService.GetPaymentSettings();
+        }
 
-			}
-		}
+        private async Task GetCreditCArds()
+        {
+            try
+            {
+                var creditCardsDetails = await _accountService.GetCreditCards();
 
-		public List<CreditCardInfos> CreditCards{ get; set; }
+                CreditCards = creditCardsDetails.Select( cc => 
+                    {
+                        var cardNumber = string.Format("{0} **** {1} ", cc.Label, cc.Last4Digits);
 
-		public bool ShouldDisplayTip
-		{
-			get
-			{
-				return _paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled;
-			}
-		}
+                        if(cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId)
+                        {
+                            cardNumber += "(DEFAULT)";
+                        }
 
-		private PaymentDetailsViewModel _paymentPreferences;
-		public PaymentDetailsViewModel PaymentPreferences
-		{
-			get
-			{
-				if (_paymentPreferences == null)
-				{
-					_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
-					_paymentPreferences.Start();
-					_paymentPreferences.ActionOnTipSelected = SaveTip;
-				}
-				return _paymentPreferences;
-			}
-		}
+                        Console.WriteLine(cardNumber);
 
-		public ICommand NavigateToAddCard
-		{
-			get
-			{
-				return this.GetCommand(() =>
-					{
-						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true});
-					});
-			}
-		}
+                        return new CreditCardInfos()
+                        {
+                            CardNumber = cardNumber,
+                            CreditCardId = cc.CreditCardId,
+                            CreditCardCompany = cc.CreditCardCompany
+                        };
+                    }).ToList();
+            }
+            catch
+            {
+                // Do nothing
+            }
 
-		private ICommand SaveTip 
-		{ 
-			get
-			{
-				return this.GetCommand<int>(async tip =>
-					{
-						if (PaymentPreferences.Tip > TipMaxPercent)
-						{
-							await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
-							return;
-						}
+        }
 
-						try
-						{
-							await _accountService.UpdateSettings(_accountService.CurrentAccount.Settings, _accountService.CurrentAccount.Email, PaymentPreferences.Tip);
-						}
-						catch (WebServiceException)
-						{
-							this.Services()
-								.Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-									this.Services().Localize["UpdateBookingSettingsGenericError"]);
-						}
-					});
-			} 
-		} 
-	}
+        List<CreditCardInfos> _creditCards;
+        public List<CreditCardInfos> CreditCards
+        {
+            get
+            {
+                return _creditCards;
+            }
+            set
+            {
+                _creditCards = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(() => CanAddCard);
+            }
+        }
+
+        public bool CanAddCard
+        {
+            get
+            {
+                return CreditCards.Count <= _appSettings.Data.MaxNumberOfCardsOnFile;
+            }
+        }
+
+        public bool ShouldDisplayTip
+        {
+            get
+            {
+                return _paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled;
+            }
+        }
+
+        private PaymentDetailsViewModel _paymentPreferences;
+        public PaymentDetailsViewModel PaymentPreferences
+        {
+            get
+            {
+                if (_paymentPreferences == null)
+                {
+                    _paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
+                    _paymentPreferences.Start();
+                    _paymentPreferences.ActionOnTipSelected = SaveTip;
+                }
+                return _paymentPreferences;
+            }
+        }
+
+        public ICommand NavigateToAddCard
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                    {
+                        ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true});
+                    });
+            }
+        }
+
+        public ICommand NavigateToDetails
+        {
+            get
+            {
+                return this.GetCommand<CreditCardInfos>( cci =>
+                    {
+                        ShowViewModel<CreditCardAddViewModel>(new {creditCardId = cci.CreditCardId});
+                    });
+            }
+        }
+
+        private ICommand SaveTip 
+        { 
+            get
+            {
+                return this.GetCommand<int>(async tip =>
+                    {
+                        if (PaymentPreferences.Tip > TipMaxPercent)
+                        {
+                            await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
+                            return;
+                        }
+
+                        try
+                        {
+                            await _accountService.UpdateSettings(_accountService.CurrentAccount.Settings, _accountService.CurrentAccount.Email, PaymentPreferences.Tip);
+                        }
+                        catch (WebServiceException)
+                        {
+                            this.Services()
+                                .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                                    this.Services().Localize["UpdateBookingSettingsGenericError"]);
+                        }
+                    });
+            } 
+        } 
+    }
 }
-
