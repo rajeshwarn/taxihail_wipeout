@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		    {
 			    _showEta = value;
 
-			    _etaLabel.Visibility = _showEta ? ViewStates.Visible : ViewStates.Gone;
+			    Redraw();
 		    }
 	    }
 
@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _horizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.company_color), PorterDuff.Mode.SrcAtop);
 				_rideEstimate.Visibility = ViewStates.Visible;
 				_vehicleSelection.Visibility = ViewStates.Gone;
-                _etaLabel.Visibility = Eta.HasValue() ? ViewStates.Visible : ViewStates.Gone;
+				_etaLabel.Visibility = (Eta.HasValue() && _showEta) ? ViewStates.Visible : ViewStates.Gone;
             }
             else
             {
