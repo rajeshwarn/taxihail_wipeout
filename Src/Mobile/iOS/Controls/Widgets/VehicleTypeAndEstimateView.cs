@@ -221,6 +221,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
+        private bool _showEta;
+        public bool ShowEta
+        {
+            get
+            {
+                return _showEta;
+            }
+            set
+            {
+                _showEta = value;
+
+                EtaLabel.Hidden = !value;
+
+                Redraw();
+            }
+        }
+
 		public string Eta
 		{
 			get { return EtaLabel.Text; }
@@ -243,7 +260,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 EstimateContainer.Hidden = false;
 				VehicleSelectionContainer.Hidden = true;
 
-                if (Eta.HasValue())
+                if (Eta.HasValue() && ShowEta)
                 {
                     EstimateContainer.RemoveConstraint(_constraintEstimatedFareLabelHeight);
                     _constraintEstimatedFareLabelHeight = _estimatedFareLabelHeightValueWithEta;
