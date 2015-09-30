@@ -16,5 +16,11 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
         AccountDetail FindByTwitterId(string id);
         int? GetIbsAccountId(Guid accountId, string companyKey);
         string GetPayPalEncryptedRefreshToken(Guid id);
+
+		AccountDetail[] FindByNamePattern(string name);
+
+		AccountDetail[] FindByEmailPattern(string email);
+
+		AccountDetail[] FindByPhoneNumberPattern(string phoneNumber);
     }
 }
