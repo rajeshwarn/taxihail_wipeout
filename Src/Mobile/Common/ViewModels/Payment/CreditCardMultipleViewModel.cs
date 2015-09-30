@@ -141,17 +141,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public ICommand NavigateToAddCard
-		{
-			get
-			{
-				return this.GetCommand(() =>
-					{
-						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true});
-					});
-			}
-		}
-
 		public ICommand NavigateToDetails
 		{
 			get
@@ -159,6 +148,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return this.GetCommand<CreditCardInfos>( cci =>
 					{
 						ShowViewModel<CreditCardAddViewModel>(new {creditCardId = cci.CreditCardId});
+					});
+			}
+		}
+
+		public ICommand NavigateToAddCard
+		{
+			get
+			{
+				return this.GetCommand(() =>
+					{
+						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true});
 					});
 			}
 		}
