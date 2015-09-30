@@ -55,9 +55,9 @@ namespace apcurium.MK.Booking.Api.Payment
             }
         }
 
-        public void SendMessageToDriver(string message, string vehicleNumber)
+        public void SendMessageToDriver(string message, string vehicleNumber, string company)
         {
-            if (!_ibsServiceProvider.Booking().SendMessageToDriver(message, vehicleNumber))
+			if (!_ibsServiceProvider.Booking(company).SendMessageToDriver(message, vehicleNumber))
             {
                 throw new Exception("Cannot send message to driver.");
             }
