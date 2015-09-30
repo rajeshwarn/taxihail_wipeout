@@ -242,11 +242,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, null, null, true);  
 		}
 
-	    public async Task<bool> SendMessageToDriver(string message, string vehicleNumber)
+	    public async Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId)
 	    {
             try
             {
-                await UseServiceClientAsync<IVehicleClient>(service => service.SendMessageToDriver(message, vehicleNumber))
+                await UseServiceClientAsync<IVehicleClient>(service => service.SendMessageToDriver(message, vehicleNumber, orderId))
                     .ConfigureAwait(false);
 
                 return true;
