@@ -140,6 +140,7 @@
   <string name="HomeActivityName">Home</string>
   <string name="Rebook">Reservar viaje nuevamente</string>
   <string name="Tuto06Bottom">Toque “Confirmar” cuando esté listo</string>
+  <string name="PaymentDetails.Label.Business">Business</string>
   <string name="CreateAccountLanguageEnglish">Inglés</string>
   <string name="View_RideSummary">Resumen del servicio</string>
   <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
@@ -230,7 +231,6 @@
   <string name="EtaLessThanAMinute">Nearest taxi is less than a minute away</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance or try again.</string>
   <string name="AddPaymentMethod_Multiple">Agregar método de pago</string>
-  <string name="PayPalLinked">Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
   <string name="RemoveCreditCardMessage">Esta seguro que desea eliminar esta tarjeta de crédito?</string>
   <string name="LoginSupport">¿Necesita asistencia?</string>
   <string name="Politeness">Amabilidad</string>
@@ -392,7 +392,7 @@
   <string name="September">Sep (09)</string>
   <string name="ResetPasswordTitleText">Olvidó su contraseña?</string>
   <string name="March">Mar (03)</string>
-  <string name="PromotionActivityName">Promotion</string>
+  <string name="PaymentDetails.LabelName">Label</string>
   <string name="EmailUsedMessageTitle">Email already used</string>
   <string name="NoPayBackErrorMessage">El campo PayBack es obligatorio.</string>
   <string name="HistoryViewStatusButton">Ver estado</string>
@@ -405,6 +405,7 @@
   <string name="CreateAccountLanguageFrench">Francés</string>
   <string name="TechSupportEmailTitle">Soporte de applicion móvil</string>
   <string name="View_RideLinqPair">Registro</string>
+  <string name="PromotionActivityName">Promotion</string>
   <string name="BookItLaterButton">Mas Tarde</string>
   <string name="RingCode">Código de entrada</string>
   <string name="app_id">134284363380764</string>
@@ -509,6 +510,7 @@
   <string name="April">Abr (04)</string>
   <string name="Error">Error</string>
   <string name="View_AccountConfirmation_Label_Code">Código</string>
+  <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="StatusEditAutoTipButton">Propina</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Tipo de Cargo</string>
@@ -559,6 +561,7 @@
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">Para utilizar un código de promoción, es necesario introducir una tarjeta de crédito como parte de su cuenta.</string>
   <string name="NoFareTextIfDestinationIsRequired">Necesita especificar su destino</string>
   <string name="InvalidEmailMessage">Este email es inválido</string>
+  <string name="PaymentDetails.Label.Personal">Personal</string>
   <string name="LocationsActivityName">Favorite locations</string>
   <string name="searchHint">Buscar</string>
   <string name="CreateAccountTitleMrs">Srta.</string>
@@ -610,7 +613,7 @@
   <string name="View_BookRating">Califique su servicio</string>
   <string name="TermsAndConditionsActivityName">Terms and conditions</string>
   <string name="BookItButton">Reservar ya</string>
-  <string name="PanelMenuViewPromotionsText">Promotions</string>
+  <string name="PayPalLinked">Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
   <string name="ChangePasswordConfirmmation">Su contraseña ha sido actualizada, por favor inicie sesión</string>
   <string name="OrderNote">Reservado por Móvil</string>
   <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>

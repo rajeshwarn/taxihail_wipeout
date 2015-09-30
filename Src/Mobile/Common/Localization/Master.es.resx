@@ -1369,6 +1369,15 @@
     <value>Propina</value>
     <comment>Tip Amount</comment>
   </data>
+  <data name="PaymentDetails.Label.Personal" xml:space="preserve">
+    <value>Personal</value>
+  </data>
+  <data name="PaymentDetails.Label.Business" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="PaymentDetails.LabelName" xml:space="preserve">
+    <value>Label</value>
+  </data>
   <data name="PaymentInCar" xml:space="preserve">
     <value>Pago en carro</value>
     <comment>Payment In Car</comment>

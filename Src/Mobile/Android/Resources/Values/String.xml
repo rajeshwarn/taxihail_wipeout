@@ -137,6 +137,7 @@
   <string name="NoFareTextIfDestinationIsRequired">You need to specify a destination.</string>
   <string name="Rebook">Rebook trip</string>
   <string name="Tuto06Bottom">Tap Confirm when you are ready to go.</string>
+  <string name="PaymentDetails.Label.Business">Business</string>
   <string name="CreateAccountLanguageEnglish">English</string>
   <string name="View_RideSummary">Ride Summary</string>
   <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
@@ -387,7 +388,7 @@
   <string name="September">Sep (09)</string>
   <string name="ResetPasswordTitleText">Forgot your password?</string>
   <string name="March">Mar (03)</string>
-  <string name="PromotionActivityName">Promotion</string>
+  <string name="PaymentDetails.LabelName">Label</string>
   <string name="EmailUsedMessageTitle">Email already used</string>
   <string name="NoPayBackErrorMessage">The PayBack field is required</string>
   <string name="HistoryViewStatusButton">View Status</string>
@@ -400,6 +401,7 @@
   <string name="CreateAccountLanguageFrench">French</string>
   <string name="TechSupportEmailTitle">Support Application Mobile</string>
   <string name="View_RideLinqPair">Check In</string>
+  <string name="PromotionActivityName">Promotion</string>
   <string name="BookItLaterButton">Later</string>
   <string name="RingCode">Entry Code</string>
   <string name="app_id">134284363380764</string>
@@ -558,6 +560,7 @@
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
   <string name="DriverInfoCompany">Company:</string>
   <string name="InvalidEmailMessage">The email is invalid.</string>
+  <string name="PaymentDetails.Label.Personal">Personal</string>
   <string name="LocationsActivityName">Favorite locations</string>
   <string name="searchHint">Search</string>
   <string name="CreateAccountTitleMrs">Mrs</string>

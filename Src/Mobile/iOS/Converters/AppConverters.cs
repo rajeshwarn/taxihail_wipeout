@@ -16,6 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
 		public readonly CurrencyFormatConverter CurrencyFormat = new CurrencyFormatConverter();
         public readonly StringFormatConverter StringFormat = new StringFormatConverter();
 
+        public readonly CreditCardLabelToInt CreditCardLabel = new CreditCardLabelToInt();
+
         public readonly DialCodeConverter DialCodeConverter = new DialCodeConverter();
+        public readonly CreditCardNumberToTypeImageConverter CreditCardCompanyImageConverter = new CreditCardNumberToTypeImageConverter();
 	}
 }

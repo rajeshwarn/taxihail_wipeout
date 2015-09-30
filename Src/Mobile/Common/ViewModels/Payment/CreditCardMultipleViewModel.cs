@@ -21,40 +21,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         private readonly IAccountService _accountService;
         private readonly IAppSettings _appSettings;
 
-        private ClientPaymentSettings _paymentSettings;
+		private ClientPaymentSettings _paymentSettings;
 
         private const int TipMaxPercent = 100;
 
         public CreditCardMultipleViewModel(
             ILocationService locationService,
             IPaymentService paymentService, 
-            IAccountService accountService,
-            IAppSettings appSettings)
+			IAccountService accountService,
+			IAppSettings appSettings)
         {
-            this._appSettings = appSettings;
+			_appSettings = appSettings;
             _locationService = locationService;
             _paymentService = paymentService;
             _accountService = accountService;
         }
 
-        public override async void OnViewStarted(bool firstTime)
+		public override async void OnViewStarted(bool firstTime)
         {
             base.OnViewStarted(firstTime);
             // we stop the service when the viewmodel starts because it stops after the homeviewmodel starts when we press back
             // this ensures that we don't stop the service just after having started it in homeviewmodel
             _locationService.Stop();
 
-            if (firstTime)
-            {
-                using (this.Services().Message.ShowProgress())
-                {
-                    await GetCreditCArds();
-                }   
-            }
-            else
-            {
-                await GetCreditCArds();
-            }
+			if (firstTime)
+			{
+				using (this.Services().Message.ShowProgress())
+				{
+					await GetCreditCArds();
+				}	
+			}
+			else
+			{
+				await GetCreditCArds();
+			}
 
         }
 
@@ -70,39 +70,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             try
             {
                 var creditCardsDetails = await _accountService.GetCreditCards();
+				var defaultCreditCard = creditCardsDetails.First(cc => cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId);
+				var orderedCreditCards = creditCardsDetails.ToList();
+				orderedCreditCards.Remove(defaultCreditCard);
+				orderedCreditCards.Insert(0, defaultCreditCard);
+				CreditCards = orderedCreditCards.Select( cc => 
+					{
+						var cardNumber = string.Format("{0} **** {1} ", cc.Label, cc.Last4Digits);
 
-                CreditCards = creditCardsDetails.Select( cc => 
-                    {
-                        var cardNumber = string.Format("{0} **** {1} ", cc.Label, cc.Last4Digits);
+						if(cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId)
+						{
+							cardNumber += "(DEFAULT)";
+						}
 
-                        if(cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId)
-                        {
-                            cardNumber += "(DEFAULT)";
-                        }
+						return new CreditCardInfos()
+						{
+							CardNumber = cardNumber,
+							CreditCardId = cc.CreditCardId,
+							CreditCardCompany = cc.CreditCardCompany
+						};
+					}).ToList();
+			}
+			catch
+			{
+				// Do nothing
+			}
+		}
 
-                        return new CreditCardInfos()
-                        {
-                            CardNumber = cardNumber,
-                            CreditCardId = cc.CreditCardId,
-                            CreditCardCompany = cc.CreditCardCompany
-                        };
-                    }).ToList();
-            }
-            catch
-            {
-                // Do nothing
-            }
-
-        }
-
-        List<CreditCardInfos> _creditCards;
-        public List<CreditCardInfos> CreditCards
-        {
-            get
-            {
-                return _creditCards;
-            }
-            set
+		List<CreditCardInfos> _creditCards;
+		public List<CreditCardInfos> CreditCards
+		{
+			get
+			{
+				return _creditCards;
+			}
+			set
             {
                 _creditCards = value;
                 RaisePropertyChanged();
@@ -110,13 +112,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        public bool CanAddCard
-        {
-            get
-            {
-                return CreditCards.Count <= _appSettings.Data.MaxNumberOfCardsOnFile;
-            }
-        }
+		public bool CanAddCard
+		{
+			get
+			{
+				return CreditCards.Count < _appSettings.Data.MaxNumberOfCardsOnFile;
+			}
+		}
 
         public bool ShouldDisplayTip
         {
@@ -141,24 +143,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
+		public ICommand NavigateToDetails
+		{
+			get
+			{
+				return this.GetCommand<CreditCardInfos>( cci =>
+					{
+						ShowViewModel<CreditCardAddViewModel>(new {creditCardId = cci.CreditCardId, isFromMultiple = true});
+					});
+			}
+		}
+
         public ICommand NavigateToAddCard
         {
             get
             {
                 return this.GetCommand(() =>
                     {
-                        ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true});
-                    });
-            }
-        }
-
-        public ICommand NavigateToDetails
-        {
-            get
-            {
-                return this.GetCommand<CreditCardInfos>( cci =>
-                    {
-                        ShowViewModel<CreditCardAddViewModel>(new {creditCardId = cci.CreditCardId});
+						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true, isFromMultiple = true});
                     });
             }
         }

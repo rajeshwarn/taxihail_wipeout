@@ -41,7 +41,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
 		private bool _isFromPromotions;
+		private bool _isFromMultiple;
 		private bool _isAddingNew;
+		private Guid _creditCardId;
+		private int _numberOfCreditCards;
 
 		#region Const and ReadOnly
 		private const string Visa = "Visa";
@@ -64,13 +67,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
 		}
 
-		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null, bool isFromPromotions = false, bool isAddingNew = false)
+		public void Init(bool showInstructions = false, 
+			bool isMandatory = false, 
+			string paymentToSettle = null, 
+			bool isFromPromotions = false, 
+			bool isFromMultiple = false, 
+			bool isAddingNew = false, 
+			Guid creditCardId = default(Guid))
 		{
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
 
 			_isFromPromotions = isFromPromotions;
+			_isFromMultiple = isFromMultiple;
 			_isAddingNew = isAddingNew;
+			_creditCardId = creditCardId;
 
 			if (paymentToSettle != null)
 			{
@@ -140,7 +151,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				try
 				{
-					creditCard = await _accountService.GetDefaultCreditCard();
+					var creditCards = await _accountService.GetCreditCards();
+					_numberOfCreditCards = creditCards.ToList().Count;
+
+					creditCard = _creditCardId == default(Guid)
+						? await _accountService.GetDefaultCreditCard()
+						: creditCards.First(c => c.CreditCardId == _creditCardId);
 				}
 				catch (Exception ex)
 				{
@@ -194,6 +210,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged(() => CreditCardNumber);
 				RaisePropertyChanged(() => CanDeleteCreditCard);
 				RaisePropertyChanged(() => IsPayPalOnly);
+				RaisePropertyChanged (() => CanSetCreditCardAsDefault);
 
 				if (_paymentToSettle != null)
 				{
@@ -353,6 +370,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				_data = value;
 				RaisePropertyChanged ();
 				RaisePropertyChanged (() => CreditCardNumber);
+
 			}
 		}
 
@@ -373,7 +391,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public bool CanDeleteCreditCard
 		{
-			get { return IsEditing && !Settings.CreditCardIsMandatory; }
+			get { return IsEditing && (!Settings.CreditCardIsMandatory  || Settings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
 		}
 
 		public bool CanLinkPayPalAccount
@@ -418,9 +436,47 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return _paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled;
+				return (_paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled) && !_isFromMultiple;
 			}
 		}
+
+		public bool ShouldChooseLabel
+		{
+			get
+			{
+				return _isFromMultiple;
+			}
+		}
+
+		public bool CanScanCreditCard
+		{
+			get
+			{
+				return _isAddingNew;
+			}
+		}
+
+		public bool CanSetCreditCardAsDefault
+		{
+			get
+			{
+				return !_isAddingNew && _isFromMultiple && Data.CreditCardId != _accountService.CurrentAccount.DefaultCreditCard.CreditCardId;
+			}
+		}
+
+		int _selectedLabel;
+		public int SelectedLabel
+		{
+			get
+			{
+				return _selectedLabel;
+			}
+			set
+			{
+				_selectedLabel = value;
+			}
+		}
+
 
 		private PaymentDetailsViewModel _paymentPreferences;
 		public PaymentDetailsViewModel PaymentPreferences
@@ -436,7 +492,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return _paymentPreferences;
 			}
 		}
-
+		public ICommand SetAsDefault 
+		{ 
+			get
+			{
+				return this.GetCommand(async() =>
+					{
+						await _accountService.UpdateDefaultCreditCard(Data.CreditCardId);
+					});
+			}
+		}
 		private ICommand _saveTip 
 		{ 
 			get
@@ -657,7 +722,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 								this.Services().Localize["CreditCardAdded"]);
 						}
 
-						if(_isFromPromotions || _isAddingNew)
+						if(_isFromPromotions || _isFromMultiple)
 						{
 							// We are from the promotion page, we should return to it.
 							Close(this);

@@ -139,6 +139,7 @@
   <string name="NoFareTextIfDestinationIsRequired">Vous devez saisir une destination</string>
   <string name="Rebook">Réinitialiser le trajet</string>
   <string name="Tuto06Bottom">Appuyer sur confirmer lorsque vous êtes prêt </string>
+  <string name="PaymentDetails.Label.Business">Entreprise</string>
   <string name="CreateAccountLanguageEnglish">English</string>
   <string name="View_RideSummary">Résumé du trajet</string>
   <string name="ServiceError_EmailClientAbsent">Désolé, nous ne pouvons pas créer le courriel. Il n\'y a pas de client de courriel installé sur cet appareil.</string>
@@ -228,7 +229,6 @@
   <string name="EtaLessThanAMinute">Le taxi le plus proche est à moins d\'une minute de votre position</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Merci de contacter {0} au {1} pour toute demande d\'assistance</string>
   <string name="AddPaymentMethod_Multiple">Ajouter une méthode de paiement</string>
-  <string name="PayPalLinked">Votre compte est maintenant configuré pour le paiement via PayPal par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de confirmation.</string>
   <string name="RemoveCreditCardMessage">Etes-vous sûr de vouloir supprimer cette carte de paiement?</string>
   <string name="LoginSupport">Support Technique?</string>
   <string name="Politeness">Politesse</string>
@@ -390,7 +390,7 @@
   <string name="September">Septembre (09)</string>
   <string name="ResetPasswordTitleText">Mot de passe oublié?</string>
   <string name="March">Mars (03)</string>
-  <string name="PromotionActivityName">Promotion</string>
+  <string name="PaymentDetails.LabelName">Label</string>
   <string name="EmailUsedMessageTitle">Courriel déjà utilisé</string>
   <string name="NoPayBackErrorMessage">Le champs PayBack est requis</string>
   <string name="HistoryViewStatusButton">Voir le statut</string>
@@ -403,6 +403,7 @@
   <string name="CreateAccountLanguageFrench">Français</string>
   <string name="TechSupportEmailTitle">Support application mobile</string>
   <string name="View_RideLinqPair">Check In</string>
+  <string name="PromotionActivityName">Promotion</string>
   <string name="BookItLaterButton">Plus tard</string>
   <string name="RingCode">Saisissez un code</string>
   <string name="app_id">134284363380764</string>
@@ -510,6 +511,7 @@
   <string name="April">Avril (04)</string>
   <string name="Error">Erreur</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
+  <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="StatusEditAutoTipButton">Pourboire</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Type de facturation</string>
@@ -561,6 +563,7 @@
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.</string>
   <string name="DriverInfoCompany">Compagnie:</string>
   <string name="InvalidEmailMessage">Désolé, cet email n\'est pas valide</string>
+  <string name="PaymentDetails.Label.Personal">Personnelle</string>
   <string name="LocationsActivityName">Favorite locations</string>
   <string name="searchHint">Rechercher</string>
   <string name="CreateAccountTitleMrs">Mme</string>
@@ -612,7 +615,7 @@
   <string name="View_BookRating">Noter votre trajet</string>
   <string name="TermsAndConditionsActivityName">Terms and conditions</string>
   <string name="BookItButton">Commander</string>
-  <string name="PanelMenuViewPromotionsText">Promotions</string>
+  <string name="PayPalLinked">Votre compte est maintenant configuré pour le paiement via PayPal par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de confirmation.</string>
   <string name="ChangePasswordConfirmmation">Votre mot de passe a été mis à jour, merci de vous connecter.</string>
   <string name="OrderNote">Réserver sur votre mobile</string>
   <string name="CallDriverUsingProxyPrompt">Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.</string>
