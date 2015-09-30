@@ -136,6 +136,7 @@
 "NoFareTextIfDestinationIsRequired"="Vous devez saisir une destination";
 "Rebook"="Réinitialiser le trajet";
 "Tuto06Bottom"="Appuyer sur confirmer lorsque vous êtes prêt ";
+"PaymentDetails.Label.Business"="Entreprise";
 "CreateAccountLanguageEnglish"="English";
 "View_RideSummary"="Résumé du trajet";
 "ServiceError_EmailClientAbsent"="Désolé, nous ne pouvons pas créer le courriel. Il n'y a pas de client de courriel installé sur cet appareil.";
@@ -225,7 +226,6 @@
 "EtaLessThanAMinute"="Le taxi le plus proche est à moins d'une minute de votre position";
 "ServiceError_ErrorCreatingOrderMessage"="Merci de contacter {0} au {1} pour toute demande d'assistance";
 "AddPaymentMethod_Multiple"="Ajouter une méthode de paiement";
-"PayPalLinked"="Votre compte est maintenant configuré pour le paiement via PayPal par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de confirmation.";
 "RemoveCreditCardMessage"="Etes-vous sûr de vouloir supprimer cette carte de paiement?";
 "LoginSupport"="Support Technique?";
 "Politeness"="Politesse";
@@ -387,7 +387,7 @@
 "September"="Septembre (09)";
 "ResetPasswordTitleText"="Mot de passe oublié?";
 "March"="Mars (03)";
-"PromotionActivityName"="Promotion";
+"PaymentDetails.LabelName"="Label";
 "EmailUsedMessageTitle"="Courriel déjà utilisé";
 "NoPayBackErrorMessage"="Le champs PayBack est requis";
 "HistoryViewStatusButton"="Voir le statut";
@@ -400,6 +400,7 @@
 "CreateAccountLanguageFrench"="Français";
 "TechSupportEmailTitle"="Support application mobile";
 "View_RideLinqPair"="Check In";
+"PromotionActivityName"="Promotion";
 "BookItLaterButton"="Plus tard";
 "RingCode"="Saisissez un code";
 "app_id"="134284363380764";
@@ -507,6 +508,7 @@
 "April"="Avril (04)";
 "Error"="Erreur";
 "View_AccountConfirmation_Label_Code"="Code";
+"PanelMenuViewPromotionsText"="Promotions";
 "StatusEditAutoTipButton"="Pourboire";
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Type de facturation";
@@ -557,6 +559,7 @@
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.";
 "DriverInfoCompany"="Compagnie:";
 "InvalidEmailMessage"="Désolé, cet email n'est pas valide";
+"PaymentDetails.Label.Personal"="Personnelle";
 "LocationsActivityName"="Favorite locations";
 "searchHint"="Rechercher";
 "CreateAccountTitleMrs"="Mme";
@@ -608,7 +611,7 @@
 "View_BookRating"="Noter votre trajet";
 "TermsAndConditionsActivityName"="Terms and conditions";
 "BookItButton"="Commander";
-"PanelMenuViewPromotionsText"="Promotions";
+"PayPalLinked"="Votre compte est maintenant configuré pour le paiement via PayPal par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de confirmation.";
 "ChangePasswordConfirmmation"="Votre mot de passe a été mis à jour, merci de vous connecter.";
 "OrderNote"="Réserver sur votre mobile";
 "CallDriverUsingProxyPrompt"="Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.";

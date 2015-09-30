@@ -131,6 +131,7 @@
 "NoFareTextIfDestinationIsRequired"="يجب أن تحدد الوجهة.";
 "Rebook"="إعادة حجز المشوار";
 "TermsAndConditionsActivityName"="Terms and conditions";
+"PaymentDetails.Label.Business"="Business";
 "CreateAccountLanguageEnglish"="الإنجليزية";
 "View_RideSummary"="ملخص الرحلة";
 "ServiceError_EmailClientAbsent"="Sorry, we're unable to create an email. There is no email client installed on this device";
@@ -217,7 +218,6 @@
 "EtaLessThanAMinute"="Nearest taxi is less than a minute away";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "AddPaymentMethod_Multiple"="Add payment method";
-"PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
 "RemoveCreditCardMessage"="هل أنت متأكد من رغبتك في إزالة بطاقة الائتمان هذه؟";
 "LoginSupport"="Need support?";
 "Politeness"="Politeness";
@@ -377,14 +377,14 @@
 "September"="سبتمبر (09)";
 "ResetPasswordTitleText"="نسيت كلمة المرور؟";
 "March"="مارس (03)";
-"PromotionActivityName"="Promotion";
+"PaymentDetails.LabelName"="Label";
 "EmailUsedMessageTitle"="Email already used";
 "NoPayBackErrorMessage"="The PayBack field is required";
 "HistoryViewStatusButton"="رؤية حالة الطلب";
 "WarningPromoCodeDontShow"="لا تحذر";
 "TaxiHailNetworkTimeOutPopupAlways"="Always Accept";
 "Reset"="إعادة الضبط";
-"ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";
+"PromotionActivityName"="Promotion";
 "CreditCardErrorTitle"="لا يمكنك حفظ هذه البطاقة الائتمانية";
 "View_PaymentPreference"="طرق الدفع المفضلة";
 "CreateAccountLanguageFrench"="الفرنسية";
@@ -495,6 +495,7 @@
 "April"="أبريل (04)";
 "Error"="خطأ";
 "View_AccountConfirmation_Label_Code"="Code";
+"PanelMenuViewPromotionsText"="Promotions";
 "StatusEditAutoTipButton"="Tip";
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="طريقة الدفع :";
@@ -543,6 +544,7 @@
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to enter a credit card as part of your account.";
 "DriverInfoCompany"="Company:";
 "InvalidEmailMessage"="البريد الإلكتروني غير صحيح";
+"PaymentDetails.Label.Personal"="Personal";
 "LocationsActivityName"="Favorite locations";
 "searchHint"="بحث";
 "CreateAccountTitleMrs"="السيدة";
@@ -593,7 +595,8 @@
 "DateTimePickerPickDate"="اختر تاريخ الإلتقاء:";
 "View_BookRating"="قم بتقييم مشوارك";
 "BookItButton"="احجز الآن";
-"PanelMenuViewPromotionsText"="Promotions";
+"PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
+"ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";
 "ChangePasswordConfirmmation"="تم تحديث كلمة المرور الخاصة بك، رجاء تسجيل الدخول.";
 "OrderNote"="تم الحجز من خلال الهاتف الجوال";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";

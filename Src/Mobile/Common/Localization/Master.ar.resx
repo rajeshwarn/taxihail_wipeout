@@ -928,6 +928,15 @@
   <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
     <value>قيمة الإكرامية</value>
   </data>
+  <data name="PaymentDetails.Label.Personal" xml:space="preserve">
+    <value>Personal</value>
+  </data>
+  <data name="PaymentDetails.Label.Business" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="PaymentDetails.LabelName" xml:space="preserve">
+    <value>Label</value>
+  </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
     <value>قيمة العداد</value>
   </data>

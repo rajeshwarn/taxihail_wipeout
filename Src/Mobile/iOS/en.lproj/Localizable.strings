@@ -134,6 +134,7 @@
 "NoFareTextIfDestinationIsRequired"="You need to specify a destination.";
 "Rebook"="Rebook trip";
 "Tuto06Bottom"="Tap Confirm when you are ready to go.";
+"PaymentDetails.Label.Business"="Business";
 "CreateAccountLanguageEnglish"="English";
 "View_RideSummary"="Ride Summary";
 "ServiceError_EmailClientAbsent"="Sorry, we're unable to create an email. There is no email client installed on this device";
@@ -162,6 +163,7 @@
 "TermsAndConditionsAcknowledgment"="I acknowledge that I have read and understood the Terms and Conditions.";
 "CreateAccount_AccountAlreadyExist"="This email is already in use.";
 "Language"="English";
+"TrainStationsButton"="Train Stations";
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "UpdateBookingSettingsInvalidAccount"="The account or rider number that was entered doesn't exist";
 "RefineAddressTitle"="Refine an address";
@@ -221,7 +223,6 @@
 "EtaLessThanAMinute"="Nearest taxi is less than a minute away";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "AddPaymentMethod_Multiple"="Add payment method";
-"PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen";
 "Error_EditAutoTipMessage"="An error occurred while trying to update the tip. Please try again.";
 "LoginSupport"="Need support?";
 "Politeness"="Politeness";
@@ -364,7 +365,7 @@
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";
 "CreateAccountInvalidPassword"="The password is invalid.  The password and confirmation must be the same.  The password must also contain at least 6 characters.";
 "WarningTitle"="Warning";
-"TrainStationsButton"="Train Stations";
+"StatusConfirmCancelRide"="Are you sure you want to cancel?";
 "PaymentDetails.CreditCardLabel"="Cards";
 "TaxiHailNetworkTimeOutPopupRefuse"="Ignore";
 "Error_EditAutoTipTitle"="Error";
@@ -384,7 +385,7 @@
 "September"="Sep (09)";
 "ResetPasswordTitleText"="Forgot your password?";
 "March"="Mar (03)";
-"PromotionActivityName"="Promotion";
+"PaymentDetails.LabelName"="Label";
 "EmailUsedMessageTitle"="Email already used";
 "NoPayBackErrorMessage"="The PayBack field is required";
 "HistoryViewStatusButton"="View Status";
@@ -397,6 +398,7 @@
 "CreateAccountLanguageFrench"="French";
 "TechSupportEmailTitle"="Support Application Mobile";
 "View_RideLinqPair"="Check In";
+"PromotionActivityName"="Promotion";
 "BookItLaterButton"="Later";
 "RingCode"="Entry Code";
 "app_id"="134284363380764";
@@ -490,7 +492,6 @@
 "CreateAccountPayBackPlaceHolder"="PayBack";
 "CreditCardInvalidCrediCardNUmber"="The Credit Card Number is invalid";
 "UpdateBookingSettingsEmptyAccount"="Account and rider numbers cannot be empty when Charge Type is set to Charge Account";
-"StatusConfirmCancelRide"="Are you sure you want to cancel?";
 "CmtTransactionResendConfirmationButtonText"="Resend";
 "StatusDescription"="Order #{0}";
 "Notification_ReceiptEmail"="Receipt (Email)";
@@ -505,6 +506,7 @@
 "April"="Apr (04)";
 "Error"="Error";
 "View_AccountConfirmation_Label_Code"="Code";
+"PanelMenuViewPromotionsText"="Promotions";
 "StatusEditAutoTipButton"="Tip";
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Charge type";
@@ -554,6 +556,7 @@
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to enter a credit card as part of your account.";
 "DriverInfoCompany"="Company:";
 "InvalidEmailMessage"="The email is invalid.";
+"PaymentDetails.Label.Personal"="Personal";
 "LocationsActivityName"="Favorite locations";
 "searchHint"="Search";
 "CreateAccountTitleMrs"="Mrs";
@@ -608,7 +611,7 @@
 "DateTimePickerPickDate"="Select your pickup date:";
 "View_BookRating"="Rate Your Trip";
 "BookItButton"="Book Now";
-"PanelMenuViewPromotionsText"="Promotions";
+"PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen";
 "ChangePasswordConfirmmation"="You password has been updated, please sign in.";
 "OrderNote"="Booked on mobile";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";

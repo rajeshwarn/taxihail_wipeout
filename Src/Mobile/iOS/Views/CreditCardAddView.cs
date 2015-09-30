@@ -16,6 +16,7 @@ using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -85,11 +86,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 lblInstructions.RemoveFromSuperview();
             }
+            else
+            {
+                ConfigureLabelSection();
+            }
+
+            if (!ViewModel.ShouldChooseLabel)
+            {
+                viewLabel.RemoveFromSuperview();
+            }
 
             if (!ViewModel.ShouldDisplayTip)
             {
-                lblTip.RemoveFromSuperview();
-                txtTip.RemoveFromSuperview();
+                viewTip.RemoveFromSuperview();
             }
             else
             {
@@ -130,7 +139,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.CanDeleteCreditCard)
 				.WithConversion("BoolInverter");
-
+            
+            set.Bind(btnCardDefault)
+                .For("TouchUpInside")
+                .To(vm => vm.SetAsDefault);
+            set.Bind(btnCardDefault)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.CanSetCreditCardAsDefault)
+                .WithConversion("BoolInverter");
+            
             set.Bind(txtNameOnCard)
 				.For(v => v.Text)
 				.To(vm => vm.Data.NameOnCard);
@@ -173,6 +190,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Text)
                 .To(vm => vm.PaymentPreferences.TipAmount);
 
+            set.Bind(segmentedLabel)
+                .For(v => v.SelectedSegment)
+                .To(vm => vm.Data.Label)
+                .WithConversion("CreditCardLabel");
+
 			set.Apply ();   
 
             txtNameOnCard.ShouldReturn += GoToNext;
@@ -189,9 +211,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtTip.TextAlignment = UITextAlignment.Right;
         }
 
+        private void ConfigureLabelSection()
+        {
+            lblLabel.Text = Localize.GetValue("PaymentDetails.LabelName.");
+            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardConstants.Personal), 0);
+            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardConstants.Business), 0);
+        }
+
         private void ConfigureCreditCardSection()
         {
-            if (CardIOIsEnabled)
+            if (CardIOIsEnabled && ViewModel.CanScanCreditCard)
             {
                 FlatButtonStyle.Silver.ApplyTo(btnScanCard);
                 btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
@@ -201,7 +230,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 btnScanCard.RemoveFromSuperview();
             }
-
+            FlatButtonStyle.Silver.ApplyTo(btnCardDefault);
             // Configure CreditCard section
             FlatButtonStyle.Green.ApplyTo(btnSaveCard);
             FlatButtonStyle.Red.ApplyTo (btnDeleteCard);
