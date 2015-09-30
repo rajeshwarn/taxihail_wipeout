@@ -30,7 +30,14 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
         public override object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var type = _creditCardCompanies.FirstOrDefault(x=>x.Display == value.ToString());
+
+            #if __ANDROID__
+            return type.Image.Replace(".png", "");
+            #endif
+
+            #if __IOS__
             return type.Image;
+            #endif
         }
     }
 }

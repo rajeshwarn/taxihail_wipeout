@@ -933,6 +933,12 @@
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
     <value>Paiement effectué par le passager pour un montant de {0} (code: {1})</value>
   </data>
+  <data name="PaymentDetails.PaymentMethodsLabel" xml:space="preserve">
+    <value>Méthodes de paiement</value>
+  </data>
+  <data name="PaymentDetails.AddNewCreditCardButtonLabel" xml:space="preserve">
+    <value>Ajouter une carte de crédit</value>
+  </data>
   <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
     <value>Cartes de paiement</value>
   </data>
@@ -2151,7 +2157,10 @@
     <value>Terms and conditions</value>
   </data>
 	<data name="CreditCardAddingActivityName" xml:space="preserve">
-    <value>Add or edit credit card</value>
+    <value>Payment</value>
+  </data>
+	<data name="CreditCardMultipleActivityName" xml:space="preserve">
+    <value>Payment</value>
   </data>
 	<data name="AccountCreationActivityName" xml:space="preserve">
     <value>Account creation</value>

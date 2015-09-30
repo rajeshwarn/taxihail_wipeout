@@ -913,6 +913,12 @@
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
     <value>قام الراكب بدفع {0} (تصريح: {1})</value>
   </data>
+  <data name="PaymentDetails.PaymentMethodsLabel" xml:space="preserve">
+    <value>Payment Methods</value>
+  </data>
+  <data name="PaymentDetails.AddNewCreditCardButtonLabel" xml:space="preserve">
+    <value>Add New Card</value>
+  </data>
   <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
     <value>بطاقات</value>
   </data>
@@ -2093,7 +2099,10 @@
     <value>Terms and conditions</value>
   </data>
 	<data name="CreditCardAddingActivityName" xml:space="preserve">
-    <value>Add or edit credit card</value>
+    <value>Payment</value>
+  </data>
+	<data name="CreditCardMultipleActivityName" xml:space="preserve">
+    <value>Payment</value>
   </data>
 	<data name="AccountCreationActivityName" xml:space="preserve">
     <value>Account creation</value>

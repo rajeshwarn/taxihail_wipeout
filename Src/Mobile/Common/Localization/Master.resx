@@ -1107,6 +1107,12 @@
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>Credit Cards</value>
   </data>
+  <data name="PaymentDetails.PaymentMethodsLabel" xml:space="preserve">
+    <value>Payment Methods</value>
+  </data>
+  <data name="PaymentDetails.AddNewCreditCardButtonLabel" xml:space="preserve">
+    <value>Add New Card</value>
+  </data>
   <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
     <value>Cards</value>
   </data>
@@ -2194,7 +2200,10 @@
     <value>Terms and conditions</value>
   </data>
 	<data name="CreditCardAddingActivityName" xml:space="preserve">
-    <value>Add or edit credit card</value>
+    <value>Payment</value>
+  </data>
+	<data name="CreditCardMultipleActivityName" xml:space="preserve">
+    <value>Payment</value>
   </data>
 	<data name="AccountCreationActivityName" xml:space="preserve">
     <value>Account creation</value>

@@ -80,8 +80,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                             cardNumber += "(DEFAULT)";
                         }
 
-                        Console.WriteLine(cardNumber);
-
                         return new CreditCardInfos()
                         {
                             CardNumber = cardNumber,

@@ -49,6 +49,14 @@
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/paymentMethodsLabel"
+                android:text="@string/PaymentDetails.PaymentMethodsLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                style="@style/BlackTextLabel" />
             <Button
                 style="@style/ButtonActionGreenStyle"
                 android:text="@string/PaymentDetails.AddNewCreditCardButtonLabel"
@@ -58,15 +66,7 @@
                 android:singleLine="true"
                 android:lines="1"
                 local:MvxBind="Click NavigateToAddCard"
-                android:layout_marginBottom="10dip" />
-            <TextView
-                android:id="@+id/paymentMethodsLabel"
-                android:text="@string/PaymentDetails.PaymentMethodsLabel"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dip"
-                android:paddingBottom="5dip"
-                style="@style/BlackTextLabel" />
+                android:layout_marginBottom="5dip" />
             <MvxListView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
