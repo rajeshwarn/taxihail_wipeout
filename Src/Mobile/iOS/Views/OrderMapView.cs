@@ -690,7 +690,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         && vehicleLongitude != 0
                         && value.VehicleNumber.HasValue())
 				{
-                        // Refresh vehicle position
+                    // Refresh vehicle position
 					coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
 				}
 

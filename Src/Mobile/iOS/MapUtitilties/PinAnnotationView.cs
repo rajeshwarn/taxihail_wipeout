@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		{
 			Annotation = annotation;
 			RefreshPinImage();
-            CreateMedailonView(annotation.Title, hidden:true);
+            CreateMedailonView(annotation.Title, annotation.Market, hidden:true);
 		}
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             }
         }
 
-        private void CreateMedailonView(string text, bool hidden)
+        private void CreateMedailonView(string text, string market, bool hidden)
         {
             var lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
             lblVehicleNumber.BackgroundColor = UIColor.DarkGray;
@@ -95,9 +95,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             Image = ann.GetImage();
 
             // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
-            if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin) 
+            if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin)
             {
-                CreateMedailonView(((AddressAnnotation)Annotation).Subtitle, hidden: false);
+                var addressAnnotation = (AddressAnnotation) Annotation;
+                CreateMedailonView(addressAnnotation.Subtitle, addressAnnotation.Market, hidden: false);
             }
 
             CenterOffset = new CGPoint (0, -Image.Size.Height / 2);
@@ -105,9 +106,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                ann.AddressType == AddressAnnotationType.Pickup)
             {
                 CenterOffset = new CGPoint(0, -Image.Size.Height / 2 + 2);
-            }
-             
+            } 
 		}
+
+        private UI
 	}
 }
 
