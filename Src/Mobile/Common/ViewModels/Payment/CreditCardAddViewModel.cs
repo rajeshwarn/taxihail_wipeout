@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private bool _isFromPromotions;
 		private bool _isAddingNew;
+		private Guid _creditCardId;
 		
 #region Const and ReadOnly
         private const string Visa = "Visa";
@@ -64,13 +65,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null, bool isFromPromotions = false, bool isAddingNew = false)
+		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null, bool isFromPromotions = false, bool isAddingNew = false, Guid creditCardId = default(Guid))
 		{
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
 			
 			_isFromPromotions = isFromPromotions;
 			_isAddingNew = isAddingNew;
+			_creditCardId = creditCardId;
 
 			if (paymentToSettle != null)
 			{
@@ -136,20 +138,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				};
 
 				Data = new CreditCardInfos ();
-
 				CreditCardDetails creditCard = null;
 
-                try
-                {
-                    creditCard = await _accountService.GetDefaultCreditCard();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogMessage(ex.Message, ex.ToString());
-                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PaymentLoadError"]);
-                }
+				try
+				{
+					creditCard = _creditCardId == default(Guid)
+						? await _accountService.GetDefaultCreditCard()
+						: (await _accountService.GetCreditCards()).First(c => c.CreditCardId == _creditCardId);
+				}
+				catch (Exception ex)
+				{
+					Logger.LogMessage(ex.Message, ex.ToString());
+					this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PaymentLoadError"]);
+				}
 
-				if (creditCard == null)
+				if (creditCard == null || _isAddingNew)
 				{
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
 
@@ -181,8 +184,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.NameOnCard = creditCard.NameOnCard;
 					Data.CreditCardCompany = creditCard.CreditCardCompany;
 
-    				ExpirationMonth = string.IsNullOrWhiteSpace(creditCard.ExpirationMonth) ? (int?)null : int.Parse(creditCard.ExpirationMonth);
-    				ExpirationYear = string.IsNullOrWhiteSpace(creditCard.ExpirationYear) ? (int?)null : int.Parse(creditCard.ExpirationYear);
+					ExpirationMonth = string.IsNullOrWhiteSpace(creditCard.ExpirationMonth) ? (int?)null : int.Parse(creditCard.ExpirationMonth);
+					ExpirationYear = string.IsNullOrWhiteSpace(creditCard.ExpirationYear) ? (int?)null : int.Parse(creditCard.ExpirationYear);
 
 					var id = CreditCardCompanies.Find(x => x.Display == creditCard.CreditCardCompany).Id;
 					if (id != null)
@@ -193,38 +196,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				RaisePropertyChanged(() => Data);
 				RaisePropertyChanged(() => CreditCardNumber);
-                RaisePropertyChanged(() => CanDeleteCreditCard);
-                RaisePropertyChanged(() => IsPayPalOnly);
+				RaisePropertyChanged(() => CanDeleteCreditCard);
+				RaisePropertyChanged(() => IsPayPalOnly);
 
-                if (_paymentToSettle != null)
-                {
-                    return;
-                }
+				if (_paymentToSettle != null)
+				{
+					return;
+				}
 
-                try
-                {
-                    var overduePayment = await _paymentService.GetOverduePayment();
+				try
+				{
+					var overduePayment = await _paymentService.GetOverduePayment();
 
-                    if (overduePayment == null)
-                    {
-                        return;
-                    }
+					if (overduePayment == null)
+					{
+						return;
+					}
 
-                    this.Services().Message.ShowMessage(
-                        this.Services().Localize["View_Overdue"],
-                        this.Services().Localize["Overdue_OutstandingPaymentExists"],
-                        this.Services().Localize["OkButtonText"],
-                        () => ShowViewModelAndRemoveFromHistory<OverduePaymentViewModel>(new
-                        {
-                            overduePayment = overduePayment.ToJson()
-                        }),
-                        this.Services().Localize["Cancel"],
-                        () => Close(this));
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex);
-                }
+					this.Services().Message.ShowMessage(
+						this.Services().Localize["View_Overdue"],
+						this.Services().Localize["Overdue_OutstandingPaymentExists"],
+						this.Services().Localize["OkButtonText"],
+						() => ShowViewModelAndRemoveFromHistory<OverduePaymentViewModel>(new
+							{
+								overduePayment = overduePayment.ToJson()
+							}),
+						this.Services().Localize["Cancel"],
+						() => Close(this));
+				}
+				catch (Exception ex)
+				{
+					Logger.LogError(ex);
+				}
 			}
         }
 
@@ -658,7 +661,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                                 this.Services().Localize["CreditCardAdded"]);
 					    }
 						
-						if(_isFromPromotions)
+						if(_isFromPromotions || _isAddingNew)
 						{
 							// We are from the promotion page, we should return to it.
 							Close(this);

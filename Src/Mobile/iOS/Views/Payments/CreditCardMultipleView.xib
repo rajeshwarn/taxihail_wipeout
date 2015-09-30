@@ -52,11 +52,11 @@
                         <constraint firstAttribute="height" constant="41" id="nvT-aw-ksF"/>
                     </constraints>
                     <state key="normal" title="Add Credit Card">
-                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="UjK-TY-4iP">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="UjK-TY-4iP">
                     <rect key="frame" x="0.0" y="178" width="320" height="390"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
@@ -76,6 +76,7 @@
                 <constraint firstItem="ps2-SB-MJG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="mDI-Qf-yFd"/>
                 <constraint firstItem="ps2-SB-MJG" firstAttribute="top" secondItem="F6R-js-7jx" secondAttribute="bottom" constant="6" id="p25-ZA-uqX"/>
                 <constraint firstAttribute="bottom" secondItem="UjK-TY-4iP" secondAttribute="bottom" id="qN2-NA-CDm"/>
+                <constraint firstItem="UjK-TY-4iP" firstAttribute="top" secondItem="gAZ-bV-pgy" secondAttribute="bottom" priority="750" constant="14" id="zB2-01-sxI"/>
             </constraints>
         </view>
     </objects>

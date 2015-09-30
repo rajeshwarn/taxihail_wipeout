@@ -4,6 +4,8 @@ using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
@@ -27,6 +29,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             NavigationItem.Title = Localize.GetValue ("View_CreditCard");
 
             ChangeRightBarButtonFontToBold();
+
+            tblCreditCards.DeselectRow(tblCreditCards.IndexPathForSelectedRow, false);
         }
 
         public override void ViewDidLoad()
@@ -34,7 +38,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             base.ViewDidLoad();
 
             View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
-            tblCreditCards.BackgroundColor = View.BackgroundColor;
+
+            tblCreditCards.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
+            tblCreditCards.BackgroundColor = UIColor.Clear;
+            tblCreditCards.SeparatorColor = UIColor.Clear;
+            tblCreditCards.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            tblCreditCards.AlwaysBounceVertical = false;
+            tblCreditCards.DelaysContentTouches = false;
+
+            var tableViewSource = new MvxSimpleTableViewSource(tblCreditCards, CreditCardCell.Key);
+            tblCreditCards.Source = tableViewSource;
+            tblCreditCards.RowHeight = 49;
 
             if (!ViewModel.ShouldDisplayTip)
             {
@@ -50,13 +64,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             var set = this.CreateBindingSet<CreditCardMultipleView, CreditCardMultipleViewModel>();
 
+            set.Bind(tableViewSource)
+                .For(v => v.ItemsSource)
+                .To(vm => vm.CreditCards);
+
+            set.Bind(tableViewSource)
+                .For(v => v.SelectionChangedCommand)
+                .To(vm => vm.NavigateToDetails);
+            
             set.Bind(txtTip)
                 .For(v => v.Text)
                 .To(vm => vm.PaymentPreferences.TipAmount);
 
             set.Bind(btnAddCard)
-                .To(vm => vm.GoToAddCard);
-
+                .To(vm => vm.NavigateToAddCard);
+            
+            set.Bind(btnAddCard)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.CanAddCard)
+                .WithConversion("BoolInverter");
+            
             set.Apply ();  
         }
 

@@ -287,6 +287,7 @@
     <InterfaceDefinition Include="Views\Order\OrderAirportView.xib" />
     <InterfaceDefinition Include="Views\WaitingCarLandscapeView.xib" />
     <InterfaceDefinition Include="Views\Payments\CreditCardMultipleView.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\CreditCardCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -656,6 +657,11 @@
     <Compile Include="Views\Payments\CreditCardMultipleView.designer.cs">
       <DependentUpon>CreditCardMultipleView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Widgets\CreditCardCell.cs" />
+    <Compile Include="Controls\Widgets\CreditCardCell.designer.cs">
+      <DependentUpon>CreditCardCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\CreditCardNumberToTypeImageConverter.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
