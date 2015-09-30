@@ -132,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 CheckCreditCardExpiration();
 
-                BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
+                BottomBar.CheckManualRideLinqEnabledAsync();
 				
 				_isShowingTutorial = _tutorialService.DisplayTutorialToNewUser(() =>
 				{
@@ -722,7 +722,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (BottomBar != null)
             {
-                BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
+                BottomBar.CheckManualRideLinqEnabledAsync();
             }
         }
     }

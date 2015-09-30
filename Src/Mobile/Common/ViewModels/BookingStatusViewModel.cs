@@ -162,21 +162,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}, Logger.LogError)
 				.DisposeWith(subscriptions);
 
-
 			var deviceLocationObservable = Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
 				.Where(_ => ManualRideLinqDetail != null && ManualRideLinqDetail.Medallion.HasValue())
 				.SelectMany(_ => _locationService.GetUserPosition());
 
 			var orderId = orderManualRideLinqDetail.OrderId;
-
+			var deviceName = orderManualRideLinqDetail.DeviceName;
 			var taxilocationViaGeo = GetAndObserveTaxiLocationViaGeo(orderManualRideLinqDetail.DeviceName, orderId);
 
 			_orderWorkflowService.GetAndObserveIsUsingGeo()
 				.DistinctUntilChanged()
-				.SelectMany(isUsingGeo => isUsingGeo
+				.SelectMany(isUsingGeo => isUsingGeo && deviceName.HasValue()
 					? taxilocationViaGeo
 					: deviceLocationObservable
 				)
+				.Where(pos => pos != null)
 				.ObserveOn(SynchronizationContext.Current)
 				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, orderManualRideLinqDetail.Medallion, CancellationToken.None), Logger.LogError)
 				.DisposeWith(subscriptions);
@@ -1144,7 +1144,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         string.Empty,
 						() => { });
 
-	                var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber);
+	                var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber, Order.Id);
 	                if (!messageSent)
 	                {
                         this.Services().Message.ShowMessage(
