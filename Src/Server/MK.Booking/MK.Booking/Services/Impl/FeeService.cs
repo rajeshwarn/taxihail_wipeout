@@ -188,7 +188,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var pairingDetail = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
 
-            var isPastNoFeeCancellationWindow = !pairingDetail.WasUnpaired // No cancellation fee for unpaired rides because the rider is either: already in the car (pay cash) or had his car hijacked
+            var isPastNoFeeCancellationWindow =  pairingDetail != null // Pairing details might be null if the cancellation was done as a result of a network timeout.
+				&& !pairingDetail.WasUnpaired // No cancellation fee for unpaired rides because the rider is either: already in the car (pay cash) or had his car hijacked
                 && orderStatusDetail.TaxiAssignedDate.HasValue
                 && orderStatusDetail.TaxiAssignedDate.Value.AddSeconds(_serverSettings.ServerData.CancellationFeesWindow) < DateTime.UtcNow;
 

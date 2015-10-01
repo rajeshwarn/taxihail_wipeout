@@ -539,6 +539,15 @@ namespace apcurium.MK.Booking.Api.Services
                 return orderStatusDetail;
             }
 
+			// We are in a network timeout situation.
+	        if (orderStatusDetail.CompanyKey == request.NextDispatchCompanyKey)
+	        {
+				CancelIbsOrder(order, account.Id);
+		        orderStatusDetail.IBSStatusId = VehicleStatuses.Common.Timeout;
+		        orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_"+VehicleStatuses.Common.Timeout);
+		        return orderStatusDetail;
+	        }
+
             var market = _taxiHailNetworkServiceClient.GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
             var isConfiguredForCmtPayment = FetchCompanyPaymentSettings(request.NextDispatchCompanyKey);
