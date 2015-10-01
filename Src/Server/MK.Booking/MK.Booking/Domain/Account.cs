@@ -245,6 +245,14 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void RemoveCreditCard(Guid creditCardId)
+        {
+            Update(new CreditCardRemoved()
+            {
+                CreditCardId = creditCardId
+            });
+        }
+
         public void RemoveAllCreditCards()
         {
             Update(new AllCreditCardsRemoved());
