@@ -385,6 +385,12 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus)
         {
+			// We are not supposed to attempt to show the vehicle position when not in the proper state.
+	        if (VehicleStatuses.ShowOnMapStatuses.None(status => status.Equals(ibsOrderInfo.Status)))
+	        {
+				return;
+	        }
+
             // Use IBS vehicle position by default
             var vehicleLatitude = ibsOrderInfo.VehicleLatitude;
             var vehicleLongitude = ibsOrderInfo.VehicleLongitude;
@@ -392,8 +398,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             var isUsingGeo = (!orderStatus.Market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo)
                 || (orderStatus.Market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo);
 
-            // Override with Geo position if enabled
-            if (isUsingGeo)
+            // Override with Geo position if enabled and if we have a vehicle registration.
+            if (isUsingGeo && ibsOrderInfo.VehicleRegistration.HasValue())
             {
                 var orderDetail = _orderDao.FindById(orderStatus.OrderId);
                 var vehicleStatus = _cmtGeoServiceClient.GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleRegistration);
