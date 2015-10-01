@@ -12,6 +12,8 @@ namespace apcurium.MK.Booking.Commands
 
         public Guid AccountId { get; set; }
         public Guid CreditCardId { get; set; }
+        public Guid? NextDefaultCreditCardId { get; set; }
         public Guid Id { get; private set; }
+
     }
 }

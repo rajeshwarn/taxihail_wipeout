@@ -34,9 +34,10 @@ namespace apcurium.MK.Booking.Api.Client
 
         Task<IEnumerable<CreditCardDetails>> GetCreditCards();
         Task AddCreditCard(CreditCardRequest creditCardRequest);
-        Task RemoveCreditCard();
+        Task<CreditCardDetails> RemoveCreditCard(Guid creditCardId);
         Task UpdateCreditCard(CreditCardRequest creditCardRequest);
         Task UpdateDefaultCreditCard(DefaultCreditCardRequest defaultCreditCardRequest);
+        Task UpdateCreditCardLabel(UpdateCreditCardLabelRequest updateCreditCardLabelRequest);
 
         Task<NotificationSettings> GetNotificationSettings(Guid accountId);
         Task UpdateNotificationSettings(NotificationSettingsRequest notificationSettingsRequest);

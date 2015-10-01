@@ -40,6 +40,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<CreditCardAddedOrUpdated>(NoAction);
             Handles<CreditCardRemoved>(NoAction);
             Handles<AllCreditCardsRemoved>(NoAction);
+            Handles<DefaultCreditCardUpdated>(NoAction);
+            Handles<CreditCardLabelUpdated>(NoAction);
             Handles<PaymentProfileUpdated>(NoAction);
             Handles<DeviceRegisteredForPushNotifications>(NoAction);
             Handles<DeviceUnregisteredForPushNotifications>(NoAction);
@@ -245,11 +247,21 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void RemoveCreditCard(Guid creditCardId)
+        public void UpdateCreditCardLabel(Guid creditCardId,string label)
+        {
+            Update(new CreditCardLabelUpdated()
+            {
+                CreditCardId = creditCardId,
+                Label = label
+            });
+        }
+
+        public void RemoveCreditCard(Guid creditCardId, Guid? nextDefaultCreditCardId)
         {
             Update(new CreditCardRemoved()
             {
-                CreditCardId = creditCardId
+                CreditCardId = creditCardId,
+                NextDefaultCreditCardId = nextDefaultCreditCardId,
             });
         }
 

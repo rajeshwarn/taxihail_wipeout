@@ -168,6 +168,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				if (creditCard == null || _isAddingNew)
 				{
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
+					Data.Label = CreditCardConstants.Personal;
 
 					var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
 					CreditCardType = (int)id;
@@ -196,6 +197,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.CardNumber = "************" + creditCard.Last4Digits;
 					Data.NameOnCard = creditCard.NameOnCard;
 					Data.CreditCardCompany = creditCard.CreditCardCompany;
+					Data.Label = creditCard.Label;
 
 					ExpirationMonth = string.IsNullOrWhiteSpace(creditCard.ExpirationMonth) ? (int?)null : int.Parse(creditCard.ExpirationMonth);
 					ExpirationYear = string.IsNullOrWhiteSpace(creditCard.ExpirationYear) ? (int?)null : int.Parse(creditCard.ExpirationYear);
@@ -658,11 +660,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return;
 			}
 
-			await _accountService.RemoveCreditCard(replacedByPayPal);
+			await _accountService.RemoveCreditCard(Data.CreditCardId, replacedByPayPal);
 
-			if (!replacedByPayPal)
+			if (!replacedByPayPal && _accountService.CurrentAccount.DefaultCreditCard == null)
 			{
 				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+			}
+			else
+			{
+				Close(this);
 			}
 		}
 
@@ -724,7 +730,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						{
 							await SettleOverduePayment();
 						}
-						else
+						else if(IsMandatory)
 						{
 							await this.Services().Message.ShowMessage(string.Empty, 
 								_paymentSettings.IsOutOfAppPaymentDisabled ? 
@@ -734,7 +740,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 						if(_isFromPromotions || _isFromMultiple)
 						{
-							// We are from the promotion page, we should return to it.
+							// We are from the promotion or mutliple credit card pages, we should return to it.
 							Close(this);
 						}
 						else

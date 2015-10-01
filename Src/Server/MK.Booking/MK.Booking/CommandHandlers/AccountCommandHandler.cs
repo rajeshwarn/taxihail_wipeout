@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateRoleToUserAccount>,
         ICommandHandler<AddOrUpdateCreditCard>,
         ICommandHandler<UpdateDefaultCreditCard>,
+        ICommandHandler<UpdateCreditCardLabel>,
         ICommandHandler<DeleteAllCreditCards>,
         ICommandHandler<DeleteAccountCreditCard>,
         ICommandHandler<RegisterDeviceForPushNotifications>,
@@ -80,6 +81,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
             account.UpdateDefaultCreditCard(command.CreditCardId);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateCreditCardLabel command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateCreditCardLabel(command.CreditCardId, command.Label);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -156,7 +164,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(DeleteAccountCreditCard command)
         {
             var account = _repository.Find(command.AccountId);
-            account.RemoveCreditCard(command.CreditCardId);
+            account.RemoveCreditCard(command.CreditCardId, command.NextDefaultCreditCardId);
             _repository.Save(account, command.Id.ToString());
         }
 

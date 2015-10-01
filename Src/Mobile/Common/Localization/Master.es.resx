@@ -591,6 +591,9 @@
     <value>El número de tarjeta de crédito es inválido</value>
     <comment>The Credit Card Number is invalid</comment>
   </data>
+  <data name="CreditCardLabel" xml:space="preserve">
+    <value>Label</value>
+  </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Nombre tal y como aparece en la tarjeta</value>
     <comment>Name as it appears on card</comment>
@@ -1620,6 +1623,9 @@
   <data name="ScanCreditCard" xml:space="preserve">
     <value>Escanear su Tarjeta de crédito</value>
     <comment>Scan Credit Card</comment>
+  </data>
+  <data name="SetAsDefaultCreditCard" xml:space="preserve">
+    <value>Set As Default</value>
   </data>
   <data name="searchHint" xml:space="preserve">
     <value>Buscar</value>
