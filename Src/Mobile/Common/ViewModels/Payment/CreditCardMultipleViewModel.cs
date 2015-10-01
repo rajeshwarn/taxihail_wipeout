@@ -91,13 +91,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						};
 					}).ToList();
 			}
-			catch
+			catch(Exception e)
 			{
-				// Do nothing
+				Logger.LogError(e);
 			}
 		}
 
-		List<CreditCardInfos> _creditCards;
+		private List<CreditCardInfos> _creditCards;
 		public List<CreditCardInfos> CreditCards
 		{
 			get
@@ -181,8 +181,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         {
                             await _accountService.UpdateSettings(_accountService.CurrentAccount.Settings, _accountService.CurrentAccount.Email, PaymentPreferences.Tip);
                         }
-                        catch (WebServiceException)
+                        catch (WebServiceException e)
                         {
+							Logger.LogError(e);
                             this.Services()
                                 .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
                                     this.Services().Localize["UpdateBookingSettingsGenericError"]);
