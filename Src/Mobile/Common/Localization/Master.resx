@@ -1152,6 +1152,9 @@
   <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
     <value>You cannot delete your credit card when an order is scheduled or in progress.</value>
   </data>
+  <data name="CreditCardLabel" xml:space="preserve">
+    <value>Label</value>
+  </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Name as it appears on card</value>
   </data>
@@ -1448,6 +1451,9 @@
   </data>
   <data name="ScanCreditCard" xml:space="preserve">
     <value>Scan Credit Card</value>
+  </data>
+  <data name="SetAsDefaultCreditCard" xml:space="preserve">
+    <value>Set As Default</value>
   </data>
   <data name="View_InitializeOrderForAccountPayment" xml:space="preserve">
     <value>Please answer these questions</value>

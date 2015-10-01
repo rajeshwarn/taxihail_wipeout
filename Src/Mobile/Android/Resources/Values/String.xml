@@ -176,7 +176,6 @@
   <string name="DontHaveAnAccountLabel">Don\'t have an account?</string>
   <string name="EtaDurationUnitPlural">mins</string>
   <string name="MessageActivityName">Message</string>
-  <string name="AccountPaymentNumberRequiredTitle">Account Number required</string>
   <string name="ViewRatingBtn">View ratings</string>
   <string name="NoPhoneNumberTitle">Invalid Phone Number</string>
   <string name="BookPickupLocationEmptyPlaceholder">Tap to choose pickup</string>
@@ -207,6 +206,7 @@
   <string name="Save">Save</string>
   <string name="PickupTextPlaceholder">Pickup street address</string>
   <string name="SettingViewLoginInfo">You are currently signed in as : {0}</string>
+  <string name="SetAsDefaultCreditCard">Set As Default</string>
   <string name="PassengerNameLabel">Name</string>
   <string name="RideSettingsPayBack">PayBack</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
@@ -301,7 +301,7 @@
   <string name="DontAsk">Don\'t ask</string>
   <string name="CmtRideLinqErrorTitle">Error</string>
   <string name="SendReceipt">Send receipt</string>
-  <string name="ManualRideLinqStatus_Email">A receipt will be emailed to {0}.</string>
+  <string name="AccountPaymentNumberRequiredTitle">Account Number required</string>
   <string name="VehicleNumberErrorTitle">Error</string>
   <string name="StatusInvalid">Status not available</string>
   <string name="EtaNoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
@@ -459,6 +459,7 @@
   <string name="PayPalLinkedInfo">Account Linked</string>
   <string name="PaymentViewMeterAmountText">Meter Amount</string>
   <string name="CallDriverUsingProxyMessage">Your driver will call you back in a few minutes</string>
+  <string name="ManualRideLinqStatus_Email">A receipt will be emailed to {0}.</string>
   <string name="DriverInfoTaxiType">Taxi Type:</string>
   <string name="InvalidAccountOnActivatedTitle">Invalid account</string>
   <string name="Destination">Destination</string>
@@ -486,6 +487,7 @@
   <string name="StreetNumber">Street Number</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
   <string name="ConfirmPassengerSettingsTitle">Passenger Settings</string>
+  <string name="CreditCardLabel">Label</string>
   <string name="CmtRideLinqGenericErrorMessage">There was an error during pairing, verify your credit card information or try again later.</string>
   <string name="CreateAccountInvalidDataTitle">Invalid account info</string>
   <string name="PickupDateTextPlaceholder">Date: Today</string>

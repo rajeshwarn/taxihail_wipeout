@@ -202,6 +202,7 @@
   <string name="Save">حفظ</string>
   <string name="PickupTextPlaceholder">عنوان شارع الإلتقاء</string>
   <string name="SettingViewLoginInfo">انت متصل حاليا باسم : {0}</string>
+  <string name="SetAsDefaultCreditCard">Set As Default</string>
   <string name="PassengerNameLabel">الإسم</string>
   <string name="RideSettingsPayBack">PayBack</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
@@ -541,7 +542,7 @@
   <string name="Tuto02Top">سنتمكن من تحديد موقعك بإستخدام مستقبل الGPS على هاتفك.</string>
   <string name="CreateAccountEmailPlaceHolder">البرید الإلكتروني</string>
   <string name="TabContacts">قائمة الإتصال</string>
-  <string name="Tuto06Top">تتيح لك شاشة التأكيد مراجعة بيانات مشوارك وتغيير خياراتك لهذه الرحلة تحديدا.</string>
+  <string name="CreditCardLabel">Label</string>
   <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
   <string name="StatusNewRideButton">رحلة جديدة</string>
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
@@ -707,6 +708,7 @@
   <string name="DeleteAddressBt">مسح العنوان</string>
   <string name="StatusConfirmNewBooking">في حالة حجز سيارة أجرة اخرى فإن هذا الطلب سيظل ساري، هل ترغب في الاستمرار ؟</string>
   <string name="RateLastRide">Rate</string>
+  <string name="Tuto06Top">تتيح لك شاشة التأكيد مراجعة بيانات مشوارك وتغيير خياراتك لهذه الرحلة تحديدا.</string>
   <string name="InvalidPassengersNumber">The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.</string>
   <string name="PickupViewDestinationLabel">الوجهة  &gt;&gt;</string>
   <string name="Tuto07Bottom">يتم توفير تحديثات الحالة حين تصل السيارة لعنوان الإلتقاء،  وعند دخولك السيارة وفي نهاية المشوار.</string>

@@ -209,6 +209,7 @@
   <string name="Save">Enregistrer</string>
   <string name="PickupTextPlaceholder">Adresse de départ</string>
   <string name="SettingViewLoginInfo">Vous vous être identifié comme: {0}</string>
+  <string name="SetAsDefaultCreditCard">Définir comme carte par défault</string>
   <string name="PassengerNameLabel">Nom</string>
   <string name="RideSettingsPayBack">PayBack</string>
   <string name="ManualRideLinqStatus_Tax">Taxes:</string>
@@ -335,7 +336,7 @@
   <string name="August">Août (08)</string>
   <string name="ConfirmNameLabel">Nom: </string>
   <string name="GenericTitle"></string>
-  <string name="CallDriver">Call driver</string>
+  <string name="EtaNotAvailable">Il n\'y a pas de véhicule disponible</string>
   <string name="PanelMenuViewAboutUsText">À Propos</string>
   <string name="LocationDetailAddressLabel">Adresse</string>
   <string name="HistoryDetailPickupDateLabel">Date de départ:</string>
@@ -541,7 +542,6 @@
   <string name="View_RideLinqStatus">Status</string>
   <string name="InvalidPayBackErrorMessage">Le champs PayBack ne doit contenir que des chiffres et ne doit pas dépasser 10 caractères</string>
   <string name="BookingAirportFlightNumlbl">Flight Number</string>
-  <string name="EtaNotAvailable">Il n\'y a pas de véhicule disponible</string>
   <string name="PayPalLinkError">Impossible d\'associer votre compte PayPal</string>
   <string name="Overdue_Failed_Message">Votre transaction a été refusée, veuillez essayer plus tard ou changer de carte de crédit.</string>
   <string name="CreditCardMultipleActivityName">Payment</string>
@@ -556,7 +556,7 @@
   <string name="Tuto02Top">Nous devrions être capable de vous localiser en utilisant le GPS de votre smartphone.</string>
   <string name="CreateAccountEmailPlaceHolder">Email (adresse électronique)</string>
   <string name="TabContacts">Contacts</string>
-  <string name="Tuto06Top">L\'écran de confirmation vous permet de vérifier que les détails de votre trajet sont corrects. En cas d\'erreur, merci d\'effectuer les modifications</string>
+  <string name="CreditCardLabel">Label</string>
   <string name="CreditCardInstructions">Afin d\'utiliser l\'application, vous devez ajouter un mode de paiement à votre compte.</string>
   <string name="StatusNewRideButton">Nouveau trajet</string>
   <string name="WarningPushServiceMessage">Nous avons remarqué que vous n\'avez pas les notifications activées. En les activant, vous obtiendrez alors des mises à jour sur l\'état de votre réservation, sans avoir à regarder l\'application !</string>
@@ -666,6 +666,7 @@
   <string name="PanelMenuViewTaxiHailNetworkText">Réseau TaxiHail</string>
   <string name="RemoveCreditCardTitle">Supprimer cette carte de paiement</string>
   <string name="PanelMenuViewTutorialText">Aide</string>
+  <string name="CallDriver">Call driver</string>
   <string name="PaymentDetails.AddNewCreditCardButtonLabel">Ajouter une carte de crédit</string>
   <string name="PanelMenuViewUpdateProfileText">Compte</string>
   <string name="PromoMustHavePaymentMethodSetMessage_PayPal">Pour utiliser un code promotionnel, vous devez avoir un compte PayPal associé à votre compte.</string>
@@ -723,6 +724,7 @@
   <string name="DeleteAddressBt">Supprimer l\'adresse</string>
   <string name="StatusConfirmNewBooking">Attention, la commande d\'un nouveau véhicule n\'annulera pas la précédente. Souhaitez-vous continuer?</string>
   <string name="RateLastRide">Évaluer</string>
+  <string name="Tuto06Top">L\'écran de confirmation vous permet de vérifier que les détails de votre trajet sont corrects. En cas d\'erreur, merci d\'effectuer les modifications</string>
   <string name="InvalidPassengersNumber">Le type de vécicule sélectionné n\'a pas suffisamment de places pour accueillir votre nombre de passagers. Veuillez modifier votre sélection ou commander plus d\'un véhicule pour accommoder votre groupe.</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
   <string name="Tuto07Bottom">Des mises à jour sont envoyées lorsque le véhicule arrive à l\'addresse de départ, quand vous entrez dans le véhicule et à la fin du trajet.</string>

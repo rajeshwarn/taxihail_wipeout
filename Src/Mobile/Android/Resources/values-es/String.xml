@@ -210,6 +210,7 @@
   <string name="Save">Guardar</string>
   <string name="PickupTextPlaceholder">Direccion de abordaje</string>
   <string name="SettingViewLoginInfo">Usted ha iniciado sesion como: {0}</string>
+  <string name="SetAsDefaultCreditCard">Set As Default</string>
   <string name="PassengerNameLabel">Nombre</string>
   <string name="RideSettingsPayBack">PayBack</string>
   <string name="ManualRideLinqStatus_Tax">Impuesto:</string>
@@ -554,7 +555,7 @@
   <string name="Eta">El taxi más cercano esta a {0} {1} de distancia</string>
   <string name="CreateAccountEmailPlaceHolder">Email</string>
   <string name="TabContacts">Contactos</string>
-  <string name="Tuto06Top">La pantalla de confirmacion le permite verificar los detalles de su reservación y cambiar cualquier preferencia que requiera para este servicio</string>
+  <string name="CreditCardLabel">Label</string>
   <string name="CreditCardInstructions">Para usar esta aplicación necesita ingresar un método de pago a su cuenta</string>
   <string name="StatusNewRideButton">Nuevo Servicio</string>
   <string name="WarningPushServiceMessage">Notamos que no tiene las “Notificaciones automáticas” encendidas. Queremos informarle que si las enciende podría obtener mensajes de estado de sus servicios sin tener que abrir la aplicación! Prometemos no le mandaremos información innecesaria</string>
@@ -723,6 +724,7 @@
   <string name="DeleteAddressBt">Eliminar dirección</string>
   <string name="StatusConfirmNewBooking">Reservar un nuevo taxi mantendrá esta reservación activa, desea continuar?</string>
   <string name="RateLastRide">Calificar</string>
+  <string name="Tuto06Top">La pantalla de confirmacion le permite verificar los detalles de su reservación y cambiar cualquier preferencia que requiera para este servicio</string>
   <string name="InvalidPassengersNumber">El tipo de vehículo que ha seleccionado no tiene suficientes asientos para acomodar el número de pasajeros solicitado. Por favor cambie su selección o reserve más de un coche para acomodar a su grupo.</string>
   <string name="PickupViewDestinationLabel">Destino &gt;&gt;</string>
   <string name="Tuto07Bottom">Las actualizaciones al estado se generan cuando el vehículo llega a la dirección de arribo, cuando usted aborda el vehículo y al final del servicio.</string>

@@ -450,6 +450,9 @@
   <data name="CreditCardErrorInvalid" xml:space="preserve">
     <value>La carte ne semble pas être valide</value>
   </data>
+  <data name="CreditCardLabel" xml:space="preserve">
+    <value>Label</value>
+  </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Nom du titulaire (tel qu'il apparaît sur la carte)</value>
   </data>
@@ -1121,6 +1124,9 @@
   </data>
   <data name="ScanCreditCard" xml:space="preserve">
     <value>Scanner la carte de paiement</value>
+  </data>
+  <data name="SetAsDefaultCreditCard" xml:space="preserve">
+    <value>Définir comme carte par défault</value>
   </data>
   <data name="searchHint" xml:space="preserve">
     <value>Rechercher</value>

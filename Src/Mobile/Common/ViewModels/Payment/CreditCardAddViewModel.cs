@@ -438,7 +438,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return (_paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled) && !_isFromMultiple && !IsMandatory;
+                return (_paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled) && !_isFromMultiple && !IsMandatory;
 			}
 		}
 

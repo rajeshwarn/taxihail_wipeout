@@ -442,6 +442,9 @@
   <data name="CreditCardErrorInvalid" xml:space="preserve">
     <value>Cannot validate the credit card</value>
   </data>
+  <data name="CreditCardLabel" xml:space="preserve">
+    <value>Label</value>
+  </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>الإسم كما يظهر على البطاقة</value>
   </data>
@@ -1098,6 +1101,9 @@
   </data>
   <data name="ScanCreditCard" xml:space="preserve">
     <value>مسح بطاقة الائتمان</value>
+  </data>
+  <data name="SetAsDefaultCreditCard" xml:space="preserve">
+    <value>Set As Default</value>
   </data>
   <data name="searchHint" xml:space="preserve">
     <value>بحث</value>
