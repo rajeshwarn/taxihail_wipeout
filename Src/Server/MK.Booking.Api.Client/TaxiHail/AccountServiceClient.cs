@@ -114,6 +114,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.PostAsync<string>("/account/creditcard/changedefault", defaultCreditCardRequest);
         }
 
+        public Task UpdateCreditCardLabel(UpdateCreditCardLabelRequest updateCreditCardLabelRequest)
+        {
+            return Client.PostAsync<string>("/account/creditcard/cahngelabel", updateCreditCardLabelRequest);
+        }
+
         public Task AddCreditCard(CreditCardRequest creditCardRequest)
         {
             return Client.PostAsync<string>("/account/creditcards", creditCardRequest);

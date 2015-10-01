@@ -674,15 +674,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateDefaultCreditCard(new DefaultCreditCardRequest {CreditCardId = creditCardId})); 
 		}
 
-		public async Task UpdateCreditCardLabel(Guid creditCardId)
+		public async Task UpdateCreditCardLabel(Guid creditCardId, string label)
 		{
-			var creditCard = (await GetCreditCards()).First(cc => cc.CreditCardId == creditCardId);
-
-			UpdateCachedAccount(creditCard, CurrentAccount.Settings.ChargeTypeId, CurrentAccount.IsPayPalAccountLinked);
-
-			await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateDefaultCreditCard(new DefaultCreditCardRequest {CreditCardId = creditCardId})); 
+			await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label})); 
 		}
-
 
 		public Task LinkPayPalAccount(string authCode)
 		{
