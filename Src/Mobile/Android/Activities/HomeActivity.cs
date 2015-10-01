@@ -21,8 +21,8 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Common.Entity;
+using Android.Views.InputMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -217,14 +217,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = screenSize.Y;
 			((ViewGroup.MarginLayoutParams)_orderAirport.LayoutParameters).TopMargin = screenSize.Y;
 
-			if (this.Services ().Localize.IsRightToLeft) 
-			{
-				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).RightMargin = screenSize.X;
-            } 
-            else 
-            {
-				((ViewGroup.MarginLayoutParams)_orderEdit.LayoutParameters).LeftMargin = screenSize.X;
-			}
+			var orderEditLayout = _orderEdit.GetLayoutParameters();
+
+			bool IsRightToLeftLanguage = this.Services().Localize.IsRightToLeft;
+
+			_orderEdit.SetLayoutParameters(screenSize.X, orderEditLayout.Height,
+				IsRightToLeftLanguage ? orderEditLayout.LeftMargin : screenSize.X,
+				IsRightToLeftLanguage ? screenSize.X : orderEditLayout.RightMargin,
+				orderEditLayout.TopMargin, orderEditLayout.BottomMargin, orderEditLayout.Gravity);
 
 	        ((ViewGroup.MarginLayoutParams) _orderStatus.LayoutParameters).TopMargin = -screenSize.Y;
 
@@ -233,6 +233,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap = (TouchableMap)FragmentManager.FindFragmentById(Resource.Id.mapPickup);
             _touchMap.OnCreate(mapViewSavedInstanceState);
 			MapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
+
+            var inputManager = (InputMethodManager)ApplicationContext.GetSystemService(Context.InputMethodService);
+            MapFragment.TouchableMap.Surface.Touched += (sender, e) => 
+                {
+                    inputManager.HideSoftInputFromWindow(Window.DecorView.RootView.WindowToken, HideSoftInputFlags.None);
+                };
 
 	        _orderReview.ScreenSize = screenSize;
 	        _orderReview.OrderReviewHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
@@ -436,7 +442,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 if (_locateUserOnStart)
                 {
                     // this happens ONLY when returning from a ride
-                    ViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible(null);
+                    ViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
                     _locateUserOnStart = false;
                 }
             }
@@ -486,14 +492,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
                 var dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
-                if (ViewModel.CurrentViewState == HomeViewModelState.PickDate)
-                {
-	                ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(dt);
-	            }
-                else
-                {
-                    ViewModel.BottomBar.SetPickupDateAndReturnToAirport.ExecuteIfPossible(dt);
-                }
+				ViewModel.BottomBar.CreateOrder.ExecuteIfPossible(dt);
             }
             else if (requestCode == (int) ActivityEnum.BookATaxi && resultCode == Result.Ok)
             {
@@ -501,7 +500,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 switch (result)
                 {
                     case BookATaxiEnum.BookNow:
-                        ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible();
+						ViewModel.BottomBar.CreateOrder.ExecuteIfPossible();
                         break;
                     case BookATaxiEnum.BookLater:
                         ViewModel.BottomBar.BookLater.ExecuteIfPossible();
@@ -511,9 +510,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         break;
                 }
             }
+			else if (requestCode == (int) ActivityEnum.DateTimePicked 
+				&& ViewModel.CurrentViewState == HomeViewModelState.AirportPickDate)
+			{
+				ViewModel.CloseCommand.ExecuteIfPossible();
+			}
             else
             {
-                ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible();
+				ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible();
             }
         }
 

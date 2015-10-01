@@ -37,7 +37,7 @@ namespace apcurium.MK.Web.Tests
             }
 
             Assert.True(addresses.Any());
-            Assert.True(addresses.ElementAt(0).AddressType.Contains("place"));
+            Assert.True(addresses.Any(x => x.AddressType.Contains("place")));
         }
 
         [Test]

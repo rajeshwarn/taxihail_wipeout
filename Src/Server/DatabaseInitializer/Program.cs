@@ -165,6 +165,7 @@ namespace DatabaseInitializer
                 }
                 else
                 {
+                    EnsureSupportRoleIsSupported(connectionString, commandBus);
                     appSettings = serverSettings.GetSettings();
                 }
 
@@ -693,20 +694,46 @@ namespace DatabaseInitializer
             AddOrUpdateAppSettings(commandBus, appSettings);
         }
 
+        private static void EnsureSupportRoleIsSupported(ConnectionStringSettings connectionString, ICommandBus commandBus)
+        {
+            var accounts = new AccountDao(() => new BookingDbContext(connectionString.ConnectionString));
+
+            var allAdmins = accounts.GetAll();
+            var admins = allAdmins.Where(a => a.Roles == (int)OldRoles.Admin);
+            foreach (var admin in admins)
+            {
+                commandBus.Send(new UpdateRoleToUserAccount
+                {
+                    AccountId = admin.Id,
+                    RoleName = RoleName.Admin,
+                });
+            }
+
+            var superAdmins = allAdmins.Where(a => a.Roles == (int)OldRoles.SuperAdmin);
+            foreach (var admin in superAdmins)
+            {
+                commandBus.Send(new UpdateRoleToUserAccount
+                {
+                    AccountId = admin.Id,
+                    RoleName = RoleName.SuperAdmin,
+                });
+            }
+
+        }
+
         private static void EnsureDefaultAccountsHasCorrectSettings(ConnectionStringSettings connectionString, ICommandBus commandBus)
         {
             var accounts = new AccountDao(() => new BookingDbContext(connectionString.ConnectionString));
             var admin = accounts.FindByEmail("taxihail@apcurium.com");
 
             if (admin != null
-                && (!admin.IsAdmin || !admin.IsConfirmed))
+                && (!admin.HasAdminAccess || !admin.IsConfirmed))
             {
                 commandBus.Send(new AddRoleToUserAccount
                 {
                     AccountId = admin.Id,
                     RoleName = RoleName.SuperAdmin,
                 });
-
 
                 commandBus.Send(new ConfirmAccount
                 {

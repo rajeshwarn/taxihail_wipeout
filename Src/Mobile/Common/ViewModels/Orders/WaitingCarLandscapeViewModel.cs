@@ -18,10 +18,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			BookingStatusViewModel.WaitingCarLandscapeViewModelParameters.Subscribe(UpdateModelParametersEvent, СloseWaitingWindowEvent);
 		}
 
-		private void UpdateModelParametersEvent(DeviceOrientations deviceOrientations, string carMumber)
+		private void UpdateModelParametersEvent(DeviceOrientations deviceOrientation, string carNumber)
 		{
-			DeviceOrientation = deviceOrientations;
-			CarNumber = carMumber;
+			DeviceOrientation = deviceOrientation;
+			CarNumber = carNumber;
 		}
 
 		private void СloseWaitingWindowEvent()

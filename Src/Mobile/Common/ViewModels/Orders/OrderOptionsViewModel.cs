@@ -338,6 +338,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
 				RaisePropertyChanged(() => ShowEstimate);
 				RaisePropertyChanged(() => ShowEta);
+				RaisePropertyChanged(() => ShowEtaInEstimate);
 			}
 		}
 
@@ -367,6 +368,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				_eta = value;
 				RaisePropertyChanged ();
 				RaisePropertyChanged(() => ShowEta);
+				RaisePropertyChanged(() => ShowEtaInEstimate);
 				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
 				RaisePropertyChanged(() => FormattedEta);
 
@@ -435,6 +437,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate;
 			}
+		}
+
+		public bool ShowEtaInEstimate
+		{
+			get { return Settings.ShowEta && FormattedEta.HasValue(); }
 		}
 
 		public bool ShowEstimate

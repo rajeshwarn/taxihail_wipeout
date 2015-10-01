@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<Direction> GetEtaBetweenCoordinates (double fromLat, double fromLng, double toLat, double toLng);
 
-	    Task<bool> SendMessageToDriver(string message, string vehicleNumber);
+		Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId);
 		void SetAvailableVehicle(bool enable);
 	}
 }

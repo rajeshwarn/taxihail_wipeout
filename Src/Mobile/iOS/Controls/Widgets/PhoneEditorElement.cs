@@ -5,6 +5,7 @@ using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Common;
 using Foundation;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -76,6 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		    _phoneNumberTextEdit.AdjustsFontSizeToFitWidth = true;
 			_phoneNumberTextEdit.SetHeight(21).IncrementY(11);
 			_phoneNumberTextEdit.EditingChanged += AfterTextChanged;
+            _phoneNumberTextEdit.AccessibilityLabel = _phoneNumberTextEdit.Placeholder;
 
 		    _phoneDialCodeLabel = new CountrySelector(cell.Frame.SetX(0).SetWidth(50))
 		    {
@@ -87,6 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		    };
 		    _phoneDialCodeLabel.SetHeight(_phoneNumberTextEdit.Frame.Height).IncrementY(11).SetX(padding);
             _phoneDialCodeLabel.Configure(_navigationController, CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Value.Country)), OnDialCodeSelected);
+            _phoneDialCodeLabel.AccessibilityLabel = Localize.GetValue("DialCodeSelectorTitle");
 
 			cell.AddSubview(_phoneDialCodeLabel);
 			cell.AddSubview(_phoneNumberTextEdit);

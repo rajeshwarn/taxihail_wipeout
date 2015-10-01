@@ -7,6 +7,8 @@
   <string name="AccountDisabled_NoCall">Votre compte a été désactivé</string>
   <string name="AccountNotActivated">Votre compte n\'a pas pu être activé. Merci d\'activer le compte à l\'aide de l\'email qui vient de vous être envoyé</string>
   <string name="AccountNotActivatedCodeBySMS">Votre compte n\'a pas pu être activé. Merci d\'activer le compte à l\'aide du SMS qui vient de vous être envoyé</string>
+  <string name="FacebookLoginErrorTitle">Email existant</string>
+  <string name="FacebookLoginErrorMessage">Cet email est déjà utilisé pour un compte Facebook. Merci de vous enregistrer via Facebook ou d\'utiliser un autre email.</string>
   <string name="AccountPaymentNumberRequiredMessage">Merci de saisir un numéro de compte valide</string>
   <string name="AccountPaymentCustomerNumberRequiredMessage">Merci de saisir un numéro de client valide</string>
   <string name="AccountPaymentCustomerNumberRequiredTitle">Numéro de client du compte requis</string>
@@ -137,7 +139,6 @@
   <string name="Done">Terminé</string>
   <string name="DontHaveAnAccountLabel">Souhaitez-vous créer un compte?</string>
   <string name="DriverInfoColor">Coloris:</string>
-  <string name="DriverInfoDriver">Chauffeur:</string>
   <string name="DriverInfoLicence">Licence:</string>
   <string name="DriverInfoMake">Marque:</string>
   <string name="DriverInfoModel">Modèle:</string>
@@ -301,8 +302,8 @@
   <string name="ResetPasswordConfirmationMessage">Un nouveau mot de passe vous a été envoyé par email</string>
   <string name="ResetPasswordConfirmationTitle">Mot de passe envoyé</string>
   <string name="ResetPasswordEmailPlaceHolder">Email (adresse électronique)</string>
-  <string name="ResetPasswordInvalidDataMessage">Désolé, cet email n\'est pas valide</string>
-  <string name="ResetPasswordInvalidDataTitle">Cet email n\'est pas valide</string>
+  <string name="InvalidEmailMessage">Désolé, cet email n\'est pas valide</string>
+  <string name="InvalidEmailTitle">Cet email n\'est pas valide</string>
   <string name="ResetPasswordSubtitleText">Saisissez votre email pour recevoir votre nouveau mot de passe</string>
   <string name="ResetPasswordSucessMessage">Le mot de passe a été réinitialisé avec succès</string>
   <string name="ResetPasswordSucessTitle">Mot de passe réinitialisé</string>
@@ -590,12 +591,12 @@
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Driver">Chauffeur #:</string>
   <string name="ManualRideLinqStatus_Fare">Tarif:</string>
-  <string name="ManualRideLinqStatus_PairingCode">Code d\'association:</string>
   <string name="ManualRideLinqStatus_Tax">Taxes:</string>
   <string name="ManualRideLinqStatus_Tip">Pourboire:</string>
   <string name="ManualRideLinqStatus_Total">Coût Total:</string>
   <string name="ManualRideLinqStatus_Unpair">Dissocier</string>
   <string name="ManualRideLinqSummary_Done">Ok</string>
+  <string name="ManualRideLinqStatus_PairingError">Une erreur est survenue. Veuillez essayer de vous connecter de nouveau en utilisant le code affiché sur l\'écran dans le taxi.</string>
   <string name="ManualUnPairingForRideLinQ_Error_Message">Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Êtes-vous sûr de vouloir annuler? Des frais d\'annulation peuvent être appliqués.</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">Vous ne pouvez pas effacer une carte de crédit s\'il y a une commande en cours.</string>
@@ -703,6 +704,21 @@
   <string name="WaitingCarLandscapeViewCloseButtonText">Retour</string>
   <string name="WaitingCarLandscapeViewCarNumber">Numéro de voiture</string>
   <string name="WaitingCarLandscapeActivityName">Numéro de voiture</string>
+  <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
   <string name="UpdateNoticeTitle">Update Notice</string>
+  <string name="BookingAirportNoFlights_Title">Aucun vol</string>
+  <string name="BookingAirportNoFlights_Message">Nous n\'avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}</string>
   <string name="UpdateNoticeText">Désolé, cette version d\'application n\'est plus maintenue. Mettez à jour l\'application s\'il vous plaît</string>
+  <string name="AccountLinkedWithFAcebook">Ce compte est associé avec un compte Facebook</string>
+  <string name="EmailUsedMessageTitle">Courriel déjà utilisé</string>
+  <string name="EmailUsedMessage">Ce courriel est déjà utilisé par un autre compte</string>
+  <string name="OrderStatus_PairingSuccess">Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</string>
+  <string name="BookingAirportMissingInfo_Title">Informations manquantes</string>
+  <string name="BookingAirportMissingInfo_Message">Le numéro de vol et la compagnie aérienne sont nécessaires.</string>
+  <string name="OrderAirportView_BAD_FLIGHT_NUMBER">Numéro de vol invalide</string>
+  <string name="OrderAirportView_BAD_AIRPORT_CODE">Une erreur est survenue avec le fournisseur d\'informations de vol.</string>
+  <string name="OrderAirportView_DATE_OUT_OF_RANGE">La date fournis est à l\'extérieur des limites du fournisseur.</string>
+  <string name="OrderAirportView_BAD_AIRLINE_CODE">Une erreur est survenue avec le fournisseur d\'information de vol.</string>
+  <string name="ManualPairing_TimeOut_Title">Erreur de connection</string>
+  <string name="ManualPairing_TimeOut_Message">Un probleme de connexion est survenu lors de la tentative d\'obtenir l\'état de votre course de taxi.</string>
 </resources>

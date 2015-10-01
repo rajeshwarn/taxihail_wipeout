@@ -119,6 +119,6 @@
   </resheader>
   <data name="Email_Body_VAT" xml:space="preserve">
     <value>HST</value>
-    <comment>Renamed VAT to HST</comment>
+    <comment>Changed VAT to HST in the email for Aeroport taxi</comment>
   </data>
 </root>

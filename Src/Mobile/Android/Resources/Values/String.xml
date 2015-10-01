@@ -47,6 +47,8 @@
   <string name="AccountDisabled">Your account has been disabled, please contact {0} at {1} to activate your account.</string>
   <string name="AccountNotActivated">Your account has not been activated. Another activation email was sent to you.</string>
   <string name="AccountNotActivatedCodeBySMS">Your account has not been activated. Another activation SMS was sent to you.</string>
+  <string name="FacebookLoginErrorTitle">Email already used</string>
+  <string name="FacebookLoginErrorMessage">This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.</string>
   <string name="BookItButton">Book Now</string>
   <string name="BookPickupLabel">Confirm your pickup location</string>
   <string name="PickupTextPlaceholder">Pickup street address</string>
@@ -185,8 +187,8 @@
   <string name="CurrencyPriceFormat">{0:C}</string>
   <string name="NotAvailable">N/A</string>
   <string name="EstimatedFareNotAvailable">Estimated fare not available</string>
-  <string name="ResetPasswordInvalidDataTitle">Invalid email</string>
-  <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>
+  <string name="InvalidEmailTitle">Invalid email</string>
+  <string name="InvalidEmailMessage">The email is invalid.</string>
   <string name="Create">Create</string>
   <string name="RideSettingsChargeType">Charge type</string>
   <string name="RideSettingsPassword">Password</string>
@@ -360,7 +362,6 @@
   <string name="NoPreference">No preference</string>
   <string name="StreetNumberPlacesBt">Search for places</string>
   <string name="DriverInfoColor">Color:</string>
-  <string name="DriverInfoDriver">Driver:</string>
   <string name="DriverInfoLicence">Licence #:</string>
   <string name="DriverInfoMake">Make:</string>
   <string name="DriverInfoModel">Model:</string>
@@ -591,13 +592,13 @@
   <string name="ManualPairingForRideLinQ_Pair">CHECK IN</string>
   <string name="PaymentLoadError">Unable to load the payment details. Please try again later.</string>
   <string name="ManualPairingForRideLinQ_Instructions">Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</string>
-  <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Total">Total cost:</string>
   <string name="ManualRideLinqStatus_Fare">Fare meter:</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="ManualRideLinqStatus_Unpair">Unpair</string>
+  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
   <string name="ManualPairingForRideLinQ_Error_Message">An error occurred during check in.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Invalid code</string>
@@ -660,9 +661,14 @@
   <string name="BookingAirportPUPointslbl">Pickup Point</string>
   <string name="BookingAirportPUDatelbl">Pickup Date</string>
   <string name="Next">Next</string>
+  <string name="BookingAirportNoFlights_Title">No flights</string>
+  <string name="BookingAirportMissingInfo_Title">Missing information</string>
+  <string name="BookingAirportMissingInfo_Message">The airline and the flight number are madatory.</string>
+  <string name="BookingAirportNoFlights_Message">No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}</string>
   <string name="BookingAirportPickupPointFee">Selecting Pickup Point {0} will incurr an additional Fee of {1}</string>
   <string name="BookingAirportDetails">Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</string>
   <string name="BookingAirportDetailsFee">, (Pickup Fee: {0})</string>
+  <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
   <string name="ManualRideLinqStatus_Cancelled">You have been unpaired from RideLinQ. Please type in the pairing code again.</string>
   <string name="CallDriver">Call Driver</string>
   <string name="AddressSearch">Address search</string>
@@ -704,6 +710,16 @@
   <string name="WaitingCarLandscapeViewCloseButtonText">Back</string>
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
+  <string name="OrderAirportView_BAD_FLIGHT_NUMBER">Invalid flight number</string>
+  <string name="OrderAirportView_BAD_AIRPORT_CODE">An error occurred with the flight status provider. Airport code might not be set.</string>
+  <string name="OrderAirportView_DATE_OUT_OF_RANGE">Provided date is out of range.</string>
+  <string name="OrderAirportView_BAD_AIRLINE_CODE">An error occurred with the flight status provider.</string>
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
+  <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
+  <string name="EmailUsedMessageTitle">Email already used</string>
+  <string name="EmailUsedMessage">This email is already used by another account</string>
+  <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
+  <string name="ManualPairing_TimeOut_Title">Connection error</string>
+  <string name="ManualPairing_TimeOut_Message">There is a connection error preventing us from providing the status of your ride.</string>
 </resources>

@@ -2,458 +2,519 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Helpers;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Configuration.Impl;
 using System.Text;
-using System.Globalization;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
+using MK.Common.Android.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class OrderAirportViewModel : BaseViewModel
 	{
         private readonly IOrderWorkflowService _orderWorkflowService;
-        private readonly IAccountService _accountService;
-        private readonly IPaymentService _paymentService;
+		private readonly IAirportInformationService _airportInformationService;
 
-        private const string NoAirlines = "No Airline";
+		private const string NoAirlines = "No Airline";
         private const string PUCurbSide = "Curb Side";
 
+		private List<ListItem> _pickupPoints;
+		private int _selectedPickupPointsId;
+		private List<ListItem> _airlines;
+		private int? _airLineId;
+		private BookingSettings _bookingSettings;
+		private string _flightNumber;
+		private string _pickupTimeStamp;
+		private string _note;
+		private Address _pickupAddress;
+		private PickupPoint[] _poiPickup;
+		private KeyValuePair<int, Airline>[] _carrierCodes = new KeyValuePair<int, Airline>[0];
+		private Airline[] _poiAirline = new Airline[0];
+		private DateTime? _pickupDate;
 
-        public class PointsItems
-        {
-            public string Name = string.Empty;
-            public string Fee = string.Empty;
-        }
-
-        public List<PointsItems> PickupPoints { get; set; }
-
-        public OrderAirportViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IPaymentService paymentService)
+		public OrderAirportViewModel(IOrderWorkflowService orderWorkflowService, IAirportInformationService airportInformationService)
 		{
 			_orderWorkflowService = orderWorkflowService;
-			_accountService = accountService;
-            _paymentService = paymentService;
+	        _airportInformationService = airportInformationService;
 
-            Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
+	        Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
             Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-            Observe(_orderWorkflowService.GetAndObservePOIRefPickupList(), pObject => POIPickup = pObject);
-            Observe(_orderWorkflowService.GetAndObservePOIRefAirlineList(), pObject => POIAirline = pObject);
-            Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
+            Observe(_orderWorkflowService.GetAndObservePOIRefPickupList(), poiPickup => POIPickup = poiPickup);
+            Observe(_orderWorkflowService.GetAndObservePOIRefAirlineList(), poiAirline => POIAirline = poiAirline);
+			Observe(_orderWorkflowService.GetAndObservePickupDate(), pickupDate => PickupDate = pickupDate);
 
             //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
             Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
-
         }
 
-        public async Task Init()
+		public void Init()
         {
-            _airlines = new List<ListItem>
+            Airlines = new List<ListItem>
             {
-				new ListItem {Display = NoAirlines, Id = 0},
+				new ListItem {Display = NoAirlines, Id = -1},
             };
-            AirlineId = 0;
+            AirlineId = -1;
             RaisePropertyChanged(() => AirlineName);
 
-            PickupPoints = new List<PointsItems>();
-            PickupPoints.Add(new PointsItems { Name = PUCurbSide, Fee = string.Empty });
 
-            _PUPoints = new List<ListItem>();
-            for( int iIndex = 0; iIndex < PickupPoints.Count; iIndex++ )
-            {
-                PointsItems pItem = PickupPoints[iIndex];
-                _PUPoints.Add( new ListItem { Display = pItem.Name, Id = iIndex });
+			var pickupPoint = new PickupPoint()
+			{
+				Name = PUCurbSide,
+				AdditionalFee = string.Empty
+			};
 
-            }
-            PUPointsId = 0;
-            RaisePropertyChanged(() => PUPointsName);
+			PickupPointItems = new List<KeyValuePair<int, PickupPoint>>
+	        {
+		        new KeyValuePair<int, PickupPoint>(0, pickupPoint) 
+	        };
+
+			_pickupPoints = PickupPointItems
+				.Select(item => new ListItem
+				{
+					Display = item.Value.Name,
+					Id = item.Key
+				})
+				.ToList();
+
+            SelectedPickupPointsId = 0;
+            RaisePropertyChanged(() => SelectedPickupPointName);
         }
 
-        private List<ListItem> _PUPoints;
-        public List<ListItem> PUPoints
+		#region Properties
+		public List<KeyValuePair<int, PickupPoint>> PickupPointItems { get; set; }
+
+		public List<ListItem> PickupPoints
+		{
+			get
+			{
+				return _pickupPoints;
+			}
+			set
+			{
+				_airlines = value ?? new List<ListItem>();
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => SelectedPickupPointsId);
+				RaisePropertyChanged(() => SelectedPickupPointName);
+
+			}
+		}
+
+		public int SelectedPickupPointsId
+		{
+			get
+			{
+				return _selectedPickupPointsId;
+			}
+			set
+			{
+				if (_selectedPickupPointsId == value)
+				{
+					return;
+				}
+
+				_selectedPickupPointsId = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => SelectedPickupPointName);
+			}
+		}
+
+		public string SelectedPickupPointName
+		{
+			get
+			{
+				if (PickupPoints == null)
+				{
+					return null;
+				}
+
+				var vehicle = PickupPoints.FirstOrDefault(x => x.Id == SelectedPickupPointsId) ?? PickupPoints.FirstOrDefault();
+
+				return vehicle == null
+					? string.Empty
+					: vehicle.Display;
+			}
+		}
+
+		public List<ListItem> Airlines
+		{
+			get
+			{
+				return _airlines;
+			}
+			set
+			{
+				_airlines = value ?? new List<ListItem>();
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => AirlineId);
+				RaisePropertyChanged(() => AirlineName);
+
+			}
+		}
+
+		public int? AirlineId
+		{
+			get
+			{
+				return _airLineId;
+			}
+			set
+			{
+				if (_airLineId == value)
+				{
+					return;
+				}
+
+				_airLineId = value;
+				_airLineId = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => AirlineName);
+			}
+		}
+
+		public string AirlineName
+		{
+			get
+			{
+				if (!AirlineId.HasValue)
+				{
+					return this.Services().Localize["NoPreference"];
+				}
+
+				if (Airlines == null)
+				{
+					return null;
+				}
+
+				var vehicle = Airlines.FirstOrDefault(x => x.Id == AirlineId) ?? Airlines.FirstOrDefault();
+
+				return vehicle == null
+					? string.Empty
+					: vehicle.Display;
+			}
+		}
+
+		public BookingSettings BookingSettings
+		{
+			get { return _bookingSettings; }
+			set
+			{
+				if (_bookingSettings == value)
+				{
+					return;
+				}
+
+				_bookingSettings = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public string FlightNumber
+		{
+			get { return _flightNumber; }
+			set
+			{
+				if (_flightNumber == value)
+				{
+					return;
+				}
+
+				_flightNumber = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public string Title
+		{
+			get { return _pickupAddress.FullAddress; }
+		}
+
+		public string PickupTimeStamp
+		{
+			get { return _pickupTimeStamp; }
+			set
+			{
+				if (_pickupTimeStamp == value)
+				{
+					return;
+				}
+
+				_pickupTimeStamp = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public string Note
+		{
+			get { return _note; }
+			set
+			{
+				if (_note == value)
+				{
+					return;
+				}
+
+				_note = value;
+				_orderWorkflowService.SetNoteToDriver(value);
+				RaisePropertyChanged();
+			}
+		}
+
+		public Address PickupAddress
+		{
+			get { return _pickupAddress; }
+			set
+			{
+				if (_pickupAddress == value)
+				{
+					return;
+				}
+
+				_pickupAddress = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => Title);
+
+				if (_pickupAddress != null && _pickupAddress.AddressLocationType == AddressLocationType.Airport)
+				{
+					_orderWorkflowService.POIRefAirLineList(string.Empty, 0);
+					_orderWorkflowService.POIRefPickupList(string.Empty, 0);
+
+					// Clear/default any previous data
+					AirlineId = -1;
+					RaisePropertyChanged(() => AirlineName);
+					FlightNumber = string.Empty;
+					SelectedPickupPointsId = 0;
+					RaisePropertyChanged(() => SelectedPickupPointName);
+				}
+			}
+		}
+
+		public PickupPoint[] POIPickup
+		{
+			get { return _poiPickup; }
+			set
+			{
+				if (_poiPickup == value || value == null)
+				{
+					return;
+				}
+
+				_poiPickup = value;
+				if (_poiPickup.None())
+				{
+					return;
+				}
+
+				PickupPointItems.Clear();
+
+				var pickupPoints = _poiPickup
+					.Select((point, index) => new KeyValuePair<int, PickupPoint>(index, point))
+					.ToArray();
+
+				PickupPointItems.AddRange(pickupPoints);
+
+				_pickupPoints = pickupPoints
+					.Select(item => new ListItem
+					{
+						Display = item.Value.Name,
+						Id = item.Key
+					})
+					.ToList();
+
+				SelectedPickupPointsId = 0;
+				RaisePropertyChanged(() => PickupPoints);
+				RaisePropertyChanged(() => SelectedPickupPointName);
+			}
+		}
+
+		public Airline[] POIAirline
+		{
+			get { return _poiAirline; }
+			set
+			{
+				if (value == null || value.SequenceEqual(_poiAirline, new AirlineComparer()))
+				{
+					return;
+				}
+
+				_poiAirline = value;
+				if (value.None())
+				{
+					return;
+				}
+
+				UpdateAirlines(value);
+
+				AirlineId = -1;
+				RaisePropertyChanged(() => Airlines);
+				RaisePropertyChanged(() => AirlineName);
+			}
+		}
+
+		public DateTime? PickupDate
+		{
+			get { return _pickupDate; }
+			set
+			{
+				_pickupDate = value;
+
+				PickupTimeStamp = _pickupDate.HasValue
+					? _pickupDate.Value.ToString("g")
+					: this.Services().Localize["TimeNow"];
+
+				RaisePropertyChanged();
+			}
+		}
+
+		#endregion
+
+		private void UpdateAirlines(IEnumerable<Airline> airlines)
+		{
+			_carrierCodes = airlines
+				.OrderBy(item => item.Name)
+				.Select((airline, index) => new KeyValuePair<int, Airline>(index, airline))
+				.ToArray();
+
+			_airlines.AddRange(_carrierCodes.Select(carrier => new ListItem { Display = carrier.Value.Name, Id = carrier.Key }));
+		}
+
+		private async Task<string> GetTerminal()
+		{
+			try
+			{		
+				var carrier = _carrierCodes.FirstOrDefault(c => c.Key == AirlineId);
+
+				return await _airportInformationService.GetTerminal(PickupDate ?? DateTime.Now, FlightNumber, carrier.Value.Id, AirlineName, _pickupAddress.PlaceId, true);
+			}
+			catch (Exception ex)
+			{
+				Logger.LogMessage("An error has occurred while attempting to get the airport terminal.");
+				Logger.LogError(ex);
+
+				return string.Empty;
+			}
+		}
+
+		private bool CanGetTerminal()
+		{
+			return AirlineId.HasValue
+			    && FlightNumber.HasValue() 
+			    && _pickupAddress.SelectOrDefault(addr => addr.PlaceId.HasValue())
+			    && _carrierCodes.Any(c => c.Key == AirlineId);
+		}
+
+		private async Task ExecuteNext()
+		{
+			var localize = this.Services().Localize;
+
+			// check if additional fee is accepted
+			var pickupPoint = PickupPointItems
+				.Select(item => (KeyValuePair<int, PickupPoint>?)item)
+				.FirstOrDefault(item => item.HasValue && item.Value.Key == SelectedPickupPointsId);
+
+			var pickupPointValue = pickupPoint.HasValue
+				? pickupPoint.Value.Value
+				: null;
+
+			var accepted = true;
+			var fee = 0;
+			if (pickupPointValue != null && pickupPointValue.AdditionalFee.HasValue())
+			{
+				foreach (var c in pickupPointValue.AdditionalFee.Where(char.IsDigit))
+				{
+					fee *= 10;
+					// When converting, subtract 0x30 to get true value between 0 - 9
+					fee += Convert.ToInt32(c - 0x30);
+				}
+
+				if (fee > 0)
+				{
+					accepted = false;
+					var feeWarning = string.Format(localize["BookingAirportPickupPointFee"], pickupPointValue.Name, pickupPointValue.AdditionalFee);
+					await this.Services().Message.ShowMessage(
+						localize["WarningTitle"],
+						feeWarning,
+						localize["OkButtonText"],
+						() => accepted = true,
+						localize["Cancel"],
+						() => { });
+				}
+			}
+
+			if (!CanGetTerminal())
+			{
+				await this.Services().Message.ShowMessage(localize["BookingAirportMissingInfo_Title"], localize["BookingAirportMissingInfo_Message"]);
+
+				return;
+			}
+
+			if (accepted)
+			{
+				var terminal = await GetTerminal().ShowProgress();
+
+				if (!terminal.HasValue())
+				{
+					return;
+				}
+
+				UpdateDriverNoteWithAirportInformation(pickupPointValue, fee, terminal);
+
+				((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
+
+				// Clear all values...
+				AirlineId = -1;
+				FlightNumber = string.Empty;
+			}
+			else
+			{
+				SelectedPickupPointsId = 0;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => SelectedPickupPointName);
+			}
+		}
+
+		private void UpdateDriverNoteWithAirportInformation(PickupPoint pickupPoint, int fee, string terminal)
+		{
+			var localize = this.Services().Localize;
+
+			var sb = new StringBuilder();
+
+			if (Note.Length > 0)
+			{
+				sb.AppendLine(Note);
+			}
+
+			sb.Append(localize["BookingAirportDetails"], _pickupAddress.FullAddress, AirlineName, FlightNumber, SelectedPickupPointName);
+
+			if (pickupPoint != null && pickupPoint.AdditionalFee != string.Empty && fee > 0)
+			{
+				sb.Append(localize["BookingAirportDetailsFee"], pickupPoint.AdditionalFee);
+			}
+
+			if (terminal.HasValue())
+			{
+				sb.Append(localize["BookingAirportDetailsTerminal"], terminal);
+			}
+
+			Note = sb.ToString();
+		}
+
+		public ICommand NextCommand
         {
             get
             {
-                return _PUPoints;
-            }
-            set
-            {
-                _airlines = value ?? new List<ListItem>();
-                RaisePropertyChanged();
-                RaisePropertyChanged(() => PUPointsId);
-                RaisePropertyChanged(() => PUPointsName);
-
+                return this.GetCommand(() => ExecuteNext());
             }
         }
 
-        private int _PUPointsId;
-        public int PUPointsId
+		public ICommand NavigateToDatePicker
         {
             get
             {
-                return _PUPointsId;
+				return this.GetCommand(() => ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportPickDate);
             }
-            set
-            {
-                if (value != _PUPointsId)
-                {
-                    _PUPointsId = value;
-                    RaisePropertyChanged();
-                    RaisePropertyChanged(() => PUPointsName);
-                }
-            }
-        }
-
-        public string PUPointsName
-        {
-            get
-            {
-                if (PUPoints == null)
-                {
-                    return null;
-                }
-
-                var vehicle = PUPoints.FirstOrDefault(x => x.Id == PUPointsId);
-                if (vehicle == null)
-                {
-                    vehicle = PUPoints.FirstOrDefault();
-                }
-                return vehicle.Display;
-            }
-        }
-
-
-
-        private List<ListItem> _airlines;
-        public List<ListItem> Airlines
-        {
-            get
-            {
-                return _airlines;
-            }
-            set
-            {
-                _airlines = value ?? new List<ListItem>();
-                RaisePropertyChanged();
-                RaisePropertyChanged(() => AirlineId);
-                RaisePropertyChanged(() => AirlineName);
-
-            }
-        }
-
-        private int? _AirLineId;
-        public int? AirlineId
-        {
-            get
-            {
-                return _AirLineId;
-            }
-            set
-            {
-                if (value != _AirLineId)
-                {
-                    _AirLineId = value;
-                    RaisePropertyChanged();
-                    RaisePropertyChanged(() => AirlineName);
-                }
-            }
-        }
-
-        public string AirlineName
-        {
-            get
-            {
-                if (!AirlineId.HasValue)
-                {
-                    return this.Services().Localize["NoPreference"];
-                }
-
-                if (Airlines == null)
-                {
-                    return null;
-                }
-
-                var vehicle = Airlines.FirstOrDefault(x => x.Id == AirlineId);
-                if (vehicle == null)
-                {
-                    vehicle = Airlines.FirstOrDefault();
-                }
-                return vehicle.Display;
-            }
-        }
-
-        private BookingSettings _bookingSettings;
-        public BookingSettings BookingSettings
-        {
-            get { return _bookingSettings; }
-            set
-            {
-                if (value != _bookingSettings)
-                {
-                    _bookingSettings = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        
-        private String _FlightNum;
-        public String FlightNum
-        {
-            get { return _FlightNum; }
-            set
-            {
-                if (value != _FlightNum)
-                {
-                    _FlightNum = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public String Title
-        {
-            get { return _pickupAddress.FullAddress; }
-        }
-
-
-        private void DateUpdated(DateTime? date)
-        {
-            PickupTimeStamp = date.HasValue
-                ? date.Value.ToShortDateString() + " " + date.Value.ToShortTimeString()
-                : this.Services().Localize["TimeNow"];
-        }
-
-        private string _PickupTimeStamp;
-        public string PickupTimeStamp
-        {
-            get { return _PickupTimeStamp; }
-            set
-            {
-                if (value != _PickupTimeStamp)
-                {
-                    _PickupTimeStamp = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        private string _note;
-        public string Note
-        {
-            get { return _note; }
-            set
-            {
-                if (_note != value)
-                {
-                    _note = value;
-                    _orderWorkflowService.SetNoteToDriver(value);
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        private Address _pickupAddress;
-        public Address PickupAddress
-        {
-            get { return _pickupAddress; }
-            set
-            {
-                if (value != _pickupAddress)
-                {
-                    _pickupAddress = value;
-                    RaisePropertyChanged();
-                    RaisePropertyChanged(() => Title);
-                    if ((_pickupAddress != null) && (_pickupAddress.AddressLocationType == AddressLocationType.Airport))
-                    {
-                        _orderWorkflowService.POIRefAirLineList(string.Empty, 0);
-                        _orderWorkflowService.POIRefPickupList(string.Empty, 0);
-
-                        // Clear/default any previous data
-                        AirlineId = 0;
-                        RaisePropertyChanged(() => AirlineName);
-                        FlightNum = string.Empty;
-                        PUPointsId = 0;
-                        RaisePropertyChanged(() => PUPointsName);
-                    }
-                }
-            }
-        }
-
-        private string _POIPickup;
-        public String POIPickup
-        {
-            get { return _POIPickup; }
-            set
-            {
-                if (value != _POIPickup && value != null )
-                {
-                    _POIPickup = value;
-                    if (value != string.Empty)
-                    {
-                        var pArray = JArray.Parse(value);
-
-                        PickupPoints.Clear();
-                        foreach (var pItem in pArray)
-                        {
-                            string sFee = string.Empty;
-                            string sName = string.Empty;
-                            foreach (var x in pItem)
-                            {
-                                if (((JProperty)x).Name == "additionalFee")
-                                {
-                                    sFee = ((string)((JProperty)x).Value);
-                                }
-                                else if (((JProperty)x).Name == "name")
-                                {
-                                    sName = ((string)((JProperty)x).Value);
-                                }
-                            }
-                            PickupPoints.Add(new PointsItems { Name = sName, Fee = sFee });
-                        }
-                        _PUPoints = new List<ListItem>();
-                        for (int iIndex = 0; iIndex < PickupPoints.Count; iIndex++)
-                        {
-                            PointsItems pItem = PickupPoints[iIndex];
-                            _PUPoints.Add(new ListItem { Display = pItem.Name, Id = iIndex });
-
-                        }
-                        PUPointsId = 0;
-                        RaisePropertyChanged(() => PUPoints);
-                        RaisePropertyChanged(() => PUPointsName);
-                    }
-                }
-            }
-        }
-        
-        private string _POIAirline;
-        public String POIAirline
-        {
-            get { return _POIAirline; }
-            set
-            {
-                if ( value != _POIAirline && value != null )
-                {
-                    _POIAirline = value;
-                    if (value != string.Empty)
-                    {
-                        var pArray = JArray.Parse(value);
-
-                        _airlines.Clear();
-                        int index = 0;
-                        foreach (var pItem in pArray)
-                        {
-                            bool addItem = false;
-                            string name = string.Empty;
-                            foreach (var x in pItem)
-                            {
-                                if ((((JProperty)x).Name == "type") && (((string)((JProperty)x).Value).IndexOf("airline") != -1 ))
-                                {
-                                    addItem = true;
-                                }
-                                else if (((JProperty)x).Name == "name")
-                                {
-                                    name = ((string)((JProperty)x).Value);
-                                }
-                            }
-                            if (addItem == true)
-                            {
-                                _airlines.Add(new ListItem { Display = name, Id = index++ });
-                            }
-                        }
-                        AirlineId = 0;
-                        RaisePropertyChanged(() => Airlines);
-                        RaisePropertyChanged(() => AirlineName);
-                    }
-                }
-            }
-        }
-
-        public ICommand NextCommand
-        {
-            get
-            {
-                return this.GetCommand(async () =>
-                {
-                    // check if additional fee is accepted
-                    PointsItems pItem = PickupPoints[PUPointsId];
-                    bool accepted = true;
-                    int fee = 0;
-                    if (pItem != null && pItem.Fee != string.Empty)
-                    {
-						foreach( char c in pItem.Fee )
-						{
-							if( Char.IsDigit(c)== true )
-							{
-								fee *= 10;
-                                // When converting, subtract 0x30 to get true value between 0 - 9
-								fee += Convert.ToInt32(c - 0x30);
-							}
-						}
-						if( fee > 0 )
-						{
-	                        accepted = false;
-	                        var feeWarning = string.Format(this.Services().Localize["BookingAirportPickupPointFee"], pItem.Name, pItem.Fee);
-	                        await this.Services().Message.ShowMessage(
-	                            this.Services().Localize["WarningTitle"],
-	                            feeWarning,
-	                            this.Services().Localize["OkButtonText"],
-	                            () =>
-	                            {
-	                                accepted = true;
-	                            },
-	                            this.Services().Localize["Cancel"],
-	                            () => { });
-						}
-                    }
-                    if (accepted)
-                    {
-                        var sb = new StringBuilder();
-                        if( Note.Length > 0 )
-                        {
-                            sb.Append("{0}\n", Note );
-                        }
-						sb.Append(this.Services().Localize["BookingAirportDetails"], _pickupAddress.FullAddress, AirlineName, FlightNum, PUPointsName);
-                        if (pItem != null && pItem.Fee != string.Empty && fee > 0 )
-                        {
-                            sb.Append(this.Services().Localize["BookingAirportDetailsFee"], pItem.Fee);
-                        }
-                        Note = sb.ToString();
-
-						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Review;
-
-                        // Clear all values...
-                        AirlineId = 0;
-                        FlightNum = string.Empty;
-                    }
-                    else
-                    {
-                        PUPointsId = 0;
-                        RaisePropertyChanged();
-                        RaisePropertyChanged(() => PUPointsName);
-                    }
-                });
-            }
-        }
-
-        public ICommand NavigateToDatePicker
-        {
-            get
-            {
-                return this.GetCommand(() =>
-                {
-					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportPickDate;
-                });
-            }
-        }
-    }
+		}
+	}
 }

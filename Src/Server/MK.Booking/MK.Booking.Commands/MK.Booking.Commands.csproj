@@ -68,6 +68,7 @@
     <Compile Include="UpdateAutoTip.cs" />
     <Compile Include="UpdateFees.cs" />
     <Compile Include="UpdateOrderNotificationDetail.cs" />
+    <Compile Include="UpdateRoleToUserAccount.cs" />
     <Compile Include="UpdateTripInfoInOrderForManualRideLinq.cs" />
     <Compile Include="UpdateRefundedOrder.cs" />
     <Compile Include="ReactToPaymentFailure.cs" />

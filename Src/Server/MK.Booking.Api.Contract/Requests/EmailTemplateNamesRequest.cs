@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
 #if !CLIENT
-    [AuthorizationRequired(ApplyTo.Get, RoleName.Admin)]
+    [AuthorizationRequired(ApplyTo.Get, RoleName.Support)]
 #endif
     [Route("/admin/testemail/templates", "GET")]
     public class EmailTemplateNamesRequest

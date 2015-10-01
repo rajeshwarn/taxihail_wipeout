@@ -1,0 +1,22 @@
+﻿{
+	"Search Criteria": "Search Criteria",
+	"Name/Email/Phone Number": "Name/Email/Phone Number",
+	"Find user": "Find user",
+	"Name": "Name",
+	"Email": "Email",
+	"Number":  "Number",
+	"Action": "Action",
+	"State": "State",
+	"Send Account Confirmation Code via SMS": "Send Account Confirmation Code via SMS",
+	"Confirmed": "Confirmed",
+	"NotConfirmed": "Not confirmed",
+	"Enabled": "Enabled",
+	"Disabled": "Disabled",
+
+	"Enable account" : "Enable account",
+	"Disable account" : "Disable account",
+	"Unlink IBS account(s)" : "Unlink IBS account(s)",
+	"Cancel" : "Cancel",
+	"Email Address" : "Email Address"
+
+}

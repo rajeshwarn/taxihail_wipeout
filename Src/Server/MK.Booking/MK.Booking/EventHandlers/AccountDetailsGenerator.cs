@@ -14,6 +14,7 @@ using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 using System.Globalization;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Helpers;
 
 #endregion
 
@@ -28,6 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountPasswordReset>,
         IEventHandler<AccountPasswordUpdated>,
         IEventHandler<RoleAddedToUserAccount>,
+        IEventHandler<RoleUpdatedToUserAccount>,
         IEventHandler<PaymentProfileUpdated>,
         IEventHandler<CreditCardAddedOrUpdated>,
         IEventHandler<CreditCardRemoved>,
@@ -206,7 +208,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.AccountNumber = @event.AccountNumber;
                 settings.CustomerNumber = @event.CustomerNumber;
                 settings.PayBack = @event.PayBack;
-
+				account.Email = @event.Email;
                 account.DefaultTipPercent = @event.DefaultTipPercent;
 
                 account.Settings = settings;
@@ -231,6 +233,16 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Roles |= (int) Enum.Parse(typeof (Roles), @event.RoleName);
+                context.Save(account);
+            }
+        }
+
+        public void Handle(RoleUpdatedToUserAccount @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.Roles = (int)Enum.Parse(typeof(Roles), @event.RoleName);
                 context.Save(account);
             }
         }

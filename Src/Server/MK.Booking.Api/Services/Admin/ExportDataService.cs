@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                                 a.Language,
                                 a.TwitterId,
                                 a.FacebookId,
-                                a.IsAdmin,
+                                a.HasAdminAccess,
                                 a.IsConfirmed,
                                 a.DisabledByAdmin,
                                 a.Settings.PayBack,

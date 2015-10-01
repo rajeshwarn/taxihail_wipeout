@@ -1,14 +1,14 @@
 using System;
+using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 using Android.Content;
 using Android.Graphics;
+using Android.Runtime;
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -20,8 +20,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public event EventHandler AddressClicked;
 
         private Color _selectedColor;
-        public EditText AddressTextView;
-        private EditText _streetNumberTextView;
+		public EditTextWithAccessibility AddressTextView;
+		private EditTextWithAccessibility _streetNumberTextView;
         private LinearLayout _loadingWheel;
         private ImageView _dot;
         private View _horizontalDivider;
@@ -39,8 +39,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             _selectedColor = Resources.GetColor(Resource.Color.orderoptions_pickup_address_color);
 
-            _streetNumberTextView = (EditText)layout.FindViewById(Resource.Id.StreetNumberTextView);
-            AddressTextView = (EditText)layout.FindViewById(Resource.Id.AddressTextView);
+			_streetNumberTextView = (EditTextWithAccessibility)layout.FindViewById(Resource.Id.StreetNumberTextView);
+			AddressTextView = (EditTextWithAccessibility)layout.FindViewById(Resource.Id.AddressTextView);
             _loadingWheel = (LinearLayout)layout.FindViewById(Resource.Id.ProgressBar);
             _dot = (ImageView)layout.FindViewById(Resource.Id.Dot);
             _horizontalDivider = layout.FindViewById(Resource.Id.HorizontalDivider);
@@ -51,12 +51,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _streetNumberTextView.Hint = "#";
             _streetNumberTextView.Gravity = GravityFlags.Center;
             _streetNumberTextView.InputType = _streetNumberTextView.InputType | InputTypes.ClassNumber;
+			_streetNumberTextView.ContentDescription = ContentDescription + " " + this.Services().Localize["StreetNumber"];
 
             AddressTextView.SetSelectAllOnFocus(true);
             AddressTextView.SetSingleLine(true);
             AddressTextView.InputType = InputTypes.ClassText | InputTypes.TextFlagNoSuggestions;
             AddressTextView.ImeOptions = ImeAction.Go;
-			AddressTextView.Hint = this.ContentDescription;
+			AddressTextView.Hint = ContentDescription;
+			AddressTextView.ContentDescription = ContentDescription;
+
 
             SetBehavior();
 

@@ -50,6 +50,7 @@
             TaxiHail.parameters.isLoggedIn = <%: IsAuthenticated ? "true" : "false" %>;
             TaxiHail.parameters.isSuperAdmin = <%: IsSuperAdmin ? "true" : "false" %>;
             TaxiHail.parameters.isTaxiHailPro = <%: IsTaxiHailPro ? "true" : "false" %>;
+            TaxiHail.parameters.isAdmin = <%: IsAdmin ? "true" : "false" %>;
             TaxiHail.parameters.geolocSearchFilter = '<%= GeolocSearchFilter %>';
             TaxiHail.parameters.geolocSearchRegion = '<%= GeolocSearchRegion %>';
             TaxiHail.parameters.geolocSearchBounds = '<%= GeolocSearchBounds %>';
@@ -57,7 +58,10 @@
             TaxiHail.parameters.apiRoot = "../api";
             TaxiHail.parameters.applicationKey = '<%= ApplicationKey %>';
             TaxiHail.parameters.version = '<%: ApplicationVersion %>';
-            TaxiHail.parameters.languages = <%= Languages %>;
+        	TaxiHail.parameters.languages = <%= Languages %>;
+        	TaxiHail.countryCodes = <%= CountryCodes %>;
+        	TaxiHail.parameters.defaultCountryCode = "<%= DefaultCountryCode %>";
+        	TaxiHail.parameters.currentAccountID = "<%= CurrentAccountID %>";
         </script>
 
         <%: Scripts.Render("~/admin/bundles/app") %>

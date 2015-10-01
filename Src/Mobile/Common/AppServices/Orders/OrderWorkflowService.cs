@@ -8,7 +8,6 @@ using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
@@ -61,8 +60,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
-        readonly ISubject<string> _objPOIRefPickupListSubject = new BehaviorSubject<string>(string.Empty);
-        readonly ISubject<string> _objPOIRefAirlineListSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<PickupPoint[]> _poiRefPickupListSubject = new BehaviorSubject<PickupPoint[]>(new PickupPoint[0]);
+		readonly ISubject<Airline[]> _poiRefAirlineListSubject = new BehaviorSubject<Airline[]>(new Airline[0]);
 
         private bool _isOrderRebooked;
 
@@ -389,32 +388,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                         return null;
                     }
                 }
-                else
-                {
-                    try
-                    {
-                        var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
-                        if (order.IsRated)
-                        {
-                            _bookingService.ClearLastOrder();
-                        }
-                        else
-                        {
-                            if (!order.IsManualRideLinq)
-                            {
-                                // Rating only for "normal" rides
-                                _bookingService.SetLastUnratedOrderId(status.OrderId);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogMessage(string.Format("Error trying to get status of order {0}", status.OrderId));
-                        _logger.LogError(ex);
 
-                        return null;
-                    }
-                }
+				try
+				{
+					var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
+					if (order.IsRated)
+					{
+						_bookingService.ClearLastOrder();
+					}
+					else
+					{
+						if (!order.IsManualRideLinq)
+						{
+							// Rating only for "normal" rides
+							_bookingService.SetLastUnratedOrderId(status.OrderId);
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					_logger.LogMessage(string.Format("Error trying to get status of order {0}", status.OrderId));
+					_logger.LogError(ex);
+
+					return null;
+				}
 			}
 
 			return null;
@@ -422,15 +419,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task POIRefPickupList(string textMatch, int maxRespSize)
         {
-			var pObject = await _poiProvider.GetPOIRefPickupList(String.Empty, textMatch, maxRespSize);
-            _objPOIRefPickupListSubject.OnNext(pObject);
+			var pickupPointLists = await _poiProvider.GetPOIRefPickupList(string.Empty, textMatch, maxRespSize);
+			_poiRefPickupListSubject.OnNext(pickupPointLists);
 
         }
 
         public async Task POIRefAirLineList(string textMatch, int maxRespSize)
         {
-			var pObject = await _poiProvider.GetPOIRefAirLineList(String.Empty, textMatch, maxRespSize);
-            _objPOIRefAirlineListSubject.OnNext(pObject);
+			var airlines = await _poiProvider.GetPOIRefAirLineList(string.Empty, textMatch, maxRespSize);
+			_poiRefAirlineListSubject.OnNext(airlines);
         }
 
         public Guid? GetLastUnratedRide()
@@ -457,14 +454,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _addressSelectionModeSubject;
 		}
 
-        public IObservable<string> GetAndObservePOIRefPickupList()
+		public IObservable<PickupPoint[]> GetAndObservePOIRefPickupList()
         {
-            return _objPOIRefPickupListSubject;
+            return _poiRefPickupListSubject;
         }
 
-        public IObservable<string> GetAndObservePOIRefAirlineList()
+		public IObservable<Airline[]> GetAndObservePOIRefAirlineList()
         {
-            return _objPOIRefAirlineListSubject;
+            return _poiRefAirlineListSubject;
         }
 
         public async Task<Address> GetCurrentAddress()
@@ -586,7 +583,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			// Needs to run in a background thread to prevent a potential deadlock issue.
 			await Task.Run(async () =>
 				{
-					var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask();
+					var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask(token);
 					if (selectionMode == AddressSelectionMode.PickupSelection)
 					{
 						_pickupAddressSubject.OnNext (address);
@@ -599,8 +596,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					}
 				}, token);
 
-			// do NOT await this
-			CalculateEstimatedFare (token);
+			// Do NOT await this
+			CalculateEstimatedFare(token).FireAndForget();
 		}
 
 		private CancellationTokenSource _calculateFareCancellationTokenSource = new CancellationTokenSource();
@@ -609,12 +606,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			if (!_calculateFareCancellationTokenSource.IsCancellationRequested)
 			{
-				this.Logger.LogMessage("Fare Estimate - CANCEL");
+				Logger.LogMessage("Fare Estimate - CANCEL");
 				_calculateFareCancellationTokenSource.Cancel ();
 			}
-			_calculateFareCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(new [] { token });
+			_calculateFareCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(token);
 
-			this.Logger.LogMessage("Fare Estimate - START");
+			Logger.LogMessage("Fare Estimate - START");
 
 			var newCancelToken = _calculateFareCancellationTokenSource.Token;
 
@@ -628,7 +625,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				return;
 			}
 
-			this.Logger.LogMessage("Fare Estimate - DONE");
+			Logger.LogMessage("Fare Estimate - DONE");
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
 		}
@@ -674,8 +671,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_orderValidationResultSubject.OnNext(null);
 			_loadingAddressSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
-            _objPOIRefPickupListSubject.OnNext(string.Empty);
-            _objPOIRefAirlineListSubject.OnNext(string.Empty);
+            _poiRefPickupListSubject.OnNext(new PickupPoint[0]);
+            _poiRefAirlineListSubject.OnNext(new Airline[0]);
         }
 
 		public void BeginCreateOrder()
@@ -932,12 +929,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     if (hashedMarket.HasValue())
                     {
                         // Set vehicles list with data from external market
-                        SetMarketVehicleTypes(currentPosition);
+                        await SetMarketVehicleTypes(currentPosition);
                     }
                     else
                     {
                         // Load and cache local vehicle types
-                        SetLocalVehicleTypes();
+                        await SetLocalVehicleTypes();
                     }
 	            }
 
@@ -958,7 +955,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	            selectedVehicleId = networkVehicles.First().ReferenceDataVehicleId;
 	        }
 
-            SetVehicleType(selectedVehicleId);
+            await SetVehicleType(selectedVehicleId);
 	    }
 
 	    private async Task SetLocalVehicleTypes()
@@ -978,12 +975,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     : localVehicles.First().ReferenceDataVehicleId;
             }
 
-	        SetVehicleType(selectedVehicleId);
+	        await SetVehicleType(selectedVehicleId);
 	    }
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)
 		{
-			bool currentValue = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+			var currentValue = await _isDestinationModeOpenedSubject.Take(1).ToTask();
 			_isDestinationModeOpenedSubject.OnNext(forceValue ?? !currentValue);
 		}
 			

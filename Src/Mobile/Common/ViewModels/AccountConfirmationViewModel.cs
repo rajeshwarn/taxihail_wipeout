@@ -5,25 +5,109 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Common;
+using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Diagnostic;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class AccountConfirmationViewModel : PageViewModel
 	{
-		readonly IRegisterWorkflowService _registerService;
-		RegisterAccount _account;
+		private readonly IRegisterWorkflowService _registerService;
+		private readonly IAccountServiceClient _accountServiceClient;
+		private readonly ILogger _logger;
+		private RegisterAccount _account;
 
-		public AccountConfirmationViewModel (IRegisterWorkflowService registerService)
+		public AccountConfirmationViewModel(IRegisterWorkflowService registerService, IAccountServiceClient accountServiceClient, ILogger logger)
 		{
-			_registerService = registerService;			
+			_registerService = registerService;
+			_accountServiceClient = accountServiceClient;
+			_logger = logger;
+			PhoneNumber = new PhoneNumberModel();
 		}
 
-		public void Init()
+
+		public async void Init()
 		{
 			_account = _registerService.Account;
+
+			CurrentAccountPhoneResponse currentAccountPhone = null;
+
+			try
+			{
+				currentAccountPhone = await _accountServiceClient.GetAccountPhoneNumber(new CurrentAccountPhoneRequest() { Email = _account.Email });
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex);
+
+				string countryISOCode = new RegionInfo(CultureProvider.CultureInfo.LCID).TwoLetterISORegionName;
+
+				CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryISOCode));
+
+				currentAccountPhone = new CurrentAccountPhoneResponse()
+				{
+					CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(countryISOCode)).CountryISOCode,
+					PhoneNumber = ""
+				};
+			}
+
+			_account.Country = currentAccountPhone.CountryCode;
+			_account.Phone = currentAccountPhone.PhoneNumber;
+
+			PhoneNumber.Country = currentAccountPhone.CountryCode;
+			PhoneNumber.PhoneNumber = currentAccountPhone.PhoneNumber;
+
+			RaisePropertyChanged(() => Phone);
+			RaisePropertyChanged(() => SelectedCountryCode);
+			RaisePropertyChanged(() => PhoneNumber);
 		}
 
 		public string Code { get; set; }
+
+		public PhoneNumberModel PhoneNumber { get; set; }
+
+		public CountryCode[] CountryCodes
+		{
+			get
+			{
+				return CountryCode.CountryCodes;
+			}
+		}
+
+		public CountryCode SelectedCountryCode
+		{
+			get
+			{
+				return CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(_account.Country));
+			}
+
+			set
+			{
+				_account.Country = value.CountryISOCode;
+				PhoneNumber.Country = value.CountryISOCode;
+				RaisePropertyChanged();
+			}
+		}
+
+		public string Phone
+		{
+			get
+			{
+				return _account.Phone;
+			}
+			set
+			{
+				_account.Phone = value;
+				PhoneNumber.PhoneNumber = value;
+				RaisePropertyChanged();
+			}
+		}
+
+
+
 
 		public ICommand ConfirmAccount 
 		{
@@ -60,9 +144,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(async () =>
                 {
-                    await _registerService.GetConfirmationCode();
-                    this.Services().Message.ShowMessage(this.Services().Localize["ResendConfirmationCodeTitle"],
-                        this.Services().Localize["ResendConfirmationCodeText"]);
+					try
+					{
+						_registerService.GetConfirmationCode(SelectedCountryCode.CountryISOCode, Phone);
+						this.Services().Message.ShowMessage(this.Services().Localize["ResendConfirmationCodeTitle"],
+							this.Services().Localize["ResendConfirmationCodeText"]);
+					}
+					catch (ArgumentException exception)
+					{
+						_logger.LogError(exception);
+					}
                 });
             }
         }

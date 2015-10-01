@@ -32,7 +32,9 @@ using Google.Android.M4b.Maps;
 using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
+using System.Threading.Tasks;
 using apcurium.MK.Common;
+using Android.Animation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -189,51 +191,95 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		    }
 	    }
 
-	    private void UpdateTaxiLocation(TaxiLocation value)
-	    {
-		    if (_taxiLocationPin != null)
-		    {
-			    _taxiLocationPin.Remove();
+        // Animate Marker on the map between retrieving positions
+        private void AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double compassCourse, Position oldPosition)
+        {
+            markerToUpdate.SetIcon(icon);
+            markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && compassCourse != 0
+                ? .5f
+                : 1f);
 
-				_taxiLocationPin = null;
-		    }
+            var evaluator = new LatLngEvaluator ();
+            var objectAnimator = ObjectAnimator.OfObject (markerToUpdate, "position", evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
+            objectAnimator.SetAutoCancel(true);
+            objectAnimator.SetDuration (5000);
+            objectAnimator.SetInterpolator(new Android.Views.Animations.LinearInterpolator());
+            objectAnimator.Start();
+        }
 
-		    if (value != null && value.Latitude.HasValue && value.Longitude.HasValue && value.VehicleNumber.HasValue())
-		    {
-				ShowAvailableVehicles(null);
-				try
-				{
-					var mapOptions = new MarkerOptions()
-						.Anchor(.5f, 1f)
-						.SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
-						.InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
-						.Visible(true);
+        private class LatLngEvaluator : Java.Lang.Object, ITypeEvaluator
+        {
+            public Java.Lang.Object Evaluate (float fraction, Java.Lang.Object startValue, Java.Lang.Object endValue)
+            {
+                var start = (LatLng)startValue;
+                var end = (LatLng)endValue;
+                return new LatLng (start.Latitude + fraction * (end.Latitude - start.Latitude),
+                    start.Longitude + fraction * (end.Longitude - start.Longitude));
+            }
+        }
+
+        private void UpdateTaxiLocation(TaxiLocation value)
+        {
+            if (value != null && value.Latitude.HasValue && value.Longitude.HasValue && value.VehicleNumber.HasValue())
+            {
+                ShowAvailableVehicles(null);
+
+                // Update Marker and Animate it to see it move on the map
+                if (_taxiLocationPin != null)
+                {
+                    var icon = ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
+                        ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+                        : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap());
+                    
+                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
+                        {
+                            Latitude = value.Latitude.Value, 
+                            Longitude = value.Longitude.Value
+                        });
+                }
+
+                // Create Marker the first time
+                else
+                {
+                    try
+                    {
+                        var mapOptions = new MarkerOptions()
+                            .Anchor(.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
+                                ? .5f
+                                : 1f)
+                            .SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
+                            .InvokeIcon(
+                                ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
+                                ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+                                : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
+                            .Visible(true);
 
 
-					if (_showVehicleNumber)
-					{
-						var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
-						Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
+                        if (_showVehicleNumber)
+                        {
+                            var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
+                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
 
-						mapOptions.SetTitle(value.VehicleNumber);
-					}
+                            mapOptions.SetTitle(value.VehicleNumber);
+                        }
 
-					_taxiLocationPin = Map.AddMarker(mapOptions);
+                        _taxiLocationPin = Map.AddMarker(mapOptions);
 
-					if (_showVehicleNumber)
-					{
-						_taxiLocationPin.ShowInfoWindow();
-					}
-				}
-				catch (Exception ex)
-				{
-					Logger.LogError(ex);
-				}
+                        if (_showVehicleNumber)
+                        {
+                            _taxiLocationPin.ShowInfoWindow();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(ex);
+                    }
 
-				_isBookingMode = true;
+                    _isBookingMode = true;
 
-			    return;
-		    }
+                    return;
+                }
+            }
 
 		    if (value == null)
 		    {
@@ -320,6 +366,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             TouchableMap.Surface.MoveBy = (deltaX, deltaY) =>
             {
+                ViewModel.BookCannotExecute = true;
                 TouchableMap.Map.MoveCamera(CameraUpdateFactory.ScrollBy(deltaX, deltaY));
             };
 
@@ -557,20 +604,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _availableVehicleMarkers.Remove (markerToRemove);
         }
 
-        private void CreateMarker(AvailableVehicle vehicle)
+        private async Task CreateMarker(AvailableVehicle vehicle)
+        {
+            var isCluster = vehicle is AvailableVehicleCluster;
+            const string defaultLogoName = "taxi";
+			var logoKey = isCluster
+				? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
+				: string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
+
+            var vehicleMarker = Map.AddMarker(new MarkerOptions()
+                .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
+                .SetTitle(vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture))
+                .Anchor(.5f, ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
+                    ? .5f
+                    : 1f)
+                .InvokeIcon(ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
+                    ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
+                    : _vehicleIcons[logoKey]));
+
+            _availableVehicleMarkers.Add(vehicleMarker);
+        }
+
+        // Update Marker and Animate it to see it move on the map
+        private void UpdateMarker(Marker markerToUpdate, AvailableVehicle vehicle, Position oldPosition)
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";
             var logoKey = isCluster
-                                ? string.Format("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
-                                : string.Format("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
+                ? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
+                : string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
 
-            var vehicleMarker = Map.AddMarker(new MarkerOptions()
-                .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
-                .Anchor(.5f, 1f)
-                .InvokeIcon(_vehicleIcons[logoKey]));
+            var icon = ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
+                ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
+                : _vehicleIcons[logoKey];
 
-            _availableVehicleMarkers.Add (vehicleMarker);
+            AnimateMarkerOnMap(icon, markerToUpdate, new LatLng(vehicle.Latitude, vehicle.Longitude), vehicle.CompassCourse, oldPosition);
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
@@ -596,6 +664,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			foreach (var vehicle in vehicleArray)
             {
                 var existingMarkerForVehicle = _availableVehicleMarkers.FirstOrDefault (x => x.Title == vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture));
+
                 if (existingMarkerForVehicle != null)
                 {
                     if (existingMarkerForVehicle.Position.Latitude == vehicle.Latitude && existingMarkerForVehicle.Position.Longitude == vehicle.Longitude)
@@ -604,11 +673,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         continue;
                     }
 
+                    var oldPosition = new Position()
+                    {
+                        Latitude = existingMarkerForVehicle.Position.Latitude,
+                        Longitude = existingMarkerForVehicle.Position.Longitude,
+                    };
+                    
                     // coordinates were updated, remove and add later with new position
-                    DeleteMarker (existingMarkerForVehicle);
+                    UpdateMarker(existingMarkerForVehicle, vehicle, oldPosition);
                 }
-
-                CreateMarker (vehicle);
+                else
+                {
+                    CreateMarker(vehicle);
+                }
             }
         }
 
