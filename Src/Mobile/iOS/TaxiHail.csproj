@@ -662,6 +662,7 @@
       <DependentUpon>CreditCardCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\CreditCardNumberToTypeImageConverter.cs" />
+    <Compile Include="Converters\CreditCardLabelToInt.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

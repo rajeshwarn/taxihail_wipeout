@@ -436,7 +436,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return (_paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled) && !_isFromMultiple;
+                return (_paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled) && !_isFromMultiple && !IsMandatory;
 			}
 		}
 
@@ -499,6 +499,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return this.GetCommand(async() =>
 					{
 						await _accountService.UpdateDefaultCreditCard(Data.CreditCardId);
+						Close(this);
 					});
 			}
 		}

@@ -28,5 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
         public readonly DialCodeConverter DialCodeConverter = new DialCodeConverter();
         public readonly HomeViewStateToVisibilityConverter HomeViewStateToVisibility = new HomeViewStateToVisibilityConverter();
         public readonly CreditCardNumberToTypeImageConverter CreditCardCompanyImageConverter = new CreditCardNumberToTypeImageConverter();
+        public readonly CreditCardLabelToBool CreditCardLabel = new CreditCardLabelToBool();
     }
 }
