@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IAccountService _accountService;
 
 		private OverduePayment _paymentToSettle;
+		private CreditCardInfos _originalData;
 
 		public CreditCardAddViewModel(
 			ILocationService locationService,
@@ -204,6 +205,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					{
 						CreditCardType = (int) id;
 					}
+
+					_originalData = Data;
 				}
 
 				RaisePropertyChanged(() => Data);
@@ -436,7 +439,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return (_paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled) && !_isFromMultiple;
+                return (_paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled) && !_isFromMultiple && !IsMandatory;
 			}
 		}
 
@@ -499,6 +502,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return this.GetCommand(async() =>
 					{
 						await _accountService.UpdateDefaultCreditCard(Data.CreditCardId);
+						Close(this);
 					});
 			}
 		}
@@ -667,6 +671,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			try
 			{
 				Data.CreditCardCompany = CreditCardTypeName;
+
+				if(string.IsNullOrEmpty(Data.CCV) && Data.Label != _originalData.Label && !_isAddingNew)
+				{
+					//function for saving  only label
+					return;
+				}
 
 				if (Params.Get(Data.NameOnCard, 
 					Data.CardNumber,
