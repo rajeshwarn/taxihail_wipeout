@@ -631,40 +631,58 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             };
 
 			await UseServiceClientAsync<IAccountServiceClient> (client => 
-				isUpdate 
+				!isUpdate 
 					? client.AddCreditCard (request)
 					: client.UpdateCreditCard(request));  
 
-			var creditCardDetails = new CreditCardDetails
+
+			if (isUpdate || CurrentAccount.DefaultCreditCard == null)
 			{
-				AccountId = CurrentAccount.Id,
-				CreditCardId = request.CreditCardId,
-				CreditCardCompany = request.CreditCardCompany,
-				NameOnCard = request.NameOnCard,
-				Token = request.Token,
-				Last4Digits = request.Last4Digits,
-				ExpirationMonth = request.ExpirationMonth,
-				ExpirationYear = request.ExpirationYear,
-				IsDeactivated = false
-			};
-			UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false);
+				var creditCardDetails = new CreditCardDetails
+					{
+						AccountId = CurrentAccount.Id,
+						CreditCardId = request.CreditCardId,
+						CreditCardCompany = request.CreditCardCompany,
+						NameOnCard = request.NameOnCard,
+						Token = request.Token,
+						Last4Digits = request.Last4Digits,
+						ExpirationMonth = request.ExpirationMonth,
+						ExpirationYear = request.ExpirationYear,
+						IsDeactivated = false
+					};
+				UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false);
+			}	
 
 			return true;
         }
 			
-		public async Task RemoveCreditCard(bool replacedByPayPal = false)
+		public async Task RemoveCreditCard(Guid creditCardId, bool replacedByPayPal = false)
 		{
-            var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
+			var defaultCreditCard = await UseServiceClientAsync<IAccountServiceClient, CreditCardDetails>(client => client.RemoveCreditCard(creditCardId));
 
-            UpdateCachedAccount(null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
+			var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
 
-			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
+			UpdateCachedAccount(defaultCreditCard != null ? defaultCreditCard : null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
 		}
 
 		public async Task UpdateDefaultCreditCard(Guid creditCardId)
 		{
+			var creditCard = (await GetCreditCards()).First(cc => cc.CreditCardId == creditCardId);
+
+			UpdateCachedAccount(creditCard, CurrentAccount.Settings.ChargeTypeId, CurrentAccount.IsPayPalAccountLinked);
+
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateDefaultCreditCard(new DefaultCreditCardRequest {CreditCardId = creditCardId})); 
 		}
+
+		public async Task UpdateCreditCardLabel(Guid creditCardId)
+		{
+			var creditCard = (await GetCreditCards()).First(cc => cc.CreditCardId == creditCardId);
+
+			UpdateCachedAccount(creditCard, CurrentAccount.Settings.ChargeTypeId, CurrentAccount.IsPayPalAccountLinked);
+
+			await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateDefaultCreditCard(new DefaultCreditCardRequest {CreditCardId = creditCardId})); 
+		}
+
 
 		public Task LinkPayPalAccount(string authCode)
 		{

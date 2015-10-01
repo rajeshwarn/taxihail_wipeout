@@ -282,7 +282,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_isShowingCreditCardExpiredPrompt = true;
 
 					// remove card
-					await _accountService.RemoveCreditCard();
+					await _accountService.RemoveCreditCard(_accountService.CurrentAccount.DefaultCreditCard.CreditCardId);
 
 					var paymentSettings = await _paymentService.GetPaymentSettings();
 					if (!paymentSettings.IsPayInTaxiEnabled)
