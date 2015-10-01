@@ -67,9 +67,10 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError("Can't delete credit card when an order is in progress");
             }
 
-            var command = new DeleteAccountCreditCards
+            var command = new DeleteAccountCreditCard
             {
-                AccountId = accountId
+                AccountId = accountId,
+                CreditCardId = request.CreditCardId
             };
 
             _bus.Send(command);

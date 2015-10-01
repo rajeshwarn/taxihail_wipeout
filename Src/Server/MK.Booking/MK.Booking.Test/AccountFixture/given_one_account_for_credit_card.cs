@@ -109,7 +109,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_remove_all_credit_cards()
         {
-            _sut.When(new DeleteAccountCreditCards {AccountId = _accountId});
+            _sut.When(new DeleteAccountCreditCard {AccountId = _accountId});
 
             var @event = _sut.ThenHasSingle<AllCreditCardsRemoved>();
             Assert.AreEqual(_accountId, @event.SourceId);
