@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		List<CreditCardInfos> _creditCards;
+		private List<CreditCardInfos> _creditCards;
 		public List<CreditCardInfos> CreditCards
 		{
 			get
