@@ -268,7 +268,6 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.DefaultCreditCard = @event.CreditCardId;
-                account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                 context.Save(account);
             }
         }
@@ -279,9 +278,8 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 // used for migration, if user removed one card but had another one, we set this one as the default card
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                var otherCreditCardForAccount = context.Query<CreditCardDetails>().FirstOrDefault(x => x.AccountId == @event.SourceId && x.CreditCardId != @event.CreditCardId);
-                account.DefaultCreditCard = otherCreditCardForAccount != null ? otherCreditCardForAccount.CreditCardId : (Guid?) null;
-                account.Settings.ChargeTypeId = otherCreditCardForAccount != null ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
+                account.DefaultCreditCard = @event.NextDefaultCreditCardId;
+                account.Settings.ChargeTypeId = @event.NextDefaultCreditCardId.HasValue ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
                 context.Save(account);
             }
         }

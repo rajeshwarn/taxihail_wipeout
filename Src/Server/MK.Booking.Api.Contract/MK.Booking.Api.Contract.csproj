@@ -217,6 +217,7 @@
     <Compile Include="Resources\VehicleType.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Security\AuthorizationRequiredAttribute.cs" />
+    <Compile Include="Requests\UpdateCreditCardLabelRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.csproj">
