@@ -208,6 +208,7 @@
 "Save"="Guardar";
 "PickupTextPlaceholder"="Direccion de abordaje";
 "SettingViewLoginInfo"="Usted ha iniciado sesion como: {0}";
+"SetAsDefaultCreditCard"="Set As Default";
 "PassengerNameLabel"="Nombre";
 "RideSettingsPayBack"="PayBack";
 "ManualRideLinqStatus_Tax"="Impuesto:";
@@ -552,7 +553,7 @@
 "Eta"="El taxi más cercano esta a {0} {1} de distancia";
 "CreateAccountEmailPlaceHolder"="Email";
 "TabContacts"="Contactos";
-"Tuto06Top"="La pantalla de confirmacion le permite verificar los detalles de su reservación y cambiar cualquier preferencia que requiera para este servicio";
+"CreditCardLabel"="Label";
 "CreditCardInstructions"="Para usar esta aplicación necesita ingresar un método de pago a su cuenta";
 "StatusNewRideButton"="Nuevo Servicio";
 "WarningPushServiceMessage"="Notamos que no tiene las “Notificaciones automáticas” encendidas. Queremos informarle que si las enciende podría obtener mensajes de estado de sus servicios sin tener que abrir la aplicación! Prometemos no le mandaremos información innecesaria";
@@ -721,6 +722,7 @@
 "DeleteAddressBt"="Eliminar dirección";
 "StatusConfirmNewBooking"="Reservar un nuevo taxi mantendrá esta reservación activa, desea continuar?";
 "RateLastRide"="Calificar";
+"Tuto06Top"="La pantalla de confirmacion le permite verificar los detalles de su reservación y cambiar cualquier preferencia que requiera para este servicio";
 "InvalidPassengersNumber"="El tipo de vehículo que ha seleccionado no tiene suficientes asientos para acomodar el número de pasajeros solicitado. Por favor cambie su selección o reserve más de un coche para acomodar a su grupo.";
 "PickupViewDestinationLabel"="Destino &gt;&gt;";
 "Tuto07Bottom"="Las actualizaciones al estado se generan cuando el vehículo llega a la dirección de arribo, cuando usted aborda el vehículo y al final del servicio.";

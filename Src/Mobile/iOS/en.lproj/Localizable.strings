@@ -174,7 +174,6 @@
 "DontHaveAnAccountLabel"="Don't have an account?";
 "EtaDurationUnitPlural"="mins";
 "MessageActivityName"="Message";
-"AccountPaymentNumberRequiredTitle"="Account Number required";
 "ViewRatingBtn"="View ratings";
 "NoPhoneNumberTitle"="Invalid Phone Number";
 "BookPickupLocationEmptyPlaceholder"="Tap to choose pickup";
@@ -205,6 +204,7 @@
 "Save"="Save";
 "PickupTextPlaceholder"="Pickup street address";
 "SettingViewLoginInfo"="You are currently signed in as : {0}";
+"SetAsDefaultCreditCard"="Set As Default";
 "PassengerNameLabel"="Name";
 "RideSettingsPayBack"="PayBack";
 "ManualRideLinqStatus_Tax"="Tax amount:";
@@ -299,7 +299,7 @@
 "DontAsk"="Don't ask";
 "CmtRideLinqErrorTitle"="Error";
 "SendReceipt"="Send receipt";
-"ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
+"AccountPaymentNumberRequiredTitle"="Account Number required";
 "VehicleNumberErrorTitle"="Error";
 "StatusInvalid"="Status not available";
 "EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
@@ -457,6 +457,7 @@
 "PayPalLinkedInfo"="Account Linked";
 "PaymentViewMeterAmountText"="Meter Amount";
 "CallDriverUsingProxyMessage"="Your driver will call you back in a few minutes";
+"ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
 "DriverInfoTaxiType"="Taxi Type:";
 "InvalidAccountOnActivatedTitle"="Invalid account";
 "Destination"="Destination";
@@ -484,6 +485,7 @@
 "StreetNumber"="Street Number";
 "CreateAccountEmptyField"="The data is invalid, all the fields are required.";
 "ConfirmPassengerSettingsTitle"="Passenger Settings";
+"CreditCardLabel"="Label";
 "CmtRideLinqGenericErrorMessage"="There was an error during pairing, verify your credit card information or try again later.";
 "CreateAccountInvalidDataTitle"="Invalid account info";
 "PickupDateTextPlaceholder"="Date: Today";

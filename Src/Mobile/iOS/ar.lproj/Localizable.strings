@@ -200,6 +200,7 @@
 "Save"="حفظ";
 "PickupTextPlaceholder"="عنوان شارع الإلتقاء";
 "SettingViewLoginInfo"="انت متصل حاليا باسم : {0}";
+"SetAsDefaultCreditCard"="Set As Default";
 "PassengerNameLabel"="الإسم";
 "RideSettingsPayBack"="PayBack";
 "ManualRideLinqStatus_Tax"="Tax amount:";
@@ -539,7 +540,7 @@
 "Tuto02Top"="سنتمكن من تحديد موقعك بإستخدام مستقبل الGPS على هاتفك.";
 "CreateAccountEmailPlaceHolder"="البرید الإلكتروني";
 "TabContacts"="قائمة الإتصال";
-"Tuto06Top"="تتيح لك شاشة التأكيد مراجعة بيانات مشوارك وتغيير خياراتك لهذه الرحلة تحديدا.";
+"CreditCardLabel"="Label";
 "CreditCardInstructions"="In order to use the application, you need to add a payment method to your account.";
 "StatusNewRideButton"="رحلة جديدة";
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to enter a credit card as part of your account.";
@@ -705,6 +706,7 @@
 "DeleteAddressBt"="مسح العنوان";
 "StatusConfirmNewBooking"="في حالة حجز سيارة أجرة اخرى فإن هذا الطلب سيظل ساري، هل ترغب في الاستمرار ؟";
 "RateLastRide"="Rate";
+"Tuto06Top"="تتيح لك شاشة التأكيد مراجعة بيانات مشوارك وتغيير خياراتك لهذه الرحلة تحديدا.";
 "InvalidPassengersNumber"="The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.";
 "PickupViewDestinationLabel"="الوجهة  &gt;&gt;";
 "Tuto07Bottom"="يتم توفير تحديثات الحالة حين تصل السيارة لعنوان الإلتقاء،  وعند دخولك السيارة وفي نهاية المشوار.";
