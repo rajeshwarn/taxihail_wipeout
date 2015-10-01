@@ -680,7 +680,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				if(string.IsNullOrEmpty(Data.CCV) && Data.Label != _originalData.Label && !_isAddingNew)
 				{
-					//function for saving  only label
+					await _accountService.UpdateCreditCardLabel(Data.CreditCardId, Data.Label);
 					return;
 				}
 
