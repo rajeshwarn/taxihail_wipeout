@@ -543,14 +543,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
             annotationToUpdateView.RefreshPinImage();
 
-            UIView.Animate(5, 0, UIViewAnimationOptions.CurveLinear, () =>
+            Animate(5, 0, UIViewAnimationOptions.CurveLinear, () =>
                 {
                     annotationToUpdate.SetCoordinate(new CLLocationCoordinate2D(newPosition.Latitude, newPosition.Longitude));
                 }, () => {});
         }
 
         // Update Annotation and Animate it to see it move on the map
-        private async Task UpdateAnnotation(AddressAnnotation annotationToUpdate, AvailableVehicle vehicle)
+        private void UpdateAnnotation(AddressAnnotation annotationToUpdate, AvailableVehicle vehicle)
         {
             var annotationType = (vehicle is AvailableVehicleCluster) 
                 ? AddressAnnotationType.NearbyTaxiCluster 
@@ -708,10 +708,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	    }
 
         public ICommand CancelAutoFollow { get; set; }
-        private async Task UpdateTaxiLocation(TaxiLocation value)
+        private void UpdateTaxiLocation(TaxiLocation value)
 
-	    {
-            // Update Marker and Animate it to see it move on the map
+        {
+	        // Update Marker and Animate it to see it move on the map
             if (_taxiLocationPin != null)
             {
                 var taxiLocationPin = _taxiLocationPin as AddressAnnotation;
@@ -722,43 +722,47 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         Latitude = value.Latitude.Value,
                         Longitude = value.Longitude.Value
                     });
+
+	            return;
             }
             // Create Marker the first time
-            else
-            {
-                if (value != null)
-                {
-                    var coord = new CLLocationCoordinate2D(0, 0);
+	        if (value != null)
+	        {
+		        var coord = new CLLocationCoordinate2D(0, 0);
 
-                    var vehicleLatitude = value.Latitude ?? 0;
-                    var vehicleLongitude = value.Longitude ?? 0;
+		        var vehicleLatitude = value.Latitude ?? 0;
+		        var vehicleLongitude = value.Longitude ?? 0;
 
-                    if (vehicleLatitude != 0
-                        && vehicleLongitude != 0
-                        && value.VehicleNumber.HasValue())
-                    {
-                        // Refresh vehicle position
-                        coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
-                    }
+		        if (vehicleLatitude != 0
+		            && vehicleLongitude != 0
+		            && value.VehicleNumber.HasValue())
+		        {
+			        // Refresh vehicle position
+			        coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
+		        }
 
-                    _taxiLocationPin = new AddressAnnotation(
-                        coord, 
-                        AddressAnnotationType.Taxi,
-                        Localize.GetValue("TaxiMapTitle"), 
-                        value.VehicleNumber, 
-                        _useThemeColorForPickupAndDestinationMapIcons, 
-                        _showAssignedVehicleNumberOnPin,
-                        true,
-                        null,
-                        ViewModel.Settings.ShowOrientedPins 
-                            ? value.CompassCourse
-                            : 0);
+		        _taxiLocationPin = new AddressAnnotation(
+			        coord, 
+			        AddressAnnotationType.Taxi,
+			        Localize.GetValue("TaxiMapTitle"), 
+			        value.VehicleNumber, 
+			        _useThemeColorForPickupAndDestinationMapIcons, 
+			        _showAssignedVehicleNumberOnPin,
+			        true,
+			        null,
+			        ViewModel.Settings.ShowOrientedPins 
+				        ? value.CompassCourse
+				        : 0);
 
-                    AddAnnotation(_taxiLocationPin);
-                    SetNeedsDisplay();
-                }
-            }
-	    }
+		        AddAnnotation(_taxiLocationPin);
+		        SetNeedsDisplay();
+
+		        return;
+	        }
+
+			RemoveAnnotation(_taxiLocationPin);
+	        _taxiLocationPin = null;
+        }
 
 
 	    private OrderStatusDetail _orderStatusDetail;

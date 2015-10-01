@@ -281,9 +281,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
 
+			// Booking is now over, so we need to clean up.
 		    if (value == null)
 		    {
 				_isBookingMode = false;
+			    _taxiLocationPin.Visible = false;
+				_taxiLocationPin.Remove();
+			    _taxiLocationPin = null;
 		    }
 	    }
 
@@ -604,7 +608,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _availableVehicleMarkers.Remove (markerToRemove);
         }
 
-        private async Task CreateMarker(AvailableVehicle vehicle)
+        private void CreateMarker(AvailableVehicle vehicle)
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";
