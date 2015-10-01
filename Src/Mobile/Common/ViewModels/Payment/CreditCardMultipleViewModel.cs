@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return CreditCards.Count < _appSettings.Data.MaxNumberOfCardsOnFile;
+				return CreditCards != null ? CreditCards.Count < _appSettings.Data.MaxNumberOfCardsOnFile : false;
 			}
 		}
 
