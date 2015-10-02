@@ -49,6 +49,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _isStarted;
 
+		private bool _isOrderRefreshing;
+
 		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
 		public BookingStatusViewModel(
@@ -117,10 +119,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_subscriptions.Disposable = GetTimerObservable()
 				.ObserveOn(SynchronizationContext.Current)
+				.Where(_ => !_isOrderRefreshing)
 				.SelectMany(async (_, cancellationToken) =>
 				{
+					_isOrderRefreshing = true;
 					await RefreshStatus(cancellationToken);
-
+					_isOrderRefreshing = false;
 					return Unit.Default;
 				})
 				.Subscribe(
@@ -673,7 +677,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private TaxiLocation _taxiLocation;
 
 
-		public async Task RefreshStatus(CancellationToken cancellationToken)
+		private async Task RefreshStatus(CancellationToken cancellationToken)
         {
 			if (cancellationToken.IsCancellationRequested)
 			{
@@ -783,7 +787,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if (geoData.IsPositionValid)
 							{
-								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken, geoData.CompassCourse.HasValue ? geoData.CompassCourse.Value : 0);
+								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken, geoData.CompassCourse ?? 0);
 							}
 						}
 					}
@@ -801,8 +805,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						}
 
 						eta = direction.Duration;
-
-						UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber, cancellationToken);
 					}
 					if (eta.HasValue)
 					{
@@ -826,12 +828,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					if (geoData != null && geoData.IsPositionValid)
 					{
-						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken, geoData.CompassCourse.HasValue ? geoData.CompassCourse.Value : 0);
+						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken, geoData.CompassCourse ?? 0);
 					}
 				}
-				else if (!isUsingGeoServices && hasVehicleInfo &&
-				         (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-				          || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
+				else if (!isUsingGeoServices && hasVehicleInfo && VehicleStatuses.ShowOnMapStatuses.Any(vehicleStatus => vehicleStatus == status.IBSStatusId))
 				{
 					UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber, cancellationToken);
 				}
