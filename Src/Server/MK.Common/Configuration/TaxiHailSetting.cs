@@ -58,6 +58,7 @@ namespace MK.Common.Configuration
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
+            ShowOrientedPins = false;
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
@@ -74,6 +75,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehicles = false;
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
+            ShowOrientedPins = false;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
 			
@@ -482,6 +484,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - Maximum number of Cards On File", Description = "Maximum number of Credit cards the client car add to his account")]
         public int MaxNumberOfCardsOnFile { get; set; }
+        
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Display - Use vehicle direction", Description = "Available only with GEO. When enabled, the marked will be oriented according to the vehicle direction information")]
+        public bool ShowOrientedPins { get; protected set; }
     }
 }
 

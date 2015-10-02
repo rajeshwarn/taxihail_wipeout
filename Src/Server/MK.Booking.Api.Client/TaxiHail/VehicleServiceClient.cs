@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return response.ToArray();
 	    }
 
-	    public async Task SendMessageToDriver(string message, string vehicleNumber)
+	    public async Task SendMessageToDriver(string message, string vehicleNumber, Guid orderId)
 	    {
             var request = string.Format("/vehicle/{0}/message", vehicleNumber);
 
@@ -68,7 +68,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 new SendMessageToDriverRequest
 	            {
 	                Message = message,
-	                VehicleNumber = vehicleNumber
+	                VehicleNumber = vehicleNumber,
+					OrderId = orderId
 	            });
 	    }
     }

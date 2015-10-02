@@ -2,7 +2,9 @@
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.EventHandlers.Integration;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 
@@ -12,18 +14,25 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IIbsOrderService _ibsOrderService;
         private readonly ILogger _logger;
+	    private readonly IOrderDao _orderDao;
 
-        public DriverService(IIbsOrderService ibsOrderService, ILogger logger)
+        public DriverService(IIbsOrderService ibsOrderService, ILogger logger, IOrderDao orderDao)
         {
             _ibsOrderService = ibsOrderService;
             _logger = logger;
+	        _orderDao = orderDao;
         }
 
         public object Post(SendMessageToDriverRequest request)
         {
             try
             {
-                _ibsOrderService.SendMessageToDriver(request.Message, request.VehicleNumber);
+	            var order = _orderDao.FindById(request.OrderId);
+	            if (order == null)
+	            {
+		            throw new Exception("Order Id: {0} does not exist".InvariantCultureFormat(request.OrderId));
+	            }
+                _ibsOrderService.SendMessageToDriver(request.Message, request.VehicleNumber, order.CompanyKey);
             }
             catch (Exception ex)
             {

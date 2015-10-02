@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		public void RefreshPinImage ()
         {
             var ann = ((AddressAnnotation)Annotation);
+            var degrees = ann.Degrees;
 
             Image = ann.GetImage();
 
@@ -100,13 +101,19 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                 CreateMedailonView(((AddressAnnotation)Annotation).Subtitle, hidden: false);
             }
 
-            CenterOffset = new CGPoint (0, -Image.Size.Height / 2);
-            if (ann.AddressType == AddressAnnotationType.Destination ||
-               ann.AddressType == AddressAnnotationType.Pickup)
+            if (degrees != 0)
             {
-                CenterOffset = new CGPoint(0, -Image.Size.Height / 2 + 2);
+                CenterOffset = new CGPoint(0, 0);
             }
-             
+            else
+            {
+                CenterOffset = new CGPoint(0, -Image.Size.Height / 2);
+                if (ann.AddressType == AddressAnnotationType.Destination ||
+                ann.AddressType == AddressAnnotationType.Pickup)
+                {
+                    CenterOffset = new CGPoint(0, -Image.Size.Height / 2 + 2);
+                }
+            }
 		}
 	}
 }

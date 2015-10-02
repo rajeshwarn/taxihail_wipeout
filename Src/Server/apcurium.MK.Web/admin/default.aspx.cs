@@ -8,6 +8,8 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using Microsoft.Practices.ServiceLocation;
 using ServiceStack.Text;
+using apcurium.MK.Common;
+using System.Globalization;
 
 #endregion
 
@@ -30,6 +32,12 @@ namespace apcurium.MK.Web.admin
         protected bool IsNetworkEnabled { get; private set; }
         protected string Languages { get; private set; }
 
+		protected string CountryCodes { get; private set; }
+
+		protected string DefaultCountryCode { get; private set; }
+
+		protected string CurrentAccountID { get; private set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var config = ServiceLocator.Current.GetInstance<IServerSettings>();
@@ -44,6 +52,7 @@ namespace apcurium.MK.Web.admin
             IsAuthenticated = base.UserSession.IsAuthenticated;
             IsSuperAdmin = UserSession.HasPermission(RoleName.SuperAdmin);
             IsAdmin = UserSession.HasPermission(RoleName.Admin);
+			CurrentAccountID = UserSession.UserAuthId;
 
             IsNetworkEnabled = config.ServerData.Network.Enabled;
 
@@ -61,6 +70,20 @@ namespace apcurium.MK.Web.admin
             {
                 Response.Redirect("~");
             }
+
+
+			CountryCodes = Newtonsoft.Json.JsonConvert.SerializeObject(CountryCode.CountryCodes);
+
+			CultureInfo defaultCultureInfo = CultureInfo.GetCultureInfo(config.ServerData.PriceFormat);
+
+			if (defaultCultureInfo != null)
+			{
+				DefaultCountryCode = (new RegionInfo(defaultCultureInfo.LCID)).TwoLetterISORegionName;
+			}
+			else
+			{
+				DefaultCountryCode = "CA";
+			}
 
             IsTaxiHailPro = config.ServerData.IsTaxiHailPro;
         }

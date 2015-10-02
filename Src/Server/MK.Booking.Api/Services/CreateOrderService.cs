@@ -141,7 +141,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
 
-            if (countryCode.IsNumberPossible(request.Settings.Phone))
+			if (PhoneHelper.IsNumberPossible(countryCode, request.Settings.Phone))
             {
                 request.Settings.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Settings.Phone);
             }
