@@ -339,7 +339,7 @@
   <string name="View_TermsAndConditions">Terms and Conditions</string>
   <string name="BookingAirportTitle">Airport</string>
   <string name="AirportsButton">Airports</string>
-  <string name="View_EditAutoTip">Edit Tip</string>
+  <string name="View_EditAutoTip">Edit Payment</string>
   <string name="PayInCar">Pay Cash/Credit Card in Car</string>
   <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
   <string name="SaveAddressEmptyFieldTitle">Friendly name required</string>
@@ -512,7 +512,7 @@
   <string name="Error">Error</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="StatusEditAutoTipButton">Tip</string>
+  <string name="StatusEditAutoTipButton">Payment</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Charge type</string>
   <string name="ResetPasswordSubtitleText">Enter your email and we\'ll send you a new one.</string>

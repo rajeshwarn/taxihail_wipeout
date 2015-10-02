@@ -343,7 +343,7 @@
   <string name="View_TermsAndConditions">Conditions d\'utilisation</string>
   <string name="BookingAirportTitle">Airport</string>
   <string name="AirportsButton">Aéroports</string>
-  <string name="View_EditAutoTip">Modifier Pourboire</string>
+  <string name="View_EditAutoTip">Modifier Paiement</string>
   <string name="PayInCar">Payer dans le taxi</string>
   <string name="PanelMenuViewSignOutPopupMessage">Êtes vous sûr de vouloir vous déconnecter ?</string>
   <string name="SaveAddressEmptyFieldTitle">Merci de resaisir le nom</string>
@@ -513,7 +513,7 @@
   <string name="Error">Erreur</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="StatusEditAutoTipButton">Pourboire</string>
+  <string name="StatusEditAutoTipButton">Paiement</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Type de facturation</string>
   <string name="ResetPasswordSubtitleText">Saisissez votre email pour recevoir votre nouveau mot de passe</string>

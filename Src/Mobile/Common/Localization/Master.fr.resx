@@ -2003,7 +2003,7 @@
     <value>Menu</value>
   </data>
   <data name="StatusEditAutoTipButton" xml:space="preserve">
-    <value>Pourboire</value>
+    <value>Paiement</value>
     </data>
   <data name="LocateMeButton" xml:space="preserve">
     <value>Localiser moi</value>
@@ -2015,7 +2015,7 @@
     <value>Aéroports</value>
   </data>
   <data name="View_EditAutoTip" xml:space="preserve">
-    <value>Modifier Pourboire</value>
+    <value>Modifier Paiement</value>
     </data>
    <data name="TrainStationsButton" xml:space="preserve">
     <value>Stations de trains</value>

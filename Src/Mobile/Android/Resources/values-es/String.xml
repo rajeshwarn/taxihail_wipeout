@@ -345,7 +345,7 @@
   <string name="View_TermsAndConditions">Términos y Condiciones</string>
   <string name="BookingAirportTitle">Airport</string>
   <string name="AirportsButton">Airports</string>
-  <string name="View_EditAutoTip">Editar propina</string>
+  <string name="View_EditAutoTip">Editar Pago</string>
   <string name="PayInCar">Pagar en el vehículo</string>
   <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
   <string name="SaveAddressEmptyFieldTitle">Nombre</string>
@@ -512,7 +512,7 @@
   <string name="Error">Error</string>
   <string name="View_AccountConfirmation_Label_Code">Código</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="StatusEditAutoTipButton">Propina</string>
+  <string name="StatusEditAutoTipButton">Pago</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Tipo de Cargo</string>
   <string name="ResetPasswordSubtitleText">Ingrese su email y le enviaremos una nueva contraseña</string>

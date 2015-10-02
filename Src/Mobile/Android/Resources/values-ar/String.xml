@@ -333,7 +333,7 @@
   <string name="View_TermsAndConditions">الأحكام والشروط</string>
   <string name="BookingAirportTitle">Airport</string>
   <string name="AirportsButton">Airports</string>
-  <string name="View_EditAutoTip">Edit Tip</string>
+  <string name="View_EditAutoTip">Edit Payment</string>
   <string name="PayInCar">Pay in Car</string>
   <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
   <string name="SaveAddressEmptyFieldTitle">يجب ادخال اسم المستخدم</string>
@@ -500,7 +500,7 @@
   <string name="Error">خطأ</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="StatusEditAutoTipButton">Tip</string>
+  <string name="StatusEditAutoTipButton">Payment</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">طريقة الدفع :</string>
   <string name="ResetPasswordSubtitleText">أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.</string>
