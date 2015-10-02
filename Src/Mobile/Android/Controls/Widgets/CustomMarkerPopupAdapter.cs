@@ -16,20 +16,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public View GetInfoWindow(Marker marker)
         {
-            return null;
+			var customPopup = _layoutInflater.Inflate(Resource.Layout.VehicleInfoWindow, null);
+			
+			var titleTextView = customPopup.FindViewById<TextView>(Resource.Id.vehicleNumberTitle);
+
+			if (titleTextView != null)
+			{
+				titleTextView.Text = marker.Title;
+			}
+
+			return customPopup;
         }
 
         public View GetInfoContents(Marker marker)
         {
-            var customPopup = _layoutInflater.Inflate(Resource.Layout.VehicleInfoWindow, null);
-
-            var titleTextView = customPopup.FindViewById<TextView>(Resource.Id.vehicleNumberTitle);
-            if (titleTextView != null)
-            {
-                titleTextView.Text = marker.Title;
-            }
-
-            return customPopup;
+			return null;
         }
     }
 }
