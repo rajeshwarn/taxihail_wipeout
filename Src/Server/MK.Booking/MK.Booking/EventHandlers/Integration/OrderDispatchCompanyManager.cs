@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
-        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
         private readonly IConfigurationDao _configurationDao;
 	    private readonly ILogger _logger;
 	    private readonly IServerSettings _serverSettings;
@@ -38,7 +37,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             Func<BookingDbContext> contextFactory,
             IIBSServiceProvider ibsServiceProvider,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            HoneyBadgerServiceClient honeyBadgerServiceClient,
             IConfigurationDao configurationDao, 
 			ILogger logger, 
 			IServerSettings serverSettings)
@@ -47,7 +45,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _ibsServiceProvider = ibsServiceProvider;
             _commandBus = commandBus;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
-            _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _configurationDao = configurationDao;
 	        _logger = logger;
 	        _serverSettings = serverSettings;
