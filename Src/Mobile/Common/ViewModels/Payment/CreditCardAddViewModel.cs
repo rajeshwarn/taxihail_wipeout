@@ -469,7 +469,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		int _selectedLabel;
+		private int _selectedLabel;
 		public int SelectedLabel
 		{
 			get
@@ -481,7 +481,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				_selectedLabel = value;
 			}
 		}
-
 
 		private PaymentDetailsViewModel _paymentPreferences;
 		public PaymentDetailsViewModel PaymentPreferences
@@ -497,6 +496,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return _paymentPreferences;
 			}
 		}
+
 		public ICommand SetAsDefault 
 		{ 
 			get
@@ -508,6 +508,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					});
 			}
 		}
+
 		private ICommand _saveTip 
 		{ 
 			get
@@ -680,7 +681,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				if(string.IsNullOrEmpty(Data.CCV) && Data.Label != _originalLabel && !_isAddingNew)
 				{
-					await _accountService.UpdateCreditCardLabel(Data.CreditCardId, Data.Label);
+					using(this.Services().Message.ShowProgress())
+					{
+						var success = await _accountService.UpdateCreditCardLabel(Data.CreditCardId, Data.Label);
+
+						if(success)
+						{
+							Close(this);
+						}
+						else
+						{
+							await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
+						}
+					}
 					return;
 				}
 

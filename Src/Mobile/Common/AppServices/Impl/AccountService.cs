@@ -674,9 +674,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateDefaultCreditCard(new DefaultCreditCardRequest {CreditCardId = creditCardId})); 
 		}
 
-		public async Task UpdateCreditCardLabel(Guid creditCardId, string label)
+		public async Task<bool> UpdateCreditCardLabel(Guid creditCardId, string label)
 		{
-			await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label})); 
+			try
+			{
+				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label})); 
+			}
+			catch
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		public Task LinkPayPalAccount(string authCode)
