@@ -805,8 +805,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						}
 
 						eta = direction.Duration;
-
-						UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber, cancellationToken);
 					}
 					if (eta.HasValue)
 					{
@@ -833,9 +831,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken, geoData.CompassCourse ?? 0);
 					}
 				}
-				else if (!isUsingGeoServices && hasVehicleInfo &&
-				         (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-				          || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
+				else if (!isUsingGeoServices && hasVehicleInfo && VehicleStatuses.ShowOnMapStatuses.Any(vehicleStatus => vehicleStatus == status.IBSStatusId))
 				{
 					UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber, cancellationToken);
 				}
