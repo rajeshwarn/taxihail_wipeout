@@ -1016,7 +1016,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					BottomBar.NotifyBookingStatusAppbarChanged();
 
-					await GoToBookingScreen();
+					await GoToHomeScreen();
 				    return;
 			    }
 			    StatusInfoText = string.Format(
