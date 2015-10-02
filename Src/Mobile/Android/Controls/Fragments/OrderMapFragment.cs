@@ -236,6 +236,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             Latitude = value.Latitude.Value, 
                             Longitude = value.Longitude.Value
                         });
+
+					if (_showVehicleNumber)
+					{
+						_taxiLocationPin.ShowInfoWindow();
+					}
                 }
 
                 // Create Marker the first time
