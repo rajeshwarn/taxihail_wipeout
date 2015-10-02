@@ -689,7 +689,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				while (!CanRefreshStatus(status))
 				{
 					Logger.LogMessage("Waiting for Ibs Order Creation (ibs order id)");
-					await Task.Delay(TimeSpan.FromSeconds(1));
+					await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
 					status = await _bookingService.GetOrderStatusAsync(Order.Id);
 
 					if (status.IBSOrderId.HasValue)
@@ -930,48 +930,69 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-	    private void SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
+	    private async Task SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
 	    {
-            if (status.Status == OrderStatus.TimedOut)
-            {
-                bool alwayAcceptSwitch;
-                bool.TryParse(this.Services().Cache.Get<string>("TaxiHailNetworkTimeOutAlwayAccept"), out alwayAcceptSwitch);
+		    if (status.Status != OrderStatus.TimedOut)
+		    {
+			    return;
+		    }
 
-                if (status.NextDispatchCompanyKey != null
-                    && (alwayAcceptSwitch || Settings.Network.AutoConfirmFleetChange))
-                {
-                    // Switch without user input
-                    SwitchCompany(status);
-                }
-                else if (status.NextDispatchCompanyKey != null && !_isDispatchPopupVisible && !alwayAcceptSwitch)
-                {
-                    _isDispatchPopupVisible = true;
+		    bool alwayAcceptSwitch;
+		    bool.TryParse(this.Services().Cache.Get<string>("TaxiHailNetworkTimeOutAlwayAccept"), out alwayAcceptSwitch);
 
-                    this.Services().Message.ShowMessage(
-                        this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
-                        string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
-                        this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
-                            () => SwitchCompany(status),
-                        this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
-                            () =>
-                            {
-                                if (status.Status.Equals(OrderStatus.TimedOut))
-                                {
-                                    _bookingService.IgnoreDispatchCompanySwitch(status.OrderId);
-                                    _isDispatchPopupVisible = false;
-                                }
-                            },
-                        this.Services().Localize["TaxiHailNetworkTimeOutPopupAlways"],
-                            () =>
-                            {
-                                this.Services().Cache.Set("TaxiHailNetworkTimeOutAlwayAccept", "true");
-                                SwitchCompany(status);
-                            });
-                }
-            }
+		    var isAutomaticallyHandlingTimeout = alwayAcceptSwitch
+		            || Settings.Network.AutoConfirmFleetChange
+		            || status.CompanyKey == status.NextDispatchCompanyKey;
+
+			if (status.NextDispatchCompanyKey != null && isAutomaticallyHandlingTimeout)
+		    {
+			    // Switch without user input
+				await HandleNetworkTimeout(status);
+
+			    return;
+		    }
+
+			if (status.NextDispatchCompanyKey != null && !_isDispatchPopupVisible && !isAutomaticallyHandlingTimeout)
+		    {
+			    _isDispatchPopupVisible = true;
+
+				var tcs = new TaskCompletionSource<Unit>();
+
+			    await this.Services().Message.ShowMessage(
+				    this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
+				    string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
+				    this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
+				    async () =>
+				    {
+					    await HandleNetworkTimeout(status);
+
+						tcs.SetResult(Unit.Default);
+				    },
+				    this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
+				    () =>
+				    {
+					    if (status.Status.Equals(OrderStatus.TimedOut))
+					    {
+						    _bookingService.IgnoreDispatchCompanySwitch(status.OrderId);
+						    _isDispatchPopupVisible = false;
+					    }
+
+						tcs.SetResult(Unit.Default);
+				    },
+				    this.Services().Localize["TaxiHailNetworkTimeOutPopupAlways"],
+				    async () =>
+				    {
+					    this.Services().Cache.Set("TaxiHailNetworkTimeOutAlwayAccept", "true");
+					    await HandleNetworkTimeout(status);
+
+						tcs.SetResult(Unit.Default);
+				    });
+
+			    await tcs.Task;
+		    }
 	    }
 
-	    private async void SwitchCompany(OrderStatusDetail status)
+	    private async Task HandleNetworkTimeout(OrderStatusDetail status)
 	    {
 	        if (status.Status != OrderStatus.TimedOut)
 	        {
@@ -981,25 +1002,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        _isDispatchPopupVisible = false;
             _isContactingNextCompany = true;
 
-            try
-            {
-                var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
-                    status.OrderId,
-                    status.NextDispatchCompanyKey,
-                    status.NextDispatchCompanyName);
-                OrderStatusDetail = orderStatusDetail;
+		    try
+		    {
+			    var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
+				    status.OrderId,
+				    status.NextDispatchCompanyKey,
+				    status.NextDispatchCompanyName);
+			    OrderStatusDetail = orderStatusDetail;
 
-                StatusInfoText = string.Format(
-                    this.Services().Localize["NetworkContactingNextDispatchDescription"],
-                    status.NextDispatchCompanyName);
-            }
-            catch (WebServiceException ex)
-            {
-                _isContactingNextCompany = false;
-                this.Services().Message.ShowMessage(
-                    this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
-                    ex.ErrorMessage);
-            }
+			    if (orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Timeout)
+			    {
+				    StatusInfoText = orderStatusDetail.IBSStatusDescription;
+
+					BottomBar.NotifyBookingStatusAppbarChanged();
+
+					await GoToBookingScreen();
+				    return;
+			    }
+			    StatusInfoText = string.Format(
+				    this.Services().Localize["NetworkContactingNextDispatchDescription"],
+				    status.NextDispatchCompanyName);
+		    }
+		    catch (WebServiceException ex)
+		    {
+			    _isContactingNextCompany = false;
+			    this.Services().Message.ShowMessage(
+				    this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
+				    ex.ErrorMessage);
+		    }
+		    catch (Exception ex)
+		    {
+			    Logger.LogError(ex);
+
+				_isContactingNextCompany = false;
+		    }
 	    }
 
 	    private void DisplayOrderNumber()

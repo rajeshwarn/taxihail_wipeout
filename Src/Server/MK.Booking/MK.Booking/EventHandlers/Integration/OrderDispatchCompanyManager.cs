@@ -8,7 +8,9 @@ using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using CMTServices;
 using CustomerPortal.Client;
@@ -28,6 +30,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
         private readonly IConfigurationDao _configurationDao;
+	    private readonly ILogger _logger;
+	    private readonly IServerSettings _serverSettings;
 
         public OrderDispatchCompanyManager(
             ICommandBus commandBus,
@@ -35,7 +39,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IIBSServiceProvider ibsServiceProvider,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             HoneyBadgerServiceClient honeyBadgerServiceClient,
-            IConfigurationDao configurationDao)
+            IConfigurationDao configurationDao, 
+			ILogger logger, 
+			IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
             _ibsServiceProvider = ibsServiceProvider;
@@ -43,6 +49,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _configurationDao = configurationDao;
+	        _logger = logger;
+	        _serverSettings = serverSettings;
         }
 
         public async void Handle(OrderTimedOut @event)
@@ -123,6 +131,25 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             return nextDispatchCompany; 
         }
 
+		private bool IsCmtGeoServiceMode(string market)
+		{
+			var externalMarketMode = market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo;
+
+			var internalMarketMode = !market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo;
+
+			return internalMarketMode || externalMarketMode;
+		}
+
+		private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
+		{
+			if (IsCmtGeoServiceMode(market))
+			{
+				return new CmtGeoServiceClient(_serverSettings, _logger);
+			}
+
+			return new HoneyBadgerServiceClient(_serverSettings, _logger);
+		}
+
         private NetworkFleetResponse FindNextAvailableCompanyInIbsZone(string currentCompanyKey, MapCoordinate pickupPosition, IList<NetworkFleetResponse> networkFleet, string market = null)
         {
             // Find the list index of the current company
@@ -132,7 +159,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (currentDispatchCompanyIndex == networkFleet.Count - 1)
             {
                 // End of list, no more company in fleet
-                return currentDispatchCompany;
+				return currentDispatchCompany;
             }
 
             var nextDispatchCompany = networkFleet[currentDispatchCompanyIndex + 1];
@@ -154,9 +181,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             for (var i = 1; i < searchExpendLimit; i++)
             {
-                var marketVehicles =
-                    _honeyBadgerServiceClient.GetAvailableVehicles(market, pickupLatitude, pickupLongitude, searchRadius, null, true)
-                                             .ToArray();
+                var marketVehicles = GetAvailableVehiclesServiceClient(market)
+					.GetAvailableVehicles(market, pickupLatitude, pickupLongitude, searchRadius, null, true)
+					.ToArray();
 
                 if (marketVehicles.Any())
                 {
