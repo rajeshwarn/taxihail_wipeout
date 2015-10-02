@@ -709,8 +709,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public ICommand CancelAutoFollow { get; set; }
         private void UpdateTaxiLocation(TaxiLocation value)
-
         {
+            if (_taxiLocationPin != null && value == null)
+            {
+                RemoveAnnotation(_taxiLocationPin);
+                _taxiLocationPin = null;
+
+                return;
+            }
+
 	        // Update Marker and Animate it to see it move on the map
             if (_taxiLocationPin != null)
             {
@@ -725,43 +732,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 	            return;
             }
+
             // Create Marker the first time
-	        if (value != null)
-	        {
-		        var coord = new CLLocationCoordinate2D(0, 0);
+            var coord = new CLLocationCoordinate2D(0, 0);
 
-		        var vehicleLatitude = value.Latitude ?? 0;
-		        var vehicleLongitude = value.Longitude ?? 0;
+            var vehicleLatitude = value.Latitude ?? 0;
+            var vehicleLongitude = value.Longitude ?? 0;
 
-		        if (vehicleLatitude != 0
-		            && vehicleLongitude != 0
-		            && value.VehicleNumber.HasValue())
-		        {
-			        // Refresh vehicle position
-			        coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
-		        }
+            if (vehicleLatitude != 0
+                && vehicleLongitude != 0
+                && value.VehicleNumber.HasValue())
+            {
+                // Refresh vehicle position
+                coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
+            }
 
-		        _taxiLocationPin = new AddressAnnotation(
-			        coord, 
-			        AddressAnnotationType.Taxi,
-			        Localize.GetValue("TaxiMapTitle"), 
-			        value.VehicleNumber, 
-			        _useThemeColorForPickupAndDestinationMapIcons, 
-			        _showAssignedVehicleNumberOnPin,
-			        true,
-			        null,
-			        ViewModel.Settings.ShowOrientedPins 
-				        ? value.CompassCourse
-				        : 0);
+            _taxiLocationPin = new AddressAnnotation(
+                coord, 
+                AddressAnnotationType.Taxi,
+                Localize.GetValue("TaxiMapTitle"), 
+                value.VehicleNumber, 
+                _useThemeColorForPickupAndDestinationMapIcons, 
+                _showAssignedVehicleNumberOnPin,
+                true,
+                null,
+                ViewModel.Settings.ShowOrientedPins 
+                ? value.CompassCourse
+                : 0);
 
-		        AddAnnotation(_taxiLocationPin);
-		        SetNeedsDisplay();
+            AddAnnotation(_taxiLocationPin);
+            SetNeedsDisplay();
 
-		        return;
-	        }
 
-			RemoveAnnotation(_taxiLocationPin);
-	        _taxiLocationPin = null;
+
         }
 
 
