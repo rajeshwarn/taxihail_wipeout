@@ -1,15 +1,14 @@
 using System;
+using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 using Android.Content;
 using Android.Graphics;
+using Android.Runtime;
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using Android.Runtime;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -27,14 +26,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private ImageView _dot;
         private View _horizontalDivider;
 
-		ILocalization _localization = TinyIoC.TinyIoCContainer.Current.Resolve<ILocalization>();
-
         public AddressTextBox(Context c, IAttributeSet attr) : base(c, attr)
         {
 
         }
-
-
 
         protected override void OnFinishInflate()
         {
@@ -56,15 +51,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _streetNumberTextView.Hint = "#";
             _streetNumberTextView.Gravity = GravityFlags.Center;
             _streetNumberTextView.InputType = _streetNumberTextView.InputType | InputTypes.ClassNumber;
-			_streetNumberTextView.Hint = this.ContentDescription + " " + _localization["StreetNumber"];
-			_streetNumberTextView.ContentDescription = _streetNumberTextView.Hint;
+			_streetNumberTextView.ContentDescription = ContentDescription + " " + this.Services().Localize["StreetNumber"];
 
             AddressTextView.SetSelectAllOnFocus(true);
             AddressTextView.SetSingleLine(true);
             AddressTextView.InputType = InputTypes.ClassText | InputTypes.TextFlagNoSuggestions;
             AddressTextView.ImeOptions = ImeAction.Go;
-			AddressTextView.Hint = this.ContentDescription;
-			AddressTextView.ContentDescription = this.ContentDescription;
+			AddressTextView.Hint = ContentDescription;
+			AddressTextView.ContentDescription = ContentDescription;
 
 
             SetBehavior();

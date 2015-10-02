@@ -83,15 +83,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				.DistinctUntilChanged();
 		}
 
-        public async void CheckManualRideLinqEnabledAsync(bool isInMarket)
+        public async void CheckManualRideLinqEnabledAsync()
         {
             try
             {
                 var settings = await _paymentService.GetPaymentSettings();
 
                 IsManualRidelinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
-                                           && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
-										   && !isInMarket;
+                                           && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled;
 
                 BookButtonHidden = Settings.DisableImmediateBooking && !Settings.UseSingleButtonForNowAndLaterBooking;
             }

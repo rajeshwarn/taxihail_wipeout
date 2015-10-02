@@ -15,9 +15,7 @@
 
             /* Admin right*/
             "security": "manageSecurity",
-            "confirmemail": "confirmEmail",
-            "disableemail": "disableEmail",
-            "unlinkaccount": "unlinkAccount",
+            "accountManagement": "accountManagement",
 
             /* test notifications */
             "sendpushnotification": "sendPushNotification",
@@ -120,16 +118,8 @@
             action(TaxiHail.SecurityController, 'index');
         },
         
-        confirmEmail: function () {
-            action(TaxiHail.SecurityController, 'confirmemail');
-        },
-        
-        disableEmail: function () {
-            action(TaxiHail.SecurityController, 'disableemail');
-        },
-
-        unlinkAccount: function () {
-            action(TaxiHail.SecurityController, 'unlinkaccount');
+        accountManagement: function () {
+        	action(TaxiHail.AccountController, 'accountManagement');
         },
 
         sendPushNotification: function () {

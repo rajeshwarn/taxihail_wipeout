@@ -81,8 +81,10 @@
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
     <Compile Include="Requests\ConfirmationCodeRequest.cs" />
+    <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
     <Compile Include="Requests\DefaultCreditCardRequest.cs" />
     <Compile Include="Requests\EtaForPickupRequest.cs" />
+    <Compile Include="Requests\FindAccountsRequest.cs" />
     <Compile Include="Requests\FlightInformationRequest.cs" />
     <Compile Include="Requests\InitiateCallToDriverRequest.cs" />
     <Compile Include="Requests\GetAddressesFromPostcalCodeRequest.cs" />

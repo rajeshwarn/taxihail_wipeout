@@ -17,7 +17,8 @@ namespace apcurium.MK.Booking.IBS
                 .ForMember(x => x.PositionDate, opt => opt
                     .MapFrom(x => x.GPSLastUpdated.ToDateTime().GetValueOrDefault())
                 )
-                .ForMember(p => p.Eta, opt => opt.Ignore());
+                .ForMember(p => p.Eta, opt => opt.Ignore())
+                .ForMember(p => p.CompassCourse, opt => opt.Ignore());
         }
     }
 }

@@ -28,6 +28,16 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return result;
         }
 
+		/// <summary>
+		/// Get phone number without authorization
+		/// </summary>
+		/// <returns></returns>
+		public Task<CurrentAccountPhoneResponse> GetAccountPhoneNumber(CurrentAccountPhoneRequest currentAccountPhoneRequest)
+		{
+			var uri = string.Format("/account/phone/{0}", currentAccountPhoneRequest.Email);
+			return Client.GetAsync<CurrentAccountPhoneResponse>(uri);
+		}
+
         public Task RegisterAccount(RegisterAccount account)
         {
             return Client.PostAsync<Account>("/account/register", account);
@@ -35,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task GetConfirmationCode(ConfirmationCodeRequest request)
         {
-            var uri = string.Format("/account/getconfirmationcode/{0}", request.Email);
+            var uri = string.Format("/account/getconfirmationcode/{0}/{1}/{2}", request.Email, request.CountryCode, request.PhoneNumber);
             return Client.GetAsync<string>(uri);
         }
 

@@ -715,11 +715,17 @@
     <AndroidResource Include="Resources\Drawable\waitingcarclosebutton.xml" />
     <AndroidResource Include="Resources\drawable-xhdpi\status_gradient.png" />
     <Compile Include="Controls\Widgets\RoundedMvxImageView.cs" />
+    <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_available.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_available.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_available.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_passenger.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_passenger.png" />
     <Compile Include="Activities\Setting\CreditCardMultipleActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardMultiple.axml" />
     <AndroidResource Include="Resources\Layout\CreditCardListItem.axml" />
     <Compile Include="Converters\CreditCardNumberToTypeImageConverter.cs" />
     <Compile Include="Converters\CreditCardLabelToBool.cs" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

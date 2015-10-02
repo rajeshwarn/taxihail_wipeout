@@ -54,7 +54,8 @@ namespace CMTServices
                 Longitude = entity.Longitude,
                 Medallion = entity.Medallion,
                 FleetId = entity.FleetId,
-				VehicleType = entity.VehicleType
+				VehicleType = entity.VehicleType,
+                CompassCourse = entity.CompassCourse,
             };
         }
     }

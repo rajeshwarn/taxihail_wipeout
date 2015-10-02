@@ -96,6 +96,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtPayBack.Placeholder = Localize.GetValue("RideSettingsPayBack");
             txtPayBack.AccessibilityLabel = txtPayBack.Placeholder;
 
+            lblDialCode.AccessibilityLabel = Localize.GetValue("DialCodeSelectorTitle");
+
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
             DismissKeyboardOnReturn(txtName);
