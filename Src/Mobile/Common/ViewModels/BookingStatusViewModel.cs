@@ -940,16 +940,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    bool alwayAcceptSwitch;
 		    bool.TryParse(this.Services().Cache.Get<string>("TaxiHailNetworkTimeOutAlwayAccept"), out alwayAcceptSwitch);
 
-			
-		    if (status.NextDispatchCompanyKey != null
-		        && (alwayAcceptSwitch || Settings.Network.AutoConfirmFleetChange || status.CompanyKey == status.NextDispatchCompanyKey))
+		    var isAutomaticallyHandlingTimeout = alwayAcceptSwitch
+		            || Settings.Network.AutoConfirmFleetChange
+		            || status.CompanyKey == status.NextDispatchCompanyKey;
+
+			if (status.NextDispatchCompanyKey != null && isAutomaticallyHandlingTimeout)
 		    {
 			    // Switch without user input
 				await HandleNetworkTimeout(status);
 
 			    return;
 		    }
-		    if (status.NextDispatchCompanyKey != null && !_isDispatchPopupVisible && !alwayAcceptSwitch)
+
+			if (status.NextDispatchCompanyKey != null && !_isDispatchPopupVisible && !isAutomaticallyHandlingTimeout)
 		    {
 			    _isDispatchPopupVisible = true;
 
