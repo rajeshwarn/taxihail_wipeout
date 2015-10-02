@@ -65,7 +65,7 @@
                             }
 
                             <li class="nav-header">User Management</li>
-                            @if (!Convert.ToBoolean(ViewData["IsAdmin"]))
+                            @if (Convert.ToBoolean(ViewData["IsAdmin"]))
                             {
                                 <li><a href="@(ViewData["BaseUrl"] + "/admin/#security")" class="navbar-brand">Grant access admin</a></li>
                             }
