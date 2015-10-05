@@ -287,7 +287,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
 			// Booking is now over, so we need to clean up.
-		    if (value == null)
+			if (value == null && _taxiLocationPin != null)
 		    {
 				_isBookingMode = false;
 			    _taxiLocationPin.Visible = false;
