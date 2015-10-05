@@ -337,7 +337,7 @@
 "View_TermsAndConditions"="Terms and Conditions";
 "BookingAirportTitle"="Airport";
 "AirportsButton"="Airports";
-"View_EditAutoTip"="Edit Tip";
+"View_EditAutoTip"="Edit Payment";
 "PayInCar"="Pay Cash/Credit Card in Car";
 "PanelMenuViewSignOutPopupMessage"="Are you sure you want to sign out?";
 "SaveAddressEmptyFieldTitle"="Friendly name required";
@@ -510,7 +510,7 @@
 "Error"="Error";
 "View_AccountConfirmation_Label_Code"="Code";
 "PanelMenuViewPromotionsText"="Promotions";
-"StatusEditAutoTipButton"="Tip";
+"StatusEditAutoTipButton"="Payment";
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Charge type";
 "ResetPasswordSubtitleText"="Enter your email and we'll send you a new one.";

@@ -331,7 +331,7 @@
 "View_TermsAndConditions"="الأحكام والشروط";
 "BookingAirportTitle"="Airport";
 "AirportsButton"="Airports";
-"View_EditAutoTip"="Edit Tip";
+"View_EditAutoTip"="Edit Payment";
 "PayInCar"="Pay in Car";
 "PanelMenuViewSignOutPopupMessage"="Are you sure you want to sign out?";
 "SaveAddressEmptyFieldTitle"="يجب ادخال اسم المستخدم";
@@ -498,7 +498,7 @@
 "Error"="خطأ";
 "View_AccountConfirmation_Label_Code"="Code";
 "PanelMenuViewPromotionsText"="Promotions";
-"StatusEditAutoTipButton"="Tip";
+"StatusEditAutoTipButton"="Payment";
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="طريقة الدفع :";
 "ResetPasswordSubtitleText"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";

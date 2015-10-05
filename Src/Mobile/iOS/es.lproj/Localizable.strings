@@ -343,7 +343,7 @@
 "View_TermsAndConditions"="Términos y Condiciones";
 "BookingAirportTitle"="Airport";
 "AirportsButton"="Airports";
-"View_EditAutoTip"="Editar propina";
+"View_EditAutoTip"="Editar Pago";
 "PayInCar"="Pagar en el vehículo";
 "PanelMenuViewSignOutPopupMessage"="Are you sure you want to sign out?";
 "SaveAddressEmptyFieldTitle"="Nombre";
@@ -510,7 +510,7 @@
 "Error"="Error";
 "View_AccountConfirmation_Label_Code"="Código";
 "PanelMenuViewPromotionsText"="Promotions";
-"StatusEditAutoTipButton"="Propina";
+"StatusEditAutoTipButton"="Pago";
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Tipo de Cargo";
 "ResetPasswordSubtitleText"="Ingrese su email y le enviaremos una nueva contraseña";

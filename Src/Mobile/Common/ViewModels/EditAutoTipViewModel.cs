@@ -54,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 using (this.Services().Message.ShowProgress())
                 {
                     await GetCreditCArds();
+					CreditCardSelected = CreditCards.First(cc => cc.IsDefault.Value).Id.Value;
                 }   
             }
             else
@@ -156,8 +157,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             Image = cc.CreditCardCompany
                         };
                     }).ToArray();
-
-                CreditCardSelected = CreditCards.First(cc => cc.IsDefault.Value).Id.Value;
             }
             catch(Exception e)
             {

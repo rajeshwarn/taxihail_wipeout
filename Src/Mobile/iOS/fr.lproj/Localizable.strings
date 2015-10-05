@@ -341,7 +341,7 @@
 "View_TermsAndConditions"="Conditions d'utilisation";
 "BookingAirportTitle"="Airport";
 "AirportsButton"="Aéroports";
-"View_EditAutoTip"="Modifier Pourboire";
+"View_EditAutoTip"="Modifier Paiement";
 "PayInCar"="Payer dans le taxi";
 "PanelMenuViewSignOutPopupMessage"="Êtes vous sûr de vouloir vous déconnecter ?";
 "SaveAddressEmptyFieldTitle"="Merci de resaisir le nom";
@@ -511,7 +511,7 @@
 "Error"="Erreur";
 "View_AccountConfirmation_Label_Code"="Code";
 "PanelMenuViewPromotionsText"="Promotions";
-"StatusEditAutoTipButton"="Pourboire";
+"StatusEditAutoTipButton"="Paiement";
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Type de facturation";
 "ResetPasswordSubtitleText"="Saisissez votre email pour recevoir votre nouveau mot de passe";

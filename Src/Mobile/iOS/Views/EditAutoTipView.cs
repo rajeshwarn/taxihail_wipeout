@@ -32,7 +32,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
 			txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, () => ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id, true);
-			txtTip.TextAlignment = UITextAlignment.Right;
+            txtTip.TextAlignment = UITextAlignment.Right;
+
+            lblCreditCard.Text = Localize.GetValue("PaymentDetails.PaymentMethodsLabel");
+            txtCreditCard.Configure(Localize.GetValue("PaymentDetails.PaymentMethodsLabel"), () => ViewModel.CreditCards, () => ViewModel.CreditCardSelected, x => ViewModel.CreditCardSelected = (int)x.Id);
+            txtCreditCard.TextAlignment = UITextAlignment.Right;
 
 			btnSave.SetTitle (Localize.GetValue("Save"), UIControlState.Normal);
 			FlatButtonStyle.Green.ApplyTo(btnSave);
@@ -41,7 +45,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(txtTip)
 				.For(v => v.Text)
-				.To(vm => vm.PaymentPreferences.TipAmount);
+                .To(vm => vm.PaymentPreferences.TipAmount);
+
+            set.Bind(txtCreditCard)
+                .For(v => v.Text)
+                .To(vm => vm.CreditCardSelectedDisplay);
+
+            set.Bind(txtCreditCard)
+                .For(v => v.ImageLeftSource)
+                .To(vm => vm.CreditCardSelectedImage);
 
 			set.Bind (btnSave)
 				.For(v => v.Command)
