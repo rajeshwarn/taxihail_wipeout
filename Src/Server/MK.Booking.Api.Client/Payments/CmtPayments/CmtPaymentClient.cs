@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 		/// <returns></returns>
         public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-			return await Task.Run<DeleteTokenizedCreditcardResponse>(() => { return new DeleteTokenizedCreditcardResponse(); });
+			return new DeleteTokenizedCreditcardResponse();
         }
 
         public Task<OverduePayment> GetOverduePayment()
