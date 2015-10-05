@@ -30,8 +30,10 @@ namespace CMTPayment
             ConsumerKey = cmtSettings.ConsumerKey;
             ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
 
+#if DEBUG
             //todo - Bug accept all certificates
             ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
+#endif
         }
 
         protected string ConsumerKey { get; private set; }
