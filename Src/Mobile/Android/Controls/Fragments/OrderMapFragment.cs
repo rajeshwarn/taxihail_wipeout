@@ -32,7 +32,6 @@ using Google.Android.M4b.Maps;
 using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
-using System.Threading.Tasks;
 using apcurium.MK.Common;
 using Android.Animation;
 
@@ -287,9 +286,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
 			// Booking is now over, so we need to clean up.
-			if (value == null && _taxiLocationPin != null)
+	        if (value != null)
+	        {
+				return;
+	        }
+
+			_isBookingMode = false;
+
+			if (_taxiLocationPin != null)
 		    {
-				_isBookingMode = false;
 			    _taxiLocationPin.Visible = false;
 				_taxiLocationPin.Remove();
 			    _taxiLocationPin = null;
