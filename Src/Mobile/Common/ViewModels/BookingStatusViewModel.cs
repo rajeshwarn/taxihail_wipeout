@@ -153,7 +153,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 .Do(RefreshManualRideLinqDetails)
 				.Where(orderDetails => orderDetails.EndTime.HasValue || orderDetails.PairingError.HasValue())
 				.Take(1) // trigger only once
-				.Subscribe(async orderDetails =>
+				.SelectMany(async orderDetails =>
 				{
 				    if (orderDetails.PairingError.HasValue())
 				    {
@@ -163,7 +163,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				    {
                         ToRideSummary(orderDetails);
 				    }
-				}, Logger.LogError)
+
+					return orderDetails;
+				})
+				.Subscribe(_ => { }, Logger.LogError)
 				.DisposeWith(subscriptions);
 
 			var deviceLocationObservable = Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
@@ -690,6 +693,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
 
+				if (status == null)
+				{
+					Logger.LogMessage("Status for order {0} is not currently available.".InvariantCultureFormat(Order.Id));
+
+					return;
+				}
+
 				while (!CanRefreshStatus(status))
 				{
 					Logger.LogMessage("Waiting for Ibs Order Creation (ibs order id)");
@@ -722,7 +732,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_currentIbsOrderId = status.IBSOrderId;
 				_isContactingNextCompany = false;
 
-				SwitchDispatchCompanyIfNecessary(status);
+				await SwitchDispatchCompanyIfNecessary(status);
 
 				var isDone = _bookingService.IsStatusDone(status.IBSStatusId);
 
@@ -897,11 +907,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
+		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
 			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && !string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber))
 			{
-				string carNumber = OrderStatusDetail.VehicleNumber;
+				var carNumber = OrderStatusDetail.VehicleNumber;
 
 				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 				{
@@ -1057,7 +1067,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var etaDuration = eta.Value < 1 ? 1 : eta.Value;
 			return string.Format(this.Services ().Localize ["StatusEta"], etaDuration, durationUnit);
 		}
-
 
 		public void GoToSummary()
 		{
