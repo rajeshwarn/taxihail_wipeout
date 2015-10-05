@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		{
 			Annotation = annotation;
 			RefreshPinImage();
-            CreateMedailonView(annotation.Title, annotation.Market, hidden:true);
+            CreateMedaillonView(annotation.Title, annotation.Market, hidden:true);
 		}
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -73,21 +73,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             }
         }
 
-        private void CreateMedailonView(string text, string market, bool hidden)
-        {
-            var lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
-            lblVehicleNumber.BackgroundColor = UIColor.DarkGray;
-            lblVehicleNumber.TextColor = UIColor.White;
-            lblVehicleNumber.TextAlignment = UITextAlignment.Center;
-            lblVehicleNumber.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 30 / 2);
-            lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
-            lblVehicleNumber.Text = text; 
-            lblVehicleNumber.Hidden = hidden;
-            AddSubview(lblVehicleNumber);
-
-            _lblVehicleNumber = lblVehicleNumber;
-        }
-
 		public void RefreshPinImage ()
         {
             var ann = ((AddressAnnotation)Annotation);
@@ -98,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin)
             {
                 var addressAnnotation = (AddressAnnotation) Annotation;
-                CreateMedailonView(addressAnnotation.Subtitle, addressAnnotation.Market, hidden: false);
+                CreateMedaillonView(addressAnnotation.Subtitle, addressAnnotation.Market, hidden: false);
             }
 
             CenterOffset = new CGPoint (0, -Image.Size.Height / 2);
@@ -109,7 +94,33 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             } 
 		}
 
-        private UI
+        private void CreateMedaillonView(string text, string market, bool hidden)
+        {
+            var lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
+            lblVehicleNumber.BackgroundColor = GetMedaillonBackgroundColor(market);
+            lblVehicleNumber.TextColor = UIColor.White;
+            lblVehicleNumber.TextAlignment = UITextAlignment.Center;
+            lblVehicleNumber.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 30 / 2);
+            lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
+            lblVehicleNumber.Text = text;
+            lblVehicleNumber.Hidden = hidden;
+            AddSubview(lblVehicleNumber);
+
+            _lblVehicleNumber = lblVehicleNumber;
+        }
+
+	    private UIColor GetMedaillonBackgroundColor(string market)
+	    {
+	        switch (market.ToLower())
+	        {
+	            case "nyc":
+                    return UIColor.FromRGB(222, 157, 0); // Yellow
+                case "nyshl":
+                    return UIColor.FromRGB(92, 127, 18); // Green
+                default:
+	                return UIColor.DarkGray;
+	        }
+	    }
 	}
 }
 

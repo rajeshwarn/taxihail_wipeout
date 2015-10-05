@@ -20,9 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         private static readonly UIColor Red = UIColor.FromRGB(255, 0, 23);
         private static readonly UIColor Green = UIColor.FromRGB(30, 192, 34);
 
-        private static readonly UIColor YellowMarket = UIColor.FromRGB(222, 157, 0);
-        private static readonly UIColor GreenMarket = UIColor.FromRGB(92, 127, 18);
-
         private CLLocationCoordinate2D _coordinate;
         private readonly string _vehicleTypeLogoName;
 
