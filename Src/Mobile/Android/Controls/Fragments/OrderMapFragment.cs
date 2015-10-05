@@ -762,6 +762,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 return;
             }
+			
+			
+			// We should not trigger the camera change event since this is an automated camera change.
+			_bypassCameraChangeEvent = true;
 
 			if (coordinateViewModels.Length == 1)
 			{
