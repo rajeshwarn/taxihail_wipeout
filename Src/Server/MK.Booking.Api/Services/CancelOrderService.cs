@@ -39,6 +39,7 @@ namespace apcurium.MK.Booking.Api.Services
             _accountDao = accountDao;
             _updateOrderStatusJob = updateOrderStatusJob;
             _commandBus = commandBus;
+            _serverSettings = serverSettings;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -61,17 +62,15 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
                 var orderDetail = _orderDao.FindOrderStatusById(order.Id);
-                var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
 
-                var canCancelWhenPaired = orderDetail.IBSStatusId == VehicleStatuses.Common.Loaded
-                    && _serverSettings.GetPaymentSettings().CancelOrderOnUnpair
-                    && pairingInfo != null;
+                var canCancelWhenPaired = orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
+                    && _serverSettings.GetPaymentSettings(orderDetail.CompanyKey).CancelOrderOnUnpair;
 
                 if (currentIbsAccountId.HasValue
                     && (!orderDetail.IBSStatusId.HasValue()
-                        || orderDetail.IBSStatusId == VehicleStatuses.Common.Waiting
-                        || orderDetail.IBSStatusId == VehicleStatuses.Common.Assigned
-                        || orderDetail.IBSStatusId == VehicleStatuses.Common.Arrived
+                        || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Waiting)
+                        || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned)
+                        || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)
                         || canCancelWhenPaired))
                 {
                     //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
