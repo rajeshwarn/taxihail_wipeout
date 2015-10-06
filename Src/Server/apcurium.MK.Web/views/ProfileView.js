@@ -148,6 +148,34 @@
                 this.updateSettings();
             }
         },
+        
+        updateSettings: function() {
+            // Update settings
+            this.model.get("settings").email = this.model.get("email");
+            this.model.updateSettings()
+                .done(_.bind(function() {
+                    this.renderConfirmationMessage();
+                }, this))
+                .fail(_.bind(function (result) {
+                    this.$(':submit').button('reset');
+
+                    var message = "";
+
+                    if (result.statusText != undefined) {
+                        message = result.statusText;
+                    }
+                    else {
+                        message = TaxiHail.localize("error.accountUpdate");
+                    }
+
+                    var alert = new TaxiHail.AlertView({
+                        message: message,
+                        type: 'error'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.errors').html(alert.render().el);
+                }, this));
+        },
 
         onPropertyChanged: function (e) {
 
@@ -160,13 +188,6 @@
             if (dataNodeName == "input") {
                 var name = $input.attr("name");
                 var value = $input.val();
-
-                // Update local model values
-                if (name === "defaultTipPercent") {
-                    this.model.set("defaultTipPercent", value);
-                }
-                settings[name] = value;
-                settings["defaultTipPercent"] = this.model.get("defaultTipPercent");
             }
             else if (dataNodeName == "select") {
                 if (elementName == "countryCode") {

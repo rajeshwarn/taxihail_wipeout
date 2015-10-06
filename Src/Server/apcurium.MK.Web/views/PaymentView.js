@@ -7,9 +7,12 @@
         },
         initialize: function () {
             this.collection.on('selected', function (model, collection) {
-                var detailsView = new TaxiHail.PaymentDetailView({
-                    model: model
+                model.set("settings", this.model.get('settings'));
+                var detailsView = this._detailsView = new TaxiHail.PaymentDetailView({
+                    model: model,
+                    parent: this
                 });
+                detailsView.on('cancel', this.render, this);
                 this.$el.html(detailsView.render().el);
             }, this);
             this.collection.on('destroy cancel', this.render, this);
@@ -17,6 +20,10 @@
 
         render: function () {
 
+            if (this._detailsView) {
+                this._detailsView.remove();
+                this._detailsView = null;
+            }
             var data = this.model.toJSON();
 
             var tipPercentages = [
@@ -63,20 +70,29 @@
             return this;
         },
 
+        remove: function () {
+            this._detailsView && this._detailsView.remove();
+        },
+
         add: function (e) {
             var creditCardInfo = new TaxiHail.CreditCard();
 
-            this.view = new TaxiHail.PaymentDetailView({
+            this.view = this._detailsView = new TaxiHail.PaymentDetailView({
                 model: creditCardInfo,
                 parent: this
             });
 
+            this.view.on('cancel', this.render, this);
             this.view.render();
             this.$el.html(this.view.el);
         },
 
         renderItem: function (model) {
-            model.set("isDefault", model.get('creditCardId') === this.model.get('defaultCreditCard').creditCardId);
+            if (this.model.get('defaultCreditCard')) {
+                model.set("isDefault", model.get('creditCardId') === this.model.get('defaultCreditCard').creditCardId);
+            }
+
+            model.set("numberOfCrecitCards", this.collection.models.length);
             var view = new TaxiHail.PaymentItemView({
                 model: model
         });

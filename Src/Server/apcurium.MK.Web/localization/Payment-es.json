@@ -1,5 +1,6 @@
 ﻿{
     "PaymentTitle": "Payment",
     "addCardButtonLabel": "Add a new card",
-    "save": "Save",
+    "save": "Guardar",
+    "Changes were saved": "Cambios Guardados",
 }

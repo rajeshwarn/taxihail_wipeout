@@ -16,9 +16,30 @@
         },
 
         deleteCreditCard: function() {
-            return $.ajax({
+            var result = $.ajax({
                 type: 'DELETE',
-                url: 'api/account/creditcards',
+                url: 'api/account/creditcards/' + this.attributes.creditCardId,
+                dataType: 'json'
+            });
+
+            return result;
+        },
+
+        changeCreditCardLabel: function () {
+            var updatedCreditCard = this.attributes;
+            return $.ajax({
+                type: 'POST',
+                url: 'api/account/creditcard/changelabel',
+                data: updatedCreditCard,
+                dataType: 'json'
+            });
+        },
+
+        changeDefaultCreditCard: function () {
+            return $.ajax({
+                type: 'POST',
+                url: 'api/account/creditcard/changedefault',
+                data: { "creditCardId": this.attributes.creditCardId },
                 dataType: 'json'
             });
         },
@@ -57,6 +78,20 @@
             }, d.reject);
 
             return d.promise();
+        },
+
+        updateSettings: function () {
+            var settings = this.get('settings');
+
+            var result = $.ajax({
+                type: 'PUT',
+                url: 'api/account/bookingsettings',
+                data: JSON.stringify(settings),
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            });
+
+            return result;
         },
 
         determineCompany: function(cardNumber) {

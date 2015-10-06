@@ -6,6 +6,8 @@
             'change :input': 'onPropertyChanged',
             'click [data-action=destroy]': 'deleteCreditCard',
             'click [data-action=cancel]': 'cancel',
+            'click [data-action=savetip]': 'saveTip',
+            'click [data-action=setdefault]': 'changeDefaultCreditCard',
         },
 
         initialize: function () {
@@ -14,7 +16,8 @@
         },
 
         render: function () {
-
+            this._validateFields = true;
+           
             var expMonths = [
                 { id: 1, display: this.localize("January") },
                 { id: 2, display: this.localize("February") },
@@ -42,27 +45,60 @@
                     expirationMonths: expMonths,
                     expirationYears: this.generateExpYears(),
                     isEditing: true,
-                    isCreditCardMandatory: TaxiHail.parameters.isCreditCardMandatory
+                    canDeleteCreditCard: !TaxiHail.parameters.isCreditCardMandatory || TaxiHail.parameters.isCreditCardMandatory && this.model.get("numberOfCrecitCards") > 1
                 });
+                this._label = creditCard.label;
             } else {
                 _.extend(creditCard, {
                     expirationMonths: expMonths,
                     expirationYears: this.generateExpYears(true),
                     isEditing: false,
-                    isCreditCardMandatory: TaxiHail.parameters.isCreditCardMandatory,
+                    canDeleteCreditCard: !TaxiHail.parameters.isCreditCardMandatory || TaxiHail.parameters.isCreditCardMandatory && this.model.get("numberOfCrecitCards") > 1,
                     label : "Personal"
                 });
                 this.model.set('label', "Personal");
                 this.model.set('expirationMonth', 1);
             }
 
+            var tipPercentages = [
+            { id: 0, display: "0%" },
+            { id: 5, display: "5%" },
+            { id: 10, display: "10%" },
+            { id: 15, display: "15%" },
+            { id: 18, display: "18%" },
+            { id: 20, display: "20%" },
+            { id: 25, display: "25%" }
+            ];
+
+            if (creditCard.defaultTipPercent == null) {
+                _.extend(creditCard,
+                {
+                    defaultTipPercent: TaxiHail.parameters.defaultTipPercentage,
+                });
+            }
+
+            var displayTipSelection = (TaxiHail.parameters.isChargeAccountPaymentEnabled
+                || TaxiHail.parameters.isPayPalEnabled
+                || TaxiHail.parameters.isBraintreePrepaidEnabled) && TaxiHail.parameters.maxNumberOfCreditCards < 2;
+
+            _.extend(creditCard,
+            {
+                multipleCCEnabled: TaxiHail.parameters.maxNumberOfCreditCards > 1,
+                displayTipSelection: displayTipSelection,
+                tipPercentages: tipPercentages,
+            });
+
             this.$el.html(this.renderTemplate(creditCard));
 
             this.validate({
                 rules: {
                     cardName: "required",
-                    cvv: "required",
-                    cardNumber : {
+                    cvv: {
+                        required: _.bind(function () {
+                            return this.changeLabel();
+                        }, this)
+                    },
+                    cardNumber: {
                         required: true,
                         creditcard: true
                     }
@@ -77,6 +113,23 @@
 
             return this;
         },
+        changeLabel: function() {
+            var label = this.model.get('label');
+            var cvv = this.model.get('cvv');
+            if (this._label !== label && !cvv) {
+                this._label = label;
+                this.model.changeCreditCardLabel()
+                    .done(_.bind(function() {
+                        this.renderConfirmationMessage();
+                    }, this))
+                    .fail(_.bind(function() {
+                        this.renderDeleteCreditCardErrorMessage();
+                    }, this));
+                return false;
+
+            }
+            return true;
+        },
 
         onPropertyChanged : function (e) {
             var $input = $(e.currentTarget);
@@ -85,8 +138,44 @@
             var value = $input.val();
 
             this.model.set(name, value);
+            var dataNodeName = e.currentTarget.nodeName.toLowerCase();
 
+            var settings = this.model.get('settings');
+
+            if (dataNodeName == "select") {
+
+                // Update local model values
+                if (name === "defaultTipPercent") {
+                    this.model.set("defaultTipPercent", value);
+                    settings["defaultTipPercent"] = this.model.get("defaultTipPercent");
+                    settings["email"] = this.options.parent.model.get("email");
+                }
+            }
             this.$(':submit').removeClass('disabled');
+        },
+
+        saveTip: function () {
+            // Update settings
+            this.model.updateSettings()
+                .fail(_.bind(function (result) {
+                    this.$(':submit').button('reset');
+
+                    var message = "";
+
+                    if (result.statusText != undefined) {
+                        message = result.statusText;
+                    }
+                    else {
+                        message = TaxiHail.localize("error.accountUpdate");
+                    }
+
+                    var alert = new TaxiHail.AlertView({
+                        message: message,
+                        type: 'error'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.errors').html(alert.render().el);
+                }, this));
         },
 
         generateExpYears: function (setYear) {
@@ -161,6 +250,16 @@
             exp.setMonth(exp.getMonth() + 1);           // add a month
             exp.setDate(exp.getDate() - 1);             //remove one day
 
+            if (this._label !== label && !cvv) {
+                this.model.changeCreditCardLabel()
+                    .done(_.bind(function () {
+                    this.renderConfirmationMessage();
+                    this.model.attributes = { last4Digits: null };
+                }, this))
+                    .fail(_.bind(function () {
+                        this.renderDeleteCreditCardErrorMessage();
+                    }, this));
+            }
             if (exp < now) {
                 this.$(':submit').button('reset');
                 this.renderErrorMessage(TaxiHail.localize("ExpiredCreditCardError"));
@@ -246,10 +345,22 @@
                 TaxiHail.app.navigate('confirmationbook', { trigger: true });
                 e.preventDefault();
             }
+            if (TaxiHail.parameters.maxNumberOfCreditCards > 1) {
+                e.preventDefault();
+                this.model.set(this.model.previousAttributes);
+                this.trigger('cancel', this);
+            }
+        },
 
-            e.preventDefault();
-            this.model.set(this.model.previousAttributes);
-            this.trigger('cancel', this);
+        changeDefaultCreditCard: function() {
+            this.model.changeDefaultCreditCard()
+                    .done(_.bind(function () {
+                        this.model.set(this.model.previousAttributes);
+                        this.trigger('cancel', this);
+                    }, this))
+                    .fail(_.bind(function () {
+                        this.renderDeleteCreditCardErrorMessage();
+                    }, this));
         },
 
         deleteCreditCard: function (e) {
@@ -259,6 +370,9 @@
                 message: this.localize('modal.payment.deleteCreditCard')
             }).on('ok', function() {
                 this.model.deleteCreditCard()
+                    .success(_.bind(function(result) {
+                        this.options.parent.model.set("defaultCreditCard", result);
+                    }, this))
                     .done(_.bind(function() {
                         this.renderConfirmationMessage();
                         this.model.attributes = { last4Digits: null };

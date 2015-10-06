@@ -2,6 +2,25 @@
 <div class="errors"></div>
 <form class="form-horizontal clearfix" id="updateSettingsForm">
 
+    {{#if displayTipSelection}}
+    <div id="tipPercentageDiv" class="control-group">
+        <label class="control-label" for="inputTipPercentage">{{localize "Tip"}}</label>
+        <div class="controls">
+            <select id="inputTipPercentage" name="defaultTipPercent" style="margin-bottom:0;">
+                {{#each tipPercentages}}
+                {{#ifCond this.id ../defaultTipPercent}}
+                <option value="{{this.id}}" selected>{{localize this.display}}</option>
+                {{else}}
+                <option value="{{this.id}}">{{localize this.display}}</option>
+                {{/ifCond}}
+                {{/each}}
+            </select>
+            <a href='#useraccount/payment' class='btn btn-primary ' data-action='savetip'>{{localize 'save'}}</a>
+        </div>
+    </div>
+    {{/if}}
+
+    {{#if multipleCCEnabled}}
     <div class="control-group">
         <label class="control-label">{{localize "Label"}}</label>
         <div class="controls">
@@ -15,6 +34,7 @@
             </label>
         </div>
     </div>
+    {{/if}}
 
     <div class="control-group">
         <label class="control-label" for="inputCardName">{{localize "CreditCardName"}}</label>
@@ -71,10 +91,18 @@
         <br/>
         <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</button>
         {{#if isEditing}}
-        {{#unless isCreditCardMandatory}}
+        {{#if canDeleteCreditCard}}
         <a href='#' class='btn btn-danger  span' data-action='destroy'>{{localize "Delete"}}</a>
-        {{/unless}}
+        {{/if}}
         {{/if}}
         <a href='#' class='btn span' data-action='cancel'>{{localize "Cancel"}}</a>
+    </div>
+    <div class="control-group btn-right-alignment">
+        <br />
+        {{#if isEditing}}
+        {{#unless isDefault}}
+        <a href='#' class='btn' data-action='setdefault'>{{localize "Default"}}</a>
+        {{/unless}}
+        {{/if}}
     </div>
 </form>
