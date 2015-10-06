@@ -589,7 +589,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<IEnumerable<CreditCardDetails>> GetCreditCards ()
 		{
-			return await UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(client => client.GetCreditCards());
+			return UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(client => client.GetCreditCards());
 		}
 
 		private async Task TokenizeCard(CreditCardInfos creditCard)

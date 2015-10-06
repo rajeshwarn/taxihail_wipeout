@@ -53,13 +53,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 using (this.Services().Message.ShowProgress())
                 {
-                    await GetCreditCArds();
+                    await GetCreditCards();
 					CreditCardSelected = CreditCards.First(cc => cc.IsDefault.Value).Id.Value;
                 }   
             }
             else
             {
-                await GetCreditCArds();
+                await GetCreditCards();
             }
 
         }
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private async Task GetCreditCArds()
+        private async Task GetCreditCards()
         {
             try
             {
