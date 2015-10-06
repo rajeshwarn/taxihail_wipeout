@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Android.Util;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -853,9 +854,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 cancellationToken.ThrowIfCancellationRequested();
 
                 // Needed to do this here since cmtGeoService needs the device's location to calculate the Eta and does not have the ability to get the position of a specific vehicle(or a bach of vehicle) without the device location.
-                if (isUsingGeoServices &&
-                    (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-                     || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
+                if (isUsingGeoServices
+                    && VehicleStatuses.ShowOnMapStatuses.Any(vehicleStatus => vehicleStatus == status.IBSStatusId))
                 {
                     //refresh vehicle position on the map from the geo data
                     var geoData = await _vehicleService.GetVehiclePositionInfoFromGeo(
@@ -937,14 +937,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
         {
-            if (OrderStatusDetail.VehicleNumber.HasValue()
+            if (OrderStatusDetail == null)
+            {
+                Log.Wtf("WFT", "ORDERSTATUSDETAIL IS NULL");
+            }
+
+            if (OrderStatusDetail != null && OrderStatusDetail.VehicleNumber.HasValue()
                 && (deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right))
             {
-		var carNumber = OrderStatusDetail.VehicleNumber;
+		        var carNumber = OrderStatusDetail.VehicleNumber;
 
-                if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+                if (WaitingCarLandscapeViewModelParameters == null)
                 {
-                    if (!string.IsNullOrWhiteSpace(carNumber))
+                    Log.Wtf("WFT", "WaitingCarLandscapeViewModelParameters IS NULL");
+                }
+
+                if (WaitingCarLandscapeViewModelParameters == null
+                    || (WaitingCarLandscapeViewModelParameters != null
+                        && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+                {
+                    if (carNumber.HasValue())
                     {
                         WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
                         {
@@ -956,7 +968,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 else
                 {
-                    if (!string.IsNullOrWhiteSpace(carNumber))
+                    if (WaitingCarLandscapeViewModelParameters == null)
+                    {
+                        Log.Wtf("WFT", "WaitingCarLandscapeViewModelParameters IS NULL");
+                    }
+
+                    if (carNumber.HasValue())
                     {
                         WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
                     }
