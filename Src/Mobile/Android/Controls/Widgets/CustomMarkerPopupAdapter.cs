@@ -29,8 +29,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			var vehicleNumberLayout = customPopup.FindViewById<View>(Resource.Id.vehicleNumberLayout);
 
-			ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams)vehicleNumberLayout.LayoutParameters;
-			mlp.SetMargins(mlp.LeftMargin, mlp.TopMargin, mlp.RightMargin, _marginBottomOffset);
+			var vehicleNumberMarginLayountParameters = (ViewGroup.MarginLayoutParams)vehicleNumberLayout.LayoutParameters;
+			vehicleNumberMarginLayountParameters.SetMargins(vehicleNumberMarginLayountParameters.LeftMargin, vehicleNumberMarginLayountParameters.TopMargin, vehicleNumberMarginLayountParameters.RightMargin, _marginBottomOffset);
 			vehicleNumberLayout.RequestLayout();
 
 			return customPopup;
