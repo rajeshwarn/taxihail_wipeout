@@ -6,7 +6,6 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Android.Util;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -259,7 +258,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 .Dematerialize();
         }
 
-	private void UpdatePosition(double latitude, double longitude, string medallion, string market, CancellationToken token, double compassCourse = 0)
+	    private void UpdatePosition(double latitude, double longitude, string medallion, string market, CancellationToken token, double compassCourse = 0)
         {
             token.ThrowIfCancellationRequested();
 
@@ -287,6 +286,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 TaxiLocation.Latitude = latitude;
                 TaxiLocation.Longitude = longitude;
                 TaxiLocation.CompassCourse = compassCourse;
+                TaxiLocation.Market = market;
 
                 RaisePropertyChanged(() => TaxiLocation);
             }
@@ -708,7 +708,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private TaxiLocation _taxiLocation;
 
 
-	private async Task RefreshStatus(CancellationToken cancellationToken)
+	    private async Task RefreshStatus(CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested)
             {
@@ -731,7 +731,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 while (!CanRefreshStatus(status))
                 {
                     Logger.LogMessage("Waiting for Ibs Order Creation (ibs order id)");
-		await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+
+		            await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                     status = await _bookingService.GetOrderStatusAsync(Order.Id);
 
                     if (status.IBSOrderId.HasValue)
@@ -760,7 +761,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 _currentIbsOrderId = status.IBSOrderId;
                 _isContactingNextCompany = false;
 
-		await SwitchDispatchCompanyIfNecessary(status);
+		        await SwitchDispatchCompanyIfNecessary(status);
 
                 var isDone = _bookingService.IsStatusDone(status.IBSStatusId);
 
@@ -826,7 +827,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                             if (geoData.IsPositionValid)
                             {
-				UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, status.Market, cancellationToken, geoData.CompassCourse ?? 0);
+                                UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, geoData.Market, cancellationToken, geoData.CompassCourse ?? 0);
                             }
                         }
                     }
@@ -866,10 +867,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     if (geoData != null && geoData.IsPositionValid)
                     {
-			UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, status.Market, cancellationToken, geoData.CompassCourse ?? 0);
+                        UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, geoData.Market, cancellationToken, geoData.CompassCourse ?? 0);
                     }
                 }
-		else if (!isUsingGeoServices && hasVehicleInfo && VehicleStatuses.ShowOnMapStatuses.Any(vehicleStatus => vehicleStatus == status.IBSStatusId))
+		        else if (!isUsingGeoServices && hasVehicleInfo && VehicleStatuses.ShowOnMapStatuses.Any(vehicleStatus => vehicleStatus == status.IBSStatusId))
                 {
                     UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber, status.Market, cancellationToken);
                 }
@@ -939,7 +940,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (OrderStatusDetail == null)
             {
-                Log.Wtf("WFT", "ORDERSTATUSDETAIL IS NULL");
+				Logger.LogMessage("ORDERSTATUSDETAIL IS NULL");
             }
 
             if (OrderStatusDetail != null && OrderStatusDetail.VehicleNumber.HasValue()
@@ -949,7 +950,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 if (WaitingCarLandscapeViewModelParameters == null)
                 {
-                    Log.Wtf("WFT", "WaitingCarLandscapeViewModelParameters IS NULL");
+					Logger.LogMessage("WaitingCarLandscapeViewModelParameters IS NULL");
                 }
 
                 if (WaitingCarLandscapeViewModelParameters == null
@@ -970,7 +971,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (WaitingCarLandscapeViewModelParameters == null)
                     {
-                        Log.Wtf("WFT", "WaitingCarLandscapeViewModelParameters IS NULL");
+						Logger.LogMessage("WaitingCarLandscapeViewModelParameters IS NULL");
                     }
 
                     if (carNumber.HasValue())
