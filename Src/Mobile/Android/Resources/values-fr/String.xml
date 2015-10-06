@@ -205,7 +205,6 @@
   <string name="WarningPushServiceTitle">Notifications</string>
   <string name="Version">v{0}</string>
   <string name="View">Voir</string>
-  <string name="UpdatePasswordNewPasswordLabel">Nouveau mot de passe</string>
   <string name="Save">Enregistrer</string>
   <string name="PickupTextPlaceholder">Adresse de départ</string>
   <string name="SettingViewLoginInfo">Vous vous être identifié comme: {0}</string>
@@ -497,6 +496,7 @@
   <string name="ManualRideLinqStatus_Medallion">Vous êtes assis dans le véhicule {0}.</string>
   <string name="CreateAccountPayBackPlaceHolder">PayBack</string>
   <string name="CreditCardInvalidCrediCardNUmber">Le numéro de la carte ne semble pas être valide</string>
+  <string name="View_EditAutoPayment">Modifier Paiement</string>
   <string name="UpdateBookingSettingsEmptyAccount">Le numéro de compte et de client ne peuvent être vides lorsque le mode de paiement sélectionné est Compte</string>
   <string name="CmtTransactionResendConfirmationButtonText">Envoyer de nouveau</string>
   <string name="StatusDescription">Commande n°{0}</string>
@@ -510,10 +510,11 @@
   <string name="EmailLabel">Email (adresse électronique)</string>
   <string name="ManualPairingForRideLinqActivityName">Manual pairing for RideLinq</string>
   <string name="April">Avril (04)</string>
+  <string name="StatusEditAutoPaymentButton">Paiement</string>
   <string name="Error">Erreur</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="StatusEditAutoTipButton">Pourboire</string>
+  <string name="StatusEditAutoTipButton">Tip</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Type de facturation</string>
   <string name="ResetPasswordSubtitleText">Saisissez votre email pour recevoir votre nouveau mot de passe</string>
@@ -582,6 +583,7 @@
   <string name="UpdateBookingSettingsGenericError">Une erreur est survenue lors de la mise à jour des informations du compte</string>
   <string name="TabHistory">Réservations</string>
   <string name="OtherListItemPromptLabel">Entrez une valeur:</string>
+  <string name="DestinationAddress">Destination address</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Erreur</string>
   <string name="ConfirmDestinationLabel">Destination</string>
   <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement via carte de crédit par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de confirmation.</string>
@@ -676,7 +678,7 @@
   <string name="View_CreditCard">Paiement</string>
   <string name="GooglePlayServicesNotAvailableMessage">Merci de mettre à jour Google Play pour utiliser cette application mobile.</string>
   <string name="AccountPaymentQuestionsRequired">(requis)</string>
-  <string name="DestinationAddress">Destination address</string>
+  <string name="UpdatePasswordNewPasswordLabel">Nouveau mot de passe</string>
   <string name="OrderAirportView_BAD_AIRLINE_CODE">Une erreur est survenue avec le fournisseur d\'information de vol.</string>
   <string name="ChargeTypeCreditCardFile">Carte de paiement déjà engistrée</string>
   <string name="AccountDisabled_NoCall">Votre compte a été désactivé</string>

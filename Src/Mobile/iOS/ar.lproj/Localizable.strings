@@ -37,7 +37,7 @@
 "StatusEta"="and is {0} {1} away";
 "View_Promotions"="Promotions";
 "CmtCarNumber"="رقم السيارة:";
-"BookingRateActivityName"="Booking rate";
+"Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
 "ManualRideLinqCreditCardDisabled"="Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ";
 "OrderAirportView_DATE_OUT_OF_RANGE"="Provided date is out of range.";
 "StatusActionButton"="إتصال / حجز/ إلغاء";
@@ -281,7 +281,6 @@
 "Locating"="جار البحث عن موقعك...";
 "ConfirmVehiculeTypeLabel"="نوع السيارة:";
 "OrderHistoryListTitle"="طلبية #{0} ({1:ddd, MMM d}, {1:h:mm tt})";
-"Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
 "InvalidLocalContactTitle"="الإسم غير صحيح";
 "StreetNumber"="Street Number";
 "PaymentViewTotalText"="الإجمالي";
@@ -298,6 +297,7 @@
 "StatusInvalid"="الحالة غير متاحة";
 "EtaNoTaxiAvailable"="Sorry, no taxis currently available nearby.";
 "Rating3"="Average";
+"BookingRateActivityName"="Booking rate";
 "GenericErrorTitle"="Error";
 "VehicleNumberInfo"="رجاء تأكيد رقم سيارتك مع السائق";
 "CreditCardExpiredUpdateNow"="Update now";
@@ -386,12 +386,13 @@
 "WarningPromoCodeDontShow"="لا تحذر";
 "TaxiHailNetworkTimeOutPopupAlways"="Always Accept";
 "Reset"="إعادة الضبط";
-"PromotionActivityName"="Promotion";
+"ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";
 "CreditCardErrorTitle"="لا يمكنك حفظ هذه البطاقة الائتمانية";
 "View_PaymentPreference"="طرق الدفع المفضلة";
 "CreateAccountLanguageFrench"="الفرنسية";
 "TechSupportEmailTitle"="دعم تطبيق الهاتف الجوال";
 "View_RideLinqPair"="Check In";
+"PromotionActivityName"="Promotion";
 "BookItLaterButton"="لاحقا";
 "RingCode"="رمز الدخول";
 "SendEmail"="ارسل رسالة إلكترونية...";
@@ -482,6 +483,7 @@
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "CreateAccountPayBackPlaceHolder"="PayBack";
 "CreditCardInvalidCrediCardNUmber"="رقم البطاقة الائتمانية خاطئة";
+"View_EditAutoPayment"="Edit Payment";
 "UpdateBookingSettingsEmptyAccount"="Account and rider numbers cannot be empty when Charge Type is set to Charge Account";
 "CmtTransactionResendConfirmationButtonText"="إعادة إرسال";
 "StatusDescription"="طلب # {0}";
@@ -495,6 +497,7 @@
 "EmailLabel"="بريد إلكتروني";
 "ManualPairingForRideLinqActivityName"="Manual pairing for RideLinq";
 "April"="أبريل (04)";
+"StatusEditAutoPaymentButton"="Payment";
 "Error"="خطأ";
 "View_AccountConfirmation_Label_Code"="Code";
 "PanelMenuViewPromotionsText"="Promotions";
@@ -599,7 +602,6 @@
 "TermsAndConditionsActivityName"="Terms and conditions";
 "BookItButton"="احجز الآن";
 "PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
-"ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";
 "ChangePasswordConfirmmation"="تم تحديث كلمة المرور الخاصة بك، رجاء تسجيل الدخول.";
 "OrderNote"="تم الحجز من خلال الهاتف الجوال";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";

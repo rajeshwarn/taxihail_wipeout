@@ -2578,15 +2578,23 @@
   </data>
   <data name="StatusEditAutoTipButton" xml:space="preserve">
     <value>Propina</value>
-    <comment>Propina</comment>
+    <comment>Tip</comment>
   </data>
+  <data name="StatusEditAutoPaymentButton" xml:space="preserve">
+    <value>Pago</value>
+    <comment>Payment</comment>
+    </data>
   <data name="ManualRideLinqStatus_Toll" xml:space="preserve">
     <value>Peaje:</value>
     <comment>Toll:</comment>
   </data>
-  <data name="View_EditAutoTip" xml:space="preserve">
-    <value>Editar propina</value>
-    <comment>Edit tip</comment>
+  <data name="View_EditAutoPayment" xml:space="preserve">
+    <value>Editar Propina</value>
+    <comment>Edit Tip</comment>
+    </data>
+  <data name="View_EditAutoPayment" xml:space="preserve">
+    <value>Editar Pago</value>
+    <comment>Edit Payment</comment>
     </data>
   <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
     <value>You're checked into taxi #{0}.</value>

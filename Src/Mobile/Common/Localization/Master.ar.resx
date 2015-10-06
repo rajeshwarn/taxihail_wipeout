@@ -1960,6 +1960,9 @@
   <data name="StatusEditAutoTipButton" xml:space="preserve">
     <value>Tip</value>
   </data>
+  <data name="StatusEditAutoPaymentButton" xml:space="preserve">
+    <value>Payment</value>
+    </data>
   <data name="CloseTutorial" xml:space="preserve">
     <value>Close Tutorial</value>
   </data>
@@ -1969,6 +1972,9 @@
   <data name="View_EditAutoTip" xml:space="preserve">
     <value>Edit Tip</value>
   </data>
+  <data name="View_EditAutoPayment" xml:space="preserve">
+    <value>Edit Payment</value>
+	</data>
   <data name="Error_EditAutoTipMessage" xml:space="preserve">
     <value>An error occurred while trying to update the tip. Please try again.</value>
   </data>

@@ -136,6 +136,7 @@
 "Rebook"="Rebook trip";
 "Tuto06Bottom"="Tap Confirm when you are ready to go.";
 "PaymentDetails.Label.Business"="Business";
+"PanelMenuViewSignOutPopupMessage"="Are you sure you want to sign out?";
 "CreateAccountLanguageEnglish"="English";
 "View_RideSummary"="Ride Summary";
 "ServiceError_EmailClientAbsent"="Sorry, we're unable to create an email. There is no email client installed on this device";
@@ -339,7 +340,7 @@
 "AirportsButton"="Airports";
 "View_EditAutoTip"="Edit Tip";
 "PayInCar"="Pay Cash/Credit Card in Car";
-"PanelMenuViewSignOutPopupMessage"="Are you sure you want to sign out?";
+"ResendConfirmationCodeText"="Confirmation code will be resent shortly";
 "SaveAddressEmptyFieldTitle"="Friendly name required";
 "Tuto02Top"="We should be able to locate you using the GPS receiver in your mobile device.";
 "Notification_VehicleAtPickupPush"="Vehicle at Pickup";
@@ -494,6 +495,7 @@
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "CreateAccountPayBackPlaceHolder"="PayBack";
 "CreditCardInvalidCrediCardNUmber"="The Credit Card Number is invalid";
+"View_EditAutoPayment"="Edit Payment";
 "UpdateBookingSettingsEmptyAccount"="Account and rider numbers cannot be empty when Charge Type is set to Charge Account";
 "CmtTransactionResendConfirmationButtonText"="Resend";
 "StatusDescription"="Order #{0}";
@@ -502,11 +504,11 @@
 "TaxiHailNetworkTimeOutErrorTitle"="Error";
 "InvalidAccountOnActivatedMessage"="Your account cannot be validated, you must log in to use this application";
 "Overdue_Date"="Transaction date:";
-"ResendConfirmationCodeText"="Confirmation code will be resent shortly";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";
 "EmailLabel"="Email";
 "ManualPairingForRideLinqActivityName"="Manual pairing for RideLinq";
 "April"="Apr (04)";
+"StatusEditAutoPaymentButton"="Payment";
 "Error"="Error";
 "View_AccountConfirmation_Label_Code"="Code";
 "PanelMenuViewPromotionsText"="Promotions";

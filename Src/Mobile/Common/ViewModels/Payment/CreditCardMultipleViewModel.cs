@@ -48,12 +48,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				using (this.Services().Message.ShowProgress())
 				{
-					await GetCreditCArds();
+					await GetCreditCards();
 				}	
 			}
 			else
 			{
-				await GetCreditCArds();
+				await GetCreditCards();
 			}
 
         }
@@ -62,10 +62,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             base.Start();
 
-            _paymentSettings = await _paymentService.GetPaymentSettings();
+			try
+			{
+				_paymentSettings = await _paymentService.GetPaymentSettings();
+			}
+			catch(Exception ex)
+			{
+				Logger.LogError(ex);
+			}
         }
 
-        private async Task GetCreditCArds()
+        private async Task GetCreditCards()
         {
             try
             {

@@ -39,7 +39,7 @@
   <string name="StatusEta">and is {0} {1} away</string>
   <string name="View_Promotions">Promotions</string>
   <string name="CmtCarNumber">رقم السيارة:</string>
-  <string name="BookingRateActivityName">Booking rate</string>
+  <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
   <string name="ManualRideLinqCreditCardDisabled">Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</string>
   <string name="OrderAirportView_DATE_OUT_OF_RANGE">Provided date is out of range.</string>
   <string name="StatusActionButton">إتصال / حجز/ إلغاء</string>
@@ -283,7 +283,6 @@
   <string name="Locating">جار البحث عن موقعك...</string>
   <string name="ConfirmVehiculeTypeLabel">نوع السيارة:</string>
   <string name="OrderHistoryListTitle">طلبية #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
-  <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
   <string name="InvalidLocalContactTitle">الإسم غير صحيح</string>
   <string name="StreetNumber">Street Number</string>
   <string name="PaymentViewTotalText">الإجمالي</string>
@@ -300,6 +299,7 @@
   <string name="StatusInvalid">الحالة غير متاحة</string>
   <string name="EtaNoTaxiAvailable">Sorry, no taxis currently available nearby.</string>
   <string name="Rating3">Average</string>
+  <string name="BookingRateActivityName">Booking rate</string>
   <string name="GenericErrorTitle">Error</string>
   <string name="VehicleNumberInfo">رجاء تأكيد رقم سيارتك مع السائق</string>
   <string name="CreditCardExpiredUpdateNow">Update now</string>
@@ -388,12 +388,13 @@
   <string name="WarningPromoCodeDontShow">لا تحذر</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
   <string name="Reset">إعادة الضبط</string>
-  <string name="PromotionActivityName">Promotion</string>
+  <string name="ManualPairingForRideLinQ_InvalidCode_Title">Invalid code</string>
   <string name="CreditCardErrorTitle">لا يمكنك حفظ هذه البطاقة الائتمانية</string>
   <string name="View_PaymentPreference">طرق الدفع المفضلة</string>
   <string name="CreateAccountLanguageFrench">الفرنسية</string>
   <string name="TechSupportEmailTitle">دعم تطبيق الهاتف الجوال</string>
   <string name="View_RideLinqPair">Check In</string>
+  <string name="PromotionActivityName">Promotion</string>
   <string name="BookItLaterButton">لاحقا</string>
   <string name="RingCode">رمز الدخول</string>
   <string name="SendEmail">ارسل رسالة إلكترونية...</string>
@@ -484,6 +485,7 @@
   <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
   <string name="CreateAccountPayBackPlaceHolder">PayBack</string>
   <string name="CreditCardInvalidCrediCardNUmber">رقم البطاقة الائتمانية خاطئة</string>
+  <string name="View_EditAutoPayment">Edit Payment</string>
   <string name="UpdateBookingSettingsEmptyAccount">Account and rider numbers cannot be empty when Charge Type is set to Charge Account</string>
   <string name="CmtTransactionResendConfirmationButtonText">إعادة إرسال</string>
   <string name="StatusDescription">طلب # {0}</string>
@@ -497,6 +499,7 @@
   <string name="EmailLabel">بريد إلكتروني</string>
   <string name="ManualPairingForRideLinqActivityName">Manual pairing for RideLinq</string>
   <string name="April">أبريل (04)</string>
+  <string name="StatusEditAutoPaymentButton">Payment</string>
   <string name="Error">خطأ</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
@@ -601,7 +604,6 @@
   <string name="TermsAndConditionsActivityName">Terms and conditions</string>
   <string name="BookItButton">احجز الآن</string>
   <string name="PayPalLinked">Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
-  <string name="ManualPairingForRideLinQ_InvalidCode_Title">Invalid code</string>
   <string name="ChangePasswordConfirmmation">تم تحديث كلمة المرور الخاصة بك، رجاء تسجيل الدخول.</string>
   <string name="OrderNote">تم الحجز من خلال الهاتف الجوال</string>
   <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>

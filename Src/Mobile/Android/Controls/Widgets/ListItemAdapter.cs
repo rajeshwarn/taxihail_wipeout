@@ -12,7 +12,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
         }
 
-
         public ListItemAdapter(Context context, int resource, List<ListItemData> items) : base(context, resource, items)
         {
         }
@@ -22,13 +21,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
         }
 
-
         public override View GetDropDownView(int position, View convertView, ViewGroup parent)
         {
             //we use the same layout as the GetView so we call it, see adapter ctor call to change the layout
             return GetView(position, convertView, parent);
         }
-
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
@@ -53,7 +50,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (listImage != null
                     && p.Image != null)
                 {
-                    listImage.SetImageResource(int.Parse(p.Image));
+                    var resource = Context.Resources.GetIdentifier(p.Image.ToLower(), "drawable", Context.PackageName);
+                    if (resource != 0)
+                    {
+                        listImage.SetImageResource(resource);
+                    }
                 }
             }
             return v;

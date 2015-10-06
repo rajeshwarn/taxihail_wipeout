@@ -111,9 +111,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					_paymentSettings = await _paymentService.GetPaymentSettings();
 				}
-				catch
+				catch(Exception ex)
 				{
-					// Do nothing
+					Logger.LogError(ex);
 				}
 
 				CreditCardCompanies = new List<ListItem>
@@ -813,13 +813,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			var sum = 0;
 			for(var i = len - 1; i >= 0; i--)
 			{
-				if(i % 2 == len % 2)
+				if (i % 2 == len % 2)
 				{
 					var n = number[i] * 2;
 					sum += (n / 10) + (n % 10);
 				}
 				else
+				{
 					sum += number[i];
+				}
 			}
 			return (sum % 10 == 0);
 		}

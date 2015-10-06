@@ -345,7 +345,7 @@
   <string name="View_TermsAndConditions">Términos y Condiciones</string>
   <string name="BookingAirportTitle">Airport</string>
   <string name="AirportsButton">Airports</string>
-  <string name="View_EditAutoTip">Editar propina</string>
+  <string name="PanelMenuViewNotificationsText">Notificaciones</string>
   <string name="PayInCar">Pagar en el vehículo</string>
   <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
   <string name="SaveAddressEmptyFieldTitle">Nombre</string>
@@ -496,6 +496,7 @@
   <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
   <string name="CreateAccountPayBackPlaceHolder">PayBack</string>
   <string name="CreditCardInvalidCrediCardNUmber">El número de tarjeta de crédito es inválido</string>
+  <string name="View_EditAutoPayment">Editar Pago</string>
   <string name="UpdateBookingSettingsEmptyAccount">Los números de cuenta y de reservación no pueden estar vacíos cuando se el Tipo de Cargo está establecido como Cargo a Cuenta</string>
   <string name="CmtTransactionResendConfirmationButtonText">Re-enviar</string>
   <string name="StatusDescription">Reservación #{0}</string>
@@ -509,6 +510,7 @@
   <string name="EmailLabel">Email</string>
   <string name="ManualPairingForRideLinqActivityName">Manual pairing for RideLinq</string>
   <string name="April">Abr (04)</string>
+  <string name="StatusEditAutoPaymentButton">Pago</string>
   <string name="Error">Error</string>
   <string name="View_AccountConfirmation_Label_Code">Código</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
@@ -699,7 +701,6 @@
   <string name="WarningLocationService">Por favor encienda los servicios de ubicación para poder mostrar su posición en el mapa</string>
   <string name="Facebook">Iniciar sesión con Facebook</string>
   <string name="BookingAirportMissingInfo_Message">The airline and the flight number are madatory.</string>
-  <string name="PanelMenuViewNotificationsText">Notificaciones</string>
   <string name="HistoryLoadError">No se pudo cargar el historial. Favor de intenar más tarde.</string>
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="SendMessageToDriverErrorMessage">An error occurred while trying to contact the driver. Please try again later.</string>
