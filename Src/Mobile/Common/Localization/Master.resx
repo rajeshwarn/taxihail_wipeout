@@ -2011,12 +2011,18 @@
     <value>Locate Me</value>
   </data>
   <data name="StatusEditAutoTipButton" xml:space="preserve">
+    <value>Tip</value>
+    </data>
+  <data name="StatusEditAutoPaymentButton" xml:space="preserve">
     <value>Payment</value>
     </data>
   <data name="AirportsButton" xml:space="preserve">
     <value>Airports</value>
   </data>
   <data name="View_EditAutoTip" xml:space="preserve">
+    <value>Edit Tip</value>
+	</data>
+  <data name="View_EditAutoPayment" xml:space="preserve">
     <value>Edit Payment</value>
 	</data>
    <data name="TrainStationsButton" xml:space="preserve">

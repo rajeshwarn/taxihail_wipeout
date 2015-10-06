@@ -138,6 +138,7 @@
   <string name="Rebook">Rebook trip</string>
   <string name="Tuto06Bottom">Tap Confirm when you are ready to go.</string>
   <string name="PaymentDetails.Label.Business">Business</string>
+  <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
   <string name="CreateAccountLanguageEnglish">English</string>
   <string name="View_RideSummary">Ride Summary</string>
   <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
@@ -339,9 +340,9 @@
   <string name="View_TermsAndConditions">Terms and Conditions</string>
   <string name="BookingAirportTitle">Airport</string>
   <string name="AirportsButton">Airports</string>
-  <string name="View_EditAutoTip">Edit Payment</string>
+  <string name="View_EditAutoTip">Edit Tip</string>
   <string name="PayInCar">Pay Cash/Credit Card in Car</string>
-  <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
+  <string name="ResendConfirmationCodeText">Confirmation code will be resent shortly</string>
   <string name="SaveAddressEmptyFieldTitle">Friendly name required</string>
   <string name="Tuto02Top">We should be able to locate you using the GPS receiver in your mobile device.</string>
   <string name="Notification_VehicleAtPickupPush">Vehicle at Pickup</string>
@@ -496,6 +497,7 @@
   <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
   <string name="CreateAccountPayBackPlaceHolder">PayBack</string>
   <string name="CreditCardInvalidCrediCardNUmber">The Credit Card Number is invalid</string>
+  <string name="View_EditAutoPayment">Edit Payment</string>
   <string name="UpdateBookingSettingsEmptyAccount">Account and rider numbers cannot be empty when Charge Type is set to Charge Account</string>
   <string name="CmtTransactionResendConfirmationButtonText">Resend</string>
   <string name="StatusDescription">Order #{0}</string>
@@ -504,15 +506,15 @@
   <string name="TaxiHailNetworkTimeOutErrorTitle">Error</string>
   <string name="InvalidAccountOnActivatedMessage">Your account cannot be validated, you must log in to use this application</string>
   <string name="Overdue_Date">Transaction date:</string>
-  <string name="ResendConfirmationCodeText">Confirmation code will be resent shortly</string>
   <string name="PaymentLoadError">Unable to load the payment details. Please try again later.</string>
   <string name="EmailLabel">Email</string>
   <string name="ManualPairingForRideLinqActivityName">Manual pairing for RideLinq</string>
   <string name="April">Apr (04)</string>
+  <string name="StatusEditAutoPaymentButton">Payment</string>
   <string name="Error">Error</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="StatusEditAutoTipButton">Payment</string>
+  <string name="StatusEditAutoTipButton">Tip</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Charge type</string>
   <string name="ResetPasswordSubtitleText">Enter your email and we\'ll send you a new one.</string>

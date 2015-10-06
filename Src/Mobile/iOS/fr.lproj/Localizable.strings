@@ -203,7 +203,6 @@
 "WarningPushServiceTitle"="Notifications";
 "Version"="v{0}";
 "View"="Voir";
-"UpdatePasswordNewPasswordLabel"="Nouveau mot de passe";
 "Save"="Enregistrer";
 "PickupTextPlaceholder"="Adresse de départ";
 "SettingViewLoginInfo"="Vous vous être identifié comme: {0}";
@@ -341,7 +340,7 @@
 "View_TermsAndConditions"="Conditions d'utilisation";
 "BookingAirportTitle"="Airport";
 "AirportsButton"="Aéroports";
-"View_EditAutoTip"="Modifier Paiement";
+"View_EditAutoTip"="Modifier Pourboire";
 "PayInCar"="Payer dans le taxi";
 "PanelMenuViewSignOutPopupMessage"="Êtes vous sûr de vouloir vous déconnecter ?";
 "SaveAddressEmptyFieldTitle"="Merci de resaisir le nom";
@@ -495,6 +494,7 @@
 "ManualRideLinqStatus_Medallion"="Vous êtes assis dans le véhicule {0}.";
 "CreateAccountPayBackPlaceHolder"="PayBack";
 "CreditCardInvalidCrediCardNUmber"="Le numéro de la carte ne semble pas être valide";
+"View_EditAutoPayment"="Modifier Paiement";
 "UpdateBookingSettingsEmptyAccount"="Le numéro de compte et de client ne peuvent être vides lorsque le mode de paiement sélectionné est Compte";
 "CmtTransactionResendConfirmationButtonText"="Envoyer de nouveau";
 "StatusDescription"="Commande n°{0}";
@@ -508,10 +508,11 @@
 "EmailLabel"="Email (adresse électronique)";
 "ManualPairingForRideLinqActivityName"="Manual pairing for RideLinq";
 "April"="Avril (04)";
+"StatusEditAutoPaymentButton"="Paiement";
 "Error"="Erreur";
 "View_AccountConfirmation_Label_Code"="Code";
 "PanelMenuViewPromotionsText"="Promotions";
-"StatusEditAutoTipButton"="Paiement";
+"StatusEditAutoTipButton"="Tip";
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Type de facturation";
 "ResetPasswordSubtitleText"="Saisissez votre email pour recevoir votre nouveau mot de passe";
@@ -580,6 +581,7 @@
 "UpdateBookingSettingsGenericError"="Une erreur est survenue lors de la mise à jour des informations du compte";
 "TabHistory"="Réservations";
 "OtherListItemPromptLabel"="Entrez une valeur:";
+"DestinationAddress"="Destination address";
 "ManualPairingForRideLinQ_Error_Title"="Erreur";
 "ConfirmDestinationLabel"="Destination";
 "CreditCardAdded"="Votre compte est maintenant configuré pour le paiement via carte de crédit par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de confirmation.";
@@ -674,7 +676,7 @@
 "View_CreditCard"="Paiement";
 "GooglePlayServicesNotAvailableMessage"="Merci de mettre à jour Google Play pour utiliser cette application mobile.";
 "AccountPaymentQuestionsRequired"="(requis)";
-"DestinationAddress"="Destination address";
+"UpdatePasswordNewPasswordLabel"="Nouveau mot de passe";
 "OrderAirportView_BAD_AIRLINE_CODE"="Une erreur est survenue avec le fournisseur d'information de vol.";
 "ChargeTypeCreditCardFile"="Carte de paiement déjà engistrée";
 "AccountDisabled_NoCall"="Votre compte a été désactivé";

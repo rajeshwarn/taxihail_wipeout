@@ -2003,6 +2003,9 @@
     <value>Menu</value>
   </data>
   <data name="StatusEditAutoTipButton" xml:space="preserve">
+    <value>Tip</value>
+    </data>
+  <data name="StatusEditAutoPaymentButton" xml:space="preserve">
     <value>Paiement</value>
     </data>
   <data name="LocateMeButton" xml:space="preserve">
@@ -2014,8 +2017,11 @@
   <data name="AirportsButton" xml:space="preserve">
     <value>Aéroports</value>
   </data>
-  <data name="View_EditAutoTip" xml:space="preserve">
+  <data name="View_EditAutoPayment" xml:space="preserve">
     <value>Modifier Paiement</value>
+    </data>
+  <data name="View_EditAutoTip" xml:space="preserve">
+    <value>Modifier Pourboire</value>
     </data>
    <data name="TrainStationsButton" xml:space="preserve">
     <value>Stations de trains</value>

@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			base.ViewWillAppear(animated);
 
 			NavigationController.NavigationBar.Hidden = false;
-			NavigationItem.Title = Localize.GetValue("View_EditAutoTip");
 
 			ChangeThemeOfBarStyle();
 		}
@@ -57,10 +56,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind (btnSave)
 				.For(v => v.Command)
-				.To(vm => vm.SaveAutoTipChangeCommand);
+                .To(vm => vm.SaveAutoTipChangeCommand);
+
+            set.Bind (NavigationItem)
+                .For(v => v.Title)
+                .To(vm => vm.ViewTitle);
+
+            set.Bind (this)
+                .For(v => v.RemoveCCFromView)
+                .To(vm => vm.CanShowCreditCard)
+                .WithConversion("BoolInverter");
 
 			set.Apply();
 		}
+
+        private bool _removeCCFromView;
+        public bool RemoveCCFromView
+        {
+            get
+            {
+                return _removeCCFromView;
+            }
+            set
+            {
+                _removeCCFromView = value;
+                if (RemoveCCFromView)
+                {
+                    txtCreditCard.RemoveFromSuperview();
+                    lblCreditCard.RemoveFromSuperview();
+                }
+            }
+        }
 	}
 }
 

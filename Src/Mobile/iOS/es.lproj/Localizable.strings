@@ -343,7 +343,7 @@
 "View_TermsAndConditions"="Términos y Condiciones";
 "BookingAirportTitle"="Airport";
 "AirportsButton"="Airports";
-"View_EditAutoTip"="Editar Pago";
+"PanelMenuViewNotificationsText"="Notificaciones";
 "PayInCar"="Pagar en el vehículo";
 "PanelMenuViewSignOutPopupMessage"="Are you sure you want to sign out?";
 "SaveAddressEmptyFieldTitle"="Nombre";
@@ -494,6 +494,7 @@
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "CreateAccountPayBackPlaceHolder"="PayBack";
 "CreditCardInvalidCrediCardNUmber"="El número de tarjeta de crédito es inválido";
+"View_EditAutoPayment"="Editar Pago";
 "UpdateBookingSettingsEmptyAccount"="Los números de cuenta y de reservación no pueden estar vacíos cuando se el Tipo de Cargo está establecido como Cargo a Cuenta";
 "CmtTransactionResendConfirmationButtonText"="Re-enviar";
 "StatusDescription"="Reservación #{0}";
@@ -507,10 +508,11 @@
 "EmailLabel"="Email";
 "ManualPairingForRideLinqActivityName"="Manual pairing for RideLinq";
 "April"="Abr (04)";
+"StatusEditAutoPaymentButton"="Pago";
 "Error"="Error";
 "View_AccountConfirmation_Label_Code"="Código";
 "PanelMenuViewPromotionsText"="Promotions";
-"StatusEditAutoTipButton"="Pago";
+"StatusEditAutoTipButton"="Propina";
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Tipo de Cargo";
 "ResetPasswordSubtitleText"="Ingrese su email y le enviaremos una nueva contraseña";
@@ -697,7 +699,6 @@
 "WarningLocationService"="Por favor encienda los servicios de ubicación para poder mostrar su posición en el mapa";
 "Facebook"="Iniciar sesión con Facebook";
 "BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";
-"PanelMenuViewNotificationsText"="Notificaciones";
 "HistoryLoadError"="No se pudo cargar el historial. Favor de intenar más tarde.";
 "UpdateNoticeTitle"="Update Notice";
 "SendMessageToDriverErrorMessage"="An error occurred while trying to contact the driver. Please try again later.";

@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using System.Linq;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -17,7 +18,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private readonly IPaymentService _paymentService;
         private readonly IBookingService _bookingService;
         private readonly IAccountService _accountService;
-        private List<CreditCardInfos> _creditCardsData;
+		private List<CreditCardInfos> _creditCardsData;
+		private bool _isCmtRideLinq;
         private const int TIP_MAX_PERCENT = 100;
 
         public EditAutoTipViewModel(IOrderWorkflowService orderWorkflowService,
@@ -28,8 +30,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _orderWorkflowService = orderWorkflowService;
             _paymentService = paymentService;
             _bookingService = bookingService;
-            _accountService = accountService;
-        }
+			_accountService = accountService;
+
+			GetIsCmtRideLinq();
+		}
+
+		private async void GetIsCmtRideLinq()
+		{
+			try
+			{
+				var paymentSettings = await _paymentService.GetPaymentSettings();
+
+				_isCmtRideLinq = paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt;
+
+				RaisePropertyChanged(() => ViewTitle);
+				RaisePropertyChanged(() => CanShowCreditCard);
+			}
+			catch(Exception ex) 
+			{
+				Logger.LogError(ex);	
+			}
+		}
 
 		public async void Init(int tip = -1)
 		{
@@ -103,7 +124,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return CreditCards[CreditCardSelected].Image;
             }
-        }
+		}
+
+		public string ViewTitle
+		{
+			get
+			{
+				return _isCmtRideLinq ? this.Services().Localize["View_EditAutoPayment"] : this.Services().Localize["View_EditAutoTip"];
+			}
+		}
+
+		public bool CanShowCreditCard
+		{
+			get
+			{
+				return _isCmtRideLinq;
+			}
+		}
 
         private int _creditCardSelected;
         public int CreditCardSelected
