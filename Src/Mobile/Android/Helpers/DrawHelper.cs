@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Android.App;
 using Android.Content.Res;
 using Google.Android.M4b.Maps.Model;
@@ -148,6 +148,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 			matrix.PostRotate((float)degrees);
 
 			return Bitmap.CreateBitmap(image, 0, 0, image.Width, image.Height, matrix, true);
+		}
+
+		public static Bitmap RotateImageByDegreesWithСenterCrop(int imageResource, double degrees)
+		{
+			Drawable originalImage = Application.Context.Resources.GetDrawable(imageResource);
+
+			Bitmap rotatedImage = RotateImageByDegrees(imageResource, degrees);
+			Bitmap croppedImage = Bitmap.CreateBitmap(originalImage.IntrinsicWidth, originalImage.IntrinsicHeight, Bitmap.Config.Argb8888);
+
+			Rect rectDestination = new Rect()
+			{
+				Left = 0,
+				Right = originalImage.IntrinsicWidth,
+				Top = 0,
+				Bottom = originalImage.IntrinsicHeight
+			};
+
+			Rect rectSource = new Rect()
+			{
+				Left = (rotatedImage.Width / 2) - (originalImage.IntrinsicWidth / 2),
+				Right = (rotatedImage.Width / 2) + (originalImage.IntrinsicWidth / 2),
+				Top = (rotatedImage.Height / 2) - (originalImage.IntrinsicHeight / 2),
+				Bottom = (rotatedImage.Height / 2) + (originalImage.IntrinsicHeight / 2)
+			};
+
+			Canvas croppedImageCanvas = new Canvas(croppedImage);
+
+			croppedImageCanvas.DrawBitmap(rotatedImage, rectSource, rectDestination, new Paint());
+
+			return croppedImage;
 		}
     }
 }
