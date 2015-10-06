@@ -784,7 +784,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					long? eta = null;
 
-					if (isUsingGeoServices)
+					if (isUsingGeoServices && status.DriverInfos.VehicleRegistration.HasValue())
 					{
 						var geoData =
 							await
