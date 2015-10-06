@@ -152,12 +152,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
 		public static Bitmap RotateImageByDegreesWithСenterCrop(int imageResource, double degrees)
 		{
-			Drawable originalImage = Application.Context.Resources.GetDrawable(imageResource);
+			var originalImage = Application.Context.Resources.GetDrawable(imageResource);
 
-			Bitmap rotatedImage = RotateImageByDegrees(imageResource, degrees);
-			Bitmap croppedImage = Bitmap.CreateBitmap(originalImage.IntrinsicWidth, originalImage.IntrinsicHeight, Bitmap.Config.Argb8888);
+			var rotatedImage = RotateImageByDegrees(imageResource, degrees);
+			var croppedImage = Bitmap.CreateBitmap(originalImage.IntrinsicWidth, originalImage.IntrinsicHeight, Bitmap.Config.Argb8888);
 
-			Rect rectDestination = new Rect()
+			var rectDestination = new Rect()
 			{
 				Left = 0,
 				Right = originalImage.IntrinsicWidth,
@@ -165,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 				Bottom = originalImage.IntrinsicHeight
 			};
 
-			Rect rectSource = new Rect()
+			var rectSource = new Rect()
 			{
 				Left = (rotatedImage.Width / 2) - (originalImage.IntrinsicWidth / 2),
 				Right = (rotatedImage.Width / 2) + (originalImage.IntrinsicWidth / 2),
@@ -173,7 +173,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 				Bottom = (rotatedImage.Height / 2) + (originalImage.IntrinsicHeight / 2)
 			};
 
-			Canvas croppedImageCanvas = new Canvas(croppedImage);
+			var croppedImageCanvas = new Canvas(croppedImage);
 
 			croppedImageCanvas.DrawBitmap(rotatedImage, rectSource, rectDestination, new Paint());
 
