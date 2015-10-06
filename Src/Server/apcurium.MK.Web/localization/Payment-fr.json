@@ -1,24 +1,5 @@
 ﻿{
-    "PaymentTitle" : "Paiement",
-    "CreditCardName": "Nom du titulaire (tel qu'il apparaît sur la carte)",
-    "CreditCardNumber": "Numéro de la carte",
-    "CVV": "Code sécurité",
-    "ExpMonth": "Date d'expiration (mois)",
-    "ExpYear": "Date d'expiration (année)",
-    "Save": "Enregistrer",
-    "Delete": "Supprimer la carte",
-
-    // Exp. Months
-    "January": "Janvier (01)",
-    "February": "Février (02)",
-    "Mars": "Mars (03)",
-    "April": "Avril (04)",
-    "May": "Mai (05)",
-    "June": "Juin (06)",
-    "July": "Juillet (07)",
-    "August": "Août (08)",
-    "September": "Septembre (09)",
-    "October": "Octobre (10)",
-    "November": "Novembre (11)",
-    "December": "Décembre (12)"
+    "PaymentTitle": "Paiement",
+    "addCardButtonLabel": "Ajouter une nouvelle carte",
+    "ave": "Sauvergarder",
 }

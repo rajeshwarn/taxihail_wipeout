@@ -1,261 +1,135 @@
 ﻿(function () {
-
-    var View = TaxiHail.PaymentView = TaxiHail.TemplatedView.extend({
-
+    TaxiHail.PaymentView = TaxiHail.TemplatedView.extend({
         events: {
-            'change :input': 'onPropertyChanged',
-            'click [data-action=destroy]': 'deleteCreditCard',
-            'click [data-action=cancel]': 'cancel'
+            'click [data-action=add]': 'add',
+            'click [data-action=save]': 'saveTip',
+            'change :input': 'onPropertyChanged'
         },
-
         initialize: function () {
-
-            _.bindAll(this, 'savechanges');
+            this.collection.on('selected', function (model, collection) {
+                var detailsView = new TaxiHail.PaymentDetailView({
+                    model: model
+                });
+                this.$el.html(detailsView.render().el);
+            }, this);
+            this.collection.on('destroy cancel', this.render, this);
         },
 
         render: function () {
 
-            var expMonths = [
-                { id: 1, display: this.localize("January") },
-                { id: 2, display: this.localize("February") },
-                { id: 3, display: this.localize("Mars") },
-                { id: 4, display: this.localize("April") },
-                { id: 5, display: this.localize("May") },
-                { id: 6, display: this.localize("June") },
-                { id: 7, display: this.localize("July") },
-                { id: 8, display: this.localize("August") },
-                { id: 9, display: this.localize("September") },
-                { id: 10, display: this.localize("October") },
-                { id: 11, display: this.localize("November") },
-                { id: 12, display: this.localize("December") }
+            var data = this.model.toJSON();
+
+            var tipPercentages = [
+             { id: 0, display: "0%" },
+             { id: 5, display: "5%" },
+             { id: 10, display: "10%" },
+             { id: 15, display: "15%" },
+             { id: 18, display: "18%" },
+             { id: 20, display: "20%" },
+             { id: 25, display: "25%" }
             ];
-            
-            var isEditing = this.model != null && this.model.get('last4Digits') != null;
-            var creditCard = {};
 
-            if (isEditing) {
-                creditCard = this.model.toJSON();
-                var cardNumber = "************" + creditCard.last4Digits;
-
-                _.extend(creditCard, {
-                    cardNumber: cardNumber,
-                    expirationMonths: expMonths,
-                    expirationYears: this.generateExpYears(),
-                    isEditing: true,
-                    isCreditCardMandatory: TaxiHail.parameters.isCreditCardMandatory
+            if (data.defaultTipPercent == null) {
+                _.extend(data,
+                {
+                    defaultTipPercent: TaxiHail.parameters.defaultTipPercentage,
                 });
-            } else {
-                _.extend(creditCard, {
-                    expirationMonths: expMonths,
-                    expirationYears: this.generateExpYears(true),
-                    isEditing: false,
-                    isCreditCardMandatory: TaxiHail.parameters.isCreditCardMandatory
-                });
-
-                this.model.set('expirationMonth', 1);
             }
 
-            this.$el.html(this.renderTemplate(creditCard));
-
-            this.validate({
-                rules: {
-                    cardName: "required",
-                    cvv: "required",
-                    cardNumber : {
-                        required: true,
-                        creditcard: true
-                    }
-                },
-                messages: {
-                    name: {
-                        required: TaxiHail.localize('error.NameRequired')
-                    }
-                },
-                submitHandler: this.savechanges
+            var displayTipSelection = TaxiHail.parameters.isChargeAccountPaymentEnabled
+                || TaxiHail.parameters.isPayPalEnabled
+                || TaxiHail.parameters.isBraintreePrepaidEnabled;
+            _.extend(data,
+            {
+                displayTipSelection: displayTipSelection,
+                tipPercentages: tipPercentages,
             });
+            if (this.collection.models.length < TaxiHail.parameters.maxNumberOfCreditCards) {
+                _.extend(data,
+                   {
+                       canAddCard: true
+                   });
+            }
+            this.$el.html(this.renderTemplate(data));
+
+            //this.$el.empty();
+            if (this.collection.length) {
+                this.collection.each(this.renderItem, this);
+               
+            } else {
+                this.$el.append($('<div>').addClass('no-result').text(TaxiHail.localize('order.no-result')));
+            }
 
             return this;
         },
 
-        onPropertyChanged : function (e) {
+        add: function (e) {
+            var creditCardInfo = new TaxiHail.CreditCard();
+
+            this.view = new TaxiHail.PaymentDetailView({
+                model: creditCardInfo,
+                parent: this
+            });
+
+            this.view.render();
+            this.$el.html(this.view.el);
+        },
+
+        renderItem: function (model) {
+            model.set("isDefault", model.get('creditCardId') === this.model.get('defaultCreditCard').creditCardId);
+            var view = new TaxiHail.PaymentItemView({
+                model: model
+        });
+            view.render();
+            this.$('ul').append(view.el);
+        },
+
+        onPropertyChanged: function (e) {
+
+            var dataNodeName = e.currentTarget.nodeName.toLowerCase();
+            var elementName = e.currentTarget.name;
+
             var $input = $(e.currentTarget);
+            var settings = this.model.get('settings');
 
-            var name = $input.attr("name");
-            var value = $input.val();
+            if (dataNodeName == "select") {
+                var name = $input.attr("name");
+                var value = $input.val();
 
-            this.model.set(name, value);
+                // Update local model values
+                if (name === "defaultTipPercent") {
+                    this.model.set("defaultTipPercent", value);
+                    settings["defaultTipPercent"] = this.model.get("defaultTipPercent");
+                    settings["email"] = this.model.get("email");
+                }
+            }
 
             this.$(':submit').removeClass('disabled');
         },
 
-        generateExpYears: function (setYear) {
+        saveTip: function () {
+            // Update settings
+            this.model.updateSettings()
+                .fail(_.bind(function (result) {
+                    this.$(':submit').button('reset');
 
-            // Generate expiration years for the next 15 years
-            var expYears = new Array(16);
-            var currentYear = new Date().getFullYear();
+                    var message = "";
 
-            for (var i = 0; i <= 15; i++) {
-                var expYear = currentYear + i;
-                expYears[i] = { id: expYear, display: expYear }
-            }
+                    if (result.statusText != undefined) {
+                        message = result.statusText;
+                    }
+                    else {
+                        message = TaxiHail.localize("error.accountUpdate");
+                    }
 
-            if (setYear) {
-                this.model.set('expirationYear', expYears[0].id);
-            }
-
-            return expYears;
-        },
-
-        renderConfirmationMessage: function () {
-            var view = new TaxiHail.AlertView({
-                message: this.localize('Changes were saved'),
-                type: 'success'
-            });
-            view.on('ok', this.render, this);
-
-            this.$el.html(view.render().el);
-        },
-
-        renderErrorMessage: function (message) {
-            var errorMessage = message;
-            if (!errorMessage) {
-                errorMessage = TaxiHail.localize("TokenizeGenericError");
-            }
-
-            var alert = new TaxiHail.AlertView({
-                message: errorMessage,
-                type: 'error'
-            });
-
-            alert.on('ok', alert.remove, alert);
-            this.$('.errors').html(alert.render().el);
-        },
-
-        renderDeleteCreditCardErrorMessage: function () {
-            var alert = new TaxiHail.AlertView({
-                message: TaxiHail.localize("error.CreditCardNotDeleted"),
-                type: 'error'
-            });
-
-            alert.on('ok', alert.remove, alert);
-            this.$('.errors').html(alert.render().el);
-        },
-
-        savechanges: function (form) {
-            var cardNumber = this.model.get('cardNumber');
-            var expMonth = this.model.get('expirationMonth');
-            var formattedExpMonth = expMonth;
-            if (formattedExpMonth < 10) {
-                formattedExpMonth = "0" + expMonth;
-            }
-
-            var expYear = this.model.get('expirationYear');
-            var cvv = this.model.get('cvv');
-
-            var now = new Date();
-            var exp = new Date(expYear, expMonth - 1, 1, 23, 59, 59);
-            exp.setMonth(exp.getMonth() + 1);           // add a month
-            exp.setDate(exp.getDate() - 1);             //remove one day
-
-            if (exp < now) {
-                this.$(':submit').button('reset');
-                this.renderErrorMessage(TaxiHail.localize("ExpiredCreditCardError"));
-                return;
-            }
-
-            // Tokenize credit card
-            this.model.tokenize(cardNumber, formattedExpMonth, expYear, cvv)
-	            .done(_.bind(function (tokenizedCard) {
-
-	                if (tokenizedCard.isSuccessful) {
-	                    // Set up request fields
-	                    this.model.set("token", tokenizedCard.cardOnFileToken);
-	                    this.model.set("last4Digits", tokenizedCard.lastFour);
-	                    this.model.set("creditCardCompany", tokenizedCard.cardType);
-
-	                    // Update card on file
-	                    this.model.updateCreditCard()
-                            .done(_.bind(function () {
-                                TaxiHail.auth.account.set('defaultCreditCard', 'tempId');
-
-                                if (this.isOnBookingFlow()) {
-                                    var currentOrder = TaxiHail.orderService.getCurrentOrder();
-
-                                    if (TaxiHail.parameters.askForCVVAtBooking) {
-                                        currentOrder.set('cvv', cvv);
-                                    }
-
-                                    // Wait for credit card to be added to profile
-                                    setTimeout(function () { }, 1000);
-
-                                    currentOrder.save({}, {
-                                        success: TaxiHail.postpone(function (model) {
-                                            // Wait for response before doing anything
-                                            ga('send', 'event', 'button', 'click', 'book web', 0);
-
-                                            TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
-                                        }, this),
-                                        error: this.showErrors
-                                    });
-                                } else {
-                                    this.renderConfirmationMessage();
-                                }
-                            }, this))
-                            .fail(_.bind(function () {
-                                this.$(':submit').button('reset');
-	                            this.renderErrorMessage();
-	                    }, this));
-	                } else {
-	                    this.$(':submit').button('reset');
-
-	                    var alert = new TaxiHail.AlertView({
-	                        message: TaxiHail.localize("TokenizeInvalidCardInfos"),
-	                        type: 'error'
-	                    });
-
-	                    alert.on('ok', alert.remove, alert);
-	                    this.$('.errors').html(alert.render().el);
-	                }
-	            }, this))
-	            .fail(_.bind(function () {
-	                this.$(':submit').button('reset');
-	                this.renderErrorMessage();
-	            }, this));
-        },
-
-
-        isOnBookingFlow: function () {
-             var currentNode = $(location).attr('hash');
-
-            return currentNode == '#confirmationbook/payment';
-        },
-
-        cancel: function(e) {
-            if (this.isOnBookingFlow()) {
-                TaxiHail.app.navigate('confirmationbook', { trigger: true });
-                e.preventDefault();
-            }
-        },
-
-        deleteCreditCard: function (e) {
-            e.preventDefault();
-            TaxiHail.confirm({
-                title: this.localize('Delete'),
-                message: this.localize('modal.payment.deleteCreditCard')
-            }).on('ok', function() {
-                this.model.deleteCreditCard()
-                    .done(_.bind(function() {
-                        this.renderConfirmationMessage();
-                        this.model.attributes = { last4Digits: null };
-                    }, this))
-                    .fail(_.bind(function () {
-                        this.renderDeleteCreditCardErrorMessage();
-                    }, this));
-                
-            }, this);
+                    var alert = new TaxiHail.AlertView({
+                        message: message,
+                        type: 'error'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.errors').html(alert.render().el);
+                }, this));
         }
     });
-
-    _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }());
