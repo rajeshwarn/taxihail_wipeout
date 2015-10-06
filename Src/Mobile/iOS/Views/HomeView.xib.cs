@@ -489,13 +489,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 switch (state)
 				{
 					case HomeViewModelState.AddressSearch:
-						ctrlAddressPicker.Open(AddressLocationType.Unspeficied, HomeViewModelState.Initial);
+						ctrlAddressPicker.Open(AddressLocationType.Unspeficied);
 						break;
 					case HomeViewModelState.AirportSearch:
-						ctrlAddressPicker.Open(AddressLocationType.Airport, HomeViewModelState.Initial);
+						ctrlAddressPicker.Open(AddressLocationType.Airport);
 						break;
 					case HomeViewModelState.TrainStationSearch:
-						ctrlAddressPicker.Open(AddressLocationType.Train, HomeViewModelState.Initial);
+						ctrlAddressPicker.Open(AddressLocationType.Train);
 						break;
 				}
 			}

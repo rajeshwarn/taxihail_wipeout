@@ -552,25 +552,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else if (state == HomeViewModelState.AddressSearch)
             {
-				_searchAddress.Open(AddressLocationType.Unspeficied, HomeViewModelState.Initial);
+				_searchAddress.Open(AddressLocationType.Unspeficied);
             }
             else if (state == HomeViewModelState.AirportSearch)
             {
-				_searchAddress.Open(AddressLocationType.Airport, HomeViewModelState.Initial);
+				_searchAddress.Open(AddressLocationType.Airport);
             }
             else if (state == HomeViewModelState.TrainStationSearch)
             {
-				_searchAddress.Open(AddressLocationType.Train, HomeViewModelState.Initial);
+				_searchAddress.Open(AddressLocationType.Train);
             }	
 			else if (state == HomeViewModelState.Initial)
             {			
                 _searchAddress.Close();
 
                 SetSelectedOnBookLater(false);
-            }
-            else if(state == HomeViewModelState.AirportDetails)
-            {
-                _searchAddress.Close();
             }
         }
 
