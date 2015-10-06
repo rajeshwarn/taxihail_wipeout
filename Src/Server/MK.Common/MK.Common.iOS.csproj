@@ -106,6 +106,7 @@
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\RatingTypeWrapper.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
+    <Compile Include="Enumeration\AssignedVehicleMarkets.cs" />
     <Compile Include="Enumeration\DeviceOrientations.cs" />
     <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />

@@ -21,7 +21,7 @@ namespace apcurium.MK.Web.Tests
         {
         }
 
-        public void SendMessageToDriver(string message, string vehicleNumber)
+        public void SendMessageToDriver(string message, string vehicleNumber, string companyKey)
         {
         }
 

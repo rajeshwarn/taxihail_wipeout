@@ -32,7 +32,6 @@ using Google.Android.M4b.Maps;
 using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
-using System.Threading.Tasks;
 using apcurium.MK.Common;
 using Android.Animation;
 
@@ -236,6 +235,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             Latitude = value.Latitude.Value, 
                             Longitude = value.Longitude.Value
                         });
+
+					if (_showVehicleNumber)
+					{
+						_taxiLocationPin.ShowInfoWindow();
+					}
                 }
 
                 // Create Marker the first time
@@ -258,7 +262,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         if (_showVehicleNumber)
                         {
                             var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
-                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
+                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater, _resources, value.Market));
 
                             mapOptions.SetTitle(value.VehicleNumber);
                         }
@@ -281,10 +285,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
 
-		    if (value == null)
-		    {
-				_isBookingMode = false;
-		    }
+			// Booking is now over, so we need to clean up.
+            if (value == null && _taxiLocationPin != null)
+            {
+                _isBookingMode = false;
+                _taxiLocationPin.Visible = false;
+				_taxiLocationPin.Remove();
+			    _taxiLocationPin = null;
+            }
 	    }
 
 		private Bitmap CreateTaxiBitmap()
@@ -604,7 +612,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _availableVehicleMarkers.Remove (markerToRemove);
         }
 
-        private async Task CreateMarker(AvailableVehicle vehicle)
+        private void CreateMarker(AvailableVehicle vehicle)
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";

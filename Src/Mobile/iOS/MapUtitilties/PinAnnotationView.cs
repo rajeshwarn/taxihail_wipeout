@@ -1,4 +1,6 @@
 using System;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Common.Enumeration;
 using CoreGraphics;
 using Foundation;
 using MapKit;
@@ -119,11 +121,16 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
 	    private UIColor GetMedaillonBackgroundColor(string market)
 	    {
+	        if (!market.HasValue())
+	        {
+                return UIColor.DarkGray;
+	        }
+
 	        switch (market.ToLower())
 	        {
-	            case "nyc":
+	            case AssignedVehicleMarkets.NYC:
                     return UIColor.FromRGB(222, 157, 0); // Yellow
-                case "nyshl":
+                case AssignedVehicleMarkets.NYSHL:
                     return UIColor.FromRGB(92, 127, 18); // Green
                 default:
 	                return UIColor.DarkGray;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
 	[Route("/account/findaccounts/{searchCriteria}", "GET")]
-	[AuthorizationRequired(ApplyTo.Get, RoleName.Admin)]
+	[AuthorizationRequired(ApplyTo.Get, RoleName.Support)]
 	public class FindAccountsRequest
 	{
 		public string SearchCriteria { get; set; }
