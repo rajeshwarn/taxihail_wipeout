@@ -722,7 +722,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (_taxiLocationPin != null)
             {
                 var taxiLocationPin = _taxiLocationPin as AddressAnnotation;
-                taxiLocationPin.Degrees = value.CompassCourse;
+                taxiLocationPin.Degrees = value.CompassCourse??0;
 
                 AnimateAnnotationOnMap(taxiLocationPin, new Position()
                     {
@@ -756,8 +756,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _showAssignedVehicleNumberOnPin,
                 true,
                 null,
-                ViewModel.Settings.ShowOrientedPins 
-                ? value.CompassCourse
+                ViewModel.Settings.ShowOrientedPins
+                ? value.CompassCourse??0
                 : 0);
 
             AddAnnotation(_taxiLocationPin);

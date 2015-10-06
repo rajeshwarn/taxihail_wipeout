@@ -237,7 +237,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.Dematerialize();
 		}
 
-		private void UpdatePosition(double latitude, double longitude, string medallion, CancellationToken token, double compassCourse = 0)
+		private void UpdatePosition(double latitude, double longitude, string medallion, CancellationToken token, double? compassCourse = null)
 		{
 			token.ThrowIfCancellationRequested();
 
