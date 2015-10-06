@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	    private ViewStates _animatedVisibility;
 
 	    public Button BigInvisibleButton { get; set; }
-		public int CurrentHeight { get; set; }
 
 		/// Added to prevent the ETA from becoming visible in during booking status in certain scenarios.
 		private const int HIDDEN_HIGHT_OFFSET = -50;

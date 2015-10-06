@@ -85,6 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			switch (state)
 			{
 				case HomeViewModelState.Review:
+				case HomeViewModelState.AirportDetails:
 					PickupInputDisabled = true;
 					DestinationInputDisabled = true;
 					VehicleTypeInputDisabled = true;
@@ -103,15 +104,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					PickupInputDisabled = false;
 					DestinationInputDisabled = false;
 					VehicleTypeInputDisabled = false;
-					IsDestinationSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
-					IsPickupSelected = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
-					break;
-			case HomeViewModelState.AirportDetails:
-					PickupInputDisabled = true;
-					DestinationInputDisabled = false;
-					VehicleTypeInputDisabled = false;
 					IsDestinationSelected = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
-					IsPickupSelected = false;
+					IsPickupSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
 					break;
 			}
 		}
@@ -295,15 +289,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		private void UpdatePickupAndDestinationSelectionIfNeeded()
 		{
-			if (((HomeViewModel) Parent).CurrentViewState != HomeViewModelState.Initial && ((HomeViewModel) Parent).CurrentViewState != HomeViewModelState.AirportDetails)
+			if (((HomeViewModel) Parent).CurrentViewState != HomeViewModelState.Initial)
 			{
 				return;
 			}
 
-			if (((HomeViewModel)Parent).CurrentViewState == HomeViewModelState.Initial) 
-			{
-				IsPickupSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
-			}
+			IsPickupSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
 			IsDestinationSelected = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
 		}
 
@@ -378,18 +369,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					RaisePropertyChanged(() => FormattedEta);
 				}
-			}
-		}
-
-
-		private HomeViewModelState _state;
-		public HomeViewModelState State
-		{
-			get { return _state; }
-			set
-			{
-				_state = value;
-				RaisePropertyChanged();
 			}
 		}
 
@@ -484,6 +463,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				    {
 				        _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
 				    }
+
 					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AddressSearch;
 				});
 			}
@@ -556,7 +536,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
 				}
             }
-			((HomeViewModel)Parent).CurrentViewState = ((HomeViewModel)Parent).CurrentViewState;
 		}
 	}
 }
