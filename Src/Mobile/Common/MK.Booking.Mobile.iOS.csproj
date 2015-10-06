@@ -153,6 +153,7 @@
     <Compile Include="Infrastructure\DeviceOrientation\DeviceOrientationFilter.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Messages\OrderStatusChanged.cs" />
+    <Compile Include="Models\ManualPairingPosition.cs" />
     <Compile Include="Models\PhoneNumberModel.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
