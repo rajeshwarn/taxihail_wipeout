@@ -162,7 +162,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }, Logger.LogError)
                 .DisposeWith(subscriptions);
 
-
             var deviceLocationObservable = Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
                 .Where(_ => ManualRideLinqDetail != null && ManualRideLinqDetail.Medallion.HasValue())
                 .SelectMany(async _ =>
@@ -179,15 +178,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
 
             var orderId = orderManualRideLinqDetail.OrderId;
-
+			var deviceName = orderManualRideLinqDetail.DeviceName;
             var taxilocationViaGeo = GetAndObserveTaxiLocationViaGeo(orderManualRideLinqDetail.DeviceName, orderId);
 
             _orderWorkflowService.GetAndObserveIsUsingGeo()
                 .DistinctUntilChanged()
-                .SelectMany(isUsingGeo => isUsingGeo
+		.SelectMany(isUsingGeo => isUsingGeo && deviceName.HasValue()
                     ? taxilocationViaGeo
                     : deviceLocationObservable
                 )
+				.Where(pos => pos != null)
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(positionData => UpdatePosition(positionData.Latitude,
                     positionData.Longitude,
@@ -251,7 +251,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 .Dematerialize();
         }
 
-        private void UpdatePosition(double latitude, double longitude, string medallion, string market, CancellationToken token)
+	private void UpdatePosition(double latitude, double longitude, string medallion, string market, CancellationToken token, double compassCourse = 0)
         {
             token.ThrowIfCancellationRequested();
 
@@ -269,6 +269,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     Longitude = longitude,
                     Latitude = latitude,
+                    CompassCourse = compassCourse,
                     VehicleNumber = medallion,
                     Market = market
                 };
@@ -277,6 +278,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 TaxiLocation.Latitude = latitude;
                 TaxiLocation.Longitude = longitude;
+                TaxiLocation.CompassCourse = compassCourse;
 
                 RaisePropertyChanged(() => TaxiLocation);
             }
@@ -809,7 +811,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                             if (geoData.IsPositionValid)
                             {
-                                UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, status.Market, cancellationToken);
+				UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, status.Market, cancellationToken, geoData.CompassCourse.HasValue ? geoData.CompassCourse.Value : 0);
                             }
                         }
                     }
@@ -852,7 +854,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     if (geoData != null && geoData.IsPositionValid)
                     {
-                        UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, status.Market, cancellationToken);
+			UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, status.Market, cancellationToken, geoData.CompassCourse.HasValue ? geoData.CompassCourse.Value : 0);
                     }
                 }
                 else if (!isUsingGeoServices && hasVehicleInfo &&
@@ -1173,7 +1175,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         string.Empty,
                         () => { });
 
-                    var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber);
+	                var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber, Order.Id);
                     if (!messageSent)
                     {
                         this.Services().Message.ShowMessage(

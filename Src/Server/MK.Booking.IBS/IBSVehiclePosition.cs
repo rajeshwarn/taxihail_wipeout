@@ -12,6 +12,8 @@ namespace apcurium.MK.Booking.IBS
 
         public double Longitude { get; set; }
 
+        public double CompassCourse { get; set; }
+
         public string VehicleNumber { get; set; }
 
         public DateTime PositionDate { get; set; }

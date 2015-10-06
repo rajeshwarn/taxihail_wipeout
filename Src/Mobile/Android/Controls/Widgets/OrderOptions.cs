@@ -195,6 +195,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				.For (v => v.Eta)
 				.To (vm => vm.FormattedEta);
 
+	        set.Bind(_viewVehicleType)
+		        .For(v => v.ShowEta)
+				.To(vm => vm.ShowEtaInEstimate);
+
 			set.Bind(_etaContainer)
 				.For(v => v.Visibility)
 				.To(vm => vm.ShowEta)
@@ -203,6 +207,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set.Bind(_etaLabelInVehicleSelection)
 				.For(v => v.Text)
 				.To(vm => vm.FormattedEta);
+
+			set.Bind(_etaLabelInVehicleSelection)
+				.For(v => v.Visibility)
+				.To(vm => vm.ShowEta)
+				.WithConversion("Visibility");
 
             set.Bind (_etaBadgeImage)
                 .For (v => v.Vehicle)

@@ -22,10 +22,10 @@ namespace apcurium.MK.Booking.Api.Payment
         }
         
         public void ConfirmExternalPayment(Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
-                                                    string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent)       
+                                                    string authorizationCode, string cardToken, int accountId, string name, string phone, string email, string os, string userAgent)       
         {
             if (!_ibsServiceProvider.Booking().ConfirmExternalPayment(orderId, ibsOrderId, totalAmount, tipAmount, meterAmount, type, provider, transactionId,
-                            authorizationCode, cardToken, accountID, name, phone, email, os, userAgent) )
+                            authorizationCode, cardToken, accountId, name, phone, email, os, userAgent) )
             {
                 throw new Exception("Cannot send payment information to dispatch.");
             }
@@ -55,9 +55,9 @@ namespace apcurium.MK.Booking.Api.Payment
             }
         }
 
-        public void SendMessageToDriver(string message, string vehicleNumber)
+        public void SendMessageToDriver(string message, string vehicleNumber, string company)
         {
-            if (!_ibsServiceProvider.Booking().SendMessageToDriver(message, vehicleNumber))
+			if (!_ibsServiceProvider.Booking(company).SendMessageToDriver(message, vehicleNumber))
             {
                 throw new Exception("Cannot send message to driver.");
             }

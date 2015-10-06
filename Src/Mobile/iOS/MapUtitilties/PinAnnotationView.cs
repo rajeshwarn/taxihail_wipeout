@@ -73,28 +73,36 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             }
         }
 
-		public void RefreshPinImage ()
-        {
-            var ann = ((AddressAnnotation)Annotation);
+	    public void RefreshPinImage()
+	    {
+	        var ann = ((AddressAnnotation) Annotation);
+	        var degrees = ann.Degrees;
 
-            Image = ann.GetImage();
+	        Image = ann.GetImage();
 
-            // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
-            if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin)
-            {
-                var addressAnnotation = (AddressAnnotation) Annotation;
-                CreateMedaillonView(addressAnnotation.Subtitle, addressAnnotation.Market, hidden: false);
-            }
+	        // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
+	        if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin)
+	        {
+	            var addressAnnotation = (AddressAnnotation) Annotation;
+	            CreateMedaillonView(addressAnnotation.Subtitle, addressAnnotation.Market, hidden: false);
+	        }
 
-            CenterOffset = new CGPoint (0, -Image.Size.Height / 2);
-            if (ann.AddressType == AddressAnnotationType.Destination ||
-               ann.AddressType == AddressAnnotationType.Pickup)
-            {
-                CenterOffset = new CGPoint(0, -Image.Size.Height / 2 + 2);
-            } 
-		}
+	        if (degrees != 0)
+	        {
+	            CenterOffset = new CGPoint(0, 0);
+	        }
+	        else
+	        {
+	            CenterOffset = new CGPoint(0, -Image.Size.Height/2);
+	            if (ann.AddressType == AddressAnnotationType.Destination
+	                || ann.AddressType == AddressAnnotationType.Pickup)
+	            {
+	                CenterOffset = new CGPoint(0, -Image.Size.Height/2 + 2);
+	            }
+	        }
+	    }
 
-        private void CreateMedaillonView(string text, string market, bool hidden)
+	    private void CreateMedaillonView(string text, string market, bool hidden)
         {
             var lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
             lblVehicleNumber.BackgroundColor = GetMedaillonBackgroundColor(market);
