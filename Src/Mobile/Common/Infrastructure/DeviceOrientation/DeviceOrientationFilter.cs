@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
         }
 
         private const int BufferCapacity = 1000;
-        private const int MaximumRandomDeviation = 10;
+        private const int MaximumRandomDeviation = 4;
 
         private readonly FilterValue[] _buffer = new FilterValue[BufferCapacity];
         private int _bufferTopPointer = -1;
