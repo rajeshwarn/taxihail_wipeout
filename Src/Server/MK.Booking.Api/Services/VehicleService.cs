@@ -444,8 +444,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Latitude = result.Latitude,
                 Longitude = result.Longitude,
                 CompassCourse = result.CompassCourse,
-                Market = "nyc"
-                //Market = result.Market
+                Market = result.Market
             };
         }
 
