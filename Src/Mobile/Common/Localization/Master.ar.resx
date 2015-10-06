@@ -838,6 +838,12 @@
   <data name="NotesToDriveLabel" xml:space="preserve">
     <value>ملاحظات للسائق (اسم العمل، مدخل محدد، ...)</value>
   </data>
+  <data name="DiverBonusTitle" xml:space="preserve">
+    <value>Diver Bonus:</value>
+  </data>
+  <data name="DiverBonusDescription" xml:space="preserve">
+    <value>Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</value>
+  </data>
   <data name="November" xml:space="preserve">
     <value>نوفمبر (11)</value>
   </data>

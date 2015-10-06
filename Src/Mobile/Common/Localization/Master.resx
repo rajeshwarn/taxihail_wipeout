@@ -1014,6 +1014,12 @@
   <data name="NotesToDriveLabel" xml:space="preserve">
     <value>Notes to driver (Name of business, specific entrance, ...)</value>
   </data>
+  <data name="DiverBonusTitle" xml:space="preserve">
+    <value>Diver Bonus:</value>
+  </data>
+  <data name="DiverBonusDescription" xml:space="preserve">
+    <value>Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</value>
+  </data>
   <data name="Submit" xml:space="preserve">
     <value>Submit Rating</value>
   </data>
