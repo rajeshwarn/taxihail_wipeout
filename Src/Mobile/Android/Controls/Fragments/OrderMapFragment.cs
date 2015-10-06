@@ -40,6 +40,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
     {
+		private static readonly int BottomMarginTaxiLocationInfoWindowNoCompassCourse = 5;
+		private static readonly int BottomMarginTaxiLocationInfoWindowCompassCourse = 0;
+
         public GoogleMap Map { get; set;}
 	    public TouchableMap TouchableMap { get; set;}
         private ImageView _pickupOverlay;
@@ -222,6 +225,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             if (value != null && value.Latitude.HasValue && value.Longitude.HasValue && value.VehicleNumber.HasValue())
             {
+				value.CompassCourse = 45;
+
                 ShowAvailableVehicles(null);
 
                 // Update Marker and Animate it to see it move on the map
@@ -257,7 +262,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         if (_showVehicleNumber)
                         {
                             var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
-                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
+							Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater, ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0 ? BottomMarginTaxiLocationInfoWindowCompassCourse : BottomMarginTaxiLocationInfoWindowNoCompassCourse));
 
                             mapOptions.SetTitle(value.VehicleNumber);
                         }
