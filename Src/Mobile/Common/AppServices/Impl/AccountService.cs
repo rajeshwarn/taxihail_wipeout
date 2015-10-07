@@ -29,6 +29,7 @@ using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
 using apcurium.MK.Common.Helpers;
+using System.Text.RegularExpressions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -589,15 +590,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<IEnumerable<CreditCardDetails>> GetCreditCards ()
 		{
-			return UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(client => client.GetCreditCards());
+			return await UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(client => client.GetCreditCards());
 		}
 
 		private async Task TokenizeCard(CreditCardInfos creditCard)
 		{
+			var usRgx = new Regex("^\\d{5}([ \\-]\\d{4})?$", RegexOptions.IgnoreCase);
+			var zipCode = usRgx.Matches(creditCard.ZipCode).Count > 0 && _appSettings.Data.SendZipCodeWhenTokenizingCard ? creditCard.ZipCode : null;
+
 			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
 				creditCard.CardNumber, 
 				new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
-				creditCard.CCV));
+				creditCard.CCV,
+				zipCode));
 
 		    if (!response.IsSuccessful)
 		    {
@@ -628,6 +633,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				ExpirationMonth = creditCard.ExpirationMonth,
 				ExpirationYear = creditCard.ExpirationYear,
 				Label = creditCard.Label,
+				ZipCode = creditCard.ZipCode,
+				
             };
 
 			await UseServiceClientAsync<IAccountServiceClient> (client => 

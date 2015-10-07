@@ -1397,6 +1397,9 @@
     <value>Total</value>
     <comment>Total</comment>
   </data>
+     <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Zip/Postal</value>
+  </data>
   <data name="PayNow" xml:space="preserve">
     <value>Pagar con Aplicación</value>
     <comment>Pay now</comment>

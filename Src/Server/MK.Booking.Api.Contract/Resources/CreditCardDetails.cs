@@ -49,5 +49,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         }
 
         public string Label { get; set; }
+
+        public string ZipCode { get; set; }
     }
 }

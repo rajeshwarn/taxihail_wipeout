@@ -955,6 +955,9 @@
   <data name="PaymentViewTotalText" xml:space="preserve">
     <value>الإجمالي</value>
   </data>
+ <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Zip/Postal</value>
+  </data>
   <data name="PayNow" xml:space="preserve">
     <value>ادفع الآن</value>
   </data>

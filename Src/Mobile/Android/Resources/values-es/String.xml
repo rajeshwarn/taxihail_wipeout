@@ -26,7 +26,7 @@
   <string name="BookDateLabel">Recogerme más tarde</string>
   <string name="Overdue_IBSOrderId">Reservación:</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
-  <string name="CreditCardZipCode">Codigo Postal</string>
+  <string name="CreditCardZipCode">Zip/Postal</string>
   <string name="PromotionButton">Pulse para entrar o Ver Código de promoción</string>
   <string name="LocationDetailApartmentLabel">Departamento</string>
   <string name="CvvRequiredTitle">Se requiere CVV</string>

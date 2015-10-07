@@ -108,9 +108,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _cache.Set(orderId + PayedCacheSuffix, amount.ToString(CultureInfo.InvariantCulture));
         }
 
-        public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
+		public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv, string zipCode = null)
         {
-			return await GetClient().Tokenize(creditCardNumber, expiryDate, cvv);
+			return await GetClient().Tokenize(creditCardNumber, expiryDate, cvv, zipCode);
         }
 
         public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
