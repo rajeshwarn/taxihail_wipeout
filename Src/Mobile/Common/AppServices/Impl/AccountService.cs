@@ -579,7 +579,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public async Task<CreditCardDetails> GetDefaultCreditCard ()
         {
+			
 			var account = await GetAccount();
+
 			var creditCard = account.DefaultCreditCard;
 
 			// refresh credit card in cache
