@@ -11,6 +11,7 @@ namespace apcurium.MK.Common.Entity
         public OrderStatusDetail()
         {
             DriverInfos = new DriverInfos();
+            TipIncentive = 0;
         }
 
         public OrderStatus Status { get; set; }
@@ -50,7 +51,8 @@ namespace apcurium.MK.Common.Entity
 
         public string RideLinqPairingCode { get; set; }
         public long? OriginalEta { get; set; }
-        
+        public double? TipIncentive { get; set; }
+
         public override string ToString()
         {
             return Status + " " + Name;

@@ -125,7 +125,8 @@ namespace apcurium.MK.Booking.Api.Services
 				OrderId = request.Id,
 				EstimatedFare = request.Estimate.Price,
 				UserAgent = Request.UserAgent,
-				ClientVersion = Request.Headers.Get("ClientVersion")
+				ClientVersion = Request.Headers.Get("ClientVersion"),
+                TipIncentive = request.TipIncentive
 			};
 		}
 

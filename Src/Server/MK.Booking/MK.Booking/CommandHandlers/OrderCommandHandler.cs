@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 					command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
 					command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
 					command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-					command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees);
+					command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.TipIncentive);
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 				command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
 				command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
 				command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.Error);
+				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.Error, command.TipIncentive);
 
 			if (command.Payment.PayWithCreditCard)
 			{

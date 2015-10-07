@@ -430,7 +430,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     CardOnFileId = cardToken,
                     Market = cmtPaymentSettings.Market,
                     TripRequestNumber = orderStatusDetail.IBSOrderId.GetValueOrDefault().ToString(),
-                    LastFour = creditCardDetail.Last4Digits
+                    LastFour = creditCardDetail.Last4Digits,
+                    TipIncentive = orderStatusDetail.TipIncentive
                 };
 
                 if (orderStatusDetail.RideLinqPairingCode.HasValue())
