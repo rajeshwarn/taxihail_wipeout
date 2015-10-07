@@ -292,22 +292,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void ChangeState(HomeViewModelState state)
         {
             if (state == HomeViewModelState.PickDate)
-			{
-				// Order Options: Visible
-				// Order Review: Hidden
-				// Order Edit: Hidden
-				// Date Picker: Visible
+            {
+                // Order Options: Visible
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                // Date Picker: Visible
 
-				CloseBookATaxiDialog();
+                CloseBookATaxiDialog();
 
-				_datePicker.ViewState = state;
-				_datePicker.Show ();
-			}
+                _datePicker.ViewState = state;
+                _datePicker.Show();
+            }
             else if (state == HomeViewModelState.AirportPickDate)
             {
-				_datePicker.ViewState = state;
-				_datePicker.Show();
-			}
+                _datePicker.ViewState = state;
+                _datePicker.Show();
+            }
+            else if (state == HomeViewModelState.BookATaxi)
+            {
+                // nothing to do but we can't remove the condition 
+                // otherwise it gets picked up in the "search mode" catch all
+            }
             else if (state == HomeViewModelState.Initial)
 			{
 				// Order Options: Visible
