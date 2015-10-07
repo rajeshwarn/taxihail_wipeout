@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
@@ -166,7 +167,8 @@ namespace apcurium.MK.Booking.Api.Services
                     VehicleNumber = v.Medallion,
                     FleetId = v.FleetId,
                     Eta = (int?)v.Eta,
-                    VehicleType = v.VehicleType
+                    VehicleType = v.VehicleType,
+                    CompassCourse = v.CompassCourse,
                 }).ToArray();
             }
 
@@ -355,24 +357,57 @@ namespace apcurium.MK.Booking.Api.Services
             return referenceData.VehiclesList.Where(x => x.Id != null && !allAssigned.Contains(x.Id.Value)).Select(x => new { x.Id, x.Display }).ToArray();
         }
 
-        public object Post(EtaForPickupRequest request)
+	    public object Get(TaxiLocationRequest request)
+	    {
+			var order = _orderDao.FindById(request.OrderId);
+		    if (order == null)
+		    {
+				return new HttpResult(HttpStatusCode.NotFound, "No order found.");
+		    }
+
+			var market = GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+
+			var geoService = GetAvailableVehiclesServiceClient(market) as CmtGeoServiceClient;
+
+		    if (geoService == null)
+		    {
+				return new HttpResult(HttpStatusCode.BadRequest, "This call is only supported when using Geo.");
+		    }
+
+		    var taxiLocation = geoService.GetEta(order.PickupAddress.Latitude, order.PickupAddress.Longitude, request.Medallion);
+
+			if (taxiLocation == null)
+		    {
+				return new HttpResult(HttpStatusCode.NotFound, "No vehicle found.");
+		    }
+
+		    return taxiLocation;
+
+	    }
+
+	    private string GetCompanyMarket(double latitude, double longitude)
+	    {
+		    var market = string.Empty;
+		    try
+		    {
+				market = _taxiHailNetworkServiceClient.GetCompanyMarket(latitude, longitude);
+		    }
+		    catch
+		    {
+			    // Do nothing. If we fail to contact Customer Portal, we continue as if we are in a local market.
+			    _logger.LogMessage("VehicleService: Error while trying to get company Market.");
+		    }
+		    return market;
+	    }
+
+	    public object Post(EtaForPickupRequest request)
         {
             if (!request.Latitude.HasValue || !request.Longitude.HasValue || !request.VehicleRegistration.HasValue())
             {
                 return new HttpResult(HttpStatusCode.BadRequest, "Longitude, latitude and vehicle number are required.");
             }
 
-            var market = string.Empty;
-
-            try
-            {
-                market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude.Value, request.Longitude.Value);
-            }
-            catch
-            {
-                // Do nothing. If we fail to contact Customer Portal, we continue as if we are in a local market.
-                _logger.LogMessage("VehicleService: Error while trying to get company Market to compute ETA.");
-            }
+		    var market = GetCompanyMarket(request.Latitude.Value, request.Longitude.Value);
 
             if (!market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode != LocalAvailableVehiclesModes.Geo)
             {
@@ -404,7 +439,8 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 Eta = result.Eta,
                 Latitude = result.Latitude,
-                Longitude = result.Longitude
+                Longitude = result.Longitude,
+                CompassCourse = result.CompassCourse,
             };
         }
 
@@ -427,23 +463,20 @@ namespace apcurium.MK.Booking.Api.Services
                         .InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
                 }
             }
-            else
-            {
-                // Local market
-                switch ( _serverSettings.ServerData.LocalAvailableVehiclesMode)
-                {
-                    case LocalAvailableVehiclesModes.Geo:
-                        {
-                            return new CmtGeoServiceClient(_serverSettings, _logger);
-                        }
-                    case LocalAvailableVehiclesModes.HoneyBadger:
-                        {
-                            return new HoneyBadgerServiceClient(_serverSettings, _logger);
-                        }
-                    default: throw new InvalidOperationException("{0} is not a supported Vehicle provider"
-                        .InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
-                }
-            }
+	        // Local market
+	        switch ( _serverSettings.ServerData.LocalAvailableVehiclesMode)
+	        {
+		        case LocalAvailableVehiclesModes.Geo:
+		        {
+			        return new CmtGeoServiceClient(_serverSettings, _logger);
+		        }
+		        case LocalAvailableVehiclesModes.HoneyBadger:
+		        {
+			        return new HoneyBadgerServiceClient(_serverSettings, _logger);
+		        }
+		        default: throw new InvalidOperationException("{0} is not a supported Vehicle provider"
+			        .InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
+	        }
         }
     }
 }

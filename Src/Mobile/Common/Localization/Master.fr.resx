@@ -138,6 +138,12 @@
   <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
     <value>Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide du SMS qui vient de vous être envoyé</value>
   </data>
+  <data name="FacebookLoginErrorTitle" xml:space="preserve">
+    <value>Email existant</value>
+  </data>
+  <data name="FacebookLoginErrorMessage" xml:space="preserve">
+    <value>Cet email est déjà utilisé pour un compte Facebook. Merci de vous enregistrer via Facebook ou d'utiliser un autre email.</value>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Merci de saisir un numéro de compte valide</value>
   </data>
@@ -391,7 +397,7 @@
     <value>Données invalides</value>
   </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
-    <value>Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.</value>
+    <value>Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit contenir au minimum 6 caractères.</value>
   </data>
   <data name="CreateAccountLanguageEnglish" xml:space="preserve">
     <value>English</value>
@@ -527,9 +533,6 @@
   </data>
   <data name="DriverInfoColor" xml:space="preserve">
     <value>Coloris:</value>
-  </data>
-  <data name="DriverInfoDriver" xml:space="preserve">
-    <value>Chauffeur:</value>
   </data>
   <data name="DriverInfoLicence" xml:space="preserve">
     <value>Licence:</value>
@@ -1020,10 +1023,10 @@
   <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
     <value>Email (adresse électronique)</value>
   </data>
-  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+  <data name="InvalidEmailMessage" xml:space="preserve">
     <value>Désolé, cet email n'est pas valide</value>
   </data>
-  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+  <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Cet email n'est pas valide</value>
   </data>
   <data name="ResetPasswordSubtitleText" xml:space="preserve">
@@ -1699,8 +1702,11 @@
   <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
   </data>
-  <data name="UnpairWarningCancelButton" xml:space="preserve">
+  <data name="UnpairWarningOkButton" xml:space="preserve">
     <value>Payer dans le taxi</value>
+  </data>
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
+    <value>Annuler</value>
   </data>
   <data name="View_Promotions" xml:space="preserve">
     <value>Promotions</value>
@@ -1885,9 +1891,6 @@
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Tarif:</value>
   </data>
-  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
-    <value>Code d'association:</value>
-  </data>
   <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
     <value>Taxes:</value>
   </data>
@@ -1902,6 +1905,9 @@
   </data>
   <data name="ManualRideLinqSummary_Done" xml:space="preserve">
     <value>Ok</value>
+  </data>
+  <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
+    <value>Une erreur est survenue. Veuillez essayer de vous connecter de nouveau en utilisant le code affiché sur l'écran dans le taxi.</value>
   </data>
   <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
     <value>Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</value>
@@ -2215,5 +2221,65 @@
   </data>
 	<data name="OrderStatus_Medallion" xml:space="preserve">
 		<value>Medallion</value>
+	</data>
+	<data name="WaitingCarLandscapeViewCloseButtonText" xml:space="preserve">
+		<value>Retour</value>
+	</data>
+	<data name="WaitingCarLandscapeViewCarNumber" xml:space="preserve">
+		<value>Numéro de voiture</value>
+	</data>
+	<data name="WaitingCarLandscapeActivityName" xml:space="preserve">
+    	<value>Numéro de voiture</value>
+	</data>
+	<data name="BookingAirportDetailsTerminal">
+		<value>, \nTerminal: {0}</value>
+	</data>
+	<data name="UpdateNoticeTitle" xml:space="preserve">
+    		<value>Update Notice</value>
+	</data>
+	<data name="BookingAirportNoFlights_Title" xml:space="preserve">
+    <value>Aucun vol</value>
+  </data>
+	<data name="BookingAirportNoFlights_Message" xml:space="preserve">
+    <value>Nous n'avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}</value>
+  </data>
+	<data name="UpdateNoticeText" xml:space="preserve">
+    	<value>Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît</value>
+	</data>
+	<data name="AccountLinkedWithFAcebook" xml:space="preserve">
+    	<value>Ce compte est associé avec un compte Facebook</value>
+	</data>
+   <data name="EmailUsedMessageTitle" xml:space="preserve">
+    <value>Courriel déjà utilisé</value>
+  </data>
+   <data name="EmailUsedMessage" xml:space="preserve">
+        <value>Ce courriel est déjà utilisé par un autre compte</value>
+  </data>
+	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
+ 		<value>Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</value>
+  	</data>
+	<data name="BookingAirportMissingInfo_Title" xml:space="preserve">
+    <value>Informations manquantes</value>
+  </data>
+	<data name="BookingAirportMissingInfo_Message" xml:space="preserve">
+    <value>Le numéro de vol et la compagnie aérienne sont nécessaires.</value>
+  </data>
+	<data name="OrderAirportView_BAD_FLIGHT_NUMBER" xml:space="preserve">
+			<value>Numéro de vol invalide</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRPORT_CODE" xml:space="preserve">
+			<value>Une erreur est survenue avec le fournisseur d'informations de vol.</value>
+	</data>
+	<data name="OrderAirportView_DATE_OUT_OF_RANGE" xml:space="preserve">
+			<value>La date fournis est à l'extérieur des limites du fournisseur.</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRLINE_CODE" xml:space="preserve">
+			<value>Une erreur est survenue avec le fournisseur d'information de vol.</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Title" xml:space="preserve">
+		<value>Erreur de connection</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
+		<value>Un probleme de connexion est survenu lors de la tentative d'obtenir l'état de votre course de taxi.</value>
 	</data>
 </root>

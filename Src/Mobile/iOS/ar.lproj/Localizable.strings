@@ -5,6 +5,8 @@
 "AccountDisabled_NoCall"="تم إيقاف حسابك.";
 "AccountNotActivated"="لم يتم تفعيل حسابك. تم إرسال بريد الكتروني اخر للتنشيط";
 "AccountNotActivatedCodeBySMS"="Your account has not been activated. Another activation SMS was sent to you.";
+"FacebookLoginErrorTitle"="Email already used";
+"FacebookLoginErrorMessage"="This email is already registered via a Facebook account. Please login using your Facebook account or use a different email.";
 "AccountPaymentNumberRequiredMessage"="Please enter a valid account number";
 "AccountPaymentCustomerNumberRequiredMessage"="Please enter a valid rider number";
 "AccountPaymentNumberRequiredTitle"="مطلوب رقم الحساب";
@@ -58,6 +60,7 @@
 "CmtRideLinqErrorTitle"="خطأ";
 "CmtRideLinqGenericErrorMessage"="حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.";
 "CmtRideLinqSaveChanges"="حفظ";
+"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "UnpairPayInCar"="Pay in Car";
 "UnpairErrorMessage"="حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.";
 "CmtTipAmount"="قيمة الإكرامية:";
@@ -130,7 +133,6 @@
 "Done"="تم";
 "DontHaveAnAccountLabel"="ليس لديك حساب؟";
 "DriverInfoColor"="اللون:";
-"DriverInfoDriver"="السائق:";
 "DriverInfoLicence"="رقم الرخصة:";
 "DriverInfoMake"="الصنع:";
 "DriverInfoModel"="الموديل:";
@@ -291,8 +293,8 @@
 "ResetPasswordConfirmationMessage"="تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.";
 "ResetPasswordConfirmationTitle"="تم إرسال كلمة المرور";
 "ResetPasswordEmailPlaceHolder"="البريد الإلكتروني";
-"ResetPasswordInvalidDataMessage"="البريد الإلكتروني غير صحيح";
-"ResetPasswordInvalidDataTitle"="عنوان البريد الإلكتروني غير صحيح";
+"InvalidEmailMessage"="البريد الإلكتروني غير صحيح";
+"InvalidEmailTitle"="عنوان البريد الإلكتروني غير صحيح";
 "ResetPasswordSubtitleText"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";
 "ResetPasswordSucessMessage"="تم إعادة ضبط كلمة المرور بنجاح";
 "ResetPasswordSucessTitle"="إعادة ضبط كلمة المرور";
@@ -507,7 +509,8 @@
 "PanelMenuViewPromotionsText"="Promotions";
 "UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
-"UnpairWarningCancelButton"="Pay in car";
+"UnpairWarningOkButton"="Pay in car";
+"UnpairWarningCancelButton"="Cancel";
 "View_Promotions"="Promotions";
 "PromoExpiringIn1DayMessage"="Expires in 1 day";
 "PromoExpiringSoonMessage"="Expires in {0} days";
@@ -570,7 +573,6 @@
 "ManualRideLinqStatus_Distance"="Distance:";
 "ManualRideLinqStatus_Driver"="Driver id:";
 "ManualRideLinqStatus_Fare"="Fare meter:";
-"ManualRideLinqStatus_PairingCode"="Pairing Code:";
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "ManualRideLinqStatus_Total"="Total cost:";
@@ -680,3 +682,23 @@
 "NetworkTimeOutPopupAlways"="Always Accept";
 "EstimateFareCalculating"="Calculating...";
 "OrderStatus_Medallion"="Medallion";
+"WaitingCarLandscapeViewCloseButtonText"="Back";
+"WaitingCarLandscapeViewCarNumber"="Car Number";
+"WaitingCarLandscapeActivityName"="Car Number";
+"BookingAirportDetailsTerminal"=", \nTerminal: {0}";
+"UpdateNoticeTitle"="Update Notice";
+"BookingAirportNoFlights_Title"="No flights";
+"BookingAirportNoFlights_Message"="No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}";
+"UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";
+"AccountLinkedWithFacebook"="Account is linked with Facebook account";
+"EmailUsedMessageTitle"="Email already used";
+"EmailUsedMessage"="This email is already used by another account";
+"OrderStatus_PairingSuccess"="OK you're checked in. Payment will be automatic at the end of your trip.";
+"BookingAirportMissingInfo_Title"="Missing information";
+"BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";
+"OrderAirportView_BAD_FLIGHT_NUMBER"="Invalid flight number";
+"OrderAirportView_BAD_AIRPORT_CODE"="An error occurred with the flight status provider.";
+"OrderAirportView_DATE_OUT_OF_RANGE"="Provided date is out of range.";
+"OrderAirportView_BAD_AIRLINE_CODE"="An error occurred with the flight status provider.";
+"ManualPairing_TimeOut_Title"="Connection error";
+"ManualPairing_TimeOut_Message"="There is a connection error preventing us from providing the status of your ride.";

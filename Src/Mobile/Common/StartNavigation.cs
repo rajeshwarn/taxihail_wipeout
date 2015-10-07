@@ -11,6 +11,7 @@ using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -50,6 +51,8 @@ namespace apcurium.MK.Booking.Mobile
                     accountService.SignOut();
 				}
 
+                // Don't check the app version here since it's done in the LoginViewModel
+
 				ShowViewModel<LoginViewModel>();
             }
 			else if (@params.ContainsKey ("orderId"))
@@ -62,6 +65,7 @@ namespace apcurium.MK.Booking.Mobile
                 await accountService.GetNotificationSettings(true);
                 await accountService.GetUserTaxiHailNetworkSettings(true);
 				await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
+                await Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync();
                 
                 try
                 {
@@ -88,6 +92,7 @@ namespace apcurium.MK.Booking.Mobile
                     // Make sure to refresh notification/payment settings even if the user has killed the app
                     accountService.GetNotificationSettings(true);
                     Mvx.Resolve<IPaymentService>().GetPaymentSettings();
+                    Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync();
                 });
 
                 // Log user session start

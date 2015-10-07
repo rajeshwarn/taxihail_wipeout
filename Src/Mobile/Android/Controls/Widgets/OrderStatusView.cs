@@ -7,6 +7,8 @@ using Android.Util;
 using Android.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using Android.Widget;
+using Android.Views.Animations;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -17,32 +19,91 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private bool _isShown;
 		private ViewStates _animatedVisibility;
+        private LinearLayout _statusLayout;
+        private ImageView _progressImage;
+        private FrameLayout _progressLayout;
 
-		public OrderStatusView(Context context, IAttributeSet attrs) : base(Resource.Layout.SubView_BookingStatus, context, attrs)
-		{
-			this.DelayBind(() =>
-			{
-				_contactTaxiOverlay = FindViewById<OrderStatusContactTaxiOverlay>(Resource.Id.ContactTaxiOverlay);
-				
-				var set = this.CreateBindingSet<OrderStatusView, BookingStatusViewModel>();
+        public OrderStatusView(Context context, IAttributeSet attrs) : base(Resource.Layout.SubView_BookingStatus, context, attrs)
+        {
+            this.DelayBind(() =>
+                {
+                    _contactTaxiOverlay = FindViewById<OrderStatusContactTaxiOverlay>(Resource.Id.ContactTaxiOverlay);
+                    _statusLayout = FindViewById<LinearLayout>(Resource.Id.statusLayout);
+                    _progressImage = FindViewById<ImageView>(Resource.Id.progressImage);
+                    _progressLayout = FindViewById<FrameLayout>(Resource.Id.progressLayout);
 
-				set.Bind(_contactTaxiOverlay)
-					.For("DataContext")
-					.To(vm => vm);
+                    var set = this.CreateBindingSet<OrderStatusView, BookingStatusViewModel>();
 
-				set.Bind(_contactTaxiOverlay)
-					.For(v => v.AnimatedVisibility)
-					.To(vm => vm.IsContactTaxiVisible)
-					.WithConversion("Visibility");
+                    set.Bind(_contactTaxiOverlay)
+                        .For("DataContext")
+                        .To(vm => vm);
 
-				set.Bind(_contactTaxiOverlay)
-					.For(v => v.Visibility)
-					.To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
-					.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+                    set.Bind(_contactTaxiOverlay)
+                        .For(v => v.AnimatedVisibility)
+                        .To(vm => vm.IsContactTaxiVisible)
+                        .WithConversion("Visibility");
 
-				set.Apply();
-			});
-		}
+                    set.Bind()
+                        .For(v => v.ShowAnimation)
+                        .To(vm => vm.IsProgressVisible);
+
+                    set.Bind(_contactTaxiOverlay)
+                        .For(v => v.Visibility)
+                        .To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
+                        .WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+
+                    set.Apply();
+                });
+        }
+
+        private bool _showAnnimation;
+        public bool ShowAnimation
+        {
+            get
+            {
+                return _showAnnimation;
+            }
+            set
+            {
+                if (_showAnnimation != value)
+                {
+                    _showAnnimation = value;
+                    if (ShowAnimation)
+                    {
+                        _progressLayout.Visibility = ViewStates.Visible;
+                        _statusLayout.SetBackgroundColor(Resources.GetColor(Resource.Color.transparent));
+                        AnimateProgress(_progressImage);
+                    }
+                    else
+                    {
+                        _progressLayout.Visibility = ViewStates.Gone;
+                        _statusLayout.Background = Resources.GetDrawable(Resource.Drawable.drop_shadow_opaque);
+                        _progressImage.ClearAnimation();
+                    }
+                }
+            }
+        }
+
+        private void AnimateProgress(View view)
+        {
+            view.SetX(-_statusLayout.Width);
+            var animation = new TranslateAnimation(0, _statusLayout.Width, 0, 0)
+                {
+                    Duration = 4000,
+                };
+
+            animation.AnimationEnd += (sender, e) => 
+                {
+                    var animationEnd = new TranslateAnimation(_statusLayout.Width, _statusLayout.Width * 2, 0, 0)
+                        {
+                            Duration = 4000,
+                        };
+                    animationEnd.AnimationEnd += (sender1, e1) => AnimateProgress(view);
+                    view.StartAnimation(animationEnd);
+                };
+            view.StartAnimation(animation);
+
+        }
 
 		public ViewStates AnimatedVisibility
 		{
@@ -87,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					return;
 				}
 
-				var desiredHeight = -(_contactTaxiOverlay.Height + 1);
+				var desiredHeight = -_contactTaxiOverlay.Height;
 
 				if (((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin != desiredHeight)
 				{
@@ -111,8 +172,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			animation.AnimationEnd += (sender, args) =>
 			{
-				((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = -1000;
+				var contactAnimation = _contactTaxiOverlay.Animation;
 
+				if (contactAnimation != null && contactAnimation.HasStarted)
+				{
+					contactAnimation.Cancel();
+				}
+
+				((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = OrderStatusContactTaxiOverlay.CONTACT_TAXI_HIDDEN_Y_OFFSET;
+				
 				//Ensures that the status view is hidden correctly.
 				if (((MarginLayoutParams) LayoutParameters).TopMargin != -Height)
 				{

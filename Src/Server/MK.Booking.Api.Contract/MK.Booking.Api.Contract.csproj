@@ -81,7 +81,10 @@
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
     <Compile Include="Requests\ConfirmationCodeRequest.cs" />
+    <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
     <Compile Include="Requests\EtaForPickupRequest.cs" />
+    <Compile Include="Requests\FindAccountsRequest.cs" />
+    <Compile Include="Requests\FlightInformationRequest.cs" />
     <Compile Include="Requests\InitiateCallToDriverRequest.cs" />
     <Compile Include="Requests\GetAddressesFromPostcalCodeRequest.cs" />
     <Compile Include="Requests\LogOriginalEtaRequest.cs" />
@@ -171,6 +174,7 @@
     <Compile Include="Requests\SendReceipt.cs" />
     <Compile Include="Requests\EmailTemplateNamesRequest.cs" />
     <Compile Include="Requests\PrivacyPolicyRequest.cs" />
+    <Compile Include="Requests\TaxiLocationRequest.cs" />
     <Compile Include="Requests\UnassignedNetworkVehicleTypeRequest.cs" />
     <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
@@ -191,6 +195,11 @@
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
+    <Compile Include="Resources\FlightInformation.cs" />
+    <Compile Include="Resources\FlightStats\AirportResource.cs" />
+    <Compile Include="Resources\FlightStats\FlightStatsError.cs" />
+    <Compile Include="Resources\FlightStats\FlightStatsResponse.cs" />
+    <Compile Include="Resources\FlightStats\FlightStatus.cs" />
     <Compile Include="Resources\IbsChargeAccountImportReport.cs" />
     <Compile Include="Resources\IbsChargeAccountValidation.cs" />
     <Compile Include="Resources\IbsChargeAccount.cs" />

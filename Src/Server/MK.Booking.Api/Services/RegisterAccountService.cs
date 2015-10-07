@@ -43,8 +43,8 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
-            
-            if (countryCode.IsNumberPossible(request.Phone))
+
+			if (PhoneHelper.IsNumberPossible(countryCode, request.Phone))
             {
                 request.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Phone);
             }

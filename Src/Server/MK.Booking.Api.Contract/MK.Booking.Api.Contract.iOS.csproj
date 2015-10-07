@@ -79,7 +79,9 @@
     <Compile Include="AuthenticateAttribute.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
     <Compile Include="Requests\ConfirmationCodeRequest.cs" />
+    <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
     <Compile Include="Requests\EtaForPickupRequest.cs" />
+    <Compile Include="Requests\FlightInformationRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\LogOriginalEtaRequest.cs" />
     <Compile Include="Requests\NotificationSettingsRequest.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Requests\Payment\UpdateAutoTipRequest.cs" />
     <Compile Include="Requests\SendMessageToDriverRequest.cs" />
     <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
+    <Compile Include="Requests\TaxiLocationRequest.cs" />
     <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\ActivePromotion.cs" />
@@ -159,6 +162,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Resources\FlightInformation.cs" />
     <BundleResource Include="Resources\OrderRatings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

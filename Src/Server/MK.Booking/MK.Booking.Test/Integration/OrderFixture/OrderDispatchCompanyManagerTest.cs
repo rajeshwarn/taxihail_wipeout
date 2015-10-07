@@ -13,7 +13,6 @@ using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using CMTServices;
 using CustomerPortal.Client.Impl;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.InMemory;
@@ -44,8 +43,9 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 () => new BookingDbContext(DbName),
                 new IBSServiceProvider(new TestServerSettings(), new Logger(), new TaxiHailNetworkServiceClient(new TestServerSettings())),
                 new TaxiHailNetworkServiceClient(new TestServerSettings()),
-                new HoneyBadgerServiceClient(new TestServerSettings(), new Logger()),
-                new ConfigurationDao(() => new ConfigurationDbContext(DbName)));
+                new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
+                new Logger(),
+                new TestServerSettings());
 
             var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestServerSettings());
             ordetailsGenerator.Handle(new OrderCreated

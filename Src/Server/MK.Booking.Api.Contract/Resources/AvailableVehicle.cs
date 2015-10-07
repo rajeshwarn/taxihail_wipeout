@@ -6,7 +6,11 @@
 
         public double Longitude { get; set; }
 
+        public double CompassCourse { get; set; }
+
         public double VehicleNumber { get; set; }
+
+		public string VehicleName { get; set; }
 
         public string LogoName { get; set; }
 

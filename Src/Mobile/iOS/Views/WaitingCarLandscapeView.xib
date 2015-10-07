@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WaitingCarLandscapeView">
+            <connections>
+                <outlet property="carNumberLabel" destination="kO3-nq-PfR" id="XBD-Zc-zAM"/>
+                <outlet property="closeButton" destination="oSO-At-UW7" id="yES-jb-VTT"/>
+                <outlet property="mainView" destination="iN0-l3-epB" id="Cup-R5-sdP"/>
+                <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oSO-At-UW7" userLabel="Close Button" customClass="FlatButton">
+                    <rect key="frame" x="438" y="264" width="107" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="107" id="nAM-zc-ahC"/>
+                        <constraint firstAttribute="height" constant="41" id="ov0-vh-T4F"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="67" id="t8I-aF-pdK"/>
+                    </constraints>
+                    <state key="normal" title="BACK">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="70" translatesAutoresizingMaskIntoConstraints="NO" id="kO3-nq-PfR" userLabel="Car Number">
+                    <rect key="frame" x="34" y="70" width="500" height="180"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="150"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="oSO-At-UW7" secondAttribute="trailing" constant="23" id="A2D-7I-yKg"/>
+                <constraint firstAttribute="trailing" secondItem="kO3-nq-PfR" secondAttribute="trailing" constant="34" id="Kmd-3Y-Q1K"/>
+                <constraint firstAttribute="centerX" secondItem="kO3-nq-PfR" secondAttribute="centerX" id="QRL-y5-C7D"/>
+                <constraint firstItem="kO3-nq-PfR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="70" id="QTX-iM-pXL"/>
+                <constraint firstAttribute="bottom" secondItem="kO3-nq-PfR" secondAttribute="bottom" constant="70" id="RBX-Wz-whv"/>
+                <constraint firstItem="kO3-nq-PfR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="34" id="gpv-k1-buA"/>
+                <constraint firstAttribute="bottom" secondItem="oSO-At-UW7" secondAttribute="bottom" constant="15" id="iRV-9B-i1P"/>
+                <constraint firstAttribute="centerY" secondItem="kO3-nq-PfR" secondAttribute="centerY" id="mdO-oB-XLC"/>
+            </constraints>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

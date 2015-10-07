@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<AccountPasswordUpdated>(NoAction);
             Handles<AddressRemovedFromHistory>(NoAction);
             Handles<RoleAddedToUserAccount>(NoAction);
+            Handles<RoleUpdatedToUserAccount>(NoAction);
             Handles<CreditCardAddedOrUpdated>(NoAction);
             Handles<CreditCardRemoved>(NoAction);
             Handles<AllCreditCardsRemoved>(NoAction);
@@ -161,11 +162,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateBookingSettings(BookingSettings settings, int? defaultTipPercent)
+        public void UpdateBookingSettings(BookingSettings settings, string email, int? defaultTipPercent)
         {
             Update(new BookingSettingsUpdated
             {
                 SourceId = Id,
+				Email = email,
                 Name = settings.Name,
                 ChargeTypeId = settings.ChargeTypeId,
                 NumberOfTaxi = settings.NumberOfTaxi,
@@ -242,6 +244,14 @@ namespace apcurium.MK.Booking.Domain
         public void AddRole(string rolename)
         {
             Update(new RoleAddedToUserAccount
+            {
+                RoleName = rolename,
+            });
+        }
+
+        public void UpdateRole(string rolename)
+        {
+            Update(new RoleUpdatedToUserAccount
             {
                 RoleName = rolename,
             });

@@ -135,6 +135,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppServices\IAirportInformationService.cs" />
+    <Compile Include="AppServices\Impl\AirportInformationService.cs" />
     <Compile Include="AppServices\Impl\MetricsService.cs" />
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
     <Compile Include="AppServices\Impl\POIProvider.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\DeviceOrientationFilter.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Messages\OrderStatusChanged.cs" />
     <Compile Include="Models\PhoneNumberModel.cs" />
@@ -216,6 +219,7 @@
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
     <Compile Include="ViewModels\EditAutoTipViewModel.cs" />
+    <Compile Include="ViewModels\Map\TaxiLocation.cs" />
     <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
     <Compile Include="ViewModels\Orders\OrderAirportViewModel.cs" />
     <Compile Include="ViewModels\Orders\BookingStatusBottomBarViewModel.cs" />
@@ -351,11 +355,15 @@
     <Compile Include="BindingConverter\StringFormatConverter.cs" />
     <Compile Include="ViewModels\PanelMenuViewModel.iOS.cs" />
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
-    <Compile Include="ViewModels\ManualRideLinqStatusViewModel.cs" />
     <Compile Include="BindingConverter\DialCodeConverter.cs" />
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\OrientationService.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\CommonDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\IOrientationService.cs" />
+    <Compile Include="ViewModels\Orders\WaitingCarLandscapeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -394,6 +402,8 @@
     <None Include="Localization\Sherbet London.resx" />
     <None Include="Localization\BlackCabNow.resx" />
     <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
+    <EmbeddedResource Include="Localization\Arro.resx" />
+    <EmbeddedResource Include="Localization\ArroDemo.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />

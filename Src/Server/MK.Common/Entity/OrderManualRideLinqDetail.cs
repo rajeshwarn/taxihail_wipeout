@@ -49,6 +49,8 @@ namespace apcurium.MK.Common.Entity
 
         public string Medallion { get; set; }
 
+	    public string DeviceName { get; set; }
+
         public int TripId { get; set; }
 
         public int DriverId { get; set; }
@@ -56,5 +58,7 @@ namespace apcurium.MK.Common.Entity
         public double? AccessFee { get; set; }
 
         public string LastFour { get; set; }
+
+        public string PairingError { get; set; }
     }
 }

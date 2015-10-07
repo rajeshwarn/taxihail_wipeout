@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<RegisterTwitterAccount>,
         ICommandHandler<UpdateAccountPassword>,
         ICommandHandler<AddRoleToUserAccount>,
+        ICommandHandler<UpdateRoleToUserAccount>,
         ICommandHandler<AddOrUpdateCreditCard>,
         ICommandHandler<DeleteAllCreditCards>,
         ICommandHandler<DeleteAccountCreditCards>,
@@ -77,6 +78,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
             account.AddRole(command.RoleName);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateRoleToUserAccount command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateRole(command.RoleName);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -190,7 +198,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var settings = new BookingSettings();
             Mapper.Map(command, settings);
 
-            account.UpdateBookingSettings(settings, command.DefaultTipPercent);
+            account.UpdateBookingSettings(settings, command.Email, command.DefaultTipPercent);
 
             _repository.Save(account, command.Id.ToString());
         }

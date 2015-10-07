@@ -1,10 +1,7 @@
-using System.Linq;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -13,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IPaymentService _paymentService;
         private readonly IBookingService _bookingService;
-		private const int TipMaxPercent = 100;
+		private const int TIP_MAX_PERCENT = 100;
 
         public EditAutoTipViewModel(IOrderWorkflowService orderWorkflowService,
             IPaymentService paymentService,
@@ -57,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     using (this.Services().Message.ShowProgress())
                     {
-							if(PaymentPreferences.Tip > TipMaxPercent)
+							if(PaymentPreferences.Tip > TIP_MAX_PERCENT)
 						{
 							await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
 						}
@@ -66,30 +63,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                        var activeOrder = await _orderWorkflowService.GetLastActiveOrder();
 	                        if (activeOrder != null)
 	                        {
-	                            bool autoTipUpdated;
-								
-								if (activeOrder.Item1.IsManualRideLinq)
-								{
-									// Manual ride linq rides
-									autoTipUpdated = await _bookingService.UpdateAutoTipForManualRideLinq(activeOrder.Item1.Id, PaymentPreferences.Tip);
-									if(autoTipUpdated)
-									{
-										this.ReturnResult(PaymentPreferences.Tip);
-									}
-								}	
-								else
-								{
-									// Normal rides
-									autoTipUpdated = await _paymentService.UpdateAutoTip(activeOrder.Item1.Id, PaymentPreferences.Tip);
-								}
+	                            var autoTipUpdated = activeOrder.Item1.IsManualRideLinq
+									? await _bookingService.UpdateAutoTipForManualRideLinq(activeOrder.Item1.Id, PaymentPreferences.Tip) 
+									: await _paymentService.UpdateAutoTip(activeOrder.Item1.Id, PaymentPreferences.Tip);
 
 								if (autoTipUpdated)
 								{
-									Close(this);
+									this.ReturnResult(PaymentPreferences.Tip);
 								}
 								else
 								{
-									this.Services().Message.ShowMessage(this.Services().Localize["Error_EditAutoTipTitle"], this.Services().Localize["Error_EditAutoTipMessage"]);
+									this.Services().Message
+										.ShowMessage(this.Services().Localize["Error_EditAutoTipTitle"], this.Services().Localize["Error_EditAutoTipMessage"])
+										.FireAndForget();
 								}
 	                        }
 						}

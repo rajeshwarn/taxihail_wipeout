@@ -127,7 +127,7 @@
     <value>Finding you a taxi...</value>
   </data>
   <data name="OrderStatus_wosWAITINGRoaming" xml:space="preserve">
-    <value>Finding you a taxi with company {0}...</value>
+    <value>Finding you a taxi...</value>
   </data>
   <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
     <value>Sorry, no driver accepted. Please try again in a bit.</value>
@@ -143,5 +143,11 @@
   </data>
   <data name="PushNotification_wosARRIVED" xml:space="preserve">
     <value>Your Taxi (#{0}) has arrived. Driver will wait 3 minutes.</value>
+  </data>
+  <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
+    <value>Sorry, no driver accepted. Please try again in a bit.</value>
+  </data>
+  <data name="OrderStatus_wosLOADED" xml:space="preserve">
+    <value>Meter is on. Checking you in now...</value>
   </data>
 </root>

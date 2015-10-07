@@ -2,13 +2,13 @@ using System;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class ManualPairingForRideLinqViewModel: PageViewModel
+    public class ManualPairingForRideLinqViewModel: PageViewModel, ISubViewModel<OrderManualRideLinqDetail>
     {
         private readonly IBookingService _bookingService;
         private readonly IOrderWorkflowService _orderWorkflowService;
@@ -68,9 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             var isCreditCardDeactivated = await _orderWorkflowService.ValidateIsCardDeactivated();
                             if (isCreditCardDeactivated)
                             {
-                                 this.Services().Message.ShowMessage(
-                                    localize["ErrorCreatingOrderTitle"],
-                                    localize["ManualRideLinqCreditCardDisabled"]);
+                                 this.Services().Message.ShowMessage(localize["ErrorCreatingOrderTitle"], localize["ManualRideLinqCreditCardDisabled"]).FireAndForget();
                                  return;
                             }
 
@@ -81,21 +79,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
                             var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress);
 
-                            ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new
-                            {
-                                orderManualRideLinqDetail = orderManualRideLinqDetail.SerializeToString()
-                            });
+							this.ReturnResult(orderManualRideLinqDetail);
                         }
                     }
                     catch (WebServiceException ex)
                     {
                         Logger.LogError(ex);
-                        this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_Error_Title"], localize["ManualPairingForRideLinQ_Error_Message"]).HandleErrors();
+                        this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_Error_Title"], localize["ManualPairingForRideLinQ_Error_Message"]).FireAndForget();
                     }
                     catch (Exception ex)
                     {
                         Logger.LogError(ex);
-                        this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]).HandleErrors();
+						this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]).FireAndForget();
                     } 
                 });
             }

@@ -30,6 +30,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using MK.Booking.MapDataProvider.Foursquare;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Services;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -79,7 +81,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
 			container.Register<IPlaceDataProvider, FoursquareProvider>();
-			
+
+			container.Register<IDeviceOrientationService, AndroidDeviceOrientationService>();
+
             container.Register<IDirectionDataProvider> ((c, p) =>
             {
                 switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)

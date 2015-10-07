@@ -285,6 +285,7 @@
     <None Include="features\support\env.rb" />
     <None Include="features\my_first.feature" />
     <InterfaceDefinition Include="Views\Order\OrderAirportView.xib" />
+    <InterfaceDefinition Include="Views\WaitingCarLandscapeView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -594,10 +595,6 @@
     <Compile Include="Views\ManualPairingForRideLinqView.designer.cs">
       <DependentUpon>ManualPairingForRideLinqView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ManualRideLinqStatusView.cs" />
-    <Compile Include="Views\ManualRideLinqStatusView.designer.cs">
-      <DependentUpon>ManualRideLinqStatusView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Order\OrderBookingOptions.cs" />
     <Compile Include="Views\Order\OrderBookingOptions.designer.cs">
       <DependentUpon>OrderBookingOptions.cs</DependentUpon>
@@ -645,6 +642,21 @@
       <DependentUpon>ContactTaxiControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
+    <Compile Include="PlatformIntegration\AppleDeviceOrientationService.cs" />
+    <Compile Include="Views\WaitingCarLandscapeView.cs" />
+    <Compile Include="Views\WaitingCarLandscapeView.designer.cs">
+      <DependentUpon>WaitingCarLandscapeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\LoadingStatusBarView.cs" />
+    <BundleResource Include="Resources\status_gradient.png" />
+    <BundleResource Include="Resources\status_gradient%402x.png" />
+    <BundleResource Include="Resources\status_gradient%403x.png" />
+    <BundleResource Include="Resources\nearby_oriented_available.png" />
+    <BundleResource Include="Resources\nearby_oriented_available%402x.png" />
+    <BundleResource Include="Resources\nearby_oriented_available%403x.png" />
+    <BundleResource Include="Resources\nearby_oriented_passenger.png" />
+    <BundleResource Include="Resources\nearby_oriented_passenger%402x.png" />
+    <BundleResource Include="Resources\nearby_oriented_passenger%403x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -693,7 +705,6 @@
     <InterfaceDefinition Include="Views\PromotionCell.xib" />
     <InterfaceDefinition Include="Views\Payments\OverduePaymentView.xib" />
     <InterfaceDefinition Include="Views\ManualPairingForRideLinqView.xib" />
-    <InterfaceDefinition Include="Views\ManualRideLinqStatusView.xib" />
     <InterfaceDefinition Include="Views\Order\OrderBookingOptions.xib" />
     <InterfaceDefinition Include="Views\EditAutoTipView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\AppBarBookingStatus.xib" />

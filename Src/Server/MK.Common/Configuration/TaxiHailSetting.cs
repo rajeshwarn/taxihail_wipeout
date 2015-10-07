@@ -58,6 +58,7 @@ namespace MK.Common.Configuration
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
+            ShowOrientedPins = false;
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
@@ -74,6 +75,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehicles = false;
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
+            ShowOrientedPins = false;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
 			
@@ -95,7 +97,13 @@ namespace MK.Common.Configuration
             TwitterCallback = "http://www.taxihail.com/oauth";
             TwitterRequestTokenUrl = "https://api.twitter.com/oauth/request_token";
             
-            InitialZoomLevel = 14;            
+            InitialZoomLevel = 14;       
+     
+
+			FlightStats = new FlightStatsSettingsContainer
+			{
+				UseAirportDetails = false
+			};
 		}
 
 		[Hidden]
@@ -110,6 +118,8 @@ namespace MK.Common.Configuration
         public GeoLocSettingContainer GeoLoc { get; protected set; }
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
         public NetworkSettingContainer Network { get; protected set; }
+
+		public FlightStatsSettingsContainer FlightStats { get; set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Configuration - Can Change Service Url", Description="Display a button on the login page to change the API server url")]
@@ -469,6 +479,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - Show Message Driver", Description = "Show button on the status screen to text message the driver")]
         public bool ShowMessageDriver { get; set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Display - Use vehicle direction", Description = "Available only with GEO. When enabled, the marked will be oriented according to the vehicle direction information")]
+        public bool ShowOrientedPins { get; protected set; }
     }
 }
 

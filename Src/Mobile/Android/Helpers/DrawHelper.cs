@@ -139,5 +139,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
             return differentColorThanExpected;
         }
+
+		public static Bitmap RotateImageByDegrees(int imageResource, double degrees)
+		{
+			var image = DrawHelper.DrawableToBitmap (Application.Context.Resources.GetDrawable(imageResource));
+
+			Matrix matrix = new Matrix();
+			matrix.PostRotate((float)degrees);
+
+			return Bitmap.CreateBitmap(image, 0, 0, image.Width, image.Height, matrix, true);
+		}
     }
 }

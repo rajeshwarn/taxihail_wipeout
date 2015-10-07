@@ -40,7 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				btnUnpair.Dispose ();
 				btnUnpair = null;
 			}
-
 			if (btnEditTip != null) {
 				btnEditTip.Dispose ();
 				btnEditTip = null;

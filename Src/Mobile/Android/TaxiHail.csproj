@@ -43,6 +43,7 @@
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -246,11 +247,11 @@
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Book\PromotionActivity.cs" />
     <Compile Include="Activities\ManualPairingForRideLinqActivity.cs" />
-    <Compile Include="Activities\ManualRideLinqStatusActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\Setting\NotificationSettingsActivity.cs" />
     <Compile Include="Activities\Setting\UserTaxiHailNetworkSettingsActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
+    <Compile Include="Activities\WaitingCarLandscapeActivity.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
@@ -262,6 +263,7 @@
     <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
     <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
+    <Compile Include="Controls\Widgets\EditBoxWithAccessibility.cs" />
     <Compile Include="Controls\Widgets\OrderAirport.cs" />
     <Compile Include="Controls\Widgets\OrderStatusView.cs" />
     <Compile Include="Controls\Widgets\OrderStatusContactTaxiOverlay.cs" />
@@ -276,6 +278,7 @@
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
     <Compile Include="Models\BookATaxiDialogResult.cs" />
+    <Compile Include="PlatformIntegration\AndroidDeviceOrientationService.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
@@ -710,6 +713,15 @@
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <AndroidResource Include="Resources\Drawable\facebook_account_icon.png" />
+    <AndroidResource Include="Resources\Drawable\waitingcarclosebutton.xml" />
+    <AndroidResource Include="Resources\drawable-xhdpi\status_gradient.png" />
+    <Compile Include="Controls\Widgets\RoundedMvxImageView.cs" />
+    <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_available.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_available.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_available.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_passenger.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_passenger.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -863,6 +875,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_available.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\CarNumberOnTheVehicleIcon.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
@@ -949,9 +962,6 @@
     <AndroidResource Include="Resources\Layout\View_ManualPairingForRideLinq.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_ManualRideLinqStatus.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_EditAutoTip.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -984,6 +994,9 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\SubView_OrderAirport.axml" />
     <AndroidResource Include="Resources\Layout\VehicleInfoWindow.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_WaitingCarLandscape.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

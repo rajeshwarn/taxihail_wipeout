@@ -18,10 +18,14 @@ namespace apcurium.MK.Booking.Database
     {
         public const string SchemaName = "Booking";
 
+        public BookingDbContext()
+        {
+            
+        }
+
         public BookingDbContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
-
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -108,5 +112,13 @@ namespace apcurium.MK.Booking.Database
 
             SaveChanges();
         }
+
+		public static DateTime MinimumDatabaseDateTime
+		{
+			get
+			{
+				return new DateTime(System.Data.SqlTypes.SqlDateTime.MinValue.TimeTicks);
+			}
+		}
     }
 }

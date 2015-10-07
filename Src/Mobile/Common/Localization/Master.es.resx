@@ -149,6 +149,12 @@
     <value>Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado</value>
     <comment>Your account has not been activated. Another activation SMS was sent to you.</comment>
   </data>
+  <data name="FacebookLoginErrorTitle" xml:space="preserve">
+    <value>Correo electrónico existente</value>
+  </data>
+  <data name="FacebookLoginErrorMessage" xml:space="preserve">
+    <value>Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.</value>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Por favor introduzca un número de cuenta válido.</value>
     <comment>Please enter a valid account number</comment>
@@ -506,7 +512,7 @@
     <comment>Invalid account info</comment>
   </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
-    <value>La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.</value>
+    <value>La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.</value>
     <comment>The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</comment>
   </data>
   <data name="CreateAccountLanguageEnglish" xml:space="preserve">
@@ -712,10 +718,6 @@
   <data name="DriverInfoColor" xml:space="preserve">
     <value>Color:</value>
     <comment>Color:</comment>
-  </data>
-  <data name="DriverInfoDriver" xml:space="preserve">
-    <value>Chofer:</value>
-    <comment>Driver:</comment>
   </data>
   <data name="DriverInfoLicence" xml:space="preserve">
     <value># de Placa:</value>
@@ -1493,11 +1495,11 @@
     <value>Email</value>
     <comment>Email</comment>
   </data>
-  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+  <data name="InvalidEmailMessage" xml:space="preserve">
     <value>Este email es inválido</value>
     <comment>The email is invalid.</comment>
   </data>
-  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+  <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Email inválido</value>
     <comment>Invalid email</comment>
   </data>
@@ -2191,13 +2193,16 @@
     <value>Si usted decide pagar en el carro, usted no podrá utilizar la promoción</value>
     <comment>If you decide to pay in car, you will not be able to use the promotion</comment>
   </data>
-  <data name="UnpairWarningCancelButton" xml:space="preserve">
+  <data name="UnpairWarningOkButton" xml:space="preserve">
     <value>Pago en carro</value>
     <comment>Pay in car</comment>
   </data>
   <data name="View_Promotions" xml:space="preserve">
     <value>Promociones</value>
     <comment>Promotions</comment>
+  </data>
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
   <data name="PromoExpiringIn1DayMessage" xml:space="preserve">
     <value>Expira en 1 día</value>
@@ -2272,7 +2277,7 @@
     <comment>Link</comment>
   </data>
   <data name="PayPalLinked" xml:space="preserve">
-    <value>Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \ "Pagar en vehículo \" en la pantalla de pago</value>
+    <value>Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</value>
     <comment>Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</comment>
   </data>
   <data name="PayPalLinkedInfo" xml:space="preserve">
@@ -2403,6 +2408,9 @@
     <value>Error</value>
     <comment>Error</comment>
   </data>
+  <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
+    <value>An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</value>
+  </data>
   <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
     <value>Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.</value>
     <comment>Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</comment>
@@ -2439,10 +2447,6 @@
     <value>Medidor de tarifa:</value>
     <comment>Fare meter:</comment>
 	</data>
-  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
-    <value>Código de emparejamiento:</value>
-    <comment>Pairing Code:</comment>
-  </data>
   <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
     <value>Impuesto:</value>
     <comment>Tax amount:</comment>
@@ -2820,5 +2824,65 @@
   </data>
 	<data name="OrderStatus_Medallion" xml:space="preserve">
 		<value>Medallion</value>
+	</data>
+	<data name="WaitingCarLandscapeViewCloseButtonText" xml:space="preserve">
+		<value>Back</value>
+	</data>
+	<data name="WaitingCarLandscapeViewCarNumber" xml:space="preserve">
+		<value>Car Number</value>
+	</data>
+	<data name="WaitingCarLandscapeActivityName" xml:space="preserve">
+    	<value>Car Number</value>
+	</data>
+	<data name="BookingAirportDetailsTerminal">
+		<value>, \nTerminal: {0}</value>
+	</data>
+	<data name="UpdateNoticeTitle" xml:space="preserve">
+    		<value>Update Notice</value>
+	</data>
+	<data name="BookingAirportNoFlights_Title" xml:space="preserve">
+		<value>No flights</value>
+	</data>
+	<data name="BookingAirportNoFlights_Message" xml:space="preserve">
+		<value>No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}</value>
+	</data>
+	<data name="UpdateNoticeText" xml:space="preserve">
+    	<value>Sorry, this version of the app is no longer supported. Please update the app</value>
+	</data>
+	<data name="AccountLinkedWithFacebook" xml:space="preserve">
+    	<value>Account is linked with Facebook account</value>
+	</data>
+   <data name="EmailUsedMessageTitle" xml:space="preserve">
+    <value>Email already used</value>
+  </data>
+   <data name="EmailUsedMessage" xml:space="preserve">
+    <value>This email is already used by another account</value>
+	 </data>
+	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
+		<value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
+	</data>
+	<data name="BookingAirportMissingInfo_Title" xml:space="preserve">
+    <value>Missing information</value>
+  </data>
+	<data name="BookingAirportMissingInfo_Message" xml:space="preserve">
+    <value>The airline and the flight number are madatory.</value>
+  </data>
+	<data name="OrderAirportView_BAD_FLIGHT_NUMBER" xml:space="preserve">
+			<value>Invalid flight number</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRPORT_CODE" xml:space="preserve">
+			<value>An error occurred with the flight status provider.</value>
+	</data>
+	<data name="OrderAirportView_DATE_OUT_OF_RANGE" xml:space="preserve">
+			<value>Provided date is out of range.</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRLINE_CODE" xml:space="preserve">
+			<value>An error occurred with the flight status provider.</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Title" xml:space="preserve">
+		<value>Connection error</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
+		<value>There is a connection error preventing us from providing the status of your ride.</value>
 	</data>
 </root>

@@ -83,7 +83,7 @@
                             android:gravity="center_vertical"
                             android:src="@drawable/facebook_account_icon"
                             android:layout_gravity="center_vertical"
-                            android:hint="@string/RideSettingsName"
+                            android:contentDescription="@string/AccountLinkedWithFacebook"
                             local:MvxBind="Visibility IsLinkedWithFacebook, Converter=Visibility" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -92,8 +92,17 @@
                             android:textSize="18dp"
                             style="@style/BlackTextLabel"
                             android:text="thony@apcurium.com"
-                            local:MvxBind="Text Email"
+                            local:MvxBind="Text Email; Visibility CanEditEmail, Converter=InvertedVisibility"
                             android:gravity="center_vertical" />
+                        <EditText
+                            android:layout_width="fill_parent"
+                            android:layout_marginBottom="10dip"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:singleLine="true"
+                            android:maxLines="1"
+                            android:inputType="textEmailAddress"
+                            local:MvxBind="Text Email; Visibility CanEditEmail, Converter=Visibility"
+                            android:hint="@string/EmailLabel" />
                     </LinearLayout>
                     <TextView
                         android:layout_width="fill_parent"
@@ -110,11 +119,12 @@
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:layout_marginBottom="10dip"
                             android:background="@drawable/edit_text_flat"
+                            android:contentDescription="@string/DialCodeSelectorTitle"
                             style="@style/MainTheme"
                             local:MvxItemTemplate="@layout/countrycodeitemmvx"
                             local:MvxDropDownItemTemplate="@layout/countrycodeitemdropdownmvx"
                             local:MvxBind="ItemsSource CountryCodes;SelectedItem SelectedCountryCode" />
-                        <EditText
+                        <apcurium.mk.booking.mobile.client.controls.widgets.EditTextWithAccessibility
                             android:layout_width="fill_parent"
                             android:layout_marginBottom="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
@@ -198,22 +208,6 @@
                         android:maxLines="1"
                         android:singleLine="true"
                         android:hint="@string/RideSettingsCustomerNumber" />
-                    <TextView
-                        android:id="@+id/tipAmountLabel"
-                        android:text="@string/PaymentDetails.TipAmountLabel"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="5dip"
-                        android:paddingBottom="5dip"
-                        style="@style/BlackTextLabel" />
-                    <apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner
-                        android:id="@+id/tipPicker"
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:layout_marginBottom="10dip"
-                        local:allowOtherSelection="true"
-                        local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip"
-                        android:contentDescription="@string/PaymentDetails.TipAmountLabel" />
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"

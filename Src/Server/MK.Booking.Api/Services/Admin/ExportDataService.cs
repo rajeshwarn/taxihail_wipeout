@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                                 a.Language,
                                 a.TwitterId,
                                 a.FacebookId,
-                                a.IsAdmin,
+                                a.HasAdminAccess,
                                 a.IsConfirmed,
                                 a.DisabledByAdmin,
                                 a.Settings.PayBack,
@@ -113,6 +113,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Order.WasSwitchedToAnotherCompany"] = orderReport.Order.WasSwitchedToAnotherCompany.ToString();
                             orderReportEntry["Order.HasTimedOut"] = orderReport.Order.HasTimedOut.ToString();
                             orderReportEntry["Order.OriginalEta"] = orderReport.Order.OriginalEta.ToString();
+							orderReportEntry["Order.Error"] = orderReport.Order.Error;
 
                             orderReportEntry["OrderStatus.Status"] = orderReport.OrderStatus.Status.ToString();
                             orderReportEntry["OrderStatus.OrderIsCancelled"] = orderReport.OrderStatus.OrderIsCancelled.ToString();                            
@@ -136,6 +137,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Payment.BookingFees"] = orderReport.Payment.BookingFees.ToString();
                             orderReportEntry["Payment.CmtPairingToken"] = orderReport.Payment.PairingToken;
                             orderReportEntry["Payment.IsPaired"] = orderReport.Payment.IsPaired.ToString();
+                            orderReportEntry["Payment.WasUnpaired"] = orderReport.Payment.WasUnpaired.ToString();
                             orderReportEntry["Payment.IsCompleted"] = orderReport.Payment.IsCompleted.ToString();
                             orderReportEntry["Payment.IsCancelled"] = orderReport.Payment.IsCancelled.ToString();
                             orderReportEntry["Payment.IsRefunded"] = orderReport.Payment.IsRefunded.ToString();

@@ -322,6 +322,9 @@ namespace apcurium.MK.Web.Tests
                 ClientLanguageCode = SupportedLanguages.fr.ToString()
             };
             sut.CreateOrder(order).Wait();
+
+            // Wait for IBS order Id to be assigned
+            Thread.Sleep(10000);
         }
 
         [TestFixtureTearDown]
@@ -375,7 +378,7 @@ namespace apcurium.MK.Web.Tests
             var order = await sut.GetOrder(_orderId);
 
             Assert.IsNotNull(order);
-            Assert.IsNull(order.IBSOrderId);
+            Assert.IsNotNull(order.IBSOrderId);
         }
 
         [Test]

@@ -12,6 +12,7 @@ using ServiceStack.Text;
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class ReportDetailGenerator : IEventHandler<OrderCreated>,
+		IEventHandler<OrderReportCreated>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderCancelled>,
         IEventHandler<OrderCancelledBecauseOfError>,
@@ -88,7 +89,52 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderStatusChanged @event)
+		public void Handle(OrderReportCreated @event)
+		{
+			using (var context = _contextFactory.Invoke())
+			{
+				var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
+				var orderReport = existingReport ?? new OrderReportDetail { Id = @event.SourceId };
+
+				var account = context.Find<AccountDetail>(@event.AccountId);
+
+				orderReport.Account = new OrderReportAccount
+				{
+					AccountId = @event.AccountId,
+					Name = @event.Settings.Name,
+					Phone = @event.Settings.Phone,
+					Email = (account != null) ? account.Email : null,
+					DefaultCardToken = (account != null) ? account.DefaultCreditCard : null,
+					IBSAccountId = (account != null) ? account.IBSAccountId : null,
+					PayBack = (account != null) ? account.Settings.PayBack : null
+				};
+				orderReport.Order = new OrderReportOrder
+				{
+					IBSOrderId = @event.IBSOrderId,
+					ChargeType = @event.Settings.ChargeType,
+					IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
+					IsPrepaid = @event.IsPrepaid,
+					PickupDateTime = @event.PickupDate,
+					CreateDateTime = @event.CreatedDate,
+					PickupAddress = @event.PickupAddress,
+					DropOffAddress = @event.DropOffAddress,
+					CompanyName = @event.CompanyName,
+					CompanyKey = @event.CompanyKey,
+					Market = @event.Market,
+					Error = @event.Error
+				};
+				orderReport.Client = new OrderReportClient
+				{
+					OperatingSystem = @event.UserAgent.GetOperatingSystem(),
+					UserAgent = @event.UserAgent,
+					Version = @event.ClientVersion
+				};
+
+				context.Save(orderReport);
+			}
+		}
+
+		public void Handle(OrderStatusChanged @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -138,7 +184,8 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.Payment.Type = null;
-                orderReport.Payment.IsPaired = true;
+                orderReport.Payment.IsPaired = false;
+                orderReport.Payment.WasUnpaired = true;
                 orderReport.Order.ChargeType = ChargeTypes.PaymentInCar.Display;
                 context.Save(orderReport);
             }
@@ -443,7 +490,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     ChargeType = ChargeTypes.CardOnFile.Id.ToString(),
                     PickupDateTime = @event.PairingDate,
                     CreateDateTime = @event.PairingDate,
-                    PickupAddress = @event.PickupAddress,
+                    PickupAddress = @event.PickupAddress
                 };
                 orderReport.Client = new OrderReportClient
                 {
@@ -452,13 +499,13 @@ namespace apcurium.MK.Booking.EventHandlers
                     Version = @event.ClientVersion
                 };
                 
-                orderReport.Payment = new OrderReportPayment()
+                orderReport.Payment = new OrderReportPayment
                 {
                     PairingToken = @event.PairingToken,
                     IsPaired = true
                 };
 
-                orderReport.OrderStatus = new OrderReportOrderStatus()
+                orderReport.OrderStatus = new OrderReportOrderStatus
                 {
                     Status = OrderStatus.Created
                 };
@@ -484,10 +531,10 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
-
                 orderReport.Payment.MdtFare = @event.Fare;
                 orderReport.Payment.MdtTip = @event.Tip;
                 orderReport.Payment.MdtToll = @event.Toll;
+                orderReport.Payment.Error = @event.PairingError;
                 orderReport.Payment.TotalAmountCharged = @event.Total.HasValue
                     ? (decimal?)Math.Round(@event.Total.Value, 2)
                     : null;
@@ -497,7 +544,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.OrderStatus.OrderIsCompleted = true;
                     orderReport.OrderStatus.Status = OrderStatus.Completed;
                 }
-
 
                 context.Save(orderReport);
             }

@@ -6,6 +6,8 @@
 "AccountDisabled_NoCall"="Su cuenta ha sido deshabilitada";
 "AccountNotActivated"="Su cuenta no ha sido activada. Otro email de activación le ha sido enviado";
 "AccountNotActivatedCodeBySMS"="Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado";
+"FacebookLoginErrorTitle"="Correo electrónico existente";
+"FacebookLoginErrorMessage"="Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.";
 "AccountPaymentNumberRequiredMessage"="Por favor introduzca un número de cuenta válido.";
 "AccountPaymentCustomerNumberRequiredMessage"="Por favor introduzca un número de cliente válido.";
 "AccountPaymentNumberRequiredTitle"="Número de cuenta caducado.";
@@ -95,7 +97,7 @@
 "CreateAccountErrorTitle"="Error";
 "CreateAccountFullNamePlaceHolder"="Nombre completo";
 "CreateAccountInvalidDataTitle"="Información de cuenta inválida";
-"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.";
+"CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.";
 "CreateAccountLanguageEnglish"="Inglés";
 "CreateAccountLanguageFrench"="Francés";
 "CreateAccountPasswordConfirmationPlaceHolder"="Confirme contraseña";
@@ -147,7 +149,6 @@
 "DontAsk"="No preguntar";
 "DontHaveAnAccountLabel"="No tiene cuenta?";
 "DriverInfoColor"="Color:";
-"DriverInfoDriver"="Chofer:";
 "DriverInfoLicence"="# de Placa:";
 "DriverInfoMake"="Marca:";
 "DriverInfoModel"="Modelo:";
@@ -343,8 +344,8 @@
 "ResetPasswordConfirmationMessage"="Una nueva contraseña ha sido enviada a su email";
 "ResetPasswordConfirmationTitle"="Contraseña enviada";
 "ResetPasswordEmailPlaceHolder"="Email";
-"ResetPasswordInvalidDataMessage"="Este email es inválido";
-"ResetPasswordInvalidDataTitle"="Email inválido";
+"InvalidEmailMessage"="Este email es inválido";
+"InvalidEmailTitle"="Email inválido";
 "ResetPasswordSubtitleText"="Ingrese su email y le enviaremos una nueva contraseña";
 "ResetPasswordSucessMessage"="La contraseña ha sido restablecida exitosamente";
 "ResetPasswordSucessTitle"="Restablecer contraseña";
@@ -518,8 +519,9 @@
 "PanelMenuViewPromotionsText"="Promotions";
 "UnpairWarningMessage"="¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?";
 "UnpairWarningMessageWithPromo"="Si usted decide pagar en el carro, usted no podrá utilizar la promoción";
-"UnpairWarningCancelButton"="Pago en carro";
+"UnpairWarningOkButton"="Pago en carro";
 "View_Promotions"="Promociones";
+"UnpairWarningCancelButton"="Cancelar";
 "PromoExpiringIn1DayMessage"="Expira en 1 día";
 "PromoExpiringSoonMessage"="Expira en {0} dias";
 "PromoExpiringToday"="Expira hoy!";
@@ -538,7 +540,7 @@
 "PayPalLinkError"="No se puede vincular la cuenta de PayPal";
 "PayPalUnlinkError"="No se puede desvincular la cuenta de PayPal";
 "LinkPayPalConfirmation"="Vincular";
-"PayPalLinked"="Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \ "Pagar en vehículo \" en la pantalla de pago";
+"PayPalLinked"="Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago";
 "PayPalLinkedInfo"="Cuenta vinculada";
 "NoPairingCreditCard"="Ninguno";
 "InvalidPassengersNumberTitle"="Número inválido de pasajeros";
@@ -571,6 +573,7 @@
 "PaymentLoadError"="No se pueden cargar los datos de pago. Por favor, inténtelo de nuevo más tarde.";
 "ManualPairingForRideLinQ_Error_Message"="Ocurrió un error durante el registro.";
 "ManualPairingForRideLinQ_Error_Title"="Error";
+"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
 "ManualPairingForRideLinQ_Instructions"="Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.";
 "ManualPairingForRideLinQ_InvalidCode_Message"="El código de emparejamiento es inválido.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Código Inválido";
@@ -580,7 +583,6 @@
 "ManualRideLinqStatus_Distance"="Distancia:";
 "ManualRideLinqStatus_Driver"="Id de Conductor:";
 "ManualRideLinqStatus_Fare"="Medidor de tarifa:";
-"ManualRideLinqStatus_PairingCode"="Código de emparejamiento:";
 "ManualRideLinqStatus_Tax"="Impuesto:";
 "ManualRideLinqStatus_Tip"="Propina:";
 "ManualRideLinqStatus_Total"="Costo Total:";
@@ -697,3 +699,23 @@
 "TaxiHailNetworkTimeOutPopupMessage"="Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?";
 "TaxiHailNetworkTimeOutPopupTitle"="Switch company?";
 "OrderStatus_Medallion"="Medallion";
+"WaitingCarLandscapeViewCloseButtonText"="Back";
+"WaitingCarLandscapeViewCarNumber"="Car Number";
+"WaitingCarLandscapeActivityName"="Car Number";
+"BookingAirportDetailsTerminal"=", \nTerminal: {0}";
+"UpdateNoticeTitle"="Update Notice";
+"BookingAirportNoFlights_Title"="No flights";
+"BookingAirportNoFlights_Message"="No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}";
+"UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";
+"AccountLinkedWithFacebook"="Account is linked with Facebook account";
+"EmailUsedMessageTitle"="Email already used";
+"EmailUsedMessage"="This email is already used by another account";
+"OrderStatus_PairingSuccess"="OK you're checked in. Payment will be automatic at the end of your trip.";
+"BookingAirportMissingInfo_Title"="Missing information";
+"BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";
+"OrderAirportView_BAD_FLIGHT_NUMBER"="Invalid flight number";
+"OrderAirportView_BAD_AIRPORT_CODE"="An error occurred with the flight status provider.";
+"OrderAirportView_DATE_OUT_OF_RANGE"="Provided date is out of range.";
+"OrderAirportView_BAD_AIRLINE_CODE"="An error occurred with the flight status provider.";
+"ManualPairing_TimeOut_Title"="Connection error";
+"ManualPairing_TimeOut_Message"="There is a connection error preventing us from providing the status of your ride.";

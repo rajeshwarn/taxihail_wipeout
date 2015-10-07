@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Extensions
 	{
 		private static readonly string[] _otherTypesAllowed = {
 			"airport", "transit_station", "bus_station", "train_station",
-			"route", "postal_code", "street_address"
+			"route", "postal_code", "street_address", "premise", "subpremise"
 		};
 
 		public static GeoAddress[] ConvertGeoResultToAddresses(this GeoResult result)

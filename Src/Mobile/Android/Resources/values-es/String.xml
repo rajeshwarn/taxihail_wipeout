@@ -8,6 +8,8 @@
   <string name="AccountDisabled_NoCall">Su cuenta ha sido deshabilitada</string>
   <string name="AccountNotActivated">Su cuenta no ha sido activada. Otro email de activación le ha sido enviado</string>
   <string name="AccountNotActivatedCodeBySMS">Su cuenta no ha sido activada. Otro SMS de activación le ha sido enviado</string>
+  <string name="FacebookLoginErrorTitle">Correo electrónico existente</string>
+  <string name="FacebookLoginErrorMessage">Este correo electrónico ya está inscribirse a través de una cuenta de Facebook. Por favor, iniciar sesión utilizando su cuenta de Facebook o utilizar un correo electrónico diferente.</string>
   <string name="AccountPaymentNumberRequiredMessage">Por favor introduzca un número de cuenta válido.</string>
   <string name="AccountPaymentCustomerNumberRequiredMessage">Por favor introduzca un número de cliente válido.</string>
   <string name="AccountPaymentNumberRequiredTitle">Número de cuenta caducado.</string>
@@ -97,7 +99,7 @@
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountFullNamePlaceHolder">Nombre completo</string>
   <string name="CreateAccountInvalidDataTitle">Información de cuenta inválida</string>
-  <string name="CreateAccountInvalidPassword">La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.</string>
+  <string name="CreateAccountInvalidPassword">La contraseña es inválida. La contraseña y la confirmación deben ser identicas. The password must also contain at least 6 characters.</string>
   <string name="CreateAccountLanguageEnglish">Inglés</string>
   <string name="CreateAccountLanguageFrench">Francés</string>
   <string name="CreateAccountPasswordConfirmationPlaceHolder">Confirme contraseña</string>
@@ -149,7 +151,6 @@
   <string name="DontAsk">No preguntar</string>
   <string name="DontHaveAnAccountLabel">No tiene cuenta?</string>
   <string name="DriverInfoColor">Color:</string>
-  <string name="DriverInfoDriver">Chofer:</string>
   <string name="DriverInfoLicence"># de Placa:</string>
   <string name="DriverInfoMake">Marca:</string>
   <string name="DriverInfoModel">Modelo:</string>
@@ -345,8 +346,8 @@
   <string name="ResetPasswordConfirmationMessage">Una nueva contraseña ha sido enviada a su email</string>
   <string name="ResetPasswordConfirmationTitle">Contraseña enviada</string>
   <string name="ResetPasswordEmailPlaceHolder">Email</string>
-  <string name="ResetPasswordInvalidDataMessage">Este email es inválido</string>
-  <string name="ResetPasswordInvalidDataTitle">Email inválido</string>
+  <string name="InvalidEmailMessage">Este email es inválido</string>
+  <string name="InvalidEmailTitle">Email inválido</string>
   <string name="ResetPasswordSubtitleText">Ingrese su email y le enviaremos una nueva contraseña</string>
   <string name="ResetPasswordSucessMessage">La contraseña ha sido restablecida exitosamente</string>
   <string name="ResetPasswordSucessTitle">Restablecer contraseña</string>
@@ -520,8 +521,9 @@
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="UnpairWarningMessage">¿Seguro que no quiere pagar con su tarjeta de crédito en el perfil?</string>
   <string name="UnpairWarningMessageWithPromo">Si usted decide pagar en el carro, usted no podrá utilizar la promoción</string>
-  <string name="UnpairWarningCancelButton">Pago en carro</string>
+  <string name="UnpairWarningOkButton">Pago en carro</string>
   <string name="View_Promotions">Promociones</string>
+  <string name="UnpairWarningCancelButton">Cancelar</string>
   <string name="PromoExpiringIn1DayMessage">Expira en 1 día</string>
   <string name="PromoExpiringSoonMessage">Expira en {0} dias</string>
   <string name="PromoExpiringToday">Expira hoy!</string>
@@ -540,7 +542,7 @@
   <string name="PayPalLinkError">No se puede vincular la cuenta de PayPal</string>
   <string name="PayPalUnlinkError">No se puede desvincular la cuenta de PayPal</string>
   <string name="LinkPayPalConfirmation">Vincular</string>
-  <string name="PayPalLinked">Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \ "Pagar en vehículo \" en la pantalla de pago</string>
+  <string name="PayPalLinked">Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
   <string name="PayPalLinkedInfo">Cuenta vinculada</string>
   <string name="NoPairingCreditCard">Ninguno</string>
   <string name="InvalidPassengersNumberTitle">Número inválido de pasajeros</string>
@@ -573,6 +575,7 @@
   <string name="PaymentLoadError">No se pueden cargar los datos de pago. Por favor, inténtelo de nuevo más tarde.</string>
   <string name="ManualPairingForRideLinQ_Error_Message">Ocurrió un error durante el registro.</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
+  <string name="ManualRideLinqStatus_PairingError">An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.</string>
   <string name="ManualPairingForRideLinQ_Instructions">Ingrese el código de 7 dígitos que aparece en la pantalla táctil de taxi para auto-pago y para obtener un recibo electrónico al final de su viaje.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">El código de emparejamiento es inválido.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Código Inválido</string>
@@ -582,7 +585,6 @@
   <string name="ManualRideLinqStatus_Distance">Distancia:</string>
   <string name="ManualRideLinqStatus_Driver">Id de Conductor:</string>
   <string name="ManualRideLinqStatus_Fare">Medidor de tarifa:</string>
-  <string name="ManualRideLinqStatus_PairingCode">Código de emparejamiento:</string>
   <string name="ManualRideLinqStatus_Tax">Impuesto:</string>
   <string name="ManualRideLinqStatus_Tip">Propina:</string>
   <string name="ManualRideLinqStatus_Total">Costo Total:</string>
@@ -699,4 +701,24 @@
   <string name="TaxiHailNetworkTimeOutPopupMessage">Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?</string>
   <string name="TaxiHailNetworkTimeOutPopupTitle">Switch company?</string>
   <string name="OrderStatus_Medallion">Medallion</string>
+  <string name="WaitingCarLandscapeViewCloseButtonText">Back</string>
+  <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
+  <string name="WaitingCarLandscapeActivityName">Car Number</string>
+  <string name="BookingAirportDetailsTerminal">, \nTerminal: {0}</string>
+  <string name="UpdateNoticeTitle">Update Notice</string>
+  <string name="BookingAirportNoFlights_Title">No flights</string>
+  <string name="BookingAirportNoFlights_Message">No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}</string>
+  <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
+  <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
+  <string name="EmailUsedMessageTitle">Email already used</string>
+  <string name="EmailUsedMessage">This email is already used by another account</string>
+  <string name="OrderStatus_PairingSuccess">OK you\'re checked in. Payment will be automatic at the end of your trip.</string>
+  <string name="BookingAirportMissingInfo_Title">Missing information</string>
+  <string name="BookingAirportMissingInfo_Message">The airline and the flight number are madatory.</string>
+  <string name="OrderAirportView_BAD_FLIGHT_NUMBER">Invalid flight number</string>
+  <string name="OrderAirportView_BAD_AIRPORT_CODE">An error occurred with the flight status provider.</string>
+  <string name="OrderAirportView_DATE_OUT_OF_RANGE">Provided date is out of range.</string>
+  <string name="OrderAirportView_BAD_AIRLINE_CODE">An error occurred with the flight status provider.</string>
+  <string name="ManualPairing_TimeOut_Title">Connection error</string>
+  <string name="ManualPairing_TimeOut_Message">There is a connection error preventing us from providing the status of your ride.</string>
 </resources>

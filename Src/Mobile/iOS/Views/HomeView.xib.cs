@@ -1,4 +1,4 @@
-the state change to be called using Cirrious.MvvmCross.Binding.BindingContext;
+using Cirrious.MvvmCross.Binding.BindingContext;
 using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
@@ -13,16 +13,15 @@ using System.ComponentModel;
 using System.Reactive.Linq;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using System.Reactive.Disposables;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class HomeView : BaseViewController<HomeViewModel>, IChangePresentation
     {
         private BookLaterDatePicker _datePicker;
-        private SerialDisposable _viewStatesubscription = new SerialDisposable();
-        private SerialDisposable _bookingStatussubscription = new SerialDisposable();
-        private SerialDisposable _orderStatusDetailSubscription = new SerialDisposable();
+        private readonly SerialDisposable _viewStatesubscription = new SerialDisposable();
+        private readonly SerialDisposable _bookingStatussubscription = new SerialDisposable();
+        private readonly SerialDisposable _orderStatusDetailSubscription = new SerialDisposable();
 
         private const int BookingStatusHiddenConstraintValue = -200;
         private const int ContactDriverHiddenConstraintValue = -283;
@@ -30,6 +29,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private const int BookingStatusAppBarHiddenConstrainValue = 80;
         private const int BookingStatusHeight = 75;
         private const int BookingStatusAndDriverInfosHeight = 158;
+
+	    private const int MarginBetweenOverlay = 16;
 
 		private HomeViewModelState _presentationState = HomeViewModelState.Initial;
 
@@ -92,9 +93,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private IDisposable ObserveIsDriverInfoAvailable()
         {
             return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-                h => ViewModel.BookingStatus.PropertyChanged += h,
-                h => ViewModel.BookingStatus.PropertyChanged -= h
-            )
+	                h => ViewModel.BookingStatus.PropertyChanged += h,
+	                h => ViewModel.BookingStatus.PropertyChanged -= h
+	            )
                 .Where(args => args.EventArgs.PropertyName.Equals("IsDriverInfoAvailable"))
                 .Select(_ => ViewModel.BookingStatus.IsDriverInfoAvailable)
                 .DistinctUntilChanged()
@@ -136,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnMenu)
                 .For(v => v.Hidden)
                 .To(vm => vm.CurrentViewState)
-                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus });
+                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq});
 
 			set.Bind(btnAirport)
 				.For(v => v.Command)
@@ -161,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnLocateMe)
                 .For(v => v.Hidden)
                 .To(vm => vm.CurrentViewState)
-                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus });
+                .WithConversion("EnumToBool", new[] { HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq });
 
             set.Bind(mapView)
                 .For(v => v.DataContext)
@@ -213,18 +214,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.BookingStatus);
 
-            set.Bind(this.mapView)
+            set.Bind(mapView)
                 .For(v => v.OrderStatusDetail)
                 .To(vm => vm.BookingStatus.OrderStatusDetail);
 
             set.Bind(contactTaxiControl)
                 .For(v => v.DataContext)
                 .To(vm => vm.BookingStatus);
+
+	        set.Bind(mapView)
+		        .For(v => v.TaxiLocation)
+		        .To(vm => vm.BookingStatus.TaxiLocation);
+
+            set.Bind(mapView)
+                .For(v => v.CancelAutoFollow)
+                .To(vm => vm.BookingStatus.CancelAutoFollow);
+
+            mapView.OverlayOffsetProvider = GetOverlayOffset;
             
             #endregion
 
             set.Apply();
         }
+
+        private nfloat GetOverlayOffset()
+        {
+            var screenOffset = (nfloat)Math.Abs(UIScreen.MainScreen.ApplicationFrame.Height - UIScreen.MainScreen.Bounds.Height);
+
+            return ViewModel.BookingStatus.IsContactTaxiVisible
+				? contactTaxiControl.Bounds.Height + bookingStatusControl.Bounds.Height + MarginBetweenOverlay + screenOffset
+                : bookingStatusControl.Bounds.Height + screenOffset;
+        }
+
 
         private void ToggleContactTaxiVisibility(bool isContactTaxiVisible)
         {
@@ -269,7 +290,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             bookingStatusControl.SetNeedsDisplay();
         }
-
+			
         private void ChangeState(HomeViewModelState state)
         {
 			if (_presentationState == HomeViewModelState.AirportDetails && state == HomeViewModelState.AddressSearch) 
@@ -328,6 +349,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     }, () =>
                     {
                         RedrawSubViews();
+                        ctrlAddressPicker.ResignFirstResponderOnSubviews();
                     });
 			}
 
@@ -337,7 +359,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     Localize.GetValue("Cancel"),
                     () => { ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible(); },
                     Localize.GetValue("Now"),
-                    () => { ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(); },
+                    () => { ViewModel.BottomBar.CreateOrder.ExecuteIfPossible(); },
                     Localize.GetValue("BookItLaterButton"),
                     () => { ViewModel.BottomBar.BookLater.ExecuteIfPossible(); });
             }
@@ -389,7 +411,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         ctrlOrderOptions.SetNeedsDisplay();
                     }, () => orderEdit.SetNeedsDisplay());
             }
-			else if (_presentationState == HomeViewModelState.BookingStatus)
+            else if (_presentationState == HomeViewModelState.BookingStatus || _presentationState == HomeViewModelState.ManualRidelinq)
             {
                 // Order Options: Hidden
                 // Order Review: Hidden
@@ -401,7 +423,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 CloseBookATaxiDialog();
                 constraintAppBarBookingStatus.Constant = 0;
-                constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstrainValue;
+
+                if (ViewModel.BookingStatus != null && !ViewModel.BookingStatus.IsContactTaxiVisible)
+                {
+                    constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstrainValue;
+                }
+
+                if (_presentationState == HomeViewModelState.ManualRidelinq) 
+				{
+					ResizeBookingStatusControl(false);
+				}
 
                 homeView.LayoutIfNeeded();
 
@@ -422,10 +453,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                         homeView.LayoutIfNeeded();
                         _datePicker.Hide();  
-                    }, () =>
-                    {
-                        RedrawSubViews();
-                    });
+                    }, RedrawSubViews);
 			}
 			else if (_presentationState == HomeViewModelState.AirportDetails)
             {
@@ -466,10 +494,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						constraintOrderAirportTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 22;
 						constraintOrderAirportBottomSpace.Constant = constraintOrderAirportBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
 						homeView.LayoutIfNeeded();
-					}, () =>
-					{
-						RedrawSubViews();
-					});
+					}, RedrawSubViews);
                 
 				switch (_presentationState)
 				{

@@ -186,6 +186,14 @@ namespace apcurium.MK.Booking.Services.Impl
                 return null;
             }
 
+            var wasOrderUnpaired = false;
+
+            var pairingDetail = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
+            if (pairingDetail != null)
+            {
+                wasOrderUnpaired = pairingDetail.WasUnpaired;
+            }
+
             var isPastNoFeeCancellationWindow = orderStatusDetail.TaxiAssignedDate.HasValue
                 && orderStatusDetail.TaxiAssignedDate.Value.AddSeconds(_serverSettings.ServerData.CancellationFeesWindow) < DateTime.UtcNow;
 
@@ -195,8 +203,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 ? feesForMarket.Cancellation + bookingFees
                 : 0;
 
-            if (cancellationFee <= 0 || !isPastNoFeeCancellationWindow)
+            if (cancellationFee <= 0 || !isPastNoFeeCancellationWindow || wasOrderUnpaired)
             {
+                // No cancellation fee for unpaired rides because the rider is either: already in the car (pay cash) or had his car hijacked
                 return null;
             }
 

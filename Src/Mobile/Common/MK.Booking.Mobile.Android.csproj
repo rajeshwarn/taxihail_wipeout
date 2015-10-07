@@ -120,8 +120,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppServices\IAirportInformationService.cs" />
     <Compile Include="AppServices\IGeolocService.cs" />
     <Compile Include="AppServices\IMetricsService.cs" />
+    <Compile Include="AppServices\Impl\AirportInformationService.cs" />
     <Compile Include="AppServices\Impl\MetricsService.cs" />
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
     <Compile Include="AppServices\Impl\POIProvider.cs" />
@@ -185,8 +187,13 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\CommonDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\DeviceOrientationFilter.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\OrientationService.cs" />
+    <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
+    <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
     <Compile Include="Localization\Taxiworld.Designer.cs">
@@ -235,9 +242,10 @@
     <Compile Include="ViewModels\enum\ColorEnum.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
-    <Compile Include="ViewModels\ManualRideLinqStatusViewModel.cs" />
     <Compile Include="ViewModels\Orders\OrderAirportViewModel.cs" />
+    <Compile Include="ViewModels\Map\TaxiLocation.cs" />
     <Compile Include="ViewModels\Orders\BookingStatusBottomBarViewModel.cs" />
+    <Compile Include="ViewModels\Orders\WaitingCarLandscapeViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
@@ -390,6 +398,8 @@
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
+    <EmbeddedResource Include="Localization\Arro.resx" />
+    <EmbeddedResource Include="Localization\ArroDemo.resx" />
     <EmbeddedResource Include="Localization\BlackCabNow.resx" />
     <EmbeddedResource Include="Localization\Master.es.resx">
       <SubType>Designer</SubType>

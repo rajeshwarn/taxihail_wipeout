@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
@@ -18,6 +19,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly ICacheService _cacheService;
 		private readonly IMessageService _messageService;
 
+	    private Action _onEndedTutorial;
+
 		public TutorialService(IAppSettings settings, 
 			ICacheService cacheService,
 			IMessageService messageService)
@@ -26,16 +29,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			_cacheService = cacheService;
 			_settings = settings;	
 		}
-
-		public void DisplayTutorialToNewUser()
+		
+		public bool DisplayTutorialToNewUser(Action onEndedTutorial)
 		{
-			if(_settings.Data.TutorialEnabled
-				&& _cacheService.Get<object>("TutorialDisplayed") == null)
+			if(_settings.Data.TutorialEnabled && _cacheService.Get<object>("TutorialDisplayed") == null)
 			{
 				_cacheService.Set("TutorialDisplayed", new object());
 				_messageService.ShowDialog(typeof(TutorialViewModel));
+				
+				_onEndedTutorial = onEndedTutorial; //Needed in android to, for instance, correctly zoom on first login.
 
+				return true;
 			}
+
+			return false;
 		}
 
         private TutorialContent _content;
@@ -59,7 +66,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 							.ToArray ();
         }
 
-        private TutorialContent LoadTutorialContent ()
+	    public void NotifyTutorialEnded()
+	    {
+		    if (_onEndedTutorial != null)
+		    {
+			    _onEndedTutorial();
+
+			    _onEndedTutorial = null;
+		    }
+	    }
+
+	    private TutorialContent LoadTutorialContent ()
         {
             TutorialContent result = null;
             var resourceName = "";

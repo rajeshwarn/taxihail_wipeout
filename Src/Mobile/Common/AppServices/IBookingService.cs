@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Resources;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
@@ -63,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    Task SendRatingReview(OrderRatings orderRatings);
 
-        Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress);
+		Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress);
 
         Task UnpairFromManualRideLinq(Guid orderId);
 

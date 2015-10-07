@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IAccountService
     {        
-        Task UpdateSettings(BookingSettings settings, int? tipPercent);
+        Task UpdateSettings(BookingSettings settings, string email, int? tipPercent);
         
 		void UpdateAccountNumber (string accountNumber, string customerNumber);
 

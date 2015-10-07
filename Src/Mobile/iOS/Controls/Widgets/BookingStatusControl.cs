@@ -3,11 +3,14 @@ using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public partial class BookingStatusControl : BaseBindableChildView<BookingStatusViewModel>
     {
+        private LoadingStatusBarView _annimationView;
+
         public BookingStatusControl (IntPtr handle) : base(handle)
         {
         }
@@ -17,15 +20,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             base.AwakeFromNib();
             var nib = UINib.FromName ("BookingStatusControl", null);
             AddSubview((UIView)nib.Instantiate (this, null)[0]);
-
             Initialize();
-
+           
             this.DelayBind (InitializeBinding);
         }
 
         private void Initialize()
         {
             BackgroundColor = UIColor.White;
+
+            // Create rounded driver picture
+            driverPhoto.Layer.CornerRadius = driverPhoto.Frame.Size.Width / 2;
+            driverPhoto.ClipsToBounds = true;
         }
 
         private void InitializeBinding()
@@ -35,6 +41,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(lblOrderNumber)
                 .For(v => v.Text)
                 .To(vm => vm.ConfirmationNoTxt);
+
+			set.Bind(lblOrderNumber)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsConfirmationNoHidden);
 
             set.Bind(lblOrderStatus)
                 .For(v => v.Text)
@@ -56,8 +66,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(lblVehicleInfos)
                 .For(v => v.Text)
                 .To(vm => vm.OrderStatusDetail.DriverInfos.FullVehicleInfo);
-
+            
+            set.Bind()
+                .For(v => v.ShowAnimation)
+                .To(vm => vm.IsProgressVisible);
+            
             set.Apply();
+        }
+
+        private bool _showAnnimation;
+        public bool ShowAnimation
+        {
+            get { return _showAnnimation; }
+            set
+            {
+                if (_showAnnimation != value)
+                {
+                    _showAnnimation = value;
+                    if (ShowAnimation)
+                    {
+                        _annimationView = new LoadingStatusBarView(new CGRect(0, 0, viewStatus.Superview.Frame.Width, viewStatus.Superview.Frame.Height));
+                        viewStatus.InsertSubview(_annimationView, 0);
+                    }
+                    else
+                    {
+                        _annimationView.RemoveFromSuperview();
+                    }
+                }
+            }
         }
     } 
 }

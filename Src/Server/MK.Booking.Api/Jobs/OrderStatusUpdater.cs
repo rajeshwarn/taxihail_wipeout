@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.EventHandlers.Integration;
@@ -20,9 +19,11 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
+using CMTPayment.Pair;
 using CMTServices;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -31,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private const string FailedCode = "0";
         
         // maximum probable time between the moment when user changes payment type on his device and it's saving in the database on server, seconds
-        const int timeBetweenPaymentChangeAndSaveInDB = 15;
+        private const int TimeBetweenPaymentChangeAndSaveInDb = 15;
 
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -107,6 +108,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                 CheckForOrderTimeOut(orderStatusDetail);
             }
 
+            CheckForRideLinqCmtPairingErrors(orderStatusDetail);
+
             if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
             {
                 _logger.LogMessage("Skipping order update");
@@ -140,15 +143,17 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            if (orderStatusDetail.UnpairingTimeOut != null)
+            var paymentSettings = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey);
+
+            if (orderStatusDetail.UnpairingTimeOut != null && !paymentSettings.CancelOrderOnUnpair && orderStatusDetail.UnpairingTimeOut.Value != DateTime.MaxValue)
             {
-                if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(timeBetweenPaymentChangeAndSaveInDB))
+                if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(TimeBetweenPaymentChangeAndSaveInDb))
                 {
                     var orderNotification = _orderNotificationsDetailDao.FindByOrderId(orderStatusDetail.OrderId);
 
                     if (orderNotification == null || !orderNotification.InfoAboutPaymentWasSentToDriver)
                     {
-                        _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
+						_ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber, orderDetail.CompanyKey);
 
                         _commandBus.Send(new UpdateOrderNotificationDetail
                         {
@@ -157,6 +162,34 @@ namespace apcurium.MK.Booking.Api.Jobs
                         });
                     }
                 }
+            }
+        }
+
+        public void CheckForRideLinqCmtPairingErrors(OrderStatusDetail orderStatusDetail)
+        {
+            var paymentMode = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey).PaymentMode;
+            if (paymentMode != PaymentMethod.RideLinqCmt)
+            {
+                // Only for CMT RideLinQ
+                return;
+            }
+
+            var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
+            if (pairingInfo == null)
+            {
+                // Order not paired
+                return;
+            }
+
+            InitializeCmtServiceClient();
+
+            var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
+            if (tripInfo != null
+                && (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair
+                    || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired))
+            {
+                orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_PairingFailed", _languageCode);
+                orderStatusDetail.PairingError = string.Format("CMT Pairing Error Code: {0}", tripInfo.ErrorCode);
             }
         }
 
@@ -173,6 +206,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             InitializeCmtServiceClient();
 
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
+
             if (tripInfo == null)
             {
                 var errorMessage = string.Format("No Trip information found for order {0} (pairing token {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
@@ -187,20 +221,15 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
+            string pairingError = null;
+
+            if (tripInfo.ErrorCode == CmtErrorCodes.UnableToPair || tripInfo.ErrorCode == CmtErrorCodes.TripUnpaired)
+            {
+                pairingError = tripInfo.ErrorCode.ToString();
+            }
+
             _logger.LogMessage("Sending Trip update command for trip {0} (order {1}; pairing token {2})", tripInfo.TripId, orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
             _logger.LogMessage("Trip end time is {0}.", tripInfo.EndTime.HasValue ? tripInfo.EndTime.Value.ToString(CultureInfo.CurrentCulture) : "Not set yet");
-
-            var tolls = new List<TollDetail>();
-
-            if (tripInfo.TollHistory != null)
-            {
-                tolls.AddRange(tripInfo.TollHistory.Select(toll =>
-                    new TollDetail
-                    {
-                        TollName = toll.TollName,
-                        TollAmount = toll.TollAmount
-                    }));
-            }
 
             _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
             {
@@ -211,11 +240,10 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Fare = Math.Round(((double)tripInfo.Fare / 100), 2),
                 Tax = Math.Round(((double)tripInfo.Tax / 100), 2),
                 Tip = Math.Round(((double)tripInfo.Tip / 100), 2),
-                TollTotal = tripInfo.TollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2)),
+				TollTotal = tripInfo.TollHistory.SelectOrDefault(tollHistory => tollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2))),
                 Surcharge = Math.Round(((double)tripInfo.Surcharge / 100), 2),
                 Total = Math.Round(((double)tripInfo.Total / 100), 2),
                 FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
-                Medallion = tripInfo.Medallion,
                 RateAtTripStart = tripInfo.RateAtTripStart,
                 RateAtTripEnd = tripInfo.RateAtTripEnd,
                 RateChangeTime = tripInfo.RateChangeTime,
@@ -225,9 +253,10 @@ namespace apcurium.MK.Booking.Api.Jobs
                 DriverId = tripInfo.DriverId,
                 AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
                 LastFour = tripInfo.LastFour,
-                Tolls = tolls.ToArray(),
+				Tolls = tripInfo.TollHistory.SelectOrDefault(tollHistory => tollHistory.ToArray(), new TollDetail[0]),
                 LastLatitudeOfVehicle = tripInfo.Lat,
                 LastLongitudeOfVehicle = tripInfo.Lon,
+                PairingError = pairingError
             });
         }
 
@@ -396,6 +425,12 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus)
         {
+			// We are not supposed to attempt to show the vehicle position when not in the proper state.
+	        if (VehicleStatuses.ShowOnMapStatuses.None(status => status.Equals(ibsOrderInfo.Status)))
+	        {
+				return;
+	        }
+
             // Use IBS vehicle position by default
             var vehicleLatitude = ibsOrderInfo.VehicleLatitude;
             var vehicleLongitude = ibsOrderInfo.VehicleLongitude;
@@ -403,8 +438,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             var isUsingGeo = (!orderStatus.Market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo)
                 || (orderStatus.Market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo);
 
-            // Override with Geo position if enabled
-            if (isUsingGeo)
+            // Override with Geo position if enabled and if we have a vehicle registration.
+            if (isUsingGeo && ibsOrderInfo.VehicleRegistration.HasValue())
             {
                 var orderDetail = _orderDao.FindById(orderStatus.OrderId);
                 var vehicleStatus = _cmtGeoServiceClient.GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleRegistration);
@@ -467,7 +502,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             if (ibsOrderInfo.IsMeterOffNotPaid)
             {
-                SendPaymentBeingProcessedMessageToDriver(ibsOrderInfo.VehicleNumber);
+                SendPaymentBeingProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, orderStatusDetail.CompanyKey);
             }
 
             if (ibsOrderInfo.Fare <= 0)
@@ -571,7 +606,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     {
                         if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                         {
-                            _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                            _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber, orderStatusDetail.CompanyKey);
                         }
 
                         // set the payment error message in OrderStatusDetail for reporting purpose
@@ -584,7 +619,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                     {
-                        _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                        _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber, orderStatusDetail.CompanyKey);
                     }
 
                     // set the payment error message in OrderStatusDetail for reporting purpose
@@ -597,7 +632,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                 {
-                    _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+					_ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber, orderStatusDetail.CompanyKey);
                 }
 
                 // set the payment error message in OrderStatusDetail for reporting purpose
@@ -698,7 +733,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         paymentProviderServiceResponse.TransactionId,
                         paymentProviderServiceResponse.AuthorizationCode,
                         cardToken,
-                        account.IBSAccountId.Value,
+                        account.IBSAccountId.GetValueOrDefault(),
                         orderDetail.Settings.Name,
                         orderDetail.Settings.Phone,
                         account.Email,
@@ -810,7 +845,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
 
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
-            if (pairingInfo == null)
+            if (pairingInfo == null || pairingInfo.WasUnpaired)
             {
                 _logger.LogMessage("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
                 return;
@@ -893,12 +928,12 @@ namespace apcurium.MK.Booking.Api.Jobs
                 var sendEtaToDriver = _serverSettings.ServerData.DriverEtaNotificationMode == DriverEtaNotificationModes.Always ||
                                       (_serverSettings.ServerData.DriverEtaNotificationMode == DriverEtaNotificationModes.Once && sendEtaToDriverOnNotifyOnce);
 
-                if (_serverSettings.ServerData.ShowEta && sendEtaToDriver)
+                if (_serverSettings.ServerData.ShowEta && sendEtaToDriver && orderDetail != null)
                 {
                     try
                     {
-                        SendEtaMessageToDriver((double) ibsOrderInfo.VehicleLatitude, (double) ibsOrderInfo.VehicleLongitude, 
-                            orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleNumber);
+                        SendEtaMessageToDriver(ibsOrderInfo.VehicleLatitude.GetValueOrDefault(), ibsOrderInfo.VehicleLongitude.GetValueOrDefault(), 
+                            orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleNumber, orderDetail.CompanyKey);
                     }
                     catch(Exception ex)
                     {
@@ -919,8 +954,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsLoaded)
             {
-                if (orderDetail != null 
-                    && _serverSettings.GetPaymentSettings(orderDetail.CompanyKey).IsUnpairingDisabled
+                if (orderDetail != null
                     && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
                 {
@@ -933,21 +967,21 @@ namespace apcurium.MK.Booking.Api.Jobs
                         : _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
         }
 
-        private void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, double pickupLatitude, double pickupLongitude, string vehicleNumber)
+        private void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, double pickupLatitude, double pickupLongitude, string vehicleNumber, string company)
         {
             var eta = _directions.GetEta(vehicleLatitude, vehicleLongitude, pickupLatitude, pickupLongitude);
             if (eta != null && eta.IsValidEta())
             {
                 var etaMessage = string.Format(_resources.Get("EtaMessageToDriver"), eta.FormattedDistance, eta.Duration);
-                _ibs.SendMessageToDriver(etaMessage, vehicleNumber);
+				_ibs.SendMessageToDriver(etaMessage, vehicleNumber, company);
                 _logger.LogMessage(etaMessage);
             }
         }
 
-        private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber)
+		private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber, string company)
         {
             var paymentBeingProcessedMessage = _resources.Get("PaymentBeingProcessedMessageToDriver");
-            _ibs.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber);
+			_ibs.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber, company);
             _logger.LogMessage(paymentBeingProcessedMessage);
         }
 

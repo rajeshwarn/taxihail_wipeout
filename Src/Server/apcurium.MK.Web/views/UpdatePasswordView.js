@@ -17,7 +17,8 @@
                 rules: {
                     password: "required",
                     'new-password': {
-                        required: true
+                        required: true,
+                        regex: /^.{6,}$/ // Min 6 chars
                     },
                     'confirm-password': {
                         required: true,
@@ -29,7 +30,8 @@
                         required : TaxiHail.localize('Password required')
                     },
                     'new-password' : {
-                        required: TaxiHail.localize('Password required')
+                        required: TaxiHail.localize('Password required'),
+                        regex: TaxiHail.localize('Password length')
                     },
                     'confirm-password': {
                         required: TaxiHail.localize('Password required'),

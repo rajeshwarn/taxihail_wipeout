@@ -461,6 +461,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Aeroport Taxi.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Aeroport Taxi.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Aexid.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Aexid.fr.Designer.cs</LastGenOutput>

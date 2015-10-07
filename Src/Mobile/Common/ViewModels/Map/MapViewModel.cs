@@ -50,9 +50,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private IObservable<HomeViewModelState> ObserveCurrentHomeViewModelState()
 		{
 			return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-				h => Parent.PropertyChanged += h,
-				h => Parent.PropertyChanged -= h
-			)
+					h => Parent.PropertyChanged += h,
+					h => Parent.PropertyChanged -= h
+				)
 				.Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
 				.Select(_ => ((HomeViewModel) Parent).CurrentViewState)
 				.DistinctUntilChanged();
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void HomeViewModelStateChanged(HomeViewModelState state)
 		{
-			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus)
+			if (state == HomeViewModelState.Initial || state == HomeViewModelState.BookingStatus || state == HomeViewModelState.ManualRidelinq)
 			{
 				IsMapDisabled = false;
 			}
@@ -172,10 +172,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				return _userMovedMap ?? (_userMovedMap = new CancellableCommand<MapBounds>(SetAddressToCoordinate, _ => true));
+				return _userMovedMap ?? (_userMovedMap = new CancellableCommand<MapBounds>(SetAddressToCoordinate, _ => CanExecuteUserMovedMap()));
             }
         }
 
+		private bool CanExecuteUserMovedMap()
+		{
+			return ((HomeViewModel)Parent).CurrentViewState == HomeViewModelState.Initial;
+		}
+
+		private bool _bookCannotExecute;
+		public bool BookCannotExecute
+		{
+			get 
+			{ 
+				return _bookCannotExecute; 
+			}
+			set
+			{
+				_bookCannotExecute = value;
+				RaisePropertyChanged();
+			}
+		}
+			
 		private async Task SetAddressToCoordinate(MapBounds bounds, CancellationToken token)
 		{
 			if (AddressSelectionMode == AddressSelectionMode.None)
@@ -188,8 +207,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Latitude = bounds.GetCenter().Latitude,
 				Longitude = bounds.GetCenter().Longitude
 			};
-
+			
 			await _orderWorkflowService.SetAddressToCoordinate(position, token);
+			BookCannotExecute = false;
 		}
     }
 }
