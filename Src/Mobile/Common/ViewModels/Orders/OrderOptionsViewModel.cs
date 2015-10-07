@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             Observe (_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
             Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
-			Observe(_vehicleService.GetAndObserveAvailableVehicles(), vehicles => _availableVehicles = vehicles);
+			Observe (_vehicleService.GetAndObserveAvailableVehicles(), vehicles => _availableVehicles = vehicles);
 		}
 
 		public override void Start()
@@ -134,6 +134,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        }
 	        
             RaisePropertyChanged(() => ShowVehicleSelection);
+			RaisePropertyChanged(() => GroupVehiclesByServiceType);
 	    }
 
 	    private async Task SetLocalMarketVehicleTypes()
@@ -198,6 +199,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				RaisePropertyChanged ();
 				RaisePropertyChanged (() => ShowVehicleSelection);
+				RaisePropertyChanged (() => GroupVehiclesByServiceType);
 				RaisePropertyChanged (() => SelectedVehicleType);
 				RaisePropertyChanged (() => VehicleAndEstimateBoxIsVisible);
 			}
@@ -426,6 +428,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public bool ShowEstimate
 		{
             get { return ShowDestination && Settings.ShowEstimate; }
+		}
+
+		public bool GroupVehiclesByServiceType 
+		{
+			get { return VehicleTypes.Select(x => x.ServiceType).Distinct().Count() > 1; }
 		}
 
 		public bool ShowVehicleSelection

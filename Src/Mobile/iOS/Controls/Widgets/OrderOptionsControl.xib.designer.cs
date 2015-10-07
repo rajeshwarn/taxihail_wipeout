@@ -22,13 +22,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AddressTextBox viewPickup { get; set; }
 
 		[Outlet]
-        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.VehicleTypeAndEstimateView viewVehicleType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.VehicleTypeAndEstimateView viewVehicleType { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
 			if (viewDestination != null) {
 				viewDestination.Dispose ();
 				viewDestination = null;
+			}
+
+			if (viewEta != null) {
+				viewEta.Dispose ();
+				viewEta = null;
 			}
 
 			if (viewPickup != null) {
@@ -39,11 +44,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (viewVehicleType != null) {
 				viewVehicleType.Dispose ();
 				viewVehicleType = null;
-			}
-
-			if (viewEta != null) {
-				viewEta.Dispose ();
-				viewEta = null;
 			}
 		}
 	}

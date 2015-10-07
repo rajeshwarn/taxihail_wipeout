@@ -93,8 +93,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             _vehicleTypeSubject = new BehaviorSubject<int?>(
                 _appSettings.Data.VehicleTypeSelectionEnabled
-                ? accountService.CurrentAccount.Settings.VehicleTypeId
-                : null);
+	                ? accountService.CurrentAccount.Settings.VehicleTypeId
+	                : null);
 
 			_localize = localize;
 			_bookingService = bookingService;
