@@ -90,15 +90,17 @@
 			}
 		},
 
-		sendConfirmationCodeSMS: function (email, viewObject, completeCallback)
+		sendConfirmationCodeSMS: function (email, countryCode, phoneNumber, viewObject, completeCallback)
 		{
 			email = email.toString();
+			countryCode = countryCode.toString();
+			phoneNumber = phoneNumber.toString();
 
-			if (email.length)
+			if (email.length > 0 && countryCode.length > 0 && phoneNumber.length > 0)
 			{
 				$.ajax({
 					type: 'GET',
-					url: "../api/account/getconfirmationcode/" + email,
+					url: "../api/account/getconfirmationcode/" + email + "/" + countryCode + "/" + phoneNumber,
 					data: { format: "json" },
 					dataType: "application/json",
 					complete: function (data) {
@@ -114,7 +116,7 @@
 		{
 			email = email.toString();
 
-			if (email.length)
+			if (email.length > 0)
 			{
 				$.ajax({
 					type: 'PUT',
@@ -134,7 +136,7 @@
 		{
 			email = email.toString();
 
-			if (email.length) {
+			if (email.length > 0) {
 				$.ajax({
 					type: 'PUT',
 					url: "../api/account/admindisable",
@@ -153,7 +155,7 @@
 		{
 			email = email.toString();
 
-			if (email.length)
+			if (email.length > 0)
 			{
 				$.ajax({
 					type: 'PUT',
@@ -162,6 +164,28 @@
 					dataType: "application/json",
 					complete: function (data) {
 						if (completeCallback != undefined && completeCallback != null) {
+							completeCallback(viewObject, data);
+						}
+					}
+				});
+			}
+		},
+
+		deleteAccountCreditCards: function(accountID, viewObject, completeCallback)
+		{
+			accountID = accountID.toString();
+
+			if (accountID.length > 0)
+			{
+				$.ajax({
+					type: 'DELETE',
+					url: "../api/admin/deleteAllCreditCards/" + accountID,
+					data: { format: "json" },
+					dataType: "application/json",
+					complete: function (data)
+					{
+						if (completeCallback != undefined && completeCallback != null)
+						{
 							completeCallback(viewObject, data);
 						}
 					}
