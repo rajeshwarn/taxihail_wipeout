@@ -32,7 +32,6 @@ using Google.Android.M4b.Maps;
 using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
-using System.Threading.Tasks;
 using apcurium.MK.Common;
 using Android.Animation;
 
@@ -236,7 +235,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             Latitude = value.Latitude.Value, 
                             Longitude = value.Longitude.Value
                         });
-				}
+
+					if (_showVehicleNumber)
+					{
+						_taxiLocationPin.ShowInfoWindow();
+					}
+                }
 
                 // Create Marker the first time
                 else
@@ -280,9 +284,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
 
-		    if (value == null)
+			// Booking is now over, so we need to clean up.
+	        if (value != null)
+	        {
+				return;
+	        }
+
+			_isBookingMode = false;
+
+			if (_taxiLocationPin != null)
 		    {
-				_isBookingMode = false;
+			    _taxiLocationPin.Visible = false;
+				_taxiLocationPin.Remove();
+			    _taxiLocationPin = null;
 		    }
 	    }
 
@@ -603,7 +617,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _availableVehicleMarkers.Remove (markerToRemove);
         }
 
-        private async Task CreateMarker(AvailableVehicle vehicle)
+        private void CreateMarker(AvailableVehicle vehicle)
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";

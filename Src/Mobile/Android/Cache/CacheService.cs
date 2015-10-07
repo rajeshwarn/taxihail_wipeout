@@ -1,4 +1,5 @@
 using System;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using Android.App;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -18,29 +19,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 
         public T Get<T>(string key) where T : class
         {
-            var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
-            var serialized = pref.GetString(key, null);
+	        try
+	        {
+				var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
+				var serialized = pref.GetString(key, null);
 
-            if ((serialized.HasValue()) && (serialized.ToLower().Contains("expiresat")))
-                //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
-            {
-                var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
-                if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
-                {
-                    return cacheItem.Value;
-                }
-            }
-            else if (serialized.HasValue()) //Support for older cached item
-            {
-                var item = JsonSerializer.DeserializeFromString<T>(serialized);
-                if (item != null)
-                {
-                    Set(key, item);
-                    return item;
-                }
-            }
-
-
+				if ((serialized.HasValue()) && (serialized.ToLower().Contains("expiresat")))
+				//We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
+				{
+					var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
+					if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
+					{
+						return cacheItem.Value;
+					}
+				}
+				else if (serialized.HasValue()) //Support for older cached item
+				{
+					var item = JsonSerializer.DeserializeFromString<T>(serialized);
+					if (item != null)
+					{
+						Set(key, item);
+						return item;
+					}
+				}
+	        }
+	        catch (Exception ex)
+	        {
+		        Logger.LogError(ex);
+	        }
+            
             return default(T);
         }
 
