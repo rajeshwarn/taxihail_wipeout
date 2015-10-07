@@ -185,7 +185,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				)
 				.Where(pos => pos != null)
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, orderManualRideLinqDetail.Medallion, CancellationToken.None), Logger.LogError)
+				.Do(pos => UpdatePosition(pos.Latitude, pos.Longitude, orderManualRideLinqDetail.Medallion, CancellationToken.None))
+				.Subscribe(_ => CenterMapIfNeeded(), Logger.LogError)
 				.DisposeWith(subscriptions);
 			
 
@@ -323,6 +324,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ManualRideLinqDetail = manualRideLinqDetails;
 
 			var localize = this.Services().Localize;
+
+			if (!_canAutoFollowTaxi)
+			{
+				_canAutoFollowTaxi = true;
+				_autoFollowTaxi = true;
+			}
 
 		    if (manualRideLinqDetails.PairingError.HasValue())
 		    {
@@ -1096,39 +1103,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void CenterMapIfNeeded()
         {   
-			if (Order == null) 
-			{
-				return;
-			}
 
-			var hasValidVehiclePosition = OrderStatusDetail.VehicleLatitude.HasValue &&
-			                              OrderStatusDetail.VehicleLongitude.HasValue;
+			var hasValidVehiclePosition = TaxiLocation != null && 
+				TaxiLocation.Latitude.HasValue &&
+				TaxiLocation.Longitude.HasValue;
 
-			if (VehicleStatuses.Common.Assigned.Equals(OrderStatusDetail.IBSStatusId) 
-				&& TaxiLocation != null
+			var isVehicleAssigned = OrderStatusDetail.SelectOrDefault(orderStatusDetail => orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned));
+
+			if (Order != null
+				&& isVehicleAssigned
 				&& hasValidVehiclePosition
-				&& !MapCenter.HasValue())
+				&& !MapCenter.HasValue()
+				)
 			{
 				var pickup = CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true);
-				var vehicle = CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value);
+				var vehicle = CoordinateViewModel.Create(TaxiLocation.Latitude.Value, TaxiLocation.Longitude.Value);
 				MapCenter = new[] { pickup, vehicle };
 
 				return;
 			}
 
-			if (TaxiLocation != null && _canAutoFollowTaxi && _autoFollowTaxi && hasValidVehiclePosition)
+			if (hasValidVehiclePosition && _canAutoFollowTaxi && _autoFollowTaxi)
 			{
-				var vehicle = CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value);
+				var vehicle = CoordinateViewModel.Create(TaxiLocation.Latitude.Value, TaxiLocation.Longitude.Value);
 				MapCenter = new[] { vehicle };
 
 				return;
 			}
 
-			if (!VehicleStatuses.Common.Assigned.Equals(OrderStatusDetail.IBSStatusId))
-			{
-				MapCenter = new CoordinateViewModel[0];
-			}
-
+			if (!isVehicleAssigned)
+	        {
+		        MapCenter = new CoordinateViewModel[0];
+	        }
+			
         }
 
 		#region Commands
