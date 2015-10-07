@@ -20,5 +20,6 @@ namespace apcurium.MK.Booking.Commands
         public string ExpirationYear { get; set; } 
         public Guid Id { get; set; }
         public string Label { get; set; }
+        public string ZipCode { get; set; }
     }
 }

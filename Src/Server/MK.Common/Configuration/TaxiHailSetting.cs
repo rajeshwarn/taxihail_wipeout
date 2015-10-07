@@ -100,6 +100,7 @@ namespace MK.Common.Configuration
             InitialZoomLevel = 14;
 
             MaxNumberOfCardsOnFile = 1;
+            SendZipCodeWhenTokenizingCard = false;
 
             FlightStats = new FlightStatsSettingsContainer
 			{
@@ -488,6 +489,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - Use vehicle direction", Description = "Available only with GEO. When enabled, the marked will be oriented according to the vehicle direction information")]
         public bool ShowOrientedPins { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Display - ZipCode required when tokenizing card", Description = "Send the zip code when tokenizing card")]
+        public bool SendZipCodeWhenTokenizingCard { get; set; }
     }
 }
 
