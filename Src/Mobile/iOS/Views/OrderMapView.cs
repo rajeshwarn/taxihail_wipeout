@@ -513,9 +513,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 								false,
                                 false,
                                 vehicle.LogoName,
-                                ViewModel.Settings.ShowOrientedPins 
-                                    ? vehicle.CompassCourse
-                                    : 0);
+                                ViewModel.Settings.ShowOrientedPins,
+                                vehicle.CompassCourse);
             
             vehicleAnnotation.HideMedaillonsCommand = new AsyncCommand(() =>
                 {
@@ -718,11 +717,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 return;
             }
 
+            var showOrientedPins = ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue;
+
 	        // Update Marker and Animate it to see it move on the map
             if (_taxiLocationPin != null)
             {
                 var taxiLocationPin = _taxiLocationPin as AddressAnnotation;
-                taxiLocationPin.Degrees = value.CompassCourse??0;
+                if (showOrientedPins)
+                {
+                    taxiLocationPin.Degrees = value.CompassCourse ?? 0;
+                }
 
                 AnimateAnnotationOnMap(taxiLocationPin, new Position()
                     {
@@ -756,9 +760,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _showAssignedVehicleNumberOnPin,
                 true,
                 null,
-                ViewModel.Settings.ShowOrientedPins
-                ? value.CompassCourse??0
-                : 0);
+                showOrientedPins,
+                value.CompassCourse??0);
 
             AddAnnotation(_taxiLocationPin);
             SetNeedsDisplay();

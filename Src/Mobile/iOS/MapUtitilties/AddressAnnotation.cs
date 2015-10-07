@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         private static readonly UIColor Red = UIColor.FromRGB(255, 0, 23);
         private static readonly UIColor Green = UIColor.FromRGB(30, 192, 34);
 
-        public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s, bool useThemeColorForIcons, bool showSubtitleOnPin, bool showMedallion = false, string vehicleTypeLogoName = null, double degrees = 0)
+        public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s, bool useThemeColorForIcons, bool showSubtitleOnPin, bool showMedallion = false, string vehicleTypeLogoName = null, bool showOrientation = false, double degrees = 0)
 		{
 			AddressType = type;
 			_coordinate = coord;
@@ -31,7 +31,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 			ShowSubtitleOnPin = showSubtitleOnPin;
             _vehicleTypeLogoName = vehicleTypeLogoName;
             ShowMedallionOnStart = showMedallion;
+            ShowOrientation = showOrientation;
 		}
+
+        public bool ShowOrientation { get; set; }
 
         public bool ShowMedallionOnStart { get; private set; }
 		
@@ -72,10 +75,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public UIImage GetImage()
         {
-            return GetImage(AddressType, _vehicleTypeLogoName, Degrees);
+            return GetImage(AddressType, _vehicleTypeLogoName, ShowOrientation,Degrees);
         }
 
-        public static UIImage GetImage(AddressAnnotationType addressType, string vehicleTypeLogoName = null, double degrees = 0)
+        public static UIImage GetImage(AddressAnnotationType addressType, string vehicleTypeLogoName = null, bool showOrientation = false,double degrees = 0)
         {
             const string defaultIconName = "taxi";
 
@@ -86,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                         ? ImageHelper.ApplyThemeColorToMapIcon("destination_icon.png", true)
                         : ImageHelper.ApplyColorToMapIcon("destination_icon.png", Red, true);
                 case AddressAnnotationType.Taxi:
-                    if (degrees != 0)
+                    if (showOrientation)
                     {
                         return ImageHelper.ImageToOrientedMapIcon("nearby_oriented_passenger.png", degrees, false);
                     }
@@ -95,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                         return ImageHelper.ApplyThemeColorToMapIcon("taxi_icon.png", true);
                     }
                 case AddressAnnotationType.NearbyTaxi:
-                    if (degrees != 0)
+                    if (showOrientation)
                     {
                         return ImageHelper.ImageToOrientedMapIcon("nearby_oriented_available.png", degrees, false);
                     }
