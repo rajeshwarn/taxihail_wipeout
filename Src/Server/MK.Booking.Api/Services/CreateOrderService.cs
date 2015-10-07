@@ -1226,21 +1226,32 @@ namespace apcurium.MK.Booking.Api.Services
             var customerNumber = GetCustomerNumber(request.Settings.AccountNumber, request.Settings.CustomerNumber);
 
             int? createOrderResult = null;
-            var defaultVehiculeType = _vehiculeTypeDao.GetAll().FirstOrDefault();
-            var defaultVehicleTypeId = defaultVehiculeType != null ? defaultVehiculeType.ReferenceDataVehicleId : -1;
+            var defaultVehicleType = _vehiculeTypeDao.GetAll().FirstOrDefault();
+            var defaultVehicleTypeId = defaultVehicleType != null ? defaultVehicleType.ReferenceDataVehicleId : -1;
 
             IbsHailResponse ibsHailResult = null;
 
             if (isHailRequest)
             {
+                // Query avaiable vehicles
+                var availableVehicleService = GetAvailableVehiclesServiceClient(market);
+                var availableVehicles = availableVehicleService.GetAvailableVehicles(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude).ToArray();
+
+                var vehicleCandidates = availableVehicles.Select(vehicle => new IbsVehicleCandidate
+                {
+                    CandidateType = VehicleCandidateTypes.VctPimId,
+                    VehicleId = vehicle.DeviceName,
+                    ETADistance = (int?)vehicle.DistanceToArrival ?? 0,
+                    ETATime = (int?)vehicle.Eta ?? 0
+                });
+
                 ibsHailResult = _ibsServiceProvider.Booking(companyKey).Hail(
                     request.Id,
                     providerId,
                     ibsAccountId,
                     request.Settings.Name,
                     CountryCode.GetCountryCodeByIndex(
-                        CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country)).CountryDialCode +
-                    request.Settings.Phone,
+                        CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country)).CountryDialCode + request.Settings.Phone,
                     request.Settings.Passengers,
                     request.Settings.VehicleTypeId,
                     ibsChargeTypeId,
@@ -1253,9 +1264,10 @@ namespace apcurium.MK.Booking.Api.Services
                     prompts,
                     promptsLength,
                     defaultVehicleTypeId,
+                    vehicleCandidates,
                     fare);
 
-                // Fetch vehicle candidates only if order was successfully created on IBS
+                // Fetch vehicle candidates (who have accepted the hail request) only if order was successfully created on IBS
                 if (ibsHailResult.OrderKey.IbsOrderId > -1)
                 {
                     // TODO: replace hardcoded value by timeout returned by IBS

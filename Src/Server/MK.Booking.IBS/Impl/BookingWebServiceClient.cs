@@ -417,13 +417,14 @@ namespace apcurium.MK.Booking.IBS.Impl
             return orderId;
         }
 
-        public IbsHailResponse Hail(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, Fare fare = default(Fare))
+        public IbsHailResponse Hail(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, IEnumerable<IbsVehicleCandidate> vehicleCandidates, Fare fare = default(Fare))
         {
             var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
                 promptsLength, defaultVehiculeTypeId, fare, orderId);
 
             var orderKey = new TBookOrderKey();
+            var vehicleComps = Mapper.Map<TVehicleComp[]>(vehicleCandidates);
 
             UseService(service =>
             {
@@ -434,7 +435,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Creating IBS Hail dest : " +
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
-                orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, null);
+                orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, vehicleComps);
                 Logger.LogMessage("WebService Create Hail, orderid received : " + orderKey.OrderID + ", orderGUID received : " + orderKey.GUID);
             });
 

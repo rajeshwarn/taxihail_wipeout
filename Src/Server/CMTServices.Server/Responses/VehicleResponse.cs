@@ -17,6 +17,11 @@ namespace CMTServices.Responses
        public int FleetId { get; set; }
 
         public long? Eta { get; set; }
+
+        public long? DistanceToArrival { get; set; }
+
+        public string DeviceName { get; set; }
+
         public int VehicleType { get; set; }
     }
 }
