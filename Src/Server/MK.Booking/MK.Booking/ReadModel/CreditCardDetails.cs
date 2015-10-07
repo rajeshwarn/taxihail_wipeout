@@ -55,5 +55,6 @@ namespace apcurium.MK.Booking.ReadModel
         }
         
         public string Label { get; set; }
+        public string ZipCode { get; set; }
     }
 }
