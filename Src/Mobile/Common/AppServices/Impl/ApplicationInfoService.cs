@@ -70,7 +70,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var appInfo = await GetAppInfoAsync();
 
 				var mobileVersion = new ApplicationVersion(_packageInfo.Version);
-                var serverVersion = new ApplicationVersion(appInfo.Version);
                 var minimumRequiredVersion = new ApplicationVersion(appInfo.MinimumRequiredAppVersion);
 
 				if (mobileVersion < minimumRequiredVersion)
