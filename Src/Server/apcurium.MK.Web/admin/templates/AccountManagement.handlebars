@@ -44,8 +44,7 @@
 							<td style="width:50px;">{{#if this.disabledByAdmin }} - {{else}} + {{/if}}</td>
 
 							<td style="width:260px;">
-								{{#if this.currentAccount }}
-								{{else}}
+								{{#unless this.currentAccount }}
 								<div>
 									<button id="buttonSendSMS{{this.id}}" type="submit" class='btn btn-primary span buttontable1autocenter' data-action='sendConfirmationCodeSMS' email="{{this.email}}" accid="{{this.id}}">{{localize "Send Account Confirmation Code via SMS"}}</button>
 								</div>
@@ -56,7 +55,7 @@
 								<div>
 									<button id="buttonUnlinkIBSAccount{{this.id}}" type="submit" class='btn btn-primary span buttontable1autocenter' data-action='unlinkIBSAccount' email="{{this.email}}" accid="{{this.id}}">{{localize "Unlink IBS Account(s)"}}</button>
 								</div>
-								{{/if}}
+								{{/unless}}
 							</td>
 						</tr>
 						{{/each}}
