@@ -485,22 +485,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
 				ViewModel.BottomBar.CreateOrder.ExecuteIfPossible(dt);
             }
-            else if (requestCode == (int) ActivityEnum.BookATaxi && resultCode == Result.Ok)
-            {
-                var result = (BookATaxiEnum)data.GetIntExtra("BookATaxiResult", (int)BookATaxiEnum.BookCancelled);
-                switch (result)
-                {
-                    case BookATaxiEnum.BookNow:
-						ViewModel.BottomBar.CreateOrder.ExecuteIfPossible();
-                        break;
-                    case BookATaxiEnum.BookLater:
-                        ViewModel.BottomBar.BookLater.ExecuteIfPossible();
-                        break;
-                    default:
-                        ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible();
-                        break;
-                }
-            }
 			else if (requestCode == (int) ActivityEnum.DateTimePicked 
 				&& ViewModel.CurrentViewState == HomeViewModelState.AirportPickDate)
 			{
@@ -537,18 +521,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
-            }
-            else if (state == HomeViewModelState.BookATaxi)
-            {
-                var localize = this.Services().Localize;
-
-                this.Services().Message.ShowMessage(null, localize["BookATaxi_Message"],
-                    localize["Cancel"],
-                    () => { ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible(); },
-                    localize["Now"],
-                    () => { ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(); },
-                    localize["BookItLaterButton"],
-                    () => { ViewModel.BottomBar.BookLater.ExecuteIfPossible(); });
             }
             else if (state == HomeViewModelState.AddressSearch)
             {

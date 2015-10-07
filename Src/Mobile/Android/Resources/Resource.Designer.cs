@@ -7041,40 +7041,37 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int View_NotificationSettings = 2130903174;
 			
 			// aapt resource value: 0x7f030087
-			public const int View_OrderBookingOptionsDialog = 2130903175;
+			public const int View_OverduePayment = 2130903175;
 			
 			// aapt resource value: 0x7f030088
-			public const int View_OverduePayment = 2130903176;
+			public const int View_PasswordRecovery = 2130903176;
 			
 			// aapt resource value: 0x7f030089
-			public const int View_PasswordRecovery = 2130903177;
+			public const int View_Payments_CreditCardAdd = 2130903177;
 			
 			// aapt resource value: 0x7f03008a
-			public const int View_Payments_CreditCardAdd = 2130903178;
+			public const int View_Promotion = 2130903178;
 			
 			// aapt resource value: 0x7f03008b
-			public const int View_Promotion = 2130903179;
+			public const int View_RideSettings = 2130903179;
 			
 			// aapt resource value: 0x7f03008c
-			public const int View_RideSettings = 2130903180;
+			public const int View_TermsAndConditions = 2130903180;
 			
 			// aapt resource value: 0x7f03008d
-			public const int View_TermsAndConditions = 2130903181;
+			public const int View_Tutorial = 2130903181;
 			
 			// aapt resource value: 0x7f03008e
-			public const int View_Tutorial = 2130903182;
+			public const int View_UpdatedTermsAndConditions = 2130903182;
 			
 			// aapt resource value: 0x7f03008f
-			public const int View_UpdatedTermsAndConditions = 2130903183;
+			public const int View_UpdatePassword = 2130903183;
 			
 			// aapt resource value: 0x7f030090
-			public const int View_UpdatePassword = 2130903184;
+			public const int View_UserTaxiHailNetworkSettings = 2130903184;
 			
 			// aapt resource value: 0x7f030091
-			public const int View_UserTaxiHailNetworkSettings = 2130903185;
-			
-			// aapt resource value: 0x7f030092
-			public const int View_WaitingCarLandscape = 2130903186;
+			public const int View_WaitingCarLandscape = 2130903185;
 			
 			static Layout()
 			{

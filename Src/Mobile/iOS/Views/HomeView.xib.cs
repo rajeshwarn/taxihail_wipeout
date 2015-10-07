@@ -342,17 +342,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         ctrlAddressPicker.ResignFirstResponderOnSubviews();
                     });
 			}
-
-            else if (state == HomeViewModelState.BookATaxi)
-            {
-                this.Services().Message.ShowMessage(null, Localize.GetValue("BookATaxi_Message"),
-                    Localize.GetValue("Cancel"),
-                    () => { ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible(); },
-                    Localize.GetValue("Now"),
-                    () => { ViewModel.BottomBar.CreateOrder.ExecuteIfPossible(); },
-                    Localize.GetValue("BookItLaterButton"),
-                    () => { ViewModel.BottomBar.BookLater.ExecuteIfPossible(); });
-            }
             else if (state == HomeViewModelState.Review)
             {
                 // Order Options: Visible
