@@ -1099,7 +1099,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				TaxiLocation.Latitude.HasValue &&
 				TaxiLocation.Longitude.HasValue;
 
-			var isVehicleAssigned = VehicleStatuses.Common.Assigned != OrderStatusDetail.SelectOrDefault(orderStatusDetail => orderStatusDetail.IBSStatusId);
+			var isVehicleAssigned = OrderStatusDetail.SelectOrDefault(orderStatusDetail => orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned));
 
 			if (Order != null
 				&& isVehicleAssigned
