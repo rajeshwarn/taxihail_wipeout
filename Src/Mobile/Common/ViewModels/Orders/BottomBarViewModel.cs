@@ -854,9 +854,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
 						&& !Settings.DisableFutureBooking && !Settings.DisableImmediateBooking)
                     {
-						//We need to show the Book A Taxi popup.
 						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.BookATaxi;
 						await PrevalidatePickupAndDestinationRequired(onValidated);
+
+                        this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message"],
+                            this.Services().Localize["Cancel"], () => ResetToInitialState.ExecuteIfPossible(),
+                            this.Services().Localize["Now"], () => CreateOrder.ExecuteIfPossible(),
+                            this.Services().Localize["BookItLaterButton"], () => BookLater.ExecuteIfPossible());
 
 	                    return;
                     }
