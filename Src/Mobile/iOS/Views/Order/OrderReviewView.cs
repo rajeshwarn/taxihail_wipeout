@@ -42,14 +42,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             lblBonusDescription.PreferredMaxLayoutWidth = this.Superview.Bounds.Size.Width - 20;
             lblBonusAmount.TextColor = UIColor.FromRGB(208, 208, 208);
 
-            sliderBonus.ValueChanged += (sender, e) =>
-                {
-                    var newStep = Math.Round((sliderBonus.Value) / SliderStepValue);
-
-                    // Convert "steps" back to the context of the sliders values.
-                    sliderBonus.Value = (float) newStep * SliderStepValue;
-                };
-
             switchBonus.ValueChanged += (sender, e) => 
                 {
                     if(switchBonus.On)
@@ -273,7 +265,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             constraintHeight.Constant = this.Frame.Height;
         }
-
 
         private bool _removeBonusFromView;
         public bool RemoveBonusFromView

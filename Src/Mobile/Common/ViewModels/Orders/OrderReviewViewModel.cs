@@ -13,6 +13,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class OrderReviewViewModel: BaseViewModel
     {
+        private const float SliderStepValue = 5f;
+
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
@@ -194,8 +196,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			set
 			{
 				if (_driverBonus != value)
-				{
-					_driverBonus = value;
+                {
+                    // to get steps of 5
+                    var valueFactorOf5 = (float)Math.Round(value / SliderStepValue) * SliderStepValue;
+                    _driverBonus = (valueFactorOf5 == 0) ? 5f : valueFactorOf5;
 					RaisePropertyChanged();
 				}
 			}
