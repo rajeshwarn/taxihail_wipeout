@@ -914,7 +914,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     }
 
 	                var homeViewModel = (HomeViewModel) Parent;
-					ShowSubViewModel<ManualPairingForRideLinqViewModel, OrderManualRideLinqDetail>(null, homeViewModel.GoToManualRideLinq);
+					ShowSubViewModel<ManualPairingForRideLinqViewModel, OrderManualRideLinqDetail>(null, orderManualPairingDetails => homeViewModel.GoToManualRideLinq(orderManualPairingDetails));
                 });
             }
         }

@@ -105,52 +105,62 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
-		public override void OnViewStarted(bool firstTime)
+		public override async void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
 
-			_firstTime = firstTime;
-
-			_locationService.Start();
-            
-			CheckActiveOrderAsync (firstTime);
-
-            if (_orderWorkflowService.IsOrderRebooked())
-            {
-                _bottomBar.ReviewOrderDetails();
-            }
-
-			if (firstTime)
+			try
 			{
-				Panel.Start().FireAndForget();
+				_firstTime = firstTime;
 
-                AddressPicker.RefreshFilteredAddress();
+				_locationService.Start();
 
-			    this.Services().ApplicationInfo.CheckVersionAsync();
+				var activeOrderTask = CheckActiveOrderAsync (firstTime);
 
-                CheckTermsAsync();
-
-                CheckCreditCardExpiration();
-
-                BottomBar.CheckManualRideLinqEnabledAsync();
-				
-				_isShowingTutorial = _tutorialService.DisplayTutorialToNewUser(() =>
+				if (_orderWorkflowService.IsOrderRebooked())
 				{
-					_isShowingTutorial = false;
+					_bottomBar.ReviewOrderDetails();
+				}
+
+				if (firstTime)
+				{
+					Panel.Start().FireAndForget();
+
+					AddressPicker.RefreshFilteredAddress();
+
+					this.Services().ApplicationInfo.CheckVersionAsync().HandleErrors();
+
+					CheckTermsAsync();
+
+					CheckCreditCardExpiration().HandleErrors();
+
+					BottomBar.CheckManualRideLinqEnabledAsync();
+
+					_isShowingTutorial = _tutorialService.DisplayTutorialToNewUser(() =>
+						{
+							_isShowingTutorial = false;
+							LocateUserIfNeeded();
+						});
+					_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
+				}
+
+				if(await activeOrderTask)
+				{
 					LocateUserIfNeeded();
-				});
-				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
+				}
+
+				if (_defaultHintZoomLevel != null)
+				{
+					ChangePresentation(_defaultHintZoomLevel);
+					_defaultHintZoomLevel = null;
+				}
+
+				_vehicleService.Start();
 			}
-
-			LocateUserIfNeeded();
-
-			if (_defaultHintZoomLevel != null)
+			catch(Exception ex)
 			{
-				ChangePresentation(_defaultHintZoomLevel);
-				_defaultHintZoomLevel = null;
+				Logger.LogError(ex);
 			}
-
-			_vehicleService.Start();
 		}
 
 		private void LocateUserIfNeeded()
@@ -162,28 +172,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public async void CheckActiveOrderAsync(bool firstTime)
+		public async Task<bool> CheckActiveOrderAsync(bool firstTime)
 		{
-			var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
+			var lastOrder = await Task.Run(() => _orderWorkflowService.GetLastActiveOrder());
 			if(lastOrder != null)
 			{
 			    if (lastOrder.Item1.IsManualRideLinq)
 			    {
-                    var orderManualRideLinqDetail = await _bookingService.GetTripInfoFromManualRideLinq(lastOrder.Item1.Id);
+					var orderManualRideLinqDetail = await Task.Run(() => _bookingService.GetTripInfoFromManualRideLinq(lastOrder.Item1.Id));
 
-                    GoToManualRideLinq(orderManualRideLinqDetail);
+                    GoToManualRideLinq(orderManualRideLinqDetail, true);
 			    }
 			    else
 			    {
 					GotoBookingStatus(lastOrder.Item1, lastOrder.Item2);
 			    }
 
-				
+				return true;
 			}
 			else if (firstTime)
 			{
 				CheckUnratedRide ();
 			}
+
+			return false;
 		}
 
 		public bool FirstTime{ get; set;}
@@ -268,7 +280,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public async void CheckCreditCardExpiration()
+		public async Task CheckCreditCardExpiration()
 		{
 			if (!_isShowingCreditCardExpiredPrompt)
 			{
@@ -358,13 +370,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BookingStatus.StartBookingStatus(order, orderStatusDetail);
 		}
 
-		public void GoToManualRideLinq(OrderManualRideLinqDetail detail)
+		public void GoToManualRideLinq(OrderManualRideLinqDetail detail, bool isRestoringFromBackground = false)
 		{
 			CurrentViewState = HomeViewModelState.ManualRidelinq;
 
 			_orderWorkflowService.SetAddresses(new Address(), new Address());
 
-			BookingStatus.StartBookingStatus(detail);
+			BookingStatus.StartBookingStatus(detail, isRestoringFromBackground);
 		}
 
 		public PanelMenuViewModel Panel { get; set; }
@@ -703,7 +715,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				AutomaticLocateMeAtPickup.ExecuteIfPossible();
                 CheckUnratedRide();
 				CheckTermsAsync();
-				CheckCreditCardExpiration();
+				CheckCreditCardExpiration().HandleErrors();
                 AddressPicker.RefreshFilteredAddress();
 
 				_metricsService.LogApplicationStartUp ();

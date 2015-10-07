@@ -107,13 +107,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = order;
 			OrderStatusDetail = orderStatusDetail;
 			DisplayOrderNumber();
-			BottomBar.NotifyBookingStatusAppbarChanged();
+
+			if (orderStatusDetail.IBSStatusId.HasValue())
+			{
+				BottomBar.ResetButtonsVisibility();
+			}
+			else
+			{
+				BottomBar.NotifyBookingStatusAppbarChanged();
+			}
+
+			CenterMapOnPinsIfNeeded();
 
 			StatusInfoText = orderStatusDetail.IBSStatusId == null 
 				? this.Services().Localize["Processing"]
 				: orderStatusDetail.IBSStatusDescription;
-
-			BottomBar.ResetButtonsVisibility();
 
 			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
 
@@ -133,7 +141,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				);
 		}
 
-		public void StartBookingStatus(OrderManualRideLinqDetail orderManualRideLinqDetail)
+		// Method used when we are restoring from background to zoom back to the order's location correctly.
+		private void CenterMapOnPinsIfNeeded()
+		{
+			// Handle case where we are waiting for a taxi.
+			if (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting)
+			{
+				((HomeViewModel)Parent).AutomaticLocateMeAtPickup.ExecuteIfPossible();
+
+				return;
+			}
+
+			// Handle case where order is in a state where we should not do anything anyway.
+			if (VehicleStatuses.ShowOnMapStatuses.None(status => status == OrderStatusDetail.IBSStatusId))
+			{
+				return;
+			}
+
+			// Handle case where we have both the taxi and the pickup point.
+			if (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived)
+			{
+				MapCenter = new CoordinateViewModel[]
+				{
+					CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true),
+					CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value)
+				};
+
+				return;
+			}
+
+			// Handle case where the user is in a taxi.
+
+			MapCenter = new CoordinateViewModel[]
+			{
+				CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value, true)
+			};
+
+		}
+
+		public void StartBookingStatus(OrderManualRideLinqDetail orderManualRideLinqDetail, bool isRestoringFromBackground = false)
 		{
 			if (_isStarted)
 			{
@@ -142,6 +188,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_isStarted = true;
 
 			BottomBar.ResetButtonsVisibility();
+
+			if (isRestoringFromBackground)
+			{
+				((HomeViewModel)Parent).AutomaticLocateMeAtPickup.ExecuteIfPossible();
+			}
 
 			var subscriptions = new CompositeDisposable();
 
