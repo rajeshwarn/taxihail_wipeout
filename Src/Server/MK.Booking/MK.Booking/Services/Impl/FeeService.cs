@@ -191,7 +191,6 @@ namespace apcurium.MK.Booking.Services.Impl
             var pairingDetail = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingDetail != null)
             {
-                
                 wasOrderUnpaired = pairingDetail.WasUnpaired;
             }
 

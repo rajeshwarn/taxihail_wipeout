@@ -879,6 +879,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_available.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\CarNumberOnTheVehicleIcon.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

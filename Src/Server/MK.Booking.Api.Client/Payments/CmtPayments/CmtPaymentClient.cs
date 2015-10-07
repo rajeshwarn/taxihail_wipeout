@@ -35,13 +35,14 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate, cvv);
         }
 
+		/// <summary>
+		/// This method does not remove CMT token in CMT payment service, according to ticket https://apcurium.atlassian.net/browse/MKTAXI-3225
+		/// </summary>
+		/// <param name="cardToken"></param>
+		/// <returns></returns>
         public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-            var result = await Client.DeleteAsync(new DeleteTokenizedCreditcardRequest
-            {
-                CardToken = cardToken
-            });
-            return result;
+			return new DeleteTokenizedCreditcardResponse();
         }
 
         public Task<OverduePayment> GetOverduePayment()

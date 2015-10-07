@@ -532,15 +532,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							var hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions();
 							if (!hasValidAccountNumber)
 							{
-								var accountNumber = await this.Services().Message.ShowPromptDialog(
+								string accountNumber = null;
+								string customerNumber = null;
+
+								accountNumber = await this.Services().Message.ShowPromptDialog(
 									this.Services().Localize["AccountPaymentNumberRequiredTitle"],
 									this.Services().Localize["AccountPaymentNumberRequiredMessage"],
 									() => { return; });
 
-                                var customerNumber = await this.Services().Message.ShowPromptDialog(
-                                    this.Services().Localize["AccountPaymentCustomerNumberRequiredTitle"],
-                                    this.Services().Localize["AccountPaymentCustomerNumberRequiredMessage"],
-                                    () => { return; });
+								if (accountNumber == null)
+                                {
+                                	return;
+                                }
+
+								customerNumber = await this.Services().Message.ShowPromptDialog(
+                                	this.Services().Localize["AccountPaymentCustomerNumberRequiredTitle"],
+                                	this.Services().Localize["AccountPaymentCustomerNumberRequiredMessage"],
+                                	() => { return; });
+
+                                if (customerNumber == null)
+                                {
+                                	return;
+                                }
 
                                 hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber, customerNumber);
 								if (!hasValidAccountNumber)
@@ -555,9 +568,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							}
 
 							var questions = await _orderWorkflowService.GetAccountPaymentQuestions();
-							if ((questions != null) && (questions.Length > 0))
+
+							if (questions != null
+								&& questions.Length > 0
+								&& questions[0].Question.HasValue())
 							{
 								ParentViewModel.CurrentViewState = HomeViewModelState.Initial;								
+								// Navigate to Q&A page
 
 								ShowSubViewModel<InitializeOrderForAccountPaymentViewModel, Tuple<Order, OrderStatusDetail>>(
 									null, 
@@ -566,11 +583,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							}
 							else
 							{
+								// Skip Q&A page and confirm order
 								await ConfirmOrderAndGoToBookingStatus();
 							}
 						}
 						else
 						{
+							// Skip Q&A page and confirm order
 							await ConfirmOrderAndGoToBookingStatus();
 						}
                     }
