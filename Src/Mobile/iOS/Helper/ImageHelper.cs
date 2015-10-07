@@ -255,7 +255,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             UIView rotatedViewBox = new UIView(new CGRect(0,0,image.Size.Width, image.Size.Height));
 
             rotatedViewBox.Transform = CGAffineTransform.MakeRotation((nfloat)(degrees * Math.PI / 180));
-            CGSize rotatedSize = rotatedViewBox.Frame.Size;
+            CGSize rotatedSize = rotatedViewBox.Bounds.Size;
             rotatedViewBox = null;
 
             // Step 2: Create the bitmap context
