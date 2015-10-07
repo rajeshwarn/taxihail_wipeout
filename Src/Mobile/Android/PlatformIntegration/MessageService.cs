@@ -23,10 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class MessageService : IMessageService
     {
-        // Current system doesn't handle well 2 back to back popups, so we introduce a small delay before showing them.
-        // Delay is in ms.
-        private const int DisplayDelay = 500;
-
         public MessageService(IMvxAndroidCurrentTopActivity context)
         {
             Context = context;
@@ -50,11 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             var tcs = new TaskCompletionSource<object>();
 
             dispatcher.RequestMainThreadAction(async () => 
-            {
-                await Task.Delay(DisplayDelay);
-
-                AlertDialogHelper.Show(Context.Activity, title, message, () => tcs.TrySetResult(null));
-            });
+                AlertDialogHelper.Show(Context.Activity, title, message, () => tcs.TrySetResult(null)));
 
             return tcs.Task;
         }
@@ -66,31 +58,26 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var tcs = new TaskCompletionSource<object>();
 
-            dispatcher.RequestMainThreadAction(async () =>
-            {
-                await Task.Delay(DisplayDelay);
-
-                AlertDialogHelper.Show(
-                    Context.Activity,
-                    title,
-                    message,
-                    positiveButtonTitle, () => 
-                    { 
-                        if(positiveAction != null)
-                        {
-                            positiveAction(); 
-                        }
-                        tcs.TrySetResult(null); 
-                    },
-                    negativeButtonTitle, () =>  
-                    { 
-                        if(negativeAction != null)
-                        {
-                            negativeAction(); 
-                        }
-                        tcs.TrySetResult(null); 
-                    });
-            });
+            dispatcher.RequestMainThreadAction(async () => AlertDialogHelper.Show(
+                Context.Activity,
+                title,
+                message,
+                positiveButtonTitle, () =>
+                { 
+                    if (positiveAction != null)
+                    {
+                        positiveAction(); 
+                    }
+                    tcs.TrySetResult(null); 
+                },
+                negativeButtonTitle, () =>
+                { 
+                    if (negativeAction != null)
+                    {
+                        negativeAction(); 
+                    }
+                    tcs.TrySetResult(null); 
+                }));
 
             return tcs.Task;
         }
@@ -102,39 +89,34 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var tcs = new TaskCompletionSource<object>();
 
-            dispatcher.RequestMainThreadAction(async () =>
-                {
-                    await Task.Delay(DisplayDelay);
-
-                    AlertDialogHelper.Show(
-                        Context.Activity,
-                        title,
-                        message,
-                        positiveButtonTitle, () =>
-                        { 
-                            if (positiveAction != null)
-                            {
-                                positiveAction(); 
-                            }
-                            tcs.TrySetResult(null); 
-                        },
-                        negativeButtonTitle, () =>
-                        { 
-                            if (negativeAction != null)
-                            {
-                                negativeAction(); 
-                            }
-                            tcs.TrySetResult(null); 
-                        },
-                        neutralButtonTitle, () =>
-                        { 
-                            if (neutralAction != null)
-                            {
-                                neutralAction(); 
-                            }
-                            tcs.TrySetResult(null); 
-                        });
-                });
+            dispatcher.RequestMainThreadAction(async () => AlertDialogHelper.Show(
+                Context.Activity,
+                title,
+                message,
+                positiveButtonTitle, () =>
+                { 
+                    if (positiveAction != null)
+                    {
+                        positiveAction(); 
+                    }
+                    tcs.TrySetResult(null); 
+                },
+                negativeButtonTitle, () =>
+                { 
+                    if (negativeAction != null)
+                    {
+                        negativeAction(); 
+                    }
+                    tcs.TrySetResult(null); 
+                },
+                neutralButtonTitle, () =>
+                { 
+                    if (neutralAction != null)
+                    {
+                        neutralAction(); 
+                    }
+                    tcs.TrySetResult(null); 
+                }));
 
             return tcs.Task;
         }
@@ -145,11 +127,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var tcs = new TaskCompletionSource<object>();
 
-            dispatcher.RequestMainThreadAction(async () =>
-            {
-                await Task.Delay(DisplayDelay);
-                AlertDialogHelper.Show(Context.Activity, title, message, () => { additionalAction.Invoke(); tcs.TrySetResult(null); });
-            });
+            dispatcher.RequestMainThreadAction(async () => 
+                AlertDialogHelper.Show(Context.Activity, title, message, () => { additionalAction.Invoke(); tcs.TrySetResult(null); }));
 
             return tcs.Task;
         }
@@ -269,8 +248,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             dispatcher.RequestMainThreadAction(async () => 
                 {
-                    await Task.Delay(DisplayDelay);
-
                     var result = await AlertDialogHelper.ShowPromptDialog(
                         Context.Activity,
                         title,

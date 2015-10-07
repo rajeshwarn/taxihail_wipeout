@@ -2,9 +2,6 @@ using System;
 using Android.App;
 using Android.Content;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using Android.Views;
-using Android.Animation;
 using apcurium.MK.Booking.Mobile.Client.Controls.Dialog;
 using System.Threading.Tasks;
 
