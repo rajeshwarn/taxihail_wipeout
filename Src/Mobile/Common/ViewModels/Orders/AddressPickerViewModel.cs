@@ -37,7 +37,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         public AddressViewModel[] FilteredPlaces { get; private set; }
 
 		private AddressLocationType _currentActiveFilter;
-		private HomeViewModelState _respState;
 
 		private string _previousPostCode = string.Empty;
 
@@ -142,14 +141,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 	    }
 
-		public async Task LoadAddresses(AddressLocationType filter, HomeViewModelState responseState)
+		public async Task LoadAddresses(AddressLocationType filter)
 		{
             _ignoreTextChange = true;
 
 	        try
 	        {
 				_currentActiveFilter = filter;
-				_respState = responseState;
 
 		        if (filter == AddressLocationType.Unspeficied)
 	            {
@@ -285,19 +283,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				await _orderWorkflowService.SetAddress(detailedAddress);
 
-				if (_currentActiveFilter == AddressLocationType.Airport && AddressSelectionMode == AddressSelectionMode.PickupSelection )
-                {
-					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.AirportDetails;
-                }
-                else
-                {
-					if (returnToHome)
-					{
-						((HomeViewModel)Parent).CurrentViewState = _respState;
-					}
-	
-					ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+				if (returnToHome)
+				{
+					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
 				}
+
+				ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
 			}
 			catch(Exception ex)
 			{

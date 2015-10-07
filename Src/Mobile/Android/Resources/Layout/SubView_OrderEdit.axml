@@ -73,6 +73,7 @@
                                 android:layout_height="@dimen/HeightEditTextFlat"
                                 android:layout_marginBottom="10dip"
                                 android:background="@color/ordereditbackgroundfield"
+                                android:contentDescription="@string/DialCodeSelectorTitle"
                                 style="@style/MainTheme"
                                 local:MvxItemTemplate="@layout/countrycodeitemmvx"
                                 local:MvxDropDownItemTemplate="@layout/countrycodeitemdropdownmvx"
@@ -85,8 +86,8 @@
                                 android:background="#f2f2f2"
                                 android:maxLines="1"
                                 android:inputType="phone"
-                            android:singleLine="true"
-                            android:hint="@string/PassengerPhoneLabel" />
+                                android:singleLine="true"
+                                android:hint="@string/PassengerPhoneLabel" />
                         </LinearLayout>
                     </LinearLayout>
                     <View

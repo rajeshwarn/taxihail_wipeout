@@ -32,7 +32,8 @@ using Foundation;
 using MapKit;
 using TinyIoC;
 using UIKit;
-using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -51,11 +52,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private bool _useThemeColorForPickupAndDestinationMapIcons;
         private bool _showAssignedVehicleNumberOnPin;
         private bool _automatedMapChanged;
-
-
-        private const double StatusOffset = 1;
-        private const double VehicleInformationOffset = 0.7;
-        private const double InitialZoomOffset = 1.5;
 
         public OrderMapView(IntPtr handle) :base(handle)
         {
@@ -131,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _showAssignedVehicleNumberOnPin = settings.ShowAssignedVehicleNumberOnPin;
             _useThemeColorForPickupAndDestinationMapIcons = this.Services().Settings.UseThemeColorForMapIcons;
 
-            var coordonates = new CoordinateViewModel[] 
+            var coordonates = new[] 
             {
                     CoordinateViewModel.Create(settings.UpperRightLatitude??0, settings.UpperRightLongitude??0, true),
                     CoordinateViewModel.Create(settings.LowerLeftLatitude??0, settings.LowerLeftLongitude??0, true),
@@ -470,6 +466,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void HandleTouchEnded(object sender, EventArgs e)
         {
+            ViewModel.BookCannotExecute = true;
             _userMovedMapSubsciption.Disposable = Observable
 				.FromEventPattern<MKMapViewChangeEventArgs>(eh =>  RegionChanged += eh, eh => RegionChanged -= eh)
                 .Throttle(TimeSpan.FromMilliseconds(1000))
@@ -514,7 +511,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
-                                vehicle.LogoName);
+                                false,
+                                vehicle.LogoName,
+                                ViewModel.Settings.ShowOrientedPins 
+                                    ? vehicle.CompassCourse
+                                    : 0);
             
             vehicleAnnotation.HideMedaillonsCommand = new AsyncCommand(() =>
                 {
@@ -534,6 +535,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
             AddAnnotation (vehicleAnnotation);
             _availableVehicleAnnotations.Add (vehicleAnnotation);
+        }
+
+        // Animate Annotation on the map between retrieving positions
+        private void AnimateAnnotationOnMap(AddressAnnotation annotationToUpdate, Position newPosition)
+        {
+            var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
+            annotationToUpdateView.RefreshPinImage();
+
+            Animate(5, 0, UIViewAnimationOptions.CurveLinear, () =>
+                {
+                    annotationToUpdate.SetCoordinate(new CLLocationCoordinate2D(newPosition.Latitude, newPosition.Longitude));
+                }, () => {});
+        }
+
+        // Update Annotation and Animate it to see it move on the map
+        private void UpdateAnnotation(AddressAnnotation annotationToUpdate, AvailableVehicle vehicle)
+        {
+            var annotationType = (vehicle is AvailableVehicleCluster) 
+                ? AddressAnnotationType.NearbyTaxiCluster 
+                : AddressAnnotationType.NearbyTaxi;
+
+            annotationToUpdate.Degrees = ViewModel.Settings.ShowOrientedPins 
+                                            ? vehicle.CompassCourse
+                                            : 0;
+            annotationToUpdate.AddressType = annotationType;
+
+            AnimateAnnotationOnMap(annotationToUpdate, new Position()
+                {
+                    Latitude = vehicle.Latitude,
+                    Longitude = vehicle.Longitude
+                });
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
@@ -568,10 +600,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     }
 
                     // coordinates were updated, remove and add later with new position
-                    DeleteAnnotation (existingAnnotationForVehicle);
+                    UpdateAnnotation(existingAnnotationForVehicle, vehicle);
                 }
-
-                CreateAnnotation (vehicle);
+                else
+                {
+                    CreateAnnotation(vehicle);
+                }
             }
         }
 
@@ -674,44 +708,64 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	    }
 
         public ICommand CancelAutoFollow { get; set; }
+        private void UpdateTaxiLocation(TaxiLocation value)
+        {
+            if (_taxiLocationPin != null && value == null)
+            {
+                RemoveAnnotation(_taxiLocationPin);
+                _taxiLocationPin = null;
 
-	    private void UpdateTaxiLocation(TaxiLocation value)
-	    {
-			if (_taxiLocationPin != null)
-			{
-				RemoveAnnotation(_taxiLocationPin);
-				_taxiLocationPin = null;
-			}
+                return;
+            }
 
-			if (value != null)
-			{
-				var coord = new CLLocationCoordinate2D(0, 0);
+	        // Update Marker and Animate it to see it move on the map
+            if (_taxiLocationPin != null)
+            {
+                var taxiLocationPin = _taxiLocationPin as AddressAnnotation;
+                taxiLocationPin.Degrees = value.CompassCourse;
 
-	            var vehicleLatitude = value.Latitude ?? 0;
-	            var vehicleLongitude = value.Longitude ?? 0;
+                AnimateAnnotationOnMap(taxiLocationPin, new Position()
+                    {
+                        Latitude = value.Latitude.Value,
+                        Longitude = value.Longitude.Value
+                    });
 
-                    if (vehicleLatitude != 0
-                        && vehicleLongitude != 0
-                        && value.VehicleNumber.HasValue())
-				{
-                        // Refresh vehicle position
-					coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
-				}
+	            return;
+            }
 
-				_taxiLocationPin = new AddressAnnotation(
-					coord, 
-					AddressAnnotationType.Taxi,
-					Localize.GetValue("TaxiMapTitle"), 
-					value.VehicleNumber, 
-					_useThemeColorForPickupAndDestinationMapIcons, 
-					_showAssignedVehicleNumberOnPin);
+            // Create Marker the first time
+            var coord = new CLLocationCoordinate2D(0, 0);
 
-				AddAnnotation(_taxiLocationPin);
+            var vehicleLatitude = value.Latitude ?? 0;
+            var vehicleLongitude = value.Longitude ?? 0;
 
-				
-			}
-			SetNeedsDisplay();
-	    }
+            if (vehicleLatitude != 0
+                && vehicleLongitude != 0
+                && value.VehicleNumber.HasValue())
+            {
+                // Refresh vehicle position
+                coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
+            }
+
+            _taxiLocationPin = new AddressAnnotation(
+                coord, 
+                AddressAnnotationType.Taxi,
+                Localize.GetValue("TaxiMapTitle"), 
+                value.VehicleNumber, 
+                _useThemeColorForPickupAndDestinationMapIcons, 
+                _showAssignedVehicleNumberOnPin,
+                true,
+                null,
+                ViewModel.Settings.ShowOrientedPins 
+                ? value.CompassCourse
+                : 0);
+
+            AddAnnotation(_taxiLocationPin);
+            SetNeedsDisplay();
+
+
+
+        }
 
 
 	    private OrderStatusDetail _orderStatusDetail;
@@ -736,6 +790,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+
+        public Func<nfloat> OverlayOffsetProvider { get; set; }
+
         private IEnumerable<CoordinateViewModel> _center;
 	    
 
@@ -745,104 +802,58 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set
             {
                 _center = value;                
-                SetZoom(value);                   
+                ShowPinsOnMap();                   
             }
         }
 
-	    private double GetLatitudeDeltaThreshold()
-	    {
-		    return UIHelper.Is35InchDisplay
-				? 0.001
-				: 0.004;
-	    }
+        private const float PinHeight = 75;
+		private const float PinWidth = 95;
+		private const float BottomPadding = 10;
+		private const float RightPadding = 40;
+		private const float LeftPadding = 40;
 
-        private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
+        private void ShowPinsOnMap()
         {
-            var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.ToArray();
-            if(addresseesToDisplay == null || !coordinateViewModels.Any())
+            var annotations = _center.ToArray();
+
+            // There is nothing to do here
+            if (annotations.None())
             {
                 return;
             }
 
-            var region = new MKCoordinateRegion();
-            double? deltaLat = null;
-            double? deltaLng = null;
-            CLLocationCoordinate2D center;
-
-            if (coordinateViewModels.Count() == 1)
+            if (annotations.Length == 1)
             {
-                var lat = coordinateViewModels.ElementAt(0).Coordinate.Latitude;
-                var lon = coordinateViewModels.ElementAt(0).Coordinate.Longitude;
+                var lat = annotations[0].Coordinate.Latitude;
+                var lon = annotations[0].Coordinate.Longitude;
 
-                if (coordinateViewModels.ElementAt(0).Zoom == ZoomLevel.DontChange)
+                var region = new MKCoordinateRegion();
+
+                if (annotations[0].Zoom == ZoomLevel.DontChange)
                 {
                     region = Region;
                 }
-                else
-                {
-                    deltaLat = 0.004;
-                    deltaLng = 0.004;
-                }
 
-                center = new CLLocationCoordinate2D(lat, lon);
-            }
-            else
-            {
-	            if (ViewModel == null)
-	            {
-		            return;
-	            }
-                var minLat = coordinateViewModels.Min(a => a.Coordinate.Latitude);
-                var maxLat = coordinateViewModels.Max(a => a.Coordinate.Latitude);
-                var minLon = coordinateViewModels.Min(a => a.Coordinate.Longitude);
-                var maxLon = coordinateViewModels.Max(a => a.Coordinate.Longitude);
+                region.Center = new CLLocationCoordinate2D(lat, lon);
 
-                double zoomOffset = InitialZoomOffset;
+                SetRegion(region, true);
 
-                var bookingStatusViewModel = ((HomeViewModel)ViewModel.Parent).BookingStatus;
-				// Changes the map zoom to prevent hiding the pin under the booking status.
-				if (Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
-				{
-                    if (bookingStatusViewModel.IsContactTaxiVisible)
-					{
-                        zoomOffset += StatusOffset;
-					}
-
-                    if (!bookingStatusViewModel.VehicleFullInfoHidden)
-					{
-                        zoomOffset += VehicleInformationOffset;
-					}
-				}
-
-                deltaLat = (Math.Abs(maxLat - minLat)) * zoomOffset;
-                deltaLng = (Math.Abs(maxLon - minLon)) * zoomOffset;
-
-                var latOffset = 0d;
-
-                //Moves the center to avoid having to zoom out too mutch.
-                if (bookingStatusViewModel.IsContactTaxiVisible && Math.Abs(maxLat - minLat) > GetLatitudeDeltaThreshold())
-                {
-                    latOffset = deltaLat.Value/4;
-                }
-
-                center = new CLLocationCoordinate2D(((maxLat + minLat) / 2)+latOffset, (maxLon + minLon) / 2);
+                return;
             }
 
-            SetRegionAndZoom(region, center, deltaLat, deltaLng);
+			var zoomRect = annotations
+                .Select(coordinateViewModel => new CLLocationCoordinate2D(coordinateViewModel.Coordinate.Latitude, coordinateViewModel.Coordinate.Longitude))
+                .Select(MKMapPoint.FromCoordinate)
+				.Select(coord => new MKMapRect(coord.X, coord.Y, PinWidth, PinHeight))
+				.Aggregate(MKMapRect.Null, MKMapRect.Union);
+
+	        var overlayOffset = OverlayOffsetProvider != null
+                ? OverlayOffsetProvider() + PinHeight
+                : 0;
+
+			SetVisibleMapRect(zoomRect, new UIEdgeInsets(overlayOffset, LeftPadding, BottomPadding, RightPadding), true);
         }
 
-        private void SetRegionAndZoom(MKCoordinateRegion region, CLLocationCoordinate2D center, double? deltaLat, double? deltaLng)
-        {
-            region.Center = center;
-            if (deltaLat.HasValue && deltaLng.HasValue)
-            {
-                region.Span = new MKCoordinateSpan(deltaLat.Value, deltaLng.Value);
-            }
-            _automatedMapChanged = true;
-            SetRegion(region, true);
-            RegionThatFits(region);
-        }
-
-        #endregion
+	    #endregion
     }
 }

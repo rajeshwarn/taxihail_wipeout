@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -22,7 +22,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVP-xw-EI2">
-                            <rect key="frame" x="10" y="25" width="299" height="60"/>
+                            <rect key="frame" x="10" y="10" width="299" height="60"/>
                             <attributedString key="attributedText">
                                 <fragment content="Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.">
                                     <attributes>
@@ -34,24 +34,14 @@
                             </attributedString>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="ffJ-rx-jiE" customClass="ExtendedTextFieldView">
-                            <rect key="frame" x="57" y="128" width="90" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="40" id="8bJ-Br-p1V"/>
-                                <constraint firstAttribute="width" constant="90" id="PBb-Kc-UjI"/>
-                            </constraints>
-                            <nil key="textColor"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
-                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                        </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxc-dp-OfE">
-                            <rect key="frame" x="153" y="126" width="14" height="42"/>
+                            <rect key="frame" x="153" y="92" width="14" height="42"/>
                             <fontDescription key="fontDescription" type="system" pointSize="35"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ok-qV-hDh" customClass="FlatButton">
-                            <rect key="frame" x="10" y="196" width="299" height="41"/>
+                            <rect key="frame" x="10" y="159" width="299" height="41"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="41" id="KSb-xE-VKN"/>
                             </constraints>
@@ -59,8 +49,8 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="Cf3-Se-yw5" customClass="ExtendedTextFieldView">
-                            <rect key="frame" x="175" y="128" width="120" height="40"/>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="Cf3-Se-yw5" customClass="ExtendedTextFieldView">
+                            <rect key="frame" x="173" y="95" width="120" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="120" id="G4n-0S-DeD"/>
                                 <constraint firstAttribute="height" constant="40" id="x5b-et-hlw"/>
@@ -69,17 +59,27 @@
                             <fontDescription key="fontDescription" type="system" pointSize="35"/>
                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                         </textField>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="ffJ-rx-jiE" customClass="ExtendedTextFieldView">
+                            <rect key="frame" x="57" y="95" width="90" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="8bJ-Br-p1V"/>
+                                <constraint firstAttribute="width" constant="90" id="PBb-Kc-UjI"/>
+                            </constraints>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                        </textField>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="BVP-xw-EI2" secondAttribute="centerX" id="2gc-LE-zbO"/>
-                        <constraint firstItem="bxc-dp-OfE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="41" id="3v5-nk-mDo"/>
-                        <constraint firstItem="BVP-xw-EI2" firstAttribute="top" secondItem="Xgm-lE-qM8" secondAttribute="top" constant="25" id="6zg-s2-wFd"/>
+                        <constraint firstItem="bxc-dp-OfE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="22" id="3v5-nk-mDo"/>
+                        <constraint firstItem="BVP-xw-EI2" firstAttribute="top" secondItem="Xgm-lE-qM8" secondAttribute="top" constant="10" id="6zg-s2-wFd"/>
                         <constraint firstAttribute="bottom" secondItem="0Ok-qV-hDh" secondAttribute="bottom" constant="331" id="7kg-mK-SmX"/>
-                        <constraint firstItem="Cf3-Se-yw5" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="43" id="7pW-yX-WcH"/>
+                        <constraint firstItem="Cf3-Se-yw5" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="25" id="7pW-yX-WcH"/>
                         <constraint firstAttribute="trailing" secondItem="BVP-xw-EI2" secondAttribute="trailing" constant="10" id="IFJ-Km-7aL"/>
                         <constraint firstAttribute="centerX" secondItem="bxc-dp-OfE" secondAttribute="centerX" id="KE5-Qd-jXe"/>
-                        <constraint firstItem="ffJ-rx-jiE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="43" id="UDW-K9-ePV"/>
-                        <constraint firstItem="0Ok-qV-hDh" firstAttribute="top" secondItem="bxc-dp-OfE" secondAttribute="bottom" constant="28" id="Y1q-6a-FER"/>
+                        <constraint firstItem="ffJ-rx-jiE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="25" id="UDW-K9-ePV"/>
+                        <constraint firstItem="0Ok-qV-hDh" firstAttribute="top" secondItem="bxc-dp-OfE" secondAttribute="bottom" constant="25" id="Y1q-6a-FER"/>
                         <constraint firstAttribute="trailing" secondItem="0Ok-qV-hDh" secondAttribute="trailing" constant="10" id="iF6-tJ-dO5"/>
                         <constraint firstItem="0Ok-qV-hDh" firstAttribute="leading" secondItem="Xgm-lE-qM8" secondAttribute="leading" constant="10" id="nPj-ls-D0K"/>
                         <constraint firstItem="Cf3-Se-yw5" firstAttribute="leading" secondItem="bxc-dp-OfE" secondAttribute="trailing" constant="6" id="nar-3A-mJv"/>

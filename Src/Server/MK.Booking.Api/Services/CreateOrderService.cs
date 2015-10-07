@@ -22,6 +22,7 @@ using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -50,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IOrderDao _orderDao;
         private readonly IPromotionDao _promotionDao;
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
-        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+	    private readonly ILogger _logger;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IPaymentService _paymentService;
         private readonly IPayPalServiceFactory _payPalServiceFactory;
@@ -64,6 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
+        private readonly IVehicleTypeDao _vehiculeTypeDao;
         private readonly Resources.Resources _resources;
 
         public CreateOrderService(ICommandBus commandBus,
@@ -78,12 +80,13 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderDao orderDao,
             IPromotionDao promotionDao,
             IEventSourcedRepository<Promotion> promoRepository,
-            HoneyBadgerServiceClient honeyBadgerServiceClient,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             IPaymentService paymentService,
             IPayPalServiceFactory payPalServiceFactory,
             IOrderPaymentDao orderPaymentDao,
-            IFeesDao feesDao)
+            IFeesDao feesDao, 
+            ILogger logger,
+            IVehicleTypeDao vehiculeTypeDao)
         {
             _accountChargeDao = accountChargeDao;
             _creditCardDao = creditCardDao;
@@ -97,13 +100,14 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
-            _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _paymentService = paymentService;
             _payPalServiceFactory = payPalServiceFactory;
             _orderPaymentDao = orderPaymentDao;
             _feesDao = feesDao;
-            _resources = new Resources.Resources(_serverSettings);
+	        _logger = logger;
+            _vehiculeTypeDao = vehiculeTypeDao;
+	        _resources = new Resources.Resources(_serverSettings);
         }
 
         public object Post(CreateOrder request)
@@ -167,7 +171,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
 
-            if (countryCode.IsNumberPossible(request.Settings.Phone))
+			if (PhoneHelper.IsNumberPossible(countryCode, request.Settings.Phone))
             {
                 request.Settings.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Settings.Phone);
             }
@@ -579,6 +583,15 @@ namespace apcurium.MK.Booking.Api.Services
                 // Only switch companies if order is timedout
                 return orderStatusDetail;
             }
+
+			// We are in a network timeout situation.
+	        if (orderStatusDetail.CompanyKey == request.NextDispatchCompanyKey)
+	        {
+				CancelIbsOrder(order, account.Id);
+		        orderStatusDetail.IBSStatusId = VehicleStatuses.Common.Timeout;
+		        orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_"+VehicleStatuses.Common.Timeout);
+		        return orderStatusDetail;
+	        }
 
             var market = _taxiHailNetworkServiceClient.GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
@@ -1213,6 +1226,9 @@ namespace apcurium.MK.Booking.Api.Services
             var customerNumber = GetCustomerNumber(request.Settings.AccountNumber, request.Settings.CustomerNumber);
 
             int? createOrderResult = null;
+            var defaultVehiculeType = _vehiculeTypeDao.GetAll().FirstOrDefault();
+            var defaultVehicleTypeId = defaultVehiculeType != null ? defaultVehiculeType.ReferenceDataVehicleId : -1;
+
             IbsHailResponse ibsHailResult = null;
 
             if (isHailRequest)
@@ -1236,6 +1252,7 @@ namespace apcurium.MK.Booking.Api.Services
                     customerNumber,
                     prompts,
                     promptsLength,
+                    defaultVehicleTypeId,
                     fare);
 
                 // Fetch vehicle candidates only if order was successfully created on IBS
@@ -1267,6 +1284,7 @@ namespace apcurium.MK.Booking.Api.Services
                     customerNumber,
                     prompts,
                     promptsLength,
+                    defaultVehicleTypeId,
                     fare);
             }
 
@@ -1416,6 +1434,26 @@ namespace apcurium.MK.Booking.Api.Services
             return null;
         }
 
+	    private bool IsCmtGeoServiceMode(string market)
+	    {
+		    var externalMarketMode = market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode ==ExternalAvailableVehiclesModes.Geo;
+
+		    var internalMarketMode = !market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo;
+
+		    return internalMarketMode || externalMarketMode;
+	    }
+
+		private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
+		{
+			if (IsCmtGeoServiceMode(market))
+			{
+				return new CmtGeoServiceClient(_serverSettings, _logger);
+			}
+
+			return new HoneyBadgerServiceClient(_serverSettings, _logger);
+		}
+
+
         private BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude)
         {
             if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
@@ -1430,9 +1468,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             for (var i = 1; i < searchExpendLimit; i++)
             {
-                var marketVehicles =
-                    _honeyBadgerServiceClient.GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, null, true)
-                                             .ToArray();
+                var marketVehicles = GetAvailableVehiclesServiceClient(market)
+					.GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, null, true)
+					.ToArray();
 
                 if (marketVehicles.Any())
                 {

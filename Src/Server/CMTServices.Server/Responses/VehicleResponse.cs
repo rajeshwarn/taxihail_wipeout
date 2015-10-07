@@ -10,6 +10,8 @@ namespace CMTServices.Responses
 
         public float Longitude { get; set; }
 
+        public float CompassCourse { get; set; }
+
         public string Medallion { get; set; }
 
        public int FleetId { get; set; }

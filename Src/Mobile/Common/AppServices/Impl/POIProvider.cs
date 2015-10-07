@@ -1,48 +1,39 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
-using System;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class POIProvider : BaseService, IPOIProvider
     {
-        public async Task<string> GetPOIRefPickupList(string company, string textMatch, int maxRespSize)
+		public async Task<PickupPoint[]> GetPOIRefPickupList(string company, string textMatch, int maxRespSize)
         {
-            var result = string.Empty;
             try
             {
-                result = await UseServiceClientAsync<POIServiceClient, string>(service => service.GetPOIRefPickupList(company, textMatch, maxRespSize ));
+                return await UseServiceClientAsync<POIServiceClient, PickupPoint[]>(service => service.GetPOIRefPickupList(company, textMatch, maxRespSize ));
             }
-            catch
+            catch(Exception ex)
             {
-                result = string.Empty;
-#if DEBUG
-                result = "[{\"additionalFee\":\"0.00\",\"name\":\"Curbside\",\"id\":\"utog.Curbside\",\"type\":\"pickuppoint_utog\"},{\"additionalFee\":\"15.00\",\"name\":\"Meet and Greet\",\"id\":\"utog.Meet and Greet\",\"type\":\"pickuppoint_utog\"}]";
-#endif
+				Logger.LogError(ex);
+
+	            return new PickupPoint[0];
             }
-            return result;
         }
 
-        public async Task<string> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
+		public async Task<Airline[]> GetPOIRefAirLineList(string company, string textMatch, int maxRespSize)
         {
-            var result = string.Empty;
             try
             {
-                result = await UseServiceClientAsync<POIServiceClient, string>(service => service.GetPOIRefAirLineList(company, textMatch, maxRespSize));
+				return await UseServiceClientAsync<POIServiceClient, Airline[]>(service => service.GetPOIRefAirLineList(company, textMatch, maxRespSize));
             }
-            catch
+            catch(Exception ex)
             {
-                result = string.Empty;
-#if DEBUG
-                result = "[{\"name\":\"Delta\",\"callsign\":null,\"id\":\"***\",\"type\":\"airline\"}, {\"name\":\"Air Canada\",\"callsign\":null,\"id\":\"***\",\"type\":\"airline\"},{\"name\":\"American Airlines\",\"callsign\":null,\"id\":\"***\",\"type\":\"airline\"},{\"name\":\"Southwest\",\"callsign\":null,\"id\":\"***\",\"type\":\"airline\"},{\"name\":\"United\",\"callsign\":null,\"id\":\"***\",\"type\":\"airline\"},{\"name\":\"Alaska Airlines\",\"callsign\":null,\"id\":\"***\",\"type\":\"airline\"},{\"iataCode\":\"-+\",\"icaoCode\":\"--+\",\"name\":\"U.S. Air\",\"callsign\":null,\"alias\":null,\"active\":false,\"id\":\"--+\",\"type\":\"airline\",\"openFlightsId\":\"13391\",\"homeCountry\":\"United States\"}]";
-#endif
+				Logger.LogError(ex);
+
+	            return new Airline[0];
             }
-            return result;
         }
     }
 }

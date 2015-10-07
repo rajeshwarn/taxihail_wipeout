@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             lblPhone.Maybe(x => x.Text = Localize.GetValue("PassengerPhoneLabel"));
             txtPhone.Maybe(x => x.Placeholder = Localize.GetValue("PassengerPhoneLabel"));
             txtPhone.Maybe(x => x.AccessibilityLabel = Localize.GetValue("PassengerPhoneLabel"));
+            lblPhoneDialCode.Maybe(x => x.AccessibilityLabel = Localize.GetValue("DialCodeSelectorTitle"));
 
             lblPassengers.Maybe(x => x.Text = Localize.GetValue("PassengerNumberLabel"));
             txtPassengers.Maybe(x => x.Placeholder = Localize.GetValue("PassengerNumberLabel"));

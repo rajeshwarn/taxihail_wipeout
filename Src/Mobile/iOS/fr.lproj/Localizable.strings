@@ -41,6 +41,7 @@
 "CmtCarNumber"="Numéro du véhicule: ";
 "Notification_PromotionUnlockedPush"="Promotions déverrouillées (Push)";
 "ManualRideLinqCreditCardDisabled"="Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.";
+"OrderAirportView_DATE_OUT_OF_RANGE"="La date fournis est à l'extérieur des limites du fournisseur.";
 "StatusActionButton"="Appeler/Réserver/Annuler";
 "TaxiHailNetworkTimeOutPopupMessage"="En raison d'un grand nombre de demandes, aucun véhicule n'est disponible présentement. Désirez-vous passer une commande avec {0}?";
 "ConfirmationOfPaymentSent"="Confirmation du paiement envoyée au chauffeur";
@@ -185,6 +186,7 @@
 "RideSettingsCustomerNumber"="Numéro de client du compte (optionnel)";
 "ResendConfirmationCodeButtonText"="Renvoyer le code";
 "Tuto04Bottom"="En faisant cela vous aurez une estimation du coût de votre trajet.";
+"ManualPairing_TimeOut_Message"="Un probleme de connexion est survenu lors de la tentative d'obtenir l'état de votre course de taxi.";
 "Toggle_On"="Oui";
 "ManualPairingForRideLinQ_InvalidCode_Message"="Le code d'association est invalide";
 "CreditCard"="Carte de paiement";
@@ -249,9 +251,11 @@
 "View_BookingDetail"="Détails de la réservation";
 "RideSettingsVehiculeType"="Type de véhicule";
 "WarningPushServiceAction"="Merci";
+"BookingAirportDetailsTerminal"=", \nTerminal: {0}";
 "LoginForgotPasswordDetail"="Saisissez votre email pour recevoir votre nouveau mot de passe";
 "UnpairWarningCancelButton"="Annuler";
 "PassengerNumberLabel"="Passagers";
+"ManualPairing_TimeOut_Title"="Erreur de connection";
 "LocationServiceErrorTitle"="Erreur";
 "CmtTransactionSuccessTitle"="Paiement effectué";
 "January"="Janvier (01)";
@@ -399,6 +403,7 @@
 "BookItLaterButton"="Plus tard";
 "RingCode"="Saisissez un code";
 "app_id"="134284363380764";
+"BookingAirportMissingInfo_Title"="Informations manquantes";
 "View_AboutUs"="À propos";
 "Error_InvalidCvvMessage"="Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres";
 "ScanCreditCard"="Scanner la carte de paiement";
@@ -491,6 +496,7 @@
 "CmtTransactionResendConfirmationButtonText"="Envoyer de nouveau";
 "StatusDescription"="Commande n°{0}";
 "Notification_ReceiptEmail"="Reçu (Email)";
+"OrderAirportView_BAD_FLIGHT_NUMBER"="Numéro de vol invalide";
 "TaxiHailNetworkTimeOutErrorTitle"="Erreur";
 "InvalidAccountOnActivatedMessage"="Votre compte semble ne pas exister. Merci de vérifier la saisie";
 "Overdue_Date"="Date de transaction:";
@@ -582,6 +588,7 @@
 "LinkPayPalConfirmation"="Associer";
 "Notification_PaymentConfirmationPush"="Confirmation de paiement";
 "HistoryDetailAuthorizationLabel"="Autorisation:";
+"OrderAirportView_BAD_AIRPORT_CODE"="Une erreur est survenue avec le fournisseur d'informations de vol.";
 "DestinationMapTitle"="Lieu de destination";
 "CreateAccountPhonePlaceHolder"="Ligne mobile";
 "HistoryDetailDestinationLabel"="Destination:";
@@ -605,7 +612,7 @@
 "ChangePasswordConfirmmation"="Votre mot de passe a été mis à jour, merci de vous connecter.";
 "OrderNote"="Réserver sur votre mobile";
 "CallDriverUsingProxyPrompt"="Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepté, votre chauffeur vous rappellera aussitôt que possible.";
-"FacebookLoginErrorTitle"="Email déjà utilisé";
+"FacebookLoginErrorTitle"="Email existant";
 "PickupViewPickupLabel"="Départ:";
 "Done"="Terminé";
 "DriverInfoVehicleMedallion"="Medallion:";
@@ -643,6 +650,7 @@
 "Notification_DriverAssignedEmail"="Chauffeur assigné (Email)";
 "May"="Mai (05)";
 "PayNow"="Payer maintenant!";
+"BookingAirportNoFlights_Message"="Nous n'avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}";
 "StatusActionCancelButton"="Annuler";
 "OtherListItemLabel"="Autre Pourcentage";
 "ManualRideLinqStatus_PairingError"="Une erreur est survenue. Veuillez essayer de vous connecter de nouveau en utilisant le code affiché sur l'écran dans le taxi.";
@@ -660,6 +668,7 @@
 "GooglePlayServicesNotAvailableMessage"="Merci de mettre à jour Google Play pour utiliser cette application mobile.";
 "AccountPaymentQuestionsRequired"="(requis)";
 "DestinationAddress"="Destination address";
+"OrderAirportView_BAD_AIRLINE_CODE"="Une erreur est survenue avec le fournisseur d'information de vol.";
 "ChargeTypeCreditCardFile"="Carte de paiement déjà engistrée";
 "AccountDisabled_NoCall"="Votre compte a été désactivé";
 "View_AccountConfirmation_Button"="Confimer";
@@ -670,6 +679,7 @@
 "StatusActionBookButton"="Réserver un nouveau véhicule";
 "WarningLocationServiceTitle"="Avertissement";
 "November"="Novembre (11)";
+"BookingAirportNoFlights_Title"="Aucun vol";
 "EstimatedFareNotAvailable"="Le prix ne peut être estimé pour le moment";
 "RateLastRideTitle"="Évaluer la dernière course?";
 "Tuto02Bottom"="Si le curseur n'est pas tout à fait à votre position actuelle, veuillez simplement le repositionner.";
@@ -679,6 +689,7 @@
 "CreditCardExpYear"="Date d'expiration (année)";
 "WarningLocationService"="Merci d'activer la géolocalisation afin de pouvoir utiliser la carte";
 "Facebook"="Connexion Facebook";
+"BookingAirportMissingInfo_Message"="Le numéro de vol et la compagnie aérienne sont nécessaires.";
 "PanelMenuViewNotificationsText"="Notifications";
 "HistoryLoadError"="Impossible de charger l'historique. Veuillez réessayer plus tard.";
 "UpdateNoticeTitle"="Update Notice";

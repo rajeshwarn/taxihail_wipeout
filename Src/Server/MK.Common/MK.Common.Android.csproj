@@ -79,6 +79,7 @@
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\AddressLocationType.cs" />
+    <Compile Include="Entity\Airline.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
     <Compile Include="Entity\OrderPairingDetail.cs" />
     <Compile Include="Entity\OrderRatings.cs" />
+    <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\RatingScore.cs" />
     <Compile Include="Entity\RatingTypeWrapper.cs" />
     <Compile Include="Entity\Rule.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Geography\GeographyHelper.cs" />
+    <Compile Include="Helpers\AirlineComparer.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="ICacheService.cs" />

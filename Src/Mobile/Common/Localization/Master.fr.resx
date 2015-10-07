@@ -2231,9 +2231,18 @@
 	<data name="WaitingCarLandscapeActivityName" xml:space="preserve">
     	<value>Numéro de voiture</value>
 	</data>
-	<data name="UpdateNoticeTitle" xml:space="preserve">
-    	<value>Update Notice</value>
+	<data name="BookingAirportDetailsTerminal">
+		<value>, \nTerminal: {0}</value>
 	</data>
+	<data name="UpdateNoticeTitle" xml:space="preserve">
+    		<value>Update Notice</value>
+	</data>
+	<data name="BookingAirportNoFlights_Title" xml:space="preserve">
+    <value>Aucun vol</value>
+  </data>
+	<data name="BookingAirportNoFlights_Message" xml:space="preserve">
+    <value>Nous n'avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}</value>
+  </data>
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît</value>
 	</data>
@@ -2249,4 +2258,28 @@
 	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
  		<value>Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</value>
   	</data>
+	<data name="BookingAirportMissingInfo_Title" xml:space="preserve">
+    <value>Informations manquantes</value>
+  </data>
+	<data name="BookingAirportMissingInfo_Message" xml:space="preserve">
+    <value>Le numéro de vol et la compagnie aérienne sont nécessaires.</value>
+  </data>
+	<data name="OrderAirportView_BAD_FLIGHT_NUMBER" xml:space="preserve">
+			<value>Numéro de vol invalide</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRPORT_CODE" xml:space="preserve">
+			<value>Une erreur est survenue avec le fournisseur d'informations de vol.</value>
+	</data>
+	<data name="OrderAirportView_DATE_OUT_OF_RANGE" xml:space="preserve">
+			<value>La date fournis est à l'extérieur des limites du fournisseur.</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRLINE_CODE" xml:space="preserve">
+			<value>Une erreur est survenue avec le fournisseur d'information de vol.</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Title" xml:space="preserve">
+		<value>Erreur de connection</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
+		<value>Un probleme de connexion est survenu lors de la tentative d'obtenir l'état de votre course de taxi.</value>
+	</data>
 </root>

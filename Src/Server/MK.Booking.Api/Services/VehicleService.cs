@@ -167,7 +167,8 @@ namespace apcurium.MK.Booking.Api.Services
                     VehicleNumber = v.Medallion,
                     FleetId = v.FleetId,
                     Eta = (int?)v.Eta,
-                    VehicleType = v.VehicleType
+                    VehicleType = v.VehicleType,
+                    CompassCourse = v.CompassCourse,
                 }).ToArray();
             }
 
@@ -438,7 +439,8 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 Eta = result.Eta,
                 Latitude = result.Latitude,
-                Longitude = result.Longitude
+                Longitude = result.Longitude,
+                CompassCourse = result.CompassCourse,
             };
         }
 
@@ -461,23 +463,20 @@ namespace apcurium.MK.Booking.Api.Services
                         .InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
                 }
             }
-            else
-            {
-                // Local market
-                switch ( _serverSettings.ServerData.LocalAvailableVehiclesMode)
-                {
-                    case LocalAvailableVehiclesModes.Geo:
-                        {
-                            return new CmtGeoServiceClient(_serverSettings, _logger);
-                        }
-                    case LocalAvailableVehiclesModes.HoneyBadger:
-                        {
-                            return new HoneyBadgerServiceClient(_serverSettings, _logger);
-                        }
-                    default: throw new InvalidOperationException("{0} is not a supported Vehicle provider"
-                        .InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
-                }
-            }
+	        // Local market
+	        switch ( _serverSettings.ServerData.LocalAvailableVehiclesMode)
+	        {
+		        case LocalAvailableVehiclesModes.Geo:
+		        {
+			        return new CmtGeoServiceClient(_serverSettings, _logger);
+		        }
+		        case LocalAvailableVehiclesModes.HoneyBadger:
+		        {
+			        return new HoneyBadgerServiceClient(_serverSettings, _logger);
+		        }
+		        default: throw new InvalidOperationException("{0} is not a supported Vehicle provider"
+			        .InvariantCultureFormat(_serverSettings.ServerData.ExternalAvailableVehiclesMode));
+	        }
         }
     }
 }

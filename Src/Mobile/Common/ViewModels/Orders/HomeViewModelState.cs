@@ -50,12 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         /// <summary>
         /// Airport Details selection
         /// </summary>
-        AirportDetails,
-		/// <summary>
-		/// Addresss search (favorites, history, etc...)
-		/// </summary>
-		AirportAddressSearch
-
+        AirportDetails
     }
 }
 

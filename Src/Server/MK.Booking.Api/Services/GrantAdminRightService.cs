@@ -49,5 +49,23 @@ namespace apcurium.MK.Booking.Api.Services
             });
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
+
+        public object Put(GrantSupportRightRequest request)
+        {
+            var account = Dao.FindByEmail(request.AccountEmail);
+            if (account != null)
+            {
+                _commandBus.Send(new AddRoleToUserAccount
+                {
+                    AccountId = account.Id,
+                    RoleName = RoleName.Support
+                });
+                return new HttpResult(HttpStatusCode.OK, "OK");
+            }
+            else
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, "Account not found");
+            }
+        }
     }
 }

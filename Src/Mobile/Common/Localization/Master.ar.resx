@@ -2179,9 +2179,18 @@
 	<data name="WaitingCarLandscapeActivityName" xml:space="preserve">
     	<value>Car Number</value>
 	</data>
-	<data name="UpdateNoticeTitle" xml:space="preserve">
-    	<value>Update Notice</value>
+	<data name="BookingAirportDetailsTerminal">
+		<value>, \nTerminal: {0}</value>
 	</data>
+	<data name="UpdateNoticeTitle" xml:space="preserve">
+		<value>Update Notice</value>
+	</data>
+	<data name="BookingAirportNoFlights_Title" xml:space="preserve">
+    <value>No flights</value>
+  </data>
+	<data name="BookingAirportNoFlights_Message" xml:space="preserve">
+    <value>No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}</value>
+  </data>
 	<data name="UpdateNoticeText" xml:space="preserve">
     	<value>Sorry, this version of the app is no longer supported. Please update the app</value>
 	</data>
@@ -2197,4 +2206,28 @@
 	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
  		<value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
   	</data>
+	<data name="BookingAirportMissingInfo_Title" xml:space="preserve">
+    <value>Missing information</value>
+  </data>
+	<data name="BookingAirportMissingInfo_Message" xml:space="preserve">
+    <value>The airline and the flight number are madatory.</value>
+  </data>
+	<data name="OrderAirportView_BAD_FLIGHT_NUMBER" xml:space="preserve">
+			<value>Invalid flight number</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRPORT_CODE" xml:space="preserve">
+			<value>An error occurred with the flight status provider.</value>
+	</data>
+	<data name="OrderAirportView_DATE_OUT_OF_RANGE" xml:space="preserve">
+			<value>Provided date is out of range.</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRLINE_CODE" xml:space="preserve">
+			<value>An error occurred with the flight status provider.</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Title" xml:space="preserve">
+		<value>Connection error</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
+		<value>There is a connection error preventing us from providing the status of your ride.</value>
+	</data>
 </root>

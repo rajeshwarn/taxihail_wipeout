@@ -45,7 +45,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var tcs = new TaskCompletionSource<object>();
 
-            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(Context.Activity, title, message, () => tcs.TrySetResult(null)));
+            dispatcher.RequestMainThreadAction(async () => 
+                AlertDialogHelper.Show(Context.Activity, title, message, () => tcs.TrySetResult(null)));
 
             return tcs.Task;
         }
@@ -57,21 +58,21 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var tcs = new TaskCompletionSource<object>();
 
-            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(
+            dispatcher.RequestMainThreadAction(async () => AlertDialogHelper.Show(
                 Context.Activity,
                 title,
                 message,
-                positiveButtonTitle, () => 
+                positiveButtonTitle, () =>
                 { 
-                    if(positiveAction != null)
+                    if (positiveAction != null)
                     {
                         positiveAction(); 
                     }
                     tcs.TrySetResult(null); 
                 },
-                negativeButtonTitle, () =>  
+                negativeButtonTitle, () =>
                 { 
-                    if(negativeAction != null)
+                    if (negativeAction != null)
                     {
                         negativeAction(); 
                     }
@@ -88,13 +89,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var tcs = new TaskCompletionSource<object>();
 
-            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(
+            dispatcher.RequestMainThreadAction(async () => AlertDialogHelper.Show(
                 Context.Activity,
                 title,
                 message,
                 positiveButtonTitle, () =>
                 { 
-                    if(positiveAction != null)
+                    if (positiveAction != null)
                     {
                         positiveAction(); 
                     }
@@ -102,15 +103,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 },
                 negativeButtonTitle, () =>
                 { 
-                    if(negativeAction != null)
+                    if (negativeAction != null)
                     {
                         negativeAction(); 
                     }
                     tcs.TrySetResult(null); 
                 },
-                neutralButtonTitle, () => 
+                neutralButtonTitle, () =>
                 { 
-                    if(neutralAction != null)
+                    if (neutralAction != null)
                     {
                         neutralAction(); 
                     }
@@ -126,7 +127,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var tcs = new TaskCompletionSource<object>();
 
-            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(Context.Activity, title, message, () => { additionalAction.Invoke(); tcs.TrySetResult(null); }));
+            dispatcher.RequestMainThreadAction(async () => 
+                AlertDialogHelper.Show(Context.Activity, title, message, () => { additionalAction.Invoke(); tcs.TrySetResult(null); }));
 
             return tcs.Task;
         }
@@ -244,7 +246,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
 
-            dispatcher.RequestMainThreadAction( async () => 
+            dispatcher.RequestMainThreadAction(async () => 
                 {
                     var result = await AlertDialogHelper.ShowPromptDialog(
                         Context.Activity,

@@ -38,6 +38,7 @@
 "CmtCarNumber"="رقم السيارة:";
 "BookingRateActivityName"="Booking rate";
 "ManualRideLinqCreditCardDisabled"="Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ";
+"OrderAirportView_DATE_OUT_OF_RANGE"="Provided date is out of range.";
 "StatusActionButton"="إتصال / حجز/ إلغاء";
 "TaxiHailNetworkTimeOutPopupMessage"="Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?";
 "ConfirmationOfPaymentSent"="تم إرسال تأكيد السداد للسائق.";
@@ -180,6 +181,7 @@
 "RideSettingsCustomerNumber"="Account Rider Number";
 "ResendConfirmationCodeButtonText"="Resend confirmation code";
 "Tuto04Bottom"="بذلك سيتم تزويدك بسعر تقريبي للرحلة.";
+"ManualPairing_TimeOut_Message"="There is a connection error preventing us from providing the status of your ride.";
 "Toggle_On"="On";
 "ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
 "CreditCard"="بطاقة الائتمان";
@@ -240,9 +242,11 @@
 "Now"="الآن";
 "View_BookingDetail"="تفاصيل الحجز";
 "RideSettingsVehiculeType"="نوع السیارة";
+"BookingAirportDetailsTerminal"=", \nTerminal: {0}";
 "LoginForgotPasswordDetail"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";
 "UnpairWarningCancelButton"="Cancel";
 "PassengerNumberLabel"="الركاب";
+"ManualPairing_TimeOut_Title"="Connection error";
 "LocationServiceErrorTitle"="خطأ";
 "CmtTransactionSuccessTitle"="تم إستلام المبلغ";
 "January"="يناير (01)";
@@ -389,6 +393,7 @@
 "BookItLaterButton"="لاحقا";
 "RingCode"="رمز الدخول";
 "SendEmail"="ارسل رسالة إلكترونية...";
+"BookingAirportMissingInfo_Title"="Missing information";
 "View_AboutUs"="نبذة عنا";
 "Error_InvalidCvvMessage"="The CVV must be a number between 3 and 4 digits";
 "ScanCreditCard"="مسح بطاقة الائتمان";
@@ -479,6 +484,7 @@
 "CmtTransactionResendConfirmationButtonText"="إعادة إرسال";
 "StatusDescription"="طلب # {0}";
 "Notification_ReceiptEmail"="Receipt (Email)";
+"OrderAirportView_BAD_FLIGHT_NUMBER"="Invalid flight number";
 "TaxiHailNetworkTimeOutErrorTitle"="Error";
 "InvalidAccountOnActivatedMessage"="لا يمكن التعرف على حسابك، يجب أن تقوم بتسجيل الدخول لاستخدام هذا التطبيق";
 "Overdue_Date"="Transaction date:";
@@ -568,6 +574,7 @@
 "LinkPayPalConfirmation"="Link";
 "Notification_PaymentConfirmationPush"="Payment Confirmation";
 "HistoryDetailAuthorizationLabel"="التصريح:";
+"OrderAirportView_BAD_AIRPORT_CODE"="An error occurred with the flight status provider.";
 "DestinationMapTitle"="موقع وجهتك";
 "CreateAccountPhonePlaceHolder"="الجوال";
 "HistoryDetailDestinationLabel"="الوجهة:";
@@ -628,6 +635,7 @@
 "Notification_DriverAssignedEmail"="Driver Assigned (Email)";
 "May"="مايو (05)";
 "PayNow"="ادفع الآن";
+"BookingAirportNoFlights_Message"="No flights found with the provided information.\nAre you sure that the following information is correct? \nAirline: {0}\nFlight number: {1}\nDate: {2}";
 "StatusActionCancelButton"="إلغاء هذا الطلب";
 "OtherListItemLabel"="Custom Percent";
 "ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the taxi touchscreen.";
@@ -645,6 +653,7 @@
 "View_CreditCard"="دفع";
 "GooglePlayServicesNotAvailableMessage"="يجب أن تقوم بتحديث خدمات Google Play لتتمكن من استخدام هذا التطبيق.";
 "DestinationAddress"="Destination address";
+"OrderAirportView_BAD_AIRLINE_CODE"="An error occurred with the flight status provider.";
 "ChargeTypeCreditCardFile"="بطاقة الائتمان في الملف";
 "AccountDisabled_NoCall"="تم إيقاف حسابك.";
 "View_AccountConfirmation_Button"="Confirm";
@@ -655,6 +664,7 @@
 "StatusActionBookButton"="احجز سيارة أجرة اخرى";
 "WarningLocationServiceTitle"="تحذير";
 "November"="نوفمبر (11)";
+"BookingAirportNoFlights_Title"="No flights";
 "EstimatedFareNotAvailable"="التكلفة المتوقعة غير متاحة";
 "RateLastRideTitle"="Rate last ride?";
 "Tuto02Bottom"="إن كانت الخريطة غير دقيقة، قم بإعادة ضبطها على موقعك الحالي";
@@ -664,6 +674,7 @@
 "CreditCardExpYear"="سنة الإنتهاء";
 "WarningLocationService"="يرجى تشغيل خدمات الموقع ليظهر موقعك على الخريطة";
 "Facebook"="الدخول عبر حساب الفيسبوك";
+"BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";
 "PanelMenuViewNotificationsText"="Notifications";
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "UpdateNoticeTitle"="Update Notice";

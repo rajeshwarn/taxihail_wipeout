@@ -10,6 +10,7 @@
         android:layout_width="60dp"
         android:layout_height="@dimen/HeightEditText"
         android:background="@drawable/dialog_center"
+        android:contentDescription="@string/DialCodeSelectorTitle"
         style="@style/CreateAccount" />
     <EditText
         android:id="@+id/phoneNumber"

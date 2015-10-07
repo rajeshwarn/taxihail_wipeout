@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Android.App;
 using Android.Content.Res;
 using Google.Android.M4b.Maps.Model;
@@ -139,5 +139,45 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
             return differentColorThanExpected;
         }
+
+		public static Bitmap RotateImageByDegrees(int imageResource, double degrees)
+		{
+			var image = DrawHelper.DrawableToBitmap (Application.Context.Resources.GetDrawable(imageResource));
+
+			Matrix matrix = new Matrix();
+			matrix.PostRotate((float)degrees);
+
+			return Bitmap.CreateBitmap(image, 0, 0, image.Width, image.Height, matrix, true);
+		}
+
+		public static Bitmap RotateImageByDegreesWithСenterCrop(int imageResource, double degrees)
+		{
+			var originalImage = Application.Context.Resources.GetDrawable(imageResource);
+
+			var rotatedImage = RotateImageByDegrees(imageResource, degrees);
+			var croppedImage = Bitmap.CreateBitmap(originalImage.IntrinsicWidth, originalImage.IntrinsicHeight, Bitmap.Config.Argb8888);
+
+			var rectDestination = new Rect()
+			{
+				Left = 0,
+				Right = originalImage.IntrinsicWidth,
+				Top = 0,
+				Bottom = originalImage.IntrinsicHeight
+			};
+
+			var rectSource = new Rect()
+			{
+				Left = (rotatedImage.Width / 2) - (originalImage.IntrinsicWidth / 2),
+				Right = (rotatedImage.Width / 2) + (originalImage.IntrinsicWidth / 2),
+				Top = (rotatedImage.Height / 2) - (originalImage.IntrinsicHeight / 2),
+				Bottom = (rotatedImage.Height / 2) + (originalImage.IntrinsicHeight / 2)
+			};
+
+			var croppedImageCanvas = new Canvas(croppedImage);
+
+			croppedImageCanvas.DrawBitmap(rotatedImage, rectSource, rectDestination, new Paint());
+
+			return croppedImage;
+		}
     }
 }

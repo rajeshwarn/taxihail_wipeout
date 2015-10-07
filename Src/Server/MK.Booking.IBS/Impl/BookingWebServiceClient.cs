@@ -18,8 +18,8 @@ namespace apcurium.MK.Booking.IBS.Impl
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
         private readonly IServerSettings _serverSettings;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
 
-        
         public BookingWebServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings.ServerData.IBS, logger)
         {
@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.IBS.Impl
         }
 
         public IbsFareEstimate GetFareEstimate( double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string pickupZipCode, string dropoffZipCode, string accountNumber, 
-            int? customerNumber, int? tripDurationInSeconds, int? providerId, int? vehicleType)
+            int? customerNumber, int? tripDurationInSeconds, int? providerId, int? vehicleType, int defaultVehiculeTypeId)
         {
             var result = new IbsFareEstimate();
             UseService(service =>
@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 }
 
                 tbook.AccountNum = accountNumber;
-                tbook.VehicleTypeID = vehicleType  ?? - 1;
+                tbook.VehicleTypeID = vehicleType ?? defaultVehiculeTypeId;
                 tbook.ChargeTypeID = -1;
 
                 tbook.ServiceProviderID = providerId ?? -1;
@@ -394,11 +394,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, Fare fare = default(Fare))
         {
             var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
-                promptsLength, fare);
+                promptsLength, defaultVehiculeTypeId, fare);
 
             int? orderId = null;
 
@@ -417,11 +417,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             return orderId;
         }
 
-        public IbsHailResponse Hail(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
+        public IbsHailResponse Hail(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, Fare fare = default(Fare))
         {
             var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
-                promptsLength, fare, orderId);
+                promptsLength, defaultVehiculeTypeId, fare, orderId);
 
             var orderKey = new TBookOrderKey();
 
@@ -457,7 +457,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Getting Vehicle Candidates : " + JsonSerializer.SerializeToString(orderKey, typeof(IbsOrderKey)));
 
                 vehicleCandidates = service.GetVehicleCandidates(UserNameApp, PasswordApp, new TBookOrderKey { GUID = orderKey.ToString(), OrderID = orderKey.IbsOrderId });
-                Logger.LogMessage("WebService Getting Vehicle Candidates, candidates received : " + JsonSerializer.SerializeToString(vehicleCandidates, typeof(TVehicleComp)));
+                Logger.LogMessage("WebService Getting Vehicle Candidates, candidates received : " + JsonSerializer.SerializeToString(vehicleCandidates, typeof(TVehicleComp)));            
             });
 
             return Mapper.Map<IbsVehicleCandidate[]>(vehicleCandidates);
@@ -512,7 +512,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        private TBookOrder_11 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
+        private TBookOrder_11 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
@@ -572,7 +572,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             };
 
             order.Passengers = nbPassengers;
-            order.VehicleTypeID = vehicleTypeId ?? -1;
+            order.VehicleTypeID = vehicleTypeId ?? defaultVehiculeTypeId;
             order.Note = note;
             order.ContactPhone = CleanPhone(phone);
             order.OrderStatus = TWEBOrderStatusValue.wosPost;

@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private const string FailedCode = "0";
         
         // maximum probable time between the moment when user changes payment type on his device and it's saving in the database on server, seconds
-        const int timeBetweenPaymentChangeAndSaveInDB = 15;
+        private const int TimeBetweenPaymentChangeAndSaveInDb = 15;
 
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -147,13 +147,13 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             if (orderStatusDetail.UnpairingTimeOut != null && !paymentSettings.CancelOrderOnUnpair && orderStatusDetail.UnpairingTimeOut.Value != DateTime.MaxValue)
             {
-                if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(timeBetweenPaymentChangeAndSaveInDB))
+                if (DateTime.UtcNow >= orderStatusDetail.UnpairingTimeOut.Value.AddSeconds(TimeBetweenPaymentChangeAndSaveInDb))
                 {
                     var orderNotification = _orderNotificationsDetailDao.FindByOrderId(orderStatusDetail.OrderId);
 
                     if (orderNotification == null || !orderNotification.InfoAboutPaymentWasSentToDriver)
                     {
-                        _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
+						_ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber, orderDetail.CompanyKey);
 
                         _commandBus.Send(new UpdateOrderNotificationDetail
                         {
@@ -425,6 +425,12 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus)
         {
+			// We are not supposed to attempt to show the vehicle position when not in the proper state.
+	        if (VehicleStatuses.ShowOnMapStatuses.None(status => status.Equals(ibsOrderInfo.Status)))
+	        {
+				return;
+	        }
+
             // Use IBS vehicle position by default
             var vehicleLatitude = ibsOrderInfo.VehicleLatitude;
             var vehicleLongitude = ibsOrderInfo.VehicleLongitude;
@@ -432,8 +438,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             var isUsingGeo = (!orderStatus.Market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo)
                 || (orderStatus.Market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo);
 
-            // Override with Geo position if enabled
-            if (isUsingGeo)
+            // Override with Geo position if enabled and if we have a vehicle registration.
+            if (isUsingGeo && ibsOrderInfo.VehicleRegistration.HasValue())
             {
                 var orderDetail = _orderDao.FindById(orderStatus.OrderId);
                 var vehicleStatus = _cmtGeoServiceClient.GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleRegistration);
@@ -496,7 +502,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             if (ibsOrderInfo.IsMeterOffNotPaid)
             {
-                SendPaymentBeingProcessedMessageToDriver(ibsOrderInfo.VehicleNumber);
+                SendPaymentBeingProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, orderStatusDetail.CompanyKey);
             }
 
             if (ibsOrderInfo.Fare <= 0)
@@ -600,7 +606,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     {
                         if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                         {
-                            _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                            _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber, orderStatusDetail.CompanyKey);
                         }
 
                         // set the payment error message in OrderStatusDetail for reporting purpose
@@ -613,7 +619,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                     {
-                        _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                        _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber, orderStatusDetail.CompanyKey);
                     }
 
                     // set the payment error message in OrderStatusDetail for reporting purpose
@@ -626,7 +632,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                 {
-                    _ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+					_ibs.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber, orderStatusDetail.CompanyKey);
                 }
 
                 // set the payment error message in OrderStatusDetail for reporting purpose
@@ -727,7 +733,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         paymentProviderServiceResponse.TransactionId,
                         paymentProviderServiceResponse.AuthorizationCode,
                         cardToken,
-                        account.IBSAccountId.Value,
+                        account.IBSAccountId.GetValueOrDefault(),
                         orderDetail.Settings.Name,
                         orderDetail.Settings.Phone,
                         account.Email,
@@ -922,12 +928,12 @@ namespace apcurium.MK.Booking.Api.Jobs
                 var sendEtaToDriver = _serverSettings.ServerData.DriverEtaNotificationMode == DriverEtaNotificationModes.Always ||
                                       (_serverSettings.ServerData.DriverEtaNotificationMode == DriverEtaNotificationModes.Once && sendEtaToDriverOnNotifyOnce);
 
-                if (_serverSettings.ServerData.ShowEta && sendEtaToDriver)
+                if (_serverSettings.ServerData.ShowEta && sendEtaToDriver && orderDetail != null)
                 {
                     try
                     {
-                        SendEtaMessageToDriver((double) ibsOrderInfo.VehicleLatitude, (double) ibsOrderInfo.VehicleLongitude, 
-                            orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleNumber);
+                        SendEtaMessageToDriver(ibsOrderInfo.VehicleLatitude.GetValueOrDefault(), ibsOrderInfo.VehicleLongitude.GetValueOrDefault(), 
+                            orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleNumber, orderDetail.CompanyKey);
                     }
                     catch(Exception ex)
                     {
@@ -961,21 +967,21 @@ namespace apcurium.MK.Booking.Api.Jobs
                         : _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
         }
 
-        private void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, double pickupLatitude, double pickupLongitude, string vehicleNumber)
+        private void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, double pickupLatitude, double pickupLongitude, string vehicleNumber, string company)
         {
             var eta = _directions.GetEta(vehicleLatitude, vehicleLongitude, pickupLatitude, pickupLongitude);
             if (eta != null && eta.IsValidEta())
             {
                 var etaMessage = string.Format(_resources.Get("EtaMessageToDriver"), eta.FormattedDistance, eta.Duration);
-                _ibs.SendMessageToDriver(etaMessage, vehicleNumber);
+				_ibs.SendMessageToDriver(etaMessage, vehicleNumber, company);
                 _logger.LogMessage(etaMessage);
             }
         }
 
-        private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber)
+		private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber, string company)
         {
             var paymentBeingProcessedMessage = _resources.Get("PaymentBeingProcessedMessageToDriver");
-            _ibs.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber);
+			_ibs.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber, company);
             _logger.LogMessage(paymentBeingProcessedMessage);
         }
 

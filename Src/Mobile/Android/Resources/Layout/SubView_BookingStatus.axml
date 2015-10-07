@@ -60,9 +60,6 @@
                     local:MvxBind="ImageUrl OrderStatusDetail.DriverInfos.DriverPhotoUrl" />
             </RelativeLayout>
             <RelativeLayout
-                android:layout_width="60dip"
-                android:layout_height="wrap_content" />
-            <RelativeLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dip"
@@ -135,8 +132,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
+        android:id="@+id/progressLayout"
         android:background="@drawable/drop_shadow_opaque"
-        local:MvxBind="Visibility IsProgressVisible, Converter=Visibility;">
+        android:visibility="gone">
         <ImageView
             android:src="@drawable/status_gradient"
             android:layout_width="wrap_content"
