@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
 			Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
 			Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
+			Observe(_orderWorkflowService.GetAndObserveTipIncentive(), tipIncentive => DriverBonus = tipIncentive);
 
 			GetIsCmtRideLinq();
 		}
@@ -189,16 +190,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private double _driverBonus = 5;
-        public double DriverBonus
+		private double? _driverBonus = 5;
+        public double? DriverBonus
 		{
 			get { return _driverBonus; }
 			set
 			{
-				if (_driverBonus != value)
+				if (value == null)
+				{
+					DriverBonusEnabled = false;
+				}
+				else if (_driverBonus != value)
                 {
                     // to get steps of 5
-                    var valueFactorOf5 = (double)Math.Round(value / SliderStepValue) * SliderStepValue;
+					var valueFactorOf5 = (double)Math.Round(value.Value / SliderStepValue) * SliderStepValue;
                     _driverBonus = (valueFactorOf5 == 0) ? 5 : valueFactorOf5;
                     _orderWorkflowService.SetTipIncentive(_driverBonus);
 					RaisePropertyChanged();
