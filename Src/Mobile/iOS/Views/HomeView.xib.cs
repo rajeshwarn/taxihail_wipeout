@@ -32,8 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 	    private const int MarginBetweenOverlay = 16;
 
-		private HomeViewModelState _presentationState = HomeViewModelState.Initial;
-
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
@@ -75,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             )
                 .Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
                 .Select(_ => ViewModel.CurrentViewState)
+                .DistinctUntilChanged()
                 .Subscribe(ChangeState, Logger.LogError);
         }
 
@@ -124,7 +123,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnTrain.AccessibilityLabel = Localize.GetValue("TrainStationsButton");
 
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
-            ChangeState( ViewModel.CurrentViewState );
 
             set.Bind(panelMenu)
                 .For(v => v.DataContext)
@@ -293,32 +291,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			
         private void ChangeState(HomeViewModelState state)
         {
-			if (_presentationState == HomeViewModelState.AirportDetails && state == HomeViewModelState.AddressSearch) 
-			{
-				_presentationState = HomeViewModelState.AirportAddressSearch;
-			} 
-			else
-			{
-				_presentationState = state;
-			}
-			if (_presentationState == HomeViewModelState.PickDate)
-			{
-				// Order Options: Visible
-				// Order Review: Hidden
-				// Order Edit: Hidden
-				// Date Picker: Visible
-
-				CloseBookATaxiDialog();
-
-				_datePicker.ViewState = state;
-				_datePicker.Show ();
-			}
-			else if (_presentationState == HomeViewModelState.AirportPickDate)
+            if (state == HomeViewModelState.PickDate)
             {
-				_datePicker.ViewState = state;
-				_datePicker.Show();
-			}
-			else if (_presentationState == HomeViewModelState.Initial)
+                // Order Options: Visible
+                // Order Review: Hidden
+                // Order Edit: Hidden
+                // Date Picker: Visible
+
+                CloseBookATaxiDialog();
+
+                _datePicker.ViewState = state;
+                _datePicker.Show();
+            }
+            else if (state == HomeViewModelState.AirportPickDate)
+            {
+                _datePicker.ViewState = state;
+                _datePicker.Show();
+            }
+            else if (state == HomeViewModelState.BookATaxi)
+            {
+                // nothing to do but we can't remove the condition 
+                // otherwise it gets picked up in the "search mode" catch all
+            }
+            else if (state == HomeViewModelState.Initial)
 			{
 				// Order Options: Visible
 				// Order Review: Hidden
@@ -352,18 +347,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         ctrlAddressPicker.ResignFirstResponderOnSubviews();
                     });
 			}
-
-			else if (_presentationState == HomeViewModelState.BookATaxi)
-            {
-                this.Services().Message.ShowMessage(null, Localize.GetValue("BookATaxi_Message"),
-                    Localize.GetValue("Cancel"),
-                    () => { ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible(); },
-                    Localize.GetValue("Now"),
-                    () => { ViewModel.BottomBar.CreateOrder.ExecuteIfPossible(); },
-                    Localize.GetValue("BookItLaterButton"),
-                    () => { ViewModel.BottomBar.BookLater.ExecuteIfPossible(); });
-            }
-			else if (_presentationState == HomeViewModelState.Review)
+            else if (state == HomeViewModelState.Review)
             {
                 // Order Options: Visible
                 // Order Review: Visible
@@ -390,7 +374,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     },
                     RedrawSubViews);
             }
-			else if (_presentationState == HomeViewModelState.Edit)
+            else if (state == HomeViewModelState.Edit)
             {
                 // Order Options: Hidden
                 // Order Review: Hidden
@@ -411,7 +395,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         ctrlOrderOptions.SetNeedsDisplay();
                     }, () => orderEdit.SetNeedsDisplay());
             }
-            else if (_presentationState == HomeViewModelState.BookingStatus || _presentationState == HomeViewModelState.ManualRidelinq)
+            else if (state == HomeViewModelState.BookingStatus || state == HomeViewModelState.ManualRidelinq)
             {
                 // Order Options: Hidden
                 // Order Review: Hidden
@@ -429,7 +413,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstrainValue;
                 }
 
-                if (_presentationState == HomeViewModelState.ManualRidelinq) 
+                if (state == HomeViewModelState.ManualRidelinq) 
 				{
 					ResizeBookingStatusControl(false);
 				}
@@ -455,7 +439,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         _datePicker.Hide();  
                     }, RedrawSubViews);
 			}
-			else if (_presentationState == HomeViewModelState.AirportDetails)
+            else if (state == HomeViewModelState.AirportDetails)
             {
 				// Order Options: Hidden
 				// Order Review: Hidden
@@ -496,19 +480,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						homeView.LayoutIfNeeded();
 					}, RedrawSubViews);
                 
-				switch (_presentationState)
+                switch (state)
 				{
-					case HomeViewModelState.AirportAddressSearch:
-						ctrlAddressPicker.Open(AddressLocationType.Unspeficied, HomeViewModelState.AirportDetails);
-						break;
 					case HomeViewModelState.AddressSearch:
-						ctrlAddressPicker.Open(AddressLocationType.Unspeficied, HomeViewModelState.Initial);
+						ctrlAddressPicker.Open(AddressLocationType.Unspeficied);
 						break;
 					case HomeViewModelState.AirportSearch:
-						ctrlAddressPicker.Open(AddressLocationType.Airport, HomeViewModelState.Initial);
+						ctrlAddressPicker.Open(AddressLocationType.Airport);
 						break;
 					case HomeViewModelState.TrainStationSearch:
-						ctrlAddressPicker.Open(AddressLocationType.Train, HomeViewModelState.Initial);
+						ctrlAddressPicker.Open(AddressLocationType.Train);
 						break;
 				}
 			}

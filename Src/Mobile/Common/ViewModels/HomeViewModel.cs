@@ -551,7 +551,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							break;
 
 						case HomeViewModelState.Initial:
-						case HomeViewModelState.AirportAddressSearch:
 						case HomeViewModelState.ManualRidelinq:
 						default:
 							base.CloseCommand.ExecuteIfPossible();
