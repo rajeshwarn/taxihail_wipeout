@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-	[AuthorizationRequired(ApplyTo.Delete, new string[] { RoleName.Admin, RoleName.SuperAdmin, RoleName.Support } )]
+	[AuthorizationRequired(ApplyTo.Delete, RoleName.Support)]
 	[Route("/admin/deleteAllCreditCards/{AccountID}", "DELETE")]
 	public class DeleteCreditCardsWithAccountRequest
 	{

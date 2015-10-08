@@ -96,8 +96,8 @@
 			var accid = e.currentTarget.attributes.accid.nodeValue;
 			var account = model.getAccount(accid);
 
-			if (email != undefined && email != null && email.toString().length > 0
-				&& account.settings.phone != undefined && account.settings.phone != null && account.settings.phone.length > 0)
+			if (email && email.toString().length > 0
+				&& account.settings.phone && account.settings.phone.length > 0)
 			{
 				var sendButton = document.getElementById("buttonSendSMS" + accid);
 				sendButton.disabled = true;
@@ -128,7 +128,7 @@
 			var email = e.currentTarget.attributes.email.nodeValue;
 			var accid = e.currentTarget.attributes.accid.nodeValue;
 
-			if (email != undefined && email != null && email.toString().length > 0)
+			if (email && email.toString().length > 0)
 			{
 				var enableDisableAccountButton = document.getElementById("buttonEnableDisableAccount" + accid);
 				enableDisableAccountButton.disabled = true;
@@ -179,7 +179,7 @@
 			var email = e.currentTarget.attributes.email.nodeValue;
 			var accid = e.currentTarget.attributes.accid.nodeValue;
 
-			if (email != undefined && email != null && email.toString().length > 0)
+			if (email && email.toString().length > 0)
 			{
 				var unlinkIBSAccounButton = document.getElementById("buttonUnlinkIBSAccount" + accid);
 				unlinkIBSAccounButton.disabled = true;
@@ -208,30 +208,32 @@
 			e.preventDefault();
 
 			var accid = e.currentTarget.attributes.accid.nodeValue;
+			var account = model.getAccount(accid);
 
-			var buttonDeleteCreditCardsInfo = document.getElementById("buttonDeleteCreditCardsInfo" + accid);
-			buttonDeleteCreditCardsInfo.disabled = true;
+			var deleteConfirm = confirm("Confirm removing credit cards for user " + account.name);
 
-			model.deleteAccountCreditCards(accid, this, function (viewObject, data)
+			if (deleteConfirm == true)
 			{
-				if (data.status == 200)
+				var buttonDeleteCreditCardsInfo = document.getElementById("buttonDeleteCreditCardsInfo" + accid);
+				buttonDeleteCreditCardsInfo.disabled = true;
+
+				model.deleteAccountCreditCards(accid, this, function (viewObject, data)
 				{
-					buttonDeleteCreditCardsInfo.innerText = TaxiHail.localize("Credit cards info deleted");
-				}
-				else if (data.status == 202)
-				{
-					buttonDeleteCreditCardsInfo.innerText = TaxiHail.localize("Credit cards info will be deleted soon");
-				}
-				else if (data.status == 204)
-				{
-					buttonDeleteCreditCardsInfo.innerText = TaxiHail.localize("Credit cards not found");
-				}
-				else
-				{
-					buttonDeleteCreditCardsInfo.disabled = false;
-					viewObject.$('.errors').text(TaxiHail.localize('Error during credit cards info removing'));
-				}
-			});
+					if (data.status == 200 || data.status == 204)
+					{
+						buttonDeleteCreditCardsInfo.innerText = TaxiHail.localize("Credit cards info deleted");
+					}
+					else if (data.status == 202)
+					{
+						buttonDeleteCreditCardsInfo.innerText = TaxiHail.localize("Credit cards info will be deleted soon");
+					}
+					else
+					{
+						buttonDeleteCreditCardsInfo.disabled = false;
+						viewObject.$('.errors').text(TaxiHail.localize('Error during credit cards info removing'));
+					}
+				});
+			}
 		}
 	});
 }());
