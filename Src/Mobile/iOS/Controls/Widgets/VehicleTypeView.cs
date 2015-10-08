@@ -10,6 +10,95 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
+    [Register("VehicleTypeSubView")]
+    public class VehicleTypeSubView : UIControl
+    {
+        private UILabel _vehicleTypeLabel { get; set; }
+
+        public VehicleTypeSubView (CGRect frame, VehicleType vehicle, bool isSelected) : base (frame)
+        {
+            Initialize();
+
+            Vehicle = vehicle;
+            Selected = isSelected;
+        }
+
+        private void Initialize()
+        {
+            _vehicleTypeLabel = new UILabel 
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                BackgroundColor = UIColor.Clear,
+                Font = UIFont.FromName (FontName.HelveticaNeueBold, 18 / 2),
+                TextColor = DefaultColorForTextAndImage,
+                ShadowColor = UIColor.Clear,
+                LineBreakMode = UILineBreakMode.TailTruncation,
+                TextAlignment = UITextAlignment.Center
+            };
+            AddSubview (_vehicleTypeLabel);
+
+            // Constraints for VehicleTypeLabel
+            AddConstraints(new [] 
+            {
+                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Top, 1f, 0),
+                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Bottom, 1f, 0f),
+                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Right, 1f, 0f)
+            });
+        }
+
+        private VehicleType _vehicle;
+        public VehicleType Vehicle
+        {
+            get { return _vehicle; }
+            set
+            {
+                if (_vehicle != value)
+                {
+                    _vehicle = value;
+
+                    _vehicleTypeLabel.TextColor = DefaultColorForTextAndImage;
+                    _vehicleTypeLabel.Text = Localize.GetValue (value.Name.ToUpper ());
+                    _vehicleTypeLabel.SizeToFit ();
+                }
+            }
+        }
+
+        public override bool Selected 
+        {
+            get { return base.Selected; }
+            set 
+            {
+                if (base.Selected != value)
+                {
+                    base.Selected = value;
+
+                    if (Vehicle == null)
+                    {
+                        return;
+                    }
+
+                    if (value) 
+                    {
+                        _vehicleTypeLabel.TextColor = Theme.CompanyColor;
+                    } 
+                    else 
+                    {
+                        _vehicleTypeLabel.TextColor = DefaultColorForTextAndImage;
+                    }
+                }
+            }
+        }
+
+        private UIColor DefaultColorForTextAndImage
+        {
+            get 
+            { 
+                return UIColor.FromRGB(153, 153, 153);
+            }
+        }
+    }
+
     [Register("VehicleTypeView")]
     public class VehicleTypeView : UIControl
     {

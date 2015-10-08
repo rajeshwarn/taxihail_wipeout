@@ -18,8 +18,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private const float VehicleLeftBadgeWidth = 56f;
         private const float LabelPadding = 5f;
         private const float VehicleSelectionPadding = 16f;
+        private const float VehicleSubSelectionPadding = 12f;
         private const float EstimatedFareLabelTopValueWithEta = 2f;
         private const float EstimatedFareLabelTopValueWithoutEta = 0f;
+        private const float DefaultControlHeight = 52f;
+        private const float GroupByServiceTypeControlHeight = 82f;
 
         private UIView HorizontalDividerTop { get; set; }
         private VehicleTypeView EstimateSelectedVehicleType { get; set; }
@@ -30,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public Action<VehicleType> VehicleSelected { get; set; }
 
+        private NSLayoutConstraint _constraintControlHeight;
 		private NSLayoutConstraint _constraintEstimateVehicleWidth;
         private NSLayoutConstraint _constraintEstimatedFareLabelHeight;
         private NSLayoutConstraint _constraintEstimatedFareLabelTop;
@@ -48,6 +52,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
+            _constraintControlHeight = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DefaultControlHeight);
+            AddConstraint(_constraintControlHeight);
+
             HorizontalDividerTop = Line.CreateHorizontal(Frame.Width, Theme.LabelTextColor);
 
             VehicleSelectionContainer = new UIView ();
@@ -274,6 +281,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 HorizontalDividerTop.BackgroundColor = Theme.LabelTextColor;
                 EstimateContainer.Hidden = false;
 				VehicleSelectionContainer.Hidden = true;
+                ChangeControlHeightIfNeeded(true);
 
                 if (Eta.HasValue() && ShowEta)
                 {
@@ -302,6 +310,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 
             _constraintEstimateVehicleWidth.Constant = EstimateSelectedVehicleType.WidthToFitLabel();
 		}
+
+        private bool IsVehicleSelected(VehicleType vehicle, bool isForSubSelection = false)
+        {
+            return SelectedVehicle != null && ((isForSubSelection || !GroupVehiclesByServiceType) 
+                ? vehicle.Id == SelectedVehicle.Id 
+                : vehicle.ServiceType == SelectedVehicle.ServiceType);
+        }
 
         private void DrawVehicleSelectionContainerContent()
         {
@@ -332,19 +347,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             foreach (var vehicle in vehiclesRepresentation) 
             {
-                var currentIsSelected = SelectedVehicle != null 
-                    ? (GroupVehiclesByServiceType 
-                        ? vehicle.ServiceType == SelectedVehicle.ServiceType
-                        : vehicle.Id == SelectedVehicle.Id)
-                    : false;
-
+                var currentIsSelected = IsVehicleSelected(vehicle);
+                
                 var vehicleView = new VehicleTypeView(new CGRect(), vehicle, currentIsSelected);
                 vehicleView.TranslatesAutoresizingMaskIntoConstraints = false;
                 vehicleView.TouchUpInside += (sender, e) => { 
                     if (!IsReadOnly && VehicleSelected != null) {
                         if(GroupVehiclesByServiceType) 
                         {
-                            // change service type only internally to display vehicle types under it
+                            var firstForServiceTypeSelected = Vehicles.FirstOrDefault(x => x.ServiceType == vehicle.ServiceType);
+                            VehicleSelected (firstForServiceTypeSelected);
                         }
                         else
                         {
@@ -358,7 +370,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 VehicleSelectionContainer.AddConstraints(new [] 
                 { 
                     NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, vehicleView.Superview, NSLayoutAttribute.Top, 1f, 0f),
-                    NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, vehicleView.Superview, NSLayoutAttribute.Height, 1f, 0f)
+                    NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DefaultControlHeight)
                 });
 
                 if (i == 0)
@@ -382,7 +394,90 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     VehicleSelectionContainer.AddConstraint(NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, VehicleSelectionContainer, NSLayoutAttribute.Right, 1f, -VehicleSelectionPadding));
                 }
 
+                if (GroupVehiclesByServiceType && currentIsSelected)
+                {
+                    var vehiclesForThisServiceType = Vehicles.Where(x => x.ServiceType == SelectedVehicle.ServiceType).ToList();
+                    if (vehiclesForThisServiceType.Count > 1)
+                    {
+                        // the sub-selection is needed
+                        var subSelectionView = new UIView 
+                        { 
+                            TranslatesAutoresizingMaskIntoConstraints = false,
+                            BackgroundColor = UIColor.FromRGB(227, 227, 227)
+                        };
+                        VehicleSelectionContainer.Add(subSelectionView);
+
+                        VehicleSelectionContainer.AddConstraints(new [] {
+                            NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, subSelectionView.Superview, NSLayoutAttribute.Top, 1f, DefaultControlHeight),
+                            NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.Width, 1f, GroupByServiceTypeControlHeight - DefaultControlHeight),
+                            NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, subSelectionView.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                            NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, subSelectionView.Superview, NSLayoutAttribute.Right, 1f, 0f)
+                        });
+
+                        var y = 0;
+                        foreach (var vehicleType in vehiclesForThisServiceType)
+                        {
+                            var vehicleSubView = new VehicleTypeSubView(new CGRect(), vehicleType, IsVehicleSelected(vehicleType, true));
+                            vehicleSubView.TranslatesAutoresizingMaskIntoConstraints = false;
+                            vehicleSubView.TouchUpInside += (sender, e) => { 
+                                if (!IsReadOnly && VehicleSelected != null) {
+                                    VehicleSelected (vehicleType);
+                                }
+                            };
+
+                            subSelectionView.AddSubview(vehicleSubView);
+
+                            subSelectionView.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, vehicleSubView.Superview, NSLayoutAttribute.CenterY, 1f, 0f));
+                            subSelectionView.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 15f));
+
+                            if (y == 0)
+                            {
+                                // first vehicle
+                                subSelectionView.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, vehicleSubView.Superview, NSLayoutAttribute.Left, 1f, VehicleSubSelectionPadding));
+                            }
+                            else
+                            {
+                                // add constraint relative to previous vehicle
+                                subSelectionView.AddConstraints(new [] 
+                                {
+                                    NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, vehicleSubView.Superview.Subviews[y - 1], NSLayoutAttribute.Right, 1f, 0f),
+                                    NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, vehicleSubView.Superview.Subviews[y - 1], NSLayoutAttribute.Width, 1f, 0f)
+                                });
+                            }
+
+                            if (y == (vehiclesForThisServiceType.Count() - 1))
+                            {
+                                // last vehicle
+                                subSelectionView.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, vehicleSubView.Superview, NSLayoutAttribute.Right, 1f, -VehicleSubSelectionPadding));
+                            }
+
+                            y++;
+                        }
+
+                        ChangeControlHeightIfNeeded(false);
+                    }
+                    else
+                    {
+                        ChangeControlHeightIfNeeded(true);
+                    }
+                }
+
                 i++;
+            }
+        }
+
+        private void ChangeControlHeightIfNeeded(bool setToDefault)
+        {
+            var wantedValue = setToDefault ? DefaultControlHeight : GroupByServiceTypeControlHeight;
+            if (_constraintControlHeight.Constant != wantedValue)
+            {
+                _constraintControlHeight.Constant = wantedValue;
+
+                // force the constraint to be applied and the bounds to be updated immediately
+                SetNeedsLayout();
+                LayoutIfNeeded();
+
+                ((OrderOptionsControl)Superview.Superview).Resize();
             }
         }
 

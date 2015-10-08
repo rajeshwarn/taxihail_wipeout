@@ -529,10 +529,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			// server should return blackcar as logoname if luxury or taxi if taxi
 			var list = new List<VehicleType>()
 			{
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Luxury, Name = "Sedan", LogoName = "blackcar" },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Sedan", LogoName = "taxi" },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Van", LogoName = "suv" },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "WAV", LogoName = "wheelchair" }
+				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Sedan", LogoName = "taxi", ReferenceDataVehicleId = 0 },
+				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Luxury, Name = "Sedan", LogoName = "blackcar", ReferenceDataVehicleId = 1 },
+				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Van", LogoName = "suv", ReferenceDataVehicleId = 2 },
+				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "WAV", LogoName = "wheelchair", ReferenceDataVehicleId = 3 }
 			};
 
 			return list;
