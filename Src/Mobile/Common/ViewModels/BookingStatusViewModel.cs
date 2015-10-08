@@ -960,35 +960,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
-			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && !string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber))
+			try
 			{
 				var carNumber = OrderStatusDetail.VehicleNumber;
 
-				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+				if ((deviceOrientation != DeviceOrientations.Left && deviceOrientation != DeviceOrientations.Right) || string.IsNullOrWhiteSpace(carNumber))
 				{
-					if (!string.IsNullOrWhiteSpace(carNumber))
-					{
-						WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
-						{
-						    CarNumber = carNumber,
-                            DeviceOrientations = deviceOrientation
-						};
-						ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
-					}
-				}
-				else
-				{
-					if (!string.IsNullOrWhiteSpace(carNumber))
-					{
-						WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
-					}
-					else
+					if (WaitingCarLandscapeViewModelParameters != null)
 					{
 						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
 						WaitingCarLandscapeViewModelParameters = null;
 					}
+
+					return;
 				}
+
+
+				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+				{
+					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
+					{
+						CarNumber = carNumber,
+						DeviceOrientations = deviceOrientation
+					};
+
+					ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
+				}
+				else
+				{
+					WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
+				}
+
 			}
+			catch (Exception ex)
+			{
+				Logger.LogMessage("An error occurred while handling DeviceOrientationChanged");
+				Logger.LogError(ex);
+			}
+			
 		}
 
 	    private async Task SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
