@@ -281,7 +281,8 @@
                     android:layout_alignParentLeft="true"
                     android:gravity="start|top"
                     android:minHeight="44dip"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_weight="1" />
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
