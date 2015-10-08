@@ -63,7 +63,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return;
 			}
 
-			var isUpToDate = true;
 			var isSupported = true;
             
 			try
@@ -71,13 +70,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var appInfo = await GetAppInfoAsync();
 
 				var mobileVersion = new ApplicationVersion(_packageInfo.Version);
-                var serverVersion = new ApplicationVersion(appInfo.Version);
                 var minimumRequiredVersion = new ApplicationVersion(appInfo.MinimumRequiredAppVersion);
-
-				if (mobileVersion < serverVersion)
-				{
-					isUpToDate = false;
-				}
 
 				if (mobileVersion < minimumRequiredVersion)
 				{
@@ -94,11 +87,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 // App is not supported anymore (also means that an update is available so don't display the other pop-up)
                 await _messageService.ShowMessage(_localize["UpdateNoticeTitle"], _localize["UpdateNoticeText"]);
-            }
-            else if (!isUpToDate)
-            {
-                // App is still supported but an update is available
-                await _messageService.ShowMessage(_localize["AppNeedUpdateTitle"], _localize["AppNeedUpdateMessage"]);
             }
 		}
     }
