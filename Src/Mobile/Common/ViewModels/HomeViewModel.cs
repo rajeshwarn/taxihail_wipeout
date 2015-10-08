@@ -88,10 +88,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _firstTime;
 
-        public void Init(bool locateUser, string defaultHintZoomLevel)
+		public void Init(bool locateUser, string defaultHintZoomLevel, string order, string orderStatusDetail, string manualRidelinqDetail)
         {
 			_locateUser = locateUser;
 			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
+
+			if (manualRidelinqDetail != null)
+			{
+				var deserializedRidelinqDetails = JsonSerializer.DeserializeFromString<OrderManualRideLinqDetail>(manualRidelinqDetail);
+
+				CurrentViewState = HomeViewModelState.ManualRidelinq;
+
+				BookingStatus.StartBookingStatus(deserializedRidelinqDetails, true);
+
+				CurrentViewState = HomeViewModelState.ManualRidelinq;
+
+				return;
+			}
+
+			if (order != null && orderStatusDetail != null)
+			{
+				var deserializedOrder = JsonSerializer.DeserializeFromString<Order>(order);
+				var deserializeOrderStatus = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatusDetail);
+
+				BookingStatus.StartBookingStatus(deserializedOrder, deserializeOrderStatus);
+
+				CurrentViewState = HomeViewModelState.BookingStatus;
+			}
 		}
 
 		public override void OnViewLoaded ()
@@ -105,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
-		public override async void OnViewStarted(bool firstTime)
+		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
 
@@ -114,8 +137,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_firstTime = firstTime;
 
 				_locationService.Start();
-
-				var activeOrderTask = CheckActiveOrderAsync (firstTime);
 
 				if (_orderWorkflowService.IsOrderRebooked())
 				{
@@ -128,11 +149,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					AddressPicker.RefreshFilteredAddress();
 
-					this.Services().ApplicationInfo.CheckVersionAsync().HandleErrors();
+					this.Services().ApplicationInfo.CheckVersionAsync().FireAndForget();
 
 					CheckTermsAsync();
 
-					CheckCreditCardExpiration().HandleErrors();
+					CheckCreditCardExpiration().FireAndForget();
 
 					BottomBar.CheckManualRideLinqEnabledAsync();
 
@@ -144,10 +165,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 				}
 
-				if(await activeOrderTask)
-				{
-					LocateUserIfNeeded();
-				}
+				LocateUserIfNeeded();
 
 				if (_defaultHintZoomLevel != null)
 				{
@@ -170,32 +188,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				AutomaticLocateMeAtPickup.Execute(null);
 				_locateUser = false;
 			}
-		}
-
-		public async Task<bool> CheckActiveOrderAsync(bool firstTime)
-		{
-			var lastOrder = await Task.Run(() => _orderWorkflowService.GetLastActiveOrder());
-			if(lastOrder != null)
-			{
-			    if (lastOrder.Item1.IsManualRideLinq)
-			    {
-					var orderManualRideLinqDetail = await Task.Run(() => _bookingService.GetTripInfoFromManualRideLinq(lastOrder.Item1.Id));
-
-                    GoToManualRideLinq(orderManualRideLinqDetail, true);
-			    }
-			    else
-			    {
-					GotoBookingStatus(lastOrder.Item1, lastOrder.Item2);
-			    }
-
-				return true;
-			}
-			else if (firstTime)
-			{
-				CheckUnratedRide ();
-			}
-
-			return false;
 		}
 
 		public bool FirstTime{ get; set;}
@@ -276,7 +268,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					},
 					_locateUser, 
 					_defaultHintZoomLevel
-				);
+				).HandleErrors();
 			}
 		}
 
@@ -715,7 +707,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				AutomaticLocateMeAtPickup.ExecuteIfPossible();
                 CheckUnratedRide();
 				CheckTermsAsync();
-				CheckCreditCardExpiration().HandleErrors();
+				CheckCreditCardExpiration().FireAndForget();
                 AddressPicker.RefreshFilteredAddress();
 
 				_metricsService.LogApplicationStartUp ();

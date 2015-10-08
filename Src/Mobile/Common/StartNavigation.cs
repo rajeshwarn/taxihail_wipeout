@@ -12,6 +12,7 @@ using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -87,18 +88,26 @@ namespace apcurium.MK.Booking.Mobile
             }
             else
             {
-                Task.Run(() =>
-                {
-                    // Make sure to refresh notification/payment settings even if the user has killed the app
-                    accountService.GetNotificationSettings(true);
-                    Mvx.Resolve<IPaymentService>().GetPaymentSettings();
-                    Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync();
-                });
+				// Make sure to refresh notification/payment settings even if the user has killed the app
+				Task.WhenAll(new[]
+					{
+						accountService.GetNotificationSettings(true),
+						Mvx.Resolve<IPaymentService>().GetPaymentSettings(),
+						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync()
+					}).FireAndForget();
 
                 // Log user session start
                 metricsService.LogApplicationStartUp();
 
-                ShowViewModel<HomeViewModel>(new { locateUser = true });
+				var hasLastOrder = Mvx.Resolve<IBookingService>().HasLastOrder;
+				if (hasLastOrder)
+				{
+					ShowViewModel<ExtendedSplashScreenViewModel>();
+				}
+				else
+				{
+					ShowViewModel<HomeViewModel>(new { locateUser = true });
+				}
             }
 
             Mvx.Resolve<ILogger>().LogMessage("Startup with server {0}", appSettings.Data.ServiceUrl);

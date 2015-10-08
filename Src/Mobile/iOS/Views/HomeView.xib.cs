@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnTrain.AccessibilityLabel = Localize.GetValue("TrainStationsButton");
 
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
-			ChangeState( HomeViewModelState.Initial );
+            ChangeState( ViewModel.CurrentViewState );
 
             set.Bind(panelMenu)
                 .For(v => v.DataContext)
