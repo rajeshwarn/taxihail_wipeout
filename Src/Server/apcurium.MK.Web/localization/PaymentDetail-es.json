@@ -1,0 +1,27 @@
+﻿{
+    "PaymentTitle" : "Payment",
+    "CreditCardName": "Name as it appears on card",
+    "CreditCardNumber": "Card Number",
+    "CVV": "CVV",
+    "ExpMonth": "Exp. Month",
+    "ExpYear": "Exp. Year",
+    "Save": "Save Changes",
+    "Delete": "Delete Credit Card",
+    "Label" :  "Label",
+    "Personal": "Personal",
+    "Business": "Business",
+
+    // Exp. Months
+    "January": "January (01)",
+    "February": "February (02)",
+    "Mars": "Mars (03)",
+    "April": "April (04)",
+    "May": "May (05)",
+    "June": "June (06)",
+    "July": "July (07)",
+    "August": "August (08)",
+    "September": "September (09)",
+    "October": "October (10)",
+    "November": "November (11)",
+    "December": "December (12)"
+}
