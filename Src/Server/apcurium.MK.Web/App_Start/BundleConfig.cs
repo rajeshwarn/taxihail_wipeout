@@ -215,6 +215,7 @@ namespace apcurium.MK.Web
                 "~/admin/views/SendTestEmailView.js",
                 "~/admin/views/ExportAccountsView.js",
                 "~/admin/views/ExportOrdersView.js",
+				"~/admin/views/ExportPromotionsView.js",
                 "~/admin/views/AdminMenuView.js",
                 "~/admin/views/ManageDefaultAddressesView.js",
                 "~/admin/views/ManageTariffsView.js",

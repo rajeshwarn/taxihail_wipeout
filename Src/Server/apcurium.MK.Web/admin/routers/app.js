@@ -50,6 +50,7 @@
             /*Export*/
             "exportaccounts": "exportAccounts",
             "exportorders": "exportOrders",
+            "exportpromotions": "exportPromotions",
 
             /*Signup*/
             "signup": "signup",
@@ -194,6 +195,10 @@
 
         exportOrders: function () {
             action(TaxiHail.ExportController, 'exportOrders');
+        },
+
+        exportPromotions:function(){
+        	action(TaxiHail.ExportController, 'exportPromotions');
         },
 
         manageRatings: function () {
