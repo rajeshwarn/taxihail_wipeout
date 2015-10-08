@@ -76,7 +76,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
             ShowOrientedPins = false;
-            HideTHNetworkAppMenu = false;
+            HideTHNetworkAppMenu = true;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
 			
@@ -486,7 +486,7 @@ namespace MK.Common.Configuration
         public bool ShowOrientedPins { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Display - Hide THNetwork from menu", Description = "Hide THNetwork from app menu item")]
+        [Display(Name = "Display - Hide TaxiHail Network from menu", Description = "Hide THNetwork from app menu item")]
         public bool HideTHNetworkAppMenu { get; protected set; }
     }
 }
