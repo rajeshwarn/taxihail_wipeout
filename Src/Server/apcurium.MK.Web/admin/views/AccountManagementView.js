@@ -221,16 +221,16 @@
 				{
 					if (data.status == 200 || data.status == 204)
 					{
-						buttonDeleteCreditCardsInfo.innerText = TaxiHail.localize("Credit cards info deleted");
+						buttonDeleteCreditCardsInfo.innerText = "Credit cards info deleted";
 					}
 					else if (data.status == 202)
 					{
-						buttonDeleteCreditCardsInfo.innerText = TaxiHail.localize("Credit cards info will be deleted soon");
+						buttonDeleteCreditCardsInfo.innerText = "Credit cards info will be deleted soon";
 					}
 					else
 					{
 						buttonDeleteCreditCardsInfo.disabled = false;
-						viewObject.$('.errors').text(TaxiHail.localize('Error during credit cards info removing'));
+						viewObject.$('.errors').text('Error during credit cards info removing');
 					}
 				});
 			}
