@@ -1020,12 +1020,12 @@ namespace apcurium.MK.Booking.Api.Services
                 return;
             }
 
-			ApplicationVersion currentMobileVersion = new ApplicationVersion(appVersion);
-			ApplicationVersion minimumVersion = new ApplicationVersion(minimumAppVersion);
+			var currentMobileVersion = new ApplicationVersion(appVersion);
+			var minimumVersion = new ApplicationVersion(minimumAppVersion);
 
 			if (currentMobileVersion < minimumVersion)
 			{
-				Exception createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+				var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
 									_resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
 
 				createReportOrder.Error = createOrderException.ToString();
