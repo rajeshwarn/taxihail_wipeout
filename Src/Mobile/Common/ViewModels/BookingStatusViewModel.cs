@@ -110,11 +110,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (orderStatusDetail.IBSStatusId.HasValue())
 			{
-				BottomBar.ResetButtonsVisibility();
+				BottomBar.NotifyBookingStatusAppbarChanged();
 			}
 			else
 			{
-				BottomBar.NotifyBookingStatusAppbarChanged();
+				BottomBar.ResetButtonsVisibility();
 			}
 
 			CenterMapOnPinsIfNeeded();
