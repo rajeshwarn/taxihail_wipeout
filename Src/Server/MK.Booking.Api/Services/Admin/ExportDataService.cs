@@ -182,29 +182,22 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 				case DataType.Promotions:
 					var exportedPromotions = new List<Dictionary<string, string>>();
 
-					var promotions = _promotionsDao.GetAll().Where(x => (x.StartDate == null || (x.StartDate != null && x.StartDate.Value <= startDate))
-						&& (x.EndDate == null || (x.EndDate != null && x.EndDate.Value.AddDays(1).AddTicks(-1) <= endDate))).ToArray();
-
-					CultureInfo currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
+					var promotions = _promotionsDao.GetAll().Where(x => (!x.StartDate.HasValue || (x.StartDate.HasValue && x.StartDate.Value <= endDate))
+						&& (!x.EndDate.HasValue || (x.EndDate.HasValue && x.EndDate.Value >= startDate))).ToArray();
 
 					for (int i = 0; i < promotions.Length; i++)
 					{
 						var promo = new Dictionary<string, string>();
 						promo["Name"] = promotions[i].Name;
 						promo["Description"] = promotions[i].Description;
-						promo["Start"] = (promotions[i].StartDate != null ?
-							promotions[i].StartDate.Value.ToString(currentCultureInfo.DateTimeFormat.LongDatePattern, currentCultureInfo) : "")
-							+ (promotions[i].StartTime != null ? (promotions[i].StartDate != null ? " " : "")
-							+ promotions[i].StartTime.Value.ToString(currentCultureInfo.DateTimeFormat.ShortTimePattern) : "");
-						promo["End"] = (promotions[i].EndDate != null ?
-							promotions[i].EndDate.Value.ToString(currentCultureInfo.DateTimeFormat.LongDatePattern, currentCultureInfo) : "")
-							+ (promotions[i].EndTime != null ? (promotions[i].EndDate != null ? " " : "")
-							+ promotions[i].EndTime.Value.ToString(currentCultureInfo.DateTimeFormat.ShortTimePattern) : "");
-
+						promo["StartDate"] = promotions[i].StartDate.HasValue ? promotions[i].StartDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
+						promo["StartTime"] = promotions[i].StartTime.HasValue ? promotions[i].StartTime.Value.ToString("t", CultureInfo.InvariantCulture) : null;
+						promo["EndDate"] = promotions[i].EndDate.HasValue ? promotions[i].EndDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
+						promo["EndTime"] = promotions[i].EndTime.HasValue ? promotions[i].EndTime.Value.ToString("t", CultureInfo.InvariantCulture) : null;
 						var days = (string[])JsonSerializer.DeserializeFromString(promotions[i].DaysOfWeek, typeof(string[]));
 						var daysOfWeek = Enum.GetNames(typeof(System.DayOfWeek));
 
-						StringBuilder daysText = new StringBuilder();
+						var daysText = new StringBuilder();
 
 						for (int i1 = 0; i1 < daysOfWeek.Length; i1++)
 						{
@@ -215,7 +208,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 									daysText.Append(", ");
 								}
 
-								daysText.Append(currentCultureInfo.DateTimeFormat.DayNames[i1]);
+								daysText.Append(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[i1]);
 							}
 						}
 
@@ -230,8 +223,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 						}
 
 						promo["Promo Code"] = promotions[i].Code;
-						promo["Published Start Date"] = (promotions[i].PublishedStartDate != null ? promotions[i].PublishedStartDate.Value.ToString("f", currentCultureInfo) : null);
-						promo["Published End Date"] = (promotions[i].PublishedEndDate != null ? promotions[i].PublishedEndDate.Value.ToString("f", currentCultureInfo) : null);
+						promo["Published Start Date"] = promotions[i].PublishedStartDate.HasValue ? promotions[i].PublishedStartDate.Value.ToString("d",  CultureInfo.InvariantCulture) : null;
+						promo["Published End Date"] = promotions[i].PublishedEndDate.HasValue ? promotions[i].PublishedEndDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
 
 						switch (promotions[i].TriggerSettings.Type)
 						{
