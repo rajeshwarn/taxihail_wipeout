@@ -36,7 +36,7 @@
              { id: 25, display: "25%" }
             ];
 
-            if (data.defaultTipPercent == null) {
+            if (!data.defaultTipPercent) {
                 _.extend(data,
                 {
                     defaultTipPercent: TaxiHail.parameters.defaultTipPercentage,
@@ -46,6 +46,7 @@
             var displayTipSelection = TaxiHail.parameters.isChargeAccountPaymentEnabled
                 || TaxiHail.parameters.isPayPalEnabled
                 || TaxiHail.parameters.isBraintreePrepaidEnabled;
+
             _.extend(data,
             {
                 displayTipSelection: displayTipSelection,
@@ -59,7 +60,6 @@
             }
             this.$el.html(this.renderTemplate(data));
 
-            //this.$el.empty();
             if (this.collection.length) {
                 this.collection.each(this.renderItem, this);
                
@@ -131,7 +131,7 @@
 
                     var message = "";
 
-                    if (result.statusText != undefined) {
+                    if (result.statusText) {
                         message = result.statusText;
                     }
                     else {

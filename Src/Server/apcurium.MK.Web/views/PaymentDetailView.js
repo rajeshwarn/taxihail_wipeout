@@ -35,17 +35,17 @@
             
             var isEditing = this.model != null && this.model.get('last4Digits') != null;
             var creditCard = {};
+            var canDeleteCard = !TaxiHail.parameters.isCreditCardMandatory || TaxiHail.parameters.isCreditCardMandatory && this.model.get("numberOfCrecitCards") > 1;
 
             if (isEditing) {
                 creditCard = this.model.toJSON();
                 var cardNumber = "************" + creditCard.last4Digits;
-
                 _.extend(creditCard, {
                     cardNumber: cardNumber,
                     expirationMonths: expMonths,
                     expirationYears: this.generateExpYears(),
                     isEditing: true,
-                    canDeleteCreditCard: !TaxiHail.parameters.isCreditCardMandatory || TaxiHail.parameters.isCreditCardMandatory && this.model.get("numberOfCrecitCards") > 1
+                    canDeleteCreditCard: canDeleteCard
                 });
                 this._label = creditCard.label;
             } else {
@@ -53,7 +53,7 @@
                     expirationMonths: expMonths,
                     expirationYears: this.generateExpYears(true),
                     isEditing: false,
-                    canDeleteCreditCard: !TaxiHail.parameters.isCreditCardMandatory || TaxiHail.parameters.isCreditCardMandatory && this.model.get("numberOfCrecitCards") > 1,
+                    canDeleteCreditCard:canDeleteCard,
                     label : "Personal"
                 });
                 this.model.set('label', "Personal");
@@ -70,7 +70,7 @@
             { id: 25, display: "25%" }
             ];
 
-            if (creditCard.defaultTipPercent == null) {
+            if (!creditCard.defaultTipPercent) {
                 _.extend(creditCard,
                 {
                     defaultTipPercent: TaxiHail.parameters.defaultTipPercentage,
@@ -123,7 +123,7 @@
                         this.renderConfirmationMessage();
                     }, this))
                     .fail(_.bind(function() {
-                        this.renderDeleteCreditCardErrorMessage();
+                        this.renderErrorMessage(TaxiHail.localize('error.accountUpdateCreditCardLabel'));
                     }, this));
                 return false;
 
@@ -162,7 +162,7 @@
 
                     var message = "";
 
-                    if (result.statusText != undefined) {
+                    if (result.statusText) {
                         message = result.statusText;
                     }
                     else {
@@ -246,9 +246,9 @@
             var cvv = this.model.get('cvv');
 
             var now = new Date();
-            var exp = new Date(expYear, expMonth - 1, 1, 23, 59, 59);
-            exp.setMonth(exp.getMonth() + 1);           // add a month
-            exp.setDate(exp.getDate() - 1);             //remove one day
+            var expDate = new Date(expYear, expMonth - 1, 1, 23, 59, 59);
+            expDate.setMonth(expDate.getMonth() + 1);           // add a month
+            expDate.setDate(expDate.getDate() - 1);             //remove one day
 
             if (this._label !== label && !cvv) {
                 this.model.changeCreditCardLabel()
@@ -260,7 +260,7 @@
                         this.renderDeleteCreditCardErrorMessage();
                     }, this));
             }
-            if (exp < now) {
+            if (expDate < now) {
                 this.$(':submit').button('reset');
                 this.renderErrorMessage(TaxiHail.localize("ExpiredCreditCardError"));
                 return;
@@ -359,7 +359,7 @@
                         this.trigger('cancel', this);
                     }, this))
                     .fail(_.bind(function () {
-                        this.renderDeleteCreditCardErrorMessage();
+                        this.renderErrorMessage(TaxiHail.localize('error.accountUpdateDefaultCreditCard'));
                     }, this));
         },
 

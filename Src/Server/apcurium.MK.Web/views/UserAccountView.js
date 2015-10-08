@@ -37,7 +37,7 @@
 
                         if (TaxiHail.parameters.maxNumberOfCreditCards < 2) {
 
-                            var creditCardInfo = collection.models.length ? collection.models[0] : new TaxiHail.CreditCard();
+                            var creditCardInfo = collection.models.length && collection.models.length > 0 ? collection.models[0] : new TaxiHail.CreditCard();
 
                             creditCardInfo.set("settings", this.model.get('settings'));
                             creditCardInfo.set("defaultTipPercent", this.model.get('defaultTipPercent'));
