@@ -138,7 +138,7 @@ namespace apcurium.MK.Booking.Api.Services
             var ibsVehicleCandidate = Mapper.Map<IbsVehicleCandidate>(request.VehicleCandidate);
 
             var confirmHailResult = _ibsServiceProvider.Booking(orderDetail.CompanyKey).ConfirmHail(ibsOrderKey, ibsVehicleCandidate);
-            if (confirmHailResult < 0)
+            if (confirmHailResult == null || confirmHailResult < 0)
             {
                 var errorMessage = string.Format("Error while trying to confirm the hail. IBS response code : {0}", confirmHailResult);
                 Log.Error(errorMessage);
