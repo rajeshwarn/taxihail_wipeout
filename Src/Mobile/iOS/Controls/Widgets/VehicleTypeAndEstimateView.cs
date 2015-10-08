@@ -57,11 +57,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             HorizontalDividerTop = Line.CreateHorizontal(Frame.Width, Theme.LabelTextColor);
 
-            VehicleSelectionContainer = new UIView ();
-            VehicleSelectionContainer.TranslatesAutoresizingMaskIntoConstraints = false;
+            VehicleSelectionContainer = new UIView 
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
 
-            EstimateContainer = new UIView ();
-            EstimateContainer.TranslatesAutoresizingMaskIntoConstraints = false;
+            EstimateContainer = new UIView 
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
 
             AddSubviews(HorizontalDividerTop, VehicleSelectionContainer, EstimateContainer);
 
@@ -74,6 +78,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create(VehicleSelectionContainer, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, VehicleSelectionContainer.Superview, NSLayoutAttribute.Bottom, 1f, 0f)
             });
 
+            InitializeEstimateContainer();
+        }
+
+        private void InitializeEstimateContainer()
+        {
             // Constraints for EstimateContainer
             AddConstraints(new [] 
             { 
@@ -83,16 +92,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create(EstimateContainer, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, EstimateContainer.Superview, NSLayoutAttribute.Bottom, 1f, 0f)
             });
 
-            InitializeEstimateContainer();
-        }
-
-        private void InitializeEstimateContainer()
-        {
             EstimateSelectedVehicleType = new VehicleTypeView(new CGRect(0f, 0f, 50f, this.Frame.Height));
-            EstimateSelectedVehicleType.TranslatesAutoresizingMaskIntoConstraints = false;
 
             EstimatedFareLabel = new UILabel
             {
+                TranslatesAutoresizingMaskIntoConstraints = false,
                 AdjustsFontSizeToFitWidth = true,
                 BackgroundColor = UIColor.Clear,
                 Lines = 1,
@@ -101,10 +105,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear
             };
-            EstimatedFareLabel.TranslatesAutoresizingMaskIntoConstraints = false;
 
             EtaLabel = new UILabel
             {
+                TranslatesAutoresizingMaskIntoConstraints = false,
                 AdjustsFontSizeToFitWidth = true,
                 BackgroundColor = UIColor.Clear,
                 Lines = 1,
@@ -113,7 +117,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear,
             };
-            EtaLabel.TranslatesAutoresizingMaskIntoConstraints = false;
 
             EstimateContainer.AddSubviews(EstimateSelectedVehicleType, EstimatedFareLabel, EtaLabel);
 
@@ -151,127 +154,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create(EtaLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, EstimatedFareLabel.Superview, NSLayoutAttribute.Bottom, 1f, -2f)
             });
         }
-
-        public override void LayoutSubviews()
-        {
-            base.LayoutSubviews();
-
-            this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, ShowEstimate ? 3f : 0f);
-        }
-
-        public bool IsReadOnly { get; set; }
-
-        private bool _showEstimate;
-        public bool ShowEstimate
-        {
-            get { return _showEstimate; }
-            set
-            {
-                if (_showEstimate != value)
-                {
-                    _showEstimate = value;
-                    Redraw();
-                }
-            }
-        }
-
-		private bool _showVehicleSelection;
-		public bool ShowVehicleSelection
-		{
-			get { return _showVehicleSelection; }
-			set
-			{
-				if (_showVehicleSelection != value)
-				{
-					_showVehicleSelection = value;
-					Redraw();
-				}
-			}
-		}
-
-        public VehicleType SelectedVehicle
-        {
-            get { return EstimateSelectedVehicleType.Vehicle; }
-            set
-            {
-                if (EstimateSelectedVehicleType.Vehicle != value)
-                {
-                    EstimateSelectedVehicleType.Vehicle = value;
-                    Redraw();
-                }
-            }
-        }
-
-        private IEnumerable<VehicleType> _vehicles = new List<VehicleType>();
-        public IEnumerable<VehicleType> Vehicles
-        {
-            get { return _vehicles; }
-            set
-            {
-                if (_vehicles != value)
-                {
-                    _vehicles = value;
-                    Redraw();
-                }
-            }
-        }
-
-        public string EstimatedFare
-        {
-            get { return EstimatedFareLabel.Text; }
-            set
-            {
-                if (EstimatedFareLabel.Text != value)
-                {
-					EstimatedFareLabel.Text = value;
-                }
-            }
-        }
-
-        private bool _showEta;
-        public bool ShowEta
-        {
-            get
-            {
-                return _showEta;
-            }
-            set
-            {
-                _showEta = value;
-
-                EtaLabel.Hidden = !value;
-
-                Redraw();
-            }
-        }
-
-        private bool _groupVehiclesByServiceType;
-        public bool GroupVehiclesByServiceType
-        {
-            get
-            {
-                return _groupVehiclesByServiceType;
-            }
-            set
-            {
-                _groupVehiclesByServiceType = value;
-
-                Redraw();
-            }
-        }
-
-		public string Eta
-		{
-			get { return EtaLabel.Text; }
-			set
-			{
-				if (EtaLabel.Text != value)
-				{
-					EtaLabel.Text = value;
-					Redraw ();
-				}
-			}
-		}
 
         private void Redraw()
         {
@@ -311,11 +193,121 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _constraintEstimateVehicleWidth.Constant = EstimateSelectedVehicleType.WidthToFitLabel();
 		}
 
-        private bool IsVehicleSelected(VehicleType vehicle, bool isForSubSelection = false)
+        private void DrawVehicleForMainSelector(VehicleType vehicle, int index, bool isFirst, bool isLast)
         {
-            return SelectedVehicle != null && ((isForSubSelection || !GroupVehiclesByServiceType) 
-                ? vehicle.Id == SelectedVehicle.Id 
-                : vehicle.ServiceType == SelectedVehicle.ServiceType);
+            var currentIsSelected = IsVehicleSelected(vehicle);
+
+            var vehicleView = new VehicleTypeView(new CGRect(), vehicle, currentIsSelected);
+            vehicleView.TouchUpInside += (sender, e) => { 
+                if (!IsReadOnly && VehicleSelected != null) 
+                {
+                    VehicleSelected(GroupVehiclesByServiceType 
+                        ? Vehicles.FirstOrDefault(x => x.ServiceType == vehicle.ServiceType)
+                        : vehicle);
+                }
+            };
+
+            VehicleSelectionContainer.AddSubview (vehicleView);
+
+            VehicleSelectionContainer.AddConstraints(new [] 
+            { 
+                NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, vehicleView.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DefaultControlHeight)
+            });
+
+            if (isFirst)
+            {
+                // first vehicle
+                VehicleSelectionContainer.AddConstraint(NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, vehicleView.Superview, NSLayoutAttribute.Left, 1f, VehicleSelectionPadding));
+            }
+            else
+            {
+                // add constraint relative to previous vehicle
+                VehicleSelectionContainer.AddConstraints(new [] 
+                {
+                    NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, vehicleView.Superview.Subviews[index - 1], NSLayoutAttribute.Right, 1f, 0f),
+                    NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, vehicleView.Superview.Subviews[index - 1], NSLayoutAttribute.Width, 1f, 0f)
+                });
+            }
+
+            if (isLast)
+            {
+                // last vehicle
+                VehicleSelectionContainer.AddConstraint(NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, vehicleView.Superview, NSLayoutAttribute.Right, 1f, -VehicleSelectionPadding));
+            }
+
+            if (GroupVehiclesByServiceType && currentIsSelected)
+            {
+                var vehiclesForThisServiceType = Vehicles.Where(x => x.ServiceType == SelectedVehicle.ServiceType).ToList();
+                if (vehiclesForThisServiceType.Count > 1)
+                {
+                    // the sub-selection is needed
+                    var subSelectionView = new UIView 
+                    { 
+                        TranslatesAutoresizingMaskIntoConstraints = false,
+                        BackgroundColor = UIColor.FromRGB(227, 227, 227)
+                    };
+                    VehicleSelectionContainer.AddSubview(subSelectionView);
+
+                    VehicleSelectionContainer.AddConstraints(new [] 
+                    {
+                        NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, subSelectionView.Superview, NSLayoutAttribute.Top, 1f, DefaultControlHeight),
+                        NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.Width, 1f, GroupByServiceTypeControlHeight - DefaultControlHeight),
+                        NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, subSelectionView.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                        NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, subSelectionView.Superview, NSLayoutAttribute.Right, 1f, 0f)
+                    });
+
+                    var y = 0;
+                    foreach (var vehicleType in vehiclesForThisServiceType)
+                    {
+                        DrawVehicleForSubSelector(subSelectionView, vehicleType, y, y == 0, y == (vehiclesForThisServiceType.Count - 1));
+                        y++;
+                    }
+
+                    ChangeControlHeightIfNeeded(false);
+                }
+                else
+                {
+                    ChangeControlHeightIfNeeded(true);
+                }
+            }
+        }
+
+        private void DrawVehicleForSubSelector(UIView subSelectorContainer, VehicleType vehicle, int index, bool isFirst, bool isLast)
+        {
+            var vehicleSubView = new VehicleTypeSubView(new CGRect(), vehicle, IsVehicleSelected(vehicle, true));
+            vehicleSubView.TouchUpInside += (sender, e) => { 
+                if (!IsReadOnly && VehicleSelected != null) 
+                {
+                    VehicleSelected (vehicle);
+                }
+            };
+
+            subSelectorContainer.AddSubview(vehicleSubView);
+
+            subSelectorContainer.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, vehicleSubView.Superview, NSLayoutAttribute.CenterY, 1f, 0f));
+            subSelectorContainer.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 15f));
+
+            if (isFirst)
+            {
+                // first vehicle
+                subSelectorContainer.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, vehicleSubView.Superview, NSLayoutAttribute.Left, 1f, VehicleSubSelectionPadding));
+            }
+            else
+            {
+                // add constraint relative to previous vehicle
+                subSelectorContainer.AddConstraints(new [] 
+                {
+                    NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, vehicleSubView.Superview.Subviews[index - 1], NSLayoutAttribute.Right, 1f, 0f),
+                    NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, vehicleSubView.Superview.Subviews[index - 1], NSLayoutAttribute.Width, 1f, 0f)
+                });
+            }
+
+            if (isLast)
+            {
+                // last vehicle
+                subSelectorContainer.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, vehicleSubView.Superview, NSLayoutAttribute.Right, 1f, -VehicleSubSelectionPadding));
+            }
         }
 
         private void DrawVehicleSelectionContainerContent()
@@ -327,12 +319,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 return;
             }
 
-            var i = 0;
+            var vehiclesRepresentation = GetVehicleRepresentations();
 
-            var vehiclesRepresentation = Vehicles;
+            var i = 0;
+            foreach (var vehicle in vehiclesRepresentation) 
+            {
+                DrawVehicleForMainSelector(vehicle, i, i == 0, i == (vehiclesRepresentation.Count - 1));
+
+                i++;
+            }
+        }
+
+        private IList<VehicleType> GetVehicleRepresentations()
+        {
             if (GroupVehiclesByServiceType)
             {
-                vehiclesRepresentation = Vehicles
+                return Vehicles
                     .Select(x => x.ServiceType)
                     .Distinct()
                     .Select(x => new VehicleType 
@@ -344,126 +346,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                             : "taxi"
                     }).ToList();
             }
-
-            foreach (var vehicle in vehiclesRepresentation) 
+            else
             {
-                var currentIsSelected = IsVehicleSelected(vehicle);
-                
-                var vehicleView = new VehicleTypeView(new CGRect(), vehicle, currentIsSelected);
-                vehicleView.TranslatesAutoresizingMaskIntoConstraints = false;
-                vehicleView.TouchUpInside += (sender, e) => { 
-                    if (!IsReadOnly && VehicleSelected != null) {
-                        if(GroupVehiclesByServiceType) 
-                        {
-                            var firstForServiceTypeSelected = Vehicles.FirstOrDefault(x => x.ServiceType == vehicle.ServiceType);
-                            VehicleSelected (firstForServiceTypeSelected);
-                        }
-                        else
-                        {
-                            VehicleSelected (vehicle);
-                        }
-                    }
-                };
-
-                VehicleSelectionContainer.Add (vehicleView);
-
-                VehicleSelectionContainer.AddConstraints(new [] 
-                { 
-                    NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, vehicleView.Superview, NSLayoutAttribute.Top, 1f, 0f),
-                    NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DefaultControlHeight)
-                });
-
-                if (i == 0)
-                {
-                    // first vehicle
-                    VehicleSelectionContainer.AddConstraint(NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, vehicleView.Superview, NSLayoutAttribute.Left, 1f, VehicleSelectionPadding));
-                }
-                else
-                {
-                    // add constraint relative to previous vehicle
-                    VehicleSelectionContainer.AddConstraints(new [] 
-                    {
-                        NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, VehicleSelectionContainer.Subviews[i - 1], NSLayoutAttribute.Right, 1f, 0f),
-                        NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, VehicleSelectionContainer.Subviews[i - 1], NSLayoutAttribute.Width, 1f, 0f)
-                    });
-                }
-
-                if (i == (vehiclesRepresentation.Count() - 1))
-                {
-                    // last vehicle
-                    VehicleSelectionContainer.AddConstraint(NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, VehicleSelectionContainer, NSLayoutAttribute.Right, 1f, -VehicleSelectionPadding));
-                }
-
-                if (GroupVehiclesByServiceType && currentIsSelected)
-                {
-                    var vehiclesForThisServiceType = Vehicles.Where(x => x.ServiceType == SelectedVehicle.ServiceType).ToList();
-                    if (vehiclesForThisServiceType.Count > 1)
-                    {
-                        // the sub-selection is needed
-                        var subSelectionView = new UIView 
-                        { 
-                            TranslatesAutoresizingMaskIntoConstraints = false,
-                            BackgroundColor = UIColor.FromRGB(227, 227, 227)
-                        };
-                        VehicleSelectionContainer.Add(subSelectionView);
-
-                        VehicleSelectionContainer.AddConstraints(new [] {
-                            NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, subSelectionView.Superview, NSLayoutAttribute.Top, 1f, DefaultControlHeight),
-                            NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.Width, 1f, GroupByServiceTypeControlHeight - DefaultControlHeight),
-                            NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, subSelectionView.Superview, NSLayoutAttribute.Left, 1f, 0f),
-                            NSLayoutConstraint.Create(subSelectionView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, subSelectionView.Superview, NSLayoutAttribute.Right, 1f, 0f)
-                        });
-
-                        var y = 0;
-                        foreach (var vehicleType in vehiclesForThisServiceType)
-                        {
-                            var vehicleSubView = new VehicleTypeSubView(new CGRect(), vehicleType, IsVehicleSelected(vehicleType, true));
-                            vehicleSubView.TranslatesAutoresizingMaskIntoConstraints = false;
-                            vehicleSubView.TouchUpInside += (sender, e) => { 
-                                if (!IsReadOnly && VehicleSelected != null) {
-                                    VehicleSelected (vehicleType);
-                                }
-                            };
-
-                            subSelectionView.AddSubview(vehicleSubView);
-
-                            subSelectionView.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, vehicleSubView.Superview, NSLayoutAttribute.CenterY, 1f, 0f));
-                            subSelectionView.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 15f));
-
-                            if (y == 0)
-                            {
-                                // first vehicle
-                                subSelectionView.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, vehicleSubView.Superview, NSLayoutAttribute.Left, 1f, VehicleSubSelectionPadding));
-                            }
-                            else
-                            {
-                                // add constraint relative to previous vehicle
-                                subSelectionView.AddConstraints(new [] 
-                                {
-                                    NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, vehicleSubView.Superview.Subviews[y - 1], NSLayoutAttribute.Right, 1f, 0f),
-                                    NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, vehicleSubView.Superview.Subviews[y - 1], NSLayoutAttribute.Width, 1f, 0f)
-                                });
-                            }
-
-                            if (y == (vehiclesForThisServiceType.Count() - 1))
-                            {
-                                // last vehicle
-                                subSelectionView.AddConstraint(NSLayoutConstraint.Create(vehicleSubView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, vehicleSubView.Superview, NSLayoutAttribute.Right, 1f, -VehicleSubSelectionPadding));
-                            }
-
-                            y++;
-                        }
-
-                        ChangeControlHeightIfNeeded(false);
-                    }
-                    else
-                    {
-                        ChangeControlHeightIfNeeded(true);
-                    }
-                }
-
-                i++;
+                return Vehicles.ToList();
             }
+        }
+
+        private bool IsVehicleSelected(VehicleType vehicle, bool isForSubSelection = false)
+        {
+            return SelectedVehicle != null && ((isForSubSelection || !GroupVehiclesByServiceType) 
+                ? vehicle.Id == SelectedVehicle.Id 
+                : vehicle.ServiceType == SelectedVehicle.ServiceType);
         }
 
         private void ChangeControlHeightIfNeeded(bool setToDefault)
@@ -517,6 +410,127 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     {
                         ((OrderOptionsControl)Superview.Superview).Resize();
                     }
+                }
+            }
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, ShowEstimate ? 3f : 0f);
+        }
+
+        public bool IsReadOnly { get; set; }
+
+        private bool _showEstimate;
+        public bool ShowEstimate
+        {
+            get { return _showEstimate; }
+            set
+            {
+                if (_showEstimate != value)
+                {
+                    _showEstimate = value;
+                    Redraw();
+                }
+            }
+        }
+
+        private bool _showVehicleSelection;
+        public bool ShowVehicleSelection
+        {
+            get { return _showVehicleSelection; }
+            set
+            {
+                if (_showVehicleSelection != value)
+                {
+                    _showVehicleSelection = value;
+                    Redraw();
+                }
+            }
+        }
+
+        public VehicleType SelectedVehicle
+        {
+            get { return EstimateSelectedVehicleType.Vehicle; }
+            set
+            {
+                if (EstimateSelectedVehicleType.Vehicle != value)
+                {
+                    EstimateSelectedVehicleType.Vehicle = value;
+                    Redraw();
+                }
+            }
+        }
+
+        private IEnumerable<VehicleType> _vehicles = new List<VehicleType>();
+        public IEnumerable<VehicleType> Vehicles
+        {
+            get { return _vehicles; }
+            set
+            {
+                if (_vehicles != value)
+                {
+                    _vehicles = value;
+                    Redraw();
+                }
+            }
+        }
+
+        public string EstimatedFare
+        {
+            get { return EstimatedFareLabel.Text; }
+            set
+            {
+                if (EstimatedFareLabel.Text != value)
+                {
+                    EstimatedFareLabel.Text = value;
+                }
+            }
+        }
+
+        private bool _showEta;
+        public bool ShowEta
+        {
+            get
+            {
+                return _showEta;
+            }
+            set
+            {
+                _showEta = value;
+
+                EtaLabel.Hidden = !value;
+
+                Redraw();
+            }
+        }
+
+        private bool _groupVehiclesByServiceType;
+        public bool GroupVehiclesByServiceType
+        {
+            get
+            {
+                return _groupVehiclesByServiceType;
+            }
+            set
+            {
+                _groupVehiclesByServiceType = value;
+
+                Redraw();
+            }
+        }
+
+        public string Eta
+        {
+            get { return EtaLabel.Text; }
+            set
+            {
+                if (EtaLabel.Text != value)
+                {
+                    EtaLabel.Text = value;
+                    Redraw ();
                 }
             }
         }
