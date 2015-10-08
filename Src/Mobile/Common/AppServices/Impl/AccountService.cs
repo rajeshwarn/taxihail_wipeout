@@ -590,15 +590,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return creditCard;
         }
 
-		public async Task<IEnumerable<CreditCardDetails>> GetCreditCards ()
+		public Task<IEnumerable<CreditCardDetails>> GetCreditCards ()
 		{
-			return await UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(client => client.GetCreditCards());
+			return UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(client => client.GetCreditCards());
 		}
 
 		private async Task TokenizeCard(CreditCardInfos creditCard)
 		{
-			var usRgx = new Regex("^\\d{5}([ \\-]\\d{4})?$", RegexOptions.IgnoreCase);
-			var zipCode = usRgx.Matches(creditCard.ZipCode).Count > 0 && _appSettings.Data.SendZipCodeWhenTokenizingCard ? creditCard.ZipCode : null;
+			var usRegex = new Regex("^\\d{5}([ \\-]\\d{4})?$", RegexOptions.IgnoreCase);
+			var zipCode = usRegex.Matches(creditCard.ZipCode).Count > 0 && _appSettings.Data.SendZipCodeWhenTokenizingCard ? creditCard.ZipCode : null;
 
 			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
 				creditCard.CardNumber, 
