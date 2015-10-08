@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile
 				var hasLastOrder = Mvx.Resolve<IBookingService>().HasLastOrder;
 				if (hasLastOrder)
 				{
-					ShowViewModel<ExtendedSplashScreenViewModel>();
+					ShowViewModel<ExtendedSplashScreenViewModel>(new { preventShowViewAnimation = "NotUsed" });
 				}
 				else
 				{
