@@ -189,8 +189,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private float _driverBonus = 5f;
-		public float DriverBonus
+		private double _driverBonus = 5;
+        public double DriverBonus
 		{
 			get { return _driverBonus; }
 			set
@@ -198,8 +198,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				if (_driverBonus != value)
                 {
                     // to get steps of 5
-                    var valueFactorOf5 = (float)Math.Round(value / SliderStepValue) * SliderStepValue;
-                    _driverBonus = (valueFactorOf5 == 0) ? 5f : valueFactorOf5;
+                    var valueFactorOf5 = (double)Math.Round(value / SliderStepValue) * SliderStepValue;
+                    _driverBonus = (valueFactorOf5 == 0) ? 5 : valueFactorOf5;
+                    _orderWorkflowService.SetTipIncentive(_driverBonus);
 					RaisePropertyChanged();
 				}
 			}
@@ -213,7 +214,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				if (_driverBonusEnabled != value)
 				{
-					_driverBonusEnabled = value;
+                    _driverBonusEnabled = value;
+                    if (_driverBonusEnabled)
+                    {
+                        _orderWorkflowService.SetTipIncentive(DriverBonus);
+                    }
+                    else
+                    {
+                        _orderWorkflowService.SetTipIncentive(null);  
+                    }
 					RaisePropertyChanged();
 				}
 			}
