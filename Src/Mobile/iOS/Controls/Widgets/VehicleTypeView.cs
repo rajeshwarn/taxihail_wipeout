@@ -7,6 +7,7 @@ using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -14,6 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     public class VehicleTypeSubView : UIControl
     {
         private UILabel _vehicleTypeLabel { get; set; }
+        private UIView _borderView { get; set; }
 
         public VehicleTypeSubView (CGRect frame, VehicleType vehicle, bool isSelected) : base (frame)
         {
@@ -25,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            _vehicleTypeLabel = new UILabel 
+            _vehicleTypeLabel = new UILabel
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 BackgroundColor = UIColor.Clear,
@@ -35,15 +37,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 LineBreakMode = UILineBreakMode.TailTruncation,
                 TextAlignment = UITextAlignment.Center
             };
+             
             AddSubview (_vehicleTypeLabel);
 
             // Constraints for VehicleTypeLabel
             AddConstraints(new [] 
             {
-                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Top, 1f, 0),
+                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Top, 1f, 0f),
                 NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Bottom, 1f, 0f),
-                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Left, 1f, 0f),
-                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Right, 1f, 0f)
+                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.CenterX, 1f, 0f)
+            });
+
+            _borderView = new UIView
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
+
+            _borderView.Layer.BorderColor = UIColor.Clear.CGColor;
+            _borderView.Layer.BorderWidth = 1f;
+            _borderView.Layer.CornerRadius = 8f;
+
+            _vehicleTypeLabel.AddSubview(_borderView);
+
+            AddConstraints(new [] 
+            {
+                NSLayoutConstraint.Create(_borderView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _borderView.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(_borderView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _borderView.Superview, NSLayoutAttribute.Bottom, 1f, 0f),
+                NSLayoutConstraint.Create(_borderView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _borderView.Superview, NSLayoutAttribute.Left, 1f, -10f),
+                NSLayoutConstraint.Create(_borderView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _borderView.Superview, NSLayoutAttribute.Right, 1f, 10f)
             });
         }
 
@@ -81,10 +102,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     if (value) 
                     {
                         _vehicleTypeLabel.TextColor = Theme.CompanyColor;
+                        _borderView.Layer.BorderColor = Theme.CompanyColor.CGColor;
                     } 
                     else 
                     {
                         _vehicleTypeLabel.TextColor = DefaultColorForTextAndImage;
+                        _borderView.Layer.BorderColor = UIColor.Clear.CGColor;
                     }
                 }
             }
