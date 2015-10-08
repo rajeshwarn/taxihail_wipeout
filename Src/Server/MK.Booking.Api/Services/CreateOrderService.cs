@@ -1020,24 +1020,18 @@ namespace apcurium.MK.Booking.Api.Services
                 return;
             }
 
-            var minimumMajorMinorBuild = minimumAppVersion.Split(new[]{ "." }, StringSplitOptions.RemoveEmptyEntries);
-            var appMajorMinorBuild = appVersion.Split('.');
+			ApplicationVersion currentMobileVersion = new ApplicationVersion(appVersion);
+			ApplicationVersion minimumVersion = new ApplicationVersion(minimumAppVersion);
 
-            for (var i = 0; i < appMajorMinorBuild.Length; i++)
-            {
-                var appVersionItem = int.Parse(appMajorMinorBuild[i]);
-                var minimumVersionItem = int.Parse(minimumMajorMinorBuild.Length <= i ? "0" : minimumMajorMinorBuild[i]);
+			if (currentMobileVersion < minimumVersion)
+			{
+				Exception createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+									_resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
 
-                if (appVersionItem < minimumVersionItem)
-                {
-                    Exception createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                                        _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
-
-					createReportOrder.Error = createOrderException.ToString();
-					_commandBus.Send(createReportOrder);
-					throw createOrderException;
-                }
-            }
+				createReportOrder.Error = createOrderException.ToString();
+				_commandBus.Send(createReportOrder);
+				throw createOrderException;
+			}
         }
 
 		private void ValidateChargeAccountAnswers(string accountNumber, string customerNumber, AccountChargeQuestion[] userQuestionsDetails, string clientLanguageCode, CreateReportOrder createReportOrder)
