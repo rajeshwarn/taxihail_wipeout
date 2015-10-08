@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System;
 using apcurium.MK.Common.Extensions;
 using Android.Runtime;
-using Android.Gms.Analytics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -50,109 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             this.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
         }
-			
-		public bool IsReadOnly { get; set; }
-
-		public VehicleType SelectedVehicle
-		{
-			get { return _estimateSelectedVehicleType.Vehicle; }
-			set
-			{
-				if (_estimateSelectedVehicleType.Vehicle != value)
-				{
-					_estimateSelectedVehicleType.Vehicle = value;
-					Redraw();
-				}
-			}
-		}
-
-		private IEnumerable<VehicleType> _vehicles = new List<VehicleType>();
-		public IEnumerable<VehicleType> Vehicles
-		{
-			get { return _vehicles; }
-			set
-			{
-				if (_vehicles != value)
-				{
-					_vehicles = value;
-					Redraw();
-				}
-			}
-		}
-
-        private bool _showEstimate;
-        public bool ShowEstimate
-        {
-            get { return _showEstimate; }
-            set
-            {
-                if (_showEstimate != value)
-                {
-                    _showEstimate = value;
-                    Redraw();
-                }
-            }
-        }
-
-	    public bool ShowEta
-	    {
-		    get { return _showEta; }
-		    set
-		    {
-			    _showEta = value;
-
-			    Redraw();
-		    }
-	    }
-
-	    public string EstimatedFare
-        {
-            get{ return _estimatedFareLabel.Text; }
-            set
-            {
-                if (_estimatedFareLabel.Text != value)
-                {
-                    _estimatedFareLabel.Text = value;
-                }
-            }
-        }
-
-		bool _showVehicleSelectionContainer
-		{
-			get { return ShowVehicleSelection; }
-		}
-
-		private bool _showVehicleSelection;
-		public bool ShowVehicleSelection
-		{
-			get { return _showVehicleSelection; }
-			set
-			{
-				if (_showVehicleSelection != value)
-				{
-					_showVehicleSelection = value;
-					Redraw();
-				}
-			}
-		}
-
-		private string _eta;
-	    private bool _showEta;
-
-	    public string Eta
-		{
-			get { return _eta; }
-			set
-			{
-				if (_eta != value)
-				{
-					_eta = value;
-					_etaLabel.Text = _eta;
-					Redraw ();
-				}
-			}
-		}
-
+		
         private void Redraw()
         {
 			if (ShowEstimate)
@@ -170,26 +67,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 				_vehicleSelection.Visibility = ShowVehicleSelection ? ViewStates.Visible : ViewStates.Gone;
 
-				_vehicleSelectionAndEta.Visibility = _showVehicleSelectionContainer ? ViewStates.Visible : ViewStates.Gone;
-
+                _vehicleSelectionAndEta.Visibility = ShowVehicleSelection ? ViewStates.Visible : ViewStates.Gone;
+                // refactor this
 				_vehicleSelection.RemoveAllViews ();
 
-				if (_showVehicleSelectionContainer) 
+                if (ShowVehicleSelection) 
 				{
 					_horizontalDivider.SetBackgroundColor(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider));
 				}
 
-				if (ShowVehicleSelection && Vehicles != null) {
-
-					foreach (var vehicle in Vehicles) {
+				if (ShowVehicleSelection && Vehicles != null) 
+                {
+					foreach (var vehicle in Vehicles) 
+                    {
 						var vehicleView = new VehicleTypeControl (base.Context, vehicle, SelectedVehicle == null ? false : vehicle.Id == SelectedVehicle.Id);
 
-						var layoutParameters = new LinearLayout.LayoutParams (0, LayoutParams.FillParent);
+                        var layoutParameters = new LinearLayout.LayoutParams (0, LayoutParams.MatchParent);
 						layoutParameters.Weight = 1.0f;
 						vehicleView.LayoutParameters = layoutParameters;
 
 						vehicleView.Click += (sender, e) => { 
-							if (!IsReadOnly && VehicleSelected != null) {
+							if (!IsReadOnly && VehicleSelected != null) 
+                            {
 								VehicleSelected (vehicle);
 							}
 						};
@@ -198,7 +97,117 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					}
 				}
             }
+
 			this.Visibility = ViewStates.Visible;
+        }
+
+        public bool IsReadOnly { get; set; }
+
+        public VehicleType SelectedVehicle
+        {
+            get { return _estimateSelectedVehicleType.Vehicle; }
+            set
+            {
+                if (_estimateSelectedVehicleType.Vehicle != value)
+                {
+                    _estimateSelectedVehicleType.Vehicle = value;
+                    Redraw();
+                }
+            }
+        }
+
+        private IEnumerable<VehicleType> _vehicles = new List<VehicleType>();
+        public IEnumerable<VehicleType> Vehicles
+        {
+            get { return _vehicles; }
+            set
+            {
+                if (_vehicles != value)
+                {
+                    _vehicles = value;
+                    Redraw();
+                }
+            }
+        }
+
+        private bool _showEstimate;
+        public bool ShowEstimate
+        {
+            get { return _showEstimate; }
+            set
+            {
+                if (_showEstimate != value)
+                {
+                    _showEstimate = value;
+                    Redraw();
+                }
+            }
+        }
+
+        private bool _showEta;
+        public bool ShowEta
+        {
+            get { return _showEta; }
+            set
+            {
+                _showEta = value;
+                Redraw();
+            }
+        }
+
+        private bool _groupVehiclesByServiceType;
+        public bool GroupVehiclesByServiceType
+        {
+            get
+            {
+                return _groupVehiclesByServiceType;
+            }
+            set
+            {
+                _groupVehiclesByServiceType = value;
+                Redraw();
+            }
+        }
+
+        public string EstimatedFare
+        {
+            get{ return _estimatedFareLabel.Text; }
+            set
+            {
+                if (_estimatedFareLabel.Text != value)
+                {
+                    _estimatedFareLabel.Text = value;
+                }
+            }
+        }
+
+        private bool _showVehicleSelection;
+        public bool ShowVehicleSelection
+        {
+            get { return _showVehicleSelection; }
+            set
+            {
+                if (_showVehicleSelection != value)
+                {
+                    _showVehicleSelection = value;
+                    Redraw();
+                }
+            }
+        }
+
+        private string _eta;
+        public string Eta
+        {
+            get { return _eta; }
+            set
+            {
+                if (_eta != value)
+                {
+                    _eta = value;
+                    _etaLabel.Text = _eta;
+                    Redraw ();
+                }
+            }
         }
     }
 }

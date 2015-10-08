@@ -273,7 +273,6 @@
 "ChangeServer"="Changer de serveur";
 "December"="Décembre (12)";
 "ManualRideLinqStatus_Greetings"="Appréciez la balade!";
-"AppNeedUpdateTitle"="Nouvelle version disponible";
 "LocationAddFavoriteTitle"="Ajouter une nouvelle adresse";
 "PromoDescriptionCode"="Enter le code {0} ou appuyez sur le bouton ci-dessous.";
 "Overdue_Retry"="Payer Maintenant";
@@ -540,7 +539,6 @@
 "PayPalLinkError"="Impossible d'associer votre compte PayPal";
 "Overdue_Failed_Message"="Votre transaction a été refusée, veuillez essayer plus tard ou changer de carte de crédit.";
 "DriverInfoModel"="Modèle:";
-"AppNeedUpdateMessage"="Une nouvelle version de l'application est disponible, merci de la télécharger pour continuer";
 "HistoryInfo"="Synthèse des trajets effectués le mois dernier";
 "UpdatePasswordActivityName"="Update password";
 "ManualRideLinqSummary_Done"="Ok";
