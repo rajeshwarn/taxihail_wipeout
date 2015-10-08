@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-            NavigationController.NavigationBarHidden = true;
+            NavigationController.NavigationBar.Hidden = true;
 
             var splashImage = GetSplashImage();
             if (splashImage != null)
