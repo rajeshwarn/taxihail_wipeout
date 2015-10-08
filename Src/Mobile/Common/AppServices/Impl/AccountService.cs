@@ -526,13 +526,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<VehicleType>> GetVehiclesList()
 		{
 			// todo temporary until server returns data
-			// server should return blackcar as logoname if luxury or taxi if taxi
-			var list = new List<VehicleType>()
+			var list = new List<VehicleType>
 			{
 				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Sedan", LogoName = "taxi", ReferenceDataVehicleId = 0 },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Luxury, Name = "Sedan", LogoName = "blackcar", ReferenceDataVehicleId = 1 },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Van", LogoName = "suv", ReferenceDataVehicleId = 2 },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "WAV", LogoName = "wheelchair", ReferenceDataVehicleId = 3 }
+				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Van", LogoName = "suv", ReferenceDataVehicleId = 1 },
+				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "WAV", LogoName = "wheelchair", ReferenceDataVehicleId = 2 },
+				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Luxury, Name = "Sedan", LogoName = "blackcar", ReferenceDataVehicleId = 3 }
 			};
 
 			return list;
