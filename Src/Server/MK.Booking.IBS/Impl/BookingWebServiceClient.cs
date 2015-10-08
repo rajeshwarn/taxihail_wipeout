@@ -398,7 +398,7 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
-            var order = new TBookOrder_8
+            var order = new TBookOrder_11
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,                
@@ -473,21 +473,21 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             SetPrompts(order, prompts, promptsLength);
 
-            int? orderId = null;
+            TBookOrderKey orderKey = null;
 
             UseService(service =>
             {
                 Logger.LogMessage("WebService Creating IBS Order : " +
-                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_8)));
+                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_11)));
                 Logger.LogMessage("WebService Creating IBS Order pickup : " +
                                   JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Order dest : " +
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
-                orderId = service.SaveBookOrder_8(UserNameApp, PasswordApp, order);
-                Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
+                orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, null);
+                Logger.LogMessage("WebService Create Order, orderKey received : " + JsonSerializer.SerializeToString(orderKey, typeof(TBookOrderKey)));
             });
-            return orderId;
+            return orderKey.OrderID;
         }
 
         public bool CancelOrder(int orderId, int accountId, string contactPhone)
@@ -531,7 +531,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return regEx.Replace(phone, "");
         }
 
-        private void SetPrompts(TBookOrder_8 order, string[] prompts, int?[] promptsLength)
+        private void SetPrompts(TBookOrder_11 order, string[] prompts, int?[] promptsLength)
         {
             if (prompts != null)
             {
