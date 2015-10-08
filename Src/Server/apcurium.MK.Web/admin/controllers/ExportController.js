@@ -15,6 +15,11 @@
         exportOrders: function () {
 
             return new TaxiHail.ExportOrdersView();
+        },
+
+        exportPromotions: function ()
+        {
+        	return new TaxiHail.ExportPromotionsView();
         }
     });
 }());
