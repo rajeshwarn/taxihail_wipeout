@@ -246,6 +246,7 @@
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Book\PromotionActivity.cs" />
+    <Compile Include="Activities\ExtendedSplashActivity.cs" />
     <Compile Include="Activities\ManualPairingForRideLinqActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\Setting\NotificationSettingsActivity.cs" />
