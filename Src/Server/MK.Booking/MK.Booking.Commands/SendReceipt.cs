@@ -80,6 +80,7 @@ namespace apcurium.MK.Booking.Commands
             public double? LastLongitudeOfVehicle { get; set; }
 
             public TollDetail[] Tolls { get; set; }
+            public double? TipIncentive { get; set; }
         }
 
         public class Payment

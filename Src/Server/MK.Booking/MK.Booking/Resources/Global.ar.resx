@@ -222,6 +222,9 @@
   <data name="Email_Body_Tip" xml:space="preserve">
     <value>إكرامية</value>
   </data>
+  <data name="Email_Body_TipIncentive" xml:space="preserve">
+    <value>Driver Bonus</value>
+  </data>
   <data name="Email_Body_Promo" xml:space="preserve">
     <value>Promo Code</value>
     <comment>Promo Code</comment>

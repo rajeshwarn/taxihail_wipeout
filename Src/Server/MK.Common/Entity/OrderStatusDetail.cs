@@ -11,7 +11,6 @@ namespace apcurium.MK.Common.Entity
         public OrderStatusDetail()
         {
             DriverInfos = new DriverInfos();
-            TipIncentive = 0;
         }
 
         public OrderStatus Status { get; set; }

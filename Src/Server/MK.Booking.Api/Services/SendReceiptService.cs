@@ -153,7 +153,8 @@ namespace apcurium.MK.Booking.Api.Services
                         FareAtAlternateRate = Math.Round(((double) tripInfo.FareAtAlternateRate / 100), 2),
                         RateAtTripEnd = tripInfo.RateAtTripEnd,
                         RateAtTripStart = tripInfo.RateAtTripStart,
-						Tolls = tripInfo.TollHistory
+						Tolls = tripInfo.TollHistory,
+                        TipIncentive = order.TipIncentive
                     };
                 }
                 else

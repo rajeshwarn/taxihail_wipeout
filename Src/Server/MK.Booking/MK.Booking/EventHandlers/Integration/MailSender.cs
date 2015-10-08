@@ -145,7 +145,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                     FareAtAlternateRate = fareAtAlternateRate,
                                     RateAtTripEnd = tripInfo.RateAtTripEnd,
                                     RateAtTripStart = tripInfo.RateAtTripStart,
-                                    Tolls = tolls.ToArray()
+                                    Tolls = tolls.ToArray(),
+                                    TipIncentive = order.TipIncentive
                                 });
                         }
                     }
@@ -217,7 +218,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             RateAtTripStart = @event.RateAtTripStart.HasValue ? Convert.ToInt32(@event.RateAtTripStart) : 0,
                             Tolls = @event.Tolls,
                             LastLatitudeOfVehicle = @event.LastLatitudeOfVehicle,
-                            LastLongitudeOfVehicle = @event.LastLongitudeOfVehicle
+                            LastLongitudeOfVehicle = @event.LastLongitudeOfVehicle,
+                            TipIncentive = order.TipIncentive
                         });
                 }
             }

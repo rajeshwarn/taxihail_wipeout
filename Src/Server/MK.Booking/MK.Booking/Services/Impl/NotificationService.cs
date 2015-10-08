@@ -523,11 +523,13 @@ namespace apcurium.MK.Booking.Services.Impl
             int? rateClassStart = null;
             int? rateClassEnd = null;
             double? fareAtAlternateRate = null;
+            double? tipIncentive = null;
 
             // RideLinQ Rate class & fare
             if (cmtRideLinqFields != null)
             {
                 rateClassStart = cmtRideLinqFields.RateAtTripStart;
+                tipIncentive = cmtRideLinqFields.TipIncentive;
 
                 if (cmtRideLinqFields.RateAtTripStart != cmtRideLinqFields.RateAtTripEnd)
                 {
@@ -613,6 +615,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 BookingFees = _resources.FormatPrice(bookingFees), 
                 Extra = _resources.FormatPrice(extra),
                 Tip = _resources.FormatPrice(tip),
+                TipIncentive = _resources.FormatPrice(tipIncentive),
                 TotalFare = _resources.FormatPrice(totalAmount),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
@@ -659,6 +662,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowRateClassStart = rateClassStart.HasValue || isCmtRideLinqReceipt,
                 ShowRateClassEnd = rateClassEnd.HasValue,
                 ShowDistance = isCmtRideLinqReceipt,
+                ShowTipIncentive = tipIncentive.HasValue && tipIncentive != 0,
 
                 vatIsEnabled,
                 HasPaymentInfo = hasPaymentInfo,
@@ -680,7 +684,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
                 promoCode,
                 AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion))
-
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
