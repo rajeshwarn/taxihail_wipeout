@@ -22,6 +22,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -919,7 +920,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 					{
-						if (!string.IsNullOrWhiteSpace(carNumber))
+						if (carNumber.HasValue())
 						{
 							WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
 							{
@@ -931,7 +932,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 					else
 					{
-						if (!string.IsNullOrWhiteSpace(carNumber))
+						if (carNumber.HasValue())
 						{
 							WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
 						}
