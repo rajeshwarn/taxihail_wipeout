@@ -29,6 +29,7 @@ using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
 using apcurium.MK.Common.Helpers;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -627,7 +628,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Token = creditCard.Token,
 				ExpirationMonth = creditCard.ExpirationMonth,
 				ExpirationYear = creditCard.ExpirationYear,
-				Label = creditCard.Label,
+				Label = creditCard.Label.ToString(),
             };
 
 			await UseServiceClientAsync<IAccountServiceClient> (client => 
@@ -683,11 +684,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-		public async Task<bool> UpdateCreditCardLabel(Guid creditCardId, string label)
+		public async Task<bool> UpdateCreditCardLabel(Guid creditCardId, CreditCardLabelConstants label)
 		{
 			try
 			{
-				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label})); 
+				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label.ToString()})); 
 			}
 			catch
 			{

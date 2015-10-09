@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IAccountService _accountService;
 
 		private OverduePayment _paymentToSettle;
-		private string _originalLabel;
+		private CreditCardLabelConstants _originalLabel;
 
 		public CreditCardAddViewModel(
 			ILocationService locationService,
@@ -148,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				if (creditCard == null || _isAddingNew)
 				{
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
-					Data.Label = CreditCardConstants.Personal;
+					Data.Label = CreditCardLabelConstants.Personal;
 
 					var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
 					CreditCardType = (int)id;
@@ -610,7 +610,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				Data.CreditCardCompany = CreditCardTypeName;
 
-				if(Data.CCV.HasValue() && Data.Label != _originalLabel && !_isAddingNew)
+				if(!Data.CCV.HasValue() && Data.Label != _originalLabel && !_isAddingNew)
 				{
 					using(this.Services().Message.ShowProgress())
 					{

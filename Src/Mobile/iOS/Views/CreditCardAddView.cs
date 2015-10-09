@@ -215,8 +215,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             lblLabel.Text = Localize.GetValue("PaymentDetails.LabelName");
             segmentedLabel.TintColor = UIColor.FromRGB(90, 90, 90);
-            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardConstants.Personal), 0);
-            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardConstants.Business), 1);
+            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardLabelConstants.Personal), 0);
+            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardLabelConstants.Business), 1);
         }
 
         private void ConfigureCreditCardSection()

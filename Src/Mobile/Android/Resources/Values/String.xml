@@ -36,6 +36,7 @@
   <string name="VehicleNumberNotice">Please note that if the vehicle number presented above does not match the actual car number of your ride, we regret that payment cannot be processed through the Application. Please press the back button to return to the trip status screen, and pay the driver directly.</string>
   <string name="InvalidChoiceTitle">Invalid Choice</string>
   <string name="NoPairingCreditCard">None</string>
+  <string name="SetCreditCardAsDefault_Error">Couldn\'t update your default credit card. Please try again</string>
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
   <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
   <string name="ConfirmOriginLablel">Pickup</string>
@@ -211,6 +212,7 @@
   <string name="PassengerNameLabel">Name</string>
   <string name="RideSettingsPayBack">PayBack</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
+  <string name="DefaultCreditCard_Label">(DEFAULT)</string>
   <string name="BookItButtonImageName">Assets/Button/btnBookIt_en.png</string>
   <string name="Safety">Safety</string>
   <string name="ManualRideLinqStatus_Payment">Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</string>
@@ -616,6 +618,7 @@
   <string name="AcceptButton">Accept</string>
   <string name="CmtRideLinqCancelChanges">Cancel</string>
   <string name="LoginViewPasswordPlaceHolder">Password</string>
+  <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
   <string name="DateTimePickerPickDate">Select your pickup date:</string>
   <string name="View_BookRating">Rate Your Trip</string>
   <string name="BookItButton">Book Now</string>
