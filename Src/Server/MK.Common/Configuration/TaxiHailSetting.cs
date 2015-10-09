@@ -485,7 +485,7 @@ namespace MK.Common.Configuration
         public bool ShowOrientedPins { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Display - Use Tip Incentive", Description = "Offering a guaranteed bonus to drivers to boost the odds of getting a taxi.")]
+        [Display(Name = "Configuration - Enable Driver Bonus", Description = "Offering a guaranteed bonus to drivers to boost the odds of getting a taxi.")]
         public bool IsDriverBonusEnabled { get; protected set; }
 
         [CustomizableByCompany]
