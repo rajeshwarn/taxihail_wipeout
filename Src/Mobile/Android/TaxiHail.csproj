@@ -995,6 +995,8 @@
     <AndroidResource Include="Resources\Layout\View_WaitingCarLandscape.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_ExtendedSplashScreen.axml" />
+    <AndroidResource Include="Resources\Layout\View_ExtendedSplashScreen.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
 </Project>
