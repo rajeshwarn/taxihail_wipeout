@@ -321,7 +321,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             foreach (var vehicle in VehicleRepresentations) 
             {
                 DrawVehicleForMainSelector(vehicle, i, i == 0, i == (VehicleRepresentations.Count - 1));
-
                 i++;
             }
         }

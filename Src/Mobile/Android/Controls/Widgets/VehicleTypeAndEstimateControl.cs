@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System;
 using apcurium.MK.Common.Extensions;
 using Android.Runtime;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -20,10 +22,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private View _horizontalDivider;
 		private LinearLayout _vehicleSelectionAndEta;
 		private LinearLayout _vehicleSelection;
+        private LinearLayout _vehicleSubSelection;
 		private LinearLayout _rideEstimate;
 		private VehicleTypeControl _estimateSelectedVehicleType;
 
-		public Action<VehicleType> VehicleSelected { get; set; }
+        public Action<OrderOptionsViewModel.VehicleSelectionModel> VehicleSelected { get; set; }
 
         public VehicleTypeAndEstimateControl(Context c, IAttributeSet attr) : base(c, attr)
         {
@@ -39,6 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_rideEstimate = (LinearLayout)layout.FindViewById (Resource.Id.RideEstimate);
 			_vehicleSelectionAndEta = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelectionAndEta);
 			_vehicleSelection = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSelection);
+            _vehicleSubSelection = (LinearLayout)layout.FindViewById (Resource.Id.VehicleSubSelection);
 
             _estimatedFareLabel = (AutoResizeTextView)layout.FindViewById(Resource.Id.estimateFareAutoResizeLabel);
 			
@@ -58,6 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _horizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.company_color), PorterDuff.Mode.SrcAtop);
 				_rideEstimate.Visibility = ViewStates.Visible;
 				_vehicleSelection.Visibility = ViewStates.Gone;
+                _vehicleSubSelection.Visibility = ViewStates.Gone;
 				_etaLabel.Visibility = (Eta.HasValue() && _showEta) ? ViewStates.Visible : ViewStates.Gone;
             }
             else
@@ -67,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 				_vehicleSelection.Visibility = ShowVehicleSelection ? ViewStates.Visible : ViewStates.Gone;
                 _vehicleSelection.RemoveAllViews ();
+                _vehicleSubSelection.RemoveAllViews();
 
                 _vehicleSelectionAndEta.Visibility = ShowVehicleSelection ? ViewStates.Visible : ViewStates.Gone;
 
@@ -79,27 +85,77 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         return;
                     }
 
-                    foreach (var vehicle in Vehicles) 
+                    foreach (var vehicle in VehicleRepresentations) 
                     {
-                        var vehicleView = new VehicleTypeControl(base.Context, vehicle, SelectedVehicle != null && vehicle.Id == SelectedVehicle.Id);
-
-                        var layoutParameters = new LinearLayout.LayoutParams (0, ViewGroup.LayoutParams.MatchParent);
-                        layoutParameters.Weight = 1.0f;
-                        vehicleView.LayoutParameters = layoutParameters;
-
-                        vehicleView.Click += (sender, e) => { 
-                            if (!IsReadOnly && VehicleSelected != null) 
-                            {
-                                VehicleSelected (vehicle);
-                            }
-                        };
-
-                        _vehicleSelection.AddView (vehicleView);
+                        DrawVehicleForMainSelector(vehicle);
                     }
 				}
             }
 
 			this.Visibility = ViewStates.Visible;
+        }
+
+        private void DrawVehicleForMainSelector(VehicleType vehicle)
+        {
+            var currentIsSelected = IsVehicleSelected(vehicle);
+
+            var vehicleView = new VehicleTypeControl(base.Context, vehicle, currentIsSelected);
+
+            var layoutParameters = new LinearLayout.LayoutParams (0, ViewGroup.LayoutParams.MatchParent);
+            layoutParameters.Weight = 1.0f;
+            vehicleView.LayoutParameters = layoutParameters;
+
+            vehicleView.Click += (sender, e) => { 
+                if (VehicleSelected != null) 
+                {
+                    VehicleSelected(new OrderOptionsViewModel.VehicleSelectionModel { VehicleType = vehicle, IsSubMenuSelection = false });
+                }
+            };
+
+            _vehicleSelection.AddView (vehicleView);
+
+            if (GroupVehiclesByServiceType && currentIsSelected)
+            {
+                var vehiclesForThisServiceType = Vehicles.Where(x => x.ServiceType == SelectedVehicle.ServiceType).ToList();
+                if (vehiclesForThisServiceType.Count > 1)
+                {
+                    foreach (var vehicleType in vehiclesForThisServiceType)
+                    {
+                        DrawVehicleForSubSelector(vehicleType);
+                    }
+
+                    _vehicleSubSelection.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    _vehicleSubSelection.Visibility = ViewStates.Gone;
+                }
+            }
+        }
+
+        private void DrawVehicleForSubSelector(VehicleType vehicle)
+        {
+            var vehicleView = new VehicleTypeSubControl(base.Context, vehicle, IsVehicleSelected(vehicle, true));
+
+            var layoutParameters = new LinearLayout.LayoutParams (0, ViewGroup.LayoutParams.MatchParent);
+            layoutParameters.Weight = 1.0f;
+            vehicleView.LayoutParameters = layoutParameters;
+
+            vehicleView.Click += (sender, e) => { 
+                if (VehicleSelected != null) 
+                {
+                    VehicleSelected(new OrderOptionsViewModel.VehicleSelectionModel { VehicleType = vehicle, IsSubMenuSelection = true });
+                }
+            };
+
+            _vehicleSubSelection.AddView (vehicleView);
+        }
+
+        private bool IsVehicleSelected(VehicleType vehicle, bool isForSubSelection = false)
+        {
+            return SelectedVehicle != null && ((isForSubSelection || !GroupVehiclesByServiceType) 
+                ? vehicle.Id == SelectedVehicle.Id 
+                : vehicle.ServiceType == SelectedVehicle.ServiceType);
         }
 
         public bool IsReadOnly { get; set; }
@@ -130,6 +186,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             }
         }
+
+        public IList<VehicleType> VehicleRepresentations { get; set; }
 
         private bool _showEstimate;
         public bool ShowEstimate
