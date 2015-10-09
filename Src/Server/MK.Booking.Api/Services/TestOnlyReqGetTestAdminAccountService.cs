@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Last4Digits = "1234",
                 NameOnCard = "test test",
                 Token = "123456",
-                Label = CreditCardConstants.Personal
+                Label = CreditCardLabelConstants.Personal.ToString()
             });
 
             return _dao.FindByEmail(testEmail);

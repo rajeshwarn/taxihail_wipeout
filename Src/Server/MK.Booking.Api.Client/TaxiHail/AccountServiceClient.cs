@@ -9,6 +9,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using MK.Common.Configuration;
 using System.Linq;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -121,12 +122,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task UpdateDefaultCreditCard(DefaultCreditCardRequest defaultCreditCardRequest)
         {
-            return Client.PostAsync<string>("/account/creditcard/changedefault", defaultCreditCardRequest);
+            return Client.PostAsync<string>("/account/creditcard/updatedefault", defaultCreditCardRequest);
         }
 
         public Task UpdateCreditCardLabel(UpdateCreditCardLabelRequest updateCreditCardLabelRequest)
         {
-            return Client.PostAsync<string>("/account/creditcard/changelabel", updateCreditCardLabelRequest);
+            return Client.PostAsync<string>("/account/creditcard/updatelabel", updateCreditCardLabelRequest);
         }
 
         public Task AddCreditCard(CreditCardRequest creditCardRequest)
@@ -176,13 +177,15 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         private async Task UnregisterTokenizedCards(Guid creditCardId, string skipThisToken = null)
         {
-            // previously, it was possible to add multiple cards, this is why we unregister every card here
             var cards = await GetCreditCards ();
-            var card = cards.First(c => c.CreditCardId == creditCardId);
+            var card = cards.FirstOrDefault(c => c.CreditCardId == creditCardId);
            
-            if (!string.IsNullOrWhiteSpace(card.Token) && card.Token != skipThisToken)
+            if (card != null)
             {
-                await _paymentService.ForgetTokenizedCard(card.Token);
+                if (card.Token.HasValue() && card.Token != skipThisToken)
+                {
+                    await _paymentService.ForgetTokenizedCard(card.Token);
+                }
             }
         }
 

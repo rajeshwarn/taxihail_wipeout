@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				var paymentSettings = await _paymentService.GetPaymentSettings();
 
-				_isCmtRideLinq = paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt;
+				_isCmtRideLinq = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
 
 				RaisePropertyChanged(() => ButtonEditTipLabel);
 			}

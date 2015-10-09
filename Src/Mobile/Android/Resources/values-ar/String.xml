@@ -192,6 +192,7 @@
   <string name="ResetPasswordEmailPlaceHolder">البريد الإلكتروني</string>
   <string name="PendingOrderMessage">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="AddPaymentMethod_CreditCard">Add credit card</string>
+  <string name="CreateAccountInvalidDataTitle">معلومات الحساب غير صحيحة</string>
   <string name="TutorialActivityName">Tutorial</string>
   <string name="View_UpdatePassword">تحديث كلمة المرور</string>
   <string name="StreetNumberSearchBt">استخدم عنوان آخر</string>
@@ -206,6 +207,7 @@
   <string name="PassengerNameLabel">الإسم</string>
   <string name="RideSettingsPayBack">PayBack</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
+  <string name="DefaultCreditCard_Label">(DEFAULT)</string>
   <string name="Safety">Safety</string>
   <string name="ManualRideLinqStatus_Payment">Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.</string>
   <string name="NetworkContactingNextDispatchDescription">Contacting {0} ...</string>
@@ -478,7 +480,7 @@
   <string name="CreateAccountEmptyField">البيانات غير صحيحة، يجب تعبئة كافة الخانات.</string>
   <string name="ConfirmPassengerSettingsTitle">إعدادات الركاب</string>
   <string name="CmtRideLinqGenericErrorMessage">حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.</string>
-  <string name="CreateAccountInvalidDataTitle">معلومات الحساب غير صحيحة</string>
+  <string name="SetCreditCardAsDefault_Error">Couldn\'t update your default credit card. Please try again</string>
   <string name="PickupDateTextPlaceholder">التاريخ: اليوم</string>
   <string name="PanelMenuViewPaymentInfoText">Payment</string>
   <string name="BookViewInvalidDate">تاريخ الإلتقاء وقت الإلتقاء غير مقبولة.</string>
@@ -599,6 +601,7 @@
   <string name="AcceptButton">موافق</string>
   <string name="CmtRideLinqCancelChanges">إلغاء</string>
   <string name="DeleteCreditCardTitle">حذف بطاقة الائتمان</string>
+  <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
   <string name="DateTimePickerPickDate">اختر تاريخ الإلتقاء:</string>
   <string name="View_BookRating">قم بتقييم مشوارك</string>
   <string name="TermsAndConditionsActivityName">Terms and conditions</string>

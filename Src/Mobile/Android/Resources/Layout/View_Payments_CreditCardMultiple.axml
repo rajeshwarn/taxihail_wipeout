@@ -42,7 +42,7 @@
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            local:MvxBind="Visibility ShouldDisplayTip, Converter=Visibility">
+            local:MvxBind="Visibility CanChooseTip, Converter=Visibility">
             <TextView
                 android:id="@+id/tipAmountLabel"
                 android:text="@string/PaymentDetails.TipAmountLabel"

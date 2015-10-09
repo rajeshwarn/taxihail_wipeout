@@ -30,6 +30,7 @@ using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
 using apcurium.MK.Common.Helpers;
 using System.Text.RegularExpressions;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -634,7 +635,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Token = creditCard.Token,
 				ExpirationMonth = creditCard.ExpirationMonth,
 				ExpirationYear = creditCard.ExpirationYear,
-				Label = creditCard.Label,
+				Label = creditCard.Label.ToString(),
 				ZipCode = creditCard.ZipCode,
 				
             };
@@ -674,20 +675,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			UpdateCachedAccount(defaultCreditCard != null ? defaultCreditCard : null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
 		}
 
-		public async Task UpdateDefaultCreditCard(Guid creditCardId)
-		{
-			var creditCard = (await GetCreditCards()).First(cc => cc.CreditCardId == creditCardId);
-
-			UpdateCachedAccount(creditCard, CurrentAccount.Settings.ChargeTypeId, CurrentAccount.IsPayPalAccountLinked);
-
-			await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateDefaultCreditCard(new DefaultCreditCardRequest {CreditCardId = creditCardId})); 
-		}
-
-		public async Task<bool> UpdateCreditCardLabel(Guid creditCardId, string label)
+		public async Task<bool> UpdateDefaultCreditCard(Guid creditCardId)
 		{
 			try
 			{
-				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label})); 
+				var creditCard = (await GetCreditCards()).First(cc => cc.CreditCardId == creditCardId);
+
+				UpdateCachedAccount(creditCard, CurrentAccount.Settings.ChargeTypeId, CurrentAccount.IsPayPalAccountLinked);
+
+				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateDefaultCreditCard(new DefaultCreditCardRequest {CreditCardId = creditCardId})); 
+
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public async Task<bool> UpdateCreditCardLabel(Guid creditCardId, CreditCardLabelConstants label)
+		{
+			try
+			{
+				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label.ToString()})); 
 			}
 			catch
 			{

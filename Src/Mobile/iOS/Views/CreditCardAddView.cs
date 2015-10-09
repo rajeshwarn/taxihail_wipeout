@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 lblInstructions.RemoveFromSuperview();
             }
 
-            if (!ViewModel.ShouldChooseLabel)
+            if (!ViewModel.CanChooseLabel)
             {
                 viewLabel.RemoveFromSuperview();
             }
@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ConfigureLabelSection();
             }
 
-            if (!ViewModel.ShouldDisplayTip)
+            if (!ViewModel.CanChooseTip)
             {
                 viewTip.RemoveFromSuperview();
             }
@@ -218,9 +218,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void ConfigureLabelSection()
         {
             lblLabel.Text = Localize.GetValue("PaymentDetails.LabelName");
-            segmentedLabel.TintColor = UIColor.FromRGB(31, 191, 33);
-            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardConstants.Personal), 0);
-            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardConstants.Business), 1);
+            segmentedLabel.TintColor = UIColor.FromRGB(90, 90, 90);
+            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardLabelConstants.Personal), 0);
+            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardLabelConstants.Business), 1);
         }
 
         private void ConfigureCreditCardSection()

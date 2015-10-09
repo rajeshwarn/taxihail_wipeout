@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 			    return this.GetCommand(() =>
 			    {
-			        ShowViewModel<CreditCardAddViewModel>(new {isFromPromotions = true});
+			        ShowViewModel<CreditCardAddViewModel>(new {isFromPromotionsView = true});
 			    });
 			}
 		}

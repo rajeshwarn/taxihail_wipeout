@@ -60,9 +60,20 @@ namespace apcurium.MK.Booking.Api.Services
         public object Post(UpdateCreditCardLabelRequest request)
         {
             var session = this.GetSession();
-            var command = new UpdateCreditCardLabel { AccountId = new Guid(session.UserAuthId) };
-            command.CreditCardId = request.CreditCardId;
-            command.Label = request.Label;
+            var accountId = new Guid(session.UserAuthId);
+
+            var creditCardDetails = _dao.FindById(request.CreditCardId);
+            if (creditCardDetails == null)
+            {
+                return new HttpError("Cannot find the credit card");
+            }
+
+            var command = new UpdateCreditCardLabel
+            {
+                AccountId = accountId,
+                CreditCardId = request.CreditCardId,
+                Label = request.Label
+            };
 
             _bus.Send(command);
 
@@ -81,6 +92,13 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var creditCards = _dao.FindByAccountId(accountId);
+
+            var creditCardDetails = creditCards.FirstOrDefault(x => x.CreditCardId == request.CreditCardId);
+            if (creditCardDetails == null)
+            {
+                return new HttpError("Cannot find the credit card");
+            }
+
             var defaultCreditCard = creditCards.FirstOrDefault(x => x.CreditCardId != request.CreditCardId);
             var command = new DeleteAccountCreditCard
             {
@@ -93,5 +111,17 @@ namespace apcurium.MK.Booking.Api.Services
 
             return defaultCreditCard;
         }
+
+		public object Delete(DeleteCreditCardsWithAccountRequest request)
+		{
+			if (_dao.FindByAccountId(request.AccountID).Count > 0)
+			{
+				_bus.Send(new DeleteAccountCreditCards() { AccountId = request.AccountID });
+
+				return new HttpResult(HttpStatusCode.Accepted, "Accepted");
+			}
+
+			return new HttpResult(HttpStatusCode.NoContent, "No Content");
+		}
     }
 }

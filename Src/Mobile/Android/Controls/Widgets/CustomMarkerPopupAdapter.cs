@@ -7,11 +7,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class CustomMarkerPopupAdapter : Java.Lang.Object, GoogleMap.IInfoWindowAdapter
     {
-        private readonly LayoutInflater _layoutInflater;
+		private static readonly int BottomMargin0 = 0;
+		private static readonly int BottomMargin5 = 5;
 
-        public CustomMarkerPopupAdapter(LayoutInflater inflater)
+		private readonly LayoutInflater _layoutInflater;
+		private readonly bool _makeBottomMargin;
+
+        public CustomMarkerPopupAdapter(LayoutInflater inflater, bool makeBottomMargin)
         {
             _layoutInflater = inflater;
+			_makeBottomMargin = makeBottomMargin;
         }
 
         public View GetInfoWindow(Marker marker)
@@ -24,6 +29,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			{
 				titleTextView.Text = marker.Title;
 			}
+
+			var vehicleNumberLayout = customPopup.FindViewById<View>(Resource.Id.vehicleNumberLayout);
+
+			var vehicleNumberMarginLayountParameters = (ViewGroup.MarginLayoutParams)vehicleNumberLayout.LayoutParameters;
+			vehicleNumberMarginLayountParameters.SetMargins(vehicleNumberMarginLayountParameters.LeftMargin, vehicleNumberMarginLayountParameters.TopMargin,
+				vehicleNumberMarginLayountParameters.RightMargin, _makeBottomMargin ? BottomMargin5 : BottomMargin0);
+			vehicleNumberLayout.RequestLayout();
 
 			return customPopup;
         }

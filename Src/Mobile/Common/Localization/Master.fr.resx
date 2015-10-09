@@ -435,6 +435,9 @@
   <data name="CreditCardErrorTitle" xml:space="preserve">
     <value>Cette carte ne peut être sauvegardée</value>
   </data>
+  <data name="CreditCardError_Label" xml:space="preserve">
+    <value>Le label de cette carte n'a pas pu être sauvergardée. S'il vous plait réessayer</value>
+  </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
     <value>Date d'expiration (mois)</value>
   </data>
@@ -2092,6 +2095,12 @@
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Le pourboire ne peut être supérieur à 100%</value>
+  </data>
+  <data name="SetCreditCardAsDefault_Error" xml:space="preserve">
+    <value>Impossible de mettre à jour de votre carte de crédit par défaut, s'il vous plait réessayer</value>
+  </data>
+  <data name="DefaultCreditCard_Label" xml:space="preserve">
+    <value>(DÉFAUT)</value>
   </data>
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
     <value>Désolé, aucun taxi disponible dans les environs.</value>

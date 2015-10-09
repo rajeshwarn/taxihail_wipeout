@@ -6,6 +6,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -13,9 +14,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	{
 		private readonly IPaymentService _paymentService;
 	    private readonly IAccountService _accountService;
+		private readonly IAppSettings _appSettings;
 
-		public OverduePaymentViewModel(IPaymentService accountService, IAccountService accountService1)
+		public OverduePaymentViewModel(IPaymentService accountService, 
+			IAccountService accountService1,
+			IAppSettings appSettings)
 		{
+			this._appSettings = appSettings;
 		    _paymentService = accountService;
 		    _accountService = accountService1;
 		}
@@ -99,11 +104,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return this.GetCommand(() => 
 				{
 					var serializedOverduePayment = _overduePayment.ToJson();
-
-					ShowViewModel<CreditCardAddViewModel>(new 
-					{ 
-						paymentToSettle = serializedOverduePayment 
-					});
+					if(_appSettings.Data.MaxNumberOfCardsOnFile > 1)
+					{
+						ShowViewModel<CreditCardMultipleViewModel>(new 
+							{ 
+								paymentToSettle = serializedOverduePayment 
+							});
+					}
+					else
+					{
+						ShowViewModel<CreditCardAddViewModel>(new 
+							{ 
+								paymentToSettle = serializedOverduePayment 
+							});
+					}
 				});
 			}
 		}

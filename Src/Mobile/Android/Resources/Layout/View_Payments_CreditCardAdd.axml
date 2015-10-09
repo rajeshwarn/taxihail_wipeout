@@ -61,7 +61,7 @@
                     android:layout_height="fill_parent"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    local:MvxBind="Visibility ShouldDisplayTip, Converter=Visibility">
+                    local:MvxBind="Visibility CanChooseTip, Converter=Visibility">
                     <TextView
                         android:id="@+id/tipAmountLabel"
                         android:text="@string/PaymentDetails.TipAmountLabel"
@@ -95,7 +95,7 @@
                         android:text="@string/CreditCardLabel"
                         style="@style/BlackTextLabel"
                         android:layout_marginBottom="4dp"
-                        local:MvxBind="Visibility ShouldChooseLabel, Converter=Visibility" />
+                        local:MvxBind="Visibility CanChooseLabel, Converter=Visibility" />
                     <RadioGroup
                         android:id="@+id/labelCardRadioGroup"
                         android:layout_width="fill_parent"
@@ -103,14 +103,14 @@
                         android:gravity="center_horizontal"
                         android:orientation="horizontal"
                         android:layout_marginBottom="4dp"
-                        local:MvxBind="Visibility ShouldChooseLabel, Converter=Visibility">
+                        local:MvxBind="Visibility CanChooseLabel, Converter=Visibility">
                         <RadioButton
                             android:id="@+id/personalRadioButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/PaymentDetails.Label.Personal"
                             style="@style/BlackTextLabel"
-                            local:MvxBind="Checked Data.Label, Converter=CreditCardLabel"
+                            local:MvxBind="Checked Data.Label, Converter=IsPersonalCreditCard"
                             android:paddingRight="30dip" />
                         <RadioButton
                             android:id="@+id/businessRadioButton"

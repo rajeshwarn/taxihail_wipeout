@@ -35,6 +35,7 @@
   <string name="VehicleNumberNotice">Veuillez noter que si le numéro du véhicule ci-haut ne correspond pas au numéro actuel de votre Audi, nous regrettons de vous informer qu\'il sera impossible de procéder au paiement via l\'application. Veuillez retourner à l\'écran précédant et payez directement au chauffeur.</string>
   <string name="InvalidChoiceTitle">Choix invalide</string>
   <string name="NoPairingCreditCard">Aucun</string>
+  <string name="SetCreditCardAsDefault_Error">Impossible de mettre à jour de votre carte de crédit par défaut, s\'il vous plait réessayer</string>
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
   <string name="CurrentBookingDisabledTitle">Réservation Immédiate Non Disponible</string>
   <string name="ConfirmOriginLablel">Départ</string>
@@ -140,6 +141,7 @@
   <string name="Rebook">Réinitialiser le trajet</string>
   <string name="Tuto06Bottom">Appuyer sur confirmer lorsque vous êtes prêt </string>
   <string name="PaymentDetails.Label.Business">Entreprise</string>
+  <string name="PanelMenuViewSignOutPopupMessage">Êtes vous sûr de vouloir vous déconnecter ?</string>
   <string name="CreateAccountLanguageEnglish">English</string>
   <string name="View_RideSummary">Résumé du trajet</string>
   <string name="ServiceError_EmailClientAbsent">Désolé, nous ne pouvons pas créer le courriel. Il n\'y a pas de client de courriel installé sur cet appareil.</string>
@@ -212,6 +214,7 @@
   <string name="PassengerNameLabel">Nom</string>
   <string name="RideSettingsPayBack">PayBack</string>
   <string name="ManualRideLinqStatus_Tax">Taxes:</string>
+  <string name="DefaultCreditCard_Label">(DÉFAUT)</string>
   <string name="BookItButtonImageName">Assets/Button/btnBookIt_en.png</string>
   <string name="Safety">Conduite sécuritaire</string>
   <string name="ManualRideLinqStatus_Payment">Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.</string>
@@ -344,7 +347,7 @@
   <string name="AirportsButton">Aéroports</string>
   <string name="View_EditAutoTip">Modifier Pourboire</string>
   <string name="PayInCar">Payer dans le taxi</string>
-  <string name="PanelMenuViewSignOutPopupMessage">Êtes vous sûr de vouloir vous déconnecter ?</string>
+  <string name="ResendConfirmationCodeText">Le code de confirmation sera envoyé bientôt</string>
   <string name="SaveAddressEmptyFieldTitle">Merci de resaisir le nom</string>
   <string name="UnpairPayInCar">Payer dans le taxi</string>
   <string name="Notification_VehicleAtPickupPush">Taxi au point de ramassage</string>
@@ -505,7 +508,6 @@
   <string name="TaxiHailNetworkTimeOutErrorTitle">Erreur</string>
   <string name="InvalidAccountOnActivatedMessage">Votre compte semble ne pas exister. Merci de vérifier la saisie</string>
   <string name="Overdue_Date">Date de transaction:</string>
-  <string name="ResendConfirmationCodeText">Le code de confirmation sera envoyé bientôt</string>
   <string name="PaymentLoadError">Impossible de charger les informations de paiement. Veuillez réessayer plus tard.</string>
   <string name="EmailLabel">Email (adresse électronique)</string>
   <string name="ManualPairingForRideLinqActivityName">Manual pairing for RideLinq</string>
@@ -613,6 +615,7 @@
   <string name="AcceptButton">Accepter</string>
   <string name="CmtRideLinqCancelChanges">Annuler</string>
   <string name="DeleteCreditCardTitle">Supprimer la carte</string>
+  <string name="CreditCardError_Label">Le label de cette carte n\'a pas pu être sauvergardée. S\'il vous plait réessayer</string>
   <string name="DateTimePickerPickDate">Sélectionner la date de départ:</string>
   <string name="View_BookRating">Noter votre trajet</string>
   <string name="TermsAndConditionsActivityName">Terms and conditions</string>
