@@ -29,7 +29,7 @@
             var updatedCreditCard = this.attributes;
             return $.ajax({
                 type: 'POST',
-                url: 'api/account/creditcard/changelabel',
+                url: 'api/account/creditcard/updatelabel',
                 data: updatedCreditCard,
                 dataType: 'json'
             });
@@ -38,7 +38,7 @@
         changeDefaultCreditCard: function () {
             return $.ajax({
                 type: 'POST',
-                url: 'api/account/creditcard/changedefault',
+                url: 'api/account/creditcard/updatedefault',
                 data: { "creditCardId": this.attributes.creditCardId },
                 dataType: 'json'
             });
