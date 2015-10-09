@@ -279,6 +279,7 @@
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddRideRatingView.js" />
     <Content Include="admin\views\AddVehicleTypeView.js" />
+    <Content Include="admin\views\ExportPromotionsView.js" />
     <Content Include="admin\views\ManageNotificationSettingsView.js" />
     <Content Include="admin\views\ManageRideRatingsView.js" />
     <Content Include="admin\views\AccountManagementView.js" />
@@ -447,6 +448,7 @@
     <Content Include="localization\BlackCabNow-en.json" />
     <Content Include="Areas\AdminTH\Views\TaxiHailNetwork\Fees.cshtml" />
     <Content Include="admin\templates\AccountManagement.handlebars" />
+    <Content Include="admin\templates\ExportPromotions.handlebars" />
     <Content Include="localization\PaymentItem.json" />
     <Content Include="localization\PaymentItem-fr.json" />
     <Content Include="localization\PaymentItem-es.json" />

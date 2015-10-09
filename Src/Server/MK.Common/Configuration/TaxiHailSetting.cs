@@ -76,6 +76,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
             ShowOrientedPins = false;
+            HideTHNetworkAppMenu = true;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
 			
@@ -493,6 +494,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - ZipCode required when tokenizing card", Description = "Send the zip code when tokenizing card")]
         public bool SendZipCodeWhenTokenizingCard { get; set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Display - Hide TaxiHail Network from menu", Description = "Hide THNetwork from app menu item")]
+        public bool HideTHNetworkAppMenu { get; protected set; }
     }
 }
 

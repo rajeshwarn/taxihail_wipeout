@@ -207,14 +207,6 @@
     <value>TaxiHail</value>
     <comment>TaxiHail</comment>
   </data>
-  <data name="AppNeedUpdateMessage" xml:space="preserve">
-    <value>Una nueva versión de la aplicación esta disponible, por favor actualize para continuar</value>
-    <comment>A new version of the application is available, please update the app to continue.</comment>
-  </data>
-  <data name="AppNeedUpdateTitle" xml:space="preserve">
-    <value>Actualización disponible</value>
-    <comment>Update available</comment>
-  </data>
   <data name="app_id" xml:space="preserve">
     <value>134284363380764</value>
     <comment>134284363380764</comment>

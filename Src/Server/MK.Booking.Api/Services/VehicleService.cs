@@ -414,6 +414,7 @@ namespace apcurium.MK.Booking.Api.Services
                 // Local market validation
                 return new HttpResult(HttpStatusCode.BadRequest, "Api cannot be used unless Local 'Available Vehicles Mode' is set to Geo");
             }
+
             if (market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode != ExternalAvailableVehiclesModes.Geo)
             {
                 // External market validation
@@ -426,7 +427,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             var order = _orderDao.FindOrderStatusById(request.OrderId);
 
-            if (order != null && !order.OriginalEta.HasValue && result.Eta.HasValue)
+            if (order != null
+                && !order.OriginalEta.HasValue
+                && result.Eta.HasValue)
             {
                 _commandBus.Send(new LogOriginalEta
                 {
@@ -441,6 +444,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Latitude = result.Latitude,
                 Longitude = result.Longitude,
                 CompassCourse = result.CompassCourse,
+                Market = result.Market
             };
         }
 

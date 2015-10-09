@@ -58,6 +58,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			IsCancelButtonVisible = false;
 			CanEditAutoTip = false;
 			IsUnpairButtonVisible = false;
+			_orderWasUnpaired = false;
 		}
 
 		private async void UpdateActionsPossibleOnOrder()
@@ -78,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				if (arePassengersOnBoard && IsUsingPaymentMethodOnFile())
 				{
-					var isPaired = ParentViewModel.ManualRideLinqDetail != null 
+					var isPaired = ParentViewModel.ManualRideLinqDetail != null
 						|| await _bookingService.IsPaired(ParentViewModel.Order.SelectOrDefault(order => order.Id, Guid.Empty));
 
 					CanEditAutoTip = isPaired;
