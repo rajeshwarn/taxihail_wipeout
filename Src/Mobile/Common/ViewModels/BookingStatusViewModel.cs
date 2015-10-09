@@ -180,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return null;
 					}
 
-					return new ManualPairingPosition
+					return new PairedTaxiPosition
 					{
 						Latitude = pos.Latitude,
 						Longitude = pos.Longitude
@@ -219,7 +219,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		/// 
 		/// This observable will also fallback to the device's location if Geo is not available for any reason.
 		/// </remarks>
-		private IObservable<ManualPairingPosition> GetAndObserveTaxiLocationViaGeo(string medallion, Guid orderId)
+		private IObservable<PairedTaxiPosition> GetAndObserveTaxiLocationViaGeo(string medallion, Guid orderId)
 		{
 			return _vehicleService.GetAndObserveCurrentTaxiLocation(medallion, orderId)
 				.Materialize()
@@ -232,10 +232,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 						if (fallbackPosition == null)
 						{
-							return Notification.CreateOnNext<ManualPairingPosition>(null);
+							return Notification.CreateOnNext<PairedTaxiPosition>(null);
 						}
 
-						var value = new ManualPairingPosition
+						var value = new PairedTaxiPosition
 						{
 							Latitude = fallbackPosition.Latitude,
 							Longitude = fallbackPosition.Longitude,
@@ -246,7 +246,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					if (notif.Kind == NotificationKind.OnNext && notif.Value != null)
 					{
-						var position = new ManualPairingPosition
+						var position = new PairedTaxiPosition
 						{
 							Longitude = notif.Value.Longitude,
 							Latitude = notif.Value.Latitude,
@@ -256,7 +256,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return Notification.CreateOnNext(position);
 					}
 
-					return Notification.CreateOnCompleted<ManualPairingPosition>();
+					return Notification.CreateOnCompleted<PairedTaxiPosition>();
 				})
 				.Dematerialize();
 		}

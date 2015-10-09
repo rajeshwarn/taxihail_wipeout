@@ -1,6 +1,6 @@
 namespace apcurium.MK.Booking.Mobile.Models
 {
-	public class ManualPairingPosition
+	public class PairedTaxiPosition
 	{
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
