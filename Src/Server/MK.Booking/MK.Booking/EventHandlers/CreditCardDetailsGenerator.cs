@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var existingCreditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
-                existingCreditCard.Label = @event.Label;
+                existingCreditCard.Label = @event.Label.ToString();
 
                 context.Save(existingCreditCard);
             }

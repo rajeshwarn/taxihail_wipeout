@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.ReadModel
     {
         public CreditCardDetails()
         {
-            Label = CreditCardConstants.Personal;
+            Label = CreditCardLabelConstants.Personal.ToString();
         }
 
         [Key]
