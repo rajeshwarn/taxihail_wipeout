@@ -282,7 +282,8 @@ namespace apcurium.MK.Booking.Domain
                     Toll = toll,
                     Tax = tax,
                     Surcharge = surcharge,
-                    IsCompleted = status.Status == OrderStatus.Completed
+                    IsCompleted = status.Status == OrderStatus.Completed,
+                    PreviousIBSStatusId = _ibsStatus,
                 });
             }
         }

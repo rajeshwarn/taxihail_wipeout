@@ -168,6 +168,9 @@
   <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
     <value>Sorry no cars are available due to high demand, please try later.</value>
   </data>
+  <data name="PushNotification_BAILED" xml:space="preserve">
+    <value>BAIL BAIL BAIL !</value>
+  </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
     <value>The passenger has paid</value>
   </data>
@@ -383,6 +386,9 @@
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>Fare will be paid using the selected payment method</value>
+  </data>
+  <data name="OrderStatus_BAILED" xml:space="preserve">
+    <value>BAIL BAIL BAIL !</value>
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>
