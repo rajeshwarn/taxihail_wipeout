@@ -277,7 +277,6 @@
     <Compile Include="ListViewStructure\ListItemData.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
-    <Compile Include="Models\BookATaxiDialogResult.cs" />
     <Compile Include="PlatformIntegration\AndroidDeviceOrientationService.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
@@ -695,10 +694,6 @@
     <Compile Include="Activities\Setting\OverduePaymentActivity.cs" />
     <AndroidResource Include="Resources\Drawable\notification_background.xml">
       <SubType>Designer</SubType>
-    </AndroidResource>
-    <Compile Include="Activities\Book\OrderBookingOptionsDialogActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_OrderBookingOptionsDialog.axml">
-      <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\button_action_company_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_company_text_selector.xml" />

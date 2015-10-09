@@ -532,28 +532,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							var hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions();
 							if (!hasValidAccountNumber)
 							{
-								string accountNumber = null;
-								string customerNumber = null;
-
-								accountNumber = await this.Services().Message.ShowPromptDialog(
+								var accountNumber = await this.Services().Message.ShowPromptDialog(
 									this.Services().Localize["AccountPaymentNumberRequiredTitle"],
 									this.Services().Localize["AccountPaymentNumberRequiredMessage"],
 									() => { return; });
 
-								if (accountNumber == null)
-                                {
-                                	return;
-                                }
-
-								customerNumber = await this.Services().Message.ShowPromptDialog(
+								var customerNumber = await this.Services().Message.ShowPromptDialog(
                                 	this.Services().Localize["AccountPaymentCustomerNumberRequiredTitle"],
                                 	this.Services().Localize["AccountPaymentCustomerNumberRequiredMessage"],
                                 	() => { return; });
-
-                                if (customerNumber == null)
-                                {
-                                	return;
-                                }
 
                                 hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber, customerNumber);
 								if (!hasValidAccountNumber)
@@ -854,9 +841,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
 						&& !Settings.DisableFutureBooking && !Settings.DisableImmediateBooking)
                     {
-						//We need to show the Book A Taxi popup.
 						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.BookATaxi;
 						await PrevalidatePickupAndDestinationRequired(onValidated);
+
+                        this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message"],
+                            this.Services().Localize["Cancel"], () => ResetToInitialState.ExecuteIfPossible(),
+                            this.Services().Localize["Now"], () => CreateOrder.ExecuteIfPossible(),
+                            this.Services().Localize["BookItLaterButton"], () => BookLater.ExecuteIfPossible());
 
 	                    return;
                     }

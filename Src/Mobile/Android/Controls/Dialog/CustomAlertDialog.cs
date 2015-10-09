@@ -128,7 +128,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
         {
             _rootView = owner.Window.DecorView.RootView as ViewGroup;
 
-            var viewToDisplay = LayoutInflater.FromContext(owner.ApplicationContext).Inflate(Resource.Layout.CustomAlertDialogView, _rootView);
+            // We know the view will be attached to the rootview, but we don't want to attach it now
+            var viewToDisplay = LayoutInflater.FromContext(owner.ApplicationContext).Inflate(Resource.Layout.CustomAlertDialogView, _rootView, false);
 
             _dialogOpacityView = viewToDisplay.FindViewById<FrameLayout>(Resource.Id.CustomDialogBackView);
             _dialogRootView = viewToDisplay.FindViewById<RelativeLayout>(Resource.Id.CustomDialogRootView);
@@ -167,6 +168,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
             _dialogOpacityView.Touch += (sender, e) => {
                 e.Handled = true;
             };
+
+            // add the view to the rootview 
+            _rootView.AddView(viewToDisplay);
         }
 
         public Task<string> ShowPrompt(Activity owner, string title, string message, Action cancelAction = null, bool isNumericOnly = false, string inputText = "")
