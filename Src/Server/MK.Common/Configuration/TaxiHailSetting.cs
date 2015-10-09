@@ -494,10 +494,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - ZipCode required when tokenizing card", Description = "Send the zip code when tokenizing card")]
         public bool SendZipCodeWhenTokenizingCard { get; set; }
-        
+
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Display - ZipCode required when tokenizing card", Description = "Send the zip code when tokenizing card")]
-        public bool SendZipCodeWhenTokenizingCard { get; set; }
+        [Display(Name = "Display - Hide TaxiHail Network from menu", Description = "Hide THNetwork from app menu item")]
+        public bool HideTHNetworkAppMenu { get; protected set; }
     }
 }
 
