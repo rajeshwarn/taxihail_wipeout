@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             tblCreditCards.Source = tableViewSource;
             tblCreditCards.RowHeight = 49;
 
-            if (!ViewModel.ShouldDisplayTip)
+            if (!ViewModel.CanChooseTip)
             {
                 lblTip.RemoveFromSuperview();
                 txtTip.RemoveFromSuperview();

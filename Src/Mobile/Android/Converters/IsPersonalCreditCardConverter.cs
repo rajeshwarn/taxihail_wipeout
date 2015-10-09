@@ -4,7 +4,7 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Converters
 {
-    public class CreditCardLabelToBool : MvxValueConverter
+    public class IsPersonalCreditCardConverter : MvxValueConverter
     {
         public override object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

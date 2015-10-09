@@ -190,6 +190,7 @@
 "ResetPasswordEmailPlaceHolder"="البريد الإلكتروني";
 "PendingOrderMessage"="You cannot book this ride since an order is already pending. View the order status?";
 "AddPaymentMethod_CreditCard"="Add credit card";
+"CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
 "TutorialActivityName"="Tutorial";
 "View_UpdatePassword"="تحديث كلمة المرور";
 "StreetNumberSearchBt"="استخدم عنوان آخر";
@@ -204,6 +205,7 @@
 "PassengerNameLabel"="الإسم";
 "RideSettingsPayBack"="PayBack";
 "ManualRideLinqStatus_Tax"="Tax amount:";
+"DefaultCreditCard_Label"="(DEFAULT)";
 "Safety"="Safety";
 "ManualRideLinqStatus_Payment"="Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.";
 "NetworkContactingNextDispatchDescription"="Contacting {0} ...";
@@ -476,7 +478,7 @@
 "CreateAccountEmptyField"="البيانات غير صحيحة، يجب تعبئة كافة الخانات.";
 "ConfirmPassengerSettingsTitle"="إعدادات الركاب";
 "CmtRideLinqGenericErrorMessage"="حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.";
-"CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
+"SetCreditCardAsDefault_Error"="Couldn't update your default credit card. Please try again";
 "PickupDateTextPlaceholder"="التاريخ: اليوم";
 "PanelMenuViewPaymentInfoText"="Payment";
 "BookViewInvalidDate"="تاريخ الإلتقاء وقت الإلتقاء غير مقبولة.";
@@ -597,6 +599,7 @@
 "AcceptButton"="موافق";
 "CmtRideLinqCancelChanges"="إلغاء";
 "DeleteCreditCardTitle"="حذف بطاقة الائتمان";
+"CreditCardError_Label"="Cannot save credit card label. Please try again";
 "DateTimePickerPickDate"="اختر تاريخ الإلتقاء:";
 "View_BookRating"="قم بتقييم مشوارك";
 "TermsAndConditionsActivityName"="Terms and conditions";

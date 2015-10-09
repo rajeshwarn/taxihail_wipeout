@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				var paymentSettings = await _paymentService.GetPaymentSettings();
 
-				_isCmtRideLinq = paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt;
+				_isCmtRideLinq = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
 
 				RaisePropertyChanged(() => ViewTitle);
 				RaisePropertyChanged(() => CanShowCreditCard);
@@ -163,26 +163,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             try
             {
                 var creditCardsDetails = await _accountService.GetCreditCards();
-                var defaultCreditCard = creditCardsDetails.First(cc => cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId);
-                var orderedCreditCards = creditCardsDetails.ToList();
-                orderedCreditCards.Remove(defaultCreditCard);
-                orderedCreditCards.Insert(0, defaultCreditCard);
-                _creditCardsData = orderedCreditCards.Select( cc => 
-                    {
-                        var cardNumber = string.Format("{0} **** {1} ", cc.Label, cc.Last4Digits);
 
-                        if(cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId)
-                        {
-                            cardNumber += "(DEFAULT)";
-                        }
+				_creditCardsData = creditCardsDetails.Select( cc => 
+	                {
+							var creditCardInfos =  new CreditCardInfos()
+							{
+								CreditCardId = cc.CreditCardId,
+								CreditCardCompany = cc.CreditCardCompany
+							};
+	                        var cardNumber = string.Format("{0} **** {1} ", cc.Label, cc.Last4Digits);
 
-                        return new CreditCardInfos()
-                        {
-                            CardNumber = cardNumber,
-                            CreditCardId = cc.CreditCardId,
-                            CreditCardCompany = cc.CreditCardCompany
-                        };
-                    }).ToList();
+	                        if(cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId)
+	                        {
+								cardNumber += this.Services().Localize["DefaultCreditCard_Label"];
+								creditCardInfos.IsDefault = true;
+	                        }
+							creditCardInfos.CardNumber = cardNumber;
+
+							return creditCardInfos;
+							
+						}).OrderByDescending(cc => cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId).ToList();
 
                 CreditCards = _creditCardsData.Select(cc =>
                     {
@@ -190,7 +190,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             Id = _creditCardsData.FindIndex(c => c == cc),
                             Display = cc.CardNumber,
-                            IsDefault = cc.CreditCardId == defaultCreditCard.CreditCardId,
+							IsDefault = cc.IsDefault,
                             Image = cc.CreditCardCompany
                         };
                     }).ToArray();

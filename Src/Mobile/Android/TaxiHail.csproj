@@ -724,8 +724,8 @@
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardMultiple.axml" />
     <AndroidResource Include="Resources\Layout\CreditCardListItem.axml" />
     <Compile Include="Converters\CreditCardNumberToTypeImageConverter.cs" />
-    <Compile Include="Converters\CreditCardLabelToBool.cs" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
+    <Compile Include="Converters\IsPersonalCreditCardConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

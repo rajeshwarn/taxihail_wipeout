@@ -587,7 +587,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return creditCard;
         }
 
-		public async Task<IEnumerable<CreditCardDetails>> GetCreditCards ()
+		public Task<IEnumerable<CreditCardDetails>> GetCreditCards ()
 		{
 			return UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(client => client.GetCreditCards());
 		}
@@ -665,13 +665,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			UpdateCachedAccount(defaultCreditCard != null ? defaultCreditCard : null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
 		}
 
-		public async Task UpdateDefaultCreditCard(Guid creditCardId)
+		public async Task<bool> UpdateDefaultCreditCard(Guid creditCardId)
 		{
-			var creditCard = (await GetCreditCards()).First(cc => cc.CreditCardId == creditCardId);
+			try
+			{
+				var creditCard = (await GetCreditCards()).First(cc => cc.CreditCardId == creditCardId);
 
-			UpdateCachedAccount(creditCard, CurrentAccount.Settings.ChargeTypeId, CurrentAccount.IsPayPalAccountLinked);
+				UpdateCachedAccount(creditCard, CurrentAccount.Settings.ChargeTypeId, CurrentAccount.IsPayPalAccountLinked);
 
-			await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateDefaultCreditCard(new DefaultCreditCardRequest {CreditCardId = creditCardId})); 
+				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateDefaultCreditCard(new DefaultCreditCardRequest {CreditCardId = creditCardId})); 
+
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		public async Task<bool> UpdateCreditCardLabel(Guid creditCardId, string label)

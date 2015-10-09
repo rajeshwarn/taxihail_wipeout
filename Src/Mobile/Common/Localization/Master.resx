@@ -1179,6 +1179,9 @@
   <data name="CreditCardErrorTitle" xml:space="preserve">
     <value>Cannot save credit card</value>
   </data>
+  <data name="CreditCardError_Label" xml:space="preserve">
+    <value>Cannot save credit card label. Please try again</value>
+  </data>
   <data name="CreditCardRequiredFields" xml:space="preserve">
     <value>All the fields are required</value>
   </data>
@@ -2099,6 +2102,12 @@
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
+  </data>
+  <data name="SetCreditCardAsDefault_Error" xml:space="preserve">
+    <value>Couldn't update your default credit card. Please try again</value>
+  </data>
+  <data name="DefaultCreditCard_Label" xml:space="preserve">
+    <value>(DEFAULT)</value>
   </data>
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
     <value>Sorry, no taxis currently available nearby.</value>

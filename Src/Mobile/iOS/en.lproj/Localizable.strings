@@ -34,6 +34,7 @@
 "VehicleNumberNotice"="Please note that if the vehicle number presented above does not match the actual car number of your ride, we regret that payment cannot be processed through the Application. Please press the back button to return to the trip status screen, and pay the driver directly.";
 "InvalidChoiceTitle"="Invalid Choice";
 "NoPairingCreditCard"="None";
+"SetCreditCardAsDefault_Error"="Couldn't update your default credit card. Please try again";
 "mobileKnowledgeUrl"="http://www.mobile-knowledge.com/";
 "CurrentBookingDisabledTitle"="Current Booking Disabled";
 "ConfirmOriginLablel"="Pickup";
@@ -209,6 +210,7 @@
 "PassengerNameLabel"="Name";
 "RideSettingsPayBack"="PayBack";
 "ManualRideLinqStatus_Tax"="Tax amount:";
+"DefaultCreditCard_Label"="(DEFAULT)";
 "BookItButtonImageName"="Assets/Button/btnBookIt_en.png";
 "Safety"="Safety";
 "ManualRideLinqStatus_Payment"="Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.";
@@ -614,6 +616,7 @@
 "AcceptButton"="Accept";
 "CmtRideLinqCancelChanges"="Cancel";
 "LoginViewPasswordPlaceHolder"="Password";
+"CreditCardError_Label"="Cannot save credit card label. Please try again";
 "DateTimePickerPickDate"="Select your pickup date:";
 "View_BookRating"="Rate Your Trip";
 "BookItButton"="Book Now";

@@ -22,9 +22,8 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-	public class CreditCardAddViewModel : PageViewModel
+	public class CreditCardAddViewModel : CreditCardBaseViewModel
 	{
-		private readonly ILocationService _locationService;
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 
@@ -35,14 +34,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			ILocationService locationService,
 			IPaymentService paymentService, 
 			IAccountService accountService)
+			:base(locationService, paymentService, accountService)
 		{
-			_locationService = locationService;
 			_paymentService = paymentService;
 			_accountService = accountService;
 		}
 
-		private bool _isFromPromotions;
-		private bool _isFromMultiple;
+		private bool _isFromPromotionsView;
+		private bool _isFromCreditCardListView;
 		private bool _isAddingNew;
 		private Guid _creditCardId;
 		private int _numberOfCreditCards;
@@ -71,16 +70,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public void Init(bool showInstructions = false, 
 			bool isMandatory = false, 
 			string paymentToSettle = null, 
-			bool isFromPromotions = false, 
-			bool isFromMultiple = false, 
+			bool isFromPromotionsView = false, 
+			bool isFromCreditCardListView = false, 
 			bool isAddingNew = false, 
 			Guid creditCardId = default(Guid))
 		{
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
 
-			_isFromPromotions = isFromPromotions;
-			_isFromMultiple = isFromMultiple;
+			_isFromPromotionsView = isFromPromotionsView;
+			_isFromCreditCardListView = isFromCreditCardListView;
 			_isAddingNew = isAddingNew;
 			_creditCardId = creditCardId;
 
@@ -91,30 +90,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		}
 
-		public override void OnViewStarted(bool firstTime)
-		{
-			base.OnViewStarted(firstTime);
-			// we stop the service when the viewmodel starts because it stops after the homeviewmodel starts when we press back
-			// this ensures that we don't stop the service just after having started it in homeviewmodel
-			_locationService.Stop();
-		}
-
-		private ClientPaymentSettings _paymentSettings;
-
-		public override async void Start()
+		public override async void BaseStart()
 		{
 			using (this.Services ().Message.ShowProgress ())
 			{
 				IsPayPalAccountLinked = _accountService.CurrentAccount.IsPayPalAccountLinked;
-
-				try
-				{
-					_paymentSettings = await _paymentService.GetPaymentSettings();
-				}
-				catch(Exception ex)
-				{
-					Logger.LogError(ex);
-				}
 
 				CreditCardCompanies = new List<ListItem>
 					{
@@ -152,8 +132,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				try
 				{
-					var creditCards = await _accountService.GetCreditCards();
-					_numberOfCreditCards = creditCards.ToList().Count;
+					var creditCards = (await _accountService.GetCreditCards()).ToList();
+					_numberOfCreditCards = creditCards.Count;
 
 					creditCard = _creditCardId == default(Guid)
 						? await _accountService.GetDefaultCreditCard()
@@ -174,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					CreditCardType = (int)id;
 
 					#if DEBUG
-					if (_paymentSettings.PaymentMode == PaymentMethod.Braintree)
+                    if (PaymentSettings.PaymentMode == PaymentMethod.Braintree)
 					{
 						CreditCardNumber = DummyVisa.BraintreeNumber;
 					}
@@ -199,8 +179,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.CreditCardCompany = creditCard.CreditCardCompany;
 					Data.Label = creditCard.Label;
 
-					ExpirationMonth = string.IsNullOrWhiteSpace(creditCard.ExpirationMonth) ? (int?)null : int.Parse(creditCard.ExpirationMonth);
-					ExpirationYear = string.IsNullOrWhiteSpace(creditCard.ExpirationYear) ? (int?)null : int.Parse(creditCard.ExpirationYear);
+					ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? (int?)null : int.Parse(creditCard.ExpirationMonth);
+					ExpirationYear = creditCard.ExpirationYear.HasValue() ? (int?)null : int.Parse(creditCard.ExpirationYear);
 
 					var id = CreditCardCompanies.Find(x => x.Display == creditCard.CreditCardCompany).Id;
 					if (id != null)
@@ -222,29 +202,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					return;
 				}
 
-				try
+				if (!_isFromCreditCardListView)
 				{
-					var overduePayment = await _paymentService.GetOverduePayment();
-
-					if (overduePayment == null)
-					{
-						return;
-					}
-
-					this.Services().Message.ShowMessage(
-						this.Services().Localize["View_Overdue"],
-						this.Services().Localize["Overdue_OutstandingPaymentExists"],
-						this.Services().Localize["OkButtonText"],
-						() => ShowViewModelAndRemoveFromHistory<OverduePaymentViewModel>(new
-							{
-								overduePayment = overduePayment.ToJson()
-							}),
-						this.Services().Localize["Cancel"],
-						() => Close(this));
-				}
-				catch (Exception ex)
-				{
-					Logger.LogError(ex);
+					await GoToOverduePayment();
 				}
 			}
 		}
@@ -404,8 +364,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get
 			{
 				return !IsPayPalAccountLinked
-					&& _paymentSettings != null
-					&& _paymentSettings.PayPalClientSettings.IsEnabled;
+                    && PaymentSettings != null
+                    && PaymentSettings.PayPalClientSettings.IsEnabled;
 			}
 		}
 
@@ -423,9 +383,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return _paymentSettings != null
-					&& _paymentSettings.PayPalClientSettings.IsEnabled
-					&& !_paymentSettings.IsPayInTaxiEnabled;
+                return PaymentSettings != null
+                    && PaymentSettings.PayPalClientSettings.IsEnabled
+                    && !PaymentSettings.IsPayInTaxiEnabled;
 			}
 		}
 
@@ -437,19 +397,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public bool ShouldDisplayTip
+		public bool CanChooseTip
 		{
 			get
 			{
-                return (_paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled) && !_isFromMultiple && !IsMandatory;
+                return (PaymentSettings.IsPayInTaxiEnabled || PaymentSettings.PayPalClientSettings.IsEnabled) && !_isFromCreditCardListView && !IsMandatory;
 			}
 		}
 
-		public bool ShouldChooseLabel
+		public bool CanChooseLabel
 		{
 			get
 			{
-				return _isFromMultiple;
+				return _isFromCreditCardListView;
 			}
 		}
 
@@ -465,7 +425,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return !_isAddingNew && _isFromMultiple && Data.CreditCardId != _accountService.CurrentAccount.DefaultCreditCard.CreditCardId;
+				return !_isAddingNew && _isFromCreditCardListView && Data.CreditCardId != _accountService.CurrentAccount.DefaultCreditCard.CreditCardId;
 			}
 		}
 
@@ -482,58 +442,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		private PaymentDetailsViewModel _paymentPreferences;
-		public PaymentDetailsViewModel PaymentPreferences
-		{
-			get
-			{
-				if (_paymentPreferences == null)
-				{
-					_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
-					_paymentPreferences.Start();
-					_paymentPreferences.ActionOnTipSelected = _saveTip;
-				}
-				return _paymentPreferences;
-			}
-		}
-
 		public ICommand SetAsDefault 
 		{ 
 			get
 			{
 				return this.GetCommand(async() =>
 					{
-						await _accountService.UpdateDefaultCreditCard(Data.CreditCardId);
-						Close(this);
+						
+						var updated = await _accountService.UpdateDefaultCreditCard(Data.CreditCardId);
+						if(updated)
+						{
+							if (_paymentToSettle != null)
+							{
+								await SettleOverduePayment();
+							}
+							Close(this);
+						}
+						else
+						{
+							this.Services().Message.ShowMessage(null, this.Services().Localize["SetCreditCardAsDefault_Error"]);
+						}
 					});
 			}
 		}
-
-		private ICommand _saveTip 
-		{ 
-			get
-			{
-				return this.GetCommand<int>(async tip =>
-					{
-						if (PaymentPreferences.Tip > TipMaxPercent)
-						{
-							await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
-							return;
-						}
-
-						try
-						{
-							await _accountService.UpdateSettings(_accountService.CurrentAccount.Settings, _accountService.CurrentAccount.Email, PaymentPreferences.Tip);
-						}
-						catch (WebServiceException)
-						{
-							this.Services()
-								.Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-									this.Services().Localize["UpdateBookingSettingsGenericError"]);
-						}
-					});
-			} 
-		} 
 
 		public ICommand SaveCreditCardCommand 
 		{ 
@@ -679,7 +610,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				Data.CreditCardCompany = CreditCardTypeName;
 
-				if(string.IsNullOrEmpty(Data.CCV) && Data.Label != _originalLabel && !_isAddingNew)
+				if(Data.CCV.HasValue() && Data.Label != _originalLabel && !_isAddingNew)
 				{
 					using(this.Services().Message.ShowProgress())
 					{
@@ -691,7 +622,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						}
 						else
 						{
-							await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
+							await this.Services().Message.ShowMessage(null, this.Services().Localize["CreditCardError_Label"]);
 						}
 					}
 					return;
@@ -746,12 +677,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						else if(IsMandatory)
 						{
 							await this.Services().Message.ShowMessage(string.Empty, 
-								_paymentSettings.IsOutOfAppPaymentDisabled ? 
+                                PaymentSettings.IsOutOfAppPaymentDisabled ? 
 								this.Services().Localize["CreditCardAdded_PayInCarDisabled"] :
 								this.Services().Localize["CreditCardAdded"]);
 						}
 
-						if(_isFromPromotions || _isFromMultiple)
+						if(_isFromPromotionsView || _isFromCreditCardListView)
 						{
 							// We are from the promotion or mutliple credit card pages, we should return to it.
 							Close(this);

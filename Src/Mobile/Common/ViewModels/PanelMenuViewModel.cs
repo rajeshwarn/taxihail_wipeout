@@ -332,7 +332,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						}
 						else
 						{
-							ShowViewModel<CreditCardMultipleViewModel>();
+							ShowViewModel<CreditCardAddViewModel>();
 						}
 				});
 			}

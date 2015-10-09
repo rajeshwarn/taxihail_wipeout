@@ -33,6 +33,7 @@
 "VehicleNumberNotice"="Veuillez noter que si le numéro du véhicule ci-haut ne correspond pas au numéro actuel de votre Audi, nous regrettons de vous informer qu'il sera impossible de procéder au paiement via l'application. Veuillez retourner à l'écran précédant et payez directement au chauffeur.";
 "InvalidChoiceTitle"="Choix invalide";
 "NoPairingCreditCard"="Aucun";
+"SetCreditCardAsDefault_Error"="Impossible de mettre à jour de votre carte de crédit par défaut, s'il vous plait réessayer";
 "mobileKnowledgeUrl"="http://www.mobile-knowledge.com/";
 "CurrentBookingDisabledTitle"="Réservation Immédiate Non Disponible";
 "ConfirmOriginLablel"="Départ";
@@ -138,6 +139,7 @@
 "Rebook"="Réinitialiser le trajet";
 "Tuto06Bottom"="Appuyer sur confirmer lorsque vous êtes prêt ";
 "PaymentDetails.Label.Business"="Entreprise";
+"PanelMenuViewSignOutPopupMessage"="Êtes vous sûr de vouloir vous déconnecter ?";
 "CreateAccountLanguageEnglish"="English";
 "View_RideSummary"="Résumé du trajet";
 "ServiceError_EmailClientAbsent"="Désolé, nous ne pouvons pas créer le courriel. Il n'y a pas de client de courriel installé sur cet appareil.";
@@ -210,6 +212,7 @@
 "PassengerNameLabel"="Nom";
 "RideSettingsPayBack"="PayBack";
 "ManualRideLinqStatus_Tax"="Taxes:";
+"DefaultCreditCard_Label"="(DÉFAUT)";
 "BookItButtonImageName"="Assets/Button/btnBookIt_en.png";
 "Safety"="Conduite sécuritaire";
 "ManualRideLinqStatus_Payment"="Votre carte {0} se terminant par {1} sera automatiquement chargée à la fin de la course. Un pourboire de {2}% sera ajouté au total.";
@@ -342,7 +345,7 @@
 "AirportsButton"="Aéroports";
 "View_EditAutoTip"="Modifier Pourboire";
 "PayInCar"="Payer dans le taxi";
-"PanelMenuViewSignOutPopupMessage"="Êtes vous sûr de vouloir vous déconnecter ?";
+"ResendConfirmationCodeText"="Le code de confirmation sera envoyé bientôt";
 "SaveAddressEmptyFieldTitle"="Merci de resaisir le nom";
 "UnpairPayInCar"="Payer dans le taxi";
 "Notification_VehicleAtPickupPush"="Taxi au point de ramassage";
@@ -503,7 +506,6 @@
 "TaxiHailNetworkTimeOutErrorTitle"="Erreur";
 "InvalidAccountOnActivatedMessage"="Votre compte semble ne pas exister. Merci de vérifier la saisie";
 "Overdue_Date"="Date de transaction:";
-"ResendConfirmationCodeText"="Le code de confirmation sera envoyé bientôt";
 "PaymentLoadError"="Impossible de charger les informations de paiement. Veuillez réessayer plus tard.";
 "EmailLabel"="Email (adresse électronique)";
 "ManualPairingForRideLinqActivityName"="Manual pairing for RideLinq";
@@ -611,6 +613,7 @@
 "AcceptButton"="Accepter";
 "CmtRideLinqCancelChanges"="Annuler";
 "DeleteCreditCardTitle"="Supprimer la carte";
+"CreditCardError_Label"="Le label de cette carte n'a pas pu être sauvergardée. S'il vous plait réessayer";
 "DateTimePickerPickDate"="Sélectionner la date de départ:";
 "View_BookRating"="Noter votre trajet";
 "TermsAndConditionsActivityName"="Terms and conditions";

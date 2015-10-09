@@ -11,17 +11,17 @@ using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-    public class CreditCardMultipleViewModel : PageViewModel
+	public class CreditCardMultipleViewModel : CreditCardBaseViewModel
     {
-        private readonly ILocationService _locationService;
-        private readonly IPaymentService _paymentService;
         private readonly IAccountService _accountService;
         private readonly IAppSettings _appSettings;
 
-		private ClientPaymentSettings _paymentSettings;
+		private string _paymentToSettle;
 
         private const int TipMaxPercent = 100;
 
@@ -30,20 +30,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             IPaymentService paymentService, 
 			IAccountService accountService,
 			IAppSettings appSettings)
+			:base(locationService, paymentService, accountService)
         {
 			_appSettings = appSettings;
-            _locationService = locationService;
-            _paymentService = paymentService;
             _accountService = accountService;
         }
 
-		public override async void OnViewStarted(bool firstTime)
-        {
-            base.OnViewStarted(firstTime);
-            // we stop the service when the viewmodel starts because it stops after the homeviewmodel starts when we press back
-            // this ensures that we don't stop the service just after having started it in homeviewmodel
-            _locationService.Stop();
+		public void Init(string paymentToSettle = null)
+		{
+			if (paymentToSettle != null)
+			{
+				_paymentToSettle = paymentToSettle;
+			}
+		}
 
+		public override async void BaseOnViewStarted(bool firstTime)
+        {
 			if (firstTime)
 			{
 				using (this.Services().Message.ShowProgress())
@@ -54,49 +56,47 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			else
 			{
 				await GetCreditCards();
-			}
 
-        }
-
-        public async override void Start()
-        {
-            base.Start();
-
-			try
-			{
-				_paymentSettings = await _paymentService.GetPaymentSettings();
-			}
-			catch(Exception ex)
-			{
-				Logger.LogError(ex);
 			}
         }
+
+		public override async void BaseStart()
+		{
+
+			if (_paymentToSettle != null)
+			{
+				return;
+			}
+
+			await GoToOverduePayment();
+		}
 
         private async Task GetCreditCards()
         {
             try
             {
                 var creditCardsDetails = await _accountService.GetCreditCards();
-				var defaultCreditCard = creditCardsDetails.First(cc => cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId);
-				var orderedCreditCards = creditCardsDetails.ToList();
-				orderedCreditCards.Remove(defaultCreditCard);
-				orderedCreditCards.Insert(0, defaultCreditCard);
-				CreditCards = orderedCreditCards.Select( cc => 
-					{
-						var cardNumber = string.Format("{0} **** {1} ", cc.Label, cc.Last4Digits);
 
-						if(cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId)
+				CreditCards = creditCardsDetails
+					.Select( cc => 
 						{
-							cardNumber += "(DEFAULT)";
-						}
+							var creditCardInfos =  new CreditCardInfos()
+								{
+									CreditCardId = cc.CreditCardId,
+									CreditCardCompany = cc.CreditCardCompany
+								};
+							var cardNumber = string.Format("{0} **** {1} ", cc.Label, cc.Last4Digits);
 
-						return new CreditCardInfos()
-						{
-							CardNumber = cardNumber,
-							CreditCardId = cc.CreditCardId,
-							CreditCardCompany = cc.CreditCardCompany
-						};
-					}).ToList();
+							if(cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId)
+							{
+								cardNumber += this.Services().Localize["DefaultCreditCard_Label"];
+								creditCardInfos.IsDefault = true;
+							}
+							creditCardInfos.CardNumber = cardNumber;
+
+							return creditCardInfos;
+
+						}).OrderByDescending(cc => cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId).ToList();
 			}
 			catch(Exception e)
 			{
@@ -123,30 +123,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return CreditCards != null ? CreditCards.Count < _appSettings.Data.MaxNumberOfCardsOnFile : false;
+				return CreditCards != null && CreditCards.Count < _appSettings.Data.MaxNumberOfCardsOnFile;
 			}
 		}
 
-        public bool ShouldDisplayTip
+        public bool CanChooseTip
         {
             get
             {
-                return _paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled;
-            }
-        }
-
-        private PaymentDetailsViewModel _paymentPreferences;
-        public PaymentDetailsViewModel PaymentPreferences
-        {
-            get
-            {
-                if (_paymentPreferences == null)
-                {
-                    _paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
-                    _paymentPreferences.Start();
-                    _paymentPreferences.ActionOnTipSelected = SaveTip;
-                }
-                return _paymentPreferences;
+				return PaymentSettings.IsPayInTaxiEnabled || PaymentSettings.PayPalClientSettings.IsEnabled;
             }
         }
 
@@ -156,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand<CreditCardInfos>( cci =>
 					{
-						ShowViewModel<CreditCardAddViewModel>(new {creditCardId = cci.CreditCardId, isFromMultiple = true});
+						ShowViewModel<CreditCardAddViewModel>(new {creditCardId = cci.CreditCardId, isFromCreditCardListView = true, paymentToSettle = _paymentToSettle});
 					});
 			}
 		}
@@ -167,36 +152,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 return this.GetCommand(() =>
                     {
-						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true, isFromMultiple = true});
+						ShowViewModel<CreditCardAddViewModel>(new {isAddingNew = true, isFromCreditCardListView = true, paymentToSettle = _paymentToSettle});
                     });
             }
         }
-
-        private ICommand SaveTip 
-        { 
-            get
-            {
-                return this.GetCommand<int>(async tip =>
-                    {
-                        if (PaymentPreferences.Tip > TipMaxPercent)
-                        {
-                            await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
-                            return;
-                        }
-
-                        try
-                        {
-                            await _accountService.UpdateSettings(_accountService.CurrentAccount.Settings, _accountService.CurrentAccount.Email, PaymentPreferences.Tip);
-                        }
-                        catch (WebServiceException e)
-                        {
-							Logger.LogError(e);
-                            this.Services()
-                                .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-                                    this.Services().Localize["UpdateBookingSettingsGenericError"]);
-                        }
-                    });
-            } 
-        } 
     }
 }
