@@ -22,6 +22,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -909,32 +910,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
-			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && !string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber))
-			{
-				var carNumber = OrderStatusDetail.VehicleNumber;
+			var orderStatusDetail = OrderStatusDetail;
 
-				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+			if (orderStatusDetail != null)
+			{
+				if (orderStatusDetail.VehicleNumber.HasValue()
+                    && (deviceOrientation == DeviceOrientations.Left
+                        || deviceOrientation == DeviceOrientations.Right))
 				{
-					if (!string.IsNullOrWhiteSpace(carNumber))
+					var carNumber = orderStatusDetail.VehicleNumber;
+
+					if (WaitingCarLandscapeViewModelParameters == null
+                        || (WaitingCarLandscapeViewModelParameters != null
+                            && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 					{
-						WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
+						if (carNumber.HasValue())
 						{
-						    CarNumber = carNumber,
-                            DeviceOrientations = deviceOrientation
-						};
-						ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
-					}
-				}
-				else
-				{
-					if (!string.IsNullOrWhiteSpace(carNumber))
-					{
-						WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
+							WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
+							{
+								CarNumber = carNumber,
+								DeviceOrientations = deviceOrientation
+							};
+							ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
+						}
 					}
 					else
 					{
-						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
-						WaitingCarLandscapeViewModelParameters = null;
+						if (carNumber.HasValue())
+						{
+							WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
+						}
+						else
+						{
+							WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+							WaitingCarLandscapeViewModelParameters = null;
+						}
 					}
 				}
 			}

@@ -1,4 +1,6 @@
 using System;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Common.Enumeration;
 using CoreGraphics;
 using Foundation;
 using MapKit;
@@ -26,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		{
 			Annotation = annotation;
 			RefreshPinImage();
-            CreateMedailonView(annotation.Title, hidden:true);
+            CreateMedaillonView(annotation.Title, annotation.Market, hidden:true);
 		}
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -73,48 +75,67 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             }
         }
 
-        private void CreateMedailonView(string text, bool hidden)
+	    public void RefreshPinImage()
+	    {
+	        var ann = ((AddressAnnotation) Annotation);
+	        var degrees = ann.Degrees;
+
+	        Image = ann.GetImage();
+
+	        // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
+	        if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin)
+	        {
+	            var addressAnnotation = (AddressAnnotation) Annotation;
+	            CreateMedaillonView(addressAnnotation.Subtitle, addressAnnotation.Market, hidden: false);
+	        }
+
+	        if (degrees != 0)
+	        {
+	            CenterOffset = new CGPoint(0, 0);
+	        }
+	        else
+	        {
+	            CenterOffset = new CGPoint(0, -Image.Size.Height/2);
+	            if (ann.AddressType == AddressAnnotationType.Destination
+	                || ann.AddressType == AddressAnnotationType.Pickup)
+	            {
+	                CenterOffset = new CGPoint(0, -Image.Size.Height/2 + 2);
+	            }
+	        }
+	    }
+
+	    private void CreateMedaillonView(string text, string market, bool hidden)
         {
             var lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
-            lblVehicleNumber.BackgroundColor = UIColor.DarkGray;
+            lblVehicleNumber.BackgroundColor = GetMedaillonBackgroundColor(market);
             lblVehicleNumber.TextColor = UIColor.White;
             lblVehicleNumber.TextAlignment = UITextAlignment.Center;
-            lblVehicleNumber.Font = UIFont.FromName (FontName.HelveticaNeueRegular, 30 / 2);
+            lblVehicleNumber.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 30 / 2);
             lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
-            lblVehicleNumber.Text = text; 
+            lblVehicleNumber.Text = text;
             lblVehicleNumber.Hidden = hidden;
             AddSubview(lblVehicleNumber);
 
             _lblVehicleNumber = lblVehicleNumber;
         }
 
-		public void RefreshPinImage ()
-        {
-            var ann = ((AddressAnnotation)Annotation);
-            var degrees = ann.Degrees;
+	    private UIColor GetMedaillonBackgroundColor(string market)
+	    {
+	        if (!market.HasValue())
+	        {
+                return UIColor.DarkGray;
+	        }
 
-            Image = ann.GetImage();
-
-            // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
-            if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin) 
-            {
-                CreateMedailonView(((AddressAnnotation)Annotation).Subtitle, hidden: false);
-            }
-
-            if (degrees != 0)
-            {
-                CenterOffset = new CGPoint(0, 0);
-            }
-            else
-            {
-                CenterOffset = new CGPoint(0, -Image.Size.Height / 2);
-                if (ann.AddressType == AddressAnnotationType.Destination ||
-                ann.AddressType == AddressAnnotationType.Pickup)
-                {
-                    CenterOffset = new CGPoint(0, -Image.Size.Height / 2 + 2);
-                }
-            }
-		}
+	        switch (market.ToLower())
+	        {
+	            case AssignedVehicleMarkets.NYC:
+                    return UIColor.FromRGB(222, 157, 0); // Yellow
+                case AssignedVehicleMarkets.NYSHL:
+                    return UIColor.FromRGB(92, 127, 18); // Green
+                default:
+	                return UIColor.DarkGray;
+	        }
+	    }
 	}
 }
 
