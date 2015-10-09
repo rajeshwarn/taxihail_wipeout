@@ -104,7 +104,6 @@
 "HistoryDetailsActivityName"="History details";
 "PaymentDetails.InvalidDataTitle"="بيانات الدفع غير صحيحة";
 "DriverBonusWarningMessage"="Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?";
-"TabLocations"="مواقع";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
 "WaitingCarLandscapeActivityName"="Car Number";
 "InvalidAddressMessage"="العنوان الذي أدخلته غير صحيح. يرجى التأكد من المعلومات";
@@ -132,8 +131,7 @@
 "DriverInfoColor"="اللون:";
 "NoFareTextIfDestinationIsRequired"="يجب أن تحدد الوجهة.";
 "Rebook"="إعادة حجز المشوار";
-"NoPhoneNumberMessage"="Your phone number or the driver's phone number is invalid.";
-"Tuto06Bottom"="انقر تأكيد عندما تكون مستعد للذهاب.";
+"TermsAndConditionsActivityName"="Terms and conditions";
 "CreateAccountLanguageEnglish"="الإنجليزية";
 "View_RideSummary"="ملخص الرحلة";
 "ServiceError_EmailClientAbsent"="Sorry, we're unable to create an email. There is no email client installed on this device";
@@ -266,7 +264,6 @@
 "ChangeServer"="تغيير الشبكة";
 "December"="ديسمبر (12)";
 "ManualRideLinqStatus_Greetings"="Enjoy the ride!";
-"AppNeedUpdateTitle"="هناك تحديثات متاحة";
 "LocationAddFavoriteTitle"="إضافة موقع جدید";
 "PromoDescriptionCode"="Enter code {0} at the time of booking or press the button below";
 "Overdue_Retry"="Pay Now";
@@ -374,14 +371,13 @@
 "ServerInfo"="({0} v{1})";
 "UpdateBookingSettingsEmptyField"="البيانات خاطئة، يجب تعبئة كافة الخانات.";
 "NbPassenger"="راكب {0})";
-"PromoExpiringIn1DayMessage"="Expires in 1 day";
+"PromotionActivityName"="Promotion";
 "LocationServiceErrorMessage"="خدمة تحديد الموقع غير مفعلة";
 "View_LocationDetail"="تفاصيل الموقع";
 "DriverBonusDescription"="Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.";
 "September"="سبتمبر (09)";
 "ResetPasswordTitleText"="نسيت كلمة المرور؟";
 "March"="مارس (03)";
-"PromotionActivityName"="Promotion";
 "EmailUsedMessageTitle"="Email already used";
 "NoPayBackErrorMessage"="The PayBack field is required";
 "HistoryViewStatusButton"="رؤية حالة الطلب";
@@ -479,6 +475,7 @@
 "CmtRideLinqGenericErrorMessage"="حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.";
 "CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
 "PickupDateTextPlaceholder"="التاريخ: اليوم";
+"TabLocations"="مواقع";
 "PanelMenuViewPaymentInfoText"="Payment";
 "BookViewInvalidDate"="تاريخ الإلتقاء وقت الإلتقاء غير مقبولة.";
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
@@ -492,7 +489,6 @@
 "TaxiHailNetworkTimeOutErrorTitle"="Error";
 "InvalidAccountOnActivatedMessage"="لا يمكن التعرف على حسابك، يجب أن تقوم بتسجيل الدخول لاستخدام هذا التطبيق";
 "Overdue_Date"="Transaction date:";
-"Overdue_Date"="Transaction date:";
 "ResendConfirmationCodeText"="Confirmation code will be resend shortly";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";
 "EmailLabel"="بريد إلكتروني";
@@ -505,6 +501,7 @@
 "ChargeTypeLabel"="طريقة الدفع :";
 "ResetPasswordSubtitleText"="أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.";
 "DateTimePickerPickTitle"="تاريخ و وقت الإلتقاء";
+"Tuto06Bottom"="انقر تأكيد عندما تكون مستعد للذهاب.";
 "UpdatedTermsAndConditionsAcceptButton"="موافق";
 "Cancel"="إلغاء";
 "ChooseProviderDialogTitle"="اختر مورد خدمة";
@@ -528,12 +525,10 @@
 "ReceiptSent"="تم إرسال الإيصال";
 "View_RideLinqStatus"="Status";
 "InvalidPayBackErrorMessage"="The PayBack field must be all digits and must not exceed 10 characters in length";
-"InvalidPayBackErrorMessage"="The PayBack field must be all digits and must not exceed 10 characters in length";
 "BookingAirportFlightNumlbl"="Flight Number";
 "PayPalLinkError"="Unable to link your PayPal account";
 "Overdue_Failed_Message"="Your transaction was denied, please try again later or replace your credit card with a new one.";
 "DriverInfoModel"="الموديل:";
-"AppNeedUpdateMessage"="هناك تحديث جديد متاح للتطبيق ، يرجى تحديث التطبيق للإستمرار.";
 "HistoryInfo"="عرض حجوزاتكم خلال الشهر الماضي";
 "UpdatePasswordActivityName"="Update password";
 "ManualRideLinqSummary_Done"="Done";
@@ -598,7 +593,6 @@
 "DeleteCreditCardTitle"="حذف بطاقة الائتمان";
 "DateTimePickerPickDate"="اختر تاريخ الإلتقاء:";
 "View_BookRating"="قم بتقييم مشوارك";
-"TermsAndConditionsActivityName"="Terms and conditions";
 "BookItButton"="احجز الآن";
 "PanelMenuViewPromotionsText"="Promotions";
 "ChangePasswordConfirmmation"="تم تحديث كلمة المرور الخاصة بك، رجاء تسجيل الدخول.";
@@ -653,6 +647,7 @@
 "PanelMenuViewTutorialText"="شاهد فيديو تعليمي";
 "PanelMenuViewUpdateProfileText"="تحديث الحساب";
 "PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked to your account.";
+"PromoExpiringIn1DayMessage"="Expires in 1 day";
 "ManualRideLinqStatusActivityName"="Manual RideLinq Status";
 "View_History"="التاريخ";
 "Twitter"="الدخول عبر حساب تويتر";
