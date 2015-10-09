@@ -139,7 +139,6 @@
   <string name="HomeActivityName">Home</string>
   <string name="Rebook">Reservar viaje nuevamente</string>
   <string name="Tuto06Bottom">Toque “Confirmar” cuando esté listo</string>
-  <string name="AppNeedUpdateMessage">Una nueva versión de la aplicación esta disponible, por favor actualize para continuar</string>
   <string name="CreateAccountLanguageEnglish">Inglés</string>
   <string name="View_RideSummary">Resumen del servicio</string>
   <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
@@ -279,7 +278,6 @@
   <string name="ChangeServer">Cambiar Servidor</string>
   <string name="December">Dic (12)</string>
   <string name="ManualRideLinqStatus_Greetings">Enjoy the ride!</string>
-  <string name="AppNeedUpdateTitle">Actualización disponible</string>
   <string name="LocationAddFavoriteTitle">Agregar lugar</string>
   <string name="PromoDescriptionCode">Ingrese el código {0} o pulse el botón de abajo</string>
   <string name="Overdue_Retry">Pagar ahora</string>
@@ -634,7 +632,7 @@
   <string name="AccountDisabled">Su cuenta ha sido deshabilitada, por favor contacte a {0} al {1} para re-activar su cuenta</string>
   <string name="InvalidAddressTitle">Dirección inválida</string>
   <string name="WarningEstimateTitle">Aviso</string>
-  <string name="Create">Crear</string>
+  <string name="RateLastRide">Calificar</string>
   <string name="MenuButton">Menu</string>
   <string name="Collapse">Mostrar menos</string>
   <string name="WarningEstimateDontShow">No avisar</string>
@@ -667,6 +665,7 @@
   <string name="PanelMenuViewUpdateProfileText">Perfil</string>
   <string name="PromoMustHavePaymentMethodSetMessage_PayPal">Para utilizar un código de promoción, es necesario tener una cuenta PayPal vinculada a su cuenta.</string>
   <string name="ManualRideLinqStatusActivityName">Manual RideLinq Status</string>
+  <string name="Create">Crear</string>
   <string name="View_History">Historia</string>
   <string name="Twitter">Iniciar sesión con Twitter</string>
   <string name="AccountLinkedWithFacebook">Account is linked with Facebook account</string>
@@ -720,7 +719,6 @@
   <string name="SignIn">Entrar</string>
   <string name="DeleteAddressBt">Eliminar dirección</string>
   <string name="StatusConfirmNewBooking">Reservar un nuevo taxi mantendrá esta reservación activa, desea continuar?</string>
-  <string name="RateLastRide">Calificar</string>
   <string name="InvalidPassengersNumber">El tipo de vehículo que ha seleccionado no tiene suficientes asientos para acomodar el número de pasajeros solicitado. Por favor cambie su selección o reserve más de un coche para acomodar a su grupo.</string>
   <string name="PickupViewDestinationLabel">Destino &gt;&gt;</string>
   <string name="Tuto07Bottom">Las actualizaciones al estado se generan cuando el vehículo llega a la dirección de arribo, cuando usted aborda el vehículo y al final del servicio.</string>

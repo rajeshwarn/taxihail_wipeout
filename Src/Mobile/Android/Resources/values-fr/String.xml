@@ -138,7 +138,6 @@
   <string name="NoFareTextIfDestinationIsRequired">Vous devez saisir une destination</string>
   <string name="Rebook">Réinitialiser le trajet</string>
   <string name="Tuto06Bottom">Appuyer sur confirmer lorsque vous êtes prêt </string>
-  <string name="AppNeedUpdateMessage">Une nouvelle version de l\'application est disponible, merci de la télécharger pour continuer</string>
   <string name="CreateAccountLanguageEnglish">English</string>
   <string name="View_RideSummary">Résumé du trajet</string>
   <string name="ServiceError_EmailClientAbsent">Désolé, nous ne pouvons pas créer le courriel. Il n\'y a pas de client de courriel installé sur cet appareil.</string>
@@ -276,7 +275,6 @@
   <string name="ChangeServer">Changer de serveur</string>
   <string name="December">Décembre (12)</string>
   <string name="ManualRideLinqStatus_Greetings">Appréciez la balade!</string>
-  <string name="AppNeedUpdateTitle">Nouvelle version disponible</string>
   <string name="LocationAddFavoriteTitle">Ajouter une nouvelle adresse</string>
   <string name="PromoDescriptionCode">Enter le code {0} ou appuyez sur le bouton ci-dessous.</string>
   <string name="Overdue_Retry">Payer Maintenant</string>

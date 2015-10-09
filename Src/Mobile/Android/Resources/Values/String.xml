@@ -198,7 +198,7 @@
   <string name="TAXI">TAXI</string>
   <string name="View_UpdatePassword">Update Password</string>
   <string name="StreetNumberSearchBt">Use a different address</string>
-  <string name="AppNeedUpdateTitle">Update available</string>
+  <string name="RideSummaryTitleText">Thank you</string>
   <string name="WarningPushServiceTitle">Push Notifications</string>
   <string name="Version">v{0}</string>
   <string name="View">View</string>
@@ -543,7 +543,6 @@
   <string name="PayPalLinkError">Unable to link your PayPal account</string>
   <string name="Overdue_Failed_Message">Your transaction was denied, please try again later or replace your credit card with a new one.</string>
   <string name="DriverInfoModel">Model:</string>
-  <string name="AppNeedUpdateMessage">A new version of the application is available, please update the app to continue.</string>
   <string name="HistoryInfo">Displaying trips from the last month</string>
   <string name="UpdatePasswordActivityName">Update password</string>
   <string name="ManualRideLinqSummary_Done">Done</string>
@@ -580,7 +579,6 @@
   <string name="OtherListItemPromptLabel">Enter a value:</string>
   <string name="DestinationAddress">Destination address</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
-  <string name="RideSummaryTitleText">Thank you</string>
   <string name="ConfirmDestinationLabel">Destination</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</string>
   <string name="HistoryViewNoHistoryLabel">No booking history</string>
