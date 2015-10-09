@@ -1160,6 +1160,7 @@ namespace apcurium.MK.Booking.Api.Services
                 prompts,
                 promptsLength,
                 defaultVehiculeType != null ? defaultVehiculeType.ReferenceDataVehicleId : -1,
+                request.TipIncentive,
                 fare);
 
             return result;

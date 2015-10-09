@@ -10,6 +10,7 @@ using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Text;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 #endregion
 
@@ -394,11 +395,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
         
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, Fare fare = default(Fare))
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
-            var order = new TBookOrder_11
+            var order = new TBookOrder_10
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,                
@@ -470,24 +471,32 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.Note = note;
             order.ContactPhone = CleanPhone( phone );
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
+            order.JobOfferPrompt = _serverSettings.ServerData.MessagePromptedToDriver;
+
+            var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
+
+            if (tipIncentive.HasValue && tipIncentive != 0)
+            {
+                order.JobOfferPrompt = string.Format(currentCultureInfo, "{0} + {1:C} Bonus", order.JobOfferPrompt, tipIncentive);
+            }
 
             SetPrompts(order, prompts, promptsLength);
 
-            TBookOrderKey orderKey = null;
+            int? orderId = null;
 
             UseService(service =>
             {
                 Logger.LogMessage("WebService Creating IBS Order : " +
-                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_11)));
+                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_10)));
                 Logger.LogMessage("WebService Creating IBS Order pickup : " +
                                   JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Order dest : " +
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
-                orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, null);
-                Logger.LogMessage("WebService Create Order, orderKey received : " + JsonSerializer.SerializeToString(orderKey, typeof(TBookOrderKey)));
+                orderId = service.SaveBookOrder_10(UserNameApp, PasswordApp, order);
+                Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
-            return orderKey.OrderID;
+            return orderId;
         }
 
         public bool CancelOrder(int orderId, int accountId, string contactPhone)
@@ -531,7 +540,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return regEx.Replace(phone, "");
         }
 
-        private void SetPrompts(TBookOrder_11 order, string[] prompts, int?[] promptsLength)
+        private void SetPrompts(TBookOrder_10 order, string[] prompts, int?[] promptsLength)
         {
             if (prompts != null)
             {
