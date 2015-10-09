@@ -528,9 +528,6 @@
     <Compile Include="Controls\Behavior\NumberAndAddressTextFieldBehavior.cs" />
     <AndroidResource Include="Resources\Layout\Control_AddressTextBox.axml" />
     <AndroidResource Include="Resources\Drawable\colored_dot.xml" />
-    <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateControl.cs" />
     <Compile Include="Helpers\DrawableHelper.cs" />
     <Compile Include="Controls\Widgets\OrderEdit.cs" />
@@ -717,6 +714,14 @@
     <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_passenger.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_passenger.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
+    <Compile Include="Controls\Widgets\VehicleTypeSubControl.cs" />
+    <AndroidResource Include="Resources\Layout\Control_VehicleTypeSub.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\textview_rounded_border.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

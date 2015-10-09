@@ -93,7 +93,6 @@
 "PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured as part of your account.";
 "Tuto08Bottom"="نأمل أن تجد الراحة و السهولة عند استخدام هذا التطبيق .";
 "ErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
-"CardOnFile"="Card on File";
 "HistoryActivityName"="History";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "View_AccountConfirmationTitle"="Account Confirmation";
@@ -155,7 +154,7 @@
 "ResetPasswordConfirmationMessage"="تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.";
 "ApartmentLabel"="شقة";
 "HistoryDetailOrderLabel"="الطلب:";
-"CreditCardRemoveErrorMessage"="عليك أن تدخل بطاقة إئتمانية واحدة على الأقل في حسابك، إن رغبت في إزالة بطاقة، ستحتاج لإضافة بطاقة أخرى قبل الإزالة.";
+"CardOnFile"="Card on File";
 "DefaultRideSettingsViewTitle"="إعدادات";
 "TermsAndConditionsAcknowledgment"="أقر بأني قد قرأت وفهمت الأحكام والشروط.";
 "CreateAccount_AccountAlreadyExist"="لا يمكن إنشاء حساب. هذا العنوان الإلكتروني مستخدم .";
@@ -263,7 +262,6 @@
 "ChangeServer"="تغيير الشبكة";
 "December"="ديسمبر (12)";
 "ManualRideLinqStatus_Greetings"="Enjoy the ride!";
-"AppNeedUpdateTitle"="هناك تحديثات متاحة";
 "LocationAddFavoriteTitle"="إضافة موقع جدید";
 "PromoDescriptionCode"="Enter code {0} at the time of booking or press the button below";
 "Overdue_Retry"="Pay Now";
@@ -371,13 +369,12 @@
 "ServerInfo"="({0} v{1})";
 "UpdateBookingSettingsEmptyField"="البيانات خاطئة، يجب تعبئة كافة الخانات.";
 "NbPassenger"="راكب {0})";
-"PromoExpiringIn1DayMessage"="Expires in 1 day";
+"PromotionActivityName"="Promotion";
 "LocationServiceErrorMessage"="خدمة تحديد الموقع غير مفعلة";
 "View_LocationDetail"="تفاصيل الموقع";
 "September"="سبتمبر (09)";
 "ResetPasswordTitleText"="نسيت كلمة المرور؟";
 "March"="مارس (03)";
-"PromotionActivityName"="Promotion";
 "EmailUsedMessageTitle"="Email already used";
 "NoPayBackErrorMessage"="The PayBack field is required";
 "HistoryViewStatusButton"="رؤية حالة الطلب";
@@ -528,7 +525,6 @@
 "PayPalLinkError"="Unable to link your PayPal account";
 "Overdue_Failed_Message"="Your transaction was denied, please try again later or replace your credit card with a new one.";
 "DriverInfoModel"="الموديل:";
-"AppNeedUpdateMessage"="هناك تحديث جديد متاح للتطبيق ، يرجى تحديث التطبيق للإستمرار.";
 "HistoryInfo"="عرض حجوزاتكم خلال الشهر الماضي";
 "UpdatePasswordActivityName"="Update password";
 "ManualRideLinqSummary_Done"="Done";
@@ -557,6 +553,7 @@
 "NoFareText"="اختر وجهة للحصول على سعر تقريبي.";
 "Notes"="ملاحظات";
 "EstimatingFare"="جاري تقييم قيمة مشوارك...";
+"CreditCardRemoveErrorMessage"="عليك أن تدخل بطاقة إئتمانية واحدة على الأقل في حسابك، إن رغبت في إزالة بطاقة، ستحتاج لإضافة بطاقة أخرى قبل الإزالة.";
 "OverduePaymentActivityName"="Overdue payment";
 "UpdateBookingSettingsGenericError"="An error occured when updating the booking settings";
 "TabHistory"="السجل";
@@ -646,6 +643,7 @@
 "PanelMenuViewTutorialText"="شاهد فيديو تعليمي";
 "PanelMenuViewUpdateProfileText"="تحديث الحساب";
 "PromoMustHavePaymentMethodSetMessage_PayPal"="In order to use a promo code, you need to have a PayPal account linked to your account.";
+"PromoExpiringIn1DayMessage"="Expires in 1 day";
 "ManualRideLinqStatusActivityName"="Manual RideLinq Status";
 "View_History"="التاريخ";
 "Twitter"="الدخول عبر حساب تويتر";

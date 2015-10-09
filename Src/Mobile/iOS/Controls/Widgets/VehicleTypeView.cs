@@ -42,6 +42,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
+            TranslatesAutoresizingMaskIntoConstraints = false;
+
             _vehicleTypeImage = new UIImageView();
             _vehicleTypeImage.TranslatesAutoresizingMaskIntoConstraints = false;
             _vehicleTypeImage.IsAccessibilityElement = true;

@@ -25,6 +25,15 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="52dp" />
+        <LinearLayout
+            android:id="@+id/VehicleSubSelection"
+            android:background="#e3e3e3"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/RideEstimate"

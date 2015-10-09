@@ -275,7 +275,6 @@
 "ChangeServer"="Cambiar Servidor";
 "December"="Dic (12)";
 "ManualRideLinqStatus_Greetings"="Enjoy the ride!";
-"AppNeedUpdateTitle"="Actualización disponible";
 "LocationAddFavoriteTitle"="Agregar lugar";
 "PromoDescriptionCode"="Ingrese el código {0} o pulse el botón de abajo";
 "Overdue_Retry"="Pagar ahora";
@@ -538,7 +537,6 @@
 "PayPalLinkError"="No se puede vincular la cuenta de PayPal";
 "Overdue_Failed_Message"="Su transacción no fué autorizada, por favor intente de nuevo más tarde o reemplace su tarjeta de crédito con una nueva.";
 "DriverInfoModel"="Modelo:";
-"AppNeedUpdateMessage"="Una nueva versión de la aplicación esta disponible, por favor actualize para continuar";
 "HistoryInfo"="Mostrando los viajes del último mes";
 "UpdatePasswordActivityName"="Update password";
 "ManualRideLinqSummary_Done"="Listo";
@@ -628,7 +626,7 @@
 "AccountDisabled"="Su cuenta ha sido deshabilitada, por favor contacte a {0} al {1} para re-activar su cuenta";
 "InvalidAddressTitle"="Dirección inválida";
 "WarningEstimateTitle"="Aviso";
-"Create"="Crear";
+"RateLastRide"="Calificar";
 "MenuButton"="Menu";
 "Collapse"="Mostrar menos";
 "WarningEstimateDontShow"="No avisar";
@@ -661,6 +659,7 @@
 "PanelMenuViewUpdateProfileText"="Perfil";
 "PromoMustHavePaymentMethodSetMessage_PayPal"="Para utilizar un código de promoción, es necesario tener una cuenta PayPal vinculada a su cuenta.";
 "ManualRideLinqStatusActivityName"="Manual RideLinq Status";
+"Create"="Crear";
 "View_History"="Historia";
 "Twitter"="Iniciar sesión con Twitter";
 "AccountLinkedWithFacebook"="Account is linked with Facebook account";
@@ -714,7 +713,6 @@
 "SignIn"="Entrar";
 "DeleteAddressBt"="Eliminar dirección";
 "StatusConfirmNewBooking"="Reservar un nuevo taxi mantendrá esta reservación activa, desea continuar?";
-"RateLastRide"="Calificar";
 "InvalidPassengersNumber"="El tipo de vehículo que ha seleccionado no tiene suficientes asientos para acomodar el número de pasajeros solicitado. Por favor cambie su selección o reserve más de un coche para acomodar a su grupo.";
 "PickupViewDestinationLabel"="Destino &gt;&gt;";
 "Tuto07Bottom"="Las actualizaciones al estado se generan cuando el vehículo llega a la dirección de arribo, cuando usted aborda el vehículo y al final del servicio.";

@@ -44,7 +44,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			Clickable = false;
 		}
 
-
 		protected override void OnFinishInflate()
 		{
 			base.OnFinishInflate();

@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             Observe (_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
             Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
-			Observe(_vehicleService.GetAndObserveAvailableVehicles(), vehicles => _availableVehicles = vehicles);
+			Observe (_vehicleService.GetAndObserveAvailableVehicles(), vehicles => _availableVehicles = vehicles);
 		}
 
 		public override void Start()
@@ -134,6 +134,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        }
 	        
             RaisePropertyChanged(() => ShowVehicleSelection);
+			RaisePropertyChanged(() => GroupVehiclesByServiceType);
 	    }
 
 	    private async Task SetLocalMarketVehicleTypes()
@@ -198,8 +199,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				RaisePropertyChanged ();
 				RaisePropertyChanged (() => ShowVehicleSelection);
+				RaisePropertyChanged (() => GroupVehiclesByServiceType);
+				RaisePropertyChanged (() => VehicleRepresentations);
 				RaisePropertyChanged (() => SelectedVehicleType);
 				RaisePropertyChanged (() => VehicleAndEstimateBoxIsVisible);
+			}
+		}
+
+		public IList<VehicleType> VehicleRepresentations
+		{
+			get
+			{
+				if (GroupVehiclesByServiceType)
+				{
+					return VehicleTypes
+						.Select(x => x.ServiceType)
+						.Distinct()
+						.Select(x => new VehicleType 
+						{
+							ServiceType = x,
+							Name = x.ToString(),
+							LogoName = x == ServiceType.Luxury 
+								? "blackcar" 
+								: "taxi"
+						})
+						.ToList();
+				}
+				else
+				{
+					return VehicleTypes.ToList();
+				}
 			}
 		}
 			
@@ -428,6 +457,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             get { return ShowDestination && Settings.ShowEstimate; }
 		}
 
+		public bool GroupVehiclesByServiceType 
+		{
+			get { return VehicleTypes.Select(x => x.ServiceType).Distinct().Count() > 1; }
+		}
+
 		public bool ShowVehicleSelection
 		{
 			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled; }
@@ -447,8 +481,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return this.GetCommand<VehicleType>(vehicleType => {
-					_orderWorkflowService.SetVehicleType(vehicleType.ReferenceDataVehicleId);
+				return this.GetCommand<VehicleSelectionModel>(model => {
+
+					if (!VehicleTypeInputDisabled) 
+					{
+						var vehicle = (GroupVehiclesByServiceType && !model.IsSubMenuSelection)
+							? VehicleTypes.First(x => x.ServiceType == model.VehicleType.ServiceType)
+							: model.VehicleType;
+						_orderWorkflowService.SetVehicleType(vehicle.ReferenceDataVehicleId);
+					}
 				});
 			}
 		}
@@ -536,6 +577,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
 				}
             }
+		}
+
+		public class VehicleSelectionModel
+		{
+			public VehicleType VehicleType { get; set; }
+			public bool IsSubMenuSelection { get; set; }
 		}
 	}
 }

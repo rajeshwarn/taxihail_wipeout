@@ -195,7 +195,7 @@
 "TAXI"="TAXI";
 "View_UpdatePassword"="Update Password";
 "StreetNumberSearchBt"="Use a different address";
-"AppNeedUpdateTitle"="Update available";
+"RideSummaryTitleText"="Thank you";
 "WarningPushServiceTitle"="Push Notifications";
 "Version"="v{0}";
 "View"="View";
@@ -538,7 +538,6 @@
 "PayPalLinkError"="Unable to link your PayPal account";
 "Overdue_Failed_Message"="Your transaction was denied, please try again later or replace your credit card with a new one.";
 "DriverInfoModel"="Model:";
-"AppNeedUpdateMessage"="A new version of the application is available, please update the app to continue.";
 "HistoryInfo"="Displaying trips from the last month";
 "UpdatePasswordActivityName"="Update password";
 "ManualRideLinqSummary_Done"="Done";
@@ -574,7 +573,6 @@
 "OtherListItemPromptLabel"="Enter a value:";
 "DestinationAddress"="Destination address";
 "ManualPairingForRideLinQ_Error_Title"="Error";
-"RideSummaryTitleText"="Thank you";
 "ConfirmDestinationLabel"="Destination";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen";
 "HistoryViewNoHistoryLabel"="No booking history";
