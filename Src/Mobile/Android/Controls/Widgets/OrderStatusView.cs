@@ -2,6 +2,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Android.Content;
+using Android.OS;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
@@ -121,9 +122,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
+		public void ShowWithoutAnimation(bool showContactTaxi)
+		{
+			_isShown = true;
+
+			((MarginLayoutParams)LayoutParameters).TopMargin = 0;
+
+			if (!showContactTaxi)
+			{
+				return;
+			}
+		}
+
 		private void ShowIfNeeded()
 		{
-			if (_isShown)
+			if (_isShown || Height == 0)
 			{
 				return;
 			}
@@ -161,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private void HideIfNeeded()
 		{
-			if (!_isShown)
+			if (!_isShown || Height == 0)
 			{
 				return;
 			}

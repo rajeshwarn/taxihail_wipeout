@@ -32,7 +32,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         ClearTaskOnLaunch = true, 
         WindowSoftInputMode = SoftInput.AdjustPan, 
         FinishOnTaskLaunch = true, 
-        LaunchMode = LaunchMode.SingleTask
+        LaunchMode = LaunchMode.SingleTask,
+		ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize
     )]   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
@@ -218,11 +219,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			var orderEditLayout = _orderEdit.GetLayoutParameters();
 
-			bool IsRightToLeftLanguage = this.Services().Localize.IsRightToLeft;
+			var isRightToLeftLanguage = this.Services().Localize.IsRightToLeft;
 
 			_orderEdit.SetLayoutParameters(screenSize.X, orderEditLayout.Height,
-				IsRightToLeftLanguage ? orderEditLayout.LeftMargin : screenSize.X,
-				IsRightToLeftLanguage ? screenSize.X : orderEditLayout.RightMargin,
+				isRightToLeftLanguage ? orderEditLayout.LeftMargin : screenSize.X,
+				isRightToLeftLanguage ? screenSize.X : orderEditLayout.RightMargin,
 				orderEditLayout.TopMargin, orderEditLayout.BottomMargin, orderEditLayout.Gravity);
 
 	        ((ViewGroup.MarginLayoutParams) _orderStatus.LayoutParameters).TopMargin = -screenSize.Y;
@@ -249,12 +250,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			_orderAirport.OrderAirportHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
 			_orderAirport.OrderAirportShownHeightProvider = () => _orderOptions.Height;
 
+	        ResumeFromBackgroundIfNecessary();
+
             SetupHomeViewBinding();
 
 	        PanelMenuInit();
         }
 
-	    private void SetupHomeViewBinding()
+		private void ResumeFromBackgroundIfNecessary()
+		{
+			// We are in an order, we should at least setup the view to not have the booking entry animation.
+			if (ViewModel.CurrentViewState == HomeViewModelState.ManualRidelinq || ViewModel.CurrentViewState == HomeViewModelState.BookingStatus)
+			{
+				_orderStatus.ShowWithoutAnimation(ViewModel.BookingStatus.IsContactTaxiVisible);
+				_orderOptions.HideWithoutAnimation();
+
+				_appBar.Visibility = ViewStates.Gone;
+			}
+		}
+
+		private void SetupHomeViewBinding()
 	    {
 		    var set = this.CreateBindingSet<HomeActivity, HomeViewModel>();
 			

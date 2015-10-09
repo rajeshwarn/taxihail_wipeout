@@ -77,9 +77,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		    }
 	    }
 
+	    public void HideWithoutAnimation()
+	    {
+		    _isShown = false;
+
+			((MarginLayoutParams)LayoutParameters).TopMargin = -500;
+	    }
+
 		private void HideIfNeeded()
 	    {
-		    if (!_isShown)
+			if (!_isShown || Height == 0)
 		    {
 			    return;
 		    }
@@ -92,17 +99,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	    }
 		private void ShowIfNeeded()
 	    {
-			if (_isShown)
+			if (_isShown || Height == 0)
 			{
 				return;
 			}
 
 			_isShown = true;
 
+			var translationOffset = -Height + HIDDEN_HIGHT_OFFSET;
+
+			((MarginLayoutParams)LayoutParameters).TopMargin = translationOffset;
+
 			StartAnimation(AnimationHelper.GetForYTranslation(this, 0));
 	    }
 
-        void InitializeBinding()
+        private void InitializeBinding()
 		{
 			_viewPickup.AddressUpdated = streetNumber => {
 				ViewModel.PickupAddress.ChangeStreetNumber(streetNumber);
