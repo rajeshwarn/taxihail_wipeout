@@ -13,6 +13,7 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
+using System.Text;
 
 #endregion
 
@@ -24,13 +25,15 @@ namespace apcurium.MK.Booking.Api.Services.Admin
         private readonly IServerSettings _serverSettings;
         private readonly IReportDao _reportDao;
         private readonly IAppStartUpLogDao _appStartUpLogDao;
+		private readonly IPromotionDao _promotionsDao;
 
-        public ExportDataService(IAccountDao accountDao, IReportDao reportDao, IServerSettings serverSettings, IAppStartUpLogDao appStartUpLogDao)
+		public ExportDataService(IAccountDao accountDao, IReportDao reportDao, IServerSettings serverSettings, IAppStartUpLogDao appStartUpLogDao, IPromotionDao promotionsDao)
         {
             _accountDao = accountDao;
             _reportDao = reportDao;
             _serverSettings = serverSettings;
             _appStartUpLogDao = appStartUpLogDao;
+			_promotionsDao = promotionsDao;
         }
 
         public object Post(ExportDataRequest request)
@@ -175,7 +178,79 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                         });
 
                     return exportedOrderReports;
+
+				case DataType.Promotions:
+					var exportedPromotions = new List<Dictionary<string, string>>();
+
+					var promotions = _promotionsDao.GetAll().Where(x => (!x.StartDate.HasValue || (x.StartDate.HasValue && x.StartDate.Value <= endDate))
+						&& (!x.EndDate.HasValue || (x.EndDate.HasValue && x.EndDate.Value >= startDate))).ToArray();
+
+					for (int i = 0; i < promotions.Length; i++)
+					{
+						var promo = new Dictionary<string, string>();
+						promo["Name"] = promotions[i].Name;
+						promo["Description"] = promotions[i].Description;
+						promo["StartDate"] = promotions[i].StartDate.HasValue ? promotions[i].StartDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
+						promo["StartTime"] = promotions[i].StartTime.HasValue ? promotions[i].StartTime.Value.ToString("t", CultureInfo.InvariantCulture) : null;
+						promo["EndDate"] = promotions[i].EndDate.HasValue ? promotions[i].EndDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
+						promo["EndTime"] = promotions[i].EndTime.HasValue ? promotions[i].EndTime.Value.ToString("t", CultureInfo.InvariantCulture) : null;
+						var days = (string[])JsonSerializer.DeserializeFromString(promotions[i].DaysOfWeek, typeof(string[]));
+						var daysOfWeek = Enum.GetNames(typeof(System.DayOfWeek));
+
+						var daysText = new StringBuilder();
+
+						for (int i1 = 0; i1 < daysOfWeek.Length; i1++)
+						{
+							if (days.Contains(daysOfWeek[i1]))
+							{
+								if (daysText.Length > 0)
+								{
+									daysText.Append(", ");
+								}
+
+								daysText.Append(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[i1]);
+							}
+						}
+
+						promo["Days"] = daysText.ToString();
+						promo["Applies To"] = ((promotions[i].AppliesToCurrentBooking ? "Current booking" : "") + (promotions[i].AppliesToFutureBooking ? " Future booking" : "")).TrimStart();
+						promo["Discount"] = promotions[i].DiscountValue.ToString() + (promotions[i].DiscountType == Common.Enumeration.PromoDiscountType.Cash ? " $" : " %");
+
+						if (promotions[i].TriggerSettings.Type != Common.Enumeration.PromotionTriggerTypes.CustomerSupport)
+						{
+							promo["Maximum Usage Per User"] = promotions[i].MaxUsagePerUser.ToString();
+							promo["Maximum Usage"] = promotions[i].MaxUsage.ToString();
+						}
+
+						promo["Promo Code"] = promotions[i].Code;
+						promo["Published Start Date"] = promotions[i].PublishedStartDate.HasValue ? promotions[i].PublishedStartDate.Value.ToString("d",  CultureInfo.InvariantCulture) : null;
+						promo["Published End Date"] = promotions[i].PublishedEndDate.HasValue ? promotions[i].PublishedEndDate.Value.ToString("d", CultureInfo.InvariantCulture) : null;
+
+						switch (promotions[i].TriggerSettings.Type)
+						{
+							case Common.Enumeration.PromotionTriggerTypes.AccountCreated:
+								promo["Trigger"] = "Account created";
+								break;
+
+							case Common.Enumeration.PromotionTriggerTypes.AmountSpent:
+								promo["Trigger"] = "Amount spent " + promotions[i].TriggerSettings.AmountSpent.ToString();;
+								break;
+
+							case Common.Enumeration.PromotionTriggerTypes.CustomerSupport:
+								promo["Trigger"] = "Customer support";
+								break;
+
+							case Common.Enumeration.PromotionTriggerTypes.RideCount:
+								promo["Trigger"] = "Ride count " + promotions[i].TriggerSettings.RideCount.ToString();
+								break;
+						}
+
+						exportedPromotions.Add(promo);
+					}
+
+					return exportedPromotions;
             }
+
             return new HttpResult(HttpStatusCode.NotFound);
         }
     }

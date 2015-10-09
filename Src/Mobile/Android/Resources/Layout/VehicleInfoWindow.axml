@@ -5,10 +5,9 @@
     android:orientation="horizontal"
     android:background="#00000000">
     <LinearLayout
-        android:id="@+id/medaillonView"
+        android:id="@+id/vehicleNumberLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:background="@drawable/default_vehicle_medaillon_icon">

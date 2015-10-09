@@ -12,14 +12,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class CustomMarkerPopupAdapter : Java.Lang.Object, GoogleMap.IInfoWindowAdapter
     {
+        private const int BottomMargin = 5;
+
         private readonly LayoutInflater _layoutInflater;
         private readonly Resources _resources;
+		private readonly bool _addBottomMargin;
         private readonly string _market;
 
-        public CustomMarkerPopupAdapter(LayoutInflater inflater, Resources resources, string market)
+        public CustomMarkerPopupAdapter(LayoutInflater inflater, bool addBottomMargin, Resources resources, string market)
         {
             _layoutInflater = inflater;
             _resources = resources;
+			_addBottomMargin = addBottomMargin;
             _market = market;
         }
 
@@ -27,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
 			var customPopup = _layoutInflater.Inflate(Resource.Layout.VehicleInfoWindow, null);
 
-            var medaillonView = customPopup.FindViewById<LinearLayout>(Resource.Id.medaillonView);
+            var medaillonView = customPopup.FindViewById<LinearLayout>(Resource.Id.vehicleNumberLayout);
             medaillonView.Background = GetMedaillonBackgroundColor(_market);
 
 			var titleTextView = customPopup.FindViewById<TextView>(Resource.Id.vehicleNumberTitle);
@@ -36,6 +40,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			{
 				titleTextView.Text = marker.Title;
 			}
+
+			var vehicleNumberLayout = customPopup.FindViewById<View>(Resource.Id.vehicleNumberLayout);
+
+			var vehicleNumberMarginLayountParameters = (ViewGroup.MarginLayoutParams)vehicleNumberLayout.LayoutParameters;
+			vehicleNumberMarginLayountParameters.SetMargins(vehicleNumberMarginLayountParameters.LeftMargin, vehicleNumberMarginLayountParameters.TopMargin,
+                vehicleNumberMarginLayountParameters.RightMargin, _addBottomMargin ? BottomMargin : 0);
+			vehicleNumberLayout.RequestLayout();
 
 			return customPopup;
         }

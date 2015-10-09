@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -227,7 +227,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (_taxiLocationPin != null)
                 {
                     var icon = ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-                        ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+						? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
                         : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap());
                     
                     AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
@@ -248,21 +248,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     try
                     {
                         var mapOptions = new MarkerOptions()
-                            .Anchor(.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-                                ? .5f
+                            .Anchor(0.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
+                                ? 0.5f
                                 : 1f)
                             .SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
                             .InvokeIcon(
                                 ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-                                ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+								? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
                                 : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
                             .Visible(true);
-
 
                         if (_showVehicleNumber)
                         {
                             var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
-                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater, _resources, value.Market));
+                            var addBottomMargin = !(ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0);
+
+                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater, addBottomMargin, _resources, value.Market));
 
                             mapOptions.SetTitle(value.VehicleNumber);
                         }
