@@ -1014,11 +1014,17 @@
   <data name="NotesToDriveLabel" xml:space="preserve">
     <value>Notes to driver (Name of business, specific entrance, ...)</value>
   </data>
-  <data name="DiverBonusTitle" xml:space="preserve">
-    <value>Diver Bonus:</value>
+  <data name="DriverBonusTitle" xml:space="preserve">
+    <value>Driver Bonus:</value>
   </data>
-  <data name="DiverBonusDescription" xml:space="preserve">
+  <data name="DriverBonusDescription" xml:space="preserve">
     <value>Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</value>
+  </data>
+  <data name="DriverBonusWarningTitle" xml:space="preserve">
+    <value>Confirm Driver Bonus</value>
+  </data>
+  <data name="DriverBonusWarningMessage" xml:space="preserve">
+    <value>Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?</value>
   </data>
   <data name="Submit" xml:space="preserve">
     <value>Submit Rating</value>

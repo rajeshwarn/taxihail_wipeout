@@ -37,8 +37,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             txtNote.AccessibilityLabel = txtNote.Placeholder;
             txtNote.ShowCloseButtonOnKeyboard();
 
-            lblBonus.Text = Localize.GetValue("DiverBonusTitle");
-            lblBonusDescription.Text = Localize.GetValue("DiverBonusDescription");
+            lblBonus.Text = Localize.GetValue("DriverBonusTitle");
+            lblBonusDescription.Text = Localize.GetValue("DriverBonusDescription");
             lblBonusDescription.PreferredMaxLayoutWidth = this.Superview.Bounds.Size.Width - 20;
             lblBonusAmount.TextColor = UIColor.FromRGB(208, 208, 208);
 

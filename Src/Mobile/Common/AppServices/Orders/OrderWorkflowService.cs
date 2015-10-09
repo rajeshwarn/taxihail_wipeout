@@ -715,6 +715,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_promoCodeSubject.OnNext(code);
 		}
 
+		public async Task<double?> GetTipIncentive()
+		{
+			return await _tipIncentiveSubject.Take(1).ToTask();
+		}
+
 		public async Task<bool> ShouldWarnAboutEstimate()
 		{
 			var destination = await _destinationAddressSubject.Take(1).ToTask();

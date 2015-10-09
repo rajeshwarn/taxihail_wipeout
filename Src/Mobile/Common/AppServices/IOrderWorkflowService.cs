@@ -63,6 +63,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		void SetPromoCode(string code);
 
+		Task<double?> GetTipIncentive();
+
 		IObservable<Address> GetAndObservePickupAddress();
 
 		IObservable<Address> GetAndObserveDestinationAddress();

@@ -33,6 +33,7 @@
   <string name="VehicleNumberNotice">يرجى ملاحظة أنه في حالة عدم مطابقة رقم السيارة أعلاه لرقم السيارة الفعلي لمشوارك، فإننا لن نتمكن من إتمام عملية الدفع من خلال التطبيق. يرجي ضغط زر الرجوع للعودة لشاشة حالة الرحلة، وقم بالدفع للسائق مباشرة.</string>
   <string name="InvalidChoiceTitle">اختيار خاطئ</string>
   <string name="NoPairingCreditCard">None</string>
+  <string name="DriverBonusTitle">Driver Bonus:</string>
   <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
   <string name="ConfirmOriginLablel">الإلتقاء</string>
   <string name="StatusEta">and is {0} {1} away</string>
@@ -104,7 +105,7 @@
   <string name="UpdateBookingSettingsInvalidCoF">You must have a card on file to use this account</string>
   <string name="HistoryDetailsActivityName">History details</string>
   <string name="PaymentDetails.InvalidDataTitle">بيانات الدفع غير صحيحة</string>
-  <string name="TabLocations">مواقع</string>
+  <string name="DriverBonusWarningMessage">Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?</string>
   <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
   <string name="InvalidAddressMessage">العنوان الذي أدخلته غير صحيح. يرجى التأكد من المعلومات</string>
@@ -132,7 +133,7 @@
   <string name="DriverInfoColor">اللون:</string>
   <string name="NoFareTextIfDestinationIsRequired">يجب أن تحدد الوجهة.</string>
   <string name="Rebook">إعادة حجز المشوار</string>
-  <string name="TermsAndConditionsActivityName">Terms and conditions</string>
+  <string name="Tuto06Bottom">انقر تأكيد عندما تكون مستعد للذهاب.</string>
   <string name="CreateAccountLanguageEnglish">الإنجليزية</string>
   <string name="View_RideSummary">ملخص الرحلة</string>
   <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
@@ -376,6 +377,7 @@
   <string name="PromoExpiringIn1DayMessage">Expires in 1 day</string>
   <string name="LocationServiceErrorMessage">خدمة تحديد الموقع غير مفعلة</string>
   <string name="View_LocationDetail">تفاصيل الموقع</string>
+  <string name="DriverBonusDescription">Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</string>
   <string name="September">سبتمبر (09)</string>
   <string name="ResetPasswordTitleText">نسيت كلمة المرور؟</string>
   <string name="March">مارس (03)</string>
@@ -477,6 +479,7 @@
   <string name="CmtRideLinqGenericErrorMessage">حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.</string>
   <string name="CreateAccountInvalidDataTitle">معلومات الحساب غير صحيحة</string>
   <string name="PickupDateTextPlaceholder">التاريخ: اليوم</string>
+  <string name="TabLocations">مواقع</string>
   <string name="PanelMenuViewPaymentInfoText">Payment</string>
   <string name="BookViewInvalidDate">تاريخ الإلتقاء وقت الإلتقاء غير مقبولة.</string>
   <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
@@ -502,7 +505,6 @@
   <string name="ChargeTypeLabel">طريقة الدفع :</string>
   <string name="ResetPasswordSubtitleText">أدخل عنوان بريدك الإلكتروني وسوف نرسل لك كلمة مرور جديدة.</string>
   <string name="DateTimePickerPickTitle">تاريخ و وقت الإلتقاء</string>
-  <string name="Tuto06Bottom">انقر تأكيد عندما تكون مستعد للذهاب.</string>
   <string name="UpdatedTermsAndConditionsAcceptButton">موافق</string>
   <string name="Cancel">إلغاء</string>
   <string name="ChooseProviderDialogTitle">اختر مورد خدمة</string>
@@ -515,7 +517,6 @@
   <string name="View_RefineAddress">بيانات نقطة الإلتقاء</string>
   <string name="TaxiMapTitle">سيارة الأجرة الخاصه بك</string>
   <string name="HistoryViewSendReceiptButton">إرسال إيصال</string>
-  <string name="DiverBonusDescription">Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</string>
   <string name="PanelMenuViewSignOutText">خروج</string>
   <string name="CmtRideLinqConfirmPairView">تأكيد معلومات الدفع</string>
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
@@ -544,6 +545,7 @@
   <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
   <string name="StatusNewRideButton">رحلة جديدة</string>
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
+  <string name="DriverBonusWarningTitle">Confirm Driver Bonus</string>
   <string name="DriverInfoCompany">Company:</string>
   <string name="InvalidEmailMessage">البريد الإلكتروني غير صحيح</string>
   <string name="LocationsActivityName">Favorite locations</string>
@@ -582,7 +584,6 @@
   <string name="CreateAccountPhonePlaceHolder">الجوال</string>
   <string name="HistoryDetailDestinationLabel">الوجهة:</string>
   <string name="View_PayPal">PayPal</string>
-  <string name="DiverBonusTitle">Diver Bonus:</string>
   <string name="NbPassengers">({0}ركاب)</string>
   <string name="Confirm">موافق</string>
   <string name="TabPlaces">أماكن</string>
@@ -596,6 +597,7 @@
   <string name="DeleteCreditCardTitle">حذف بطاقة الائتمان</string>
   <string name="DateTimePickerPickDate">اختر تاريخ الإلتقاء:</string>
   <string name="View_BookRating">قم بتقييم مشوارك</string>
+  <string name="TermsAndConditionsActivityName">Terms and conditions</string>
   <string name="BookItButton">احجز الآن</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="ChangePasswordConfirmmation">تم تحديث كلمة المرور الخاصة بك، رجاء تسجيل الدخول.</string>
