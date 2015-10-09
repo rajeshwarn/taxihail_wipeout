@@ -18,7 +18,10 @@
 
 
         public int? Eta { get; set; }
+
         public int? VehicleType { get; set; }
+
+        public string Market { get; set; }
     }
 
     public class AvailableVehicleCluster : AvailableVehicle
