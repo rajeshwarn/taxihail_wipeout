@@ -24,7 +24,7 @@
   <string name="BookDateLabel">Départ différé</string>
   <string name="Overdue_IBSOrderId">Commande:</string>
   <string name="UpdateNoticeText">Désolé, cette version d\'application n\'est plus maintenue. Mettez à jour l\'application s\'il vous plaît</string>
-  <string name="CreditCardZipCode">Code postal</string>
+  <string name="CreditCardZipCode">Code Postal</string>
   <string name="PromotionButton">Entrer ou voir promotions</string>
   <string name="LocationDetailApartmentLabel">Appartement</string>
   <string name="CvvRequiredTitle">CVV Requis</string>

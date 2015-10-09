@@ -65,6 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			public static string CmtNumber = "4012 0000 3333 0026".Replace(" ", "");
 			public static int AvcCvvCvv2 = 135;
 			public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
+			public static string ZipCode = "95001";
 		}
 
 		public void Init(bool showInstructions = false, 
@@ -164,6 +165,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					}
 
 					Data.CCV = DummyVisa.AvcCvvCvv2+"";
+					Data.ZipCode = DummyVisa.ZipCode;
 
 					ExpirationMonth = DummyVisa.ExpirationDate.Month;
 					ExpirationYear = DummyVisa.ExpirationDate.Year;
@@ -178,6 +180,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.NameOnCard = creditCard.NameOnCard;
 					Data.CreditCardCompany = creditCard.CreditCardCompany;
 					Data.Label = creditCard.Label;
+					Data.ZipCode = creditCard.ZipCode;
 
 					ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? (int?)null : int.Parse(creditCard.ExpirationMonth);
 					ExpirationYear = creditCard.ExpirationYear.HasValue() ? (int?)null : int.Parse(creditCard.ExpirationYear);
@@ -633,7 +636,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.CreditCardCompany,
 					Data.ExpirationMonth,
 					Data.ExpirationYear,
-					Data.CCV).Any(x => x.IsNullOrEmpty()))
+					Data.CCV,
+					Data.ZipCode).Any(x => x.IsNullOrEmpty()))
 				{
 					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
 					return;
@@ -642,12 +646,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				if (!IsValid(Data.CardNumber))
 				{
 					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
-					return;
-				}
-
-				if(!HasValidDate(Data.ExpirationMonth, Data.ExpirationYear))
-				{
-					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
 					return;
 				}
 

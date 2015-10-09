@@ -152,6 +152,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.Data.NameOnCard);
 
+            set.Bind(txtZipCode)
+                .For(v => v.Text)
+                .To(vm => vm.Data.ZipCode);
+
 			set.Bind(txtCardNumber)
 				.For(v => v.Text)
 				.To(vm => vm.CreditCardNumber);
@@ -242,9 +246,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblExpMonth.Text = Localize.GetValue("CreditCardExpMonth");
             lblExpYear.Text = Localize.GetValue("CreditCardExpYear");
             lblCvv.Text = Localize.GetValue("CreditCardCCV");
+            lblZipCode.Text = Localize.GetValue("CreditCardZipCode");
 
             txtNameOnCard.AccessibilityLabel = Localize.GetValue("CreditCardName");
             txtNameOnCard.Placeholder = txtNameOnCard.AccessibilityLabel;
+
+            txtZipCode.AccessibilityLabel = Localize.GetValue("CreditCardZipCode");
+            txtZipCode.Placeholder = txtZipCode.AccessibilityLabel;
 
             txtCardNumber.AccessibilityLabel = Localize.GetValue("CreditCardNumber");
             txtCardNumber.Placeholder = txtCardNumber.AccessibilityLabel;
@@ -261,6 +269,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtCardNumber.ClearsOnBeginEditing = true;
             txtCardNumber.ShowCloseButtonOnKeyboard();
             txtCvv.ShowCloseButtonOnKeyboard();
+            txtZipCode.ShowCloseButtonOnKeyboard();
 
             ViewModel.CreditCardCompanies[0].Image = "visa.png";
             ViewModel.CreditCardCompanies[1].Image = "mastercard.png";

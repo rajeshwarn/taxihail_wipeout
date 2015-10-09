@@ -23,7 +23,7 @@
   <string name="BookDateLabel">قم بإرسال السيارة لاحقا</string>
   <string name="Overdue_IBSOrderId">Order:</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
-  <string name="CreditCardZipCode">الرمز البريدي</string>
+  <string name="CreditCardZipCode">Zip/Postal</string>
   <string name="PromotionButton">Tap to Enter or View Promo Code</string>
   <string name="LocationDetailApartmentLabel">الشقة</string>
   <string name="CvvRequiredTitle">CVV Required</string>

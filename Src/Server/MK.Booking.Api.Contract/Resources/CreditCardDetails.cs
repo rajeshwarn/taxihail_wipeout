@@ -49,5 +49,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         }
 
         public CreditCardLabelConstants Label { get; set; }
+
+        public string ZipCode { get; set; }
     }
 }

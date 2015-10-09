@@ -972,6 +972,9 @@
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
     <value>Montant</value>
   </data>
+     <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Code Postal</value>
+  </data>
   <data name="PaymentViewTipText" xml:space="preserve">
     <value>Pourboire</value>
   </data>

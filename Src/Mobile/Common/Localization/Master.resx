@@ -1137,6 +1137,9 @@
   <data name="PaymentDetails.InvalidDataTitle" xml:space="preserve">
     <value>Invalid payment information</value>
   </data>
+   <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Zip/Postal</value>
+  </data>
   <data name="View_CreditCard" xml:space="preserve">
     <value>Payment</value>
   </data>
