@@ -92,6 +92,7 @@ namespace CMTServices
             var response = base.ToVehicleResponse(entity);
 
             response.Eta = entity.ETASeconds;
+	        response.CompassCourse = entity.CompassCourse;
 
             return response;
         }

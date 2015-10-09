@@ -23,9 +23,6 @@ namespace CMTServices.Responses
         [JsonProperty("lg")]
         public float Longitude { get; set; }
 
-        [JsonProperty("cc")]
-        public float CompassCourse { get; set; }
-
         [JsonProperty("md")]
         public string Medallion { get; set; }
 
