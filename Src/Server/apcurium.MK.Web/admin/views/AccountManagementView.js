@@ -210,26 +210,23 @@
 			var accid = e.currentTarget.attributes.accid.nodeValue;
 			var account = model.getAccount(accid);
 
-			var deleteConfirm = confirm("Confirm removing credit cards for user " + account.name);
+			TaxiHail.confirm({
+			    title: "Credit card removal",
+			    message: "Confirm removing all credit cards for user " + account.name
+			}).on('ok', function () {
+			    var buttonDeleteCreditCardsInfo = document.getElementById("buttonDeleteCreditCardsInfo" + accid);
+			    buttonDeleteCreditCardsInfo.disabled = true;
 
-			if (deleteConfirm == true)
-			{
-				var buttonDeleteCreditCardsInfo = document.getElementById("buttonDeleteCreditCardsInfo" + accid);
-				buttonDeleteCreditCardsInfo.disabled = true;
-
-				model.deleteAccountCreditCards(accid, this, function (viewObject, data)
-				{
-					if (data.status == 200 )
-					{
-						buttonDeleteCreditCardsInfo.innerText = "Credit cards info deleted";
-					}
-					else
-					{
-					    buttonDeleteCreditCardsInfo.disabled = false;
-					    viewObject.$('.errors').text('Error during credit cards info removing');
-					}
-				});
-			}
+			    model.deleteAccountCreditCards(accid, this, function (viewObject, data) {
+			        if (data.status == 200) {
+			            buttonDeleteCreditCardsInfo.innerText = "Credit cards info deleted";
+			        }
+			        else {
+			            buttonDeleteCreditCardsInfo.disabled = false;
+			            viewObject.$('.errors').text('Error during credit cards info removing');
+			        }
+			    });
+			}, this);
 		}
 	});
 }());
