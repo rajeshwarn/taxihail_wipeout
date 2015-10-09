@@ -914,11 +914,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (orderStatusDetail != null)
 			{
-				if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && !string.IsNullOrWhiteSpace(orderStatusDetail.VehicleNumber))
+				if (orderStatusDetail.VehicleNumber.HasValue()
+                    && (deviceOrientation == DeviceOrientations.Left
+                        || deviceOrientation == DeviceOrientations.Right))
 				{
 					var carNumber = orderStatusDetail.VehicleNumber;
 
-					if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+					if (WaitingCarLandscapeViewModelParameters == null
+                        || (WaitingCarLandscapeViewModelParameters != null
+                            && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 					{
 						if (carNumber.HasValue())
 						{
