@@ -237,7 +237,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get 
 			{ 
-				return _isCmtRideLinq; 
+				return _isCmtRideLinq && this.Services().Settings.IsDriverBonusEnabled; 
 			}
 		}
 

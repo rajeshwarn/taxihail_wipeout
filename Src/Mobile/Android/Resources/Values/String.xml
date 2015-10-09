@@ -26,6 +26,7 @@
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
   <string name="CreditCardZipCode">Zip code</string>
   <string name="PromotionButton">Tap to Enter or View Promo Code</string>
+  <string name="DriverBonusTitle">Driver Bonus:</string>
   <string name="LocationDetailApartmentLabel">Apartment</string>
   <string name="CvvRequiredTitle">CVV Required</string>
   <string name="HistoryDetailPickupLabel">Pickup:</string>
@@ -383,6 +384,7 @@
   <string name="LocationServiceErrorMessage">The location service is not enabled.</string>
   <string name="View_LocationDetail">Location Detail</string>
   <string name="Collapse">Collapse</string>
+  <string name="DriverBonusDescription">Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</string>
   <string name="September">Sep (09)</string>
   <string name="ResetPasswordTitleText">Forgot your password?</string>
   <string name="March">Mar (03)</string>
@@ -404,6 +406,7 @@
   <string name="app_id">134284363380764</string>
   <string name="BookingAirportMissingInfo_Title">Missing information</string>
   <string name="View_AboutUs">About Us</string>
+  <string name="DriverBonusWarningMessage">Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?</string>
   <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="ScanCreditCard">Scan Credit Card</string>
   <string name="HomeActivityName">Home</string>
@@ -495,7 +498,6 @@
   <string name="StatusConfirmCancelRide">Are you sure you want to cancel?</string>
   <string name="CmtTransactionResendConfirmationButtonText">Resend</string>
   <string name="StatusDescription">Order #{0}</string>
-  <string name="DiverBonusTitle">Diver Bonus:</string>
   <string name="Notification_ReceiptEmail">Receipt (Email)</string>
   <string name="OrderAirportView_BAD_FLIGHT_NUMBER">Invalid flight number</string>
   <string name="TaxiHailNetworkTimeOutErrorTitle">Error</string>
@@ -525,7 +527,6 @@
   <string name="View_RefineAddress">Pickup Details</string>
   <string name="TaxiMapTitle">Your Taxi</string>
   <string name="HistoryViewSendReceiptButton">Send Receipt</string>
-  <string name="DiverBonusDescription">Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</string>
   <string name="PanelMenuViewSignOutText">Sign Out</string>
   <string name="CmtRideLinqConfirmPairView">Confirm Payment Information</string>
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
@@ -556,6 +557,7 @@
   <string name="StatusNewRideButton">New Ride</string>
   <string name="WarningPushServiceMessage">We noticed you do not have push notifications turned on. Just to let you know if you have them enabled then you get updates about the status of your booking without having to look at the app! We promise we will not spam you with useless information!</string>
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">In order to use a promo code, you need to enter a credit card as part of your account.</string>
+  <string name="DriverBonusWarningTitle">Confirm Driver Bonus</string>
   <string name="DriverInfoCompany">Company:</string>
   <string name="InvalidEmailMessage">The email is invalid.</string>
   <string name="LocationsActivityName">Favorite locations</string>

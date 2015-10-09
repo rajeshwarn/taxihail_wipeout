@@ -36,7 +36,7 @@
   <string name="VehicleNumberNotice">Por favor note que si el numero de taxi presentado no es el mismo que el taxi que abordó, sentimos informarle que no podrá pagar a través de esta aplicación. Presione el botón “Atras” para regresar a la pagina de estado de viaje, y page al directamente al chofer.</string>
   <string name="InvalidChoiceTitle">Selección inválida</string>
   <string name="NoPairingCreditCard">Ninguno</string>
-  <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
+  <string name="DriverBonusTitle">Driver Bonus:</string>
   <string name="CurrentBookingDisabledTitle">Reservación deshabilitada.</string>
   <string name="ConfirmOriginLablel">Abordaje</string>
   <string name="SendEmail">Enviar email...</string>
@@ -109,7 +109,7 @@
   <string name="UpdateBookingSettingsInvalidCoF">Usted debe tener una tarjeta de crédito en el perfil para usar esta cuenta</string>
   <string name="HistoryDetailsActivityName">History details</string>
   <string name="EtaNotAvailable">No hay vehículo dosponible</string>
-  <string name="TabLocations">Ubicaciones</string>
+  <string name="DriverBonusWarningMessage">Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?</string>
   <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
   <string name="WaitingCarLandscapeActivityName">Car Number</string>
   <string name="InvalidAddressMessage">La dirección que ha proporcionado es inválida. Por favor vefíquela</string>
@@ -139,6 +139,7 @@
   <string name="HomeActivityName">Home</string>
   <string name="Rebook">Reservar viaje nuevamente</string>
   <string name="Tuto06Bottom">Toque “Confirmar” cuando esté listo</string>
+  <string name="AppNeedUpdateMessage">Una nueva versión de la aplicación esta disponible, por favor actualize para continuar</string>
   <string name="CreateAccountLanguageEnglish">Inglés</string>
   <string name="View_RideSummary">Resumen del servicio</string>
   <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
@@ -388,6 +389,7 @@
   <string name="PromoExpiringIn1DayMessage">Expira en 1 día</string>
   <string name="LocationServiceErrorMessage">Los servicios de localización no estan habilitados</string>
   <string name="View_LocationDetail">Detalles de ubicación</string>
+  <string name="DriverBonusDescription">Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</string>
   <string name="September">Sep (09)</string>
   <string name="ResetPasswordTitleText">Olvidó su contraseña?</string>
   <string name="March">Mar (03)</string>
@@ -488,6 +490,7 @@
   <string name="CmtRideLinqGenericErrorMessage">Hubo un error al sincronizar, verifique la información de se tarjeta de crédito o intente nuevamente</string>
   <string name="CreateAccountInvalidDataTitle">Información de cuenta inválida</string>
   <string name="PickupDateTextPlaceholder">Fecha: Hoy</string>
+  <string name="TabLocations">Ubicaciones</string>
   <string name="PanelMenuViewPaymentInfoText">Pago</string>
   <string name="BookViewInvalidDate">La fecha y hora del servicio son inválidas</string>
   <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
@@ -525,7 +528,6 @@
   <string name="View_RefineAddress">Detalles del servicio</string>
   <string name="TaxiMapTitle">Su Taxi</string>
   <string name="HistoryViewSendReceiptButton">Enviar comprobante</string>
-  <string name="DiverBonusDescription">Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</string>
   <string name="PanelMenuViewSignOutText">Cerrar Sesión</string>
   <string name="Overdue_Amount">Importe a Pagar:</string>
   <string name="WaitingCarLandscapeViewCarNumber">Car Number</string>
@@ -541,7 +543,7 @@
   <string name="PayPalLinkError">No se puede vincular la cuenta de PayPal</string>
   <string name="Overdue_Failed_Message">Su transacción no fué autorizada, por favor intente de nuevo más tarde o reemplace su tarjeta de crédito con una nueva.</string>
   <string name="DriverInfoModel">Modelo:</string>
-  <string name="AppNeedUpdateMessage">Una nueva versión de la aplicación esta disponible, por favor actualize para continuar</string>
+  <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
   <string name="HistoryInfo">Mostrando los viajes del último mes</string>
   <string name="UpdatePasswordActivityName">Update password</string>
   <string name="ManualRideLinqSummary_Done">Listo</string>
@@ -556,6 +558,7 @@
   <string name="StatusNewRideButton">Nuevo Servicio</string>
   <string name="WarningPushServiceMessage">Notamos que no tiene las “Notificaciones automáticas” encendidas. Queremos informarle que si las enciende podría obtener mensajes de estado de sus servicios sin tener que abrir la aplicación! Prometemos no le mandaremos información innecesaria</string>
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">Para utilizar un código de promoción, es necesario introducir una tarjeta de crédito como parte de su cuenta.</string>
+  <string name="DriverBonusWarningTitle">Confirm Driver Bonus</string>
   <string name="NoFareTextIfDestinationIsRequired">Necesita especificar su destino</string>
   <string name="InvalidEmailMessage">Este email es inválido</string>
   <string name="LocationsActivityName">Favorite locations</string>
@@ -594,7 +597,6 @@
   <string name="CreateAccountPhonePlaceHolder">Celular</string>
   <string name="HistoryDetailDestinationLabel">Destino:</string>
   <string name="View_PayPal">PayPal</string>
-  <string name="DiverBonusTitle">Diver Bonus:</string>
   <string name="NbPassengers">({0} pasajeros)</string>
   <string name="Confirm">Confirmar</string>
   <string name="TabPlaces">Lugares</string>

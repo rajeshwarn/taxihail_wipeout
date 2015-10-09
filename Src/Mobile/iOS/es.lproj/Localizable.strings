@@ -34,7 +34,7 @@
 "VehicleNumberNotice"="Por favor note que si el numero de taxi presentado no es el mismo que el taxi que abordó, sentimos informarle que no podrá pagar a través de esta aplicación. Presione el botón “Atras” para regresar a la pagina de estado de viaje, y page al directamente al chofer.";
 "InvalidChoiceTitle"="Selección inválida";
 "NoPairingCreditCard"="Ninguno";
-"mobileKnowledgeUrl"="http://www.mobile-knowledge.com/";
+"DriverBonusTitle"="Driver Bonus:";
 "CurrentBookingDisabledTitle"="Reservación deshabilitada.";
 "ConfirmOriginLablel"="Abordaje";
 "SendEmail"="Enviar email...";
@@ -107,7 +107,7 @@
 "UpdateBookingSettingsInvalidCoF"="Usted debe tener una tarjeta de crédito en el perfil para usar esta cuenta";
 "HistoryDetailsActivityName"="History details";
 "EtaNotAvailable"="No hay vehículo dosponible";
-"TabLocations"="Ubicaciones";
+"DriverBonusWarningMessage"="Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
 "WaitingCarLandscapeActivityName"="Car Number";
 "InvalidAddressMessage"="La dirección que ha proporcionado es inválida. Por favor vefíquela";
@@ -137,6 +137,7 @@
 "HomeActivityName"="Home";
 "Rebook"="Reservar viaje nuevamente";
 "Tuto06Bottom"="Toque “Confirmar” cuando esté listo";
+"AppNeedUpdateMessage"="Una nueva versión de la aplicación esta disponible, por favor actualize para continuar";
 "CreateAccountLanguageEnglish"="Inglés";
 "View_RideSummary"="Resumen del servicio";
 "ServiceError_EmailClientAbsent"="Sorry, we're unable to create an email. There is no email client installed on this device";
@@ -386,6 +387,7 @@
 "PromoExpiringIn1DayMessage"="Expira en 1 día";
 "LocationServiceErrorMessage"="Los servicios de localización no estan habilitados";
 "View_LocationDetail"="Detalles de ubicación";
+"DriverBonusDescription"="Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.";
 "September"="Sep (09)";
 "ResetPasswordTitleText"="Olvidó su contraseña?";
 "March"="Mar (03)";
@@ -486,6 +488,7 @@
 "CmtRideLinqGenericErrorMessage"="Hubo un error al sincronizar, verifique la información de se tarjeta de crédito o intente nuevamente";
 "CreateAccountInvalidDataTitle"="Información de cuenta inválida";
 "PickupDateTextPlaceholder"="Fecha: Hoy";
+"TabLocations"="Ubicaciones";
 "PanelMenuViewPaymentInfoText"="Pago";
 "BookViewInvalidDate"="La fecha y hora del servicio son inválidas";
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
@@ -523,7 +526,6 @@
 "View_RefineAddress"="Detalles del servicio";
 "TaxiMapTitle"="Su Taxi";
 "HistoryViewSendReceiptButton"="Enviar comprobante";
-"DiverBonusDescription"="Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.";
 "PanelMenuViewSignOutText"="Cerrar Sesión";
 "Overdue_Amount"="Importe a Pagar:";
 "WaitingCarLandscapeViewCarNumber"="Car Number";
@@ -539,7 +541,7 @@
 "PayPalLinkError"="No se puede vincular la cuenta de PayPal";
 "Overdue_Failed_Message"="Su transacción no fué autorizada, por favor intente de nuevo más tarde o reemplace su tarjeta de crédito con una nueva.";
 "DriverInfoModel"="Modelo:";
-"AppNeedUpdateMessage"="Una nueva versión de la aplicación esta disponible, por favor actualize para continuar";
+"mobileKnowledgeUrl"="http://www.mobile-knowledge.com/";
 "HistoryInfo"="Mostrando los viajes del último mes";
 "UpdatePasswordActivityName"="Update password";
 "ManualRideLinqSummary_Done"="Listo";
@@ -554,6 +556,7 @@
 "StatusNewRideButton"="Nuevo Servicio";
 "WarningPushServiceMessage"="Notamos que no tiene las “Notificaciones automáticas” encendidas. Queremos informarle que si las enciende podría obtener mensajes de estado de sus servicios sin tener que abrir la aplicación! Prometemos no le mandaremos información innecesaria";
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="Para utilizar un código de promoción, es necesario introducir una tarjeta de crédito como parte de su cuenta.";
+"DriverBonusWarningTitle"="Confirm Driver Bonus";
 "NoFareTextIfDestinationIsRequired"="Necesita especificar su destino";
 "InvalidEmailMessage"="Este email es inválido";
 "LocationsActivityName"="Favorite locations";
@@ -592,7 +595,6 @@
 "CreateAccountPhonePlaceHolder"="Celular";
 "HistoryDetailDestinationLabel"="Destino:";
 "View_PayPal"="PayPal";
-"DiverBonusTitle"="Diver Bonus:";
 "NbPassengers"="({0} pasajeros)";
 "Confirm"="Confirmar";
 "TabPlaces"="Lugares";

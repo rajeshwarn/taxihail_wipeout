@@ -34,7 +34,7 @@
   <string name="VehicleNumberNotice">Veuillez noter que si le numéro du véhicule ci-haut ne correspond pas au numéro actuel de votre Audi, nous regrettons de vous informer qu\'il sera impossible de procéder au paiement via l\'application. Veuillez retourner à l\'écran précédant et payez directement au chauffeur.</string>
   <string name="InvalidChoiceTitle">Choix invalide</string>
   <string name="NoPairingCreditCard">Aucun</string>
-  <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
+  <string name="DriverBonusTitle">Bonus Conducteur:</string>
   <string name="CurrentBookingDisabledTitle">Réservation Immédiate Non Disponible</string>
   <string name="ConfirmOriginLablel">Départ</string>
   <string name="SendEmail">Envoyer un email…</string>
@@ -108,7 +108,7 @@
   <string name="UpdateBookingSettingsInvalidCoF">Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte</string>
   <string name="HistoryDetailsActivityName">History details</string>
   <string name="PaymentDetails.InvalidDataTitle">Informations relatives au paiement invalides</string>
-  <string name="TabLocations">Adresses Favorites</string>
+  <string name="DriverBonusWarningMessage">Le montant du bonus est en supplément du pourboire. Il sera automatiquement prélevé à la fin de la course. Continuez ?</string>
   <string name="UserTaxiHailNetwork_Enabled">Réseau TaxiHail</string>
   <string name="WaitingCarLandscapeActivityName">Numéro de voiture</string>
   <string name="InvalidAddressMessage">Désolé, l\'adresse saisie semble invalide. Merci de saisir de nouveau</string>
@@ -138,6 +138,7 @@
   <string name="NoFareTextIfDestinationIsRequired">Vous devez saisir une destination</string>
   <string name="Rebook">Réinitialiser le trajet</string>
   <string name="Tuto06Bottom">Appuyer sur confirmer lorsque vous êtes prêt </string>
+  <string name="AppNeedUpdateMessage">Une nouvelle version de l\'application est disponible, merci de la télécharger pour continuer</string>
   <string name="CreateAccountLanguageEnglish">English</string>
   <string name="View_RideSummary">Résumé du trajet</string>
   <string name="ServiceError_EmailClientAbsent">Désolé, nous ne pouvons pas créer le courriel. Il n\'y a pas de client de courriel installé sur cet appareil.</string>
@@ -386,6 +387,7 @@
   <string name="PromoExpiringIn1DayMessage">Expire dans 1 jour</string>
   <string name="LocationServiceErrorMessage">Le service de localisation est inactif</string>
   <string name="View_LocationDetail">Détails sur votre position</string>
+  <string name="DriverBonusDescription">Augmentez la probabilité d\'avoir un taxi en offrant un bonus garanti au conducteur.</string>
   <string name="September">Septembre (09)</string>
   <string name="ResetPasswordTitleText">Mot de passe oublié?</string>
   <string name="March">Mars (03)</string>
@@ -412,6 +414,7 @@
   <string name="HomeActivityName">Home</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="InvalidPickupAddress">Merci d\'entrer une adresse de départ valide</string>
+  <string name="RideHistoryButton">Historique des trajets</string>
   <string name="NotNow">Plus tard</string>
   <string name="BookStatusActivityName">Booking status</string>
   <string name="Notification_DriverAssignedPush">Chauffeur assigné</string>
@@ -467,7 +470,6 @@
   <string name="Tuto04Top">Vous pouvez également saisir votre destination</string>
   <string name="DateTimePickerPickInvalidDateTitle">Date / heure invalide</string>
   <string name="TutorialActivityName">Tutorial</string>
-  <string name="NoConnectionTitle">Erreur de connexion</string>
   <string name="Knowledgabledriver">Trajet respecté</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Êtes-vous sûr de vouloir annuler? Des frais d\'annulation peuvent être appliqués.</string>
   <string name="Notification_BookingConfirmationEmail">Confirmation Commande (Email)</string>
@@ -482,13 +484,14 @@
   <string name="LocalContactCannotBeResolverTitle">Informations erronées</string>
   <string name="CreateAccountFullNamePlaceHolder">Nom complet</string>
   <string name="EtaDurationUnit">minute</string>
-  <string name="RideHistoryButton">Historique des trajets</string>
+  <string name="NoConnectionTitle">Erreur de connexion</string>
   <string name="View_SearchAddress">Rechercher une adresse</string>
   <string name="CreateAccountEmptyField">Votre demande ne peut être validée, merci de remplir les champs obligatoires</string>
   <string name="ConfirmPassengerSettingsTitle">Concernant les passagers</string>
   <string name="CmtRideLinqGenericErrorMessage">Désolé, il semble qu\'il y ait eu une erreur lors du paiement. Merci de vérifier les paramètres de paiement ou réessayez ultérieurement.</string>
   <string name="CreateAccountInvalidDataTitle">Données invalides</string>
   <string name="PickupDateTextPlaceholder">Date: Aujourd\'hui</string>
+  <string name="TabLocations">Adresses Favorites</string>
   <string name="PanelMenuViewPaymentInfoText">Paiement</string>
   <string name="BookViewInvalidDate">La date et l\'heure de départ sont invalides</string>
   <string name="ManualRideLinqStatus_Medallion">Vous êtes assis dans le véhicule {0}.</string>
@@ -526,7 +529,6 @@
   <string name="View_RefineAddress">Informations concernant le départ</string>
   <string name="TaxiMapTitle">Votre véhicule</string>
   <string name="HistoryViewSendReceiptButton">Je souhaite recevoir une facture</string>
-  <string name="DiverBonusDescription">Augmentez la probabilité d\'avoir un taxi en offrant un bonus garanti au conducteur.</string>
   <string name="PanelMenuViewSignOutText">Déconnexion</string>
   <string name="CmtRideLinqConfirmPairView">Confirmer les informations relatives au paiement</string>
   <string name="WaitingCarLandscapeViewCarNumber">Numéro de voiture</string>
@@ -543,7 +545,7 @@
   <string name="PayPalLinkError">Impossible d\'associer votre compte PayPal</string>
   <string name="Overdue_Failed_Message">Votre transaction a été refusée, veuillez essayer plus tard ou changer de carte de crédit.</string>
   <string name="DriverInfoModel">Modèle:</string>
-  <string name="AppNeedUpdateMessage">Une nouvelle version de l\'application est disponible, merci de la télécharger pour continuer</string>
+  <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
   <string name="HistoryInfo">Synthèse des trajets effectués le mois dernier</string>
   <string name="UpdatePasswordActivityName">Update password</string>
   <string name="ManualRideLinqSummary_Done">Ok</string>
@@ -558,6 +560,7 @@
   <string name="StatusNewRideButton">Nouveau trajet</string>
   <string name="WarningPushServiceMessage">Nous avons remarqué que vous n\'avez pas les notifications activées. En les activant, vous obtiendrez alors des mises à jour sur l\'état de votre réservation, sans avoir à regarder l\'application !</string>
   <string name="PromoMustHavePaymentMethodSetMessage_CreditCard">Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.</string>
+  <string name="DriverBonusWarningTitle">Confirmation du Bonus Conducteur</string>
   <string name="DriverInfoCompany">Compagnie:</string>
   <string name="InvalidEmailMessage">Désolé, cet email n\'est pas valide</string>
   <string name="LocationsActivityName">Favorite locations</string>
@@ -596,7 +599,6 @@
   <string name="CreateAccountPhonePlaceHolder">Ligne mobile</string>
   <string name="HistoryDetailDestinationLabel">Destination:</string>
   <string name="View_PayPal">PayPal</string>
-  <string name="DiverBonusTitle">Bonus Conducteur:</string>
   <string name="NbPassengers"> ({0} passagers)</string>
   <string name="Confirm">Confirmer</string>
   <string name="TabPlaces">Points d\'intérêt</string>

@@ -324,7 +324,7 @@
                         android:layout_width="match_parent"
                         android:gravity="start|center"
                         android:textColor="#000000"
-                        android:text="@string/DiverBonusDescription"
+                        android:text="@string/DriverBonusDescription"
                         android:textSize="15dip"
                         android:ellipsize="end"
                         android:singleLine="false"
