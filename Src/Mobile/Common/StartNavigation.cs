@@ -63,11 +63,13 @@ namespace apcurium.MK.Booking.Mobile
                 bool.TryParse(@params["isPairingNotification"], out isPairingNotification);
 
 				// Make sure to reload notification/payment/network settings even if the user has killed the app
-                await accountService.GetNotificationSettings(true);
-                await accountService.GetUserTaxiHailNetworkSettings(true);
-				await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
-                await Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync();
-                
+	            Task.WhenAll(
+						accountService.GetNotificationSettings(true).HandleErrors(),
+						accountService.GetUserTaxiHailNetworkSettings(true).HandleErrors(),
+						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors(),
+						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync().HandleErrors()
+		            ).FireAndForget();
+
                 try
                 {
                     var orderStatus = await Mvx.Resolve<IBookingService>().GetOrderStatusAsync(orderId);
@@ -75,10 +77,12 @@ namespace apcurium.MK.Booking.Mobile
 
                     if (order != null && orderStatus != null)
                     {
-                        ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
-						    {"order", order.ToJson()},
-                            {"orderStatus", orderStatus.ToJson()}
-                        });
+						ShowViewModel<HomeViewModel>(new
+						{
+							locateUser = false,
+							order = order.ToJson(),
+							orderStatusDetail = orderStatus.ToJson()
+						});
                     }
                 }
                 catch(Exception)
@@ -89,12 +93,11 @@ namespace apcurium.MK.Booking.Mobile
             else
             {
 				// Make sure to refresh notification/payment settings even if the user has killed the app
-				Task.WhenAll(new[]
-					{
-						accountService.GetNotificationSettings(true),
-						Mvx.Resolve<IPaymentService>().GetPaymentSettings(),
-						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync()
-					}).FireAndForget();
+				Task.WhenAll(
+						accountService.GetNotificationSettings(true).HandleErrors(),
+						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors(),
+						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync().HandleErrors()
+					).FireAndForget();
 
                 // Log user session start
                 metricsService.LogApplicationStartUp();
