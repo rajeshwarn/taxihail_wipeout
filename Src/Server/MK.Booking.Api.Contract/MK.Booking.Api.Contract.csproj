@@ -83,6 +83,7 @@
     <Compile Include="Requests\ConfirmationCodeRequest.cs" />
     <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
     <Compile Include="Requests\DefaultCreditCardRequest.cs" />
+    <Compile Include="Requests\DeleteCreditCardsWithAccountRequest.cs" />
     <Compile Include="Requests\EtaForPickupRequest.cs" />
     <Compile Include="Requests\FindAccountsRequest.cs" />
     <Compile Include="Requests\FlightInformationRequest.cs" />

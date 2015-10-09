@@ -111,5 +111,17 @@ namespace apcurium.MK.Booking.Api.Services
 
             return defaultCreditCard;
         }
+
+		public object Delete(DeleteCreditCardsWithAccountRequest request)
+		{
+			if (_dao.FindByAccountId(request.AccountID).Count > 0)
+			{
+				_bus.Send(new DeleteAccountCreditCards() { AccountId = request.AccountID });
+
+				return new HttpResult(HttpStatusCode.Accepted, "Accepted");
+			}
+
+			return new HttpResult(HttpStatusCode.NoContent, "No Content");
+		}
     }
 }

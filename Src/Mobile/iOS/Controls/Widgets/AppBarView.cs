@@ -8,8 +8,6 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore;
 
@@ -29,6 +27,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private UIImageView _imagePromoForManual;
 
         public static CGSize ButtonSize = new CGSize(60, 46);
+
+        private const float ContainerHorizontalPadding = 8f;
+        private const float TextButtonWidth = 70f;
+        private const float CenterButtonHorizontalPadding = 20f;
+        private const float ButtonHeight = 41f;
 
         protected UIView Line { get; set; }
 
@@ -107,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             // Constraints for Manual button
             AddConstraints(new []
                 {
-                    NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
+                    NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, ButtonHeight),
                     NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Width, NSLayoutRelation.Equal, btnBookForManualRideLinq, NSLayoutAttribute.Width, 1, 0f),
                     NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.CenterY, 1, 0f),
                     NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnManual, NSLayoutAttribute.Trailing, 1, 10f),
@@ -133,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			{
 				NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.Trailing, 1, -10f),
 				NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.CenterY, 1, 0f),
-				NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
+                NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, ButtonHeight),
 			});
 
 
@@ -224,7 +227,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			return new []
 			{
-				NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, container, NSLayoutAttribute.Leading, 1, 8f),
+                NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, container, NSLayoutAttribute.Leading, 1, ContainerHorizontalPadding),
 				NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Width),
 				NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Height),
 				NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterY, 1, -4f),
@@ -283,7 +286,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _orderButtons, NSLayoutAttribute.CenterX, 1, 0f),
                 NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _orderButtons, NSLayoutAttribute.CenterY, 1, 0f),
                 NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Width, NSLayoutRelation.Equal, _reviewButtons.Subviews[1], NSLayoutAttribute.Width, 1, 0f),
-                NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
+                NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, ButtonHeight),
             });
 
 			// Constraints for Image Promo button
@@ -292,7 +295,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             // Constraints for Book Later button
             _orderButtons.AddConstraints(new []
             {
-                NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _orderButtons, NSLayoutAttribute.Trailing, 1, -8f),
+                NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _orderButtons, NSLayoutAttribute.Trailing, 1, -ContainerHorizontalPadding),
                 NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Width),
                 NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Height),
                 NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _orderButtons, NSLayoutAttribute.CenterY, 1, -4f),
@@ -367,19 +370,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _reviewButtons.AddSubviews(btnCancel, btnConfirm, btnEdit);
 
             // Constraints for Container
-            _reviewButtons.Superview.AddConstraints(new []
-            {
-                NSLayoutConstraint.Create(_reviewButtons, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _reviewButtons.Superview, NSLayoutAttribute.Leading, 1, 0f),
-                NSLayoutConstraint.Create(_reviewButtons, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _reviewButtons.Superview, NSLayoutAttribute.Top, 1, 0f),
-                NSLayoutConstraint.Create(_reviewButtons, NSLayoutAttribute.Width, NSLayoutRelation.Equal, _reviewButtons.Superview, NSLayoutAttribute.Width, 1, 0f),
-                NSLayoutConstraint.Create(_reviewButtons, NSLayoutAttribute.Height, NSLayoutRelation.Equal, _reviewButtons.Superview, NSLayoutAttribute.Height, 1, 0f),
-            });
+            _reviewButtons.Superview.AddConstraints(GenerateConstraintsForContainer(_reviewButtons));
 
             // Constraints for Cancel button
             _reviewButtons.AddConstraints(new []
             {
-                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _reviewButtons, NSLayoutAttribute.Leading, 1, 8f),
-                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 70f),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _reviewButtons, NSLayoutAttribute.Leading, 1, ContainerHorizontalPadding),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, TextButtonWidth),
                 NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _reviewButtons, NSLayoutAttribute.CenterY, 1, 0),
             });
 
@@ -387,15 +384,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _reviewButtons.AddConstraints(new []
             {
                 NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _reviewButtons, NSLayoutAttribute.CenterY, 1, 0),
-                NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnCancel, NSLayoutAttribute.Trailing, 1, 20f),
-                NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, btnEdit, NSLayoutAttribute.Leading, 1, -20f),
-                NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41),
+                NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnCancel, NSLayoutAttribute.Trailing, 1, CenterButtonHorizontalPadding),
+                NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, btnEdit, NSLayoutAttribute.Leading, 1, -CenterButtonHorizontalPadding),
+                NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, ButtonHeight),
             });
 
             // Constraints for Edit button
             _reviewButtons.AddConstraints(new []
             {
-                NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _reviewButtons, NSLayoutAttribute.Trailing, 1, -8f),
+                NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _reviewButtons, NSLayoutAttribute.Trailing, 1, -ContainerHorizontalPadding),
                 NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.Width, NSLayoutRelation.Equal, btnCancel, NSLayoutAttribute.Width, 1, 0f),
                 NSLayoutConstraint.Create(btnEdit, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _reviewButtons, NSLayoutAttribute.CenterY, 1, 0),
             });
@@ -413,6 +410,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(btnEdit)
                 .For(v => v.Command)
                 .To(vm => vm.Edit);
+
+            set.Bind(_reviewButtons)
+                .For(v => v.Hidden)
+                .To(vm => vm.HideReviewButtons);
 
             set.Apply();
         }
@@ -436,19 +437,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _editButtons.AddSubviews(btnCancel, btnSave);
 
             // Constraints for Container
-            _editButtons.Superview.AddConstraints(new []
-            {
-                NSLayoutConstraint.Create(_editButtons, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _editButtons.Superview, NSLayoutAttribute.Leading, 1, 0f),
-                NSLayoutConstraint.Create(_editButtons, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _editButtons.Superview, NSLayoutAttribute.Top, 1, 0f),
-                NSLayoutConstraint.Create(_editButtons, NSLayoutAttribute.Width, NSLayoutRelation.Equal, _editButtons.Superview, NSLayoutAttribute.Width, 1, 0f),
-                NSLayoutConstraint.Create(_editButtons, NSLayoutAttribute.Height, NSLayoutRelation.Equal, _editButtons.Superview, NSLayoutAttribute.Height, 1, 0f),
-            });
+            _editButtons.Superview.AddConstraints(GenerateConstraintsForContainer(_editButtons));
 
             // Constraints for Cancel button
             _editButtons.AddConstraints(new []
             {
-                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _editButtons, NSLayoutAttribute.Leading, 1, 8f),
-                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 70f),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _editButtons, NSLayoutAttribute.Leading, 1, ContainerHorizontalPadding),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, TextButtonWidth),
                 NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _editButtons, NSLayoutAttribute.CenterY, 1, 0),
             });
 
@@ -458,7 +453,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create(btnSave, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _editButtons, NSLayoutAttribute.CenterX, 1, 0),
                 NSLayoutConstraint.Create(btnSave, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _editButtons, NSLayoutAttribute.CenterY, 1, 0),
                 NSLayoutConstraint.Create(btnSave, NSLayoutAttribute.Width, NSLayoutRelation.Equal, _reviewButtons.Subviews[1], NSLayoutAttribute.Width, 1, 0f),
-                NSLayoutConstraint.Create(btnSave, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41),
+                NSLayoutConstraint.Create(btnSave, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, ButtonHeight),
             });
 
             var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
@@ -474,13 +469,63 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(_editButtons)
                 .For(v => v.Hidden)
                 .To(vm => vm.HideEditButtons);
-
-            set.Bind(_reviewButtons)
-                .For(v => v.Hidden)
-                .To(vm => vm.HideReviewButtons);
-
+            
             set.Apply();
         }
+
+		private void CreateButtonsForAirportBooking()
+		{
+			// - Cancel - Confirm
+			_airportOrderButtons = new UIView() { Hidden = true };
+			_airportOrderButtons.TranslatesAutoresizingMaskIntoConstraints = false;
+			Add(_airportOrderButtons);
+
+			var btnCancel = new AppBarLabelButton(Localize.GetValue("Cancel"));
+			btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
+
+			var btnConfirm = new FlatButton();
+			btnConfirm.TranslatesAutoresizingMaskIntoConstraints = false;
+			FlatButtonStyle.Green.ApplyTo(btnConfirm);
+			btnConfirm.SetTitle(Localize.GetValue("Next"), UIControlState.Normal);
+
+            _airportOrderButtons.AddSubviews(btnCancel, btnConfirm);
+
+			// Constraints for Container
+            _airportOrderButtons.Superview.AddConstraints(GenerateConstraintsForContainer(_airportOrderButtons));
+
+            // Constraints for Cancel button
+            _airportOrderButtons.AddConstraints(new [] 
+            {
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.Leading, 1, ContainerHorizontalPadding),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, TextButtonWidth),
+                NSLayoutConstraint.Create(btnCancel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterY, 1, 0)
+            });
+
+			// Constraints for Confirm button
+			_airportOrderButtons.AddConstraints(new []
+			{
+                NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterY, 1, 0),
+                NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnCancel, NSLayoutAttribute.Trailing, 1, CenterButtonHorizontalPadding),
+                NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.Trailing, 1, -(CenterButtonHorizontalPadding + ContainerHorizontalPadding + TextButtonWidth)),
+                NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, ButtonHeight)
+			});
+
+			var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
+
+			set.Bind(btnCancel)
+				.For(v => v.Command)
+                .To(vm => vm.CancelAirport);
+
+			set.Bind(btnConfirm)
+				.For(v => v.Command)
+				.To(vm => vm.NextAirport);
+
+            set.Bind(_airportOrderButtons)
+                .For(v => v.Hidden)
+                .To(vm => vm.HideAirportButtons);
+
+			set.Apply();
+		}
 
         public override void LayoutSubviews()
         {
@@ -491,94 +536,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 Line.Frame = new CGRect(0, 0, Frame.Width, UIHelper.OnePixel);
             }
         }
-	
-		private void CreateButtonsForAirportBooking()
-		{
-			// - Destination - Confirm - Edit 
-			_airportOrderButtons = new UIView() { Hidden = true };
-			_airportOrderButtons.TranslatesAutoresizingMaskIntoConstraints = false;
-			Add(_airportOrderButtons);
-
-			var btnEstimate = GenerateEstimateButton();
-
-			var btnCancel = new AppBarLabelButton(Localize.GetValue("Cancel"));
-			btnCancel.TranslatesAutoresizingMaskIntoConstraints = false;
-
-			var btnConfirm = new FlatButton();
-			btnConfirm.TranslatesAutoresizingMaskIntoConstraints = false;
-			FlatButtonStyle.Green.ApplyTo(btnConfirm);
-			btnConfirm.SetTitle(Localize.GetValue("Next"), UIControlState.Normal);
-
-			var btnBookLater = new AppBarButton(Localize.GetValue("BookItLaterButton"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "later_icon.png", "later_icon_pressed.png");
-			btnBookLater.TranslatesAutoresizingMaskIntoConstraints = false;
-
-			_airportOrderButtons.AddSubviews(btnEstimate, btnConfirm, btnBookLater);
-
-			// Constraints for Container
-			_airportOrderButtons.Superview.AddConstraints(new []
-				{
-					NSLayoutConstraint.Create(_airportOrderButtons, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _airportOrderButtons.Superview, NSLayoutAttribute.Leading, 1, 0f),
-					NSLayoutConstraint.Create(_airportOrderButtons, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _airportOrderButtons.Superview, NSLayoutAttribute.Top, 1, 0f),
-					NSLayoutConstraint.Create(_airportOrderButtons, NSLayoutAttribute.Width, NSLayoutRelation.Equal, _airportOrderButtons.Superview, NSLayoutAttribute.Width, 1, 0f),
-					NSLayoutConstraint.Create(_airportOrderButtons, NSLayoutAttribute.Height, NSLayoutRelation.Equal, _airportOrderButtons.Superview, NSLayoutAttribute.Height, 1, 0f),
-				});
-
-			// Constraints for Estimate button
-			_airportOrderButtons.AddConstraints(GenerateEstimateButtonConstraints(btnEstimate, _airportOrderButtons));
-
-			// Constraints for Confirm button
-			_airportOrderButtons.AddConstraints(new []
-				{
-					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterY, 1, 0),
-					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnEstimate, NSLayoutAttribute.Trailing, 1, 20f),
-					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, btnBookLater, NSLayoutAttribute.Leading, 1, -20f),
-					NSLayoutConstraint.Create(btnConfirm, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41),
-				});
-			// Constraints for Book Later button
-			_airportOrderButtons.AddConstraints(new []
-				{
-					NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.Trailing, 1, -8f),
-					NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Width),
-					NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Height),
-					NSLayoutConstraint.Create(btnBookLater, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _airportOrderButtons, NSLayoutAttribute.CenterY, 1, -4f),
-				});
-			
-			var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
-
-			set.Bind(btnEstimate)
-				.For(v => v.Command)
-				.To(vm => vm.ChangeAddressSelectionMode);
-
-			set.Bind(btnEstimate)
-				.For(v => v.Selected)
-				.To(vm => vm.EstimateSelected);
-
-			set.Bind(btnEstimate)
-				.For(v => v.Hidden)
-				.To(vm => vm.Settings.HideDestination);
-
-			set.Bind(btnCancel)
-				.For(v => v.Command)
-				.To(vm => vm.CancelReview);
-
-			set.Bind(btnConfirm)
-				.For(v => v.Command)
-				.To(vm => vm.NextAirport);
-
-			set.Bind(btnBookLater)
-				.For(v => v.Command)
-				.To(vm => vm.BookAirportLater);
-
-			set.Bind(btnBookLater)
-				.For(v => v.Hidden)
-				.To(vm => vm.IsFutureBookingDisabled);
-
-            set.Bind(_airportOrderButtons)
-                .For(v => v.Hidden)
-                .To(vm => vm.HideAirportButtons);
-
-			set.Apply();
-		}
 	}
 }
-

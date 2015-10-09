@@ -9,14 +9,12 @@
 "CreateAccountPasswordConfirmationPlaceHolder"="Confirme contraseña";
 "View_CreditCardsList"="Tarjetas de crédito";
 "VehicleNumberErrorMessage"="No podemos encontrar el número de vehículo.  Por favor page en el vehículo.";
-"PaymentDetails.InvalidDataTitle"="Información de pago inválida";
 "OkButtonText"="OK";
 "CreateAccountTitleMr"="Sra.";
 "LinkPayPal"="Vincular cuenta de PayPal";
 "PanelMenuViewSignOutPopupLogout"="Cerrar Sesión";
 "CmtConfirmPayment"="Confirmar";
 "StatusViewTitle"="Confirmado";
-"PaymentDetails.PaymentMethodsLabel"="Payment Methods";
 "PayPalUnlinkError"="No se puede desvincular la cuenta de PayPal";
 "BookPickupLabel"="Confirme su ubicación";
 "Tuto02Top"="Podemos localizarle usando el GPS de su celular";
@@ -35,13 +33,13 @@
 "VehicleNumberNotice"="Por favor note que si el numero de taxi presentado no es el mismo que el taxi que abordó, sentimos informarle que no podrá pagar a través de esta aplicación. Presione el botón “Atras” para regresar a la pagina de estado de viaje, y page al directamente al chofer.";
 "InvalidChoiceTitle"="Selección inválida";
 "NoPairingCreditCard"="Ninguno";
-"SetCreditCardAsDefault_Error"="Couldn't update your default credit card. Please try again";
 "mobileKnowledgeUrl"="http://www.mobile-knowledge.com/";
 "CurrentBookingDisabledTitle"="Reservación deshabilitada.";
 "ConfirmOriginLablel"="Abordaje";
 "SendEmail"="Enviar email...";
 "StatusEta"="y está a {0} {1} de distancia";
 "View_Promotions"="Promociones";
+"Tuto08Bottom"="Esperamos que usted encuentre esta aplicación conveniente e intuitiva";
 "CmtCarNumber"="Número de Taxi:";
 "Notification_PromotionUnlockedPush"="Promociones bloqueadas (Push)";
 "ManualRideLinqCreditCardDisabled"="Su tarjeta de crédito en el perfil tiene un cargo pendiente de un servicio anterior. Este pago vencido le impide el emparejamiento con RideLinQ";
@@ -97,7 +95,7 @@
 "ResetPasswordConfirmationTitle"="Contraseña enviada";
 "HistoryViewTitle"="Historia";
 "PromoMustHavePaymentMethodSetMessage_Multiple"="Para utilizar un código de promoción, es necesario tener un método de pago configurado como parte de su cuenta.";
-"Tuto08Bottom"="Esperamos que usted encuentre esta aplicación conveniente e intuitiva";
+"MarketChangedMessageTitle"="Se ha detectado una nueva área de servicio.";
 "ErrorCreateOrder_PendingOrder"="No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?";
 "CardOnFile"="Tarjeta en Archivo";
 "HistoryActivityName"="History";
@@ -107,7 +105,7 @@
 "View_CreateAccount"="Cree su cuenta";
 "UpdateBookingSettingsInvalidCoF"="Usted debe tener una tarjeta de crédito en el perfil para usar esta cuenta";
 "HistoryDetailsActivityName"="History details";
-"EtaNotAvailable"="No hay vehículo dosponible";
+"PaymentDetails.InvalidDataTitle"="Información de pago inválida";
 "TabLocations"="Ubicaciones";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
 "WaitingCarLandscapeActivityName"="Car Number";
@@ -138,7 +136,6 @@
 "HomeActivityName"="Home";
 "Rebook"="Reservar viaje nuevamente";
 "Tuto06Bottom"="Toque “Confirmar” cuando esté listo";
-"PaymentDetails.Label.Business"="Business";
 "CreateAccountLanguageEnglish"="Inglés";
 "View_RideSummary"="Resumen del servicio";
 "ServiceError_EmailClientAbsent"="Sorry, we're unable to create an email. There is no email client installed on this device";
@@ -204,14 +201,13 @@
 "WarningPushServiceTitle"="Notificaciones lanzadas";
 "Version"="v{0}";
 "View"="Ver";
+"UpdatePasswordNewPasswordLabel"="Nueva contraseña";
 "Save"="Guardar";
 "PickupTextPlaceholder"="Direccion de abordaje";
 "SettingViewLoginInfo"="Usted ha iniciado sesion como: {0}";
-"SetAsDefaultCreditCard"="Set As Default";
 "PassengerNameLabel"="Nombre";
 "RideSettingsPayBack"="PayBack";
 "ManualRideLinqStatus_Tax"="Impuesto:";
-"DefaultCreditCard_Label"="(DEFAULT)";
 "BookItButtonImageName"="Assets/Button/btnBookIt_en.png";
 "UnpairWarningOkButton"="Pago en carro";
 "Safety"="Seguridad";
@@ -230,6 +226,7 @@
 "EtaLessThanAMinute"="Nearest taxi is less than a minute away";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "AddPaymentMethod_Multiple"="Agregar método de pago";
+"PayPalLinked"="Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago";
 "RemoveCreditCardMessage"="Esta seguro que desea eliminar esta tarjeta de crédito?";
 "LoginSupport"="¿Necesita asistencia?";
 "Politeness"="Amabilidad";
@@ -324,7 +321,6 @@
 "CreditCardType"="Tipo de tarjeta";
 "CannotCancelOrderTitle"="Acción inválida";
 "PaymentInCar"="Pago en carro";
-"MarketChangedMessageTitle"="Se ha detectado una nueva área de servicio.";
 "SendMessageDriver"="Send Message to Driver";
 "PromotionLoadError"="No se pueden cargar las promociones disponibles. Por favor, inténtelo de nuevo más tarde.";
 "DateToday"="Hoy";
@@ -344,7 +340,7 @@
 "View_TermsAndConditions"="Términos y Condiciones";
 "BookingAirportTitle"="Airport";
 "AirportsButton"="Airports";
-"PanelMenuViewNotificationsText"="Notificaciones";
+"View_EditAutoTip"="Editar propina";
 "PayInCar"="Pagar en el vehículo";
 "PanelMenuViewSignOutPopupMessage"="Are you sure you want to sign out?";
 "SaveAddressEmptyFieldTitle"="Nombre";
@@ -392,7 +388,7 @@
 "September"="Sep (09)";
 "ResetPasswordTitleText"="Olvidó su contraseña?";
 "March"="Mar (03)";
-"PaymentDetails.LabelName"="Label";
+"PromotionActivityName"="Promotion";
 "EmailUsedMessageTitle"="Email already used";
 "NoPayBackErrorMessage"="El campo PayBack es obligatorio.";
 "HistoryViewStatusButton"="Ver estado";
@@ -405,7 +401,6 @@
 "CreateAccountLanguageFrench"="Francés";
 "TechSupportEmailTitle"="Soporte de applicion móvil";
 "View_RideLinqPair"="Registro";
-"PromotionActivityName"="Promotion";
 "BookItLaterButton"="Mas Tarde";
 "RingCode"="Código de entrada";
 "app_id"="134284363380764";
@@ -422,7 +417,7 @@
 "RideSettingsName"="Nombre";
 "MarketChangedMessage"="Usted está saliendo de su área de servicio local. Si usted decide reservar, su pedido será enviado a una empresa de taxis de esta zona.";
 "Continue"="Continuar";
-"CreditCardAddingActivityName"="Payment";
+"CreditCardAddingActivityName"="Add or edit credit card";
 "DateTimePickerPickInvalidDateMessage"="La fecha y hora del servicio deben ser en el futuro";
 "HistoryDetailBuildingNameNotSpecified"="No Especificado";
 "ReSendConfirmation"="Notificar al chofer del pago";
@@ -495,7 +490,6 @@
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
 "CreateAccountPayBackPlaceHolder"="PayBack";
 "CreditCardInvalidCrediCardNUmber"="El número de tarjeta de crédito es inválido";
-"View_EditAutoPayment"="Editar Pago";
 "UpdateBookingSettingsEmptyAccount"="Los números de cuenta y de reservación no pueden estar vacíos cuando se el Tipo de Cargo está establecido como Cargo a Cuenta";
 "CmtTransactionResendConfirmationButtonText"="Re-enviar";
 "StatusDescription"="Reservación #{0}";
@@ -509,10 +503,8 @@
 "EmailLabel"="Email";
 "ManualPairingForRideLinqActivityName"="Manual pairing for RideLinq";
 "April"="Abr (04)";
-"StatusEditAutoPaymentButton"="Pago";
 "Error"="Error";
 "View_AccountConfirmation_Label_Code"="Código";
-"PanelMenuViewPromotionsText"="Promotions";
 "StatusEditAutoTipButton"="Propina";
 "PickupAddress"="Pickup address";
 "ChargeTypeLabel"="Tipo de Cargo";
@@ -542,9 +534,9 @@
 "View_RideLinqStatus"="Status";
 "InvalidPayBackErrorMessage"="El campo PayBack debe ser solamente dígitos y no debe superar los 10 caracteres de longitud.";
 "BookingAirportFlightNumlbl"="Flight Number";
+"EtaNotAvailable"="No hay vehículo dosponible";
 "PayPalLinkError"="No se puede vincular la cuenta de PayPal";
 "Overdue_Failed_Message"="Su transacción no fué autorizada, por favor intente de nuevo más tarde o reemplace su tarjeta de crédito con una nueva.";
-"CreditCardMultipleActivityName"="Payment";
 "DriverInfoModel"="Modelo:";
 "AppNeedUpdateMessage"="Una nueva versión de la aplicación esta disponible, por favor actualize para continuar";
 "HistoryInfo"="Mostrando los viajes del último mes";
@@ -556,14 +548,13 @@
 "Eta"="El taxi más cercano esta a {0} {1} de distancia";
 "CreateAccountEmailPlaceHolder"="Email";
 "TabContacts"="Contactos";
-"CreditCardLabel"="Label";
+"Tuto06Top"="La pantalla de confirmacion le permite verificar los detalles de su reservación y cambiar cualquier preferencia que requiera para este servicio";
 "CreditCardInstructions"="Para usar esta aplicación necesita ingresar un método de pago a su cuenta";
 "StatusNewRideButton"="Nuevo Servicio";
 "WarningPushServiceMessage"="Notamos que no tiene las “Notificaciones automáticas” encendidas. Queremos informarle que si las enciende podría obtener mensajes de estado de sus servicios sin tener que abrir la aplicación! Prometemos no le mandaremos información innecesaria";
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="Para utilizar un código de promoción, es necesario introducir una tarjeta de crédito como parte de su cuenta.";
 "NoFareTextIfDestinationIsRequired"="Necesita especificar su destino";
 "InvalidEmailMessage"="Este email es inválido";
-"PaymentDetails.Label.Personal"="Personal";
 "LocationsActivityName"="Favorite locations";
 "searchHint"="Buscar";
 "CreateAccountTitleMrs"="Srta.";
@@ -582,7 +573,6 @@
 "UpdateBookingSettingsGenericError"="Se produjo un error al actualizar la configuración de la reservación";
 "TabHistory"="Historia";
 "OtherListItemPromptLabel"="Enter a value:";
-"DestinationAddress"="Destination address";
 "ManualPairingForRideLinQ_Error_Title"="Error";
 "ConfirmDestinationLabel"="Destino";
 "CreditCardAdded"="Su cuenta ha sido activada para pagar por defecto con tarjeta de crédito. Usted puede también pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago";
@@ -612,12 +602,11 @@
 "AcceptButton"="Aceptar";
 "CmtRideLinqCancelChanges"="Cancelar";
 "DeleteCreditCardTitle"="Eliminar tarjeta de crédito";
-"CreditCardError_Label"="Cannot save credit card label. Please try again";
 "DateTimePickerPickDate"="Seleccione la fecha del servicio:";
 "View_BookRating"="Califique su servicio";
 "TermsAndConditionsActivityName"="Terms and conditions";
 "BookItButton"="Reservar ya";
-"PayPalLinked"="Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago";
+"PanelMenuViewPromotionsText"="Promotions";
 "ChangePasswordConfirmmation"="Su contraseña ha sido actualizada, por favor inicie sesión";
 "OrderNote"="Reservado por Móvil";
 "CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";
@@ -669,7 +658,6 @@
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
 "RemoveCreditCardTitle"="Eliminar tarjeta de crédito";
 "PanelMenuViewTutorialText"="Ver tutorial";
-"PaymentDetails.AddNewCreditCardButtonLabel"="Add New Card";
 "PanelMenuViewUpdateProfileText"="Perfil";
 "PromoMustHavePaymentMethodSetMessage_PayPal"="Para utilizar un código de promoción, es necesario tener una cuenta PayPal vinculada a su cuenta.";
 "ManualRideLinqStatusActivityName"="Manual RideLinq Status";
@@ -679,7 +667,7 @@
 "View_CreditCard"="Pago";
 "GooglePlayServicesNotAvailableMessage"="Usted necesita actualizar los servicios de “Google play” para poder utilizar esta aplicación";
 "AccountPaymentQuestionsRequired"="(requerido)";
-"UpdatePasswordNewPasswordLabel"="Nueva contraseña";
+"DestinationAddress"="Destination address";
 "OrderAirportView_BAD_AIRLINE_CODE"="An error occurred with the flight status provider.";
 "ChargeTypeCreditCardFile"="Tarjeta de crédito guardada";
 "AccountDisabled_NoCall"="Su cuenta ha sido deshabilitada";
@@ -702,6 +690,7 @@
 "WarningLocationService"="Por favor encienda los servicios de ubicación para poder mostrar su posición en el mapa";
 "Facebook"="Iniciar sesión con Facebook";
 "BookingAirportMissingInfo_Message"="The airline and the flight number are madatory.";
+"PanelMenuViewNotificationsText"="Notificaciones";
 "HistoryLoadError"="No se pudo cargar el historial. Favor de intenar más tarde.";
 "UpdateNoticeTitle"="Update Notice";
 "SendMessageToDriverErrorMessage"="An error occurred while trying to contact the driver. Please try again later.";
@@ -726,7 +715,6 @@
 "DeleteAddressBt"="Eliminar dirección";
 "StatusConfirmNewBooking"="Reservar un nuevo taxi mantendrá esta reservación activa, desea continuar?";
 "RateLastRide"="Calificar";
-"Tuto06Top"="La pantalla de confirmacion le permite verificar los detalles de su reservación y cambiar cualquier preferencia que requiera para este servicio";
 "InvalidPassengersNumber"="El tipo de vehículo que ha seleccionado no tiene suficientes asientos para acomodar el número de pasajeros solicitado. Por favor cambie su selección o reserve más de un coche para acomodar a su grupo.";
 "PickupViewDestinationLabel"="Destino &gt;&gt;";
 "Tuto07Bottom"="Las actualizaciones al estado se generan cuando el vehículo llega a la dirección de arribo, cuando usted aborda el vehículo y al final del servicio.";
