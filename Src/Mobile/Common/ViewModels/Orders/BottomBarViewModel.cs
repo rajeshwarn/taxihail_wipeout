@@ -580,9 +580,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}
 
 					var questions = await _orderWorkflowService.GetAccountPaymentQuestions();
-					if ((questions != null) && (questions.Length > 0))
+
+							if (questions != null
+								&& questions.Length > 0
+								&& questions[0].Question.HasValue())
 					{
 						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;								
+								// Navigate to Q&A page
 
 						ShowSubViewModel<InitializeOrderForAccountPaymentViewModel, Tuple<Order, OrderStatusDetail>>(
 							null, 
@@ -591,11 +595,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}
 					else
 					{
+								// Skip Q&A page and confirm order
 						await ConfirmOrderAndGoToBookingStatus();
 					}
 				}
 				else
 				{
+							// Skip Q&A page and confirm order
 					await ConfirmOrderAndGoToBookingStatus();
 				}
 			}
@@ -858,9 +864,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
 						&& !Settings.DisableFutureBooking && !Settings.DisableImmediateBooking)
                     {
-						//We need to show the Book A Taxi popup.
 						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.BookATaxi;
 						await PrevalidatePickupAndDestinationRequired(onValidated);
+
+                        this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message"],
+                            this.Services().Localize["Cancel"], () => ResetToInitialState.ExecuteIfPossible(),
+                            this.Services().Localize["Now"], () => CreateOrder.ExecuteIfPossible(),
+                            this.Services().Localize["BookItLaterButton"], () => BookLater.ExecuteIfPossible());
 
 	                    return;
                     }

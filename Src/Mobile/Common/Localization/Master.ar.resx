@@ -172,12 +172,6 @@
   <data name="ApplicationName" xml:space="preserve">
     <value>TaxiHail</value>
   </data>
-  <data name="AppNeedUpdateMessage" xml:space="preserve">
-    <value>هناك تحديث جديد متاح للتطبيق ، يرجى تحديث التطبيق للإستمرار.</value>
-  </data>
-  <data name="AppNeedUpdateTitle" xml:space="preserve">
-    <value>هناك تحديثات متاحة</value>
-  </data>
   <data name="April" xml:space="preserve">
     <value>أبريل (04)</value>
   </data>

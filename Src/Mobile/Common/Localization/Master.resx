@@ -957,12 +957,6 @@
   <data name="View_RefineAddress" xml:space="preserve">
     <value>Pickup Details</value>
   </data>
-  <data name="AppNeedUpdateTitle" xml:space="preserve">
-    <value>Update available</value>
-  </data>
-  <data name="AppNeedUpdateMessage" xml:space="preserve">
-    <value>A new version of the application is available, please update the app to continue.</value>
-  </data>
   <data name="BookingService_MobileBookingNote" xml:space="preserve">
     <value>Booked mobile device.</value>
   </data>

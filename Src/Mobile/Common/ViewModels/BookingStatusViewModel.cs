@@ -22,6 +22,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -48,6 +49,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _isCmtRideLinq;
 
 		private bool _isStarted;
+
+		private bool _isOrderRefreshing;
 
 		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
@@ -117,10 +120,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_subscriptions.Disposable = GetTimerObservable()
 				.ObserveOn(SynchronizationContext.Current)
+				.Where(_ => !_isOrderRefreshing)
 				.SelectMany(async (_, cancellationToken) =>
 				{
+					_isOrderRefreshing = true;
 					await RefreshStatus(cancellationToken);
-
+					_isOrderRefreshing = false;
 					return Unit.Default;
 				})
 				.Subscribe(
@@ -149,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 .Do(RefreshManualRideLinqDetails)
 				.Where(orderDetails => orderDetails.EndTime.HasValue || orderDetails.PairingError.HasValue())
 				.Take(1) // trigger only once
-				.Subscribe(async orderDetails =>
+				.SelectMany(async orderDetails =>
 				{
 				    if (orderDetails.PairingError.HasValue())
 				    {
@@ -159,7 +164,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				    {
                         ToRideSummary(orderDetails);
 				    }
-				}, Logger.LogError)
+
+					return orderDetails;
+				})
+				.Subscribe(_ => { }, Logger.LogError)
 				.DisposeWith(subscriptions);
 
 			var deviceLocationObservable = Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
@@ -673,7 +681,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private TaxiLocation _taxiLocation;
 
 
-		public async Task RefreshStatus(CancellationToken cancellationToken)
+		private async Task RefreshStatus(CancellationToken cancellationToken)
         {
 			if (cancellationToken.IsCancellationRequested)
 			{
@@ -686,10 +694,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
 
+				if (status == null)
+				{
+					Logger.LogMessage("Status for order {0} is not currently available.".InvariantCultureFormat(Order.Id));
+
+					return;
+				}
+
 				while (!CanRefreshStatus(status))
 				{
 					Logger.LogMessage("Waiting for Ibs Order Creation (ibs order id)");
-					await Task.Delay(TimeSpan.FromSeconds(1));
+					await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
 					status = await _bookingService.GetOrderStatusAsync(Order.Id);
 
 					if (status.IBSOrderId.HasValue)
@@ -718,7 +733,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_currentIbsOrderId = status.IBSOrderId;
 				_isContactingNextCompany = false;
 
-				SwitchDispatchCompanyIfNecessary(status);
+				await SwitchDispatchCompanyIfNecessary(status);
 
 				var isDone = _bookingService.IsStatusDone(status.IBSStatusId);
 
@@ -783,7 +798,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if (geoData.IsPositionValid)
 							{
-								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken, geoData.CompassCourse.HasValue ? geoData.CompassCourse.Value : 0);
+								UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken, geoData.CompassCourse ?? 0);
 							}
 						}
 					}
@@ -801,8 +816,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						}
 
 						eta = direction.Duration;
-
-						UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber, cancellationToken);
 					}
 					if (eta.HasValue)
 					{
@@ -826,12 +839,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					if (geoData != null && geoData.IsPositionValid)
 					{
-						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken, geoData.CompassCourse.HasValue ? geoData.CompassCourse.Value : 0);
+						UpdatePosition(geoData.Latitude.Value, geoData.Longitude.Value, status.VehicleNumber, cancellationToken, geoData.CompassCourse ?? 0);
 					}
 				}
-				else if (!isUsingGeoServices && hasVehicleInfo &&
-				         (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-				          || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)))
+				else if (!isUsingGeoServices && hasVehicleInfo && VehicleStatuses.ShowOnMapStatuses.Any(vehicleStatus => vehicleStatus == status.IBSStatusId))
 				{
 					UpdatePosition(status.VehicleLatitude.Value, status.VehicleLongitude.Value, status.VehicleNumber, cancellationToken);
 				}
@@ -897,81 +908,111 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
+		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
-			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && !string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber))
-			{
-				string carNumber = OrderStatusDetail.VehicleNumber;
+			var orderStatusDetail = OrderStatusDetail;
 
-				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+			if (orderStatusDetail != null)
+			{
+				if (orderStatusDetail.VehicleNumber.HasValue()
+                    && (deviceOrientation == DeviceOrientations.Left
+                        || deviceOrientation == DeviceOrientations.Right))
 				{
-					if (!string.IsNullOrWhiteSpace(carNumber))
+					var carNumber = orderStatusDetail.VehicleNumber;
+
+					if (WaitingCarLandscapeViewModelParameters == null
+                        || (WaitingCarLandscapeViewModelParameters != null
+                            && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 					{
-						WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
+						if (carNumber.HasValue())
 						{
-						    CarNumber = carNumber,
-                            DeviceOrientations = deviceOrientation
-						};
-						ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
-					}
-				}
-				else
-				{
-					if (!string.IsNullOrWhiteSpace(carNumber))
-					{
-						WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
+							WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
+							{
+								CarNumber = carNumber,
+								DeviceOrientations = deviceOrientation
+							};
+							ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
+						}
 					}
 					else
 					{
-						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
-						WaitingCarLandscapeViewModelParameters = null;
+						if (carNumber.HasValue())
+						{
+							WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
+						}
+						else
+						{
+							WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+							WaitingCarLandscapeViewModelParameters = null;
+						}
 					}
 				}
 			}
 		}
 
-	    private void SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
+	    private async Task SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
 	    {
-            if (status.Status == OrderStatus.TimedOut)
-            {
-                bool alwayAcceptSwitch;
-                bool.TryParse(this.Services().Cache.Get<string>("TaxiHailNetworkTimeOutAlwayAccept"), out alwayAcceptSwitch);
+		    if (status.Status != OrderStatus.TimedOut)
+		    {
+			    return;
+		    }
 
-                if (status.NextDispatchCompanyKey != null
-                    && (alwayAcceptSwitch || Settings.Network.AutoConfirmFleetChange))
-                {
-                    // Switch without user input
-                    SwitchCompany(status);
-                }
-                else if (status.NextDispatchCompanyKey != null && !_isDispatchPopupVisible && !alwayAcceptSwitch)
-                {
-                    _isDispatchPopupVisible = true;
+		    bool alwayAcceptSwitch;
+		    bool.TryParse(this.Services().Cache.Get<string>("TaxiHailNetworkTimeOutAlwayAccept"), out alwayAcceptSwitch);
 
-                    this.Services().Message.ShowMessage(
-                        this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
-                        string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
-                        this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
-                            () => SwitchCompany(status),
-                        this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
-                            () =>
-                            {
-                                if (status.Status.Equals(OrderStatus.TimedOut))
-                                {
-                                    _bookingService.IgnoreDispatchCompanySwitch(status.OrderId);
-                                    _isDispatchPopupVisible = false;
-                                }
-                            },
-                        this.Services().Localize["TaxiHailNetworkTimeOutPopupAlways"],
-                            () =>
-                            {
-                                this.Services().Cache.Set("TaxiHailNetworkTimeOutAlwayAccept", "true");
-                                SwitchCompany(status);
-                            });
-                }
-            }
+		    var isAutomaticallyHandlingTimeout = alwayAcceptSwitch
+		            || Settings.Network.AutoConfirmFleetChange
+		            || status.CompanyKey == status.NextDispatchCompanyKey;
+
+			if (status.NextDispatchCompanyKey != null && isAutomaticallyHandlingTimeout)
+		    {
+			    // Switch without user input
+				await HandleNetworkTimeout(status);
+
+			    return;
+		    }
+
+			if (status.NextDispatchCompanyKey != null && !_isDispatchPopupVisible && !isAutomaticallyHandlingTimeout)
+		    {
+			    _isDispatchPopupVisible = true;
+
+				var tcs = new TaskCompletionSource<Unit>();
+
+			    await this.Services().Message.ShowMessage(
+				    this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
+				    string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
+				    this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
+				    async () =>
+				    {
+					    await HandleNetworkTimeout(status);
+
+						tcs.SetResult(Unit.Default);
+				    },
+				    this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
+				    () =>
+				    {
+					    if (status.Status.Equals(OrderStatus.TimedOut))
+					    {
+						    _bookingService.IgnoreDispatchCompanySwitch(status.OrderId);
+						    _isDispatchPopupVisible = false;
+					    }
+
+						tcs.SetResult(Unit.Default);
+				    },
+				    this.Services().Localize["TaxiHailNetworkTimeOutPopupAlways"],
+				    async () =>
+				    {
+					    this.Services().Cache.Set("TaxiHailNetworkTimeOutAlwayAccept", "true");
+					    await HandleNetworkTimeout(status);
+
+						tcs.SetResult(Unit.Default);
+				    });
+
+			    await tcs.Task;
+		    }
 	    }
 
-	    private async void SwitchCompany(OrderStatusDetail status)
+	    private async Task HandleNetworkTimeout(OrderStatusDetail status)
 	    {
 	        if (status.Status != OrderStatus.TimedOut)
 	        {
@@ -981,25 +1022,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        _isDispatchPopupVisible = false;
             _isContactingNextCompany = true;
 
-            try
-            {
-                var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
-                    status.OrderId,
-                    status.NextDispatchCompanyKey,
-                    status.NextDispatchCompanyName);
-                OrderStatusDetail = orderStatusDetail;
+		    try
+		    {
+			    var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
+				    status.OrderId,
+				    status.NextDispatchCompanyKey,
+				    status.NextDispatchCompanyName);
+			    OrderStatusDetail = orderStatusDetail;
 
-                StatusInfoText = string.Format(
-                    this.Services().Localize["NetworkContactingNextDispatchDescription"],
-                    status.NextDispatchCompanyName);
-            }
-            catch (WebServiceException ex)
-            {
-                _isContactingNextCompany = false;
-                this.Services().Message.ShowMessage(
-                    this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
-                    ex.ErrorMessage);
-            }
+			    if (orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Timeout)
+			    {
+				    StatusInfoText = orderStatusDetail.IBSStatusDescription;
+
+					BottomBar.NotifyBookingStatusAppbarChanged();
+
+					await GoToHomeScreen();
+				    return;
+			    }
+			    StatusInfoText = string.Format(
+				    this.Services().Localize["NetworkContactingNextDispatchDescription"],
+				    status.NextDispatchCompanyName);
+		    }
+		    catch (WebServiceException ex)
+		    {
+			    _isContactingNextCompany = false;
+			    this.Services().Message.ShowMessage(
+				    this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
+				    ex.ErrorMessage);
+		    }
+		    catch (Exception ex)
+		    {
+			    Logger.LogError(ex);
+
+				_isContactingNextCompany = false;
+		    }
 	    }
 
 	    private void DisplayOrderNumber()
@@ -1021,7 +1077,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var etaDuration = eta.Value < 1 ? 1 : eta.Value;
 			return string.Format(this.Services ().Localize ["StatusEta"], etaDuration, durationUnit);
 		}
-
 
 		public void GoToSummary()
 		{

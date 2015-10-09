@@ -164,7 +164,8 @@ namespace apcurium.MK.Booking.Api
             CreateMap<IbsVehiclePosition, AvailableVehicle>()
                 .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => GetNumberOnly(x.VehicleNumber)))
 				.ForMember(p => p.VehicleName, opt => opt.ResolveUsing(x => x.VehicleNumber))
-                .ForMember(p => p.LogoName, opt => opt.Ignore());
+                .ForMember(p => p.LogoName, opt => opt.Ignore())
+                .ForMember(p => p.Market, opt => opt.Ignore());
         }
 
         private object GetNumberOnly(string text)

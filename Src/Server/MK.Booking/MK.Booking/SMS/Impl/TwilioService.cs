@@ -1,6 +1,7 @@
 ﻿using System;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using RestSharp.Extensions;
 using ServiceStack.Text;
 using Twilio;
 
@@ -28,9 +29,16 @@ namespace apcurium.MK.Booking.SMS.Impl
             var accountSid = _serverSettings.ServerData.SMSAccountSid;
             var authToken = _serverSettings.ServerData.SMSAuthToken;
             var fromNumber = _serverSettings.ServerData.SMSFromNumber;
+
+            if (!accountSid.HasValue() || !authToken.HasValue() || !fromNumber.HasValue())
+            {
+                _logger.LogMessage("Cannot send SMS. Either one of those values are not set: SMSAccountSid, SMSAuthToken, SMSFromNumber");
+                return;
+            }
+
             var twilio = new TwilioRestClient(accountSid, authToken);
-            
-            var response = twilio.SendSmsMessage("+" + fromNumber, toNumber.Format(libphonenumber.PhoneNumberUtil.PhoneNumberFormat.E164), message, "");
+
+            var response = twilio.SendSmsMessage("+" + fromNumber, toNumber.Format(libphonenumber.PhoneNumberUtil.PhoneNumberFormat.E164), message, string.Empty);
 
             if (response.RestException != null)
             {

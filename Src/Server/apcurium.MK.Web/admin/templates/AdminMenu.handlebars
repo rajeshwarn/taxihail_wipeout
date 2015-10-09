@@ -35,8 +35,8 @@
     <li class="nav-header">{{localize "User Management"}}</li>
     {{#if isAdmin}}
     <li data-route="security"><a href="#">{{localize "Grant access admin"}}</a></li>
-	<li data-route="accountManagement"><a href="#">{{localize "Account Management"}}</a></li>
     {{/if}}
+    <li data-route="accountManagement"><a href="#">{{localize "Account Management"}}</a></li>
     <li data-route="signup"><a href="#">{{localize "Signup"}}</a></li>
 
     <li class="nav-header">{{localize "Test Notifications"}}</li>  
@@ -46,6 +46,7 @@
     <li class="nav-header">{{localize "Export"}}</li>
     <li data-route="exportaccounts"><a href="#" >{{localize "ExportAccounts"}}</a></li>
     <li data-route="exportorders"><a href="#">{{localize "ExportOrders"}}</a></li>
+  	<li data-route="exportpromotions"><a href="#">{{localize "ExportPromotions"}}</a></li>
     <li class="nav-header">{{localize "Version"}}</li>
     <li>{{version}}</li>
   </ul>

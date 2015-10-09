@@ -65,7 +65,7 @@
                             }
 
                             <li class="nav-header">User Management</li>
-                            @if (!Convert.ToBoolean(ViewData["IsAdmin"]))
+                            @if (Convert.ToBoolean(ViewData["IsAdmin"]))
                             {
                                 <li><a href="@(ViewData["BaseUrl"] + "/admin/#security")" class="navbar-brand">Grant access admin</a></li>
                             }
@@ -80,6 +80,7 @@
                             <li class="nav-header">Export</li>
                             <li><a href="@(ViewData["BaseUrl"] + "/admin/#exportaccounts")" class="navbar-brand">Accounts</a></li>
                             <li><a href="@(ViewData["BaseUrl"] + "/admin/#exportorders")" class="navbar-brand">Orders</a></li>
+							<li><a href="@(ViewData["BaseUrl"] + "/admin/#exportpromotions")" class="navbar-brand">Promotions</a></li>
 
                             <li class="nav-header">Version</li>
                             <li>@ViewData["version"]</li>

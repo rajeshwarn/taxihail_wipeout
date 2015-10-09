@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -49,7 +50,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IOrderDao _orderDao;
         private readonly IPromotionDao _promotionDao;
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
-        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+	    private readonly ILogger _logger;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IPaymentService _paymentService;
         private readonly IPayPalServiceFactory _payPalServiceFactory;
@@ -78,12 +79,12 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderDao orderDao,
             IPromotionDao promotionDao,
             IEventSourcedRepository<Promotion> promoRepository,
-            HoneyBadgerServiceClient honeyBadgerServiceClient,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             IPaymentService paymentService,
             IPayPalServiceFactory payPalServiceFactory,
             IOrderPaymentDao orderPaymentDao,
-            IFeesDao feesDao,
+            IFeesDao feesDao, 
+            ILogger logger,
             IVehicleTypeDao vehiculeTypeDao)
         {
             _accountChargeDao = accountChargeDao;
@@ -98,14 +99,14 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
-            _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _paymentService = paymentService;
             _payPalServiceFactory = payPalServiceFactory;
             _orderPaymentDao = orderPaymentDao;
             _feesDao = feesDao;
+	        _logger = logger;
             _vehiculeTypeDao = vehiculeTypeDao;
-            _resources = new Resources.Resources(_serverSettings);
+	        _resources = new Resources.Resources(_serverSettings);
         }
 
 		private CreateReportOrder CreateReportOrder(CreateOrder request, AccountDetail account)
@@ -542,6 +543,15 @@ namespace apcurium.MK.Booking.Api.Services
                 // Only switch companies if order is timedout
                 return orderStatusDetail;
             }
+
+			// We are in a network timeout situation.
+	        if (orderStatusDetail.CompanyKey == request.NextDispatchCompanyKey)
+	        {
+				CancelIbsOrder(order, account.Id);
+		        orderStatusDetail.IBSStatusId = VehicleStatuses.Common.Timeout;
+		        orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_"+VehicleStatuses.Common.Timeout);
+		        return orderStatusDetail;
+	        }
 
             var market = _taxiHailNetworkServiceClient.GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
@@ -1011,24 +1021,18 @@ namespace apcurium.MK.Booking.Api.Services
                 return;
             }
 
-            var minimumMajorMinorBuild = minimumAppVersion.Split(new[]{ "." }, StringSplitOptions.RemoveEmptyEntries);
-            var appMajorMinorBuild = appVersion.Split('.');
+			var currentMobileVersion = new ApplicationVersion(appVersion);
+			var minimumVersion = new ApplicationVersion(minimumAppVersion);
 
-            for (var i = 0; i < appMajorMinorBuild.Length; i++)
-            {
-                var appVersionItem = int.Parse(appMajorMinorBuild[i]);
-                var minimumVersionItem = int.Parse(minimumMajorMinorBuild.Length <= i ? "0" : minimumMajorMinorBuild[i]);
+			if (currentMobileVersion < minimumVersion)
+			{
+				var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+									_resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
 
-                if (appVersionItem < minimumVersionItem)
-                {
-                    Exception createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                                        _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
-
-					createReportOrder.Error = createOrderException.ToString();
-					_commandBus.Send(createReportOrder);
-					throw createOrderException;
-                }
-            }
+				createReportOrder.Error = createOrderException.ToString();
+				_commandBus.Send(createReportOrder);
+				throw createOrderException;
+			}
         }
 
 		private void ValidateChargeAccountAnswers(string accountNumber, string customerNumber, AccountChargeQuestion[] userQuestionsDetails, string clientLanguageCode, CreateReportOrder createReportOrder)
@@ -1302,6 +1306,26 @@ namespace apcurium.MK.Booking.Api.Services
             return null;
         }
 
+	    private bool IsCmtGeoServiceMode(string market)
+	    {
+		    var externalMarketMode = market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode ==ExternalAvailableVehiclesModes.Geo;
+
+		    var internalMarketMode = !market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo;
+
+		    return internalMarketMode || externalMarketMode;
+	    }
+
+		private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
+		{
+			if (IsCmtGeoServiceMode(market))
+			{
+				return new CmtGeoServiceClient(_serverSettings, _logger);
+			}
+
+			return new HoneyBadgerServiceClient(_serverSettings, _logger);
+		}
+
+
         private BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude)
         {
             if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
@@ -1316,9 +1340,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             for (var i = 1; i < searchExpendLimit; i++)
             {
-                var marketVehicles =
-                    _honeyBadgerServiceClient.GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, null, true)
-                                             .ToArray();
+                var marketVehicles = GetAvailableVehiclesServiceClient(market)
+					.GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, null, true)
+					.ToArray();
 
                 if (marketVehicles.Any())
                 {

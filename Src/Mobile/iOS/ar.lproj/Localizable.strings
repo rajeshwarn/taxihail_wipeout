@@ -104,6 +104,7 @@
 "HistoryDetailsActivityName"="History details";
 "PaymentDetails.InvalidDataTitle"="بيانات الدفع غير صحيحة";
 "DriverBonusWarningMessage"="Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?";
+"TabLocations"="مواقع";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
 "WaitingCarLandscapeActivityName"="Car Number";
 "InvalidAddressMessage"="العنوان الذي أدخلته غير صحيح. يرجى التأكد من المعلومات";
@@ -131,6 +132,7 @@
 "DriverInfoColor"="اللون:";
 "NoFareTextIfDestinationIsRequired"="يجب أن تحدد الوجهة.";
 "Rebook"="إعادة حجز المشوار";
+"NoPhoneNumberMessage"="Your phone number or the driver's phone number is invalid.";
 "Tuto06Bottom"="انقر تأكيد عندما تكون مستعد للذهاب.";
 "CreateAccountLanguageEnglish"="الإنجليزية";
 "View_RideSummary"="ملخص الرحلة";
@@ -477,7 +479,6 @@
 "CmtRideLinqGenericErrorMessage"="حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.";
 "CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
 "PickupDateTextPlaceholder"="التاريخ: اليوم";
-"TabLocations"="مواقع";
 "PanelMenuViewPaymentInfoText"="Payment";
 "BookViewInvalidDate"="تاريخ الإلتقاء وقت الإلتقاء غير مقبولة.";
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
@@ -490,6 +491,7 @@
 "OrderAirportView_BAD_FLIGHT_NUMBER"="Invalid flight number";
 "TaxiHailNetworkTimeOutErrorTitle"="Error";
 "InvalidAccountOnActivatedMessage"="لا يمكن التعرف على حسابك، يجب أن تقوم بتسجيل الدخول لاستخدام هذا التطبيق";
+"Overdue_Date"="Transaction date:";
 "Overdue_Date"="Transaction date:";
 "ResendConfirmationCodeText"="Confirmation code will be resend shortly";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";
@@ -525,6 +527,7 @@
 "LocationHistoryTitle"="مشاوير سابقة";
 "ReceiptSent"="تم إرسال الإيصال";
 "View_RideLinqStatus"="Status";
+"InvalidPayBackErrorMessage"="The PayBack field must be all digits and must not exceed 10 characters in length";
 "InvalidPayBackErrorMessage"="The PayBack field must be all digits and must not exceed 10 characters in length";
 "BookingAirportFlightNumlbl"="Flight Number";
 "PayPalLinkError"="Unable to link your PayPal account";

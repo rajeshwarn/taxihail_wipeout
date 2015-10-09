@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -32,7 +32,6 @@ using Google.Android.M4b.Maps;
 using Google.Android.M4b.Maps.Model;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels.Map;
-using System.Threading.Tasks;
 using apcurium.MK.Common;
 using Android.Animation;
 
@@ -228,7 +227,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (_taxiLocationPin != null)
                 {
                     var icon = ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-                        ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+						? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
                         : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap());
                     
                     AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
@@ -236,6 +235,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             Latitude = value.Latitude.Value, 
                             Longitude = value.Longitude.Value
                         });
+
+					if (_showVehicleNumber)
+					{
+						_taxiLocationPin.ShowInfoWindow();
+					}
                 }
 
                 // Create Marker the first time
@@ -244,21 +248,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     try
                     {
                         var mapOptions = new MarkerOptions()
-                            .Anchor(.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-                                ? .5f
+                            .Anchor(0.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
+                                ? 0.5f
                                 : 1f)
                             .SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
                             .InvokeIcon(
                                 ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-                                ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+								? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
                                 : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
                             .Visible(true);
-
 
                         if (_showVehicleNumber)
                         {
                             var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
-                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
+                            var addBottomMargin = !(ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0);
+
+                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater, addBottomMargin, _resources, value.Market));
 
                             mapOptions.SetTitle(value.VehicleNumber);
                         }
@@ -281,10 +286,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
 
-		    if (value == null)
-		    {
-				_isBookingMode = false;
-		    }
+			// Booking is now over, so we need to clean up.
+            if (value == null && _taxiLocationPin != null)
+            {
+                _isBookingMode = false;
+                _taxiLocationPin.Visible = false;
+				_taxiLocationPin.Remove();
+			    _taxiLocationPin = null;
+            }
 	    }
 
 		private Bitmap CreateTaxiBitmap()
@@ -604,7 +613,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _availableVehicleMarkers.Remove (markerToRemove);
         }
 
-        private async Task CreateMarker(AvailableVehicle vehicle)
+        private void CreateMarker(AvailableVehicle vehicle)
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";
