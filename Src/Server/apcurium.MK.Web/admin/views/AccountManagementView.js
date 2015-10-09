@@ -219,18 +219,14 @@
 
 				model.deleteAccountCreditCards(accid, this, function (viewObject, data)
 				{
-					if (data.status == 200 || data.status == 204)
+					if (data.status == 200 )
 					{
 						buttonDeleteCreditCardsInfo.innerText = "Credit cards info deleted";
 					}
-					else if (data.status == 202)
-					{
-						buttonDeleteCreditCardsInfo.innerText = "Credit cards info will be deleted soon";
-					}
 					else
 					{
-						buttonDeleteCreditCardsInfo.disabled = false;
-						viewObject.$('.errors').text('Error during credit cards info removing');
+					    buttonDeleteCreditCardsInfo.disabled = false;
+					    viewObject.$('.errors').text('Error during credit cards info removing');
 					}
 				});
 			}

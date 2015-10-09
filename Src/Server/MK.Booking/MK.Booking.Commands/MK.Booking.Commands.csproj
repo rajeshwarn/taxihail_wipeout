@@ -60,6 +60,7 @@
     <Compile Include="CancelOrderBecauseOfError.cs" />
     <Compile Include="CreateOrderForManualRideLinqPair.cs" />
     <Compile Include="CreateReportOrder.cs" />
+    <Compile Include="DeleteAccountCreditCards.cs" />
     <Compile Include="DeletePromotion.cs" />
     <Compile Include="LogOriginalEta.cs" />
     <Compile Include="SaveTemporaryOrderPaymentInfo.cs" />

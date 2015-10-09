@@ -118,10 +118,10 @@ namespace apcurium.MK.Booking.Api.Services
 			{
 				_bus.Send(new DeleteAccountCreditCards() { AccountId = request.AccountID });
 
-				return new HttpResult(HttpStatusCode.Accepted, "Accepted");
+				return new HttpResult(HttpStatusCode.OK);
 			}
 
-			return new HttpResult(HttpStatusCode.NoContent, "No Content");
+			return new HttpError("Cannot find the credit card");
 		}
     }
 }
