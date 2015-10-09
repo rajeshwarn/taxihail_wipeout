@@ -66,35 +66,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				_rideEstimate.Visibility = ViewStates.Gone;
 
 				_vehicleSelection.Visibility = ShowVehicleSelection ? ViewStates.Visible : ViewStates.Gone;
+                _vehicleSelection.RemoveAllViews ();
 
                 _vehicleSelectionAndEta.Visibility = ShowVehicleSelection ? ViewStates.Visible : ViewStates.Gone;
-                // refactor this
-				_vehicleSelection.RemoveAllViews ();
 
                 if (ShowVehicleSelection) 
 				{
 					_horizontalDivider.SetBackgroundColor(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider));
-				}
 
-				if (ShowVehicleSelection && Vehicles != null) 
-                {
-					foreach (var vehicle in Vehicles) 
+                    if (Vehicles.None())
                     {
-						var vehicleView = new VehicleTypeControl (base.Context, vehicle, SelectedVehicle == null ? false : vehicle.Id == SelectedVehicle.Id);
+                        return;
+                    }
 
-                        var layoutParameters = new LinearLayout.LayoutParams (0, LayoutParams.MatchParent);
-						layoutParameters.Weight = 1.0f;
-						vehicleView.LayoutParameters = layoutParameters;
+                    foreach (var vehicle in Vehicles) 
+                    {
+                        var vehicleView = new VehicleTypeControl(base.Context, vehicle, SelectedVehicle != null && vehicle.Id == SelectedVehicle.Id);
 
-						vehicleView.Click += (sender, e) => { 
-							if (!IsReadOnly && VehicleSelected != null) 
+                        var layoutParameters = new LinearLayout.LayoutParams (0, ViewGroup.LayoutParams.MatchParent);
+                        layoutParameters.Weight = 1.0f;
+                        vehicleView.LayoutParameters = layoutParameters;
+
+                        vehicleView.Click += (sender, e) => { 
+                            if (!IsReadOnly && VehicleSelected != null) 
                             {
-								VehicleSelected (vehicle);
-							}
-						};
+                                VehicleSelected (vehicle);
+                            }
+                        };
 
-						_vehicleSelection.AddView (vehicleView);
-					}
+                        _vehicleSelection.AddView (vehicleView);
+                    }
 				}
             }
 

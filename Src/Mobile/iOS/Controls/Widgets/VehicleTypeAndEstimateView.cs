@@ -5,10 +5,10 @@ using apcurium.MK.Booking.Mobile.Client.Style;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
 using CoreGraphics;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIView EstimateContainer { get; set; }
         private UILabel EtaLabel { get; set; }
 
-        public Action<VehicleType> VehicleSelected { get; set; }
+        public Action<OrderOptionsViewModel.VehicleSelectionModel> VehicleSelected { get; set; }
 
         private NSLayoutConstraint _constraintControlHeight;
 		private NSLayoutConstraint _constraintEstimateVehicleWidth;
@@ -199,11 +199,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             var vehicleView = new VehicleTypeView(new CGRect(), vehicle, currentIsSelected);
             vehicleView.TouchUpInside += (sender, e) => { 
-                if (!IsReadOnly && VehicleSelected != null) 
+                if (VehicleSelected != null) 
                 {
-                    VehicleSelected(GroupVehiclesByServiceType 
-                        ? Vehicles.FirstOrDefault(x => x.ServiceType == vehicle.ServiceType)
-                        : vehicle);
+                    VehicleSelected(new OrderOptionsViewModel.VehicleSelectionModel { VehicleType = vehicle, IsSubMenuSelection = false });
                 }
             };
 
@@ -277,9 +275,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             var vehicleSubView = new VehicleTypeSubView(new CGRect(), vehicle, IsVehicleSelected(vehicle, true));
             vehicleSubView.TouchUpInside += (sender, e) => { 
-                if (!IsReadOnly && VehicleSelected != null) 
+                if (VehicleSelected != null) 
                 {
-                    VehicleSelected (vehicle);
+                    VehicleSelected(new OrderOptionsViewModel.VehicleSelectionModel { VehicleType = vehicle, IsSubMenuSelection = true });
                 }
             };
 
@@ -319,36 +317,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 return;
             }
 
-            var vehiclesRepresentation = GetVehicleRepresentations();
-
             var i = 0;
-            foreach (var vehicle in vehiclesRepresentation) 
+            foreach (var vehicle in VehicleRepresentations) 
             {
-                DrawVehicleForMainSelector(vehicle, i, i == 0, i == (vehiclesRepresentation.Count - 1));
+                DrawVehicleForMainSelector(vehicle, i, i == 0, i == (VehicleRepresentations.Count - 1));
 
                 i++;
-            }
-        }
-
-        private IList<VehicleType> GetVehicleRepresentations()
-        {
-            if (GroupVehiclesByServiceType)
-            {
-                return Vehicles
-                    .Select(x => x.ServiceType)
-                    .Distinct()
-                    .Select(x => new VehicleType 
-                    {
-                        ServiceType = x,
-                        Name = x.ToString(),
-                        LogoName = x == ServiceType.Luxury 
-                            ? "blackcar" 
-                            : "taxi"
-                    }).ToList();
-            }
-            else
-            {
-                return Vehicles.ToList();
             }
         }
 
@@ -477,6 +451,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             }
         }
+
+        public IList<VehicleType> VehicleRepresentations { get; set; }
 
         public string EstimatedFare
         {

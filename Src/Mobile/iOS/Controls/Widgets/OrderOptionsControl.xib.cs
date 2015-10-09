@@ -4,9 +4,7 @@ using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using System.Linq;
-using apcurium.MK.Booking.Mobile.PresentationHints;
 using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 
@@ -47,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewModel.SetAddress.ExecuteIfPossible(ViewModel.DestinationAddress);
             };
 
-            viewVehicleType.VehicleSelected = vehicleType => ViewModel.SetVehicleType.ExecuteIfPossible(vehicleType);
+            viewVehicleType.VehicleSelected = vehicleSelectionModel => ViewModel.SetVehicleType.ExecuteIfPossible(vehicleSelectionModel);
 
             var set = this.CreateBindingSet<OrderOptionsControl, OrderOptionsViewModel>();
 
@@ -121,7 +119,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind (viewVehicleType)
                 .For (v => v.Vehicles)
                 .To (vm => vm.VehicleTypes);
-            
+
+            set.Bind (viewVehicleType)
+                .For (v => v.VehicleRepresentations)
+                .To (vm => vm.VehicleRepresentations);
+
             set.Bind (viewVehicleType)
                 .For (v => v.SelectedVehicle)
                 .To (vm => vm.SelectedVehicleType);
