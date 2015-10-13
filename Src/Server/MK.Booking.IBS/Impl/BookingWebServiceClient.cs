@@ -475,7 +475,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             var currentCultureInfo = CultureInfo.GetCultureInfo(_serverSettings.ServerData.PriceFormat);
 
-            if (tipIncentive.HasValue && tipIncentive != 0)
+            if (tipIncentive.HasValue && tipIncentive > 0)
             {
                 order.JobOfferPrompt = string.Format(currentCultureInfo, "{0} + {1:C} Bonus", order.JobOfferPrompt, tipIncentive);
             }

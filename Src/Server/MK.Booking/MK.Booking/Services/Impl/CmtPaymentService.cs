@@ -414,6 +414,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
                 var creditCardDetail = _creditCardDao.FindByToken(cardToken);
+                var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
 
                 // send pairing request                                
                 var cmtPaymentSettings = _serverPaymentSettings.CmtPaymentSettings;
@@ -431,7 +432,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     Market = cmtPaymentSettings.Market,
                     TripRequestNumber = orderStatusDetail.IBSOrderId.GetValueOrDefault().ToString(),
                     LastFour = creditCardDetail.Last4Digits,
-                    TipIncentive = orderStatusDetail.TipIncentive
+                    TipIncentive = orderDetail.TipIncentive
                 };
 
                 if (orderStatusDetail.RideLinqPairingCode.HasValue())

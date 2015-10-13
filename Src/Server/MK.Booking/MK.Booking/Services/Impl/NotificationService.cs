@@ -662,7 +662,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowRateClassStart = rateClassStart.HasValue || isCmtRideLinqReceipt,
                 ShowRateClassEnd = rateClassEnd.HasValue,
                 ShowDistance = isCmtRideLinqReceipt,
-                ShowTipIncentive = tipIncentive.HasValue && tipIncentive != 0,
+                ShowTipIncentive = tipIncentive.HasValue && tipIncentive > 0,
 
                 vatIsEnabled,
                 HasPaymentInfo = hasPaymentInfo,

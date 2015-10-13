@@ -187,8 +187,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         IsPrepaid = @event.IsPrepaid,
                         CompanyKey = @event.CompanyKey,
                         CompanyName = @event.CompanyName,
-                        Market = @event.Market,
-                        TipIncentive = @event.TipIncentive
+                        Market = @event.Market
                     });
                 }
             }
