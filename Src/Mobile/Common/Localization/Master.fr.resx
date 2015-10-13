@@ -858,6 +858,18 @@
   <data name="NotesToDriveLabel" xml:space="preserve">
     <value>Commentaires à destination du chauffeur</value>
   </data>
+  <data name="DriverBonusTitle" xml:space="preserve">
+    <value>Bonus Conducteur:</value>
+  </data>
+  <data name="DriverBonusDescription" xml:space="preserve">
+    <value>Augmentez la probabilité d'avoir un taxi en offrant un bonus garanti au conducteur.</value>
+  </data>
+  <data name="DriverBonusWarningTitle" xml:space="preserve">
+    <value>Confirmation du Bonus Conducteur</value>
+  </data>
+  <data name="DriverBonusWarningMessage" xml:space="preserve">
+    <value>Le montant du bonus est en supplément du pourboire. Il sera automatiquement prélevé à la fin de la course. Continuez ?</value>
+  </data>
   <data name="November" xml:space="preserve">
     <value>Novembre (11)</value>
   </data>

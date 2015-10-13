@@ -61,7 +61,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<PickupPoint[]> _poiRefPickupListSubject = new BehaviorSubject<PickupPoint[]>(new PickupPoint[0]);
-		readonly ISubject<Airline[]> _poiRefAirlineListSubject = new BehaviorSubject<Airline[]>(new Airline[0]);
+        readonly ISubject<Airline[]> _poiRefAirlineListSubject = new BehaviorSubject<Airline[]>(new Airline[0]);
+        readonly ISubject<double?> _tipIncentiveSubject = new BehaviorSubject<double?>(null);
 
         private bool _isOrderRebooked;
 
@@ -273,6 +274,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					Id = order.Id,
                     PickupAddress = order.PickupAddress,
 					Note = order.Note,
+                    TipIncentive = order.TipIncentive,
                     PickupDate = order.PickupDate ?? currentDate,
 					Settings = order.Settings,
 					PromoCode = order.PromoCode
@@ -500,7 +502,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<string> GetAndObserveNoteToDriver()
 		{
 			return _noteToDriverSubject;
-		}
+        }
+
+        public IObservable<double?> GetAndObserveTipIncentive()
+        {
+            return _tipIncentiveSubject;
+        }
 
 		public IObservable<string> GetAndObservePromoCode()
 		{
@@ -673,6 +680,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_accountPaymentQuestions.OnNext(null);
             _poiRefPickupListSubject.OnNext(new PickupPoint[0]);
             _poiRefAirlineListSubject.OnNext(new Airline[0]);
+            _tipIncentiveSubject.OnNext(null);
         }
 
 		public void BeginCreateOrder()
@@ -687,18 +695,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task ResetOrderSettings()
 		{
-			_noteToDriverSubject.OnNext(string.Empty);
+            _noteToDriverSubject.OnNext(string.Empty);
+            _tipIncentiveSubject.OnNext(null);
 			await SetBookingSettings(_accountService.CurrentAccount.Settings);
 		}
 
 		public void SetNoteToDriver(string text)
 		{
 			_noteToDriverSubject.OnNext(text);
-		}
+        }
+
+        public void SetTipIncentive(double? tipIncentive)
+        {
+            _tipIncentiveSubject.OnNext(tipIncentive);
+        }
 
 		public void SetPromoCode(string code)
 		{
 			_promoCodeSubject.OnNext(code);
+		}
+
+		public async Task<double?> GetTipIncentive()
+		{
+			return await _tipIncentiveSubject.Take(1).ToTask();
 		}
 
 		public async Task<bool> ShouldWarnAboutEstimate()
@@ -867,7 +886,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
 			order.Note = await _noteToDriverSubject.Take(1).ToTask();
-			order.PromoCode = await _promoCodeSubject.Take(1).ToTask();
+            order.PromoCode = await _promoCodeSubject.Take(1).ToTask();
+            order.TipIncentive = await _tipIncentiveSubject.Take(1).ToTask();
 			
 			var estimatedFare = await _estimatedFareDetailSubject.Take (1).ToTask();
 			if (estimatedFare != null) 
@@ -899,7 +919,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupAddressSubject.OnNext(previous.PickupAddress);
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
-			_noteToDriverSubject.OnNext(previous.Note);
+            _noteToDriverSubject.OnNext(previous.Note);
+            _tipIncentiveSubject.OnNext(previous.TipIncentive);
             await CalculateEstimatedFare();
 		}
 

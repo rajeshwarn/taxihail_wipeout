@@ -7,25 +7,58 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using System.Windows.Input;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class OrderReviewViewModel: BaseViewModel
     {
+		private const float SliderStepValue = 5f;
+		private const float MinimumIncentiveValue = 5f;
+
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
+		private readonly IPaymentService _paymentService;
+		private bool _isCmtRideLinq;
         
-		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService,	IAccountService accountService)
+		public OrderReviewViewModel
+		(
+			IOrderWorkflowService orderWorkflowService,
+			IPaymentService paymentService,
+			IAccountService accountService
+		)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
+			_paymentService = paymentService;
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), settings => SettingsUpdated(settings));
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
 			Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
             //We are throttling to prevent cases where we can cause the app to become unresponsive after typing fast.
 			Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
-            Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
+			Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
+			Observe(_orderWorkflowService.GetAndObserveTipIncentive(), tipIncentive => DriverBonus = tipIncentive);
+
+			_driverBonus = 5;
+
+			GetIsCmtRideLinq();
+		}
+
+		private async Task GetIsCmtRideLinq()
+		{
+			try
+			{
+				var paymentSettings = await _paymentService.GetPaymentSettings();
+
+				_isCmtRideLinq = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+
+				RaisePropertyChanged(() => CanShowDriverBonus);
+			}
+			catch(Exception ex) 
+			{
+				Logger.LogError(ex);	
+			}
 		}
 			
 	    private async Task SettingsUpdated(BookingSettings settings)
@@ -157,6 +190,59 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					RaisePropertyChanged();
                     RaisePropertyChanged(() => PromotionButtonText);
 				}
+			}
+		}
+
+		private double? _driverBonus;
+        public double? DriverBonus
+		{
+			get { return _driverBonus; }
+			set
+			{
+				if (value == null)
+				{
+					_driverBonus = MinimumIncentiveValue;
+					DriverBonusEnabled = false;
+					RaisePropertyChanged();
+				}
+				else if (_driverBonus != value)
+                {
+                    // to get steps of 5
+					var valueFactorOf5 = (double)Math.Round(value.Value / SliderStepValue) * SliderStepValue;
+					_driverBonus = (valueFactorOf5 == 0) ? MinimumIncentiveValue : valueFactorOf5;
+					_orderWorkflowService.SetTipIncentive(_driverBonus);
+					RaisePropertyChanged();
+				}
+			}
+		}
+
+		private bool _driverBonusEnabled;
+		public bool DriverBonusEnabled
+		{
+			get { return _driverBonusEnabled; }
+			set
+			{
+				if (_driverBonusEnabled != value)
+				{
+                    _driverBonusEnabled = value;
+                    if (_driverBonusEnabled)
+                    {
+                        _orderWorkflowService.SetTipIncentive(DriverBonus);
+                    }
+                    else
+                    {
+                        _orderWorkflowService.SetTipIncentive(null);  
+                    }
+					RaisePropertyChanged();
+				}
+			}
+		}
+
+		public bool CanShowDriverBonus
+		{
+			get 
+			{ 
+				return _isCmtRideLinq && this.Services().Settings.IsDriverBonusEnabled; 
 			}
 		}
 
