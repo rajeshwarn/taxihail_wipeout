@@ -70,14 +70,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });              
         }
 
-        private OrderReviewViewModel ViewModel { get { return (OrderReviewViewModel)DataContext; } }
-
 	    public Point ScreenSize { get; set; }
 
 		public Func<int> OrderReviewShownHeightProvider { get; set; }
 
 		public Func<int> OrderReviewHiddenHeightProvider { get; set; }
 
+	    public void ShowWithoutAnimation()
+	    {
+		    _isShown = true;
+
+		    if (Animation != null)
+		    {
+			    Animation.Cancel();
+		    }
+
+			((MarginLayoutParams)LayoutParameters).TopMargin = OrderReviewShownHeightProvider();
+	    }
 
 	    public ViewStates AnimatedVisibility
 	    {

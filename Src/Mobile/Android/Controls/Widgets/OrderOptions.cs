@@ -1,3 +1,4 @@
+using System;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
@@ -23,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private LinearLayout _etaBadge;
 		private VehicleTypeControl _etaBadgeImage;
 		private AutoResizeTextView _etaLabelInVehicleSelection;
+
+		public event EventHandler<EventArgs> SizeChanged;
 
 	    private bool _isShown = true;
 	    private ViewStates _animatedVisibility;
@@ -59,6 +62,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             });
         }
+
+		protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
+		{
+			base.OnSizeChanged(w, h, oldw, oldh);
+
+			if (SizeChanged != null)
+			{
+				SizeChanged(this, EventArgs.Empty);
+			}
+		}
 
         private OrderOptionsViewModel ViewModel { get { return (OrderOptionsViewModel)DataContext; } }
 

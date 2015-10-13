@@ -122,16 +122,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-		public void ShowWithoutAnimation(bool showContactTaxi)
+		public void ShowWithoutAnimation()
 		{
 			_isShown = true;
 
+			if (Animation != null)
+			{
+				Animation.Cancel();
+			}
+
 			((MarginLayoutParams)LayoutParameters).TopMargin = 0;
 
-			if (!showContactTaxi)
-			{
-				return;
-			}
 		}
 
 		private void ShowIfNeeded()

@@ -234,7 +234,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnCreate(mapViewSavedInstanceState);
 			MapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
 
-            var inputManager = (InputMethodManager)ApplicationContext.GetSystemService(Context.InputMethodService);
+            var inputManager = (InputMethodManager)ApplicationContext.GetSystemService(InputMethodService);
             MapFragment.TouchableMap.Surface.Touched += (sender, e) => 
                 {
                     inputManager.HideSoftInputFromWindow(Window.DecorView.RootView.WindowToken, HideSoftInputFlags.None);
@@ -242,7 +242,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 	        _orderReview.ScreenSize = screenSize;
 	        _orderReview.OrderReviewHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
-	        _orderReview.OrderReviewShownHeightProvider = () => _orderOptions.Height;
+			_orderReview.OrderReviewShownHeightProvider = () => _orderOptions.Height;
 			_orderEdit.ScreenSize = screenSize;
 	        _orderEdit.ParentFrameLayout = _frameLayout;
 
@@ -257,12 +257,52 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 	        PanelMenuInit();
         }
 
+		private void OrderOptionsSizeChanged(object sender, EventArgs args)
+		{
+			if (_orderOptions.Height == 0)
+			{
+				return;
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.Review)
+			{
+				_orderReview.ShowWithoutAnimation();
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.AirportDetails)
+			{
+				_orderAirport.ShowWithoutAnimation();
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.Edit)
+			{
+				_orderOptions.HideWithoutAnimation();
+				_orderEdit.ShowWithoutAnimations();
+			}
+
+			_orderOptions.SizeChanged -= OrderOptionsSizeChanged;
+		}
+
 		private void ResumeFromBackgroundIfNecessary()
 		{
+
+			// The current state is the initial state, we don't need to do anything
+			if (ViewModel.CurrentViewState == HomeViewModelState.Initial)
+			{
+				return;
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.Review || ViewModel.CurrentViewState == HomeViewModelState.AirportDetails)
+			{
+				_orderOptions.SizeChanged += OrderOptionsSizeChanged;
+
+				return;
+			}
+
 			// We are in an order, we should at least setup the view to not have the booking entry animation.
 			if (ViewModel.CurrentViewState == HomeViewModelState.ManualRidelinq || ViewModel.CurrentViewState == HomeViewModelState.BookingStatus)
 			{
-				_orderStatus.ShowWithoutAnimation(ViewModel.BookingStatus.IsContactTaxiVisible);
+				_orderStatus.ShowWithoutAnimation();
 				_orderOptions.HideWithoutAnimation();
 
 				_appBar.Visibility = ViewStates.Gone;
