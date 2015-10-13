@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
 		readonly ISubject<int?> _vehicleTypeSubject;
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
+		readonly ISubject<ServiceType> _serviceTypeSubject;
 		readonly ISubject<string> _estimatedFareDisplaySubject;
         readonly ISubject<OrderValidationResult> _orderValidationResultSubject = new BehaviorSubject<OrderValidationResult>(new OrderValidationResult());
 		readonly ISubject<DirectionInfo> _estimatedFareDetailSubject = new BehaviorSubject<DirectionInfo>( new DirectionInfo() );
@@ -91,10 +92,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
 
-            _vehicleTypeSubject = new BehaviorSubject<int?>(
+			var vehicleTypeId = 
                 _appSettings.Data.VehicleTypeSelectionEnabled
 	                ? accountService.CurrentAccount.Settings.VehicleTypeId
-	                : null);
+	                : null;
+
+			_vehicleTypeSubject = new BehaviorSubject<int?>(vehicleTypeId);
+
+			var serviceType = GetServiceTypeForVehicleId(vehicleTypeId).Result;
+			_serviceTypeSubject = new BehaviorSubject<ServiceType>(serviceType);
 
 			_localize = localize;
 			_bookingService = bookingService;
@@ -314,6 +320,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			bookingSettings.VehicleTypeId = vehicleTypeId;
 
 			await SetBookingSettings (bookingSettings);
+
+			var serviceType = await GetServiceTypeForVehicleId(vehicleTypeId);
+			_serviceTypeSubject.OnNext(serviceType);
+		}
+
+		private async Task<ServiceType> GetServiceTypeForVehicleId (int? vehicleTypeId)
+		{ 
+			var vehicleType = (await _accountService.GetVehiclesList())
+				.FirstOrDefault(x => x.ReferenceDataVehicleId == vehicleTypeId);
+
+			return vehicleType != null ? vehicleType.ServiceType : ServiceType.Taxi;
 		}
 
 		public async Task SetBookingSettings(BookingSettings bookingSettings)
