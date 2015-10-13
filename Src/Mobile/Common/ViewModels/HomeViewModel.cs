@@ -139,7 +139,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_isShowingTutorial = false;
 					LocateUserIfNeeded();
 				});
+
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
+
+				_accountService.GetVehiclesList(true);
 			}
 
 			LocateUserIfNeeded();
@@ -704,8 +707,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				CheckTermsAsync();
 				CheckCreditCardExpiration();
                 AddressPicker.RefreshFilteredAddress();
-
 				_metricsService.LogApplicationStartUp ();
+				_accountService.GetVehiclesList(true);
             }
         }
 
