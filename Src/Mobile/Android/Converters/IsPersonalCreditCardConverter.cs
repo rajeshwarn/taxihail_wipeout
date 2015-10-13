@@ -8,12 +8,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
     {
         public override object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return value.ToString() == CreditCardLabelConstants.Personal.ToString() ? true : false;
+            if (parameter != null && parameter.ToString() == "Inverted")
+            {
+                return value.ToString() != CreditCardLabelConstants.Personal.ToString();
+            }
+            return value.ToString() == CreditCardLabelConstants.Personal.ToString();
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return bool.Parse(value.ToString()) == true ? CreditCardLabelConstants.Personal : CreditCardLabelConstants.Business;
+            if (parameter != null && parameter.ToString() == "Inverted")
+            {
+                return bool.Parse(value.ToString()) ? CreditCardLabelConstants.Business : CreditCardLabelConstants.Personal;
+            }
+            return bool.Parse(value.ToString()) ? CreditCardLabelConstants.Personal : CreditCardLabelConstants.Business;
         }
     }
 }

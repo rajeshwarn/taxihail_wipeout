@@ -110,13 +110,14 @@
                             android:layout_height="wrap_content"
                             android:text="@string/PaymentDetails.Label.Personal"
                             style="@style/BlackTextLabel"
-                            local:MvxBind="Checked Data.Label, Converter=IsPersonalCreditCard"
+                            local:MvxBind="Checked Data.Label, Converter=IsPersonalCreditCard, ConverterParameter=''"
                             android:paddingRight="30dip" />
                         <RadioButton
                             android:id="@+id/businessRadioButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/PaymentDetails.Label.Business"
+                            local:MvxBind="Checked Data.Label, Converter=IsPersonalCreditCard, ConverterParameter='Inverted'"
                             style="@style/BlackTextLabel" />
                     </RadioGroup>
                     <TextView
