@@ -72,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         IObservable<Airline[]> GetAndObservePOIRefAirlineList();
 
         IObservable<int?> GetAndObserveVehicleType();
+		IObservable<ServiceType> GetAndObserveServiceType();
 
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
 
