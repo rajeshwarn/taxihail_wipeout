@@ -32,7 +32,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
 		private readonly IAccountService _accountService;
-	    private readonly IBookingService _bookingService;
 	    private readonly IMetricsService _metricsService;
 	    private readonly IPaymentService _paymentService;
 		private string _lastHashedMarket = string.Empty;
@@ -56,7 +55,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService, 
             IMvxLifetime mvxLifetime,
             IPromotionService promotionService,
-            IBookingService bookingService,
             IMetricsService metricsService)
 		{
 			_locationService = locationService;
@@ -66,7 +64,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_termsService = termsService;
 		    _mvxLifetime = mvxLifetime;
-		    _bookingService = bookingService;
 		    _metricsService = metricsService;
 		    _accountService = accountService;
 			_paymentService = paymentService;
@@ -548,8 +545,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							CurrentViewState = HomeViewModelState.AirportDetails;
 							break;
 
-						case HomeViewModelState.Initial:
-						case HomeViewModelState.ManualRidelinq:
 						default:
 							base.CloseCommand.ExecuteIfPossible();
 							break;

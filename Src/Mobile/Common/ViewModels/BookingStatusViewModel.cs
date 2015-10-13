@@ -159,10 +159,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return;
 			}
 
+			// We have no vehicle positions to display, so don't try to.
+			if (!OrderStatusDetail.VehicleLatitude.HasValue || !OrderStatusDetail.VehicleLongitude.HasValue)
+			{
+				return;
+			}
+
 			// Handle case where we have both the taxi and the pickup point.
 			if (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived)
 			{
-				MapCenter = new CoordinateViewModel[]
+				MapCenter = new[]
 				{
 					CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true),
 					CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value)
@@ -173,7 +179,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			// Handle case where the user is in a taxi.
 
-			MapCenter = new CoordinateViewModel[]
+			MapCenter = new[]
 			{
 				CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value, true)
 			};
