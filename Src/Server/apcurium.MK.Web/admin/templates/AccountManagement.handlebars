@@ -1,5 +1,4 @@
-﻿
-<div class="div-account-panelheader">Account</div>
+﻿<div class="div-account-panelheader">Account</div>
 
 <div class='row'>
     <div class='span8'>
@@ -122,22 +121,29 @@
 
 			</div>
 
+			<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
+				<button id="buttonSaveAccount{{account.id}}" type="submit" class='btn btn-primary span buttonaccount' style="margin-left:0" data-action='saveAccount' accountid="{{account.id}}">{{localize "Save Account"}}</button>
+			</div>
+
 			{{#unless account.currentAccount }}
 
-			<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
-				<button id="buttonSendSMS{{account.id}}" type="submit" class='btn btn-primary span buttonaccount' style="margin-left:0" data-action='sendConfirmationCodeSMS' accountid="{{account.id}}">{{localize "Send Account Confirmation Code via SMS"}}</button>
-			</div>
+			<div style="margin-top:20px;">
 
-			<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
-				<button id="buttonEnableDisableAccount{{account.id}}" type="submit" class='btn btn-primary span buttonaccount' style="margin-left:0" data-action='enableDisableAccount' accountid="{{account.id}}">{{#if account.disabledByAdmin }} {{ localize "Enable Account"}} {{else}} {{ localize "Disable Account"}} {{/if}}</button>
-			</div>
+				<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
+					<a href id="refSendSMS{{account.id}}" data-action='sendConfirmationCodeSMS' accountid="{{account.id}}" onclick="return false;">{{localize "Send Account Confirmation Code via SMS"}}</a>
+				</div>
 
-			<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
-				<button id="buttonUnlinkIBSAccount{{account.id}}" type="submit" class='btn btn-primary span buttonaccount' style="margin-left:0" data-action='unlinkIBSAccount' accountid="{{account.id}}">{{localize "Unlink IBS Account(s)"}}</button>
-			</div>
+				<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
+					<a href id="refEnableDisableAccount{{account.id}}" data-action='enableDisableAccount' accountid="{{account.id}}" onclick="return false;">{{#if account.disabledByAdmin }} {{ localize "Enable Account"}} {{else}} {{ localize "Disable Account"}} {{/if}}</a>
+				</div>
 
-			<div>
-				<button id="buttonDeleteCreditCardsInfo{{account.id}}" type="submit" class='btn btn-primary span buttonaccount' data-action='deleteCreditCardsInfo' accountid="{{account.id}}">{{localize "Delete all credit cards information"}}</button>
+				<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
+					<a href id="refUnlinkIBSAccount{{account.id}}" data-action='unlinkIBSAccount' accountid="{{account.id}}" onclick="return false;">{{localize "Unlink IBS Account(s)"}}</a>
+				</div>
+
+				<div>
+					<a href id="refDeleteCreditCardsInfo{{account.id}}" data-action='deleteCreditCardsInfo' accountid="{{account.id}}" onclick="return false;">{{localize "Delete all credit cards information"}}</a>
+				</div>
 			</div>
 
 			{{/unless}}
@@ -145,8 +151,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 {{#if orders}}

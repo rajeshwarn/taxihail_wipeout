@@ -9,6 +9,7 @@
 
 		events:
 		{
+			'click [data-action=saveAccount]': 'saveAccount',
 			'click [data-action=sendConfirmationCodeSMS]': 'sendConfirmationCodeSMS',
 			'click [data-action=enableDisableAccount]': 'enableDisableAccount',
 			'click [data-action=unlinkIBSAccount]': 'unlinkIBSAccount',
@@ -46,6 +47,11 @@
 			return this;
 		},
 
+		saveAccount:function(e)
+		{
+			e.preventDefault();
+		},
+
 		sendConfirmationCodeSMS: function (e)
 		{
 			e.preventDefault();
@@ -55,18 +61,20 @@
 			if (account && account.email && account.settings.country.code && account.settings.phone
 				&& account.email.toString().length > 0 && account.settings.country.code.toString().length > 0 && account.settings.phone.toString().length > 0)
 			{
-				var sendButton = document.getElementById("buttonSendSMS" + account.id);
-				sendButton.disabled = true;
+				var sendRef = document.getElementById("refSendSMS" + account.id);
+				sendRef.disabled = true;
+				sendRef.classList.add("label-account-linkitem-disabled");
 
 				model.sendConfirmationCodeSMS(account.email, account.settings.country.code, account.settings.phone, this, function (viewObject, data)
 				{
 					if (data.status == 200)
 					{
-						sendButton.innerText = TaxiHail.localize("Code will be send shortly");
+						sendRef.innerText = TaxiHail.localize("Code will be send shortly");
 					}
 					else
 					{
-						sendButton.disabled = false;
+						sendRef.classList.remove("label-account-linkitem-disabled");
+						sendRef.disabled = false;
 						viewObject.$('.errors').text(TaxiHail.localize('SendSMSError'));
 					}
 				});
@@ -85,8 +93,9 @@
 
 			if (account)
 			{
-				var enableDisableAccountButton = document.getElementById("buttonEnableDisableAccount" + account.id);
-				enableDisableAccountButton.disabled = true;
+				var enableDisableAccountRef = document.getElementById("refEnableDisableAccount" + account.id);
+				enableDisableAccountRef.disabled = true;
+				enableDisableAccountRef.classList.add("label-account-linkitem-disabled");
 
 				if (!account.disabledByAdmin)
 				{
@@ -98,7 +107,8 @@
 						}
 						else
 						{
-							enableDisableAccountButton.disabled = false;
+							enableDisableAccountRef.classList.remove("label-account-linkitem-disabled");
+							enableDisableAccountRef.disabled = false;
 							viewObject.$('.errors').text(TaxiHail.localize('Error during enable/disable account'));
 						}
 					});
@@ -113,7 +123,8 @@
 						}
 						else
 						{
-							enableDisableAccountButton.disabled = false;
+							enableDisableAccountRef.classList.remove("label-account-linkitem-disabled");
+							enableDisableAccountRef.disabled = false;
 							viewObject.$('.errors').text(TaxiHail.localize('Error during enable/disable account'));
 						}
 					});
@@ -133,18 +144,20 @@
 
 			if (account)
 			{
-				var unlinkIBSAccounButton = document.getElementById("buttonUnlinkIBSAccount" + account.id);
-				unlinkIBSAccounButton.disabled = true;
+				var unlinkIBSAccounRef = document.getElementById("refUnlinkIBSAccount" + account.id);
+				unlinkIBSAccounRef.disabled = true;
+				unlinkIBSAccounRef.classList.add("label-account-linkitem-disabled");
 
 				model.unlinkAccount(account.email, this, function (viewObject, data)
 				{
 					if (data.status == 200)
 					{
-						unlinkIBSAccounButton.innerText = TaxiHail.localize("IBS Account Unlinked");
+						unlinkIBSAccounRef.innerText = TaxiHail.localize("IBS Account Unlinked");
 					}
 					else
 					{
-						unlinkIBSAccounButton.disabled = false;
+						unlinkIBSAccounRef.classList.remove("label-account-linkitem-disabled");
+						unlinkIBSAccounRef.disabled = false;
 						viewObject.$('.errors').text(TaxiHail.localize('unlinkAccountError'))
 					}
 				});
@@ -166,17 +179,20 @@
 				message: "Confirm removing all credit cards for user " + account.name
 			}).on('ok', function ()
 			{
-				var buttonDeleteCreditCardsInfo = document.getElementById("buttonDeleteCreditCardsInfo" + account.id);
-				buttonDeleteCreditCardsInfo.disabled = true;
+				var deleteCreditCardsInfoRef = document.getElementById("refDeleteCreditCardsInfo" + account.id);
+				deleteCreditCardsInfoRef.disabled = true;
+				deleteCreditCardsInfoRef.classList.add("label-account-linkitem-disabled");
+
 				model.deleteAccountCreditCards(account.id, this, function (viewObject, data)
 				{
 					if (data.status == 200)
 					{
-						buttonDeleteCreditCardsInfo.innerText = "Credit cards info deleted";
+						deleteCreditCardsInfoRef.innerText = "Credit cards info deleted";
 					}
 					else
 					{
-						buttonDeleteCreditCardsInfo.disabled = false;
+						deleteCreditCardsInfoRef.disabled = false;
+						deleteCreditCardsInfoRef.classList.remove("label-account-linkitem-disabled");
 						viewObject.$('.errors').text('Error during credit cards info removing');
 					}
 				});
