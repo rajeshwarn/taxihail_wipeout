@@ -957,12 +957,6 @@
   <data name="View_RefineAddress" xml:space="preserve">
     <value>Pickup Details</value>
   </data>
-  <data name="AppNeedUpdateTitle" xml:space="preserve">
-    <value>Update available</value>
-  </data>
-  <data name="AppNeedUpdateMessage" xml:space="preserve">
-    <value>A new version of the application is available, please update the app to continue.</value>
-  </data>
   <data name="BookingService_MobileBookingNote" xml:space="preserve">
     <value>Booked mobile device.</value>
   </data>
@@ -1013,6 +1007,18 @@
   </data>
   <data name="NotesToDriveLabel" xml:space="preserve">
     <value>Notes to driver (Name of business, specific entrance, ...)</value>
+  </data>
+  <data name="DriverBonusTitle" xml:space="preserve">
+    <value>Driver Bonus:</value>
+  </data>
+  <data name="DriverBonusDescription" xml:space="preserve">
+    <value>Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</value>
+  </data>
+  <data name="DriverBonusWarningTitle" xml:space="preserve">
+    <value>Confirm Driver Bonus</value>
+  </data>
+  <data name="DriverBonusWarningMessage" xml:space="preserve">
+    <value>Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?</value>
   </data>
   <data name="Submit" xml:space="preserve">
     <value>Submit Rating</value>

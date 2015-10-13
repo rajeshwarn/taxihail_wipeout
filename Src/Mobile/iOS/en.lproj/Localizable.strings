@@ -24,6 +24,7 @@
 "UpdateNoticeText"="Sorry, this version of the app is no longer supported. Please update the app";
 "CreditCardZipCode"="Zip code";
 "PromotionButton"="Tap to Enter or View Promo Code";
+"DriverBonusTitle"="Driver Bonus:";
 "LocationDetailApartmentLabel"="Apartment";
 "CvvRequiredTitle"="CVV Required";
 "HistoryDetailPickupLabel"="Pickup:";
@@ -195,7 +196,7 @@
 "TAXI"="TAXI";
 "View_UpdatePassword"="Update Password";
 "StreetNumberSearchBt"="Use a different address";
-"AppNeedUpdateTitle"="Update available";
+"RideSummaryTitleText"="Thank you";
 "WarningPushServiceTitle"="Push Notifications";
 "Version"="v{0}";
 "View"="View";
@@ -381,6 +382,7 @@
 "LocationServiceErrorMessage"="The location service is not enabled.";
 "View_LocationDetail"="Location Detail";
 "Collapse"="Collapse";
+"DriverBonusDescription"="Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.";
 "September"="Sep (09)";
 "ResetPasswordTitleText"="Forgot your password?";
 "March"="Mar (03)";
@@ -402,6 +404,7 @@
 "app_id"="134284363380764";
 "BookingAirportMissingInfo_Title"="Missing information";
 "View_AboutUs"="About Us";
+"DriverBonusWarningMessage"="Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?";
 "Error_InvalidCvvMessage"="The CVV must be a number between 3 and 4 digits";
 "ScanCreditCard"="Scan Credit Card";
 "HomeActivityName"="Home";
@@ -538,7 +541,6 @@
 "PayPalLinkError"="Unable to link your PayPal account";
 "Overdue_Failed_Message"="Your transaction was denied, please try again later or replace your credit card with a new one.";
 "DriverInfoModel"="Model:";
-"AppNeedUpdateMessage"="A new version of the application is available, please update the app to continue.";
 "HistoryInfo"="Displaying trips from the last month";
 "UpdatePasswordActivityName"="Update password";
 "ManualRideLinqSummary_Done"="Done";
@@ -552,6 +554,7 @@
 "StatusNewRideButton"="New Ride";
 "WarningPushServiceMessage"="We noticed you do not have push notifications turned on. Just to let you know if you have them enabled then you get updates about the status of your booking without having to look at the app! We promise we will not spam you with useless information!";
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to enter a credit card as part of your account.";
+"DriverBonusWarningTitle"="Confirm Driver Bonus";
 "DriverInfoCompany"="Company:";
 "InvalidEmailMessage"="The email is invalid.";
 "LocationsActivityName"="Favorite locations";
@@ -574,7 +577,6 @@
 "OtherListItemPromptLabel"="Enter a value:";
 "DestinationAddress"="Destination address";
 "ManualPairingForRideLinQ_Error_Title"="Error";
-"RideSummaryTitleText"="Thank you";
 "ConfirmDestinationLabel"="Destination";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen";
 "HistoryViewNoHistoryLabel"="No booking history";

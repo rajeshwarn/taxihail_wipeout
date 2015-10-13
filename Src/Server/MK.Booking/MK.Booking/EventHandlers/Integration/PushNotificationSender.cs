@@ -64,6 +64,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             _notificationService.SendTimeoutPush(@event.Status);
                         }
                         break;
+                    case VehicleStatuses.Common.Waiting:
+                        if (@event.PreviousIBSStatusId == VehicleStatuses.Common.Assigned)
+                        {
+                            _notificationService.SendBailedPush(@event.Status);
+                        }
+                        break;
                     default:
                         // No push notification for this order status
                         return;

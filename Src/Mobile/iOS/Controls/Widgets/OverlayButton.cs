@@ -97,8 +97,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (Hidden)
                 {
                     // Remove dropshadow
-                    _shadowView.RemoveFromSuperview();
-                    _shadowView = null;
+                    if (_shadowView != null)
+                    {
+                        _shadowView.RemoveFromSuperview();
+                        _shadowView = null;
+                    }
                 }
             }
         }

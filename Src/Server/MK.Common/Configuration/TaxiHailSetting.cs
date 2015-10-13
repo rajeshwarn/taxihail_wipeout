@@ -59,6 +59,7 @@ namespace MK.Common.Configuration
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
             ShowOrientedPins = false;
+            IsDriverBonusEnabled = false;
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
@@ -75,7 +76,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehicles = false;
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
-            ShowOrientedPins = false;
+            HideTHNetworkAppMenu = true;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
 			
@@ -483,6 +484,17 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - Use vehicle direction", Description = "Available only with GEO. When enabled, the marked will be oriented according to the vehicle direction information")]
         public bool ShowOrientedPins { get; protected set; }
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Display - Hide TaxiHail Network from menu", Description = "Hide THNetwork from app menu item")]
+        public bool HideTHNetworkAppMenu { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Configuration - Enable Driver Bonus", Description = "Offering a guaranteed bonus to drivers to boost the odds of getting a taxi.")]
+        public bool IsDriverBonusEnabled { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Display - Message To Prompt To Driver", Description = "Message that will prompt on driver console on the Accept/Decline screen")]
+        public string MessagePromptedToDriver { get; protected set; }
     }
 }
 

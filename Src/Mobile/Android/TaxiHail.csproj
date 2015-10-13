@@ -490,9 +490,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\suv_badge_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\highlight.png" />
     <AndroidResource Include="Resources\Drawable\home_car_text_selector.xml" />
-    <AndroidResource Include="Resources\Values\String.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <Compile Include="Activities\Utilities\MvxFragmentActivity.cs" />
     <Compile Include="Activities\Utilities\MvxEventSourceFragmentActivity.cs" />
     <Compile Include="Activities\Utilities\MvxTabsFragmentActivity.cs" />
@@ -605,9 +602,6 @@
     <AndroidResource Include="Resources\Drawable\destination_small_icon_pressed.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon_pressed.png" />
-    <AndroidResource Include="Resources\values-ar\String.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <Compile Include="Dialog\EntryElementWithInputType.cs" />
     <Compile Include="Activities\Book\InitializeOrderForAccountPaymentActivity.cs" />
     <Compile Include="PlatformIntegration\AndroidMapApiClient.cs" />
@@ -718,6 +712,10 @@
     <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_passenger.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_passenger.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
+    <AndroidResource Include="Resources/values-ar/String.xml" />
+    <AndroidResource Include="Resources/values-es/String.xml" />
+    <AndroidResource Include="Resources/values-fr/String.xml" />
+    <AndroidResource Include="Resources\Values\String.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -827,9 +825,6 @@
     <AndroidResource Include="Resources\Drawable\edit_text_flat.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\values-fr\String.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cluster_blackcar.png" />
     <AndroidResource Include="Resources\Drawable\cluster_suv.png" />
     <AndroidResource Include="Resources\Drawable\nearby_blackcar.png" />
@@ -839,9 +834,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\cluster_blackcar.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\cluster_suv.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\cluster_taxi.png" />
-    <AndroidResource Include="Resources\values-es\String.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\down_arrow.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\down_arrow.png" />
     <AndroidResource Include="Resources\Drawable\paypal_icon.png" />
@@ -871,7 +863,9 @@
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_available.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge_selected.png" />
-    <AndroidResource Include="Resources\Drawable\CarNumberOnTheVehicleIcon.xml" />
+    <AndroidResource Include="Resources\Drawable\default_vehicle_medaillon_icon.xml" />
+    <AndroidResource Include="Resources\Drawable\green_vehicle_medaillon_icon.xml" />
+    <AndroidResource Include="Resources\Drawable\yellow_vehicle_medaillon_icon.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
@@ -998,5 +992,10 @@
     <AndroidResource Include="Resources\Layout\View_ExtendedSplashScreen.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\values-ar\" />
+    <Folder Include="Resources\values-es\" />
+    <Folder Include="Resources\values-fr\" />
   </ItemGroup>
 </Project>
