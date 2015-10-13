@@ -24,24 +24,21 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         private readonly string _vehicleTypeLogoName;
 
         public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string title, string subtitle, bool useThemeColorForIcons,
-            bool showSubtitleOnPin, bool showMedallion = false, string vehicleTypeLogoName = null, double degrees = 0, string market = null)
+            bool showSubtitleOnPin, string vehicleTypeLogoName = null, string market = null)
 		{
 			AddressType = type;
 			_coordinate = coord;
 			_title = title;
-            Degrees = degrees;
 			_subtitle = subtitle;
             UseThemeColorForIcons = useThemeColorForIcons;
 			ShowSubtitleOnPin = showSubtitleOnPin;
             _vehicleTypeLogoName = vehicleTypeLogoName;
-            ShowMedallionOnStart = showMedallion;
             Market = market;
-            ShowOrientation = showOrientation;
 		}
 
         public bool ShowOrientation { get; set; }
 
-        public bool ShowMedallionOnStart { get; private set; }
+        public bool ShowMedallionOnStart { get; set; }
 
 		public bool ShowSubtitleOnPin = true;
 

@@ -511,25 +511,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
-                                false,
                                 vehicle.LogoName,
-                                ViewModel.Settings.ShowOrientedPins,
-                                vehicle.CompassCourse,
-                                vehicle.Market);
+                                vehicle.Market)
+                {
+	                Degrees = vehicle.CompassCourse,
+					ShowOrientation = ViewModel.Settings.ShowOrientedPins
+                };
             
             vehicleAnnotation.HideMedaillonsCommand = new AsyncCommand(() =>
-                {
-                    foreach(var annotation in Annotations)
+            {
+	            var annotations = Annotations.Where(annotation => !annotation.Equals(vehicleAnnotation))
+					.Select(ViewForAnnotation)
+					.Cast<PinAnnotationView>()
+					.Where(view => view != null);
+
+					foreach (var pinAnnotationView in annotations)
                     {
-                        if(annotation != vehicleAnnotation)
-                        {
-                            var annotationView = ViewForAnnotation(annotation);
-                            var pinAnnotationView = annotationView as PinAnnotationView;
-                            if(pinAnnotationView != null)
-                            {
-                                pinAnnotationView.HideMedaillon();
-                            }
-                        }
+						pinAnnotationView.HideMedaillon();
                     }
                 });
             
@@ -744,9 +742,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var vehicleLatitude = value.Latitude ?? 0;
             var vehicleLongitude = value.Longitude ?? 0;
 
-            if (vehicleLatitude != 0
-                && vehicleLongitude != 0
-                && value.VehicleNumber.HasValue())
+            if (vehicleLatitude != 0 && vehicleLongitude != 0 && value.VehicleNumber.HasValue())
             {
                 // Refresh vehicle position
                 coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
@@ -759,11 +755,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 value.VehicleNumber, 
                 _useThemeColorForPickupAndDestinationMapIcons, 
                 _showAssignedVehicleNumberOnPin,
-                true,
                 null,
-                showOrientedPins,
-                value.CompassCourse??0,
-                value.Market);
+                value.Market)
+            {
+				ShowMedallionOnStart = true,
+	            Degrees = value.CompassCourse??0,
+				ShowOrientation = showOrientedPins
+            };
 
             AddAnnotation(_taxiLocationPin);
             SetNeedsDisplay();
