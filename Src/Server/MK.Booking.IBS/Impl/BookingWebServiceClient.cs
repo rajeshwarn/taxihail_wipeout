@@ -473,8 +473,8 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             UseService(service =>
             {
-                Logger.LogMessage("WebService Confirming Hail for orderkey: " + JsonSerializer.SerializeToString(orderKey, typeof (TBookOrderKey)));
-                Logger.LogMessage("WebService Confirming Hail for vehicle: " + JsonSerializer.SerializeToString(selectedVehicle, typeof (TVehicleComp)));
+                Logger.LogMessage("WebService Confirming Hail for orderkey: " + JsonSerializer.SerializeToString(ibsOrderKey, typeof(TBookOrderKey)));
+                Logger.LogMessage("WebService Confirming Hail for vehicle: " + JsonSerializer.SerializeToString(ibsVehicleCandidate, typeof(TVehicleComp)));
 
                 result = service.UpdateJobToVehicle(UserNameApp, PasswordApp, ibsOrderKey, ibsVehicleCandidate);
                 Logger.LogMessage("WebService Confirm Hail, orderid : " + ibsOrderKey.OrderID + ", orderGUID : " + ibsOrderKey.GUID);
