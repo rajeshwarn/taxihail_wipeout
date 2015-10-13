@@ -523,7 +523,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
         }
 
-		public async Task<IList<VehicleType>> GetVehiclesList()
+		public async Task<IList<VehicleType>> GetVehiclesList(bool refresh)
 		{
 			// todo temporary until server returns data
 			var list = new List<VehicleType>
@@ -539,7 +539,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		    var cacheService = Mvx.Resolve<ICacheService>();
 
             var cached = cacheService.Get<VehicleType[]>(VehicleTypesDataCacheKey);
-            if (cached != null)
+            if (!refresh && cached != null)
             {
                 return cached;
             }
