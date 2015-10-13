@@ -1141,6 +1141,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BAIL BAIL BAIL !.
+        /// </summary>
+        public static string OrderStatus_BAILED {
+            get {
+                return ResourceManager.GetString("OrderStatus_BAILED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ETA: {0}.
         /// </summary>
         public static string OrderStatus_CabDriverETA {
@@ -1434,6 +1443,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string PhoneNumberFormat {
             get {
                 return ResourceManager.GetString("PhoneNumberFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BAIL BAIL BAIL !.
+        /// </summary>
+        public static string PushNotification_BAILED {
+            get {
+                return ResourceManager.GetString("PushNotification_BAILED", resourceCulture);
             }
         }
         

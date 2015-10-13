@@ -126,6 +126,14 @@ namespace apcurium.MK.Booking.Services.Impl
                         new Dictionary<string, object>());
         }
 
+        public void SendBailedPush(OrderStatusDetail orderStatusDetail)
+        {
+            var order = _orderDao.FindById(orderStatusDetail.OrderId);
+            SendPushOrSms(order.AccountId,
+                        _resources.Get("PushNotification_BAILED", order.ClientLanguageCode),
+                        new Dictionary<string, object>());
+        }
+
         public void SendChangeDispatchCompanyPush(Guid orderId)
         {
             var order = _orderDao.FindById(orderId);

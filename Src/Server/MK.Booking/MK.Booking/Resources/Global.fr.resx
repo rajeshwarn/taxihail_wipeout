@@ -336,6 +336,9 @@
   <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
     <value>Veuillez nous excuser, en raison d'un grand nombre de demandes nous n'avons pas de véhicule disponible, merci d'essayer ultérieurement.</value>
   </data>
+  <data name="PushNotification_BAILED" xml:space="preserve">
+    <value>BAIL BAIL BAIL !</value>
+  </data>
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Votre vehicule sera bientôt au lieu de départ</value>
   </data>
@@ -368,6 +371,9 @@
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>La course sera payée en utilisant le mode de paiement choisi</value>
+  </data>
+  <data name="OrderStatus_BAILED" xml:space="preserve">
+    <value>BAIL BAIL BAIL !</value>
   </data>
   <data name="AccountConfirmationSmsBody" xml:space="preserve">
     <value>Votre code de confirmation pour {0} est {1} </value>
