@@ -173,7 +173,8 @@ namespace apcurium.MK.Web
                 "~/admin/models/UnassignedReferenceDataVehicles.js",
                 "~/admin/models/NetworkVehicleTypes.js",
                 "~/admin/models/RideRatings.js",
-				"~/admin/models/AccountModel.js",
+				"~/admin/models/AccountsManagementModel.js",
+				"~/admin/models/AccountManagementModel.js",
                 /* Collections */
                 "~/common/collections/AddressCollection.js",
                 "~/common/collections/AvailableVehicleCollection.js",
@@ -199,7 +200,7 @@ namespace apcurium.MK.Web
                 "~/admin/controllers/AccountsChargeController.js",
                 "~/admin/controllers/VehicleTypesController.js",
                 "~/admin/controllers/RideRatingsController.js",
-				"~/admin/controllers/AccountController.js",
+				"~/admin/controllers/AccountsManagementController.js",
                 /* Views */
                 "~/admin/views/AddPopularAddressView.js",
                 "~/common/views/AlertView.js",
@@ -238,6 +239,7 @@ namespace apcurium.MK.Web
                 "~/admin/views/AddVehicleTypeView.js",
                 "~/admin/views/ManageVehicleTypesView.js",
                 "~/admin/views/VehicleTypeItemView.js",
+				"~/admin/views/AccountsManagementView.js",
 				"~/admin/views/AccountManagementView.js",
                 /* Services */
                 "~/common/services/AuthService.js",

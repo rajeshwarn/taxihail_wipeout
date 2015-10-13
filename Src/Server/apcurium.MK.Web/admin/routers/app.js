@@ -15,6 +15,7 @@
 
             /* Admin right*/
             "security": "manageSecurity",
+            "accountsManagement": "accountsManagement",
             "accountManagement": "accountManagement",
 
             /* test notifications */
@@ -119,11 +120,17 @@
             action(TaxiHail.SecurityController, 'index');
         },
         
-        accountManagement: function () {
-        	action(TaxiHail.AccountController, 'accountManagement');
+        accountsManagement: function () {
+        	action(TaxiHail.AccountsManagementController, 'accountsManagement');
         },
 
-        sendPushNotification: function () {
+        accountManagement: function ()
+        {
+        	action(TaxiHail.AccountsManagementController, 'accountManagement');
+        },
+
+        sendPushNotification: function ()
+        {
             action(TaxiHail.NotificationController, 'sendpushnotification');
         },
 

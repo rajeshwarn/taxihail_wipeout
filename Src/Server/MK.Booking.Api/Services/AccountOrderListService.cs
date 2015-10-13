@@ -5,6 +5,9 @@ using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using ServiceStack.ServiceInterface;
+using System.Collections;
+using apcurium.MK.Booking.Domain;
+using System.Collections.Generic;
 
 #endregion
 
@@ -31,5 +34,19 @@ namespace apcurium.MK.Booking.Api.Services
             response.AddRange(orders);
             return response;
         }
+
+		public object Get(AccountOrderListRequestWithUserID request)
+		{
+			OrderMapper om = new OrderMapper();
+
+			var orders = Dao.FindByAccountId(request.UserID)
+				.Where(x => !x.IsRemovedFromHistory)
+				.OrderByDescending(c => c.CreatedDate)
+				.Select(read => om.ToResource(read));
+
+			var response = new AccountOrderListRequestWithUserIDResponse();
+			response.AddRange(orders);
+			return response;
+		}
     }
 }
