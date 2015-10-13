@@ -93,6 +93,7 @@ namespace CMTServices
 
             response.Eta = entity.ETASeconds;
 	        response.CompassCourse = entity.CompassCourse;
+            response.Market = entity.Market;
 
             return response;
         }

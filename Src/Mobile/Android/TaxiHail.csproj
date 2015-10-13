@@ -43,6 +43,7 @@
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -276,7 +277,6 @@
     <Compile Include="ListViewStructure\ListItemData.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
-    <Compile Include="Models\BookATaxiDialogResult.cs" />
     <Compile Include="PlatformIntegration\AndroidDeviceOrientationService.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
@@ -695,10 +695,6 @@
     <AndroidResource Include="Resources\Drawable\notification_background.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <Compile Include="Activities\Book\OrderBookingOptionsDialogActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_OrderBookingOptionsDialog.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\button_action_company_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_company_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\rounded_dialog_background.xml" />
@@ -874,6 +870,9 @@
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_available.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge_selected.png" />
+    <AndroidResource Include="Resources\Drawable\default_vehicle_medaillon_icon.xml" />
+    <AndroidResource Include="Resources\Drawable\green_vehicle_medaillon_icon.xml" />
+    <AndroidResource Include="Resources\Drawable\yellow_vehicle_medaillon_icon.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

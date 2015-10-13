@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.IBS
         public int? FleetId { get; set; }
 
         public int? Eta { get; set; }
+
         public int? VehicleType { get; set; }
     }
 }

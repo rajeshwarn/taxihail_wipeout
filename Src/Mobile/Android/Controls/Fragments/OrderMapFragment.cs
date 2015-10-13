@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -256,11 +256,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                                 : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
                             .Visible(true);
 
-
                         if (_showVehicleNumber)
                         {
                             var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
-                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
+                            var addBottomMargin = !(ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0);
+
+                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater, addBottomMargin, _resources, value.Market));
 
                             mapOptions.SetTitle(value.VehicleNumber);
                         }
@@ -284,19 +285,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
 			// Booking is now over, so we need to clean up.
-	        if (value != null)
-	        {
-				return;
-	        }
-
-			_isBookingMode = false;
-
-			if (_taxiLocationPin != null)
-		    {
-			    _taxiLocationPin.Visible = false;
+            if (value == null && _taxiLocationPin != null)
+            {
+                _isBookingMode = false;
+                _taxiLocationPin.Visible = false;
 				_taxiLocationPin.Remove();
 			    _taxiLocationPin = null;
-		    }
+            }
 	    }
 
 		private Bitmap CreateTaxiBitmap()

@@ -514,7 +514,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 false,
                                 vehicle.LogoName,
                                 ViewModel.Settings.ShowOrientedPins,
-                                vehicle.CompassCourse);
+                                vehicle.CompassCourse,
+                                vehicle.Market);
             
             vehicleAnnotation.HideMedaillonsCommand = new AsyncCommand(() =>
                 {
@@ -761,13 +762,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 true,
                 null,
                 showOrientedPins,
-                value.CompassCourse??0);
+                value.CompassCourse??0,
+                value.Market);
 
             AddAnnotation(_taxiLocationPin);
             SetNeedsDisplay();
-
-
-
         }
 
 
