@@ -19,25 +19,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class MapViewModel: BaseViewModel
     {
-		
-		private static readonly int TimeToKeepVehiclesOnMapWhenResultNull = 10; // In seconds
-		private DateTime? _keepVehiclesWhenResultNullStartTime = null;
+	    private const int TimeToKeepVehiclesOnMapWhenResultNull = 10; // In seconds
+	    private DateTime? _keepVehiclesWhenResultNullStartTime = null;
        
 		private readonly IOrderWorkflowService _orderWorkflowService;
-		private readonly IVehicleService _vehicleService;
 
-		public static int ZoomStreetLevel = 14;
+	    public static int ZoomStreetLevel = 14;
 
 		public MapViewModel(IOrderWorkflowService orderWorkflowService, IVehicleService vehicleService)
         {
-			_orderWorkflowService = orderWorkflowService;
-			_vehicleService = vehicleService;
+		    _orderWorkflowService = orderWorkflowService;
 
-			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
+		    Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
 			Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(), isDestinationModeOpened => IsDestinationModeOpened = isDestinationModeOpened);
             Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
-			Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
+			Observe(vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
         }
 
 		public override void Start()

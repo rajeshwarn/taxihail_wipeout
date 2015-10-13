@@ -716,7 +716,11 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_available.png" />
     <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_passenger.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_passenger.png" />
+    <Compile Include="Activities\Setting\CreditCardMultipleActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_Payments_CreditCardMultiple.axml" />
+    <AndroidResource Include="Resources\Layout\CreditCardListItem.axml" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
+    <Compile Include="Converters\IsPersonalCreditCardConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -870,7 +874,9 @@
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_available.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge_selected.png" />
-    <AndroidResource Include="Resources\Drawable\CarNumberOnTheVehicleIcon.xml" />
+    <AndroidResource Include="Resources\Drawable\default_vehicle_medaillon_icon.xml" />
+    <AndroidResource Include="Resources\Drawable\green_vehicle_medaillon_icon.xml" />
+    <AndroidResource Include="Resources\Drawable\yellow_vehicle_medaillon_icon.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

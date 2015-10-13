@@ -366,6 +366,9 @@
     <Compile Include="BindingConverter\DialCodeConverter.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardBaseViewModel.cs" />
+    <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">

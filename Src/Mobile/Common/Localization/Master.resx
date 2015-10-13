@@ -1101,6 +1101,12 @@
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>Credit Cards</value>
   </data>
+  <data name="PaymentDetails.PaymentMethodsLabel" xml:space="preserve">
+    <value>Payment Methods</value>
+  </data>
+  <data name="PaymentDetails.AddNewCreditCardButtonLabel" xml:space="preserve">
+    <value>Add New Card</value>
+  </data>
   <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
     <value>Cards</value>
   </data>
@@ -1110,11 +1116,23 @@
   <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
     <value>Tip Amount</value>
   </data>
+  <data name="PaymentDetails.Label.Personal" xml:space="preserve">
+    <value>Personal</value>
+  </data>
+  <data name="PaymentDetails.Label.Business" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="PaymentDetails.LabelName" xml:space="preserve">
+    <value>Label</value>
+  </data>
   <data name="PaymentDetails.InvalidTipAmount" xml:space="preserve">
     <value>Tip amount is invalid</value>
   </data>
   <data name="PaymentDetails.InvalidDataTitle" xml:space="preserve">
     <value>Invalid payment information</value>
+  </data>
+   <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Zip/Postal</value>
   </data>
   <data name="View_CreditCard" xml:space="preserve">
     <value>Payment</value>
@@ -1130,6 +1148,9 @@
   </data>
   <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
     <value>You cannot delete your credit card when an order is scheduled or in progress.</value>
+  </data>
+  <data name="CreditCardLabel" xml:space="preserve">
+    <value>Label</value>
   </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Name as it appears on card</value>
@@ -1154,6 +1175,9 @@
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
     <value>Cannot save credit card</value>
+  </data>
+  <data name="CreditCardError_Label" xml:space="preserve">
+    <value>Cannot save credit card label. Please try again</value>
   </data>
   <data name="CreditCardRequiredFields" xml:space="preserve">
     <value>All the fields are required</value>
@@ -1427,6 +1451,9 @@
   </data>
   <data name="ScanCreditCard" xml:space="preserve">
     <value>Scan Credit Card</value>
+  </data>
+  <data name="SetAsDefaultCreditCard" xml:space="preserve">
+    <value>Set As Default</value>
   </data>
   <data name="View_InitializeOrderForAccountPayment" xml:space="preserve">
     <value>Please answer these questions</value>
@@ -1986,11 +2013,17 @@
   <data name="StatusEditAutoTipButton" xml:space="preserve">
     <value>Tip</value>
     </data>
+  <data name="StatusEditAutoPaymentButton" xml:space="preserve">
+    <value>Payment</value>
+    </data>
   <data name="AirportsButton" xml:space="preserve">
     <value>Airports</value>
   </data>
   <data name="View_EditAutoTip" xml:space="preserve">
     <value>Edit Tip</value>
+	</data>
+  <data name="View_EditAutoPayment" xml:space="preserve">
+    <value>Edit Payment</value>
 	</data>
    <data name="TrainStationsButton" xml:space="preserve">
     <value>Train Stations</value>
@@ -2066,6 +2099,12 @@
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
+  </data>
+  <data name="SetCreditCardAsDefault_Error" xml:space="preserve">
+    <value>Couldn't update your default credit card. Please try again</value>
+  </data>
+  <data name="DefaultCreditCard_Label" xml:space="preserve">
+    <value>(DEFAULT)</value>
   </data>
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
     <value>Sorry, no taxis currently available nearby.</value>
@@ -2188,7 +2227,10 @@
     <value>Terms and conditions</value>
   </data>
 	<data name="CreditCardAddingActivityName" xml:space="preserve">
-    <value>Add or edit credit card</value>
+    <value>Payment</value>
+  </data>
+	<data name="CreditCardMultipleActivityName" xml:space="preserve">
+    <value>Payment</value>
   </data>
 	<data name="AccountCreationActivityName" xml:space="preserve">
     <value>Account creation</value>

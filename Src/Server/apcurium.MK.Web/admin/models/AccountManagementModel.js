@@ -134,7 +134,7 @@
 		{
 			email = email.toString();
 
-			if (email.length)
+			if (email.length > 0 && countryCode.length > 0 && phoneNumber.length > 0)
 			{
 				$.ajax({
 					type: 'GET',
@@ -156,7 +156,7 @@
 		{
 			email = email.toString();
 
-			if (email.length)
+			if (email.length > 0)
 			{
 				$.ajax({
 					type: 'PUT',
@@ -178,7 +178,7 @@
 		{
 			email = email.toString();
 
-			if (email.length)
+			if (email.length > 0)
 			{
 				$.ajax({
 					type: 'PUT',
@@ -200,12 +200,32 @@
 		{
 			email = email.toString();
 
-			if (email.length)
+			if (email.length > 0)
 			{
 				$.ajax({
 					type: 'PUT',
 					url: "../api/account/unlink",
 					data: { format: "json", accountEmail: email },
+					dataType: "application/json",
+					complete: function (data)
+					{
+						if (completeCallback != undefined && completeCallback != null)
+						{
+							completeCallback(viewObject, data);
+						}
+					}
+				});
+			}
+		},
+
+		deleteAccountCreditCards: function (accountID, viewObject, completeCallback)
+		{
+			if (accountID.toString().length > 0)
+			{
+				$.ajax({
+					type: 'DELETE',
+					url: "../api/admin/deleteAllCreditCards/" + accountID.toString(),
+					data: { format: "json" },
 					dataType: "application/json",
 					complete: function (data)
 					{

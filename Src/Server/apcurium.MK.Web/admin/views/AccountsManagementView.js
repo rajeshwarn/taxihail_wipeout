@@ -66,13 +66,13 @@
 					}
 					else
 					{
-						viewObject.$('.errors').text(TaxiHail.localize('Error during users search'))
+						viewObject.$('.errors').text(TaxiHail.localize('Error during users search'));
 					}
 				});
 			}
 			else
 			{
-				this.$('.errors').text(TaxiHail.localize('Email should not be empty'))
+				this.$('.errors').text(TaxiHail.localize('Email should not be empty'));
 			}
 		},
 

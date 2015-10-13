@@ -98,10 +98,12 @@ namespace MK.Common.Configuration
             TwitterCallback = "http://www.taxihail.com/oauth";
             TwitterRequestTokenUrl = "https://api.twitter.com/oauth/request_token";
             
-            InitialZoomLevel = 14;       
-     
+            InitialZoomLevel = 14;
 
-			FlightStats = new FlightStatsSettingsContainer
+            MaxNumberOfCardsOnFile = 1;
+            SendZipCodeWhenTokenizingCard = false;
+
+            FlightStats = new FlightStatsSettingsContainer
 			{
 				UseAirportDetails = false
 			};
@@ -482,8 +484,16 @@ namespace MK.Common.Configuration
         public bool ShowMessageDriver { get; set; }
 
         [SendToClient, CustomizableByCompany]
+        [Display(Name = "Display - Maximum number of Cards On File", Description = "Maximum number of Credit cards the client car add to his account")]
+        public int MaxNumberOfCardsOnFile { get; set; }
+        
+        [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - Use vehicle direction", Description = "Available only with GEO. When enabled, the marked will be oriented according to the vehicle direction information")]
         public bool ShowOrientedPins { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Display - ZipCode required when tokenizing card", Description = "Send the zip code when tokenizing card")]
+        public bool SendZipCodeWhenTokenizingCard { get; set; }
 
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - Hide TaxiHail Network from menu", Description = "Hide THNetwork from app menu item")]

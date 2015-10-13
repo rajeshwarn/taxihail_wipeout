@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class CreditCardAddView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCardDefault { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnDeleteCard { get; set; }
 
 		[Outlet]
@@ -43,6 +46,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblInstructions { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblLabel { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblNameOnCard { get; set; }
 
 		[Outlet]
@@ -50,6 +56,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.UILabel lblTip { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblZipCode { get; set; }
+
+		[Outlet]
+		UIKit.UISegmentedControl segmentedLabel { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCardNumber { get; set; }
@@ -70,16 +82,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtTip { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtZipCode { get; set; }
+
+		[Outlet]
 		UIKit.UIView viewCreditCard { get; set; }
+
+		[Outlet]
+		UIKit.UIView viewLabel { get; set; }
 
 		[Outlet]
 		UIKit.UIView viewPayPal { get; set; }
 
 		[Outlet]
 		UIKit.UIView viewPayPalIsLinkedInfo { get; set; }
+
+		[Outlet]
+		UIKit.UIView viewTip { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (txtZipCode != null) {
+				txtZipCode.Dispose ();
+				txtZipCode = null;
+			}
+
+			if (lblZipCode != null) {
+				lblZipCode.Dispose ();
+				lblZipCode = null;
+			}
+
+			if (btnCardDefault != null) {
+				btnCardDefault.Dispose ();
+				btnCardDefault = null;
+			}
+
 			if (btnDeleteCard != null) {
 				btnDeleteCard.Dispose ();
 				btnDeleteCard = null;
@@ -130,6 +166,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblInstructions = null;
 			}
 
+			if (lblLabel != null) {
+				lblLabel.Dispose ();
+				lblLabel = null;
+			}
+
 			if (lblNameOnCard != null) {
 				lblNameOnCard.Dispose ();
 				lblNameOnCard = null;
@@ -138,6 +179,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblPayPalLinkedInfo != null) {
 				lblPayPalLinkedInfo.Dispose ();
 				lblPayPalLinkedInfo = null;
+			}
+
+			if (lblTip != null) {
+				lblTip.Dispose ();
+				lblTip = null;
+			}
+
+			if (segmentedLabel != null) {
+				segmentedLabel.Dispose ();
+				segmentedLabel = null;
 			}
 
 			if (txtCardNumber != null) {
@@ -165,9 +216,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtNameOnCard = null;
 			}
 
+			if (txtTip != null) {
+				txtTip.Dispose ();
+				txtTip = null;
+			}
+
 			if (viewCreditCard != null) {
 				viewCreditCard.Dispose ();
 				viewCreditCard = null;
+			}
+
+			if (viewLabel != null) {
+				viewLabel.Dispose ();
+				viewLabel = null;
 			}
 
 			if (viewPayPal != null) {
@@ -180,14 +241,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				viewPayPalIsLinkedInfo = null;
 			}
 
-			if (lblTip != null) {
-				lblTip.Dispose ();
-				lblTip = null;
-			}
-
-			if (txtTip != null) {
-				txtTip.Dispose ();
-				txtTip = null;
+			if (viewTip != null) {
+				viewTip.Dispose ();
+				viewTip = null;
 			}
 		}
 	}

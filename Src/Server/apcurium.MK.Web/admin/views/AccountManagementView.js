@@ -11,7 +11,8 @@
 		{
 			'click [data-action=sendConfirmationCodeSMS]': 'sendConfirmationCodeSMS',
 			'click [data-action=enableDisableAccount]': 'enableDisableAccount',
-			'click [data-action=unlinkIBSAccount]': 'unlinkIBSAccount'
+			'click [data-action=unlinkIBSAccount]': 'unlinkIBSAccount',
+			'click [data-action=deleteCreditCardsInfo]': 'deleteCreditCardsInfo'
 		},
 
 		initialize: function (accountManagementModel)
@@ -51,7 +52,8 @@
 
 			var account = model.getAccount(e.currentTarget.attributes.accountid.nodeValue);
 
-			if (account && account.email && account.settings.country.code && account.settings.phone)
+			if (account && account.email && account.settings.country.code && account.settings.phone
+				&& account.email.toString().length > 0 && account.settings.country.code.toString().length > 0 && account.settings.phone.toString().length > 0)
 			{
 				var sendButton = document.getElementById("buttonSendSMS" + account.id);
 				sendButton.disabled = true;
@@ -65,13 +67,13 @@
 					else
 					{
 						sendButton.disabled = false;
-						viewObject.$('.errors').text(TaxiHail.localize('SendSMSError'))
+						viewObject.$('.errors').text(TaxiHail.localize('SendSMSError'));
 					}
 				});
 			}
 			else
 			{
-				this.$('.errors').text(TaxiHail.localize('Email should not be empty'))
+				this.$('.errors').text(TaxiHail.localize('Email, country code and phone number should not be empty'));
 			}
 		},
 
@@ -97,7 +99,7 @@
 						else
 						{
 							enableDisableAccountButton.disabled = false;
-							viewObject.$('.errors').text(TaxiHail.localize('Error during enable/disable account'))
+							viewObject.$('.errors').text(TaxiHail.localize('Error during enable/disable account'));
 						}
 					});
 				}
@@ -112,14 +114,14 @@
 						else
 						{
 							enableDisableAccountButton.disabled = false;
-							viewObject.$('.errors').text(TaxiHail.localize('Error during enable/disable account'))
+							viewObject.$('.errors').text(TaxiHail.localize('Error during enable/disable account'));
 						}
 					});
 				}
 			}
 			else
 			{
-				this.$('.errors').text(TaxiHail.localize('Email should not be empty'))
+				this.$('.errors').text(TaxiHail.localize('Account should not be empty'));
 			}
 		},
 
@@ -151,6 +153,34 @@
 			{
 				this.$('.errors').text(TaxiHail.localize('Email should not be empty'))
 			}
+		},
+
+		deleteCreditCardsInfo: function (e)
+		{
+			e.preventDefault();
+
+			var account = model.getAccount(e.currentTarget.attributes.accountid.nodeValue);
+
+			TaxiHail.confirm({
+				title: "Credit card removal",
+				message: "Confirm removing all credit cards for user " + account.name
+			}).on('ok', function ()
+			{
+				var buttonDeleteCreditCardsInfo = document.getElementById("buttonDeleteCreditCardsInfo" + account.id);
+				buttonDeleteCreditCardsInfo.disabled = true;
+				model.deleteAccountCreditCards(account.id, this, function (viewObject, data)
+				{
+					if (data.status == 200)
+					{
+						buttonDeleteCreditCardsInfo.innerText = "Credit cards info deleted";
+					}
+					else
+					{
+						buttonDeleteCreditCardsInfo.disabled = false;
+						viewObject.$('.errors').text('Error during credit cards info removing');
+					}
+				});
+			}, this);
 		}
 	});
 }());

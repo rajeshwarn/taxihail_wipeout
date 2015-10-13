@@ -136,6 +136,10 @@
 				<button id="buttonUnlinkIBSAccount{{account.id}}" type="submit" class='btn btn-primary span buttonaccount' style="margin-left:0" data-action='unlinkIBSAccount' accountid="{{account.id}}">{{localize "Unlink IBS Account(s)"}}</button>
 			</div>
 
+			<div>
+				<button id="buttonDeleteCreditCardsInfo{{account.id}}" type="submit" class='btn btn-primary span buttonaccount' data-action='deleteCreditCardsInfo' accountid="{{account.id}}">{{localize "Delete all credit cards information"}}</button>
+			</div>
+
 			{{/unless}}
 
         </div>

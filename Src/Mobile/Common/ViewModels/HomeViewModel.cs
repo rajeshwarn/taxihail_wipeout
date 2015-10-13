@@ -273,7 +273,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (!_isShowingCreditCardExpiredPrompt)
 			{
                 // Update cached credit card
-				await _accountService.GetCreditCard();
+				await _accountService.GetDefaultCreditCard();
 
 				if (!_accountService.CurrentAccount.IsPayPalAccountLinked
 					&& _accountService.CurrentAccount.DefaultCreditCard != null
@@ -282,7 +282,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_isShowingCreditCardExpiredPrompt = true;
 
 					// remove card
-					await _accountService.RemoveCreditCard();
+					await _accountService.RemoveCreditCard(_accountService.CurrentAccount.DefaultCreditCard.CreditCardId);
 
 					var paymentSettings = await _paymentService.GetPaymentSettings();
 					if (!paymentSettings.IsPayInTaxiEnabled)

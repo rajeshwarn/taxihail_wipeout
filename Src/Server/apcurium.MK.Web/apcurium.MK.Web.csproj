@@ -30,6 +30,7 @@
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <DontImportPostSharp>True</DontImportPostSharp>
     <SkipPostSharp>True</SkipPostSharp>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -443,16 +444,22 @@
     <Content Include="Areas\AdminTH\Views\CompanySettings\Index.cshtml" />
     <Content Include="Areas\Company\Views\TermsAndConditions\Index.cshtml" />
     <Content Include="Areas\AdminTH\Views\Order\ViewDebug.cshtml" />
-    <Content Include="localization\Payment.json" />
-    <Content Include="localization\Payment-fr.json" />
-    <Content Include="localization\Payment-es.json" />
+    <Content Include="localization\PaymentDetail.json" />
+    <Content Include="localization\PaymentDetail-fr.json" />
+    <Content Include="localization\PaymentDetail-es.json" />
     <Content Include="Areas\AdminTH\Views\PromoCode\Unlock.cshtml" />
     <Content Include="localization\Sherbet-en.json" />
     <Content Include="localization\BlackCabNow-en.json" />
     <Content Include="Areas\AdminTH\Views\TaxiHailNetwork\Fees.cshtml" />
     <Content Include="admin\templates\AccountsManagement.handlebars" />
     <Content Include="admin\templates\ExportPromotions.handlebars" />
-    <None Include="admin\templates\AccountManagement.handlebars" />
+    <Content Include="admin\templates\AccountManagement.handlebars" />
+    <Content Include="localization\PaymentItem.json" />
+    <Content Include="localization\PaymentItem-fr.json" />
+    <Content Include="localization\PaymentItem-es.json" />
+    <Content Include="localization\Payment.json" />
+    <Content Include="localization\Payment-fr.json" />
+    <Content Include="localization\Payment-es.json" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -491,6 +498,8 @@
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\ConfirmCVVView.js" />
+    <Content Include="views\PaymentDetailView.js" />
+    <Content Include="views\PaymentItemView.js" />
     <Content Include="views\PaymentView.js" />
     <Content Include="views\QuestionItemView.js" />
     <Content Include="views\BookAccountChargeView.js" />
@@ -634,8 +643,10 @@
     <Content Include="localization\UserAccount-es.json" />
     <Content Include="localization\TaxiHailPro-en.json" />
     <Content Include="localization\TaxiHailPro-fr.json" />
-    <Content Include="templates\Payment.handlebars" />
+    <Content Include="templates\PaymentDetail.handlebars" />
     <Content Include="templates\ConfirmCVV.handlebars" />
+    <Content Include="templates\Payment.handlebars" />
+    <Content Include="templates\PaymentItem.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
