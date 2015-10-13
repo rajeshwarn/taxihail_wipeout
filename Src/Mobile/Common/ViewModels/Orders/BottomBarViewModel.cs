@@ -428,7 +428,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-        public ICommand ConfirmOrder
+        public ICommand ConfirmOrderCommand
         {
             get
             {
@@ -436,7 +436,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
 					var tipIncentive = await _orderWorkflowService.GetTipIncentive();
 
-					if(tipIncentive.HasValue && tipIncentive != 0)
+					if(tipIncentive.HasValue && tipIncentive > 0)
 					{
 						await this.Services().Message.ShowMessage(
 							this.Services().Localize["DriverBonusWarningTitle"], 
@@ -444,20 +444,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							this.Services().Localize["YesButton"], 
 							async () => 
 							{ 
-								await ConfirmOrderMethod(); 
+								await ConfirmOrder(); 
 							},
 							this.Services().Localize["NoButton"], 
 							() => { }); 
 					}
 					else
 					{
-						await ConfirmOrderMethod();
+						await ConfirmOrder();
 					}
 				});
             }
         }
 
-		private async Task ConfirmOrderMethod()
+		private async Task ConfirmOrder()
 		{
 			try
 			{
