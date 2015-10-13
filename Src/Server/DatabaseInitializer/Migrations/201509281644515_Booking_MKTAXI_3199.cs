@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Migrations
     {
         public override void Up()
         {
-            AddColumn("Booking.CreditCardDetails", "Label", c => c.String(false, null, null, null, CreditCardConstants.Personal));
+            AddColumn("Booking.CreditCardDetails", "Label", c => c.String(false, null, null, null, CreditCardLabelConstants.Personal.ToString()));
         }
         
         public override void Down()
