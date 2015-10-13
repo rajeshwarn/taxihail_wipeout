@@ -499,6 +499,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _vehicleTypeSubject;
 		}
 
+		public IObservable<ServiceType> GetAndObserveServiceType()
+		{
+			return _serviceTypeSubject;
+		}
+
 		public IObservable<BookingSettings> GetAndObserveBookingSettings()
 		{
 			return _bookingSettingsSubject;
