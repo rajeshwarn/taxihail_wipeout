@@ -898,6 +898,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Driver Bonus.
+        /// </summary>
+        public static string Email_Body_TipIncentive {
+            get {
+                return ResourceManager.GetString("Email_Body_TipIncentive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tolls.
         /// </summary>
         public static string Email_Body_Toll {

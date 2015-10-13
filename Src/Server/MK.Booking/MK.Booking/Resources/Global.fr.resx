@@ -222,6 +222,9 @@
   <data name="Email_Body_Tip" xml:space="preserve">
     <value>Pourboire</value>
   </data>
+  <data name="Email_Body_TipIncentive" xml:space="preserve">
+    <value>Bonus Conducteur</value>
+  </data>
   <data name="Email_Body_Promo" xml:space="preserve">
     <value>Promotion</value>
   </data>

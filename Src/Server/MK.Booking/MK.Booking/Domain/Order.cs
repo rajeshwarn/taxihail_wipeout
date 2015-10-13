@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Domain
 
 		public void UpdateOrderCreated(Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees)
+			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, double? tipIncentive)
 		{
 			if ((settings == null) || pickupAddress == null ||
 				(Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
@@ -86,13 +86,14 @@ namespace apcurium.MK.Booking.Domain
 				CompanyName = companyName,
 				Market = market,
 				IsPrepaid = isPrepaid,
-				BookingFees = bookingFees
+				BookingFees = bookingFees,
+                TipIncentive = tipIncentive
 			});
 		}
 
 		public void UpdateOrderReportCreated(Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, string error)
+			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, string error, double? tipIncentive)
 		{
 			Update(new OrderReportCreated
 			{
@@ -115,7 +116,8 @@ namespace apcurium.MK.Booking.Domain
 				Market = market,
 				IsPrepaid = isPrepaid,
 				BookingFees = bookingFees,
-				Error = error
+				Error = error,
+                TipIncentive = tipIncentive
 			});
 		}
 

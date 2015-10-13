@@ -126,7 +126,8 @@ namespace apcurium.MK.Booking.Api.Services
 				OrderId = request.Id,
 				EstimatedFare = request.Estimate.Price,
 				UserAgent = Request.UserAgent,
-				ClientVersion = Request.Headers.Get("ClientVersion")
+				ClientVersion = Request.Headers.Get("ClientVersion"),
+                TipIncentive = request.TipIncentive
 			};
 		}
 
@@ -1163,6 +1164,7 @@ namespace apcurium.MK.Booking.Api.Services
                 prompts,
                 promptsLength,
                 defaultVehiculeType != null ? defaultVehiculeType.ReferenceDataVehicleId : -1,
+                request.TipIncentive,
                 fare);
 
             return result;
