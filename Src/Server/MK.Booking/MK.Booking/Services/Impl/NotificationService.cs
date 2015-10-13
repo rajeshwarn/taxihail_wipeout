@@ -523,7 +523,7 @@ namespace apcurium.MK.Booking.Services.Impl
             int? rateClassStart = null;
             int? rateClassEnd = null;
             double? fareAtAlternateRate = null;
-            double? tipIncentive = null;
+            double tipIncentive = 0;
 
             // RideLinQ Rate class & fare
             if (cmtRideLinqFields != null)
@@ -578,7 +578,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-            var totalAmount = fare + toll + tax + tip + bookingFees + surcharge + extra - amountSavedByPromotion
+            var totalAmount = fare + toll + tax + tip + bookingFees + surcharge + tipIncentive + extra - amountSavedByPromotion
                 + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
                 + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
 
@@ -662,7 +662,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowRateClassStart = rateClassStart.HasValue || isCmtRideLinqReceipt,
                 ShowRateClassEnd = rateClassEnd.HasValue,
                 ShowDistance = isCmtRideLinqReceipt,
-                ShowTipIncentive = tipIncentive.HasValue && tipIncentive > 0,
+                ShowTipIncentive = tipIncentive > 0,
 
                 vatIsEnabled,
                 HasPaymentInfo = hasPaymentInfo,
