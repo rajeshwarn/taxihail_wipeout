@@ -420,7 +420,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return _isAddingNew;
+				return _isAddingNew || IsMandatory;
 			}
 		}
 
@@ -451,19 +451,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand(async() =>
 					{
-						
-						var updated = await _accountService.UpdateDefaultCreditCard(Data.CreditCardId);
-						if(updated)
+						using (this.Services ().Message.ShowProgress ())
 						{
-							if (_paymentToSettle != null)
+							var updated = await _accountService.UpdateDefaultCreditCard(Data.CreditCardId);
+							if(updated)
 							{
-								await SettleOverduePayment();
+								if (_paymentToSettle != null)
+								{
+									await SettleOverduePayment();
+								}
+								Close(this);
 							}
-							Close(this);
-						}
-						else
-						{
-							this.Services().Message.ShowMessage(null, this.Services().Localize["SetCreditCardAsDefault_Error"]);
+							else
+							{
+								this.Services().Message.ShowMessage(null, this.Services().Localize["SetCreditCardAsDefault_Error"]);
+							}
 						}
 					});
 			}

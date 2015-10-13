@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
 
         public override object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return bool.Parse(value.ToString()) == true ? CreditCardLabelConstants.Personal.ToString() : CreditCardLabelConstants.Business.ToString();
+            return bool.Parse(value.ToString()) == true ? CreditCardLabelConstants.Personal : CreditCardLabelConstants.Business;
         }
     }
 }

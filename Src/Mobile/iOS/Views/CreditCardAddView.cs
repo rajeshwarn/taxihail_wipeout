@@ -82,9 +82,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             lblInstructions.Text = Localize.GetValue("CreditCardInstructions");
 
-            if (!ViewModel.ShowInstructions)
+            if (!ViewModel.CanChooseTip)
             {
-                lblInstructions.RemoveFromSuperview();
+                viewTip.RemoveFromSuperview();
+            }
+            else
+            {
+                ConfigureTipSection();
             }
 
             if (!ViewModel.CanChooseLabel)
@@ -96,15 +100,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ConfigureLabelSection();
             }
 
-            if (!ViewModel.CanChooseTip)
+            if (!ViewModel.ShowInstructions)
             {
-                viewTip.RemoveFromSuperview();
+                lblInstructions.RemoveFromSuperview();
             }
-            else
-            {
-                ConfigureTipSection();
-            }
-                
+
             if (!ViewModel.IsPayPalOnly)
             {
                 ConfigureCreditCardSection();
@@ -128,6 +128,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnSaveCard)
                 .For("Title")
                 .To(vm => vm.CreditCardSaveButtonDisplay);
+            
             set.Bind(btnSaveCard)
                 .For("TouchUpInside")
 				.To(vm => vm.SaveCreditCardCommand);
@@ -135,6 +136,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(btnDeleteCard)
 				.For("TouchUpInside")
 				.To(vm => vm.DeleteCreditCardCommand);
+            
 			set.Bind(btnDeleteCard)
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.CanDeleteCreditCard)
@@ -143,6 +145,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnCardDefault)
                 .For("TouchUpInside")
                 .To(vm => vm.SetAsDefault);
+            
             set.Bind(btnCardDefault)
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.CanSetCreditCardAsDefault)
@@ -159,6 +162,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtCardNumber)
 				.For(v => v.Text)
 				.To(vm => vm.CreditCardNumber);
+            
 			set.Bind(txtCardNumber)
 				.For(v => v.ImageLeftSource)
 				.To(vm => vm.CreditCardImagePath);
