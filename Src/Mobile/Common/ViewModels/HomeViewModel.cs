@@ -101,8 +101,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				BookingStatus.StartBookingStatus(deserializedRidelinqDetails, true);
 
-				CurrentViewState = HomeViewModelState.ManualRidelinq;
-
 				return;
 			}
 
@@ -111,9 +109,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var deserializedOrder = JsonSerializer.DeserializeFromString<Order>(order);
 				var deserializeOrderStatus = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatusDetail);
 
-				BookingStatus.StartBookingStatus(deserializedOrder, deserializeOrderStatus);
-
 				CurrentViewState = HomeViewModelState.BookingStatus;
+
+				BookingStatus.StartBookingStatus(deserializedOrder, deserializeOrderStatus);	
 			}
 		}
 
