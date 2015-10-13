@@ -719,6 +719,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 return;
             }
 
+            if (value == null)
+            {
+                return;
+            }
+
 	        // Update Marker and Animate it to see it move on the map
             if (_taxiLocationPin != null)
             {
@@ -775,7 +780,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 _orderStatusDetail = value;
 
-				
+                if (_orderStatusDetail == null)
+                {
+                    return;
+                }
 
 				if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)
 				{
@@ -813,6 +821,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void ShowPinsOnMap()
         {
+            if (_center == null)
+            {
+                return;
+            }
+
             var annotations = _center.ToArray();
 
             // There is nothing to do here
