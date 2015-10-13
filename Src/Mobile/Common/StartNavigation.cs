@@ -85,8 +85,13 @@ namespace apcurium.MK.Booking.Mobile
 						});
                     }
                 }
-                catch(Exception)
+                catch(Exception ex)
                 {
+					var logger = Mvx.Resolve<ILogger>();
+
+					logger.LogMessage("An error occurred while handling notifications");
+					logger.LogError(ex);
+
                     ShowViewModel<HomeViewModel>(new { locateUser = true });
                 }
             }
