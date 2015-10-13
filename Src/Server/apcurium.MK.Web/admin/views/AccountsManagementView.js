@@ -72,7 +72,7 @@
 			}
 			else
 			{
-				this.$('.errors').text(TaxiHail.localize('Email should not be empty'));
+				this.$('.errors').text(TaxiHail.localize('Search criteria field should not be empty'));
 			}
 		},
 
