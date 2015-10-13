@@ -158,6 +158,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void LocateUserIfNeeded()
 		{
+//			if (true)
+//			{
+//				CurrentViewState = HomeViewModelState.Review;
+//				return;
+//			}
+
 			if (_locateUser && !_isShowingTutorial)
 			{
 				AutomaticLocateMeAtPickup.Execute(null);
