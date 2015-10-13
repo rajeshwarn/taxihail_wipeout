@@ -13,7 +13,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class OrderReviewViewModel: BaseViewModel
     {
-        private const float SliderStepValue = 5f;
+		private const float SliderStepValue = 5f;
+		private const float MinimumIncentiveValue = 5f;
 
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
@@ -38,6 +39,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObserveNoteToDriver().Throttle(TimeSpan.FromMilliseconds(500)), note => Note = note);
 			Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
 			Observe(_orderWorkflowService.GetAndObserveTipIncentive(), tipIncentive => DriverBonus = tipIncentive);
+
+			_driverBonus = 5;
 
 			GetIsCmtRideLinq();
 		}
@@ -190,7 +193,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		private double? _driverBonus = 5;
+		private double? _driverBonus;
         public double? DriverBonus
 		{
 			get { return _driverBonus; }
@@ -198,20 +201,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				if (value == null)
 				{
+					_driverBonus = MinimumIncentiveValue;
 					DriverBonusEnabled = false;
+					RaisePropertyChanged();
 				}
 				else if (_driverBonus != value)
                 {
                     // to get steps of 5
 					var valueFactorOf5 = (double)Math.Round(value.Value / SliderStepValue) * SliderStepValue;
-                    _driverBonus = (valueFactorOf5 == 0) ? 5 : valueFactorOf5;
-                    _orderWorkflowService.SetTipIncentive(_driverBonus);
+					_driverBonus = (valueFactorOf5 == 0) ? MinimumIncentiveValue : valueFactorOf5;
+					_orderWorkflowService.SetTipIncentive(_driverBonus);
 					RaisePropertyChanged();
 				}
 			}
 		}
 
-		private bool _driverBonusEnabled = false;
+		private bool _driverBonusEnabled;
 		public bool DriverBonusEnabled
 		{
 			get { return _driverBonusEnabled; }

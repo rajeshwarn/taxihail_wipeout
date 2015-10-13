@@ -42,18 +42,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             lblBonusDescription.PreferredMaxLayoutWidth = this.Superview.Bounds.Size.Width - 20;
             lblBonusAmount.TextColor = UIColor.FromRGB(208, 208, 208);
 
-            switchBonus.ValueChanged += (sender, e) => 
-                {
-                    if(switchBonus.On)
-                    {
-                        lblBonusAmount.TextColor = UIColor.Black;
-                    }
-                    else
-                    {
-                        lblBonusAmount.TextColor = UIColor.FromRGB(208, 208, 208);
-                    }
-                };
-
             Foundation.NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, ObserveKeyboardShown);
 
             FlatButtonStyle.CompanyColor.ApplyTo(btnViewPromo);
@@ -175,6 +163,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				.For(v => v.Hidden)
 				.To(vm => vm.PromoCode)
                 .WithConversion("HasValueToVisibility");
+            
+            set.Bind(switchBonus)
+                .For(v => v.On)
+                .To(vm => vm.DriverBonusEnabled);
 
             set.Bind(sliderBonus)
                 .For(v => v.Value)
@@ -185,22 +177,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .To(vm => vm.DriverBonus)
                 .WithConversion("CurrencyFormat");
 
-            set.Bind(switchBonus)
-                .For(v => v.On)
-                .To(vm => vm.DriverBonusEnabled);
-
-            set.Bind(sliderBonus)
-                .For(v => v.Enabled)
-                .To(vm => vm.DriverBonusEnabled);
-
-            set.Bind(lblBonusAmount)
-                .For(v => v.Enabled)
-                .To(vm => vm.DriverBonusEnabled);
-
             set.Bind(this)
                 .For(v => v.RemoveBonusFromView)
                 .To(vm => vm.CanShowDriverBonus)
                 .WithConversion("BoolInverter");
+
+            set.Bind(this)
+                .For(v => v.DriverBonusEnabled)
+                .To(vm => vm.DriverBonusEnabled);
             
             if (!this.Services().Settings.ShowPassengerName)
             {
@@ -276,6 +260,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 if (RemoveBonusFromView)
                 {
                     driverBonusView.RemoveFromSuperview();
+                }
+            }
+        }
+
+        private bool _driverBonusEnabled;
+        public bool DriverBonusEnabled
+        {
+            get { return _driverBonusEnabled; }
+            set
+            {
+                _driverBonusEnabled = value;
+                if (DriverBonusEnabled)
+                {
+                    sliderBonus.Enabled = true;
+                    lblBonusAmount.Enabled = true;
+                    lblBonusAmount.TextColor = UIColor.Black;
+                }
+                else
+                {
+                    sliderBonus.Enabled = false;
+                    lblBonusAmount.Enabled = false;
+                    lblBonusAmount.TextColor = UIColor.FromRGB(208, 208, 208);
                 }
             }
         }
