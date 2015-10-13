@@ -720,12 +720,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var showOrientedPins = ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue;
 
 	        // Update Marker and Animate it to see it move on the map
-            if (_taxiLocationPin != null)
+            if (_taxiLocationPin != null && value.Longitude.HasValue && value.Latitude.HasValue)
             {
-                var taxiLocationPin = _taxiLocationPin as AddressAnnotation;
+                var taxiLocationPin = (AddressAnnotation)_taxiLocationPin;
                 if (showOrientedPins)
                 {
-                    taxiLocationPin.Degrees = value.CompassCourse ?? 0;
+                    taxiLocationPin.Degrees = value.CompassCourse.Value;
                 }
 
                 AnimateAnnotationOnMap(taxiLocationPin, new Position()
