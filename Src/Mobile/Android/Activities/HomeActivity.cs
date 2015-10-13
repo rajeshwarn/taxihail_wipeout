@@ -274,12 +274,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				_orderAirport.ShowWithoutAnimation();
 			}
 
-			if (ViewModel.CurrentViewState == HomeViewModelState.Edit)
-			{
-				_orderOptions.HideWithoutAnimation();
-				_orderEdit.ShowWithoutAnimations();
-			}
-
 			_orderOptions.SizeChanged -= OrderOptionsSizeChanged;
 		}
 
@@ -295,6 +289,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			if (ViewModel.CurrentViewState == HomeViewModelState.Review || ViewModel.CurrentViewState == HomeViewModelState.AirportDetails)
 			{
 				_orderOptions.SizeChanged += OrderOptionsSizeChanged;
+
+				return;
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.Edit)
+			{
+				_orderOptions.HideWithoutAnimation();
+				_orderEdit.ShowWithoutAnimations();
 
 				return;
 			}
