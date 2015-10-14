@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 AccountId = _accountId
             });
 
-            var @event = _sut.ThenHasSingle<AllCreditCardsRemoved>();
+            var @event = _sut.ThenHasSingle<CreditCardRemoved>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
         }
