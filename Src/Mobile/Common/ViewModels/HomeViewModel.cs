@@ -176,20 +176,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 
-				_accountService.GetVehiclesList(true);
+				    _accountService.GetVehiclesList(true);
 				}
 
-			if (_shouldShowReview)
-			{
-				// need to refetch order settings
-				_orderWorkflowService.ResetOrderSettings();
-				CurrentViewState = HomeViewModelState.Review;
-				_shouldShowReview = false;
-			}
-			else
-			{
-				LocateUserIfNeeded();
-			}
+    			if (_shouldShowReview)
+    			{
+    				// need to refetch order settings
+    				_orderWorkflowService.ResetOrderSettings();
+    				CurrentViewState = HomeViewModelState.Review;
+    				_shouldShowReview = false;
+    			}
+    			else
+    			{
+    				LocateUserIfNeeded();
+    			}
 
 				if (_defaultHintZoomLevel != null)
 				{
