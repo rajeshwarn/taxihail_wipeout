@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             StreetNumberTextView.ShowCloseButtonOnKeyboard();
             StreetNumberTextView.VerticalAlignment = UIControlContentVerticalAlignment.Center;
             StreetNumberTextView.SizeToFit();
-            StreetNumberTextView.IncrementWidth(10);
+            StreetNumberTextView.SetHeight(this.Frame.Height).IncrementWidth(10);
             AddSubview(StreetNumberTextView);
 
             AddressTextView = new FlatTextField();   
@@ -77,11 +77,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             LoadingWheel.Color = UIColor.Gray;
             AddSubview(LoadingWheel);
 
-            VerticalDivider = new UIView();
+            VerticalDivider = new UIView(new CGRect(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12));
             VerticalDivider.BackgroundColor = UIColor.FromRGB(118, 118, 118);
             AddSubview(VerticalDivider);
 
-            HorizontalDividerTop = new UIView();
+            HorizontalDividerTop = new UIView(new CGRect(0, 0, this.Frame.Width, UIHelper.OnePixel));
             HorizontalDividerTop.BackgroundColor = UIColor.FromRGB(177, 177, 177);
             AddSubview(HorizontalDividerTop);
 
@@ -191,14 +191,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             base.LayoutSubviews();
 
+            StreetNumberTextView.SizeToFit();
+            StreetNumberTextView.SetHeight(this.Frame.Height).IncrementWidth(10);
+
+            VerticalDivider.Frame = new CGRect(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12);
+
             if (IsSelected)
             {
                 StreetNumberTextView.Hidden = false;
-                StreetNumberTextView.SizeToFit();
-                StreetNumberTextView.SetHeight(this.Frame.Height).IncrementWidth(10);
 
-                VerticalDivider.Frame = new CGRect(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12);
-                HorizontalDividerTop.Frame = new CGRect(0, 0, this.Frame.Width, UIHelper.OnePixel);
                 AddressButton.Frame = AddressTextView.Frame = new CGRect(VerticalDivider.Frame.Right + 6, 0, this.Frame.Width - VerticalDivider.Frame.Right, this.Frame.Height);
 
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Never;

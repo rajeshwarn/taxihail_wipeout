@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -15,7 +14,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using ServiceStack.Text;
@@ -41,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
 		private bool _isFromPromotions;
+		private bool _shouldShowReview;
 		
 #region Const and ReadOnly
         private const string Visa = "Visa";
@@ -63,18 +62,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null, bool isFromPromotions = false)
+		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null, bool isFromPromotions = false, bool shouldShowReview = false)
 		{
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
 			
 			_isFromPromotions = isFromPromotions;
+			_shouldShowReview = shouldShowReview;
 
 			if (paymentToSettle != null)
 			{
 				_paymentToSettle = JsonSerializer.DeserializeFromString<OverduePayment>(paymentToSettle);
 			}
-
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -544,7 +543,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 this.Services().Message.ShowMessage(
                     string.Empty,
                     this.Services().Localize["PayPalLinked"],
-                    () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
+					() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString, shouldShowReview = _shouldShowReview }));
             }
             catch (Exception ex)
             {
@@ -592,7 +591,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             
 			if (!replacedByPayPal)
 			{
-				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString, shouldShowReview = _shouldShowReview });
 			}
 	    }
 
@@ -663,9 +662,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						}
 						else
 						{
-							ShowViewModelAndClearHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+							ShowViewModelAndClearHistory<HomeViewModel>(new { locateUser = bool.TrueString, shouldShowReview = _shouldShowReview });
 						}
-						
 					}
 					else
 					{

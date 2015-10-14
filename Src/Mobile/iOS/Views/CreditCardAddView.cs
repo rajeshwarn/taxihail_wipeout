@@ -4,7 +4,6 @@ using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Card.IO;
 using System;
-using System.Threading.Tasks;
 using Foundation;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.AppServices;
