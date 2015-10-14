@@ -136,7 +136,7 @@ namespace apcurium.MK.Web.Tests
                 Token = tokenResponse.CardOnFileToken
             });
 
-            await sut.RemoveCreditCard();
+            await sut.RemoveCreditCard(creditCardId);
 
             var creditCards = await sut.GetCreditCards();
             Assert.IsEmpty(creditCards);
