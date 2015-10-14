@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Android.App;
@@ -31,7 +29,6 @@ using Android.Views.InputMethods;
 using Cirrious.CrossCore;
 using Cirrious.CrossCore.Core;
 using Cirrious.MvvmCross.Droid.Views;
-using Cirrious.MvvmCross.Parse.StringDictionary;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -89,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		{
 			base.OnNewIntent(intent);
 
-			if (intent.Extras == null)
+			if (intent == null || intent.Extras == null)
 			{
 				return;
 			}
