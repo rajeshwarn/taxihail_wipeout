@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Android.App;
@@ -21,8 +23,14 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using Android.Views.InputMethods;
+using Cirrious.CrossCore;
+using Cirrious.CrossCore.Core;
+using Cirrious.MvvmCross.Droid.Views;
+using Cirrious.MvvmCross.Parse.StringDictionary;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -54,6 +62,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private Bundle _mainBundle;
 		private readonly SerialDisposable _subscription = new SerialDisposable();
 
+		private readonly IMvxAndroidViewModelLoader _androidViewModelLoader;
+
+		public HomeActivity()
+		{
+			_androidViewModelLoader = Mvx.Resolve<IMvxAndroidViewModelLoader>();
+		}
+
 	    protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -68,6 +83,75 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 dialog.DismissEvent += (s, e) => Finish();
             }    
         }
+
+		protected override void OnNewIntent(Intent intent)
+		{
+			base.OnNewIntent(intent);
+
+			if (intent.Extras == null)
+			{
+				return;
+			}
+
+			// Attempting to verify if only orderId was passed via intent.
+			if (intent.Extras.ContainsKey("orderId"))
+			{
+				var orderId = Guid.Parse(Intent.Extras.GetString("orderId"));
+
+				ViewModel.GoToBookingStatusFromOrderId(orderId).FireAndForget();
+
+				return;
+			}
+
+			Intent = intent;
+
+			// Managing case where we come from StartNavigationObject but activity was running and we recived a notification (that was tapped by the user).
+			if (HandleOrderInProgressNavigationParams(intent.Extras))
+			{
+				return;
+			}
+
+			// Managing other cases, reloading a new ViewModel.
+			var viewModel = _androidViewModelLoader.Load(intent, null);
+
+			var oldViewModel = ViewModel;
+
+			DataContext = viewModel;
+
+			// Memory Leak prevention, ensuring that viewmodel is disposed correctly.
+			oldViewModel.DisposeIfDisposable();
+		}
+
+		private bool HandleOrderInProgressNavigationParams(BaseBundle extraBundle)
+		{
+			if (!extraBundle.ContainsKey("MvxLaunchData"))
+			{
+				return false;
+			}
+
+
+			var navigationParamReader = new MvxStringDictionaryParser();
+
+			var launchData = navigationParamReader.Parse(extraBundle.GetString("MvxLaunchData"));
+
+			if (!launchData.ContainsKey("Params"))
+			{
+				return false;
+			}
+
+			var navigationParams = navigationParamReader.Parse(launchData["Params"]);
+
+			if (navigationParams.ContainsKey("order") && navigationParams.ContainsKey("orderStatusDetail"))
+			{
+				var locateUser = navigationParams.GetValueOrDefault("locateUser", bool.FalseString);
+
+				ViewModel.Init(bool.Parse(locateUser), null, navigationParams["order"], navigationParams["orderStatusDetail"], null);
+
+				return true;
+			}
+
+			return false;
+		}
 
 		public OrderMapFragment MapFragment { get; set; }
 

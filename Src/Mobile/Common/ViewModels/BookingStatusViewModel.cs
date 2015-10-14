@@ -1268,5 +1268,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    }
 
 	    #endregion
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				// Ensuring that the subcription is disposed correctly to prevent memory leak.
+				_subscriptions.Disposable = null;
+			}
+
+			base.Dispose(disposing);
+		}
     }
 }

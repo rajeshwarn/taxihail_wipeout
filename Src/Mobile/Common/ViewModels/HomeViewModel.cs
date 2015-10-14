@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
 		private readonly IAccountService _accountService;
+		private readonly IBookingService _bookingService;
 	    private readonly IMetricsService _metricsService;
 	    private readonly IPaymentService _paymentService;
 		private string _lastHashedMarket = string.Empty;
@@ -55,7 +56,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService, 
             IMvxLifetime mvxLifetime,
             IPromotionService promotionService,
-            IMetricsService metricsService)
+            IMetricsService metricsService,
+			IBookingService bookingService)
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -65,7 +67,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_termsService = termsService;
 		    _mvxLifetime = mvxLifetime;
 		    _metricsService = metricsService;
-		    _accountService = accountService;
+			_bookingService = bookingService;
+			_accountService = accountService;
 			_paymentService = paymentService;
 
             Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
@@ -110,6 +113,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				BookingStatus.StartBookingStatus(deserializedOrder, deserializeOrderStatus);	
 			}
+		}
+
+		public Task GoToBookingStatusFromOrderId(Guid orderId)
+		{
+			return Task.Run(async () =>
+			{
+				var orderStatus = await _bookingService.GetOrderStatusAsync(orderId);
+				var order = await _accountService.GetHistoryOrderAsync(orderId);
+
+				CurrentViewState = HomeViewModelState.BookingStatus;
+
+				BookingStatus.StartBookingStatus(order, orderStatus);
+			});
 		}
 
 		public override void OnViewLoaded ()
@@ -724,5 +740,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 BottomBar.CheckManualRideLinqEnabledAsync();
             }
         }
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				BookingStatus.Dispose();
+			}
+
+			base.Dispose(disposing);
+		}
     }
 }
