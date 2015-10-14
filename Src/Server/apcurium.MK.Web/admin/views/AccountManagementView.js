@@ -26,7 +26,7 @@
 
 		refresh:function(viewObject)
 		{
-			model.getAccountWithID(model.getAccountID(), this, function (viewObject, data)
+			model.getAccountWithID(this, function (viewObject, data)
 			{
 				model.getUserOrders(viewObject, function (viewObject1, data)
 				{

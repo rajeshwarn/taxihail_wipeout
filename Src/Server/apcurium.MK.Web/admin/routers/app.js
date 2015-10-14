@@ -17,6 +17,7 @@
             "security": "manageSecurity",
             "accountsManagement": "accountsManagement",
             "accountManagement": "accountManagement",
+            "accountManagement?accountID=:accountID": "accountManagement",
 
             /* test notifications */
             "sendpushnotification": "sendPushNotification",

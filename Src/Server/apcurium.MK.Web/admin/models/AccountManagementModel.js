@@ -9,8 +9,10 @@
 
 	TaxiHail.AccountManagementModel = Backbone.Model.extend({
 
-		getAccountWithID: function (accountID, viewObject, completeCallback)
+		getAccountWithID: function (viewObject, completeCallback)
 		{
+			var accountID = this.getAccountID();
+
 			if (accountID && accountID.toString().length > 0)
 			{
 				var model = this;
@@ -90,6 +92,31 @@
 
 		getAccountID: function ()
 		{
+			var accountID = this.get("accountID");
+
+			if (accountID == undefined || accountID == null || accountID.toString.length == 0)
+			{
+				var parametersStartIndex = window.location.href.indexOf("?");
+
+				if (parametersStartIndex >= 0)
+				{
+					var parametersText = window.location.href.substring(parametersStartIndex + 1, window.location.href.length);
+					var parameters = parametersText.split("=");
+
+					if (parameters.length % 2 == 0)
+					{
+						for (i = 0; i < parameters.length; i = i + 2)
+						{
+							if (parameters[i] == "accountID")
+							{
+								this.set("accountID", parameters[i + 1]);
+								break;
+							}
+						}
+					}
+				}
+			}
+
 			return this.get("accountID");
 		},
 

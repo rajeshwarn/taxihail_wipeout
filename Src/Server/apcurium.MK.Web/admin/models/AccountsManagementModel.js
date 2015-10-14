@@ -91,7 +91,7 @@
 		goToAccountManagement:function(accountID)
 		{
 			TaxiHail.AccountManagementAccount = this.getAccount(accountID);
-			window.location.href = "#accountManagement";
+			window.location.href = "#accountManagement?accountID=" + accountID;
 		}
 	});
 }());
