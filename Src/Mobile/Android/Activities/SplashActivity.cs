@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {

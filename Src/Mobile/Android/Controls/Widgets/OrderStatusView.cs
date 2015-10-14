@@ -121,9 +121,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
+		public void ShowWithoutAnimation()
+		{
+			_isShown = true;
+
+			if (Animation != null)
+			{
+				Animation.Cancel();
+			}
+
+			((MarginLayoutParams)LayoutParameters).TopMargin = 0;
+
+		}
+
 		private void ShowIfNeeded()
 		{
-			if (_isShown)
+			if (_isShown || Height == 0)
 			{
 				return;
 			}
@@ -161,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private void HideIfNeeded()
 		{
-			if (!_isShown)
+			if (!_isShown || Height == 0)
 			{
 				return;
 			}
