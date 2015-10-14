@@ -80,6 +80,7 @@
     <Compile Include="ContractDocument.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\AccountOrderListRequestWithUserID.cs" />
+    <Compile Include="Requests\AccountUpdateRequest.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
     <Compile Include="Requests\ConfirmationCodeRequest.cs" />
     <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />

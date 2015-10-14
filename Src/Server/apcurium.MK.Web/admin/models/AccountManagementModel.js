@@ -4,6 +4,7 @@
 	// accountID - edited account iD
 	// account - edited account
 	// orders - list of orders of edited account
+	// countryCodes - list of country codes
 	// currentAccountID - it's account id of the user which is connected with web site (logged user)
 
 	TaxiHail.AccountManagementModel = Backbone.Model.extend({
@@ -26,6 +27,20 @@
 							model.set("account", JSON.parse(data.responseText));
 
 							var account = model.getAccount();
+
+							var currentAccountID = model.get("currentAccountID").replace(/-/g, "").toLowerCase();
+
+							var id = account.id.replace(/-/g, "").toLowerCase();
+
+							if (id != currentAccountID)
+							{
+								account.currentAccount = false;
+							}
+							else
+							{
+								account.currentAccount = true;
+							}
+
 							var creationDate = new Date(account.creationDate);
 							account.creationDateText = creationDate.toLocaleDateString("en-US") + " " + creationDate.toLocaleTimeString("en-US");
 						}
@@ -76,6 +91,11 @@
 		getAccountID: function ()
 		{
 			return this.get("accountID");
+		},
+
+		getCountryCodes:function()
+		{
+			return this.get("countryCodes");
 		},
 
 		setOrders: function (orders)
@@ -130,15 +150,34 @@
 			model.set("orders", orders);
 		},
 
-		sendConfirmationCodeSMS: function (email, countryCode, phoneNumber, viewObject, completeCallback)
+		saveAccount: function (accountUpdateRequest, viewObject, completeCallback)
 		{
-			email = email.toString();
+			$.ajax({
+				type: 'PUT',
+				url: "../api/account/update",
+				contentType: 'application/json; charset=UTF-8',
+				dataType: "json",
+				data: JSON.stringify(accountUpdateRequest),
+				complete: function (data)
+				{
+					if (completeCallback != undefined && completeCallback != null)
+					{
+						completeCallback(viewObject, data);
+					}
+				}
+			});
+		},
 
-			if (email.length > 0 && countryCode.length > 0 && phoneNumber.length > 0)
+		sendConfirmationCodeSMS: function (viewObject, completeCallback)
+		{
+			var account = this.getAccount();
+
+			if (account && account.email && account.email.length > 0 && account.settings.country && account.settings.country.code && account.settings.country.code.length > 0
+				&& account.settings.phone && account.settings.phone.length > 0)
 			{
 				$.ajax({
 					type: 'GET',
-					url: "../api/account/getconfirmationcode/" + email + "/" + countryCode + "/" + phoneNumber,
+					url: "../api/account/getconfirmationcode/" + account.email + "/" + account.settings.country.code + "/" + account.settings.phone,
 					data: { format: "json" },
 					dataType: "application/json",
 					complete: function (data)
@@ -152,17 +191,39 @@
 			}
 		},
 
-		enableEmail: function (email, viewObject, completeCallback)
+		resetPassword: function (viewObject, completeCallback)
 		{
-			email = email.toString();
+			var account = this.getAccount();
 
-			if (email.length > 0)
+			if (account && account.email && account.email.length > 0)
+			{
+				$.ajax({
+					type: 'POST',
+					url: "../api/account/resetpassword/" + account.email,
+					contentType: 'application/json; charset=UTF-8',
+					dataType: "json",
+					complete: function (data)
+					{
+						if (completeCallback != undefined && completeCallback != null)
+						{
+							completeCallback(viewObject, data);
+						}
+					}
+				});
+			}
+		},
+
+		enableEmail: function (viewObject, completeCallback)
+		{
+			var account = this.getAccount();
+
+			if (account && account.email && account.email.length > 0)
 			{
 				$.ajax({
 					type: 'PUT',
 					url: "../api/account/adminenable",
-					data: { format: "json", accountEmail: email },
-					dataType: "application/json",
+					data: { format: "json", accountEmail: account.email },
+					dataType: "json",
 					complete: function (data)
 					{
 						if (completeCallback != undefined && completeCallback != null)
@@ -174,17 +235,17 @@
 			}
 		},
 
-		disableEmail: function (email, viewObject, completeCallback)
+		disableEmail: function (viewObject, completeCallback)
 		{
-			email = email.toString();
+			var account = this.getAccount();
 
-			if (email.length > 0)
+			if (account && account.email && account.email.length > 0)
 			{
 				$.ajax({
 					type: 'PUT',
 					url: "../api/account/admindisable",
-					data: { format: "json", accountEmail: email },
-					dataType: "application/json",
+					data: { format: "json", accountEmail: account.email },
+					dataType: "json",
 					complete: function (data)
 					{
 						if (completeCallback != undefined && completeCallback != null)
@@ -196,17 +257,17 @@
 			}
 		},
 
-		unlinkAccount: function (email, viewObject, completeCallback)
+		unlinkAccount: function (viewObject, completeCallback)
 		{
-			email = email.toString();
+			var account = this.getAccount();
 
-			if (email.length > 0)
+			if (account && account.email && account.email.length > 0)
 			{
 				$.ajax({
 					type: 'PUT',
 					url: "../api/account/unlink",
-					data: { format: "json", accountEmail: email },
-					dataType: "application/json",
+					data: { format: "json", accountEmail: account.email },
+					dataType: "json",
 					complete: function (data)
 					{
 						if (completeCallback != undefined && completeCallback != null)
@@ -218,15 +279,17 @@
 			}
 		},
 
-		deleteAccountCreditCards: function (accountID, viewObject, completeCallback)
+		deleteAccountCreditCards: function (viewObject, completeCallback)
 		{
-			if (accountID.toString().length > 0)
+			var account = this.getAccount();
+
+			if (account && account.id)
 			{
 				$.ajax({
 					type: 'DELETE',
-					url: "../api/admin/deleteAllCreditCards/" + accountID.toString(),
+					url: "../api/admin/deleteAllCreditCards/" + account.id.toString(),
 					data: { format: "json" },
-					dataType: "application/json",
+					dataType: "json",
 					complete: function (data)
 					{
 						if (completeCallback != undefined && completeCallback != null)

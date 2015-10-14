@@ -80,7 +80,7 @@
 
 				<div class="div-account-block">
 					<div class="left-column">
-						<label class="control-label-wide">{{localize "Phone Number"}}</label>
+						<label class="control-label-wide" for="phoneNumber">{{localize "Phone Number"}}</label>
 					</div>
 					<div class="right-column">
 						<select id="countryСode" name="countryCode" style="width:100%; margin-bottom:1px;">
@@ -131,6 +131,11 @@
 
 				<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
 					<a href id="refSendSMS{{account.id}}" data-action='sendConfirmationCodeSMS' accountid="{{account.id}}" onclick="return false;">{{localize "Send Account Confirmation Code via SMS"}}</a>
+				</div>
+
+				<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
+					<a href id="refResetPassword{{account.id}}" data-action='resetPassword' accountid="{{account.id}}" onclick="return false;">{{localize "Reset Password"}}</a>
+					<label id="refResetPasswordResponse{{account.id}}" class="label-password invisible"></label>
 				</div>
 
 				<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
