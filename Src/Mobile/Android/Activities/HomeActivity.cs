@@ -23,6 +23,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -124,22 +125,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 		private bool HandleOrderInProgressNavigationParams(BaseBundle extraBundle)
 		{
-			if (!extraBundle.ContainsKey("MvxLaunchData"))
+			var navigationParams = extraBundle.GetNavigationParameters();
+
+			if (navigationParams.None())
 			{
 				return false;
 			}
-
-
-			var navigationParamReader = new MvxStringDictionaryParser();
-
-			var launchData = navigationParamReader.Parse(extraBundle.GetString("MvxLaunchData"));
-
-			if (!launchData.ContainsKey("Params"))
-			{
-				return false;
-			}
-
-			var navigationParams = navigationParamReader.Parse(launchData["Params"]);
 
 			if (navigationParams.ContainsKey("order") && navigationParams.ContainsKey("orderStatusDetail"))
 			{

@@ -270,6 +270,7 @@
     <Compile Include="Controls\Widgets\OrderStatusContactTaxiOverlay.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
+    <Compile Include="Extensions\BundleExtentions.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
@@ -997,9 +998,5 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\values-ar\" />
-    <Folder Include="Resources\values-es\" />
-    <Folder Include="Resources\values-fr\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
