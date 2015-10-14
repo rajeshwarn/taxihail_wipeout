@@ -6,20 +6,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
 	public static class BundleExtentions
 	{
+		private const string LaunchDataKey = "MvxLaunchData";
+		private const string NavigationParametersKey = "Params";
+
+
 		public static IDictionary<string, string> GetNavigationParameters(this BaseBundle sourceBundle)
 		{
-			if (sourceBundle == null || sourceBundle.ContainsKey("MvxLaunchData"))
+			if (sourceBundle == null || sourceBundle.ContainsKey(LaunchDataKey))
 			{
 				return new Dictionary<string, string>();
 			}
 
 			var navigationParamReader = new MvxStringDictionaryParser();
 
-			var launchData = navigationParamReader.Parse(sourceBundle.GetString("MvxLaunchData"));
+			var launchData = navigationParamReader.Parse(sourceBundle.GetString(LaunchDataKey));
 
-			return !launchData.ContainsKey("Params") 
-				? new Dictionary<string, string>() 
-				: navigationParamReader.Parse(launchData["Params"]);
+			return !launchData.ContainsKey(NavigationParametersKey) 
+				? new Dictionary<string, string>()
+				: navigationParamReader.Parse(launchData[NavigationParametersKey]);
 		}
 	}
 }
