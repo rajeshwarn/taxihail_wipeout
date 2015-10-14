@@ -97,9 +97,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			// Attempting to verify if only orderId was passed via intent.
 			if (intent.Extras.ContainsKey("orderId"))
 			{
-				var orderId = Guid.Parse(Intent.Extras.GetString("orderId"));
+				Guid orderId;
 
-				ViewModel.GoToBookingStatusFromOrderId(orderId).FireAndForget();
+				if (Guid.TryParse(Intent.Extras.GetString("orderId"), out orderId))
+				{
+					ViewModel.GoToBookingStatusFromOrderId(orderId).FireAndForget();
+				}
+				else
+				{
+					Logger.LogMessage("Received OrderId was not correctly formatted. Expected a Guid, received: " + Intent.Extras.GetString("orderId"));
+				}
 
 				return;
 			}

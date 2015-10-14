@@ -2,7 +2,6 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Android.Content;
-using Android.OS;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;

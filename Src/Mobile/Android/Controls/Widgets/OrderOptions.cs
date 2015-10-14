@@ -1,6 +1,5 @@
 using System;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Android.Content;
 using Android.Runtime;
@@ -33,7 +32,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	    public Button BigInvisibleButton { get; set; }
 
 		/// Added to prevent the ETA from becoming visible in during booking status in certain scenarios.
-		private const int HIDDEN_HEIGHT_OFFSET = -50;
+		private const int HiddenHeightOffset = -50;
+
+	    private const int HiddenHeightNoAnim = -500;
 
         public OrderOptions(Context context, IAttributeSet attrs) : base (Resource.Layout.SubView_OrderOptions, context, attrs)
         {
@@ -94,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	    {
 		    _isShown = false;
 
-			((MarginLayoutParams)LayoutParameters).TopMargin = -500;
+			((MarginLayoutParams)LayoutParameters).TopMargin = HiddenHeightNoAnim;
 	    }
 
 		private void HideIfNeeded()
@@ -106,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		    _isShown = false;
 
-		    var translationOffset = -Height + HIDDEN_HEIGHT_OFFSET;
+		    var translationOffset = -Height + HiddenHeightOffset;
 
 			StartAnimation(AnimationHelper.GetForYTranslation(this, translationOffset));
 	    }
@@ -119,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			_isShown = true;
 
-			var translationOffset = -Height + HIDDEN_HEIGHT_OFFSET;
+			var translationOffset = -Height + HiddenHeightOffset;
 
 			((MarginLayoutParams)LayoutParameters).TopMargin = translationOffset;
 
