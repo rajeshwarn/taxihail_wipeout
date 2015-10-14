@@ -211,6 +211,7 @@
     <Compile Include="Messages\OrderDeleted.cs" />
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />
+    <Compile Include="Models\PairedTaxiPosition.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
