@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
@@ -11,7 +10,6 @@ using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile
@@ -63,12 +61,12 @@ namespace apcurium.MK.Booking.Mobile
                 bool.TryParse(@params["isPairingNotification"], out isPairingNotification);
 
 				// Make sure to reload notification/payment/network settings even if the user has killed the app
-	            Task.WhenAll(
+	            await Task.WhenAll(
 						accountService.GetNotificationSettings(true).HandleErrors(),
 						accountService.GetUserTaxiHailNetworkSettings(true).HandleErrors(),
 						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors(),
 						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync().HandleErrors()
-		            ).FireAndForget();
+		            );
 
                 try
                 {
@@ -98,11 +96,11 @@ namespace apcurium.MK.Booking.Mobile
             else
             {
 				// Make sure to refresh notification/payment settings even if the user has killed the app
-				Task.WhenAll(
+				await Task.WhenAll(
 						accountService.GetNotificationSettings(true).HandleErrors(),
 						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors(),
 						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync().HandleErrors()
-					).FireAndForget();
+					);
 
                 // Log user session start
                 metricsService.LogApplicationStartUp();
