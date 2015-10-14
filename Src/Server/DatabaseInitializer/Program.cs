@@ -592,7 +592,7 @@ namespace DatabaseInitializer
             registerAdminAccountCommand.ConfimationToken = confirmationAdminToken.ToString();
 
             commandBus.Send(registerAdminAccountCommand);
-            commandBus.Send(new AddRoleToUserAccount
+            commandBus.Send(new UpdateRoleToUserAccount
             {
                 AccountId = registerAdminAccountCommand.AccountId,
                 RoleName = RoleName.SuperAdmin,
@@ -744,7 +744,7 @@ namespace DatabaseInitializer
             if (admin != null
                 && (!admin.HasAdminAccess || !admin.IsConfirmed))
             {
-                commandBus.Send(new AddRoleToUserAccount
+                commandBus.Send(new UpdateRoleToUserAccount
                 {
                     AccountId = admin.Id,
                     RoleName = RoleName.SuperAdmin,

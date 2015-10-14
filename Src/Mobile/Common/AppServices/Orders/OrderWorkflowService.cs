@@ -386,12 +386,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			if (_bookingService.HasLastOrder) 
 			{
                 var status = await _bookingService.GetLastOrderStatus();
-                if (status == null)
-                {
-                    return null;
-                }
 
-                if (!_bookingService.IsStatusCompleted(status))
+				if (status != null && !_bookingService.IsStatusCompleted(status))
                 {
                     try
                     {
@@ -411,6 +407,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				try
 				{
 					var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
+
+					// For some reason, the OrderId is not found. This should not normally happen in production.
+					if(order == null)
+					{
+						_logger.LogMessage(string.Format("Order {0} was not found on server.", status.OrderId));
+
+						_bookingService.ClearLastOrder();
+						return null;
+					}
+
 					if (order.IsRated)
 					{
 						_bookingService.ClearLastOrder();
@@ -871,7 +877,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var orderToValidate = await GetOrder();	
 			if (orderToValidate.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 			{
-				var creditCard = await _accountService.GetCreditCard();
+				var creditCard = await _accountService.GetDefaultCreditCard();
 
 				if (creditCard == null)
                 {
@@ -886,7 +892,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task<bool> ValidateIsCardDeactivated()
         {
-            var creditCard = await _accountService.GetCreditCard();
+            var creditCard = await _accountService.GetDefaultCreditCard();
 
             return creditCard == null || creditCard.IsDeactivated;
         }

@@ -55,7 +55,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
         }
 
-        private OrderAirportViewModel ViewModel { get { return (OrderAirportViewModel)DataContext; } }
+		public void ShowWithoutAnimation()
+		{
+			_isShown = true;
+
+			if (Animation != null)
+			{
+				Animation.Cancel();
+			}
+
+			((MarginLayoutParams)LayoutParameters).TopMargin = OrderAirportShownHeightProvider();
+		}
 
 		public Point ScreenSize { get; set; }
 

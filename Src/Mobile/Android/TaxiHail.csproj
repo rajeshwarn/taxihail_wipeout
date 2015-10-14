@@ -246,6 +246,7 @@
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Book\PromotionActivity.cs" />
+    <Compile Include="Activities\ExtendedSplashActivity.cs" />
     <Compile Include="Activities\ManualPairingForRideLinqActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\Setting\NotificationSettingsActivity.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Controls\Widgets\OrderStatusContactTaxiOverlay.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
+    <Compile Include="Extensions\BundleExtentions.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
@@ -707,8 +709,12 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_available.png" />
     <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_passenger.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_passenger.png" />
+    <Compile Include="Activities\Setting\CreditCardMultipleActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_Payments_CreditCardMultiple.axml" />
+    <AndroidResource Include="Resources\Layout\CreditCardListItem.axml" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
     <Compile Include="Controls\Widgets\VehicleTypeSubControl.cs" />
+    <Compile Include="Converters\IsPersonalCreditCardConverter.cs" />
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeSub.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -716,6 +722,9 @@
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\values-ar\String.xml" />
+    <AndroidResource Include="Resources\values-es\String.xml" />
+    <AndroidResource Include="Resources\values-fr\String.xml" />
     <AndroidResource Include="Resources\Drawable\textview_rounded_border.xml" />
     <AndroidResource Include="Resources\values-ar\String.xml" />
     <AndroidResource Include="Resources\values-es\String.xml" />
@@ -993,10 +1002,9 @@
     <AndroidResource Include="Resources\Layout\View_WaitingCarLandscape.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_ExtendedSplashScreen.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\values-ar\" />
-    <Folder Include="Resources\values-es\" />
-    <Folder Include="Resources\values-fr\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

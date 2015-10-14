@@ -22,16 +22,19 @@ namespace apcurium.MK.Booking.Mobile.Client
             var clearHistory = request.ParameterValues != null
                                      && request.ParameterValues.ContainsKey("clearNavigationStack");
 
+		    var preventShowViewAnimation = request.ParameterValues != null && request.ParameterValues.ContainsKey("preventShowViewAnimation");
+
             var intent = CreateIntentForRequest (request);
 
-            Show(intent, removeFromHistory, clearHistory);
+			Show(intent, removeFromHistory, clearHistory, preventShowViewAnimation);
         }
 
-        public override void ChangePresentation(Cirrious.MvvmCross.ViewModels.MvxPresentationHint hint)
+        public override void ChangePresentation(MvxPresentationHint hint)
         {
-            if (hint is ChangePresentationHint)
+	        var presentationHint = hint as ChangePresentationHint;
+	        if (presentationHint != null)
             {
-                TryChangeViewPresentation((ChangePresentationHint)hint);
+                TryChangeViewPresentation(presentationHint);
             }
             else
             {
@@ -39,12 +42,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        private void Show (Intent intent, bool removeFromHistory, bool clearHistory)
+	    private void Show (Intent intent, bool removeFromHistory, bool clearHistory, bool preventShowViewAnimation)
         {
             var activity = Activity;
             if (activity == null)
             {
-                MvxTrace.Warning ("Cannot Resolve current top activity", new object[0]);
+                MvxTrace.Warning ("Cannot Resolve current top activity");
                 return;
             }
 
@@ -52,6 +55,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
             }
+
+		    if(preventShowViewAnimation)
+		    {
+			    intent.AddFlags(ActivityFlags.NoAnimation);
+		    }
 
             activity.StartActivity(intent);
             if (removeFromHistory)
