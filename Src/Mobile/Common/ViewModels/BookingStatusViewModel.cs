@@ -404,6 +404,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			ManualRideLinqDetail = manualRideLinqDetails;
 
+			ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], manualRideLinqDetails.TripId);
+
 			var localize = this.Services().Localize;
 
 		    if (manualRideLinqDetails.PairingError.HasValue())
