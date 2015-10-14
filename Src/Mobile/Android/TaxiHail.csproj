@@ -714,11 +714,11 @@
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardMultiple.axml" />
     <AndroidResource Include="Resources\Layout\CreditCardListItem.axml" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
-    <AndroidResource Include="Resources/values-ar/String.xml" />
     <Compile Include="Converters\IsPersonalCreditCardConverter.cs" />
-    <AndroidResource Include="Resources/values-es/String.xml" />
-    <AndroidResource Include="Resources/values-fr/String.xml" />
     <AndroidResource Include="Resources\Values\String.xml" />
+    <AndroidResource Include="Resources\values-ar\String.xml" />
+    <AndroidResource Include="Resources\values-es\String.xml" />
+    <AndroidResource Include="Resources\values-fr\String.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
