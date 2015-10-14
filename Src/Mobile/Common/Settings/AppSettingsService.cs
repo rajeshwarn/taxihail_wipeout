@@ -52,6 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 					data.ServiceUrl = bundledServiceUrl;
 				}
 
+
 				Data = data;
                 // Update settings asynchronously. NB: ServiceUrl is never returned from the server settings
 				Task.Run(() => RefreshSettingsFromServer());

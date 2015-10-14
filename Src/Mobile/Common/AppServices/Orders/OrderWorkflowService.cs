@@ -843,7 +843,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var orderToValidate = await GetOrder();	
 			if (orderToValidate.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 			{
-				var creditCard = await _accountService.GetCreditCard();
+				var creditCard = await _accountService.GetDefaultCreditCard();
 
 				if (creditCard == null)
                 {
@@ -858,7 +858,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task<bool> ValidateIsCardDeactivated()
         {
-            var creditCard = await _accountService.GetCreditCard();
+            var creditCard = await _accountService.GetDefaultCreditCard();
 
             return creditCard == null || creditCard.IsDeactivated;
         }

@@ -18,6 +18,7 @@
   <string name="PanelMenuViewSignOutPopupLogout">Cerrar Sesión</string>
   <string name="CmtConfirmPayment">Confirmar</string>
   <string name="StatusViewTitle">Confirmado</string>
+  <string name="PaymentDetails.PaymentMethodsLabel">Payment Methods</string>
   <string name="PayPalUnlinkError">No se puede desvincular la cuenta de PayPal</string>
   <string name="BookPickupLabel">Confirme su ubicación</string>
   <string name="Tuto02Top">Podemos localizarle usando el GPS de su celular</string>
@@ -25,7 +26,7 @@
   <string name="BookDateLabel">Recogerme más tarde</string>
   <string name="Overdue_IBSOrderId">Reservación:</string>
   <string name="UpdateNoticeText">Sorry, this version of the app is no longer supported. Please update the app</string>
-  <string name="CreditCardZipCode">Codigo Postal</string>
+  <string name="CreditCardZipCode">Zip/Postal</string>
   <string name="PromotionButton">Pulse para entrar o Ver Código de promoción</string>
   <string name="LocationDetailApartmentLabel">Departamento</string>
   <string name="CvvRequiredTitle">Se requiere CVV</string>
@@ -36,13 +37,13 @@
   <string name="VehicleNumberNotice">Por favor note que si el numero de taxi presentado no es el mismo que el taxi que abordó, sentimos informarle que no podrá pagar a través de esta aplicación. Presione el botón “Atras” para regresar a la pagina de estado de viaje, y page al directamente al chofer.</string>
   <string name="InvalidChoiceTitle">Selección inválida</string>
   <string name="NoPairingCreditCard">Ninguno</string>
+  <string name="SetCreditCardAsDefault_Error">Couldn\'t update your default credit card. Please try again</string>
   <string name="DriverBonusTitle">Driver Bonus:</string>
   <string name="CurrentBookingDisabledTitle">Reservación deshabilitada.</string>
   <string name="ConfirmOriginLablel">Abordaje</string>
   <string name="SendEmail">Enviar email...</string>
   <string name="StatusEta">y está a {0} {1} de distancia</string>
   <string name="View_Promotions">Promociones</string>
-  <string name="Tuto08Bottom">Esperamos que usted encuentre esta aplicación conveniente e intuitiva</string>
   <string name="CmtCarNumber">Número de Taxi:</string>
   <string name="Notification_PromotionUnlockedPush">Promociones bloqueadas (Push)</string>
   <string name="ManualRideLinqCreditCardDisabled">Su tarjeta de crédito en el perfil tiene un cargo pendiente de un servicio anterior. Este pago vencido le impide el emparejamiento con RideLinQ</string>
@@ -98,7 +99,7 @@
   <string name="ResetPasswordConfirmationTitle">Contraseña enviada</string>
   <string name="HistoryViewTitle">Historia</string>
   <string name="PromoMustHavePaymentMethodSetMessage_Multiple">Para utilizar un código de promoción, es necesario tener un método de pago configurado como parte de su cuenta.</string>
-  <string name="MarketChangedMessageTitle">Se ha detectado una nueva área de servicio.</string>
+  <string name="Tuto08Bottom">Esperamos que usted encuentre esta aplicación conveniente e intuitiva</string>
   <string name="ErrorCreateOrder_PendingOrder">No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?</string>
   <string name="CardOnFile">Tarjeta en Archivo</string>
   <string name="HistoryActivityName">History</string>
@@ -139,6 +140,7 @@
   <string name="HomeActivityName">Home</string>
   <string name="Rebook">Reservar viaje nuevamente</string>
   <string name="Tuto06Bottom">Toque “Confirmar” cuando esté listo</string>
+  <string name="PaymentDetails.Label.Business">Business</string>
   <string name="CreateAccountLanguageEnglish">Inglés</string>
   <string name="View_RideSummary">Resumen del servicio</string>
   <string name="ServiceError_EmailClientAbsent">Sorry, we\'re unable to create an email. There is no email client installed on this device</string>
@@ -204,13 +206,14 @@
   <string name="WarningPushServiceTitle">Notificaciones lanzadas</string>
   <string name="Version">v{0}</string>
   <string name="View">Ver</string>
-  <string name="UpdatePasswordNewPasswordLabel">Nueva contraseña</string>
   <string name="Save">Guardar</string>
   <string name="PickupTextPlaceholder">Direccion de abordaje</string>
   <string name="SettingViewLoginInfo">Usted ha iniciado sesion como: {0}</string>
+  <string name="SetAsDefaultCreditCard">Set As Default</string>
   <string name="PassengerNameLabel">Nombre</string>
   <string name="RideSettingsPayBack">PayBack</string>
   <string name="ManualRideLinqStatus_Tax">Impuesto:</string>
+  <string name="DefaultCreditCard_Label">(DEFAULT)</string>
   <string name="BookItButtonImageName">Assets/Button/btnBookIt_en.png</string>
   <string name="UnpairWarningOkButton">Pago en carro</string>
   <string name="Safety">Seguridad</string>
@@ -229,7 +232,6 @@
   <string name="EtaLessThanAMinute">Nearest taxi is less than a minute away</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance or try again.</string>
   <string name="AddPaymentMethod_Multiple">Agregar método de pago</string>
-  <string name="PayPalLinked">Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
   <string name="RemoveCreditCardMessage">Esta seguro que desea eliminar esta tarjeta de crédito?</string>
   <string name="LoginSupport">¿Necesita asistencia?</string>
   <string name="Politeness">Amabilidad</string>
@@ -323,6 +325,7 @@
   <string name="CreditCardType">Tipo de tarjeta</string>
   <string name="CannotCancelOrderTitle">Acción inválida</string>
   <string name="PaymentInCar">Pago en carro</string>
+  <string name="MarketChangedMessageTitle">Se ha detectado una nueva área de servicio.</string>
   <string name="SendMessageDriver">Send Message to Driver</string>
   <string name="PromotionLoadError">No se pueden cargar las promociones disponibles. Por favor, inténtelo de nuevo más tarde.</string>
   <string name="DateToday">Hoy</string>
@@ -342,7 +345,7 @@
   <string name="View_TermsAndConditions">Términos y Condiciones</string>
   <string name="BookingAirportTitle">Airport</string>
   <string name="AirportsButton">Airports</string>
-  <string name="View_EditAutoTip">Editar propina</string>
+  <string name="PanelMenuViewNotificationsText">Notificaciones</string>
   <string name="PayInCar">Pagar en el vehículo</string>
   <string name="PanelMenuViewSignOutPopupMessage">Are you sure you want to sign out?</string>
   <string name="SaveAddressEmptyFieldTitle">Nombre</string>
@@ -391,7 +394,7 @@
   <string name="September">Sep (09)</string>
   <string name="ResetPasswordTitleText">Olvidó su contraseña?</string>
   <string name="March">Mar (03)</string>
-  <string name="PromotionActivityName">Promotion</string>
+  <string name="PaymentDetails.LabelName">Label</string>
   <string name="EmailUsedMessageTitle">Email already used</string>
   <string name="NoPayBackErrorMessage">El campo PayBack es obligatorio.</string>
   <string name="HistoryViewStatusButton">Ver estado</string>
@@ -404,6 +407,7 @@
   <string name="CreateAccountLanguageFrench">Francés</string>
   <string name="TechSupportEmailTitle">Soporte de applicion móvil</string>
   <string name="View_RideLinqPair">Registro</string>
+  <string name="PromotionActivityName">Promotion</string>
   <string name="BookItLaterButton">Mas Tarde</string>
   <string name="RingCode">Código de entrada</string>
   <string name="app_id">134284363380764</string>
@@ -420,7 +424,7 @@
   <string name="RideSettingsName">Nombre</string>
   <string name="MarketChangedMessage">Usted está saliendo de su área de servicio local. Si usted decide reservar, su pedido será enviado a una empresa de taxis de esta zona.</string>
   <string name="Continue">Continuar</string>
-  <string name="CreditCardAddingActivityName">Add or edit credit card</string>
+  <string name="CreditCardAddingActivityName">Payment</string>
   <string name="DateTimePickerPickInvalidDateMessage">La fecha y hora del servicio deben ser en el futuro</string>
   <string name="HistoryDetailBuildingNameNotSpecified">No Especificado</string>
   <string name="ReSendConfirmation">Notificar al chofer del pago</string>
@@ -494,6 +498,7 @@
   <string name="ManualRideLinqStatus_Medallion">You\'re checked into taxi #{0}.</string>
   <string name="CreateAccountPayBackPlaceHolder">PayBack</string>
   <string name="CreditCardInvalidCrediCardNUmber">El número de tarjeta de crédito es inválido</string>
+  <string name="View_EditAutoPayment">Editar Pago</string>
   <string name="UpdateBookingSettingsEmptyAccount">Los números de cuenta y de reservación no pueden estar vacíos cuando se el Tipo de Cargo está establecido como Cargo a Cuenta</string>
   <string name="CmtTransactionResendConfirmationButtonText">Re-enviar</string>
   <string name="StatusDescription">Reservación #{0}</string>
@@ -507,8 +512,10 @@
   <string name="EmailLabel">Email</string>
   <string name="ManualPairingForRideLinqActivityName">Manual pairing for RideLinq</string>
   <string name="April">Abr (04)</string>
+  <string name="StatusEditAutoPaymentButton">Pago</string>
   <string name="Error">Error</string>
   <string name="View_AccountConfirmation_Label_Code">Código</string>
+  <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="StatusEditAutoTipButton">Propina</string>
   <string name="PickupAddress">Pickup address</string>
   <string name="ChargeTypeLabel">Tipo de Cargo</string>
@@ -540,6 +547,7 @@
   <string name="BookingAirportFlightNumlbl">Flight Number</string>
   <string name="PayPalLinkError">No se puede vincular la cuenta de PayPal</string>
   <string name="Overdue_Failed_Message">Su transacción no fué autorizada, por favor intente de nuevo más tarde o reemplace su tarjeta de crédito con una nueva.</string>
+  <string name="CreditCardMultipleActivityName">Payment</string>
   <string name="DriverInfoModel">Modelo:</string>
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
   <string name="HistoryInfo">Mostrando los viajes del último mes</string>
@@ -551,7 +559,7 @@
   <string name="Eta">El taxi más cercano esta a {0} {1} de distancia</string>
   <string name="CreateAccountEmailPlaceHolder">Email</string>
   <string name="TabContacts">Contactos</string>
-  <string name="Tuto06Top">La pantalla de confirmacion le permite verificar los detalles de su reservación y cambiar cualquier preferencia que requiera para este servicio</string>
+  <string name="CreditCardLabel">Label</string>
   <string name="CreditCardInstructions">Para usar esta aplicación necesita ingresar un método de pago a su cuenta</string>
   <string name="StatusNewRideButton">Nuevo Servicio</string>
   <string name="WarningPushServiceMessage">Notamos que no tiene las “Notificaciones automáticas” encendidas. Queremos informarle que si las enciende podría obtener mensajes de estado de sus servicios sin tener que abrir la aplicación! Prometemos no le mandaremos información innecesaria</string>
@@ -559,6 +567,7 @@
   <string name="DriverBonusWarningTitle">Confirm Driver Bonus</string>
   <string name="NoFareTextIfDestinationIsRequired">Necesita especificar su destino</string>
   <string name="InvalidEmailMessage">Este email es inválido</string>
+  <string name="PaymentDetails.Label.Personal">Personal</string>
   <string name="LocationsActivityName">Favorite locations</string>
   <string name="searchHint">Buscar</string>
   <string name="CreateAccountTitleMrs">Srta.</string>
@@ -577,6 +586,7 @@
   <string name="UpdateBookingSettingsGenericError">Se produjo un error al actualizar la configuración de la reservación</string>
   <string name="TabHistory">Historia</string>
   <string name="OtherListItemPromptLabel">Enter a value:</string>
+  <string name="DestinationAddress">Destination address</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
   <string name="ConfirmDestinationLabel">Destino</string>
   <string name="CreditCardAdded">Su cuenta ha sido activada para pagar por defecto con tarjeta de crédito. Usted puede también pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
@@ -606,11 +616,12 @@
   <string name="AcceptButton">Aceptar</string>
   <string name="CmtRideLinqCancelChanges">Cancelar</string>
   <string name="DeleteCreditCardTitle">Eliminar tarjeta de crédito</string>
+  <string name="CreditCardError_Label">Cannot save credit card label. Please try again</string>
   <string name="DateTimePickerPickDate">Seleccione la fecha del servicio:</string>
   <string name="View_BookRating">Califique su servicio</string>
   <string name="TermsAndConditionsActivityName">Terms and conditions</string>
   <string name="BookItButton">Reservar ya</string>
-  <string name="PanelMenuViewPromotionsText">Promotions</string>
+  <string name="PayPalLinked">Su cuenta está habilitada ahora para pagar con PayPal de forma predeterminada. Usted todavía puede optar por pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
   <string name="ChangePasswordConfirmmation">Su contraseña ha sido actualizada, por favor inicie sesión</string>
   <string name="OrderNote">Reservado por Móvil</string>
   <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>
@@ -662,6 +673,7 @@
   <string name="PanelMenuViewTaxiHailNetworkText">TaxiHail Network</string>
   <string name="RemoveCreditCardTitle">Eliminar tarjeta de crédito</string>
   <string name="PanelMenuViewTutorialText">Ver tutorial</string>
+  <string name="PaymentDetails.AddNewCreditCardButtonLabel">Add New Card</string>
   <string name="PanelMenuViewUpdateProfileText">Perfil</string>
   <string name="PromoMustHavePaymentMethodSetMessage_PayPal">Para utilizar un código de promoción, es necesario tener una cuenta PayPal vinculada a su cuenta.</string>
   <string name="ManualRideLinqStatusActivityName">Manual RideLinq Status</string>
@@ -672,7 +684,7 @@
   <string name="View_CreditCard">Pago</string>
   <string name="GooglePlayServicesNotAvailableMessage">Usted necesita actualizar los servicios de “Google play” para poder utilizar esta aplicación</string>
   <string name="AccountPaymentQuestionsRequired">(requerido)</string>
-  <string name="DestinationAddress">Destination address</string>
+  <string name="UpdatePasswordNewPasswordLabel">Nueva contraseña</string>
   <string name="OrderAirportView_BAD_AIRLINE_CODE">An error occurred with the flight status provider.</string>
   <string name="ChargeTypeCreditCardFile">Tarjeta de crédito guardada</string>
   <string name="AccountDisabled_NoCall">Su cuenta ha sido deshabilitada</string>
@@ -695,7 +707,6 @@
   <string name="WarningLocationService">Por favor encienda los servicios de ubicación para poder mostrar su posición en el mapa</string>
   <string name="Facebook">Iniciar sesión con Facebook</string>
   <string name="BookingAirportMissingInfo_Message">The airline and the flight number are madatory.</string>
-  <string name="PanelMenuViewNotificationsText">Notificaciones</string>
   <string name="HistoryLoadError">No se pudo cargar el historial. Favor de intenar más tarde.</string>
   <string name="UpdateNoticeTitle">Update Notice</string>
   <string name="SendMessageToDriverErrorMessage">An error occurred while trying to contact the driver. Please try again later.</string>
@@ -719,6 +730,7 @@
   <string name="SignIn">Entrar</string>
   <string name="DeleteAddressBt">Eliminar dirección</string>
   <string name="StatusConfirmNewBooking">Reservar un nuevo taxi mantendrá esta reservación activa, desea continuar?</string>
+  <string name="Tuto06Top">La pantalla de confirmacion le permite verificar los detalles de su reservación y cambiar cualquier preferencia que requiera para este servicio</string>
   <string name="InvalidPassengersNumber">El tipo de vehículo que ha seleccionado no tiene suficientes asientos para acomodar el número de pasajeros solicitado. Por favor cambie su selección o reserve más de un coche para acomodar a su grupo.</string>
   <string name="PickupViewDestinationLabel">Destino &gt;&gt;</string>
   <string name="Tuto07Bottom">Las actualizaciones al estado se generan cuando el vehículo llega a la dirección de arribo, cuando usted aborda el vehículo y al final del servicio.</string>

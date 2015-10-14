@@ -30,7 +30,10 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<AddRoleToUserAccount>,
         ICommandHandler<UpdateRoleToUserAccount>,
         ICommandHandler<AddOrUpdateCreditCard>,
+        ICommandHandler<UpdateDefaultCreditCard>,
+        ICommandHandler<UpdateCreditCardLabel>,
         ICommandHandler<DeleteAllCreditCards>,
+        ICommandHandler<DeleteAccountCreditCard>,
         ICommandHandler<DeleteAccountCreditCards>,
         ICommandHandler<RegisterDeviceForPushNotifications>,
         ICommandHandler<UnregisterDeviceForPushNotifications>,
@@ -70,7 +73,23 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.Last4Digits,
                 command.ExpirationMonth,
                 command.ExpirationYear,
-                command.Token);
+                command.Token,
+                command.Label,
+                command.ZipCode);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateDefaultCreditCard command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateDefaultCreditCard(command.CreditCardId);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateCreditCardLabel command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateCreditCardLabel(command.CreditCardId, command.Label);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -144,6 +163,12 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account, command.Id.ToString());
         }
 
+        public void Handle(DeleteAccountCreditCard command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.RemoveCreditCard(command.CreditCardId, command.NextDefaultCreditCardId);
+            _repository.Save(account, command.Id.ToString());
+        }
         public void Handle(DeleteAccountCreditCards command)
         {
             var account = _repository.Find(command.AccountId);

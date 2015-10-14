@@ -921,7 +921,7 @@ namespace apcurium.MK.Booking.Api.Services
 				throw createOrderException;
             }
 
-            var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+            var creditCard = _creditCardDao.FindById(account.DefaultCreditCard.Value);
             if (creditCard.IsExpired())
             {
                 Exception createOrderException = new HttpError(HttpStatusCode.BadRequest,

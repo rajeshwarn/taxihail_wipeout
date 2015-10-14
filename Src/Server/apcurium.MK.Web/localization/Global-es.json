@@ -19,6 +19,8 @@
     "error.accountNotSupported": "Esta cuenta no es apoyada por la página web",
     "error.accountUpdate": "An error occured while updating your account",
     "error.InvalidCvv" : "The CVV must be a number between 3 and 4 digits",
+    "error.accountUpdateDefaultCreditCard": "An error occured while updating your default credit card",
+    "error.accountUpdateCreditCardLabel": "An error occured while updating your credit card label",
 	"signup.confirmation": "Su cuenta ha sido creada. En unos momentos usted va a recibir un Email con un vínculo que debe seguir para confirmar su registro.",
 	"signup.confirmationWithoutActivation": "Cuenta creada. Mucha Gracias!",
 	"search.no-result": "Comienze a ingresar una dirección o el nombre del lugar.",

@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<RoleUpdatedToUserAccount>,
         IEventHandler<PaymentProfileUpdated>,
         IEventHandler<CreditCardAddedOrUpdated>,
+        IEventHandler<DefaultCreditCardUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
         IEventHandler<CreditCardDeactivated>,
@@ -252,8 +253,22 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                account.DefaultCreditCard = @event.CreditCardId;
+                if (!account.DefaultCreditCard.HasValue)
+                {
+                    account.DefaultCreditCard = @event.CreditCardId;
+                    account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                }
+                context.Save(account);
+            }
+        }
+
+        public void Handle(DefaultCreditCardUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                account.DefaultCreditCard = @event.CreditCardId;
                 context.Save(account);
             }
         }
@@ -264,9 +279,8 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 // used for migration, if user removed one card but had another one, we set this one as the default card
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                var otherCreditCardForAccount = context.Query<CreditCardDetails>().FirstOrDefault(x => x.AccountId == @event.SourceId && x.CreditCardId != @event.CreditCardId);
-                account.DefaultCreditCard = otherCreditCardForAccount != null ? otherCreditCardForAccount.CreditCardId : (Guid?) null;
-                account.Settings.ChargeTypeId = otherCreditCardForAccount != null ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
+                account.DefaultCreditCard = @event.NextDefaultCreditCardId;
+                account.Settings.ChargeTypeId = @event.NextDefaultCreditCardId.HasValue ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
                 context.Save(account);
             }
         }
