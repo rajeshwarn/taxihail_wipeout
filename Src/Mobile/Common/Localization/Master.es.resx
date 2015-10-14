@@ -567,6 +567,9 @@
     <value>No podemos guardar su tarjeta de crédito</value>
     <comment>Cannot save credit card</comment>
   </data>
+  <data name="CreditCardError_Label" xml:space="preserve">
+    <value>Cannot save credit card label. Please try again</value>
+  </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
     <value>Fecha de expiración</value>
     <comment>Exp. Month</comment>
@@ -582,6 +585,9 @@
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>El número de tarjeta de crédito es inválido</value>
     <comment>The Credit Card Number is invalid</comment>
+  </data>
+  <data name="CreditCardLabel" xml:space="preserve">
+    <value>Label</value>
   </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Nombre tal y como aparece en la tarjeta</value>
@@ -1179,6 +1185,18 @@
     <value>Notas al chofer (Nombre de negocio, entrada específica,...)</value>
     <comment>Notes to driver (Name of business, specific entrance, ...)</comment>
   </data>
+  <data name="DriverBonusTitle" xml:space="preserve">
+    <value>Driver Bonus:</value>
+  </data>
+  <data name="DriverBonusDescription" xml:space="preserve">
+    <value>Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</value>
+  </data>
+  <data name="DriverBonusWarningTitle" xml:space="preserve">
+    <value>Confirm Driver Bonus</value>
+  </data>
+  <data name="DriverBonusWarningMessage" xml:space="preserve">
+    <value>Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?</value>
+  </data>
   <data name="Notification_BookingConfirmationEmail" xml:space="preserve">
     <value>Confirmación de reservación (email)</value>
     <comment>Booking Confirmation (Email)</comment>
@@ -1335,6 +1353,12 @@
     <value>El pasajero ha pagado {0} (auth : {1})</value>
     <comment>The passenger has paid {0} (auth : {1})</comment>
   </data>
+  <data name="PaymentDetails.PaymentMethodsLabel" xml:space="preserve">
+    <value>Payment Methods</value>
+  </data>
+  <data name="PaymentDetails.AddNewCreditCardButtonLabel" xml:space="preserve">
+    <value>Add New Card</value>
+  </data>
   <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
     <value>Tarjetas</value>
     <comment>Cards</comment>
@@ -1355,6 +1379,15 @@
     <value>Propina</value>
     <comment>Tip Amount</comment>
   </data>
+  <data name="PaymentDetails.Label.Personal" xml:space="preserve">
+    <value>Personal</value>
+  </data>
+  <data name="PaymentDetails.Label.Business" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="PaymentDetails.LabelName" xml:space="preserve">
+    <value>Label</value>
+  </data>
   <data name="PaymentInCar" xml:space="preserve">
     <value>Pago en carro</value>
     <comment>Payment In Car</comment>
@@ -1370,6 +1403,9 @@
   <data name="PaymentViewTotalText" xml:space="preserve">
     <value>Total</value>
     <comment>Total</comment>
+  </data>
+     <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Zip/Postal</value>
   </data>
   <data name="PayNow" xml:space="preserve">
     <value>Pagar con Aplicación</value>
@@ -1597,6 +1633,9 @@
   <data name="ScanCreditCard" xml:space="preserve">
     <value>Escanear su Tarjeta de crédito</value>
     <comment>Scan Credit Card</comment>
+  </data>
+  <data name="SetAsDefaultCreditCard" xml:space="preserve">
+    <value>Set As Default</value>
   </data>
   <data name="searchHint" xml:space="preserve">
     <value>Buscar</value>
@@ -2549,15 +2588,23 @@
   </data>
   <data name="StatusEditAutoTipButton" xml:space="preserve">
     <value>Propina</value>
-    <comment>Propina</comment>
+    <comment>Tip</comment>
   </data>
+  <data name="StatusEditAutoPaymentButton" xml:space="preserve">
+    <value>Pago</value>
+    <comment>Payment</comment>
+    </data>
   <data name="ManualRideLinqStatus_Toll" xml:space="preserve">
     <value>Peaje:</value>
     <comment>Toll:</comment>
   </data>
-  <data name="View_EditAutoTip" xml:space="preserve">
-    <value>Editar propina</value>
-    <comment>Edit tip</comment>
+  <data name="View_EditAutoPayment" xml:space="preserve">
+    <value>Editar Propina</value>
+    <comment>Edit Tip</comment>
+    </data>
+  <data name="View_EditAutoPayment" xml:space="preserve">
+    <value>Editar Pago</value>
+    <comment>Edit Payment</comment>
     </data>
   <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
     <value>You're checked into taxi #{0}.</value>
@@ -2614,6 +2661,12 @@
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
+  </data>
+  <data name="SetCreditCardAsDefault_Error" xml:space="preserve">
+    <value>Couldn't update your default credit card. Please try again</value>
+  </data>
+  <data name="DefaultCreditCard_Label" xml:space="preserve">
+    <value>(DEFAULT)</value>
   </data>
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
     <value>Sorry, no taxis currently available nearby.</value>
@@ -2740,7 +2793,10 @@
     <value>Terms and conditions</value>
   </data>
 	<data name="CreditCardAddingActivityName" xml:space="preserve">
-    <value>Add or edit credit card</value>
+    <value>Payment</value>
+  </data>
+	<data name="CreditCardMultipleActivityName" xml:space="preserve">
+    <value>Payment</value>
   </data>
 	<data name="AccountCreationActivityName" xml:space="preserve">
     <value>Account creation</value>

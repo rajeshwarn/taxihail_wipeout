@@ -19,6 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		UIKit.NSLayoutConstraint constraintHeight { get; set; }
 
 		[Outlet]
+		UIKit.UIView driverBonusView { get; set; }
+
+		[Outlet]
 		UIKit.UIImageView iconApartment { get; set; }
 
 		[Outlet]
@@ -43,7 +46,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		UIKit.UILabel lblApt { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblBonus { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblBonusAmount { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblBonusDescription { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblChargeType { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblCountryDialCode { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblDate { get; set; }
@@ -67,7 +82,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		UIKit.UILabel lblVehicule { get; set; }
 
 		[Outlet]
-        UIKit.UILabel lblCountryDialCode { get; set; }
+		UIKit.UISlider sliderBonus { get; set; }
+
+		[Outlet]
+		UIKit.UISwitch switchBonus { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextView txtNote { get; set; }
@@ -124,9 +142,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				lblApt = null;
 			}
 
+			if (lblBonus != null) {
+				lblBonus.Dispose ();
+				lblBonus = null;
+			}
+
+			if (lblBonusAmount != null) {
+				lblBonusAmount.Dispose ();
+				lblBonusAmount = null;
+			}
+
+			if (lblBonusDescription != null) {
+				lblBonusDescription.Dispose ();
+				lblBonusDescription = null;
+			}
+
 			if (lblChargeType != null) {
 				lblChargeType.Dispose ();
 				lblChargeType = null;
+			}
+
+			if (lblCountryDialCode != null) {
+				lblCountryDialCode.Dispose ();
+				lblCountryDialCode = null;
 			}
 
 			if (lblDate != null) {
@@ -164,14 +202,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				lblVehicule = null;
 			}
 
+			if (sliderBonus != null) {
+				sliderBonus.Dispose ();
+				sliderBonus = null;
+			}
+
+			if (switchBonus != null) {
+				switchBonus.Dispose ();
+				switchBonus = null;
+			}
+
 			if (txtNote != null) {
 				txtNote.Dispose ();
 				txtNote = null;
 			}
 
-            if (lblCountryDialCode != null) {
-                lblCountryDialCode.Dispose ();
-                lblCountryDialCode = null;
+			if (driverBonusView != null) {
+				driverBonusView.Dispose ();
+				driverBonusView = null;
 			}
 		}
 	}

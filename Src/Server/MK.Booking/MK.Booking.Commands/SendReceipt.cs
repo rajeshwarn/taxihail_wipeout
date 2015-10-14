@@ -47,7 +47,11 @@ namespace apcurium.MK.Booking.Commands
 
         public double TotalFare
         {
-            get { return Fare + Toll + Tip + Tax + Extra + Surcharge - AmountSavedByPromotion; }
+            get
+            {
+                var tipIncentive = CmtRideLinqFields != null ? CmtRideLinqFields.TipIncentive : 0;
+                return Fare + Toll + Tip + Tax + Extra + tipIncentive + Surcharge - AmountSavedByPromotion;
+            }
         }
 
         public Guid Id { get; set; }
@@ -80,6 +84,7 @@ namespace apcurium.MK.Booking.Commands
             public double? LastLongitudeOfVehicle { get; set; }
 
             public TollDetail[] Tolls { get; set; }
+            public double TipIncentive { get; set; }
         }
 
         public class Payment

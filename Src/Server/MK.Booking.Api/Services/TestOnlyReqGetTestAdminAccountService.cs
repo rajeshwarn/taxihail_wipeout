@@ -86,7 +86,8 @@ namespace apcurium.MK.Booking.Api.Services
                 ExpirationYear = DateTime.Now.AddYears(1).ToString("yy"),
                 Last4Digits = "1234",
                 NameOnCard = "test test",
-                Token = "123456"
+                Token = "123456",
+                Label = CreditCardLabelConstants.Personal.ToString()
             });
 
             return _dao.FindByEmail(testEmail);

@@ -1,66 +1,30 @@
-﻿<h4 class="table-title">{{localize "Payment"}}</h4>
-<div class="errors"></div>
+﻿<h4 class="table-title">{{localize "PaymentTitle"}}</h4>
 
-<form class="form-horizontal clearfix" id="updateSettingsForm">
-    <div class="control-group">
-        <label class="control-label" for="inputCardName">{{localize "CreditCardName"}}</label>
-        <div class="controls">
-            <input type="text" id="inputCardName" name="nameOnCard" value="{{nameOnCard}}" class='input-block-level'>
-        </div>
+{{#if displayTipSelection}}
+<div id="tipPercentageDiv" class="control-group">
+    <label class="control-label" for="inputTipPercentage">{{localize "Tip"}}</label>
+    <div class="controls">
+        <select id="inputTipPercentage" name="defaultTipPercent" style="margin-bottom:0;">
+            {{#each tipPercentages}}
+            {{#ifCond this.id ../defaultTipPercent}}
+            <option value="{{this.id}}" selected>{{localize this.display}}</option>
+            {{else}}
+            <option value="{{this.id}}">{{localize this.display}}</option>
+            {{/ifCond}}
+            {{/each}}
+        </select>
+        <a href='#useraccount/payment' class='btn btn-primary ' data-action='save'>{{localize 'save'}}</a>
     </div>
+</div>
+{{/if}}
 
-    <div class="control-group left-half-control-group">
-        <label class="control-label" for="inputCardNumber">{{localize "CreditCardNumber"}}</label>
-        <div class="controls">
-            <input type="text" id="inputCardNumber" name="cardNumber" value="{{cardNumber}}" class='input-block-level'>
-        </div>
-    </div>
+<ul class="unstyled locations"></ul>
 
-    <div class="control-group right-half-control-group">
-        <label class="control-label" for="inputCVV">{{localize "CVV"}}</label>
-        <div class="controls">
-            <input type="text" id="inputCVV" name="cvv" class='input-block-level'>
-        </div>
-    </div>
 
-    <div class="control-group left-half-control-group">
-        <label class="control-label" for="inputExpMonth">{{localize "ExpMonth"}}</label>
-        <div class="controls">
-            <select id="inputExpMonth" name="expirationMonth" class="input-block-level">
-                {{#each expirationMonths}}
-                {{#ifCond this.id ../expirationMonth}}
-                    <option value="{{this.id}}" selected>{{localize this.display}}</option>
-                {{else}}
-                    <option value="{{this.id}}">{{localize this.display}}</option>
-                {{/ifCond}}
-                {{/each}}
-            </select>
-        </div>
+{{#if canAddCard}}
+<div class="control-group">
+    <div class="controls input-block-level ">
+        <a href='#useraccount/payment' class='btn btn-primary ' data-action='add'>{{localize 'addCardButtonLabel'}}</a>
     </div>
-
-    <div class="control-group right-half-control-group">
-        <label class="control-label" for="inputExpYear">{{localize "ExpYear"}}</label>
-        <div class="controls">
-            <select id="inputExpYear" name="expirationYear" class="input-block-level">
-                {{#each expirationYears}}
-                {{#ifCond this.id ../expirationYear}}
-                    <option value="{{this.id}}" selected>{{localize this.display}}</option>
-                {{else}}
-                    <option value="{{this.id}}">{{localize this.display}}</option>
-                {{/ifCond}}
-                {{/each}}
-            </select>
-        </div>
-    </div>
-
-    <div class="control-group btn-right-alignment">
-        <br />
-        <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</button>
-        {{#if isEditing}}
-        {{#unless isCreditCardMandatory}}
-        <a href='#' class='btn btn-danger  span' data-action='destroy'>{{localize "Delete"}}</a>
-        {{/unless}}
-        {{/if}}
-        <a href='#' class='btn span' data-action='cancel'>{{localize "Cancel"}}</a>
-    </div>
-</form>
+</div>
+{{/if}}
