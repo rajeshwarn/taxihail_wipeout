@@ -191,12 +191,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	    }
 
         // Animate Marker on the map between retrieving positions
-        private void AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double compassCourse, Position oldPosition)
+        private void AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double? compassCourse, Position oldPosition)
         {
             markerToUpdate.SetIcon(icon);
-            markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && compassCourse != 0
-                ? .5f
-                : 1f);
+            markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && compassCourse.HasValue ? .5f : 1f);
 
             var evaluator = new LatLngEvaluator ();
             var objectAnimator = ObjectAnimator.OfObject (markerToUpdate, "position", evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
@@ -230,7 +228,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
                         : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap());
                     
-                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse??0, new Position()
+                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
                         {
                             Latitude = value.Latitude.Value, 
                             Longitude = value.Longitude.Value
@@ -641,7 +639,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 ? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
                 : string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
 
-            var icon = ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
+            var icon = ViewModel.Settings.ShowOrientedPins
                 ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
                 : _vehicleIcons[logoKey];
 
