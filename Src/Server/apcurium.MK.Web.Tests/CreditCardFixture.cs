@@ -111,7 +111,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(creditCardId, creditcard.CreditCardId);
             Assert.AreEqual("1234", creditcard.Last4Digits);
             Assert.AreEqual(tokenResponse2.CardOnFileToken, creditcard.Token);
-            Assert.AreEqual("Business", creditcard.Label);
+            Assert.AreEqual("Business", creditcard.Label.ToString());
         }
 
         [Test]

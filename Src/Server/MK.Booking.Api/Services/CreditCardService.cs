@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Api.Services
 		{
 			if (_dao.FindByAccountId(request.AccountID).Count > 0)
 			{
-				_bus.Send(new DeleteAccountCreditCards() { AccountId = request.AccountID });
+				_bus.Send(new DeleteCreditCardsFromAccounts() { AccountIds = new[] { request.AccountID } });
 
 				return new HttpResult(HttpStatusCode.OK);
 			}
