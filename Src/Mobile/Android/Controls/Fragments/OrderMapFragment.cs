@@ -191,12 +191,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	    }
 
         // Animate Marker on the map between retrieving positions
-        private void AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double compassCourse, Position oldPosition)
+        private void AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double? compassCourse, Position oldPosition)
         {
             markerToUpdate.SetIcon(icon);
-            markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && compassCourse != 0
-                ? .5f
-                : 1f);
+            markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && compassCourse.HasValue ? .5f : 1f);
 
             var evaluator = new LatLngEvaluator ();
             var objectAnimator = ObjectAnimator.OfObject (markerToUpdate, "position", evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
@@ -226,8 +224,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 // Update Marker and Animate it to see it move on the map
                 if (_taxiLocationPin != null)
                 {
-                    var icon = ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-						? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+                    var icon = ViewModel.Settings.ShowOrientedPins  && value.CompassCourse.HasValue
+                        ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
                         : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap());
                     
                     AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
@@ -248,13 +246,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     try
                     {
                         var mapOptions = new MarkerOptions()
-                            .Anchor(0.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-                                ? 0.5f
-                                : 1f)
+							.Anchor(.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue ? .5f : 1f)
                             .SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
                             .InvokeIcon(
-                                ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-								? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+								ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue
+                                ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
                                 : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
                             .Visible(true);
 
@@ -643,7 +639,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 ? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
                 : string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
 
-            var icon = ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
+            var icon = ViewModel.Settings.ShowOrientedPins
                 ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
                 : _vehicleIcons[logoKey];
 

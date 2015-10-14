@@ -360,17 +360,17 @@ namespace apcurium.MK.Common.Configuration
 
 	public class FlightStatsSettingsContainer
 	{
-		[Display(Name = "FlightStatus - Application Id", Description = "Application id for flight stats API")]
+		[Display(Name = "FlightStats - Application Id", Description = "Application id for flight stats API")]
 		public string AppId { get; set; }
 
-		[Display(Name = "FlightStatus - Application key", Description = "Application keys for flight stats API.")]
+		[Display(Name = "FlightStats - Application key", Description = "Application keys for flight stats API.")]
 		public string ApplicationKeys { get; set; }
 
-		[Display(Name = "FlightStatus - Api Url", Description = "Url to access the FlightStats api.")]
+		[Display(Name = "FlightStats - Api Url", Description = "Url to access the FlightStats api.")]
 		public string ApiUrl { get; set; }
 
 		[SendToClient, CustomizableByCompany]
-		[Display(Name = "FlightStatus - Use airport details screen", Description = "Display the airport details screen before the order review screen to allow the user to send airport related information to the driver.")]
+		[Display(Name = "FlightStats - Use airport details screen", Description = "Display the airport details screen before the order review screen to allow the user to send airport related information to the driver.")]
 		public bool UseAirportDetails { get; set; }
 	}
 
