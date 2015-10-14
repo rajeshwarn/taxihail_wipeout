@@ -53,12 +53,16 @@ namespace apcurium.MK.Booking.IBS.Impl
             var useProvider = providerId.HasValue && providerId > 0;
             var zoneByCompanyEnabled = _ibsSettings.ZoneByCompanyEnabled;
             
-            UseService(service =>
+            if (latitude != 0 && longitude != 0)
             {
+                UseService(service =>
+                {
                     zone = useProvider && zoneByCompanyEnabled
                         ? service.GetCompanyZoneByGPS(UserNameApp, PasswordApp, providerId.Value, latitude, longitude)
                         : service.GetZoneByGPS(UserNameApp, PasswordApp, latitude, longitude);
-            });
+                });
+            }
+
             return zone;
         }
 
