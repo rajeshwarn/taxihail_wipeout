@@ -182,8 +182,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.Label = creditCard.Label;
 					Data.ZipCode = creditCard.ZipCode;
 
-					ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? (int?)null : int.Parse(creditCard.ExpirationMonth);
-					ExpirationYear = creditCard.ExpirationYear.HasValue() ? (int?)null : int.Parse(creditCard.ExpirationYear);
+					ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? int.Parse(creditCard.ExpirationMonth) : (int?)null;
+					ExpirationYear = creditCard.ExpirationYear.HasValue() ? int.Parse(creditCard.ExpirationYear) : (int?)null;
 
 					var id = CreditCardCompanies.Find(x => x.Display == creditCard.CreditCardCompany).Id;
 					if (id != null)
