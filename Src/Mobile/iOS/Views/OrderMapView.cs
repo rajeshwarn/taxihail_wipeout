@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -33,7 +32,6 @@ using MapKit;
 using TinyIoC;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -135,7 +133,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
 
 
+	        // ReSharper disable CompareOfFloatsByEqualityOperator
             if (!coordonates.Any(p => p.Coordinate.Latitude == 0 || p.Coordinate.Longitude == 0))
+	        // ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 var minLat = coordonates.Min(a => a.Coordinate.Latitude);
                 var maxLat = coordonates.Max(a => a.Coordinate.Latitude);
@@ -206,22 +206,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _gesture.TouchEndOrCancel += HandleTouchEnded;
                 AddGestureRecognizer(_gesture);
 
-                var pinchRecognizer = new UIPinchGestureRecognizer ();
-                pinchRecognizer.ShouldRecognizeSimultaneously = (g1, g2) => !(g2 is UITapGestureRecognizer);
-                pinchRecognizer.AddTarget (() => OnPinch (pinchRecognizer));
+	            var pinchRecognizer = new UIPinchGestureRecognizer
+	            {
+		            ShouldRecognizeSimultaneously = (g1, g2) => !(g2 is UITapGestureRecognizer)
+	            };
+	            pinchRecognizer.AddTarget (() => OnPinch (pinchRecognizer));
                 AddGestureRecognizer (pinchRecognizer);
 
-                var doubleTapRecognizer = new UITapGestureRecognizer ();
-                doubleTapRecognizer.ShouldRecognizeSimultaneously = (g1, g2) => false;
-                doubleTapRecognizer.NumberOfTapsRequired = 2;
+                var doubleTapRecognizer = new UITapGestureRecognizer ()
+                {
+	                ShouldRecognizeSimultaneously = (g1, g2) => false,
+					NumberOfTapsRequired = 2
+                };
+                
                 doubleTapRecognizer.AddTarget (() => this.ChangeZoomLevel(true));
                 AddGestureRecognizer (doubleTapRecognizer);
 
-                var doubleTapMultitouchRecognizer = new UITapGestureRecognizer ();
-                doubleTapMultitouchRecognizer.ShouldRecognizeSimultaneously = (g1, g2) => false;
-                doubleTapMultitouchRecognizer.NumberOfTapsRequired = 2;
-                doubleTapMultitouchRecognizer.NumberOfTouchesRequired = 2;
-                doubleTapMultitouchRecognizer.AddTarget (() => this.ChangeZoomLevel(false));
+	            var doubleTapMultitouchRecognizer = new UITapGestureRecognizer
+	            {
+		            ShouldRecognizeSimultaneously = (g1, g2) => false,
+		            NumberOfTapsRequired = 2,
+		            NumberOfTouchesRequired = 2
+	            };
+	            doubleTapMultitouchRecognizer.AddTarget (() => this.ChangeZoomLevel(false));
                 AddGestureRecognizer (doubleTapMultitouchRecognizer);
             }
         }
@@ -286,7 +293,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             get { return _availableVehicles; }
             set
             {
-                if (_availableVehicles != value)
+                if (_availableVehicles == null || !_availableVehicles.SequenceEqual(value))
                 {
                     _availableVehicles = ViewModel.Settings.ShowIndividualTaxiMarkerOnly
                         ? value
@@ -507,7 +514,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var vehicleAnnotation = new AddressAnnotation (
                                 new CLLocationCoordinate2D(vehicle.Latitude, vehicle.Longitude),
                                 annotationType, 
-								vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture),             
+								vehicle.VehicleName,             
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
@@ -536,9 +543,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         }
 
         // Animate Annotation on the map between retrieving positions
-        private void AnimateAnnotationOnMap(AddressAnnotation annotationToUpdate, Position newPosition)
+        private void AnimateAnnotationOnMap(MKAnnotation annotationToUpdate, Position newPosition)
         {
-            var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
+			var annotationToUpdateView = (PinAnnotationView)ViewForAnnotation(annotationToUpdate);
             annotationToUpdateView.RefreshPinImage();
 
             Animate(5, 0, UIViewAnimationOptions.CurveLinear, () =>
@@ -559,7 +566,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                             : 0;
             annotationToUpdate.AddressType = annotationType;
 
-            AnimateAnnotationOnMap(annotationToUpdate, new Position()
+            AnimateAnnotationOnMap(annotationToUpdate, new Position
                 {
                     Latitude = vehicle.Latitude,
                     Longitude = vehicle.Longitude
@@ -576,7 +583,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 	        var vehiclesArray = vehicles.ToArray();
 
-            var vehicleNumbersToBeShown = vehiclesArray.Select (x => x.VehicleNumber.ToString(CultureInfo.InvariantCulture));
+            var vehicleNumbersToBeShown = vehiclesArray.Select (x => x.VehicleName);
 
             // check for annotations that needs to be removed
             var annotationsToRemove = _availableVehicleAnnotations.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
@@ -588,10 +595,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             // check for updated or new
 			foreach (var vehicle in vehiclesArray)
             {
-                var existingAnnotationForVehicle = _availableVehicleAnnotations.FirstOrDefault (x => x.Title == vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture));
+                var existingAnnotationForVehicle = _availableVehicleAnnotations.FirstOrDefault (x => x.Title == vehicle.VehicleName);
                 if (existingAnnotationForVehicle != null)
                 {
-                    if (existingAnnotationForVehicle.Coordinate.Latitude == vehicle.Latitude && existingAnnotationForVehicle.Coordinate.Longitude == vehicle.Longitude)
+                    if (Math.Abs(existingAnnotationForVehicle.Coordinate.Latitude - vehicle.Latitude) < double.Epsilon 
+						&& Math.Abs(existingAnnotationForVehicle.Coordinate.Longitude - vehicle.Longitude) < double.Epsilon)
                     {
                         // vehicle not updated, nothing to do
                         continue;
@@ -747,7 +755,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var vehicleLatitude = value.Latitude ?? 0;
             var vehicleLongitude = value.Longitude ?? 0;
 
+	        // ReSharper disable CompareOfFloatsByEqualityOperator
             if (vehicleLatitude != 0 && vehicleLongitude != 0 && value.VehicleNumber.HasValue())
+			// ReSharper enable CompareOfFloatsByEqualityOperator
             {
                 // Refresh vehicle position
                 coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);

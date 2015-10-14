@@ -1,4 +1,6 @@
-﻿namespace apcurium.MK.Booking.Api.Contract.Resources
+﻿using System;
+
+namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class AvailableVehicle : BaseDto
     {
@@ -8,6 +10,7 @@
 
         public double CompassCourse { get; set; }
 
+		[Obsolete]
         public double VehicleNumber { get; set; }
 
 		public string VehicleName { get; set; }
