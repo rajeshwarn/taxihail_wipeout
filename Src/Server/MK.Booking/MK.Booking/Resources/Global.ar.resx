@@ -222,6 +222,9 @@
   <data name="Email_Body_Tip" xml:space="preserve">
     <value>إكرامية</value>
   </data>
+  <data name="Email_Body_TipIncentive" xml:space="preserve">
+    <value>Driver Bonus</value>
+  </data>
   <data name="Email_Body_Promo" xml:space="preserve">
     <value>Promo Code</value>
     <comment>Promo Code</comment>
@@ -334,6 +337,9 @@
   <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
     <value>عذرا، لا توجد سيارات متاحة نتيجة للطلب الكبير، رجاء المحاولة لاحقا</value>
   </data>
+  <data name="PushNotification_BAILED" xml:space="preserve">
+    <value>BAIL BAIL BAIL !</value>
+  </data>
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Your vehicle is almost at pickup location</value>
   </data>
@@ -366,6 +372,9 @@
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>Fare will be paid using the selected payment method</value>
+  </data>
+  <data name="OrderStatus_BAILED" xml:space="preserve">
+    <value>BAIL BAIL BAIL !</value>
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>

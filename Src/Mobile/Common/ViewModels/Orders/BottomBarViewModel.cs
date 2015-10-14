@@ -439,211 +439,234 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			return shouldContinue;
 		}
 
-        public ICommand ConfirmOrder
+        public ICommand ConfirmOrderCommand
         {
             get
             {
                 return this.GetCommand(async () =>
                 {
-                    try
-                    {
-                        var chargeTypeValidated = await _orderWorkflowService.ValidateChargeType();
-                        if (!chargeTypeValidated)
-                        {
-                            this.Services().Message.ShowMessage(
-                                this.Services().Localize["InvalidChargeTypeTitle"],
-                                this.Services().Localize["InvalidChargeType"]);
+					var tipIncentive = await _orderWorkflowService.GetTipIncentive();
 
-                            return;
-                        }
-
-                        var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed().Take(1).ToTask();
-                        if (!canBeConfirmed)
-                        {
-                            return;
-                        }
-
-						var promoConditionsValidated = await _orderWorkflowService.ValidatePromotionUseConditions();
-						if(!promoConditionsValidated)
-						{
-							this.Services().Message.ShowMessage(
-								this.Services().Localize["ErrorCreatingOrderTitle"],
-								this.Services().Localize["PromoMustUseCardOnFileMessage"]);
-
-							return;
-						}
-
-                        var cardValidated = await _orderWorkflowService.ValidateCardOnFile();
-                        if (!cardValidated)
-                        {
-                            this.Services().Message.ShowMessage(
-                                this.Services().Localize["ErrorCreatingOrderTitle"],
-                                this.Services().Localize["NoCardOnFileMessage"]);
-
-                            return;
-                        }
-
-						var cardExpirationValidated = await _orderWorkflowService.ValidateCardExpiration();
-						if (!cardExpirationValidated)
-						{
-							this.Services().Message.ShowMessage(
-								this.Services().Localize["ErrorCreatingOrderTitle"],
-								this.Services().Localize["CardExpiredMessage"]);
-
-							return;
-						}
-
-						if (await _orderWorkflowService.ShouldWarnAboutPromoCode())
-						{
-							var acceptedConditions = false;
-							await this.Services().Message.ShowMessage(
-								this.Services().Localize["WarningTitle"], 
-								this.Services().Localize["PromoMustUseCardOnFileWarningMessage"],
-								this.Services().Localize["OkButtonText"], 
-								() => { 
-									acceptedConditions = true; 
-								},
-								this.Services().Localize["Cancel"], 
-								() => { },
-								this.Services().Localize["WarningPromoCodeDontShow"], 
-								() => { 
-									this.Services().Cache.Set("WarningPromoCodeDontShow", "yes"); 
-									acceptedConditions = true; 
-								});
-
-							if(!acceptedConditions)
-							{
-								return;
-							}
-						}
-
-						_orderWorkflowService.BeginCreateOrder();
-
-						if (await _orderWorkflowService.ShouldPromptForCvv())
-						{
-							var cvv = await this.Services().Message.ShowPromptDialog(
-								this.Services().Localize["CvvRequiredTitle"],
-                                string.Format(this.Services().Localize["CvvRequiredMessage"], _accountService.CurrentAccount.DefaultCreditCard.Last4Digits),
-								() => { return; },
-                                true );
-
-							// validate that it's a numeric value with 3 or 4 digits
-							var cvvSetCorrectly = _orderWorkflowService.ValidateAndSetCvv(cvv);
-							if(!cvvSetCorrectly)
-							{
-								await this.Services().Message.ShowMessage(
-									this.Services().Localize["Error_InvalidCvvTitle"],
-									this.Services().Localize["Error_InvalidCvvMessage"]);
-								return;
-							}
-						}
-
-						if (await _orderWorkflowService.ShouldGoToAccountNumberFlow())
-						{
-							var hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions();
-							if (!hasValidAccountNumber)
-							{
-								var accountNumber = await this.Services().Message.ShowPromptDialog(
-									this.Services().Localize["AccountPaymentNumberRequiredTitle"],
-									this.Services().Localize["AccountPaymentNumberRequiredMessage"],
-									() => { return; });
-
-								var customerNumber = await this.Services().Message.ShowPromptDialog(
-                                	this.Services().Localize["AccountPaymentCustomerNumberRequiredTitle"],
-                                	this.Services().Localize["AccountPaymentCustomerNumberRequiredMessage"],
-                                	() => { return; });
-
-                                hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber, customerNumber);
-								if (!hasValidAccountNumber)
-								{
-									await this.Services().Message.ShowMessage(
-										this.Services().Localize["Error_AccountPaymentTitle"],
-										this.Services().Localize["Error_AccountPaymentMessage"]);
-									return;
-								}
-
-								await _orderWorkflowService.SetAccountNumber(accountNumber, customerNumber);
-							}
-
-							var questions = await _orderWorkflowService.GetAccountPaymentQuestions();
-
-							if (questions != null
-								&& questions.Length > 0
-								&& questions[0].Question.HasValue())
-							{
-								ParentViewModel.CurrentViewState = HomeViewModelState.Initial;								
-								// Navigate to Q&A page
-
-								ShowSubViewModel<InitializeOrderForAccountPaymentViewModel, Tuple<Order, OrderStatusDetail>>(
-									null, 
-									result => ParentViewModel.GotoBookingStatus(result.Item1, result.Item2)
-								);
-							}
-							else
-							{
-								// Skip Q&A page and confirm order
-								await ConfirmOrderAndGoToBookingStatus();
-							}
-						}
-						else
-						{
-							// Skip Q&A page and confirm order
-							await ConfirmOrderAndGoToBookingStatus();
-						}
-                    }
-                    catch (OrderCreationException e)
-                    {
-                        Logger.LogError(e);
-
-                        var title = this.Services().Localize["ErrorCreatingOrderTitle"];
-
-                        switch (e.Message)
-                        {
-                            case "CreateOrder_PendingOrder":
-                                {
-                                    Guid pendingOrderId;
-                                    Guid.TryParse(e.Parameter, out pendingOrderId);
-
-								this.Services().Message.ShowMessage(title, this.Services().Localize["Error" + e.Message],
-									this.Services().Localize["View"], async () =>
-									{
-										var orderInfos = await GetOrderInfos(pendingOrderId);
-
-										ParentViewModel.BookingStatus.StartBookingStatus(orderInfos.Item1, orderInfos.Item2);
-
-										ParentViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
-										ParentViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
-									},
-                                        this.Services().Localize["Cancel"], () => {});
-                                }
-                                break;
-                            default:
-                                {
-                                    if (!Settings.HideCallDispatchButton)
-                                    {
-                                        this.Services().Message.ShowMessage(title, e.Message,
-                                            "Call", () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
-                                            "Cancel", () => { });
-                                    }
-                                    else
-                                    {
-                                        this.Services().Message.ShowMessage(title, e.Message);
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.LogError(e);
-                    }
- 					finally 
+					if(tipIncentive.HasValue && tipIncentive > 0)
 					{
-						_orderWorkflowService.EndCreateOrder ();
+						await this.Services().Message.ShowMessage(
+							this.Services().Localize["DriverBonusWarningTitle"], 
+							this.Services().Localize["DriverBonusWarningMessage"],
+							this.Services().Localize["YesButton"], 
+							async () => 
+							{ 
+								await ConfirmOrder(); 
+							},
+							this.Services().Localize["NoButton"], 
+							() => { }); 
+					}
+					else
+					{
+						await ConfirmOrder();
 					}
 				});
             }
         }
+
+		private async Task ConfirmOrder()
+		{
+			try
+			{
+				var chargeTypeValidated = await _orderWorkflowService.ValidateChargeType();
+				if (!chargeTypeValidated)
+				{
+					this.Services().Message.ShowMessage(
+						this.Services().Localize["InvalidChargeTypeTitle"],
+						this.Services().Localize["InvalidChargeType"]);
+
+					return;
+				}
+
+				var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed().Take(1).ToTask();
+				if (!canBeConfirmed)
+				{
+					return;
+				}
+
+				var promoConditionsValidated = await _orderWorkflowService.ValidatePromotionUseConditions();
+				if(!promoConditionsValidated)
+				{
+					this.Services().Message.ShowMessage(
+						this.Services().Localize["ErrorCreatingOrderTitle"],
+						this.Services().Localize["PromoMustUseCardOnFileMessage"]);
+
+					return;
+				}
+
+				var cardValidated = await _orderWorkflowService.ValidateCardOnFile();
+				if (!cardValidated)
+				{
+					this.Services().Message.ShowMessage(
+						this.Services().Localize["ErrorCreatingOrderTitle"],
+						this.Services().Localize["NoCardOnFileMessage"]);
+
+					return;
+				}
+
+				var cardExpirationValidated = await _orderWorkflowService.ValidateCardExpiration();
+				if (!cardExpirationValidated)
+				{
+					this.Services().Message.ShowMessage(
+						this.Services().Localize["ErrorCreatingOrderTitle"],
+						this.Services().Localize["CardExpiredMessage"]);
+
+					return;
+				}
+
+				if (await _orderWorkflowService.ShouldWarnAboutPromoCode())
+				{
+					var acceptedConditions = false;
+					await this.Services().Message.ShowMessage(
+						this.Services().Localize["WarningTitle"], 
+						this.Services().Localize["PromoMustUseCardOnFileWarningMessage"],
+						this.Services().Localize["OkButtonText"], 
+						() => { 
+						acceptedConditions = true; 
+					},
+						this.Services().Localize["Cancel"], 
+						() => { },
+						this.Services().Localize["WarningPromoCodeDontShow"], 
+						() => { 
+						this.Services().Cache.Set("WarningPromoCodeDontShow", "yes"); 
+						acceptedConditions = true; 
+					});
+
+					if(!acceptedConditions)
+					{
+						return;
+					}
+				}
+
+				_orderWorkflowService.BeginCreateOrder();
+
+				if (await _orderWorkflowService.ShouldPromptForCvv())
+				{
+					var cvv = await this.Services().Message.ShowPromptDialog(
+						this.Services().Localize["CvvRequiredTitle"],
+						string.Format(this.Services().Localize["CvvRequiredMessage"], _accountService.CurrentAccount.DefaultCreditCard.Last4Digits),
+						() => { return; },
+						true );
+
+					// validate that it's a numeric value with 3 or 4 digits
+					var cvvSetCorrectly = _orderWorkflowService.ValidateAndSetCvv(cvv);
+					if(!cvvSetCorrectly)
+					{
+						await this.Services().Message.ShowMessage(
+							this.Services().Localize["Error_InvalidCvvTitle"],
+							this.Services().Localize["Error_InvalidCvvMessage"]);
+						return;
+					}
+				}
+
+				if (await _orderWorkflowService.ShouldGoToAccountNumberFlow())
+				{
+					var hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions();
+					if (!hasValidAccountNumber)
+					{
+						var accountNumber = await this.Services().Message.ShowPromptDialog(
+							this.Services().Localize["AccountPaymentNumberRequiredTitle"],
+							this.Services().Localize["AccountPaymentNumberRequiredMessage"],
+							() => { return; });
+
+						var customerNumber = await this.Services().Message.ShowPromptDialog(
+							this.Services().Localize["AccountPaymentCustomerNumberRequiredTitle"],
+							this.Services().Localize["AccountPaymentCustomerNumberRequiredMessage"],
+							() => { return; });
+
+						hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber, customerNumber);
+						if (!hasValidAccountNumber)
+						{
+							await this.Services().Message.ShowMessage(
+								this.Services().Localize["Error_AccountPaymentTitle"],
+								this.Services().Localize["Error_AccountPaymentMessage"]);
+							return;
+						}
+
+						await _orderWorkflowService.SetAccountNumber(accountNumber, customerNumber);
+					}
+
+					var questions = await _orderWorkflowService.GetAccountPaymentQuestions();
+
+							if (questions != null
+								&& questions.Length > 0
+								&& questions[0].Question.HasValue())
+					{
+						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;								
+								// Navigate to Q&A page
+
+						ShowSubViewModel<InitializeOrderForAccountPaymentViewModel, Tuple<Order, OrderStatusDetail>>(
+							null, 
+							result => ParentViewModel.GotoBookingStatus(result.Item1, result.Item2)
+						);
+					}
+					else
+					{
+								// Skip Q&A page and confirm order
+						await ConfirmOrderAndGoToBookingStatus();
+					}
+				}
+				else
+				{
+							// Skip Q&A page and confirm order
+					await ConfirmOrderAndGoToBookingStatus();
+				}
+			}
+			catch (OrderCreationException e)
+			{
+				Logger.LogError(e);
+
+				var title = this.Services().Localize["ErrorCreatingOrderTitle"];
+
+				switch (e.Message)
+				{
+					case "CreateOrder_PendingOrder":
+						{
+							Guid pendingOrderId;
+							Guid.TryParse(e.Parameter, out pendingOrderId);
+
+							this.Services().Message.ShowMessage(title, this.Services().Localize["Error" + e.Message],
+								this.Services().Localize["View"], async () =>
+								{
+									var orderInfos = await GetOrderInfos(pendingOrderId);
+
+									ParentViewModel.BookingStatus.StartBookingStatus(orderInfos.Item1, orderInfos.Item2);
+
+									ParentViewModel.CurrentViewState = HomeViewModelState.BookingStatus;
+									ParentViewModel.AutomaticLocateMeAtPickup.ExecuteIfPossible();
+								},
+								this.Services().Localize["Cancel"], () => {});
+						}
+						break;
+					default:
+						{
+							if (!Settings.HideCallDispatchButton)
+							{
+								this.Services().Message.ShowMessage(title, e.Message,
+									"Call", () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
+									"Cancel", () => { });
+							}
+							else
+							{
+								this.Services().Message.ShowMessage(title, e.Message);
+							}
+						}
+						break;
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.LogError(e);
+			}
+			finally 
+			{
+				_orderWorkflowService.EndCreateOrder ();
+			}
+		}
 
 		private async Task ConfirmOrderAndGoToBookingStatus()
 		{

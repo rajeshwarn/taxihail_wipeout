@@ -54,5 +54,7 @@ namespace apcurium.MK.Booking.Events
         public bool IsPrepaid { get; set; }
         
         public decimal BookingFees { get; set; }
+
+        public double? TipIncentive { get; set; }
     }
 }

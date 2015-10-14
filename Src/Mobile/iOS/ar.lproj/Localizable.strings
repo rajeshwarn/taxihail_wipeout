@@ -31,6 +31,7 @@
 "VehicleNumberNotice"="يرجى ملاحظة أنه في حالة عدم مطابقة رقم السيارة أعلاه لرقم السيارة الفعلي لمشوارك، فإننا لن نتمكن من إتمام عملية الدفع من خلال التطبيق. يرجي ضغط زر الرجوع للعودة لشاشة حالة الرحلة، وقم بالدفع للسائق مباشرة.";
 "InvalidChoiceTitle"="اختيار خاطئ";
 "NoPairingCreditCard"="None";
+"DriverBonusTitle"="Driver Bonus:";
 "CurrentBookingDisabledTitle"="Current Booking Disabled";
 "ConfirmOriginLablel"="الإلتقاء";
 "StatusEta"="and is {0} {1} away";
@@ -101,7 +102,7 @@
 "UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
 "HistoryDetailsActivityName"="History details";
 "PaymentDetails.InvalidDataTitle"="بيانات الدفع غير صحيحة";
-"TabLocations"="مواقع";
+"DriverBonusWarningMessage"="Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
 "WaitingCarLandscapeActivityName"="Car Number";
 "InvalidAddressMessage"="العنوان الذي أدخلته غير صحيح. يرجى التأكد من المعلومات";
@@ -372,6 +373,7 @@
 "PromotionActivityName"="Promotion";
 "LocationServiceErrorMessage"="خدمة تحديد الموقع غير مفعلة";
 "View_LocationDetail"="تفاصيل الموقع";
+"DriverBonusDescription"="Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.";
 "September"="سبتمبر (09)";
 "ResetPasswordTitleText"="نسيت كلمة المرور؟";
 "March"="مارس (03)";
@@ -472,6 +474,7 @@
 "CmtRideLinqGenericErrorMessage"="حدث خطأ أثناء الإقتران، تأكد من بيانات بطاقة إئتمانك أو حاول في وقت لاحق.";
 "CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
 "PickupDateTextPlaceholder"="التاريخ: اليوم";
+"TabLocations"="مواقع";
 "PanelMenuViewPaymentInfoText"="Payment";
 "BookViewInvalidDate"="تاريخ الإلتقاء وقت الإلتقاء غير مقبولة.";
 "ManualRideLinqStatus_Medallion"="You're checked into taxi #{0}.";
@@ -537,6 +540,7 @@
 "CreditCardInstructions"="In order to use the application, you need to add a payment method to your account.";
 "StatusNewRideButton"="رحلة جديدة";
 "PromoMustHavePaymentMethodSetMessage_CreditCard"="In order to use a promo code, you need to enter a credit card as part of your account.";
+"DriverBonusWarningTitle"="Confirm Driver Bonus";
 "DriverInfoCompany"="Company:";
 "InvalidEmailMessage"="البريد الإلكتروني غير صحيح";
 "LocationsActivityName"="Favorite locations";
