@@ -22,6 +22,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
+using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -172,7 +173,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			var deviceLocationObservable = Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
 				.Where(_ => ManualRideLinqDetail != null && ManualRideLinqDetail.Medallion.HasValue())
-				.SelectMany(_ => _locationService.GetUserPosition());
+				.SelectMany(_ => _locationService.GetUserPosition())
+				.Select(pos =>
+				{
+					if (pos == null)
+					{
+						return null;
+					}
+
+					return new PairedTaxiPosition
+					{
+						Latitude = pos.Latitude,
+						Longitude = pos.Longitude
+					};
+				});
 
 			var orderId = orderManualRideLinqDetail.OrderId;
 			var deviceName = orderManualRideLinqDetail.DeviceName;
@@ -184,11 +198,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					? taxilocationViaGeo
 					: deviceLocationObservable
 				)
-				.Where(pos => pos != null)
+				.Where(pos => pos != null )
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, orderManualRideLinqDetail.Medallion, CancellationToken.None), Logger.LogError)
+				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, orderManualRideLinqDetail.Medallion, CancellationToken.None, pos.Orientation), Logger.LogError)
 				.DisposeWith(subscriptions);
-			
 
 			_locationService.Start();
 
@@ -207,7 +220,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		/// 
 		/// This observable will also fallback to the device's location if Geo is not available for any reason.
 		/// </remarks>
-		private IObservable<Position> GetAndObserveTaxiLocationViaGeo(string medallion, Guid orderId)
+		private IObservable<PairedTaxiPosition> GetAndObserveTaxiLocationViaGeo(string medallion, Guid orderId)
 		{
 			return _vehicleService.GetAndObserveCurrentTaxiLocation(medallion, orderId)
 				.Materialize()
@@ -218,27 +231,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						var fallbackPosition = await _locationService.GetUserPosition();
 
-						return Notification.CreateOnNext(fallbackPosition);
-					}
-
-					if(notif.Kind == NotificationKind.OnNext && notif.Value != null)
-					{
-						var position = new Position
+						if (fallbackPosition == null)
 						{
-							Longitude = notif.Value.Longitude,
-							Latitude = notif.Value.Latitude
+							return Notification.CreateOnNext<PairedTaxiPosition>(null);
+						}
+
+						var value = new PairedTaxiPosition
+						{
+							Latitude = fallbackPosition.Latitude,
+							Longitude = fallbackPosition.Longitude,
 						};
 
+						return Notification.CreateOnNext(value);
+					}
+
+					if (notif.Kind == NotificationKind.OnNext && notif.Value != null)
+					{
+						var position = new PairedTaxiPosition
+						{
+							Longitude = notif.Value.Longitude,
+							Latitude = notif.Value.Latitude,
+							Orientation = notif.Value.CompassCourse
+						};
 
 						return Notification.CreateOnNext(position);
 					}
 
-					return Notification.CreateOnCompleted<Position>();
+					return Notification.CreateOnCompleted<PairedTaxiPosition>();
 				})
 				.Dematerialize();
 		}
 
-		private void UpdatePosition(double latitude, double longitude, string medallion, CancellationToken token, double compassCourse = 0)
+		private void UpdatePosition(double latitude, double longitude, string medallion, CancellationToken token, double? compassCourse = null)
 		{
 			token.ThrowIfCancellationRequested();
 
