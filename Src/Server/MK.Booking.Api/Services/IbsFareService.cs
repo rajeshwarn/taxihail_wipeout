@@ -65,5 +65,38 @@ namespace apcurium.MK.Booking.Api.Services
 
             return new DirectionInfo();
         }
+
+        public DirectionInfo Get(IbsDistanceRequest request)
+        {
+            var tripDurationInMinutes = (request.WaitTime.HasValue ? (int?)TimeSpan.FromSeconds(request.WaitTime.Value).TotalMinutes : null);
+
+            var defaultVehiculeType = _vehicleTypeDao.GetAll().FirstOrDefault();
+
+            var fare = _ibsServiceProvider.Booking().GetDistanceEstimate(
+                request.Distance,
+                tripDurationInMinutes,
+                request.StopCount,
+                request.PassengerCount,
+                request.VehicleType,
+                defaultVehiculeType != null ? defaultVehiculeType.ReferenceDataVehicleId : -1,
+                request.AccountNumber,
+                request.CustomerNumber
+                );
+
+            if (fare.TotalFare != null)
+            {
+                double distance = request.Distance;
+
+                return new DirectionInfo
+                {
+                    Distance = distance,
+                    Price = fare.TotalFare,
+                    FormattedDistance = _resources.FormatDistance(distance),
+                    FormattedPrice = _resources.FormatPrice(fare.TotalFare)
+                };
+            }
+
+            return new DirectionInfo();
+        }
     }
 }

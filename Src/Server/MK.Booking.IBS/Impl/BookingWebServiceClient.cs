@@ -190,6 +190,30 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
+        public IBSDistanceEstimate GetDistanceEstimate(double? distance, int? waitTime, int? stopCount, int? passengerCount, int? vehicleType, int defaultVehiculeTypeId, int? accountNumber, string customerNumber)
+        {
+            var result = new IBSDistanceEstimate();
+            UseService(service =>
+            {
+                var frDate = new TWEBTimeStamp { Year = DateTime.Now.Year, Month = DateTime.Now.Month, Day = DateTime.Now.Day };
+
+                waitTime = waitTime.HasValue && waitTime > 0 ? waitTime.Value : 0;
+                distance = distance.HasValue && distance > 0 ? distance.Value : 0;
+                stopCount = stopCount.HasValue && stopCount > 0 ? stopCount.Value : 0;
+                passengerCount = passengerCount.HasValue && passengerCount > 0 ? passengerCount.Value : 0;
+                vehicleType = vehicleType ?? defaultVehiculeTypeId;
+
+                int tripTime;
+                int completionState;
+
+                result.TotalFare = service.EstimateDistance(UserNameApp, PasswordApp, distance.Value, waitTime.Value, stopCount.Value, passengerCount.Value, frDate, vehicleType.ToString(), accountNumber.Value, customerNumber, out tripTime, out completionState);
+
+                result.TripTime = distance;
+            });
+
+            return result;
+        }
+
         public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
         {
             var result = new List<IBSOrderInformation>();

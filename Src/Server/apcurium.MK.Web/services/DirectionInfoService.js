@@ -18,7 +18,35 @@
                 var directionInfoDefer = $.Deferred();
                 var tripDurationInSeconds = null;
 
-                if (tarifMode != 'AppTarif') {
+                if (tarifMode == "Ibs_Distance") {
+                    var distance = null;
+                    $.ajax({
+                        url: 'api/directions/',
+                        data: coordinates,
+                        dataType: fmt,
+                        success: function (result, status) {
+                            tripDurationInSeconds = result.tripDurationInSeconds;
+                            distance = result.distance;
+                        },
+                        async: false
+                    });
+
+                    $.get('api/ibsdistance?Distance={0}&WaitTime={1}&StopCount={2}&PassengerCount={3}&AccountNumber={4}&CustomerNumber={5}&VehicleType={6}'.format(
+                           distance,  
+                           (tripDurationInSeconds != null)
+                            ? tripDurationInSeconds
+                            : 0,
+                            0,
+                            0,
+                            0,
+                            (account != null)
+                            ? account
+                            : '',
+                            vehicleTypeId),
+                        function() {}, fmt).then(function(result) {
+                        });
+                }
+                else if (tarifMode != 'AppTarif') {
 
                     $.ajax({
                         url: 'api/directions/',

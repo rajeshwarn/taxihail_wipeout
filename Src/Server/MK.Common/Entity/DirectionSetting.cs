@@ -3,8 +3,9 @@ namespace apcurium.MK.Common.Entity
     public enum TarifMode
     {
         AppTarif,
-        Ibs,
-        Both
+        Ibs_Fare,
+        Both,
+        Ibs_Distance
     }
 
     public enum MapProvider
