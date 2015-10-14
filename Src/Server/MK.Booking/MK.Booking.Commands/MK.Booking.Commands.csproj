@@ -66,6 +66,8 @@
     <Compile Include="UnapplyPromotion.cs" />
     <Compile Include="UnpairOrderForManualRideLinq.cs" />
     <Compile Include="UpdateAutoTip.cs" />
+    <Compile Include="UpdateCreditCardLabel.cs" />
+    <Compile Include="UpdateDefaultCreditCard.cs" />
     <Compile Include="UpdateFees.cs" />
     <Compile Include="UpdateOrderNotificationDetail.cs" />
     <Compile Include="UpdateRoleToUserAccount.cs" />
@@ -87,8 +89,8 @@
     <Compile Include="IgnoreDispatchCompanySwitch.cs" />
     <Compile Include="NotifyOrderTimedOut.cs" />
     <Compile Include="DeleteAccountCharge.cs" />
-    <Compile Include="DeleteAccountCreditCards.cs" />
-    <Compile Include="DeleteAllCreditCards.cs" />
+    <Compile Include="DeleteAccountCreditCard.cs" />
+    <Compile Include="DeleteCreditCardsFromAccounts.cs" />
     <Compile Include="DeleteRatingType.cs" />
     <Compile Include="DeleteVehicleType.cs" />
     <Compile Include="InitiateCreditCardPayment.cs" />

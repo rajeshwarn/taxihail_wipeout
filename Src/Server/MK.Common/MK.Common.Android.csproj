@@ -156,6 +156,7 @@
     <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Diagnostic\BaseLogger.cs" />
     <Compile Include="Configuration\Attributes\RequiresTaxiHailPro.cs" />
+    <Compile Include="CreditCardLabelConstants.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

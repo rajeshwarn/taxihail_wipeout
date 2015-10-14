@@ -71,6 +71,7 @@
             TaxiHail.parameters.directionNeedAValidTarif = <%: DirectionNeedAValidTarif ? "true" : "false" %>;
             TaxiHail.parameters.isChargeAccountPaymentEnabled = <%: IsChargeAccountPaymentEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isBraintreePrepaidEnabled = <%: IsBraintreePrepaidEnabled ? "true" : "false" %>;
+            TaxiHail.parameters.maxNumberOfCreditCards = <%: MaxNumberOfCreditCards %>;
             TaxiHail.parameters.isPayPalEnabled = <%: IsPayPalEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isCreditCardMandatory = <%: IsCreditCardMandatory ? "true" : "false" %>;
             TaxiHail.parameters.apiRoot = "api";

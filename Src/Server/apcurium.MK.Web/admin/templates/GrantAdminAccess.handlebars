@@ -11,14 +11,20 @@
             <div class="control-group btn-right-alignment">
                 <button type="button" class='btn btn-primary span' data-action='grantadmin' data-loading-text="{{localize 'Loading'}}">{{localize "Grant Admin"}}</button>
             </div>
-            <div class="control-group btn-right-alignment">
-                <button type="button" class='btn btn-primary span' data-action='grantsupport' data-loading-text="{{localize 'Loading'}}">{{localize "Grant Support"}}</button>
-            </div>
-            <div class="control-group btn-right-alignment">
+             <div class="control-group btn-right-alignment">
                 {{#if isSuperAdmin}}
                 <button type="button" class='btn btn-warning span' data-action='grantsuperadmin' data-loading-text="{{localize 'Loading'}}">{{localize "Grant SuperAdmin"}}</button>
                 {{/if}}
             </div>
+            {{#if isAdmin}}
+            <div class="control-group btn-right-alignment">
+                <button type="button" class='btn btn-primary span' data-action='grantsupport' data-loading-text="{{localize 'Loading'}}">{{localize "Grant Support"}}</button>
+            </div>
+            <div class="control-group btn-right-alignment">
+                <button type="button" class='btn btn-danger span' data-action='revokeaccess' data-loading-text="{{localize 'Loading'}}">{{localize "Revoke Access"}}</button>
+            </div>
+            {{/if}}
+           
         </div>
     </div>
 </div>

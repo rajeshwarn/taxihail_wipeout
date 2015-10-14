@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     if (resource != 0)
                     {
                         _imageLeftView.SetImageResource(resource);
-                        _label.OffsetLeftAndRight(70);
+                        _label.SetPadding(55.ToPixels (), 0, 0, 0);
                     }
                 }
             }
@@ -168,9 +168,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     _imageLeftView.SetImageResource(resource);
                     if (this.Services ().Localize.IsRightToLeft) {
-                        _label.SetPadding (0, 0, 70.ToPixels (), 0);
+                        _label.SetPadding (0, 0, 55.ToPixels (), 0);
                     } else {
-                        _label.SetPadding (70.ToPixels (), 0, 0, 0);
+                        _label.SetPadding (55.ToPixels (), 0, 0, 0);
                     }
                 }
             }

@@ -20,12 +20,12 @@
             android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
-                android:text="@string/View_EditAutoTip"
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/top_bar_title_height"
-                android:gravity="center" />
+                android:gravity="center"
+                local:MvxBind="Text ViewTitle" />
         </LinearLayout>
         <LinearLayout
             android:paddingLeft="15dp"
@@ -34,6 +34,21 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/paymentMethodsLabel"
+                android:text="@string/PaymentDetails.PaymentMethodsLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                style="@style/BlackTextLabel"
+                local:MvxBind="Visibility CanShowCreditCard, Converter=Visibility" />
+            <apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner
+                android:id="@+id/tipPicker"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightEditTextFlat"
+                android:layout_marginBottom="10dip"
+                local:MvxBind="Text CreditCardSelectedDisplay; Data CreditCards; SelectedItem CreditCardSelected; LeftImage CreditCardSelectedImage; Visibility CanShowCreditCard, Converter=Visibility" />
             <TextView
                 android:id="@+id/tipAmountLabel"
                 android:text="@string/PaymentDetails.TipAmountLabel"

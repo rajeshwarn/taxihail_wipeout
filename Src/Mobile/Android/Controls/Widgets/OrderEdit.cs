@@ -12,8 +12,6 @@ using Android.Graphics;
 using Android.Runtime;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
-using Android.Runtime;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -68,22 +66,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
         }
 
-		public FrameLayout.LayoutParams GetLayoutParameters()
+		public LayoutParams GetLayoutParameters()
 		{
-			return (FrameLayout.LayoutParams)LayoutParameters;
+			return (LayoutParams)LayoutParameters;
 		}
 
 		public void SetLayoutParameters(int width, int height, int leftMargin, int rigthMargin, int topMargin, int bottomMargin, GravityFlags gravityFlags)
 		{
-			LayoutParameters = new FrameLayout.LayoutParams(width, height, gravityFlags);
+			LayoutParameters = new LayoutParams(width, height, gravityFlags);
 
-			((ViewGroup.MarginLayoutParams)LayoutParameters).LeftMargin = leftMargin;
-			((ViewGroup.MarginLayoutParams)LayoutParameters).RightMargin = rigthMargin;
-			((ViewGroup.MarginLayoutParams)LayoutParameters).TopMargin = topMargin;
-			((ViewGroup.MarginLayoutParams)LayoutParameters).BottomMargin = bottomMargin;
+			((MarginLayoutParams)LayoutParameters).LeftMargin = leftMargin;
+			((MarginLayoutParams)LayoutParameters).RightMargin = rigthMargin;
+			((MarginLayoutParams)LayoutParameters).TopMargin = topMargin;
+			((MarginLayoutParams)LayoutParameters).BottomMargin = bottomMargin;
 		}
 
-        private OrderEditViewModel ViewModel { get { return (OrderEditViewModel)DataContext; } }
+	    public void ShowWithoutAnimations()
+	    {
+		    _isShown = true;
+
+		    if (Animation != null)
+		    {
+			    Animation.Cancel();
+		    }
+
+		    ((MarginLayoutParams) LayoutParameters).LeftMargin = 0;
+	    }
 
 	    public Point ScreenSize { get; set; }
 

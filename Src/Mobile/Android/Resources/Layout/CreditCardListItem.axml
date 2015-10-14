@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/HeightEditTextFlat"
+    android:background="@android:color/white">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <MvxImageView
+            android:id="@+id/CreditCardImagePath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="5dp"
+            android:paddingBottom="2dp"
+            local:MvxBind="DrawableName CreditCardCompany, Converter=CreditCardCompanyImageConverter" />
+        <TextView
+            local:MvxBind="Text CardNumber"
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/HeightEditTextFlat"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/CreditCardImagePath"
+            android:gravity="start|center_vertical"
+            style="@style/BlackTextLabel" />
+        <ImageView
+            android:src="@drawable/right_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:paddingTop="5dp"
+            android:layout_marginRight="20dp"
+            android:paddingBottom="5dp" />
+    </RelativeLayout>
+</LinearLayout>

@@ -105,7 +105,11 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Tax = 1,
                 Tip = 2,
                 Toll = 4,
-                VehicleNumber = "123"
+                VehicleNumber = "123",
+                CmtRideLinqFields = new SendReceipt.CmtRideLinqReceiptFields()
+                {
+                    TipIncentive = 5
+                },
             });
 
             var dateFormat = CultureInfo.GetCultureInfo("fr");
@@ -129,7 +133,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             AssertTemplateValueEquals("BookingFees", "$5.00");
             AssertTemplateValueEquals("Extra", "$1.00");
             AssertTemplateValueEquals("Tip", "$2.00");
-            AssertTemplateValueEquals("TotalFare", "$16.00");
+            AssertTemplateValueEquals("TotalFare", "$21.00");
             AssertTemplateValueEquals("Tax", "$1.00");
             AssertTemplateValueEquals("ShowTax", "True");
             AssertTemplateValueEquals("ShowToll", "True");
@@ -148,6 +152,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             AssertTemplateValueEquals("PromotionWasUsed", "True");
             AssertTemplateValueEquals("promoCode", "promo");
             AssertTemplateValueEquals("AmountSavedByPromotion", "$2.00");
+            AssertTemplateValueEquals("TipIncentive", "$5.00");
         }
         
         [Test]
