@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
@@ -12,5 +16,6 @@ namespace apcurium.MK.Booking.Commands
 
         public Guid AccountId { get; set; }
         public Guid Id { get; private set; }
+
     }
 }

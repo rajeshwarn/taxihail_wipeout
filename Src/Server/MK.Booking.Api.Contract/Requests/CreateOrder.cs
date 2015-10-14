@@ -75,5 +75,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public bool FromWebApp { get; set; }
 
         public string Cvv { get; set; }
+
+        public double? TipIncentive { get; set; }
     }
 }

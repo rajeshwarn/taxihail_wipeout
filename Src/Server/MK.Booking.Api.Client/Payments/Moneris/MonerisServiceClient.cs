@@ -23,9 +23,9 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			MonerisClient = new MonerisTokenizeClient(monerisSettings, logger);
 		}
 
-		public Task<TokenizedCreditCardResponse> Tokenize (string creditCardNumber, DateTime expiryDate, string cvv)
+        public Task<TokenizedCreditCardResponse> Tokenize (string creditCardNumber, DateTime expiryDate, string cvv, string zipCode = null)
 		{
-			return Tokenize(MonerisClient, creditCardNumber, expiryDate);
+            return Tokenize(MonerisClient, creditCardNumber, expiryDate);
 		}
 
 		public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard (string cardToken)
@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
             return Client.PostAsync(new SettleOverduePaymentRequest());
         }
 
-	    public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
+        public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger, string zipCode = null)
         {
             var monerisTokenizeClient = new MonerisTokenizeClient(serverPaymentSettings, logger);
             var result = monerisTokenizeClient.Tokenize(number, date.ToString("yyMM"));

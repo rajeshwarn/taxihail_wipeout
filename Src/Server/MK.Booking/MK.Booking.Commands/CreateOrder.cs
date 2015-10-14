@@ -57,7 +57,9 @@ namespace apcurium.MK.Booking.Commands
         public bool IsPrepaid { get; set; }
 
         public decimal BookingFees { get; set; }
-        
+
+        public double? TipIncentive { get; set; }
+
         public class PaymentInformation
         {
             public bool PayWithCreditCard { get; set; }

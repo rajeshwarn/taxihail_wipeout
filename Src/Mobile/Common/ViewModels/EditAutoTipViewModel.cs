@@ -2,6 +2,13 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Booking.Mobile.Data;
+using System.Collections.Generic;
+using System;
+using System.Threading.Tasks;
+using System.Linq;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -10,16 +17,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IPaymentService _paymentService;
         private readonly IBookingService _bookingService;
-		private const int TIP_MAX_PERCENT = 100;
+        private readonly IAccountService _accountService;
+		private List<CreditCardInfos> _creditCardsData;
+		private bool _isCmtRideLinq;
+        private const int TIP_MAX_PERCENT = 100;
 
         public EditAutoTipViewModel(IOrderWorkflowService orderWorkflowService,
             IPaymentService paymentService,
+            IAccountService accountService,
             IBookingService bookingService)
         {
             _orderWorkflowService = orderWorkflowService;
             _paymentService = paymentService;
             _bookingService = bookingService;
-        }
+			_accountService = accountService;
+
+			GetIsCmtRideLinq();
+		}
+
+		private async void GetIsCmtRideLinq()
+		{
+			try
+			{
+				var paymentSettings = await _paymentService.GetPaymentSettings();
+
+				_isCmtRideLinq = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+
+				RaisePropertyChanged(() => ViewTitle);
+				RaisePropertyChanged(() => CanShowCreditCard);
+			}
+			catch(Exception ex) 
+			{
+				Logger.LogError(ex);	
+			}
+		}
 
 		public async void Init(int tip = -1)
 		{
@@ -33,7 +64,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_paymentPreferences.Tip = tip;
 			}
 			PaymentPreferences = _paymentPreferences;
-		}
+        }
+
+        public override async void OnViewStarted(bool firstTime)
+        {
+            base.OnViewStarted(firstTime);
+
+            if (firstTime)
+            {
+                using (this.Services().Message.ShowProgress())
+                {
+                    await GetCreditCards();
+					CreditCardSelected = CreditCards.First(cc => cc.IsDefault.Value).Id.Value;
+                }   
+            }
+            else
+            {
+                await GetCreditCards();
+            }
+
+        }
 
 		private PaymentDetailsViewModel _paymentPreferences;
 		public PaymentDetailsViewModel PaymentPreferences 
@@ -44,7 +94,112 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_paymentPreferences = value; 
 				RaisePropertyChanged(); 
 			}
+        }
+
+        private ListItem[] _creditCards;
+        public ListItem[] CreditCards
+        {
+            get
+            {
+                return _creditCards;
+            }
+            set
+            {
+                _creditCards = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public string CreditCardSelectedDisplay
+        {
+            get
+            {
+                return CreditCards[CreditCardSelected].Display;
+            }
+        }
+
+        public string CreditCardSelectedImage
+        {
+            get
+            {
+                return CreditCards[CreditCardSelected].Image;
+            }
 		}
+
+		public string ViewTitle
+		{
+			get
+			{
+				return _isCmtRideLinq ? this.Services().Localize["View_EditAutoPayment"] : this.Services().Localize["View_EditAutoTip"];
+			}
+		}
+
+		public bool CanShowCreditCard
+		{
+			get
+			{
+				return _isCmtRideLinq;
+			}
+		}
+
+        private int _creditCardSelected;
+        public int CreditCardSelected
+        {
+            get
+            {
+                return _creditCardSelected;
+            }
+            set
+            {
+                _creditCardSelected = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(() => CreditCardSelectedDisplay);
+                RaisePropertyChanged(() => CreditCardSelectedImage);
+            }
+        }
+
+        private async Task GetCreditCards()
+        {
+            try
+            {
+                var creditCardsDetails = await _accountService.GetCreditCards();
+
+				_creditCardsData = creditCardsDetails.Select( cc => 
+	                {
+							var creditCardInfos =  new CreditCardInfos()
+							{
+								CreditCardId = cc.CreditCardId,
+								CreditCardCompany = cc.CreditCardCompany
+							};
+	                        var cardNumber = string.Format("{0} **** {1} ", cc.Label, cc.Last4Digits);
+
+	                        if(cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId)
+	                        {
+								cardNumber += this.Services().Localize["DefaultCreditCard_Label"];
+								creditCardInfos.IsDefault = true;
+	                        }
+							creditCardInfos.CardNumber = cardNumber;
+
+							return creditCardInfos;
+							
+						}).OrderByDescending(cc => cc.CreditCardId == _accountService.CurrentAccount.DefaultCreditCard.CreditCardId).ToList();
+
+                CreditCards = _creditCardsData.Select(cc =>
+                    {
+                        return new ListItem()
+                        {
+                            Id = _creditCardsData.FindIndex(c => c == cc),
+                            Display = cc.CardNumber,
+							IsDefault = cc.IsDefault,
+                            Image = cc.CreditCardCompany
+                        };
+                    }).ToArray();
+            }
+            catch(Exception e)
+            {
+                Logger.LogError(e);
+            }
+        }
 
         public ICommand SaveAutoTipChangeCommand
         {
@@ -54,7 +209,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     using (this.Services().Message.ShowProgress())
                     {
-							if(PaymentPreferences.Tip > TIP_MAX_PERCENT)
+						if(PaymentPreferences.Tip > TIP_MAX_PERCENT)
 						{
 							await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
 						}

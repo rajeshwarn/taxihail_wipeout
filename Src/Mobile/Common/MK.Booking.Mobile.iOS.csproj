@@ -365,6 +365,9 @@
     <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
     <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="ViewModels\Orders\WaitingCarLandscapeViewModel.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardBaseViewModel.cs" />
+    <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

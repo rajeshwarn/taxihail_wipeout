@@ -331,7 +331,7 @@ namespace apcurium.MK.Common.Configuration
 
     public class HoneyBadgerSettingContainer
     {
-        [Display(Name = "Available Vehicle - Honey Badger Market", Description = "Honey Badger Service Url. N.B.: Market request parameter is added automatically by the middleware, no need to add it here.")]
+        [Display(Name = "Available Vehicle - Honey Badger service URL", Description = "Honey Badger Service Url. N.B.: Market request parameter is added automatically by the middleware, no need to add it here.")]
         public string ServiceUrl { get; protected internal set; }
 
         [Display(Name = "Available Vehicle - Honey Badger Market", Description = "Market used to find vehicles when Available Vehicles Mode is set to 'HoneyBadger'")]
