@@ -14,8 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("AddressTextBox")]
     public class AddressTextBox : UIView
     {        
-        private bool _isInStreetNumberEditMode;
-
         public event EventHandler AddressClicked;
 
         public Action<string> AddressUpdated;
@@ -27,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIView VerticalDivider { get; set; }
         private UIView HorizontalDividerTop { get; set; }
         private RoundedCornerView StreetNumberRoundedCornerView { get; set; }
+        private NSLayoutConstraint _streetNumberTextViewWidthConstraint;
+        private const float MinimumStreetNumberTextViewWidth = 40f;
 
         public AddressTextBox(IntPtr h):base(h)
         {
@@ -41,22 +41,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             BackgroundColor = UIColor.Clear;
 
-            StreetNumberRoundedCornerView = new RoundedCornerView();
-            StreetNumberRoundedCornerView.Hidden = true;
+            StreetNumberRoundedCornerView = new RoundedCornerView 
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                Hidden = true
+            };
             AddSubview(StreetNumberRoundedCornerView);
 
-            StreetNumberTextView = new FlatTextField();
-            StreetNumberTextView.BackgroundColor = UIColor.Clear;
-            StreetNumberTextView.ClearButtonMode = UITextFieldViewMode.Never;
-            StreetNumberTextView.Placeholder = "#";
-            StreetNumberTextView.AccessibilityLabel = Localize.GetValue("StreetNumber");
-            StreetNumberTextView.SetPadding(15, 0);
-            StreetNumberTextView.KeyboardType = UIKeyboardType.NumberPad;
+            StreetNumberTextView = new FlatTextField
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                BackgroundColor = UIColor.Clear,
+                ClearButtonMode = UITextFieldViewMode.Never,
+                Placeholder = "#",
+                AccessibilityLabel = Localize.GetValue("StreetNumber"),
+                KeyboardType = UIKeyboardType.NumberPad,
+                VerticalAlignment = UIControlContentVerticalAlignment.Center,
+                TextAlignment = UITextAlignment.Center
+            };
             StreetNumberTextView.ShowCloseButtonOnKeyboard();
-            StreetNumberTextView.VerticalAlignment = UIControlContentVerticalAlignment.Center;
-            StreetNumberTextView.SizeToFit();
-            StreetNumberTextView.SetHeight(this.Frame.Height).IncrementWidth(10);
             AddSubview(StreetNumberTextView);
+            _streetNumberTextViewWidthConstraint = NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, MinimumStreetNumberTextViewWidth);
+            AddConstraints(new [] {
+                NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, StreetNumberTextView.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                _streetNumberTextViewWidthConstraint,
+                NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, StreetNumberTextView.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, StreetNumberTextView.Superview, NSLayoutAttribute.Height, 1f, 0f),
+            });
+
+            AddConstraints(new [] {
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Left, 1f, 0f), 
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Width, 1f, 0f),
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Height, 1f, 0f)
+            });
 
             AddressTextView = new FlatTextField();   
             AddressTextView.BackgroundColor = UIColor.Clear;
@@ -73,17 +91,44 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             };
             AddSubview(AddressButton);
 
-            LoadingWheel = new UIActivityIndicatorView();
-            LoadingWheel.Color = UIColor.Gray;
+            LoadingWheel = new UIActivityIndicatorView
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                Color = UIColor.Gray
+            };
             AddSubview(LoadingWheel);
+            AddConstraints(new [] {
+                NSLayoutConstraint.Create(LoadingWheel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Left, 1f, 0f), 
+                NSLayoutConstraint.Create(LoadingWheel, NSLayoutAttribute.Width, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Width, 1f, 0f),
+                NSLayoutConstraint.Create(LoadingWheel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(LoadingWheel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Height, 1f, 0f)
+            });
 
-            VerticalDivider = new UIView(new CGRect(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12));
-            VerticalDivider.BackgroundColor = UIColor.FromRGB(118, 118, 118);
+            VerticalDivider = new UIView
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                BackgroundColor = UIColor.FromRGB(118, 118, 118)
+            };
             AddSubview(VerticalDivider);
+            AddConstraints(new [] {
+                NSLayoutConstraint.Create(VerticalDivider, NSLayoutAttribute.Left, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Right, 1f, 0f), 
+                NSLayoutConstraint.Create(VerticalDivider, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, UIHelper.OnePixel),
+                NSLayoutConstraint.Create(VerticalDivider, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, VerticalDivider.Superview, NSLayoutAttribute.CenterY, 1f, 0f),
+                NSLayoutConstraint.Create(VerticalDivider, NSLayoutAttribute.Height, NSLayoutRelation.Equal, VerticalDivider.Superview, NSLayoutAttribute.Height, 0.73f, 0f)
+            });
 
-            HorizontalDividerTop = new UIView(new CGRect(0, 0, this.Frame.Width, UIHelper.OnePixel));
-            HorizontalDividerTop.BackgroundColor = UIColor.FromRGB(177, 177, 177);
+            HorizontalDividerTop = new UIView
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                BackgroundColor = UIColor.FromRGB(177, 177, 177)
+            };
             AddSubview(HorizontalDividerTop);
+            AddConstraints(new [] {
+                NSLayoutConstraint.Create(HorizontalDividerTop, NSLayoutAttribute.Left, NSLayoutRelation.Equal, HorizontalDividerTop.Superview, NSLayoutAttribute.Left, 1f, 0f), 
+                NSLayoutConstraint.Create(HorizontalDividerTop, NSLayoutAttribute.Width, NSLayoutRelation.Equal, HorizontalDividerTop.Superview, NSLayoutAttribute.Width, 1f, 0f),
+                NSLayoutConstraint.Create(HorizontalDividerTop, NSLayoutAttribute.Top, NSLayoutRelation.Equal, HorizontalDividerTop.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(HorizontalDividerTop, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, UIHelper.OnePixel)
+            });
 
             SetBehavior();
 
@@ -191,11 +236,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             base.LayoutSubviews();
 
-            StreetNumberTextView.SizeToFit();
-            StreetNumberTextView.SetHeight(this.Frame.Height).IncrementWidth(10);
-
-            VerticalDivider.Frame = new CGRect(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12);
-
             if (IsSelected)
             {
                 StreetNumberTextView.Hidden = false;
@@ -203,24 +243,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 AddressButton.Frame = AddressTextView.Frame = new CGRect(VerticalDivider.Frame.Right + 6, 0, this.Frame.Width - VerticalDivider.Frame.Right, this.Frame.Height);
 
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Never;
-
-                StreetNumberRoundedCornerView.Frame = LoadingWheel.Frame = StreetNumberTextView.Frame;
-
-                if (_isInStreetNumberEditMode)
-                {
-                    StreetNumberTextView.IncrementWidth(50);
-                }
             }
             else
             {
-                var color = IsDestination ? UIColor.FromRGB(255, 0, 0) : UIColor.FromRGB(30, 192, 34);
-
                 StreetNumberTextView.Hidden = true;
 
                 AddressButton.Frame = AddressTextView.Frame = new CGRect(0, 0, this.Frame.Width, this.Frame.Height);
 
                 AddressTextView.SetPadding(VerticalDivider.Frame.Right + 6, 6);
-                AddressTextView.LeftView = new Dot(6, color, -3)
+                AddressTextView.LeftView = new Dot(6, GetColor(), -3)
                 { 
                     Frame = new CGRect(0, 0, VerticalDivider.Frame.Right + 6, this.Frame.Height)
                 };
@@ -232,12 +263,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             AddressTextView.UserInteractionEnabled = IsSelected;
 
-            var color = IsDestination ? UIColor.FromRGB(255, 0, 0) : UIColor.FromRGB(30, 192, 34);
+            var sizeThatFits = StreetNumberTextView.GetSizeThatFits(StreetNumberTextView.Text, StreetNumberTextView.Font);
+            _streetNumberTextViewWidthConstraint.Constant = (float)Math.Max(sizeThatFits.Width + 30f, MinimumStreetNumberTextViewWidth);
 
             if (IsSelected)
             {
-                StreetNumberRoundedCornerView.BackColor = color;
-                StreetNumberRoundedCornerView.StrokeLineColor = color;
+                StreetNumberRoundedCornerView.BackColor = GetColor();
+                StreetNumberRoundedCornerView.StrokeLineColor = GetColor();
 
                 if (IsDestination)
                 {
@@ -283,7 +315,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 StreetNumberRoundedCornerView.Hidden = false;
                 VerticalDivider.Hidden = true;
-                _isInStreetNumberEditMode = true;
                 Resize();
             };
 
@@ -291,9 +322,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 StreetNumberRoundedCornerView.Hidden = true;
                 VerticalDivider.Hidden = false;
-                _isInStreetNumberEditMode = false;
                 Resize();
             };
+        }
+
+        private UIColor GetColor()
+        {
+            return IsDestination ? UIColor.FromRGB(255, 0, 0) : UIColor.FromRGB(30, 192, 34);
         }
     }
 }

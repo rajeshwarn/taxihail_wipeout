@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		void EndCreateOrder ();
 
 		Task<bool> ValidateCardOnFile ();
+		Task<bool> ValidateCardOnFileForLuxuryService();
 		Task<bool> ValidateCardExpiration ();
 	    Task<bool> ValidateIsCardDeactivated();
 		Task<bool> ValidatePromotionUseConditions();

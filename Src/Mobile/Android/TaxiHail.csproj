@@ -712,14 +712,14 @@
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeSub.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources/values-ar/String.xml" />
-    <AndroidResource Include="Resources/values-es/String.xml" />
-    <AndroidResource Include="Resources/values-fr/String.xml" />
     <AndroidResource Include="Resources\Values\String.xml" />
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\textview_rounded_border.xml" />
+    <AndroidResource Include="Resources\values-ar\String.xml" />
+    <AndroidResource Include="Resources\values-es\String.xml" />
+    <AndroidResource Include="Resources\values-fr\String.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

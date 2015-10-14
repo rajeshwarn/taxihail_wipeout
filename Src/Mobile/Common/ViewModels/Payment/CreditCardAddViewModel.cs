@@ -662,7 +662,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						}
 						else
 						{
-							ShowViewModelAndClearHistory<HomeViewModel>(new { locateUser = bool.TrueString, shouldShowReview = _shouldShowReview });
+							var vmParams = new { locateUser = bool.TrueString, shouldShowReview = _shouldShowReview };
+							if(_shouldShowReview)
+							{
+								ShowViewModelAndRemoveFromHistory<HomeViewModel>(vmParams);
+							}
+							else
+							{
+								ShowViewModelAndClearHistory<HomeViewModel>(vmParams);
+							}
 						}
 					}
 					else

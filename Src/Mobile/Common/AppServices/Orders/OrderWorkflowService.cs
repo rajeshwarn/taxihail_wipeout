@@ -854,6 +854,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return true;
 		}
 
+		public async Task<bool> ValidateCardOnFileForLuxuryService()
+		{
+			var serviceType = await _serviceTypeSubject.Take(1).ToTask();
+			if (serviceType == ServiceType.Luxury
+			   && _accountService.CurrentAccount.DefaultCreditCard == null)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
 		public async Task<bool> ValidateCardExpiration()
 		{
 			var orderToValidate = await GetOrder();	

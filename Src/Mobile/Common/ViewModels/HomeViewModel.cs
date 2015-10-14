@@ -147,6 +147,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (_shouldShowReview)
 			{
+				// need to refetch order settings
+				_orderWorkflowService.ResetOrderSettings();
 				CurrentViewState = HomeViewModelState.Review;
 				_shouldShowReview = false;
 			}

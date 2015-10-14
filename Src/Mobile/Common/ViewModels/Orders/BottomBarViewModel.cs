@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             _accountService = accountService;
             _paymentService = paymentService;
 
-            if (Settings.DestinationIsRequired)
+			if (!Settings.HideDestination)
 			{
 				Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(),
 					isDestinationModeOpened => EstimateSelected = isDestinationModeOpened);
@@ -151,8 +151,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-		bool _bookButtonHidden = true;
-
+		private bool _bookButtonHidden = true;
 		public bool BookButtonHidden
 		{
 			get { return _bookButtonHidden; }
@@ -958,19 +957,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private async Task<bool> ValidateCardOnFile()
         {
 			var shouldContinueGoingToReview = true;
-            //if (!await _orderWorkflowService.ValidateCardOnFile())
-            {
+
+			Action goToCreditCardAdd = () => ShowViewModel<CreditCardAddViewModel>(new {
+				showInstructions = true,
+				shouldShowReview = true
+			});
+
+			var cardIsValidForChargeTypeSelected = await _orderWorkflowService.ValidateCardOnFile();
+			if (!cardIsValidForChargeTypeSelected)
+			{
 				shouldContinueGoingToReview = false;
-                this.Services().Message.ShowMessage(
-                    this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
-                    this.Services().Localize["AddACardButton"],
-                    () => {
-						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;
-						ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true, shouldShowReview = true });
-                    },
-                    this.Services().Localize["Cancel"],
-					() => ParentViewModel.CurrentViewState = HomeViewModelState.Initial);
-            }
+				this.Services().Message.ShowMessage(
+					this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
+					this.Services().Localize["AddACardButton"], goToCreditCardAdd,
+					this.Services().Localize["Cancel"], () => {});
+			}
+			else if(!await _orderWorkflowService.ValidateCardOnFileForLuxuryService())
+			{
+				shouldContinueGoingToReview = false;
+				goToCreditCardAdd();
+			}
 
 			return shouldContinueGoingToReview;
         }

@@ -94,6 +94,7 @@
 "PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured as part of your account.";
 "Tuto08Bottom"="نأمل أن تجد الراحة و السهولة عند استخدام هذا التطبيق .";
 "ErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
+"CardOnFile"="Card on File";
 "HistoryActivityName"="History";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "View_AccountConfirmationTitle"="Account Confirmation";
@@ -155,7 +156,7 @@
 "ResetPasswordConfirmationMessage"="تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.";
 "ApartmentLabel"="شقة";
 "HistoryDetailOrderLabel"="الطلب:";
-"CardOnFile"="Card on File";
+"CreditCardRemoveErrorMessage"="عليك أن تدخل بطاقة إئتمانية واحدة على الأقل في حسابك، إن رغبت في إزالة بطاقة، ستحتاج لإضافة بطاقة أخرى قبل الإزالة.";
 "DefaultRideSettingsViewTitle"="إعدادات";
 "TermsAndConditionsAcknowledgment"="أقر بأني قد قرأت وفهمت الأحكام والشروط.";
 "CreateAccount_AccountAlreadyExist"="لا يمكن إنشاء حساب. هذا العنوان الإلكتروني مستخدم .";
@@ -557,7 +558,6 @@
 "NoFareText"="اختر وجهة للحصول على سعر تقريبي.";
 "Notes"="ملاحظات";
 "EstimatingFare"="جاري تقييم قيمة مشوارك...";
-"CreditCardRemoveErrorMessage"="عليك أن تدخل بطاقة إئتمانية واحدة على الأقل في حسابك، إن رغبت في إزالة بطاقة، ستحتاج لإضافة بطاقة أخرى قبل الإزالة.";
 "OverduePaymentActivityName"="Overdue payment";
 "UpdateBookingSettingsGenericError"="An error occured when updating the booking settings";
 "TabHistory"="السجل";
