@@ -150,4 +150,7 @@
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
     <value>Meter is on. Checking you in now...</value>
   </data>
+  <data name="PushNotification_wosASSIGNED" xml:space="preserve">
+    <value>Taxi #{0} has been assigned to you and is on the way</value>
+  </data>
 </root>
