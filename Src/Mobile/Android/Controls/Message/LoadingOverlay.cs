@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Cirrious.CrossCore.Droid.Platform;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
@@ -54,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 			_layoutCenter = new LinearLayout(_activity.ApplicationContext);
 			_layoutImage = new LinearLayout(_activity.ApplicationContext);
 
-			var layoutParentParameters = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.FillParent, LinearLayout.LayoutParams.FillParent);
+            var layoutParentParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
             layoutParent.LayoutParameters = layoutParentParameters;
 			layoutParent.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
 
@@ -95,12 +96,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             _zoneCircle = new RectF((_windowSize.Width * 0.5f) - _radius / 2f, (_windowSize.Height * 0.5f) - _radius / 2f,  (_windowSize.Width * 0.5f) + _radius / 2f, (_windowSize.Height * 0.5f) + _radius / 2f);
 
-			StartAnimationLoop ();
+            StartAnimationLoop (layoutParent);
         }
 
         public static void StopAnimatingLoading()
         {                
-            WaitStack -= 1;
+            Interlocked.Decrement(ref WaitStack);
 
             if (WaitStack < 1)
             {
@@ -114,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
         public static void WaitMore()
         {
-            WaitStack += 1;
+            Interlocked.Increment(ref WaitStack);
             _isLoading = true;
 
             if (Progress > 20)
@@ -125,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
         public static int WaitStack = 0;
 
-        private static async void StartAnimationLoop()
+        private static async void StartAnimationLoop(LinearLayout overlay)
         {
 			Progress = 0;
 			_isLoading = true;
@@ -153,12 +154,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
                 await Task.Delay(500);
 
-                if (_layoutCenter.Parent != null)
+                if (overlay != null)
                 {
-					var root = _layoutCenter.Parent.Parent as ViewGroup;
+                    var root = overlay.Parent as ViewGroup;
                     if (root != null)
                     {
-                        root.RemoveView((LinearLayout)_layoutCenter.Parent);
+                        root.RemoveView(overlay);
                     }
                 }
             });
