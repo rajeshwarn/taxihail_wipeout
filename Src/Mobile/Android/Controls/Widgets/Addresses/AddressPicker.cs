@@ -152,22 +152,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             set.Apply();
         }
 
-            set.Bind()
-                .For(v => v.SelectedCommand)
-                .To(vm => vm.AddressSelected);
-
-            set.Bind(_addressEditText)
-                .For(v => v.Text)
-                .To(vm => vm.StartingText)
-                .OneWay();
-
-            set.Bind(_cancelButton)
-                .For("Click")
-                .To(vm => vm.Cancel);
-
-            set.Apply();
-        }
-
 		public async void Open(AddressLocationType filterAddresses)
         {
             _collectionChangedSubscription.Disposable = Observable

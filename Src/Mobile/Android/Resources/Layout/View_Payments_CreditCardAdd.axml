@@ -37,13 +37,12 @@
             android:textSize="17dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/CreditCardInstructions"
             style="@style/BlackTextLong"
             android:gravity="center_horizontal"
             android:inputType="textMultiLine"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="12dp"
-            local:MvxBind="Visibility ShowInstructions, Converter=Visibility" />
+            local:MvxBind="Text Instructions; Visibility ShowInstructions, Converter=Visibility" />
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

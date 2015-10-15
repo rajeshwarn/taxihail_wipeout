@@ -79,6 +79,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
 
+			Instructions = shouldShowReview 
+				? this.Services().Localize["CreditCardInstructionsForLuxury"]
+				: this.Services().Localize["CreditCardInstructions"];
+
 			_isFromPromotionsView = isFromPromotionsView;
 			_shouldShowReview = shouldShowReview;
 			_isFromCreditCardListView = isFromCreditCardListView;
@@ -198,7 +202,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged(() => CreditCardNumber);
 				RaisePropertyChanged(() => CanDeleteCreditCard);
 				RaisePropertyChanged(() => IsPayPalOnly);
-				RaisePropertyChanged (() => CanSetCreditCardAsDefault);
+				RaisePropertyChanged(() => CanSetCreditCardAsDefault);
 
 				if (_paymentToSettle != null)
 				{
@@ -328,6 +332,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public List<ListItem> ExpirationMonths { get; set; }
 		public bool ShowInstructions { get; set; }
 		public bool IsMandatory { get; set; }
+		public string Instructions { get; set; }
 
 		private CreditCardInfos _data;
 		public CreditCardInfos Data 
@@ -338,7 +343,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				_data = value;
 				RaisePropertyChanged ();
 				RaisePropertyChanged (() => CreditCardNumber);
-
 			}
 		}
 

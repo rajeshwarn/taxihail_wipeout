@@ -529,6 +529,7 @@
   <string name="ChooseProviderDialogTitle">Pick a provider</string>
   <string name="OrderStatus_Medallion">Medallion</string>
   <string name="LanguageCode">en</string>
+  <string name="CreditCardInstructionsForLuxury">Please enter a credit card to continue the booking process</string>
   <string name="DateTimePickerSetButton">Book</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
   <string name="HistoryDetailAptRingCodeLabel">Apt / Entry code:</string>

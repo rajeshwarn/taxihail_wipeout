@@ -1152,6 +1152,9 @@
   <data name="CreditCardInstructions" xml:space="preserve">
     <value>In order to use the application, you need to add a payment method to your account.</value>
   </data>
+  <data name="CreditCardInstructionsForLuxury" xml:space="preserve">
+    <value>Please enter a credit card to continue the booking process</value>
+  </data>
   <data name="CreditCardRemoveErrorTitle" xml:space="preserve">
     <value>Cannot remove credit card</value>
   </data>
