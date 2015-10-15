@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Reactive.Linq;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using System.Reactive.Disposables;
+using Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -65,6 +66,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
+        public override void ViewDidUnload()
+        {
+            base.ViewDidUnload();
+            UnregisterKeyboardNotifications();
+        }
+
         private IDisposable ObserveCurrentViewState()
         {
             return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
@@ -102,9 +109,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .Subscribe(ResizeBookingStatusControl, Logger.LogError);
         }
 
+        protected override void KeyboardWillShowNotification(NSNotification notification)
+        {
+            if (ViewModel.CurrentViewState == HomeViewModelState.Initial)
+            {
+                View.ResignFirstResponderOnSubviews();
+            }
+        }
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+
+            RegisterForKeyboardNotifications();
 
             btnMenu.SetImage(UIImage.FromFile("menu_icon.png"), UIControlState.Normal);
 
