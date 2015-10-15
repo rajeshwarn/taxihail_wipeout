@@ -501,7 +501,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 
                 switch (state)
 				{
-					case HomeViewModelState.AddressSearch:
+                    case HomeViewModelState.AddressSearch:
+                        ViewModel.Map.BookCannotExecute = false;
 						ctrlAddressPicker.Open(AddressLocationType.Unspeficied);
 						break;
 					case HomeViewModelState.AirportSearch:
