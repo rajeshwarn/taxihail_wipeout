@@ -636,8 +636,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							if (!Settings.HideCallDispatchButton)
 							{
 								this.Services().Message.ShowMessage(title, e.Message,
-									"Call", () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
-									"Cancel", () => { });
+									this.Services().Localize["StatusCallButton"], () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
+									this.Services().Localize["Cancel"], () => { });
 							}
 							else
 							{
@@ -775,8 +775,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         }
 
         private ICommand _cancelEdit;
-
-        public ICommand CancelEdit
+		public ICommand CancelEdit
         {
             get { return _cancelEdit; }
             set
