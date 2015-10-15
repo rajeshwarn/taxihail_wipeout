@@ -29,6 +29,7 @@ using Android.Views.InputMethods;
 using Cirrious.CrossCore;
 using Cirrious.CrossCore.Core;
 using Cirrious.MvvmCross.Droid.Views;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -60,13 +61,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private Bundle _mainBundle;
 		private readonly SerialDisposable _subscription = new SerialDisposable();
 
-		private readonly IMvxAndroidViewModelLoader _androidViewModelLoader;
-
-		public HomeActivity()
-		{
-			_androidViewModelLoader = Mvx.Resolve<IMvxAndroidViewModelLoader>();
-		}
-
 	    protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -82,71 +76,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }    
         }
 
-		protected override void OnNewIntent(Intent intent)
-		{
-			base.OnNewIntent(intent);
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
 
-			if (intent == null || intent.Extras == null)
-			{
-				return;
-			}
+            if (intent == null)
+            {
+                return;
+            }
 
-			// Attempting to verify if only orderId was passed via intent.
-			if (intent.Extras.ContainsKey("orderId"))
-			{
-				Guid orderId;
+            Intent = intent;
 
-				if (Guid.TryParse(Intent.Extras.GetString("orderId"), out orderId))
-				{
-					ViewModel.GoToBookingStatusFromOrderId(orderId).FireAndForget();
-				}
-				else
-				{
-					Logger.LogMessage("Received OrderId was not correctly formatted. Expected a Guid, received: " + Intent.Extras.GetString("orderId"));
-				}
+            var navigationParams = intent.Extras.GetNavigationBundle();
 
-				return;
-			}
-
-			Intent = intent;
-
-			// Managing case where we come from StartNavigationObject but activity was running and we recived a notification (that was tapped by the user).
-			if (HandleOrderInProgressNavigationParams(intent.Extras))
-			{
-				return;
-			}
-
-			// Managing other cases, reloading a new ViewModel.
-			var viewModel = _androidViewModelLoader.Load(intent, null);
-
-			var oldViewModel = ViewModel;
-
-			DataContext = viewModel;
-
-			// Memory Leak prevention, ensuring that viewmodel is disposed correctly.
-			oldViewModel.DisposeIfDisposable();
-		}
-
-		private bool HandleOrderInProgressNavigationParams(BaseBundle extraBundle)
-		{
-			var navigationParams = extraBundle.GetNavigationParameters();
-
-			if (navigationParams.None())
-			{
-				return false;
-			}
-
-			if (navigationParams.ContainsKey("order") && navigationParams.ContainsKey("orderStatusDetail"))
-			{
-				var locateUser = navigationParams.GetValueOrDefault("locateUser", bool.FalseString);
-
-				ViewModel.Init(bool.Parse(locateUser), null, navigationParams["order"], navigationParams["orderStatusDetail"], null);
-
-				return true;
-			}
-
-			return false;
-		}
+            ViewModel.CallBundleMethods("Init", navigationParams);
+            ViewModel.Init(navigationParams);
+        }
 
 		public OrderMapFragment MapFragment { get; set; }
 

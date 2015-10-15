@@ -41,9 +41,10 @@ namespace apcurium.MK.Booking.Api.Services
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public object Put(BookingSettingsRequest request)
+		public object Put(AccountUpdateRequest accountUpdateRequest)
         {
-			Guid accountId = new Guid(this.GetSession().UserAuthId);
+			Guid accountId = accountUpdateRequest.AccountId;
+			var request = accountUpdateRequest.BookingSettingsRequest;
 
 			AccountDetail existingEmailAccountDetail = _accountDao.FindByEmail(request.Email);
 			AccountDetail currentAccountDetail = _accountDao.FindById(accountId);
@@ -103,5 +104,10 @@ namespace apcurium.MK.Booking.Api.Services
 
             return new HttpResult(HttpStatusCode.OK);
         }
+
+		public object Put(BookingSettingsRequest request)
+		{
+			return Put(new AccountUpdateRequest() { AccountId = new Guid(this.GetSession().UserAuthId), BookingSettingsRequest = request });
+		}
     }
 }

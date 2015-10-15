@@ -133,15 +133,19 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             return tcs.Task;
         }
 
+        private object ProgressLock = new object();
         public void ShowProgress(bool show)
         {
-            if (show)
-            {            
-                LoadingOverlay.StartAnimatingLoading();
-            }
-            else
+            lock (ProgressLock)
             {
-                LoadingOverlay.StopAnimatingLoading();
+                if (show)
+                {            
+                    LoadingOverlay.StartAnimatingLoading();
+                }
+                else
+                {
+                    LoadingOverlay.StopAnimatingLoading();
+                }
             }
         }
 
