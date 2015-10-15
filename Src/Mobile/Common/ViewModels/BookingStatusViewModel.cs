@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			else
 			{
-				BottomBar.ResetButtonsVisibility();
+				BottomBar.PrepareForNewOrder();
 			}
 
 			CenterMapOnPinsIfNeeded();
@@ -195,7 +195,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			_isStarted = true;
 
-			BottomBar.ResetButtonsVisibility();
+			BottomBar.PrepareForNewOrder();
 
 			if (isRestoringFromBackground)
 			{
