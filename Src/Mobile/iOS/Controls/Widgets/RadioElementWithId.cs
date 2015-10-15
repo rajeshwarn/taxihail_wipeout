@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				return;
 
             if (_image != null) {                
-                cell.ImageView.Image = UIImage.FromFile (_image);                
+                cell.ImageView.Image = UIImage.FromBundle (_image);                
             }
         }
 

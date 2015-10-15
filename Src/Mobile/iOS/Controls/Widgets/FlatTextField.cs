@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     _imageLeftSource = value;
 
-                    var image = UIImage.FromFile(value);
+                    var image = UIImage.FromBundle(value);
 
                     // remove previous image if it exists
                     if (_leftImageView != null)
@@ -181,7 +181,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             if (ImageLeftSource.HasValue())
             {
-                if (_leftImageView != null)
+                if (_leftImageView != null && _leftImageView.Image != null)
                 {
                     _leftImageView.Frame = new CGRect(
                         0, 
