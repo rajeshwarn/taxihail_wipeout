@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Android.OS;
-using Cirrious.MvvmCross.Parse.StringDictionary;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
@@ -12,18 +13,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
 
 		public static IDictionary<string, string> GetNavigationParameters(this BaseBundle sourceBundle)
 		{
-			if (sourceBundle == null || sourceBundle.ContainsKey(LaunchDataKey))
-			{
-				return new Dictionary<string, string>();
-			}
+            if (sourceBundle == null)
+            {
+                return new Dictionary<string, string>();
+            }
 
-			var navigationParamReader = new MvxStringDictionaryParser();
+            var extraData = sourceBundle.GetString(LaunchDataKey);
+            if (extraData == null)
+            {
+                return new Dictionary<string, string>();
+            }
 
-			var launchData = navigationParamReader.Parse(sourceBundle.GetString(LaunchDataKey));
+            var converter = Mvx.Resolve<IMvxNavigationSerializer>();
+            var viewModelRequest = converter.Serializer.DeserializeObject<MvxViewModelRequest>(extraData);
 
-			return !launchData.ContainsKey(NavigationParametersKey) 
-				? new Dictionary<string, string>()
-				: navigationParamReader.Parse(launchData[NavigationParametersKey]);
+            return viewModelRequest.ParameterValues;
 		}
+
+        public static IMvxBundle GetNavigationBundle(this BaseBundle sourceBundle)
+        {
+            var navParams = GetNavigationParameters(sourceBundle);
+            return new MvxBundle(navParams);
+        }
 	}
 }
