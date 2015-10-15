@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
         }
 
         private const int BufferCapacity = 1000;
-        private const int MaximumRandomDeviation = 4;
+        private const int MaximumRandomDeviation = 2;
 
         private readonly FilterValue[] _buffer = new FilterValue[BufferCapacity];
         private int _bufferTopPointer = -1;
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
         }
 
         /// <summary>
-        /// Takes the events of the last ~250 milliseconds or, if this time is not be able to gather, the last 5 events,
+		/// Takes the events of the last [timeIntervalToGatherEventsSet] milliseconds or, if this time is not be able to gather, the last 10 events,
         /// if deviation between neighbour events in this set is less or equal MaximumRandomDeviation - returns value of the last event, otherwise [-1]
         /// </summary>
         /// <returns></returns>
@@ -113,27 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
                         }
                     }
 
-                    if (!timeAchieved)
-                    {
-                        fv1 = ReadValueFromEnd(0);
-                        fv2 = ReadValueFromEnd(0);
-
-                        for (int i = 0; i < Math.Min(_bufferLength, 10); i++)
-                        {
-                            fv2 = ReadValueFromEnd(i);
-
-                            int valueDifference = Math.Abs(fv2.Value - fv1.Value);
-
-                            if (valueDifference > 180)
-                            {
-                                valueDifference = 360 - valueDifference;
-                            }
-
-                            maximumValueDifference = Math.Max(maximumValueDifference, valueDifference);
-                        }
-                    }
-
-                    if (maximumValueDifference <= MaximumRandomDeviation)
+					if (timeAchieved && maximumValueDifference <= MaximumRandomDeviation)
                     {
                         result = ReadValueFromEnd(0).Value;
                     }
