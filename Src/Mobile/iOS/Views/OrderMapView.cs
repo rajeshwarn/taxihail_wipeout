@@ -545,7 +545,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         // Animate Annotation on the map between retrieving positions
         private void AnimateAnnotationOnMap(MKAnnotation annotationToUpdate, Position newPosition)
         {
-			var annotationToUpdateView = (PinAnnotationView)ViewForAnnotation(annotationToUpdate);
+            var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
+
+            if (annotationToUpdateView == null)
+            {
+                return;
+            }
+
             annotationToUpdateView.RefreshPinImage();
 
             Animate(5, 0, UIViewAnimationOptions.CurveLinear, () =>
@@ -563,7 +569,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             annotationToUpdate.Degrees = ViewModel.Settings.ShowOrientedPins 
                                             ? vehicle.CompassCourse
-                                            : 0;
+                                          : 0;
             annotationToUpdate.AddressType = annotationType;
 
             AnimateAnnotationOnMap(annotationToUpdate, new Position
