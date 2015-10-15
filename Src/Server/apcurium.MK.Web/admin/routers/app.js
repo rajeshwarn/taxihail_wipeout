@@ -15,7 +15,9 @@
 
             /* Admin right*/
             "security": "manageSecurity",
+            "accountsManagement": "accountsManagement",
             "accountManagement": "accountManagement",
+            "accountManagement?accountId:accountId": "accountManagement",
 
             /* test notifications */
             "sendpushnotification": "sendPushNotification",
@@ -50,6 +52,7 @@
             /*Export*/
             "exportaccounts": "exportAccounts",
             "exportorders": "exportOrders",
+            "exportpromotions": "exportPromotions",
 
             /*Signup*/
             "signup": "signup",
@@ -118,11 +121,17 @@
             action(TaxiHail.SecurityController, 'index');
         },
         
-        accountManagement: function () {
-        	action(TaxiHail.AccountController, 'accountManagement');
+        accountsManagement: function () {
+        	action(TaxiHail.AccountsManagementController, 'accountsManagement');
         },
 
-        sendPushNotification: function () {
+        accountManagement: function ()
+        {
+        	action(TaxiHail.AccountsManagementController, 'accountManagement');
+        },
+
+        sendPushNotification: function ()
+        {
             action(TaxiHail.NotificationController, 'sendpushnotification');
         },
 
@@ -194,6 +203,10 @@
 
         exportOrders: function () {
             action(TaxiHail.ExportController, 'exportOrders');
+        },
+
+        exportPromotions:function(){
+        	action(TaxiHail.ExportController, 'exportPromotions');
         },
 
         manageRatings: function () {

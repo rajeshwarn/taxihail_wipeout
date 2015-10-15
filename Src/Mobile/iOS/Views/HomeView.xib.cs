@@ -73,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             )
                 .Where(args => args.EventArgs.PropertyName.Equals("CurrentViewState"))
                 .Select(_ => ViewModel.CurrentViewState)
+                .StartWith(ViewModel.CurrentViewState)
                 .DistinctUntilChanged()
                 .Subscribe(ChangeState, Logger.LogError);
         }
@@ -412,11 +413,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 {
                     constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstrainValue;
                 }
+                if (ViewModel.BookingStatus != null)
+                {
+                    var isManualPairing = state == HomeViewModelState.ManualRidelinq;
 
-                if (state == HomeViewModelState.ManualRidelinq) 
-				{
-					ResizeBookingStatusControl(false);
-				}
+                    ResizeBookingStatusControl(!isManualPairing && ViewModel.BookingStatus.IsDriverInfoAvailable);
+                }
 
                 homeView.LayoutIfNeeded();
 
@@ -427,11 +429,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     {
                         ctrlOrderReview.SetNeedsDisplay();
                         ctrlAddressPicker.Close();
-                        constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+                        constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 100f;
                         constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
-                        constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f;
+                        constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 122f;
                         constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
-						constraintOrderAirportTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 22;
+						constraintOrderAirportTopSpace.Constant = UIScreen.MainScreen.Bounds.Height + 122;
 						constraintOrderAirportBottomSpace.Constant = constraintOrderAirportBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         bookingStatusTopSpaceConstraint.Constant = 22f;
 

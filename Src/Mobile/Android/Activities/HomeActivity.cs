@@ -21,8 +21,14 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using Android.Views.InputMethods;
+using Cirrious.CrossCore;
+using Cirrious.CrossCore.Core;
+using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -32,7 +38,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         ClearTaskOnLaunch = true, 
         WindowSoftInputMode = SoftInput.AdjustPan, 
         FinishOnTaskLaunch = true, 
-        LaunchMode = LaunchMode.SingleTask
+        LaunchMode = LaunchMode.SingleTask,
+		ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize
     )]   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
@@ -53,6 +60,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private Bundle _mainBundle;
 		private readonly SerialDisposable _subscription = new SerialDisposable();
 
+		private readonly IMvxAndroidViewModelLoader _androidViewModelLoader;
+
+		public HomeActivity()
+		{
+			_androidViewModelLoader = Mvx.Resolve<IMvxAndroidViewModelLoader>();
+		}
+
 	    protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -67,6 +81,72 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 dialog.DismissEvent += (s, e) => Finish();
             }    
         }
+
+		protected override void OnNewIntent(Intent intent)
+		{
+			base.OnNewIntent(intent);
+
+			if (intent == null || intent.Extras == null)
+			{
+				return;
+			}
+
+			// Attempting to verify if only orderId was passed via intent.
+			if (intent.Extras.ContainsKey("orderId"))
+			{
+				Guid orderId;
+
+				if (Guid.TryParse(Intent.Extras.GetString("orderId"), out orderId))
+				{
+					ViewModel.GoToBookingStatusFromOrderId(orderId).FireAndForget();
+				}
+				else
+				{
+					Logger.LogMessage("Received OrderId was not correctly formatted. Expected a Guid, received: " + Intent.Extras.GetString("orderId"));
+				}
+
+				return;
+			}
+
+			Intent = intent;
+
+			// Managing case where we come from StartNavigationObject but activity was running and we recived a notification (that was tapped by the user).
+			if (HandleOrderInProgressNavigationParams(intent.Extras))
+			{
+				return;
+			}
+
+			// Managing other cases, reloading a new ViewModel.
+			var viewModel = _androidViewModelLoader.Load(intent, null);
+
+			var oldViewModel = ViewModel;
+
+			DataContext = viewModel;
+
+			// Memory Leak prevention, ensuring that viewmodel is disposed correctly.
+			oldViewModel.DisposeIfDisposable();
+		}
+
+		private bool HandleOrderInProgressNavigationParams(BaseBundle extraBundle)
+		{
+			var navigationParams = extraBundle.GetNavigationParameters();
+
+			if (navigationParams.None())
+			{
+				return false;
+			}
+
+			if (navigationParams.ContainsKey("order") && navigationParams.ContainsKey("orderStatusDetail"))
+			{
+				var locateUser = navigationParams.GetValueOrDefault("locateUser", bool.FalseString);
+
+				ViewModel.Init(bool.Parse(locateUser), null, navigationParams["order"], navigationParams["orderStatusDetail"], null);
+
+				return true;
+			}
+
+			return false;
+		}
 
 		public OrderMapFragment MapFragment { get; set; }
 
@@ -218,11 +298,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			var orderEditLayout = _orderEdit.GetLayoutParameters();
 
-			bool IsRightToLeftLanguage = this.Services().Localize.IsRightToLeft;
+			var isRightToLeftLanguage = this.Services().Localize.IsRightToLeft;
 
 			_orderEdit.SetLayoutParameters(screenSize.X, orderEditLayout.Height,
-				IsRightToLeftLanguage ? orderEditLayout.LeftMargin : screenSize.X,
-				IsRightToLeftLanguage ? screenSize.X : orderEditLayout.RightMargin,
+				isRightToLeftLanguage ? orderEditLayout.LeftMargin : screenSize.X,
+				isRightToLeftLanguage ? screenSize.X : orderEditLayout.RightMargin,
 				orderEditLayout.TopMargin, orderEditLayout.BottomMargin, orderEditLayout.Gravity);
 
 	        ((ViewGroup.MarginLayoutParams) _orderStatus.LayoutParameters).TopMargin = -screenSize.Y;
@@ -233,7 +313,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnCreate(mapViewSavedInstanceState);
 			MapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
 
-            var inputManager = (InputMethodManager)ApplicationContext.GetSystemService(Context.InputMethodService);
+            var inputManager = (InputMethodManager)ApplicationContext.GetSystemService(InputMethodService);
             MapFragment.TouchableMap.Surface.Touched += (sender, e) => 
                 {
                     inputManager.HideSoftInputFromWindow(Window.DecorView.RootView.WindowToken, HideSoftInputFlags.None);
@@ -241,7 +321,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 	        _orderReview.ScreenSize = screenSize;
 	        _orderReview.OrderReviewHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
-	        _orderReview.OrderReviewShownHeightProvider = () => _orderOptions.Height;
+			_orderReview.OrderReviewShownHeightProvider = () => _orderOptions.Height;
 			_orderEdit.ScreenSize = screenSize;
 	        _orderEdit.ParentFrameLayout = _frameLayout;
 
@@ -249,12 +329,68 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			_orderAirport.OrderAirportHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
 			_orderAirport.OrderAirportShownHeightProvider = () => _orderOptions.Height;
 
+	        ResumeFromBackgroundIfNecessary();
+
             SetupHomeViewBinding();
 
 	        PanelMenuInit();
         }
 
-	    private void SetupHomeViewBinding()
+		private void OrderOptionsSizeChanged(object sender, EventArgs args)
+		{
+			if (_orderOptions.Height == 0)
+			{
+				return;
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.Review)
+			{
+				_orderReview.ShowWithoutAnimation();
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.AirportDetails)
+			{
+				_orderAirport.ShowWithoutAnimation();
+			}
+
+			_orderOptions.SizeChanged -= OrderOptionsSizeChanged;
+		}
+
+		private void ResumeFromBackgroundIfNecessary()
+		{
+
+			// The current state is the initial state, we don't need to do anything
+			if (ViewModel.CurrentViewState == HomeViewModelState.Initial)
+			{
+				return;
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.Review || ViewModel.CurrentViewState == HomeViewModelState.AirportDetails)
+			{
+				_orderOptions.SizeChanged += OrderOptionsSizeChanged;
+
+				return;
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.Edit)
+			{
+				_orderOptions.HideWithoutAnimation();
+				_orderEdit.ShowWithoutAnimations();
+
+				return;
+			}
+
+			// We are in an order, we should at least setup the view to not have the booking entry animation.
+			if (ViewModel.CurrentViewState == HomeViewModelState.ManualRidelinq || ViewModel.CurrentViewState == HomeViewModelState.BookingStatus)
+			{
+				_orderStatus.ShowWithoutAnimation();
+				_orderOptions.HideWithoutAnimation();
+
+				_appBar.Visibility = ViewStates.Gone;
+			}
+		}
+
+		private void SetupHomeViewBinding()
 	    {
 		    var set = this.CreateBindingSet<HomeActivity, HomeViewModel>();
 			

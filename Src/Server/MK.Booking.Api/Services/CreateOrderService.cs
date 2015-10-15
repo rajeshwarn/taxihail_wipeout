@@ -1265,6 +1265,7 @@ namespace apcurium.MK.Booking.Api.Services
                     promptsLength,
                     defaultVehicleTypeId,
                     vehicleCandidates,
+                    request.TipIncentive,
                     fare);
 
                 // Fetch vehicle candidates (who have accepted the hail request) only if order was successfully created on IBS
@@ -1297,6 +1298,7 @@ namespace apcurium.MK.Booking.Api.Services
                     prompts,
                     promptsLength,
                     defaultVehicleTypeId,
+                    request.TipIncentive,
                     fare);
             }
 
@@ -1825,7 +1827,8 @@ namespace apcurium.MK.Booking.Api.Services
                 OrderId = request.Id,
                 EstimatedFare = request.Estimate.Price,
                 UserAgent = Request.UserAgent,
-                ClientVersion = Request.Headers.Get("ClientVersion")
+                ClientVersion = Request.Headers.Get("ClientVersion"),
+                TipIncentive = request.TipIncentive
             };
         }
 

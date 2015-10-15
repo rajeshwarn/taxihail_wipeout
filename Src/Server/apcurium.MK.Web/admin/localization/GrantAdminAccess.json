@@ -1,5 +1,8 @@
 ﻿{
 	"Grant Admin" : "Grant Admin",
+	"Grant Support" : "Grant Support",
+	"Grant SuperAdmin" : "Grant Super Admin",
+	"Revoke Access" : "Revoke Access",
 	"Cancel" : "Cancel",
 	"Email Address" : "Email Address"
 }

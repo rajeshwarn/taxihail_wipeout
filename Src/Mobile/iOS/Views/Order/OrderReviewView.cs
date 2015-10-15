@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
     {
         // Offset to fix potential issue with iPhone 6+ that would not scroll the viewport completely.
         private const float ScrollingOffset = 3f;
+        private const float SliderStepValue = 5f;
 
         public OrderReviewView(IntPtr handle) : base(handle)
         {
@@ -36,12 +37,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             txtNote.AccessibilityLabel = txtNote.Placeholder;
             txtNote.ShowCloseButtonOnKeyboard();
 
+            lblBonus.Text = Localize.GetValue("DriverBonusTitle");
+            lblBonusDescription.Text = Localize.GetValue("DriverBonusDescription");
+            lblBonusDescription.PreferredMaxLayoutWidth = this.Superview.Bounds.Size.Width - 20;
+            lblBonusAmount.TextColor = UIColor.FromRGB(208, 208, 208);
+
             Foundation.NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, ObserveKeyboardShown);
 
             FlatButtonStyle.CompanyColor.ApplyTo(btnViewPromo);
 			btnViewPromo.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2);
         }
-            
+
         // Places the visible area of the scrollviewer at the top of the driver note.
         private void ObserveKeyboardShown(NSNotification notification)
         {    
@@ -156,8 +162,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			set.Bind(iconPromo)
 				.For(v => v.Hidden)
 				.To(vm => vm.PromoCode)
-				.WithConversion("HasValueToVisibility");
+                .WithConversion("HasValueToVisibility");
+            
+            set.Bind(switchBonus)
+                .For(v => v.On)
+                .To(vm => vm.DriverBonusEnabled);
 
+            set.Bind(sliderBonus)
+                .For(v => v.Value)
+                .To(vm => vm.DriverBonus);
+
+            set.Bind(lblBonusAmount)
+                .For(v => v.Text)
+                .To(vm => vm.DriverBonus)
+                .WithConversion("CurrencyFormat");
+
+            set.Bind(this)
+                .For(v => v.RemoveBonusFromView)
+                .To(vm => vm.CanShowDriverBonus)
+                .WithConversion("BoolInverter");
+
+            set.Bind(this)
+                .For(v => v.DriverBonusEnabled)
+                .To(vm => vm.DriverBonusEnabled);
+            
             if (!this.Services().Settings.ShowPassengerName)
             {
                 lblName.RemoveFromSuperview();
@@ -220,6 +248,42 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             base.LayoutSubviews();
 
             constraintHeight.Constant = this.Frame.Height;
+        }
+
+        private bool _removeBonusFromView;
+        public bool RemoveBonusFromView
+        {
+            get { return _removeBonusFromView; }
+            set
+            {
+                _removeBonusFromView = value;
+                if (RemoveBonusFromView)
+                {
+                    driverBonusView.RemoveFromSuperview();
+                }
+            }
+        }
+
+        private bool _driverBonusEnabled;
+        public bool DriverBonusEnabled
+        {
+            get { return _driverBonusEnabled; }
+            set
+            {
+                _driverBonusEnabled = value;
+                if (DriverBonusEnabled)
+                {
+                    sliderBonus.Enabled = true;
+                    lblBonusAmount.Enabled = true;
+                    lblBonusAmount.TextColor = UIColor.Black;
+                }
+                else
+                {
+                    sliderBonus.Enabled = false;
+                    lblBonusAmount.Enabled = false;
+                    lblBonusAmount.TextColor = UIColor.FromRGB(208, 208, 208);
+                }
+            }
         }
     }
 }

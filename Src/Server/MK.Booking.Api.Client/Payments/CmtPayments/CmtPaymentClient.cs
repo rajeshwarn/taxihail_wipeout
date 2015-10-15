@@ -30,9 +30,9 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
 
-        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, DateTime expiryDate, string cvv)
+        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, DateTime expiryDate, string cvv, string zipCode = null)
         {
-            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate, cvv);
+            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate, cvv, zipCode);
         }
 
 		/// <summary>
@@ -64,19 +64,26 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         }
 
         private static async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient,
-            string accountNumber, DateTime expiryDate, string cvv)
+            string accountNumber, DateTime expiryDate, string cvv, string zipCode = null)
         {
             try
             {
-                var response = await cmtPaymentServiceClient.PostAsync(new TokenizeRequest
+                var request = new TokenizeRequest
+                    {
+                        AccountNumber = accountNumber,
+                        ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture),
+                        #if DEBUG
+                        ValidateAccountInformation = false,
+                        #endif
+                        Cvv = cvv,
+                    };
+                
+                if(!string.IsNullOrEmpty(zipCode))
                 {
-                    AccountNumber = accountNumber,
-                    ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture),
-#if DEBUG
-                    ValidateAccountInformation = false,
-#endif
-                    Cvv = cvv
-                });
+                    request.ZipCode = zipCode;
+                }
+
+                var response = await cmtPaymentServiceClient.PostAsync(request);
 
                 return new TokenizedCreditCardResponse
                 {

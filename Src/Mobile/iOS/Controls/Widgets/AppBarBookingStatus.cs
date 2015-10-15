@@ -40,7 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             btnUnpair.SetTitle(localize["UnpairPayInCar"], UIControlState.Normal);
             btnCall.SetTitle(localize["CallButton"], UIControlState.Normal);
             btnCancel.SetTitle(localize["StatusCancelButton"], UIControlState.Normal);
-            btnEditTip.SetTitle(localize["StatusEditAutoTipButton"], UIControlState.Normal);
         }
 
         private void InitializeBinding()
@@ -77,6 +76,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.CanEditAutoTip)
                 .WithConversion("BoolInverter");
+
+            set.Bind(btnEditTip)
+                .For("Title")
+                .To(vm => vm.ButtonEditTipLabel);
             
             set.Bind(btnEditTip)
                 .For(v => v.Command)

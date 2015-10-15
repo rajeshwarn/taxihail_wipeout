@@ -174,12 +174,6 @@
   <data name="ApplicationName" xml:space="preserve">
     <value>TaxiHail</value>
   </data>
-  <data name="AppNeedUpdateMessage" xml:space="preserve">
-    <value>Une nouvelle version de l'application est disponible, merci de la télécharger pour continuer</value>
-  </data>
-  <data name="AppNeedUpdateTitle" xml:space="preserve">
-    <value>Nouvelle version disponible</value>
-  </data>
   <data name="app_id" xml:space="preserve">
     <value>134284363380764</value>
   </data>
@@ -435,6 +429,9 @@
   <data name="CreditCardErrorTitle" xml:space="preserve">
     <value>Cette carte ne peut être sauvegardée</value>
   </data>
+  <data name="CreditCardError_Label" xml:space="preserve">
+    <value>Le label de cette carte n'a pas pu être sauvergardée. S'il vous plait réessayer</value>
+  </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
     <value>Date d'expiration (mois)</value>
   </data>
@@ -449,6 +446,9 @@
   </data>
   <data name="CreditCardErrorInvalid" xml:space="preserve">
     <value>La carte ne semble pas être valide</value>
+  </data>
+  <data name="CreditCardLabel" xml:space="preserve">
+    <value>Label</value>
   </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Nom du titulaire (tel qu'il apparaît sur la carte)</value>
@@ -858,6 +858,18 @@
   <data name="NotesToDriveLabel" xml:space="preserve">
     <value>Commentaires à destination du chauffeur</value>
   </data>
+  <data name="DriverBonusTitle" xml:space="preserve">
+    <value>Bonus Conducteur:</value>
+  </data>
+  <data name="DriverBonusDescription" xml:space="preserve">
+    <value>Augmentez la probabilité d'avoir un taxi en offrant un bonus garanti au conducteur.</value>
+  </data>
+  <data name="DriverBonusWarningTitle" xml:space="preserve">
+    <value>Confirmation du Bonus Conducteur</value>
+  </data>
+  <data name="DriverBonusWarningMessage" xml:space="preserve">
+    <value>Le montant du bonus est en supplément du pourboire. Il sera automatiquement prélevé à la fin de la course. Continuez ?</value>
+  </data>
   <data name="November" xml:space="preserve">
     <value>Novembre (11)</value>
   </data>
@@ -933,6 +945,12 @@
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
     <value>Paiement effectué par le passager pour un montant de {0} (code: {1})</value>
   </data>
+  <data name="PaymentDetails.PaymentMethodsLabel" xml:space="preserve">
+    <value>Méthodes de paiement</value>
+  </data>
+  <data name="PaymentDetails.AddNewCreditCardButtonLabel" xml:space="preserve">
+    <value>Ajouter une carte de crédit</value>
+  </data>
   <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
     <value>Cartes de paiement</value>
   </data>
@@ -948,8 +966,20 @@
   <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
     <value>Montant du pourboire</value>
   </data>
+  <data name="PaymentDetails.Label.Personal" xml:space="preserve">
+    <value>Personnelle</value>
+  </data>
+  <data name="PaymentDetails.Label.Business" xml:space="preserve">
+    <value>Entreprise</value>
+  </data>
+  <data name="PaymentDetails.LabelName" xml:space="preserve">
+    <value>Label</value>
+  </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
     <value>Montant</value>
+  </data>
+     <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Code Postal</value>
   </data>
   <data name="PaymentViewTipText" xml:space="preserve">
     <value>Pourboire</value>
@@ -1106,6 +1136,9 @@
   </data>
   <data name="ScanCreditCard" xml:space="preserve">
     <value>Scanner la carte de paiement</value>
+  </data>
+  <data name="SetAsDefaultCreditCard" xml:space="preserve">
+    <value>Définir comme carte par défault</value>
   </data>
   <data name="searchHint" xml:space="preserve">
     <value>Rechercher</value>
@@ -1982,7 +2015,10 @@
     <value>Menu</value>
   </data>
   <data name="StatusEditAutoTipButton" xml:space="preserve">
-    <value>Pourboire</value>
+    <value>Tip</value>
+    </data>
+  <data name="StatusEditAutoPaymentButton" xml:space="preserve">
+    <value>Paiement</value>
     </data>
   <data name="LocateMeButton" xml:space="preserve">
     <value>Localiser moi</value>
@@ -1993,6 +2029,9 @@
   <data name="AirportsButton" xml:space="preserve">
     <value>Aéroports</value>
   </data>
+  <data name="View_EditAutoPayment" xml:space="preserve">
+    <value>Modifier Paiement</value>
+    </data>
   <data name="View_EditAutoTip" xml:space="preserve">
     <value>Modifier Pourboire</value>
     </data>
@@ -2062,6 +2101,12 @@
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Le pourboire ne peut être supérieur à 100%</value>
+  </data>
+  <data name="SetCreditCardAsDefault_Error" xml:space="preserve">
+    <value>Impossible de mettre à jour de votre carte de crédit par défaut, s'il vous plait réessayer</value>
+  </data>
+  <data name="DefaultCreditCard_Label" xml:space="preserve">
+    <value>(DÉFAUT)</value>
   </data>
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
     <value>Désolé, aucun taxi disponible dans les environs.</value>
@@ -2151,7 +2196,10 @@
     <value>Terms and conditions</value>
   </data>
 	<data name="CreditCardAddingActivityName" xml:space="preserve">
-    <value>Add or edit credit card</value>
+    <value>Payment</value>
+  </data>
+	<data name="CreditCardMultipleActivityName" xml:space="preserve">
+    <value>Payment</value>
   </data>
 	<data name="AccountCreationActivityName" xml:space="preserve">
     <value>Account creation</value>

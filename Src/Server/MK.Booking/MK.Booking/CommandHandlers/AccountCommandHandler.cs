@@ -30,8 +30,10 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<AddRoleToUserAccount>,
         ICommandHandler<UpdateRoleToUserAccount>,
         ICommandHandler<AddOrUpdateCreditCard>,
-        ICommandHandler<DeleteAllCreditCards>,
-        ICommandHandler<DeleteAccountCreditCards>,
+        ICommandHandler<UpdateDefaultCreditCard>,
+        ICommandHandler<UpdateCreditCardLabel>,
+        ICommandHandler<DeleteCreditCardsFromAccounts>,
+        ICommandHandler<DeleteAccountCreditCard>,
         ICommandHandler<RegisterDeviceForPushNotifications>,
         ICommandHandler<UnregisterDeviceForPushNotifications>,
         ICommandHandler<AddFavoriteAddress>,
@@ -70,7 +72,23 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.Last4Digits,
                 command.ExpirationMonth,
                 command.ExpirationYear,
-                command.Token);
+                command.Token,
+                command.Label,
+                command.ZipCode);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateDefaultCreditCard command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateDefaultCreditCard(command.CreditCardId);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateCreditCardLabel command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateCreditCardLabel(command.CreditCardId, command.Label);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -144,14 +162,14 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(DeleteAccountCreditCards command)
+        public void Handle(DeleteAccountCreditCard command)
         {
             var account = _repository.Find(command.AccountId);
-            account.RemoveAllCreditCards();
+            account.RemoveCreditCard(command.CreditCardId, command.NextDefaultCreditCardId);
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(DeleteAllCreditCards command)
+        public void Handle(DeleteCreditCardsFromAccounts command)
         {
             foreach (var accountId in command.AccountIds)
             {

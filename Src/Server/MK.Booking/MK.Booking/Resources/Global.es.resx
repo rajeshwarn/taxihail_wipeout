@@ -285,6 +285,9 @@
     <value>Propina</value>
     <comment>Tip</comment>
   </data>
+  <data name="Email_Body_TipIncentive" xml:space="preserve">
+    <value>Driver Bonus</value>
+  </data>
   <data name="Email_Body_Promo" xml:space="preserve">
     <value>Promo Code</value>
     <comment>Promo Code</comment>
@@ -392,6 +395,9 @@
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>El costo de servicio sera pagado por el método de pago seleccionado</value>
     <comment>Fare will be paid using the selected payment method</comment>
+  </data>
+  <data name="OrderStatus_BAILED" xml:space="preserve">
+    <value>BAIL BAIL BAIL !</value>
   </data>
   <data name="OrderStatus_wosNone" xml:space="preserve">
     <value>Confirmación inválida, por favor llame nuestro centro de despacho</value>
@@ -506,6 +512,9 @@
   <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
     <value>Lo sentimos, no hay taxis disponibles dado a una alta demanda, por favor intente nuevamente más tarde</value>
     <comment>Sorry no cars are available due to high demand, please try later.</comment>
+  </data>
+  <data name="PushNotification_BAILED" xml:space="preserve">
+    <value>BAIL BAIL BAIL !</value>
   </data>
   <data name="UnpairingConfirmationToDriver" xml:space="preserve">
     <value>The customer will be paying in the car at the end of the ride</value>

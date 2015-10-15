@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Services
             var account = Dao.FindByEmail(request.AccountEmail);
             if (account == null) throw new HttpError(HttpStatusCode.BadRequest, "Bad request");
 
-            _commandBus.Send(new AddRoleToUserAccount
+            _commandBus.Send(new UpdateRoleToUserAccount
             {
                 AccountId = account.Id,
                 RoleName = RoleName.Admin
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Services
             var account = Dao.FindByEmail(request.AccountEmail);
             if (account == null) throw new HttpError(HttpStatusCode.BadRequest, "Bad request");
 
-            _commandBus.Send(new AddRoleToUserAccount
+            _commandBus.Send(new UpdateRoleToUserAccount
             {
                 AccountId = account.Id,
                 RoleName = RoleName.SuperAdmin
@@ -55,17 +55,30 @@ namespace apcurium.MK.Booking.Api.Services
             var account = Dao.FindByEmail(request.AccountEmail);
             if (account != null)
             {
-                _commandBus.Send(new AddRoleToUserAccount
+                _commandBus.Send(new UpdateRoleToUserAccount
                 {
                     AccountId = account.Id,
                     RoleName = RoleName.Support
                 });
                 return new HttpResult(HttpStatusCode.OK, "OK");
             }
-            else
+
+            throw new HttpError(HttpStatusCode.BadRequest, "Account not found");
+        }
+        public object Put(RevokeAccessRequest request)
+        {
+            var account = Dao.FindByEmail(request.AccountEmail);
+            if (account != null)
             {
-                throw new HttpError(HttpStatusCode.BadRequest, "Account not found");
+                _commandBus.Send(new UpdateRoleToUserAccount
+                {
+                    AccountId = account.Id,
+                    RoleName = RoleName.None
+                });
+                return new HttpResult(HttpStatusCode.OK, "OK");
             }
+
+            throw new HttpError(HttpStatusCode.BadRequest, "Account not found");
         }
     }
 }
