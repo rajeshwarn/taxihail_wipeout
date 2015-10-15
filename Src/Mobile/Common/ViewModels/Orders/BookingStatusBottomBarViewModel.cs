@@ -303,7 +303,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(() =>
 				{
-					ShowSubViewModel<EditAutoTipViewModel, int>(new { tip = GetTip()}, tip => _currentTip = tip);
+						ShowSubViewModel<EditAutoTipViewModel, int>(new { tip = GetTip()}, tip => {_currentTip = null;});
 				});
 			}
 		}
