@@ -22,10 +22,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	public partial class CreditCardAddView : BaseViewController<CreditCardAddViewModel>
     {
         private PayPalClientSettings _payPalSettings;
-
         private CardIOPaymentViewController _cardScanner;
         private CardScannerDelegate _cardScannerDelegate;
-
         private PayPalCustomFuturePaymentViewController _payPalPayment;
         private PayPalDelegate _payPalPaymentDelegate;
 

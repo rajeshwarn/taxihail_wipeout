@@ -76,22 +76,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }    
         }
 
-		protected override void OnNewIntent(Intent intent)
-		{
-			base.OnNewIntent(intent);
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
 
-			if (intent == null)
-			{
-				return;
-			}
+            if (intent == null)
+            {
+                return;
+            }
 
-			Intent = intent;
+            Intent = intent;
 
             var navigationParams = intent.Extras.GetNavigationBundle();
 
             ViewModel.CallBundleMethods("Init", navigationParams);
             ViewModel.Init(navigationParams);
-		}
+        }
 
 		public OrderMapFragment MapFragment { get; set; }
 

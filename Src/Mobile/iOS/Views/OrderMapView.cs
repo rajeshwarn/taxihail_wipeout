@@ -541,7 +541,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
             if (annotationToUpdateView == null)
             {
-                // crashed the app randomly once
+                // crashed the app once, not sure what caused it
                 return;
             }
 

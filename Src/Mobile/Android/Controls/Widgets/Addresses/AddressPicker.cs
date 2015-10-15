@@ -16,7 +16,6 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Entity;
-using Android.Runtime;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Runtime;
@@ -136,6 +135,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         private void InitializeBinding()
         {
             var set = this.CreateBindingSet<AddressPicker, AddressPickerViewModel>();
+
+            set.Bind()
+                .For(v => v.SelectedCommand)
+                .To(vm => vm.AddressSelected);
+
+            set.Bind(_addressEditText)
+                .For(v => v.Text)
+                .To(vm => vm.StartingText)
+                .OneWay();
+
+            set.Bind(_cancelButton)
+                .For("Click")
+                .To(vm => vm.Cancel);
+
+            set.Apply();
+        }
 
             set.Bind()
                 .For(v => v.SelectedCommand)

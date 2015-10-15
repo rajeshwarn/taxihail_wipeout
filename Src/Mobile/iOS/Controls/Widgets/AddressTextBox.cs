@@ -76,6 +76,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Height, 1f, 0f)
             });
 
+            _streetNumberTextViewWidthConstraint = 
+                NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, MinimumStreetNumberTextViewWidth);
+            AddConstraints(new [] {
+                NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, StreetNumberTextView.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                _streetNumberTextViewWidthConstraint,
+                NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, StreetNumberTextView.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, StreetNumberTextView.Superview, NSLayoutAttribute.Height, 1f, 0f)
+            });
+
+            AddConstraints(new [] {
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Left, 1f, 0f),
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Width, 1f, 0f),
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Height, 1f, 0f)
+            });
+
             AddressTextView = new FlatTextField();   
             AddressTextView.BackgroundColor = UIColor.Clear;
             AddressTextView.ClipsToBounds = true;
@@ -103,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create(LoadingWheel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Top, 1f, 0f),
                 NSLayoutConstraint.Create(LoadingWheel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Height, 1f, 0f)
             });
-
+            
             VerticalDivider = new UIView
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,

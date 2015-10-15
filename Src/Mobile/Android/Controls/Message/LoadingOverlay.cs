@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 			_layoutCenter = new LinearLayout(_activity.ApplicationContext);
 			_layoutImage = new LinearLayout(_activity.ApplicationContext);
 
-            var layoutParentParameters = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.MatchParent);
+            var layoutParentParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
             layoutParent.LayoutParameters = layoutParentParameters;
             layoutParent.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
 

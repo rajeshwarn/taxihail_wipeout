@@ -5,14 +5,14 @@ using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
-	public static class BundleExtentions
-	{
-		private const string LaunchDataKey = "MvxLaunchData";
-		private const string NavigationParametersKey = "Params";
+    public static class BundleExtentions
+    {
+        private const string LaunchDataKey = "MvxLaunchData";
+        private const string NavigationParametersKey = "Params";
 
 
-		public static IDictionary<string, string> GetNavigationParameters(this BaseBundle sourceBundle)
-		{
+        public static IDictionary<string, string> GetNavigationParameters(this BaseBundle sourceBundle)
+        {
             if (sourceBundle == null)
             {
                 return new Dictionary<string, string>();
@@ -28,12 +28,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             var viewModelRequest = converter.Serializer.DeserializeObject<MvxViewModelRequest>(extraData);
 
             return viewModelRequest.ParameterValues;
-		}
+        }
 
         public static IMvxBundle GetNavigationBundle(this BaseBundle sourceBundle)
         {
             var navParams = GetNavigationParameters(sourceBundle);
             return new MvxBundle(navParams);
         }
-	}
+    }
 }
