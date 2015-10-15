@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-	[Route("/account/findaccount/{accountID}", "GET")]
+	[Route("/account/findaccount/{accountid}", "GET")]
 	[AuthorizationRequired(ApplyTo.Get, RoleName.Support)]
 	public class FindAccountRequest
 	{
-		public Guid AccountID { get; set; }
+		public Guid AccountId { get; set; }
 	}
 }

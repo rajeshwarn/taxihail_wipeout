@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
 	[AuthorizationRequired(ApplyTo.Put, RoleName.Support)]
-	[Route("/account/update", "PUT")]
+	[Route("/account/update/{accountid}", "PUT")]
 	public class AccountUpdateRequest
 	{
-		public Guid AccountID { get; set; }
+		public Guid AccountId { get; set; }
 
 		public BookingSettingsRequest BookingSettingsRequest { get; set; }
 	}

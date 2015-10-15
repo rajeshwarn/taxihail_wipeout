@@ -6,13 +6,13 @@
 		{
 			var countryCodes = this.get("countryCodes");
 
-			var currentAccountID = this.get("currentAccountID").replace(/-/g, "").toLowerCase();
+			var currentAccountId = this.get("currentAccountID").replace(/-/g, "").toLowerCase();
 
 			for (i = 0; i < accountsList.length; i++)
 			{
 				var id = accountsList[i].id.replace(/-/g, "").toLowerCase();
 
-				if (id != currentAccountID)
+				if (id != currentAccountId)
 				{
 					accountsList[i].currentAccount = false;
 				}
@@ -91,7 +91,7 @@
 		goToAccountManagement:function(accountID)
 		{
 			TaxiHail.AccountManagementAccount = this.getAccount(accountID);
-			window.location.href = "#accountManagement?accountID=" + accountID;
+			window.location.href = "#accountManagement?accountId=" + accountID;
 		}
 	});
 }());

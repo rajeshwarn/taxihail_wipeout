@@ -11,15 +11,15 @@
 
 		getAccountWithID: function (viewObject, completeCallback)
 		{
-			var accountID = this.getAccountID();
+			var accountId = this.getAccountID();
 
-			if (accountID && accountID.toString().length > 0)
+			if (accountId && accountId.toString().length > 0)
 			{
 				var model = this;
 
 				$.ajax({
 					type: 'GET',
-					url: "../api/account/findaccount/" + accountID.toString(),
+					url: "../api/account/findaccount/" + accountId.toString(),
 					data: { format: "json" },
 					dataType: "application/json",
 					complete: function (data)
@@ -92,9 +92,9 @@
 
 		getAccountID: function ()
 		{
-			var accountID = this.get("accountID");
+			var accountId = this.get("accountID");
 
-			if (accountID == undefined || accountID == null || accountID.toString.length == 0)
+			if (accountId == undefined || accountId == null || accountId.toString.length == 0)
 			{
 				var parametersStartIndex = window.location.href.indexOf("?");
 
@@ -107,7 +107,7 @@
 					{
 						for (i = 0; i < parameters.length; i = i + 2)
 						{
-							if (parameters[i] == "accountID")
+							if (parameters[i] == "accountId")
 							{
 								this.set("accountID", parameters[i + 1]);
 								break;
@@ -181,7 +181,7 @@
 		{
 			$.ajax({
 				type: 'PUT',
-				url: "../api/account/update",
+				url: "../api/account/update/" + accountUpdateRequest.accountId,
 				contentType: 'application/json; charset=UTF-8',
 				dataType: "json",
 				data: JSON.stringify(accountUpdateRequest),

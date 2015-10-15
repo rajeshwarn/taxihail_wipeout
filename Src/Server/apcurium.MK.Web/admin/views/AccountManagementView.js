@@ -93,7 +93,7 @@
 
 				var accountUpdateRequest =
 				{
-					accountID: account.id,
+					accountId: account.id,
 					bookingSettingsRequest: bookingSettingsRequest
 				};
 

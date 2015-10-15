@@ -35,16 +35,16 @@ namespace apcurium.MK.Booking.Api.Services
             return response;
         }
 
-		public object Get(AccountOrderListRequestWithUserID request)
+		public object Get(AccountOrderListRequestWithUserIdRequest request)
 		{
-			OrderMapper om = new OrderMapper();
+			var orderMapper = new OrderMapper();
 
-			var orders = Dao.FindByAccountId(request.UserID)
+			var orders = Dao.FindByAccountId(request.UserId)
 				.Where(x => !x.IsRemovedFromHistory)
 				.OrderByDescending(c => c.CreatedDate)
-				.Select(read => om.ToResource(read));
+				.Select(read => orderMapper.ToResource(read));
 
-			var response = new AccountOrderListRequestWithUserIDResponse();
+			var response = new AccountOrderListRequestWithUserIdResponse();
 			response.AddRange(orders);
 			return response;
 		}

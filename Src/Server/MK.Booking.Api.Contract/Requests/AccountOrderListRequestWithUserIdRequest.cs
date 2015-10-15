@@ -14,13 +14,13 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
 	[AuthorizationRequired(ApplyTo.Get, RoleName.Support)]
 	[Route("/account/orderswithuserid/{userid}", "GET")]
-	public class AccountOrderListRequestWithUserID : IReturn<AccountOrderListRequestWithUserIDResponse>
+	public class AccountOrderListRequestWithUserIdRequest : IReturn<AccountOrderListRequestWithUserIdResponse>
 	{
-		public Guid UserID { get; set; }
+		public Guid UserId { get; set; }
 	}
 
 	[NoCache]
-	public class AccountOrderListRequestWithUserIDResponse : List<Order>
+	public class AccountOrderListRequestWithUserIdResponse : List<Order>
 	{
 	}
 }

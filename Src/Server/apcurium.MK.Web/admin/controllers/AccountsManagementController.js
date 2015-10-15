@@ -20,17 +20,17 @@
 
 		accountManagement: function ()
 		{
-			var accountID = null;
+			var accountId = null;
 
 			if (TaxiHail.AccountManagementAccount != undefined && TaxiHail.AccountManagementAccount != null)
 			{
-				accountID = TaxiHail.AccountManagementAccount.id;
+				accountId = TaxiHail.AccountManagementAccount.id;
 			}
 
 			var accountManagementModel = new TaxiHail.AccountManagementModel({
 					countryCodes: TaxiHail.extendSpacesForCountryDialCode(TaxiHail.countryCodes),
 					currentAccountID: TaxiHail.parameters.currentAccountID, // it's account id of the user which is connected with web site
-					accountID: accountID
+					accountID: accountId
 				});
 
 			return new TaxiHail.AccountManagementView(accountManagementModel);

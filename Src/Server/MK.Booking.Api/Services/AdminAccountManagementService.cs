@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Api.Services
 
 		public object Get(FindAccountRequest request)
 		{
-			return _accountDao.FindById(request.AccountID);
+			return _accountDao.FindById(request.AccountId);
 		}
     }
 }

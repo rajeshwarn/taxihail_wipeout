@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Api.Services
 
 		public object Put(AccountUpdateRequest accountUpdateRequest)
         {
-			Guid accountId = accountUpdateRequest.AccountID;
+			Guid accountId = accountUpdateRequest.AccountId;
 			var request = accountUpdateRequest.BookingSettingsRequest;
 
 			AccountDetail existingEmailAccountDetail = _accountDao.FindByEmail(request.Email);
@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Api.Services
 
 		public object Put(BookingSettingsRequest request)
 		{
-			return Put(new AccountUpdateRequest() { AccountID = new Guid(this.GetSession().UserAuthId), BookingSettingsRequest = request });
+			return Put(new AccountUpdateRequest() { AccountId = new Guid(this.GetSession().UserAuthId), BookingSettingsRequest = request });
 		}
     }
 }

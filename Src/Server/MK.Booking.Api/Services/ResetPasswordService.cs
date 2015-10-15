@@ -32,9 +32,9 @@ namespace apcurium.MK.Booking.Api.Services
             var user = _dao.FindByEmail(request.EmailAddress);
             if (user == null) throw new HttpError(ErrorCode.ResetPassword_AccountNotFound.ToString());
 
-			var loggedUserID = new Guid(this.GetSession().UserAuthId);
+			var currentUserId = new Guid(this.GetSession().UserAuthId);
 
-			if (user.Id == loggedUserID)
+			if (user.Id == currentUserId)
 			{
 				// In case user is signed in, sign out user to force him to authenticate again
 				base.RequestContext.Get<IHttpRequest>().RemoveSession();
