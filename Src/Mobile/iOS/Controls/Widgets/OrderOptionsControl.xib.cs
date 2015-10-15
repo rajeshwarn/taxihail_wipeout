@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             viewPickup.BackgroundColor = UIColor.Clear;
             viewDestination.BackgroundColor = UIColor.Clear;
             viewVehicleType.BackgroundColor = UIColor.Clear;
-            //viewEta.BackgroundColor = Theme.CompanyColor;
+            viewEta.BackgroundColor = Theme.CompanyColor;
 
             viewPickup.IsDestination = false;
             viewDestination.IsDestination = true;
@@ -45,12 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ViewModel.SetAddress.ExecuteIfPossible(ViewModel.DestinationAddress);
             };
 
-            viewVehicleType.VehicleSelected = vehicleSelectionModel => 
-
-            {
-				ViewModel.SetVehicleType.ExecuteIfPossible(vehicleSelectionModel);
-            };
-
+            viewVehicleType.VehicleSelected = vehicleSelectionModel => ViewModel.SetVehicleType.ExecuteIfPossible(vehicleSelectionModel);
 
             var set = this.CreateBindingSet<OrderOptionsControl, OrderOptionsViewModel>();
 
@@ -144,20 +139,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(viewVehicleType)
                 .For(v => v.GroupVehiclesByServiceType)
                 .To(vm => vm.GroupVehiclesByServiceType);
-//
-//            set.Bind(viewEta)
-//                .For(v => v.Hidden)
-//                .To(vm => vm.ShowEta)
-//                .WithConversion("BoolInverter");
-//            
-//            set.Bind (viewEta)
-//                .For (v => v.SelectedVehicle)
-//                .To (vm => vm.SelectedVehicleType);
-//            
-//            set.Bind (viewEta)
-//                .For (v => v.Eta)
-//                .To (vm => vm.FormattedEta);
-//
+
+            set.Bind(viewEta)
+                .For(v => v.Hidden)
+                .To(vm => vm.ShowEta)
+                .WithConversion("BoolInverter");
+            
+            set.Bind (viewEta)
+                .For (v => v.SelectedVehicle)
+                .To (vm => vm.SelectedVehicleType);
+            
+            set.Bind (viewEta)
+                .For (v => v.Eta)
+                .To (vm => vm.FormattedEta);
+
 			set.Bind (viewPickup)
                 .For ("AddressClicked")
 				.To (vm => vm.ShowPickUpSearchAddress);

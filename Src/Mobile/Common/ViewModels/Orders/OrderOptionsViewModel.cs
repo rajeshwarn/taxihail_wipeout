@@ -371,7 +371,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				if (value != _estimatedFare)
 				{
 					_estimatedFare = value;
-					RaisePropertyChanged();
+					RaisePropertyChanged ();
+
+					if (DisplayBaseRateInfo)
+					{
+						RaisePropertyChanged(() => FormattedEta);
+					}
 				}
 			}
 		}
@@ -405,29 +410,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				if (_availableVehicles == null || !_availableVehicles.Any())
+				if (!DisplayBaseRateInfo)
 				{
-					_keepEtaWhenNoVehicleStartTime = DateTime.Now;
-					return this.Services ().Localize ["EtaNoTaxiAvailable"];
+					if (_availableVehicles == null || !_availableVehicles.Any ())
+					{
+						_keepEtaWhenNoVehicleStartTime = DateTime.Now;
+						return this.Services ().Localize ["EtaNoTaxiAvailable"];
+					}
+
+					if (Eta == null || (Eta != null && !Eta.IsValidEta ()))
+					{
+						return this.Services ().Localize ["EtaNoTaxiAvailable"];
+					}
+
+					if (Eta.Duration > 30)
+					{
+						return this.Services ().Localize ["EtaNotAvailable"];
+					}
+
+					_keepEtaWhenNoVehicleStartTime = null;
+
+					var durationUnit = Eta.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
+
+					return Eta.Duration == 0
+                    ? this.Services ().Localize ["EtaLessThanAMinute"]
+                    : string.Format (this.Services ().Localize ["Eta"], Eta.Duration, durationUnit);
+				} else
+				{
+					return EstimatedFare;
 				}
 
-                if (Eta == null || (Eta != null && !Eta.IsValidEta()))
-			    {
-					return this.Services ().Localize ["EtaNoTaxiAvailable"];
-			    }
-
-			    if (Eta.Duration > 30) 
-			    {
-					return this.Services ().Localize ["EtaNotAvailable"];
-			    }
-
-				_keepEtaWhenNoVehicleStartTime = null;
-
-                var durationUnit = Eta.Duration <= 1 ? this.Services().Localize["EtaDurationUnit"] : this.Services().Localize["EtaDurationUnitPlural"];
-
-                return Eta.Duration == 0
-                    ? this.Services().Localize["EtaLessThanAMinute"]
-                    : string.Format(this.Services().Localize["Eta"], Eta.Duration, durationUnit);
 			}
 		}
 
@@ -443,19 +455,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate;
+				return (Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate) || DisplayBaseRateInfo;
 			}
 		}
 
 		public bool ShowEtaInEstimate
 		{
-			get { return Settings.ShowEta && FormattedEta.HasValue(); }
+			get { return (Settings.ShowEta && FormattedEta.HasValue()) && !DisplayBaseRateInfo; }
 		}
 
 		public bool ShowEstimate
 		{
-            get { return ShowDestination && Settings.ShowEstimate; }
+			get { return (ShowDestination && Settings.ShowEstimate) && !DisplayBaseRateInfo; }
 		}
+
+		public bool DisplayBaseRateInfo
+		{
+			get { return false; } // TODO: Settings.DisplayBaseRateInfo
+		}
+
 
 		public bool GroupVehiclesByServiceType 
 		{
@@ -466,7 +484,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled; }
 		}
-			
+
         public ICommand SetAddress
         {
             get

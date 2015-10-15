@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OrderOptionsControl">
             <connections>
                 <outlet property="viewDestination" destination="c4Q-op-2pd" id="64Z-qc-ry4"/>
+                <outlet property="viewEta" destination="2mX-0h-B2f" id="t91-r5-wlx"/>
                 <outlet property="viewPickup" destination="sRm-8N-029" id="A6x-pa-AxQ"/>
                 <outlet property="viewVehicleType" destination="lGR-tz-G26" id="9fg-3m-fV9"/>
             </connections>
@@ -40,6 +41,14 @@
                         <constraint firstAttribute="height" constant="52" placeholder="YES" id="iE2-gZ-GZI"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2mX-0h-B2f" userLabel="ETA" customClass="EtaView">
+                    <rect key="frame" x="0.0" y="140" width="304" height="23"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="23" id="eMR-u7-n8d"/>
+                    </constraints>
+                </view>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -47,9 +56,14 @@
                 <constraint firstAttribute="trailing" secondItem="sRm-8N-029" secondAttribute="trailing" id="47Z-3s-Whl"/>
                 <constraint firstItem="lGR-tz-G26" firstAttribute="top" secondItem="c4Q-op-2pd" secondAttribute="bottom" id="5ZC-Ru-RRw"/>
                 <constraint firstItem="lGR-tz-G26" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="EsI-Th-jS5"/>
+                <constraint firstItem="2mX-0h-B2f" firstAttribute="top" secondItem="sRm-8N-029" secondAttribute="bottom" priority="400" id="FJV-ZB-es9"/>
                 <constraint firstItem="sRm-8N-029" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="KJZ-7i-Ljx"/>
+                <constraint firstItem="2mX-0h-B2f" firstAttribute="top" secondItem="c4Q-op-2pd" secondAttribute="bottom" priority="750" id="OzM-1w-ya8"/>
                 <constraint firstAttribute="trailing" secondItem="c4Q-op-2pd" secondAttribute="trailing" id="Z9N-ZT-Jtp"/>
                 <constraint firstItem="lGR-tz-G26" firstAttribute="top" secondItem="sRm-8N-029" secondAttribute="bottom" priority="500" id="ZXh-go-Iaf"/>
+                <constraint firstItem="2mX-0h-B2f" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="bk2-rh-HYz"/>
+                <constraint firstItem="lGR-tz-G26" firstAttribute="bottom" secondItem="2mX-0h-B2f" secondAttribute="top" id="gB9-dR-GNy"/>
+                <constraint firstAttribute="trailing" secondItem="2mX-0h-B2f" secondAttribute="trailing" constant="1" id="iS6-ML-6Cb"/>
                 <constraint firstItem="c4Q-op-2pd" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="mPQ-XB-04e"/>
                 <constraint firstAttribute="trailing" secondItem="lGR-tz-G26" secondAttribute="trailing" id="r12-vM-giQ"/>
                 <constraint firstItem="c4Q-op-2pd" firstAttribute="top" secondItem="sRm-8N-029" secondAttribute="bottom" id="sib-w3-Aw1"/>
