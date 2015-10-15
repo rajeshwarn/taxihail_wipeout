@@ -53,12 +53,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return (BookingStatusViewModel) Parent; }
 		}
 
-		public void ResetButtonsVisibility()
+		public void PrepareForNewOrder()
 		{
 			IsCancelButtonVisible = false;
 			CanEditAutoTip = false;
 			IsUnpairButtonVisible = false;
 			_orderWasUnpaired = false;
+			_currentTip = null;
 		}
 
 		private async void UpdateActionsPossibleOnOrder()
@@ -303,7 +304,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(() =>
 				{
-						ShowSubViewModel<EditAutoTipViewModel, int>(new { tip = GetTip()}, tip => {_currentTip = null;});
+					ShowSubViewModel<EditAutoTipViewModel, int>(new { tip = GetTip()}, tip => _currentTip = tip);
 				});
 			}
 		}

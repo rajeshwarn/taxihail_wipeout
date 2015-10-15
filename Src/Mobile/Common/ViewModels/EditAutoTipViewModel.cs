@@ -239,7 +239,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 								if (autoTipUpdated)
 								{
-									Close(this);
+									this.ReturnResult(PaymentPreferences.Tip);
 								}
 								else
 								{
