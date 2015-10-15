@@ -118,7 +118,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     CompanyKey = @event.CompanyKey,
                     CompanyName = @event.CompanyName,
                     Market = @event.Market,
-                    BookingFees = @event.BookingFees
+                    BookingFees = @event.BookingFees,
+                    TipIncentive = @event.TipIncentive
                 };
 
                 if (@event.IsPrepaid)
@@ -149,6 +150,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.CompanyName = @event.CompanyName;
                         order.Market = @event.Market;
                         order.BookingFees = @event.BookingFees;
+                        order.TipIncentive = @event.TipIncentive;
 
                         context.SaveChanges();
                     }

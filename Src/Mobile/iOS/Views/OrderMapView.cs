@@ -511,26 +511,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
-                                false,
                                 vehicle.LogoName,
-                                ViewModel.Settings.ShowOrientedPins 
-                                    ? vehicle.CompassCourse
-                                    : 0,
-                                vehicle.Market);
+                                vehicle.Market)
+                {
+	                Degrees = vehicle.CompassCourse,
+					ShowOrientation = ViewModel.Settings.ShowOrientedPins
+                };
             
             vehicleAnnotation.HideMedaillonsCommand = new AsyncCommand(() =>
-                {
-                    foreach(var annotation in Annotations)
+            {
+	            var annotations = Annotations.Where(annotation => !annotation.Equals(vehicleAnnotation))
+					.Select(ViewForAnnotation)
+					.Cast<PinAnnotationView>()
+					.Where(view => view != null);
+
+					foreach (var pinAnnotationView in annotations)
                     {
-                        if(annotation != vehicleAnnotation)
-                        {
-                            var annotationView = ViewForAnnotation(annotation);
-                            var pinAnnotationView = annotationView as PinAnnotationView;
-                            if(pinAnnotationView != null)
-                            {
-                                pinAnnotationView.HideMedaillon();
-                            }
-                        }
+						pinAnnotationView.HideMedaillon();
                     }
                 });
             
@@ -718,12 +715,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 return;
             }
-
-	        // Update Marker and Animate it to see it move on the map
-            if (_taxiLocationPin != null)
+            
+            if (value == null)
             {
-                var taxiLocationPin = _taxiLocationPin as AddressAnnotation;
-                taxiLocationPin.Degrees = value.CompassCourse;
+                return;
+            }
+
+            var showOrientedPins = ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue;
+            
+	        // Update Marker and Animate it to see it move on the map
+            if (_taxiLocationPin != null && value.Longitude.HasValue && value.Latitude.HasValue)
+            {
+                var taxiLocationPin = (AddressAnnotation)_taxiLocationPin;
+
+				taxiLocationPin.Degrees = value.CompassCourse ?? 0;
+
+	            taxiLocationPin.ShowOrientation = showOrientedPins;
 
                 AnimateAnnotationOnMap(taxiLocationPin, new Position()
                     {
@@ -740,9 +747,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var vehicleLatitude = value.Latitude ?? 0;
             var vehicleLongitude = value.Longitude ?? 0;
 
-            if (vehicleLatitude != 0
-                && vehicleLongitude != 0
-                && value.VehicleNumber.HasValue())
+            if (vehicleLatitude != 0 && vehicleLongitude != 0 && value.VehicleNumber.HasValue())
             {
                 // Refresh vehicle position
                 coord = new CLLocationCoordinate2D(vehicleLatitude, vehicleLongitude);
@@ -755,12 +760,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 value.VehicleNumber, 
                 _useThemeColorForPickupAndDestinationMapIcons, 
                 _showAssignedVehicleNumberOnPin,
-                true,
                 null,
-                ViewModel.Settings.ShowOrientedPins 
-                    ? value.CompassCourse
-                    : 0,
-                value.Market);
+                value.Market)
+            {
+				ShowMedallionOnStart = true,
+	            Degrees = value.CompassCourse??0,
+				ShowOrientation = showOrientedPins
+            };
 
             AddAnnotation(_taxiLocationPin);
             SetNeedsDisplay();
@@ -775,7 +781,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 _orderStatusDetail = value;
 
-				
+                if (_orderStatusDetail == null)
+                {
+                    return;
+                }
 
 				if (_orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)
 				{
@@ -813,6 +822,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void ShowPinsOnMap()
         {
+            if (_center == null)
+            {
+                return;
+            }
+
             var annotations = _center.ToArray();
 
             // There is nothing to do here

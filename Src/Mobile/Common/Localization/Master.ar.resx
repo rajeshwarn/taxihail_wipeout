@@ -421,6 +421,9 @@
   <data name="CreditCardErrorTitle" xml:space="preserve">
     <value>لا يمكنك حفظ هذه البطاقة الائتمانية</value>
   </data>
+  <data name="CreditCardError_Label" xml:space="preserve">
+    <value>Cannot save credit card label. Please try again</value>
+  </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
     <value>شهر الإنتهاء</value>
   </data>
@@ -435,6 +438,9 @@
   </data>
   <data name="CreditCardErrorInvalid" xml:space="preserve">
     <value>Cannot validate the credit card</value>
+  </data>
+  <data name="CreditCardLabel" xml:space="preserve">
+    <value>Label</value>
   </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>الإسم كما يظهر على البطاقة</value>
@@ -832,6 +838,18 @@
   <data name="NotesToDriveLabel" xml:space="preserve">
     <value>ملاحظات للسائق (اسم العمل، مدخل محدد، ...)</value>
   </data>
+  <data name="DriverBonusTitle" xml:space="preserve">
+    <value>Driver Bonus:</value>
+  </data>
+  <data name="DriverBonusDescription" xml:space="preserve">
+    <value>Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</value>
+  </data>
+  <data name="DriverBonusWarningTitle" xml:space="preserve">
+    <value>Confirm Driver Bonus</value>
+  </data>
+  <data name="DriverBonusWarningMessage" xml:space="preserve">
+    <value>Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?</value>
+  </data>
   <data name="November" xml:space="preserve">
     <value>نوفمبر (11)</value>
   </data>
@@ -907,6 +925,12 @@
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
     <value>قام الراكب بدفع {0} (تصريح: {1})</value>
   </data>
+  <data name="PaymentDetails.PaymentMethodsLabel" xml:space="preserve">
+    <value>Payment Methods</value>
+  </data>
+  <data name="PaymentDetails.AddNewCreditCardButtonLabel" xml:space="preserve">
+    <value>Add New Card</value>
+  </data>
   <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
     <value>بطاقات</value>
   </data>
@@ -922,6 +946,15 @@
   <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
     <value>قيمة الإكرامية</value>
   </data>
+  <data name="PaymentDetails.Label.Personal" xml:space="preserve">
+    <value>Personal</value>
+  </data>
+  <data name="PaymentDetails.Label.Business" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="PaymentDetails.LabelName" xml:space="preserve">
+    <value>Label</value>
+  </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
     <value>قيمة العداد</value>
   </data>
@@ -930,6 +963,9 @@
   </data>
   <data name="PaymentViewTotalText" xml:space="preserve">
     <value>الإجمالي</value>
+  </data>
+ <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Zip/Postal</value>
   </data>
   <data name="PayNow" xml:space="preserve">
     <value>ادفع الآن</value>
@@ -1077,6 +1113,9 @@
   </data>
   <data name="ScanCreditCard" xml:space="preserve">
     <value>مسح بطاقة الائتمان</value>
+  </data>
+  <data name="SetAsDefaultCreditCard" xml:space="preserve">
+    <value>Set As Default</value>
   </data>
   <data name="searchHint" xml:space="preserve">
     <value>بحث</value>
@@ -1933,6 +1972,9 @@
   <data name="StatusEditAutoTipButton" xml:space="preserve">
     <value>Tip</value>
   </data>
+  <data name="StatusEditAutoPaymentButton" xml:space="preserve">
+    <value>Payment</value>
+    </data>
   <data name="CloseTutorial" xml:space="preserve">
     <value>Close Tutorial</value>
   </data>
@@ -1942,6 +1984,9 @@
   <data name="View_EditAutoTip" xml:space="preserve">
     <value>Edit Tip</value>
   </data>
+  <data name="View_EditAutoPayment" xml:space="preserve">
+    <value>Edit Payment</value>
+	</data>
   <data name="Error_EditAutoTipMessage" xml:space="preserve">
     <value>An error occurred while trying to update the tip. Please try again.</value>
   </data>
@@ -1998,6 +2043,12 @@
   </data>
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Tip cannot be over 100%</value>
+  </data>
+  <data name="SetCreditCardAsDefault_Error" xml:space="preserve">
+    <value>Couldn't update your default credit card. Please try again</value>
+  </data>
+  <data name="DefaultCreditCard_Label" xml:space="preserve">
+    <value>(DEFAULT)</value>
   </data>
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
     <value>Sorry, no taxis currently available nearby.</value>
@@ -2087,7 +2138,10 @@
     <value>Terms and conditions</value>
   </data>
 	<data name="CreditCardAddingActivityName" xml:space="preserve">
-    <value>Add or edit credit card</value>
+    <value>Payment</value>
+  </data>
+	<data name="CreditCardMultipleActivityName" xml:space="preserve">
+    <value>Payment</value>
   </data>
 	<data name="AccountCreationActivityName" xml:space="preserve">
     <value>Account creation</value>

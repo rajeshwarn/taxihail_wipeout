@@ -9,5 +9,8 @@ namespace CMTServices.Responses
 
         [JsonProperty("mapMatched")]
         public bool IsMapMatched { get; set; }
+
+		[JsonProperty("cc")]
+		public float CompassCourse { get; set; }
     }
 }

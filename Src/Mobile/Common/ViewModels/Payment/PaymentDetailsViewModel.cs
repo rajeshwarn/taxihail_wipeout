@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		    try
 		    {
-                SelectedCreditCard = await _accountService.GetCreditCard();
+                SelectedCreditCard = await _accountService.GetDefaultCreditCard();
 		    }
 		    catch (Exception ex)
 		    {

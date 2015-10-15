@@ -462,7 +462,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Action showNextView = async () => 
             {
 				if (await NeedsToNavigateToAddCreditCard ()) {
-					ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true, isMandatory = true });
+					if(Settings.MaxNumberOfCardsOnFile > 1 && _accountService.CurrentAccount.DefaultCreditCard != null)
+					{
+						ShowViewModelAndRemoveFromHistory<CreditCardMultipleViewModel> ();
+					}
+					else
+					{
+						ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel> (new { showInstructions = true, isMandatory = true});
+					}
 					return;
 				}
 

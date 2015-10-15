@@ -405,7 +405,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(btnConfirm)
                 .For(v => v.Command)
-                .To(vm => vm.ConfirmOrder);
+                .To(vm => vm.ConfirmOrderCommand);
 
             set.Bind(btnEdit)
                 .For(v => v.Command)

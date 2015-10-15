@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(PaymentModeChanged @event)
         {
-            _commandBus.Send(new DeleteAllCreditCards
+            _commandBus.Send(new DeleteCreditCardsFromAccounts
             {
                 AccountIds = _accountDao.GetAll().Select(a => a.Id).ToArray()
             });

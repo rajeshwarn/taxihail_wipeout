@@ -238,6 +238,21 @@ namespace DatabaseInitializer
                 MigratePaymentSettings(serverSettings, commandBus);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
+
+#if DEBUG
+                if (IsUpdate)
+                {
+                    var iisManager = new ServerManager();
+                    var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+
+                    if (appPool != null
+                        && appPool.State == ObjectState.Stopped)
+                    {
+                        appPool.Start();
+                        Console.WriteLine("App Pool started.");
+                    }
+                }
+#endif
                 
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
@@ -577,7 +592,7 @@ namespace DatabaseInitializer
             registerAdminAccountCommand.ConfimationToken = confirmationAdminToken.ToString();
 
             commandBus.Send(registerAdminAccountCommand);
-            commandBus.Send(new AddRoleToUserAccount
+            commandBus.Send(new UpdateRoleToUserAccount
             {
                 AccountId = registerAdminAccountCommand.AccountId,
                 RoleName = RoleName.SuperAdmin,
@@ -729,7 +744,7 @@ namespace DatabaseInitializer
             if (admin != null
                 && (!admin.HasAdminAccess || !admin.IsConfirmed))
             {
-                commandBus.Send(new AddRoleToUserAccount
+                commandBus.Send(new UpdateRoleToUserAccount
                 {
                     AccountId = admin.Id,
                     RoleName = RoleName.SuperAdmin,
@@ -752,6 +767,7 @@ namespace DatabaseInitializer
                     Country = new CountryISOCode("CA"),
                     Phone = "6132875020",
                     Name = "John Doe",
+                    Email = "john@taxihail.com",
                     NumberOfTaxi = john.Settings.NumberOfTaxi,
                     ChargeTypeId = john.Settings.ChargeTypeId,
                     DefaultTipPercent = john.DefaultTipPercent

@@ -59,7 +59,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		void SetNoteToDriver(string text);
 
+        void SetTipIncentive(double? tipIncentive);
+
 		void SetPromoCode(string code);
+
+		Task<double?> GetTipIncentive();
 
 		IObservable<Address> GetAndObservePickupAddress();
 
@@ -81,6 +85,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<string> GetAndObserveEstimatedFare();
 
 		IObservable<string> GetAndObserveNoteToDriver();
+
+        IObservable<double?> GetAndObserveTipIncentive();
 
 		IObservable<string> GetAndObservePromoCode();
 

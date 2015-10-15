@@ -22,6 +22,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
+using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -108,13 +109,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = order;
 			OrderStatusDetail = orderStatusDetail;
 			DisplayOrderNumber();
-			BottomBar.NotifyBookingStatusAppbarChanged();
+
+			if (orderStatusDetail.IBSStatusId.HasValue())
+			{
+				BottomBar.NotifyBookingStatusAppbarChanged();
+			}
+			else
+			{
+				BottomBar.ResetButtonsVisibility();
+			}
+
+			CenterMapOnPinsIfNeeded();
 
 			StatusInfoText = orderStatusDetail.IBSStatusId == null 
 				? this.Services().Localize["Processing"]
 				: orderStatusDetail.IBSStatusDescription;
-
-			BottomBar.ResetButtonsVisibility();
 
 			_orderWorkflowService.SetAddresses(order.PickupAddress, order.DropOffAddress);
 
@@ -134,7 +143,51 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				);
 		}
 
-		public void StartBookingStatus(OrderManualRideLinqDetail orderManualRideLinqDetail)
+		// Method used when we are restoring from background to zoom back to the order's location correctly.
+		private void CenterMapOnPinsIfNeeded()
+		{
+			// Handle case where we are waiting for a taxi.
+			if (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Waiting)
+			{
+				((HomeViewModel)Parent).AutomaticLocateMeAtPickup.ExecuteIfPossible();
+
+				return;
+			}
+
+			// Handle case where order is in a state where we should not do anything anyway.
+			if (VehicleStatuses.ShowOnMapStatuses.None(status => status == OrderStatusDetail.IBSStatusId))
+			{
+				return;
+			}
+
+			// We have no vehicle positions to display, so don't try to.
+			if (!OrderStatusDetail.VehicleLatitude.HasValue || !OrderStatusDetail.VehicleLongitude.HasValue)
+			{
+				return;
+			}
+
+			// Handle case where we have both the taxi and the pickup point.
+			if (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived)
+			{
+				MapCenter = new[]
+				{
+					CoordinateViewModel.Create(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, true),
+					CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value)
+				};
+
+				return;
+			}
+
+			// Handle case where the user is in a taxi.
+
+			MapCenter = new[]
+			{
+				CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value, true)
+			};
+
+		}
+
+		public void StartBookingStatus(OrderManualRideLinqDetail orderManualRideLinqDetail, bool isRestoringFromBackground = false)
 		{
 			if (_isStarted)
 			{
@@ -143,6 +196,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_isStarted = true;
 
 			BottomBar.ResetButtonsVisibility();
+
+			if (isRestoringFromBackground)
+			{
+				((HomeViewModel)Parent).AutomaticLocateMeAtPickup.ExecuteIfPossible();
+			}
 
 			var subscriptions = new CompositeDisposable();
 
@@ -172,7 +230,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			var deviceLocationObservable = Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
 				.Where(_ => ManualRideLinqDetail != null && ManualRideLinqDetail.Medallion.HasValue())
-				.SelectMany(_ => _locationService.GetUserPosition());
+				.SelectMany(_ => _locationService.GetUserPosition())
+				.Select(pos =>
+				{
+					if (pos == null)
+					{
+						return null;
+					}
+
+					return new PairedTaxiPosition
+					{
+						Latitude = pos.Latitude,
+						Longitude = pos.Longitude
+					};
+				});
 
 			var orderId = orderManualRideLinqDetail.OrderId;
 			var deviceName = orderManualRideLinqDetail.DeviceName;
@@ -184,11 +255,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					? taxilocationViaGeo
 					: deviceLocationObservable
 				)
-				.Where(pos => pos != null)
+				.Where(pos => pos != null )
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, orderManualRideLinqDetail.Medallion, CancellationToken.None), Logger.LogError)
+				.Subscribe(pos => UpdatePosition(pos.Latitude, pos.Longitude, orderManualRideLinqDetail.Medallion, CancellationToken.None, pos.Orientation), Logger.LogError)
 				.DisposeWith(subscriptions);
-			
 
 			_locationService.Start();
 
@@ -207,7 +277,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		/// 
 		/// This observable will also fallback to the device's location if Geo is not available for any reason.
 		/// </remarks>
-		private IObservable<Position> GetAndObserveTaxiLocationViaGeo(string medallion, Guid orderId)
+		private IObservable<PairedTaxiPosition> GetAndObserveTaxiLocationViaGeo(string medallion, Guid orderId)
 		{
 			return _vehicleService.GetAndObserveCurrentTaxiLocation(medallion, orderId)
 				.Materialize()
@@ -218,27 +288,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						var fallbackPosition = await _locationService.GetUserPosition();
 
-						return Notification.CreateOnNext(fallbackPosition);
-					}
-
-					if(notif.Kind == NotificationKind.OnNext && notif.Value != null)
-					{
-						var position = new Position
+						if (fallbackPosition == null)
 						{
-							Longitude = notif.Value.Longitude,
-							Latitude = notif.Value.Latitude
+							return Notification.CreateOnNext<PairedTaxiPosition>(null);
+						}
+
+						var value = new PairedTaxiPosition
+						{
+							Latitude = fallbackPosition.Latitude,
+							Longitude = fallbackPosition.Longitude,
 						};
 
+						return Notification.CreateOnNext(value);
+					}
+
+					if (notif.Kind == NotificationKind.OnNext && notif.Value != null)
+					{
+						var position = new PairedTaxiPosition
+						{
+							Longitude = notif.Value.Longitude,
+							Latitude = notif.Value.Latitude,
+							Orientation = notif.Value.CompassCourse
+						};
 
 						return Notification.CreateOnNext(position);
 					}
 
-					return Notification.CreateOnCompleted<Position>();
+					return Notification.CreateOnCompleted<PairedTaxiPosition>();
 				})
 				.Dematerialize();
 		}
 
-		private void UpdatePosition(double latitude, double longitude, string medallion, CancellationToken token, double compassCourse = 0)
+		private void UpdatePosition(double latitude, double longitude, string medallion, CancellationToken token, double? compassCourse = null)
 		{
 			token.ThrowIfCancellationRequested();
 
@@ -322,6 +403,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private void RefreshManualRideLinqDetails(OrderManualRideLinqDetail manualRideLinqDetails)
 		{
 			ManualRideLinqDetail = manualRideLinqDetails;
+
+			ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], manualRideLinqDetails.TripId);
 
 			var localize = this.Services().Localize;
 
@@ -910,44 +993,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
-			var orderStatusDetail = OrderStatusDetail;
-
-			if (orderStatusDetail != null)
+			try
 			{
-				if (orderStatusDetail.VehicleNumber.HasValue()
-                    && (deviceOrientation == DeviceOrientations.Left
-                        || deviceOrientation == DeviceOrientations.Right))
-				{
-					var carNumber = orderStatusDetail.VehicleNumber;
+				var carNumber = OrderStatusDetail.VehicleNumber;
 
-					if (WaitingCarLandscapeViewModelParameters == null
-                        || (WaitingCarLandscapeViewModelParameters != null
-                            && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+				if ((deviceOrientation != DeviceOrientations.Left && deviceOrientation != DeviceOrientations.Right) || string.IsNullOrWhiteSpace(carNumber))
+				{
+					if (WaitingCarLandscapeViewModelParameters != null)
 					{
-						if (carNumber.HasValue())
-						{
-							WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
-							{
-								CarNumber = carNumber,
-								DeviceOrientations = deviceOrientation
-							};
-							ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
-						}
+						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+						WaitingCarLandscapeViewModelParameters = null;
 					}
-					else
-					{
-						if (carNumber.HasValue())
-						{
-							WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
-						}
-						else
-						{
-							WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
-							WaitingCarLandscapeViewModelParameters = null;
-						}
-					}
+
+					return;
 				}
+
+
+				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
+				{
+					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
+					{
+						CarNumber = carNumber,
+						DeviceOrientations = deviceOrientation
+					};
+
+					ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
+				}
+				else
+				{
+					WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
+				}
+
 			}
+			catch (Exception ex)
+			{
+				Logger.LogMessage("An error occurred while handling DeviceOrientationChanged");
+				Logger.LogError(ex);
+			}
+			
 		}
 
 	    private async Task SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
@@ -1211,5 +1294,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    }
 
 	    #endregion
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				// Ensuring that the subcription is disposed correctly to prevent memory leak.
+				_subscriptions.Disposable = null;
+			}
+
+			base.Dispose(disposing);
+		}
     }
 }

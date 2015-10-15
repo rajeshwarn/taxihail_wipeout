@@ -118,6 +118,7 @@ namespace apcurium.MK.Booking.Api.Services
                         var extra = 2;
                         var surcharge = 5;
                         var bookingFees = 7;
+                        var tipIncentive = 10;
                         
                         var driverInfos = new DriverInfos
                         {
@@ -136,7 +137,7 @@ namespace apcurium.MK.Booking.Api.Services
                         var tax = Convert.ToDouble(fareObject.TaxAmount);
 
                         _notificationService.SendTripReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fare, toll, tip, tax, extra,
-                            surcharge, bookingFees, fare + toll + tip + tax + bookingFees + extra - amountSavedByPromo,
+                            surcharge, bookingFees, fare + toll + tip + tax + bookingFees + extra + tipIncentive - amountSavedByPromo,
                             _payment, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.UtcNow,
                             request.EmailAddress, "en", amountSavedByPromo, "PROMO10", new SendReceipt.CmtRideLinqReceiptFields
                             {
@@ -173,7 +174,8 @@ namespace apcurium.MK.Booking.Api.Services
                                         TollName = "Toll 4",
                                         TollAmount = 35
                                     }
-                                }
+                                },
+                                TipIncentive = tipIncentive
                             }, true);
                         break;
                     case NotificationService.EmailConstant.Template.PromotionUnlocked:

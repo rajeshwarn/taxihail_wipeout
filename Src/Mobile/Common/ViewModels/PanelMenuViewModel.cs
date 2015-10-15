@@ -326,7 +326,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
                         CloseMenu();
 
-                        ShowViewModel<CreditCardAddViewModel>();
+						if(Settings.MaxNumberOfCardsOnFile > 1)
+						{
+							ShowViewModel<CreditCardMultipleViewModel>();
+						}
+						else
+						{
+							ShowViewModel<CreditCardAddViewModel>();
+						}
 				});
 			}
 		}

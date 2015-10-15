@@ -286,6 +286,8 @@
     <None Include="features\my_first.feature" />
     <InterfaceDefinition Include="Views\Order\OrderAirportView.xib" />
     <InterfaceDefinition Include="Views\WaitingCarLandscapeView.xib" />
+    <InterfaceDefinition Include="Views\Payments\CreditCardMultipleView.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\CreditCardCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -658,6 +660,15 @@
     <BundleResource Include="Resources\nearby_oriented_passenger%402x.png" />
     <BundleResource Include="Resources\nearby_oriented_passenger%403x.png" />
     <Compile Include="Controls\Widgets\VehicleTypeSubView.cs" />
+    <Compile Include="Views\Payments\CreditCardMultipleView.cs" />
+    <Compile Include="Views\Payments\CreditCardMultipleView.designer.cs">
+      <DependentUpon>CreditCardMultipleView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\CreditCardCell.cs" />
+    <Compile Include="Controls\Widgets\CreditCardCell.designer.cs">
+      <DependentUpon>CreditCardCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\CreditCardLabelToInt.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
