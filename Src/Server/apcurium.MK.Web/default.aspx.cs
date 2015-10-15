@@ -60,6 +60,7 @@ namespace apcurium.MK.Web
         protected double MaxFareEstimate { get; private set; }
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
         protected bool IsBraintreePrepaidEnabled { get; private set; }
+        protected int MaxNumberOfCreditCards { get; private set; }
         protected bool IsPayPalEnabled { get; private set; }
         protected string PayPalMerchantId { get; private set; }
         protected bool IsCreditCardMandatory { get; private set; }
@@ -137,6 +138,8 @@ namespace apcurium.MK.Web
 
             AlwaysDisplayCoFOption = paymentSettings.AlwaysDisplayCoFOption;
             AskForCVVAtBooking = paymentSettings.AskForCVVAtBooking;
+
+            MaxNumberOfCreditCards = config.ServerData.MaxNumberOfCardsOnFile;
 
             IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
                 && paymentSettings.IsPayInTaxiEnabled

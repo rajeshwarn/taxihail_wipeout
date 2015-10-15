@@ -246,6 +246,7 @@
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Book\PromotionActivity.cs" />
+    <Compile Include="Activities\ExtendedSplashActivity.cs" />
     <Compile Include="Activities\ManualPairingForRideLinqActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\Setting\NotificationSettingsActivity.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Controls\Widgets\OrderStatusContactTaxiOverlay.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
+    <Compile Include="Extensions\BundleExtentions.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
@@ -489,9 +491,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\suv_badge_selected.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\highlight.png" />
     <AndroidResource Include="Resources\Drawable\home_car_text_selector.xml" />
-    <AndroidResource Include="Resources\Values\String.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <Compile Include="Activities\Utilities\MvxFragmentActivity.cs" />
     <Compile Include="Activities\Utilities\MvxEventSourceFragmentActivity.cs" />
     <Compile Include="Activities\Utilities\MvxTabsFragmentActivity.cs" />
@@ -601,9 +600,6 @@
     <AndroidResource Include="Resources\Drawable\destination_small_icon_pressed.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon_pressed.png" />
-    <AndroidResource Include="Resources\values-ar\String.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <Compile Include="Dialog\EntryElementWithInputType.cs" />
     <Compile Include="Activities\Book\InitializeOrderForAccountPaymentActivity.cs" />
     <Compile Include="PlatformIntegration\AndroidMapApiClient.cs" />
@@ -713,14 +709,22 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_available.png" />
     <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_passenger.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_passenger.png" />
+    <Compile Include="Activities\Setting\CreditCardMultipleActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_Payments_CreditCardMultiple.axml" />
+    <AndroidResource Include="Resources\Layout\CreditCardListItem.axml" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
     <Compile Include="Controls\Widgets\VehicleTypeSubControl.cs" />
+    <Compile Include="Converters\IsPersonalCreditCardConverter.cs" />
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeSub.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Values\String.xml" />
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\values-ar\String.xml" />
+    <AndroidResource Include="Resources\values-es\String.xml" />
+    <AndroidResource Include="Resources\values-fr\String.xml" />
     <AndroidResource Include="Resources\Drawable\textview_rounded_border.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -831,9 +835,6 @@
     <AndroidResource Include="Resources\Drawable\edit_text_flat.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\values-fr\String.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cluster_blackcar.png" />
     <AndroidResource Include="Resources\Drawable\cluster_suv.png" />
     <AndroidResource Include="Resources\Drawable\nearby_blackcar.png" />
@@ -843,9 +844,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\cluster_blackcar.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\cluster_suv.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\cluster_taxi.png" />
-    <AndroidResource Include="Resources\values-es\String.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\down_arrow.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\down_arrow.png" />
     <AndroidResource Include="Resources\Drawable\paypal_icon.png" />
@@ -1001,5 +999,9 @@
     <AndroidResource Include="Resources\Layout\View_WaitingCarLandscape.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_ExtendedSplashScreen.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
+  <ItemGroup />
 </Project>

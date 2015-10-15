@@ -898,6 +898,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Driver Bonus.
+        /// </summary>
+        public static string Email_Body_TipIncentive {
+            get {
+                return ResourceManager.GetString("Email_Body_TipIncentive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tolls.
         /// </summary>
         public static string Email_Body_Toll {
@@ -1128,6 +1137,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Network_CannotCreateOrder {
             get {
                 return ResourceManager.GetString("Network_CannotCreateOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BAIL BAIL BAIL !.
+        /// </summary>
+        public static string OrderStatus_BAILED {
+            get {
+                return ResourceManager.GetString("OrderStatus_BAILED", resourceCulture);
             }
         }
         
@@ -1425,6 +1443,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string PhoneNumberFormat {
             get {
                 return ResourceManager.GetString("PhoneNumberFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BAIL BAIL BAIL !.
+        /// </summary>
+        public static string PushNotification_BAILED {
+            get {
+                return ResourceManager.GetString("PushNotification_BAILED", resourceCulture);
             }
         }
         
