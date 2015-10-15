@@ -10,6 +10,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public double CompassCourse { get; set; }
 
+		[Obsolete("Use the property VehicleName instead")]
         public double VehicleNumber { get; set; }
 
 		public string VehicleName { get; set; }
@@ -17,7 +18,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public string LogoName { get; set; }
 
         public int? FleetId { get; set; }
-
 
         public int? Eta { get; set; }
 
