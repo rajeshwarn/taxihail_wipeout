@@ -989,13 +989,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
 			var orderStatusDetail = OrderStatusDetail;
-			if (OrderStatusDetail == null)
+			if (orderStatusDetail == null)
 			{
 				return;
 			}
-
-
-
+				
 			var carNumber = orderStatusDetail.VehicleNumber;
 
 			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && carNumber.HasValueTrimmed())
