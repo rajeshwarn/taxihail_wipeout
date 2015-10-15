@@ -57,9 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            VehicleRepresentations = Vehicles.ToList();
 
-	    BaseRateEnabled = true;
+            //DEBUG
+			BaseRateEnabled = true;
 
 
             _constraintControlHeight = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DefaultControlHeight);
@@ -70,7 +70,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             VehicleSelectionContainer = new UIView 
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
-				BackgroundColor = Theme.LabelTextColor
+				//BackgroundColor = Theme.LabelTextColor,
+				BackgroundColor = UIColor.Red
             };
 
             EstimateContainer = new UIView 
@@ -104,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				NSLayoutConstraint.Create (EstimateContainer, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, EstimatedFareControlHeight)
 			});
 
-			BaseRateToggle = new BaseRateToggleView (new CGRect (0f, 0f, 50f, this.Frame.Height));
+			BaseRateToggle = new BaseRateToggleView ();
 			BaseRateToggle.ToggleBaseRate = () => ShowBaseRate = BaseRateToggle.Toggle();
 
 			EstimateSelectedVehicleType = new VehicleTypeView (new CGRect (0f, 0f, 50f, this.Frame.Height));
@@ -116,7 +117,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				Font = UIFont.FromName (FontName.HelveticaNeueLight, 32 / 2),
 				TextAlignment = NaturalLanguageHelper.GetTextAlignment (),
 				TextColor = Theme.LabelTextColor,
-				ShadowColor = UIColor.Clear
+				ShadowColor = UIColor.Clear,
+				BackgroundColor = UIColor.Green
 			};
 
 			EtaLabel = new UILabel {
@@ -157,9 +159,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 				EstimateContainer.AddConstraints (new [] { 
 					NSLayoutConstraint.Create (BaseRateToggle, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 32f),
-					NSLayoutConstraint.Create (BaseRateToggle, NSLayoutAttribute.Right, NSLayoutRelation.Equal, BaseRateToggle.Superview, NSLayoutAttribute.Right, 1f, -LabelPadding),
-					NSLayoutConstraint.Create (BaseRateToggle, NSLayoutAttribute.Top, NSLayoutRelation.Equal, EstimatedFareLabel, NSLayoutAttribute.Top, 1f, 0f),
-					NSLayoutConstraint.Create (BaseRateToggle, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, EstimatedFareLabel, NSLayoutAttribute.Bottom, 1f, 0f)
+					NSLayoutConstraint.Create (BaseRateToggle, NSLayoutAttribute.Right, NSLayoutRelation.Equal, BaseRateToggle.Superview, NSLayoutAttribute.Right, 1f, 0f),
+					NSLayoutConstraint.Create (BaseRateToggle, NSLayoutAttribute.Top, NSLayoutRelation.Equal, BaseRateToggle.Superview, NSLayoutAttribute.Top, 1f, 0f),
+					NSLayoutConstraint.Create (BaseRateToggle, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, BaseRateToggle.Superview, NSLayoutAttribute.Bottom, 1f, 0f)
 				});
 			}
 
@@ -223,6 +225,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			} else
 			{
 				BackgroundColor = UIColor.Clear;
+				BackgroundColor = UIColor.Orange;
 				HorizontalDividerTop.BackgroundColor = UIColor.FromRGB (177, 177, 177);
 				EstimateContainer.Hidden = false;
 				VehicleSelectionContainer.Hidden = false;
@@ -379,7 +382,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			var wantedValue = (setToDefault && !BaseRateEnabled) ? DefaultControlHeight : GroupByServiceTypeControlHeight;
 
-			if (ShowEstimate)
+			if (BaseRateEnabled)
 			{
 				wantedValue += EstimatedFareControlHeight;
 			}
@@ -583,14 +586,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 	public class BaseRateToggleView : UIButton 
     {
-    	public BaseRateToggleView (CGRect r) : base (r)
+    	public BaseRateToggleView ()
 		{
 			TranslatesAutoresizingMaskIntoConstraints = false;
 			Font = UIFont.FromName (FontName.HelveticaNeueLight, 32 / 2);
 			ContentMode = UIViewContentMode.Center;
 			SetTitleColor(Theme.LabelTextColor, UIControlState.Normal);
-
-			SetTitle("▼", UIControlState.Normal);
+			SetTitle("∨", UIControlState.Normal);
 			Enabled = true;
 
 			TouchUpInside += (object sender, EventArgs e) => {
@@ -601,7 +603,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     	public bool Toggle() 
     	{
 			Expanded = !Expanded;
-			SetTitle(Expanded ? "▲" : "▼", UIControlState.Normal);
+			SetTitle(Expanded ? "∧" : "∨", UIControlState.Normal);
 			return Expanded;
     	}
 
