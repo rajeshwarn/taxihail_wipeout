@@ -36,6 +36,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			base.ViewDidLoad ();
 
             View.BackgroundColor = Theme.LoginColor;
+            confirmScrollViewer.BackgroundColor = Theme.LoginColor;
+
 			lblTitle.TextColor = Theme.LabelTextColor;
 			lblSubTitle.TextColor = Theme.LabelTextColor;
             lblTitle.TextColor = Theme.GetTextColor(Theme.LoginColor);
