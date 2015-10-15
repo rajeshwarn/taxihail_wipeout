@@ -57,9 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
+            VehicleRepresentations = Vehicles.ToList();
 
-            //DEBUG
-			BaseRateEnabled = true;
+	    BaseRateEnabled = true;
 
 
             _constraintControlHeight = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DefaultControlHeight);

@@ -231,15 +231,17 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="admin\assets\img\blackcar_badge.png" />
+    <Content Include="admin\assets\img\no.png" />
     <Content Include="admin\assets\img\suv_badge.png" />
     <Content Include="admin\assets\img\taxi_badge.png" />
     <Content Include="admin\assets\img\wheelchair_badge.png" />
+    <Content Include="admin\assets\img\yes.png" />
     <Content Include="admin\collections\RideRatingCollection.js" />
     <Content Include="admin\collections\VehicleTypeCollection.js" />
     <Content Include="admin\collections\AccountChargeCollection.js" />
     <Content Include="admin\collections\RuleCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
-    <Content Include="admin\controllers\AccountController.js" />
+    <Content Include="admin\controllers\AccountsManagementController.js" />
     <Content Include="admin\controllers\NotificationSettingsController.js" />
     <Content Include="admin\controllers\NotificationController.js" />
     <Content Include="admin\controllers\RideRatingsController.js" />
@@ -256,7 +258,8 @@
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\jquery.min.js" />
     <Content Include="admin\localization\AccountManagement.json" />
-    <Content Include="admin\models\AccountModel.js" />
+    <Content Include="admin\models\AccountManagementModel.js" />
+    <Content Include="admin\models\AccountsManagementModel.js" />
     <Content Include="admin\models\EmailTemplates.js" />
     <Content Include="admin\models\NetworkVehicleTypes.js" />
     <Content Include="admin\models\NotificationSettings.js" />
@@ -277,12 +280,13 @@
     <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
     <Content Include="admin\localization\ManageCompanySettings.json" />
     <Content Include="admin\models\CompanySettings.js" />
+    <Content Include="admin\views\AccountManagementView.js" />
     <Content Include="admin\views\AddRideRatingView.js" />
     <Content Include="admin\views\AddVehicleTypeView.js" />
     <Content Include="admin\views\ExportPromotionsView.js" />
     <Content Include="admin\views\ManageNotificationSettingsView.js" />
     <Content Include="admin\views\ManageRideRatingsView.js" />
-    <Content Include="admin\views\AccountManagementView.js" />
+    <Content Include="admin\views\AccountsManagementView.js" />
     <Content Include="admin\views\RideRatingItemView.js" />
     <Content Include="admin\views\SendTestEmailView.js" />
     <Content Include="admin\views\VehicleTypeItemView.js" />
@@ -447,8 +451,9 @@
     <Content Include="localization\Sherbet-en.json" />
     <Content Include="localization\BlackCabNow-en.json" />
     <Content Include="Areas\AdminTH\Views\TaxiHailNetwork\Fees.cshtml" />
-    <Content Include="admin\templates\AccountManagement.handlebars" />
+    <Content Include="admin\templates\AccountsManagement.handlebars" />
     <Content Include="admin\templates\ExportPromotions.handlebars" />
+    <Content Include="admin\templates\AccountManagement.handlebars" />
     <Content Include="localization\PaymentItem.json" />
     <Content Include="localization\PaymentItem-fr.json" />
     <Content Include="localization\PaymentItem-es.json" />

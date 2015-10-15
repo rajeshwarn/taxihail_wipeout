@@ -539,6 +539,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void AnimateAnnotationOnMap(AddressAnnotation annotationToUpdate, Position newPosition)
         {
             var annotationToUpdateView = ViewForAnnotation(annotationToUpdate) as PinAnnotationView;
+            if (annotationToUpdateView == null)
+            {
+                // crashed the app once, not sure what caused it
+                return;
+            }
+
             annotationToUpdateView.RefreshPinImage();
 
             Animate(5, 0, UIViewAnimationOptions.CurveLinear, () =>

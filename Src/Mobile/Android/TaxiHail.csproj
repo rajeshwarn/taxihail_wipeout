@@ -714,9 +714,11 @@
     <AndroidResource Include="Resources\Layout\CreditCardListItem.axml" />
     <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
     <Compile Include="Controls\Widgets\VehicleTypeSubControl.cs" />
+    <Compile Include="Converters\IsPersonalCreditCardConverter.cs" />
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeSub.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Values\String.xml" />
     <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
