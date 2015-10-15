@@ -10,7 +10,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public double CompassCourse { get; set; }
 
-		[Obsolete]
         public double VehicleNumber { get; set; }
 
 		public string VehicleName { get; set; }
