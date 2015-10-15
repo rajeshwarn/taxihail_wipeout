@@ -357,7 +357,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshPeriod))
 				.Select(_ => Unit.Default);
 		}
-		
+
+		private void StopOrientationServiceIfNeeded()
+		{
+			if (_orientationService.Stop())
+			{
+				if (WaitingCarLandscapeViewModelParameters != null)
+				{
+					WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
+					WaitingCarLandscapeViewModelParameters = null;
+				}
+			}
+		}		
 
 		private void StopBookingStatus()
 		{
@@ -385,13 +396,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			MapCenter = null;
 
-			_orientationService.Stop();
+			StopOrientationServiceIfNeeded();
 
-			if (WaitingCarLandscapeViewModelParameters != null)
-			{
-				WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
-				WaitingCarLandscapeViewModelParameters = null;
-			}
 			_isStarted = false;
 		}
 
@@ -403,6 +409,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private void RefreshManualRideLinqDetails(OrderManualRideLinqDetail manualRideLinqDetails)
 		{
 			ManualRideLinqDetail = manualRideLinqDetails;
+
+			ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], manualRideLinqDetails.TripId);
 
 			var localize = this.Services().Localize;
 
@@ -830,20 +838,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						WaitingCarLandscapeViewModelParameters = null;
 					}
 				}
-
-				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)
-				    || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Done)
-				    || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.NoShow)
-				    || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Cancelled)
-				    || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.CancelledDone))
+				else
 				{
-					_orientationService.Stop();
-
-					if (WaitingCarLandscapeViewModelParameters != null)
-					{
-						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
-						WaitingCarLandscapeViewModelParameters = null;
-					}
+					StopOrientationServiceIfNeeded();
 				}
 
 				var statusInfoText = status.IBSStatusDescription;
@@ -991,27 +988,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)
 		{
+			var orderStatusDetail = OrderStatusDetail;
 			if (OrderStatusDetail == null)
 			{
 				return;
 			}
 
-			try
+
+
+			var carNumber = orderStatusDetail.VehicleNumber;
+
+			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && carNumber.HasValueTrimmed())
 			{
-				var carNumber = OrderStatusDetail.VehicleNumber;
-
-				if ((deviceOrientation != DeviceOrientations.Left && deviceOrientation != DeviceOrientations.Right) || string.IsNullOrWhiteSpace(carNumber))
-				{
-					if (WaitingCarLandscapeViewModelParameters != null)
-					{
-						WaitingCarLandscapeViewModelParameters.CloseWaitingWindow();
-						WaitingCarLandscapeViewModelParameters = null;
-					}
-
-					return;
-				}
-
-
 				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 				{
 					WaitingCarLandscapeViewModelParameters = new WaitingCarLandscapeViewModelParameters
@@ -1019,21 +1007,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						CarNumber = carNumber,
 						DeviceOrientations = deviceOrientation
 					};
-
 					ShowViewModel<WaitingCarLandscapeViewModel>(WaitingCarLandscapeViewModelParameters);
 				}
 				else
 				{
-					WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
+					WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, orderStatusDetail.VehicleNumber);
 				}
-
 			}
-			catch (Exception ex)
-			{
-				Logger.LogMessage("An error occurred while handling DeviceOrientationChanged");
-				Logger.LogError(ex);
-			}
-			
 		}
 
 	    private async Task SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
