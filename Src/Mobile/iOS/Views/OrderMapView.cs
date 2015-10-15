@@ -553,8 +553,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
             annotationToUpdateView.RefreshPinImage();
+           
+            var animationOptions = UIViewAnimationOptions.CurveLinear | UIViewAnimationOptions.AllowUserInteraction | UIViewAnimationOptions.AllowAnimatedContent;
 
-            Animate(5, 0, UIViewAnimationOptions.CurveLinear, () =>
+            Animate(5, 0,animationOptions , () =>
                 {
                     annotationToUpdate.SetCoordinate(new CLLocationCoordinate2D(newPosition.Latitude, newPosition.Longitude));
                 }, () => {});
@@ -592,7 +594,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var vehicleNumbersToBeShown = vehiclesArray.Select (x => x.VehicleName);
 
             // check for annotations that needs to be removed
-            var annotationsToRemove = _availableVehicleAnnotations.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
+            var annotationsToRemove = _availableVehicleAnnotations.Where(x => !vehicleNumbersToBeShown.Contains(x.Title));
             foreach (var annotation in annotationsToRemove)
             {
                 DeleteAnnotation(annotation);
