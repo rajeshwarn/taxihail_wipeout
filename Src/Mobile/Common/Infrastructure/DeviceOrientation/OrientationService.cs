@@ -152,7 +152,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 					{
 						_currentOrientation = deviceOrientation;
 
-						if (NotifyOrientationChanged != null)
+						if (NotifyOrientationChanged != null && _deviceOrientationsNotifications.Contains(deviceOrientation))
 						{
 							NotifyOrientationChanged(_currentOrientation);
 						}
