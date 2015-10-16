@@ -58,23 +58,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		public async Task<VehicleType[]> GetVehicleTypes()
 	    {
             var response = await Client.GetAsync<VehicleType[]>("/admin/vehicletypes");
-
-            // TODO: Debug.
-            response = response.Select(x => 
-            { 
-				var customFares = new List<Tuple<string, decimal>>();
-				customFares.Add(new Tuple<string, decimal>("After Midnight", 2m));
-            	x.BaseRate = new BaseRateInfo 
-            	{
-            		BaseFare = 10m,
-            		BookingFeeAdvance = 2m,
-            		BookingFeeCurrent = 3m,
-            		CustomFares = customFares 
-            	}; 
-            	return x; 
-            }).ToArray();
-            // 
-
             return response.ToArray();
 	    }
 

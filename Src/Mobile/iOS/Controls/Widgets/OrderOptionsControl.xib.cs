@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public partial class OrderOptionsControl : BaseBindableChildView<OrderOptionsViewModel>
     {
-        private NSLayoutConstraint _heightConstraint;
+        public NSLayoutConstraint HeightConstraint;
 
         public OrderOptionsControl (IntPtr handle) : base(handle)
         {
@@ -20,8 +20,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            _heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1.0f, 44.0f);
-            AddConstraint(_heightConstraint);
+        	TranslatesAutoresizingMaskIntoConstraints = false;
+
+            HeightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1.0f, 44.0f);
+			var etaHeight = NSLayoutConstraint.Create(viewEta, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1.0f, 23f);
+			AddConstraint(HeightConstraint);
+			viewEta.AddConstraint(etaHeight);
 
             BackgroundColor = UIColor.Clear;
             viewPickup.BackgroundColor = UIColor.Clear;
@@ -63,6 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(viewPickup)
                 .For(v => v.UserInputDisabled)
                 .To(vm => vm.PickupInputDisabled);
+
             set.Bind(viewPickup.AddressButton)
                 .For(ve => ve.AccessibilityLabel)
                 .To(vm => vm.PickupAddress.DisplayAddress);
@@ -123,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind (viewVehicleType)
                 .For (v => v.VehicleRepresentations)
                 .To (vm => vm.VehicleRepresentations);
-
+			
             set.Bind (viewVehicleType)
                 .For (v => v.SelectedVehicle)
                 .To (vm => vm.SelectedVehicleType);
@@ -144,6 +149,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Hidden)
                 .To(vm => vm.ShowEta)
                 .WithConversion("BoolInverter");
+
+			set.Bind(viewEta)
+                .For(v => v.DisplayBaseRateInfo)
+                .To(vm => vm.DisplayBaseRateInfo);
             
             set.Bind (viewEta)
                 .For (v => v.SelectedVehicle)
@@ -179,9 +188,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
         }
 
-        public void Resize()
-        {
-            _heightConstraint.Constant = (nfloat)Subviews[0].Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height);
+        public void Resize ()
+		{
+			HeightConstraint.Constant = (nfloat)Subviews [0].Subviews.Where (x => !x.Hidden).Sum (x => x.Frame.Height);
             SetNeedsDisplay();
         }
     }

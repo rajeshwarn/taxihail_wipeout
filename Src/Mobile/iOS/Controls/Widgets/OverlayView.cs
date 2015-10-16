@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private float _radiusCorner = 3f;
         private UIView _shadowView = null;
+		private CGRect _frame = CGRect.Empty;
 
         public OverlayView(IntPtr handle) : base(handle)
         {
@@ -34,6 +35,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
 
         }
+
+        public override void LayoutSubviews ()
+		{
+			if (Frame != _frame)
+			{
+				_frame = Frame;
+				SetNeedsDisplay();
+			}
+
+			base.LayoutSubviews ();
+		}
 
         public override void Draw (CGRect rect)
         {           

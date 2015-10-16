@@ -537,7 +537,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Luxury, Name = "Sedan", LogoName = "blackcar", ReferenceDataVehicleId = 3 }
 			};
 
-			return list;
+			return list.Select(x => { x.BaseRate = new BaseRateInfo 
+            	{
+            		MinimumFare = 12m,
+            		WaitTime = 2m,
+            		PerMileRate = 3m,
+            		BaseRateNoMiles = 4.5m,
+            		AirportMeetAndGreet = 3m 
+        		};
+        		return x;
+        	}).ToList();
 
 		    var cacheService = Mvx.Resolve<ICacheService>();
 

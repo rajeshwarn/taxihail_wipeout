@@ -471,7 +471,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool DisplayBaseRateInfo
 		{
-			get { return false; } // TODO: Settings.DisplayBaseRateInfo
+			get { return true; } // TODO: Settings.DisplayBaseRateInfo
 		}
 
 
