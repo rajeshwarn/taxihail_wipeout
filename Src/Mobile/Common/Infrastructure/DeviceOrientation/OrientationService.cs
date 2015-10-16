@@ -9,17 +9,20 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 	{
 		private DeviceOrientations[] _deviceOrientationsNotifications;
 		private readonly IDeviceOrientationService _deviceOrientationService;
-		private DeviceOrientations _currentOrientations = DeviceOrientations.Up;
+		private DeviceOrientations _currentOrientation = DeviceOrientations.Up;
 
-	    private readonly int[] _axes = { 45, 135, 225, 315 };
+		bool _previousTrustZRotation = false;
+		bool _currentTrustZRotation = false;
+
+		private readonly int[] _axes = { 45, 135, 225, 315 };
 		private const int Deviation = 20;
 
-        private int _exclusiveAccess;
-        private bool _initialized;
-        private bool _started;
+		private int _exclusiveAccess;
+		private bool _initialized;
+		private bool _started;
 
-        public event Action<DeviceOrientations> NotifyOrientationChanged;
-        public event Action<int> NotifyAngleChanged;
+		public event Action<DeviceOrientations> NotifyOrientationChanged;
+		public event Action<int, bool> NotifyAngleChanged;
 
 		public OrientationService(IDeviceOrientationService deviceOrientationService)
 		{
@@ -70,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 
 		DeviceOrientations GetOrientationByAngle(int angle, DeviceOrientations currentDeviceOrientations)
 		{
-		    var axe1 = _axes[0];
+			var axe1 = _axes[0];
 			var axe2 = _axes[1];
 			var axe3 = _axes[2];
 			var axe4 = _axes[3];
@@ -87,12 +90,12 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 					axe3 += Deviation;
 					break;
 
-                case DeviceOrientations.Right:
+				case DeviceOrientations.Right:
 					axe1 -= Deviation;
 					axe2 += Deviation;
 					break;
 
-                case DeviceOrientations.Left:
+				case DeviceOrientations.Left:
 					axe3 -= Deviation;
 					axe4 += Deviation;
 					break;
@@ -121,26 +124,37 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 			return DeviceOrientations.Up;
 		}
 
-		public void AngleChanged(int angle)
+		public void AngleChanged(int angle, bool trustData, bool trustZRotation)
 		{
-			if (NotifyAngleChanged != null)
+			if (trustData)
 			{
-				NotifyAngleChanged(angle);
+				_previousTrustZRotation = _currentTrustZRotation;
+				_currentTrustZRotation = trustZRotation;
+			}
+			else
+			{
+				_currentTrustZRotation = false;
+				return;
 			}
 
-			DeviceOrientations deviceOrientations = GetOrientationByAngle(angle, _currentOrientations);
+			if (NotifyAngleChanged != null)
+			{
+				NotifyAngleChanged(angle, trustZRotation);
+			}
 
-			if (_currentOrientations != deviceOrientations)
+			DeviceOrientations deviceOrientation = GetOrientationByAngle(angle, _currentOrientation);
+
+			if (_currentOrientation != deviceOrientation || (_currentTrustZRotation && !_previousTrustZRotation))
 			{
 				if (System.Threading.Interlocked.CompareExchange(ref _exclusiveAccess, 1, 0) == 0)
 				{
-					if (_currentOrientations != deviceOrientations)
+					if (_currentOrientation != deviceOrientation || (_currentTrustZRotation && !_previousTrustZRotation))
 					{
-						_currentOrientations = deviceOrientations;
+						_currentOrientation = deviceOrientation;
 
-						if (NotifyOrientationChanged != null && _deviceOrientationsNotifications.Contains(deviceOrientations))
+						if (NotifyOrientationChanged != null)
 						{
-							NotifyOrientationChanged(_currentOrientations);
+							NotifyOrientationChanged(_currentOrientation);
 						}
 					}
 
