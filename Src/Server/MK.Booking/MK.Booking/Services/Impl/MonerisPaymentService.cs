@@ -13,6 +13,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using Moneris;
+using Newtonsoft.Json;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -43,6 +44,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
             _orderDao = orderDao;
+            MonerisHttpRequestWrapper.SetLogger(_logger);
         }
 
         public PaymentProvider ProviderType(Guid? orderId = null)
@@ -105,8 +107,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
 
                 var completionCommand = new Completion(orderId.ToString(), 0.ToString("F"), paymentDetail.TransactionId, CryptType_SSLEnabledMerchant);
-                var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
-                var commitReceipt = commitRequest.GetReceipt();
+                var commitRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
+                var commitReceipt = commitRequest.GetAndLogReceipt(_logger);
 
                 RequestSuccesful(commitReceipt, out message);
             }
@@ -133,8 +135,8 @@ namespace apcurium.MK.Booking.Services.Impl
             var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
 
             var correctionCommand = new PurchaseCorrection(orderId.ToString(), transactionId, CryptType_SSLEnabledMerchant);
-            var correctionRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, correctionCommand);
-            var correctionReceipt = correctionRequest.GetReceipt();
+            var correctionRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, correctionCommand);
+            var correctionReceipt = correctionRequest.GetAndLogReceipt(_logger);
 
             string monerisMessage;
             var correctionSuccess = RequestSuccesful(correctionReceipt, out monerisMessage);
@@ -155,9 +157,9 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 var deleteCommand = new ResDelete(cardToken);
-                var deleteRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId,
-                    monerisSettings.ApiToken, deleteCommand);
-                var receipt = deleteRequest.GetReceipt();
+                var deleteRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId,
+                     monerisSettings.ApiToken, deleteCommand);
+                var receipt = deleteRequest.GetAndLogReceipt(_logger);
 
                 string message;
                 var success = RequestSuccesful(receipt, out message);
@@ -219,9 +221,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
                     AddCvvInfo(preAuthorizeCommand, cvv);
-                    
-                    var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
-                    var preAuthReceipt = preAuthRequest.GetReceipt();
+
+                    var preAuthRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
+                    var preAuthReceipt = preAuthRequest.GetAndLogReceipt(_logger);
+
                     isSuccessful = RequestSuccesful(preAuthReceipt, out message);
                     isCardDeclined = IsCardDeclined(preAuthReceipt);
                     transactionId = preAuthReceipt.GetTxnNumber();
@@ -347,9 +350,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     //add driver id to "memo" field
                     completionCommand.SetDynamicDescriptor(orderStatus.DriverInfos.DriverId); 
                 }
-                
-                var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
-                var commitReceipt = commitRequest.GetReceipt();
+
+                var commitRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
+                var commitReceipt = commitRequest.GetAndLogReceipt(_logger);
 
                 var isSuccessful = RequestSuccesful(commitReceipt, out message);
                 var isCardDeclined = IsCardDeclined(commitReceipt);
@@ -504,4 +507,45 @@ namespace apcurium.MK.Booking.Services.Impl
             return stringBuilder.ToString();
         }
     }
+
+    internal class MonerisHttpRequestWrapper
+    {
+        private static ILogger _logger;
+        public static void SetLogger(ILogger logger)
+        {
+            _logger = logger;
+        }
+
+        internal static HttpsPostRequest NewHttpsPostRequest(string host, string store, string apiTok, Transaction t)
+        {
+            LogTransaction(t);
+            return new HttpsPostRequest(host, store, apiTok, t);
+        }
+        internal static HttpsPostRequest NewHttpsPostRequest(string host, string store, string apiTok, string statusCheck, Transaction t)
+        {
+            LogTransaction(t);
+            return new HttpsPostRequest(host, store, apiTok, statusCheck, t);
+        }
+        internal static HttpsPostRequest NewHttpsPostRequest(string host, string store, string apiTok, Transaction t, System.Net.WebProxy prxy)
+        {
+            LogTransaction(t);
+            return new HttpsPostRequest(host, store, apiTok, t, prxy);
+        }
+        private static void LogTransaction(Transaction t)
+        {
+            _logger.Maybe(() => _logger.LogMessage("Moneris Request : " + JsonConvert.SerializeObject(t)));
+        }
+    }
+
+    public static class MonerisExtensions
+    {
+        public static Receipt GetAndLogReceipt(this HttpsPostRequest request, ILogger logger)
+        {
+            Receipt r = request.GetReceipt();
+            logger.Maybe(() => logger.LogMessage("Moneris Response : " + JsonConvert.SerializeObject(r)));
+            return r;
+        }
+    }
+
+
 }
