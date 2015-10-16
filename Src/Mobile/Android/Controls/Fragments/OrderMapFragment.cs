@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -9,7 +8,6 @@ using System.Threading;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps.Geo;
-using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
@@ -19,8 +17,6 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using Android.App;
-using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
 using Android.Views;
@@ -191,12 +187,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	    }
 
         // Animate Marker on the map between retrieving positions
-        private void AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double compassCourse, Position oldPosition)
+        private void AnimateMarkerOnMap(BitmapDescriptor icon, Marker markerToUpdate, LatLng newPosition, double? compassCourse, Position oldPosition)
         {
             markerToUpdate.SetIcon(icon);
-            markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && compassCourse != 0
-                ? .5f
-                : 1f);
+            markerToUpdate.SetAnchor(.5f, ViewModel.Settings.ShowOrientedPins && compassCourse.HasValue ? .5f : 1f);
 
             var evaluator = new LatLngEvaluator ();
             var objectAnimator = ObjectAnimator.OfObject (markerToUpdate, "position", evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
@@ -226,8 +220,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 // Update Marker and Animate it to see it move on the map
                 if (_taxiLocationPin != null)
                 {
-                    var icon = ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-                        ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+                    var icon = ViewModel.Settings.ShowOrientedPins  && value.CompassCourse.HasValue
+                        ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
                         : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap());
                     
                     AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
@@ -248,29 +242,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     try
                     {
                         var mapOptions = new MarkerOptions()
-                            .Anchor(.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-                                ? .5f
-                                : 1f)
+							.Anchor(.5f, ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue ? .5f : 1f)
                             .SetPosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
                             .InvokeIcon(
-                                ViewModel.Settings.ShowOrientedPins && value.CompassCourse != 0
-                                ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse))
+								ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue
+                                ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
                                 : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
                             .Visible(true);
 
-
                         if (_showVehicleNumber)
                         {
-                            var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
-                            Map.SetInfoWindowAdapter(new CustomMarkerPopupAdapter(inflater));
-
-                            mapOptions.SetTitle(value.VehicleNumber);
+	                        mapOptions.SetTitle(value.VehicleNumber);
                         }
 
                         _taxiLocationPin = Map.AddMarker(mapOptions);
 
                         if (_showVehicleNumber)
                         {
+	                        _taxiLocationPin.Snippet = value.Market;
+
                             _taxiLocationPin.ShowInfoWindow();
                         }
                     }
@@ -286,19 +276,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
 			// Booking is now over, so we need to clean up.
-	        if (value != null)
-	        {
-				return;
-	        }
-
-			_isBookingMode = false;
-
-			if (_taxiLocationPin != null)
-		    {
-			    _taxiLocationPin.Visible = false;
+            if (value == null && _taxiLocationPin != null)
+            {
+                _isBookingMode = false;
+                _taxiLocationPin.Visible = false;
 				_taxiLocationPin.Remove();
 			    _taxiLocationPin = null;
-		    }
+            }
 	    }
 
 		private Bitmap CreateTaxiBitmap()
@@ -315,7 +299,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             set
             {
-                if (_availableVehicles == value)
+				if (_availableVehicles == null || _availableVehicles.SequenceEqual(value))
                 {
                     return;
                 }
@@ -626,15 +610,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
 				: string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
 
-            var vehicleMarker = Map.AddMarker(new MarkerOptions()
-                .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
-                .SetTitle(vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture))
-                .Anchor(.5f, ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
-                    ? .5f
-                    : 1f)
-                .InvokeIcon(ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
-                    ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
-                    : _vehicleIcons[logoKey]));
+	        var markerOptions = new MarkerOptions()
+		        .SetPosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
+		        .SetTitle(vehicle.VehicleName)
+		        .Anchor(.5f, ViewModel.Settings.ShowOrientedPins ? .5f : 1f)
+		        .InvokeIcon(ViewModel.Settings.ShowOrientedPins
+			        ? BitmapDescriptorFactory.FromBitmap(
+				        DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
+			        : _vehicleIcons[logoKey]);
+
+			var vehicleMarker = Map.AddMarker(markerOptions);
+
+			vehicleMarker.Snippet = vehicle.Market;
 
             _availableVehicleMarkers.Add(vehicleMarker);
         }
@@ -648,7 +635,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 ? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
                 : string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
 
-            var icon = ViewModel.Settings.ShowOrientedPins && vehicle.CompassCourse != 0
+            var icon = ViewModel.Settings.ShowOrientedPins
                 ? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegrees(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
                 : _vehicleIcons[logoKey];
 
@@ -665,7 +652,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 	        var vehicleArray = vehicles.ToArray();
 
-			var vehicleNumbersToBeShown = vehicleArray.Select(x => x.VehicleNumber.ToString(CultureInfo.InvariantCulture));
+			var vehicleNumbersToBeShown = vehicleArray.Select(x => x.VehicleName);
 
             // check for markers that needs to be removed
             var markersToRemove = _availableVehicleMarkers.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
@@ -677,11 +664,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             // check for updated or new
 			foreach (var vehicle in vehicleArray)
             {
-                var existingMarkerForVehicle = _availableVehicleMarkers.FirstOrDefault (x => x.Title == vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture));
+                var existingMarkerForVehicle = _availableVehicleMarkers.FirstOrDefault (x => x.Title == vehicle.VehicleName);
 
                 if (existingMarkerForVehicle != null)
                 {
-                    if (existingMarkerForVehicle.Position.Latitude == vehicle.Latitude && existingMarkerForVehicle.Position.Longitude == vehicle.Longitude)
+                    if (Math.Abs(existingMarkerForVehicle.Position.Latitude - vehicle.Latitude) < double.Epsilon 
+						&& Math.Abs(existingMarkerForVehicle.Position.Longitude - vehicle.Longitude) < double.Epsilon)
                     {
                         // vehicle not updated, nothing to do
                         continue;

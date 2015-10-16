@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -18,7 +19,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 
-	    private bool _orderWasUnpaired;
+		private bool _orderWasUnpaired;
+		private bool _isCmtRideLinq;
 
 		public BookingStatusBottomBarViewModel(IPhoneService phoneService, IBookingService bookingService, IPaymentService paymentService, IAccountService accountService)
 		{
@@ -26,6 +28,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_bookingService = bookingService;
 			_paymentService = paymentService;
 			_accountService = accountService;
+
+			GetIsCmtRideLinq();
+		}
+
+		private async void GetIsCmtRideLinq()
+		{
+			try
+			{
+				var paymentSettings = await _paymentService.GetPaymentSettings();
+
+				_isCmtRideLinq = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+
+				RaisePropertyChanged(() => ButtonEditTipLabel);
+			}
+			catch(Exception ex) 
+			{
+				Logger.LogError(ex);	
+			}
 		}
 
 		public BookingStatusViewModel ParentViewModel
@@ -33,11 +53,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return (BookingStatusViewModel) Parent; }
 		}
 
-		public void ResetButtonsVisibility()
+		public void PrepareForNewOrder()
 		{
 			IsCancelButtonVisible = false;
 			CanEditAutoTip = false;
 			IsUnpairButtonVisible = false;
+			_orderWasUnpaired = false;
+			_currentTip = null;
 		}
 
 		private async void UpdateActionsPossibleOnOrder()
@@ -58,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				if (arePassengersOnBoard && IsUsingPaymentMethodOnFile())
 				{
-					var isPaired = ParentViewModel.ManualRideLinqDetail != null 
+					var isPaired = ParentViewModel.ManualRideLinqDetail != null
 						|| await _bookingService.IsPaired(ParentViewModel.Order.SelectOrDefault(order => order.Id, Guid.Empty));
 
 					CanEditAutoTip = isPaired;
@@ -223,6 +245,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						},
                         this.Services().Localize["UnpairWarningCancelButton"], () => { });
 				});
+			}
+		}
+
+		public string ButtonEditTipLabel
+		{
+			get
+			{
+				return _isCmtRideLinq ? this.Services().Localize["StatusEditAutoPaymentButton"] : this.Services().Localize["StatusEditAutoTipButton"];
 			}
 		}
 

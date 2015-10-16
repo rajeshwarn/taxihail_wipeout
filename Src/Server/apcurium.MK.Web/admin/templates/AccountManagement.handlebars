@@ -1,62 +1,202 @@
-﻿<div class='row'>
-    <div class='span6'>
+﻿<div class="div-account-panelheader">Account</div>
+
+<div class='row'>
+    <div class='span8'>
         <div class='well clearfix'>
             <div class='errors'></div>
 			<div class="control-group">
-				<label class="control-label">{{localize "Search Criteria"}}</label>
-				<div class="controls">
-					<label class="control-label-wide" for="searchcriteria">{{localize "Name/Email/Phone Number"}}</label>
-					<input type="text" id="searchcriteria" autofocus name="settings.phone" value="{{settings.phone}}" class='input-block-level' data-action='findUserWithSearchCriteriaEnterOnTextfield'>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide">{{localize "Name"}}</label>
+					</div>
+					<div class="right-column">
+						<label class="label-account-item label-account-item-normalcolor">{{account.name}}</label>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide" for="email">{{localize "Email"}}</label>
+					</div>
+					<div class="right-column">
+						<input type="text" id="email" name="email" value="{{account.email}}" class='input-block-level'>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide">{{localize "Custumer Number"}}</label>
+					</div>
+					<div class="right-column">
+						<label class="label-account-item label-account-item-normalcolor">{{account.settings.customerNumber}}</label>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide">{{localize "Creation Date"}}</label>
+					</div>
+					<div class="right-column">
+						<label class="label-account-item label-account-item-normalcolor">{{account.creationDateText}}</label>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide">{{localize "Facebook Account"}}</label>
+					</div>
+					<div class="right-column">
+						<label class="label-account-item label-account-item-normalcolor">{{#if account.facebookId }}Yes{{else}}No{{/if}}</label>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide">{{localize "IBS Accound ID"}}</label>
+					</div>
+					<div class="right-column">
+						<label class="label-account-item label-account-item-normalcolor">{{account.ibsAccountId}}</label>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide">{{localize "Confirmed"}}</label>
+					</div>
+					<div class="right-column">
+						<label id="accountConfirmedLabel" class="label-account-item {{#if account.isConfirmed }}label-account-item-normalcolor {{else}}label-account-item-orangecolor{{/if}}">{{#if account.isConfirmed }}Yes{{else}}No{{/if}}</label>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide">{{localize "Enabled"}}</label>
+					</div>
+					<div class="right-column">
+						<label id="accountEnabledLabel" class="label-account-item {{#if account.disabledByAdmin }}label-account-item-orangecolor{{else}}label-account-item-normalcolor{{/if}}">{{#if account.disabledByAdmin }}No{{else}}Yes{{/if}}</label>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide" for="phoneNumber">{{localize "Phone Number"}}</label>
+					</div>
+					<div class="right-column">
+						<select id="countryСode" name="countryCode" style="width:100%; margin-bottom:1px;">
+							{{#each countryCodes}}
+							<option value="{{this.CountryISOCode.Code}}">{{this.СountryDialCodeInternationalFormat}}{{#each this.spaces}}&nbsp;{{/each}}{{this.CountryName}}</option>
+							{{/each}}
+						</select>
+						<input type="text" id="phoneNumber" name="phoneNumber" value="{{account.settings.phone}}" class='input-block-level'>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide">{{localize "Charge Type"}}</label>
+					</div>
+					<div class="right-column">
+						<label class="label-account-item label-account-item-normalcolor">{{account.settings.chargeType}}</label>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide">{{localize "Default Tip Percent"}}</label>
+					</div>
+					<div class="right-column">
+						<label class="label-account-item label-account-item-normalcolor">{{account.defaultTipPercent}}</label>
+					</div>
+				</div>
+
+				<div class="div-account-block">
+					<div class="left-column">
+						<label class="control-label-wide">{{localize "PayPal Account Linked"}}</label>
+					</div>
+					<div class="right-column">
+						<label class="label-account-item label-account-item-normalcolor">{{#if account.isPayPalAccountLinked }}Yes{{else}}No{{/if}}</label>
+					</div>
+				</div>
+
+			</div>
+
+			<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
+				<button id="buttonSaveAccount{{account.id}}" type="submit" class='btn btn-primary span buttonaccount' style="margin-left:0" data-action='saveAccount' accountid="{{account.id}}">{{localize "Save Account"}}</button>
+			</div>
+
+			{{#unless account.currentAccount }}
+
+			<div style="margin-top:20px;">
+
+				<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
+					<a href id="refSendSMS{{account.id}}" data-action='sendConfirmationCodeSMS' accountid="{{account.id}}" onclick="return false;">{{localize "Send Account Confirmation Code via SMS"}}</a>
+				</div>
+
+				<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
+					<a href id="refResetPassword{{account.id}}" data-action='resetPassword' accountid="{{account.id}}" onclick="return false;">{{localize "Reset Password"}}</a>
+					<label id="refResetPasswordResponse{{account.id}}" class="label-password invisible"></label>
+				</div>
+
+				<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
+					<a href id="refEnableDisableAccount{{account.id}}" data-action='enableDisableAccount' accountid="{{account.id}}" onclick="return false;">{{#if account.disabledByAdmin }} {{ localize "Enable Account"}} {{else}} {{ localize "Disable Account"}} {{/if}}</a>
+				</div>
+
+				<div style="overflow:hidden; margin-top:5px; margin-bottom:5px;">
+					<a href id="refUnlinkIBSAccount{{account.id}}" data-action='unlinkIBSAccount' accountid="{{account.id}}" onclick="return false;">{{localize "Unlink IBS Account(s)"}}</a>
+				</div>
+
+				<div>
+					<a href id="refDeleteCreditCardsInfo{{account.id}}" data-action='deleteCreditCardsInfo' accountid="{{account.id}}" onclick="return false;">{{localize "Delete all credit cards information"}}</a>
 				</div>
 			</div>
 
-			<div class="control-group btn-right-alignment">
-				<button id="buttonFindUsers" {{#if findButtonDisable}} disabled {{/if}} type="submit" class='btn btn-primary span' data-action='findUserWithSearchCriteria' data-loading-text="{{localize 'Loading'}}">{{localize "Find user"}}</button>
-			</div>
+			{{/unless}}
+
         </div>
     </div>
 </div>
 
-{{#if accounts}}
+
+{{#if orders}}
+<div class="div-account-panelheader">Orders</div>
 <div class='row'>
-	<div class='span12'>
+<div class='span20'>
 		<div class='well clearfix'>
-			<div class="control-group">
-				<table class="table-accountslist">
+			<div class='errors'></div>
+			<div style="width:1250px;">
+				<table class="table-orders">
 					<thead>
 						<tr>
-							<th>{{ localize "Name"}}</th>
-							<th>{{ localize "Email"}}</th>
-							<th>{{ localize "Phone Number"}}</th>
-							<th>{{ localize "Confirmed"}}</th>
-							<th>{{ localize "Enabled"}}</th>
-							<th>{{ localize "Action"}}</th>
+							<th>{{ localize "Created Date"}}</th>
+							<th>{{ localize "Pickup Date"}}</th>
+							<th>{{ localize "Pickup Address"}}</th>
+							<th>{{ localize "Drop Off Address"}}</th>
+							<th>{{ localize "Fare"}}</th>
+							<th>{{ localize "Status"}}</th>
+							<th>{{ localize "Note"}}</th>
+							<th>{{ localize "Promo Code"}}</th>
+							<th>{{ localize "Is Manual RideLinq"}}</th>
 						</tr>
 					</thead>
 					<tbody>
-						{{#each accounts}}
-						<tr>
-							<td style="width:170px;">{{this.name}}</td>
-							<td style="width:170px;">{{this.email}}</td>
-							<td style="width:130px;">+{{this.dialCode}} {{this.settings.phone}}</td>
-							
-							<td style="width:50px;">{{#if this.isConfirmed }} + {{else}} - {{/if}}</td>
-							<td style="width:50px;">{{#if this.disabledByAdmin }} - {{else}} + {{/if}}</td>
-
-							<td style="width:260px;">
-								{{#unless this.currentAccount }}
-								<div>
-									<button id="buttonSendSMS{{this.id}}" type="submit" class='btn btn-primary span buttontable1autocenter' data-action='sendConfirmationCodeSMS' email="{{this.email}}" accid="{{this.id}}">{{localize "Send Account Confirmation Code via SMS"}}</button>
-								</div>
-
-								<div>
-									<button id="buttonEnableDisableAccount{{this.id}}" type="submit" class='btn btn-primary span buttontable1autocenter' data-action='enableDisableAccount' email="{{this.email}}" accid="{{this.id}}">  {{#if this.disabledByAdmin }} {{ localize "Enable Account"}} {{else}} {{ localize "Disable Account"}} {{/if}}</button>
-								</div>
-								<div>
-									<button id="buttonUnlinkIBSAccount{{this.id}}" type="submit" class='btn btn-primary span buttontable1autocenter' data-action='unlinkIBSAccount' email="{{this.email}}" accid="{{this.id}}">{{localize "Unlink IBS Account(s)"}}</button>
-								</div>
-								{{/unless}}
+						{{#each orders}}
+						<tr data-action='goToAccountPage' orderid="{{this.id}}">
+							<td style="width:110px;"><div>{{this.createdDateText}}</div><div>{{this.createdTimeText}}</div></td>
+							<td style="width:110px;"><div>{{this.pickupDateText}}</div><div>{{this.pickupTimeText}}</div></td>
+							<td style="width:210px;"><div>{{this.pickupAddress.streetNumber}} {{this.pickupAddress.street}}</div><div>{{this.pickupAddress.city}} {{this.pickupAddress.zipCode}} {{this.pickupAddress.state}}</div></td>
+							<td style="width:210px;"><div>{{this.dropOffAddress.streetNumber}} {{this.dropOffAddress.street}}</div><div>{{this.dropOffAddress.city}} {{this.dropOffAddress.zipCode}} {{this.dropOffAddress.state}}</div></td>
+							<td style="width:140px;">
+								<div class="divPayment"><div class="divText">Fare:</div><div class="divAmount">{{this.fare}}</div></div>
+								<div class="divPayment"><div class="divText">Tax:</div><div class="divAmount">{{this.tax}}</div></div>
+								<div class="divPayment"><div class="divText">Toll:</div><div class="divAmount">{{this.toll}}</div></div>
+								<div class="divPayment"><div class="divText">Tip:</div><div class="divAmount">{{this.tip}}</div></div>
+								<div class="divPayment"><div class="divText">Surcharge:</div><div class="divAmount">{{this.surcharge}}</div></div>
 							</td>
+							<td style="width:90px;">{{this.statusText}}</td>
+							<td style="width:130px;">{{this.note}}</td>
+							<td style="width:80px;">{{this.promoCode}}</td>
+							<td style="width:130px;"> {{#if this.isManualRideLinq}}Yes{{else}}No{{/if}}</td>
 						</tr>
 						{{/each}}
 					</tbody>

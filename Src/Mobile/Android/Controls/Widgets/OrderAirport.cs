@@ -26,7 +26,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private bool _isShown;
 		private ViewStates _animatedVisibility;
-		public int CurrentHeight { get; set; }
 
 		public OrderAirport(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderAirport, context), context, attrs)
 		{
@@ -56,7 +55,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
         }
 
-        private OrderAirportViewModel ViewModel { get { return (OrderAirportViewModel)DataContext; } }
+		public void ShowWithoutAnimation()
+		{
+			_isShown = true;
+
+			if (Animation != null)
+			{
+				Animation.Cancel();
+			}
+
+			((MarginLayoutParams)LayoutParameters).TopMargin = OrderAirportShownHeightProvider();
+		}
 
 		public Point ScreenSize { get; set; }
 

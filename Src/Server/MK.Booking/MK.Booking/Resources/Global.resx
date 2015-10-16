@@ -168,6 +168,9 @@
   <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
     <value>Sorry no cars are available due to high demand, please try later.</value>
   </data>
+  <data name="PushNotification_BAILED" xml:space="preserve">
+    <value>Sorry, your driver canceled. Finding you another taxi...</value>
+  </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
     <value>The passenger has paid</value>
   </data>
@@ -297,6 +300,9 @@
   <data name="Email_Body_Tip" xml:space="preserve">
     <value>Tip</value>
   </data>
+  <data name="Email_Body_TipIncentive" xml:space="preserve">
+    <value>Driver Bonus</value>
+  </data>
   <data name="Email_Body_Promo" xml:space="preserve">
     <value>Promo Code</value>
   </data>
@@ -383,6 +389,9 @@
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>Fare will be paid using the selected payment method</value>
+  </data>
+  <data name="OrderStatus_BAILED" xml:space="preserve">
+    <value>Sorry, your driver canceled. Finding you another taxi...</value>
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>

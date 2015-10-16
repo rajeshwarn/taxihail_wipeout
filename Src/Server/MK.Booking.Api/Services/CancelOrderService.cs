@@ -71,9 +71,10 @@ namespace apcurium.MK.Booking.Api.Services
                         || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Waiting)
                         || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned)
                         || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived)
+                        || orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled)
                         || canCancelWhenPaired))
                 {
-                    //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
+                    // We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
                     Task.Factory.StartNew(() =>
                     {
                         Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey).CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);

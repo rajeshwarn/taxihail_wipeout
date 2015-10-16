@@ -44,13 +44,16 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			if (data != null && data.TaxiHail.ApplicationName.HasValue())
 			{
 				// Use cached settings until settings are done loading
+				if (!data.CanChangeServiceUrl)
+				{
+					// Always use service URL from file, not from cache in case it changes
+					var bundledServiceUrl = GetSettingFromFile("ServiceUrl");
 
-				// Always use service URL from file, not from cache in case it changes
-				var bundledServiceUrl = GetSettingFromFile("ServiceUrl");
+					data.ServiceUrl = bundledServiceUrl;
+				}
 
-				data.ServiceUrl = bundledServiceUrl;
+
 				Data = data;
-
                 // Update settings asynchronously. NB: ServiceUrl is never returned from the server settings
 				Task.Run(() => RefreshSettingsFromServer());
 			    

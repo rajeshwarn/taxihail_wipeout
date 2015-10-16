@@ -16,10 +16,10 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Entity;
-using Android.Runtime;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Runtime;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         private EditText _addressEditText;
         private ScrollView _scrollView;
         private Button _cancelButton;
-
+        private readonly SerialDisposable _collectionChangedSubscription = new SerialDisposable();
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
         private AddressPickerViewModel ViewModel 
         { 
@@ -133,33 +133,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
         private void InitializeBinding()
         {
-            ViewModel.AllAddresses.CollectionChanged += (sender, e) => {
-
-                var newItems = new AddressViewModel[0];
-                if(e.NewItems != null)
-                {
-                    newItems = e.NewItems.OfType<AddressViewModel>().ToArray();
-                }
-
-                switch(e.Action)
-                {
-                    case NotifyCollectionChangedAction.Add:
-                    {                                    
-                        AddAddresses(newItems);
-                        break;
-                    }
-                    case NotifyCollectionChangedAction.Reset:
-                    {
-                        ClearAddresses();
-                        break;
-                    }
-                    default:
-                    {
-                        throw new ArgumentOutOfRangeException("Not supported "+ e.Action);
-                    }
-                }   
-            };
-
             var set = this.CreateBindingSet<AddressPicker, AddressPickerViewModel>();
 
             set.Bind()
@@ -178,9 +151,42 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             set.Apply();
         }
 
-		public async void Open(AddressLocationType filterAddresses, HomeViewModelState respState)
+		public async void Open(AddressLocationType filterAddresses)
         {
-			await ViewModel.LoadAddresses(filterAddresses, respState).HandleErrors();
+            _collectionChangedSubscription.Disposable = Observable
+                .FromEventPattern<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
+                    h => ViewModel.AllAddresses.CollectionChanged += h, 
+                    h => ViewModel.AllAddresses.CollectionChanged -= h)
+                .ObserveOn(SynchronizationContext.Current)
+                .Select(x => x.EventArgs)
+                .Subscribe(e => 
+                { 
+                    var newItems = new AddressViewModel[0];
+                    if(e.NewItems != null)
+                    {
+                        newItems = e.NewItems.OfType<AddressViewModel>().ToArray();
+                    }
+
+                    switch(e.Action)
+                    {
+                        case NotifyCollectionChangedAction.Add:
+                            {                                    
+                                AddAddresses(newItems);
+                                break;
+                            }
+                        case NotifyCollectionChangedAction.Reset:
+                            {
+                                ClearAddresses();
+                                break;
+                            }
+                        default:
+                            {
+                                throw new ArgumentOutOfRangeException("Not supported "+ e.Action);
+                            }
+                    }   
+                }, Logger.LogError);
+
+			await ViewModel.LoadAddresses(filterAddresses).HandleErrors();
 			if (filterAddresses == AddressLocationType.Unspeficied || ViewModel.AllAddresses.Count > 1)
             {
                 FocusOnTextField();
@@ -193,7 +199,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 			_favoriteAddressList.Collapse();
 			_recentAddressList.Collapse();
 			_nearbyAddressList.Collapse();
-            
+
+            _collectionChangedSubscription.Disposable = null;
         }
 
 		public void FocusOnTextField()
@@ -211,6 +218,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             if (disposing)
             {
                 _subscriptions.Dispose();
+                _collectionChangedSubscription.Disposable = null;
             }
 
             base.Dispose(disposing);

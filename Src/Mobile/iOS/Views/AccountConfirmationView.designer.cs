@@ -19,10 +19,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnResend { get; set; }
 
 		[Outlet]
+		UIKit.UIScrollView confirmScrollViewer { get; set; }
+
+		[Outlet]
 		UIKit.UIImageView imgViewLogo { get; set; }
 
 		[Outlet]
-        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.CountrySelector lblDialCode { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.CountrySelector lblDialCode { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblPhoneNumberTitle { get; set; }
@@ -56,9 +59,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				imgViewLogo = null;
 			}
 
-            if (lblDialCode != null) {
-                lblDialCode.Dispose ();
-                lblDialCode = null;
+			if (lblDialCode != null) {
+				lblDialCode.Dispose ();
+				lblDialCode = null;
+			}
+
+			if (lblPhoneNumberTitle != null) {
+				lblPhoneNumberTitle.Dispose ();
+				lblPhoneNumberTitle = null;
 			}
 
 			if (lblSubTitle != null) {
@@ -81,9 +89,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtPhoneNumber = null;
 			}
 
-			if (lblPhoneNumberTitle != null) {
-				lblPhoneNumberTitle.Dispose ();
-				lblPhoneNumberTitle = null;
+			if (confirmScrollViewer != null) {
+				confirmScrollViewer.Dispose ();
+				confirmScrollViewer = null;
 			}
 		}
 	}

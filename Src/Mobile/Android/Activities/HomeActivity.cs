@@ -21,8 +21,15 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using Android.Views.InputMethods;
+using Cirrious.CrossCore;
+using Cirrious.CrossCore.Core;
+using Cirrious.MvvmCross.Droid.Views;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -32,7 +39,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         ClearTaskOnLaunch = true, 
         WindowSoftInputMode = SoftInput.AdjustPan, 
         FinishOnTaskLaunch = true, 
-        LaunchMode = LaunchMode.SingleTask
+        LaunchMode = LaunchMode.SingleTask,
+		ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize
     )]   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
@@ -52,7 +60,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private int _menuWidth = 400;
         private Bundle _mainBundle;
 		private readonly SerialDisposable _subscription = new SerialDisposable();
-		private HomeViewModelState _presentationState = HomeViewModelState.Initial;
 
 	    protected override void OnCreate(Bundle bundle)
         {
@@ -67,6 +74,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 dialog.Show();
                 dialog.DismissEvent += (s, e) => Finish();
             }    
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+
+            if (intent == null)
+            {
+                return;
+            }
+
+            Intent = intent;
+
+            var navigationParams = intent.Extras.GetNavigationBundle();
+
+            ViewModel.CallBundleMethods("Init", navigationParams);
+            ViewModel.Init(navigationParams);
         }
 
 		public OrderMapFragment MapFragment { get; set; }
@@ -219,11 +243,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			var orderEditLayout = _orderEdit.GetLayoutParameters();
 
-			bool IsRightToLeftLanguage = this.Services().Localize.IsRightToLeft;
+			var isRightToLeftLanguage = this.Services().Localize.IsRightToLeft;
 
 			_orderEdit.SetLayoutParameters(screenSize.X, orderEditLayout.Height,
-				IsRightToLeftLanguage ? orderEditLayout.LeftMargin : screenSize.X,
-				IsRightToLeftLanguage ? screenSize.X : orderEditLayout.RightMargin,
+				isRightToLeftLanguage ? orderEditLayout.LeftMargin : screenSize.X,
+				isRightToLeftLanguage ? screenSize.X : orderEditLayout.RightMargin,
 				orderEditLayout.TopMargin, orderEditLayout.BottomMargin, orderEditLayout.Gravity);
 
 	        ((ViewGroup.MarginLayoutParams) _orderStatus.LayoutParameters).TopMargin = -screenSize.Y;
@@ -234,7 +258,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _touchMap.OnCreate(mapViewSavedInstanceState);
 			MapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
 
-            var inputManager = (InputMethodManager)ApplicationContext.GetSystemService(Context.InputMethodService);
+            var inputManager = (InputMethodManager)ApplicationContext.GetSystemService(InputMethodService);
             MapFragment.TouchableMap.Surface.Touched += (sender, e) => 
                 {
                     inputManager.HideSoftInputFromWindow(Window.DecorView.RootView.WindowToken, HideSoftInputFlags.None);
@@ -242,7 +266,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 	        _orderReview.ScreenSize = screenSize;
 	        _orderReview.OrderReviewHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
-	        _orderReview.OrderReviewShownHeightProvider = () => _orderOptions.Height;
+			_orderReview.OrderReviewShownHeightProvider = () => _orderOptions.Height;
 			_orderEdit.ScreenSize = screenSize;
 	        _orderEdit.ParentFrameLayout = _frameLayout;
 
@@ -250,20 +274,68 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			_orderAirport.OrderAirportHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
 			_orderAirport.OrderAirportShownHeightProvider = () => _orderOptions.Height;
 
-            SetupHomeViewBinding();
+	        ResumeFromBackgroundIfNecessary();
 
-			_orderOptions.LayoutChange += (sender, e) => {
-				if (_orderOptions.Height != _orderOptions.CurrentHeight)
-				{
-					ViewModel.CurrentViewState = _presentationState;
-					_orderOptions.CurrentHeight = _orderOptions.Height;
-				}
-			};
+            SetupHomeViewBinding();
 
 	        PanelMenuInit();
         }
 
-	    private void SetupHomeViewBinding()
+		private void OrderOptionsSizeChanged(object sender, EventArgs args)
+		{
+			if (_orderOptions.Height == 0)
+			{
+				return;
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.Review)
+			{
+				_orderReview.ShowWithoutAnimation();
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.AirportDetails)
+			{
+				_orderAirport.ShowWithoutAnimation();
+			}
+
+			_orderOptions.SizeChanged -= OrderOptionsSizeChanged;
+		}
+
+		private void ResumeFromBackgroundIfNecessary()
+		{
+
+			// The current state is the initial state, we don't need to do anything
+			if (ViewModel.CurrentViewState == HomeViewModelState.Initial)
+			{
+				return;
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.Review || ViewModel.CurrentViewState == HomeViewModelState.AirportDetails)
+			{
+				_orderOptions.SizeChanged += OrderOptionsSizeChanged;
+
+				return;
+			}
+
+			if (ViewModel.CurrentViewState == HomeViewModelState.Edit)
+			{
+				_orderOptions.HideWithoutAnimation();
+				_orderEdit.ShowWithoutAnimations();
+
+				return;
+			}
+
+			// We are in an order, we should at least setup the view to not have the booking entry animation.
+			if (ViewModel.CurrentViewState == HomeViewModelState.ManualRidelinq || ViewModel.CurrentViewState == HomeViewModelState.BookingStatus)
+			{
+				_orderStatus.ShowWithoutAnimation();
+				_orderOptions.HideWithoutAnimation();
+
+				_appBar.Visibility = ViewStates.Gone;
+			}
+		}
+
+		private void SetupHomeViewBinding()
 	    {
 		    var set = this.CreateBindingSet<HomeActivity, HomeViewModel>();
 			
@@ -334,7 +406,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			set.Bind(_searchAddress)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch, HomeViewModelState.AirportAddressSearch });
+				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch });
 			
 			set.Bind(_appBar)
 				.For(v => v.Visibility)
@@ -494,22 +566,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
 				ViewModel.BottomBar.CreateOrder.ExecuteIfPossible(dt);
             }
-            else if (requestCode == (int) ActivityEnum.BookATaxi && resultCode == Result.Ok)
-            {
-                var result = (BookATaxiEnum)data.GetIntExtra("BookATaxiResult", (int)BookATaxiEnum.BookCancelled);
-                switch (result)
-                {
-                    case BookATaxiEnum.BookNow:
-						ViewModel.BottomBar.CreateOrder.ExecuteIfPossible();
-                        break;
-                    case BookATaxiEnum.BookLater:
-                        ViewModel.BottomBar.BookLater.ExecuteIfPossible();
-                        break;
-                    default:
-                        ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible();
-                        break;
-                }
-            }
 			else if (requestCode == (int) ActivityEnum.DateTimePicked 
 				&& ViewModel.CurrentViewState == HomeViewModelState.AirportPickDate)
 			{
@@ -529,16 +585,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 		private void ChangeState(HomeViewModelState state)
         {
-			// Double check if current state is AirportDetails.
-			if (_presentationState == HomeViewModelState.AirportDetails && state == HomeViewModelState.AddressSearch) 
-			{
-				_presentationState = HomeViewModelState.AirportAddressSearch;
-			} 
-			else 
-			{
-				_presentationState = state;
-			}
-			if (_presentationState == HomeViewModelState.PickDate)
+            if (state == HomeViewModelState.PickDate)
             {
                 ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 
@@ -547,7 +594,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
             }
-			else if (_presentationState == HomeViewModelState.AirportPickDate)
+            else if (state == HomeViewModelState.AirportPickDate)
             {
                 ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 
@@ -556,43 +603,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
             }
-			else if (_presentationState == HomeViewModelState.BookATaxi)
+            else if (state == HomeViewModelState.AddressSearch)
             {
-                var localize = this.Services().Localize;
-
-                this.Services().Message.ShowMessage(null, localize["BookATaxi_Message"],
-                    localize["Cancel"],
-                    () => { ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible(); },
-                    localize["Now"],
-                    () => { ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(); },
-                    localize["BookItLaterButton"],
-                    () => { ViewModel.BottomBar.BookLater.ExecuteIfPossible(); });
+				_searchAddress.Open(AddressLocationType.Unspeficied);
             }
-			else if (_presentationState == HomeViewModelState.AddressSearch)
+            else if (state == HomeViewModelState.AirportSearch)
             {
-				_searchAddress.Open(AddressLocationType.Unspeficied, HomeViewModelState.Initial);
+				_searchAddress.Open(AddressLocationType.Airport);
             }
-			else if (_presentationState == HomeViewModelState.AirportSearch)
+            else if (state == HomeViewModelState.TrainStationSearch)
             {
-				_searchAddress.Open(AddressLocationType.Airport, HomeViewModelState.Initial);
-            }
-			else if (_presentationState == HomeViewModelState.TrainStationSearch)
-            {
-				_searchAddress.Open(AddressLocationType.Train, HomeViewModelState.Initial);
-            }
-			else if (_presentationState == HomeViewModelState.AirportAddressSearch)
-			{
-				_searchAddress.Open(AddressLocationType.Unspeficied, HomeViewModelState.AirportDetails);
-			}			
+				_searchAddress.Open(AddressLocationType.Train);
+            }	
 			else if (state == HomeViewModelState.Initial)
             {			
                 _searchAddress.Close();
 
                 SetSelectedOnBookLater(false);
-            }
-            else if(state == HomeViewModelState.AirportDetails)
-            {
-                _searchAddress.Close();
             }
         }
 

@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_accountService.GetNotificationSettings();
 
 					IsNotificationsEnabled = notificationSettings.Enabled;
-					IsTaxiHailNetworkEnabled = Settings.Network.Enabled;
+					IsTaxiHailNetworkEnabled = Settings.Network.Enabled && !Settings.HideTHNetworkAppMenu;
 					
 					
 					// Display a watermark indicating on which server the application is pointing
@@ -326,7 +326,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
                         CloseMenu();
 
-                        ShowViewModel<CreditCardAddViewModel>();
+						if(Settings.MaxNumberOfCardsOnFile > 1)
+						{
+							ShowViewModel<CreditCardMultipleViewModel>();
+						}
+						else
+						{
+							ShowViewModel<CreditCardAddViewModel>();
+						}
 				});
 			}
 		}

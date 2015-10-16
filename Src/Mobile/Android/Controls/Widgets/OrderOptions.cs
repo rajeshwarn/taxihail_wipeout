@@ -1,5 +1,5 @@
+using System;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Android.Content;
 using Android.Runtime;
@@ -24,14 +24,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private VehicleTypeControl _etaBadgeImage;
 		private AutoResizeTextView _etaLabelInVehicleSelection;
 
+		public event EventHandler<EventArgs> SizeChanged;
+
 	    private bool _isShown = true;
 	    private ViewStates _animatedVisibility;
 
 	    public Button BigInvisibleButton { get; set; }
-		public int CurrentHeight { get; set; }
 
 		/// Added to prevent the ETA from becoming visible in during booking status in certain scenarios.
-		private const int HIDDEN_HIGHT_OFFSET = -50;
+		private const int HiddenHeightOffset = -50;
+
+	    private const int HiddenHeightNoAnim = -500;
 
         public OrderOptions(Context context, IAttributeSet attrs) : base (Resource.Layout.SubView_OrderOptions, context, attrs)
         {
@@ -61,6 +64,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
         }
 
+		protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
+		{
+			base.OnSizeChanged(w, h, oldw, oldh);
+
+			if (SizeChanged != null)
+			{
+				SizeChanged(this, EventArgs.Empty);
+			}
+		}
+
         private OrderOptionsViewModel ViewModel { get { return (OrderOptionsViewModel)DataContext; } }
 
 	    public ViewStates AnimatedVisibility
@@ -78,32 +91,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		    }
 	    }
 
+	    public void HideWithoutAnimation()
+	    {
+		    _isShown = false;
+
+			((MarginLayoutParams)LayoutParameters).TopMargin = HiddenHeightNoAnim;
+	    }
+
 		private void HideIfNeeded()
 	    {
-		    if (!_isShown)
+			if (!_isShown || Height == 0)
 		    {
 			    return;
 		    }
 
 		    _isShown = false;
 
-		    var translationOffset = -Height + HIDDEN_HIGHT_OFFSET;
+		    var translationOffset = -Height + HiddenHeightOffset;
 
 			StartAnimation(AnimationHelper.GetForYTranslation(this, translationOffset));
 	    }
 		private void ShowIfNeeded()
 	    {
-			if (_isShown)
+			if (_isShown || Height == 0)
 			{
 				return;
 			}
 
 			_isShown = true;
 
+			var translationOffset = -Height + HiddenHeightOffset;
+
+			((MarginLayoutParams)LayoutParameters).TopMargin = translationOffset;
+
 			StartAnimation(AnimationHelper.GetForYTranslation(this, 0));
 	    }
 
-        void InitializeBinding()
+        private void InitializeBinding()
 		{
 			_viewPickup.AddressUpdated = streetNumber => {
 				ViewModel.PickupAddress.ChangeStreetNumber(streetNumber);

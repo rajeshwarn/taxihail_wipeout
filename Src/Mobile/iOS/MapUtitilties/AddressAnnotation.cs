@@ -20,25 +20,29 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         private static readonly UIColor Red = UIColor.FromRGB(255, 0, 23);
         private static readonly UIColor Green = UIColor.FromRGB(30, 192, 34);
 
-        public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s, bool useThemeColorForIcons, bool showSubtitleOnPin, bool showMedallion = false, string vehicleTypeLogoName = null, double degrees = 0)
+        private CLLocationCoordinate2D _coordinate;
+        private readonly string _vehicleTypeLogoName;
+
+        public AddressAnnotation(CLLocationCoordinate2D coord, AddressAnnotationType type, string title, string subtitle, bool useThemeColorForIcons,
+            bool showSubtitleOnPin, string vehicleTypeLogoName = null, string market = null)
 		{
 			AddressType = type;
 			_coordinate = coord;
-            Degrees = degrees;
-			_title = t;
-			_subtitle = s;
+			_title = title;
+			_subtitle = subtitle;
             UseThemeColorForIcons = useThemeColorForIcons;
 			ShowSubtitleOnPin = showSubtitleOnPin;
             _vehicleTypeLogoName = vehicleTypeLogoName;
-            ShowMedallionOnStart = showMedallion;
+            Market = market;
 		}
 
-        public bool ShowMedallionOnStart { get; private set; }
-		
-		private CLLocationCoordinate2D _coordinate;
-        private string _vehicleTypeLogoName;
+        public bool ShowOrientation { get; set; }
+
+        public bool ShowMedallionOnStart { get; set; }
 
 		public bool ShowSubtitleOnPin = true;
+
+        public string Market { get; private set; }
 
 	    public override CLLocationCoordinate2D Coordinate 
         {
@@ -55,12 +59,14 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         public ICommand HideMedaillonsCommand { get; set; }
 
         private readonly string _title;
-		public override string Title {
+		public override string Title
+        {
 			get { return _title; }
 		}
 
         private readonly string _subtitle;
-		public override string Subtitle {
+		public override string Subtitle
+        {
 			get { return _subtitle; }
         }
 
@@ -72,10 +78,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public UIImage GetImage()
         {
-            return GetImage(AddressType, _vehicleTypeLogoName, Degrees);
+            return GetImage(AddressType, _vehicleTypeLogoName, ShowOrientation,Degrees);
         }
 
-        public static UIImage GetImage(AddressAnnotationType addressType, string vehicleTypeLogoName = null, double degrees = 0)
+        public static UIImage GetImage(AddressAnnotationType addressType, string vehicleTypeLogoName = null, bool showOrientation = false,double degrees = 0)
         {
             const string defaultIconName = "taxi";
 
@@ -86,24 +92,20 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                         ? ImageHelper.ApplyThemeColorToMapIcon("destination_icon.png", true)
                         : ImageHelper.ApplyColorToMapIcon("destination_icon.png", Red, true);
                 case AddressAnnotationType.Taxi:
-                    if (degrees != 0)
+                    if (showOrientation)
                     {
                         return ImageHelper.ImageToOrientedMapIcon("nearby_oriented_passenger.png", degrees, false);
                     }
-                    else
-                    {
-                        return ImageHelper.ApplyThemeColorToMapIcon("taxi_icon.png", true);
-                    }
-                case AddressAnnotationType.NearbyTaxi:
-                    if (degrees != 0)
+
+		            return ImageHelper.ApplyThemeColorToMapIcon("taxi_icon.png", true);
+	            case AddressAnnotationType.NearbyTaxi:
+                    if (showOrientation)
                     {
                         return ImageHelper.ImageToOrientedMapIcon("nearby_oriented_available.png", degrees, false);
                     }
-                    else
-                    {
-                        return ImageHelper.ApplyThemeColorToMapIcon(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), false);
-                    }
-                case AddressAnnotationType.NearbyTaxiCluster:
+
+		            return ImageHelper.ApplyThemeColorToMapIcon(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), false);
+	            case AddressAnnotationType.NearbyTaxiCluster:
                     return ImageHelper.ApplyThemeColorToMapIcon(string.Format("cluster_{0}.png", vehicleTypeLogoName ?? defaultIconName), false);
                 default:
                     return UseThemeColorForIcons
