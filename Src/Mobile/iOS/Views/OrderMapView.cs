@@ -714,7 +714,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		    get { return _taxiLocation; }
 		    set
 		    {
-                if (value == _taxiLocation)
+                if (_taxiLocation == value)
                 {
                     return;
                 }
