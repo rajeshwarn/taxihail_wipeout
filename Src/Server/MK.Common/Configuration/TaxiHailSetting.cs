@@ -60,7 +60,7 @@ namespace MK.Common.Configuration
             ShowVehicleInformation = true;
             ShowOrientedPins = false;
             IsDriverBonusEnabled = false;
-            ChangeDestinationMidTrip = false;
+            ChangeDropOffAddressMidTrip = false;
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
@@ -509,7 +509,7 @@ namespace MK.Common.Configuration
 
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Configuration - Enable Change Destination MidTrip", Description = "Possibility to add/change/remove the destination while in trip")]
-        public bool ChangeDestinationMidTrip { get; protected set; }
+        public bool ChangeDropOffAddressMidTrip { get; protected set; }
     }
 }
 
