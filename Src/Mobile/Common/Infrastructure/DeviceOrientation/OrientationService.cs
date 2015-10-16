@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 				NotifyAngleChanged(angle, trustZRotation);
 			}
 
-			DeviceOrientations deviceOrientation = GetOrientationByAngle(angle, _currentOrientation);
+			var deviceOrientation = GetOrientationByAngle(angle, _currentOrientation);
 
 			if (_currentOrientation != deviceOrientation || (_currentTrustZRotation && !_previousTrustZRotation))
 			{
