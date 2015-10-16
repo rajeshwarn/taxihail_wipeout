@@ -455,6 +455,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _taxiLocation; }
 			set
 			{
+				if (_taxiLocation == value)
+				{
+					return;
+				}
+
 				_taxiLocation = value;
 				RaisePropertyChanged();
 			}
