@@ -726,6 +726,11 @@
     <AndroidResource Include="Resources\values-es\String.xml" />
     <AndroidResource Include="Resources\values-fr\String.xml" />
     <AndroidResource Include="Resources\Drawable\textview_rounded_border.xml" />
+    <Compile Include="Binding\MvxButtonClickBinding.cs" />
+    <AndroidResource Include="Resources\Layout\Control_AppBarButton.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <Compile Include="Controls\Widgets\AppBarButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

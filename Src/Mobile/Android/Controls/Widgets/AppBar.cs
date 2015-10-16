@@ -1,13 +1,10 @@
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Android.Content;
-using Android.Runtime;
 using Android.Util;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -26,8 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var reviewButtons = Content.FindViewById(Resource.Id.review_buttons);
             var editButtons = Content.FindViewById(Resource.Id.edit_buttons);
             var airportButtons = Content.FindViewById(Resource.Id.airport_buttons);
-            var bookButton = Content.FindViewById<Button>(Resource.Id.bookButton);
-            var bookButtonNow = Content.FindViewById<Button>(Resource.Id.btnBookNow);
 
 	        var set = this.CreateBindingSet<AppBar, BottomBarViewModel>();
 
@@ -39,17 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	        set.Bind(bookButtons)
 		        .For(v => v.Visibility)
                 .To(vm => vm.ParentViewModel.CurrentViewState)
-		        .WithConversion("HomeViewStateToVisibility", new[] {HomeViewModelState.Initial});
-
-//            set.Bind(bookButton)
-//                .For(v => v.Enabled)
-//                .To(vm => vm.ParentViewModel.Map.BookCannotExecute)
-//                .WithConversion("BoolInverter");
-//
-//            set.Bind(bookButtonNow)
-//                .For(v => v.Enabled)
-//                .To(vm => vm.ParentViewModel.Map.BookCannotExecute)
-//                .WithConversion("BoolInverter");
+		        .WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Initial });
 
 			set.Bind(editButtons)
 				.For(v => v.Visibility)
@@ -65,4 +50,4 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
     }
 }
-
+   

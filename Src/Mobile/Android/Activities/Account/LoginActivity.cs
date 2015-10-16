@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
 using ClipboardManager = Android.Text.ClipboardManager;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -94,14 +95,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                     .Subscribe(__ => RunOnUiThread(Finish)));
 
             InitializeSoftKeyboardNavigation();
-
-			ViewModel.SignInCommand.CanExecuteChanged += (sender, e) => {
-				//just for the first one, it's a nudge to highlight the button as the next step
-				if(ViewModel.SignInCommand.CanExecute(null))
-				{
-					FindViewById<Button>(Resource.Id.SignInButton).SetBackgroundDrawable(Resources.GetDrawable(Resource.Drawable.button_main_selector));
-				}
-			};
         }
 
 	    private void InitializeSoftKeyboardNavigation()
@@ -118,10 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 e.Handled = false;
                 if (e.ActionId == ImeAction.Done)
                 {
-                    if (ViewModel.SignInCommand.CanExecute())
-                    {
-                        ViewModel.SignInCommand.Execute();
-                    }
+                    ViewModel.SignInCommand.ExecuteIfPossible();
                     e.Handled = true;
                 }
             };
