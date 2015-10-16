@@ -23,6 +23,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    Task<bool> ValidateIsCardDeactivated();
 		Task<bool> ValidatePromotionUseConditions();
 
+		void DisableBooking();
+
 		Task SetAddress(Address address);
 
 		Task SetPickupAptAndRingCode(string apt, string ringCode);

@@ -371,7 +371,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             TouchableMap.Surface.MoveBy = (deltaX, deltaY) =>
             {
-                ViewModel.BookCannotExecute = true;
                 TouchableMap.Map.MoveCamera(CameraUpdateFactory.ScrollBy(deltaX, deltaY));
             };
 

@@ -264,6 +264,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             IsFutureBookingDisabled = Settings.DisableFutureBooking 
 				|| (orderValidationResult != null && orderValidationResult.DisableFutureBooking) 
                 || Settings.UseSingleButtonForNowAndLaterBooking;
+
+			Book.RaiseCanExecuteChanged();
+			BookLater.RaiseCanExecuteChanged();
         }
 
         public ICommand ChangeAddressSelectionMode
@@ -667,16 +670,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		/// <summary>
+		/// WARNING: NOT SUITED FOR SINGLE BUTTON FOR NOW AND LATER BOOKING
+		/// </summary>
+		/// <returns><c>true</c> if this instance can proceed to book the specified forLater; otherwise, <c>false</c>.</returns>
+		/// <param name="forLater">If set to <c>true</c> for later.</param>
+		private bool CanProceedToBook(bool forLater)
+		{
+			if (_orderValidationResult == null)
+			{
+				return false;
+			}
 
-        public ICommand BookLater
+			if(!_orderValidationResult.HasError)
+			{
+				return true;
+			}
+
+			return forLater 
+				? !_orderValidationResult.AppliesToFutureBooking 
+				: !_orderValidationResult.AppliesToCurrentBooking;
+		}
+
+		private AsyncCommand _bookLaterCommand;
+		public AsyncCommand BookLater
         {
             get
             {
-                return this.GetCommand(async () =>
-                {
-					Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
-					await PrevalidatePickupAndDestinationRequired(onValidated);
-                });
+				if (_bookLaterCommand == null)
+				{
+					_bookLaterCommand = (AsyncCommand)this.GetCommand(async () =>
+					{
+						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
+						await PrevalidatePickupAndDestinationRequired(onValidated);
+					}, () => CanProceedToBook(true));
+				}
+				return _bookLaterCommand;
             }
         }
 
@@ -826,64 +855,70 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     : this.Services().Localize["BookItButton"];
             }
         }
-
-	    public ICommand CreateOrder
+			
+		public ICommand CreateOrder
 	    {
 		    get
 		    {
-			    return this.GetCommand<DateTime?>(async dateTime =>
-			    {
+				return this.GetCommand<DateTime?>(async dateTime =>
+				{
 					var pickupAddress = await _orderWorkflowService.GetAndObservePickupAddress().Take(1);
 					// airport mode immediate booking
-				    if (!Settings.DisableImmediateBooking
-				        && Settings.FlightStats.UseAirportDetails
-				        && pickupAddress != null
-				        && pickupAddress.AddressLocationType == AddressLocationType.Airport
-				        && pickupAddress.PlaceId.HasValue())
-				    {
+					if (!Settings.DisableImmediateBooking
+						&& Settings.FlightStats.UseAirportDetails
+						&& pickupAddress != null
+						&& pickupAddress.AddressLocationType == AddressLocationType.Airport
+						&& pickupAddress.PlaceId.HasValue())
+					{
 						SetPickupDateAndReturnToAirport.ExecuteIfPossible(dateTime);
-				    }
-				    // immediate booking
-				    else
+					}
+					// immediate booking
+					else
 					{
 						SetPickupDateAndReviewOrder.ExecuteIfPossible(dateTime);
 					}
-			    });
+				});
 		    }
 	    }
 
-
-        public ICommand Book
+		private AsyncCommand _bookCommand;
+		public AsyncCommand Book
         {
             get
             {
-                return this.GetCommand(async () =>
-                {
-					// popup
-					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
-						&& !Settings.DisableFutureBooking && !Settings.DisableImmediateBooking)
-                    {
-						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.BookATaxi;
-						await PrevalidatePickupAndDestinationRequired(onValidated);
-
-                        this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message"],
-                            this.Services().Localize["Cancel"], () => ResetToInitialState.ExecuteIfPossible(),
-                            this.Services().Localize["Now"], () => CreateOrder.ExecuteIfPossible(),
-                            this.Services().Localize["BookItLaterButton"], () => BookLater.ExecuteIfPossible());
-
-	                    return;
-                    }
-					if(!Settings.DisableImmediateBooking)
+				if (_bookCommand == null)
+				{
+					_bookCommand = (AsyncCommand)this.GetCommand(async () =>
 					{
-						CreateOrder.ExecuteIfPossible();
-					}
-					// future booking
-					else if (!Settings.DisableFutureBooking)
-					{
-						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
-						await PrevalidatePickupAndDestinationRequired(onValidated);
-					}
-                });
+						if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
+							&& !IsFutureBookingDisabled && !Settings.DisableImmediateBooking)
+						{
+							// popup
+							Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.BookATaxi;
+							await PrevalidatePickupAndDestinationRequired(onValidated);
+
+							this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message"],
+								this.Services().Localize["Cancel"], () => ResetToInitialState.ExecuteIfPossible(),
+								this.Services().Localize["Now"], () => CreateOrder.ExecuteIfPossible(),
+								this.Services().Localize["BookItLaterButton"], () => BookLater.ExecuteIfPossible());
+
+							return;
+						}
+						// no need for popup, we know we want the current booking if it's not disabled
+						if(!Settings.DisableImmediateBooking)
+						{
+							CreateOrder.ExecuteIfPossible();
+						}
+						// future booking
+						else if (!IsFutureBookingDisabled)
+						{
+							Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
+							await PrevalidatePickupAndDestinationRequired(onValidated);
+						}
+					}, () => CanProceedToBook(false));
+				}
+
+				return _bookCommand;
             }
         }
 

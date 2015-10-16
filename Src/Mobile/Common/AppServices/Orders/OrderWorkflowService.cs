@@ -49,7 +49,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<int?> _vehicleTypeSubject;
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<string> _estimatedFareDisplaySubject;
-        readonly ISubject<OrderValidationResult> _orderValidationResultSubject = new BehaviorSubject<OrderValidationResult>(new OrderValidationResult());
+		readonly ISubject<OrderValidationResult> _orderValidationResultSubject = 
+			// set has error at first to force a validation to pass before enabling the button
+			new BehaviorSubject<OrderValidationResult>(new OrderValidationResult 
+			{ 
+				HasError = true, 
+				AppliesToCurrentBooking = true, 
+				AppliesToFutureBooking = true 
+			});
 		readonly ISubject<DirectionInfo> _estimatedFareDetailSubject = new BehaviorSubject<DirectionInfo>( new DirectionInfo() );
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<string> _promoCodeSubject = new BehaviorSubject<string>(string.Empty);
@@ -662,6 +669,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		    return estimate;
 		}
 
+		public void DisableBooking()
+		{
+			_orderValidationResultSubject.OnNext(new OrderValidationResult{ HasError = true, AppliesToFutureBooking = true, AppliesToCurrentBooking = true });
+		}
+
 		public async Task PrepareForNewOrder()
 		{
 			var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
@@ -681,7 +693,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 			_orderCanBeConfirmed.OnNext (false);
 			_cvvSubject.OnNext(string.Empty);
-			_orderValidationResultSubject.OnNext(null);
+			DisableBooking();
 			_loadingAddressSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
             _poiRefPickupListSubject.OnNext(new PickupPoint[0]);
