@@ -104,7 +104,7 @@
 						 || data.status == 415 || data.status == 416 || data.status == 417 || data.status == 426 || data.status == 500 || data.status == 501 || data.status == 502
 						 || data.status == 503 || data.status == 504 || data.status == 505)
 					{
-						sendRef.innerText = TaxiHail.localize("Error during account update");
+						this.$('.errors').text(TaxiHail.localize('Error during account update') + ": " + data.statusText);
 					}
 					else
 					{
