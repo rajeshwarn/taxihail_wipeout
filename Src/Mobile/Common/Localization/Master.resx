@@ -2347,7 +2347,7 @@
 		<value>{0} ({1} per tenth mile)</value>
 	</data>
 	<data name="BaseRate_WaitTime" xml:space="preserve">
-		<value>{0} per minute</value>
+		<value>Wait Time</value>
 	</data>
 	<data name="BaseRate_PerMinute" xml:space="preserve">
 		<value>{0} per minute</value>

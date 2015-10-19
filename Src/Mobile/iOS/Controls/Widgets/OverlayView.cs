@@ -2,7 +2,6 @@ using System;
 using Foundation;
 using UIKit;
 using CoreGraphics;
-using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using CoreAnimation;
 using Cirrious.MvvmCross.Binding.Touch.Views;
@@ -33,7 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-
         }
 
         public override void LayoutSubviews ()
