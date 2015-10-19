@@ -530,6 +530,7 @@
 "ChooseProviderDialogTitle"="Pick a provider";
 "OrderStatus_Medallion"="Medallion";
 "LanguageCode"="en";
+"CreditCardInstructionsForLuxury"="Please enter a credit card to continue the booking process";
 "DateTimePickerSetButton"="Book";
 "HistoryDetailRequestedLabel"="Requested:";
 "HistoryDetailAptRingCodeLabel"="Apt / Entry code:";

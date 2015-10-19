@@ -525,6 +525,7 @@
 "ChooseProviderDialogTitle"="Choisissez un prestataire";
 "OrderStatus_Medallion"="Medallion";
 "LanguageCode"="fr";
+"CreditCardInstructionsForLuxury"="Veuillez entrer une carte de crédit pour continuer votre réservation";
 "DateTimePickerSetButton"="Réserver maintenant!";
 "HistoryDetailRequestedLabel"="Commandé le:";
 "HistoryDetailAptRingCodeLabel"="Apt / digicode:";

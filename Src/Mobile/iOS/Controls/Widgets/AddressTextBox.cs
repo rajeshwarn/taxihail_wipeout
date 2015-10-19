@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             };
             AddSubview(StreetNumberRoundedCornerView);
 
-            StreetNumberTextView = new FlatTextField 
+            StreetNumberTextView = new FlatTextField
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 BackgroundColor = UIColor.Clear,
@@ -61,6 +61,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             };
             StreetNumberTextView.ShowCloseButtonOnKeyboard();
             AddSubview(StreetNumberTextView);
+            _streetNumberTextViewWidthConstraint = NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, MinimumStreetNumberTextViewWidth);
+            AddConstraints(new [] {
+                NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, StreetNumberTextView.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                _streetNumberTextViewWidthConstraint,
+                NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, StreetNumberTextView.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, StreetNumberTextView.Superview, NSLayoutAttribute.Height, 1f, 0f),
+            });
+
+            AddConstraints(new [] {
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Left, 1f, 0f), 
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Width, 1f, 0f),
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(StreetNumberRoundedCornerView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, StreetNumberTextView, NSLayoutAttribute.Height, 1f, 0f)
+            });
 
             _streetNumberTextViewWidthConstraint = 
                 NSLayoutConstraint.Create(StreetNumberTextView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, MinimumStreetNumberTextViewWidth);
@@ -93,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             };
             AddSubview(AddressButton);
 
-            LoadingWheel = new UIActivityIndicatorView 
+            LoadingWheel = new UIActivityIndicatorView
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 Color = UIColor.Gray
@@ -119,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create(VerticalDivider, NSLayoutAttribute.Height, NSLayoutRelation.Equal, VerticalDivider.Superview, NSLayoutAttribute.Height, 0.73f, 0f)
             });
 
-            HorizontalDividerTop = new UIView 
+            HorizontalDividerTop = new UIView
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 BackgroundColor = UIColor.FromRGB(177, 177, 177)

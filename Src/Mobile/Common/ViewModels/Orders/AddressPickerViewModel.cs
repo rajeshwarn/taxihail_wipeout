@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		    FilteredPlaces = new AddressViewModel[0];
 		}
 
-		public void Init(string searchCriteria)
+		public void Init(string searchCriteria = null)
 		{
 			AllAddresses = new ObservableCollection<AddressViewModel>();
 			_currentLanguage = TinyIoCContainer.Current.Resolve<ILocalization> ().CurrentLanguage;

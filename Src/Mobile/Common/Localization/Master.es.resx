@@ -582,6 +582,10 @@
     <value>Para usar esta aplicación necesita ingresar un método de pago a su cuenta</value>
     <comment>In order to use the application, you need to add a payment method to your account.</comment>
   </data>
+  <data name="CreditCardInstructionsForLuxury" xml:space="preserve">
+    <value>Please enter a credit card to continue the booking process</value>
+    <comment>Please enter a credit card to continue the booking process</comment>
+  </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>El número de tarjeta de crédito es inválido</value>
     <comment>The Credit Card Number is invalid</comment>

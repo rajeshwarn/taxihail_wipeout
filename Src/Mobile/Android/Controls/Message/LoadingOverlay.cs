@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private static Android.Graphics.Color _colorToUse = Android.Graphics.Color.ParseColor("#0378ff");
 
         public static void StartAnimatingLoading()
-        {
+        {            
             _activity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
             var rootView = _activity.Window.DecorView.RootView as ViewGroup;
 
@@ -51,13 +51,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
 		private static void Initialize(FrameLayout rootView)
 		{
-			var layoutParent = new LinearLayout(_activity.ApplicationContext);
+            var layoutParent = new LinearLayout(_activity.ApplicationContext);
 			_layoutCenter = new LinearLayout(_activity.ApplicationContext);
 			_layoutImage = new LinearLayout(_activity.ApplicationContext);
 
             var layoutParentParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
             layoutParent.LayoutParameters = layoutParentParameters;
-			layoutParent.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
+            layoutParent.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
 
 			var layoutCenterParameters = new LinearLayout.LayoutParams(-2, 0);
             layoutCenterParameters.Weight = 1.0f;
@@ -76,8 +76,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _layoutCenter.AddView(_layoutImage);
             layoutParent.AddView(_layoutCenter);
             
-			rootView.AddView (layoutParent, layoutParentParameters);
-			layoutParent.BringToFront ();
+            rootView.AddView (layoutParent, layoutParentParameters);
+            layoutParent.BringToFront ();
 
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
@@ -105,7 +105,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             if (WaitStack < 1)
             {
-                _isLoading = false;    
+                _isLoading = false;
+
                 if (_activity.Intent.Categories != null && _activity.Intent.Categories.Contains("Progress"))
                 {
                     _activity.Intent.Categories.Remove("Progress");

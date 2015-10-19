@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -15,7 +14,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using ServiceStack.Text;
@@ -41,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
 		private bool _isFromPromotionsView;
+		private bool _shouldShowReview;
 		private bool _isFromCreditCardListView;
 		private bool _isAddingNew;
 		private Guid _creditCardId;
@@ -74,12 +73,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			bool isFromPromotionsView = false, 
 			bool isFromCreditCardListView = false, 
 			bool isAddingNew = false, 
-			Guid creditCardId = default(Guid))
+			Guid creditCardId = default(Guid),
+			bool shouldShowReview = false)
 		{
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
 
+			Instructions = shouldShowReview 
+				? this.Services().Localize["CreditCardInstructionsForLuxury"]
+				: this.Services().Localize["CreditCardInstructions"];
+
 			_isFromPromotionsView = isFromPromotionsView;
+			_shouldShowReview = shouldShowReview;
 			_isFromCreditCardListView = isFromCreditCardListView;
 			_isAddingNew = isAddingNew;
 			_creditCardId = creditCardId;
@@ -88,7 +93,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				_paymentToSettle = JsonSerializer.DeserializeFromString<OverduePayment>(paymentToSettle);
 			}
-
 		}
 
 		public override async void BaseStart()
@@ -198,7 +202,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged(() => CreditCardNumber);
 				RaisePropertyChanged(() => CanDeleteCreditCard);
 				RaisePropertyChanged(() => IsPayPalOnly);
-				RaisePropertyChanged (() => CanSetCreditCardAsDefault);
+				RaisePropertyChanged(() => CanSetCreditCardAsDefault);
 
 				if (_paymentToSettle != null)
 				{
@@ -328,6 +332,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public List<ListItem> ExpirationMonths { get; set; }
 		public bool ShowInstructions { get; set; }
 		public bool IsMandatory { get; set; }
+		public string Instructions { get; set; }
 
 		private CreditCardInfos _data;
 		public CreditCardInfos Data 
@@ -338,7 +343,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				_data = value;
 				RaisePropertyChanged ();
 				RaisePropertyChanged (() => CreditCardNumber);
-
 			}
 		}
 
@@ -553,7 +557,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				this.Services().Message.ShowMessage(
 					string.Empty,
 					this.Services().Localize["PayPalLinked"],
-					() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
+					() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString, shouldShowReview = _shouldShowReview }));
 			}
 			catch (Exception ex)
 			{
@@ -601,7 +605,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			if (!replacedByPayPal && _accountService.CurrentAccount.DefaultCreditCard == null)
 			{
-				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString, shouldShowReview = _shouldShowReview });
 			}
 			else
 			{
@@ -689,9 +693,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						}
 						else
 						{
-							ShowViewModelAndClearHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+							var vmParams = new { locateUser = bool.TrueString, shouldShowReview = _shouldShowReview };
+							if(_shouldShowReview)
+							{
+								ShowViewModelAndRemoveFromHistory<HomeViewModel>(vmParams);
+							}
+							else
+							{
+								ShowViewModelAndClearHistory<HomeViewModel>(vmParams);
+							}
 						}
-
 					}
 					else
 					{

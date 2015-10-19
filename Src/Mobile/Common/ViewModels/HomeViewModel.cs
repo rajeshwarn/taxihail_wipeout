@@ -39,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _isShowingTermsAndConditions;
 		private bool _isShowingCreditCardExpiredPrompt;
 		private bool _locateUser;
+		private bool _shouldShowReview;
 		private bool _isShowingTutorial;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
@@ -88,9 +89,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _firstTime;
 
-		public void Init(bool locateUser, string defaultHintZoomLevel, string order, string orderStatusDetail, string manualRidelinqDetail)
+		public void Init(bool locateUser, string defaultHintZoomLevel = null, string order = null, string orderStatusDetail = null, string manualRidelinqDetail = null, bool shouldShowReview = false)
         {
 			_locateUser = locateUser;
+			_shouldShowReview = shouldShowReview;
 			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
 
 			if (manualRidelinqDetail != null)
@@ -137,8 +139,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             BottomBar.NextAirport = OrderAirport.NextCommand;
 		}
 
-
-
 		public override void OnViewStarted(bool firstTime)
 		{
 			base.OnViewStarted(firstTime);
@@ -176,10 +176,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 
-				_accountService.GetVehiclesList(true);
+				    _accountService.GetVehiclesList(true);
 				}
-
-				LocateUserIfNeeded();
+    			if (_shouldShowReview)
+    			{
+    				// need to refetch order settings
+    				_orderWorkflowService.ResetOrderSettings();
+    				CurrentViewState = HomeViewModelState.Review;
+    				_shouldShowReview = false;
+    			}
+    			else
+    			{
+    				LocateUserIfNeeded();
+    			}
 
 				if (_defaultHintZoomLevel != null)
 				{

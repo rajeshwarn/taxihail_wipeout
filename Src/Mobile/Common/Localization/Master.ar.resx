@@ -433,6 +433,10 @@
   <data name="CreditCardInstructions" xml:space="preserve">
     <value>In order to use the application, you need to add a payment method to your account.</value>
   </data>
+  <data name="CreditCardInstructionsForLuxury" xml:space="preserve">
+    <value>Please enter a credit card to continue the booking process</value>
+    <comment>Please enter a credit card to continue the booking process</comment>
+  </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>رقم البطاقة الائتمانية خاطئة</value>
   </data>
