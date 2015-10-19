@@ -288,6 +288,7 @@
     <InterfaceDefinition Include="Views\WaitingCarLandscapeView.xib" />
     <InterfaceDefinition Include="Views\Payments\CreditCardMultipleView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\CreditCardCell.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\ChangeDropOffControl.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -669,6 +670,12 @@
       <DependentUpon>CreditCardCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\CreditCardLabelToInt.cs" />
+    <Compile Include="Controls\Widgets\ChangeDropOffControl.cs" />
+    <Compile Include="Controls\Widgets\ChangeDropOffControl.designer.cs">
+      <DependentUpon>ChangeDropOffControl.cs</DependentUpon>
+    </Compile>
+    <BundleResource Include="Resources\destination_small_icon_white.png" />
+    <BundleResource Include="Resources\destination_small_icon_white%402x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
