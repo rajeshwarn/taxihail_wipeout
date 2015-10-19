@@ -4,36 +4,28 @@ using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using System.Linq;
 using CoreGraphics;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Client.Helper;
-using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("EtaView")]
-    public class EtaView : UIControl
+    public class EtaView : UIView
     {
     	private const float EtaLabelHeight = 23f;
 		private const float BaseRateHeight = 100f;
-
-		private const float AnimationFps = 30f;
-		private const float AnimationVelocity = 4f;
 
         private CGSize ImageSize = new CGSize(34f, 34f);
 
 		private BaseRateControl BaseRate { get; set; }
         private UIImageView EtaBadge { get; set; }
         private UILabel EtaLabel { get; set; }
+        private bool BaseRateToggled { get; set; }
 
-		private bool _displayBaseRateInfo;
-		public bool DisplayBaseRateInfo
-		{ 
-			get { return _displayBaseRateInfo; }
-			set { _displayBaseRateInfo = value; Initialize(); }
-		} 
-		// Setting hardcoded to true for now.
-        public bool BaseRateToggled { get; set; }
+        // Setting hardcoded to true for now.
+        public bool DisplayBaseRateInfo { get; set; }
+
+        private NSLayoutConstraint _rateBoxHeightConstraint;
 
         public EtaView(IntPtr h) : base(h)
         {
@@ -47,123 +39,48 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize ()
 		{
-			new UIView[]{EtaLabel, EtaBadge, BaseRate}.ToList().ForEach(x => {
-				if (x != null){
-					x.RemoveFromSuperview();
-				}
-			});
+            BackgroundColor = UIColor.Clear;
+            TranslatesAutoresizingMaskIntoConstraints = false;
 
-			BackgroundColor = Theme.CompanyColor;
-			TranslatesAutoresizingMaskIntoConstraints = false;
-
-			EtaLabel = new UILabel {
-				AdjustsFontSizeToFitWidth = true,
-				BackgroundColor = UIColor.Clear,
-				Lines = 1,
-				Font = UIFont.FromName (FontName.HelveticaNeueLight, 30 / 2),
-				TextAlignment = UITextAlignment.Center,
-				TextColor = Theme.LabelTextColor,
-				ShadowColor = UIColor.Clear,
-				TranslatesAutoresizingMaskIntoConstraints = false
-			};
-
-			if (!DisplayBaseRateInfo)
-			{
-				EtaBadge = new UIImageView ();
-				EtaBadge.TranslatesAutoresizingMaskIntoConstraints = false;
-				AddSubviews (EtaLabel, EtaBadge);
-
-				// Constraints for EtaBadge
-				AddConstraints (new [] {
-					NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, ImageSize.Width),
-					NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, ImageSize.Height),
-					NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EtaBadge.Superview, NSLayoutAttribute.Left, 1f, 4f),
-					NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, EtaBadge.Superview, NSLayoutAttribute.CenterY, 1f, 0f),
-				});
-
-				// Constraints for EtaLabel
-				AddConstraints (new [] {
-					NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Height, 1f, 0f),
-					NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EtaBadge, NSLayoutAttribute.Right, 1f, 4f),
-					NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Right, 1f, -4f),
-					NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.CenterY, 1f, 0f),
-				});
-			} else
-			{
-				BaseRate = new BaseRateControl ();
-				AddSubviews(BaseRate);
-				BaseRate.AddSubview(EtaLabel);
-
-				// Constraints for EtaLabel
-				BaseRate.AddConstraints (new [] {
-					NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.Height, 1f, EtaLabelHeight),
-					NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Left, 1f, 4f),
-					NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Right, 1f, -4f),
-					NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Bottom, 1f, EtaLabelHeight),
-				});
-
-				AddConstraints (new [] {
-					NSLayoutConstraint.Create (BaseRate, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, BaseRate.Superview, NSLayoutAttribute.Bottom, 1f, -EtaLabelHeight),
-					NSLayoutConstraint.Create (BaseRate, NSLayoutAttribute.Left, NSLayoutRelation.Equal, BaseRate.Superview, NSLayoutAttribute.Left, 1f, 0f),
-					NSLayoutConstraint.Create (BaseRate, NSLayoutAttribute.Right, NSLayoutRelation.Equal, BaseRate.Superview, NSLayoutAttribute.Right, 1f, 0f),
-					NSLayoutConstraint.Create (BaseRate, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, BaseRateHeight)
-				});
-
-				TouchUpInside += (object sender, EventArgs e) => ToggleBaseRate();
-				BaseRate.TouchUpInside += (object sender, EventArgs e) => ToggleBaseRate();
-			}
+            InitializeRateBox();
+            InitializeFixedBar();
 		}
 
 		public void ToggleBaseRate ()
 		{
+            if (!DisplayBaseRateInfo || BaseRate.BaseRate == null)
+            {
+                BaseRateToggled = false;
+                return;
+            }
+
 			BaseRateToggled = !BaseRateToggled;
+            _rateBoxHeightConstraint.Constant = BaseRateToggled ? BaseRateHeight : 0f;
 
-			if (BaseRate.BaseRate == null)
-			{
-				BaseRateToggled = false;
-			}
-
-			var orderOptionsControl = ((OrderOptionsControl)Superview.Superview);
-			var orderOptionsHeightWithoutEta = 
-				(nfloat)orderOptionsControl.Subviews [0]
-				.Subviews
-				.Where (x => !x.Hidden)
-				.Sum (x => x.Frame.Height) - Frame.Height;
-
-			var newEtaViewHeight = (BaseRateToggled ? BaseRateHeight : 0f) + EtaLabelHeight;
-			var height = Constraints.FirstOrDefault (x => x.FirstItem == this && x.FirstAttribute == NSLayoutAttribute.Height);
-			float iterations = 0;
-			float delta = newEtaViewHeight - (float)height.Constant;
-			float incrementation = (delta / AnimationFps) * AnimationVelocity;
-			var originalToggleState = BaseRateToggled;
-
-			SetNeedsLayout();
-			orderOptionsControl.SetNeedsLayout();
-
-			var layoutViews = new Action(() => {
-				LayoutIfNeeded ();
-				orderOptionsControl.LayoutIfNeeded ();
-			});
-
-			NSTimer.CreateRepeatingScheduledTimer (TimeSpan.FromMilliseconds (1000d / AnimationFps), _ => {
-				iterations += AnimationVelocity;
-				height.Constant += incrementation;
-				orderOptionsControl.HeightConstraint.Constant = orderOptionsHeightWithoutEta + height.Constant;
-				if (originalToggleState != BaseRateToggled)
-				{
-					layoutViews.Invoke();
-					_.Invalidate ();
-				}
-				if (iterations >= AnimationFps)
-				{
-					height.Constant = newEtaViewHeight;
-					orderOptionsControl.HeightConstraint.Constant = orderOptionsHeightWithoutEta + newEtaViewHeight;
-					layoutViews.Invoke();
-					_.Invalidate ();
-				}
-				layoutViews.Invoke();
-			});
+            UIView.Animate(0.5f, 
+                () => {
+                    LayoutIfNeeded();
+                    if(!BaseRateToggled)
+                    {
+                        OrderOptionsControl.Resize();
+                    }
+                },
+                () => {
+                    if(BaseRateToggled)
+                    {
+                        OrderOptionsControl.Resize();
+                    }
+                }
+            );
 		}
+
+        private OrderOptionsControl OrderOptionsControl
+        {
+            get
+            {
+                return ((OrderOptionsControl)Superview.Superview);
+            }
+        }
 
         public override void LayoutSubviews()
         {
@@ -177,22 +94,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			get { return _selectedVehicle; }
 			set
 			{
-				if (_selectedVehicle != value)
-				{
-					_selectedVehicle = value;
-				}
+				_selectedVehicle = value;
 
-				if (!DisplayBaseRateInfo)
-				{
-					EtaBadge.Image = ImageHelper.ApplyColorToImage (string.Format ("{0}_no_badge_selected.png", value.LogoName.ToLower ()), Theme.LabelTextColor);
-				} else
-				{
-					BaseRate.BaseRate = value.BaseRate;
-					if (value.BaseRate == null && BaseRateToggled)
-					{
-						ToggleBaseRate();
-					}
-				}
+                EtaBadge.Image = ImageHelper.ApplyColorToImage (string.Format ("{0}_no_badge_selected.png", value.LogoName.ToLower ()), Theme.LabelTextColor);
+                BaseRate.BaseRate = value.BaseRate;
+                if (value.BaseRate == null && BaseRateToggled)
+                {
+                    ToggleBaseRate();
+                }
             }
         }
 
@@ -206,6 +115,77 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     EtaLabel.Text = value;
                 }
             }
+        }
+
+        private void InitializeRateBox()
+        {
+            BaseRate = new BaseRateControl ();
+            AddSubview(BaseRate);
+
+            _rateBoxHeightConstraint = NSLayoutConstraint.Create(BaseRate, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 0f);
+
+            AddConstraints (new [] {
+                _rateBoxHeightConstraint,
+                NSLayoutConstraint.Create (BaseRate, NSLayoutAttribute.Left, NSLayoutRelation.Equal, BaseRate.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                NSLayoutConstraint.Create (BaseRate, NSLayoutAttribute.Right, NSLayoutRelation.Equal, BaseRate.Superview, NSLayoutAttribute.Right, 1f, 0f),
+                NSLayoutConstraint.Create (BaseRate, NSLayoutAttribute.Top, NSLayoutRelation.Equal, BaseRate.Superview, NSLayoutAttribute.Top, 1f, 0f)
+            });
+        }
+
+        private void InitializeFixedBar()
+        {
+            var fixedLowerBarView = new UIControl 
+            {
+                UserInteractionEnabled = true,
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                BackgroundColor = Theme.CompanyColor
+            };
+            AddSubview(fixedLowerBarView);
+
+            AddConstraints(new [] { 
+                NSLayoutConstraint.Create(fixedLowerBarView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, BaseRate, NSLayoutAttribute.Bottom, 1f, 0f),
+                NSLayoutConstraint.Create(fixedLowerBarView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, EtaLabelHeight),
+                NSLayoutConstraint.Create(fixedLowerBarView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, fixedLowerBarView.Superview, NSLayoutAttribute.Bottom, 1f, 0f),
+                NSLayoutConstraint.Create(fixedLowerBarView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, fixedLowerBarView.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                NSLayoutConstraint.Create(fixedLowerBarView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, fixedLowerBarView.Superview, NSLayoutAttribute.Right, 1f, 0f),
+            });
+
+            EtaBadge = new UIImageView 
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                UserInteractionEnabled = false
+            };
+            fixedLowerBarView.AddSubview(EtaBadge);
+
+            AddConstraints (new [] {
+                NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DisplayBaseRateInfo ? ImageSize.Height : EtaLabelHeight),
+                NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DisplayBaseRateInfo ? ImageSize.Width : 0f),
+                NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EtaBadge.Superview, NSLayoutAttribute.Left, 1f, 4f),
+                NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, EtaBadge.Superview, NSLayoutAttribute.CenterY, 1f, 0f)
+            });
+
+            EtaLabel = new UILabel 
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                UserInteractionEnabled = false,
+                AdjustsFontSizeToFitWidth = true,
+                BackgroundColor = UIColor.Clear,
+                Lines = 1,
+                Font = UIFont.FromName (FontName.HelveticaNeueLight, 30 / 2),
+                TextAlignment = UITextAlignment.Center,
+                TextColor = Theme.LabelTextColor,
+                ShadowColor = UIColor.Clear
+            };
+            fixedLowerBarView.AddSubview(EtaLabel);
+
+            AddConstraints (new [] {
+                NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Height, 1f, 0f),
+                NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EtaBadge, NSLayoutAttribute.Right, 1f, 4f),
+                NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Right, 1f, -4f)
+            });
+
+            fixedLowerBarView.TouchUpInside += (sender, e) => ToggleBaseRate();
         }
 
         private NSLayoutConstraint[] _hiddenContraints { get; set; }

@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public BaseRateControl()
         {
+            ClipsToBounds = true;
 			BackgroundColor = UIColor.White;
 			TranslatesAutoresizingMaskIntoConstraints = false;
         }

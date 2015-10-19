@@ -46,7 +46,7 @@
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="23" placeholder="YES" id="eMR-u7-n8d"/>
+                        <constraint firstAttribute="height" constant="23" placeholder="YES" id="hCB-pY-cf4"/>
                     </constraints>
                 </view>
             </subviews>
