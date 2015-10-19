@@ -310,6 +310,7 @@
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Extensions\LocationDataExtension.cs" />
     <Compile Include="Controls\StatusBar.cs" />
+    <Compile Include="PlatformIntegration\AppleDeviceRateApplicationService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Setup.cs" />

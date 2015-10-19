@@ -505,6 +505,10 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Display - Message To Prompt To Driver", Description = "Message that will prompt on driver console on the Accept/Decline screen")]
         public string MessagePromptedToDriver { get; protected set; }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Configuration - Enable Rate Mobile Application", Description = "Enable Rate Mobile Application")]
+		public bool EnableRateMobileApplication { get; protected set; }
     }
 }
 
