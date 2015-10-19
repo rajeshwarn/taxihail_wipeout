@@ -40,6 +40,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnTrain { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ChangeDropOffControl changeDropOffControl { get; set; }
+
+		[Outlet]
 		UIKit.NSLayoutConstraint constraintAppBarBookingStatus { get; set; }
 
 		[Outlet]
@@ -56,6 +59,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.NSLayoutConstraint constraintBookingStatusHeight { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintChangeDropOffTopSpace { get; set; }
 
 		[Outlet]
 		UIKit.NSLayoutConstraint constraintContactTaxiTopSpace { get; set; }
@@ -201,6 +207,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				constraintHomeLeadingSpace = null;
 			}
 
+			if (constraintOrderAirportBottomSpace != null) {
+				constraintOrderAirportBottomSpace.Dispose ();
+				constraintOrderAirportBottomSpace = null;
+			}
+
+			if (constraintOrderAirportTopSpace != null) {
+				constraintOrderAirportTopSpace.Dispose ();
+				constraintOrderAirportTopSpace = null;
+			}
+
 			if (constraintOrderBookinOptionsTopSpace != null) {
 				constraintOrderBookinOptionsTopSpace.Dispose ();
 				constraintOrderBookinOptionsTopSpace = null;
@@ -224,16 +240,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (constraintOrderReviewTopSpace != null) {
 				constraintOrderReviewTopSpace.Dispose ();
 				constraintOrderReviewTopSpace = null;
-			}
-
-			if (constraintOrderAirportTopSpace != null) {
-				constraintOrderAirportTopSpace.Dispose ();
-				constraintOrderAirportTopSpace = null;
-			}
-
-			if (constraintOrderAirportBottomSpace != null) {
-				constraintOrderAirportBottomSpace.Dispose ();
-				constraintOrderAirportBottomSpace = null;
 			}
 
 			if (contactTaxiControl != null) {
@@ -284,6 +290,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (panelMenu != null) {
 				panelMenu.Dispose ();
 				panelMenu = null;
+			}
+
+			if (changeDropOffControl != null) {
+				changeDropOffControl.Dispose ();
+				changeDropOffControl = null;
+			}
+
+			if (constraintChangeDropOffTopSpace != null) {
+				constraintChangeDropOffTopSpace.Dispose ();
+				constraintChangeDropOffTopSpace = null;
 			}
 		}
 	}
