@@ -524,6 +524,7 @@
 "ChooseProviderDialogTitle"="Seleccionar proveedor";
 "OrderStatus_Medallion"="Medallion";
 "LanguageCode"="es";
+"CreditCardInstructionsForLuxury"="Please enter a credit card to continue the booking process";
 "DateTimePickerSetButton"="De Alta";
 "HistoryDetailRequestedLabel"="Solicitud:";
 "HistoryDetailAptRingCodeLabel"="Depto. / Código de entrada";

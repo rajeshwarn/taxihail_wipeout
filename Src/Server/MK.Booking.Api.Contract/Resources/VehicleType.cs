@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
@@ -15,6 +16,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public int ReferenceDataVehicleId { get; set; }
 
         public int MaxNumberPassengers { get; set; }
+
+        public BaseRateInfo BaseRate { get; set; }
     }
 
     public enum ServiceType

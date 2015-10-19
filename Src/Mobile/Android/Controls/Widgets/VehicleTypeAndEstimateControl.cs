@@ -35,6 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         protected override void OnFinishInflate()
         {
             base.OnFinishInflate();
+
+            VehicleRepresentations = Vehicles.ToList();
+
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
             var layout = inflater.Inflate(Resource.Layout.Control_VehicleTypeAndEstimate, this, true);
 

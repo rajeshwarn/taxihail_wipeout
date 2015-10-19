@@ -527,6 +527,7 @@
   <string name="ChooseProviderDialogTitle">Choisissez un prestataire</string>
   <string name="OrderStatus_Medallion">Medallion</string>
   <string name="LanguageCode">fr</string>
+  <string name="CreditCardInstructionsForLuxury">Veuillez entrer une carte de crédit pour continuer votre réservation</string>
   <string name="DateTimePickerSetButton">Réserver maintenant!</string>
   <string name="HistoryDetailRequestedLabel">Commandé le:</string>
   <string name="HistoryDetailAptRingCodeLabel">Apt / digicode:</string>

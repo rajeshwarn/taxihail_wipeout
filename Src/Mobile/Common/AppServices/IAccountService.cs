@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         Account CurrentAccount { get; }
 
-        Task<IList<VehicleType>> GetVehiclesList();
+        Task<IList<VehicleType>> GetVehiclesList(bool refresh = false);
 
 	    void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes);
 

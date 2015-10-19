@@ -526,6 +526,7 @@
   <string name="ChooseProviderDialogTitle">Seleccionar proveedor</string>
   <string name="OrderStatus_Medallion">Medallion</string>
   <string name="LanguageCode">es</string>
+  <string name="CreditCardInstructionsForLuxury">Please enter a credit card to continue the booking process</string>
   <string name="DateTimePickerSetButton">De Alta</string>
   <string name="HistoryDetailRequestedLabel">Solicitud:</string>
   <string name="HistoryDetailAptRingCodeLabel">Depto. / Código de entrada</string>
