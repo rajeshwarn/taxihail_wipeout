@@ -17,7 +17,8 @@ namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
 
         public static DateTime _lastConnectError = DateTime.MinValue;
 
-        public void HandleError(Exception ex)
+
+        public bool HandleError(Exception ex)
         {
 			var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 

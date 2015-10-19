@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Android.Content;
-using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using Cirrious.MvvmCross.Droid.Platform;
 using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
@@ -11,10 +10,11 @@ using apcurium.MK.Booking.Mobile.IoC;
 using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Callbox.Mobile.Client.Converters;
-using apcurium.MK.Callbox.Mobile.Client.Diagnostic;
-using apcurium.MK.Callbox.Mobile.Client.Localization;
 using apcurium.MK.Callbox.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Client.Cache;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Callbox.Mobile.Client
 {
@@ -35,10 +35,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 
 			container.Register<IMessageService, MessageService>();
 			container.Register<IPackageInfo, PackageInfo>();
-			container.Register<IAppSettings, AppSettings>();
-			container.Register<ILocalization, ResourceManager>();
-			container.Register<ILogger, LoggerImpl>();
-			container.Register<IErrorHandler, ErrorHandler>();
+			container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
+			container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
 			container.Register<IPhoneService, PhoneService>();
 			container.Register<ICacheService>(new CacheService());
 

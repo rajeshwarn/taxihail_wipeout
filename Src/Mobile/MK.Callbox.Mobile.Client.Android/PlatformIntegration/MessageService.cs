@@ -5,7 +5,6 @@ using Android.App;
 using Android.Content;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyMessenger;
 using Cirrious.MvvmCross.Views;
@@ -13,6 +12,8 @@ using apcurium.MK.Callbox.Mobile.Client.Activities;
 using apcurium.MK.Callbox.Mobile.Client.Messages;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using Android.Views;
+using Cirrious.CrossCore.Core;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore.Droid.Platform;
@@ -51,76 +52,60 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			presenter.Show(new MvxViewModelRequest(type, null, null, MvxRequestedBy.UserAction));
 		}
 
-		public Task ShowMessage(string title, string message)
+		public async Task ShowMessage(string title, string message)
 		{
 			var ownerId = Guid.NewGuid().ToString();
 
 			_viewDispatcher.RequestMainThreadAction(() =>{
-				var i = new Intent(_context, typeof(AlertDialogActivity));
-				i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-				i.PutExtra("Title", title);
-				i.PutExtra("Message", message);
-				i.PutExtra("OwnerId", ownerId );
-				_context.StartActivity(i); 
+				var intent = new Intent(_context, typeof(AlertDialogActivity));
+				intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+				intent.PutExtra("Title", title);
+				intent.PutExtra("Message", message);
+				intent.PutExtra("OwnerId", ownerId );
+				_context.StartActivity(intent); 
 			});
 
 			var tcs = new TaskCompletionSource<object>();
-			TinyMessageSubscriptionToken token = null;
-			token = _messengerHub.Subscribe<ActivityCompleted>(a =>
-				{
-					tcs.TrySetResult(null);
-					_messengerHub.Unsubscribe<ActivityCompleted>( token );
-					token.Dispose();
-				}, a => a.OwnerId == ownerId );
 
-			return tcs.Task; 
+			var token = _messengerHub.Subscribe<ActivityCompleted>(
+				a => tcs.TrySetResult(null), 
+				a => a.OwnerId == ownerId);
+
+			await tcs.Task;
+
+			_messengerHub.Unsubscribe<ActivityCompleted>(token);
+			token.DisposeIfDisposable();
 		}
         
-        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
+        public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
         {
-            var ownerId = Guid.NewGuid().ToString();
-            var i = new Intent(_context, typeof(AlertDialogActivity));
-            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-            i.PutExtra("Title", title);
-            i.PutExtra("Message", message);
-
-            i.PutExtra("PositiveButtonTitle", positiveButtonTitle);
-            i.PutExtra("NegativeButtonTitle", negativeButtonTitle);
-            i.PutExtra("OwnerId", ownerId );
-
-            TinyMessageSubscriptionToken token = null;
-			token = _messengerHub.Subscribe<ActivityCompleted>( a=>
-                        {
-                                if ( a.Content == positiveButtonTitle )
-                                {
-                                    positiveAction();
-                                }
-                                else if ( a.Content == negativeButtonTitle )
-                                {
-                                    negativeAction();
-                                }
-								_messengerHub.Unsubscribe<ActivityCompleted>( token );
-                                token.Dispose();
-                        }, a=>a.OwnerId == ownerId );            
-
-            _context.StartActivity(i); 
+	        return ShowMessage(title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction, null, null);
         }
 
-        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
+        public async Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
         {
             var ownerId = Guid.NewGuid().ToString();
-            var i = new Intent(_context, typeof(AlertDialogActivity));
-            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-            i.PutExtra("Title", title);
-            i.PutExtra("Message", message);
+	        _viewDispatcher.RequestMainThreadAction(() =>
+	        {
+		        var intent = new Intent(_context, typeof (AlertDialogActivity));
+		        intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+		        intent.PutExtra("Title", title);
+		        intent.PutExtra("Message", message);
 
-            i.PutExtra("PositiveButtonTitle", positiveButtonTitle);
-            i.PutExtra("NegativeButtonTitle", negativeButtonTitle);
-            i.PutExtra("NeutralButtonTitle", neutralButtonTitle);
-            i.PutExtra("OwnerId", ownerId);
+		        intent.PutExtra("PositiveButtonTitle", positiveButtonTitle);
+		        intent.PutExtra("NegativeButtonTitle", negativeButtonTitle);
+		        if (neutralButtonTitle != null)
+		        {
+			        intent.PutExtra("NeutralButtonTitle", neutralButtonTitle);
+		        }
 
-            TinyMessageSubscriptionToken token = null;
-			token = _messengerHub.Subscribe<ActivityCompleted>(a =>
+		        intent.PutExtra("OwnerId", ownerId);
+
+				_context.StartActivity(intent);
+	        });
+
+			var tcs = new TaskCompletionSource<object>();
+			var token = _messengerHub.Subscribe<ActivityCompleted>(a =>
             {
                 if (a.Content == positiveButtonTitle)
                 {
@@ -130,15 +115,18 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
                 {
                     negativeAction();
                 }
-                else if (a.Content == neutralButtonTitle)
+                else if (a.Content == neutralButtonTitle && neutralAction != null)
                 {
                     neutralAction();
                 }
-				_messengerHub.Unsubscribe<ActivityCompleted>(token);
-                token.Dispose();
+
+				tcs.SetResult(null);
             }, a => a.OwnerId == ownerId);
 
-            _context.StartActivity(i);
+	        await tcs.Task;
+
+			_messengerHub.Unsubscribe<ActivityCompleted>(token);
+			token.Dispose();
         }
 
         public void ShowMessage (string title, string message, List<KeyValuePair<string,Action>> additionalButton)
@@ -146,48 +134,56 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			throw new NotImplementedException();
 		}
 
-        public void ShowMessage(string title, string message, Action additionalAction)
+        public async Task ShowMessage(string title, string message, Action additionalAction)
         {            
 			var ownerId = Guid.NewGuid().ToString();
-			var i = new Intent(_context, typeof(AlertDialogActivity));
-			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-			i.PutExtra("Title", title);
-			i.PutExtra("Message", message);
+
+	        _viewDispatcher.RequestMainThreadAction(() =>
+	        {
+		        var intent = new Intent(_context, typeof (AlertDialogActivity));
+		        intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+		        intent.PutExtra("Title", title);
+		        intent.PutExtra("Message", message);
+
+		        intent.PutExtra("NeutralButtonTitle", "OK");
+		        intent.PutExtra("OwnerId", ownerId);
+
+				_context.StartActivity(intent);
+	        });
 			
-			i.PutExtra("NeutralButtonTitle", "OK");
-			i.PutExtra("OwnerId", ownerId);
-			
-			TinyMessageSubscriptionToken token = null;
-			token = _messengerHub.Subscribe<ActivityCompleted>(a =>
+			var tcs = new TaskCompletionSource<object>();
+			var token = _messengerHub.Subscribe<ActivityCompleted>(a =>
 			{				
-				additionalAction();				
-				_messengerHub.Unsubscribe<ActivityCompleted>(token);
-				token.Dispose();
+				additionalAction();	
+				tcs.SetResult(null);
+				
 			}, a => a.OwnerId == ownerId);
-			
-			_context.StartActivity(i);
+
+	        await tcs.Task;
+
+			_messengerHub.Unsubscribe<ActivityCompleted>(token);
+			token.Dispose();
         }
 
-		Stack<ProgressDialog> progressDialogs = new Stack<ProgressDialog>();
+	    private readonly Stack<ProgressDialog> _progressDialogs = new Stack<ProgressDialog>();
 
         public void ShowProgress (bool show)
 		{
 			_viewDispatcher.RequestMainThreadAction(() =>{
-
 				var activity = _topActivity.Activity;
 
 				if(show)
 				{ 		
 					var progress = new ProgressDialog(activity);
-					progressDialogs.Push(progress);
+					_progressDialogs.Push(progress);
 					progress.SetTitle(string.Empty);
 					progress.SetMessage(activity.GetString(Resource.String.LoadingMessage));
 					progress.Show();
 
 				}else{
-					if(progressDialogs.Any())
+					if(_progressDialogs.Any())
 					{
-						var progressPrevious = progressDialogs.Pop();
+						var progressPrevious = _progressDialogs.Pop();
 						if(progressPrevious != null
 						   && progressPrevious.IsShowing)
 						{
@@ -200,54 +196,120 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			});
         }
 
-		public IDisposable ShowProgress()
+	    public void ShowProgressNonModal(bool show)
+	    {
+			var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>();
+			var rootView = topActivity.Activity.Window.DecorView.RootView as ViewGroup;
+
+		    if (rootView == null)
+		    {
+			    return;
+		    }
+		    var progress = rootView.FindViewWithTag("Progress") as ProgressBar;
+
+		    if ((progress == null) && (show))
+		    {
+			    var contentView = rootView.GetChildAt(0);
+			    rootView.RemoveView(contentView);
+
+			    var relLayout = new RelativeLayout(topActivity.Activity.ApplicationContext)
+			    {
+				    LayoutParameters = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent)
+			    };
+			    relLayout.AddView(contentView);
+
+			    var b = new ProgressBar(topActivity.Activity.ApplicationContext, null, Android.Resource.Attribute.ProgressBarStyleHorizontal)
+			    {
+				    Progress = 25,
+				    LayoutParameters = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent),
+				    Indeterminate = true,
+				    Tag = "Progress"
+			    };
+
+			    ((RelativeLayout.LayoutParams)b.LayoutParameters).TopMargin = 78.ToPixels();
+			    relLayout.AddView(b);
+			    rootView.AddView(relLayout);
+		    }
+		    else if (progress != null)
+		    {
+			    progress.Visibility = show ? ViewStates.Visible : ViewStates.Gone;
+			    progress.Indeterminate = true;
+			    progress.Enabled = true;
+		    }
+	    }
+
+	    public IDisposable ShowProgress()
 		{
 			ShowProgress (true);
 			return Disposable.Create (() => ShowProgress(false));
 		}
 
-        public void ShowToast(string message, ToastDuration duration )
+	    public IDisposable ShowProgressNonModal()
+	    {
+		    throw new NotImplementedException();
+	    }
+
+	    public void ShowDialog(Type type)
+	    {
+		    throw new NotImplementedException();
+	    }
+
+	    public void ShowToast(string message, ToastDuration duration )
         {
-			_viewDispatcher.RequestMainThreadAction(() =>{
-	            Toast toast = Toast.MakeText(_context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
+			_viewDispatcher.RequestMainThreadAction(() =>
+			{
+	            var toast = Toast.MakeText(_context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
 	            toast.Show();
 			});
         }
 
-		public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)
+		public async void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)
 		{
 			var list = items.ToArray();
-			if (displayNameSelector == null) {
+			if (displayNameSelector == null) 
+			{
 				displayNameSelector = x => x.ToString ();
 			}
-			if (onResult == null) {
+			if (onResult == null) 
+			{
 				onResult = result => {};
 			}
 
-			string[] displayList = list.Select(displayNameSelector).ToArray();
-
-
+			var displayList = list.Select(displayNameSelector).ToArray();
 			var ownerId = Guid.NewGuid().ToString();
-			var i = new Intent(_context, typeof(SelectItemDialogActivity));
-			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-			i.PutExtra("Title", title);
-			i.PutExtra("Items", displayList);
-			i.PutExtra("OwnerId", ownerId );
-			TinyMessageSubscriptionToken token = null;
-			token = _messengerHub.Subscribe<SubNavigationResultMessage<int>>(msg =>
-			                                                                    {
-				if (token != null)
-				{
-					_messengerHub.Unsubscribe<SubNavigationResultMessage<int>>(token);
-				}
+			_viewDispatcher.RequestMainThreadAction(() =>
+			{
+				
+				var i = new Intent(_context, typeof (SelectItemDialogActivity));
+				i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+				i.PutExtra("Title", title);
+				i.PutExtra("Items", displayList);
+				i.PutExtra("OwnerId", ownerId);
+				_context.StartActivity(i); 
+			});
 
+			var tcs = new TaskCompletionSource<object>();
+			var token = _messengerHub.Subscribe<SubNavigationResultMessage<int>>(msg =>
+			{
 				onResult(list[msg.Result]);
-			},
-			msg => msg.MessageId == ownerId);
-			_context.StartActivity(i); 
+				tcs.SetResult(null);
+			}, msg => msg.MessageId == ownerId);
+			
+
+			if (token != null)
+			{
+				_messengerHub.Unsubscribe<SubNavigationResultMessage<int>>(token);
+			}
+
 		}
 
-        public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positiveAction)
+	    public Task<string> ShowPromptDialog(string title, string message, Action cancelAction = null, bool isNumericOnly = false,
+		    string inputText = "")
+	    {
+		    throw new NotImplementedException();
+	    }
+
+	    public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positiveAction)
         {
             var ownerId = Guid.NewGuid().ToString();
             var i = new Intent(_context, typeof(EditTextDialogActivity));
