@@ -529,31 +529,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public bool IsChangeDropOffVisible
-        {
-            get
-			{
-				if (OrderStatusDetail == null)
-				{
-					return false;
-				}
-
-                return Settings.ChangeDropOffAddressMidTrip
-                    && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
-                        || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
-                        || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded);
-            }
-        }
-
-        public string ChangeDropOffText
-        {
-            get
-            {
-                //this.Services().Localize["OrderStatus_RemoveDestination"]
-                return this.Services().Localize["OrderStatus_RemoveDestination"];
-            }
-        }
-
         public bool IsDriverInfoAvailable
         {
             get 
@@ -691,7 +666,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        RaisePropertyChanged(() => IsCallTaxiVisible);
 	        RaisePropertyChanged(() => IsMessageTaxiVisible);
             RaisePropertyChanged(() => IsContactTaxiVisible);
-            RaisePropertyChanged(() => IsChangeDropOffVisible);
 			RaisePropertyChanged(() => IsProgressVisible);
 	        RaisePropertyChanged(() => CanGoBack);
 	        RaisePropertyChanged(() => VehicleMedallionHidden);

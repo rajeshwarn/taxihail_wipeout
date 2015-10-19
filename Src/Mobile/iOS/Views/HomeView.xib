@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeView">
@@ -14,10 +14,8 @@
                 <outlet property="btnLocateMe" destination="Jqp-iu-ci1" id="Ea5-fR-6Yf"/>
                 <outlet property="btnMenu" destination="MeW-ns-SQv" id="7wz-qB-e5G"/>
                 <outlet property="btnTrain" destination="rTf-vs-kUc" id="csz-MU-0ht"/>
-                <outlet property="changeDropOffControl" destination="vHZ-QJ-LLg" id="ABL-jo-Tk6"/>
                 <outlet property="constraintAppBarBookingStatus" destination="VYn-pq-Rbv" id="zxh-xY-Neu"/>
                 <outlet property="constraintBookingStatusHeight" destination="Ztr-kp-Q7L" id="vOj-O6-UhM"/>
-                <outlet property="constraintChangeDropOffTopSpace" destination="kRK-IK-UVV" id="V2Y-47-nz0"/>
                 <outlet property="constraintContactTaxiTopSpace" destination="9l2-hu-sB1" id="YUx-lQ-0LO"/>
                 <outlet property="constraintHomeLeadingSpace" destination="Ofk-d3-Xjf" id="rC5-er-L3E"/>
                 <outlet property="constraintOrderAirportBottomSpace" destination="sgf-9n-nvL" id="iJw-fe-Dm0"/>
@@ -110,13 +108,6 @@
                                 <constraint firstAttribute="height" constant="50" id="bb7-Lk-F2S"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vHZ-QJ-LLg" userLabel="Change DropOff Control" customClass="ChangeDropOffControl">
-                            <rect key="frame" x="8" y="-87" width="304" height="40"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="40" id="CuK-ZM-nA3"/>
-                            </constraints>
-                        </view>
                         <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="44" translatesAutoresizingMaskIntoConstraints="NO" id="HaA-X5-eHm" customClass="OrderOptionsControl">
                             <rect key="frame" x="8" y="22" width="304" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -206,12 +197,9 @@
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" constant="418" id="aqP-8Y-Hn4"/>
                         <constraint firstItem="4OH-fP-dh3" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="c5H-Dc-S6w"/>
                         <constraint firstItem="rTf-vs-kUc" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="eOl-8B-fFp"/>
-                        <constraint firstItem="vHZ-QJ-LLg" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="gGK-EM-de8"/>
                         <constraint firstAttribute="trailing" secondItem="4OH-fP-dh3" secondAttribute="trailing" id="hGf-1c-Z4K"/>
                         <constraint firstItem="aEE-PN-YXj" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="iwE-nr-qb8"/>
-                        <constraint firstItem="vHZ-QJ-LLg" firstAttribute="top" secondItem="ZLu-Q7-DYG" secondAttribute="bottom" constant="-50" id="kRK-IK-UVV"/>
                         <constraint firstAttribute="trailing" secondItem="qYq-T6-6x7" secondAttribute="trailing" constant="8" id="kn7-M5-aNf"/>
-                        <constraint firstAttribute="trailing" secondItem="vHZ-QJ-LLg" secondAttribute="trailing" constant="8" id="l94-wl-gxV"/>
                         <constraint firstAttribute="right" secondItem="HaA-X5-eHm" secondAttribute="right" constant="8" id="mrh-2C-M5W"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Jqp-iu-ci1" secondAttribute="bottom" constant="13" id="nTh-8y-wH1"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="MeW-ns-SQv" secondAttribute="bottom" constant="13" id="pen-rq-tIj"/>
