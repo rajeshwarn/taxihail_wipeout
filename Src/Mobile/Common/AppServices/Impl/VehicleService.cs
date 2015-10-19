@@ -13,6 +13,8 @@ using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using ServiceStack.ServiceClient.Web;
+using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -186,7 +188,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 		    return isUsingGeoServices
                 // Ensure that the cars are ordered correctly.
-                ? cars.OrderBy(car => car.Eta.HasValue ? 0 : 1).ThenBy(car => car.Eta).ThenBy(car  => car.VehicleNumber)
+                ? cars.OrderBy(car => car.Eta.HasValue ? 0 : 1).ThenBy(car => car.Eta).ThenBy(car  => car.VehicleName)
                 : cars.OrderBy (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude));
 		}
 
@@ -211,16 +213,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		
 		public async Task<GeoDataEta> GetVehiclePositionInfoFromGeo(double fromLat, double fromLng, string vehicleRegistration, Guid orderId)
 	    {
-            var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleRegistration, orderId));
+			try
+			{
+				var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleRegistration, orderId));
 
-		    return new GeoDataEta
-		    {
-		        Eta = etaFromGeo.Eta / 60,
-                Latitude = etaFromGeo.Latitude,
-                Longitude = etaFromGeo.Longitude,
-                CompassCourse = etaFromGeo.CompassCourse,
+				return new GeoDataEta
+				{
+					Eta = etaFromGeo.Eta / 60,
+					Latitude = etaFromGeo.Latitude,
+					Longitude = etaFromGeo.Longitude,
+					CompassCourse = etaFromGeo.CompassCourse,
                 Market = etaFromGeo.Market
-			};
+				};
+			}
+			catch(WebServiceException ex)
+			{
+				Logger.LogMessage("An error occurred while obtaining vehicle: {0} from Geo in order {1}",vehicleRegistration??"Unknown vehicle", orderId);
+				Logger.LogError(ex);
+
+				return null;
+			}
+            
 	    }
 
 		private async Task<AvailableVehicle> GetVehiclePositionFromGeo(Guid orderId, string medallion)
