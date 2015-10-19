@@ -12,7 +12,7 @@
         android:scaleType="center"
         android:layout_gravity="center|center"
         android:layout_width="24dip"
-        android:layout_height="24dip" />
+        android:layout_height="20dip" />
     <TextView
         android:id="@+id/buttonLabel"
         android:textSize="10dip"

@@ -5610,11 +5610,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d01b6
 			public const int btnAirport = 2131558838;
 			
-			// aapt resource value: 0x7f0d010a
-			public const int btnBookLaterLayout = 2131558666;
-			
 			// aapt resource value: 0x7f0d0108
-			public const int btnBookNow = 2131558664;
+			public const int btnBookLaterLayout = 2131558664;
+			
+			// aapt resource value: 0x7f0d0106
+			public const int btnBookNow = 2131558662;
 			
 			// aapt resource value: 0x7f0d0191
 			public const int btnCancel = 2131558801;
@@ -5625,8 +5625,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d0192
 			public const int btnCreate = 2131558802;
 			
-			// aapt resource value: 0x7f0d0105
-			public const int btnEstimate = 2131558661;
+			// aapt resource value: 0x7f0d0109
+			public const int btnEstimate = 2131558665;
 			
 			// aapt resource value: 0x7f0d0104
 			public const int btnEstimateLayout = 2131558660;
@@ -5928,8 +5928,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d0027
 			public const int homeAsUp = 2131558439;
 			
-			// aapt resource value: 0x7f0d0107
-			public const int homeCenterButtons = 2131558663;
+			// aapt resource value: 0x7f0d0105
+			public const int homeCenterButtons = 2131558661;
 			
 			// aapt resource value: 0x7f0d000b
 			public const int hybrid = 2131558411;
@@ -5946,8 +5946,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d0051
 			public const int image = 2131558481;
 			
-			// aapt resource value: 0x7f0d0109
-			public const int imagePromo = 2131558665;
+			// aapt resource value: 0x7f0d0107
+			public const int imagePromo = 2131558663;
 			
 			// aapt resource value: 0x7f0d0101
 			public const int imageSpinner = 2131558657;
@@ -6564,8 +6564,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d0159
 			public const int txtEntryCode = 2131558745;
 			
-			// aapt resource value: 0x7f0d0106
-			public const int txtEstimate = 2131558662;
+			// aapt resource value: 0x7f0d010a
+			public const int txtEstimate = 2131558666;
 			
 			// aapt resource value: 0x7f0d0148
 			public const int txtFlightNum = 2131558728;

@@ -6,6 +6,6 @@
     </declare-styleable>
     <declare-styleable name="AppBarButton">
     	<attr name="ImgSrc" format="integer"/>
-    	<attr name="LabelText" format="reference"/>
+    	<attr name="LabelText" format="string"/>
     </declare-styleable>
 </resources>

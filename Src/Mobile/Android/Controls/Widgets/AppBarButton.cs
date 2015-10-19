@@ -11,11 +11,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private ImageView ButtonImage { get; set; }
         private TextView ButtonLabel { get; set; }
-        private IAttributeSet _attr;
+        private int _imgId;
+        private string _labelText;
 
         public AppBarButton(Context c, IAttributeSet attr) : base(c, attr)
         {
-            _attr = attr;
+            _imgId = GetImageResourceId(attr);
+            _labelText = GetString(attr);
         }
 
         protected override void OnFinishInflate()
@@ -25,16 +27,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             Initialize ();
         }
 
-        private int GetImageResourceId()
+        private int GetImageResourceId(IAttributeSet attr)
         {
-            var att = Context.Theme.ObtainStyledAttributes(_attr, Resource.Styleable.AppBarButton, 0, 0);
+            var att = Context.Theme.ObtainStyledAttributes(attr, Resource.Styleable.AppBarButton, 0, 0);
             return att.GetResourceId(Resource.Styleable.AppBarButton_ImgSrc, 0);
         }
 
-        private int GetString()
+        private string GetString(IAttributeSet attr)
         {
-            var att = Context.Theme.ObtainStyledAttributes(_attr, Resource.Styleable.AppBarButton, 0, 0);
-            return att.GetResourceId(Resource.Styleable.AppBarButton_LabelText, 0);
+            var att = Context.Theme.ObtainStyledAttributes(attr, Resource.Styleable.AppBarButton, 0, 0);
+            return att.GetString(Resource.Styleable.AppBarButton_LabelText);
         }
 
         private void Initialize()
@@ -42,13 +44,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
             var layout = inflater.Inflate(Resource.Layout.Control_AppBarButton, this, true);
         
-            var test1 = GetImageResourceId();
-            var test2 = GetString();
-
             ButtonImage = (ImageView)layout.FindViewById(Resource.Id.buttonImage);
-            ButtonImage.SetBackgroundResource(Resource.Drawable.button_booklater_image_selector);
+            ButtonImage.SetBackgroundResource(_imgId);
             ButtonLabel = (TextView)layout.FindViewById(Resource.Id.buttonLabel);
-            ButtonLabel.Text = Context.GetString(Resource.String.BookItLaterButton);
+            ButtonLabel.Text = _labelText;
         }
 
         public override bool Enabled
