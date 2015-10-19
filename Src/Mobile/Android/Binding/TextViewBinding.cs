@@ -3,6 +3,9 @@ using Android.Widget;
 using Cirrious.MvvmCross.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using Cirrious.MvvmCross.Binding.Droid.Target;
+using Android.Views;
+using System.Windows.Input;
+using Cirrious.CrossCore.WeakSubscription;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
