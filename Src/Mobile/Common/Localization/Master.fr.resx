@@ -441,6 +441,9 @@
   <data name="CreditCardInstructions" xml:space="preserve">
     <value>Afin d'utiliser l'application, vous devez ajouter un mode de paiement à votre compte.</value>
   </data>
+  <data name="CreditCardInstructionsForLuxury" xml:space="preserve">
+    <value>Veuillez entrer une carte de crédit pour continuer votre réservation</value>
+  </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>Le numéro de la carte ne semble pas être valide</value>
   </data>

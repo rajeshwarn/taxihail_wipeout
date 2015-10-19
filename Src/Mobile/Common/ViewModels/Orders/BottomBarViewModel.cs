@@ -151,8 +151,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-		bool _bookButtonHidden = true;
-
+		private bool _bookButtonHidden = true;
 		public bool BookButtonHidden
 		{
 			get { return _bookButtonHidden; }
@@ -408,27 +407,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         return;
                     }
 
-					await ValidateOrderDetails();
-					ParentViewModel.CurrentViewState = HomeViewModelState.AirportDetails;
+					var shouldContinueGoingToAirportDetails = await ValidateOrderDetails();
+					if(shouldContinueGoingToAirportDetails)
+					{
+						ParentViewModel.CurrentViewState = HomeViewModelState.AirportDetails;
+					}
                 });
             }
         }
 
         public async void ReviewOrderDetails()
 	    {
-			await ValidateOrderDetails();
-			ParentViewModel.CurrentViewState = HomeViewModelState.Review;
+			var shouldContinueGoingToReview = await ValidateOrderDetails();
+			if (shouldContinueGoingToReview)
+			{
+				ParentViewModel.CurrentViewState = HomeViewModelState.Review;
+			}
 	    }
 
-		private async Task ValidateOrderDetails()
+		private async Task<bool> ValidateOrderDetails()
 		{
+			var shouldContinue = true;
 			using (this.Services().Message.ShowProgress())
 			{
 				await _orderWorkflowService.ResetOrderSettings();
-				await ShowFareEstimateAlertDialogIfNecessary();
-				await ValidateCardOnFile();
-				await PreValidateOrder();
+				shouldContinue = shouldContinue && await PreValidateOrder();
+				shouldContinue = shouldContinue && await ValidateCardOnFile();
+				if (shouldContinue)
+				{
+					await ShowFareEstimateAlertDialogIfNecessary();
+				}
 			}
+			return shouldContinue;
 		}
 
         public ICommand ConfirmOrderCommand
@@ -979,46 +989,68 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        private async Task ValidateCardOnFile()
+		private async Task<bool> ValidateCardOnFile()
         {
-            if (!await _orderWorkflowService.ValidateCardOnFile())
-            {
-                this.Services().Message.ShowMessage(
-                    this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
-                    this.Services().Localize["AddACardButton"],
-                    () => {
-						ParentViewModel.CurrentViewState = HomeViewModelState.Initial;
-						ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true });
-                    },
-                    this.Services().Localize["Cancel"],
-					() => ParentViewModel.CurrentViewState = HomeViewModelState.Initial);
-            }
+			var shouldContinueGoingToReview = true;
+
+			Action goToCreditCardAdd = () => ShowViewModel<CreditCardAddViewModel>(new {
+				showInstructions = true,
+				shouldShowReview = true
+			});
+
+			var cardOnFileValidationPassed = await _orderWorkflowService.ValidateCardOnFile();
+			if (!cardOnFileValidationPassed)
+			{
+				shouldContinueGoingToReview = false;
+
+				var serviceType = await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask();
+				if (serviceType == ServiceType.Luxury)
+				{
+					goToCreditCardAdd();
+				}
+				else
+				{
+					this.Services().Message.ShowMessage(
+						this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
+						this.Services().Localize["AddACardButton"], goToCreditCardAdd,
+						this.Services().Localize["Cancel"], () => {});
+				}
+			}
+
+			return shouldContinueGoingToReview;
         }
 
-        private async Task PreValidateOrder()
+		private async Task<bool> PreValidateOrder()
         {
+			var shouldContinueGoingToReview = true;
             var validationInfo = await _orderWorkflowService.ValidateOrder();
 
             if (validationInfo.HasError)
             {
+				shouldContinueGoingToReview = false;
 	            this.Services().Message.ShowMessage(
 		            this.Services().Localize["ErrorCreatingOrderTitle"], validationInfo.Message,
-		            () => ((HomeViewModel) Parent).CurrentViewState = HomeViewModelState.Initial);
+					() => ParentViewModel.CurrentViewState = HomeViewModelState.Initial);
             }
             else
             {
                 if (validationInfo.HasWarning)
                 {
-                    this.Services().Message.ShowMessage(
+                    await this.Services().Message.ShowMessage(
                         this.Services().Localize["WarningTitle"], validationInfo.Message,
                         this.Services().Localize["Continue"], () => _orderWorkflowService.ConfirmValidationOrder(),
-						this.Services().Localize["Cancel"], () => ParentViewModel.CurrentViewState = HomeViewModelState.Initial);
+						this.Services().Localize["Cancel"], () => { 
+								shouldContinueGoingToReview = false; 
+								ParentViewModel.CurrentViewState = HomeViewModelState.Initial; 
+							});
                 }
                 else
                 {
                     _orderWorkflowService.ConfirmValidationOrder();
                 }
             }
+
+			return shouldContinueGoingToReview;
         }
 
         private async Task<Tuple<Order, OrderStatusDetail>> GetOrderInfos(Guid pendingOrderId)

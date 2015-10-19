@@ -69,7 +69,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                         {
                             ExecuteSearchCommand(text);
                         }
-                    });
+                    })
+                    .DisposeWith(_subscriptions);
 
                 _addressEditText.EditorAction += (sender, args) =>
                 {
@@ -160,31 +161,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                 .ObserveOn(SynchronizationContext.Current)
                 .Select(x => x.EventArgs)
                 .Subscribe(e => 
-                { 
-                    var newItems = new AddressViewModel[0];
-                    if(e.NewItems != null)
-                    {
-                        newItems = e.NewItems.OfType<AddressViewModel>().ToArray();
-                    }
+                    { 
+                        var newItems = new AddressViewModel[0];
+                        if(e.NewItems != null)
+                        {
+                            newItems = e.NewItems.OfType<AddressViewModel>().ToArray();
+                        }
 
-                    switch(e.Action)
-                    {
-                        case NotifyCollectionChangedAction.Add:
+                        switch(e.Action)
+                        {
+                            case NotifyCollectionChangedAction.Add:
                             {                                    
                                 AddAddresses(newItems);
                                 break;
                             }
-                        case NotifyCollectionChangedAction.Reset:
+                            case NotifyCollectionChangedAction.Reset:
                             {
                                 ClearAddresses();
                                 break;
                             }
-                        default:
+                            default:
                             {
                                 throw new ArgumentOutOfRangeException("Not supported "+ e.Action);
                             }
-                    }   
-                }, Logger.LogError);
+                        }   
+                    }, Logger.LogError);
 
 			await ViewModel.LoadAddresses(filterAddresses).HandleErrors();
 			if (filterAddresses == AddressLocationType.Unspeficied || ViewModel.AllAddresses.Count > 1)

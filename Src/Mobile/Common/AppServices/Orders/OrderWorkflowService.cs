@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
 		readonly ISubject<int?> _vehicleTypeSubject;
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
+		readonly ISubject<ServiceType> _serviceTypeSubject;
 		readonly ISubject<string> _estimatedFareDisplaySubject;
 		readonly ISubject<OrderValidationResult> _orderValidationResultSubject = 
 			// set has error at first to force a validation to pass before enabling the button
@@ -99,10 +100,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
 
-            _vehicleTypeSubject = new BehaviorSubject<int?>(
+			var vehicleTypeId = 
                 _appSettings.Data.VehicleTypeSelectionEnabled
 	                ? accountService.CurrentAccount.Settings.VehicleTypeId
-	                : null);
+	                : null;
+
+			_vehicleTypeSubject = new BehaviorSubject<int?>(vehicleTypeId);
+
+			var serviceType = GetServiceTypeForVehicleId(vehicleTypeId).Result;
+			_serviceTypeSubject = new BehaviorSubject<ServiceType>(serviceType);
 
 			_localize = localize;
 			_bookingService = bookingService;
@@ -323,6 +329,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			bookingSettings.VehicleTypeId = vehicleTypeId;
 
 			await SetBookingSettings (bookingSettings);
+
+			var serviceType = await GetServiceTypeForVehicleId(vehicleTypeId);
+			_serviceTypeSubject.OnNext(serviceType);
+		}
+
+		private async Task<ServiceType> GetServiceTypeForVehicleId (int? vehicleTypeId)
+		{ 
+			var vehicleType = (await _accountService.GetVehiclesList())
+				.FirstOrDefault(x => x.ReferenceDataVehicleId == vehicleTypeId);
+
+			return vehicleType != null ? vehicleType.ServiceType : ServiceType.Taxi;
 		}
 
 		public async Task SetBookingSettings(BookingSettings bookingSettings)
@@ -495,6 +512,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<int?> GetAndObserveVehicleType()
 		{
 			return _vehicleTypeSubject;
+		}
+
+		public IObservable<ServiceType> GetAndObserveServiceType()
+		{
+			return _serviceTypeSubject;
 		}
 
 		public IObservable<BookingSettings> GetAndObserveBookingSettings()
@@ -840,9 +862,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<bool> ValidateCardOnFile()
 		{
-			var orderToValidate = await GetOrder ();	
+			var orderToValidate = await GetOrder ();
+			var hasCardOnFile = _accountService.CurrentAccount.DefaultCreditCard != null;
 			if (orderToValidate.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id 
-				&& _accountService.CurrentAccount.DefaultCreditCard == null)
+				&& !hasCardOnFile)
+			{
+				return false;
+			}
+
+			var serviceType = await _serviceTypeSubject.Take(1).ToTask();
+			if (serviceType == ServiceType.Luxury
+				&& !hasCardOnFile)
 			{
 				return false;
 			}

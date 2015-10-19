@@ -134,6 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         }
 
         private object ProgressLock = new object();
+
         public void ShowProgress(bool show)
         {
             lock (ProgressLock)
