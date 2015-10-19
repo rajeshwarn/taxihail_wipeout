@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private CGSize ImageSize = new CGSize(34f, 34f);
 
+        private UIControl _fixedLowerBarView { get; set; }
 		private BaseRateControl BaseRate { get; set; }
         private UIImageView EtaBadge { get; set; }
         private UILabel EtaLabel { get; set; }
@@ -24,6 +25,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         // Setting hardcoded to true for now.
         public bool DisplayBaseRateInfo { get; set; }
+
+        public bool UserInputDisabled
+        {
+            get { return !_fixedLowerBarView.UserInteractionEnabled; }
+            set 
+            {
+                _fixedLowerBarView.UserInteractionEnabled = !value;
+                if (!_fixedLowerBarView.UserInteractionEnabled && BaseRateToggled)
+                {
+                    // close the rate box
+                    ToggleBaseRate();
+                }
+            }
+        }
 
         private NSLayoutConstraint _rateBoxHeightConstraint;
 
@@ -44,6 +59,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             InitializeRateBox();
             InitializeFixedBar();
+
+            _fixedLowerBarView.TouchUpInside += (sender, e) => ToggleBaseRate();
 		}
 
 		public void ToggleBaseRate ()
@@ -134,20 +151,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void InitializeFixedBar()
         {
-            var fixedLowerBarView = new UIControl 
+            _fixedLowerBarView = new UIControl 
             {
                 UserInteractionEnabled = true,
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 BackgroundColor = Theme.CompanyColor
             };
-            AddSubview(fixedLowerBarView);
+            AddSubview(_fixedLowerBarView);
 
             AddConstraints(new [] { 
-                NSLayoutConstraint.Create(fixedLowerBarView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, BaseRate, NSLayoutAttribute.Bottom, 1f, 0f),
-                NSLayoutConstraint.Create(fixedLowerBarView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, EtaLabelHeight),
-                NSLayoutConstraint.Create(fixedLowerBarView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, fixedLowerBarView.Superview, NSLayoutAttribute.Bottom, 1f, 0f),
-                NSLayoutConstraint.Create(fixedLowerBarView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, fixedLowerBarView.Superview, NSLayoutAttribute.Left, 1f, 0f),
-                NSLayoutConstraint.Create(fixedLowerBarView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, fixedLowerBarView.Superview, NSLayoutAttribute.Right, 1f, 0f),
+                NSLayoutConstraint.Create(_fixedLowerBarView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, BaseRate, NSLayoutAttribute.Bottom, 1f, 0f),
+                NSLayoutConstraint.Create(_fixedLowerBarView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, EtaLabelHeight),
+                NSLayoutConstraint.Create(_fixedLowerBarView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _fixedLowerBarView.Superview, NSLayoutAttribute.Bottom, 1f, 0f),
+                NSLayoutConstraint.Create(_fixedLowerBarView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _fixedLowerBarView.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                NSLayoutConstraint.Create(_fixedLowerBarView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _fixedLowerBarView.Superview, NSLayoutAttribute.Right, 1f, 0f),
             });
 
             EtaBadge = new UIImageView 
@@ -155,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 UserInteractionEnabled = false
             };
-            fixedLowerBarView.AddSubview(EtaBadge);
+            _fixedLowerBarView.AddSubview(EtaBadge);
 
             AddConstraints (new [] {
                 NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DisplayBaseRateInfo ? ImageSize.Height : EtaLabelHeight),
@@ -176,7 +193,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear
             };
-            fixedLowerBarView.AddSubview(EtaLabel);
+            _fixedLowerBarView.AddSubview(EtaLabel);
 
             AddConstraints (new [] {
                 NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Height, 1f, 0f),
@@ -184,8 +201,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EtaBadge, NSLayoutAttribute.Right, 1f, 4f),
                 NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Right, 1f, -4f)
             });
-
-            fixedLowerBarView.TouchUpInside += (sender, e) => ToggleBaseRate();
         }
 
         private NSLayoutConstraint[] _hiddenContraints { get; set; }
