@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         public override void FailedToRegisterForRemoteNotifications (UIApplication application, NSError error)
         {
-            Console.WriteLine("Failed to register for notifications");
+            new UIAlertView("Error while registering push notification", error.LocalizedDescription, null, null, null);
         }
         
         public override void ReceivedRemoteNotification (UIApplication application, NSDictionary userInfo)
