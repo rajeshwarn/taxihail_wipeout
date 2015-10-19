@@ -141,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
         {
-			Console.WriteLine(url.ToString());
+            Logger.LogMessage(url.ToString());
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             if (url.AbsoluteString.StartsWith("fb" + FacebookService.FacebookApplicationID + settings.Data.TaxiHail.ApplicationName.ToLower().Replace(" ", string.Empty)))
 			{
@@ -159,12 +159,12 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         public override void FailedToRegisterForRemoteNotifications (UIApplication application, NSError error)
         {
-            new UIAlertView("Error while registering push notification", error.LocalizedDescription, null, null, null);
+            Logger.LogMessage("Error while registering push notification: "+ error.LocalizedDescription);
         }
         
         public override void ReceivedRemoteNotification (UIApplication application, NSDictionary userInfo)
         {
-            Console.WriteLine("Received Remote Notification!");
+            Logger.LogMessage("Received Remote Notification!");
         }
     }
 }

@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             {
                 message = details.ErrorStatusCode + " " + details.ErrorStatusDescription;
             }
-            _logger.LogMessage("Failure: " + notification.Tag + " -> " + message + " -> " + notification);
+            _logger.LogMessage("Failure: " + notification.Tag + "for device token:" + details.Notification.DeviceToken+ " -> " + message + " -> " + notification);
         }
 
         private void OnChannelException(object sender, IPushChannel channel, Exception exception)
