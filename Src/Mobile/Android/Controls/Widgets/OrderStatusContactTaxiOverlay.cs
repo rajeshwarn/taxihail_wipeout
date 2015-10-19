@@ -53,11 +53,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 			_isShown = true;
 
-			var desigredHeight = -Height;
+			var desiredHeight = -Height;
 
-			if (((MarginLayoutParams) LayoutParameters).TopMargin != desigredHeight)
+			if (((MarginLayoutParams) LayoutParameters).TopMargin != desiredHeight)
 			{
-				((MarginLayoutParams)LayoutParameters).TopMargin = desigredHeight;
+				((MarginLayoutParams)LayoutParameters).TopMargin = desiredHeight;
 			}
 
 			var animation = AnimationHelper.GetForYTranslation(this, 0);

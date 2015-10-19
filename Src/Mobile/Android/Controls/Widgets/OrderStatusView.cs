@@ -15,7 +15,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	[Register("apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusView")]
 	public class OrderStatusView : MvxFrameControl
 	{
-		private OrderStatusContactTaxiOverlay _contactTaxiOverlay;
+        private OrderStatusContactTaxiOverlay _contactTaxiOverlay;
+        private OrderStatusChangeDropOffOverlay _changeDropOffOverlay;
 
 		private bool _isShown;
 		private ViewStates _animatedVisibility;
@@ -28,6 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             this.DelayBind(() =>
                 {
                     _contactTaxiOverlay = FindViewById<OrderStatusContactTaxiOverlay>(Resource.Id.ContactTaxiOverlay);
+                    _changeDropOffOverlay = FindViewById<OrderStatusChangeDropOffOverlay>(Resource.Id.ChangeDropOffOverlay);
                     _statusLayout = FindViewById<LinearLayout>(Resource.Id.statusLayout);
                     _progressImage = FindViewById<ImageView>(Resource.Id.progressImage);
                     _progressLayout = FindViewById<FrameLayout>(Resource.Id.progressLayout);
@@ -43,11 +45,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         .To(vm => vm.IsContactTaxiVisible)
                         .WithConversion("Visibility");
 
+                    set.Bind(_changeDropOffOverlay)
+                        .For("DataContext")
+                        .To(vm => vm);
+
+                    set.Bind(_changeDropOffOverlay)
+                        .For(v => v.AnimatedVisibility)
+                        .To(vm => vm.IsChangeDropOffVisible)
+                        .WithConversion("Visibility");
+
                     set.Bind()
                         .For(v => v.ShowAnimation)
                         .To(vm => vm.IsProgressVisible);
 
                     set.Bind(_contactTaxiOverlay)
+                        .For(v => v.Visibility)
+                        .To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
+                        .WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
+
+                    set.Bind(_changeDropOffOverlay)
                         .For(v => v.Visibility)
                         .To(vm => ((HomeViewModel)vm.Parent).CurrentViewState)
                         .WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus });
@@ -131,7 +147,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 
 			((MarginLayoutParams)LayoutParameters).TopMargin = 0;
-
 		}
 
 		private void ShowIfNeeded()
@@ -142,7 +157,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 
 			_isShown = true;
-
 
 			var animation = AnimationHelper.GetForYTranslation(this, 0);
 

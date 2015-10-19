@@ -127,6 +127,13 @@
         android:background="@drawable/drop_shadow_opaque"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/statusLayout" />
+    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderStatusChangeDropOffOverlay
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:id="@+id/ChangeDropOffOverlay"
+        android:background="@drawable/drop_shadow_opaque"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/ContactTaxiOverlay" />
     <FrameLayout
         android:minHeight="75dip"
         android:layout_width="wrap_content"
