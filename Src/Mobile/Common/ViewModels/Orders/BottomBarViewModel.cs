@@ -963,19 +963,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				shouldShowReview = true
 			});
 
-			var cardIsValidForChargeTypeSelected = await _orderWorkflowService.ValidateCardOnFile();
-			if (!cardIsValidForChargeTypeSelected)
+			var cardOnFileValidationPassed = await _orderWorkflowService.ValidateCardOnFile();
+			if (!cardOnFileValidationPassed)
 			{
 				shouldContinueGoingToReview = false;
-				this.Services().Message.ShowMessage(
-					this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
-					this.Services().Localize["AddACardButton"], goToCreditCardAdd,
-					this.Services().Localize["Cancel"], () => {});
-			}
-			else if(!await _orderWorkflowService.ValidateCardOnFileForLuxuryService())
-			{
-				shouldContinueGoingToReview = false;
-				goToCreditCardAdd();
+
+				var serviceType = await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask();
+				if (serviceType == ServiceType.Luxury)
+				{
+					goToCreditCardAdd();
+				}
+				else
+				{
+					this.Services().Message.ShowMessage(
+						this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoCardOnFileMessage"],
+						this.Services().Localize["AddACardButton"], goToCreditCardAdd,
+						this.Services().Localize["Cancel"], () => {});
+				}
 			}
 
 			return shouldContinueGoingToReview;
