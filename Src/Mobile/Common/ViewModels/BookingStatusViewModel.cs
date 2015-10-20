@@ -666,6 +666,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        RaisePropertyChanged(() => IsCallTaxiVisible);
 	        RaisePropertyChanged(() => IsMessageTaxiVisible);
             RaisePropertyChanged(() => IsContactTaxiVisible);
+            RaisePropertyChanged(() => IsChangeDropOffVisible);
 			RaisePropertyChanged(() => IsProgressVisible);
 	        RaisePropertyChanged(() => CanGoBack);
 	        RaisePropertyChanged(() => VehicleMedallionHidden);
