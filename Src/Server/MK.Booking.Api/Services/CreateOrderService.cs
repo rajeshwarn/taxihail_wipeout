@@ -796,9 +796,10 @@ namespace apcurium.MK.Booking.Api.Services
             var orderResult = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, market, true, bestAvailableCompany.CompanyKey);
 
             // Wait for order creation to complete before sending other commands
+            // TODO: That's evil. Find a better way to do this.
             Thread.Sleep(750);
 
-            ReactToIbsOrderCreation(orderId, orderResult.HailResult.OrderKey.IbsOrderId, isPrepaid, request.ClientLanguageCode);
+            SendOrderCreationCommands(orderId, orderResult.HailResult.OrderKey.IbsOrderId, isPrepaid, request.ClientLanguageCode);
 
             UpdateStatusAsync(orderId);
 
@@ -812,11 +813,12 @@ namespace apcurium.MK.Booking.Api.Services
             var orderResult = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, market, false, bestAvailableCompany.CompanyKey);
 
             // Wait for order creation to complete before sending other commands
+            // TODO: That's evil. Find a better way to do this.
             await Task.Delay(750);
 
             var ibsOrderId = orderResult.CreateOrderResult;
 
-            var hasErrors = ReactToIbsOrderCreation(orderId, ibsOrderId, isPrepaid, request.ClientLanguageCode);
+            var hasErrors = SendOrderCreationCommands(orderId, ibsOrderId, isPrepaid, request.ClientLanguageCode);
             if (!hasErrors)
             {
                 var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
@@ -835,7 +837,7 @@ namespace apcurium.MK.Booking.Api.Services
             UpdateStatusAsync(orderId);
         }
 
-        private bool ReactToIbsOrderCreation(Guid orderId, int? ibsOrderId, bool isPrepaid, string clientLanguageCode)
+        private bool SendOrderCreationCommands(Guid orderId, int? ibsOrderId, bool isPrepaid, string clientLanguageCode)
         {
             if (!ibsOrderId.HasValue || ibsOrderId <= 0)
             {
@@ -851,6 +853,7 @@ namespace apcurium.MK.Booking.Api.Services
                 };
 
                 _commandBus.Send(errorCommand);
+
                 return false;
             }
 
@@ -859,6 +862,7 @@ namespace apcurium.MK.Booking.Api.Services
                 OrderId = orderId,
                 IBSOrderId = ibsOrderId.Value
             };
+
             _commandBus.Send(ibsCommand);
 
             return true;
