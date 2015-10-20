@@ -22,16 +22,16 @@ namespace apcurium.MK.Booking.Api.Payment
         }
         
         public void ConfirmExternalPayment(Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
-                                                    string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent)       
+                                                    string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent, string companyKey = null)       
         {
-            if (!_ibsServiceProvider.Booking().ConfirmExternalPayment(orderId, ibsOrderId, totalAmount, tipAmount, meterAmount, type, provider, transactionId,
+            if (!_ibsServiceProvider.Booking(companyKey).ConfirmExternalPayment(orderId, ibsOrderId, totalAmount, tipAmount, meterAmount, type, provider, transactionId,
                             authorizationCode, cardToken, accountID, name, phone, email, os, userAgent) )
             {
                 throw new Exception("Cannot send payment information to dispatch.");
             }
         }
 
-        public void SendPaymentNotification(double totalAmount, double meterAmount, double tipAmount, string authorizationCode, string vehicleNumber)
+        public void SendPaymentNotification(double totalAmount, double meterAmount, double tipAmount, string authorizationCode, string vehicleNumber, string companyKey = null)
         {
             var amountString = _resources.FormatPrice(totalAmount);
             var meterString = _resources.FormatPrice(meterAmount);
@@ -49,15 +49,15 @@ namespace apcurium.MK.Booking.Api.Payment
                 ? string.Empty
                 : string.Format(_resources.Get("PaymentConfirmationToDriver4"), authorizationCode);
 
-            if (!_ibsServiceProvider.Booking().SendMessageToDriver(line1 + line2 + line3 + line4, vehicleNumber))
+            if (!_ibsServiceProvider.Booking(companyKey).SendMessageToDriver(line1 + line2 + line3 + line4, vehicleNumber))
             {
 				throw new Exception("Cannot send the payment notification.");
             }
         }
 
-        public void SendMessageToDriver(string message, string vehicleNumber)
+        public void SendMessageToDriver(string message, string vehicleNumber, string companyKey = null)
         {
-            if (!_ibsServiceProvider.Booking().SendMessageToDriver(message, vehicleNumber))
+            if (!_ibsServiceProvider.Booking(companyKey).SendMessageToDriver(message, vehicleNumber))
             {
                 throw new Exception("Cannot send message to driver.");
             }
