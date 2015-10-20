@@ -10,6 +10,7 @@ using apcurium.MK.Callbox.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Controls
 {
+	[Register("apcurium.mk.callbox.mobile.client.controls.StyledButton")]
     public sealed class StyledButton : Button
     {
         [Register(".ctor", "(Landroid/content/Context;)V", "")]

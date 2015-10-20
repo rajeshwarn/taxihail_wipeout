@@ -12,6 +12,7 @@ using apcurium.MK.Callbox.Mobile.Client.Activities;
 using apcurium.MK.Callbox.Mobile.Client.Messages;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using Android.Util;
 using Android.Views;
 using Cirrious.CrossCore.Core;
 using Cirrious.MvvmCross.Droid.Views;
@@ -226,7 +227,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 				    Tag = "Progress"
 			    };
 
-			    ((RelativeLayout.LayoutParams)b.LayoutParameters).TopMargin = 78.ToPixels();
+				((RelativeLayout.LayoutParams)b.LayoutParameters).TopMargin = GetPixels(78);
 			    relLayout.AddView(b);
 			    rootView.AddView(relLayout);
 		    }
@@ -238,6 +239,11 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 		    }
 	    }
 
+		public static int GetPixels(float dipValue)
+		{
+			return (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, dipValue, Application.Context.Resources.DisplayMetrics);
+		}
+
 	    public IDisposable ShowProgress()
 		{
 			ShowProgress (true);
@@ -246,12 +252,14 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 
 	    public IDisposable ShowProgressNonModal()
 	    {
-		    throw new NotImplementedException();
+		    ShowProgressNonModal(true);
+		    return Disposable.Create(() => ShowProgressNonModal(false));
 	    }
 
 	    public void ShowDialog(Type type)
 	    {
-		    throw new NotImplementedException();
+			var presenter = new MvxAndroidViewPresenter();
+			presenter.Show(new MvxViewModelRequest(type, null, null, MvxRequestedBy.UserAction));
 	    }
 
 	    public void ShowToast(string message, ToastDuration duration )
@@ -303,10 +311,9 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 
 		}
 
-	    public Task<string> ShowPromptDialog(string title, string message, Action cancelAction = null, bool isNumericOnly = false,
-		    string inputText = "")
+	    public Task<string> ShowPromptDialog(string title, string message, Action cancelAction = null, bool isNumericOnly = false, string inputText = "")
 	    {
-		    throw new NotImplementedException();
+		    throw new NotSupportedException();
 	    }
 
 	    public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positiveAction)

@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
@@ -9,13 +10,19 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 {
     public static class TaskExtensions
     {
-        public static Task HandleErrors(this Task task)
+		public static Task HandleErrors(this Task task, [CallerMemberName] string callerName = "Unknown method", [CallerLineNumber] int callerLineNumber = 0)
         {
-            task.ContinueWith(t=>{
+            task.ContinueWith(t=>
+			{
 
-                var logger = TinyIoCContainer.Current.Resolve<ILogger>();
+				var logger = Mvx.Resolve<ILogger>();
 
-                logger.LogError(t.Exception);
+				t.Exception.Handle(x =>
+				{
+					logger.LogMessage("An error occurred while executing a task under {0} at line {1}", callerName, callerLineNumber);
+					logger.LogError(x);
+					return true;
+				});
 
             }, TaskContinuationOptions.OnlyOnFaulted);
 
@@ -32,23 +39,26 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 		    }
 	    }
 
-        public static Task<T> HandleErrors<T>(this Task<T> task)
+        public static Task<T> HandleErrors<T>(this Task<T> task, [CallerMemberName] string callerName = "Unknown method", [CallerLineNumber] int callerLineNumber = 0)
         {
-            task.ContinueWith(t=>{
-                
-                var logger = TinyIoCContainer.Current.Resolve<ILogger>();
+            task.ContinueWith(t =>
+			{    
+                var logger = Mvx.Resolve<ILogger>();
 
-                t.Exception.Handle(x=>{
+                t.Exception.Handle(x=>
+				{
+					logger.LogMessage("An error occurred while executing a task under {0} at line {1}", callerName, callerLineNumber);
                     logger.LogError(x);
                     return true;
                 });
-                
-            }, TaskContinuationOptions.OnlyOnFaulted);
+
+				return Task.FromResult(default(T));
+			}, TaskContinuationOptions.OnlyOnFaulted);
             
             return task;
         }
 
-	    public static async void FireAndForget(this Task task)
+		public static async void FireAndForget(this Task task, [CallerMemberName] string callerName = "Unknown method", [CallerLineNumber] int callerLineNumber = 0)
 	    {
 		    try
 		    {
@@ -60,8 +70,9 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 		    }
 		    catch (Exception ex)
 		    {
-				var logger = TinyIoCContainer.Current.Resolve<ILogger>();
+				var logger = Mvx.Resolve<ILogger>();
 
+				logger.LogMessage("An error occurred while executing a task under {0} at line {1}", callerName, callerLineNumber);
 				logger.LogError(ex);
 		    }
 	    }

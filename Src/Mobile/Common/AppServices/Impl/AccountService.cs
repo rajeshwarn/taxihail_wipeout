@@ -30,6 +30,7 @@ using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
 using apcurium.MK.Common.Helpers;
 using System.Text.RegularExpressions;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
@@ -166,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public OrderStatusDetail[] GetActiveOrdersStatus()
         {
-			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus()).Result;
+			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus()).HandleErrors().Result;
         }
 
 		public async Task<Address[]> GetFavoriteAddresses ()

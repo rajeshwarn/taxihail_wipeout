@@ -18,7 +18,7 @@
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a%3bx86</AndroidSupportedAbis>
     <MandroidI18n />
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -148,6 +148,8 @@
     <Compile Include="Activities\SelectItemDialogActivity.cs" />
     <Compile Include="Activities\SplashScreenActivity.cs" />
     <Compile Include="AppFonts.cs" />
+    <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
+    <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\StyledButton.cs" />
@@ -156,11 +158,15 @@
     <Compile Include="Converters\ColorEnumToAndroidColorConverter.cs" />
     <Compile Include="Converters\CoordinateConverter.cs" />
     <Compile Include="Converters\OrderStatusToTextColorConverter.cs" />
+    <Compile Include="Diagnostic\Logger.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Localization\Localize.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
+    <Compile Include="PlatformIntegration\DummyAnalyticsService.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PhoneService.cs" />
@@ -251,8 +257,19 @@
     <AndroidResource Include="Resources\Raw\vehicle.mp3" />
     <AndroidResource Include="Resources\Drawable\red_button.xml" />
     <AndroidResource Include="Resources\Drawable\navBar.png" />
+    <AndroidResource Include="Resources\Values\Attrs.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
+      <Project>{a70ade42-9492-4247-96dc-0cfe0cb0cc64}</Project>
+      <Name>MK.Booking.Api.Client.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
+      <Project>{f899012e-c6a6-4c49-8501-8ddef592ccf1}</Project>
+      <Name>MK.Booking.Api.Contract.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
@@ -263,7 +280,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Diagnostic\" />
     <Folder Include="Localization\Mapper\" />
   </ItemGroup>
   <ItemGroup>

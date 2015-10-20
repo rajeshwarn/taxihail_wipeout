@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {

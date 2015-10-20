@@ -54,8 +54,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             {
                 return this.GetCommand(() =>
                 {
-                    _accountService.ClearCache();
-                    SignIn();
+	                try
+	                {
+						_accountService.ClearCache();
+	                }
+	                catch (Exception ex)
+	                {
+		               Logger.LogError(ex);
+	                }
+                    
+                    
+					return SignIn();
                 });
             }
         }
@@ -79,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
                     Logger.LogError( e );
 
-					this.Services().Message.ShowMessage(title, message);
+					this.Services().Message.ShowMessage(title, message).FireAndForget();
                 }
 
                 if (account != null)

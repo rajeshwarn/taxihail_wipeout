@@ -50,13 +50,18 @@ namespace apcurium.MK.Booking.Mobile
 
             _container.Register<ConfigurationClientService>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
 
-            _container.Register<IAccountService, AccountService>();
+			_container.Register<IAccountService>((c, p) => AccountService(c));
             _container.Register<IBookingService, BookingService>();
 
             _container.Register<IApplicationInfoService, ApplicationInfoService>();
         }
-        
-        private string GetSessionId ()
+
+	    private static AccountService AccountService(TinyIoCContainer c)
+	    {
+		    return new AccountService(c.Resolve<IAppSettings>(), null, null, null, null, null);
+	    }
+
+	    private string GetSessionId ()
         {
             var authData = _container.Resolve<ICacheService> ().Get<AuthenticationData> ("AuthenticationData");
             var sessionId = authData == null ? null : authData.SessionId;

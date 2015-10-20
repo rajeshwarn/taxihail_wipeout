@@ -1,10 +1,7 @@
 using System;
 using Android.App;
-using Android.OS;
 using Android.Views;
 using Android.Widget;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
@@ -12,18 +9,11 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
     [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class LoginActivity : BaseBindingActivity<CallboxLoginViewModel>
     {
-        protected override void OnCreate(Bundle bundle)
-        {
-            base.OnCreate(bundle);
-
-            // Create your application here
-        }
-
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Login);
 
-            if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChangeServiceUrl)
+			if (ViewModel.Settings.CanChangeServiceUrl)
             {
                 FindViewById<Button>(Resource.Id.ServerButton).Click += delegate
                 {
@@ -42,19 +32,22 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 
         private void PromptServer()
         {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            var alert = new AlertDialog.Builder(this);
             alert.SetTitle("Server Configuration");
             alert.SetMessage("Enter Server Url");
 
-            var input = new EditText(this);
+	        var settings = ViewModel.Settings;
+			var input = new EditText(this)
+			{
+				Text = settings.ServiceUrl
+			};
 
-            input.Text = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
-            alert.SetView(input);
+	        alert.SetView(input);
 
             alert.SetPositiveButton("Ok", (s, e) =>
             {
                 var serverUrl = input.Text;
-                TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
+				settings.ServiceUrl = serverUrl;
 	
             });
 

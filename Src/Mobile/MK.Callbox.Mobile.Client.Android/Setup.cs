@@ -12,6 +12,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Callbox.Mobile.Client.Converters;
 using apcurium.MK.Callbox.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Client.Cache;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Common.Configuration;
@@ -33,13 +34,15 @@ namespace apcurium.MK.Callbox.Mobile.Client
 
 			var container = TinyIoCContainer.Current;
 
+			container.Register<ICacheService>(new CacheService());
+			container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
 			container.Register<IMessageService, MessageService>();
 			container.Register<IPackageInfo, PackageInfo>();
-			container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
+			container.Register<ILogger>(new LoggerImpl());
+			container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(),container.Resolve<ILogger>()));
 			container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
 			container.Register<IPhoneService, PhoneService>();
-			container.Register<ICacheService>(new CacheService());
-
+			container.Register<IAnalyticsService>((c, x) => new DummyAnalyticsService());
         }
 
 		protected override IMvxApplication CreateApp()

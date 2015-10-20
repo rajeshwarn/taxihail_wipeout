@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
+using System.Windows.Input;
 using Android.App;
 using Android.Media;
 using Android.OS;
@@ -12,6 +13,7 @@ using Android.Widget;
 using Cirrious.MvvmCross.Droid.Views;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
+using apcurium.MK.Callbox.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
 {
@@ -39,12 +41,13 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 			SetContentView(Resource.Layout.View_OrderList);
 
 
-			var logoutButton = this.FindViewById<Button>(Resource.Id.LogoutButton);
+			var logoutButton = FindViewById<Button>(Resource.Id.LogoutButton);
 			Observable.FromEventPattern<View.TouchEventArgs>(logoutButton, "Touch")
 				.Where(e => e.EventArgs.Event.Action == MotionEventActions.Down)
 				.Buffer(TimeOut, NbClick)
 				.Where(s => s.Count == 5)
-				.Subscribe(_ => RunOnUiThread(() => ViewModel.Logout.Execute()));
+				.ObserveOn(SynchronizationContext.Current)
+				.SubscribeAndLogErrors(_ => ViewModel.Logout.ExecuteIfPossible());
 
 			_mediaPlayer = MediaPlayer.Create(this, Resource.Raw.vehicle);
 
