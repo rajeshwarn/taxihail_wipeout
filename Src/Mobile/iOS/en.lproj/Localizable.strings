@@ -358,7 +358,7 @@
 "Rating2"="Poor";
 "Rating1"="Awful";
 "NoConnectionMessage"=" The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.";
-"ApplicationName"="TaxiHail";
+"ApplicationName"="Taxi";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "FavoriteLocationsTitle"="Favorite locations";
 "LargeBagsLabel"="Large Bags";
