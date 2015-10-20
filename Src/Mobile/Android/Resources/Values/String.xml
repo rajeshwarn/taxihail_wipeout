@@ -77,6 +77,7 @@
   <string name="DriverInfoLicence">Licence #:</string>
   <string name="ManualRideLinqStatus_Extra">Extra:</string>
   <string name="PickupTimeTextPlaceholder">Time: Now</string>
+  <string name="BaseRate_PerTenthMile">{0} ({1} per tenth mile)</string>
   <string name="ChangeBookingSettingsButton">Change booking settings</string>
   <string name="EstimateFareCalculating">Calculating...</string>
   <string name="TimeNow">As soon as possible</string>
@@ -176,6 +177,7 @@
   <string name="BuildingName">Building Name / Remark</string>
   <string name="TaxiHailNetworkTimeOutPopupTitle">Switch company?</string>
   <string name="UpdatePasswordConfirmationLabel">Confirm New Password</string>
+  <string name="BaseRate_AirportMeetAndGreet">Airport Meet And Greet</string>
   <string name="DontHaveAnAccountLabel">Don\'t have an account?</string>
   <string name="EtaDurationUnitPlural">mins</string>
   <string name="MessageActivityName">Message</string>
@@ -453,6 +455,7 @@
   <string name="VehicleNumberInfo">Please confirm your car number with the driver</string>
   <string name="NoCreditCardSelected">Please select a credit card</string>
   <string name="InvalidAddressTextEdit">Cannot validate adddress</string>
+  <string name="BaseRate_PerMileRate">Per Mile Rate</string>
   <string name="AccountPaymentCustomerNumberRequiredTitle">Account Rider Number required</string>
   <string name="ProfileSettingsActivityName">Profile</string>
   <string name="MessageToDriverTitle">Message to Driver</string>
@@ -582,6 +585,7 @@
   <string name="View_InitializeOrderForAccountPayment">Please answer these questions</string>
   <string name="CurrencyPriceFormat">{0:C}</string>
   <string name="NoFareText">Choose a destination to get a price estimate.</string>
+  <string name="BaseRate_PerMinute">{0} per minute</string>
   <string name="Notes">Notes</string>
   <string name="EstimatingFare">Estimating your fare...</string>
   <string name="OverduePaymentActivityName">Overdue payment</string>
@@ -631,9 +635,11 @@
   <string name="PickupViewPickupLabel">Pickup:</string>
   <string name="Done">Done</string>
   <string name="DriverInfoVehicleMedallion">Medallion:</string>
+  <string name="BaseRate_MinimumFare">Minimum Fare</string>
   <string name="InvalidEmailTitle">Invalid email</string>
   <string name="CreditCardBookingSettingsError">An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</string>
   <string name="PromoExpiringSoonMessage">Expires in {0} days</string>
+  <string name="BaseRate_WaitTime">Wait Time</string>
   <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
   <string name="BookingAirportPickupPointFee">Selecting Pickup Point {0} will incurr an additional Fee of {1}</string>
   <string name="ResetPasswordSucessTitle">Password reset</string>
@@ -661,6 +667,7 @@
   <string name="Overdue_Failed_Title">Payment Failed</string>
   <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
   <string name="LocationDetailsActivityName">Location Details</string>
+  <string name="BaseRate_BaseRate">Base Rate (no miles)</string>
   <string name="PromoCodeLabel">Promo code</string>
   <string name="Notification_DriverAssignedEmail">Driver Assigned (Email)</string>
   <string name="May">May (05)</string>

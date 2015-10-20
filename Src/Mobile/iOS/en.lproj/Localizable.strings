@@ -583,7 +583,7 @@
 "View_InitializeOrderForAccountPayment"="Please answer these questions";
 "CurrencyPriceFormat"="{0:C}";
 "NoFareText"="Choose a destination to get a price estimate.";
-"BaseRate_PerMinute"="{0} per minute";
+"BaseRate_PerMinute"="Wait Time";
 "Notes"="Notes";
 "EstimatingFare"="Estimating your fare...";
 "OverduePaymentActivityName"="Overdue payment";

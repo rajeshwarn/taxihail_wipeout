@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private VehicleTypeAndEstimateControl _viewVehicleType;
 		private LinearLayout _etaContainer;
 		private LinearLayout _etaBadge;
+		private ImageView _baseRateExpandImage;
+		private BaseRateControl _baseRateControl;
 		private VehicleTypeControl _etaBadgeImage;
 		private AutoResizeTextView _etaLabelInVehicleSelection;
 
@@ -52,11 +54,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 				_etaContainer = (LinearLayout)Content.FindViewById(Resource.Id.EtaContainer);
 				_etaBadge = (LinearLayout)Content.FindViewById(Resource.Id.EtaBadge);
+				_baseRateExpandImage = (ImageView)Content.FindViewById(Resource.Id.BaseRateExpandImage);
 				_etaLabelInVehicleSelection = (AutoResizeTextView)Content.FindViewById(Resource.Id.EtaLabelInVehicleSelection);
+				_baseRateControl = (BaseRateControl)Content.FindViewById(Resource.Id.BaseRate);
+
                 _etaBadgeImage = new VehicleTypeControl (base.Context, (VehicleType)null);
                 _etaBadge.AddView (_etaBadgeImage);
 
                 _etaContainer.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
+
+				_etaContainer.Click += (object sender, EventArgs e) => 
+				{
+					_baseRateControl.ToggleBaseRate();
+
+					var toggleRessource = _baseRateControl.BaseRateToggled 
+						? Resource.Drawable.expander_close
+						: Resource.Drawable.expander_open;
+
+						_baseRateExpandImage.SetImageDrawable(Resources.GetDrawable(toggleRessource));
+				};
 
                 _viewVehicleType.Visibility = ViewStates.Gone;
                 InitializeBinding();
@@ -234,6 +250,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set.Bind(_etaContainer)
 				.For(v => v.Visibility)
 				.To(vm => vm.ShowEta)
+				.WithConversion("Visibility");
+
+			set.Bind(_baseRateControl)
+				.For(v => v.Visibility)
+                .To(vm => vm.DisplayBaseRateInfo)
+				.WithConversion("Visibility");
+
+			set.Bind(_baseRateControl)
+				.For("BaseRate")
+                .To(vm => vm.SelectedVehicleType.BaseRate)
+				.OneWay();
+
+			set.Bind(_etaBadge)
+				.For(v => v.Visibility)
+                .To(vm => vm.DisplayBaseRateInfo)
+				.WithConversion("InvertedVisibility");
+
+			set.Bind(_baseRateExpandImage)
+				.For(v => v.Visibility)
+                .To(vm => vm.DisplayBaseRateInfo)
 				.WithConversion("Visibility");
 
 			set.Bind(_etaLabelInVehicleSelection)

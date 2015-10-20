@@ -2347,7 +2347,7 @@
 		<value>{0} per minute</value>
 	</data>
 	<data name="BaseRate_PerMinute" xml:space="preserve">
-		<value>{0} per minute</value>
+		<value>Wait Time</value>
 	</data>
 	<data name="BaseRate_AirportMeetAndGreet" xml:space="preserve">
 		<value>Airport Meet And Greet</value>
