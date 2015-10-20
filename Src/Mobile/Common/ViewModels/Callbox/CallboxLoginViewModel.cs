@@ -5,20 +5,21 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
     public class CallboxLoginViewModel : BaseViewModel
     {
         private readonly IAccountService _accountService;
+	    private readonly IBookingService _bookingService;
 
-        public CallboxLoginViewModel(IAccountService accountService)
+        public CallboxLoginViewModel(IAccountService accountService, IBookingService bookingService)
         {
-            _accountService = accountService;
+	        _accountService = accountService;
+	        _bookingService = bookingService;
         }
 
-        public override void Start()
+	    public override void Start()
         {
 #if DEBUG
             Email = "john@taxihail.com";
@@ -54,16 +55,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             {
                 return this.GetCommand(() =>
                 {
-	                try
-	                {
-						_accountService.ClearCache();
-	                }
-	                catch (Exception ex)
-	                {
-		               Logger.LogError(ex);
-	                }
-                    
-                    
+					_accountService.ClearCache();
+
 					return SignIn();
                 });
             }
@@ -94,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 if (account != null)
                 {
                     Password = string.Empty;
-                    if (_accountService.GetActiveOrdersStatus().Any(c => TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
+					if (_accountService.GetActiveOrdersStatus().Any(c => _bookingService.IsCallboxStatusActive(c.IBSStatusId)))
                     {
 						ShowViewModel<CallboxOrderListViewModel>();
                     }

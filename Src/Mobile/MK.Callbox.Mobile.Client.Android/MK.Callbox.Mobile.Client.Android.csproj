@@ -166,6 +166,7 @@
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Localization\Localize.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
+    <Compile Include="PlatformIntegration\AndroidMapApiClient.cs" />
     <Compile Include="PlatformIntegration\DummyAnalyticsService.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
@@ -269,6 +270,10 @@
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
       <Project>{f899012e-c6a6-4c49-8501-8ddef592ccf1}</Project>
       <Name>MK.Booking.Api.Contract.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj">
+      <Project>{742b3c55-5630-4dca-bbbd-035c313a4647}</Project>
+      <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>

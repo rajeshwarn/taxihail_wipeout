@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using apcurium.MK.Booking.MapDataProvider;
 using Android.Content;
 using Cirrious.MvvmCross.Droid.Platform;
 using Cirrious.MvvmCross.ViewModels;
@@ -16,6 +17,7 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Common.Configuration;
+using Cirrious.CrossCore.Droid;
 
 namespace apcurium.MK.Callbox.Mobile.Client
 {
@@ -43,6 +45,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
 			container.Register<IPhoneService, PhoneService>();
 			container.Register<IAnalyticsService>((c, x) => new DummyAnalyticsService());
+			container.Register<IGeocoder>((c, p) => new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
         }
 
 		protected override IMvxApplication CreateApp()
