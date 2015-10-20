@@ -61,7 +61,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             VehicleSelectionContainer = new UIView 
             {
-                TranslatesAutoresizingMaskIntoConstraints = false
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                BackgroundColor = UIColor.FromRGB(227, 227, 227)
             };
 
             EstimateContainer = new UIView 
@@ -245,7 +246,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     var subSelectionView = new UIView 
                     { 
                         TranslatesAutoresizingMaskIntoConstraints = false,
-                        BackgroundColor = UIColor.FromRGB(227, 227, 227)
+                        BackgroundColor = UIColor.FromRGB(240, 240, 240)
                     };
                     VehicleSelectionContainer.AddSubview(subSelectionView);
 

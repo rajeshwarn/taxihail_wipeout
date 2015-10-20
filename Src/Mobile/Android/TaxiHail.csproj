@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -33,9 +33,9 @@
     <WarningLevel>4</WarningLevel>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mkMearsTaxi0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MKMearsTaxi</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkMearsTaxi0001.</AndroidSigningKeyPass>
     <DebugSymbols>True</DebugSymbols>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
@@ -54,9 +54,9 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mkMearsTaxi0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MKMearsTaxi</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkMearsTaxi0001.</AndroidSigningKeyPass>
     <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <DebugType>full</DebugType>
     <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
