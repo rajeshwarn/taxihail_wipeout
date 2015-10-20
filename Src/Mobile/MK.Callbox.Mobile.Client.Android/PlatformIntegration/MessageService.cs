@@ -12,8 +12,12 @@ using apcurium.MK.Callbox.Mobile.Client.Activities;
 using apcurium.MK.Callbox.Mobile.Client.Messages;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Common.Extensions;
 using Android.Util;
 using Android.Views;
+using Cirrious.CrossCore;
 using Cirrious.CrossCore.Core;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
@@ -181,17 +185,24 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 					progress.SetMessage(activity.GetString(Resource.String.LoadingMessage));
 					progress.Show();
 
-				}else{
-					if(_progressDialogs.Any())
+				}
+				else
+				{
+					if (_progressDialogs.None())
 					{
-						var progressPrevious = _progressDialogs.Pop();
-						if(progressPrevious != null
-						   && progressPrevious.IsShowing)
+						return;
+					}
+					var progressPrevious = _progressDialogs.Pop();
+					if(progressPrevious != null && progressPrevious.IsShowing)
+					{
+						try
 						{
-							try{
-								progressPrevious.Dismiss();
-							}catch{} // on peut avoir une exception ici si activity est plus présente, pas grave
+							progressPrevious.Dismiss();
 						}
+						catch
+						{
+							// on peut avoir une exception ici si activity est plus présente, pas grave
+						} 
 					}
 				}
 			});
@@ -271,7 +282,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			});
         }
 
-		public async void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)
+		public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)
 		{
 			var list = items.ToArray();
 			if (displayNameSelector == null) 
@@ -313,8 +324,26 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 
 	    public Task<string> ShowPromptDialog(string title, string message, Action cancelAction = null, bool isNumericOnly = false, string inputText = "")
 	    {
-		    throw new NotSupportedException();
+			var tcs = new TaskCompletionSource<string>();
+
+			var dispatcher = Mvx.Resolve<IMvxViewDispatcher>();
+
+			dispatcher.RequestMainThreadAction(() =>
+			{
+				try
+				{
+					ShowEditTextDialog(title, message, Mvx.Resolve<ILocalization>()["Ok"], content => tcs.TrySetResult(content));
+				}
+				catch (Exception ex)
+				{
+					tcs.SetException(ex);
+				}
+				
+			});
+
+			return tcs.Task;
 	    }
+
 
 	    public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positiveAction)
         {

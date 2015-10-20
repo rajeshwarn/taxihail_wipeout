@@ -151,6 +151,7 @@
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
+    <Compile Include="Controls\Dialog\CustomAlertDialog.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\StyledButton.cs" />
     <Compile Include="Controls\TextViewColor.cs" />
@@ -198,6 +199,7 @@
     <AndroidResource Include="Resources\Layout\Control_OrderCell.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\CustomAlertDialogView.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\Main.axml" />
@@ -261,6 +263,20 @@
     <AndroidResource Include="Resources\Values\Attrs.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Values\Themes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\rounded_dialog_background.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\button_selector_positive.xml" />
+    <AndroidResource Include="Resources\Drawable\button_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_rounded.xml" />
+    <AndroidResource Include="Resources\Drawable\button_rounded_positive.xml" />
+    <AndroidResource Include="Resources\Drawable\button_pressed.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\button_text_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

@@ -92,6 +92,18 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050009
 			public const int blueback = 2131034121;
 			
+			// aapt resource value: 0x7f05000f
+			public const int button_border_color = 2131034127;
+			
+			// aapt resource value: 0x7f050012
+			public const int button_pressed_background_color = 2131034130;
+			
+			// aapt resource value: 0x7f050013
+			public const int button_pressed_text_color = 2131034131;
+			
+			// aapt resource value: 0x7f050010
+			public const int button_text_color = 2131034128;
+			
 			// aapt resource value: 0x7f05000c
 			public const int cachecolor = 2131034124;
 			
@@ -106,6 +118,12 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f050005
 			public const int gray = 2131034117;
+			
+			// aapt resource value: 0x7f050011
+			public const int label_text_color = 2131034129;
+			
+			// aapt resource value: 0x7f05000e
+			public const int login_color = 2131034126;
 			
 			// aapt resource value: 0x7f050000
 			public const int orange = 2131034112;
@@ -148,52 +166,73 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			public const int black_button = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int email_cell = 2130837509;
+			public const int button_pressed = 2130837509;
 			
 			// aapt resource value: 0x7f020006
-			public const int gray_button = 2130837510;
+			public const int button_rounded = 2130837510;
 			
 			// aapt resource value: 0x7f020007
-			public const int icon = 2130837511;
+			public const int button_rounded_positive = 2130837511;
 			
 			// aapt resource value: 0x7f020008
-			public const int Logo = 2130837512;
+			public const int button_selector = 2130837512;
 			
 			// aapt resource value: 0x7f020009
-			public const int main_settings = 2130837513;
+			public const int button_selector_positive = 2130837513;
 			
 			// aapt resource value: 0x7f02000a
-			public const int navBar = 2130837514;
+			public const int button_text_selector = 2130837514;
 			
 			// aapt resource value: 0x7f02000b
-			public const int newBlackButton = 2130837515;
+			public const int email_cell = 2130837515;
 			
 			// aapt resource value: 0x7f02000c
-			public const int orderListBackground = 2130837516;
+			public const int gray_button = 2130837516;
 			
 			// aapt resource value: 0x7f02000d
-			public const int password_cell = 2130837517;
+			public const int icon = 2130837517;
 			
 			// aapt resource value: 0x7f02000e
-			public const int red_button = 2130837518;
+			public const int Logo = 2130837518;
 			
 			// aapt resource value: 0x7f02000f
-			public const int server_button = 2130837519;
+			public const int main_settings = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int server_button_state = 2130837520;
+			public const int navBar = 2130837520;
 			
 			// aapt resource value: 0x7f020011
-			public const int sign_in_btn = 2130837521;
+			public const int newBlackButton = 2130837521;
 			
 			// aapt resource value: 0x7f020012
-			public const int social_media_login_btn = 2130837522;
+			public const int orderListBackground = 2130837522;
 			
 			// aapt resource value: 0x7f020013
-			public const int social_media_login_btn_hit = 2130837523;
+			public const int password_cell = 2130837523;
 			
 			// aapt resource value: 0x7f020014
-			public const int social_media_login_btn_state = 2130837524;
+			public const int red_button = 2130837524;
+			
+			// aapt resource value: 0x7f020015
+			public const int rounded_dialog_background = 2130837525;
+			
+			// aapt resource value: 0x7f020016
+			public const int server_button = 2130837526;
+			
+			// aapt resource value: 0x7f020017
+			public const int server_button_state = 2130837527;
+			
+			// aapt resource value: 0x7f020018
+			public const int sign_in_btn = 2130837528;
+			
+			// aapt resource value: 0x7f020019
+			public const int social_media_login_btn = 2130837529;
+			
+			// aapt resource value: 0x7f02001a
+			public const int social_media_login_btn_hit = 2130837530;
+			
+			// aapt resource value: 0x7f02001b
+			public const int social_media_login_btn_state = 2130837531;
 			
 			static Drawable()
 			{
@@ -214,17 +253,59 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060006
 			public const int ContentLayout = 2131099654;
 			
-			// aapt resource value: 0x7f060010
-			public const int ContentSection = 2131099664;
+			// aapt resource value: 0x7f06001e
+			public const int ContentSection = 2131099678;
 			
-			// aapt resource value: 0x7f060011
-			public const int HeaderSection = 2131099665;
+			// aapt resource value: 0x7f060015
+			public const int CustomDialog2ButtonsLayout = 2131099669;
 			
-			// aapt resource value: 0x7f060014
-			public const int LoginButton = 2131099668;
+			// aapt resource value: 0x7f060016
+			public const int CustomDialog2ButtonsNegative = 2131099670;
+			
+			// aapt resource value: 0x7f060017
+			public const int CustomDialog2ButtonsPositive = 2131099671;
+			
+			// aapt resource value: 0x7f060018
+			public const int CustomDialog3ButtonsLayout = 2131099672;
+			
+			// aapt resource value: 0x7f060019
+			public const int CustomDialog3ButtonsNegative = 2131099673;
+			
+			// aapt resource value: 0x7f06001a
+			public const int CustomDialog3ButtonsNeutral = 2131099674;
+			
+			// aapt resource value: 0x7f06001b
+			public const int CustomDialog3ButtonsPositive = 2131099675;
 			
 			// aapt resource value: 0x7f06000f
-			public const int LogoutButton = 2131099663;
+			public const int CustomDialogBackView = 2131099663;
+			
+			// aapt resource value: 0x7f060014
+			public const int CustomDialogCancelButton = 2131099668;
+			
+			// aapt resource value: 0x7f060010
+			public const int CustomDialogDialogView = 2131099664;
+			
+			// aapt resource value: 0x7f060013
+			public const int CustomDialogInputText = 2131099667;
+			
+			// aapt resource value: 0x7f060012
+			public const int CustomDialogMessage = 2131099666;
+			
+			// aapt resource value: 0x7f06000e
+			public const int CustomDialogRootView = 2131099662;
+			
+			// aapt resource value: 0x7f060011
+			public const int CustomDialogTitle = 2131099665;
+			
+			// aapt resource value: 0x7f06001f
+			public const int HeaderSection = 2131099679;
+			
+			// aapt resource value: 0x7f060022
+			public const int LoginButton = 2131099682;
+			
+			// aapt resource value: 0x7f06001d
+			public const int LogoutButton = 2131099677;
 			
 			// aapt resource value: 0x7f060008
 			public const int MainLogo = 2131099656;
@@ -232,8 +313,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060000
 			public const int MvxBindingTagUnique = 2131099648;
 			
-			// aapt resource value: 0x7f06000e
-			public const int MyButton = 2131099662;
+			// aapt resource value: 0x7f06001c
+			public const int MyButton = 2131099676;
 			
 			// aapt resource value: 0x7f060007
 			public const int NavBarImage = 2131099655;
@@ -244,17 +325,17 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060002
 			public const int NavBarSectionBackground = 2131099650;
 			
-			// aapt resource value: 0x7f06001b
-			public const int OrderList = 2131099675;
+			// aapt resource value: 0x7f060029
+			public const int OrderList = 2131099689;
 			
-			// aapt resource value: 0x7f060013
-			public const int Password = 2131099667;
+			// aapt resource value: 0x7f060021
+			public const int Password = 2131099681;
 			
-			// aapt resource value: 0x7f060016
-			public const int ServerButton = 2131099670;
+			// aapt resource value: 0x7f060024
+			public const int ServerButton = 2131099684;
 			
-			// aapt resource value: 0x7f060012
-			public const int Username = 2131099666;
+			// aapt resource value: 0x7f060020
+			public const int Username = 2131099680;
 			
 			// aapt resource value: 0x7f060004
 			public const int ViewNavBarRightButton = 2131099652;
@@ -268,17 +349,17 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060009
 			public const int dateTextView = 2131099657;
 			
-			// aapt resource value: 0x7f060017
-			public const int frameLayout = 2131099671;
+			// aapt resource value: 0x7f060025
+			public const int frameLayout = 2131099685;
 			
-			// aapt resource value: 0x7f060015
-			public const int linearLayout0 = 2131099669;
+			// aapt resource value: 0x7f060023
+			public const int linearLayout0 = 2131099683;
 			
-			// aapt resource value: 0x7f060019
-			public const int listTitle = 2131099673;
+			// aapt resource value: 0x7f060027
+			public const int listTitle = 2131099687;
 			
-			// aapt resource value: 0x7f060018
-			public const int orderListLayout = 2131099672;
+			// aapt resource value: 0x7f060026
+			public const int orderListLayout = 2131099686;
 			
 			// aapt resource value: 0x7f06000b
 			public const int orderNumberTextView = 2131099659;
@@ -289,8 +370,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f06000a
 			public const int passengerTextView = 2131099658;
 			
-			// aapt resource value: 0x7f06001a
-			public const int stroke = 2131099674;
+			// aapt resource value: 0x7f060028
+			public const int stroke = 2131099688;
 			
 			static Id()
 			{
@@ -312,16 +393,19 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			public const int Control_OrderCell = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int Main = 2130903042;
+			public const int CustomAlertDialogView = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int View_CallTaxi = 2130903043;
+			public const int Main = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int View_Login = 2130903044;
+			public const int View_CallTaxi = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int View_OrderList = 2130903045;
+			public const int View_Login = 2130903045;
+			
+			// aapt resource value: 0x7f030006
+			public const int View_OrderList = 2130903046;
 			
 			static Layout()
 			{
@@ -559,6 +643,12 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f08000b
 			public const int ViewTitleStyle = 2131230731;
+			
+			// aapt resource value: 0x7f08001b
+			public const int customDialog_ButtonStyle = 2131230747;
+			
+			// aapt resource value: 0x7f08001a
+			public const int customDialog_PositiveButtonStyle = 2131230746;
 			
 			static Style()
 			{

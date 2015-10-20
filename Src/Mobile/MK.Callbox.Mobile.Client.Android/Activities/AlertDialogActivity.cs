@@ -1,10 +1,7 @@
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Android.App;
 using Android.OS;
-using apcurium.MK.Callbox.Mobile.Client.Helpers;
-using apcurium.MK.Callbox.Mobile.Client.Messages;
 using apcurium.MK.Common.Extensions;
-using TinyIoC;
-using TinyMessenger;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
 {
@@ -28,7 +25,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
             }
             else
             {
-                AlertDialogHelper.ShowAlert(this, _title, _message, () => Finish());
+                this.ShowAlert(_title, _message, Finish);
             }
         }
     }

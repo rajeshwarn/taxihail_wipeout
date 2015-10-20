@@ -1,10 +1,12 @@
 using System;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Client.Controls.Dialog;
 using Android.App;
 using Android.Content;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
-namespace apcurium.MK.Callbox.Mobile.Client.Helpers
+namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
     public static class AlertDialogHelper
     {
@@ -91,6 +93,12 @@ namespace apcurium.MK.Callbox.Mobile.Client.Helpers
 			dialog.SetAdapter(adapter, onItemSelected);
 			dialog.Show();
 		}
-		
+
+		public static Task<string> ShowPromptDialog(Activity owner, string title, string message, Action cancelAction, bool isNumericOnly = false, string inputText = "")
+		{
+			var cad = new CustomAlertDialog();
+			return cad.ShowPrompt(owner, title, message, cancelAction, isNumericOnly, inputText);
+		}
+
     }
 }

@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Callbox.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities

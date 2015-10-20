@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
@@ -11,25 +12,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			get
 			{
-				return this.GetCommand (() =>
+				return this.GetCommand (async () =>
 				{
-					InvokeOnMainThread (async () =>
-					{
-						var name = await this.Services ().Message.ShowPromptDialog (
+					var name = await this.Services ().Message.ShowPromptDialog (
 					           this.Services ().Localize["BookTaxiTitle"],
 					           this.Services ().Localize["BookTaxiPassengerName"], 
-							   () => { return; });
+							   () => { });
 
-						try
-						{
-							Close (this);
-							ShowViewModel<CallboxOrderListViewModel> (new { passengerName = name });
-						}
-						catch (Exception e)
-						{
-							Logger.LogError (e);
-						}
-					});
+					try
+					{
+						Close (this);
+						ShowViewModel<CallboxOrderListViewModel> (new { passengerName = name });
+					}
+					catch (Exception e)
+					{
+						Logger.LogError (e);
+					}
 				});
 			}
 		}
