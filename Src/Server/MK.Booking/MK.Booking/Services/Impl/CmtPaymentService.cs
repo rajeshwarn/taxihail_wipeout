@@ -425,7 +425,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     CallbackUrl = string.Empty,
                     CustomerId = orderStatusDetail.AccountId.ToString(),
                     CustomerName = accountDetail.Name,
-                    DriverId = orderStatusDetail.DriverInfos.DriverId.Trim(), // Remove whitespaces that can be received from IBS because it screws up the pairing request
+                    DriverId = orderStatusDetail.DriverInfos.DriverId.HasValue()
+                        ? orderStatusDetail.DriverInfos.DriverId.Trim() // Remove whitespaces that can be received from IBS because it screws up the pairing request
+                        : orderStatusDetail.DriverInfos.DriverId,
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
                     CardOnFileId = cardToken,
