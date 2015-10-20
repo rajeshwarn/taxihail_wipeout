@@ -19,7 +19,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private OrderStatusChangeDropOffOverlay _changeDropOffOverlay;
 
 		private bool _isShown;
-		private ViewStates _animatedVisibility;
+        private ViewStates _animatedVisibility;
+        private ViewStates _contactTaxiAnimatedVisibility;
         private LinearLayout _statusLayout;
         private ImageView _progressImage;
         private FrameLayout _progressLayout;
@@ -40,8 +41,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         .For("DataContext")
                         .To(vm => vm);
 
-                    set.Bind(_contactTaxiOverlay)
-                        .For(v => v.AnimatedVisibility)
+                    set.Bind()
+                        .For(v => v.ContactTaxiAnimatedVisibility)
                         .To(vm => vm.IsContactTaxiVisible)
                         .WithConversion("Visibility");
 
@@ -122,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
 
 		public ViewStates AnimatedVisibility
-		{
+        { 
 			get { return _animatedVisibility; }
 			set
 			{
@@ -135,9 +136,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 				HideIfNeeded();
 			}
-		}
+        }
 
-		public void ShowWithoutAnimation()
+        public ViewStates ContactTaxiAnimatedVisibility
+        { 
+            get { return _contactTaxiAnimatedVisibility; }
+            set
+            {
+                _contactTaxiAnimatedVisibility = value;
+
+                var layoutParams = new RelativeLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MatchParent,
+                    ViewGroup.LayoutParams.WrapContent);
+                
+                if (value == ViewStates.Visible)
+                {
+                    layoutParams.AddRule(LayoutRules.Below, Resource.Id.ContactTaxiOverlay);
+                }
+                else
+                {
+                    layoutParams.AddRule(LayoutRules.Below, Resource.Id.statusLayout);
+                }
+
+                _changeDropOffOverlay.LayoutParameters = layoutParams;
+                _contactTaxiOverlay.AnimatedVisibility = value;
+            }
+        }
+
+        public void ShowWithoutAnimation()
 		{
 			_isShown = true;
 
@@ -170,17 +196,48 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			animation.AnimationEnd += (sender, args) =>
 			{
-				if (((BookingStatusViewModel) DataContext).IsContactTaxiVisible)
+                if (((BookingStatusViewModel) DataContext).IsContactTaxiVisible && ((BookingStatusViewModel) DataContext).IsChangeDropOffVisible)
 				{
 					return;
 				}
 
-				var desiredHeight = -_contactTaxiOverlay.Height;
+                int desiredHeight = 0;
+
+                if (((BookingStatusViewModel) DataContext).IsChangeDropOffVisible)
+                {
+                    desiredHeight = -_contactTaxiOverlay.Height;
+
+                    if (((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin != desiredHeight)
+                    {
+                        ((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = desiredHeight;
+                    }
+                    return;
+                }
+
+                if (((BookingStatusViewModel) DataContext).IsContactTaxiVisible)
+                {
+                    desiredHeight = -_changeDropOffOverlay.Height;
+
+                    if (((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin != desiredHeight)
+                    {
+                        ((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin = desiredHeight;
+                    }
+                    return;
+                }
+
+                desiredHeight = -_contactTaxiOverlay.Height;
 
 				if (((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin != desiredHeight)
 				{
 					((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = desiredHeight;
 				}
+
+                desiredHeight = -_changeDropOffOverlay.Height;
+
+                if (((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin != desiredHeight)
+                {
+                    ((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin = desiredHeight;
+                }
 			};
 
 			StartAnimation(animation);
@@ -206,7 +263,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					contactAnimation.Cancel();
 				}
 
-				((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = OrderStatusContactTaxiOverlay.CONTACT_TAXI_HIDDEN_Y_OFFSET;
+                ((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = OrderStatusContactTaxiOverlay.CONTACT_TAXI_HIDDEN_Y_OFFSET;
+                ((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin = OrderStatusContactTaxiOverlay.CONTACT_TAXI_HIDDEN_Y_OFFSET;
 				
 				//Ensures that the status view is hidden correctly.
 				if (((MarginLayoutParams) LayoutParameters).TopMargin != -Height)

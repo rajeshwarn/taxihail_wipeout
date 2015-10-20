@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             var desiredHeight = -Height;
 
-            if (((MarginLayoutParams) LayoutParameters).TopMargin != desiredHeight)
+            if (((MarginLayoutParams)LayoutParameters).TopMargin != desiredHeight)
             {
                 ((MarginLayoutParams)LayoutParameters).TopMargin = desiredHeight;
             }

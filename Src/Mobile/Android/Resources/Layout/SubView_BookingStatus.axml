@@ -133,7 +133,7 @@
         android:id="@+id/ChangeDropOffOverlay"
         android:background="@drawable/drop_shadow_opaque"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/ContactTaxiOverlay" />
+        android:layout_below="@id/statusLayout" />
     <FrameLayout
         android:minHeight="75dip"
         android:layout_width="wrap_content"
