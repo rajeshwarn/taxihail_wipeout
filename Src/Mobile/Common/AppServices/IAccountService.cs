@@ -65,6 +65,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		OrderStatusDetail[] GetActiveOrdersStatus();
         
 		Task<Order> GetHistoryOrderAsync(Guid id);
+
+		Task<int> GetAccountOrderNumberToAllowRating();
         
         void RefreshCache(bool reload);
         

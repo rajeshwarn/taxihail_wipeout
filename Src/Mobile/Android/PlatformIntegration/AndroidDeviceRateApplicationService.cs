@@ -8,7 +8,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -19,6 +20,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		/// </summary>
 
 		private static readonly string AndroidMarketLink = "market://details?id=";
+
+		private ILogger _logger;
+
+		public AndroidDeviceRateApplicationService(ILogger logger)
+		{
+			_logger = logger;
+		}
 
 		public void RedirectToRatingPage()
 		{
@@ -32,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			}
 			catch (ActivityNotFoundException exception)
 			{
-
+				_logger.LogError(exception);
 			}
 		}
 	}

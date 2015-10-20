@@ -130,6 +130,8 @@
     <Compile Include="AppServices\Impl\PromotionService.cs" />
     <Compile Include="AppServices\INetworkRoamingService.cs" />
     <Compile Include="AppServices\IPromotionService.cs" />
+    <Compile Include="AppServices\RateApplicationServiceSettings.cs" />
+    <Compile Include="AppServices\RateApplicationState.cs" />
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
@@ -191,14 +193,14 @@
     <Compile Include="Infrastructure\DeviceOrientation\DeviceOrientationFilter.cs" />
     <Compile Include="Infrastructure\DeviceOrientation\OrientationService.cs" />
     <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
-    <Compile Include="Infrastructure\IDeviceRateApplicationService.cs" />
+    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
-    <Compile Include="Infrastructure\IRateApplicationService.cs" />
-    <Compile Include="Infrastructure\RateApplicationService.cs" />
+    <Compile Include="AppServices\IRateApplicationService.cs" />
+    <Compile Include="AppServices\Impl\RateApplicationService.cs" />
     <Compile Include="Localization\Taxiworld.Designer.cs">
       <DependentUpon>Taxiworld.resx</DependentUpon>
       <AutoGen>True</AutoGen>

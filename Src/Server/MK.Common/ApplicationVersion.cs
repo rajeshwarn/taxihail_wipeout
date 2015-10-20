@@ -125,6 +125,11 @@ namespace apcurium.MK.Common
 			return 1;
 		}
 
+		public override bool Equals(object obj)
+		{
+			return CompareTo(obj) == 0;
+		}
+
 		public override string ToString()
 		{
 			StringBuilder appv = new StringBuilder();

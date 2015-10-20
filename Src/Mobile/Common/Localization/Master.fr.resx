@@ -2330,4 +2330,19 @@
 	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
 		<value>Un probleme de connexion est survenu lors de la tentative d'obtenir l'état de votre course de taxi.</value>
 	</data>
+	<data name="RateMobileApplicationTitle" xml:space="preserve">
+		<value>Notez cet application</value>
+	</data>
+	<data name="RateMobileApplicationText" xml:space="preserve">
+		<value>Si vous aimez utiliser cet application, n'oubliez pas de donner votre avis. Merci d'avance pour votre soutien !</value>
+	</data>
+	<data name="RateMobileApplicationNow" xml:space="preserve">
+		<value>Noter maintenant</value>
+	</data>
+	<data name="RateMobileApplicationLater" xml:space="preserve">
+		<value>Me le rappeler ultérieurement</value>
+	</data>
+	<data name="RateMobileApplicationNever" xml:space="preserve">
+		<value>Non, merci</value>
+	</data>
 </root>

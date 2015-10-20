@@ -2331,5 +2331,19 @@
 	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
 		<value>There is a connection error preventing us from providing the status of your ride.</value>
 	</data>
-	
+	<data name="RateMobileApplicationTitle" xml:space="preserve">
+		<value>Rate this application</value>
+	</data>
+	<data name="RateMobileApplicationText" xml:space="preserve">
+		<value>If you enjoy using this application would you mind taking a moment to rate it? Thanks for your support!</value>
+	</data>
+	<data name="RateMobileApplicationNow" xml:space="preserve">
+		<value>Rate It Now</value>
+	</data>
+	<data name="RateMobileApplicationLater" xml:space="preserve">
+		<value>Remind Me Later</value>
+	</data>
+	<data name="RateMobileApplicationNever" xml:space="preserve">
+		<value>No, Thanks</value>
+	</data>
 </root>

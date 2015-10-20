@@ -10,12 +10,14 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace apcurium.MK.Booking.Mobile.Infrastructure
+namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IRateApplicationService
 	{
-		bool IsShowRateApplicationDialog();
+		bool IsShowRateApplicationDialog(int numberOfTripsToAllowRating);
 
 		void ShowRateApplicationSuggestDialog();
+
+		RateApplicationState CurrentRateApplicationState();
 	}
 }

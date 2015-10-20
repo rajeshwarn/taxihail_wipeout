@@ -509,6 +509,14 @@ namespace MK.Common.Configuration
 		[SendToClient, CustomizableByCompany]
 		[Display(Name = "Configuration - Enable Rate Mobile Application", Description = "Enable Rate Mobile Application")]
 		public bool EnableRateMobileApplication { get; protected set; }
-    }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Configuration - Minimum successful trips to allow to rate mobile application", Description = "Minimum successful trips to allow to rate mobile application")]
+		public int RateMobileApplicationMinimumSuccessfulTrips { get; protected set; }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Configuration - Minimum ride rating to consider successful trip for rate mobile application", Description = "Minimum ride rating to consider successful trip for rate mobile application")]
+		public int RateMobileMinimumRideRatingForSuccessfulTrip{ get; protected set; }
+	}
 }
 
