@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;

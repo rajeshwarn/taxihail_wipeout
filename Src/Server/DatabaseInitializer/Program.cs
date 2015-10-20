@@ -35,6 +35,7 @@ using Microsoft.Web.Administration;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using DeploymentServiceTools;
+using ServiceStack.Messaging.Rcon;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 
@@ -235,6 +236,7 @@ namespace DatabaseInitializer
                 }
 
                 Console.WriteLine("Migration of Payment Settings ...");
+
                 MigratePaymentSettings(serverSettings, commandBus);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
@@ -1004,6 +1006,12 @@ namespace DatabaseInitializer
                 });
 
                 paymentSettings.NoShowFee = null;
+                needsUpdate = true;
+            }
+
+            if (serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment)
+            {
+                paymentSettings.CmtPaymentSettings.UsePairingCode = true;
                 needsUpdate = true;
             }
 

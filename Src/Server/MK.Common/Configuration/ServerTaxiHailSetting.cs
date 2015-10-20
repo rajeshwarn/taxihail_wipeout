@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration;
@@ -191,7 +192,8 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
         public bool ValidateAdminRulesForExternalMarket { get; protected set; }
 
-        [CustomizableByCompany]
+        [Obsolete("Use PaymentSetting 'UsePairingCode' instead")]
+        [Hidden]
         [Display(Name = "Configuration - Use Pairing Code When RideLinq Payment", Description = "If enable, will wait for Pairing Code from IBS before processing Cmt Payment")]
         public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; protected set; }        
         
