@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
-                        var paymentSettings = _serverSettings.GetPaymentSettings(order.Market);
+                        var paymentSettings = _serverSettings.GetPaymentSettings(order.CompanyKey);
 
                         if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
                             && paymentSettings.CmtPaymentSettings.UsePairingCode

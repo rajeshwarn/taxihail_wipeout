@@ -185,7 +185,6 @@
     <Compile Include="EventHandlers\CompanyDetailsGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\FeesDetailsGenerator.cs" />
-    <Compile Include="Services\IIBSOrderService.cs" />
     <Compile Include="EventHandlers\Integration\OrderPairingManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderDispatchCompanyManager.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
@@ -360,6 +359,7 @@
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
     <Compile Include="Services\IFeeService.cs" />
+    <Compile Include="Services\IIbsOrderService.cs" />
     <Compile Include="Services\Impl\BasePayPalService.cs" />
     <Compile Include="Services\Impl\BraintreePaymentService.cs" />
     <Compile Include="Services\Impl\CmtPaymentService.cs" />
