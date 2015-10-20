@@ -174,8 +174,8 @@
     <Compile Include="Configuration\Attributes\RequiresTaxiHailPro.cs" />
     <Compile Include="Entity\AddressLocationType.cs" />
     <Compile Include="Resources\ManualRideLinqResponse.cs" />
-    <Compile Include="Entity\BaseRateInfo.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />
+    <Compile Include="Entity\BaseRateInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />

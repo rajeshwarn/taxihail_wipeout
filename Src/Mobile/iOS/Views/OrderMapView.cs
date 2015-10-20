@@ -73,8 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
              
 			RegionChanged += (s, e) =>
 			{
-
-				var canShowClusterizedTaxiMarker = ViewModel != null && !ViewModel.Settings.ShowIndividualTaxiMarkerOnly;
+                var canShowClusterizedTaxiMarker = ViewModel != null && !ViewModel.Settings.ShowIndividualTaxiMarkerOnly;
 
 				if (canShowClusterizedTaxiMarker && CanShowAvailableVehicle())
                 {
@@ -89,7 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 {
                     _automatedMapChanged = false;
                 }
-
 			};
         }
 
@@ -129,11 +127,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             var coordonates = new[] 
             {
-                    CoordinateViewModel.Create(settings.UpperRightLatitude??0, settings.UpperRightLongitude??0, true),
-                    CoordinateViewModel.Create(settings.LowerLeftLatitude??0, settings.LowerLeftLongitude??0, true),
+                CoordinateViewModel.Create(settings.UpperRightLatitude??0, settings.UpperRightLongitude??0, true),
+                CoordinateViewModel.Create(settings.LowerLeftLatitude??0, settings.LowerLeftLongitude??0, true),
             };
-            
-
 
             if (!coordonates.Any(p => p.Coordinate.Latitude == 0 || p.Coordinate.Longitude == 0))
             {
@@ -148,8 +144,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 Region = region;
             }
-
-
 
             this.DelayBind(() => 
             {
@@ -396,7 +390,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 if (currentState == HomeViewModelState.BookingStatus || currentState == HomeViewModelState.ManualRidelinq)
                 {
                     return;
-
                 }
 
 			    SetAnnotation(DestinationAddress, _destinationAnnotation, false);
@@ -457,8 +450,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				new MKCoordinateSpan (bounds.LatitudeDelta, bounds.LongitudeDelta));
 		}
 
-
-
         private void HandleTouchMove (object sender, EventArgs e)
         {
             CancelAddressSearch();
@@ -466,9 +457,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void HandleTouchEnded(object sender, EventArgs e)
         {
-            ViewModel.BookCannotExecute = true;
             _userMovedMapSubsciption.Disposable = Observable
-				.FromEventPattern<MKMapViewChangeEventArgs>(eh =>  RegionChanged += eh, eh => RegionChanged -= eh)
+				.FromEventPattern<MKMapViewChangeEventArgs>(eh => RegionChanged += eh, eh => RegionChanged -= eh)
+                .Do(_ => ViewModel.DisableBooking())
                 .Throttle(TimeSpan.FromMilliseconds(1000))
                 .Take(1)
                 .ObserveOn(SynchronizationContext.Current)

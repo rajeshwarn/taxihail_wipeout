@@ -50,7 +50,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<ServiceType> _serviceTypeSubject;
 		readonly ISubject<string> _estimatedFareDisplaySubject;
-        readonly ISubject<OrderValidationResult> _orderValidationResultSubject = new BehaviorSubject<OrderValidationResult>(new OrderValidationResult());
+		readonly ISubject<OrderValidationResult> _orderValidationResultSubject = 
+			// set has error at first to force a validation to pass before enabling the button
+			new BehaviorSubject<OrderValidationResult>(new OrderValidationResult 
+			{ 
+				HasError = true, 
+				AppliesToCurrentBooking = true, 
+				AppliesToFutureBooking = true 
+			});
 		readonly ISubject<DirectionInfo> _estimatedFareDetailSubject = new BehaviorSubject<DirectionInfo>( new DirectionInfo() );
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<string> _promoCodeSubject = new BehaviorSubject<string>(string.Empty);
@@ -684,6 +691,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		    return estimate;
 		}
 
+		public void DisableBooking()
+		{
+			_orderValidationResultSubject.OnNext(new OrderValidationResult{ HasError = true, AppliesToFutureBooking = true, AppliesToCurrentBooking = true });
+		}
+
 		public async Task PrepareForNewOrder()
 		{
 			var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
@@ -703,7 +715,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 			_orderCanBeConfirmed.OnNext (false);
 			_cvvSubject.OnNext(string.Empty);
-			_orderValidationResultSubject.OnNext(null);
+			DisableBooking();
 			_loadingAddressSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
             _poiRefPickupListSubject.OnNext(new PickupPoint[0]);
@@ -850,9 +862,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<bool> ValidateCardOnFile()
 		{
-			var orderToValidate = await GetOrder ();	
+			var orderToValidate = await GetOrder ();
+			var hasCardOnFile = _accountService.CurrentAccount.DefaultCreditCard != null;
 			if (orderToValidate.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id 
-				&& _accountService.CurrentAccount.DefaultCreditCard == null)
+				&& !hasCardOnFile)
+			{
+				return false;
+			}
+
+			var serviceType = await _serviceTypeSubject.Take(1).ToTask();
+			if (serviceType == ServiceType.Luxury
+				&& !hasCardOnFile)
 			{
 				return false;
 			}

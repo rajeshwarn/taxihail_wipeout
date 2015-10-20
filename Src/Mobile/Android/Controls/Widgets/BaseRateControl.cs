@@ -69,16 +69,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public bool BaseRateToggled { get; set; }
 
-		public bool Disabled
+		public bool UserInputDisabled
 		{
 			set
 			{
-				if (!value)
+				Clickable = !value;
+				if (!value && BaseRateToggled)
 				{
-					Disable ();
+					// close the rate box
+					ToggleBaseRate();
 				}
-
-				base.Clickable = value;
 			}
 		}
 
@@ -102,16 +102,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					
 				if (value == null)
 				{
-					Disable();
+					BaseRateToggled = false;
+					LayoutParameters.Height = 0;
+        			RequestLayout();
 				}
         	}
-        }
-
-        private void Disable() 
-        {
-			BaseRateToggled = false;
-			LayoutParameters.Height = 0;
-        	RequestLayout();
         }
 
 		string ToCurrency(decimal amount)

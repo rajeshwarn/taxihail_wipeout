@@ -161,11 +161,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set.Bind(btnBookForManualRideLinq)
 				.For(v => v.Command)
 				.To(vm => vm.Book);
-
-            set.Bind(btnBookForManualRideLinq)
-                .For(v => v.Enabled)
-                .To(vm => vm.ParentViewModel.Map.BookCannotExecute)
-                .WithConversion("BoolInverter");
             
 		    set.Bind(btnBookForManualRideLinq)
 		        .For("Title")
@@ -199,10 +194,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
             var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
 
-            var btnBook = new FlatButton()
-                {
-                    TranslatesAutoresizingMaskIntoConstraints = false
-                };
+            var btnBook = new FlatButton
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
             FlatButtonStyle.Green.ApplyTo(btnBook);
 
             set.Bind(btnBook).For(v => v.Hidden).To(vm => vm.BookButtonHidden);
@@ -318,11 +313,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(btnBook)
                 .For(v => v.Command)
                 .To(vm => vm.Book);
-            
-            set.Bind(btnBook)
-                .For(v => v.Enabled)
-                .To(vm => vm.ParentViewModel.Map.BookCannotExecute)
-                .WithConversion("BoolInverter");
             
 			set.Bind(btnBook)
 				.For("Title")

@@ -77,8 +77,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
             _payPalSettings = paymentSettings.PayPalClientSettings;
 
-            lblInstructions.Text = Localize.GetValue("CreditCardInstructions");
-
             if (!ViewModel.CanChooseTip)
             {
                 viewTip.RemoveFromSuperview();
@@ -121,6 +119,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
 			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
+
+            set.Bind(lblInstructions)
+                .For(v => v.Text)
+                .To(vm => vm.Instructions);
 
             set.Bind(btnSaveCard)
                 .For("Title")

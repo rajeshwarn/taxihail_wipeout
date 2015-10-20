@@ -262,6 +262,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To(vm => vm.SelectedVehicleType.BaseRate)
 				.OneWay();
 
+			set.Bind(_baseRateControl)
+				.For("UserInputDisabled")
+                .To(vm => vm.CanShowRateBox)
+				.OneWay();
+
 			set.Bind(_etaBadge)
 				.For(v => v.Visibility)
                 .To(vm => vm.DisplayBaseRateInfo)

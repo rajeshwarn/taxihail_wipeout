@@ -358,7 +358,7 @@
 "Rating2"="Poor";
 "Rating1"="Awful";
 "NoConnectionMessage"=" The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.";
-"ApplicationName"="TaxiHail";
+"ApplicationName"="Taxi";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "FavoriteLocationsTitle"="Favorite locations";
 "LargeBagsLabel"="Large Bags";
@@ -530,6 +530,7 @@
 "ChooseProviderDialogTitle"="Pick a provider";
 "OrderStatus_Medallion"="Medallion";
 "LanguageCode"="en";
+"CreditCardInstructionsForLuxury"="Please enter a credit card to continue the booking process";
 "DateTimePickerSetButton"="Book";
 "HistoryDetailRequestedLabel"="Requested:";
 "HistoryDetailAptRingCodeLabel"="Apt / Entry code:";
@@ -637,7 +638,7 @@
 "InvalidEmailTitle"="Invalid email";
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "PromoExpiringSoonMessage"="Expires in {0} days";
-"BaseRate_WaitTime"="{0} per minute";
+"BaseRate_WaitTime"="Wait Time";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "BookingAirportPickupPointFee"="Selecting Pickup Point {0} will incurr an additional Fee of {1}";
 "ResetPasswordSucessTitle"="Password reset";

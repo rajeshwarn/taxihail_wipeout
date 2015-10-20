@@ -12,7 +12,6 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Maps;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -25,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private bool _pickupInputDisabled;
 		private bool _destinationInputDisabled;
 		private bool _vehicleTypeInputDisabled;
+		private bool _canShowRateBox = true;
 
 		private static readonly int TimeBeforeUpdatingEtaWhenNoVehicle = 10;  // In seconds
 		private DateTime? _keepEtaWhenNoVehicleStartTime = null;
@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					VehicleTypeInputDisabled = true;
 					IsDestinationSelected = false;
 					IsPickupSelected = false;
+					CanShowRateBox = false;
 					break;
 				case HomeViewModelState.PickDate:
 				case HomeViewModelState.AirportPickDate:
@@ -99,6 +100,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					VehicleTypeInputDisabled = true;
 					IsDestinationSelected = false;
 					IsPickupSelected = false;
+					CanShowRateBox = true;
 					break;
 				case HomeViewModelState.Initial:
 					PickupInputDisabled = false;
@@ -106,6 +108,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					VehicleTypeInputDisabled = false;
 					IsDestinationSelected = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
 					IsPickupSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
+					CanShowRateBox = true;
 					break;
 			}
 		}
@@ -298,6 +301,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		public bool CanShowRateBox
+		{
+			get { return _canShowRateBox; }
+			set
+			{
+				_canShowRateBox = value; 
+				RaisePropertyChanged();
+			}
+		}
+
 		private AddressSelectionMode _addressSelectionMode;
 		public AddressSelectionMode AddressSelectionMode
 		{
@@ -474,6 +487,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get { return true; } // TODO: Settings.DisplayBaseRateInfo
 		}
 
+		public bool BaseRateToggled { get; set; }
 
 		public bool GroupVehiclesByServiceType 
 		{

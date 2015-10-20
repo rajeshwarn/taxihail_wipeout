@@ -358,7 +358,7 @@
 "Rating1"="Terrible";
 "NoConnectionMessage"="Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.";
 "RideSettingsPhone"="Ligne mobile";
-"ApplicationName"="TaxiHail";
+"ApplicationName"="Taxi";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
 "FavoriteLocationsTitle"="Lieu de départ / destination favoris";
 "LargeBagsLabel"="Bagages encombrants";
@@ -525,6 +525,7 @@
 "ChooseProviderDialogTitle"="Choisissez un prestataire";
 "OrderStatus_Medallion"="Medallion";
 "LanguageCode"="fr";
+"CreditCardInstructionsForLuxury"="Veuillez entrer une carte de crédit pour continuer votre réservation";
 "DateTimePickerSetButton"="Réserver maintenant!";
 "HistoryDetailRequestedLabel"="Commandé le:";
 "HistoryDetailAptRingCodeLabel"="Apt / digicode:";

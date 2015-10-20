@@ -539,11 +539,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			return list.Select(x => { x.BaseRate = new BaseRateInfo 
             	{
-            		MinimumFare = 12m,
-            		WaitTime = 2m,
-            		PerMileRate = 3m,
-            		BaseRateNoMiles = 4.5m,
-            		AirportMeetAndGreet = 3m 
+					MinimumFare = x.ServiceType == ServiceType.Luxury ? 15m : 5m,
+					BaseRateNoMiles = 6m,
+					PerMileRate = 3m,   
+            		WaitTime = 0.75m,            		         		
+            		AirportMeetAndGreet = 15m 
         		};
         		return x;
         	}).ToList();
