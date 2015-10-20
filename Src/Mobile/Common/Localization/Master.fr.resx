@@ -2271,10 +2271,10 @@
 		<value>Medallion</value>
 	</data>
 	<data name="OrderStatus_AddDestination" xml:space="preserve">
-		<value>Ajoutez votre destination</value>
+		<value>Ajouter votre destination</value>
 	</data>
 	<data name="OrderStatus_RemoveDestination" xml:space="preserve">
-		<value>Enlevez votre destination</value>
+		<value>Enlever votre destination</value>
 	</data>
 	<data name="WaitingCarLandscapeViewCloseButtonText" xml:space="preserve">
 		<value>Retour</value>
