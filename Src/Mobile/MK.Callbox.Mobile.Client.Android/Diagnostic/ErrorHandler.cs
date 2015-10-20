@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Diagnostic;
 using Android.Content;
@@ -15,16 +16,17 @@ namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
 		public const string ACTION_SERVICE_ERROR = "Mk_Taxi.SERVICE_ERROR";
 		public const string ACTION_EXTRA_ERROR = "Mk_Taxi.SERVICE_ERROR_Code";
 
-        public static DateTime _lastConnectError = DateTime.MinValue;
+        public static DateTime LastConnectError = DateTime.MinValue;
 
 
         public bool HandleError(Exception ex)
         {
 			var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 
-            if (ex is WebServiceException)
+			var webServiceException = ex as WebServiceException;
+			if (webServiceException != null)
             {
-                var webServiceException = (WebServiceException)ex;
+                
 				var title = localize["ServiceErrorCallTitle"];
 				var message = localize["ServiceErrorDefaultMessage"];
 
@@ -33,18 +35,18 @@ namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
 
 					message = localize["ServiceError" + webServiceException.ErrorCode];
                 }
-                catch
+                catch(Exception exception)
                 {
-
+					Logger.LogError(exception);
                 }
                 TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
             }
             else if (ex is WebException)
             {
                 TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-                if (_lastConnectError.Subtract(DateTime.Now).TotalSeconds < -2)
+                if (LastConnectError.Subtract(DateTime.Now).TotalSeconds < -2)
                 {
-                    _lastConnectError = DateTime.Now;
+                    LastConnectError = DateTime.Now;
                     var cm = (ConnectivityManager)Application.Context.GetSystemService(Context.ConnectivityService);
                     if ((cm == null) || (cm.ActiveNetworkInfo == null) || (!cm.ActiveNetworkInfo.IsConnectedOrConnecting))
                     {
@@ -55,7 +57,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
                 }
             }
 
-
+	        return true;
         }
 	}
 }

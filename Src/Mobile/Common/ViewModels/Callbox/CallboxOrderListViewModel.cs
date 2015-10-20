@@ -2,13 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
@@ -49,19 +53,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         private bool _isClosed;
         private CreateOrderInfo _orderToCreate;
         private List<Guid> _orderNotified;
-        private IDisposable _refreshTimer;
+        private readonly SerialDisposable _serialDisposable = new SerialDisposable();
         private ObservableCollection<CallboxOrderViewModel> _orders;
 
 		public ObservableCollection<CallboxOrderViewModel> Orders
 		{
 			get { return _orders; }
-			set { _orders = value; }
+			set
+			{
+				_orders = value;
+				RaisePropertyChanged();
+			}
 		}
 
 		public string ApplicationName
 		{
             get { return Settings.TaxiHail.ApplicationName; }
 		}
+
+		private bool _refreshGate = true;
 
         public override void OnViewLoaded()
 		{
@@ -70,7 +80,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 			_orderNotified = new List<Guid>();
 
-			_refreshTimer = Observable.Timer(TimeSpan.FromSeconds(2)).Subscribe(a => RefreshOrderStatus());                           
+			_serialDisposable.Disposable = ObserveTimerForRefresh()
+				.Select(_ => GetActiveOrderStatus())
+				.ObserveOn(SynchronizationContext.Current)
+				.Where(_ => _refreshGate)
+				.Subscribe(orderStatusDetails =>
+				{
+					_refreshGate = true;
+					RefreshOrderStatus(orderStatusDetails);
+					_refreshGate = false;
+				}, 
+				Logger.LogError);                           
 
 			_token = this.Services().MessengerHub.Subscribe<OrderDeleted>(orderId =>
     			{
@@ -79,84 +99,91 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 			if (_orderToCreate != null )
 			{
-				CreateOrder(_orderToCreate.PassengerName);
+				CreateOrder(_orderToCreate.PassengerName).FireAndForget();
 			}
 		}
 
-		private void RefreshOrderStatus()
+		private IObservable<Unit> ObserveTimerForRefresh()
+		{
+			return Observable
+				.Timer(TimeSpan.FromSeconds(2))
+				.Select(_ => Unit.Default);
+		}
+
+		private void RefreshOrderStatus(IEnumerable<OrderStatusDetail> orderStatus)
 		{
 			try
 			{
-				if ( _isClosed )
+				Orders.Clear();
+
+				var orderStatusDetails = orderStatus.ToArray();
+				if (_orderToCreate != null
+					&& _orderToCreate.Order != null
+					&& orderStatusDetails.Any(os => os.OrderId == _orderToCreate.Order.Id))
 				{
+					_orderToCreate = null;
+				}
+				else if (_orderToCreate != null
+					&& _orderToCreate.Order != null
+					&& orderStatusDetails.None(os => os.OrderId == _orderToCreate.Order.Id))
+				{
+					Orders.Add(_orderToCreate.Order);
+				}
+
+				Orders.AddRange(orderStatusDetails.Select(status => new CallboxOrderViewModel(_bookingService)
+				{
+					OrderStatus = status,
+					CreatedDate = status.PickupDate,
+					IbsOrderId = status.IBSOrderId,
+					Id = status.OrderId
+				}));
+
+				if (!Orders.Any() && _orderToCreate == null)
+				{
+					ShowViewModel<CallboxCallTaxiViewModel>();
+					Close();
+				}
+
+				if (Orders.None(x => _bookingService.IsCallboxStatusCompleted(x.OrderStatus.IBSStatusId)) && NoMoreTaxiWaiting != null)
+				{
+					NoMoreTaxiWaiting(this, new EventArgs());
+
 					return;
 				}
 
-                var orderStatus = _accountService.GetActiveOrdersStatus().ToList()
-                    .OrderByDescending(o => o.PickupDate)
-                    .Where(status => _bookingService.IsCallboxStatusActive(status.IBSStatusId));
+				var completedOrders = Orders.Where(order => 
+					_bookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId)	&&
+					_orderNotified.All(orderId => orderId != order.Id));
 
-				InvokeOnMainThread(() =>
+				foreach (var order in completedOrders)
+				{
+					_orderNotified.Add(order.Id);
+					if (OrderCompleted != null)
 					{
-						Orders.Clear();
-
-					    var orderStatusDetails = orderStatus as OrderStatusDetail[] ?? orderStatus.ToArray();
-					    if (_orderToCreate != null
-                            && _orderToCreate.Order != null
-                            && orderStatusDetails.Any(os => os.OrderId == _orderToCreate.Order.Id))
-						{
-							_orderToCreate = null;
-						}
-						else if (_orderToCreate != null
-                            && _orderToCreate.Order != null
-                            && orderStatusDetails.None(os => os.OrderId == _orderToCreate.Order.Id))
-						{
-							Orders.Add(_orderToCreate.Order);
-						}
-
-                        Orders.AddRange(orderStatusDetails.Select(status => new CallboxOrderViewModel(_bookingService)
-							{
-								OrderStatus = status,
-								CreatedDate = status.PickupDate,
-								IBSOrderId = status.IBSOrderId,
-								Id = status.OrderId
-							}));
-
-						if (!Orders.Any() && _orderToCreate == null) 
-						{
-							ShowViewModel<CallboxCallTaxiViewModel>();
-							Close();
-						}
-
-                        if(Orders.None(x => _bookingService.IsCallboxStatusCompleted(x.OrderStatus.IBSStatusId)))
-						{
-							NoMoreTaxiWaiting(this, null);
-						}
-						else
-						{
-							foreach (var order in Orders)
-							{
-                                if (_bookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId)
-                                    && _orderNotified.All(orderId => orderId != order.Id))
-								{
-									_orderNotified.Add(order.Id);
-									OrderCompleted(this, null);
-								}
-							}
-						}
-					});
+						// TODO: validate this
+						OrderCompleted(this, new EventArgs());
+					}
+				}
 			}
 			catch (WebServiceException e)
 			{
 				Logger.LogError(e);
 			}
-			finally
+		}
+
+		private OrderStatusDetail[] GetActiveOrderStatus()
+		{
+			try
 			{
-				if (!_isClosed)
-				{
-					Observable.Timer(TimeSpan.FromSeconds( _orderToCreate == null ? 10 : 2 ))
-						.Subscribe(a => RefreshOrderStatus());                           
-				}
+				return _accountService.GetActiveOrdersStatus()
+					.OrderByDescending(o => o.PickupDate)
+					.Where(status => _bookingService.IsCallboxStatusActive(status.IBSStatusId))
+					.ToArray();
+			}
+			catch (Exception ex)
+			{
+				this.Logger.LogError(ex);
+				return new OrderStatusDetail[0];
 			}
 		}
 
@@ -170,9 +197,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 		public void UnsubscribeToken()
 		{
-			_refreshTimer.Dispose();
+			_serialDisposable.Disposable = null;
 			_token.Dispose();
-			_isClosed = true;
 		}
 
         public ICommand CallTaxi
@@ -186,7 +212,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 						this.Services ().Localize["BookTaxiPassengerName"], 
 						() => { return; });
 
-					CreateOrder(name);
+					await CreateOrder(name);
 				});
 			}
 		}
@@ -251,83 +277,101 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			});
 		}
 
-        private async void CreateOrder(string passengerName)
-		{        
-			this.Services().Message.ShowProgress(true);
-
-			if ( _orderToCreate == null )
-			{
-				_orderToCreate = new CreateOrderInfo { PassengerName = passengerName, IsPendingCreation = true }; 
-			}
-                
-			try
-			{
-                var pickupAddress = (await _accountService.GetFavoriteAddresses()).FirstOrDefault();
-
-				var newOrderCreated = new CreateOrder();
-				newOrderCreated.Id = Guid.NewGuid();
-                newOrderCreated.Settings = _accountService.CurrentAccount.Settings;
-				newOrderCreated.PickupAddress = pickupAddress;
-				newOrderCreated.PickupDate = DateTime.Now;
-
-				if (!string.IsNullOrEmpty(passengerName))
+        private async Task CreateOrder(string passengerName)
+		{
+	        using (this.Services().Message.ShowProgress())
+	        {
+				if (_orderToCreate == null)
 				{
-                    newOrderCreated.Note = string.Format(this.Services().Localize["Callbox.passengerName"], passengerName);
-					newOrderCreated.Settings.Name = passengerName;
+					_orderToCreate = new CreateOrderInfo { PassengerName = passengerName, IsPendingCreation = true };
 				}
-				else
+
+				try
 				{
-                    newOrderCreated.Note = this.Services().Localize["Callbox.noPassengerName"];
-                    newOrderCreated.Settings.Name = this.Services().Localize["NotSpecified"];
-				}      
-                // TODO: Refactor to async/await
-                var orderInfoTask = _bookingService.CreateOrder(newOrderCreated);
-                orderInfoTask.Wait();
-                var orderInfo = orderInfoTask.Result;
+					var pickupAddress = (await _accountService.GetFavoriteAddresses()).FirstOrDefault();
 
-				InvokeOnMainThread (() =>
-				{                    
-					if (pickupAddress != null)
+					var newOrderCreated = new CreateOrder
 					{
-						if (orderInfo.IBSOrderId.HasValue && orderInfo.IBSOrderId > 0)
-						{
-							orderInfo.Name = newOrderCreated.Settings.Name;
-                            var o = new CallboxOrderViewModel(_bookingService)
-							{
-								CreatedDate = DateTime.Now,
-								IBSOrderId = orderInfo.IBSOrderId,
-								Id = newOrderCreated.Id,
-								OrderStatus = orderInfo                                            
-							};
+						Id = Guid.NewGuid(),
+						Settings = _accountService.CurrentAccount.Settings,
+						PickupAddress = pickupAddress,
+						PickupDate = DateTime.Now
+					};
 
-							if ( _orderToCreate != null )
-							{
-								_orderToCreate.Order  = o;
-							}
-
-							Orders.Add(o);
-						}
+					if (!string.IsNullOrEmpty(passengerName))
+					{
+						newOrderCreated.Note = string.Format(this.Services().Localize["Callbox.passengerName"], passengerName);
+						newOrderCreated.Settings.Name = passengerName;
 					}
 					else
 					{
-                        this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoPickupAddress"]);
+						newOrderCreated.Note = this.Services().Localize["Callbox.noPassengerName"];
+						newOrderCreated.Settings.Name = this.Services().Localize["NotSpecified"];
 					}
-				});
-			}
-            catch(Exception e)
-			{
-                Logger.LogError(e);
-				InvokeOnMainThread(() =>
+				
+					var orderInfo = await _bookingService.CreateOrder(newOrderCreated);
+
+					//TODO: modify to make the UI more reactive, aka we should not be needing to wait for the IbsOrderId.
+					//We need to wait for an ibsOrderId
+					while (!orderInfo.IBSOrderId.HasValue && VehicleStatuses.CancelStatuses.None(status => status == orderInfo.IBSStatusId))
+					{
+						await Task.Delay(TimeSpan.FromMilliseconds(200));
+
+						orderInfo = await _bookingService.GetOrderStatusAsync(orderInfo.OrderId);
+					}
+
+					var tcs = new TaskCompletionSource<Unit>();
+
+					InvokeOnMainThread(() =>
+					{
+						if (pickupAddress != null)
+						{
+							if (orderInfo.IBSOrderId.HasValue && orderInfo.IBSOrderId > 0)
+							{
+								orderInfo.Name = newOrderCreated.Settings.Name;
+
+								var orderViewModel = new CallboxOrderViewModel(_bookingService)
+								{
+									CreatedDate = DateTime.Now,
+									IbsOrderId = orderInfo.IBSOrderId,
+									Id = newOrderCreated.Id,
+									OrderStatus = orderInfo
+								};
+
+								if (_orderToCreate != null)
+								{
+									_orderToCreate.Order = orderViewModel;
+								}
+
+								Orders.Add(orderViewModel);
+							}
+						}
+						else
+						{
+							this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoPickupAddress"]);
+						}
+
+						tcs.TrySetResult(Unit.Default);
+					});
+
+					await tcs.Task;
+				}
+				catch (Exception e)
 				{
-                    string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.TaxiHail.ApplicationName, this.Services().Settings.DefaultPhoneNumberDisplay);
-                    this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
-				});
-			}
-			finally
-			{
-				_orderToCreate.IsPendingCreation = false;
-				this.Services().Message.ShowProgress(false);
-			}
+					Logger.LogError(e);
+					InvokeOnMainThread(() =>
+					{
+						var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.TaxiHail.ApplicationName, this.Services().Settings.DefaultPhoneNumberDisplay);
+						this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
+					});
+				}
+				finally
+				{
+					_orderToCreate.IsPendingCreation = false;
+				}
+	        }
+
+			
 		}
 
 		public delegate void OrderHandler(object sender,EventArgs args);

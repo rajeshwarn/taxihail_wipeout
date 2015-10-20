@@ -10,28 +10,47 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
     public class CallboxOrderViewModel : BaseViewModel
     {
         private readonly IBookingService _bookingService;
+	    private int? _ibsOrderId;
+	    private OrderStatusDetail _orderStatus;
 
-        public CallboxOrderViewModel(IBookingService bookingService)
+	    public CallboxOrderViewModel(IBookingService bookingService)
         {
             _bookingService = bookingService;
         }
             
         public Guid Id { get; set; }
-      
-        public int? IBSOrderId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+	    public int? IbsOrderId
+	    {
+		    get { return _ibsOrderId; }
+		    set
+		    {
+			    _ibsOrderId = value;
+			    RaisePropertyChanged();
+				RaisePropertyChanged(() => IbsOrderIdString);
+		    }
+	    }
 
-        public OrderStatusDetail OrderStatus { get; set; }
+	    public DateTime CreatedDate { get; set; }
 
-        public string FormatedCreatedDate
+	    public OrderStatusDetail OrderStatus
+	    {
+		    get { return _orderStatus; }
+		    set
+		    {
+			    _orderStatus = value; 
+			    RaisePropertyChanged();
+		    }
+	    }
+
+	    public string FormatedCreatedDate
         {
             get {  return CreatedDate.ToShortTimeString(); }
         }
 
-        public string IBSOrderIdString
+        public string IbsOrderIdString
         {
-            get { return IBSOrderId.ToString(); }
+            get { return IbsOrderId.ToString(); }
         }
 
         public ICommand CancelOrder
