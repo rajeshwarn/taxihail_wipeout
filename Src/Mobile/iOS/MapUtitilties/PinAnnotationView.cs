@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 	        switch (market.ToLower())
 	        {
 	            case AssignedVehicleMarkets.NYC:
-                    return UIColor.FromRGB(222, 157, 0); // Yellow
+                    return UIColor.FromRGB(243, 177, 20); // Yellow
                 case AssignedVehicleMarkets.NYSHL:
                     return UIColor.FromRGB(92, 127, 18); // Green
                 default:

@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Payment
         }
         
         public void ConfirmExternalPayment(Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
-                                           string authorizationCode, string cardToken, int accountId, string name, string phone, string email, string os, string userAgent, string companyKey = null)       
+                                           string authorizationCode, string cardToken, int accountId, string name, string phone, string email, string os, string userAgent, string companyKey = null)
         {
             if (!_ibsServiceProvider.Booking(companyKey).ConfirmExternalPayment(orderId, ibsOrderId, totalAmount, tipAmount, meterAmount, type, provider, transactionId,
                             authorizationCode, cardToken, accountId, name, phone, email, os, userAgent) )

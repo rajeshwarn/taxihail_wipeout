@@ -27,12 +27,20 @@ namespace apcurium.MK.Booking.Api.Services
         {
             try
             {
-	            var order = _orderDao.FindById(request.OrderId);
-	            if (order == null)
-	            {
-		            throw new Exception("Order Id: {0} does not exist".InvariantCultureFormat(request.OrderId));
-	            }
-                _ibsOrderService.SendMessageToDriver(request.Message, request.VehicleNumber, order.CompanyKey);
+                string companyKey = null;
+
+                if (request.OrderId != Guid.Empty)
+                {
+                    var order = _orderDao.FindById(request.OrderId);
+                    if (order == null)
+                    {
+                        throw new Exception("Order Id: {0} does not exist".InvariantCultureFormat(request.OrderId));
+                    }
+
+                    companyKey = order.CompanyKey;
+                }
+
+                _ibsOrderService.SendMessageToDriver(request.Message, request.VehicleNumber, companyKey);
             }
             catch (Exception ex)
             {
