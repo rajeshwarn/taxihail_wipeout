@@ -529,16 +529,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<VehicleType>> GetVehiclesList(bool refresh)
 		{
 			// todo temporary until server returns data
-			var list = new List<VehicleType>
+			return new List<VehicleType>
 			{
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Sedan", LogoName = "taxi", ReferenceDataVehicleId = 0 },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Van", LogoName = "suv", ReferenceDataVehicleId = 1 },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "WAV", LogoName = "wheelchair", ReferenceDataVehicleId = 2 },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Luxury, Name = "Sedan", LogoName = "blackcar", ReferenceDataVehicleId = 3 }
+				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Sedan", LogoName = "taxi", ReferenceDataVehicleId = 1 },
+				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Van", LogoName = "suv", ReferenceDataVehicleId = 2 },
+				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "WAV", LogoName = "wheelchair", ReferenceDataVehicleId = 3 },
+				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Luxury, Name = "Sedan", LogoName = "blackcar", ReferenceDataVehicleId = 0 }
 			};
-
-			return list;
-
+				
 		    var cacheService = Mvx.Resolve<ICacheService>();
 
             var cached = cacheService.Get<VehicleType[]>(VehicleTypesDataCacheKey);
@@ -548,9 +546,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
 
-            return vehiclesList;
+			// TODO temp list while server doesn't return service type
+			var tempList = vehiclesList.Select(x => new VehicleType { 
+				Id = x.Id, 
+				Name = x.Name, 
+				LogoName = x.LogoName, 
+				ReferenceDataVehicleId = x.ReferenceDataVehicleId, 
+				ServiceType = x.LogoName == "blackcar" ? ServiceType.Luxury : ServiceType.Taxi 
+			}).ToArray();
+
+			cacheService.Set(VehicleTypesDataCacheKey, tempList);
+
+			return tempList;
         }
 
         public async Task ResetLocalVehiclesList()

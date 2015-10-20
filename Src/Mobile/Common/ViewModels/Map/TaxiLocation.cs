@@ -1,3 +1,5 @@
+using apcurium.MK.Booking.Api.Contract.Resources;
+
 namespace apcurium.MK.Booking.Mobile.ViewModels.Map
 {
 	public class TaxiLocation
@@ -10,5 +12,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Map
 		public string VehicleNumber { get; set; }
 
         public string Market { get; set; }
+
+		public ServiceType ServiceType { get; set; }
 	}
 }
