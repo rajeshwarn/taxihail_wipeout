@@ -369,12 +369,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			if (_bookingService.HasLastOrder) 
 			{
                 var status = await _bookingService.GetLastOrderStatus();
-                if (status == null)
-                {
-                    return null;
-                }
 
-                if (!_bookingService.IsStatusCompleted(status))
+				if (status != null && !_bookingService.IsStatusCompleted(status))
                 {
                     try
                     {
@@ -394,6 +390,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				try
 				{
 					var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
+
+					// For some reason, the OrderId is not found. This should not normally happen in production.
+					if(order == null)
+					{
+						_logger.LogMessage(string.Format("Order {0} was not found on server.", status.OrderId));
+
+						_bookingService.ClearLastOrder();
+						return null;
+					}
+
 					if (order.IsRated)
 					{
 						_bookingService.ClearLastOrder();

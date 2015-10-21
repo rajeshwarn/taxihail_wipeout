@@ -7,7 +7,13 @@ namespace CMTServices.Responses
         [JsonProperty("etaInSeconds")]
         public long? ETASeconds { get; set; }
 
+        [JsonProperty("etaInMeters")]
+        public long? ETAMeters { get; set; }
+
         [JsonProperty("mapMatched")]
         public bool IsMapMatched { get; set; }
+
+		[JsonProperty("cc")]
+		public float CompassCourse { get; set; }
     }
 }

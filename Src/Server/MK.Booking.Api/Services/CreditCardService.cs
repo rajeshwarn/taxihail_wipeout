@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -38,6 +39,9 @@ namespace apcurium.MK.Booking.Api.Services
         public object Post(CreditCardRequest request)
         {
             var session = this.GetSession();
+
+            request.Label = request.Label ?? CreditCardLabelConstants.Personal.ToString();
+
             var command = new AddOrUpdateCreditCard {AccountId = new Guid(session.UserAuthId)};
             Mapper.Map(request, command);
 
@@ -116,7 +120,7 @@ namespace apcurium.MK.Booking.Api.Services
 		{
 			if (_dao.FindByAccountId(request.AccountID).Count > 0)
 			{
-				_bus.Send(new DeleteAccountCreditCards() { AccountId = request.AccountID });
+				_bus.Send(new DeleteCreditCardsFromAccounts() { AccountIds = new[] { request.AccountID } });
 
 				return new HttpResult(HttpStatusCode.OK);
 			}

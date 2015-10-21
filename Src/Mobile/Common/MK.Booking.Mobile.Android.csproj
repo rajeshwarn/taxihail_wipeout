@@ -211,6 +211,7 @@
     <Compile Include="Messages\OrderDeleted.cs" />
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />
+    <Compile Include="Models\PairedTaxiPosition.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Models\PhoneNumberModel.cs" />
     <Compile Include="ViewModels\EditAutoTipViewModel.cs" />
     <Compile Include="ViewModels\enum\ColorEnum.cs" />
+    <Compile Include="ViewModels\ExtendedSplashScreenViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
     <Compile Include="ViewModels\Orders\OrderAirportViewModel.cs" />

@@ -106,10 +106,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Toll = 3.68,
                 Tip = 5.25,
                 Tax = 2.21,
-                CmtRideLinqFields = new SendReceipt.CmtRideLinqReceiptFields()
-                {
-                    TipIncentive = 5
-                },
                 PickupAddress = new Address
                 {
                     FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"
@@ -139,10 +135,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 {
                     Last4Digits = "6578",
                     NameOnCard = "Bob"
-                },
-                CmtRideLinqFields = new SendReceipt.CmtRideLinqReceiptFields()
-                {
-                    TipIncentive = 5
                 },
                 PickupAddress = new Address
                 {

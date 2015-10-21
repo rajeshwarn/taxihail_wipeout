@@ -24,6 +24,21 @@ namespace apcurium.MK.Booking.IBS
             Mapper.AssertConfigurationIsValid(profile.ProfileName);
 
             container.RegisterType<IIBSServiceProvider, IBSServiceProvider>();
+
+            RegisterMaps();
+        }
+
+        private void RegisterMaps()
+        {
+            Mapper.CreateMap<IbsOrderKey, TBookOrderKey>()
+                .ForMember(p => p.GUID, opt => opt.ResolveUsing(x => x.TaxiHailOrderId))
+                .ForMember(p => p.OrderID, opt => opt.ResolveUsing(x => x.IbsOrderId));
+
+            Mapper.CreateMap<TVehicleComp, IbsVehicleCandidate>()
+                .ForMember(p => p.CandidateType, opt => opt.ResolveUsing(x => x.VehicleCompType));
+
+            Mapper.CreateMap<IbsVehicleCandidate, TVehicleComp>()
+                .ForMember(p => p.VehicleCompType, opt => opt.ResolveUsing(x => x.CandidateType));
         }
     }
 }

@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             _accountService = accountService;
             _paymentService = paymentService;
 
-            if (Settings.DestinationIsRequired)
+			if (!Settings.HideDestination)
 			{
 				Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(),
 					isDestinationModeOpened => EstimateSelected = isDestinationModeOpened);
@@ -928,7 +928,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     }
 
 	                var homeViewModel = (HomeViewModel) Parent;
-					ShowSubViewModel<ManualPairingForRideLinqViewModel, OrderManualRideLinqDetail>(null, homeViewModel.GoToManualRideLinq);
+					ShowSubViewModel<ManualPairingForRideLinqViewModel, OrderManualRideLinqDetail>(null, orderManualPairingDetails => homeViewModel.GoToManualRideLinq(orderManualPairingDetails));
                 });
             }
         }

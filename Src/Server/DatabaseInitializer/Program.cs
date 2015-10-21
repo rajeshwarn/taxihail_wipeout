@@ -35,6 +35,7 @@ using Microsoft.Web.Administration;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using DeploymentServiceTools;
+using ServiceStack.Messaging.Rcon;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 
@@ -235,6 +236,7 @@ namespace DatabaseInitializer
                 }
 
                 Console.WriteLine("Migration of Payment Settings ...");
+
                 MigratePaymentSettings(serverSettings, commandBus);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
@@ -592,7 +594,7 @@ namespace DatabaseInitializer
             registerAdminAccountCommand.ConfimationToken = confirmationAdminToken.ToString();
 
             commandBus.Send(registerAdminAccountCommand);
-            commandBus.Send(new AddRoleToUserAccount
+            commandBus.Send(new UpdateRoleToUserAccount
             {
                 AccountId = registerAdminAccountCommand.AccountId,
                 RoleName = RoleName.SuperAdmin,
@@ -744,7 +746,7 @@ namespace DatabaseInitializer
             if (admin != null
                 && (!admin.HasAdminAccess || !admin.IsConfirmed))
             {
-                commandBus.Send(new AddRoleToUserAccount
+                commandBus.Send(new UpdateRoleToUserAccount
                 {
                     AccountId = admin.Id,
                     RoleName = RoleName.SuperAdmin,
@@ -1004,6 +1006,12 @@ namespace DatabaseInitializer
                 });
 
                 paymentSettings.NoShowFee = null;
+                needsUpdate = true;
+            }
+
+            if (serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment)
+            {
+                paymentSettings.CmtPaymentSettings.UsePairingCode = true;
                 needsUpdate = true;
             }
 

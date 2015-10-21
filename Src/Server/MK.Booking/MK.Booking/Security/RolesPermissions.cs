@@ -8,6 +8,7 @@ namespace apcurium.MK.Booking.Security
 {
     public class RoleName
     {
+        public const string None = "None";
         public const string Admin = "Admin";
         public const string SuperAdmin = "SuperAdmin";
         public const string Support = "Support";
@@ -16,6 +17,7 @@ namespace apcurium.MK.Booking.Security
     [Flags]
     public enum Roles
     {
+        None = 0,
         Support = 4,
         //We use those values in order to be able to add Roles before Admin (Support in the basic role)
         //Admin has all Support permissions and SuperAdmin has both Support and Admin persmissions
