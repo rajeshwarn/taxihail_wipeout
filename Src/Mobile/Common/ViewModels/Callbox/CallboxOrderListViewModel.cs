@@ -43,10 +43,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             Orders = new ObservableCollection<CallboxOrderViewModel>();
 
-            if (!string.IsNullOrEmpty(passengerName))
-            {
-                _orderToCreate = new CreateOrderInfo { PassengerName = passengerName, IsPendingCreation = true }; 
-            }
+	        var name = passengerName.HasValueTrimmed()
+		        ? passengerName
+		        : this.Services().Localize["NotSpecified"];
+
+			_orderToCreate = new CreateOrderInfo { PassengerName = name, IsPendingCreation = true }; 
         }
 
         private TinyMessageSubscriptionToken _token;
@@ -118,14 +119,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 				var orderStatusDetails = orderStatus.ToArray();
 				if (_orderToCreate != null
-					&& _orderToCreate.Order != null
-					&& orderStatusDetails.Any(os => os.OrderId == _orderToCreate.Order.Id))
+				    && _orderToCreate.Order != null
+				    && orderStatusDetails.Any(os => os.OrderId == _orderToCreate.Order.Id))
 				{
 					_orderToCreate = null;
 				}
 				else if (_orderToCreate != null
-					&& _orderToCreate.Order != null
-					&& orderStatusDetails.None(os => os.OrderId == _orderToCreate.Order.Id))
+				         && _orderToCreate.Order != null
+				         && orderStatusDetails.None(os => os.OrderId == _orderToCreate.Order.Id))
 				{
 					Orders.Add(_orderToCreate.Order);
 				}
@@ -144,15 +145,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					Close();
 				}
 
-				if (Orders.None(x => _bookingService.IsCallboxStatusCompleted(x.OrderStatus.IBSStatusId)) && NoMoreTaxiWaiting != null)
+				if (Orders.None(x => _bookingService.IsCallboxStatusCompleted(x.OrderStatus.IBSStatusId)) &&
+				    NoMoreTaxiWaiting != null)
 				{
 					NoMoreTaxiWaiting(this, new EventArgs());
 
 					return;
 				}
 
-				var completedOrders = Orders.Where(order => 
-					_bookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId)	&&
+				var completedOrders = Orders.Where(order =>
+					_bookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId) &&
 					_orderNotified.All(orderId => orderId != order.Id));
 
 				foreach (var order in completedOrders)
