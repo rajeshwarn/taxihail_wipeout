@@ -55,6 +55,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         .To(vm => vm.IsChangeDropOffVisible)
                         .WithConversion("Visibility");
 
+                    set.Bind(_changeDropOffOverlay)
+                        .For("Click")
+                        .To(vm => vm.AddOrRemoveDropOffCommand);
+
                     set.Bind()
                         .For(v => v.ShowAnimation)
                         .To(vm => vm.IsProgressVisible);

@@ -557,6 +557,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public ICommand AddOrRemoveDropOffCommand
+		{
+			get 
+			{ 
+				return this.GetCommand(() =>
+					{
+						if (Order != null && Order.DropOffAddress.Id != Guid.Empty)
+						{
+							//Remove address
+							return;
+						}
+						//Show View Model DropOff Selection
+					}); 
+			}
+		}
+
         public bool IsDriverInfoAvailable
         {
             get 
