@@ -569,6 +569,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             if (_bypassCameraChangeEvent)
             {
+				ViewModel.BookCannotExecute = false;
                 _bypassCameraChangeEvent = false;
                 return;
             }
