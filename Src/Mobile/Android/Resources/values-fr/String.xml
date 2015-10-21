@@ -459,6 +459,7 @@
   <string name="ProfileSettingsActivityName">Profile</string>
   <string name="MessageToDriverTitle">Message au chauffeur</string>
   <string name="BookingAirportDetails">Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</string>
+  <string name="OrderStatus_AddDestination">Ajouter votre destination</string>
   <string name="StatusCallButton">Appeler</string>
   <string name="OrderNoteGPS">Utiliser un GPS</string>
   <string name="PaymentConfirmationMessageToDriver">Paiement effectué par le passager pour un montant de {0} (code: {1})</string>
@@ -511,6 +512,7 @@
   <string name="Overdue_Date">Date de transaction:</string>
   <string name="PaymentLoadError">Impossible de charger les informations de paiement. Veuillez réessayer plus tard.</string>
   <string name="EmailLabel">Email (adresse électronique)</string>
+  <string name="OrderStatus_RemoveDestination">Enlever votre destination</string>
   <string name="ManualPairingForRideLinqActivityName">Manual pairing for RideLinq</string>
   <string name="April">Avril (04)</string>
   <string name="StatusEditAutoPaymentButton">Paiement</string>

@@ -455,6 +455,7 @@
 "ProfileSettingsActivityName"="Profile";
 "MessageToDriverTitle"="Message to Driver";
 "BookingAirportDetails"="Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}";
+"OrderStatus_AddDestination"="Add your destination";
 "StatusCallButton"="Call";
 "OrderNoteGPS"=" using a GPS";
 "PaymentConfirmationMessageToDriver"="The passenger has paid {0} (auth : {1})";
@@ -511,6 +512,7 @@
 "Overdue_Date"="Transaction date:";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";
 "EmailLabel"="Email";
+"OrderStatus_RemoveDestination"="Remove your destination";
 "ManualPairingForRideLinqActivityName"="Manual pairing for RideLinq";
 "April"="Apr (04)";
 "StatusEditAutoPaymentButton"="Payment";
