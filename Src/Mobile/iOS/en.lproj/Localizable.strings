@@ -19,6 +19,7 @@
 "PaymentDetails.PaymentMethodsLabel"="Payment Methods";
 "PayPalUnlinkError"="Unable to unlink your PayPal account";
 "BookPickupLabel"="Confirm your pickup location";
+"Notification_DriverBailedPush"="Driver bailed";
 "Tuto03Top"="You may also select your pickup location by tapping the pickup address.";
 "BookDateLabel"="Pick Me Up Later";
 "Overdue_IBSOrderId"="Order:";

@@ -20,6 +20,7 @@
   <string name="PaymentDetails.PaymentMethodsLabel">Méthodes de paiement</string>
   <string name="PayPalUnlinkError">Impossible de dissocier votre compte PayPal</string>
   <string name="BookPickupLabel">Confirmer votre adresse de départ</string>
+  <string name="Notification_DriverBailedPush">Driver bailed</string>
   <string name="Tuto03Top">Vous pouvez également nous communiquer votre position en saisissant directement une adresse</string>
   <string name="BookDateLabel">Départ différé</string>
   <string name="Overdue_IBSOrderId">Commande:</string>
