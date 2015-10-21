@@ -670,6 +670,10 @@
     </Compile>
     <Compile Include="Converters\CreditCardLabelToInt.cs" />
     <Compile Include="Controls\Widgets\BaseRateControl.cs" />
+    <BundleResource Include="Resources\down_arrow_light.png" />
+    <BundleResource Include="Resources\down_arrow_light%402x.png" />
+    <BundleResource Include="Resources\up_arrow_light.png" />
+    <BundleResource Include="Resources\up_arrow_light%402x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

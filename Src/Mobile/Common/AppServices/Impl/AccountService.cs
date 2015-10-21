@@ -529,7 +529,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<VehicleType>> GetVehiclesList(bool refresh)
 		{
 			// todo temporary until server returns data
-			return new List<VehicleType>
+			var list = new List<VehicleType>
 			{
 				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Sedan", LogoName = "taxi", ReferenceDataVehicleId = 1 },
 				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Van", LogoName = "suv", ReferenceDataVehicleId = 2 },
@@ -537,7 +537,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Luxury, Name = "Sedan", LogoName = "blackcar", ReferenceDataVehicleId = 0 }
 			};
 				
-	    return list.Select(x => { x.BaseRate = new BaseRateInfo 
+	    	return list.Select(x => { x.BaseRate = new BaseRateInfo 
             	{
 					MinimumFare = x.ServiceType == ServiceType.Luxury ? 15m : 5m,
 					BaseRateNoMiles = 6m,
@@ -558,12 +558,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
 
 			// TODO temp list while server doesn't return service type
-			var tempList = vehiclesList.Select(x => new VehicleType { 
-				Id = x.Id, 
-				Name = x.Name, 
-				LogoName = x.LogoName, 
-				ReferenceDataVehicleId = x.ReferenceDataVehicleId, 
-				ServiceType = x.LogoName == "blackcar" ? ServiceType.Luxury : ServiceType.Taxi 
+			var tempList = vehiclesList.Select(x =>
+			{ 
+				x.ServiceType = x.LogoName == "blackcar" ? ServiceType.Luxury : ServiceType.Taxi;
+				x.BaseRate = new BaseRateInfo {
+					MinimumFare = x.ServiceType == ServiceType.Luxury ? 15m : 5m,
+					BaseRateNoMiles = 6m,
+					PerMileRate = 3m,   
+					WaitTime = 0.75m,            		         		
+					AirportMeetAndGreet = 15m 
+				};
+			
+				return x;
 			}).ToArray();
 
 			cacheService.Set(VehicleTypesDataCacheKey, tempList);

@@ -21,10 +21,46 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private BaseRateControl BaseRate { get; set; }
         private UIImageView EtaBadge { get; set; }
         private UILabel EtaLabel { get; set; }
-        private bool BaseRateToggled { get; set; }
+        private UIImageView ArrowImage { get; set; }
 
-        // Setting hardcoded to true for now.
-        public bool DisplayBaseRateInfo { get; set; }
+        private NSLayoutConstraint _constraintEtaBadgeHeight;
+        private NSLayoutConstraint _constraintEtaBadgeWidth;
+        private NSLayoutConstraint _constraintArrowImageWidth;
+
+        private bool _baseRateToggled;
+        private bool BaseRateToggled
+        {
+            get
+            {
+                return _baseRateToggled;
+            }
+            set
+            {
+                _baseRateToggled = value;
+                // TODO this will only work for dark company colors
+                ArrowImage.Highlighted = value;
+            }
+        }
+
+        private bool _displayBaseRateInfo;
+        public bool DisplayBaseRateInfo
+        {
+            get
+            {
+                return _displayBaseRateInfo;
+            }
+            set
+            {
+                _displayBaseRateInfo = value;
+
+                if (_constraintEtaBadgeHeight != null)
+                {
+                    _constraintEtaBadgeHeight.Constant = !_displayBaseRateInfo ? ImageSize.Height : EtaLabelHeight;
+                    _constraintEtaBadgeWidth.Constant = !_displayBaseRateInfo ? ImageSize.Height : 0f;
+                    _constraintArrowImageWidth.Constant = _displayBaseRateInfo ? 13f : 0f;
+                }
+            }
+        }
 
         public bool UserInputDisabled
         {
@@ -74,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			BaseRateToggled = !BaseRateToggled;
             _rateBoxHeightConstraint.Constant = BaseRateToggled ? BaseRateHeight : 0f;
 
-            UIView.Animate(0.5f, 
+            UIView.AnimateNotify(0.5f, 
                 () => {
                     LayoutIfNeeded();
                     if(!BaseRateToggled)
@@ -83,12 +119,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         OrderOptionsControl.Resize();
                     }
                 },
-                () => {
-                    if(BaseRateToggled)
+                (finished) => {
+                    if(finished)
                     {
-                        OrderOptionsControl.Resize();
+                        if(BaseRateToggled)
+                        {
+                            OrderOptionsControl.Resize();
+                        }
+                        LayoutSubviews();
                     }
-                    LayoutSubviews();
                 }
             );
 		}
@@ -176,9 +215,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             };
             _fixedLowerBarView.AddSubview(EtaBadge);
 
+            _constraintEtaBadgeHeight = NSLayoutConstraint.Create(EtaBadge, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, !DisplayBaseRateInfo ? ImageSize.Height : EtaLabelHeight);
+            _constraintEtaBadgeWidth = NSLayoutConstraint.Create(EtaBadge, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, !DisplayBaseRateInfo ? ImageSize.Width : 0f);
             AddConstraints (new [] {
-                NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DisplayBaseRateInfo ? ImageSize.Height : EtaLabelHeight),
-                NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DisplayBaseRateInfo ? ImageSize.Width : 0f),
+                _constraintEtaBadgeHeight,
+                _constraintEtaBadgeWidth,
                 NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EtaBadge.Superview, NSLayoutAttribute.Left, 1f, 4f),
                 NSLayoutConstraint.Create (EtaBadge, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, EtaBadge.Superview, NSLayoutAttribute.CenterY, 1f, 0f)
             });
@@ -197,11 +238,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             };
             _fixedLowerBarView.AddSubview(EtaLabel);
 
+            ArrowImage = new UIImageView 
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                UserInteractionEnabled = false
+            };
+            ArrowImage.Image = UIImage.FromBundle("down_arrow_light");
+            ArrowImage.HighlightedImage = UIImage.FromBundle("up_arrow_light");
+            _fixedLowerBarView.AddSubview(ArrowImage);
+
             AddConstraints (new [] {
                 NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Height, 1f, 0f),
                 NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Top, 1f, 0f),
                 NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EtaBadge, NSLayoutAttribute.Right, 1f, 4f),
                 NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Right, 1f, -4f)
+            });
+
+            _constraintArrowImageWidth = NSLayoutConstraint.Create(ArrowImage, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DisplayBaseRateInfo ? 13f : 0f);
+            AddConstraints (new [] {
+                NSLayoutConstraint.Create (ArrowImage, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 8f),
+                _constraintArrowImageWidth,
+                NSLayoutConstraint.Create (ArrowImage, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ArrowImage.Superview, NSLayoutAttribute.Right, 1f, -4f),
+                NSLayoutConstraint.Create (ArrowImage, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, ArrowImage.Superview, NSLayoutAttribute.CenterY, 1f, 0f)
             });
         }
 

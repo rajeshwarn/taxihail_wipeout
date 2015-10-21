@@ -732,6 +732,10 @@
     <AndroidResource Include="Resources\Drawable\expander_open.png" />
     <AndroidResource Include="Resources\Drawable\expander_close.png" />
     <Compile Include="Controls\Widgets\AppBarButton.cs" />
+    <AndroidResource Include="Resources\Drawable\down_arrow_light.png" />
+    <AndroidResource Include="Resources\Drawable\up_arrow_light.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\down_arrow_light.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\up_arrow_light.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
