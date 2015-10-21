@@ -337,6 +337,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Latitude = latitude,
 					VehicleNumber = medallion,
                     CompassCourse = compassCourse,
+					ServiceType = _orderWorkflowService.GetServiceTypeForVehicleId(Order.Settings.VehicleTypeId).Result
 				};
 			}
 			else

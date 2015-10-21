@@ -79,6 +79,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         IObservable<int?> GetAndObserveVehicleType();
 		IObservable<ServiceType> GetAndObserveServiceType();
+		Task<ServiceType> GetServiceTypeForVehicleId(int? vehicleTypeId);
 
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
 

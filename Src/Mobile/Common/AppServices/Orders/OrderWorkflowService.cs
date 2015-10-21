@@ -334,7 +334,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_serviceTypeSubject.OnNext(serviceType);
 		}
 
-		private async Task<ServiceType> GetServiceTypeForVehicleId (int? vehicleTypeId)
+		public async Task<ServiceType> GetServiceTypeForVehicleId (int? vehicleTypeId)
 		{ 
 			var vehicleType = (await _accountService.GetVehiclesList())
 				.FirstOrDefault(x => x.ReferenceDataVehicleId == vehicleTypeId);

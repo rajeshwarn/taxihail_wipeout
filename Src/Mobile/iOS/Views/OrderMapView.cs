@@ -498,7 +498,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var vehicleAnnotation = new AddressAnnotation (
                                 new CLLocationCoordinate2D(vehicle.Latitude, vehicle.Longitude),
                                 annotationType, 
-								vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture),             
+								vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture),           
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
@@ -757,11 +757,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 value.VehicleNumber, 
                 _useThemeColorForPickupAndDestinationMapIcons, 
                 _showAssignedVehicleNumberOnPin,
-                null,
+                value.ServiceType == ServiceType.Luxury ? "blackcar" : null, 
                 value.Market)
             {
 				ShowMedallionOnStart = true,
-	            Degrees = value.CompassCourse??0,
+	            Degrees = value.CompassCourse ?? 0,
 				ShowOrientation = showOrientedPins
             };
 

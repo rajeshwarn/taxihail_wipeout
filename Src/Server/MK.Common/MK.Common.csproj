@@ -242,6 +242,7 @@
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
     <Compile Include="TestCreditCards.cs" />
     <Compile Include="VehicleStatuses.cs" />
+    <Compile Include="Entity\BaseRateInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
