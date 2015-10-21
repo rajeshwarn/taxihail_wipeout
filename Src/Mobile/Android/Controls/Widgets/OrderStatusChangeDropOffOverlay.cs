@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             _isShown = false;
 
-            // If the Contact Taxi Overlay already at -1000, then this animation is not needed.
+            // If the Change DropOff Overlay already at -1000, then this animation is not needed.
             if (((MarginLayoutParams)LayoutParameters).TopMargin == CHANGE_DROPOFF_HIDDEN_Y_OFFSET)
             {
                 return;
