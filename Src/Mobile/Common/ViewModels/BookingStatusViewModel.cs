@@ -529,6 +529,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public bool IsChangeDropOffVisible
+        {
+            get
+			{
+                if (OrderStatusDetail == null)
+				{
+					return false;
+				}
+
+                return Settings.ChangeDropOffAddressMidTrip
+                    && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+                        || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
+                        || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded);
+            }
+        }
+
+        public string ChangeDropOffText
+        {
+            get
+            {
+                if (Order != null && Order.DropOffAddress.Id != Guid.Empty)
+                {
+                    return this.Services().Localize["OrderStatus_RemoveDestination"];
+                }
+                return this.Services().Localize["OrderStatus_AddDestination"];
+            }
+        }
+
         public bool IsDriverInfoAvailable
         {
             get 
@@ -640,7 +668,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				_order = value;
 				RaisePropertyChanged();
-				RaisePropertyChanged(() => CanGoBack);
+                RaisePropertyChanged(() => CanGoBack);
+                RaisePropertyChanged(() => ChangeDropOffText);
 			}
 		}
 		
