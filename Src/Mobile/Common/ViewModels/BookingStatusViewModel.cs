@@ -138,8 +138,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return Unit.Default;
 				})
 				.Subscribe(
-					_ => { }, 
-					Logger.LogError
+					_ => { },
+				    ex =>
+				    {
+				        Logger.LogMessage("ERROR: An error occurred in the eHail BookingStatus observable");
+                        Logger.LogError(ex);
+				    },
+                    () => Logger.LogMessage("eHail: BookingStatus Observable triggered OnCompleted")
 				);
 		}
 
@@ -216,6 +221,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 				    if (orderDetails.PairingError.HasValue())
 				    {
+                        Logger.LogMessage("ERROR: Pairing error occurred in manual RideLinQ trip. Going back home...");
+
 				        await GoToHomeScreen();
 				    }
 				    else
@@ -225,7 +232,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					return orderDetails;
 				})
-				.Subscribe(_ => { }, Logger.LogError)
+				.Subscribe(_ => { },
+                    ex =>
+				    {
+                        Logger.LogMessage("ERROR: An error occurred in the manual RideLinQ BookingStatus observable");
+				        Logger.LogError(ex);
+				    },
+                    () => Logger.LogMessage("Manual pairing: BookingStatus Observable triggered OnCompleted"))
 				.DisposeWith(subscriptions);
 
 			var deviceLocationObservable = Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))

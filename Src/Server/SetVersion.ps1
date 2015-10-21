@@ -172,7 +172,7 @@ function get-scriptdirectory {
   UpdateAndroidVersion $args[0];
   UpdateCallboxVersion $args[0];
   UpdateIosVersion $args[0];
-  Add-Content ..\..\tagsList ("`n" + $args[0])
+  Add-Content ..\..\tagsList ($args[0])
 #}
 #else
 #{
