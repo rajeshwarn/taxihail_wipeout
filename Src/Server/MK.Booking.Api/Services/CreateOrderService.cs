@@ -1277,7 +1277,7 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     // TODO: replace hardcoded value by timeout returned by IBS
                     // Need to wait for vehicles to receive hail request
-                    Thread.Sleep(20000);
+                    Thread.Sleep(25000);
 
                     var candidates = _ibsServiceProvider.Booking(companyKey).GetVehicleCandidates(ibsHailResult.OrderKey);
                     ibsHailResult.VehicleCandidates = candidates;
