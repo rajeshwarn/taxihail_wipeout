@@ -3,13 +3,10 @@ using Android.Content;
 using Android.Runtime;
 using Android.Util;
 using Android.Widget;
-using Cirrious.MvvmCross.Binding;
-using Cirrious.MvvmCross.Binding.Attributes;
-using Cirrious.MvvmCross.Binding.BindingContext;
-using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Views;
 using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -67,33 +64,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
         }
 
-		public bool BaseRateToggled { get; set; }
+		public bool BaseRateToggled { get; set; }	
 
-		public bool UserInputDisabled
-		{
-			set
-			{
-				Clickable = !value;
-				if (!value && BaseRateToggled)
-				{
-					// close the rate box
-					ToggleBaseRate();
-				}
-			}
-		}
-
+        private BaseRateInfo _baseRate;
         public BaseRateInfo BaseRate
 		{
+            get { return _baseRate; }
 			set
 			{
-				var descriptionsText = value != null ?
-				new [] { 
-					ToCurrency (value.MinimumFare),
-					ToCurrency (value.BaseRateNoMiles), 
-					string.Format (Localize ("BaseRate_PerTenthMile"), ToCurrency (value.PerMileRate), ToCurrency (value.PerMileRate / 10)),
-					string.Format (Localize ("BaseRate_PerMinute"), ToCurrency (value.WaitTime)),
-					ToCurrency (value.AirportMeetAndGreet)
-				} : new string[5];
+                _baseRate = value;
+				var descriptionsText = value != null 
+                    ? new [] { 
+    					ToCurrency (value.MinimumFare),
+    					ToCurrency (value.BaseRateNoMiles), 
+    					string.Format (Localize ("BaseRate_PerTenthMile"), ToCurrency (value.PerMileRate), ToCurrency (value.PerMileRate / 10)),
+    					string.Format (Localize ("BaseRate_PerMinute"), ToCurrency (value.WaitTime)),
+    					ToCurrency (value.AirportMeetAndGreet)
+				    } 
+                    : new string[5];
 
 				for (int i = 0; i < descriptionsText.Length; i++)
 				{
@@ -121,15 +109,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public void ToggleBaseRate ()
 		{
 			BaseRateToggled = !BaseRateToggled;
-			var contentHeightPixels = (int) (BaseRateControlHeightInDip * Context.Resources.DisplayMetrics.Density);
-			var animation = BaseRateToggled ? ValueAnimator.OfInt(0, contentHeightPixels) : ValueAnimator.OfInt(contentHeightPixels, 0);
-			animation.SetDuration(500);
-			animation.Update += (object sender, ValueAnimator.AnimatorUpdateEventArgs e) => {
-				var value = (int) animation.AnimatedValue;
-				LayoutParameters.Height = value;
-	            RequestLayout();
-			};
-			animation.Start();
+
+            var contentHeightPixels = (int) (BaseRateControlHeightInDip * Context.Resources.DisplayMetrics.Density);
+            var animation = BaseRateToggled 
+                ? ValueAnimator.OfInt(0, contentHeightPixels) 
+                : ValueAnimator.OfInt(contentHeightPixels, 0);
+
+            animation.SetDuration(500);
+            animation.Update += (sender, e) => {
+                var value = (int) animation.AnimatedValue;
+                LayoutParameters.Height = value;
+                RequestLayout();
+            };
+
+            animation.Start();
         }
     }
 }

@@ -62,22 +62,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _etaBadge.AddView (_etaBadgeImage);
 
                 _etaContainer.SetBackgroundColorWithRoundedCorners(0, 0, 3, 3, Resources.GetColor(Resource.Color.company_color));
-
-				_etaContainer.Click += (object sender, EventArgs e) => 
-				{
-					_baseRateControl.ToggleBaseRate();
-
-					var toggleRessource = _baseRateControl.BaseRateToggled 
-						? Resource.Drawable.expander_close
-						: Resource.Drawable.expander_open;
-
-						_baseRateExpandImage.SetImageDrawable(Resources.GetDrawable(toggleRessource));
-				};
+				_etaContainer.Click += (sender, e) => ToggleBaseRate();
 
                 _viewVehicleType.Visibility = ViewStates.Gone;
                 InitializeBinding();
-
             });
+        }
+
+        private void ToggleBaseRate()
+        {
+            _baseRateControl.ToggleBaseRate();
+
+            var toggleResource = _baseRateControl.BaseRateToggled 
+                ? Resource.Drawable.up_arrow_light
+                : Resource.Drawable.down_arrow_light;
+
+            _baseRateExpandImage.SetImageDrawable(Resources.GetDrawable(toggleResource));
         }
 
 		protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
@@ -127,6 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			StartAnimation(AnimationHelper.GetForYTranslation(this, translationOffset));
 	    }
+
 		private void ShowIfNeeded()
 	    {
 			if (_isShown || Height == 0)
@@ -142,6 +143,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			StartAnimation(AnimationHelper.GetForYTranslation(this, 0));
 	    }
+
+        public bool UserInputDisabled
+        {
+            get { return !_etaContainer.Clickable; }
+            set
+            {
+                _etaContainer.Clickable = !value;
+                if (!_etaContainer.Clickable && _baseRateControl.BaseRateToggled)
+                {
+                    // close the rate box
+                    ToggleBaseRate();
+                }
+            }
+        }
 
         private void InitializeBinding()
 		{
@@ -258,13 +273,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				.WithConversion("Visibility");
 
 			set.Bind(_baseRateControl)
-				.For("BaseRate")
+                .For(v => v.BaseRate)
                 .To(vm => vm.SelectedVehicleType.BaseRate)
 				.OneWay();
 
-			set.Bind(_baseRateControl)
-				.For("UserInputDisabled")
+			set.Bind(this)
+                .For(v => v.UserInputDisabled)
                 .To(vm => vm.CanShowRateBox)
+                .WithConversion("BoolInverter")
 				.OneWay();
 
 			set.Bind(_etaBadge)

@@ -729,8 +729,6 @@
     </AndroidResource>
     <Compile Include="Controls\Widgets\BaseRateControl.cs" />
     <AndroidResource Include="Resources\Layout\Control_BaseRate.axml" />
-    <AndroidResource Include="Resources\Drawable\expander_open.png" />
-    <AndroidResource Include="Resources\Drawable\expander_close.png" />
     <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <AndroidResource Include="Resources\Drawable\down_arrow_light.png" />
     <AndroidResource Include="Resources\Drawable\up_arrow_light.png" />

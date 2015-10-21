@@ -266,13 +266,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 	        _orderReview.ScreenSize = screenSize;
 	        _orderReview.OrderReviewHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
-			_orderReview.OrderReviewShownHeightProvider = () => _orderOptions.Height;
+            _orderReview.OrderReviewShownHeightProvider = () => { 
+                _orderOptions.SizeChanged += OrderOptionsSizeChanged; 
+                return _orderOptions.Height; 
+            };
 			_orderEdit.ScreenSize = screenSize;
 	        _orderEdit.ParentFrameLayout = _frameLayout;
 
 			_orderAirport.ScreenSize = screenSize;
 			_orderAirport.OrderAirportHiddenHeightProvider = () => _frameLayout.Height - _orderOptions.Height;
-			_orderAirport.OrderAirportShownHeightProvider = () => _orderOptions.Height;
+            _orderAirport.OrderAirportShownHeightProvider = () => { 
+                _orderOptions.SizeChanged += OrderOptionsSizeChanged; 
+                return _orderOptions.Height; 
+            };
 
 	        ResumeFromBackgroundIfNecessary();
 
@@ -281,7 +287,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 	        PanelMenuInit();
         }
 
-		private void OrderOptionsSizeChanged(object sender, EventArgs args)
+        private void OrderOptionsSizeChanged(object sender, EventArgs args)
 		{
 			if (_orderOptions.Height == 0)
 			{
@@ -298,7 +304,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				_orderAirport.ShowWithoutAnimation();
 			}
 
-			_orderOptions.SizeChanged -= OrderOptionsSizeChanged;
+            _orderOptions.SizeChanged -= OrderOptionsSizeChanged;
 		}
 
 		private void ResumeFromBackgroundIfNecessary()
@@ -312,7 +318,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			if (ViewModel.CurrentViewState == HomeViewModelState.Review || ViewModel.CurrentViewState == HomeViewModelState.AirportDetails)
 			{
-				_orderOptions.SizeChanged += OrderOptionsSizeChanged;
+                _orderOptions.SizeChanged += OrderOptionsSizeChanged;
 
 				return;
 			}

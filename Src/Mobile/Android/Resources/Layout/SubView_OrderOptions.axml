@@ -65,19 +65,19 @@
                     android:id="@+id/EtaLabelInVehicleSelection"
                     android:textColor="@color/label_text_color"
                     android:textSize="16dp"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="23dp" />
                 <ImageView
-                    android:src="@drawable/expander_open"
+                    android:src="@drawable/down_arrow_light"
                     android:id="@+id/BaseRateExpandImage"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     android:layout_marginRight="6dp"
                     android:layout_gravity="right|center"
-                    android:layout_width="22dp"
-                    android:layout_height="12dp" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
