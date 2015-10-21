@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendPromotionUnlockedPush(Guid accountId, PromotionDetail promotionDetail)
         {
             var account = _accountDao.FindById(accountId);
-            if (ShouldSendNotification(accountId, x => x.DriverAssignedPush))
+            if (ShouldSendNotification(accountId, x => x.PromotionUnlockedPush))
             {
                 SendPushOrSms(accountId,
                     string.Format(_resources.Get("PushNotification_PromotionUnlocked", account.Language), promotionDetail.Name, promotionDetail.Code),
