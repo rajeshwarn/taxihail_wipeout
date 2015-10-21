@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.Mobile;
 using Android.Content;
 using Cirrious.MvvmCross.Droid.Platform;
 using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.IoC;
 using apcurium.MK.Booking.Mobile.Settings;
@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore.Droid;
+using ErrorHandler = apcurium.MK.Callbox.Mobile.Client.Diagnostic.ErrorHandler;
 
 namespace apcurium.MK.Callbox.Mobile.Client
 {
