@@ -74,12 +74,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
-                            if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt
-                                && _serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment
-                                && !orderStatus.RideLinqPairingCode.HasValue())
-                            {
-                                return;
-                            }
+                        var paymentSettings = _serverSettings.GetPaymentSettings(order.CompanyKey);
+
+                        if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
+                            && paymentSettings.CmtPaymentSettings.UsePairingCode
+                            && !orderStatus.RideLinqPairingCode.HasValue())
+                        {
+                            return;
+                        }
 
                         var account = _accountDao.FindById(@event.Status.AccountId);
                         var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
