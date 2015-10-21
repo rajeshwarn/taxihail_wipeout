@@ -79,6 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     LayoutIfNeeded();
                     if(!BaseRateToggled)
                     {
+						Layer.Mask = null;
                         OrderOptionsControl.Resize();
                     }
                 },
@@ -87,6 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     {
                         OrderOptionsControl.Resize();
                     }
+                    LayoutSubviews();
                 }
             );
 		}
