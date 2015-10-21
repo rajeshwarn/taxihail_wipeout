@@ -65,6 +65,7 @@
                     android:id="@+id/EtaLabelInVehicleSelection"
                     android:textColor="@color/label_text_color"
                     android:textSize="16dp"
+                    android:textAlignment="center"
                     android:gravity="center"
                     android:layout_weight="1"
                     android:layout_width="0dp"
