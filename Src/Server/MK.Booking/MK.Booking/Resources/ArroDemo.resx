@@ -153,4 +153,7 @@
   <data name="PushNotification_wosASSIGNED" xml:space="preserve">
     <value>Taxi #{0} has been assigned to you and is on the way</value>
   </data>
+  <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
+    <value>Meter is on. Checking you in now...</value>
+  </data>
 </root>

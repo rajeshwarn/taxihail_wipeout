@@ -82,6 +82,8 @@
     <Compile Include="Requests\AccountOrderListRequestWithUserIdRequest.cs" />
     <Compile Include="Requests\AccountUpdateRequest.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
+    <Compile Include="Requests\Client\ConfirmHailRequest.cs" />
+    <Compile Include="Requests\Client\HailRequest.cs" />
     <Compile Include="Requests\ConfirmationCodeRequest.cs" />
     <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
     <Compile Include="Requests\DefaultCreditCardRequest.cs" />

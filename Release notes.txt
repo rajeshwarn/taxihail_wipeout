@@ -1,0 +1,120 @@
+3.1.5
+	Added auto-follow cancellation to iOS
+	Fixed issue where wrong message was given when auto-pairing was not disabled
+	Fixed issue where Taxi Icon appears after cancellation
+	Fixed crash with Device orientation
+	Added Follow Taxi when loaded
+	String changes for taxihail network
+	Enabled manual pairing on TH network
+3.1.6
+	Build fix
+3.1.7
+	New progress spinner while finding you a taxi
+	Orient/animate taxi markers on map
+	allow user to change email address
+	Move tip UI from "Update Account" to "Payment"
+	Change my phone number on SMS confirmation screen
+	Web - Admin - Lookup user phone number and resent SMS code
+	Bug fix - ETA says no taxi avialable when they are displayed on the map
+	Bug fix -  Display medallion  while in landscape
+	Bug fix - Not zooming out when assigned a taxi
+	Bug fix - when in a new market, text to driver will use the correct settings
+	Status message finding you a taxi no longer shows the company name
+	Changed message when no  taxi is available in Boston
+	Bug fix - turning off CC preauth cause loss of the last-4 of CC
+	Bug fix - iPhone 4 - Can't see check-in button after typing pairing code
+	Wrong text on manual trips
+	iOS - ability to tap on taxi icons and display medallions 
+	During ehail flow change status text after meter is on and after app is paired to taxi
+	Bug fix - [Android] Edit order screen is out of bounds
+	Bug fix - User could book with wrong address
+	As an Admin, have a support role on site admin
+	Notify user of Facebook account registration
+	Bug fix - When pressing 'book now/need a taxi' before the app has fetch the new address, my order will be created with the old address. We should wait for the new address to be correct before processing the order 
+	Settings - "Taxihail network" should not be a "Taxihail Pro feature"
+	Driver photo is square instead of circular
+	Bug fix - User can cancel a trip, but ride is still paired
+	Bug fix - Booking button should be centered when 'Estimate' button is disabled
+3.1.8
+	Bug fix - Fixed Progress animation while finding taxi on Android
+	Bug fix - Fixed issue where we would attempt to update the vehicle position via Geo when a taxi was not assigned
+	Bug fix - Fixes for pop-up black screen + dont navigate to charge account questions page if there's no question
+	Bug fix - Now correctly doing the timeout when NetworkTimeout is hit and no more company is found.
+	Bug fix - Now actualy removing the pin when the ride is over.
+	Added ability to resend SMS for Support group
+	Bug fix - Fixed issue where zooming was not working correctly.
+	Bug fix - Issue where zoom would not work correctly when taxi was assinged.
+	Bug fix - Fixed issue where Assigned taxi location would remain sticky when order was either completed, cancelled, or the driver bailed
+3.1.9 
+	Version bump for TestFlight
+3.1.10
+	Crash issue on Android
+	filter sensibility decreased
+	Fixed issue where having no vehicle registration would prevent us from showing the correct state from IBS.
+	Fixed a potential null reference exception in OrderMapView
+3.1.11
+	Added - Driver bonuses on ehail offers
+	Added - interface to remove credit cards from admin console
+	Added color-code assigned car's medallion over taxi icon marker
+	Added new version popup
+	added progress indication on extended splashscreen.
+	Added promotions export
+	Added setting to Hide TH Network from app menu "Display - Hide THNetwork from menu"
+	Added Settings for zipcode
+	Added Support for two (2) cards on file
+	Changed Push notification when no taxi found
+	iOS - distance between pin and info text when compass course decreased for ios
+	Bug fix - Android - Alert dialogs crashing the app
+	Bug fix - Android - fix issue where propoer validation wasn't called on Airport dialog
+	Bug fix - Android - notes covering bonus
+	Bug fix - Autofollow Taxi does not work when in Manual Pairing.
+	Bug fix - Can go back to home view from Manual Pairing.
+	Bug fix - cancel button is missing while paired
+	Bug fix - Change Medallion height
+	Bug fix - Crash in android when a taxi is assigned via Ridelinq
+	Bug fix - Fixed a bug in CancelOrderService where it was impossible to cancel a Scheduled order
+	Bug fix - Fixed issue where vehicle icon was not correctly displayed on iOS
+	Bug fix - Fixed John Doe null email when updating web site
+	Bug fix - In-trip tip percent displayed does not always match actual
+	Bug fix - iOS - Improvements to the return to active behaviour
+	Bug fix - iOS - order options control hiding when opening booking options popup
+	Bug fix - Load service url from file instead from cache
+	Bug fix - Manual pairing screen does not exit automatically when ride is over
+	Bug fix - Minimum app version fix
+	Bug fix - Password validation checked for 7 character minimum instead of 6
+	Bug fix - popup for delete credit cards
+	Bug fix - Trying to register with an already registered account causes some unexpected behaviour
+	Bug fix - Wrong taxi icon used in Manual pairing
+3.1.12
+	Bug fix - Manual pairing view is broken
+	Bug fix - If no location (0,0) do not call GetCompanyZoneByGPS
+	Added OrderID in app log
+	Added Look up and edit TH account's phone number
+	String changes for Arro
+	Bug fix - Keyboard stay on top if you press a favorite before the loading is completed in address bar
+	Bug fix - 'Need a taxi' not responsive
+	Fixed DeviceOrientationLogic
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

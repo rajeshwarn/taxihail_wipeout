@@ -30,6 +30,9 @@ namespace apcurium.MK.Booking.Mobile.Data
 				VehicleNumber = IsEmpty
 					? default(double)
 					: _vehicles.Select(x => x.VehicleNumber).Aggregate((a,b) => a + b),
+				VehicleName = IsEmpty
+					? string.Empty
+					: _vehicles.Select(x => x.VehicleName).Aggregate((a,b) => a + " " + b),
                 LogoName = IsEmpty
                     ? null
                     :_vehicles[0].LogoName

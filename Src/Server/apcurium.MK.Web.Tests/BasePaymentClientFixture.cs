@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.Entity;
-using System.Data.SqlTypes;
 using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Database;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web.Tests
