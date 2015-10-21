@@ -35,9 +35,13 @@ namespace apcurium.MK.Booking.ConfigTool
 					/**CallBox **/
                     new ConfigFile(this){ Source=@"CallBox\background_empty.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable\background_empty.png" },
                     new ConfigFile(this){ Source=@"CallBox\background_logo.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable\background_logo.png" },
+					// In case that the images are named Callbox_ instead of being in a special CallBox folder\...
+					new ConfigFile(this){ Source=@"CallBox_background_empty.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable\background_empty.png" },
+                    new ConfigFile(this){ Source=@"CallBox_background_logo.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable\background_logo.png" },
 					
                     new ConfigFile(this){ Source=@"Logo.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable\Logo.png" },
-                    new ConfigFile(this){ Source=@"Logo@2x.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable-xhdpi\Logo.png" },
+                    new ConfigFile(this){ Source=@"Logo@2x.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable-hdpi\Logo.png" },
+					new ConfigFile(this){ Source=@"Logo@3x.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable-xhdpi\Logo.png" },
 					
                     new ConfigFile(this){ Source=@"Icon.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable\icon.png" },					
 				    
