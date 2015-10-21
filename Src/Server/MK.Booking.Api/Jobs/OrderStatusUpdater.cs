@@ -496,7 +496,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 // this is the only payment related message sent to the driver when this setting is false
-                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount);
+                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount, orderStatusDetail.CompanyKey);
             }
 
             try
@@ -660,7 +660,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                             orderDetail.Settings.Phone,
                             account.Email,
                             orderDetail.UserAgent.GetOperatingSystem(),
-                            orderDetail.UserAgent);
+                            orderDetail.UserAgent,
+                            orderDetail.CompanyKey);
                     }
                     catch (Exception e)
                     {
@@ -903,9 +904,9 @@ namespace apcurium.MK.Booking.Api.Jobs
             Log.Debug(paymentBeingProcessedMessage);
         }
 
-        private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip)
+        private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip, string companyKey)
         {
-            _ibsOrderService.SendPaymentNotification(amount, meter, tip, null, vehicleNumber);
+            _ibsOrderService.SendPaymentNotification(amount, meter, tip, null, vehicleNumber, companyKey);
         }
 
         private void InitializeCmtServiceClient()
