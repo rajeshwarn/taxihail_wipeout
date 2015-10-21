@@ -86,10 +86,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 				.Where(_ => _refreshGate)
 				.Subscribe(orderStatusDetails =>
 				{
-					_refreshGate = true;
-					RefreshOrderStatus(orderStatusDetails);
 					_refreshGate = false;
-				}, 
+					RefreshOrderStatus(orderStatusDetails);
+					_refreshGate = true;
+				},
 				Logger.LogError);                           
 
 			_token = this.Services().MessengerHub.Subscribe<OrderDeleted>(orderId =>
@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		private IObservable<Unit> ObserveTimerForRefresh()
 		{
 			return Observable
-				.Timer(TimeSpan.FromSeconds(2))
+				.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
 				.Select(_ => Unit.Default);
 		}
 
