@@ -1,4 +1,5 @@
-﻿using System;
+﻿using apcurium.MK.Common.Enumeration;
+using System;
 namespace apcurium.MK.Common.Entity
 {
     public class BookingSettings
@@ -17,6 +18,8 @@ namespace apcurium.MK.Common.Entity
         public int? ProviderId { get; set; }
 
         public int? VehicleTypeId { get; set; }
+
+        public ServiceType ServiceType { get; set; }
 
         public string VehicleType { get; set; }
 
