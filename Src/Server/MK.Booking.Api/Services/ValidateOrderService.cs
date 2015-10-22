@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 request.TestZone = "101";
             }
-
+            
             Func<string> getPickupZone = () => request.TestZone.HasValue() 
                 ? request.TestZone 
                 : _ibsServiceProvider.StaticData().GetZoneByCoordinate(request.Settings.ProviderId, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
