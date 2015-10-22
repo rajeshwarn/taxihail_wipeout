@@ -48,18 +48,11 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public IBSSettingContainer GetSettingContainer(string companyKey = null, ServiceType? serviceType = null)
         {
-            if (serviceType.HasValue)
+            if (serviceType.HasValue && serviceType.Value == ServiceType.Luxury)
             {
-                var ibsSettings = _serverSettings.ServerData.IBS;
-                
-                if (serviceType.Value == ServiceType.Luxury)
-                {
-                    var luxuryIBSWebServiceUrl = _serviceTypeSettingsProvider.GetIBSWebServicesUrl(serviceType.Value);
-                    ibsSettings.WebServicesUrl = luxuryIBSWebServiceUrl;
-                    return ibsSettings;
-                }
+                return _serviceTypeSettingsProvider.GetIBSSettings(serviceType.Value);
             }
-
+            
             if (!companyKey.HasValue())
             {
                 return _serverSettings.ServerData.IBS;
