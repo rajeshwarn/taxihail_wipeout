@@ -674,6 +674,7 @@
     <BundleResource Include="Resources\down_arrow_light%402x.png" />
     <BundleResource Include="Resources\up_arrow_light.png" />
     <BundleResource Include="Resources\up_arrow_light%402x.png" />
+    <Compile Include="Views\ExtendedSplashScreen.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
