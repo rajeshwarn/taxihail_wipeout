@@ -32,6 +32,7 @@ using MapKit;
 using TinyIoC;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -505,7 +506,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var vehicleAnnotation = new AddressAnnotation (
                                 new CLLocationCoordinate2D(vehicle.Latitude, vehicle.Longitude),
                                 annotationType, 
-								vehicle.VehicleNumber.ToString(CultureInfo.InvariantCulture),           
+                                vehicle.VehicleName,           
                                 string.Empty, 
                                 _useThemeColorForPickupAndDestinationMapIcons,
 								false,
@@ -585,7 +586,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var vehicleNumbersToBeShown = vehiclesArray.Select (x => x.VehicleName);
 
             // check for annotations that needs to be removed
-            var annotationsToRemove = _availableVehicleAnnotations.Where(x => !vehicleNumbersToBeShown.Contains(x.Title));
+            var annotationsToRemove = _availableVehicleAnnotations.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
             foreach (var annotation in annotationsToRemove)
             {
                 DeleteAnnotation(annotation);

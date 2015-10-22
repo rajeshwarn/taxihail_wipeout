@@ -178,7 +178,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				    _accountService.GetVehiclesList(true);
 				}
-
     			if (_shouldShowReview)
     			{
     				// need to refetch order settings

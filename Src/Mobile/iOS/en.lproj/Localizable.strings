@@ -75,6 +75,7 @@
 "DriverInfoLicence"="Licence #:";
 "ManualRideLinqStatus_Extra"="Extra:";
 "PickupTimeTextPlaceholder"="Time: Now";
+"BaseRate_PerTenthMile"="{0} ({1} per tenth mile)";
 "ChangeBookingSettingsButton"="Change booking settings";
 "EstimateFareCalculating"="Calculating...";
 "TimeNow"="As soon as possible";
@@ -174,6 +175,7 @@
 "BuildingName"="Building Name / Remark";
 "TaxiHailNetworkTimeOutPopupTitle"="Switch company?";
 "UpdatePasswordConfirmationLabel"="Confirm New Password";
+"BaseRate_AirportMeetAndGreet"="Airport Meet And Greet";
 "DontHaveAnAccountLabel"="Don't have an account?";
 "EtaDurationUnitPlural"="mins";
 "MessageActivityName"="Message";
@@ -451,6 +453,7 @@
 "VehicleNumberInfo"="Please confirm your car number with the driver";
 "NoCreditCardSelected"="Please select a credit card";
 "InvalidAddressTextEdit"="Cannot validate adddress";
+"BaseRate_PerMileRate"="Per Mile Rate";
 "AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";
 "ProfileSettingsActivityName"="Profile";
 "MessageToDriverTitle"="Message to Driver";
@@ -581,6 +584,7 @@
 "View_InitializeOrderForAccountPayment"="Please answer these questions";
 "CurrencyPriceFormat"="{0:C}";
 "NoFareText"="Choose a destination to get a price estimate.";
+"BaseRate_PerMinute"="{0} per minute";
 "Notes"="Notes";
 "EstimatingFare"="Estimating your fare...";
 "OverduePaymentActivityName"="Overdue payment";
@@ -630,9 +634,11 @@
 "PickupViewPickupLabel"="Pickup:";
 "Done"="Done";
 "DriverInfoVehicleMedallion"="Medallion:";
+"BaseRate_MinimumFare"="Minimum Fare";
 "InvalidEmailTitle"="Invalid email";
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "PromoExpiringSoonMessage"="Expires in {0} days";
+"BaseRate_WaitTime"="Wait Time";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "BookingAirportPickupPointFee"="Selecting Pickup Point {0} will incurr an additional Fee of {1}";
 "ResetPasswordSucessTitle"="Password reset";
@@ -660,6 +666,7 @@
 "Overdue_Failed_Title"="Payment Failed";
 "SendMessageErrorMessage"="Error confirming with driver payment cancelled";
 "LocationDetailsActivityName"="Location Details";
+"BaseRate_BaseRate"="Base Rate (no miles)";
 "PromoCodeLabel"="Promo code";
 "Notification_DriverAssignedEmail"="Driver Assigned (Email)";
 "May"="May (05)";

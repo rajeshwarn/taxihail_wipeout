@@ -402,6 +402,7 @@
     <Compile Include="Controls\Widgets\TwoLinesCell.cs" />
     <Compile Include="Controls\Widgets\CustomCellBackgroundView.cs" />
     <Compile Include="Controls\Widgets\Line.cs" />
+    <Compile Include="Controls\Widgets\OverlayButton.cs" />
     <Compile Include="Controls\Widgets\TaxiHailEntryElement.cs" />
     <Compile Include="Controls\Widgets\TaxiHailDialogViewController.cs" />
     <Compile Include="Controls\Widgets\RoundedCornerView.cs" />
@@ -465,7 +466,6 @@
     <Compile Include="Controls\Widgets\Dot.cs" />
     <Compile Include="Controls\Widgets\AppBarLabelButton.cs" />
     <Compile Include="Controls\Widgets\AppBarView.cs" />
-    <Compile Include="Controls\Widgets\OverlayButton.cs" />
     <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <Compile Include="Controls\Widgets\CommandButton.cs" />
     <Compile Include="Controls\Widgets\Booking\BookLaterDatePicker.cs" />
@@ -660,7 +660,6 @@
     <BundleResource Include="Resources\nearby_oriented_passenger%402x.png" />
     <BundleResource Include="Resources\nearby_oriented_passenger%403x.png" />
     <Compile Include="Controls\Widgets\VehicleTypeSubView.cs" />
-    <Compile Include="Views\ExtendedSplashScreen.cs" />
     <Compile Include="Views\Payments\CreditCardMultipleView.cs" />
     <Compile Include="Views\Payments\CreditCardMultipleView.designer.cs">
       <DependentUpon>CreditCardMultipleView.cs</DependentUpon>
@@ -670,6 +669,12 @@
       <DependentUpon>CreditCardCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\CreditCardLabelToInt.cs" />
+    <Compile Include="Controls\Widgets\BaseRateControl.cs" />
+    <BundleResource Include="Resources\down_arrow_light.png" />
+    <BundleResource Include="Resources\down_arrow_light%402x.png" />
+    <BundleResource Include="Resources\up_arrow_light.png" />
+    <BundleResource Include="Resources\up_arrow_light%402x.png" />
+    <Compile Include="Views\ExtendedSplashScreen.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
