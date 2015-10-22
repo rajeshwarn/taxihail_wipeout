@@ -9,7 +9,6 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Android.Runtime;
 using Cirrious.MvvmCross.Binding.Droid.Views;
-using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {

@@ -681,7 +681,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 			_orderCanBeConfirmed.OnNext (false);
 			_cvvSubject.OnNext(string.Empty);
-			_orderValidationResultSubject.OnNext(null);
+			DisableBooking();
 			_loadingAddressSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
             _poiRefPickupListSubject.OnNext(new PickupPoint[0]);
@@ -1054,6 +1054,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 
 			return success;
+		}
+
+		public void DisableBooking()
+		{
+			_orderValidationResultSubject.OnNext(new OrderValidationResult { HasError = true, AppliesToFutureBooking = true, AppliesToCurrentBooking = true });
 		}
     }
 }

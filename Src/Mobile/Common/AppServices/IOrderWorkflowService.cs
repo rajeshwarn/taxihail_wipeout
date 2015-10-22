@@ -141,6 +141,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> ShouldPromptForCvv();
 		bool ValidateAndSetCvv(string cvv);
-    }
+
+		void DisableBooking();
+	}
 }
 

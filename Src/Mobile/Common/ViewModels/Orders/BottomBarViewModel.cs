@@ -264,6 +264,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             IsFutureBookingDisabled = Settings.DisableFutureBooking 
 				|| (orderValidationResult != null && orderValidationResult.DisableFutureBooking) 
                 || Settings.UseSingleButtonForNowAndLaterBooking;
+
+			Book.RaiseCanExecuteChangedIfPossible();
+			BookLater.RaiseCanExecuteChangedIfPossible();
         }
 
         public ICommand ChangeAddressSelectionMode
@@ -667,18 +670,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-
+	    private ICommand _bookLater;
         public ICommand BookLater
         {
             get
             {
-                return this.GetCommand(async () =>
+	            if (_bookLater != null)
+	            {
+		            return _bookLater;
+	            }
+
+				return _bookLater = this.GetCommand(async () =>
                 {
 					Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
 					await PrevalidatePickupAndDestinationRequired(onValidated);
-                });
+                }, () => CanProceedToBook(true));
             }
         }
+
+		/// <summary>
+		/// WARNING: NOT SUITED FOR SINGLE BUTTON FOR NOW AND LATER BOOKING
+		/// </summary>
+		/// <returns><c>true</c> if this instance can proceed to book the specified forLater; otherwise, <c>false</c>.</returns>
+		/// <param name="forLater">If set to <c>true</c> for later.</param>
+		private bool CanProceedToBook(bool forLater)
+		{
+			if (_orderValidationResult == null)
+			{
+				return false;
+			}
+
+			if (!_orderValidationResult.HasError)
+			{
+				return true;
+			}
+
+			return forLater
+				? !_orderValidationResult.AppliesToFutureBooking
+				: !_orderValidationResult.AppliesToCurrentBooking;
+		}
 
         public ICommand BookAirportLater
         {
@@ -853,12 +883,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		    }
 	    }
 
-
+	    private ICommand _book;
         public ICommand Book
         {
             get
             {
-                return this.GetCommand(async () =>
+	            if (_book != null)
+	            {
+		            return _book;
+	            }
+
+                return _book = this.GetCommand(async () =>
                 {
 					// popup
 					if ((Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled) 
@@ -884,7 +919,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
 						await PrevalidatePickupAndDestinationRequired(onValidated);
 					}
-                });
+                }, () => CanProceedToBook(false));
             }
         }
 

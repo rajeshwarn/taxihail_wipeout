@@ -88,6 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	                if (ViewModel != null)
 	                {
 						ViewModel.BookCannotExecute = false;
+
 	                }
                     _automatedMapChanged = false;
                 }
