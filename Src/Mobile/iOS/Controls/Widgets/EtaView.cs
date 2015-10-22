@@ -152,7 +152,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			get { return _selectedVehicle; }
 			set
 			{
-                if (_selectedVehicle != null)
+                if (value != null)
                 {
                     _selectedVehicle = value;
 
