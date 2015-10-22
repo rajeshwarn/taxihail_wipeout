@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	partial class ChangeDropOffControl
 	{
 		[Outlet]
+		UIKit.UIButton btnAddOrRemove { get; set; }
+
+		[Outlet]
 		UIKit.UIImageView imgDropOffIcon { get; set; }
 
 		[Outlet]
@@ -36,6 +39,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			if (view != null) {
 				view.Dispose ();
 				view = null;
+			}
+
+			if (btnAddOrRemove != null) {
+				btnAddOrRemove.Dispose ();
+				btnAddOrRemove = null;
 			}
 		}
 	}
