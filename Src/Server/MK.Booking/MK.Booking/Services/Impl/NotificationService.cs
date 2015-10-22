@@ -129,9 +129,12 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendBailedPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            SendPushOrSms(order.AccountId,
-                        _resources.Get("PushNotification_BAILED", order.ClientLanguageCode),
-                        new Dictionary<string, object>());
+            if (ShouldSendNotification(order.AccountId, x => x.DriverBailedPush))
+            {
+                SendPushOrSms(order.AccountId,
+                    _resources.Get("PushNotification_BAILED", order.ClientLanguageCode),
+                    new Dictionary<string, object>());
+            }
         }
 
         public void SendChangeDispatchCompanyPush(Guid orderId)
