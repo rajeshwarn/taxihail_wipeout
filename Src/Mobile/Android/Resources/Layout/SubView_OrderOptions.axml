@@ -33,27 +33,53 @@
             android:layout_height="wrap_content" />
         <LinearLayout
             android:id="@+id/EtaContainer"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:visibility="gone"
             android:layout_width="fill_parent"
-            android:layout_height="23dp">
+            android:clickable="true"
+            android:layout_height="wrap_content">
+            <apcurium.mk.booking.mobile.client.controls.widgets.BaseRateControl
+                android:id="@+id/BaseRate"
+                android:layout_height="0dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_width="fill_parent" />
             <LinearLayout
-                android:id="@+id/EtaBadge"
                 android:orientation="horizontal"
-                android:gravity="clip_vertical"
                 android:paddingLeft="8dp"
-                android:layout_width="45dp"
-                android:layout_height="fill_parent" />
-            <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
-                android:paddingLeft="8dp"
-                android:paddingRight="4dp"
-                android:paddingBottom="2dp"
-                android:id="@+id/EtaLabelInVehicleSelection"
-                android:textColor="@color/label_text_color"
-                android:textSize="16dp"
-                android:gravity="left|center"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
+                android:layout_height="23dp">
+                <LinearLayout
+                    android:id="@+id/EtaBadge"
+                    android:orientation="horizontal"
+                    android:gravity="clip_vertical"
+                    android:paddingLeft="8dp"
+                    android:layout_width="45dp"
+                    android:layout_height="23dp" />
+                <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="4dp"
+                    android:paddingBottom="2dp"
+                    android:id="@+id/EtaLabelInVehicleSelection"
+                    android:textColor="@color/label_text_color"
+                    android:textSize="16dp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="23dp" />
+                <ImageView
+                    android:src="@drawable/down_arrow_light"
+                    android:id="@+id/BaseRateExpandImage"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:layout_marginRight="6dp"
+                    android:layout_gravity="right|center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

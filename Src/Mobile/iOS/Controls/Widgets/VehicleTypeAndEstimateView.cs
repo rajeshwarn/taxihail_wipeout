@@ -52,6 +52,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
+            VehicleRepresentations = Vehicles.ToList();
+
             _constraintControlHeight = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, DefaultControlHeight);
             AddConstraint(_constraintControlHeight);
 
@@ -59,7 +61,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             VehicleSelectionContainer = new UIView 
             {
-                TranslatesAutoresizingMaskIntoConstraints = false
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                BackgroundColor = UIColor.FromRGB(227, 227, 227)
             };
 
             EstimateContainer = new UIView 
@@ -73,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             AddConstraints(new [] 
             { 
                 NSLayoutConstraint.Create(VehicleSelectionContainer, NSLayoutAttribute.Left, NSLayoutRelation.Equal, VehicleSelectionContainer.Superview, NSLayoutAttribute.Left, 1f, 0f),
-                NSLayoutConstraint.Create(VehicleSelectionContainer, NSLayoutAttribute.Right, NSLayoutRelation.Equal, VehicleSelectionContainer.Superview, NSLayoutAttribute.Right, 1f, 0f),
+                NSLayoutConstraint.Create(VehicleSelectionContainer, NSLayoutAttribute.Right, NSLayoutRelation.Equal, VehicleSelectionContainer.Superview, NSLayoutAttribute.Right, 1f, -1f),
                 NSLayoutConstraint.Create(VehicleSelectionContainer, NSLayoutAttribute.Top, NSLayoutRelation.Equal, VehicleSelectionContainer.Superview, NSLayoutAttribute.Top, 1f, 0f),
                 NSLayoutConstraint.Create(VehicleSelectionContainer, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, VehicleSelectionContainer.Superview, NSLayoutAttribute.Bottom, 1f, 0f)
             });
@@ -243,7 +246,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     var subSelectionView = new UIView 
                     { 
                         TranslatesAutoresizingMaskIntoConstraints = false,
-                        BackgroundColor = UIColor.FromRGB(227, 227, 227)
+                        BackgroundColor = UIColor.FromRGB(240, 240, 240)
                     };
                     VehicleSelectionContainer.AddSubview(subSelectionView);
 

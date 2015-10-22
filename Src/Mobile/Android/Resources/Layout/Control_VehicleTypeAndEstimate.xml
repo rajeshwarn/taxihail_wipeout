@@ -19,6 +19,7 @@
         android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/VehicleSelection"
+            android:background="#e3e3e3"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:visibility="gone"
@@ -27,7 +28,7 @@
             android:layout_height="52dp" />
         <LinearLayout
             android:id="@+id/VehicleSubSelection"
-            android:background="#e3e3e3"
+            android:background="#f0f0f0"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:visibility="gone"

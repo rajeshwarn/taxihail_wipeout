@@ -135,9 +135,13 @@
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
+    <Compile Include="Entity\OrderHailResult.cs" />
+    <Compile Include="CreditCardLabelConstants.cs" />
+    <Compile Include="Entity\OrderKey.cs" />
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\Airline.cs" />
     <Compile Include="Enumeration\ServiceType.cs" />
+    <Compile Include="Entity\VehicleCandidateTypes.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
@@ -242,6 +246,7 @@
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
     <Compile Include="TestCreditCards.cs" />
     <Compile Include="VehicleStatuses.cs" />
+    <Compile Include="Entity\BaseRateInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

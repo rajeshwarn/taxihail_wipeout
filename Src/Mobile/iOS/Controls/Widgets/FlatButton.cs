@@ -5,6 +5,7 @@ using CoreGraphics;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -138,6 +139,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
             base.LayoutSubviews();
+        }
+
+        public override bool Enabled
+        {
+            get
+            {
+                return base.Enabled;
+            }
+            set
+            {
+                base.Enabled = value;
+                Alpha = Enabled
+                    ? 1.0f 
+                    : 0.5f;
+            }
         }
     }
 }

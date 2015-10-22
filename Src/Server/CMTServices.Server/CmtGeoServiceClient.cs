@@ -92,6 +92,9 @@ namespace CMTServices
             var response = base.ToVehicleResponse(entity);
 
             response.Eta = entity.ETASeconds;
+            response.DistanceToArrival = entity.ETAMeters;
+            response.DeviceName = entity.DeviceName;
+            response.CompassCourse = entity.CompassCourse;
             response.Market = entity.Market;
 
             return response;

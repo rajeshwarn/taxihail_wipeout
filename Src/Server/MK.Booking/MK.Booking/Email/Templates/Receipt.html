@@ -604,6 +604,13 @@
                                                                         <td class="list_value">{{ Tip }}</td>
                                                                     </tr>
 
+                                                                    {{#ShowTipIncentive}}
+                                                                    <tr>
+                                                                        <td class="list_title">{{ localize "Email_Body_TipIncentive"}}</td>
+                                                                        <td class="list_value">{{ TipIncentive }}</td>
+                                                                    </tr>
+                                                                    {{/ShowTipIncentive}}
+
                                                                     {{#PromotionWasUsed}}
                                                                     <tr>
                                                                         <td class="list_title">{{ localize "Email_Body_Promo" }} ({{ PromoCode }})</td>

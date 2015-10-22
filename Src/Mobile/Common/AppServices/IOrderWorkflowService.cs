@@ -23,6 +23,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    Task<bool> ValidateIsCardDeactivated();
 		Task<bool> ValidatePromotionUseConditions();
 
+		void DisableBooking();
+
 		Task SetAddress(Address address);
 
 		Task SetPickupAptAndRingCode(string apt, string ringCode);
@@ -59,7 +61,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		void SetNoteToDriver(string text);
 
+        void SetTipIncentive(double? tipIncentive);
+
 		void SetPromoCode(string code);
+
+		Task<double?> GetTipIncentive();
 
 		IObservable<Address> GetAndObservePickupAddress();
 
@@ -72,6 +78,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         IObservable<Airline[]> GetAndObservePOIRefAirlineList();
 
         IObservable<int?> GetAndObserveVehicleType();
+		IObservable<ServiceType> GetAndObserveServiceType();
+		Task<ServiceType> GetServiceTypeForVehicleId(int? vehicleTypeId);
 
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
 
@@ -80,6 +88,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<string> GetAndObserveEstimatedFare();
 
 		IObservable<string> GetAndObserveNoteToDriver();
+
+        IObservable<double?> GetAndObserveTipIncentive();
 
 		IObservable<string> GetAndObservePromoCode();
 

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:paddingBottom="3dp"
+    android:paddingLeft="12dp"
+    android:gravity="bottom"
+    android:layout_gravity="bottom"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:layout_marginTop="9dp"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="20dp">
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:id="@+id/baseRateLabel1"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="0.45"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent" />
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:id="@+id/baseRateDescription1"
+            android:layout_weight="0.45"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="20dp">
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:id="@+id/baseRateLabel2"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="0.45"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent" />
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:id="@+id/baseRateDescription2"
+            android:layout_weight="0.45"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="20dp">
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:id="@+id/baseRateLabel3"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="0.45"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent" />
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:id="@+id/baseRateDescription3"
+            android:layout_weight="0.45"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="20dp">
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:id="@+id/baseRateLabel4"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="0.45"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent" />
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:id="@+id/baseRateDescription4"
+            android:layout_weight="0.45"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="20dp">
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:id="@+id/baseRateLabel5"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="0.45"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent" />
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:id="@+id/baseRateDescription5"
+            android:layout_weight="0.45"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+</LinearLayout>

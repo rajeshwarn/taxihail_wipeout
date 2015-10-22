@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Cirrious.CrossCore.Droid.Platform;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
@@ -24,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private static Android.Graphics.Color _colorToUse = Android.Graphics.Color.ParseColor("#0378ff");
 
         public static void StartAnimatingLoading()
-        {
+        {            
             _activity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
             var rootView = _activity.Window.DecorView.RootView as ViewGroup;
 
@@ -50,13 +51,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
 		private static void Initialize(FrameLayout rootView)
 		{
-			var layoutParent = new LinearLayout(_activity.ApplicationContext);
+            var layoutParent = new LinearLayout(_activity.ApplicationContext);
 			_layoutCenter = new LinearLayout(_activity.ApplicationContext);
 			_layoutImage = new LinearLayout(_activity.ApplicationContext);
 
-			var layoutParentParameters = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.FillParent, LinearLayout.LayoutParams.FillParent);
+            var layoutParentParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
             layoutParent.LayoutParameters = layoutParentParameters;
-			layoutParent.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
+            layoutParent.SetBackgroundDrawable(_activity.Resources.GetDrawable(Resource.Drawable.loading_overlay));
 
 			var layoutCenterParameters = new LinearLayout.LayoutParams(-2, 0);
             layoutCenterParameters.Weight = 1.0f;
@@ -75,8 +76,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _layoutCenter.AddView(_layoutImage);
             layoutParent.AddView(_layoutCenter);
             
-			rootView.AddView (layoutParent, layoutParentParameters);
-			layoutParent.BringToFront ();
+            rootView.AddView (layoutParent, layoutParentParameters);
+            layoutParent.BringToFront ();
 
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
@@ -95,16 +96,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             _zoneCircle = new RectF((_windowSize.Width * 0.5f) - _radius / 2f, (_windowSize.Height * 0.5f) - _radius / 2f,  (_windowSize.Width * 0.5f) + _radius / 2f, (_windowSize.Height * 0.5f) + _radius / 2f);
 
-			StartAnimationLoop ();
+            StartAnimationLoop (layoutParent);
         }
 
         public static void StopAnimatingLoading()
         {                
-            WaitStack -= 1;
+            Interlocked.Decrement(ref WaitStack);
 
             if (WaitStack < 1)
             {
-                _isLoading = false;    
+                _isLoading = false;
+
                 if (_activity.Intent.Categories != null && _activity.Intent.Categories.Contains("Progress"))
                 {
                     _activity.Intent.Categories.Remove("Progress");
@@ -114,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
         public static void WaitMore()
         {
-            WaitStack += 1;
+            Interlocked.Increment(ref WaitStack);
             _isLoading = true;
 
             if (Progress > 20)
@@ -125,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
         public static int WaitStack = 0;
 
-        private static async void StartAnimationLoop()
+        private static async void StartAnimationLoop(LinearLayout overlay)
         {
 			Progress = 0;
 			_isLoading = true;
@@ -153,12 +155,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
                 await Task.Delay(500);
 
-                if (_layoutCenter.Parent != null)
+                if (overlay != null)
                 {
-					var root = _layoutCenter.Parent.Parent as ViewGroup;
+                    var root = overlay.Parent as ViewGroup;
                     if (root != null)
                     {
-                        root.RemoveView((LinearLayout)_layoutCenter.Parent);
+                        root.RemoveView(overlay);
                     }
                 }
             });

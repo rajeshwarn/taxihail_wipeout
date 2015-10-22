@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Common.Web;
@@ -32,6 +33,13 @@ namespace apcurium.MK.Booking.Api.Services
             var creditCard = account.DefaultCreditCard.HasValue
                 ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
                 : null;
+
+            var creditCardLabel = CreditCardLabelConstants.Personal;
+            if (creditCard != null)
+            {
+                Enum.TryParse(creditCard.Label, out creditCardLabel);
+            }
+
             var creditCardResource = creditCard != null
                 ? new CreditCardDetails
                     {
@@ -43,7 +51,9 @@ namespace apcurium.MK.Booking.Api.Services
                         CreditCardCompany = creditCard.CreditCardCompany,
                         ExpirationMonth = creditCard.ExpirationMonth,
                         ExpirationYear = creditCard.ExpirationYear,
-                        IsDeactivated = creditCard.IsDeactivated
+                        IsDeactivated = creditCard.IsDeactivated,
+                        Label = creditCardLabel,
+                        ZipCode = creditCard.ZipCode
                     }
                 : null;
 

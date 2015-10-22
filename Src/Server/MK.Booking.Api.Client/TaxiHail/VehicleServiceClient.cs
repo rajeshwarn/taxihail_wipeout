@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using System;
+using apcurium.MK.Common.Entity;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -56,7 +58,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		public async Task<VehicleType[]> GetVehicleTypes()
 	    {
             var response = await Client.GetAsync<VehicleType[]>("/admin/vehicletypes");
-
             return response.ToArray();
 	    }
 

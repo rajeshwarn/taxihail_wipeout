@@ -12,7 +12,6 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Maps;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -25,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private bool _pickupInputDisabled;
 		private bool _destinationInputDisabled;
 		private bool _vehicleTypeInputDisabled;
+		private bool _canShowRateBox = true;
 
 		private static readonly int TimeBeforeUpdatingEtaWhenNoVehicle = 10;  // In seconds
 		private DateTime? _keepEtaWhenNoVehicleStartTime = null;
@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					VehicleTypeInputDisabled = true;
 					IsDestinationSelected = false;
 					IsPickupSelected = false;
+					CanShowRateBox = false;
 					break;
 				case HomeViewModelState.PickDate:
 				case HomeViewModelState.AirportPickDate:
@@ -99,6 +100,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					VehicleTypeInputDisabled = true;
 					IsDestinationSelected = false;
 					IsPickupSelected = false;
+					CanShowRateBox = true;
 					break;
 				case HomeViewModelState.Initial:
 					PickupInputDisabled = false;
@@ -106,6 +108,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					VehicleTypeInputDisabled = false;
 					IsDestinationSelected = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
 					IsPickupSelected = AddressSelectionMode == AddressSelectionMode.PickupSelection;
+					CanShowRateBox = true;
 					break;
 			}
 		}
@@ -298,6 +301,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
+		public bool CanShowRateBox
+		{
+			get { return _canShowRateBox; }
+			set
+			{
+				_canShowRateBox = value; 
+				RaisePropertyChanged();
+			}
+		}
+
 		private AddressSelectionMode _addressSelectionMode;
 		public AddressSelectionMode AddressSelectionMode
 		{
@@ -371,7 +384,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				if (value != _estimatedFare)
 				{
 					_estimatedFare = value;
-					RaisePropertyChanged();
+					RaisePropertyChanged ();
+
+					if (DisplayBaseRateInfo)
+					{
+						RaisePropertyChanged(() => FormattedEta);
+					}
 				}
 			}
 		}
@@ -405,29 +423,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				if (_availableVehicles == null || !_availableVehicles.Any())
+				if (!DisplayBaseRateInfo)
 				{
-					_keepEtaWhenNoVehicleStartTime = DateTime.Now;
-					return this.Services ().Localize ["EtaNoTaxiAvailable"];
+					if (_availableVehicles == null || !_availableVehicles.Any ())
+					{
+						_keepEtaWhenNoVehicleStartTime = DateTime.Now;
+						return this.Services ().Localize ["EtaNoTaxiAvailable"];
+					}
+
+					if (Eta == null || (Eta != null && !Eta.IsValidEta ()))
+					{
+						return this.Services ().Localize ["EtaNoTaxiAvailable"];
+					}
+
+					if (Eta.Duration > 30)
+					{
+						return this.Services ().Localize ["EtaNotAvailable"];
+					}
+
+					_keepEtaWhenNoVehicleStartTime = null;
+
+					var durationUnit = Eta.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
+
+					return Eta.Duration == 0
+                    ? this.Services ().Localize ["EtaLessThanAMinute"]
+                    : string.Format (this.Services ().Localize ["Eta"], Eta.Duration, durationUnit);
+				} else
+				{
+					return EstimatedFare;
 				}
 
-                if (Eta == null || (Eta != null && !Eta.IsValidEta()))
-			    {
-					return this.Services ().Localize ["EtaNoTaxiAvailable"];
-			    }
-
-			    if (Eta.Duration > 30) 
-			    {
-					return this.Services ().Localize ["EtaNotAvailable"];
-			    }
-
-				_keepEtaWhenNoVehicleStartTime = null;
-
-                var durationUnit = Eta.Duration <= 1 ? this.Services().Localize["EtaDurationUnit"] : this.Services().Localize["EtaDurationUnitPlural"];
-
-                return Eta.Duration == 0
-                    ? this.Services().Localize["EtaLessThanAMinute"]
-                    : string.Format(this.Services().Localize["Eta"], Eta.Duration, durationUnit);
 			}
 		}
 
@@ -443,19 +468,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate;
+				return (Settings.ShowEta && FormattedEta.HasValue() && !ShowEstimate) || DisplayBaseRateInfo;
 			}
 		}
 
 		public bool ShowEtaInEstimate
 		{
-			get { return Settings.ShowEta && FormattedEta.HasValue(); }
+			get { return (Settings.ShowEta && FormattedEta.HasValue()) && !DisplayBaseRateInfo; }
 		}
 
 		public bool ShowEstimate
 		{
-            get { return ShowDestination && Settings.ShowEstimate; }
+			get { return (ShowDestination && Settings.ShowEstimate) && !DisplayBaseRateInfo; }
 		}
+
+		public bool DisplayBaseRateInfo
+		{
+			get { return true; } // TODO: Settings.DisplayBaseRateInfo
+		}
+
+		public bool BaseRateToggled { get; set; }
 
 		public bool GroupVehiclesByServiceType 
 		{
@@ -466,7 +498,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled; }
 		}
-			
+
         public ICommand SetAddress
         {
             get

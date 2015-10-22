@@ -4,7 +4,6 @@ using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Card.IO;
 using System;
-using System.Threading.Tasks;
 using Foundation;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -16,16 +15,15 @@ using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class CreditCardAddView : BaseViewController<CreditCardAddViewModel>
     {
         private PayPalClientSettings _payPalSettings;
-
         private CardIOPaymentViewController _cardScanner;
         private CardScannerDelegate _cardScannerDelegate;
-
         private PayPalCustomFuturePaymentViewController _payPalPayment;
         private PayPalDelegate _payPalPaymentDelegate;
 
@@ -79,23 +77,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
             _payPalSettings = paymentSettings.PayPalClientSettings;
 
-            lblInstructions.Text = Localize.GetValue("CreditCardInstructions");
+            if (!ViewModel.CanChooseTip)
+            {
+                viewTip.RemoveFromSuperview();
+            }
+            else
+            {
+                ConfigureTipSection();
+            }
+
+            if (!ViewModel.CanChooseLabel)
+            {
+                viewLabel.RemoveFromSuperview();
+            }
+            else
+            {
+                ConfigureLabelSection();
+            }
 
             if (!ViewModel.ShowInstructions)
             {
                 lblInstructions.RemoveFromSuperview();
             }
 
-            if (!ViewModel.ShouldDisplayTip)
-            {
-                lblTip.RemoveFromSuperview();
-                txtTip.RemoveFromSuperview();
-            }
-            else
-            {
-                ConfigureTipSection();
-            }
-                
             if (!ViewModel.IsPayPalOnly)
             {
                 ConfigureCreditCardSection();
@@ -116,9 +120,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
 
+            set.Bind(lblInstructions)
+                .For(v => v.Text)
+                .To(vm => vm.Instructions);
+
             set.Bind(btnSaveCard)
                 .For("Title")
                 .To(vm => vm.CreditCardSaveButtonDisplay);
+            
             set.Bind(btnSaveCard)
                 .For("TouchUpInside")
 				.To(vm => vm.SaveCreditCardCommand);
@@ -126,18 +135,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(btnDeleteCard)
 				.For("TouchUpInside")
 				.To(vm => vm.DeleteCreditCardCommand);
+            
 			set.Bind(btnDeleteCard)
                 .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.CanDeleteCreditCard)
 				.WithConversion("BoolInverter");
-
+            
+            set.Bind(btnCardDefault)
+                .For("TouchUpInside")
+                .To(vm => vm.SetAsDefault);
+            
+            set.Bind(btnCardDefault)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.CanSetCreditCardAsDefault)
+                .WithConversion("BoolInverter");
+            
             set.Bind(txtNameOnCard)
 				.For(v => v.Text)
 				.To(vm => vm.Data.NameOnCard);
 
+            set.Bind(txtZipCode)
+                .For(v => v.Text)
+                .To(vm => vm.Data.ZipCode);
+
 			set.Bind(txtCardNumber)
 				.For(v => v.Text)
 				.To(vm => vm.CreditCardNumber);
+            
 			set.Bind(txtCardNumber)
 				.For(v => v.ImageLeftSource)
 				.To(vm => vm.CreditCardImagePath);
@@ -173,6 +197,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Text)
                 .To(vm => vm.PaymentPreferences.TipAmount);
 
+            set.Bind(segmentedLabel)
+                .For(v => v.SelectedSegment)
+                .To(vm => vm.Data.Label)
+                .WithConversion("CreditCardLabel");
+
 			set.Apply ();   
 
             txtNameOnCard.ShouldReturn += GoToNext;
@@ -189,9 +218,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtTip.TextAlignment = UITextAlignment.Right;
         }
 
+        private void ConfigureLabelSection()
+        {
+            lblLabel.Text = Localize.GetValue("PaymentDetails.LabelName");
+            segmentedLabel.TintColor = UIColor.FromRGB(90, 90, 90);
+            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardLabelConstants.Personal), 0);
+            segmentedLabel.SetTitle(Localize.GetValue("PaymentDetails.Label." + CreditCardLabelConstants.Business), 1);
+        }
+
         private void ConfigureCreditCardSection()
         {
-            if (CardIOIsEnabled)
+            if (CardIOIsEnabled && ViewModel.CanScanCreditCard)
             {
                 FlatButtonStyle.Silver.ApplyTo(btnScanCard);
                 btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
@@ -201,7 +238,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 btnScanCard.RemoveFromSuperview();
             }
-
+            FlatButtonStyle.Silver.ApplyTo(btnCardDefault);
             // Configure CreditCard section
             FlatButtonStyle.Green.ApplyTo(btnSaveCard);
             FlatButtonStyle.Red.ApplyTo (btnDeleteCard);
@@ -212,9 +249,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblExpMonth.Text = Localize.GetValue("CreditCardExpMonth");
             lblExpYear.Text = Localize.GetValue("CreditCardExpYear");
             lblCvv.Text = Localize.GetValue("CreditCardCCV");
+            lblZipCode.Text = Localize.GetValue("CreditCardZipCode");
 
             txtNameOnCard.AccessibilityLabel = Localize.GetValue("CreditCardName");
             txtNameOnCard.Placeholder = txtNameOnCard.AccessibilityLabel;
+
+            txtZipCode.AccessibilityLabel = Localize.GetValue("CreditCardZipCode");
+            txtZipCode.Placeholder = txtZipCode.AccessibilityLabel;
 
             txtCardNumber.AccessibilityLabel = Localize.GetValue("CreditCardNumber");
             txtCardNumber.Placeholder = txtCardNumber.AccessibilityLabel;
@@ -231,6 +272,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtCardNumber.ClearsOnBeginEditing = true;
             txtCardNumber.ShowCloseButtonOnKeyboard();
             txtCvv.ShowCloseButtonOnKeyboard();
+            txtZipCode.ShowCloseButtonOnKeyboard();
 
             ViewModel.CreditCardCompanies[0].Image = "visa.png";
             ViewModel.CreditCardCompanies[1].Image = "mastercard.png";

@@ -8,17 +8,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class AppBarButton : CommandButton
     {
-        UILabel _label;
-        UIColor _selectedTextColor;
-        UIColor _regularTextColor;
+        private readonly UILabel _label;
+        private readonly UIColor _selectedTextColor = UIColor.FromRGB(0, 126, 249);
+        private readonly UIColor _regularTextColor = UIColor.FromRGB(41, 43, 45);
+        private readonly UIColor _disabledTextColor = UIColor.FromRGB(151, 151, 151);
 
-        public AppBarButton (string text, nfloat width, nfloat height, string image, string selectedImage = null, UIColor selectedTextColor = null ) : base(new CGRect(0, 0, width, height))
+        public AppBarButton (string text, nfloat width, nfloat height, string imageName, string selectedImage = null, UIColor selectedTextColor = null) 
+            : base(new CGRect(0, 0, width, height))
         {
-            _regularTextColor = UIColor.FromRGB(41, 43, 45);
-            _selectedTextColor = selectedTextColor ?? UIColor.FromRGB(0, 126, 249);
+            if (selectedTextColor != null)
+            {
+                _selectedTextColor = selectedTextColor;
+            }
 
-            var image2 = UIImage.FromFile(image);
-            SetImage(image2, UIControlState.Normal);
+            var image = UIImage.FromFile(imageName);
+            SetImage(image, UIControlState.Normal);
             if (selectedImage.HasValue())
             {
                 SetImage(UIImage.FromFile(selectedImage), UIControlState.Selected);
@@ -45,33 +49,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public string Text 
         {
-            get 
-            {
-                return _label.Text;
-            }
-            set
-            {
-                _label.Text = value;
-            }
+            get { return _label.Text; }
+            set { _label.Text = value; }
         }
 
         public override bool Selected
         {
-            get
-            {
-                return base.Selected;
-            }
+            get { return base.Selected; }
             set
             {
                 base.Selected = value;
-                if (Selected)
-                {
-                    _label.TextColor = _selectedTextColor;
-                }
-                else
-                {
-                    _label.TextColor = _regularTextColor;
-                }
+                _label.TextColor = Selected 
+                    ? _selectedTextColor 
+                    : _regularTextColor;
+            }
+        }
+
+        public override bool Enabled
+        {
+            get { return base.Enabled; }
+            set
+            {
+                base.Enabled = value;
+                _label.TextColor = Enabled 
+                    ? _regularTextColor 
+                    : _disabledTextColor;
             }
         }
     }

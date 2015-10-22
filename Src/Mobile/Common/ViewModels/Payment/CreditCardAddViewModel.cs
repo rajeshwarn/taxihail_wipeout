@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -15,101 +14,101 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-	public class CreditCardAddViewModel : PageViewModel
-    {
-		private readonly ILocationService _locationService;
+	public class CreditCardAddViewModel : CreditCardBaseViewModel
+	{
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 
 		private OverduePayment _paymentToSettle;
+		private CreditCardLabelConstants _originalLabel;
 
-	    public CreditCardAddViewModel(
-            ILocationService locationService,
+		public CreditCardAddViewModel(
+			ILocationService locationService,
 			IPaymentService paymentService, 
 			IAccountService accountService)
+			:base(locationService, paymentService, accountService)
 		{
-			_locationService = locationService;
 			_paymentService = paymentService;
 			_accountService = accountService;
 		}
 
-		private bool _isFromPromotions;
-		
-#region Const and ReadOnly
-        private const string Visa = "Visa";
-        private const string MasterCard = "MasterCard";
-        private const string Amex = "Amex";
+		private bool _isFromPromotionsView;
+		private bool _shouldShowReview;
+		private bool _isFromCreditCardListView;
+		private bool _isAddingNew;
+		private Guid _creditCardId;
+		private int _numberOfCreditCards;
+
+		#region Const and ReadOnly
+		private const string Visa = "Visa";
+		private const string MasterCard = "MasterCard";
+		private const string Amex = "Amex";
 		private const string CreditCardGeneric = "Credit Card Generic";
-        private const string VisaElectron = "Visa Electron";
-        private readonly string[] _visaElectronFirstNumbers = { "4026", "417500", "4405", "4508", "4844", "4913", "4917" };
-        private const string VisaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
-        private const string MasterPattern = "^5[1-5][0-9]{14}$";
-        private const string AmexPattern = "^3[47][0-9]{13}$";
-        private const int TipMaxPercent = 100;
-#endregion
+		private const string VisaElectron = "Visa Electron";
+		private readonly string[] _visaElectronFirstNumbers = { "4026", "417500", "4405", "4508", "4844", "4913", "4917" };
+		private const string VisaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
+		private const string MasterPattern = "^5[1-5][0-9]{14}$";
+		private const string AmexPattern = "^3[47][0-9]{13}$";
+		private const int TipMaxPercent = 100;
+		#endregion
 
-        public class DummyVisa
-        {
+		public class DummyVisa
+		{
 			public static string BraintreeNumber = "4009 3488 8888 1881".Replace(" ", "");
-            public static string CmtNumber = "4012 0000 3333 0026".Replace(" ", "");
-            public static int AvcCvvCvv2 = 135;
-            public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
-        }
+			public static string CmtNumber = "4012 0000 3333 0026".Replace(" ", "");
+			public static int AvcCvvCvv2 = 135;
+			public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
+			public static string ZipCode = "95001";
+		}
 
-		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null, bool isFromPromotions = false)
+		public void Init(bool showInstructions = false, 
+			bool isMandatory = false, 
+			string paymentToSettle = null, 
+			bool isFromPromotionsView = false, 
+			bool isFromCreditCardListView = false, 
+			bool isAddingNew = false, 
+			Guid creditCardId = default(Guid),
+			bool shouldShowReview = false)
 		{
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
-			
-			_isFromPromotions = isFromPromotions;
+
+			Instructions = shouldShowReview 
+				? this.Services().Localize["CreditCardInstructionsForLuxury"]
+				: this.Services().Localize["CreditCardInstructions"];
+
+			_isFromPromotionsView = isFromPromotionsView;
+			_shouldShowReview = shouldShowReview;
+			_isFromCreditCardListView = isFromCreditCardListView;
+			_isAddingNew = isAddingNew;
+			_creditCardId = creditCardId;
 
 			if (paymentToSettle != null)
 			{
 				_paymentToSettle = JsonSerializer.DeserializeFromString<OverduePayment>(paymentToSettle);
 			}
-
 		}
 
-		public override void OnViewStarted(bool firstTime)
+		public override async void BaseStart()
 		{
-			base.OnViewStarted(firstTime);
-			// we stop the service when the viewmodel starts because it stops after the homeviewmodel starts when we press back
-			// this ensures that we don't stop the service just after having started it in homeviewmodel
-			_locationService.Stop();
-		}
-
-	    private ClientPaymentSettings _paymentSettings;
-
-		public override async void Start()
-        {
 			using (this.Services ().Message.ShowProgress ())
 			{
-			    IsPayPalAccountLinked = _accountService.CurrentAccount.IsPayPalAccountLinked;
+				IsPayPalAccountLinked = _accountService.CurrentAccount.IsPayPalAccountLinked;
 
-			    try
-			    {
-			        _paymentSettings = await _paymentService.GetPaymentSettings();
-			    }
-			    catch
-			    {
-			        // Do nothing
-			    }
-
-			    CreditCardCompanies = new List<ListItem>
-				{
-					new ListItem {Display = Visa, Id = 0},
-					new ListItem {Display = MasterCard, Id = 1},
-					new ListItem {Display = Amex, Id = 2},
-					new ListItem {Display = VisaElectron, Id = 3},
-					new ListItem {Display = CreditCardGeneric, Id = 4}
-				};
+				CreditCardCompanies = new List<ListItem>
+					{
+						new ListItem {Display = Visa, Id = 0},
+						new ListItem {Display = MasterCard, Id = 1},
+						new ListItem {Display = Amex, Id = 2},
+						new ListItem {Display = VisaElectron, Id = 3},
+						new ListItem {Display = CreditCardGeneric, Id = 4}
+					};
 
 				ExpirationYears = new List<ListItem>();
 				for (var i = 0; i <= 15; i++)
@@ -118,44 +117,49 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				}
 
 				ExpirationMonths = new List<ListItem>
-				{
-					new ListItem {Display = this.Services().Localize["January"], Id = 1},
-					new ListItem {Display = this.Services().Localize["February"], Id = 2},
-					new ListItem {Display = this.Services().Localize["March"], Id = 3},
-					new ListItem {Display = this.Services().Localize["April"], Id = 4},
-					new ListItem {Display = this.Services().Localize["May"], Id = 5},
-					new ListItem {Display = this.Services().Localize["June"], Id = 6},
-					new ListItem {Display = this.Services().Localize["July"], Id = 7},
-					new ListItem {Display = this.Services().Localize["August"], Id = 8},
-					new ListItem {Display = this.Services().Localize["September"], Id = 9},
-					new ListItem {Display = this.Services().Localize["October"], Id = 10},
-					new ListItem {Display = this.Services().Localize["November"], Id = 11},
-					new ListItem {Display = this.Services().Localize["December"], Id = 12}
-				};
+					{
+						new ListItem {Display = this.Services().Localize["January"], Id = 1},
+						new ListItem {Display = this.Services().Localize["February"], Id = 2},
+						new ListItem {Display = this.Services().Localize["March"], Id = 3},
+						new ListItem {Display = this.Services().Localize["April"], Id = 4},
+						new ListItem {Display = this.Services().Localize["May"], Id = 5},
+						new ListItem {Display = this.Services().Localize["June"], Id = 6},
+						new ListItem {Display = this.Services().Localize["July"], Id = 7},
+						new ListItem {Display = this.Services().Localize["August"], Id = 8},
+						new ListItem {Display = this.Services().Localize["September"], Id = 9},
+						new ListItem {Display = this.Services().Localize["October"], Id = 10},
+						new ListItem {Display = this.Services().Localize["November"], Id = 11},
+						new ListItem {Display = this.Services().Localize["December"], Id = 12}
+					};
 
 				Data = new CreditCardInfos ();
-
 				CreditCardDetails creditCard = null;
 
-                try
-                {
-                    creditCard = await _accountService.GetCreditCard();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogMessage(ex.Message, ex.ToString());
-                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PaymentLoadError"]);
-                }
+				try
+				{
+					var creditCards = (await _accountService.GetCreditCards()).ToList();
+					_numberOfCreditCards = creditCards.Count;
 
-				if (creditCard == null)
+					creditCard = _creditCardId == default(Guid)
+						? await _accountService.GetDefaultCreditCard()
+						: creditCards.First(c => c.CreditCardId == _creditCardId);
+				}
+				catch (Exception ex)
+				{
+					Logger.LogMessage(ex.Message, ex.ToString());
+					this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PaymentLoadError"]);
+				}
+
+				if (creditCard == null || _isAddingNew)
 				{
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
+					Data.Label = CreditCardLabelConstants.Personal;
 
 					var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
 					CreditCardType = (int)id;
 
 					#if DEBUG
-					if (_paymentSettings.PaymentMode == PaymentMethod.Braintree)
+                    if (PaymentSettings.PaymentMode == PaymentMethod.Braintree)
 					{
 						CreditCardNumber = DummyVisa.BraintreeNumber;
 					}
@@ -165,6 +169,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					}
 
 					Data.CCV = DummyVisa.AvcCvvCvv2+"";
+					Data.ZipCode = DummyVisa.ZipCode;
 
 					ExpirationMonth = DummyVisa.ExpirationDate.Month;
 					ExpirationYear = DummyVisa.ExpirationDate.Year;
@@ -178,155 +183,140 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.CardNumber = "************" + creditCard.Last4Digits;
 					Data.NameOnCard = creditCard.NameOnCard;
 					Data.CreditCardCompany = creditCard.CreditCardCompany;
+					Data.Label = creditCard.Label;
+					Data.ZipCode = creditCard.ZipCode;
 
-    				ExpirationMonth = string.IsNullOrWhiteSpace(creditCard.ExpirationMonth) ? (int?)null : int.Parse(creditCard.ExpirationMonth);
-    				ExpirationYear = string.IsNullOrWhiteSpace(creditCard.ExpirationYear) ? (int?)null : int.Parse(creditCard.ExpirationYear);
+					ExpirationMonth = creditCard.ExpirationMonth.HasValue() ? int.Parse(creditCard.ExpirationMonth) : (int?)null;
+					ExpirationYear = creditCard.ExpirationYear.HasValue() ? int.Parse(creditCard.ExpirationYear) : (int?)null;
 
 					var id = CreditCardCompanies.Find(x => x.Display == creditCard.CreditCardCompany).Id;
 					if (id != null)
 					{
 						CreditCardType = (int) id;
 					}
+
+					_originalLabel = creditCard.Label;
 				}
 
 				RaisePropertyChanged(() => Data);
 				RaisePropertyChanged(() => CreditCardNumber);
-                RaisePropertyChanged(() => CanDeleteCreditCard);
-                RaisePropertyChanged(() => IsPayPalOnly);
+				RaisePropertyChanged(() => CanDeleteCreditCard);
+				RaisePropertyChanged(() => IsPayPalOnly);
+				RaisePropertyChanged(() => CanSetCreditCardAsDefault);
 
-                if (_paymentToSettle != null)
-                {
-                    return;
-                }
+				if (_paymentToSettle != null)
+				{
+					return;
+				}
 
-                try
-                {
-                    var overduePayment = await _paymentService.GetOverduePayment();
-
-                    if (overduePayment == null)
-                    {
-                        return;
-                    }
-
-                    this.Services().Message.ShowMessage(
-                        this.Services().Localize["View_Overdue"],
-                        this.Services().Localize["Overdue_OutstandingPaymentExists"],
-                        this.Services().Localize["OkButtonText"],
-                        () => ShowViewModelAndRemoveFromHistory<OverduePaymentViewModel>(new
-                        {
-                            overduePayment = overduePayment.ToJson()
-                        }),
-                        this.Services().Localize["Cancel"],
-                        () => Close(this));
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex);
-                }
+				if (!_isFromCreditCardListView)
+				{
+					await GoToOverduePayment();
+				}
 			}
-        }
+		}
 
-	    private bool _isPayPalAccountLinked;
-	    public bool IsPayPalAccountLinked
-	    {
-            get { return _isPayPalAccountLinked; }
-	        set
-	        {
-	            if (_isPayPalAccountLinked != value)
-	            {
-	                _isPayPalAccountLinked = value;
-                    RaisePropertyChanged();
-                    RaisePropertyChanged(() => CanLinkPayPalAccount);
-                    RaisePropertyChanged(() => CanUnlinkPayPalAccount);
-                    RaisePropertyChanged(() => ShowLinkedPayPalInfo);
-	            }
-	        }
-	    }
+		private bool _isPayPalAccountLinked;
+		public bool IsPayPalAccountLinked
+		{
+			get { return _isPayPalAccountLinked; }
+			set
+			{
+				if (_isPayPalAccountLinked != value)
+				{
+					_isPayPalAccountLinked = value;
+					RaisePropertyChanged();
+					RaisePropertyChanged(() => CanLinkPayPalAccount);
+					RaisePropertyChanged(() => CanUnlinkPayPalAccount);
+					RaisePropertyChanged(() => ShowLinkedPayPalInfo);
+				}
+			}
+		}
 
-        public string CreditCardNumber
-        {
-            get{ return Data.CardNumber; }
-            set
-            {
-                Data.CardNumber = value;
+		public string CreditCardNumber
+		{
+			get{ return Data.CardNumber; }
+			set
+			{
+				Data.CardNumber = value;
 				DetermineCompany (value);
 
 				RaisePropertyChanged();
-            }
-        }
-			
-        private int _creditCardType;
-        public int CreditCardType 
+			}
+		}
+
+		private int _creditCardType;
+		public int CreditCardType 
 		{
 			get { return _creditCardType; }
-            set 
+			set 
 			{
-                _creditCardType = value;
+				_creditCardType = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => CreditCardTypeName);
 				RaisePropertyChanged(() => CreditCardImagePath);
-            }
-        }
+			}
+		}
 
-        public string CreditCardTypeName 
+		public string CreditCardTypeName 
 		{ 
-            get 
+			get 
 			{
-                var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
+				var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
 				return type == null ? null : type.Display;
-            }
-        }
+			}
+		}
 
-        public string CreditCardImagePath 
+		public string CreditCardImagePath 
 		{ 
-            get 
+			get 
 			{
-                var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
+				var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
 				return type == null ? null : type.Image;
-            }
-        }
+			}
+		}
 
-        public int? ExpirationYear 
+		public int? ExpirationYear 
 		{
-            get 
+			get 
 			{
-                return string.IsNullOrEmpty(Data.ExpirationYear) 
+				return string.IsNullOrEmpty(Data.ExpirationYear) 
 					? (int?)null
-                    : int.Parse(Data.ExpirationYear);
-            }
-            set 
+						: int.Parse(Data.ExpirationYear);
+			}
+			set 
 			{
 				Data.ExpirationYear = value.ToSafeString();
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => ExpirationYearDisplay);
-            }
-        }
+			}
+		}
 
-        public int? ExpirationMonth 
+		public int? ExpirationMonth 
 		{
-            get 
+			get 
 			{
-                return string.IsNullOrEmpty(Data.ExpirationMonth) 
+				return string.IsNullOrEmpty(Data.ExpirationMonth) 
 					? (int?)null
-                    : int.Parse(Data.ExpirationMonth);
-            }
-            set 
+						: int.Parse(Data.ExpirationMonth);
+			}
+			set 
 			{
 				Data.ExpirationMonth = value.ToSafeString();
 
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => ExpirationMonthDisplay);
-            }
-        }
+			}
+		}
 
-        public string ExpirationMonthDisplay 
+		public string ExpirationMonthDisplay 
 		{
-            get 
+			get 
 			{
-                var month = ExpirationMonths.FirstOrDefault(x => x.Id == ExpirationMonth);
+				var month = ExpirationMonths.FirstOrDefault(x => x.Id == ExpirationMonth);
 				return month == null ? "" : month.Display;
-            }
-        }
+			}
+		}
 
 		public string ExpirationYearDisplay 
 		{
@@ -337,11 +327,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-        public List<ListItem> CreditCardCompanies { get; set; }
-        public List<ListItem> ExpirationYears { get; set; }
-        public List<ListItem> ExpirationMonths { get; set; }
+		public List<ListItem> CreditCardCompanies { get; set; }
+		public List<ListItem> ExpirationYears { get; set; }
+		public List<ListItem> ExpirationMonths { get; set; }
 		public bool ShowInstructions { get; set; }
 		public bool IsMandatory { get; set; }
+		public string Instructions { get; set; }
 
 		private CreditCardInfos _data;
 		public CreditCardInfos Data 
@@ -355,259 +346,304 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-	    private bool _isEditing;
-	    public bool IsEditing
-	    {
-            get { return _isEditing; }
-	        set
-	        {
-	            if (_isEditing != value)
-	            {
-                    _isEditing = value;
-                    RaisePropertyChanged();
+		private bool _isEditing;
+		public bool IsEditing
+		{
+			get { return _isEditing; }
+			set
+			{
+				if (_isEditing != value)
+				{
+					_isEditing = value;
+					RaisePropertyChanged();
 					RaisePropertyChanged(() => CreditCardSaveButtonDisplay);
-	            }
-	        }
-	    }
+				}
+			}
+		}
 
-        public bool CanDeleteCreditCard
-        {
-            get { return IsEditing && !Settings.CreditCardIsMandatory; }
-        }
+		public bool CanDeleteCreditCard
+		{
+			get { return IsEditing && (!Settings.CreditCardIsMandatory  || Settings.CreditCardIsMandatory && _numberOfCreditCards > 1); }
+		}
 
-        public bool CanLinkPayPalAccount
-        {
-            get
-            {
-                return !IsPayPalAccountLinked
-                    && _paymentSettings != null
-                    && _paymentSettings.PayPalClientSettings.IsEnabled;
-            }
-        }
+		public bool CanLinkPayPalAccount
+		{
+			get
+			{
+				return !IsPayPalAccountLinked
+                    && PaymentSettings != null
+                    && PaymentSettings.PayPalClientSettings.IsEnabled;
+			}
+		}
 
-	    public bool CanUnlinkPayPalAccount
-	    {
-            get { return IsPayPalAccountLinked && !Settings.CreditCardIsMandatory; }
-	    }
+		public bool CanUnlinkPayPalAccount
+		{
+			get { return IsPayPalAccountLinked && !Settings.CreditCardIsMandatory; }
+		}
 
-	    public bool ShowLinkedPayPalInfo
-	    {
-            get { return IsPayPalAccountLinked && Settings.CreditCardIsMandatory; }
-	    }
+		public bool ShowLinkedPayPalInfo
+		{
+			get { return IsPayPalAccountLinked && Settings.CreditCardIsMandatory; }
+		}
 
-	    public bool IsPayPalOnly
-	    {
-	        get
-	        {
-	            return _paymentSettings != null
-                    && _paymentSettings.PayPalClientSettings.IsEnabled
-                    && !_paymentSettings.IsPayInTaxiEnabled;
-	        }
-	    }
+		public bool IsPayPalOnly
+		{
+			get
+			{
+                return PaymentSettings != null
+                    && PaymentSettings.PayPalClientSettings.IsEnabled
+                    && !PaymentSettings.IsPayInTaxiEnabled;
+			}
+		}
 
 		public string CreditCardSaveButtonDisplay
 		{
 			get
-            {
+			{
 				return IsEditing ? this.Services().Localize["Modify"] : this.Services().Localize["Save"];
 			}
 		}
 
-		public bool ShouldDisplayTip
+		public bool CanChooseTip
 		{
 			get
 			{
-				return _paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled;
+                return (PaymentSettings.IsPayInTaxiEnabled || PaymentSettings.PayPalClientSettings.IsEnabled) && !_isFromCreditCardListView && !IsMandatory;
 			}
 		}
 
-		private PaymentDetailsViewModel _paymentPreferences;
-		public PaymentDetailsViewModel PaymentPreferences
+		public bool CanChooseLabel
 		{
 			get
 			{
-				if (_paymentPreferences == null)
-				{
-					_paymentPreferences = Container.Resolve<PaymentDetailsViewModel>();
-					_paymentPreferences.Start();
-					_paymentPreferences.ActionOnTipSelected = _saveTip;
-				}
-				return _paymentPreferences;
+				return _isFromCreditCardListView;
 			}
 		}
 
-		private ICommand _saveTip 
+		public bool CanScanCreditCard
+		{
+			get
+			{
+				return _isAddingNew || IsMandatory;
+			}
+		}
+
+		public bool CanSetCreditCardAsDefault
+		{
+			get
+			{
+				return !_isAddingNew && _isFromCreditCardListView && Data.CreditCardId != _accountService.CurrentAccount.DefaultCreditCard.CreditCardId;
+			}
+		}
+
+		private int _selectedLabel;
+		public int SelectedLabel
+		{
+			get
+			{
+				return _selectedLabel;
+			}
+			set
+			{
+				_selectedLabel = value;
+			}
+		}
+
+		public ICommand SetAsDefault 
 		{ 
 			get
 			{
-				return this.GetCommand<int>(async tip =>
+				return this.GetCommand(async() =>
 					{
-                        if (PaymentPreferences.Tip > TipMaxPercent)
-                        {
-                            await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
-                            return;
-                        }
-
-                        try
-                        {
-                            await _accountService.UpdateSettings(_accountService.CurrentAccount.Settings, _accountService.CurrentAccount.Email, PaymentPreferences.Tip);
-                        }
-                        catch (WebServiceException)
-                        {
-                            this.Services()
-                                .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-                                    this.Services().Localize["UpdateBookingSettingsGenericError"]);
-                        }
+						using (this.Services ().Message.ShowProgress ())
+						{
+							var updated = await _accountService.UpdateDefaultCreditCard(Data.CreditCardId);
+							if(updated)
+							{
+								if (_paymentToSettle != null)
+								{
+									await SettleOverduePayment();
+								}
+								Close(this);
+							}
+							else
+							{
+								this.Services().Message.ShowMessage(null, this.Services().Localize["SetCreditCardAsDefault_Error"]);
+							}
+						}
 					});
-			} 
-		} 
+			}
+		}
 
 		public ICommand SaveCreditCardCommand 
-        { 
-            get
-            {
-                return this.GetCommand(() =>
-		        {
-                    if (IsPayPalAccountLinked)
-                    {
-                        this.Services().Message.ShowMessage(
-                            this.Services().Localize["AddCreditCardTitle"],
-                            this.Services().Localize["AddCoFPayPalWarning"],
-                            this.Services().Localize["AddACardButton"], SaveCreditCard,
-                            this.Services().Localize["Cancel"], () => { });
-                    }
-                    else
-                    {
-                        SaveCreditCard();
-                    }
-		        });
-            } 
-        }
+		{ 
+			get
+			{
+				return this.GetCommand(() =>
+					{
+						if (IsPayPalAccountLinked)
+						{
+							this.Services().Message.ShowMessage(
+								this.Services().Localize["AddCreditCardTitle"],
+								this.Services().Localize["AddCoFPayPalWarning"],
+								this.Services().Localize["AddACardButton"], SaveCreditCard,
+								this.Services().Localize["Cancel"], () => { });
+						}
+						else
+						{
+							SaveCreditCard();
+						}
+					});
+			} 
+		}
 
-	    public ICommand DeleteCreditCardCommand
-	    {
-	        get
-	        {
-	            return this.GetCommand(async () =>
-	            {
-                    var tcs = new TaskCompletionSource<bool>();
+		public ICommand DeleteCreditCardCommand
+		{
+			get
+			{
+				return this.GetCommand(async () =>
+					{
+						var tcs = new TaskCompletionSource<bool>();
 
-	                var localize = this.Services().Localize;
+						var localize = this.Services().Localize;
 
-                    this.Services().Message.ShowMessage(
-	                    localize["DeleteCreditCardTitle"],
-                        localize["DeleteCreditCard"],
-                        localize["Delete"], () => tcs.SetResult(true),
-                        localize["Cancel"], () => tcs.SetResult(false));
+						this.Services().Message.ShowMessage(
+							localize["DeleteCreditCardTitle"],
+							localize["DeleteCreditCard"],
+							localize["Delete"], () => tcs.SetResult(true),
+							localize["Cancel"], () => tcs.SetResult(false));
 
-	                if (await tcs.Task)
-	                {
-	                    try
-	                    {
-							using (this.Services().Message.ShowProgress())
+						if (await tcs.Task)
+						{
+							try
 							{
-								await DeleteCreditCard();
+								using (this.Services().Message.ShowProgress())
+								{
+									await DeleteCreditCard();
+								}
 							}
-	                    }
-                        catch (Exception ex)
-	                    {
-                            Logger.LogError(ex);
-                            this.Services().Message.ShowMessage(localize["CreditCardRemoveErrorTitle"], localize["CreditCardRemoveErrorScheduledOrderMessage"]);                        
-	                    }
-	                }
-	            });
-	        }
-	    }
+							catch (Exception ex)
+							{
+								Logger.LogError(ex);
+								this.Services().Message.ShowMessage(localize["CreditCardRemoveErrorTitle"], localize["CreditCardRemoveErrorScheduledOrderMessage"]);                        
+							}
+						}
+					});
+			}
+		}
 
-        public async void LinkPayPalAccount(string authCode)
-        {
-            try
-            {
+		public async void LinkPayPalAccount(string authCode)
+		{
+			try
+			{
 				await _accountService.LinkPayPalAccount(authCode);
 
-                IsPayPalAccountLinked = true;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
+				IsPayPalAccountLinked = true;
+			}
+			catch (Exception ex)
+			{
+				Logger.LogError(ex);
 
-                this.Services().Message.ShowMessage(
-                    this.Services().Localize["PayPalErrorTitle"],
-                    this.Services().Localize["PayPalLinkError"]);
-                return;
-            }
+				this.Services().Message.ShowMessage(
+					this.Services().Localize["PayPalErrorTitle"],
+					this.Services().Localize["PayPalLinkError"]);
+				return;
+			}
 
-            try
-            {
-                await DeleteCreditCard(true);
+			try
+			{
+				await DeleteCreditCard(true);
 
-                this.Services().Message.ShowMessage(
-                    string.Empty,
-                    this.Services().Localize["PayPalLinked"],
-                    () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
+				this.Services().Message.ShowMessage(
+					string.Empty,
+					this.Services().Localize["PayPalLinked"],
+					() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString, shouldShowReview = _shouldShowReview }));
+			}
+			catch (Exception ex)
+			{
+				Logger.LogError(ex);
 
-                this.Services().Message.ShowMessage(
-                    this.Services().Localize["PayPalErrorTitle"],
-                    this.Services().Localize["PayPalLinkError"]);
+				this.Services().Message.ShowMessage(
+					this.Services().Localize["PayPalErrorTitle"],
+					this.Services().Localize["PayPalLinkError"]);
 
-                UnlinkPayPalAccount();
-            }
-        }
+				UnlinkPayPalAccount();
+			}
+		}
 
 		public void UnlinkPayPalAccount(bool replacedByCreditCard = false)
-        {
-            if (!IsPayPalAccountLinked)
-            {
-                return;
-            }
+		{
+			if (!IsPayPalAccountLinked)
+			{
+				return;
+			}
 
-            try
-            {
+			try
+			{
 				_accountService.UnlinkPayPalAccount(replacedByCreditCard);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
+			}
+			catch (Exception ex)
+			{
+				Logger.LogError(ex);
 
-                this.Services().Message.ShowMessage(
-                    this.Services().Localize["PayPalErrorTitle"],
-                    this.Services().Localize["PayPalUnlinkError"]);
-            }
+				this.Services().Message.ShowMessage(
+					this.Services().Localize["PayPalErrorTitle"],
+					this.Services().Localize["PayPalUnlinkError"]);
+			}
 
 			IsPayPalAccountLinked = false;
-        }
+		}
 
 		private async Task DeleteCreditCard(bool replacedByPayPal = false)
-	    {
-	        if (!IsEditing)
-	        {
-	            return;
-	        }
-
-			await _accountService.RemoveCreditCard(replacedByPayPal);
-            
-			if (!replacedByPayPal)
+		{
+			if (!IsEditing)
 			{
-				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+				return;
 			}
-	    }
 
-        private async void SaveCreditCard()
-	    {
+			await _accountService.RemoveCreditCard(Data.CreditCardId, replacedByPayPal);
+
+			if (!replacedByPayPal && _accountService.CurrentAccount.DefaultCreditCard == null)
+			{
+				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString, shouldShowReview = _shouldShowReview });
+			}
+			else
+			{
+				Close(this);
+			}
+		}
+
+		private async void SaveCreditCard()
+		{
 			try
 			{
 				Data.CreditCardCompany = CreditCardTypeName;
+
+				if(!Data.CCV.HasValue() && Data.Label != _originalLabel && !_isAddingNew)
+				{
+					using(this.Services().Message.ShowProgress())
+					{
+						var success = await _accountService.UpdateCreditCardLabel(Data.CreditCardId, Data.Label);
+
+						if(success)
+						{
+							Close(this);
+						}
+						else
+						{
+							await this.Services().Message.ShowMessage(null, this.Services().Localize["CreditCardError_Label"]);
+						}
+					}
+					return;
+				}
 
 				if (Params.Get(Data.NameOnCard, 
 					Data.CardNumber,
 					Data.CreditCardCompany,
 					Data.ExpirationMonth,
 					Data.ExpirationYear,
-					Data.CCV).Any(x => x.IsNullOrEmpty()))
+					Data.CCV,
+					Data.ZipCode).Any(x => x.IsNullOrEmpty()))
 				{
 					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
 					return;
@@ -616,12 +652,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				if (!IsValid(Data.CardNumber))
 				{
 					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
-					return;
-				}
-
-				if(!HasValidDate(Data.ExpirationMonth, Data.ExpirationYear))
-				{
-					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
 					return;
 				}
 
@@ -644,28 +674,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						Data.CardNumber = null;
 						Data.CCV = null;
 
-                        if (_paymentToSettle != null)
-					    {
-                            await SettleOverduePayment();
-					    }
-					    else
-					    {
-                            await this.Services().Message.ShowMessage(string.Empty, 
-                                _paymentSettings.IsOutOfAppPaymentDisabled ? 
-                                this.Services().Localize["CreditCardAdded_PayInCarDisabled"] :
-                                this.Services().Localize["CreditCardAdded"]);
-					    }
-						
-						if(_isFromPromotions)
+						if (_paymentToSettle != null)
 						{
-							// We are from the promotion page, we should return to it.
+							await SettleOverduePayment();
+						}
+						else if(IsMandatory)
+						{
+							await this.Services().Message.ShowMessage(string.Empty, 
+                                PaymentSettings.IsOutOfAppPaymentDisabled ? 
+								this.Services().Localize["CreditCardAdded_PayInCarDisabled"] :
+								this.Services().Localize["CreditCardAdded"]);
+						}
+
+						if(_isFromPromotionsView || _isFromCreditCardListView)
+						{
+							// We are from the promotion or mutliple credit card pages, we should return to it.
 							Close(this);
 						}
 						else
 						{
-							ShowViewModelAndClearHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+							var vmParams = new { locateUser = bool.TrueString, shouldShowReview = _shouldShowReview };
+							if(_shouldShowReview)
+							{
+								ShowViewModelAndRemoveFromHistory<HomeViewModel>(vmParams);
+							}
+							else
+							{
+								ShowViewModelAndClearHistory<HomeViewModel>(vmParams);
+							}
 						}
-						
 					}
 					else
 					{
@@ -677,31 +714,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				this.Logger.LogError(ex);
 			}
-	    }
+		}
 
-	    private async Task SettleOverduePayment()
-	    {
-            var settleOverduePayment = await _paymentService.SettleOverduePayment();
+		private async Task SettleOverduePayment()
+		{
+			var settleOverduePayment = await _paymentService.SettleOverduePayment();
 
-	        if (settleOverduePayment.IsSuccessful)
-	        {
-                var message = string.Format(this.Services().Localize["Overdue_Succeed_Message"], _paymentToSettle.OverdueAmount);
-                await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Succeed_Title"], message);
-	        }
-	        else
-	        {
-                await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Failed_Title"], this.Services().Localize["Overdue_Failed_Message"]);
-	        }
-	    }
+			if (settleOverduePayment.IsSuccessful)
+			{
+				var message = string.Format(this.Services().Localize["Overdue_Succeed_Message"], _paymentToSettle.OverdueAmount);
+				await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Succeed_Title"], message);
+			}
+			else
+			{
+				await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Failed_Title"], this.Services().Localize["Overdue_Failed_Message"]);
+			}
+		}
 
-	    private bool IsValid(string cardNumber)
-        {
-            var number = new byte[16]; // number to validate
-            
-            // Remove non-digits
-            var len = 0;
-            for(var i = 0; i < cardNumber.Length; i++)
-            {
+		private bool IsValid(string cardNumber)
+		{
+			var number = new byte[16]; // number to validate
+
+			// Remove non-digits
+			var len = 0;
+			for(var i = 0; i < cardNumber.Length; i++)
+			{
 				if (char.IsDigit (cardNumber, i))
 				{
 					if (len == 16)
@@ -712,30 +749,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{
 					return false; // non-digit char
 				}
-            }
+			}
 
-            // Use Luhn Algorithm to validate
-            var sum = 0;
-            for(var i = len - 1; i >= 0; i--)
-            {
-                if(i % 2 == len % 2)
-                {
-                    var n = number[i] * 2;
-                    sum += (n / 10) + (n % 10);
-                }
-                else
-                    sum += number[i];
-            }
-            return (sum % 10 == 0);
-        }
+			// Use Luhn Algorithm to validate
+			var sum = 0;
+			for(var i = len - 1; i >= 0; i--)
+			{
+				if (i % 2 == len % 2)
+				{
+					var n = number[i] * 2;
+					sum += (n / 10) + (n % 10);
+				}
+				else
+				{
+					sum += number[i];
+				}
+			}
+			return (sum % 10 == 0);
+		}
 
 		private bool HasValidDate(string month, string year)
 		{
 			var creditCard = new CreditCardDetails 
-			{
-				ExpirationMonth = month,
-				ExpirationYear = year
-			};
+				{
+					ExpirationMonth = month,
+					ExpirationYear = year
+				};
 
 			return !creditCard.IsExpired();
 		}
@@ -794,5 +833,5 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				}
 			}
 		}
-    }
+	}
 }

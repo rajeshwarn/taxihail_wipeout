@@ -53,6 +53,5 @@
         android:layout_marginLeft="8dip"
         android:layout_marginRight="8dip"
         android:layout_gravity="center_vertical"
-        android:text="@string/StatusEditAutoTipButton"
-        local:MvxBind="Click EditAutoTipCommand; Visibility CanEditAutoTip, Converter=Visibility" />
+        local:MvxBind="Click EditAutoTipCommand; Visibility CanEditAutoTip, Converter=Visibility; Text ButtonEditTipLabel" />
 </LinearLayout>
