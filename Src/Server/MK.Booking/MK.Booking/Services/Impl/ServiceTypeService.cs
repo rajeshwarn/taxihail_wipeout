@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
