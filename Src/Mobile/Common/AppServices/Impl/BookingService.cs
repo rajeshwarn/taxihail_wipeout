@@ -404,9 +404,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return response.IsSuccessful;
         }
 
-        public Task<ManualRideLinqResponse> GetTripInfoFromManualRideLinq(Guid orderId)
+        public async Task<OrderManualRideLinqDetail> GetTripInfoFromManualRideLinq(Guid orderId)
         {
-            return UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.GetUpdatedTrip(orderId));
+            var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.GetUpdatedTrip(orderId));
+
+            if (response.IsSuccessful)
+            {
+                return response.Data;
+            }
+
+            throw new Exception(response.Message);
         }
 
         public Task<bool> InitiateCallToDriver(Guid orderId)

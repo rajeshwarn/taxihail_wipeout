@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new
 				{
-					manualRidelinqDetail = orderManualRideLinqDetail.Data.ToJson(),
+					manualRidelinqDetail = orderManualRideLinqDetail.ToJson(),
 					locateUser = false
 				});
 
