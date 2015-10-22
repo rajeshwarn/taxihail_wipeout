@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (card == null) throw new InvalidOperationException("Credit card not found");
             }
 
-            _ibs.SendPaymentNotification((double)amount, (double)meter, (double)tip, authorizationCode, orderStatusDetail.VehicleNumber);
+            _ibs.SendPaymentNotification((double)amount, (double)meter, (double)tip, authorizationCode, orderStatusDetail.VehicleNumber, orderStatusDetail.CompanyKey);
         }
 
         public void Handle(OrderCancelled @event)
