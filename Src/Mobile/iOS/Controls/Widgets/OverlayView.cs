@@ -2,7 +2,6 @@ using System;
 using Foundation;
 using UIKit;
 using CoreGraphics;
-using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using CoreAnimation;
 using Cirrious.MvvmCross.Binding.Touch.Views;
@@ -36,15 +35,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
 
         public override void Draw (CGRect rect)
-        {           
-            var context = UIGraphics.GetCurrentContext ();
+        {          
+            ClearShadowIfNecessary();
 
-            var fillColor = UIColor.White.ColorWithAlpha(0.9f);
+            if (!UIScreen.MainScreen.Bounds.Contains(Frame))
+            {
+                using (var context = UIGraphics.GetCurrentContext())
+                {
+                    context.ClearRect(rect);
+                }
 
-            var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
+                return;
+            }
 
-            DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor);
-            DrawStroke(fillColor.CGColor, rect);
+            using (var context = UIGraphics.GetCurrentContext())
+            {
+                var fillColor = UIColor.White.ColorWithAlpha(0.9f);
+
+                var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
+
+                DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor);
+                DrawStroke(fillColor.CGColor, rect);
+
+                fillColor.Dispose();
+                roundedRectanglePath.Dispose();
+                context.Dispose();
+            }
         }
 
         protected virtual void DrawBackground (CGContext context, CGRect rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
@@ -60,11 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         protected virtual void DrawStroke(CGColor fillColor, CGRect rect)
         {
-            if (_shadowView != null)
-            {
-                _shadowView.RemoveFromSuperview();
-            }
-
             var biggerRect = Bounds.Copy().Grow(10);
             var holeRect = rect.Copy().Shrink(1);
 
@@ -93,7 +104,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _shadowView.Layer.Mask = maskWithHole;
             _shadowView.Frame = Frame.Copy().Shrink(1);
 
-            this.Superview.InsertSubviewBelow(_shadowView, this);            
+            this.Superview.InsertSubviewBelow(_shadowView, this);    
+
+            roundedRectanglePath.Dispose();
+            maskPath.Dispose();
+            maskWithHole.Display();
+        }
+
+        private void ClearShadowIfNecessary()
+        {
+            if (_shadowView != null)
+            {
+                _shadowView.RemoveFromSuperview();
+                _shadowView = null;
+            }
         }
     }
 }
