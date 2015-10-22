@@ -152,13 +152,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			get { return _selectedVehicle; }
 			set
 			{
-				_selectedVehicle = value;
-
-                EtaBadge.Image = ImageHelper.ApplyColorToImage (string.Format ("{0}_no_badge_selected.png", value.LogoName.ToLower ()), Theme.LabelTextColor);
-                BaseRate.BaseRate = value.BaseRate;
-                if (value.BaseRate == null && BaseRateToggled)
+                if (_selectedVehicle != null)
                 {
-                    ToggleBaseRate();
+                    _selectedVehicle = value;
+
+                    EtaBadge.Image = ImageHelper.ApplyColorToImage (string.Format ("{0}_no_badge_selected.png", value.LogoName.ToLower ()), Theme.LabelTextColor);
+                    BaseRate.BaseRate = value.BaseRate;
+                    if (value.BaseRate == null && BaseRateToggled)
+                    {
+                        ToggleBaseRate();
+                    }
                 }
             }
         }

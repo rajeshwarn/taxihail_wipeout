@@ -28,7 +28,6 @@ using MK.Common.Configuration;
 using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
-using apcurium.MK.Common.Helpers;
 using System.Text.RegularExpressions;
 using apcurium.MK.Common;
 
@@ -49,18 +48,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
-		private readonly ILocationService _locationService;
-        private readonly IPaymentService _paymentService;
 
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
-			ILocalization localize,
-			ILocationService locationService,
-            IPaymentService paymentService)
+			ILocalization localize)
 		{
-			_locationService = locationService;
-            _paymentService = paymentService;
             _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
@@ -526,27 +519,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
         }
 
-		public async Task<IList<VehicleType>> GetVehiclesList(bool refresh)
+		public async Task<IList<VehicleType>> GetVehiclesList(bool refresh = false)
 		{
-			// todo temporary until server returns data
-			var list = new List<VehicleType>
-			{
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Sedan", LogoName = "taxi", ReferenceDataVehicleId = 1 },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "Van", LogoName = "suv", ReferenceDataVehicleId = 2 },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Taxi, Name = "WAV", LogoName = "wheelchair", ReferenceDataVehicleId = 3 },
-				new VehicleType { Id = Guid.NewGuid(), ServiceType = ServiceType.Luxury, Name = "Sedan", LogoName = "blackcar", ReferenceDataVehicleId = 0 }
-			};
-				
-	    	return list.Select(x => { x.BaseRate = new BaseRateInfo 
-            	{
-					MinimumFare = x.ServiceType == ServiceType.Luxury ? 15m : 5m,
-					BaseRateNoMiles = 6m,
-					PerMileRate = 3m,   
-            		WaitTime = 0.75m,            		         		
-            		AirportMeetAndGreet = 15m 
-        		};
-        		return x;
-        	}).ToList();
 		    var cacheService = Mvx.Resolve<ICacheService>();
 
             var cached = cacheService.Get<VehicleType[]>(VehicleTypesDataCacheKey);
@@ -555,10 +529,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return cached;
             }
 
-            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
+			var vehiclesList = await GetLocalVehicleTypes();
+			cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
+
+			return vehiclesList;
+        }
+
+        public async Task ResetLocalVehiclesList()
+        {
+			var cacheService = Mvx.Resolve<ICacheService>();
+
+			var vehiclesList = await GetLocalVehicleTypes();
+            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
+        }
+
+		private async Task<VehicleType[]> GetLocalVehicleTypes()
+		{
+			var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
 
 			// TODO temp list while server doesn't return service type
-			var tempList = vehiclesList.Select(x =>
+			return vehiclesList.Select(x =>
 			{ 
 				x.ServiceType = x.LogoName == "blackcar" ? ServiceType.Luxury : ServiceType.Taxi;
 				x.BaseRate = new BaseRateInfo {
@@ -568,21 +558,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					WaitTime = 0.75m,            		         		
 					AirportMeetAndGreet = 15m 
 				};
-			
+
 				return x;
 			}).ToArray();
-
-			cacheService.Set(VehicleTypesDataCacheKey, tempList);
-
-			return tempList;
-        }
-
-        public async Task ResetLocalVehiclesList()
-        {
-            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-            var cacheService = Mvx.Resolve<ICacheService>();
-            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
-        }
+		}
 
         public void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes)
         {

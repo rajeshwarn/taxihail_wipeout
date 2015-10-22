@@ -97,19 +97,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_geolocService = geolocService;
 			_accountService = accountService;
 			_locationService = locationService;
-
-			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(accountService.CurrentAccount.Settings);
-
-			var vehicleTypeId = 
-                _appSettings.Data.VehicleTypeSelectionEnabled
-	                ? accountService.CurrentAccount.Settings.VehicleTypeId
-	                : null;
-
-			_vehicleTypeSubject = new BehaviorSubject<int?>(vehicleTypeId);
-
-			var serviceType = GetServiceTypeForVehicleId(vehicleTypeId).Result;
-			_serviceTypeSubject = new BehaviorSubject<ServiceType>(serviceType);
-
 			_localize = localize;
 			_bookingService = bookingService;
 			_accountPaymentService = accountPaymentService;
@@ -118,9 +105,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		    _logger = logger;
             _poiProvider = poiProvider;
 
-		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
+			_estimatedFareDisplaySubject = new BehaviorSubject<string>(
+				_localize[_appSettings.Data.DestinationIsRequired 
+					? "NoFareTextIfDestinationIsRequired" 
+					: "NoFareText"]);
+
+			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(_accountService.CurrentAccount.Settings);
+
+			var vehicleTypeId = 
+				_appSettings.Data.VehicleTypeSelectionEnabled
+				? _accountService.CurrentAccount.Settings.VehicleTypeId
+				: null;
+
+			_vehicleTypeSubject = new BehaviorSubject<int?>(vehicleTypeId);
+			_serviceTypeSubject = new BehaviorSubject<ServiceType>(ServiceType.Taxi);
+
+			InitializeAsync();
 		}
 			
+		private async Task InitializeAsync()
+		{
+			var vehicleTypeId = await _vehicleTypeSubject.Take(1).ToTask();
+
+			var serviceType = await GetServiceTypeForVehicleId(vehicleTypeId);
+			_serviceTypeSubject.OnNext(serviceType);
+		}
+
 		public async Task SetAddress(Address address)
 		{
 			await SetAddressToCurrentSelection(address);
@@ -336,7 +346,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<ServiceType> GetServiceTypeForVehicleId (int? vehicleTypeId)
 		{ 
-			var vehicleType = (await _accountService.GetVehiclesList())
+			var vehicleTypes = await _accountService.GetVehiclesList();
+			var vehicleType = vehicleTypes
 				.FirstOrDefault(x => x.ReferenceDataVehicleId == vehicleTypeId);
 
 			return vehicleType != null ? vehicleType.ServiceType : ServiceType.Taxi;
