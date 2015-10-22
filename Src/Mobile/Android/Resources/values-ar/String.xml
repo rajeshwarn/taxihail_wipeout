@@ -19,6 +19,7 @@
   <string name="PaymentDetails.PaymentMethodsLabel">Payment Methods</string>
   <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
   <string name="BookPickupLabel">اكد موقع الإلتقاء المختار</string>
+  <string name="Notification_DriverBailedPush">Driver bailed</string>
   <string name="Tuto03Top">يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.</string>
   <string name="BookDateLabel">قم بإرسال السيارة لاحقا</string>
   <string name="Overdue_IBSOrderId">Order:</string>
@@ -194,7 +195,7 @@
   <string name="PendingOrderMessage">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="AddPaymentMethod_CreditCard">Add credit card</string>
   <string name="CreateAccountInvalidDataTitle">معلومات الحساب غير صحيحة</string>
-  <string name="TutorialActivityName">Tutorial</string>
+  <string name="ErrorCreatingOrderTitle">لا يمكن إتمام الحجز</string>
   <string name="View_UpdatePassword">تحديث كلمة المرور</string>
   <string name="StreetNumberSearchBt">استخدم عنوان آخر</string>
   <string name="RideSummaryTitleText">شكرا لك</string>
@@ -274,7 +275,6 @@
   <string name="PromoDescriptionCode">Enter code {0} at the time of booking or press the button below</string>
   <string name="Overdue_Retry">Pay Now</string>
   <string name="CmtChangePaymentInfo">تغيير إعدادات الدفع</string>
-  <string name="ErrorCreatingOrderTitle">لا يمكن إتمام الحجز</string>
   <string name="Next">Next</string>
   <string name="CreditCardCCV">CVV</string>
   <string name="View_BookingStatus">الوضع</string>
@@ -462,6 +462,7 @@
   <string name="Destination">الوجهة</string>
   <string name="Tuto04Top">إن رغبت في ذلك، يمكنك أيضا ضبط وجهتك.</string>
   <string name="DateTimePickerPickInvalidDateTitle">التاريخ / الوقت غير صحيح</string>
+  <string name="TutorialActivityName">Tutorial</string>
   <string name="Knowledgabledriver">Knowledgable driver</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Are you sure you want to cancel? A cancellation fee may apply.</string>
   <string name="Notification_BookingConfirmationEmail">Booking Confirmation (Email)</string>

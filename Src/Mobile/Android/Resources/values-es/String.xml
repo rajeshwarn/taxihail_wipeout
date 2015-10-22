@@ -21,6 +21,7 @@
   <string name="PaymentDetails.PaymentMethodsLabel">Payment Methods</string>
   <string name="PayPalUnlinkError">No se puede desvincular la cuenta de PayPal</string>
   <string name="BookPickupLabel">Confirme su ubicación</string>
+  <string name="Notification_DriverBailedPush">Driver bailed</string>
   <string name="Tuto02Top">Podemos localizarle usando el GPS de su celular</string>
   <string name="Tuto03Top">Puede seleccionar su lugar de abordaje tocando en el mapa la dirección.</string>
   <string name="BookDateLabel">Recogerme más tarde</string>

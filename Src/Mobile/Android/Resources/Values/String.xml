@@ -21,6 +21,7 @@
   <string name="PaymentDetails.PaymentMethodsLabel">Payment Methods</string>
   <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
   <string name="BookPickupLabel">Confirm your pickup location</string>
+  <string name="Notification_DriverBailedPush">Driver bailed</string>
   <string name="Tuto03Top">You may also select your pickup location by tapping the pickup address.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
   <string name="Overdue_IBSOrderId">Order:</string>

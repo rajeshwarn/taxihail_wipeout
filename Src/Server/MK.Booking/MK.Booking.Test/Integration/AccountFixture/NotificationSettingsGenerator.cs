@@ -52,7 +52,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     ReceiptEmail = true,
                     PromotionUnlockedEmail = true,
                     VehicleAtPickupPush = true,
-                    PromotionUnlockedPush = true
+                    PromotionUnlockedPush = true,
+                    DriverBailedPush = true
                 }
             });
 
@@ -72,6 +73,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(true, dto.PromotionUnlockedEmail);
                 Assert.AreEqual(true, dto.VehicleAtPickupPush);
                 Assert.AreEqual(true, dto.PromotionUnlockedPush);
+                Assert.AreEqual(true, dto.DriverBailedPush);
             }
         }
     }
@@ -99,7 +101,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     ReceiptEmail = true,
                     PromotionUnlockedEmail = true,
                     VehicleAtPickupPush = true,
-                    PromotionUnlockedPush = true
+                    PromotionUnlockedPush = true,
+                    DriverBailedPush = true
                 }
             });
         }
@@ -123,7 +126,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     ReceiptEmail = false,
                     PromotionUnlockedEmail = false,
                     VehicleAtPickupPush = false,
-                    PromotionUnlockedPush = false
+                    PromotionUnlockedPush = false,
+                    DriverBailedPush = false
                 }
             });
 
@@ -143,6 +147,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(false, dto.VehicleAtPickupPush);
                 Assert.AreEqual(false, dto.PromotionUnlockedEmail);
                 Assert.AreEqual(false, dto.PromotionUnlockedPush);
+                Assert.AreEqual(false, dto.DriverBailedPush);
             }
         }
     }

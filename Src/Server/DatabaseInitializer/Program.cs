@@ -229,7 +229,8 @@ namespace DatabaseInitializer
                             ReceiptEmail = true,
                             PromotionUnlockedEmail = true,
                             VehicleAtPickupPush = true,
-                            PromotionUnlockedPush = true
+                            PromotionUnlockedPush = true,
+                            DriverBailedPush = true
                         }
                     });
                 }
