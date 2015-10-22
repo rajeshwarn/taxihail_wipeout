@@ -373,7 +373,6 @@
     <Compile Include="Services\IPairingService.cs" />
     <Compile Include="Services\IPaymentService.cs" />
     <Compile Include="Services\IPayPalServiceFactory.cs" />
-    <Compile Include="Services\IServiceTypeService.cs" />
     <Compile Include="Services\MonerisResponseCodes.cs" />
     <Compile Include="Services\PaymentService.cs" />
     <Compile Include="Services\PayPalServiceFactory.cs" />

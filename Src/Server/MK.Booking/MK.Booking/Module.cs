@@ -27,6 +27,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Provider;
 using AutoMapper;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
@@ -92,7 +93,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IPayPalServiceFactory, PayPalServiceFactory>();
             container.RegisterType<IPaymentService, PaymentService>();
             container.RegisterType<IFeeService, FeeService>();
-            container.RegisterType<IServiceTypeService, ServiceTypeService>();
+            container.RegisterType<IServiceTypeSettingsProvider, ServiceTypeSettingsProvider>();
         }
 
         public void RegisterMaps()

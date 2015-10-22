@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
-    public class ServiceTypeService : IServiceTypeService
+    public class ServiceTypeSettingsProvider : IServiceTypeSettingsProvider
     {
         private Dictionary<ServiceType, ServiceTypeSettings> _serviceTypeSettings;
 
-        public ServiceTypeService()
+        public ServiceTypeSettingsProvider()
         {
             _serviceTypeSettings = new Dictionary<ServiceType, ServiceTypeSettings>();
 

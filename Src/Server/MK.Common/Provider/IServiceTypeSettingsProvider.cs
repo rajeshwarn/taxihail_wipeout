@@ -1,8 +1,8 @@
 using apcurium.MK.Common.Enumeration;
 
-namespace apcurium.MK.Booking.Services
+namespace apcurium.MK.Common.Provider
 {
-    public interface IServiceTypeService
+    public interface IServiceTypeSettingsProvider
     {
         string GetIBSWebServicesUrl(ServiceType serviceType);
     }
