@@ -30,9 +30,12 @@ namespace CMTPayment
             ConsumerKey = cmtSettings.ConsumerKey;
             ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
 
-            //todo - Bug accept all certificates
+#if DEBUG
+			// In debug, we should allow all certs to allow us to debug issues that might arise.
             ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
-        }
+#endif
+		}
+
 
         protected string ConsumerKey { get; private set; }
         protected string ConsumerSecretKey { get; private set; }
