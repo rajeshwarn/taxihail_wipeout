@@ -93,7 +93,31 @@ namespace apcurium.MK.Common.Entity
             StreetNumber = newStreetNumber;
         }
 
-        /// <summary>
+		public string DisplayLine1
+		{
+			get
+			{
+				if (AddressType == "place" || FriendlyName.HasValue())
+				{
+					return FriendlyName;
+				}
+				return DisplayAddress.SplitOnFirst(",")[0];
+			}
+		}
+
+		public string DisplayLine2
+		{
+			get
+			{
+				if (AddressType == "place" || FriendlyName.HasValue())
+				{
+					return DisplayAddress;
+				}
+				return DisplayAddress.SplitOnFirst(", ")[1].TrimStart();
+			}
+		}
+
+		/// <summary>
         ///     Returns a MemberwiseClone of the Address
         /// </summary>
         public Address Copy()
