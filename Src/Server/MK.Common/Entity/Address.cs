@@ -93,7 +93,48 @@ namespace apcurium.MK.Common.Entity
             StreetNumber = newStreetNumber;
         }
 
-        /// <summary>
+		public string DisplayLine1
+		{
+			get
+			{
+				if (AddressType == "place" || FriendlyName.HasValue())
+				{
+					return FriendlyName;
+				}
+				return DisplayAddress.SplitOnFirst(",")[0];
+			}
+		}
+
+		public string DisplayLine2
+		{
+			get
+			{
+				if (AddressType == "place" || FriendlyName.HasValue())
+				{
+					return DisplayAddress;
+				}
+				return DisplayAddress.SplitOnFirst(", ")[1].TrimStart();
+			}
+		}
+
+		// equals logic token from apcurium.MK.Booking.Mobile.ViewModels.AddressViewModel
+		public override bool Equals(object obj)
+		{
+			if (obj != null && ((obj as Address) != null))
+			{
+				return DisplayLine1 == ((Address)obj).DisplayLine1 && DisplayLine2 == ((Address)obj).DisplayLine2;
+			}
+
+			return false;
+		}
+
+		public override int GetHashCode()
+		{
+			return (DisplayLine1 + DisplayLine2).GetHashCode();
+		}
+
+
+		/// <summary>
         ///     Returns a MemberwiseClone of the Address
         /// </summary>
         public Address Copy()
