@@ -863,7 +863,7 @@
     <value>Bonus Conducteur:</value>
   </data>
   <data name="DriverBonusDescription" xml:space="preserve">
-    <value>Augmentez la probabilité d'avoir un taxi en offrant un bonus garanti au conducteur.</value>
+    <value>Augmentez la probabilité d'avoir un véhicule en offrant un bonus garanti au conducteur.</value>
   </data>
   <data name="DriverBonusWarningTitle" xml:space="preserve">
     <value>Confirmation du Bonus Conducteur</value>
@@ -1911,7 +1911,7 @@
     <value>CHECK IN</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
-    <value>Dans un Taxi</value>
+    <value>Dans un véhicule</value>
   </data>
   <data name="View_RideLinqPair" xml:space="preserve">
     <value>Check In</value>

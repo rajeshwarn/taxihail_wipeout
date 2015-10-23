@@ -1008,7 +1008,7 @@
     <value>Driver Bonus:</value>
   </data>
   <data name="DriverBonusDescription" xml:space="preserve">
-    <value>Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</value>
+    <value>Offering a guaranteed bonus to drivers can boost your odds of getting a vehicle.</value>
   </data>
   <data name="DriverBonusWarningTitle" xml:space="preserve">
     <value>Confirm Driver Bonus</value>
@@ -1908,7 +1908,7 @@
     <value>Unable to load the available promotions. Please try again later.</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
-    <value>In a Taxi</value>
+    <value>In a Vehicle</value>
   </data>
   <data name="HomeView_BookTaxi" xml:space="preserve">
     <value>Need a Taxi</value>
@@ -1923,7 +1923,7 @@
     <value>Unable to load the payment details. Please try again later.</value>
   </data>
   <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
-    <value>Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</value>
+    <value>Enter the 7-digit code displayed on the vehicle touchscreen to auto-pay and get an e-receipt at the end of your ride.</value>
   </data>
   <data name="ManualRideLinqStatus_Distance" xml:space="preserve">
     <value>Distance:</value>

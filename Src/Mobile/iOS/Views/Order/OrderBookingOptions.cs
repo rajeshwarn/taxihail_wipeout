@@ -35,6 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 			Initialize();
 
+			var serviceType = ((OrderOptionsViewModel)DataContext).SelectedVehicleType.ServiceType;
+			this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message", serviceType == ServiceType.Luxury ? "luxury" : null],
+
 			this.DelayBind (() => {
 				lblDescription.Text = Localize.GetValue("BookATaxi_Message");
 				btnNow.SetTitle(Localize.GetValue("Now"), UIControlState.Normal);

@@ -170,7 +170,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="44dip"
                     android:text="@string/HomeView_BookTaxi"
-                    local:MvxBind="Click Book" />
+                    local:MvxBind="Click Book; Text BookItButton" />
                 <ImageView
                     android:id="@+id/imagePromo"
                     android:layout_width="wrap_content"

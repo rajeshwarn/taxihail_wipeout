@@ -5,13 +5,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
 {
     public class Localize : ILocalization
 	{
-		public static string GetValue (string key)
+		public static string GetValue (string key, string context = string.Empty)
 		{
-			var localizedValue = NSBundle.MainBundle.LocalizedString (key, "", "");
-			return localizedValue ?? string.Empty;
+			string localizedValue = null;
+
+			if (!string.IsNullOrWhiteSpace (context))
+			{
+				localizedValue = NSBundle.MainBundle.LocalizedString (key + "_" + context, "", "");
+			}
+
+			return localizedValue ?? NSBundle.MainBundle.LocalizedString (key, "", "") ?? string.Empty;
 		}
 
-	    public string this[string key]
+	    public string this[string key, string context = string.Empty]
 	    {
             get { return GetValue(key); }
 	    }
