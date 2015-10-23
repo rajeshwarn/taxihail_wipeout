@@ -60,59 +60,10 @@ namespace apcurium.MK.Booking.Api.Services
 					};
 
 			var historyAddressesDistinct = from address in historyAddresses
-										   group address by address into addressesDist
+										   group address by new { address.DisplayLine1, address.DisplayLine2 } into addressesDist
 										   select addressesDist.First();
 
 			return historyAddressesDistinct.Take(MaximumNumberEntriesInHistoryAddressList).ToArray();
-
-
-
-
-
-
-
-			// this code below takes history addresses in order when they was used during the trips before stripping
-			// if the problem when returned history address list strips the addresses recently appeared in trips - use this code
-			/*
-				  
-			  
-			var orders = _orderDao.FindByAccountId(accountId); <--- before use it with this code you have to sort it by date in descending order
-				  
-			Hashtable historyAddressesDistinctHashTable = new Hashtable();
-			for (int i = 0; i < historyAddressesDistinct.Count(); i++)
-			{
-				historyAddressesDistinctHashTable.Add(historyAddressesDistinct[i].GetHashCode(), historyAddressesDistinct[i]);
-			}
-
-			List<Address> historyAddressList = new List<Address>();
-
-			for (int i = 0; i < orders.Count; i++)
-			{
-				if (historyAddressesDistinctHashTable.Contains(orders[i].GetHashCode()))
-				{
-					var address = (Address)historyAddressesDistinctHashTable[orders[i].GetHashCode()];
-
-					if (!historyAddressList.Contains(address))
-					{
-						historyAddressList.Add(address);
-					}
-				}
-
-				if (historyAddressList.Count >= MaximumNumberEntriesInHistoryAddressList)
-					break;
-			}
-
-			if (historyAddressList.Count < MaximumNumberEntriesInHistoryAddressList)
-			{
-				var historyAddressesNotInOrders = from ha in historyAddressesDistinct
-												  where !historyAddressList.Contains(ha)
-												  select ha;
-
-				int addressesNumberToAdd = Math.Min(MaximumNumberEntriesInHistoryAddressList - historyAddressList.Count, historyAddressesNotInOrders.Count());
-
-				historyAddressList.AddRange(historyAddressesNotInOrders.Take(addressesNumberToAdd));
-			}
-			*/
         }
 
         public object Delete(AddressHistoryRequest request)
