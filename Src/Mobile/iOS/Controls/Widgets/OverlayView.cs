@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-
+            BackgroundColor = UIColor.White.ColorWithAlpha(0.9f);
         }
 
         public override void Draw (CGRect rect)
@@ -40,11 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             if (!UIScreen.MainScreen.Bounds.Contains(Frame))
             {
-                using (var context = UIGraphics.GetCurrentContext())
-                {
-                    context.ClearRect(rect);
-                }
-
                 return;
             }
 
@@ -108,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             roundedRectanglePath.Dispose();
             maskPath.Dispose();
-            maskWithHole.Display();
+            maskWithHole.Dispose();
         }
 
         private void ClearShadowIfNecessary()
