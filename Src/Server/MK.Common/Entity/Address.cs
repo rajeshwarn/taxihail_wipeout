@@ -101,6 +101,12 @@ namespace apcurium.MK.Common.Entity
 				{
 					return FriendlyName;
 				}
+
+                if (DisplayAddress == null)
+                {
+                    return "";
+                }
+
 				return DisplayAddress.SplitOnFirst(",")[0];
 			}
 		}
@@ -113,6 +119,12 @@ namespace apcurium.MK.Common.Entity
 				{
 					return DisplayAddress;
 				}
+
+                if (DisplayAddress == null)
+                {
+                    return "";
+                }
+
 				return DisplayAddress.SplitOnFirst(", ")[1].TrimStart();
 			}
 		}
