@@ -59,9 +59,9 @@ namespace apcurium.MK.Booking.Api.Services
 						IsHistoric = address.IsHistoric
 					};
 
-			var historyAddressesDistinct = (from address in historyAddresses
-											group address by address into addressesDist
-											select addressesDist.First()).ToArray();
+			var historyAddressesDistinct = from address in historyAddresses
+										   group address by address into addressesDist
+										   select addressesDist.First();
 
 			return historyAddressesDistinct.Take(MaximumNumberEntriesInHistoryAddressList).ToArray();
 
