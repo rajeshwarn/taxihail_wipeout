@@ -117,23 +117,6 @@ namespace apcurium.MK.Common.Entity
 			}
 		}
 
-		// equals logic token from apcurium.MK.Booking.Mobile.ViewModels.AddressViewModel
-		public override bool Equals(object obj)
-		{
-			if (obj != null && ((obj as Address) != null))
-			{
-				return DisplayLine1 == ((Address)obj).DisplayLine1 && DisplayLine2 == ((Address)obj).DisplayLine2;
-			}
-
-			return false;
-		}
-
-		public override int GetHashCode()
-		{
-			return (DisplayLine1 + DisplayLine2).GetHashCode();
-		}
-
-
 		/// <summary>
         ///     Returns a MemberwiseClone of the Address
         /// </summary>
