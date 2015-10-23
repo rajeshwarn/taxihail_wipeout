@@ -308,9 +308,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     
                     try
                     {
-                        await _orderWorkflowService.ValidatePickupAndDestination();
-                        await _orderWorkflowService.ValidatePickupTime();
-						await _orderWorkflowService.ValidateNumberOfPassengers(null);
+						await Task.WhenAll(
+							_orderWorkflowService.ValidatePickupAndDestination(),
+							_orderWorkflowService.ValidatePickupTime(),
+							_orderWorkflowService.ValidateNumberOfPassengers(null)
+						);
                     }
                     catch (OrderValidationException e)
                     {
@@ -346,7 +348,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						return;
 					}
 
-                    ReviewOrderDetails();
+					await ReviewOrderDetails();
 				});
 			}
 		}
@@ -411,7 +413,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        public async void ReviewOrderDetails()
+        public async Task ReviewOrderDetails()
 	    {
 			await ValidateOrderDetails();
 			ParentViewModel.CurrentViewState = HomeViewModelState.Review;
@@ -421,10 +423,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			using (this.Services().Message.ShowProgress())
 			{
-				await _orderWorkflowService.ResetOrderSettings();
-				await ShowFareEstimateAlertDialogIfNecessary();
-				await ValidateCardOnFile();
-				await PreValidateOrder();
+				await Task.WhenAll(
+					_orderWorkflowService.ResetOrderSettings(),
+					ShowFareEstimateAlertDialogIfNecessary(),
+					ValidateCardOnFile(),
+					PreValidateOrder()
+				);
 			}
 		}
 
