@@ -1,4 +1,5 @@
-﻿using System;
+﻿using apcurium.MK.Common.Enumeration;
+using System;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
@@ -18,11 +19,5 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public int MaxNumberPassengers { get; set; }
 
         public BaseRateInfo BaseRate { get; set; }
-    }
-
-    public enum ServiceType
-    {
-        Taxi = 0,
-        Luxury = 1
     }
 }

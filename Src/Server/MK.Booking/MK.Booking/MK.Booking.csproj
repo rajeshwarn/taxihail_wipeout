@@ -367,6 +367,7 @@
     <Compile Include="Services\Impl\MonerisPaymentService.cs" />
     <Compile Include="Services\Impl\PairingService.cs" />
     <Compile Include="Services\Impl\PayPalService.cs" />
+    <Compile Include="Services\Impl\ServiceTypeSettingsProvider.cs" />
     <Compile Include="Services\INotificationService.cs" />
     <Compile Include="Services\Impl\NotificationService.cs" />
     <Compile Include="Services\IPairingService.cs" />

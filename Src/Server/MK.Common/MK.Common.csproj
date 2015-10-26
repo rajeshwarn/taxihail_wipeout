@@ -141,6 +141,7 @@
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\Airline.cs" />
     <Compile Include="Entity\VehicleCandidate.cs" />
+    <Compile Include="Enumeration\ServiceType.cs" />
     <Compile Include="Entity\VehicleCandidateTypes.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Params.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\IPopularAddressProvider.cs" />
+    <Compile Include="Provider\IServiceTypeSettingsProvider.cs" />
     <Compile Include="Provider\ITariffProvider.cs" />
     <Compile Include="Database\ServiceConfigurationSettingConnectionFactory.cs" />
     <Compile Include="Resources\BasePaymentResponse.cs" />

@@ -4,6 +4,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
 using apcurium.MK.Booking.IBS.ChargeAccounts;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -27,9 +28,9 @@ namespace apcurium.MK.Booking.IBS.Impl
             return new AccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
         }
 
-        public IStaticDataWebServiceClient StaticData(string companyKey)
+        public IStaticDataWebServiceClient StaticData(string companyKey = null, ServiceType? serviceType = null)
         {
-            return new StaticDataWebServiceClient(GetSettingContainer(companyKey), _logger);
+            return new StaticDataWebServiceClient(GetSettingContainer(companyKey, serviceType), _logger);
         }
 
         public IBookingWebServiceClient Booking(string companyKey)
@@ -42,8 +43,20 @@ namespace apcurium.MK.Booking.IBS.Impl
             return new ChargeAccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
         }
 
-        public IBSSettingContainer GetSettingContainer(string companyKey)
+        public IBSSettingContainer GetSettingContainer(string companyKey = null, ServiceType? serviceType = null)
         {
+            if (serviceType.HasValue)
+            {
+                var ibsSettings = _serverSettings.ServerData.IBS;
+                
+                if (serviceType.Value == ServiceType.Luxury)
+                {
+                    //var luxuryIbsSettings = _serviceTypeService.GetIbsSettingsForLuxury(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+                    //ibsSettings.WebServicesUrl = luxuryIbsSettings.ServerData.IBS.WebServicesUrl;
+                    return ibsSettings;
+                }
+            }
+
             if (!companyKey.HasValue())
             {
                 return _serverSettings.ServerData.IBS;
