@@ -6,7 +6,7 @@ using apcurium.MK.Common.Enumeration;
 
 namespace MK.Common.Configuration
 {
-	public class TaxiHailSetting
+    public class TaxiHailSetting
     {
 		public TaxiHailSetting()
 		{
