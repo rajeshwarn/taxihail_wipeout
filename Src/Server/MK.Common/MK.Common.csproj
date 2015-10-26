@@ -132,6 +132,7 @@
     <Compile Include="Configuration\Impl\ServerPaymentSetting.cs" />
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Configuration\ServerTaxiHailSetting.cs" />
+    <Compile Include="Configuration\ServiceTypeSettings.cs" />
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />

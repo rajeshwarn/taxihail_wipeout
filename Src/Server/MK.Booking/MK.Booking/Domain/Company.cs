@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
 using MK.Common.Configuration;
@@ -91,6 +92,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<PrivacyPolicyUpdated>(NoAction);
 
             Handles<FeesUpdated>(NoAction);
+            
+            Handles<ServiceTypeSettingsUpdated>(NoAction);
         }
 
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
@@ -544,6 +547,14 @@ namespace apcurium.MK.Booking.Domain
                 ReferenceNetworkVehicleTypeId = networkVehicleTypeId,
                 ServiceType = serviceType,
                 IsWheelchairAccessible = isWheelchairAccessible
+            });
+        }
+
+        public void UpdateServiceTypeSettings(ServiceTypeSettings serviceTypeSettings)
+        {
+            Update(new ServiceTypeSettingsUpdated
+            {
+                ServiceTypeSettings = serviceTypeSettings
             });
         }
 
