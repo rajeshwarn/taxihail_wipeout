@@ -104,10 +104,17 @@ namespace apcurium.MK.Common.Entity
 
                 if (DisplayAddress == null)
                 {
-                    return "";
+                    return string.Empty;
                 }
 
-				return DisplayAddress.SplitOnFirst(",")[0];
+                var splitStrings = DisplayAddress.SplitOnFirst(",");
+
+                if (splitStrings.Length > 0)
+                {
+                    return splitStrings[0];
+                }
+
+                return DisplayAddress;
 			}
 		}
 
@@ -122,10 +129,17 @@ namespace apcurium.MK.Common.Entity
 
                 if (DisplayAddress == null)
                 {
-                    return "";
+                    return string.Empty;
                 }
 
-				return DisplayAddress.SplitOnFirst(", ")[1].TrimStart();
+                var splitStrings = DisplayAddress.SplitOnFirst(",");
+
+                if (splitStrings.Length > 1)
+                {
+                    return splitStrings[1].TrimStart();
+                }
+
+                return string.Empty;
 			}
 		}
 
