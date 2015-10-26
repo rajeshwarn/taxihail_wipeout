@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChangeDropOffControl">
             <connections>
+                <outlet property="btnAddOrRemoveDropOff" destination="7UG-mq-6y7" id="tPu-5q-jvq"/>
                 <outlet property="imgDropOffIcon" destination="mTi-xu-xTR" id="psh-x2-F9d"/>
                 <outlet property="lblChangeDropOff" destination="kUf-LE-PdZ" id="tXh-RA-AIA"/>
                 <outlet property="view" destination="iN0-l3-epB" id="dsr-YB-c5e"/>
@@ -46,12 +47,22 @@
                         <constraint firstAttribute="height" constant="40" id="ox6-ui-JTM"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7UG-mq-6y7">
+                    <rect key="frame" x="0.0" y="0.0" width="304" height="40"/>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="7UG-mq-6y7" secondAttribute="trailing" id="0jq-04-k0v"/>
+                <constraint firstItem="7UG-mq-6y7" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="AnH-Ym-Yjp"/>
+                <constraint firstItem="7UG-mq-6y7" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="exu-na-y8d"/>
                 <constraint firstAttribute="centerX" secondItem="wo7-Hw-Nye" secondAttribute="centerX" id="hSV-4p-LfM"/>
                 <constraint firstAttribute="bottom" secondItem="wo7-Hw-Nye" secondAttribute="bottom" id="igG-2f-HPE"/>
                 <constraint firstItem="wo7-Hw-Nye" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="l5m-Z4-gkY"/>
+                <constraint firstAttribute="bottom" secondItem="7UG-mq-6y7" secondAttribute="bottom" id="msa-yp-Ka7"/>
                 <constraint firstItem="wo7-Hw-Nye" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="reO-UG-hBV"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wo7-Hw-Nye" secondAttribute="trailing" constant="15" id="xwY-kh-dKw"/>
             </constraints>

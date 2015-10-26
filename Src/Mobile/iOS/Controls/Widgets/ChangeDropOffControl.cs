@@ -47,6 +47,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Text)
                 .To(vm => vm.ChangeDropOffText);
 
+            set.Bind(btnAddOrRemoveDropOff)
+                .To(vm => vm.AddOrRemoveDropOffCommand);
+
             set.Apply();
         }
     } 
