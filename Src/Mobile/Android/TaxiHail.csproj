@@ -257,11 +257,13 @@
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
+    <Compile Include="Binding\MvxButtonClickBinding.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\Behavior\PairingCodeBehavior.cs" />
     <Compile Include="Controls\Dialog\PhoneEditorElement.cs" />
     <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
+    <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
     <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
     <Compile Include="Controls\Widgets\EditBoxWithAccessibility.cs" />
@@ -871,6 +873,7 @@
     <AndroidResource Include="Resources\Drawable\default_vehicle_medaillon_icon.xml" />
     <AndroidResource Include="Resources\Drawable\green_vehicle_medaillon_icon.xml" />
     <AndroidResource Include="Resources\Drawable\yellow_vehicle_medaillon_icon.xml" />
+    <AndroidResource Include="Resources\Layout\Control_AppBarButton.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
