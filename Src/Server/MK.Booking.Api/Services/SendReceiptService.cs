@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICreditCardDao _creditCardDao;
         private readonly IOrderDao _orderDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
+		private readonly IReportDao _reportDao;
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
 
@@ -40,6 +41,7 @@ namespace apcurium.MK.Booking.Api.Services
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
             IPromotionDao promotionDao,
+			IReportDao reportDao,
             IServerSettings serverSettings,
             ILogger logger)
         {
@@ -50,6 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
             _orderPaymentDao = orderPaymentDao;
             _accountDao = accountDao;
             _promotionDao = promotionDao;
+			_reportDao = reportDao;
             _creditCardDao = creditCardDao;
             _commandBus = commandBus;
         }
@@ -65,6 +68,8 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
             }
+
+			var orderReport = _reportDao.GetOrderReportWithOrderId(order.Id);
 
             AccountDetail account;
             // if the admin is requesting the receipt then it won't be for the logged in user
@@ -148,6 +153,7 @@ namespace apcurium.MK.Booking.Api.Services
                         DriverId = tripInfo.DriverId.ToString(),
                         Distance = tripInfo.Distance,
                         AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
+						PickUpDateTime = tripInfo.StartTime,
                         DropOffDateTime = tripInfo.EndTime,
                         LastFour = tripInfo.LastFour,
                         FareAtAlternateRate = Math.Round(((double) tripInfo.FareAtAlternateRate / 100), 2),
@@ -185,8 +191,8 @@ namespace apcurium.MK.Booking.Api.Services
             var sendReceiptCommand = SendReceiptCommandBuilder.GetSendReceiptCommand(
                     order, 
                     account, 
-                    ibsOrderId, 
-                    ibsOrder.VehicleNumber, 
+                    ibsOrderId,
+					(orderReport != null ? orderReport.VehicleInfos.Number : ibsOrder.VehicleNumber),
                     orderStatus.DriverInfos,
                     fareAmount,
                     tollAmount,

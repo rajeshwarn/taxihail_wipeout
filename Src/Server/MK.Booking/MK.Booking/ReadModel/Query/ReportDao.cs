@@ -25,5 +25,20 @@ namespace apcurium.MK.Booking.ReadModel.Query
                              && x.Order.CreateDateTime <= endDate).ToList();
             }
         }
+
+		public OrderReportDetail GetOrderReportWithOrderId(Guid orderId)
+		{
+			using (var context = _contextFactory.Invoke())
+			{
+				var orders = context.Query<OrderReportDetail>().Where(x => x.Id == orderId);
+
+				if (orders.Count() > 0)
+				{
+					return orders.First();
+				}
+
+				return null;
+			}
+		}
     }
 }
