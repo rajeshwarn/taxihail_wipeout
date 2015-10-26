@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 
             Sut = new OrderDispatchCompanyManager(bus.Object,
                 () => new BookingDbContext(DbName),
-                new IBSServiceProvider(new TestServerSettings(), new Logger(), new TaxiHailNetworkServiceClient(new TestServerSettings()), new ServiceTypeSettingsProvider(new TestServerSettings())),
+                new IBSServiceProvider(new TestServerSettings(), new Logger(), new TaxiHailNetworkServiceClient(new TestServerSettings()), new ServiceTypeSettingsProvider(() => new ConfigurationDbContext(DbName), new TestServerSettings())),
                 new TaxiHailNetworkServiceClient(new TestServerSettings()),
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
                 new Logger(),

@@ -38,6 +38,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             modelBuilder.Entity<ServerPaymentSettings>().ToTable("PaymentSettings", SchemaName);
             modelBuilder.Entity<NotificationSettings>().ToTable("NotificationSettings", SchemaName);
             modelBuilder.Entity<UserTaxiHailNetworkSettings>().ToTable("UserTaxiHailNetworkSettings", SchemaName);
+            modelBuilder.Entity<ServiceTypeSettings>().ToTable("ServiceTypeSettings", SchemaName);
 
             base.OnModelCreating(modelBuilder);
         }

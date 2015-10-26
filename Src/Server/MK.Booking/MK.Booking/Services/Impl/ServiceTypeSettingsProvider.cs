@@ -1,5 +1,7 @@
-using System.Collections.Generic;
+using System;
+using System.Linq;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Provider;
 using MK.Common.Configuration;
@@ -9,42 +11,29 @@ namespace apcurium.MK.Booking.Services.Impl
     public class ServiceTypeSettingsProvider : IServiceTypeSettingsProvider
     {
         private readonly IServerSettings _serverSettings;
-        private Dictionary<ServiceType, ServiceTypeSettings> _serviceTypeSettings;
+        private readonly Func<ConfigurationDbContext> _contextFactory;
 
-        public ServiceTypeSettingsProvider(IServerSettings serverSettings)
+        public ServiceTypeSettingsProvider(Func<ConfigurationDbContext> contextFactory, IServerSettings serverSettings)
         {
+            _contextFactory = contextFactory;
             _serverSettings = serverSettings;
-            _serviceTypeSettings = new Dictionary<ServiceType, ServiceTypeSettings>
-            {
-                {
-                    ServiceType.Taxi, new ServiceTypeSettings
-                    {
-                        IBSWebServicesUrl = "ibs1.com",
-                        FutureBookingThresholdInMinutes = 0
-                    }
-                },
-                {
-                    ServiceType.Luxury, new ServiceTypeSettings
-                    {
-                        IBSWebServicesUrl = "ibs2.com",
-                        FutureBookingThresholdInMinutes = 15
-                    }
-                }
-            };
         }
 
         public IBSSettingContainer GetIBSSettings(ServiceType serviceType)
         {
             var ibsSettingsContainer = _serverSettings.ServerData.IBS;
 
-            ibsSettingsContainer.WebServicesUrl = _serviceTypeSettings[serviceType].IBSWebServicesUrl;
+            ibsSettingsContainer.WebServicesUrl = GetSettings(serviceType).IBSWebServicesUrl;
 
             return ibsSettingsContainer;
         }
 
         public ServiceTypeSettings GetSettings(ServiceType serviceType)
         {
-            return _serviceTypeSettings[serviceType];
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<ServiceTypeSettings>().FirstOrDefault(x => x.ServiceType == serviceType);
+            }
         }
     }
 }
