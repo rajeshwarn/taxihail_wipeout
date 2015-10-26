@@ -248,18 +248,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!_serverSettings.ServerData.DisableFutureBooking && request.PickupDate.HasValue)
             {
-                // Here, should get the futurebookingtime for the proper service (Taxi / Luxury)
                 var futureBookingTimespanSetting = TimeSpan.FromMinutes(30); // _serverSettings.ServerData.SomeFutureBookingTimespanForServiceX;
-                
-                if (futureBookingTimespanSetting != null)
-                {
-                    var timeDifferenceBetweenPickupAndNow = pickupDate - DateTime.Now;
-                    isFutureBooking = timeDifferenceBetweenNowAndPickup >= futureBookingTimespanSetting;
-                }
-                else // No setting for future booking time. Fallback.
-                {
-                    isFutureBooking = true;
-                }
+                var timeDifferenceBetweenPickupAndNow = pickupDate - DateTime.Now;
+                isFutureBooking = timeDifferenceBetweenNowAndPickup >= futureBookingTimespanSetting;
             }
 
             createReportOrder.PickupDate = pickupDate;
