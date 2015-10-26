@@ -54,6 +54,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				.For("TouchUpInside")
 				.To(vm => vm.SetPickupDateAndReviewOrder);
 
+            set.Bind(btnNow)
+                .For("Title")
+                .To(vm => vm.BookButtonText);
+
+            set.Bind(lblDescription)
+                .For("Text")
+                .To(vm => vm.BookMessage);
+
 			set.Bind(btnLater)
 				.For("TouchUpInside")
 				.To(vm => vm.BookLater);

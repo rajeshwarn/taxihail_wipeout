@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			RefreshAppBarViewState(HomeViewModelState.Initial);
 
             Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), OrderValidated);
+            Observe(_orderWorkflowService.GetAndObserveServiceType(), serviceType => { RaisePropertyChanged(() => BookButtonText); RaisePropertyChanged(() => BookMessage); });
         }
 
 		public override void Start()
@@ -868,6 +869,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     : this.Services().Localize["BookItButton"];
             }
         }
+
+        public string BookMessage
+        {
+            get
+            {
+                var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
+                return this.Services().Localize["BookATaxi_Message" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")];
+            }
+        }
 			
 		public ICommand CreateOrder
 	    {
@@ -910,7 +920,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.BookATaxi;
 							await PrevalidatePickupAndDestinationRequired(onValidated);
 
-							var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
 							this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message"],
 							this.Services().Localize["Cancel"], () => ResetToInitialState.ExecuteIfPossible(),
 							this.Services().Localize["Now"], () => CreateOrder.ExecuteIfPossible(),
