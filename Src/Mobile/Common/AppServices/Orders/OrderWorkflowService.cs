@@ -54,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<string> _promoCodeSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<bool> _loadingAddressSubject = new BehaviorSubject<bool>(false);
+		readonly ISubject<bool> _dropOffSelectionModeSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _hashedMarketSubject = new BehaviorSubject<string>(string.Empty);
@@ -134,6 +135,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			_pickupAddressSubject.OnNext(pickupAddress);
 			_destinationAddressSubject.OnNext(destinationAddress);
+		}
+
+		public void SetDropOffSelectionMode(bool isDropOffSelectionMode)
+		{
+			_dropOffSelectionModeSubject.OnNext(isDropOffSelectionMode);
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
@@ -535,6 +541,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _loadingAddressSubject;
 		}
 
+		public IObservable<bool> GetAndObserveDropOffSelectionMode()
+		{
+			return _dropOffSelectionModeSubject;
+		}
+
 		public IObservable<string> GetAndObserveHashedMarket()
 		{
 			return _hashedMarketSubject;
@@ -683,6 +694,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_cvvSubject.OnNext(string.Empty);
 			_orderValidationResultSubject.OnNext(null);
 			_loadingAddressSubject.OnNext(false);
+			_dropOffSelectionModeSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
             _poiRefPickupListSubject.OnNext(new PickupPoint[0]);
             _poiRefAirlineListSubject.OnNext(new Airline[0]);

@@ -91,14 +91,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<bool> GetAndObserveLoadingAddress();
 
+		IObservable<bool> GetAndObserveDropOffSelectionMode();
+
 		IObservable<bool> GetAndObserveOrderCanBeConfirmed();
 
 		IObservable<string> GetAndObserveHashedMarket();
 
 		IObservable<bool> GetAndObserveIsUsingGeo();
+
 		IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
 
 		void SetAddresses(Address pickupAddress, Address destinationAddress);
+
+		void SetDropOffSelectionMode(bool isDropOffSelectionMode);
 
 		IObservable<bool> GetAndObserveIsDestinationModeOpened();
 
@@ -121,6 +126,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<bool> ShouldGoToAccountNumberFlow();
 
 		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null, string customerNumber = null);
+
 		Task<AccountChargeQuestion[]> GetAccountPaymentQuestions();
 
         bool ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers);

@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		    _postalCodeService = postalCodeService;
 
 			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
+			Observe(_orderWorkflowService.GetAndObserveDropOffSelectionMode(), dropOffSelectionMode => IsDropOffSelectionMode = dropOffSelectionMode);
 
 		    FilteredPlaces = new AddressViewModel[0];
 		}
@@ -285,7 +286,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				if (returnToHome)
 				{
-					((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+					if(IsDropOffSelectionMode)
+					{
+						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.DropOffAddressSelection;
+					}
+					else
+					{
+						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+					}
 				}
 
 				ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
@@ -311,7 +319,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}
 					else
 					{
-						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+						if(IsDropOffSelectionMode)
+						{
+							((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.DropOffAddressSelection;
+						}
+						else
+						{
+							((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+						}
 					}
 				}); 
 			}
@@ -478,6 +493,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			set
 			{
 				_addressSelectionMode = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private bool _isDropOffSelectionMode; 
+		public bool IsDropOffSelectionMode
+		{ 
+			get { return _isDropOffSelectionMode; }
+			set
+			{
+				_isDropOffSelectionMode = value;
 				RaisePropertyChanged();
 			}
 		}
