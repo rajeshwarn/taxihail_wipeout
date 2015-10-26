@@ -11,12 +11,11 @@ namespace apcurium.MK.Common.Migrations
                 "Config.ServiceTypeSettings",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
                         ServiceType = c.Int(nullable: false),
                         IBSWebServicesUrl = c.String(),
                         FutureBookingThresholdInMinutes = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.ServiceType);
             
         }
         

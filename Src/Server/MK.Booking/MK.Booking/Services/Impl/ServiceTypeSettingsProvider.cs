@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
@@ -32,7 +31,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<ServiceTypeSettings>().FirstOrDefault(x => x.ServiceType == serviceType);
+                return context.ServiceTypeSettings.Find(serviceType);
             }
         }
     }
