@@ -252,9 +252,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!_serverSettings.ServerData.DisableFutureBooking && request.PickupDate.HasValue)
             {
-                var futureBookingTimespanSetting = null;  // _serviceTypeSettingsProvider.xxxxxxxxx(request.Settings.ServiceType).yyyyyy;
-                var timeDifferenceBetweenPickupAndNow = pickupDate - DateTime.Now;
-                isFutureBooking = timeDifferenceBetweenNowAndPickup >= futureBookingTimespanSetting;
+                var futureBookingTimespanSetting = _serviceTypeSettingsProvider.GetSettings(request.Settings.ServiceType).FutureBookingThresholdInMinutes;
+                var timeDifferenceBetweenPickupAndNow = (pickupDate - DateTime.Now).TotalMinutes;
+                isFutureBooking = timeDifferenceBetweenPickupAndNow >= futureBookingTimespanSetting;
             }
 
             createReportOrder.PickupDate = pickupDate;
