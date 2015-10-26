@@ -33,6 +33,7 @@ using TinyIoC;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Globalization;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
