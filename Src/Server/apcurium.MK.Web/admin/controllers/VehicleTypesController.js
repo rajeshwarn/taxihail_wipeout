@@ -55,14 +55,12 @@
 
             var networkVehicleTypes = new TaxiHail.NetworkVehicleTypes();
 
-            var serviceTypes = TaxiHail.ServiceTypesEnum();
-
             var view = new TaxiHail.AddVehicleTypeView({
                 model: model,
                 collection: this.vehicleTypes,
                 availableVehicles: availableVehicles,
                 networkVehicleTypes: networkVehicleTypes,
-                serviceTypes: ['Taxi', 'Luxury'] //serviceTypes
+                serviceTypes: TaxiHail.parameters.serviceTypes
             })
             .on('cancel', function() {
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });

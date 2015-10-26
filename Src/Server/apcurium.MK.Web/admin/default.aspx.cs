@@ -31,11 +31,9 @@ namespace apcurium.MK.Web.admin
         protected bool IsAdmin { get; private set; }
         protected bool IsNetworkEnabled { get; private set; }
         protected string Languages { get; private set; }
-
-		protected string CountryCodes { get; private set; }
-
+        protected string ServiceTypes { get; set; }
+        protected string CountryCodes { get; private set; }
 		protected string DefaultCountryCode { get; private set; }
-
 		protected string CurrentAccountID { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -58,6 +56,9 @@ namespace apcurium.MK.Web.admin
 
             var languages = Enum.GetNames(typeof(SupportedLanguages)).ToList();
             Languages = JsonSerializer.SerializeToString(languages, languages.GetType());
+
+            var serviceTypes = Enum.GetNames(typeof(ServiceType)).ToList();
+            ServiceTypes = JsonSerializer.SerializeToString(serviceTypes, serviceTypes.GetType());
 
             var filters = config.ServerData.GeoLoc.SearchFilter.Split('&');
             GeolocSearchFilter = filters.Length > 0
@@ -87,7 +88,7 @@ namespace apcurium.MK.Web.admin
 
             IsTaxiHailPro = config.ServerData.IsTaxiHailPro;
         }
-
+        
         protected string FindParam(string[] filters, string param)
         {
             var pair = filters.FirstOrDefault(x => x.StartsWith(param + "="));
