@@ -450,7 +450,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 					return Eta.Duration == 0
                     ? this.Services ().Localize ["EtaLessThanAMinute"]
-							: string.Format (this.Services ().Localize ["Eta", serviceType == ServiceType.Luxury ? "luxury" : null], 
+                            : string.Format(this.Services().Localize["Eta" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")], 
 								Eta.Duration, durationUnit);
 				} else
 				{

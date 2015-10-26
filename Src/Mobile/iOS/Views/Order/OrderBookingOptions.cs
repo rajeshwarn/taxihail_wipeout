@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using Cirrious.MvvmCross.Binding.Touch.Views;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
@@ -36,10 +37,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			Initialize();
 
 			var serviceType = ((OrderOptionsViewModel)DataContext).SelectedVehicleType.ServiceType;
-			this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message", serviceType == ServiceType.Luxury ? "luxury" : null],
+            this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")]);
 
 			this.DelayBind (() => {
-				lblDescription.Text = Localize.GetValue("BookATaxi_Message");
+				lblDescription.Text = Localize.GetValue("BookATaxi_Message" + (serviceType == ServiceType.Luxury ? "_Luxury" : ""));
 				btnNow.SetTitle(Localize.GetValue("Now"), UIControlState.Normal);
 				btnLater.SetTitle(Localize.GetValue("BookItLaterButton"), UIControlState.Normal);
 				btnCancel.SetTitle(Localize.GetValue("Cancel"),UIControlState.Normal);

@@ -1190,7 +1190,7 @@
     <value>Driver Bonus:</value>
   </data>
   <data name="DriverBonusDescription" xml:space="preserve">
-    <value>Offering a guaranteed bonus to drivers can boost your odds of getting a vehicle.</value>
+    <value>Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.</value>
   </data>
   <data name="DriverBonusWarningTitle" xml:space="preserve">
     <value>Confirm Driver Bonus</value>

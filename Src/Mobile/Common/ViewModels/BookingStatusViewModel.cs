@@ -427,7 +427,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    if (manualRideLinqDetails.PairingError.HasValue())
 		    {
 		    	var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
-				StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError", serviceType == ServiceType.Luxury ? "luxury" : null]);
+				StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")]);
 		    }
 
 		    StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
@@ -768,8 +768,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["AddReminderMessage"],
                     this.Services().Localize["YesButton"],
 					() => _phoneService.AddEventToCalendarAndReminder(
-						string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName), 
-						string.Format(this.Services().Localize["ReminderDetails", serviceType == ServiceType.Luxury ? "luxury" : null], 
+						string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName),
+                        string.Format(this.Services().Localize["ReminderDetails" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")], 
 						Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
                     Order.PickupAddress.FullAddress, 
                     Order.PickupDate,
@@ -1242,10 +1242,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public ICommand NewRide
         {
             get {
-
+                var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
                 return this.GetCommand(() => this.Services().Message.ShowMessage(
-                    this.Services().Localize["StatusNewRideButton"], 
-					this.Services().Localize["StatusConfirmNewBooking", GetServiceType() == ServiceType.Luxury ? "luxury" : null],
+                    this.Services().Localize["StatusNewRideButton"],
+                    this.Services().Localize["StatusConfirmNewBooking" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")],
                     this.Services().Localize["YesButton"], 
                     () => { 
 						_bookingService.ClearLastOrder();

@@ -864,7 +864,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             	var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
 
                 return Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled
-					? this.Services().Localize["HomeView_BookTaxi", serviceType == ServiceType.Luxury ? "luxury" : null]
+                    ? this.Services().Localize["HomeView_BookTaxi" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")]
                     : this.Services().Localize["BookItButton"];
             }
         }
@@ -911,7 +911,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							await PrevalidatePickupAndDestinationRequired(onValidated);
 
 							var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
-							this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message", serviceType == ServiceType.Luxury ? "luxury" : null],
+							this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message"],
 							this.Services().Localize["Cancel"], () => ResetToInitialState.ExecuteIfPossible(),
 							this.Services().Localize["Now"], () => CreateOrder.ExecuteIfPossible(),
 							this.Services().Localize["BookItLaterButton"], () => BookLater.ExecuteIfPossible());
