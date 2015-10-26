@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IRateApplicationService
 	{
-		bool IsShowRateApplicationDialog(int numberOfTripsToAllowRating);
+		bool IsShowRateApplicationDialog(int successfulTripsNumber);
 
 		void ShowRateApplicationSuggestDialog();
 

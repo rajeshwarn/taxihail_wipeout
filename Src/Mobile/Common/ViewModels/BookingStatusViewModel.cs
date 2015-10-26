@@ -794,20 +794,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
 		private TaxiLocation _taxiLocation;
 
-		private void ShowRatingSuggestion()
+		private void ShowRateApplicationSuggestionDialog()
 		{
 			if (!_ratingSuggestionShownThisTrip && _applicationSettings.Data.EnableRateMobileApplication)
 			{
-				int minimumTripsNumber = 0;
+				int successfulTripsNumber = 0;
 
 				if ((_applicationSettings.Data.RatingEnabled || _applicationSettings.Data.RatingRequired) && (_rateApplicationService.CurrentRateApplicationState() == RateApplicationState.NotRated || _rateApplicationService.CurrentRateApplicationState() == RateApplicationState.Postponed))
 				{
 					Task<int> ordersNumber = _accountService.GetAccountOrderNumberToAllowRating();
 					ordersNumber.Wait();
-					minimumTripsNumber = ordersNumber.Result;
+					successfulTripsNumber = ordersNumber.Result;
 				}
 
-				if (_rateApplicationService.IsShowRateApplicationDialog(minimumTripsNumber))
+				if (_rateApplicationService.IsShowRateApplicationDialog(successfulTripsNumber))
 				{
 					_rateApplicationService.ShowRateApplicationSuggestDialog();
 				}
@@ -1001,7 +1001,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
 				{
-					Task.Run((Action)ShowRatingSuggestion);
+					Task.Run((Action)ShowRateApplicationSuggestionDialog);
 				}
 
 				if (isDone)

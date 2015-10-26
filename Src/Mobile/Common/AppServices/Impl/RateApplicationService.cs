@@ -1,11 +1,12 @@
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -30,14 +31,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 			_currentApplicationVersion = new ApplicationVersion(packageInfo.Version);
 		}
 
-		public bool IsShowRateApplicationDialog(int numberOfTripsToAllowRating)
+		public bool IsShowRateApplicationDialog(int successfulTripsNumber)
 		{
 			bool result = false;
 
-			if ((_currentRatingState.RateApplicationState == RateApplicationState.NotRated
-					|| _currentRatingState.RateApplicationState == RateApplicationState.Postponed)
+			if ((_currentRatingState.RateApplicationState == RateApplicationState.NotRated || _currentRatingState.RateApplicationState == RateApplicationState.Postponed)
 				&& (_applicationSettings.Data.RateMobileApplicationMinimumSuccessfulTrips == 0
-					|| (numberOfTripsToAllowRating > 0 && numberOfTripsToAllowRating % _applicationSettings.Data.RateMobileApplicationMinimumSuccessfulTrips == 0)))
+					|| (successfulTripsNumber > 0 && successfulTripsNumber % _applicationSettings.Data.RateMobileApplicationMinimumSuccessfulTrips == 0))
+				&& _applicationSettings.Data.PlayLink.HasValue() && _applicationSettings.Data.AppleLink.HasValue())
 			{
 				result = true;
 			}

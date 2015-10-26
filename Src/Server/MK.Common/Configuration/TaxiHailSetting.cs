@@ -517,6 +517,13 @@ namespace MK.Common.Configuration
 		[SendToClient, CustomizableByCompany]
 		[Display(Name = "Configuration - Minimum ride rating to consider successful trip for rate mobile application", Description = "Minimum ride rating to consider successful trip for rate mobile application")]
 		public int RateMobileMinimumRideRatingForSuccessfulTrip{ get; protected set; }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Website - App store link", Description = "Link to Apple App Store (Must be HTTP)")]
+		public string AppleLink { get; protected internal set; }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Website - Google Play store link", Description = "Link to Google Play Store (Must be HTTP)")]
+		public string PlayLink { get; protected internal set; }
 	}
 }
-
