@@ -64,7 +64,6 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IIBSServiceProvider _ibsServiceProvider;
-        private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly Resources.Resources _resources;
 
         public CreateOrderService(ICommandBus commandBus,
@@ -93,7 +92,6 @@ namespace apcurium.MK.Booking.Api.Services
             _serverSettings = serverSettings;
             _ibsServiceProvider = ibsServiceProvider;
             _ruleCalculator = ruleCalculator;
-            _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
@@ -302,6 +300,7 @@ namespace apcurium.MK.Booking.Api.Services
             orderCommand.Settings.ChargeType = chargeTypeIbs;
             orderCommand.Settings.VehicleType = vehicleType;
             orderCommand.IbsAccountId = account.IBSAccountId.Value;
+            orderCommand.ReferenceDataCompanyList = referenceData.CompaniesList.ToArray();
 
             // New STUFF
             var ibsInformationNote = BuildNote(chargeTypeIbs, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);

@@ -236,7 +236,26 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var accountDetail = _accountDao.FindById(@event.AccountId);
             var chargeTypeEmail = _resources.Get(chargeTypeKey, @event.ClientLanguageCode);
 
-            var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(@event);
+            var emailCommand = new SendBookingConfirmationEmail
+            {
+                IBSOrderId = ibsOrderId,
+                EmailAddress = accountDetail.Email,
+                Settings = new SendBookingConfirmationEmail.BookingSettings
+                {
+                    ChargeType = @event.Settings.ChargeType,
+                    LargeBags = @event.Settings.LargeBags,
+                    Name = @event.Settings.Name,
+                    Passengers = @event.Settings.Passengers,
+                    Phone = @event.Settings.Phone,
+                    VehicleType = @event.Settings.VehicleType
+                },
+                ClientLanguageCode = @event.ClientLanguageCode,
+                DropOffAddress = @event.DropOffAddress,
+                Note = @event.UserNote,
+                PickupAddress = @event.PickupAddress,
+                PickupDate = @event.PickupDate
+            };
+
             emailCommand.IBSOrderId = ibsOrderId;
             emailCommand.EmailAddress = accountDetail.Email;
             emailCommand.Settings.ChargeType = chargeTypeEmail;
