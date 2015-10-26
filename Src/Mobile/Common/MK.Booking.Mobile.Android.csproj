@@ -196,11 +196,6 @@
     <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
-    <Compile Include="Localization\Taxiworld.Designer.cs">
-      <DependentUpon>Taxiworld.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CallboxOrderCreated.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
@@ -438,6 +433,11 @@
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
     <None Include="Localization\UTOG.resx" />
+    <EmbeddedResource Include="Localization\MearsTaxi.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Mears.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

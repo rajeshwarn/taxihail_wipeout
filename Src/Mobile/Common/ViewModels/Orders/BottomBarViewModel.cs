@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			RefreshAppBarViewState(HomeViewModelState.Initial);
 
             Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), OrderValidated);
+            Observe(_orderWorkflowService.GetAndObserveServiceType(), serviceType => { RaisePropertyChanged(() => BookButtonText); RaisePropertyChanged(() => BookMessage); });
         }
 
 		public override void Start()
@@ -861,9 +862,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
+            	var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
+
                 return Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled
-                    ? this.Services().Localize["HomeView_BookTaxi"]
+                    ? this.Services().Localize["HomeView_BookTaxi" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")]
                     : this.Services().Localize["BookItButton"];
+            }
+        }
+
+        public string BookMessage
+        {
+            get
+            {
+                var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
+                return this.Services().Localize["BookATaxi_Message" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")];
             }
         }
 			
@@ -909,9 +921,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							await PrevalidatePickupAndDestinationRequired(onValidated);
 
 							this.Services().Message.ShowMessage(null, this.Services().Localize["BookATaxi_Message"],
-								this.Services().Localize["Cancel"], () => ResetToInitialState.ExecuteIfPossible(),
-								this.Services().Localize["Now"], () => CreateOrder.ExecuteIfPossible(),
-								this.Services().Localize["BookItLaterButton"], () => BookLater.ExecuteIfPossible());
+							this.Services().Localize["Cancel"], () => ResetToInitialState.ExecuteIfPossible(),
+							this.Services().Localize["Now"], () => CreateOrder.ExecuteIfPossible(),
+							this.Services().Localize["BookItLaterButton"], () => BookLater.ExecuteIfPossible());
 
 							return;
 						}

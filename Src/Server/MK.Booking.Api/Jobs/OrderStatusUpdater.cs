@@ -953,7 +953,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsCanceled)
             {
-                description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
+                description = _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode, orderDetail.Settings.ServiceType == ServiceType.Luxury ? "luxury" : null);
                 _logger.LogMessage("Setting Canceled status description: {0}", description);
             }
             else if (ibsOrderInfo.IsComplete)
@@ -973,7 +973,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             return description.HasValue()
                         ? description
-                        : _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode);
+                        : _resources.Get("OrderStatus_" + ibsOrderInfo.Status, _languageCode, orderDetail.Settings.ServiceType == ServiceType.Luxury ? "luxury" : null);
         }
 
         private void SendEtaMessageToDriver(double vehicleLatitude, double vehicleLongitude, double pickupLatitude, double pickupLongitude, string vehicleNumber, string company)

@@ -208,6 +208,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 return_url = redirectUrl
             };
 
+            var orderDetail = _orderDao.FindById(orderId);
+            
             // Create transaction
             var transactionList = new List<Transaction>
             {
@@ -222,7 +224,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     description = string.Format(
                         _resources.Get("PayPalWebPaymentDescription", regionName.HasValue() 
                             ? SupportedLanguages.en.ToString()
-                            : clientLanguageCode), totalAmount),
+                            : clientLanguageCode, orderDetail.Settings.ServiceType == ServiceType.Luxury ? "luxury" : null),
+                            totalAmount),
 
                     item_list = new ItemList
                     {
@@ -232,7 +235,7 @@ namespace apcurium.MK.Booking.Services.Impl
                             {
                                 name = _resources.Get("PayPalWebFareItemDescription", regionName.HasValue() 
                                         ? SupportedLanguages.en.ToString()
-                                        : clientLanguageCode),
+                                        : clientLanguageCode, orderDetail.Settings.ServiceType == ServiceType.Luxury ? "luxury" : null),
                                 currency = currency,
                                 price = fareAmount.ToString("N", CultureInfo.InvariantCulture),
                                 quantity = "1"
