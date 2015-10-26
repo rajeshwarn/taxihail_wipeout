@@ -21,22 +21,22 @@
     + "</option>\r\n";
 },"8":function(depth0,helpers,partials,data,depths) {
   var stack1, helperMissing=helpers.helperMissing, buffer = "";
-  stack1 = ((helpers.ifCond || (depth0 && depth0.ifCond) || helperMissing).call(depth0, (depth0 != null ? depth0.id : depth0), (depths[1] != null ? depths[1].serviceType : depths[1]), {"name":"ifCond","hash":{},"fn":this.program(9, data, depths),"inverse":this.program(11, data, depths),"data":data}));
+  stack1 = ((helpers.ifCond || (depth0 && depth0.ifCond) || helperMissing).call(depth0, depth0, (depths[1] != null ? depths[1].serviceType : depths[1]), {"name":"ifCond","hash":{},"fn":this.program(9, data, depths),"inverse":this.program(11, data, depths),"data":data}));
   if (stack1 != null) { buffer += stack1; }
   return buffer;
 },"9":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+  var lambda=this.lambda, escapeExpression=this.escapeExpression;
   return "                <option value=\""
-    + escapeExpression(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"id","hash":{},"data":data}) : helper)))
+    + escapeExpression(lambda(depth0, depth0))
     + "\" selected>"
-    + escapeExpression(((helper = (helper = helpers.display || (depth0 != null ? depth0.display : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"display","hash":{},"data":data}) : helper)))
+    + escapeExpression(lambda(depth0, depth0))
     + "</option>\r\n";
 },"11":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+  var lambda=this.lambda, escapeExpression=this.escapeExpression;
   return "                <option value=\""
-    + escapeExpression(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"id","hash":{},"data":data}) : helper)))
+    + escapeExpression(lambda(depth0, depth0))
     + "\">"
-    + escapeExpression(((helper = (helper = helpers.display || (depth0 != null ? depth0.display : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"display","hash":{},"data":data}) : helper)))
+    + escapeExpression(lambda(depth0, depth0))
     + "</option>\r\n";
 },"13":function(depth0,helpers,partials,data,depths) {
   var stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "        <div class=\"control-group\">\r\n            <label class=\"control-label\">"
@@ -102,7 +102,7 @@
   buffer += "            </select>\r\n        </div>\r\n\r\n        <div class=\"control-group\">\r\n            <label class=\"control-label\">"
     + escapeExpression(((helpers.localize || (depth0 && depth0.localize) || helperMissing).call(depth0, "Service Type", {"name":"localize","hash":{},"data":data})))
     + "</label>\r\n            <select name=\"serviceType\">\r\n";
-  stack1 = helpers.each.call(depth0, (depth0 != null ? depth0.availableVehicles : depth0), {"name":"each","hash":{},"fn":this.program(8, data, depths),"inverse":this.noop,"data":data});
+  stack1 = helpers.each.call(depth0, (depth0 != null ? depth0.serviceTypes : depth0), {"name":"each","hash":{},"fn":this.program(8, data, depths),"inverse":this.noop,"data":data});
   if (stack1 != null) { buffer += stack1; }
   buffer += "            </select>\r\n        </div>\r\n\r\n";
   stack1 = ((helpers.ifCond || (depth0 && depth0.ifCond) || helperMissing).call(depth0, (depth0 != null ? depth0.isNetworkEnabled : depth0), "true", {"name":"ifCond","hash":{},"fn":this.program(13, data, depths),"inverse":this.noop,"data":data}));

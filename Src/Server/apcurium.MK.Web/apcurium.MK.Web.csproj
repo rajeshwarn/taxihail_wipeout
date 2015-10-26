@@ -261,6 +261,7 @@
     <Content Include="admin\models\AccountManagementModel.js" />
     <Content Include="admin\models\AccountsManagementModel.js" />
     <Content Include="admin\models\EmailTemplates.js" />
+    <Content Include="admin\models\ServiceTypesEnum.js" />
     <Content Include="admin\models\NetworkVehicleTypes.js" />
     <Content Include="admin\models\NotificationSettings.js" />
     <Content Include="admin\models\RideRatings.js" />

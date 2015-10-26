@@ -22,15 +22,19 @@
                 alert(TaxiHail.localize('error.vehicleTypesLimitReached'));
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });
             }
+
             var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles();
 
             var networkVehicleTypes = new TaxiHail.NetworkVehicleTypes();
+
+            var serviceTypes = TaxiHail.ServiceTypesEnum();
 
             var view = new TaxiHail.AddVehicleTypeView({
                 model: new Model(),
                 collection: this.vehicleTypes,
                 availableVehicles: availableVehicles,
-                networkVehicleTypes: networkVehicleTypes
+                networkVehicleTypes: networkVehicleTypes,
+                serviceTypes: serviceTypes
             }).on('cancel', function() {
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });
             }, this);
@@ -51,11 +55,14 @@
 
             var networkVehicleTypes = new TaxiHail.NetworkVehicleTypes();
 
+            var serviceTypes = new TaxiHail.ServiceTypes();
+
             var view = new TaxiHail.AddVehicleTypeView({
                 model: model,
                 collection: this.vehicleTypes,
                 availableVehicles: availableVehicles,
-                networkVehicleTypes: networkVehicleTypes
+                networkVehicleTypes: networkVehicleTypes,
+                serviceTypes: ['Taxi', 'Luxury'] //serviceTypes
             })
             .on('cancel', function() {
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });
