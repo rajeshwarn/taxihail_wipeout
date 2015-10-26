@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Provider;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -41,10 +42,9 @@ namespace apcurium.MK.Booking.Services.Impl
             return ibsSettingsContainer;
         }
 
-        private class ServiceTypeSettings
+        public ServiceTypeSettings GetSettings(ServiceType serviceType)
         {
-            public string IBSWebServicesUrl { get; set; }
-            public int FutureBookingThresholdInMinutes { get; set; }
+            return _serviceTypeSettings[serviceType];
         }
     }
 }
