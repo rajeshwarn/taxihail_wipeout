@@ -91,14 +91,29 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress =
                     new Address
                     {
-                        FullAddress = "1234 rue Saint-Denis",
-                        Apartment = "3939",
+						FullAddress = "7250 Rue du Mile End, Montréal, QC H2R 2W1, Canada",
+						StreetNumber = "7250",
+						Street = "Rue du Mile End",
+						City = "Montréal",
+						ZipCode = "H2R 2W1",
+						State = "QC",
+						Apartment = "3939",
                         RingCode = "3131",
                         Latitude = 45.515065,
                         Longitude = -73.558064,
                     },
                 DropOffAddress =
-                    new Address {FullAddress = "Velvet auberge st gabriel", Latitude = 45.50643, Longitude = -73.554052},
+                    new Address
+					{
+						FullAddress = "7250 Rue du Mile End, Montréal, QC H2R 2W1, Canada",
+						StreetNumber = "7250",
+						Street = "Rue du Mile End",
+						City = "Montréal",
+						ZipCode = "H2R 2W1",
+						State = "QC",
+						Latitude = 45.50643,
+						Longitude = -73.554052
+					},
                 Settings = new BookingSettings
                 {
                     ChargeTypeId = ChargeTypes.PaymentInCar.Id,
