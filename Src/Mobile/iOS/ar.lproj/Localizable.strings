@@ -17,6 +17,7 @@
 "PaymentDetails.PaymentMethodsLabel"="Payment Methods";
 "PayPalUnlinkError"="Unable to unlink your PayPal account";
 "BookPickupLabel"="اكد موقع الإلتقاء المختار";
+"Notification_DriverBailedPush"="Driver bailed";
 "Tuto03Top"="يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.";
 "BookDateLabel"="قم بإرسال السيارة لاحقا";
 "Overdue_IBSOrderId"="Order:";
@@ -192,7 +193,7 @@
 "PendingOrderMessage"="You cannot book this ride since an order is already pending. View the order status?";
 "AddPaymentMethod_CreditCard"="Add credit card";
 "CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
-"TutorialActivityName"="Tutorial";
+"ErrorCreatingOrderTitle"="لا يمكن إتمام الحجز";
 "View_UpdatePassword"="تحديث كلمة المرور";
 "StreetNumberSearchBt"="استخدم عنوان آخر";
 "RideSummaryTitleText"="شكرا لك";
@@ -272,7 +273,6 @@
 "PromoDescriptionCode"="Enter code {0} at the time of booking or press the button below";
 "Overdue_Retry"="Pay Now";
 "CmtChangePaymentInfo"="تغيير إعدادات الدفع";
-"ErrorCreatingOrderTitle"="لا يمكن إتمام الحجز";
 "Next"="Next";
 "CreditCardCCV"="CVV";
 "View_BookingStatus"="الوضع";
@@ -460,6 +460,7 @@
 "Destination"="الوجهة";
 "Tuto04Top"="إن رغبت في ذلك، يمكنك أيضا ضبط وجهتك.";
 "DateTimePickerPickInvalidDateTitle"="التاريخ / الوقت غير صحيح";
+"TutorialActivityName"="Tutorial";
 "Knowledgabledriver"="Knowledgable driver";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A cancellation fee may apply.";
 "Notification_BookingConfirmationEmail"="Booking Confirmation (Email)";
