@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using MK.Common.Configuration;
@@ -8,5 +9,6 @@ namespace apcurium.MK.Common.Provider
     {
         IBSSettingContainer GetIBSSettings(ServiceType serviceType);
         ServiceTypeSettings GetSettings(ServiceType serviceType);
+        IEnumerable<ServiceTypeSettings> GetAll();
     }
 }
