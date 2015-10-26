@@ -241,11 +241,28 @@ namespace apcurium.MK.Booking.Api.Services
 			createReportOrder.IsPrepaid = isPrepaid;
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
-            
-            var isFutureBooking = request.PickupDate.HasValue;
+
             var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
 
-			createReportOrder.PickupDate = pickupDate;
+            var isFutureBooking = false;
+
+            if (!_serverSettings.ServerData.DisableFutureBooking && request.PickupDate.HasValue)
+            {
+                // Here, should get the futurebookingtime for the proper service (Taxi / Luxury)
+                var futureBookingTimespanSetting = TimeSpan.FromMinutes(30); // _serverSettings.ServerData.SomeFutureBookingTimespanForServiceX;
+                
+                if (futureBookingTimespanSetting != null)
+                {
+                    var timeDifferenceBetweenPickupAndNow = pickupDate - DateTime.Now;
+                    isFutureBooking = timeDifferenceBetweenNowAndPickup >= futureBookingTimespanSetting;
+                }
+                else // No setting for future booking time. Fallback.
+                {
+                    isFutureBooking = true;
+                }
+            }
+
+            createReportOrder.PickupDate = pickupDate;
 
             // User can still create future order, but we allow only one active Book now order.
             if (!isFutureBooking)
