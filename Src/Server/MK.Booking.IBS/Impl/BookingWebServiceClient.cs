@@ -190,7 +190,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IBSDistanceEstimate GetDistanceEstimate(double? distance, int? waitTime, int? stopCount, int? passengerCount, int? vehicleType, int defaultVehiculeTypeId, int? accountNumber, string customerNumber)
+        public IBSDistanceEstimate GetDistanceEstimate(double? distance, int? waitTime, int? stopCount, int? passengerCount, int? vehicleType, int defaultVehiculeTypeId, string accountNumber, int? customerNumber)
         {
             var result = new IBSDistanceEstimate();
             UseService(service =>
@@ -203,10 +203,19 @@ namespace apcurium.MK.Booking.IBS.Impl
                 passengerCount = passengerCount.HasValue && passengerCount > 0 ? passengerCount.Value : 0;
                 vehicleType = vehicleType ?? defaultVehiculeTypeId;
 
+                if (accountNumber.HasValue() && customerNumber.HasValue)
+                {
+                    customerNumber = customerNumber.Value;
+                }
+                else
+                {
+                    customerNumber = -1;
+                }
+
                 int tripTime;
                 int completionState;
 
-                result.TotalFare = service.EstimateDistance(UserNameApp, PasswordApp, distance.Value, waitTime.Value, stopCount.Value, passengerCount.Value, frDate, vehicleType.ToString(), accountNumber.Value, customerNumber, out tripTime, out completionState);
+                result.TotalFare = service.EstimateDistance(UserNameApp, PasswordApp, distance.Value, waitTime.Value, stopCount.Value, passengerCount.Value, frDate, accountNumber, customerNumber.Value, vehicleType.Value, out tripTime, out completionState);
 
                 result.TripTime = distance;
             });

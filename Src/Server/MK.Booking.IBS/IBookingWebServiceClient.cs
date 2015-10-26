@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.IBS
 
         IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string pickupZipCode, string dropoffZipCode, string accountNumber, int? customerNumber, int? tripDurationInSeconds, int? providerId, int? vehicleTypeB, int defaultVehiculeTypeId);
 
-        IBSDistanceEstimate GetDistanceEstimate(double? distance, int? waitTime, int? stopCount, int? passengerCount, int? vehicleType, int defaultVehiculeTypeId, int? accountNumber, string customerNumber);
+        IBSDistanceEstimate GetDistanceEstimate(double? distance, int? waitTime, int? stopCount, int? passengerCount, int? vehicleType, int defaultVehiculeTypeId, string accountNumber, int? customerNumber);
 
         bool CancelOrder(int orderId, int accountId, string contactPhone);
 

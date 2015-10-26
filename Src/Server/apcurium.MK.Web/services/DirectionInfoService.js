@@ -38,10 +38,10 @@
                             : 0,
                             0,
                             0,
-                            0,
                             (account != null)
                             ? account
                             : '',
+                            0,
                             vehicleTypeId),
                         function() {}, fmt).then(function(result) {
                         });
