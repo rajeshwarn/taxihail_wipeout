@@ -3,6 +3,7 @@ using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Security;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
@@ -23,6 +24,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public int ReferenceDataVehicleId { get; set; }
 
         public int? ReferenceNetworkVehicleTypeId { get; set; }
+
+        public ServiceType ServiceType { get; set; }
 
         public int MaxNumberPassengers { get; set; }
 
