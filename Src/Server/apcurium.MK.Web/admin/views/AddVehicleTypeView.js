@@ -23,8 +23,6 @@
                 isNew: this.model.isNew()
             });
 
-            console.log(data);
-
             var html = this.renderTemplate(data);
             this.$el.html(html);
 

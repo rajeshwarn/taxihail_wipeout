@@ -55,7 +55,7 @@
 
             var networkVehicleTypes = new TaxiHail.NetworkVehicleTypes();
 
-            var serviceTypes = new TaxiHail.ServiceTypes();
+            var serviceTypes = TaxiHail.ServiceTypesEnum();
 
             var view = new TaxiHail.AddVehicleTypeView({
                 model: model,

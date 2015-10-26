@@ -1,5 +1,3 @@
 ﻿(function () {
-
-    TaxiHail.ServiceTypes = function () { return ['Taxi', 'Luxury']; };
-
+    TaxiHail.ServiceTypesEnum = function () { return ['Taxi', 'Luxury']; };
 }());

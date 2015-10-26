@@ -174,7 +174,7 @@ namespace apcurium.MK.Web
                 "~/admin/models/VehicleType.js",
                 "~/admin/models/UnassignedReferenceDataVehicles.js",
                 "~/admin/models/NetworkVehicleTypes.js",
-                "~/admin/models/ServiceTypes.js",
+                "~/admin/models/ServiceTypesEnum.js",
                 "~/admin/models/RideRatings.js",
 				"~/admin/models/AccountsManagementModel.js",
 				"~/admin/models/AccountManagementModel.js",
