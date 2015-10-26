@@ -49,6 +49,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			RefreshAppBarViewState(HomeViewModelState.Initial);
 
             Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), OrderValidated);
+
+			Observe(_orderWorkflowService.GetAndObserveCanExecuteBookingOperation(), canExecuteBookOperation => CanExecuteBookOperation = canExecuteBookOperation);
         }
 
 		public override void Start()
@@ -351,6 +353,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                     ReviewOrderDetails();
 				});
+			}
+		}
+
+		private bool _canExecuteBookOperation;
+
+		/// <summary>
+		/// WARNING: DO NOT BIND THIS PROPERTY TO AN ENABLE, THIS SHOULD BE USED IN A CanExecute.
+		/// </summary>
+		/// <value><c>true</c> if this instance can execute book operation; otherwise, <c>false</c>.</value>
+		public bool CanExecuteBookOperation
+		{
+			get
+			{
+				return _canExecuteBookOperation;
+			}
+			set
+			{
+				_canExecuteBookOperation = value;
+				Book.RaiseCanExecuteChangedIfPossible();
 			}
 		}
 
@@ -684,30 +705,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
 					Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
 					await PrevalidatePickupAndDestinationRequired(onValidated);
-                }, () => CanProceedToBook(true));
+                }, CanProceedToBook);
             }
         }
-
-		/// <summary>
-		/// WARNING: NOT SUITED FOR SINGLE BUTTON FOR NOW AND LATER BOOKING
-		/// </summary>
-		/// <returns><c>true</c> if this instance can proceed to book the specified forLater; otherwise, <c>false</c>.</returns>
-		/// <param name="forLater">If set to <c>true</c> for later.</param>
-		private bool CanProceedToBook(bool forLater)
+			
+		private bool CanProceedToBook()
 		{
-			if (_orderValidationResult == null)
-			{
-				return false;
-			}
-
-			if (!_orderValidationResult.HasError)
-			{
-				return true;
-			}
-
-			return forLater
-				? !_orderValidationResult.AppliesToFutureBooking
-				: !_orderValidationResult.AppliesToCurrentBooking;
+			return CanExecuteBookOperation;
 		}
 
         public ICommand BookAirportLater
@@ -919,7 +923,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						Action onValidated = () => ParentViewModel.CurrentViewState = HomeViewModelState.PickDate;
 						await PrevalidatePickupAndDestinationRequired(onValidated);
 					}
-                }, () => CanProceedToBook(false));
+                }, CanProceedToBook);
             }
         }
 
