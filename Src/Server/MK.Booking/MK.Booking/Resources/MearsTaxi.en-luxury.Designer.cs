@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("apcurium.MK.Booking.Resources.MearsTaxi-en-luxury", typeof(MearsTaxi_en_luxury).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("apcurium.MK.Booking.Resources.MearsTaxi.en-luxury", typeof(MearsTaxi_en_luxury).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
