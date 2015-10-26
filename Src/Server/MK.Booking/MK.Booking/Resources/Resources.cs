@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Globalization;
-using System.Linq;
 using System.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
@@ -18,7 +17,6 @@ namespace apcurium.MK.Booking.Resources
     {
         private readonly IServerSettings _serverSettings;
         private readonly ResourceManager _resources;
-        private readonly string _applicationKey;
         private const string DefaultLanguageCode = "en";
 
         public Resources(IServerSettings serverSettings)
@@ -27,18 +25,18 @@ namespace apcurium.MK.Booking.Resources
             
             var names = GetType().Assembly.GetManifestResourceNames();
 
-            _applicationKey = serverSettings.ServerData.TaxiHail.ApplicationKey;
-            var resourceName = "apcurium.MK.Booking.Resources." + _applicationKey + ".resources";
+            var applicationKey = serverSettings.ServerData.TaxiHail.ApplicationKey;
+            var resourceName = "apcurium.MK.Booking.Resources." + applicationKey + ".resources";
 
             MissingResourceFile = names.None(n => n.ToLower() == resourceName.ToLower());
             // resource files doesn't exist for all the customers
 
-            _resources = new ResourceManager("apcurium.MK.Booking.Resources." + _applicationKey, GetType().Assembly);
+            _resources = new ResourceManager("apcurium.MK.Booking.Resources." + applicationKey, GetType().Assembly);
         }
 
         public bool MissingResourceFile { get; private set; }
 
-        public string Get(string key, string languageCode = DefaultLanguageCode, string context = "")
+        public string Get(string key, string languageCode = DefaultLanguageCode)
         {
             if (string.IsNullOrWhiteSpace(key))
             {
@@ -54,30 +52,8 @@ namespace apcurium.MK.Booking.Resources
             {
                 return Global.ResourceManager.GetString(key, CultureInfo.GetCultureInfo(languageCode));
             }
-            return GetStringForContext(key, languageCode, context)
-                    ?? _resources.GetString(key, CultureInfo.GetCultureInfo(languageCode))
+            return _resources.GetString(key, CultureInfo.GetCultureInfo(languageCode))
                    ?? Global.ResourceManager.GetString(key, CultureInfo.GetCultureInfo(languageCode));
-        }
-
-        private string GetStringForContext(string key, string languageCode, string context)
-        {
-            if (!string.IsNullOrWhiteSpace(context))
-            {
-                var names = GetType().Assembly.GetManifestResourceNames();
-                var contextualResourceSetName = string.Format("{0}.{1}-{2}.resources", _applicationKey ?? "Global", languageCode.Substring(0, 2), context);
-
-                foreach (var name in names)
-                {
-                    if (name.Contains(contextualResourceSetName))
-                    {
-                        var resourceSetStream = GetType().Assembly.GetManifestResourceStream(name);
-                        var resourceSet = new ResourceSet(resourceSetStream);
-                        return resourceSet.GetString(key);
-                    }
-                }
-            }
-
-            return null;
         }
 
         public Dictionary<string, string> GetLocalizedDictionary(string languageCode)
