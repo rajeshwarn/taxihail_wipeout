@@ -102,7 +102,8 @@ namespace apcurium.MK.Booking.Services.Impl
             if (ShouldSendNotification(order.AccountId, x => x.DriverAssignedPush))
             {
                 SendPushOrSms(order.AccountId,
-                    string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
+                    string.Format(_resources.Get("PushNotification_wosASSIGNED", order.ClientLanguageCode, order.Settings.ServiceType == ServiceType.Luxury ? "luxury" : null), 
+                    orderStatusDetail.VehicleNumber),
                     new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", false } });
             }
         }
@@ -113,7 +114,8 @@ namespace apcurium.MK.Booking.Services.Impl
             if (ShouldSendNotification(order.AccountId, x => x.VehicleAtPickupPush))
             {
                 SendPushOrSms(order.AccountId,
-                    string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode), orderStatusDetail.VehicleNumber),
+                    string.Format(_resources.Get("PushNotification_wosARRIVED", order.ClientLanguageCode, order.Settings.ServiceType == ServiceType.Luxury ? "luxury" : null), 
+                    orderStatusDetail.VehicleNumber),
                     new Dictionary<string, object> { { "orderId", order.Id }, { "isPairingNotification", false } });
             }
         }
@@ -130,7 +132,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
             SendPushOrSms(order.AccountId,
-                        _resources.Get("PushNotification_BAILED", order.ClientLanguageCode),
+                        _resources.Get("PushNotification_BAILED", order.ClientLanguageCode, order.Settings.ServiceType == ServiceType.Luxury ? "luxury" : null),
                         new Dictionary<string, object>());
         }
 

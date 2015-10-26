@@ -24,6 +24,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Extensions;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -46,7 +47,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private int? _currentIbsOrderId;
 		private bool _canAutoFollowTaxi;
 		private bool _autoFollowTaxi;
-
 		private bool _isCmtRideLinq;
 
 		private bool _isStarted;
@@ -426,7 +426,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		    if (manualRideLinqDetails.PairingError.HasValue())
 		    {
-                StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError"]);
+		    	var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
+				StatusInfoText = "{0}".InvariantCultureFormat(localize["ManualRideLinqStatus_PairingError" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")]);
 		    }
 
 		    StatusInfoText = "{0}".InvariantCultureFormat(localize["OrderStatus_PairingSuccess"]);
@@ -756,6 +757,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void AddReminder (OrderStatusDetail status)
         {
+			var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
+
             if (!HasSeenReminderPrompt(status.OrderId )
 				&& _phoneService.CanUseCalendarAPI())
             {
@@ -765,8 +768,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["AddReminderMessage"],
                     this.Services().Localize["YesButton"],
 					() => _phoneService.AddEventToCalendarAndReminder(
-						string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName), 
-                        string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
+						string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName),
+                        string.Format(this.Services().Localize["ReminderDetails" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")], 
+						Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
                     Order.PickupAddress.FullAddress, 
                     Order.PickupDate,
                     Order.PickupDate.AddHours(-2)), 
@@ -1238,9 +1242,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public ICommand NewRide
         {
             get {
+                var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
                 return this.GetCommand(() => this.Services().Message.ShowMessage(
-                    this.Services().Localize["StatusNewRideButton"], 
-                    this.Services().Localize["StatusConfirmNewBooking"],
+                    this.Services().Localize["StatusNewRideButton"],
+                    this.Services().Localize["StatusConfirmNewBooking" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")],
                     this.Services().Localize["YesButton"], 
                     () => { 
 						_bookingService.ClearLastOrder();

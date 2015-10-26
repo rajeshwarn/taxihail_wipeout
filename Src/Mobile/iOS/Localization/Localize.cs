@@ -7,8 +7,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
 	{
 		public static string GetValue (string key)
 		{
-			var localizedValue = NSBundle.MainBundle.LocalizedString (key, "", "");
-			return localizedValue ?? string.Empty;
+			return NSBundle.MainBundle.LocalizedString (key, "", "") ?? string.Empty;
 		}
 
 	    public string this[string key]

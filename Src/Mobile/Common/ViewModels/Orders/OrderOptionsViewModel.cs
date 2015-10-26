@@ -446,9 +446,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 					var durationUnit = Eta.Duration <= 1 ? this.Services ().Localize ["EtaDurationUnit"] : this.Services ().Localize ["EtaDurationUnitPlural"];
 
+					var serviceType = SelectedVehicleType.ServiceType;
+
 					return Eta.Duration == 0
                     ? this.Services ().Localize ["EtaLessThanAMinute"]
-                    : string.Format (this.Services ().Localize ["Eta"], Eta.Duration, durationUnit);
+                            : string.Format(this.Services().Localize["Eta" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")], 
+								Eta.Duration, durationUnit);
 				} else
 				{
 					return EstimatedFare;
