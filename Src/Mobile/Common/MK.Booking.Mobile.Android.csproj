@@ -196,16 +196,6 @@
     <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
-    <Compile Include="Localization\Mears.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Mears.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Localization\Taxiworld.Designer.cs">
-      <DependentUpon>Taxiworld.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CallboxOrderCreated.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
@@ -422,11 +412,6 @@
     <None Include="Localization\FlashCab.resx" />
     <None Include="Localization\Taxi303.resx" />
     <None Include="Localization\Sherbet London.resx" />
-    <EmbeddedResource Include="Localization\Mears.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Mears.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Localization\TaxiHail Pro.fr.resx" />
     <EmbeddedResource Include="Localization\TaxiHail Pro.resx" />
     <EmbeddedResource Include="Localization\Taxiworld.resx">
@@ -448,6 +433,11 @@
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
     <None Include="Localization\UTOG.resx" />
+    <EmbeddedResource Include="Localization\MearsTaxi.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Mears.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
