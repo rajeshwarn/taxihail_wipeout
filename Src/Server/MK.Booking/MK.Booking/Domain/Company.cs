@@ -10,6 +10,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
 using MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Domain
 {
@@ -534,7 +535,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId, int maxNumberPassengers, int? networkVehicleTypeId, bool isWheelchairAccessible)
+        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId, ServiceType serviceType, int maxNumberPassengers, int? networkVehicleTypeId, bool isWheelchairAccessible)
         {
             Update(new VehicleTypeAddedUpdated
             {
@@ -544,6 +545,7 @@ namespace apcurium.MK.Booking.Domain
                 ReferenceDataVehicleId = referenceDataVehicleId,
                 MaxNumberPassengers = maxNumberPassengers,
                 ReferenceNetworkVehicleTypeId = networkVehicleTypeId,
+                ServiceType = serviceType,
                 IsWheelchairAccessible = isWheelchairAccessible
             });
         }

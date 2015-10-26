@@ -18,9 +18,11 @@
             var data = _.extend(this.model.toJSON(), {
                 availableVehicles: this.options.availableVehicles.toJSON(),
                 networkVehicleTypes: this.options.networkVehicleTypes.toJSON(),
+                serviceTypes: TaxiHail.ServiceTypesEnum(),
                 isNetworkEnabled: TaxiHail.parameters.isNetworkEnabled,
                 isNew: this.model.isNew()
             });
+
             var html = this.renderTemplate(data);
             this.$el.html(html);
 

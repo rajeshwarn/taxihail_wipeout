@@ -1,4 +1,5 @@
-﻿using System;
+﻿using apcurium.MK.Common.Enumeration;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace apcurium.MK.Booking.ReadModel
@@ -13,6 +14,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string LogoName { get; set; }
 
         public int ReferenceDataVehicleId { get; set; }
+        public ServiceType ServiceType { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

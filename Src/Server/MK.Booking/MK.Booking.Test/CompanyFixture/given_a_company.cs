@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
+using apcurium.MK.Common.Enumeration;
 
 #endregion
 
@@ -318,6 +319,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                 Name = "Taxi",
                 LogoName = "Taxi",
                 ReferenceDataVehicleId = 123,
+                ServiceType = ServiceType.Taxi,
                 MaxNumberPassengers = 2
             };
 
@@ -329,6 +331,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(command.LogoName, evt.LogoName);
             Assert.AreEqual(command.VehicleTypeId, evt.VehicleTypeId);
             Assert.AreEqual(command.ReferenceDataVehicleId, evt.ReferenceDataVehicleId);
+            Assert.AreEqual(command.ServiceType, evt.ServiceType);
             Assert.AreEqual(command.MaxNumberPassengers, evt.MaxNumberPassengers);
         }
 

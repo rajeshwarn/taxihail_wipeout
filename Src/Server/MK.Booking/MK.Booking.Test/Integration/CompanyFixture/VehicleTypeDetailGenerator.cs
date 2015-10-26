@@ -8,6 +8,7 @@ using apcurium.MK.Booking.ReadModel;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
 {
@@ -43,6 +44,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Name = "Taxi",
                 ReferenceDataVehicleId = 123,
                 ReferenceNetworkVehicleTypeId = 4,
+                ServiceType = ServiceType.Taxi,
                 MaxNumberPassengers = 2
             };
 
@@ -57,6 +59,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(@event.LogoName, dto.LogoName);
                 Assert.AreEqual(@event.Name, dto.Name);
                 Assert.AreEqual(@event.ReferenceDataVehicleId, dto.ReferenceDataVehicleId);
+                Assert.AreEqual(@event.ServiceType, dto.ServiceType);
                 Assert.AreEqual(@event.ReferenceNetworkVehicleTypeId, dto.ReferenceNetworkVehicleTypeId);
                 Assert.AreEqual(@event.MaxNumberPassengers, dto.MaxNumberPassengers);
             }
@@ -76,6 +79,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 LogoName = "taxi",
                 Name = "Taxi",
                 ReferenceDataVehicleId = 123,
+                ServiceType = Common.Enumeration.ServiceType.Taxi,
                 ReferenceNetworkVehicleTypeId = 5
             });
         }
@@ -93,6 +97,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 LogoName = "taxi2",
                 Name = "Taxi2",
                 ReferenceDataVehicleId = 111,
+                ServiceType = Common.Enumeration.ServiceType.Taxi,
                 ReferenceNetworkVehicleTypeId = 9
             };
 
@@ -107,6 +112,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(@event.LogoName, dto.LogoName);
                 Assert.AreEqual(@event.Name, dto.Name);
                 Assert.AreEqual(@event.ReferenceDataVehicleId, dto.ReferenceDataVehicleId);
+                Assert.AreEqual(@event.ServiceType, dto.ServiceType);
                 Assert.AreEqual(@event.ReferenceNetworkVehicleTypeId, dto.ReferenceNetworkVehicleTypeId);
             }
         }
