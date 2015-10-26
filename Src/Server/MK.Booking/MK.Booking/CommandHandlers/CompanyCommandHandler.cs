@@ -42,7 +42,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<DeleteVehicleType>,
         ICommandHandler<AddOrUpdateNotificationSettings>,
         ICommandHandler<UpdatePrivacyPolicy>,
-        ICommandHandler<UpdateFees>
+        ICommandHandler<UpdateFees>,
+        ICommandHandler<UpdateServiceTypeSettings>
     {
         private readonly IEventSourcedRepository<Company> _repository;
         private readonly IEventSourcedRepository<Account> _accountRepository;
@@ -375,6 +376,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             var company = _repository.Get(command.CompanyId);
 
             company.UpdateFees(command.Fees);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(UpdateServiceTypeSettings command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.UpdateServiceTypeSettings(command.ServiceTypeSettings);
 
             _repository.Save(company, command.Id.ToString());
         }

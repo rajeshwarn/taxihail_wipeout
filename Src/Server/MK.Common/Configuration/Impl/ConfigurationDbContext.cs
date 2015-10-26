@@ -28,6 +28,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         public DbSet<ServerPaymentSettings> ServerPaymentSettings { get; set; }
         public DbSet<NotificationSettings> NotificationSettings { get; set; }
         public DbSet<UserTaxiHailNetworkSettings> UserTaxiHailNetworkSettings { get; set; }
+        public DbSet<ServiceTypeSettings> ServiceTypeSettings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -38,6 +39,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             modelBuilder.Entity<ServerPaymentSettings>().ToTable("PaymentSettings", SchemaName);
             modelBuilder.Entity<NotificationSettings>().ToTable("NotificationSettings", SchemaName);
             modelBuilder.Entity<UserTaxiHailNetworkSettings>().ToTable("UserTaxiHailNetworkSettings", SchemaName);
+            modelBuilder.Entity<ServiceTypeSettings>().ToTable("ServiceTypeSettings", SchemaName);
 
             base.OnModelCreating(modelBuilder);
         }
