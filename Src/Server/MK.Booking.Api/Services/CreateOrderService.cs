@@ -38,6 +38,7 @@ using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using CreateOrder = apcurium.MK.Booking.Api.Contract.Requests.CreateOrder;
 using apcurium.MK.Common.Helpers;
+using apcurium.MK.Common.Provider;
 
 #endregion
 
@@ -64,6 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IIBSServiceProvider _ibsServiceProvider;
+        private readonly IServiceTypeSettingsProvider _serviceTypeSettingsProvider;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly IVehicleTypeDao _vehiculeTypeDao;
         private readonly Resources.Resources _resources;
@@ -73,6 +75,7 @@ namespace apcurium.MK.Booking.Api.Services
             IServerSettings serverSettings,
             ReferenceDataService referenceDataService,
             IIBSServiceProvider ibsServiceProvider,
+            IServiceTypeSettingsProvider serviceTypeSettingsProvider,
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
@@ -95,6 +98,7 @@ namespace apcurium.MK.Booking.Api.Services
             _referenceDataService = referenceDataService;
             _serverSettings = serverSettings;
             _ibsServiceProvider = ibsServiceProvider;
+            _serviceTypeSettingsProvider = serviceTypeSettingsProvider;
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
@@ -248,7 +252,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!_serverSettings.ServerData.DisableFutureBooking && request.PickupDate.HasValue)
             {
-                var futureBookingTimespanSetting = TimeSpan.FromMinutes(30); // _serverSettings.ServerData.SomeFutureBookingTimespanForServiceX;
+                var futureBookingTimespanSetting = null;  // _serviceTypeSettingsProvider.xxxxxxxxx(request.Settings.ServiceType).yyyyyy;
                 var timeDifferenceBetweenPickupAndNow = pickupDate - DateTime.Now;
                 isFutureBooking = timeDifferenceBetweenNowAndPickup >= futureBookingTimespanSetting;
             }
