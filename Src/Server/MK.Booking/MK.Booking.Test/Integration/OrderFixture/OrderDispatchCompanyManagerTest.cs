@@ -18,6 +18,8 @@ using Infrastructure.Messaging;
 using Infrastructure.Messaging.InMemory;
 using Moq;
 using NUnit.Framework;
+using apcurium.MK.Common.Provider;
+using apcurium.MK.Booking.Services.Impl;
 
 namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 {
@@ -41,7 +43,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 
             Sut = new OrderDispatchCompanyManager(bus.Object,
                 () => new BookingDbContext(DbName),
-                new IBSServiceProvider(new TestServerSettings(), new Logger(), new TaxiHailNetworkServiceClient(new TestServerSettings())),
+                new IBSServiceProvider(new TestServerSettings(), new Logger(), new TaxiHailNetworkServiceClient(new TestServerSettings()), new ServiceTypeSettingsProvider()),
                 new TaxiHailNetworkServiceClient(new TestServerSettings()),
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
                 new Logger(),

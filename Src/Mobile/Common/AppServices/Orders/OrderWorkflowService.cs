@@ -337,11 +337,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			var bookingSettings = await _bookingSettingsSubject.Take (1).ToTask ();
 			bookingSettings.VehicleTypeId = vehicleTypeId;
+            
+            var serviceType = await GetServiceTypeForVehicleId(vehicleTypeId);
+            _serviceTypeSubject.OnNext(serviceType);
+            bookingSettings.ServiceType = serviceType;
 
 			await SetBookingSettings (bookingSettings);
-
-			var serviceType = await GetServiceTypeForVehicleId(vehicleTypeId);
-			_serviceTypeSubject.OnNext(serviceType);
 		}
 
 		public async Task<ServiceType> GetServiceTypeForVehicleId (int? vehicleTypeId)
@@ -359,6 +360,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			// bookingsettings to prevent the default vehicle type to override the selected value
 			var vehicleTypeId = await _vehicleTypeSubject.Take (1).ToTask ();
 			bookingSettings.VehicleTypeId = vehicleTypeId;
+            
+            var serviceType = await _serviceTypeSubject.Take(1).ToTask ();
+            bookingSettings.ServiceType = serviceType;
 
             // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
 		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
