@@ -186,15 +186,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			_isShown = true;
 
-			var animation = AnimationHelper.GetForYTranslation(this, 0);
+            if (((MarginLayoutParams) LayoutParameters).TopMargin != -Height)
+            {
+                ((MarginLayoutParams) LayoutParameters).TopMargin = -Height;
+            }
 
-			animation.AnimationStart += (sender, args) =>
-			{
-				if (((MarginLayoutParams) LayoutParameters).TopMargin != -Height)
-				{
-					((MarginLayoutParams) LayoutParameters).TopMargin = -Height;
-				}
-			};
+            var animation = AnimationHelper.GetForYTranslation(this, 0);
 
             animation.AnimationEnd += (sender, args) =>
                 {
@@ -203,37 +200,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         var desiredHeight = -_contactTaxiOverlay.Height;
 
                         if (((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin != desiredHeight)
-                        {//
-                            var animContactTaxi = AnimationHelper.GetForYTranslation(_contactTaxiOverlay, 0);
-
-                            animContactTaxi.AnimationStart += (senderContactTaxi, argsContactTaxi) =>
-                                {
-                                    ((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = desiredHeight;
-                                };
-
-                            animContactTaxi.AnimationEnd += (s, a) =>
-                                {
-                                    var animDropOffSelection = AnimationHelper.GetForYTranslation(_contactTaxiOverlay, 0);
-
-                                    animDropOffSelection.AnimationStart += (senderDropOffSelection, aDropOffSelection) =>
-                                        {
-                                            if (((BookingStatusViewModel) DataContext).IsChangeDropOffVisible)
-                                            {
-                                                desiredHeight = 0;
-
-                                                if (((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin != desiredHeight)
-                                                {
-                                                    ((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin = desiredHeight;
-                                                }
-                                            }
-                                        };
-
-                                    StartAnimation(animDropOffSelection);
-                                };
-                            
-                            StartAnimation(animContactTaxi);
-                            return;
+                        {
+                            ((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin = desiredHeight;
                         }
+
+                        var animContactTaxi = AnimationHelper.GetForYTranslation(_contactTaxiOverlay, 0);
+
+                        animContactTaxi.AnimationEnd += (s, a) =>
+                        {
+                                if (((BookingStatusViewModel) DataContext).IsChangeDropOffVisible)
+                                {
+                                    desiredHeight = 0;
+        
+                                    if (((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin != desiredHeight)
+                                    {
+                                        ((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin = desiredHeight;
+                                    }
+        
+                                    var animDropOffSelection = AnimationHelper.GetForYTranslation(_changeDropOffOverlay, 0);
+        
+                                    StartAnimation(animDropOffSelection);
+                                }
+                        };
+
+                        StartAnimation(animContactTaxi);
+                        return;
                     }
 
                     if (((BookingStatusViewModel) DataContext).IsChangeDropOffVisible)
@@ -242,15 +233,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                         if (((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin != desiredHeight)
                         {
-                            var animDropOffSelection = AnimationHelper.GetForYTranslation(_changeDropOffOverlay, 0);
-
-                            animDropOffSelection.AnimationStart += (s, a) =>
-                                {
-                                    ((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin = desiredHeight;
-                                };
-                            
-                            StartAnimation(animDropOffSelection);
+                            ((MarginLayoutParams)_changeDropOffOverlay.LayoutParameters).TopMargin = desiredHeight;
                         }
+
+                        var animDropOffSelection = AnimationHelper.GetForYTranslation(_changeDropOffOverlay, 0);
+
+                        StartAnimation(animDropOffSelection);
                     }
                 };
             
