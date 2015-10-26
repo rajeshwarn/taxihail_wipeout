@@ -25,7 +25,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             HeightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1.0f, 44.0f);
 			AddConstraint(HeightConstraint);
 
-            BackgroundColor = UIColor.Clear;
             viewPickup.BackgroundColor = UIColor.Clear;
             viewDestination.BackgroundColor = UIColor.Clear;
             viewVehicleType.BackgroundColor = UIColor.Clear;
