@@ -246,16 +246,20 @@ namespace apcurium.MK.Booking.Api.Services
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
 
-            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
-
-            var isFutureBooking = false;
-
             if (!_serverSettings.ServerData.DisableFutureBooking && request.PickupDate.HasValue)
             {
                 var futureBookingTimespanSetting = _serviceTypeSettingsProvider.GetSettings(request.Settings.ServiceType).FutureBookingThresholdInMinutes;
                 var timeDifferenceBetweenPickupAndNow = (pickupDate - DateTime.Now).TotalMinutes;
-                isFutureBooking = timeDifferenceBetweenPickupAndNow >= futureBookingTimespanSetting;
+                var isConsideredFutureBooking = timeDifferenceBetweenPickupAndNow >= futureBookingTimespanSetting;
+                if (!isConsideredFutureBooking)
+                {
+                    request.PickupDate = null;
+                }
             }
+
+            var isFutureBooking = request.PickupDate.HasValue;
+
+            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
 
             createReportOrder.PickupDate = pickupDate;
 
