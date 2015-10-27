@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.Jobs;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
@@ -27,6 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<IbsOrderSwitchInitiated>,
         IEventHandler<PrepaidOrderPaymentInfoUpdated>
     {
+        private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICommandBus _commandBus;
         private readonly ILogger _logger;
         private readonly IAccountDao _accountDao;
@@ -37,7 +40,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         private readonly Resources.Resources _resources;
 
-        public OrderCreationManager(ICommandBus commandBus,
+        public OrderCreationManager(
+            Func<BookingDbContext> contextFactory,
+            ICommandBus commandBus,
             ILogger logger,
             IAccountDao accountDao,
             IOrderDao orderDao,
@@ -45,6 +50,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IBSServiceProvider ibsServiceProvider,
             IUpdateOrderStatusJob updateOrderStatusJob)
         {
+            _contextFactory = contextFactory;
             _commandBus = commandBus;
             _logger = logger;
             _accountDao = accountDao;
@@ -59,6 +65,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(OrderCreated @event)
         {
             // Normal order flow
+
+            var isPaypalPrepaid = @event.IsPrepaid
+                && @event.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+
+            if (isPaypalPrepaid)
+            {
+                // Paypal orders are handled in their own methods
+                return;
+            }
 
             var ibsOrderId = CreateIbsOrder(@event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
                 @event.Settings.CustomerNumber, @event.CompanyKey, @event.IbsAccountId,
@@ -96,6 +111,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             var temporaryInfo = _orderDao.GetTemporaryInfo(@event.OrderId);
             var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
+
+            DeleteTempOrderData(@event.OrderId);
 
             var ibsOrderId = CreateIbsOrder(orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.Settings.AccountNumber,
                 orderInfo.Request.Settings.CustomerNumber, orderInfo.Request.CompanyKey, orderInfo.Request.IbsAccountId,
@@ -300,6 +317,22 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
 
             return null;
+        }
+
+        private void DeleteTempOrderData(Guid orderId)
+        {
+            try
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    context.RemoveWhere<TemporaryOrderCreationInfoDetail>(x => x.OrderId == orderId);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                // TODO: log
+            }
         }
 
         private void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId)

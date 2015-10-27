@@ -189,12 +189,6 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(MarkPrepaidOrderAsSuccessful command)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                context.RemoveWhere<TemporaryOrderCreationInfoDetail>(x => x.OrderId == command.OrderId);
-                context.SaveChanges();
-            }
-
             var order = _repository.Find(command.OrderId);
 
             order.UpdatePrepaidOrderPaymentInfo(command.OrderId, command.Amount, command.Meter, command.Tax,

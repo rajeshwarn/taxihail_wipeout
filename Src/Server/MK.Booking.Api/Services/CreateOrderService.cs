@@ -263,7 +263,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             
             // Initialize PayPal if user is using PayPal web
-            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(account.Id, isPrepaid, orderCommand.OrderId, request);
+            var paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(account.Id, isPrepaid, orderCommand.OrderId, request);
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
@@ -289,6 +289,9 @@ namespace apcurium.MK.Booking.Api.Services
                 .Select(x => x.Display)
                 .FirstOrDefault();
 
+            var ibsInformationNote = BuildNote(chargeTypeIbs, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
+            var fare = GetFare(request.Estimate);
+
             orderCommand.AccountId = account.Id;
             orderCommand.UserAgent = Request.UserAgent;
             orderCommand.ClientVersion = Request.Headers.Get("ClientVersion");
@@ -301,17 +304,13 @@ namespace apcurium.MK.Booking.Api.Services
             orderCommand.Settings.VehicleType = vehicleType;
             orderCommand.IbsAccountId = account.IBSAccountId.Value;
             orderCommand.ReferenceDataCompanyList = referenceData.CompaniesList.ToArray();
-
-            // New STUFF
-            var ibsInformationNote = BuildNote(chargeTypeIbs, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
-            var fare = GetFare(request.Estimate);
-
-            Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
-
             orderCommand.IbsInformationNote = ibsInformationNote;
             orderCommand.Fare = fare;
             orderCommand.Prompts = accountValidationResult.Prompts;
             orderCommand.PromptsLength = accountValidationResult.PromptsLength;
+            orderCommand.ReferenceDataCompanyList = referenceData.CompaniesList.ToArray();
+
+            Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
             _commandBus.Send(orderCommand);
 
@@ -334,7 +333,7 @@ namespace apcurium.MK.Booking.Api.Services
                         Prompts = accountValidationResult.Prompts,
                         PromptsLength = accountValidationResult.PromptsLength,
                         BestAvailableCompany = bestAvailableCompany,
-                        PromotionId = promotionId
+                        PromotionId = promotionId,
                     }.ToJson()
                 });
 
