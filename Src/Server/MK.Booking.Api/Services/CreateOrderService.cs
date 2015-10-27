@@ -317,7 +317,6 @@ namespace apcurium.MK.Booking.Api.Services
             if (paypalWebPaymentResponse != null)
             {
                 // Order prepaid by PayPal
-
                 _commandBus.Send(new SaveTemporaryOrderCreationInfo
                 {
                     OrderId = orderCommand.OrderId,
@@ -1129,15 +1128,6 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return promo.Id;
-
-            //return new ApplyPromotion
-            //{
-            //    PromoId = promo.Id,
-            //    AccountId = accountId,
-            //    OrderId = orderId,
-            //    PickupDate = pickupDate,
-            //    IsFutureBooking = isFutureBooking
-            //};
         }
 
         private string GetCreateOrderServiceErrorMessage(ErrorCode errorCode, string language)

@@ -232,6 +232,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
             else
             {
+                _logger.LogMessage(string.Format("Adding IBSOrderId {0} to order {1}", ibsOrderId, orderId));
+
                 var ibsCommand = new AddIbsOrderInfoToOrder
                 {
                     OrderId = orderId,
@@ -300,6 +302,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         private void UpdateStatusAsync(Guid orderId)
         {
+            _logger.LogMessage(string.Format("Starting status updater for order {0}", orderId));
+
             new TaskFactory().StartNew(() => _updateOrderStatusJob.CheckStatus(orderId));
         }
 
@@ -327,11 +331,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     context.RemoveWhere<TemporaryOrderCreationInfoDetail>(x => x.OrderId == orderId);
                     context.SaveChanges();
+
+                    _logger.LogMessage(string.Format("Temporary data for order {0} deleted", orderId));
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: log
+                _logger.LogMessage(string.Format("Unable to delete temporary data for order {0}", orderId));
+                _logger.LogError(ex);
             }
         }
 
@@ -343,6 +350,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var currentIbsAccountId = _accountDao.GetIbsAccountId(accountId, companyKey);
                 if (currentIbsAccountId.HasValue)
                 {
+                    _logger.LogMessage(string.Format("Cancelling IBSOrder {0}, on company {1}", ibsOrderId, companyKey));
+
                     // We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride...
                     // After 5 time, we are giving up. But we assume the order is completed.
                     Task.Factory.StartNew(() =>
