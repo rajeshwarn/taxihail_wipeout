@@ -5,7 +5,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {

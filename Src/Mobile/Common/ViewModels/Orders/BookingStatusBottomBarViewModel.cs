@@ -171,13 +171,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
+				var isLuxury = ParentViewModel.Order != null && ParentViewModel.Order.Settings.ServiceType == ServiceType.Luxury;
+
 				return this.GetCommand(() =>
-					this.Services().Message.ShowMessage(string.Empty,
-						Settings.DefaultPhoneNumberDisplay,
-						this.Services().Localize["CallButton"],
-						() => _phoneService.Call(Settings.DefaultPhoneNumber),
-						this.Services().Localize["Cancel"],
-						() => { }));
+					this.Services().Message.ShowMessage(string.Empty, isLuxury ? Settings.DefaultPhoneNumberForLuxuryDisplay : Settings.DefaultPhoneNumberDisplay,
+						this.Services().Localize["CallButton"], () => _phoneService.Call(isLuxury ? Settings.DefaultPhoneNumberForLuxury : Settings.DefaultPhoneNumber),
+                        this.Services().Localize["Cancel"], () => { }));
 			}
 		}
 

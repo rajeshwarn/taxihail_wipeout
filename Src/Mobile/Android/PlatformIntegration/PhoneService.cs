@@ -1,11 +1,9 @@
 using System;
 using System.IO;
-using Android.Content;
-using Android.OS;
-using Android.Widget;
-using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
+using Android.Content;
+using Android.Widget;
 using Java.Util;
 using TinyIoC;
 using TimeZone = Java.Util.TimeZone;
@@ -109,11 +107,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 var logger = TinyIoCContainer.Current.Resolve<ILogger>();
                 logger.LogError(e);
             }
-        }
-
-        public bool CanUseCalendarAPI()
-        {
-            return (int) Build.VERSION.SdkInt > 8;
         }
 
         private long GetDateTimeMS(DateTime date)

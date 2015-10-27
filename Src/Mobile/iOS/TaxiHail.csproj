@@ -253,12 +253,6 @@
     <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.1\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.Touch.dll</HintPath>
-    </Reference>
     <Reference Include="GoogleAnalytics.iOS">
       <HintPath>..\Components\googleanalytics-3.0.10.3\lib\ios-unified\GoogleAnalytics.iOS.dll</HintPath>
     </Reference>
@@ -603,7 +597,6 @@
     </Compile>
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
-    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Views\EditAutoTipView.cs" />
     <Compile Include="Controls\Widgets\ExtendedTextFieldView.cs" />
     <Compile Include="Views\EditAutoTipView.designer.cs">
