@@ -1,5 +1,6 @@
 ﻿using System;
 using Infrastructure.Messaging;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -17,6 +18,7 @@ namespace apcurium.MK.Booking.Commands
         public int ReferenceDataVehicleId { get; set; }
         public Guid CompanyId { get; set; }
         public int? ReferenceNetworkVehicleTypeId { get; set; }
+        public ServiceType ServiceType { get; set; }
         public int MaxNumberPassengers { get; set; }
         public bool IsWheelchairAccessible { get; set; }
     }

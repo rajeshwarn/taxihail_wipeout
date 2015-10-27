@@ -20,6 +20,7 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
@@ -241,6 +242,7 @@ namespace DatabaseInitializer
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
 
+                EnsureServiceTypesExists(connectionString, commandBus, serverSettings);
 #if DEBUG
                 if (IsUpdate)
                 {
@@ -268,7 +270,7 @@ namespace DatabaseInitializer
             return 0;
             // ReSharper restore LocalizableElement
         }
-
+        
         public static bool IsUpdate { get; set; }
 
         public static void UpdateSchema(DatabaseInitializerParams param)
@@ -1097,6 +1099,38 @@ namespace DatabaseInitializer
                     CompanyId = AppConstants.CompanyId,
                     Policy = string.Format(privacyTemplate, serverSettings.ServerData.TaxiHail.ApplicationName, serverSettings.ServerData.SupportEmail)
                 });
+            }
+        }
+
+        private static void EnsureServiceTypesExists(ConnectionStringSettings connectionString, ICommandBus commandBus, IServerSettings serverSettings)
+        {
+            var serviceTypeProvider = new ServiceTypeSettingsProvider(() => new ConfigurationDbContext(connectionString.ConnectionString), serverSettings);
+            if (serviceTypeProvider.GetSettings(ServiceType.Taxi) == null)
+            {
+                var commands = new List<UpdateServiceTypeSettings>
+                {
+                    new UpdateServiceTypeSettings
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        ServiceTypeSettings = new ServiceTypeSettings
+                        {
+                            ServiceType = ServiceType.Taxi,
+                            FutureBookingThresholdInMinutes = 0,
+                            IBSWebServicesUrl = serverSettings.ServerData.IBS.WebServicesUrl
+                        } 
+                    },
+                    new UpdateServiceTypeSettings
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        ServiceTypeSettings = new ServiceTypeSettings
+                        {
+                            ServiceType = ServiceType.Luxury,
+                            FutureBookingThresholdInMinutes = 0,
+                            IBSWebServicesUrl = ""
+                        }
+                    }
+                };
+                commandBus.Send(commands);
             }
         }
     }

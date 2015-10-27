@@ -212,6 +212,7 @@ namespace apcurium.MK.Booking.Api.Services
                 CompanyId = AppConstants.CompanyId,
                 MaxNumberPassengers = request.MaxNumberPassengers,
                 ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId,
+                ServiceType = request.ServiceType,
                 IsWheelchairAccessible = request.IsWheelchairAccessible
             };
 
@@ -256,6 +257,7 @@ namespace apcurium.MK.Booking.Api.Services
                 CompanyId = AppConstants.CompanyId,
                 MaxNumberPassengers = request.MaxNumberPassengers,
                 ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId,
+                ServiceType = request.ServiceType,
                 IsWheelchairAccessible = request.IsWheelchairAccessible
             };
 
