@@ -9,11 +9,11 @@ namespace apcurium.MK.Web.Tests
             return new Address
             {
                 Apartment = "3939",
-				FullAddress = "7250 Rue du Mile End, Montréal, QC H2R 2W1, Canada",
-				StreetNumber = "7250",
-				Street = "Rue du Mile End",
+				FullAddress = "1236 Rue St-Hubert, Montréal, QC H2L 2W1, Canada",
+				StreetNumber = "1236",
+				Street = "Rue St-Hubert",
 				City = "Montréal",
-				ZipCode = "H2R 2W1",
+				ZipCode = "H2L 2W1",
 				State = "QC",
                 RingCode = "3131",
                 BuildingName = "Hôtel de Ville",
@@ -27,11 +27,11 @@ namespace apcurium.MK.Web.Tests
             return new Address
             {
                 Apartment = "709",
-				FullAddress = "7250 Rue du Mile End, Montréal, QC H2R 2W1, Canada",
-				StreetNumber = "7250",
-				Street = "Rue du Mile End",
+				FullAddress = "5254 Rue Ferrier, Montréal, QC H4P 1L3 2W1, Canada",
+				StreetNumber = "5254",
+				Street = "Rue Ferrier",
 				City = "Montréal",
-				ZipCode = "H2R 2W1",
+				ZipCode = "1L3 2W1",
 				State = "QC",
 				RingCode = "777",
                 Latitude = 45.498069,
@@ -44,11 +44,11 @@ namespace apcurium.MK.Web.Tests
             return new Address
             {
                 Apartment = "204",
-				FullAddress = "7250 Rue du Mile End, Montréal, QC H2R 2W1, Canada",
-				StreetNumber = "7250",
-				Street = "Rue du Mile End",
+				FullAddress = "5196 Rue de la Savane, Montréal, QC H4P 2W1, Canada",
+				StreetNumber = "5196",
+				Street = "Rue de la Savane",
 				City = "Montréal",
-				ZipCode = "H2R 2W1",
+				ZipCode = "H4P 2W1",
 				State = "QC",
 				RingCode = "",
                 Latitude = 45.499242,
@@ -61,11 +61,11 @@ namespace apcurium.MK.Web.Tests
             return new Address
             {
                 Apartment = "204",
-				FullAddress = "7250 Rue du Mile End, Montréal, QC H2R 2W1, Canada",
-				StreetNumber = "7250",
-				Street = "Rue du Mile End",
+				FullAddress = "355 Cooper St, Ottawa, ON K2P 0G8, Canada",
+				StreetNumber = "355",
+				Street = "Cooper St",
 				City = "Montréal",
-				ZipCode = "H2R 2W1",
+				ZipCode = "K2P 0G8",
 				State = "QC",
 				RingCode = "",
                 Latitude = 45.4169,
