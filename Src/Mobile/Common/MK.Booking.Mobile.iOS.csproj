@@ -419,7 +419,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Localization\MearsTaxi.resx" />
+    <None Include="Localization\Taxi.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
