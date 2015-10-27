@@ -13,7 +13,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Reactive;
 using apcurium.MK.Booking.Mobile.PresentationHints;
@@ -759,8 +758,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
 
-            if (!HasSeenReminderPrompt(status.OrderId )
-				&& _phoneService.CanUseCalendarAPI())
+            if (!HasSeenReminderPrompt(status.OrderId))
             {
                 SetHasSeenReminderPrompt(status.OrderId);
                 InvokeOnMainThread(() => this.Services().Message.ShowMessage(

@@ -71,7 +71,11 @@
             /* Vehicle Types */
             "vehicleTypes": "manageVehicleTypes",
             "vehicleTypes/add": "addVehicleType",
-            "vehicleTypes/edit/:id": "editVehicleType"
+            "vehicleTypes/edit/:id": "editVehicleType",
+
+            /* Service Types */
+            "serviceTypes": "manageServiceTypes",
+            "serviceTypes/edit/:serviceType": "updateServiceType"
         },
 
         initialize: function (options) {
@@ -243,6 +247,14 @@
 
         editVehicleType: function (id) {
             action(TaxiHail.VehicleTypeController, 'edit', id);
+        },
+
+        manageServiceTypes: function () {
+            action(TaxiHail.ServiceTypeController, 'index');
+        },
+
+        updateServiceType: function (serviceType) {
+            action(TaxiHail.ServiceTypeController, 'edit', serviceType);
         }
 
     });

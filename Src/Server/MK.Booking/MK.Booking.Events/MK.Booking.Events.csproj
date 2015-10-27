@@ -138,6 +138,7 @@
     <Compile Include="PopularAddressRemoved.cs" />
     <Compile Include="PopularAddressUpdated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceTypeSettingsUpdated.cs" />
     <Compile Include="TariffCreated.cs" />
     <Compile Include="TariffDeleted.cs" />
     <Compile Include="TariffUpdated.cs" />

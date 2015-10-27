@@ -237,6 +237,7 @@
     <Content Include="admin\assets\img\wheelchair_badge.png" />
     <Content Include="admin\assets\img\yes.png" />
     <Content Include="admin\collections\RideRatingCollection.js" />
+    <Content Include="admin\collections\ServiceTypeCollection.js" />
     <Content Include="admin\collections\VehicleTypeCollection.js" />
     <Content Include="admin\collections\AccountChargeCollection.js" />
     <Content Include="admin\collections\RuleCollection.js" />
@@ -245,6 +246,7 @@
     <Content Include="admin\controllers\NotificationSettingsController.js" />
     <Content Include="admin\controllers\NotificationController.js" />
     <Content Include="admin\controllers\RideRatingsController.js" />
+    <Content Include="admin\controllers\ServiceTypesController.js" />
     <Content Include="admin\controllers\VehicleTypesController.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\AccountsChargeController.js" />
@@ -265,6 +267,7 @@
     <Content Include="admin\models\NotificationSettings.js" />
     <Content Include="admin\models\RideRatings.js" />
     <Content Include="admin\models\UnassignedReferenceDataVehicles.js" />
+    <Content Include="admin\models\ServiceType.js" />
     <Content Include="admin\models\VehicleType.js" />
     <Content Include="admin\models\AccountCharge.js" />
     <Content Include="admin\models\TermsAndConditions.js" />
@@ -282,13 +285,16 @@
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AccountManagementView.js" />
     <Content Include="admin\views\AddRideRatingView.js" />
+    <Content Include="admin\views\UpdateServiceTypeView.js" />
     <Content Include="admin\views\AddVehicleTypeView.js" />
     <Content Include="admin\views\ExportPromotionsView.js" />
     <Content Include="admin\views\ManageNotificationSettingsView.js" />
     <Content Include="admin\views\ManageRideRatingsView.js" />
     <Content Include="admin\views\AccountsManagementView.js" />
+    <Content Include="admin\views\ManageServiceTypesView.js" />
     <Content Include="admin\views\RideRatingItemView.js" />
     <Content Include="admin\views\SendTestEmailView.js" />
+    <Content Include="admin\views\ServiceTypeItemView.js" />
     <Content Include="admin\views\VehicleTypeItemView.js" />
     <Content Include="admin\views\AddAccountChargeView.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
@@ -460,6 +466,9 @@
     <Content Include="localization\Payment.json" />
     <Content Include="localization\Payment-fr.json" />
     <Content Include="localization\Payment-es.json" />
+    <Content Include="admin\templates\ServiceTypeItem.handlebars" />
+    <Content Include="admin\templates\ManageServiceTypes.handlebars" />
+    <Content Include="admin\templates\UpdateServiceType.handlebars" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

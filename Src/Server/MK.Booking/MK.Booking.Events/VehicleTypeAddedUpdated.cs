@@ -1,5 +1,6 @@
 ﻿using System;
 using Infrastructure.EventSourcing;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Events
 {
@@ -11,6 +12,7 @@ namespace apcurium.MK.Booking.Events
         public int ReferenceDataVehicleId { get; set; }
         public int MaxNumberPassengers { get; set; }
         public int? ReferenceNetworkVehicleTypeId { get; set; }
+        public ServiceType ServiceType { get; set; }
         public bool IsWheelchairAccessible { get; set; }
     }
 }

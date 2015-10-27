@@ -11,9 +11,9 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Plugins.PhoneCall;
 using System.ComponentModel;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Common.Enumeration;
@@ -23,15 +23,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
     public class BottomBarViewModel : BaseViewModel
     {
         private readonly IOrderWorkflowService _orderWorkflowService;
-        private readonly IMvxPhoneCallTask _phone;
+        private readonly IPhoneService _phoneService;
         private readonly IAccountService _accountService;
         private readonly IPaymentService _paymentService;
 
         private OrderValidationResult _orderValidationResult;
 
-        public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone, IAccountService accountService, IPaymentService paymentService)
+        public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IPhoneService phoneService, IAccountService accountService, IPaymentService paymentService)
         {
-            _phone = phone;
+            _phoneService = phoneService;
             _orderWorkflowService = orderWorkflowService;
             _accountService = accountService;
             _paymentService = paymentService;
@@ -650,8 +650,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						{
 							if (!Settings.HideCallDispatchButton)
 							{
-								this.Services().Message.ShowMessage(title, e.Message,
-									this.Services().Localize["StatusCallButton"], () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
+								var serviceType = await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask();
+
+                                this.Services().Message.ShowMessage(title, e.Message,
+									this.Services().Localize["StatusCallButton"], () => _phoneService.Call(serviceType == ServiceType.Luxury ? Settings.DefaultPhoneNumberForLuxury : Settings.DefaultPhoneNumber),
 									this.Services().Localize["Cancel"], () => { });
 							}
 							else

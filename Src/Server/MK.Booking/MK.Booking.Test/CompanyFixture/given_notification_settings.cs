@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         private readonly Guid _accountId = Guid.NewGuid();
 
         [SetUp]
-        public void setup()
+        public void Setup()
         {
             _sut = new EventSourcingTestHelper<Company>();
             _otherSut = new EventSourcingTestHelper<Account>();

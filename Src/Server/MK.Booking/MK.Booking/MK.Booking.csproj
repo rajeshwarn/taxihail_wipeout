@@ -203,6 +203,7 @@
     <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\PromotionDetailGenerator.cs" />
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\ServiceTypeSettingsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
     <Compile Include="EventHandlers\UserTaxiHailNetworkSettingsGenerator.cs" />

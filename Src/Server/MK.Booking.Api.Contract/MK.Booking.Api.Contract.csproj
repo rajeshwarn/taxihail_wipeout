@@ -121,6 +121,7 @@
     <Compile Include="Requests\Payment\SettleOverduePaymentRequest.cs" />
     <Compile Include="Requests\Payment\UpdateAutoTipRequest.cs" />
     <Compile Include="Requests\SendMessageToDriverRequest.cs" />
+    <Compile Include="Requests\ServiceTypeRequest.cs" />
     <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
     <Compile Include="Requests\IbsFareRequest.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />

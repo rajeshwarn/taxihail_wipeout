@@ -38,6 +38,7 @@ using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using CreateOrder = apcurium.MK.Booking.Api.Contract.Requests.CreateOrder;
 using apcurium.MK.Common.Helpers;
+using apcurium.MK.Common.Provider;
 
 #endregion
 
@@ -64,6 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IIBSServiceProvider _ibsServiceProvider;
+        private readonly IServiceTypeSettingsProvider _serviceTypeSettingsProvider;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly IVehicleTypeDao _vehiculeTypeDao;
         private readonly Resources.Resources _resources;
@@ -73,6 +75,7 @@ namespace apcurium.MK.Booking.Api.Services
             IServerSettings serverSettings,
             ReferenceDataService referenceDataService,
             IIBSServiceProvider ibsServiceProvider,
+            IServiceTypeSettingsProvider serviceTypeSettingsProvider,
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
@@ -95,6 +98,7 @@ namespace apcurium.MK.Booking.Api.Services
             _referenceDataService = referenceDataService;
             _serverSettings = serverSettings;
             _ibsServiceProvider = ibsServiceProvider;
+            _serviceTypeSettingsProvider = serviceTypeSettingsProvider;
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
@@ -241,11 +245,23 @@ namespace apcurium.MK.Booking.Api.Services
 			createReportOrder.IsPrepaid = isPrepaid;
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
-            
+
+            if (!_serverSettings.ServerData.DisableFutureBooking && request.PickupDate.HasValue)
+            {
+                var futureBookingTimespanSetting = _serviceTypeSettingsProvider.GetSettings(request.Settings.ServiceType).FutureBookingThresholdInMinutes;
+                var timeDifferenceBetweenPickupAndNow = (request.PickupDate.Value - DateTime.Now).TotalMinutes;
+                var isConsideredFutureBooking = timeDifferenceBetweenPickupAndNow >= futureBookingTimespanSetting;
+                if (!isConsideredFutureBooking)
+                {
+                    request.PickupDate = null;
+                }
+            }
+
             var isFutureBooking = request.PickupDate.HasValue;
+
             var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
 
-			createReportOrder.PickupDate = pickupDate;
+            createReportOrder.PickupDate = pickupDate;
 
             // User can still create future order, but we allow only one active Book now order.
             if (!isFutureBooking)

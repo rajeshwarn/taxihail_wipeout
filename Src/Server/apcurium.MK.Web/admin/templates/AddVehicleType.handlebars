@@ -46,6 +46,19 @@
             </select>
         </div>
 
+        <div class="control-group">
+            <label class="control-label">{{localize 'Service Type'}}</label>
+            <select name="serviceType">
+            {{#each serviceTypes }}
+                {{#ifCond this ../serviceType}}
+                <option value="{{ this }}" selected>{{this}}</option>
+                {{else}}
+                <option value="{{ this }}">{{this}}</option>
+                {{/ifCond}}
+            {{/each}}
+            </select>
+        </div>
+
         {{#ifCond isNetworkEnabled 'true'}}
         <div class="control-group">
             <label class="control-label">{{localize 'Network vehicle type'}}</label>

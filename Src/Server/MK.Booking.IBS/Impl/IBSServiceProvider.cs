@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public IBSSettingContainer GetSettingContainer(string companyKey = null, ServiceType? serviceType = null)
         {
-            if (serviceType.HasValue && serviceType.Value == ServiceType.Luxury)
+            if (serviceType.HasValue)
             {
                 return _serviceTypeSettingsProvider.GetIBSSettings(serviceType.Value);
             }

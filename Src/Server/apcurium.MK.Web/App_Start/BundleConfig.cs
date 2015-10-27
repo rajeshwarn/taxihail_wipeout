@@ -174,9 +174,11 @@ namespace apcurium.MK.Web
                 "~/admin/models/VehicleType.js",
                 "~/admin/models/UnassignedReferenceDataVehicles.js",
                 "~/admin/models/NetworkVehicleTypes.js",
+                "~/admin/models/ServiceTypesEnum.js",
                 "~/admin/models/RideRatings.js",
 				"~/admin/models/AccountsManagementModel.js",
 				"~/admin/models/AccountManagementModel.js",
+                "~/admin/models/ServiceType.js",
                 /* Collections */
                 "~/common/collections/AddressCollection.js",
                 "~/common/collections/AvailableVehicleCollection.js",
@@ -186,6 +188,7 @@ namespace apcurium.MK.Web
                 "~/admin/collections/AccountChargeCollection.js",
                 "~/admin/collections/VehicleTypeCollection.js",
                 "~/admin/collections/RideRatingCollection.js",
+                "~/admin/collections/ServiceTypeCollection.js",
                 /* Controllers */
                 "~/admin/controllers/Controller.js",
                 "~/admin/controllers/SecurityController.js",
@@ -203,6 +206,7 @@ namespace apcurium.MK.Web
                 "~/admin/controllers/VehicleTypesController.js",
                 "~/admin/controllers/RideRatingsController.js",
 				"~/admin/controllers/AccountsManagementController.js",
+                "~/admin/controllers/ServiceTypesController.js",
                 /* Views */
                 "~/admin/views/AddPopularAddressView.js",
                 "~/common/views/AlertView.js",
@@ -243,6 +247,9 @@ namespace apcurium.MK.Web
                 "~/admin/views/VehicleTypeItemView.js",
 				"~/admin/views/AccountsManagementView.js",
 				"~/admin/views/AccountManagementView.js",
+                "~/admin/views/UpdateServiceTypeView.js",
+                "~/admin/views/ManageServiceTypesView.js",
+                "~/admin/views/ServiceTypeItemView.js",
                 /* Services */
                 "~/common/services/AuthService.js",
                 "~/common/services/GeocodingService.js",
