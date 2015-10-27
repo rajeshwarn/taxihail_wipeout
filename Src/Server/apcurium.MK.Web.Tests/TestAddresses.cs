@@ -27,11 +27,11 @@ namespace apcurium.MK.Web.Tests
             return new Address
             {
                 Apartment = "709",
-				FullAddress = "5254 Rue Ferrier, Montréal, QC H4P 1L3 2W1, Canada",
+				FullAddress = "5254 Rue Ferrier, Montréal, QC H4P 1L3, Canada",
 				StreetNumber = "5254",
 				Street = "Rue Ferrier",
 				City = "Montréal",
-				ZipCode = "1L3 2W1",
+				ZipCode = "H4P 1L3",
 				State = "QC",
 				RingCode = "777",
                 Latitude = 45.498069,
