@@ -101,6 +101,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
         public static UIImage ApplyColorToImage(string imagePath, UIColor color)
         {
             var image = UIImage.FromFile(imagePath);
+            if (image == null)
+            {
+                return null;
+            }
 
             var rect = new CGRect(0f, 0f, image.Size.Width, image.Size.Height);
             UIGraphics.BeginImageContextWithOptions(rect.Size, false, 0f);
