@@ -360,7 +360,7 @@
   <string name="Rating1">Terrible</string>
   <string name="NoConnectionMessage">Echec de connexion, le serveur peut ne pas fonctionnner de manière temporaire ou vous avez peut-être perdu votre connection internet.</string>
   <string name="RideSettingsPhone">Ligne mobile</string>
-  <string name="ApplicationName">TaxiHail</string>
+  <string name="ApplicationName">Taxi</string>
   <string name="CreditCardErrorInvalid">La carte ne semble pas être valide</string>
   <string name="FavoriteLocationsTitle">Lieu de départ / destination favoris</string>
   <string name="LargeBagsLabel">Bagages encombrants</string>

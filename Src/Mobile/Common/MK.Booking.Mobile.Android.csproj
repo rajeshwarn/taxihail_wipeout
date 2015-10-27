@@ -426,7 +426,7 @@
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
     <None Include="Localization\UTOG.resx" />
-    <EmbeddedResource Include="Localization\MearsTaxi.resx">
+    <EmbeddedResource Include="Localization\Taxi.resx">
       <SubType>Designer</SubType>
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Mears.Designer.cs</LastGenOutput>

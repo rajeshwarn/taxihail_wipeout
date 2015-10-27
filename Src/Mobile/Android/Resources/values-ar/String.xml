@@ -350,7 +350,7 @@
   <string name="Rating1">Awful</string>
   <string name="NoConnectionMessage">لا يمكن الإتصال بالسيرفر ، من المحتمل أن تكون خارج الخدمة مؤقتا أو أن تكون غير متصل بالانترنت.</string>
   <string name="RideSettingsPhone">الهاتف الجوال</string>
-  <string name="ApplicationName">TaxiHail</string>
+  <string name="ApplicationName">Taxi</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="FavoriteLocationsTitle">مشاويرك المفضلة</string>
   <string name="LargeBagsLabel">حقائب كبيرة</string>
