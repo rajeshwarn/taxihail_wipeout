@@ -1,11 +1,14 @@
-﻿using apcurium.MK.Booking.Mobile.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using apcurium.MK.Booking.Mobile.AppServices;
+using UIKit;
+using Foundation;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-
 	/// <summary>
 	/// http://itunes.apple.com/linkmaker
 	/// http://www.apple.com/itunes/linkmaker/faq/
@@ -16,9 +19,21 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 	public class AppleDeviceRateApplicationService:IDeviceRateApplicationService
 	{
+        private IAppSettings _settings;
+
+        public AppleDeviceRateApplicationService(IAppSettings settings)
+        {
+            _settings = settings;
+        }
+
 		public void RedirectToRatingPage()
 		{
-			throw new NotImplementedException();
+            NSUrl appleStoreLink = new Foundation.NSUrl(_settings.Data.AppleLink);
+
+            UIApplication.SharedApplication.OpenUrl(appleStoreLink);
+
+            appleStoreLink.Dispose();
+            appleStoreLink = null;
 		}
 	}
 }

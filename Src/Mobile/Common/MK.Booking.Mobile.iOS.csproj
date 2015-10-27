@@ -151,9 +151,7 @@
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
     <Compile Include="Infrastructure\DeviceOrientation\DeviceOrientationFilter.cs" />
-    <Compile Include="Infrastructure\IDeviceRateApplicationService.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
-    <Compile Include="Infrastructure\RateApplicationService.cs" />
     <Compile Include="Messages\OrderStatusChanged.cs" />
     <Compile Include="Models\PairedTaxiPosition.cs" />
     <Compile Include="Models\PhoneNumberModel.cs" />
@@ -371,6 +369,11 @@
     <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardBaseViewModel.cs" />
     <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
+    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
+    <Compile Include="AppServices\IRateApplicationService.cs" />
+    <Compile Include="AppServices\RateApplicationServiceSettings.cs" />
+    <Compile Include="AppServices\RateApplicationState.cs" />
+    <Compile Include="AppServices\Impl\RateApplicationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
