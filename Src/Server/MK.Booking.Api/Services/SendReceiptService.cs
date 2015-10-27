@@ -69,8 +69,6 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotInIbs.ToString());
             }
 
-			var orderReport = _reportDao.GetOrderReportWithOrderId(order.Id);
-
             AccountDetail account;
             // if the admin is requesting the receipt then it won't be for the logged in user
             if (!request.RecipientEmail.IsNullOrEmpty())
@@ -187,6 +185,8 @@ namespace apcurium.MK.Booking.Api.Services
 
                 orderPayment = null;
             }
+			
+			var orderReport = _reportDao.GetOrderReportWithOrderId(order.Id);
 
             var sendReceiptCommand = SendReceiptCommandBuilder.GetSendReceiptCommand(
                     order, 
