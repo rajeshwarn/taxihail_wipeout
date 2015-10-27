@@ -545,22 +545,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		private async Task<VehicleType[]> GetLocalVehicleTypes()
 		{
-			var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-
-			// TODO temp list while server doesn't return service type
-			return vehiclesList.Select(x =>
-			{ 
-				x.ServiceType = x.LogoName == "blackcar" ? ServiceType.Luxury : ServiceType.Taxi;
-				x.BaseRate = new BaseRateInfo {
-					MinimumFare = x.ServiceType == ServiceType.Luxury ? 15m : 5m,
-					BaseRateNoMiles = 6m,
-					PerMileRate = 3m,   
-					WaitTime = 0.75m,            		         		
-					AirportMeetAndGreet = 15m 
-				};
-
-				return x;
-			}).ToArray();
+			return await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
 		}
 
         public void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes)
