@@ -22,6 +22,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -43,7 +44,6 @@
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -61,7 +61,6 @@
     <DebugType>full</DebugType>
     <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
     <Debugger>Xamarin</Debugger>
-    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
