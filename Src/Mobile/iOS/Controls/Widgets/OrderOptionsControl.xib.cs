@@ -65,6 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(viewPickup)
                 .For(v => v.UserInputDisabled)
                 .To(vm => vm.PickupInputDisabled);
+            
             set.Bind(viewPickup.AddressButton)
                 .For(ve => ve.AccessibilityLabel)
                 .To(vm => vm.PickupAddress.DisplayAddress);

@@ -65,6 +65,7 @@
                 <constraint firstAttribute="bottom" secondItem="7UG-mq-6y7" secondAttribute="bottom" id="msa-yp-Ka7"/>
                 <constraint firstItem="wo7-Hw-Nye" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="reO-UG-hBV"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wo7-Hw-Nye" secondAttribute="trailing" constant="15" id="xwY-kh-dKw"/>
+                <constraint firstItem="7lg-lo-NoK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="zoi-6v-cPN"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

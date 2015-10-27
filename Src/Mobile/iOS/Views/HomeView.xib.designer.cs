@@ -55,6 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.NSLayoutConstraint constraintAppBarBookingStatusVerticalSpace { get; set; }
 
 		[Outlet]
+		UIKit.NSLayoutConstraint constraintAppBarDropOffSelection { get; set; }
+
+		[Outlet]
 		UIKit.NSLayoutConstraint constraintAppBarStatusBottomSpace { get; set; }
 
 		[Outlet]
@@ -65,6 +68,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.NSLayoutConstraint constraintContactTaxiTopSpace { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintDropOffSelectionTopSpace { get; set; }
 
 		[Outlet]
 		UIKit.NSLayoutConstraint constraintHomeLeadingSpace { get; set; }
@@ -97,6 +103,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Views.AddressPicker.AddressPickerView ctrlAddressPicker { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.DropOffSelectionControl ctrlDropOffSelection { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderBookingOptions ctrlOrderBookingOptions { get; set; }
 
 		[Outlet]
@@ -104,6 +113,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderReviewView ctrlOrderReview { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarDropOffSelection dropOffSelectionBottomBar { get; set; }
 
 		[Outlet]
 		UIKit.UIView homeView { get; set; }
@@ -167,6 +179,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnTrain = null;
 			}
 
+			if (changeDropOffControl != null) {
+				changeDropOffControl.Dispose ();
+				changeDropOffControl = null;
+			}
+
 			if (constraintAppBarBookingStatus != null) {
 				constraintAppBarBookingStatus.Dispose ();
 				constraintAppBarBookingStatus = null;
@@ -197,9 +214,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				constraintBookingStatusHeight = null;
 			}
 
+			if (constraintChangeDropOffTopSpace != null) {
+				constraintChangeDropOffTopSpace.Dispose ();
+				constraintChangeDropOffTopSpace = null;
+			}
+
 			if (constraintContactTaxiTopSpace != null) {
 				constraintContactTaxiTopSpace.Dispose ();
 				constraintContactTaxiTopSpace = null;
+			}
+
+			if (constraintDropOffSelectionTopSpace != null) {
+				constraintDropOffSelectionTopSpace.Dispose ();
+				constraintDropOffSelectionTopSpace = null;
 			}
 
 			if (constraintHomeLeadingSpace != null) {
@@ -252,6 +279,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				ctrlAddressPicker = null;
 			}
 
+			if (ctrlDropOffSelection != null) {
+				ctrlDropOffSelection.Dispose ();
+				ctrlDropOffSelection = null;
+			}
+
 			if (ctrlOrderBookingOptions != null) {
 				ctrlOrderBookingOptions.Dispose ();
 				ctrlOrderBookingOptions = null;
@@ -292,14 +324,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				panelMenu = null;
 			}
 
-			if (changeDropOffControl != null) {
-				changeDropOffControl.Dispose ();
-				changeDropOffControl = null;
+			if (dropOffSelectionBottomBar != null) {
+				dropOffSelectionBottomBar.Dispose ();
+				dropOffSelectionBottomBar = null;
 			}
 
-			if (constraintChangeDropOffTopSpace != null) {
-				constraintChangeDropOffTopSpace.Dispose ();
-				constraintChangeDropOffTopSpace = null;
+			if (constraintAppBarDropOffSelection != null) {
+				constraintAppBarDropOffSelection.Dispose ();
+				constraintAppBarDropOffSelection = null;
 			}
 		}
 	}
