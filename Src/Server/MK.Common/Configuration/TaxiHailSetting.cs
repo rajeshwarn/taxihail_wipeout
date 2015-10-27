@@ -247,12 +247,20 @@ namespace MK.Common.Configuration
         public bool HideReportProblem { get; protected set; }
 
         [SendToClient]
-        [Display(Name = "Configuration - Default Phone Number (Display)", Description="Phone number as displayed to the user (1.800.XXX.XXXX)")]
-        public string DefaultPhoneNumberDisplay { get; protected set; }
-        
-        [SendToClient]
         [Display(Name = "Configuration - Default Phone Number", Description="Phone number as dialed")]
         public string DefaultPhoneNumber { get; protected set; }
+
+        [SendToClient]
+        [Display(Name = "Configuration - Default Phone Number (Display)", Description="Phone number as displayed to the user (1.800.XXX.XXXX)")]
+        public string DefaultPhoneNumberDisplay { get; protected set; }
+
+        [SendToClient]
+        [Display(Name = "Configuration - Default Phone Number For Luxury", Description="Phone number as dialed")]
+        public string DefaultPhoneNumberForLuxury { get; protected set; }
+
+        [SendToClient]
+        [Display(Name = "Configuration - Default Phone Number For Luxury (Display)", Description="Phone number as displayed to the user (1.800.XXX.XXXX)")]
+        public string DefaultPhoneNumberForLuxuryDisplay { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Search - Enable airport filter button", Description = "Enables the use of the airport search filter button in the app.")]

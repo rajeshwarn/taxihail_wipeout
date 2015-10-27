@@ -1,18 +1,17 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
-using ServiceStack.Text;
 using Params = System.Collections.Generic.Dictionary<string, string>;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Common.Entity;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -417,11 +416,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
 					CloseMenu();
-                    this.Services().Message.ShowMessage(string.Empty, Settings.DefaultPhoneNumberDisplay,
-                        this.Services().Localize["CallButton"], () => _phoneService.Call(Settings.DefaultPhoneNumber), 
+
+					var serviceType = await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask();
+
+					this.Services().Message.ShowMessage(string.Empty, serviceType == ServiceType.Luxury ? Settings.DefaultPhoneNumberForLuxuryDisplay : Settings.DefaultPhoneNumberDisplay,
+						this.Services().Localize["CallButton"], () => _phoneService.Call(serviceType == ServiceType.Luxury ? Settings.DefaultPhoneNumberForLuxury : Settings.DefaultPhoneNumber), 
                         this.Services().Localize["Cancel"], () => {});
                 });
             }

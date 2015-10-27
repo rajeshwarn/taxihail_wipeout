@@ -650,8 +650,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						{
 							if (!Settings.HideCallDispatchButton)
 							{
+								var serviceType = await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask();
+
                                 this.Services().Message.ShowMessage(title, e.Message,
-									this.Services().Localize["StatusCallButton"], () => _phoneService.Call(Settings.DefaultPhoneNumber),
+									this.Services().Localize["StatusCallButton"], () => _phoneService.Call(serviceType == ServiceType.Luxury ? Settings.DefaultPhoneNumberForLuxury : Settings.DefaultPhoneNumber),
 									this.Services().Localize["Cancel"], () => { });
 							}
 							else

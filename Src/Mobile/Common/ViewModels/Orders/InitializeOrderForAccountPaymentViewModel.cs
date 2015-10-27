@@ -8,6 +8,9 @@ using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -80,8 +83,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 						if (!Settings.HideCallDispatchButton)
 						{
+							var serviceType = await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask();
+
                             this.Services().Message.ShowMessage(title, e.Message,
-                                this.Services().Localize["CallButton"], () => _phoneService.Call(Settings.DefaultPhoneNumber),
+								this.Services().Localize["CallButton"], () => _phoneService.Call(serviceType == ServiceType.Luxury ? Settings.DefaultPhoneNumberForLuxury : Settings.DefaultPhoneNumber),
                                 this.Services().Localize["Cancel"], () => { });
                         }
 						else
