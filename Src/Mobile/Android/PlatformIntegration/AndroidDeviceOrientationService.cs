@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			{
 				_sensorManager.RegisterListener(_accelerometerSensorListener, _accelerometer, SensorDelay.Ui);
 				_enabled = true;
-				return _enabled;
+				return true;
 			}
 
 			return false;
