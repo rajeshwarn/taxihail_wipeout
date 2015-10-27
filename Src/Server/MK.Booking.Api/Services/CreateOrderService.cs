@@ -308,7 +308,7 @@ namespace apcurium.MK.Booking.Api.Services
             orderCommand.Fare = fare;
             orderCommand.Prompts = accountValidationResult.Prompts;
             orderCommand.PromptsLength = accountValidationResult.PromptsLength;
-            orderCommand.ReferenceDataCompanyList = referenceData.CompaniesList.ToArray();
+            orderCommand.PromotionId = promotionId;
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
