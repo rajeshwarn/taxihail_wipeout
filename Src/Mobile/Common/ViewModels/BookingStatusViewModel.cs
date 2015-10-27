@@ -565,10 +565,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						if (Order != null && Order.DropOffAddress.Id != Guid.Empty)
 						{
-							//Remove address
+							//Need endpoint to remove destination address
 							return;
 						}
-						//Show View Model DropOff Selection
+                        ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.DropOffAddressSelection;
 					}); 
 			}
 		}
