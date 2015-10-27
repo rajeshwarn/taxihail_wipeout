@@ -249,7 +249,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (!_serverSettings.ServerData.DisableFutureBooking && request.PickupDate.HasValue)
             {
                 var futureBookingTimespanSetting = _serviceTypeSettingsProvider.GetSettings(request.Settings.ServiceType).FutureBookingThresholdInMinutes;
-                var timeDifferenceBetweenPickupAndNow = (pickupDate - DateTime.Now).TotalMinutes;
+                var timeDifferenceBetweenPickupAndNow = (request.PickupDate.Value - DateTime.Now).TotalMinutes;
                 var isConsideredFutureBooking = timeDifferenceBetweenPickupAndNow >= futureBookingTimespanSetting;
                 if (!isConsideredFutureBooking)
                 {
