@@ -132,11 +132,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 _logger.LogMessage ("Event Saved,  ID: " + newEvent.EventIdentifier);
             }
         }
-
-        public bool CanUseCalendarAPI ()
-        {
-            return true;
-        }
     }
 }
 
