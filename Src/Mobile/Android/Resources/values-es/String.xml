@@ -361,7 +361,7 @@
   <string name="Rating1">Awful</string>
   <string name="NoConnectionMessage">El servidor no puede ser contactado, puede estar caído o usted puede haber perdido la conexión a intenet</string>
   <string name="RideSettingsPhone">Celular</string>
-  <string name="ApplicationName">TaxiHail</string>
+  <string name="ApplicationName">Taxi</string>
   <string name="CreditCardErrorInvalid">No podemos validar su tarjeta de crédito</string>
   <string name="FavoriteLocationsTitle">Lugares favoritos</string>
   <string name="LargeBagsLabel">Maletas grandes</string>

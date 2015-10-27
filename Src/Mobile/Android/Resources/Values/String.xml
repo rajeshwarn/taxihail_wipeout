@@ -360,7 +360,7 @@
   <string name="Rating2">Poor</string>
   <string name="Rating1">Awful</string>
   <string name="NoConnectionMessage"> The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</string>
-  <string name="ApplicationName">TaxiHail</string>
+  <string name="ApplicationName">Taxi</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="FavoriteLocationsTitle">Favorite locations</string>
   <string name="LargeBagsLabel">Large Bags</string>

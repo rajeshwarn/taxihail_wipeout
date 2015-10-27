@@ -59,11 +59,11 @@ namespace apcurium.MK.Booking.ConfigTool
                     }
                     Console.WriteLine("");
                     Console.WriteLine("Enter the config number:");
-                    var selectedText = "118";//Console.ReadLine();
+                    var selectedText = "119";//Console.ReadLine();
 					int selected =  int.Parse(selectedText);
 
 					Console.WriteLine("Enter the server url:");
-					var url = "http://test.taxihail.biz:8181/mearstaxi/api/";//Console.ReadLine();
+					var url = "http://test.taxihail.biz:8181/mearsluxury/api/";//Console.ReadLine();
 
 					if (!string.IsNullOrWhiteSpace(url))
                     {
