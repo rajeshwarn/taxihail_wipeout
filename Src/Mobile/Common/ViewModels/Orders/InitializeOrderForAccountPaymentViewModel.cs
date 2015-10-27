@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
-using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
-using ServiceStack.Text;
-using Cirrious.MvvmCross.Plugins.PhoneCall;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
@@ -16,12 +14,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	public class InitializeOrderForAccountPaymentViewModel : PageViewModel, ISubViewModel<Tuple<Order, OrderStatusDetail>>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
-		private readonly IMvxPhoneCallTask _phone;
+		private readonly IPhoneService _phoneService;
 
-		public InitializeOrderForAccountPaymentViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone)
+		public InitializeOrderForAccountPaymentViewModel(IOrderWorkflowService orderWorkflowService, IPhoneService phoneService)
 		{
 			_orderWorkflowService = orderWorkflowService;
-			_phone = phone;
+			_phoneService = phoneService;
 		}
 
 		public async void Init()
@@ -78,18 +76,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					{
 						Logger.LogError(e);
 
-						var settings = this.Services().Settings;
 						var title = this.Services().Localize["ErrorCreatingOrderTitle"];
 
 						if (!Settings.HideCallDispatchButton)
 						{
-							this.Services().Message.ShowMessage(title,
-								e.Message,
-								"Call",
-								() => _phone.MakePhoneCall (settings.TaxiHail.ApplicationName, settings.DefaultPhoneNumber),
-								"Cancel",
-								delegate { });
-						}
+                            this.Services().Message.ShowMessage(title, e.Message,
+                                this.Services().Localize["CallButton"], () => _phoneService.Call(Settings.DefaultPhoneNumber),
+                                this.Services().Localize["Cancel"], () => { });
+                        }
 						else
 						{
 							this.Services().Message.ShowMessage(title, e.Message);

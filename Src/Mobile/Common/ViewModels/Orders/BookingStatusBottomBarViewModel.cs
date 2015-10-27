@@ -172,12 +172,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			get
 			{
 				return this.GetCommand(() =>
-					this.Services().Message.ShowMessage(string.Empty,
-						Settings.DefaultPhoneNumberDisplay,
-						this.Services().Localize["CallButton"],
-						() => _phoneService.Call(Settings.DefaultPhoneNumber),
-						this.Services().Localize["Cancel"],
-						() => { }));
+                    this.Services().Message.ShowMessage(string.Empty, Settings.DefaultPhoneNumberDisplay,
+                        this.Services().Localize["CallButton"], () => _phoneService.Call(Settings.DefaultPhoneNumber),
+                        this.Services().Localize["Cancel"], () => { }));
 			}
 		}
 

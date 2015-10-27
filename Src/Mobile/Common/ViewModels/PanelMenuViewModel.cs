@@ -420,12 +420,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(() =>
                 {
 					CloseMenu();
-					Action call = () => { _phoneService.Call(Settings.DefaultPhoneNumber); };
-                    this.Services().Message.ShowMessage(string.Empty,
-												Settings.DefaultPhoneNumberDisplay,
-                                               this.Services().Localize["CallButton"],
-                                               call, this.Services().Localize["Cancel"], 
-                                               () => {});
+                    this.Services().Message.ShowMessage(string.Empty, Settings.DefaultPhoneNumberDisplay,
+                        this.Services().Localize["CallButton"], () => _phoneService.Call(Settings.DefaultPhoneNumber), 
+                        this.Services().Localize["Cancel"], () => {});
                 });
             }
         }
