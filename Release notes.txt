@@ -94,7 +94,21 @@
 	Bug fix - Keyboard stay on top if you press a favorite before the loading is completed in address bar
 	Bug fix - 'Need a taxi' not responsive
 	Fixed DeviceOrientationLogic
-
+3.1.13
+	Added vehiclename value to clusters
+	Bug fix - account update - error handling change
+	Orientation change response time decreased
+	Bug fix - Issue where nearby taxi would flash on the screen
+3.1.14
+	Android - Regression issues
+	Fixed color coded medallion
+	Moved pairing code setting to Payment settings
+	Added more logging information for notifications
+	Bug fix - SaveExtrPayment now uses the correct company when on the TH Network
+	Make Credit card add/update backward compatible
+	Bug fix - issue with IBS methods not working in external markets
+	Bug fix - contact driver for older app version
+	
 
 
 
