@@ -115,17 +115,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     LayoutIfNeeded();
                     if(!BaseRateToggled)
                     {
-						Layer.Mask = null;
-                        OrderOptionsControl.Resize();
+                        OrderOptionsControl.Resize(true);
                     }
+                    OrderOptionsControl.Layer.Mask = null;
                 },
-                (finished) => {
+                finished => {
                     if(finished)
                     {
-                        if(BaseRateToggled)
-                        {
-                            OrderOptionsControl.Resize();
-                        }
+                        OrderOptionsControl.Resize();
                         LayoutSubviews();
                     }
                 }
@@ -138,12 +135,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 return ((OrderOptionsControl)Superview.Superview);
             }
-        }
-
-        public override void LayoutSubviews()
-        {
-            base.LayoutSubviews();
-			this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 3f);
         }
 
         private VehicleType _selectedVehicle;

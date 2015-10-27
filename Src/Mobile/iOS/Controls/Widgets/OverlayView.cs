@@ -111,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             this.Superview.InsertSubviewBelow(_shadowView, this);   
         }
 
-        private void ClearShadowIfNecessary()
+        protected void ClearShadowIfNecessary()
         {
             if (_shadowView != null)
             {

@@ -190,10 +190,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
         }
 
-        public void Resize ()
+        public void Resize (bool drawImmediately = false)
 		{
 			HeightConstraint.Constant = (nfloat)Subviews [0].Subviews.Where (x => !x.Hidden).Sum (x => x.Frame.Height);
-            SetNeedsDisplay();
+            if (drawImmediately)
+            {
+                ClearShadowIfNecessary();
+                LayoutIfNeeded();
+            }
+            else
+            {
+                SetNeedsDisplay();
+            }
         }
     }
 }
