@@ -157,9 +157,6 @@
     <Reference Include="Cirrious.MvvmCross.Dialog.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Dialog.Droid.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\packages\Xamarin.Android.Support.v4.22.2.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.MvvmCross.Droid.FullFragging">
       <HintPath>..\packages\MvvmCross.HotTuna.Droid.FullFragging.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Droid.FullFragging.dll</HintPath>
     </Reference>
@@ -175,68 +172,17 @@
     <Reference Include="Xamarin.Facebook">
       <HintPath>..\packages\Xamarin.Facebook.Android.4.4.0.1\lib\MonoAndroid403\Xamarin.Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Base">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
+    <Reference Include="AnalyticsV2">
+      <HintPath>..\Libraries\Monodroid\AnalyticsV2.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Ads">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Ads.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Ads.dll</HintPath>
+    <Reference Include="Square.OkIO">
+      <HintPath>..\packages\Square.OkIO.1.6.0.0\lib\MonoAndroid\Square.OkIO.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Analytics">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Analytics.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Analytics.dll</HintPath>
+    <Reference Include="Square.OkHttp">
+      <HintPath>..\packages\Square.OkHttp.2.5.0.0\lib\MonoAndroid\Square.OkHttp.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.AppIndexing">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.AppIndexing.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.AppIndexing.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.AppInvite">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.AppInvite.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.AppInvite.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.AppState">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.AppState.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.AppState.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Cast">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Cast.25.0.0.0\lib\MonoAndroid42\Xamarin.GooglePlayServices.Cast.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Drive">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Drive.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Drive.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Maps">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Maps.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Maps.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Location">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Location.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Location.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Fitness">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Fitness.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Fitness.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Games">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Games.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Games.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Gcm">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Gcm.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Gcm.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Identity">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Identity.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Identity.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Nearby">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Nearby.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Nearby.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Panorama">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Panorama.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Panorama.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Plus">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Plus.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Plus.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.SafetyNet">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.SafetyNet.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.SafetyNet.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Wallet">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Wallet.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Wallet.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Wearable">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Wearable.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Wearable.dll</HintPath>
-    </Reference>
-    <Reference Include="GooglePlayServicesLib">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.25.0.0.0\lib\MonoAndroid41\GooglePlayServicesLib.dll</HintPath>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\packages\Xamarin.Android.Support.v4.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -902,9 +848,9 @@
       <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
       <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\SourceCode\GoogleMapsForBusiness\binding\android\GoogleMaps.M4B\GoogleMaps.M4B.csproj">
-      <Project>{8CB25019-45B3-4E49-90C8-5C9B03A2A75C}</Project>
-      <Name>GoogleMaps.M4B</Name>
+    <ProjectReference Include="..\..\..\..\MapBoxSdk2.1\MapBoxSdk2.1\MapBoxSdk2.1.csproj">
+      <Project>{13802257-329F-4EF6-B845-70CA0652B6AD}</Project>
+      <Name>MapBoxSdk2.1</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -920,10 +866,6 @@
     </PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <XamarinComponentReference Include="googleplayservices">
-      <Version>19.0.0.2</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>
       <Visible>False</Visible>
