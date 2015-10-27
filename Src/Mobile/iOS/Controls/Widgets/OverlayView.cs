@@ -13,7 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private const float RadiusCorner = 3f;
         private UIView _shadowView = null;
-		private CGRect _frame = CGRect.Empty;
 
         public OverlayView(IntPtr handle) : base(handle)
         {
