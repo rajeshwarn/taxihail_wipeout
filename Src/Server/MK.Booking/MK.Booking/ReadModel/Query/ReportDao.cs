@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 			{
 				var orders = context.Query<OrderReportDetail>().Where(x => x.Id == orderId);
 
-				if (orders.Count() > 0)
+				if (orders.Any())
 				{
 					return orders.First();
 				}
