@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile
 #endif
 		}
 
-		private static readonly string[] Hosts = { ".cmtapi.com", ".goarro.com", ".taxihail.com" };
+		private static readonly string[] Hosts = { ".cmtapi.com", ".goarro.com", ".taxihail.com", "test.taxihail.biz" };
 
 		private static readonly string[] PinnedKeys = 
 		{
@@ -160,17 +160,16 @@ namespace apcurium.MK.Booking.Mobile
 	    private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 	    {
 		    var request = sender as HttpWebRequest;
-
-		    var serverCert = new X509Certificate2(certificate);
-
-			if (request == null || Hosts.None(request.Host.Contains))
+			
+			if (request == null || Hosts.None(request.Host.EndsWith))
 		    {
 				// We are using the default certificate validation.
-				return serverCert.Verify();
+				return new X509Certificate2(certificate).Verify();
 		    }
 
-			return PinnedKeys.Any(
-				p => p.Equals(certificate.GetPublicKeyString(), StringComparison.InvariantCultureIgnoreCase));
+		    var publicKeyString = certificate.GetPublicKeyString();
+
+			return PinnedKeys.Any(p => p.Equals(publicKeyString, StringComparison.InvariantCultureIgnoreCase));
 	    }
 
 

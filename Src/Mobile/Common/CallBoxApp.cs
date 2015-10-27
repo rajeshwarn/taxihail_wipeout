@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile
 
         }
 
-		private static readonly string[] Hosts = { ".cmtapi.com", ".goarro.com", ".taxihail.com" };
+		private static readonly string[] Hosts = { ".cmtapi.com", ".goarro.com", ".taxihail.com", "test.taxihail.biz" };
 
 		private static readonly string[] PinnedKeys = 
 		{
@@ -89,23 +89,23 @@ namespace apcurium.MK.Booking.Mobile
 		{
 			var request = sender as HttpWebRequest;
 
-			var serverCert = new X509Certificate2(certificate);
-
-			if (request == null || Hosts.None(request.Host.Contains))
+			if (request == null || Hosts.None(request.Host.EndsWith))
 			{
 				// We are using the default certificate validation.
-				return serverCert.Verify();
+				return new X509Certificate2(certificate).Verify();
 			}
 
-			return PinnedKeys.Any(
-				p => p.Equals(certificate.GetPublicKeyString(), StringComparison.InvariantCultureIgnoreCase));
+			var publicKeyString = certificate.GetPublicKeyString();
+
+			return PinnedKeys.Any(p => p.Equals(publicKeyString, StringComparison.InvariantCultureIgnoreCase));
 		}
         
         private string GetSessionId ()
         {
             var authData = _container.Resolve<ICacheService> ().Get<AuthenticationData> ("AuthenticationData");
             var sessionId = authData == null ? null : authData.SessionId;
-            if (sessionId == null) {
+            if (sessionId == null) 
+			{
                 sessionId = _container.Resolve<ICacheService> ().Get<string>("SessionId");
             }
             return sessionId;
