@@ -1116,6 +1116,8 @@ namespace DatabaseInitializer
                         {
                             ServiceType = ServiceType.Taxi,
                             FutureBookingThresholdInMinutes = 0,
+                            WaitTimeRatePerMinute = 0,
+                            AirportMeetAndGreetRate = 0,
                             IBSWebServicesUrl = serverSettings.ServerData.IBS.WebServicesUrl
                         } 
                     },
@@ -1126,6 +1128,8 @@ namespace DatabaseInitializer
                         {
                             ServiceType = ServiceType.Luxury,
                             FutureBookingThresholdInMinutes = 0,
+                            WaitTimeRatePerMinute = 0,
+                            AirportMeetAndGreetRate = 0,
                             IBSWebServicesUrl = ""
                         }
                     }

@@ -33,6 +33,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 {
                     ServiceType = ServiceType.Luxury,
                     FutureBookingThresholdInMinutes = 15,
+                    WaitTimeRatePerMinute = 2,
+                    AirportMeetAndGreetRate = 10,
                     IBSWebServicesUrl = "test"
                 }
             });
@@ -44,6 +46,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.NotNull(dto);
                 Assert.AreEqual(ServiceType.Luxury, dto.ServiceType);
                 Assert.AreEqual(15, dto.FutureBookingThresholdInMinutes);
+                Assert.AreEqual(2, dto.WaitTimeRatePerMinute);
+                Assert.AreEqual(10, dto.AirportMeetAndGreetRate);
                 Assert.AreEqual("test", dto.IBSWebServicesUrl);
             }
         }
@@ -63,6 +67,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 {
                     ServiceType = ServiceType.Luxury,
                     FutureBookingThresholdInMinutes = 15,
+                    WaitTimeRatePerMinute = 2,
+                    AirportMeetAndGreetRate = 10,
                     IBSWebServicesUrl = "test"
                 }
             });
@@ -78,6 +84,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 {
                     ServiceType = ServiceType.Luxury,
                     FutureBookingThresholdInMinutes = 5,
+                    WaitTimeRatePerMinute = 1,
+                    AirportMeetAndGreetRate = 8,
                     IBSWebServicesUrl = "test2"
                 }
             });
@@ -89,6 +97,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.NotNull(dto);
                 Assert.AreEqual(ServiceType.Luxury, dto.ServiceType);
                 Assert.AreEqual(5, dto.FutureBookingThresholdInMinutes);
+                Assert.AreEqual(1, dto.WaitTimeRatePerMinute);
+                Assert.AreEqual(8, dto.AirportMeetAndGreetRate);
                 Assert.AreEqual("test2", dto.IBSWebServicesUrl);
             }
         }

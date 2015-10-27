@@ -24,7 +24,9 @@
                 rules: {
                     serviceType: "required",
                     ibsWebServicesUrl: "required",
-                    futureBookingThresholdInMinutes: "required"
+                    futureBookingThresholdInMinutes: "required",
+                    waitTimeRatePerMinute: "required",
+                    airportMeetAndGreetRate: "required"
                 },
                 messages: {
                     ibsWebServicesUrl: {
@@ -32,6 +34,12 @@
                     },
                     futureBookingThresholdInMinutes: {
                         required: TaxiHail.localize('error.serviceTypeFutureBookingThresholdInMinutesRequired')
+                    },
+                    waitTimeRatePerMinute: {
+                        required: TaxiHail.localize('error.serviceTypeWaitTimeRatePerMinuteRequired')
+                    },
+                    airportMeetAndGreetRate: {
+                        required: TaxiHail.localize('error.serviceTypeAirportMeetAndGreetRateRequired')
                     }
                 },
                 submitHandler: this.save

@@ -51,7 +51,9 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     ServiceType = request.ServiceType.Value,
                     IBSWebServicesUrl = request.IBSWebServicesUrl,
-                    FutureBookingThresholdInMinutes = request.FutureBookingThresholdInMinutes
+                    FutureBookingThresholdInMinutes = request.FutureBookingThresholdInMinutes,
+                    WaitTimeRatePerMinute = request.WaitTimeRatePerMinute,
+                    AirportMeetAndGreetRate = request.AirportMeetAndGreetRate
                 }
             };
 
