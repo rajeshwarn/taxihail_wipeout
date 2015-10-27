@@ -61,6 +61,10 @@
                         android:visibility="gone"
                         android:src="@drawable/destination_icon" />
                 <!-- Order Options -->
+                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.DropOffSelection
+                        android:layout_width="fill_parent"
+                        android:id="@+id/dropOffSelection"
+                        android:layout_height="wrap_content" />
                     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptions
                         android:layout_width="fill_parent"
                         android:id="@+id/orderOptions"
@@ -177,6 +181,11 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/appBarBookingStatus"
+                    android:background="@color/setting_menu_color" />
+                <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarDropOffSelection
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/appBarDropOffSelection"
                     android:background="@color/setting_menu_color" />
             </LinearLayout>
         <!-- Address Search -->

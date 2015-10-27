@@ -724,6 +724,10 @@
     <AndroidResource Include="Resources\Layout\SubView_ChangeDropOffOverlay.axml" />
     <Compile Include="Controls\Widgets\OrderStatusChangeDropOffOverlay.cs" />
     <AndroidResource Include="Resources\Drawable\destination_small_icon_white.png" />
+    <AndroidResource Include="Resources\Layout\SubView_DropOffSelection.axml" />
+    <Compile Include="Controls\Widgets\DropOffSelection.cs" />
+    <Compile Include="Controls\Widgets\AppBarDropOffSelection.cs" />
+    <AndroidResource Include="Resources\Layout\SubView_AppBar_DropOffSelection.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
