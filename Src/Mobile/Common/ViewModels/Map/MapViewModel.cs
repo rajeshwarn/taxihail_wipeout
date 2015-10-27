@@ -175,7 +175,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool CanExecuteUserMovedMap()
 		{
-			return ((HomeViewModel)Parent).CurrentViewState == HomeViewModelState.Initial || ((HomeViewModel)Parent).CurrentViewState == HomeViewModelState.DropOffAddressSelection;
+			var currentViewState = ((HomeViewModel)Parent).CurrentViewState;
+			return currentViewState == HomeViewModelState.Initial || currentViewState == HomeViewModelState.DropOffAddressSelection;
 		}
 
 		private bool _bookCannotExecute;

@@ -66,10 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return this.GetCommand<Address>(async address => 
-					{
-						await _orderWorkflowService.SetAddress(address);
-					});
+				return this.GetCommand<Address>(address => _orderWorkflowService.SetAddress(address));
 			}
 		}
 
