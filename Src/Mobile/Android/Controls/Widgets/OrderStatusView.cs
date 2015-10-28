@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     Duration = 4000,
                 };
+            animation.Interpolator = new LinearInterpolator();
 
             animation.AnimationEnd += (sender, e) => 
                 {
@@ -98,11 +99,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         {
                             Duration = 4000,
                         };
+                    animationEnd.Interpolator = new LinearInterpolator();
                     animationEnd.AnimationEnd += (sender1, e1) => AnimateProgress(view);
                     view.StartAnimation(animationEnd);
                 };
             view.StartAnimation(animation);
-
         }
 
 		public ViewStates AnimatedVisibility
