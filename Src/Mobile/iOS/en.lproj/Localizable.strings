@@ -96,7 +96,7 @@
 "TabBook"="Book";
 "UpdateBookingSettingsInvalidDataTitle"="Invalid booking settings info";
 "SettingsViewTitle"="Settings";
-"ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.";
+"ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the vehicle touchscreen to auto-pay and get an e-receipt at the end of your ride.";
 "ResetPasswordConfirmationTitle"="Password sent";
 "HistoryViewTitle"="History";
 "PromoMustHavePaymentMethodSetMessage_Multiple"="In order to use a promo code, you need to have a payment method configured as part of your account.";
@@ -219,7 +219,7 @@
 "ManualRideLinqStatus_Payment"="Your {0} card ending with {1} will be automatically charged at the end of the ride. A tip of {2}% will be added to the fare.";
 "NetworkContactingNextDispatchDescription"="Contacting {0} ...";
 "RideSettingsLoadError"="Unable to load the account settings. Please try again later.";
-"HomeView_ManualPairing"="In a Taxi";
+"HomeView_ManualPairing"="In a Vehicle";
 "UnexpectedError"="Unexpected error";
 "BookRatingErrorMessage"="You need to rate your ride";
 "CreditCardNumber"="Card Number";
@@ -376,7 +376,7 @@
 "PaymentDetails.CreditCardLabel"="Cards";
 "TaxiHailNetworkTimeOutPopupRefuse"="Ignore";
 "Error_EditAutoTipTitle"="Error";
-"CarAssigned"="Your taxi {0}";
+"CarAssigned"="Your vehicle {0}";
 "PaymentDetails.InvalidTipAmount"="Tip amount is invalid";
 "DriverInfoMake"="Make:";
 "InitializeOrderForAccountPaymentActivityName"="Initialition of order of account payment";
@@ -389,7 +389,7 @@
 "LocationServiceErrorMessage"="The location service is not enabled.";
 "View_LocationDetail"="Location Detail";
 "Collapse"="Collapse";
-"DriverBonusDescription"="Offering a guaranteed bonus to drivers can boost your odds of getting a taxi.";
+"DriverBonusDescription"="Offering a guaranteed bonus to drivers can boost your odds of getting a vehicle.";
 "September"="Sep (09)";
 "ResetPasswordTitleText"="Forgot your password?";
 "March"="Mar (03)";
@@ -467,7 +467,7 @@
 "PaymentViewMeterAmountText"="Meter Amount";
 "CallDriverUsingProxyMessage"="Your driver will call you back in a few minutes";
 "ManualRideLinqStatus_Email"="A receipt will be emailed to {0}.";
-"DriverInfoTaxiType"="Taxi Type:";
+"DriverInfoTaxiType"="Vehicle Type:";
 "InvalidAccountOnActivatedTitle"="Invalid account";
 "Destination"="Destination";
 "Tuto04Top"="If you want, you can also set your destination.";
@@ -743,3 +743,11 @@
 "PickupViewDestinationLabel"="Destination &gt;&gt;";
 "Tuto07Bottom"="Status updates are provided when the vehicles arrives at the pickup address, when you enter the vehicle, and at the end of the ride.";
 "PassengerPhoneLabel"="Phone";
+"ManualRideLinqStatus_PairingError_Luxury"="An error has occured. Please try to checkin again using the code displayed on the vehicle touchscreen.";
+"EtaNoTaxiAvailable_Luxury"="Sorry, no vehicles currently available nearby.";
+"HomeView_BookTaxi_Luxury"="Need a vehicle";
+"MarketChangedMessage_Luxury"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a company from this area.";
+"EtaLessThanAMinute_Luxury"="Nearest vehicle is less than a minute away";
+"StatusConfirmNewBooking_Luxury"="Booking a new vehicle will keep this order active, do you want to continue ?";
+"ReminderDetails_Luxury"="Reminder: A vehicle will pick you up from {0} at {1} on {2}.";
+"Eta_Luxury"="Nearest vehicle is {0} {1} away";

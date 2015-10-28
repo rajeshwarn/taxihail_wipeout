@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var vehicleTypeId = await _vehicleTypeSubject.Take(1).ToTask();
 
 			var serviceType = await GetServiceTypeForVehicleId(vehicleTypeId);
-			_serviceTypeSubject.OnNext(serviceType);
+			await ChangeServiceTypeIfNecessary(serviceType);
 		}
 
 		public async Task SetAddress(Address address)
@@ -339,10 +339,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			bookingSettings.VehicleTypeId = vehicleTypeId;
             
             var serviceType = await GetServiceTypeForVehicleId(vehicleTypeId);
-            _serviceTypeSubject.OnNext(serviceType);
+			var serviceTypeChanged = await ChangeServiceTypeIfNecessary(serviceType);
             bookingSettings.ServiceType = serviceType;
 
 			await SetBookingSettings (bookingSettings);
+
+			if (serviceTypeChanged)
+			{
+				await CalculateEstimatedFare();
+			}
+		}
+
+		private async Task<bool> ChangeServiceTypeIfNecessary(ServiceType nextServiceType)
+		{
+			var wasChanged = false;
+			var currentServiceType = await _serviceTypeSubject.Take(1).ToTask ();
+			if (currentServiceType != nextServiceType)
+			{
+				_serviceTypeSubject.OnNext(nextServiceType);
+				wasChanged = true;
+			}
+			return wasChanged;
 		}
 
 		public async Task<ServiceType> GetServiceTypeForVehicleId (int? vehicleTypeId)
