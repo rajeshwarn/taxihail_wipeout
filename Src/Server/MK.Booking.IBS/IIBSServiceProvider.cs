@@ -6,14 +6,14 @@ namespace apcurium.MK.Booking.IBS
 {
     public interface IIBSServiceProvider
     {
-        IAccountWebServiceClient Account(string companyKey = null);
+        IAccountWebServiceClient Account(string companyKey = null, ServiceType? serviceType = null);
 
         IStaticDataWebServiceClient StaticData(string companyKey = null, ServiceType? serviceType = null);
 
-        IBookingWebServiceClient Booking(string companyKey = null);
+        IBookingWebServiceClient Booking(string companyKey = null, ServiceType? serviceType = null);
 
         IBSSettingContainer GetSettingContainer(string companyKey = null, ServiceType? serviceType = null);
 
-        IChargeAccountWebServiceClient ChargeAccount(string companyKey = null);
+        IChargeAccountWebServiceClient ChargeAccount(string companyKey = null, ServiceType? serviceType = null);
     }
 }

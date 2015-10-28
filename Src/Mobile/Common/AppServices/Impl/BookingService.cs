@@ -19,6 +19,7 @@ using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Resources;
 using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -239,7 +240,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			                        service.GetDirectionInfoFromIbs(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
 			                            order.DropOffAddress.Latitude, order.DropOffAddress.Longitude,
 										order.PickupAddress.ZipCode, order.DropOffAddress.ZipCode,
-								order.Settings.AccountNumber, duration, order.Settings.VehicleTypeId));
+								order.Settings.AccountNumber, duration, order.Settings.VehicleTypeId, new Nullable<ServiceType>(order.Settings.ServiceType)));
 			    }
 
 			    if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo != null && directionInfo.Price == 0d))

@@ -68,9 +68,9 @@ namespace apcurium.MK.Booking.Api.Services
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
         {
-            var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
+            var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId && v.ServiceType == request.ServiceType);
             var logoName = vehicleType != null ? vehicleType.LogoName : null;
-
+            
             IbsVehiclePosition[] vehicles;
             string market = null;
 
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Api.Services
                 && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.IBS)
             {
                 // LOCAL market IBS
-                vehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
+                vehicles = _ibsServiceProvider.Booking(null, request.ServiceType).GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             }
             else
             {

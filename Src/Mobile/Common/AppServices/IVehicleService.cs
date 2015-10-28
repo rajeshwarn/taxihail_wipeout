@@ -6,6 +6,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Maps.Geo;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -29,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<Direction> GetEtaBetweenCoordinates (double fromLat, double fromLng, double toLat, double toLng);
 
-		Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId);
+		Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId, ServiceType serviceType);
 		void SetAvailableVehicle(bool enable);
 	}
 }

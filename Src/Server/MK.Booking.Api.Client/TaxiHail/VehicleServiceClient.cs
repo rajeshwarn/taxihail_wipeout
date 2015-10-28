@@ -9,6 +9,7 @@ using apcurium.MK.Common.Extensions;
 using System;
 using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -21,13 +22,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			_logger = logger;
         }
 
-		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId)
+		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId, ServiceType? serviceType)
 		{
-			var response = await  Client.PostAsync(new AvailableVehicles
+			var response = await Client.PostAsync(new AvailableVehicles
 				{
 					Latitude = latitude,
 					Longitude = longitude,
-					VehicleTypeId = vehicleTypeId
+					VehicleTypeId = vehicleTypeId,
+					ServiceType = serviceType
 				});
 
 			_logger.Maybe (() => _logger.LogMessage (string.Format ("Available vehicle found for lat {0}, long {1}, count = {2}", latitude, longitude, response.Count)));
@@ -61,7 +63,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return response.ToArray();
 	    }
 
-	    public async Task SendMessageToDriver(string message, string vehicleNumber, Guid orderId)
+		public async Task SendMessageToDriver(string message, string vehicleNumber, Guid orderId, ServiceType serviceType)
 	    {
             var request = string.Format("/vehicle/{0}/message", vehicleNumber);
 
@@ -70,7 +72,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 	            {
 	                Message = message,
 	                VehicleNumber = vehicleNumber,
-					OrderId = orderId
+					OrderId = orderId,
+					ServiceType = serviceType
 	            });
 	    }
     }

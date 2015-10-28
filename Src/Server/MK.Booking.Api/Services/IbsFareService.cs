@@ -33,10 +33,10 @@ namespace apcurium.MK.Booking.Api.Services
         public DirectionInfo Get(IbsFareRequest request)
         {
             var tripDurationInMinutes = (request.TripDurationInSeconds.HasValue ? (int?)TimeSpan.FromSeconds(request.TripDurationInSeconds.Value).TotalMinutes : null);
+            
+            var defaultVehiculeType = _vehicleTypeDao.GetAll().FirstOrDefault(x => x.ServiceType == request.ServiceType);
 
-            var defaultVehiculeType = _vehicleTypeDao.GetAll().FirstOrDefault();
-
-            var fare = _ibsServiceProvider.Booking().GetFareEstimate(
+            var fare = _ibsServiceProvider.Booking(null, request.ServiceType).GetFareEstimate(
                 request.PickupLatitude,
                 request.PickupLongitude,
                 request.DropoffLatitude,

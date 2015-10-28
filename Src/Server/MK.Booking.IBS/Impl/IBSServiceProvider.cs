@@ -26,9 +26,9 @@ namespace apcurium.MK.Booking.IBS.Impl
             _serviceTypeSettingsProvider = serviceTypeSettingsProvider;
         }
 
-        public IAccountWebServiceClient Account(string companyKey)
+        public IAccountWebServiceClient Account(string companyKey, ServiceType? serviceType = null)
         {
-            return new AccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
+            return new AccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey, serviceType), _logger);
         }
 
         public IStaticDataWebServiceClient StaticData(string companyKey = null, ServiceType? serviceType = null)
@@ -36,14 +36,14 @@ namespace apcurium.MK.Booking.IBS.Impl
             return new StaticDataWebServiceClient(GetSettingContainer(companyKey, serviceType), _logger);
         }
 
-        public IBookingWebServiceClient Booking(string companyKey)
+        public IBookingWebServiceClient Booking(string companyKey, ServiceType? serviceType = null)
         {
-            return new BookingWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
+            return new BookingWebServiceClient(_serverSettings, GetSettingContainer(companyKey, serviceType), _logger);
         }
 
-        public IChargeAccountWebServiceClient ChargeAccount(string companyKey)
+        public IChargeAccountWebServiceClient ChargeAccount(string companyKey, ServiceType? serviceType = null)
         {
-            return new ChargeAccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
+            return new ChargeAccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey, serviceType), _logger);
         }
 
         public IBSSettingContainer GetSettingContainer(string companyKey = null, ServiceType? serviceType = null)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Enumeration;
 
 #endregion
 
@@ -23,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             double dropoffLatitude, double dropoffLongitude, 
 			string pickupZipCode, string dropoffZipCode,
 			string accountNumber, int? tripDurationInSeconds,
-			int? vehicleType)
+			int? vehicleType, ServiceType? serviceType)
         {
             var req = string.Format(CultureInfo.InvariantCulture,
                 "/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&" +
@@ -31,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 				"AccountNumber={6}&CustomerNumber={7}&TripDurationInSeconds={8}&vehicleType={9}",
                 pickupLatitude, pickupLongitude, dropoffLatitude, dropoffLongitude, 
 				pickupZipCode, dropoffZipCode,
-				accountNumber.ToSafeString(), 0, tripDurationInSeconds.HasValue ? tripDurationInSeconds.ToString() : "", vehicleType);
+				accountNumber.ToSafeString(), 0, tripDurationInSeconds.HasValue ? tripDurationInSeconds.ToString() : "", vehicleType, serviceType);
             var result = Client.GetAsync<DirectionInfo>(req);
             return result;
         }

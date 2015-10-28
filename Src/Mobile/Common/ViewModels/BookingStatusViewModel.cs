@@ -1281,7 +1281,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         string.Empty,
 						() => { });
 
-	                var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber, Order.Id);
+						var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
+
+						var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber, Order.Id, serviceType);
+						
 	                if (!messageSent)
 	                {
                         this.Services().Message.ShowMessage(
