@@ -108,7 +108,28 @@
 	Make Credit card add/update backward compatible
 	Bug fix - issue with IBS methods not working in external markets
 	Bug fix - contact driver for older app version
+3.1.15
+	Updated Yellow Color for assigned NYC vehicles medallions
+	Increased the wait for vehciles candidates by 5 seconds
+	Bug fix - Null Reference issue with certain filters
+	Bug fix - when removing vehicles on map
+3.1.16
+	Added bailed in menu notification settings and localization
+	Added logging in booking status observable
+	Bug fix - promotion unlocked push enabled setting
+	Bug fix - Issue where NeedATaxi would not work after selecting an address in the Picker
+	Bug fix - issue where CreditCard label was overlapping over business
+	Bug fix - where the ui would stop refreshing on an active manual ridelinq order when application returns from background
+	Added condition if a driver bailed notification push should be sent
+	Bug fix - where  manual ridelinq order getting stuck
+	 date/time and vehicle number information fixed for receipt
+3.1.17
+	History address list distinct and stripped to 50 items in order to decrease memory footprint in mobile application
+	Bug fix - Fixed crash in the address view model
+	Device Orientation improvements
 	
+	
+
 
 
 
