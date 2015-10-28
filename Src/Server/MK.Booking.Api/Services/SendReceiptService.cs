@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.IBSAccountNotFound.ToString());
             }
 
-            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId.Value, order.Settings.Phone);
+            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey, order.Settings.ServiceType).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId.Value, order.Settings.Phone);
 
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id, order.CompanyKey);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);

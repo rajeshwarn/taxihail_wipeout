@@ -141,7 +141,7 @@ namespace apcurium.MK.Booking.Api.Services
             var ibsOrderKey = Mapper.Map<IbsOrderKey>(request.OrderKey);
             var ibsVehicleCandidate = Mapper.Map<IbsVehicleCandidate>(request.VehicleCandidate);
 
-            var confirmHailResult = _ibsServiceProvider.Booking(orderDetail.CompanyKey).ConfirmHail(ibsOrderKey, ibsVehicleCandidate);
+            var confirmHailResult = _ibsServiceProvider.Booking(orderDetail.CompanyKey, orderDetail.Settings.ServiceType).ConfirmHail(ibsOrderKey, ibsVehicleCandidate);
             if (confirmHailResult == null || confirmHailResult < 0)
             {
                 var errorMessage = string.Format("Error while trying to confirm the hail. IBS response code : {0}", confirmHailResult);
@@ -244,7 +244,7 @@ namespace apcurium.MK.Booking.Api.Services
 
 			createReportOrder.IsPrepaid = isPrepaid;
 
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
+            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Settings.ServiceType);
 
             if (!_serverSettings.ServerData.DisableFutureBooking && request.PickupDate.HasValue)
             {
@@ -259,7 +259,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var isFutureBooking = request.PickupDate.HasValue;
 
-            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
+            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Settings.ServiceType);
 
             createReportOrder.PickupDate = pickupDate;
 
@@ -284,13 +284,13 @@ namespace apcurium.MK.Booking.Api.Services
                 isFutureBooking,
                 pickupDate,
                 () =>
-                    _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
+                    _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Settings.ServiceType)
                         .GetZoneByCoordinate(
                             request.Settings.ProviderId,
                             request.PickupAddress.Latitude,
                             request.PickupAddress.Longitude),
                 () => request.DropOffAddress != null
-                    ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
+                    ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Settings.ServiceType)
                         .GetZoneByCoordinate(
                             request.Settings.ProviderId,
                             request.DropOffAddress.Latitude,
@@ -658,7 +658,7 @@ namespace apcurium.MK.Booking.Api.Services
             try
             {
                 // Recreate order on next dispatch company IBS
-                ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
+                ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey, null);
             }
             catch (Exception ex)
             {
@@ -907,8 +907,13 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
 
-        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
+        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null, ServiceType? serviceType = null)
         {
+            if (serviceType.HasValue && serviceType.Value != ServiceType.Taxi)
+            {
+                companyKey = ServiceType.Luxury.ToString();
+            }
+
             var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
             if (ibsAccountId.HasValue)
             {
@@ -916,7 +921,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Account doesn't exist, create it
-            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
+            ibsAccountId = _ibsServiceProvider.Account(companyKey, serviceType).CreateAccount(account.Id,
                 account.Email,
                 string.Empty,
                 account.Name,
@@ -1177,11 +1182,11 @@ namespace apcurium.MK.Booking.Api.Services
             });
         }
 
-        private DateTime GetCurrentOffsetedTime(string companyKey)
+        private DateTime GetCurrentOffsetedTime(string companyKey, ServiceType? serviceType = null)
         {
             //TODO : need to check ibs setup for shortesst time
 
-            var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey).TimeDifference;
+            var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey, serviceType).TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
             if (ibsServerTimeDifference != 0)
             {
@@ -1265,7 +1270,7 @@ namespace apcurium.MK.Booking.Api.Services
                     ETATime = (int?)vehicle.Eta ?? 0
                 });
 
-                ibsHailResult = _ibsServiceProvider.Booking(companyKey).Hail(
+                ibsHailResult = _ibsServiceProvider.Booking(companyKey, request.Settings.ServiceType).Hail(
                     request.Id,
                     providerId,
                     ibsAccountId,
@@ -1295,13 +1300,13 @@ namespace apcurium.MK.Booking.Api.Services
                     // Need to wait for vehicles to receive hail request
                     Thread.Sleep(25000);
 
-                    var candidates = _ibsServiceProvider.Booking(companyKey).GetVehicleCandidates(ibsHailResult.OrderKey);
+                    var candidates = _ibsServiceProvider.Booking(companyKey, request.Settings.ServiceType).GetVehicleCandidates(ibsHailResult.OrderKey);
                     ibsHailResult.VehicleCandidates = candidates;
                 }
             }
             else
             {
-                createOrderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+                createOrderResult = _ibsServiceProvider.Booking(companyKey, request.Settings.ServiceType).CreateOrder(
                     providerId,
                     ibsAccountId,
                     request.Settings.Name,
@@ -1360,7 +1365,7 @@ namespace apcurium.MK.Booking.Api.Services
                     // After 5 time, we are giving up. But we assume the order is completed.
                     Task.Factory.StartNew(() =>
                     {
-                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey)
+                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey, order.Settings.ServiceType)
                             .CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
                         cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
                     });

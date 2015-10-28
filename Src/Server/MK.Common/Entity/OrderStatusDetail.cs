@@ -1,5 +1,6 @@
 #region
 
+using apcurium.MK.Common.Enumeration;
 using System;
 
 #endregion
@@ -50,6 +51,8 @@ namespace apcurium.MK.Common.Entity
 
         public string RideLinqPairingCode { get; set; }
         public long? OriginalEta { get; set; }
+
+        public ServiceType ServiceType { get; set; }
 
         public override string ToString()
         {

@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             // send a message to driver, if it fails we abort the unpairing
-			_ibs.SendMessageToDriver(_resources.Get("UnpairingConfirmationToDriver"), orderStatusDetail.VehicleNumber, orderStatusDetail.CompanyKey);
+			_ibs.SendMessageToDriver(_resources.Get("UnpairingConfirmationToDriver"), orderStatusDetail.VehicleNumber, orderStatusDetail.ServiceType, orderStatusDetail.CompanyKey);
 
             // send a command to delete the pairing pairing info for this order
             _commandBus.Send(new UnpairForPayment

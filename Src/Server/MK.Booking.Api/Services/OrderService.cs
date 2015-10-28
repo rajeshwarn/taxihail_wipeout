@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (order.IBSOrderId.HasValue
                 && status.VehicleNumber.HasValue())
             {
-                return _ibsServiceProvider.Booking(order.CompanyKey).InitiateCallToDriver(order.IBSOrderId.Value, status.VehicleNumber);
+                return _ibsServiceProvider.Booking(order.CompanyKey, order.Settings.ServiceType).InitiateCallToDriver(order.IBSOrderId.Value, status.VehicleNumber);
             }
 
             return false;

@@ -50,7 +50,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			RefreshAppBarViewState(HomeViewModelState.Initial);
 
             Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), OrderValidated);
-            Observe(_orderWorkflowService.GetAndObserveServiceType(), serviceType => { RaisePropertyChanged(() => BookButtonText); RaisePropertyChanged(() => BookMessage); });
+            Observe(_orderWorkflowService.GetAndObserveServiceType(), serviceType =>
+            {
+                RaisePropertyChanged(() => BookButtonText);
+                RaisePropertyChanged(() => BookMessage);
+            });
         }
 
 		public override void Start()

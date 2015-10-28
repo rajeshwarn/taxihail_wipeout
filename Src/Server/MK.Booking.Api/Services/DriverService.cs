@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Services
                     companyKey = order.CompanyKey;
                 }
 
-                _ibsOrderService.SendMessageToDriver(request.Message, request.VehicleNumber, companyKey);
+                _ibsOrderService.SendMessageToDriver(request.Message, request.VehicleNumber, request.ServiceType, companyKey);
             }
             catch (Exception ex)
             {
