@@ -122,7 +122,8 @@ namespace apcurium.MK.Booking.EventHandlers
 					CompanyName = @event.CompanyName,
 					CompanyKey = @event.CompanyKey,
 					Market = @event.Market,
-					Error = @event.Error
+					Error = @event.Error,
+                    ServiceType = @event.Settings.ServiceType
 				};
 				orderReport.Client = new OrderReportClient
 				{
