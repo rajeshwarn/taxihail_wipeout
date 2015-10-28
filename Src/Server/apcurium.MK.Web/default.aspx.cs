@@ -169,7 +169,7 @@ namespace apcurium.MK.Web
             ReferenceData = referenceData.ToString();
 
             var vehicleService = ServiceLocator.Current.GetInstance<VehicleService>();
-            var vehicleTypes = (IList<VehicleTypeDetail>)vehicleService.Get(new VehicleTypeRequest());
+            var vehicleTypes = (IList<VehicleType>)vehicleService.Get(new VehicleTypeRequest());
             VehicleTypes = JsonSerializer.SerializeToString(vehicleTypes, vehicleTypes.GetType());
             CountryCodes = Newtonsoft.Json.JsonConvert.SerializeObject(CountryCode.CountryCodes);
 

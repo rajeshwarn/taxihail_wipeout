@@ -23,6 +23,8 @@ using CustomerPortal.Contract.Response;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Common.Provider;
+using apcurium.MK.Common.Entity;
 
 #endregion
 
@@ -34,6 +36,8 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IVehicleTypeDao _dao;
         private readonly ICommandBus _commandBus;
         private readonly ReferenceDataService _referenceDataService;
+        private readonly IServiceTypeSettingsProvider _serviceTypeSettingsProvider;
+        private readonly ITariffProvider _tariffProvider;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
@@ -43,6 +47,8 @@ namespace apcurium.MK.Booking.Api.Services
             IVehicleTypeDao dao,
             ICommandBus commandBus,
             ReferenceDataService referenceDataService,
+            IServiceTypeSettingsProvider serviceTypeSettingsProvider,
+            ITariffProvider tariffProvider,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             IServerSettings serverSettings,
             ILogger logger,
@@ -53,6 +59,8 @@ namespace apcurium.MK.Booking.Api.Services
             _dao = dao;
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
+            _serviceTypeSettingsProvider = serviceTypeSettingsProvider;
+            _tariffProvider = tariffProvider;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _logger = logger;
             _orderDao = orderDao;
@@ -187,9 +195,38 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(VehicleTypeRequest request)
         {
+            var settings = _serviceTypeSettingsProvider.GetAll();
+            var tariffs = _tariffProvider.GetTariffs();
+            
             if (request.Id == Guid.Empty)
             {
-                return _dao.GetAll();
+                return _dao.GetAll().Select(x =>
+                    {
+                        var serviceTypeSetting = settings.FirstOrDefault(y => x.ServiceType == y.ServiceType);
+                        
+                        var tariff = tariffs.FirstOrDefault(y => y.VehicleTypeId.HasValue && y.VehicleTypeId == x.ReferenceDataVehicleId)
+                                ?? tariffs.FirstOrDefault(y => y.VehicleTypeId == null);
+
+                        var baseRate = new BaseRateInfo
+                        {
+                            AirportMeetAndGreet = (decimal)serviceTypeSetting.AirportMeetAndGreetRate,
+                            WaitTime = (decimal)serviceTypeSetting.WaitTimeRatePerMinute,
+                            BaseRateNoMiles = tariff.FlatRate,
+                            MinimumFare = (decimal)tariff.MinimumRate,
+                            PerMileRate = decimal.Round((decimal)(tariff.KilometricRate * 1.609344), 2)
+                        };
+
+                        return new VehicleType { 
+                            BaseRate = baseRate,
+                            Id = x.Id,
+                            LogoName = x.LogoName,
+                            MaxNumberPassengers = x.MaxNumberPassengers,
+                            Name = x.Name,
+                            ReferenceDataVehicleId = x.ReferenceDataVehicleId,
+                            ServiceType = x.ServiceType
+                        };
+                    }).ToList();
+
             }
 
             var vehicleType = _dao.FindById(request.Id);
