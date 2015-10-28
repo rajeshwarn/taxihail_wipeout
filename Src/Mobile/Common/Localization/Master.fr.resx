@@ -2346,9 +2346,9 @@
 		<value>Non merci</value>
 	</data>
 	<data name="LinkForApplicationStoreAbsentTitle" xml:space="preserve">
-		<value>Le lien est absent</value>
+		<value>Le est absent</value>
 	</data>
 	<data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
-		<value>Le lien pour noter l'application est absent. Appelez support s'il vous plaît</value>
+		<value>Le lien pour noter l'application est absent</value>
 	</data>
 </root>
