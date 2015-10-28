@@ -1,18 +1,14 @@
-#region
-
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Entity;
 using System;
-
-#endregion
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Client
 {
     public interface IVehicleClient
     {
-        Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId);
+        Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId, ServiceType serviceType);
 
 		Task<VehicleType[]> GetVehicleTypes();
         
@@ -20,6 +16,6 @@ namespace apcurium.MK.Booking.Api.Client
 
 	    Task<AvailableVehicle> GetTaxiLocation(Guid orderId, string medallion);
 
-		Task SendMessageToDriver(string message, string vehicleNumber, Guid orderId);
+		Task SendMessageToDriver(string message, string vehicleNumber, Guid orderId, ServiceType serviceType);
     }
 }

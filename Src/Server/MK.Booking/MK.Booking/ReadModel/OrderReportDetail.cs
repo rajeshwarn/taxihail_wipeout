@@ -81,6 +81,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsPrepaid { get; set; }
 
+        public ServiceType ServiceType { get; set; }
+
         public DateTime? PickupDateTime
 		{
 			get

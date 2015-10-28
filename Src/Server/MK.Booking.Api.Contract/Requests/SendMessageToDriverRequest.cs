@@ -1,6 +1,7 @@
 using System;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
@@ -13,5 +14,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 	    public Guid OrderId { get; set; }
 
 	    public string VehicleNumber { get; set; }
+
+        public ServiceType ServiceType { get; set; }
 	}
 }

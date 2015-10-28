@@ -33,6 +33,7 @@ using Android.Animation;
 using Android.App;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -225,7 +226,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     var icon = ViewModel.Settings.ShowOrientedPins  && value.CompassCourse.HasValue
 						? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
-                        : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap());
+                        : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap(value.ServiceType));
                     
                     AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
                         {
@@ -250,7 +251,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             .InvokeIcon(
 								ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue
 								? BitmapDescriptorFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
-                                : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap()))
+                                : BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap(value.ServiceType)))
                             .Visible(true);
 
                         if (_showVehicleNumber)
@@ -289,9 +290,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 	    }
 
-		private Bitmap CreateTaxiBitmap()
+		private Bitmap CreateTaxiBitmap(ServiceType serviceType)
 		{
-			return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
+			return DrawHelper.ApplyColorToMapIcon(serviceType == ServiceType.Luxury ? Resource.Drawable.blackcar_icon : Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
 	    }
 
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();

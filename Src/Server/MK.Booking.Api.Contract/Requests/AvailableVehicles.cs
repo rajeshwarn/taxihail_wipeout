@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Enumeration;
 
 #endregion
 
@@ -35,6 +36,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         /// If specified, will return only available vehicles from those fleets
         /// </summary>
         public int[] FleetIds { get; set; }
+
+        public ServiceType ServiceType { get; set; }
     }
 
     public class AvailableVehiclesResponse : List<AvailableVehicle>

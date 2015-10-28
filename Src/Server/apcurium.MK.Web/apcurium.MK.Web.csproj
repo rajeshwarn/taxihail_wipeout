@@ -277,6 +277,9 @@
     <Content Include="admin\localization\EditTariff.json" />
     <Content Include="admin\localization\ManageTariffs.json" />
     <Content Include="admin\localization\TariffItem.json" />
+    <Content Include="admin\templates\AdminMenu.hbs.js">
+      <DependentUpon>AdminMenu.handlebars</DependentUpon>
+    </Content>
     <Content Include="admin\templates\EditTariff.handlebars">
       <SubType>Designer</SubType>
     </Content>

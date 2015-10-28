@@ -14,6 +14,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using System.Text;
+using apcurium.MK.Common.Enumeration;
 
 #endregion
 
@@ -95,6 +96,9 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Order.CompanyName"] = orderReport.Order.CompanyName;
                             orderReportEntry["Order.CompanyKey"] = orderReport.Order.CompanyKey;
                             orderReportEntry["Order.Market"] = orderReport.Order.Market;
+                            
+                            var serviceType = orderReport.Order.ServiceType;
+                            orderReportEntry["Order.ServiceType"] = Enum.GetName(typeof(ServiceType), serviceType != null ? orderReport.Order.ServiceType : ServiceType.Taxi);
                             orderReportEntry["Order.IBSOrderId"] = orderReport.Order.IBSOrderId.ToString();
                             orderReportEntry["Order.ChargeType"] = orderReport.Order.ChargeType;
                             orderReportEntry["Charge Account with Card on File Payment"] = orderReport.Order.IsChargeAccountPaymentWithCardOnFile.ToString();
