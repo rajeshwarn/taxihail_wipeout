@@ -36,8 +36,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
         public AddressViewModel[] FilteredPlaces { get; private set; }
 
-		private AddressLocationType _currentActiveFilter;
-
 		private string _previousPostCode = string.Empty;
 
 		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
@@ -147,8 +145,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	        try
 	        {
-				_currentActiveFilter = filter;
-
 		        if (filter == AddressLocationType.Unspeficied)
 	            {
                     await LoadAddressesUnspecified();

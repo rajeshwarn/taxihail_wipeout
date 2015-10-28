@@ -91,11 +91,11 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress =
                     new Address
                     {
-						FullAddress = "7250 Rue du Mile End, Montréal, QC H2R 2W1, Canada",
-						StreetNumber = "7250",
-						Street = "Rue du Mile End",
+						FullAddress = "1236 Rue St-Hubert, Montréal, QC H2L 2W1, Canada",
+						StreetNumber = "1236",
+						Street = "Rue St-Hubert",
 						City = "Montréal",
-						ZipCode = "H2R 2W1",
+						ZipCode = "H2L 2W1",
 						State = "QC",
 						Apartment = "3939",
                         RingCode = "3131",
@@ -105,11 +105,11 @@ namespace apcurium.MK.Web.Tests
                 DropOffAddress =
                     new Address
 					{
-						FullAddress = "7250 Rue du Mile End, Montréal, QC H2R 2W1, Canada",
-						StreetNumber = "7250",
-						Street = "Rue du Mile End",
+						FullAddress = "426 Rue Saint Gabriel, Montréal, QC H2Y 2W1, Canada",
+						StreetNumber = "426",
+						Street = "Rue Saint Gabriel",
 						City = "Montréal",
-						ZipCode = "H2R 2W1",
+						ZipCode = "H2Y 2W1",
 						State = "QC",
 						Latitude = 45.50643,
 						Longitude = -73.554052
