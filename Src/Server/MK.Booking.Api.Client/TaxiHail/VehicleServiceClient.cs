@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
@@ -5,11 +6,8 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Extensions;
-using System;
-using apcurium.MK.Common.Entity;
-using System.Collections.Generic;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -22,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			_logger = logger;
         }
 
-		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId, ServiceType? serviceType)
+		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId, ServiceType serviceType)
 		{
 			var response = await Client.PostAsync(new AvailableVehicles
 				{

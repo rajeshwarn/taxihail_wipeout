@@ -1,19 +1,14 @@
-#region
-
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Entity;
 using System;
 using apcurium.MK.Common.Enumeration;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Client
 {
     public interface IVehicleClient
     {
-        Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId, ServiceType? serviceType);
+        Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId, ServiceType serviceType);
 
 		Task<VehicleType[]> GetVehicleTypes();
         

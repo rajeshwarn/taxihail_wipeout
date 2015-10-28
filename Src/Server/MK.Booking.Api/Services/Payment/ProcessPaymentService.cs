@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private bool UpdateIBSOrderPaymentType(int ibsAccountId, int ibsOrderId, ServiceType serviceType, string companyKey = null)
         {
             // Change payment type to Pay in Car            
-            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId);
+            return _ibsServiceProvider.Booking(companyKey, serviceType).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId);
         }
     }
 }

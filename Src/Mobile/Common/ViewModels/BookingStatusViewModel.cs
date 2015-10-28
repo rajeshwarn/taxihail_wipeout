@@ -339,8 +339,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					VehicleNumber = medallion,
                     CompassCourse = compassCourse,
                     Market = market,
-					ServiceType = _orderWorkflowService.GetServiceTypeForVehicleId(Order.Settings.VehicleTypeId).Result
-				};
+					ServiceType = Order.Settings.ServiceType
+                };
 			}
 			else
 			{
@@ -756,8 +756,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void AddReminder (OrderStatusDetail status)
         {
-			var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
-
             if (!HasSeenReminderPrompt(status.OrderId))
             {
                 SetHasSeenReminderPrompt(status.OrderId);
@@ -767,7 +765,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["YesButton"],
 					() => _phoneService.AddEventToCalendarAndReminder(
 						string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName),
-                        string.Format(this.Services().Localize["ReminderDetails" + (serviceType == ServiceType.Luxury ? "_Luxury" : "")], 
+                        string.Format(this.Services().Localize["ReminderDetails" + (status.ServiceType == ServiceType.Luxury ? "_Luxury" : "")], 
 						Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
                     Order.PickupAddress.FullAddress, 
                     Order.PickupDate,
@@ -1281,9 +1279,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         string.Empty,
 						() => { });
 
-						var serviceType = _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
-
-						var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber, Order.Id, serviceType);
+						var messageSent = await _vehicleService.SendMessageToDriver(message, _vehicleNumber, Order.Id, Order.Settings.ServiceType);
 						
 	                if (!messageSent)
 	                {

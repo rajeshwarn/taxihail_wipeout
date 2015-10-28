@@ -244,7 +244,7 @@ namespace apcurium.MK.Booking.Api.Services
 
 			createReportOrder.IsPrepaid = isPrepaid;
 
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
+            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Settings.ServiceType);
 
             if (!_serverSettings.ServerData.DisableFutureBooking && request.PickupDate.HasValue)
             {
@@ -658,7 +658,7 @@ namespace apcurium.MK.Booking.Api.Services
             try
             {
                 // Recreate order on next dispatch company IBS
-                ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
+                ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey, null);
             }
             catch (Exception ex)
             {
@@ -907,8 +907,13 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
 
-        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
+        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null, ServiceType? serviceType = null)
         {
+            if (serviceType.HasValue && serviceType.Value != ServiceType.Taxi)
+            {
+                companyKey = ServiceType.Luxury.ToString();
+            }
+
             var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
             if (ibsAccountId.HasValue)
             {
@@ -916,7 +921,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Account doesn't exist, create it
-            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
+            ibsAccountId = _ibsServiceProvider.Account(companyKey, serviceType).CreateAccount(account.Id,
                 account.Email,
                 string.Empty,
                 account.Name,

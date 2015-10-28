@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public int? CustomerNumber { get; set; }
         public int? TripDurationInSeconds { get; set; }
         public int? VehicleType  { get; set; }
-        public ServiceType? ServiceType { get; set; }
+        public ServiceType ServiceType { get; set; }
         
     }
 

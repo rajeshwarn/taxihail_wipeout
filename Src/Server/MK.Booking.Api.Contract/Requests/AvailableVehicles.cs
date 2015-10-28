@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         /// </summary>
         public int[] FleetIds { get; set; }
 
-        public ServiceType? ServiceType { get; set; }
+        public ServiceType ServiceType { get; set; }
     }
 
     public class AvailableVehiclesResponse : List<AvailableVehicle>

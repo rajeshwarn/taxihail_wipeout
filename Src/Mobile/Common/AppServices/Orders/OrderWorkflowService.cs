@@ -330,19 +330,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task SetVehicleType(int? vehicleTypeId)
 		{
-			if (_appSettings.Data.VehicleTypeSelectionEnabled)
+            // this must be done before changing vehicleTypeSubject because of VehicleService observables
+            var serviceType = await GetServiceTypeForVehicleId(vehicleTypeId);
+            var serviceTypeChanged = await ChangeServiceTypeIfNecessary(serviceType);
+            
+            if (_appSettings.Data.VehicleTypeSelectionEnabled)
 			{
 				_vehicleTypeSubject.OnNext(vehicleTypeId);
 			}
 
 			var bookingSettings = await _bookingSettingsSubject.Take (1).ToTask ();
 			bookingSettings.VehicleTypeId = vehicleTypeId;
-            
-            var serviceType = await GetServiceTypeForVehicleId(vehicleTypeId);
-			var serviceTypeChanged = await ChangeServiceTypeIfNecessary(serviceType);
             bookingSettings.ServiceType = serviceType;
 
-			await SetBookingSettings (bookingSettings);
+            await SetBookingSettings (bookingSettings);
 
 			if (serviceTypeChanged)
 			{
