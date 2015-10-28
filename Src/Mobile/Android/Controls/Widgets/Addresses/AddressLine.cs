@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             _address = address;
             _select = select;
 
-            LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.WrapContent);
+            LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
 
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
             var layout = inflater.Inflate(Resource.Layout.Control_AddressLine, this, true);

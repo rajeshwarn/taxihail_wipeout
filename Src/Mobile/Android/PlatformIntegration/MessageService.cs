@@ -165,13 +165,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                     rootView.RemoveView(contentView);
 
                     var relLayout = new RelativeLayout(topActivity.Activity.ApplicationContext);
-                    relLayout.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
+                    relLayout.LayoutParameters = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
                     relLayout.AddView(contentView);
 
                     var b = new ProgressBar(topActivity.Activity.ApplicationContext, null, Android.Resource.Attribute.ProgressBarStyleHorizontal)
                     {
                         Progress = 25,
-                        LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.WrapContent),
+                        LayoutParameters = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent),
                         Indeterminate = true,
                         Tag = "Progress"
                     };
