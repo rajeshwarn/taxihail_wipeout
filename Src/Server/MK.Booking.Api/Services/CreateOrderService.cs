@@ -473,7 +473,8 @@ namespace apcurium.MK.Booking.Api.Services
                     VehicleType = null,
                     VehicleTypeId = null
                 },
-                Note = order.UserNote
+                Note = order.UserNote,
+                ClientLanguageCode = account.Language
             };
 
             var fare = GetFare(new CreateOrder.RideEstimate {Price = order.EstimatedFare});
@@ -501,6 +502,7 @@ namespace apcurium.MK.Booking.Api.Services
             ValidateProvider(newOrderRequest, newReferenceData, market.HasValue());
 
             var newOrderCommand = Mapper.Map<Commands.CreateOrder>(newOrderRequest);
+            newOrderCommand.OrderId = request.OrderId;
             newOrderCommand.ReferenceDataCompanyList = newReferenceData.CompaniesList.ToArray();
             newOrderCommand.Market = market;
             newOrderCommand.CompanyKey = request.NextDispatchCompanyKey;

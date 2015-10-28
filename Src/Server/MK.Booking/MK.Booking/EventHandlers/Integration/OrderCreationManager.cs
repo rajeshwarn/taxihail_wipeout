@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 @event.IbsInformationNote, @event.PickupDate, null, null,
                 @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare);
 
-            SendOrderCreationCommands(@event.SourceId, newIbsOrderId, @event.IsPrepaid, @event.ClientLanguageCode);
+            SendOrderCreationCommands(@event.SourceId, newIbsOrderId, @event.IsPrepaid, @event.ClientLanguageCode, true, @event.CompanyKey, @event.CompanyName, @event.Market);
         }
 
         public void Handle(PrepaidOrderPaymentInfoUpdated @event)

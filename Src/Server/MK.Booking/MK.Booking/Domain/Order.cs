@@ -46,6 +46,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderUnpairedFromManualRideLinq>(NoAction);
             Handles<ManualRideLinqTripInfoUpdated>(NoAction);
             Handles<OrderNotificationDetailUpdated>(NoAction);
+            Handles<IbsOrderSwitchInitiated>(NoAction);
         }
 
 
