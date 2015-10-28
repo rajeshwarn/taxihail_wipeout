@@ -7,38 +7,54 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Enumeration;
 
-namespace apcurium.MK.Booking.Mobile.AppServices
+namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-	public class RateApplicationService:IRateApplicationService
+	public class RateApplicationService:BaseService, IRateApplicationService
 	{
-		private IMessageService _messageService;
-		private IDeviceRateApplicationService _deviceRateApplicationService;
-		private ILocalization _localization;
-		private IAppSettings _applicationSettings;
-		private RateApplicationServiceSettings _currentRatingState;
-		private ApplicationVersion _currentApplicationVersion;
+		public static string RateApplicationServiceSettingsName = "RateApplicationServiceSettings";
 
-		public RateApplicationService(IMessageService messageService, IDeviceRateApplicationService deviceRateApplicationService, IPackageInfo packageInfo, ILocalization localization, IAppSettings applicationSettings)
+		private readonly IMessageService _messageService;
+		private readonly IDeviceRateApplicationService _deviceRateApplicationService;
+		private readonly ILocalization _localization;
+		private readonly IAppSettings _applicationSettings;
+		private RateApplicationState _currentState;
+
+		public RateApplicationService(IMessageService messageService, IDeviceRateApplicationService deviceRateApplicationService, ILocalization localization, IAppSettings applicationSettings)
 		{
 			_messageService = messageService;
 			_deviceRateApplicationService = deviceRateApplicationService;
 			_localization = localization;
 			_applicationSettings = applicationSettings;
 
-			_currentRatingState = new RateApplicationServiceSettings();
-			_currentRatingState.LoadCurrentSettings();
-			_currentApplicationVersion = new ApplicationVersion(packageInfo.Version);
+			LoadCurrentSettings();
 		}
 
-		public bool IsShowRateApplicationDialog(int successfulTripsNumber)
+		public void LoadCurrentSettings()
+		{
+			var currentStateText = UserCache.Get<string>(RateApplicationServiceSettingsName);
+			var currentState = RateApplicationState.NotRated;
+
+			if (currentStateText.HasValue())
+			{
+				Enum.TryParse<RateApplicationState>(currentStateText, out currentState);
+			}
+		}
+
+		public void SetState(RateApplicationState rateApplicationState, DateTime stateTime, ApplicationVersion applicationVersion)
+		{
+			_currentState = rateApplicationState;
+			UserCache.Set<string>(RateApplicationServiceSettingsName, _currentState.ToString());
+		}
+
+		public bool CanShowRateApplicationDialog(int successfulTripsNumber)
 		{
 			bool result = false;
 
-			if ((_currentRatingState.RateApplicationState == RateApplicationState.NotRated || _currentRatingState.RateApplicationState == RateApplicationState.Postponed)
-				&& (_applicationSettings.Data.RateMobileApplicationMinimumSuccessfulTrips == 0
-					|| (successfulTripsNumber > 0 && successfulTripsNumber % _applicationSettings.Data.RateMobileApplicationMinimumSuccessfulTrips == 0))
-				&& _applicationSettings.Data.PlayLink.HasValue() && _applicationSettings.Data.AppleLink.HasValue())
+			if ((_currentState == RateApplicationState.NotRated || _currentState == RateApplicationState.Postponed)
+				&& (_applicationSettings.Data.MinimumTripsForAppRating == 0
+					|| (successfulTripsNumber > 0 && successfulTripsNumber % _applicationSettings.Data.MinimumTripsForAppRating == 0)))
 			{
 				result = true;
 			}
@@ -48,10 +64,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		public RateApplicationState CurrentRateApplicationState()
 		{
-			return _currentRatingState.RateApplicationState;
+			return _currentState;
 		}
 
-		public void ShowRateApplicationSuggestDialog()
+		public void ShowRateApplicationDialog()
 		{
 			_messageService.ShowMessage(_localization["RateMobileApplicationTitle"], _localization["RateMobileApplicationText"],
 				_localization["RateMobileApplicationNow"], RedirectToRatingPage,
@@ -61,18 +77,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		private void RedirectToRatingPage()
 		{
-			_currentRatingState.SetState(RateApplicationState.Rated, DateTime.Now, _currentApplicationVersion);
-			_deviceRateApplicationService.RedirectToRatingPage();
+			UserCache.Set<string>(RateApplicationServiceSettingsName, RateApplicationState.Rated.ToString());
+			if (!_deviceRateApplicationService.RedirectToRatingPage())
+			{
+				_messageService.ShowMessage(_localization["LinkForApplicationStoreAbsentTitle"], _localization["LinkForApplicationStoreAbsentText"]);
+			}
 		}
 
 		private void PostponeRatingPopup()
 		{
-			_currentRatingState.SetState(RateApplicationState.Postponed, DateTime.Now, _currentApplicationVersion);
+			UserCache.Set<string>(RateApplicationServiceSettingsName, RateApplicationState.Postponed.ToString());
 		}
 
 		private void CancelRatingPopup()
 		{
-			_currentRatingState.SetState(RateApplicationState.Cancelled, DateTime.Now, _currentApplicationVersion);
+			UserCache.Set<string>(RateApplicationServiceSettingsName, RateApplicationState.Ignored.ToString());
 		}
 	}
 }

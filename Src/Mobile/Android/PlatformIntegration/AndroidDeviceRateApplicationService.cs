@@ -1,16 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.Net;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -20,8 +14,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		/// http://developer.android.com/distribute/tools/promote/linking.html
 		/// </summary>
 
-		private ILogger _logger;
-		private IAppSettings _settings;
+		readonly private ILogger _logger;
+		readonly private IAppSettings _settings;
 
 		public AndroidDeviceRateApplicationService(ILogger logger, IAppSettings settings)
 		{
@@ -29,10 +23,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			_settings = settings;
 		}
 
-		public void RedirectToRatingPage()
+		public bool RedirectToRatingPage()
 		{
-			Uri androidMarketLink = Uri.Parse(_settings.Data.PlayLink);
-			Intent androidMarketLinkIntent = new Intent(Intent.ActionView, androidMarketLink);
+			if (!_settings.Data.Store.PlayLink.HasValue())
+			{
+				return false;
+			}
+
+			var androidMarketLink = Uri.Parse(_settings.Data.Store.PlayLink);
+			var androidMarketLinkIntent = new Intent(Intent.ActionView, androidMarketLink);
 			androidMarketLinkIntent.SetFlags(ActivityFlags.NewTask);
 
 			try
@@ -43,6 +42,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			{
 				_logger.LogError(exception);
 			}
+
+			return true;
 		}
 	}
 }

@@ -224,6 +224,7 @@ namespace apcurium.MK.Booking.Test.ExportFixture
         {
             _reportDetailGenerator.Handle(new OrderRated
             {
+				AccountId = _accountId,
                 SourceId = _orderId,
                 Note = "x",
                 RatingScores = new List<RatingScore>

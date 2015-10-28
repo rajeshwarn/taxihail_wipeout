@@ -130,8 +130,6 @@
     <Compile Include="AppServices\Impl\PromotionService.cs" />
     <Compile Include="AppServices\INetworkRoamingService.cs" />
     <Compile Include="AppServices\IPromotionService.cs" />
-    <Compile Include="AppServices\RateApplicationServiceSettings.cs" />
-    <Compile Include="AppServices\RateApplicationState.cs" />
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />

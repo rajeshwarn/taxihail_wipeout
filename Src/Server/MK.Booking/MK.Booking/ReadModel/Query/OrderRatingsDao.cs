@@ -45,11 +45,11 @@ namespace apcurium.MK.Booking.ReadModel.Query
         }
 
 
-		public IList<RatingScoreDetails> GetRatings()
+		public IList<RatingScoreDetails> GetRatingsByAccountId(Guid accountId)
 		{
 			using (var context = _contextFactory.Invoke())
 			{
-				return context.Query<RatingScoreDetails>().ToArray();
+				return context.Query<RatingScoreDetails>().Where(r => r.AccountId == accountId).ToArray();
 			}
 		}
     }

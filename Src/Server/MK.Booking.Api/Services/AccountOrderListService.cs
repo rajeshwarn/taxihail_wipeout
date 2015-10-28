@@ -16,11 +16,11 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class AccountOrderListService : Service
     {
-		protected IOrderDao _orderDao { get; set; }
-		
-		private IOrderRatingsDao _orderRatingsDao { get; set; }
+		protected readonly IOrderDao _orderDao;
 
-		private IServerSettings _serverSettings;
+		private readonly IOrderRatingsDao _orderRatingsDao;
+
+		private readonly IServerSettings _serverSettings;
 
 		public AccountOrderListService(IOrderDao orderDao, IOrderRatingsDao orderRatingsDao, IServerSettings serverSettings)
         {
@@ -58,17 +58,15 @@ namespace apcurium.MK.Booking.Api.Services
 
 		public object Get(AccountOrderNumberToAllowRatingRequest request)
 		{
-			var userId = new Guid(this.GetSession().UserAuthId);
+			var acccountId = new Guid(this.GetSession().UserAuthId);
 
-			var successfulTripsForApplicationRATe = from order in _orderDao.FindByAccountId(userId)
-					  from rating in _orderRatingsDao.GetRatings()
-					  where rating.OrderId == order.Id && order.IsRated && order.Status == (int)apcurium.MK.Common.Entity.OrderStatus.Completed
+			var successfulTripsForApplicationRating = from rating in _orderRatingsDao.GetRatingsByAccountId(acccountId)
 					  group rating by rating.OrderId into ratingGrouped
 					  select ratingGrouped.Average(rt => rt.Score) into averageScore
-					  where averageScore >= _serverSettings.ServerData.RateMobileMinimumRideRatingForSuccessfulTrip
+					  where averageScore >= _serverSettings.ServerData.MinimumRideRatingScoreForAppRating
 					  select averageScore;
 
-			return successfulTripsForApplicationRATe.Count();
+			return successfulTripsForApplicationRating.Count();
 		}
     }
 }

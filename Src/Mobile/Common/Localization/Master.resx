@@ -2346,4 +2346,10 @@
 	<data name="RateMobileApplicationNever" xml:space="preserve">
 		<value>No, Thanks</value>
 	</data>
+	<data name="LinkForApplicationStoreAbsentTitle" xml:space="preserve">
+		<value>Link is absent</value>
+	</data>
+	<data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
+		<value>Link to evaluate application is absent. Call support please</value>
+	</data>
 </root>

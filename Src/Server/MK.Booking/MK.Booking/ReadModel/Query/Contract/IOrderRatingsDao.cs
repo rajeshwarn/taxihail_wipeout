@@ -12,6 +12,6 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
     {
         OrderRatings GetOrderRatingsByOrderId(Guid orderId);
 
-		IList<RatingScoreDetails> GetRatings();
+		IList<RatingScoreDetails> GetRatingsByAccountId(Guid accountId);
     }
 }

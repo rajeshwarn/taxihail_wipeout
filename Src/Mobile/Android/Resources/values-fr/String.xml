@@ -736,9 +736,11 @@
   <string name="OrderAirportView_BAD_AIRLINE_CODE">Une erreur est survenue avec le fournisseur d\'information de vol.</string>
   <string name="ManualPairing_TimeOut_Title">Erreur de connection</string>
   <string name="ManualPairing_TimeOut_Message">Un probleme de connexion est survenu lors de la tentative d\'obtenir l\'état de votre course de taxi.</string>
-  <string name="RateMobileApplicationTitle">Notez cet application</string>
-  <string name="RateMobileApplicationText">Si vous aimez utiliser cet application, n\'oubliez pas de donner votre avis. Merci d\'avance pour votre soutien !</string>
-  <string name="RateMobileApplicationNow">Noter maintenant</string>
-  <string name="RateMobileApplicationLater">Me le rappeler ultérieurement</string>
-  <string name="RateMobileApplicationNever">Non, merci</string>
+  <string name="RateMobileApplicationTitle">Notez cette application</string>
+  <string name="RateMobileApplicationText">Si vous aimez utiliser cette application, n\'oubliez pas de donner votre avis. Merci d\'avance pour votre soutien !</string>
+  <string name="RateMobileApplicationNow">Notez maintenant</string>
+  <string name="RateMobileApplicationLater">Plus tard</string>
+  <string name="RateMobileApplicationNever">Non merci</string>
+  <string name="LinkForApplicationStoreAbsentTitle">Le lien est absent</string>
+  <string name="LinkForApplicationStoreAbsentText">Le lien pour noter l\'application est absent. Appelez support s\'il vous plaît</string>
 </resources>

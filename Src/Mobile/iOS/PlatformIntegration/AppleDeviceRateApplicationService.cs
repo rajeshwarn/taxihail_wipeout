@@ -16,24 +16,30 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 	/// https://developer.apple.com/library/ios/featuredarticles/iPhoneURLScheme_Reference/iPhoneURLScheme_Reference.pdf
 	/// </summary>
 
-
 	public class AppleDeviceRateApplicationService:IDeviceRateApplicationService
 	{
-        private IAppSettings _settings;
+        private readonly IAppSettings _settings;
 
         public AppleDeviceRateApplicationService(IAppSettings settings)
         {
             _settings = settings;
         }
 
-		public void RedirectToRatingPage()
+		public bool RedirectToRatingPage()
 		{
-            NSUrl appleStoreLink = new Foundation.NSUrl(_settings.Data.AppleLink);
+			if (!_settings.Data.Store.AppleLink.HasValue())
+			{
+				return false;
+			}
+
+            var appleStoreLink = new Foundation.NSUrl(_settings.Data.Store.AppleLink);
 
             UIApplication.SharedApplication.OpenUrl(appleStoreLink);
 
             appleStoreLink.Dispose();
             appleStoreLink = null;
+
+			return true;
 		}
 	}
 }

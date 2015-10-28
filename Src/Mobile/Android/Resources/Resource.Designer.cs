@@ -7195,8 +7195,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070176
 			public const int AccountDisabled_NoCall = 2131165558;
 			
-			// aapt resource value: 0x7f07035e
-			public const int AccountLinkedWithFAcebook = 2131166046;
+			// aapt resource value: 0x7f070360
+			public const int AccountLinkedWithFAcebook = 2131166048;
 			
 			// aapt resource value: 0x7f070353
 			public const int AccountLinkedWithFacebook = 2131166035;
@@ -8070,6 +8070,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0701f5
 			public const int LargeBagsLabel = 2131165685;
+			
+			// aapt resource value: 0x7f07035f
+			public const int LinkForApplicationStoreAbsentText = 2131166047;
+			
+			// aapt resource value: 0x7f07035e
+			public const int LinkForApplicationStoreAbsentTitle = 2131166046;
 			
 			// aapt resource value: 0x7f0702a4
 			public const int LinkPayPal = 2131165860;

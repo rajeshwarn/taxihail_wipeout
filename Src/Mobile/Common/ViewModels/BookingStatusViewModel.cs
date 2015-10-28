@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _isOrderRefreshing;
 
-		private bool _ratingSuggestionShownThisTrip = false;
+		private bool _wasPromptedToRateApp = false;
 
 		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
@@ -412,7 +412,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			StopOrientationServiceIfNeeded();
 
 			_isStarted = false;
-			_ratingSuggestionShownThisTrip = false;
+			_wasPromptedToRateApp = false;
 		}
 
 		private Task<OrderManualRideLinqDetail> GetManualRideLinqDetails()
@@ -794,25 +794,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
 		private TaxiLocation _taxiLocation;
 
-		private void ShowRateApplicationSuggestionDialog()
+		private async Task ShowRateApplicationSuggestionDialog()
 		{
-			if (!_ratingSuggestionShownThisTrip && _applicationSettings.Data.EnableRateMobileApplication)
+			if (!_wasPromptedToRateApp && _applicationSettings.Data.EnableRateMobileApplication)
 			{
 				int successfulTripsNumber = 0;
 
 				if ((_applicationSettings.Data.RatingEnabled || _applicationSettings.Data.RatingRequired) && (_rateApplicationService.CurrentRateApplicationState() == RateApplicationState.NotRated || _rateApplicationService.CurrentRateApplicationState() == RateApplicationState.Postponed))
 				{
-					Task<int> ordersNumber = _accountService.GetAccountOrderNumberToAllowRating();
-					ordersNumber.Wait();
-					successfulTripsNumber = ordersNumber.Result;
+					successfulTripsNumber = await _accountService.GetAccountOrderNumberToAllowRating();
 				}
 
-				if (_rateApplicationService.IsShowRateApplicationDialog(successfulTripsNumber))
+				if (_rateApplicationService.CanShowRateApplicationDialog(successfulTripsNumber))
 				{
-					_rateApplicationService.ShowRateApplicationSuggestDialog();
+					_rateApplicationService.ShowRateApplicationDialog();
 				}
 
-				_ratingSuggestionShownThisTrip = true;
+				_wasPromptedToRateApp = true;
 			}
 		}
 
@@ -1001,7 +999,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
 				{
-					Task.Run((Action)ShowRateApplicationSuggestionDialog);
+					ShowRateApplicationSuggestionDialog();
 				}
 
 				if (isDone)

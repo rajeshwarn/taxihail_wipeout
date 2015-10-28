@@ -230,6 +230,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         {
             var orderRated = new OrderRated
             {
+				AccountId = _accountId,
                 SourceId = _orderId,
                 Note = "Note",
                 RatingScores = new List<RatingScore>

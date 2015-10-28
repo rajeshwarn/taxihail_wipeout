@@ -14,6 +14,8 @@ namespace apcurium.MK.Common.Entity
             RatingScores = new List<RatingScore>();
         }
 
+		public Guid AccountId { get; set; }
+
         public Guid OrderId { get; set; }
         public string Note { get; set; }
         public List<RatingScore> RatingScores { get; set; }
