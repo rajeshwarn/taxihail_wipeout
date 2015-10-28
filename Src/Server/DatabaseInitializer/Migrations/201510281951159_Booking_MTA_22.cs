@@ -7,12 +7,12 @@ namespace apcurium.MK.Booking.Migrations
     {
         public override void Up()
         {
-            AddColumn("Booking.OrderStatusDetail", "ServiceType", c => c.Int(nullable: false));
+            AddColumn("Booking.OrderReportDetail", "Order_ServiceType", c => c.Int(nullable: false));
         }
         
         public override void Down()
         {
-            DropColumn("Booking.OrderStatusDetail", "ServiceType");
+            DropColumn("Booking.OrderReportDetail", "Order_ServiceType");
         }
     }
 }
