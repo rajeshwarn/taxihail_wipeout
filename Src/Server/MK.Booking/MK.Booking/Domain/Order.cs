@@ -257,13 +257,14 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderRemovedFromHistory());
         }
 
-        public void RateOrder(string note, List<RatingScore> ratingScores)
+        public void RateOrder(Guid accountId, string note, List<RatingScore> ratingScores)
         {
             if (!_isRated)
             {
                 _isRated = true;
                 Update(new OrderRated
                 {
+					AccountId = accountId,
                     Note = note,
                     RatingScores = ratingScores
                 });

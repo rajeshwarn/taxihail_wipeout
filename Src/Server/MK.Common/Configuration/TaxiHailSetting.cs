@@ -55,6 +55,12 @@ namespace MK.Common.Configuration
                 Enabled = false
 		    };
 
+			Store = new StoreSettingContainer()
+			{
+				AppleLink = "http://www.mobile-knowledge.com/",
+                PlayLink = "http://www.mobile-knowledge.com/"
+			};
+
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
@@ -123,6 +129,7 @@ namespace MK.Common.Configuration
         public NetworkSettingContainer Network { get; protected set; }
 
 		public FlightStatsSettingsContainer FlightStats { get; set; }
+		public StoreSettingContainer Store { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Configuration - Can Change Service Url", Description="Display a button on the login page to change the API server url")]
@@ -505,6 +512,17 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Display - Job Offer Prompt mesage to driver", Description = "Message that will prompt on driver console on the Accept/Decline screen")]
         public string MessagePromptedToDriver { get; protected set; }
-    }
-}
 
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Configuration - Enable Rate Mobile Application", Description = "Enable Rate Mobile Application")]
+		public bool EnableRateMobileApplication { get; protected set; }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Rating - Minimum Trips For App Rating", Description = "Minimum successful trips to allow user to rate applicatio")]
+		public int MinimumTripsForAppRating { get; protected set; }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Rating - Minimum Ride Rating Score for App Rating", Description = "Minimum ride rating score to allow user to rate application")]
+		public int MinimumRideRatingScoreForAppRating { get; protected set; }
+	}
+}

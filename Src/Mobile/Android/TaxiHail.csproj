@@ -280,6 +280,7 @@
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
     <Compile Include="PlatformIntegration\AndroidDeviceOrientationService.cs" />
+    <Compile Include="PlatformIntegration\AndroidDeviceRateApplicationService.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />

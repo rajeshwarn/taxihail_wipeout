@@ -8,6 +8,7 @@ using ServiceStack.ServiceInterface;
 using System.Collections;
 using apcurium.MK.Booking.Domain;
 using System.Collections.Generic;
+using apcurium.MK.Common.Configuration;
 
 #endregion
 
@@ -15,17 +16,23 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class AccountOrderListService : Service
     {
-        public AccountOrderListService(IOrderDao dao)
-        {
-            Dao = dao;
-        }
+		protected readonly IOrderDao _orderDao;
 
-        protected IOrderDao Dao { get; set; }
+		private readonly IOrderRatingsDao _orderRatingsDao;
+
+		private readonly IServerSettings _serverSettings;
+
+		public AccountOrderListService(IOrderDao orderDao, IOrderRatingsDao orderRatingsDao, IServerSettings serverSettings)
+        {
+			_orderDao = orderDao;
+			_orderRatingsDao = orderRatingsDao;
+			_serverSettings = serverSettings;
+        }
 
         public object Get(AccountOrderListRequest request)
         {
             var session = this.GetSession();
-            var orders = Dao.FindByAccountId(new Guid(session.UserAuthId))
+            var orders = _orderDao.FindByAccountId(new Guid(session.UserAuthId))
                 .Where(x => !x.IsRemovedFromHistory)
                 .OrderByDescending(c => c.CreatedDate)
                 .Select(read => new OrderMapper().ToResource(read));
@@ -39,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Services
 		{
 			var orderMapper = new OrderMapper();
 
-			var orders = Dao.FindByAccountId(request.UserId)
+			var orders = _orderDao.FindByAccountId(request.UserId)
 				.Where(x => !x.IsRemovedFromHistory)
 				.OrderByDescending(c => c.CreatedDate)
 				.Select(read => orderMapper.ToResource(read));
@@ -47,6 +54,19 @@ namespace apcurium.MK.Booking.Api.Services
 			var response = new AccountOrderListRequestWithUserIdResponse();
 			response.AddRange(orders);
 			return response;
+		}
+
+		public object Get(AccountOrderNumberToAllowRatingRequest request)
+		{
+			var acccountId = new Guid(this.GetSession().UserAuthId);
+
+			var successfulTripsForApplicationRating = from rating in _orderRatingsDao.GetRatingsByAccountId(acccountId)
+					  group rating by rating.OrderId into ratingGrouped
+					  select ratingGrouped.Average(rt => rt.Score) into averageScore
+					  where averageScore >= _serverSettings.ServerData.MinimumRideRatingScoreForAppRating
+					  select averageScore;
+
+			return successfulTripsForApplicationRating.Count();
 		}
     }
 }

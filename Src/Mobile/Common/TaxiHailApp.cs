@@ -128,6 +128,7 @@ namespace apcurium.MK.Booking.Mobile
 
 			_container.Register<IErrorHandler, ErrorHandler>();
 			_container.Register<IOrientationService, OrientationService>();
+			_container.Register<IRateApplicationService, RateApplicationService>();
 
             RefreshAppData();
 

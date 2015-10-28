@@ -96,6 +96,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             });
 
+			container.Register<IDeviceRateApplicationService, AndroidDeviceRateApplicationService>();
+
 			InitializeSocialNetwork();
         }
 
