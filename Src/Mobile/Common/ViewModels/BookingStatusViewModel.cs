@@ -802,7 +802,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				int successfulTripsNumber = 0;
 
-				if ((_applicationSettings.Data.RatingEnabled || _applicationSettings.Data.RatingRequired) && (_rateApplicationService.CurrentRateApplicationState() == RateApplicationState.NotRated || _rateApplicationService.CurrentRateApplicationState() == RateApplicationState.Postponed))
+				if ((_applicationSettings.Data.RatingEnabled || _applicationSettings.Data.RatingRequired)
+					&& (_rateApplicationService.CurrentRateApplicationState() == RateApplicationState.NotRated
+						|| _rateApplicationService.CurrentRateApplicationState() == RateApplicationState.Postponed))
 				{
 					successfulTripsNumber = await _accountService.GetAccountOrderNumberToAllowRating();
 				}

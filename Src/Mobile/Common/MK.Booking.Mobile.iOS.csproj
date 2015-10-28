@@ -371,7 +371,6 @@
     <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
     <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
     <Compile Include="AppServices\IRateApplicationService.cs" />
-    <Compile Include="AppServices\RateApplicationServiceSettings.cs" />
     <Compile Include="AppServices\Impl\RateApplicationService.cs" />
   </ItemGroup>
   <ItemGroup>
