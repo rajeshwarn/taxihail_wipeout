@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         public void SetDialog(ViewGroup registerContainer, int positionInContainer)
 		{
             var signMenu = new DialogListView(this);
-            signMenu.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent,  ViewGroup.LayoutParams.WrapContent);
+            signMenu.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.MatchParent,  ViewGroup.LayoutParams.WrapContent);
 
             var numberOfFields = ViewModel.HasSocialInfo ? 3 : 5;
 

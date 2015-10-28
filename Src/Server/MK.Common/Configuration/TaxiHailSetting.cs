@@ -510,7 +510,7 @@ namespace MK.Common.Configuration
         public bool IsDriverBonusEnabled { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Display - Message To Prompt To Driver", Description = "Message that will prompt on driver console on the Accept/Decline screen")]
+        [Display(Name = "Display - Job Offer Prompt mesage to driver", Description = "Message that will prompt on driver console on the Accept/Decline screen")]
         public string MessagePromptedToDriver { get; protected set; }
 
 		[SendToClient, CustomizableByCompany]

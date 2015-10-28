@@ -44,5 +44,7 @@
         public bool SubmitAsFleetAuthorization { get; set; }
 
         public string MerchantToken { get; set; }
+
+        public bool UsePairingCode { get; set; }
     }
 }

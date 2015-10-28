@@ -94,12 +94,10 @@ namespace apcurium.MK.Web
             RequestFilters.Add((httpReq, httpResp, requestDto) =>
             {
                 var authSession = httpReq.GetSession();
-                if (authSession != null && authSession.UserAuthId != null)
+                if (authSession != null && !string.IsNullOrEmpty(authSession.UserAuthId))
                 {
-                    var account =
-                        UnityContainerExtensions.Resolve<IAccountDao>(container)
-                            .FindById(new Guid(authSession.UserAuthId));
-                    if (account.DisabledByAdmin)
+                    var account = container.Resolve<IAccountDao>().FindById(new Guid(authSession.UserAuthId));
+                    if (account == null || account.DisabledByAdmin)
                     {
                         httpReq.RemoveSession();
                     }

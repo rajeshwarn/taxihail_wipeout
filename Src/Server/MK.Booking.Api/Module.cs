@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Requests.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Jobs;
@@ -154,6 +155,14 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<PopularAddress, AddPopularAddress>();
             Mapper.CreateMap<PopularAddress, UpdatePopularAddress>();
+
+            Mapper.CreateMap<HailRequest, CreateOrder>();
+            Mapper.CreateMap<HailRequest.RideEstimate, CreateOrder.RideEstimate>();
+            Mapper.CreateMap<OrderKey, IbsOrderKey>();
+            Mapper.CreateMap<IbsOrderKey, OrderKey>();
+            Mapper.CreateMap<VehicleCandidate, IbsVehicleCandidate>();
+            Mapper.CreateMap<IbsHailResponse, OrderHailResult>();
+            Mapper.CreateMap<IbsVehicleCandidate, VehicleCandidate>();
         }
     }
 

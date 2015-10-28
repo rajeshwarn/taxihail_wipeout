@@ -36,9 +36,6 @@ namespace CMTServices
             {
                 return new List<VehicleResponse>();
             }
-            var appendToExistingParams = Settings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
-
-            var searchRadiusInKm = (searchRadius ?? Settings.ServerData.AvailableVehicles.Radius) / 1000;
 
             var honeyBadgerUrlParts = Settings.ServerData.HoneyBadger.ServiceUrl.Split('?');
             var urlParamsFromSetting = honeyBadgerUrlParts.Length > 1 ? honeyBadgerUrlParts[1] : null;

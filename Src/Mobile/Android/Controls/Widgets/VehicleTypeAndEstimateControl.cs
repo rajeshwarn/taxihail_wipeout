@@ -184,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					foreach (var vehicle in Vehicles) {
 						var vehicleView = new VehicleTypeControl (base.Context, vehicle, SelectedVehicle == null ? false : vehicle.Id == SelectedVehicle.Id);
 
-						var layoutParameters = new LinearLayout.LayoutParams (0, LayoutParams.FillParent);
+                        var layoutParameters = new LinearLayout.LayoutParams (0, ViewGroup.LayoutParams.MatchParent);
 						layoutParameters.Weight = 1.0f;
 						vehicleView.LayoutParameters = layoutParameters;
 
