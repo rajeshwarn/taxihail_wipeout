@@ -7,7 +7,6 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Android.Runtime;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Runtime;
 
@@ -135,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
         View GetDivider(){
             var v = new View(Context);
-            v.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FillParent, 1);
+            v.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, 1);
             v.SetBackgroundColor(Android.Graphics.Color.Argb(255, 240, 240, 240));
             return v;
         }

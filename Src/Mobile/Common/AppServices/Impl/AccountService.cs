@@ -49,18 +49,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
-		private readonly ILocationService _locationService;
-        private readonly IPaymentService _paymentService;
 
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
-			ILocalization localize,
-			ILocationService locationService,
-            IPaymentService paymentService)
+			ILocalization localize)
 		{
-			_locationService = locationService;
-            _paymentService = paymentService;
             _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
