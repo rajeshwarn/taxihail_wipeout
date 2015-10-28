@@ -714,11 +714,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		    get { return _taxiLocation; }
 		    set
 		    {
-                if (_taxiLocation == value)
-                {
-                    return;
-                }
-
 			    _taxiLocation = value;
 
 			    UpdateTaxiLocation(value);
