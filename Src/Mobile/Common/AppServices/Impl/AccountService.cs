@@ -374,9 +374,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        private static void SaveCredentials (AuthenticationData authResponse)
+        private void SaveCredentials (AuthenticationData authResponse)
         {         
-			Mvx.Resolve<ICacheService>().Set (AuthenticationDataCacheKey, authResponse);
+			UserCache.Set(AuthenticationDataCacheKey, authResponse);
         }
 
 		public async Task<Account> GetFacebookAccount (string facebookId)
