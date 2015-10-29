@@ -282,7 +282,7 @@ namespace MK.Common.Configuration
         public bool DisableFutureBooking { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Display - Hide Destination", Description="Hide destination address")]
+        [Display(Name = "Display - Hide Destination Button", Description="Hide destination button that allows user to enter a dropoff address")]
         public bool HideDestination { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
