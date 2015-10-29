@@ -374,7 +374,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        private static void SaveCredentials (AuthenticationData authResponse)
+        private void SaveCredentials (AuthenticationData authResponse)
         {         
 			UserCache.Set(AuthenticationDataCacheKey, authResponse);
         }
