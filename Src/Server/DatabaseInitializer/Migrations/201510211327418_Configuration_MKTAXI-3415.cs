@@ -7,7 +7,7 @@ namespace apcurium.MK.Common.Migrations
     {
         public override void Up()
         {
-            AddColumn("Config.NotificationSettings", "DriverBailedPush", c => c.Boolean());
+            AddColumn("Config.NotificationSettings", "DriverBailedPush", c => c.Boolean(false, true));
         }
         
         public override void Down()
