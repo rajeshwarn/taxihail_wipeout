@@ -218,7 +218,7 @@
     <Compile Include="Migrations\201510281727581_Booking_MKTAXI_3347.cs" />
     <Compile Include="Migrations\201510281727581_Booking_MKTAXI_3347.Designer.cs">
       <DependentUpon>201510281727581_Booking_MKTAXI_3347.cs</DependentUpon>
-    <Compile/>
+    </Compile>
     <Compile Include="Migrations\201510211327418_Configuration_MKTAXI-3415.cs" />
     <Compile Include="Migrations\201510211327418_Configuration_MKTAXI-3415.Designer.cs">
       <DependentUpon>201510211327418_Configuration_MKTAXI-3415.cs</DependentUpon>
