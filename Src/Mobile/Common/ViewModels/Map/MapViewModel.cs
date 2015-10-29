@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class MapViewModel: BaseViewModel
     {
-	    private const int TimeToKeepVehiclesOnMapWhenResultNull = 10; // In seconds
+	    private const int TimeToKeepVehiclesOnMapWhenResultNull = 1; // In seconds
 	    private DateTime? _keepVehiclesWhenResultNullStartTime = null;
        
 		private readonly IOrderWorkflowService _orderWorkflowService;
@@ -158,9 +158,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 				}
 
+				_availableVehicles = value;
 				_keepVehiclesWhenResultNullStartTime = null;
 
-				_availableVehicles = value;
 				RaisePropertyChanged();
 			}
 		}
