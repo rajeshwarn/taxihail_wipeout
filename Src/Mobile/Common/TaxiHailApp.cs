@@ -132,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile
 
             RefreshAppData();
 
-#if !DEBUG
+#if DEBUG
 			// In debug, we should allow all certs to allow us to debug issues that might arise.
 			ServicePointManager.ServerCertificateValidationCallback += (p1, p2, p3, p4) => true;
 #else
