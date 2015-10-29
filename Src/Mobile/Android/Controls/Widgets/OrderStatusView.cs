@@ -90,16 +90,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var animation = new TranslateAnimation(0, _statusLayout.Width, 0, 0)
                 {
                     Duration = 4000,
+                    Interpolator = new LinearInterpolator()
                 };
-            animation.Interpolator = new LinearInterpolator();
 
             animation.AnimationEnd += (sender, e) => 
                 {
                     var animationEnd = new TranslateAnimation(_statusLayout.Width, _statusLayout.Width * 2, 0, 0)
                         {
-                            Duration = 4000,
+                            Duration = 4000,,
+                            Interpolator = new LinearInterpolator()
                         };
-                    animationEnd.Interpolator = new LinearInterpolator();
                     animationEnd.AnimationEnd += (sender1, e1) => AnimateProgress(view);
                     view.StartAnimation(animationEnd);
                 };
