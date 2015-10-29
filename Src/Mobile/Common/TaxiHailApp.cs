@@ -238,7 +238,7 @@ namespace apcurium.MK.Booking.Mobile
 			var userCacheService = _container.Resolve<ICacheService>("UserAppCache");
 			if (authData != null)
 			{
-				// We need to migrate the old authenticationdata storage to the new one.
+				// We have a legacy authData (Auth data stored in the application Cache. We need to move it to the UserCache.
 				userCacheService.Set("AuthenticationData", authData);
 				appCacheService.Clear("AuthenticationData");
 			}
