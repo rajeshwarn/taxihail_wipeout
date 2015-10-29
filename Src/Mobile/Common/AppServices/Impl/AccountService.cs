@@ -158,9 +158,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<OrderServiceClient, Order> (service => service.GetOrder (id));
 		}
 
-		public Task<int> GetAccountOrderNumberToAllowRating()
+        public Task<int> GetOrderCountForAppRating()
 		{
-			return Mvx.Resolve<OrderServiceClient>().GetAccountOrderNumberToAllowRating();
+            return Mvx.Resolve<OrderServiceClient>().GetOrderCountForAppRating();
 		}
 
         public OrderStatusDetail[] GetActiveOrdersStatus()

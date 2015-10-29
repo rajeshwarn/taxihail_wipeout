@@ -738,10 +738,10 @@
   <string name="ManualPairing_TimeOut_Title">Connection error</string>
   <string name="ManualPairing_TimeOut_Message">There is a connection error preventing us from providing the status of your ride.</string>
   <string name="RateMobileApplicationTitle">Rate this application</string>
-  <string name="RateMobileApplicationText">If you enjoy using this application would you mind taking a moment to rate it? Thanks for your support!</string>
-  <string name="RateMobileApplicationNow">Rate It Now</string>
-  <string name="RateMobileApplicationLater">Remind Me Later</string>
-  <string name="RateMobileApplicationNever">No, Thanks</string>
-  <string name="LinkForApplicationStoreAbsentTitle">Link is absent</string>
-  <string name="LinkForApplicationStoreAbsentText">Link to evaluate application is absent. Call support please</string>
+  <string name="RateMobileApplicationText">If you enjoy using this application would you mind taking a moment to rate it?</string>
+  <string name="RateMobileApplicationNow">Rate Now</string>
+  <string name="RateMobileApplicationLater">Later</string>
+  <string name="RateMobileApplicationNever">Don\'t ask again</string>
+  <string name="LinkForApplicationStoreAbsentTitle">URL is missing</string>
+  <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
 </resources>

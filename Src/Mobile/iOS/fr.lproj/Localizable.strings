@@ -735,9 +735,9 @@
 "ManualPairing_TimeOut_Title"="Erreur de connection";
 "ManualPairing_TimeOut_Message"="Un probleme de connexion est survenu lors de la tentative d'obtenir l'état de votre course de taxi.";
 "RateMobileApplicationTitle"="Notez cette application";
-"RateMobileApplicationText"="Si vous aimez utiliser cette application, n'oubliez pas de donner votre avis. Merci d'avance pour votre soutien !";
+"RateMobileApplicationText"="Si vous aimez utiliser cette application, n'oubliez pas de donner votre avis!";
 "RateMobileApplicationNow"="Notez maintenant";
 "RateMobileApplicationLater"="Plus tard";
-"RateMobileApplicationNever"="Non merci";
+"RateMobileApplicationNever"="Ne plus demander";
 "LinkForApplicationStoreAbsentTitle"="Le lien est absent";
-"LinkForApplicationStoreAbsentText"="Le lien pour noter l'application est absent. Appelez support s'il vous plaît";
+"LinkForApplicationStoreAbsentText"="Le lien pour naviger vers la page l'application n'a pas été configuré";

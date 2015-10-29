@@ -131,9 +131,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.GetAsync<bool>(req);
         }
 
-		public Task<int> GetAccountOrderNumberToAllowRating()
+        public Task<int> GetOrderCountForAppRating()
 		{
-			return Client.GetAsync<int>("/account/ordernumbertoallowrating");
+            return Client.GetAsync<int>("/account/ordercountforapprating");
 		}
     }
 }

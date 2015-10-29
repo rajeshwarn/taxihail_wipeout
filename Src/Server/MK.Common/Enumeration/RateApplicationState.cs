@@ -6,6 +6,6 @@ namespace apcurium.MK.Common.Enumeration
 		NotRated,
 		Postponed,
 		Rated,
-		Ignored
+		NeverPrompt
 	}
 }
