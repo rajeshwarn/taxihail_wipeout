@@ -232,12 +232,28 @@ namespace apcurium.MK.Booking.Mobile
         
         private string GetSessionId ()
         {
-            var authData = _container.Resolve<ICacheService> ().Get<AuthenticationData> ("AuthenticationData");
-            var sessionId = authData == null ? null : authData.SessionId;
-            if (sessionId == null) {
-                sessionId = _container.Resolve<ICacheService> ().Get<string>("SessionId");
-            }
-            return sessionId;
+			var appCacheService = _container.Resolve<ICacheService>();
+			var authData = appCacheService.Get<AuthenticationData>("AuthenticationData");
+
+			var userCacheService = _container.Resolve<ICacheService>("UserAppCache");
+			if (authData != null)
+			{
+				// We have a legacy authData (Auth data stored in the application Cache. We need to move it to the UserCache.
+				userCacheService.Set("AuthenticationData", authData);
+				appCacheService.Clear("AuthenticationData");
+			}
+			else
+			{
+				authData = userCacheService.Get<AuthenticationData> ("AuthenticationData");
+			}
+
+
+			var sessionId = authData == null ? null : authData.SessionId;
+			if (sessionId == null) 
+			{
+				sessionId = _container.Resolve<ICacheService> ().Get<string>("SessionId");
+			}
+			return sessionId;
         }
         
         private void InitializeStartNavigation()
