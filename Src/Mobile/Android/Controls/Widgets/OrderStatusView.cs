@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     var animationEnd = new TranslateAnimation(_statusLayout.Width, _statusLayout.Width * 2, 0, 0)
                         {
-                            Duration = 4000,,
+                            Duration = 4000,
                             Interpolator = new LinearInterpolator()
                         };
                     animationEnd.AnimationEnd += (sender1, e1) => AnimateProgress(view);
