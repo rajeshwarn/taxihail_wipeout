@@ -640,6 +640,9 @@
   <data name="HistoryDetailPromoLabel" xml:space="preserve">
     <value>Code promo:</value>
   </data>
+  <data name="HistoryDetailServiceTypeLabel" xml:space="preserve">
+    <value>Type de service:</value>
+  </data>
   <data name="HistoryInfo" xml:space="preserve">
     <value>Synthèse des trajets effectués le mois dernier</value>
   </data>

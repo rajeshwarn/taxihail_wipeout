@@ -16,7 +16,7 @@
 "CmtConfirmPayment"="Confirmer";
 "StatusViewTitle"="Confirmé";
 "PaymentDetails.PaymentMethodsLabel"="Méthodes de paiement";
-"PayPalUnlinkError"="Impossible de dissocier votre compte PayPal";
+"HistoryDetailServiceTypeLabel"="Type de service:";
 "BookPickupLabel"="Confirmer votre adresse de départ";
 "Tuto03Top"="Vous pouvez également nous communiquer votre position en saisissant directement une adresse";
 "BookDateLabel"="Départ différé";
@@ -83,7 +83,7 @@
 "apcuriumUrl"="http://www.apcurium.com/";
 "HistoryDetailBuildingNameLabel"="Nom du bâtiment:";
 "NoMailClient"="Il n'y a pas d'adresse email client enregistrée";
-"AboutActivityName"="About";
+"RemoveCreditCardMessage"="Etes-vous sûr de vouloir supprimer cette carte de paiement?";
 "DateTimePickerPickTime"="Sélectionner l'heure de départ";
 "CannotCancelOrderMessage"="Désolé, vous ne pouvez plus annuler cette demande";
 "AccountCreationActivityName"="Account creation";
@@ -158,7 +158,6 @@
 "PickupMapTitle"="Lieu de départ";
 "AccountNotActivatedCodeBySMS"="Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide du SMS qui vient de vous être envoyé";
 "ManualRideLinqStatus_Driver"="Chauffeur #:";
-"Error_EditAutoTipMessage"="Une erreur est survenue en changeant le pourboire. Veuillez réessayer.";
 "OrderNoteGPSApproximate"="(adresse approximative)";
 "Notification_ConfirmPairingPush"="Confirmation de pairing";
 "ResetPasswordConfirmationMessage"="Un nouveau mot de passe vous a été envoyé par email";
@@ -230,7 +229,7 @@
 "EtaLessThanAMinute"="Le taxi le plus proche est à moins d'une minute de votre position";
 "ServiceError_ErrorCreatingOrderMessage"="Merci de contacter {0} au {1} pour toute demande d'assistance";
 "AddPaymentMethod_Multiple"="Ajouter une méthode de paiement";
-"RemoveCreditCardMessage"="Etes-vous sûr de vouloir supprimer cette carte de paiement?";
+"Error_EditAutoTipMessage"="Une erreur est survenue en changeant le pourboire. Veuillez réessayer.";
 "LoginSupport"="Support Technique?";
 "Politeness"="Politesse";
 "BookDropoffLocationButtonTitle"="Destination";
@@ -439,6 +438,7 @@
 "Overdue_TransactionId"="Id de transaction:";
 "TaxiHailNetworkTimeOutPopupAccept"="Accepter";
 "ManualRideLinqStatus_Cancelled"="You have been unpaired from RideLinQ. Please type in the pairing code again.";
+"PayPalUnlinkError"="Impossible de dissocier votre compte PayPal";
 "NotificationSettingsActivityName"="Notification setting";
 "Tuto03Bottom"="Vous pouvez selectionner une nouvelle adresse ou en choisir parmi vos favoris, ou les Points d'Intérêt les plus proches";
 "BookDestinationLabel"="Saisir votre destination";
@@ -478,6 +478,7 @@
 "InvalidLoginMessage"="L'email et/ou le mot de passe semblent invalides";
 "AccountActivationMessage"="Vous allez recevoir un email de confirmation. Merci de cliquer sur le lien pour valider votre inscription";
 "RateLastRideMessage"="Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l'évaluer?";
+"AboutActivityName"="About";
 "PromotionViewNoPromotionLabel"="Aucune promotion disponible";
 "Tuto01Bottom"="Commencez par sélectionner votre position actuelle.";
 "NearbyPlacesTitle"="À proximité";

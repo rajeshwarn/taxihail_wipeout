@@ -54,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblStatus.Text = Localize.GetValue("HistoryDetailStatusLabel");
             txtStatus.Text = Localize.GetValue("LoadingMessage");
 			lblAuthorization.Text = Localize.GetValue("HistoryDetailAuthorizationLabel");
+            lblServiceType.Text = Localize.GetValue("HistoryDetailServiceTypeLabel");
             lblPromo.Text = Localize.GetValue("HistoryDetailPromoLabel");
 
 			btnRebook.SetTitle(Localize.GetValue("Rebook"), UIControlState.Normal);
@@ -186,6 +187,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.BindSafe(txtPromo)
                 .For(v => v.Text)
                 .To(vm => vm.PromoCode);
+
+            set.Bind(txtServiceType)
+                .For(v => v.Text)
+                .To(vm => vm.ServiceType);
 
 			set.Apply();
 		}

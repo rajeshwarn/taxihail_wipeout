@@ -308,6 +308,9 @@
   <data name="HistoryDetailPromoLabel" xml:space="preserve">
     <value>Promo Code:</value>
   </data>
+  <data name="HistoryDetailServiceTypeLabel" xml:space="preserve">
+    <value>Service Type:</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>

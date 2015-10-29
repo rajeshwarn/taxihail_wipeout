@@ -624,6 +624,9 @@
   <data name="HistoryDetailPromoLabel" xml:space="preserve">
     <value>Promo Code:</value>
   </data>
+  <data name="HistoryDetailServiceTypeLabel" xml:space="preserve">
+    <value>Service Type:</value>
+  </data>
   <data name="HistoryInfo" xml:space="preserve">
     <value>عرض حجوزاتكم خلال الشهر الماضي</value>
   </data>

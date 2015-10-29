@@ -64,6 +64,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblRequested { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblServiceType { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblStatus { get; set; }
 
 		[Outlet]
@@ -91,18 +94,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel txtRequested { get; set; }
 
 		[Outlet]
+		UIKit.UILabel txtServiceType { get; set; }
+
+		[Outlet]
 		UIKit.UILabel txtStatus { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblPromo != null) {
-				lblPromo.Dispose ();
-				lblPromo = null;
+			if (txtServiceType != null) {
+				txtServiceType.Dispose ();
+				txtServiceType = null;
 			}
 
-			if (txtPromo != null) {
-				txtPromo.Dispose ();
-				txtPromo = null;
+			if (lblServiceType != null) {
+				lblServiceType.Dispose ();
+				lblServiceType = null;
 			}
 
 			if (btnCancel != null) {
@@ -180,6 +186,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblPickupDate = null;
 			}
 
+			if (lblPromo != null) {
+				lblPromo.Dispose ();
+				lblPromo = null;
+			}
+
 			if (lblRequested != null) {
 				lblRequested.Dispose ();
 				lblRequested = null;
@@ -218,6 +229,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtPickupDate != null) {
 				txtPickupDate.Dispose ();
 				txtPickupDate = null;
+			}
+
+			if (txtPromo != null) {
+				txtPromo.Dispose ();
+				txtPromo = null;
 			}
 
 			if (txtRequested != null) {

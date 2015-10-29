@@ -19,7 +19,7 @@
   <string name="CmtConfirmPayment">Confirmar</string>
   <string name="StatusViewTitle">Confirmado</string>
   <string name="PaymentDetails.PaymentMethodsLabel">Payment Methods</string>
-  <string name="PayPalUnlinkError">No se puede desvincular la cuenta de PayPal</string>
+  <string name="HistoryDetailServiceTypeLabel">Service Type:</string>
   <string name="BookPickupLabel">Confirme su ubicación</string>
   <string name="Tuto02Top">Podemos localizarle usando el GPS de su celular</string>
   <string name="Tuto03Top">Puede seleccionar su lugar de abordaje tocando en el mapa la dirección.</string>
@@ -226,7 +226,6 @@
   <string name="CreditCardNumber">Número de tarjeta</string>
   <string name="June">Jun (06)</string>
   <string name="PromoMustUseCardOnFileMessage">Para utilizar un código de promoción, tiene que pagar con su método de pago configurado.</string>
-  <string name="OrderNumber">Reservación#</string>
   <string name="Error_AccountPaymentTitle">Error</string>
   <string name="PaymentDetails.Optional">(Opcional)</string>
   <string name="EtaLessThanAMinute">Nearest taxi is less than a minute away</string>
@@ -295,7 +294,7 @@
   <string name="ConfirmVehiculeTypeLabel">Tipo de Vehículo</string>
   <string name="OrderHistoryListTitle">Reservación #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
   <string name="InvalidLocalContactTitle">Contacto inválido</string>
-  <string name="StreetNumber">Street Number</string>
+  <string name="OrderNumber">Reservación#</string>
   <string name="PaymentViewTotalText">Total</string>
   <string name="LocationNoHistory">No hay historial</string>
   <string name="NoAptText">Número Depto.</string>
@@ -439,6 +438,7 @@
   <string name="Overdue_TransactionId">Id de la Transacción:</string>
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
   <string name="ManualRideLinqStatus_Cancelled">You have been unpaired from RideLinQ. Please type in the pairing code again.</string>
+  <string name="PayPalUnlinkError">No se puede desvincular la cuenta de PayPal</string>
   <string name="NotificationSettingsActivityName">Notification setting</string>
   <string name="Tuto03Bottom">Puede buscar una dirección específica o puede seleccionar una de entre sus favoritos, contactos o lugares cercanos</string>
   <string name="BookDestinationLabel">Ingrese su destino</string>
@@ -487,6 +487,7 @@
   <string name="EtaDurationUnit">min</string>
   <string name="NoConnectionTitle">Error en conexión</string>
   <string name="View_SearchAddress">Búsqueda de dirección</string>
+  <string name="StreetNumber">Street Number</string>
   <string name="CreateAccountEmptyField">Los datos son inválidos, todos los campos son requeridos</string>
   <string name="ConfirmPassengerSettingsTitle">Ajustes de pasajero</string>
   <string name="CmtRideLinqGenericErrorMessage">Hubo un error al sincronizar, verifique la información de se tarjeta de crédito o intente nuevamente</string>

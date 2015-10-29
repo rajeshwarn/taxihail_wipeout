@@ -17,7 +17,7 @@
   <string name="CmtConfirmPayment">تأكيد</string>
   <string name="StatusViewTitle">تم التأكيد</string>
   <string name="PaymentDetails.PaymentMethodsLabel">Payment Methods</string>
-  <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
+  <string name="HistoryDetailServiceTypeLabel">Service Type:</string>
   <string name="BookPickupLabel">اكد موقع الإلتقاء المختار</string>
   <string name="Tuto03Top">يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.</string>
   <string name="BookDateLabel">قم بإرسال السيارة لاحقا</string>
@@ -81,7 +81,7 @@
   <string name="View_AccountConfirmation_Label_Instructions">A text message with your code has been sent to your phone.</string>
   <string name="HistoryDetailBuildingNameLabel">إسم المبنى:</string>
   <string name="NoMailClient">لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .</string>
-  <string name="AboutActivityName">About</string>
+  <string name="RemoveCreditCardMessage">هل أنت متأكد من رغبتك في إزالة بطاقة الائتمان هذه؟</string>
   <string name="DateTimePickerPickTime">اختر وقت الإلتقاء:</string>
   <string name="CannotCancelOrderMessage">لا يمكنك إلغاء هذا الطلب.</string>
   <string name="AccountCreationActivityName">Account creation</string>
@@ -154,7 +154,6 @@
   <string name="PickupMapTitle">موقع الإلتقاء</string>
   <string name="AccountNotActivatedCodeBySMS">Your account has not been activated. Another activation SMS was sent to you.</string>
   <string name="ManualRideLinqStatus_Driver">Driver id:</string>
-  <string name="Error_EditAutoTipMessage">An error occurred while trying to update the tip. Please try again.</string>
   <string name="OrderNoteGPSApproximate">(عنوان تقريبي)</string>
   <string name="Notification_ConfirmPairingPush">Confirm Pairing</string>
   <string name="ResetPasswordConfirmationMessage">تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.</string>
@@ -225,7 +224,7 @@
   <string name="EtaLessThanAMinute">Nearest taxi is less than a minute away</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance or try again.</string>
   <string name="AddPaymentMethod_Multiple">Add payment method</string>
-  <string name="RemoveCreditCardMessage">هل أنت متأكد من رغبتك في إزالة بطاقة الائتمان هذه؟</string>
+  <string name="Error_EditAutoTipMessage">An error occurred while trying to update the tip. Please try again.</string>
   <string name="LoginSupport">Need support?</string>
   <string name="Politeness">Politeness</string>
   <string name="BookDropoffLocationButtonTitle">وجهة</string>
@@ -430,6 +429,7 @@
   <string name="Overdue_TransactionId">Transaction Id:</string>
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
   <string name="ManualRideLinqStatus_Cancelled">You have been unpaired from RideLinQ. Please type in the pairing code again.</string>
+  <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
   <string name="NotificationSettingsActivityName">Notification setting</string>
   <string name="Tuto03Bottom">يمكنك البحث عن عنوان محدد أوإختيار عنوان من المفضلة، إتصالاتك أو قائمة بالأماكن القريبة.</string>
   <string name="BookDestinationLabel">ادخل وجهتك</string>
@@ -469,6 +469,7 @@
   <string name="InvalidLoginMessage">البريد الإلكتروني و/أو كلمة المرور غير صحيحة.</string>
   <string name="AccountActivationMessage">تم إرسال رسالة إلكترونية. اتبع الرابط في الرسالة لتأكيد عنوانك</string>
   <string name="RateLastRideMessage">We would appreciate your feedback on your last ride, would you like to rate it?</string>
+  <string name="AboutActivityName">About</string>
   <string name="PromotionViewNoPromotionLabel">No promotions available</string>
   <string name="Tuto01Bottom">ابدأ باختيار موقعك الحالي.</string>
   <string name="NearbyPlacesTitle">أماكن قريبة</string>

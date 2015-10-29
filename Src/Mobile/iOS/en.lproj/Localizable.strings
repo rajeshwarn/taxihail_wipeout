@@ -17,7 +17,7 @@
 "CmtConfirmPayment"="Confirm";
 "StatusViewTitle"="Confirmed";
 "PaymentDetails.PaymentMethodsLabel"="Payment Methods";
-"PayPalUnlinkError"="Unable to unlink your PayPal account";
+"HistoryDetailServiceTypeLabel"="Service Type:";
 "BookPickupLabel"="Confirm your pickup location";
 "Tuto03Top"="You may also select your pickup location by tapping the pickup address.";
 "BookDateLabel"="Pick Me Up Later";
@@ -439,6 +439,7 @@
 "Overdue_TransactionId"="Transaction Id:";
 "TaxiHailNetworkTimeOutPopupAccept"="Accept";
 "ManualRideLinqStatus_Cancelled"="You have been unpaired from RideLinQ. Please type in the pairing code again.";
+"PayPalUnlinkError"="Unable to unlink your PayPal account";
 "NotificationSettingsActivityName"="Notification setting";
 "Tuto03Bottom"="You can search for a specific address or pick one from your favorites, contacts or a list of nearby places.";
 "BookDestinationLabel"="Enter your destination";

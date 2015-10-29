@@ -12,7 +12,6 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -82,6 +81,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged(() => DestinationTxt); 
 				RaisePropertyChanged(() => PickUpDateTxt); 
 				RaisePropertyChanged(() => PromoCode); 
+				RaisePropertyChanged(() => ServiceType);
             }
 		}
 
@@ -300,6 +300,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return Order != null 
 					? Order.PromoCode
 					: null;
+			}
+		}
+
+		public string ServiceType
+		{
+			get
+			{
+				return Order != null && Order.Settings != null
+					? Order.Settings.ServiceType.ToString()
+					: MK.Common.Enumeration.ServiceType.Taxi.ToString();
 			}
 		}
 
