@@ -1626,6 +1626,9 @@
   <data name="Notification_ReceiptEmail" xml:space="preserve">
     <value>Receipt (Email)</value>
   </data>
+   <data name="Notification_DriverBailedPush" xml:space="preserve">
+    <value>Driver bailed</value>
+  </data>
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
     <value>Vehicle at Pickup</value>
   </data>

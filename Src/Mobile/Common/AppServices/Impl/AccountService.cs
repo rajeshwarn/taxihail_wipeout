@@ -767,6 +767,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     DriverAssignedPush = companySettings.DriverAssignedPush.HasValue && userSettings.DriverAssignedPush.HasValue
                         ? userSettings.DriverAssignedPush 
                         : companySettings.DriverAssignedPush,
+					DriverBailedPush = companySettings.DriverBailedPush.HasValue && userSettings.DriverBailedPush.HasValue
+						? userSettings.DriverBailedPush 
+						: companySettings.DriverBailedPush,
                     NearbyTaxiPush = companySettings.NearbyTaxiPush.HasValue && userSettings.NearbyTaxiPush.HasValue
                         ? userSettings.NearbyTaxiPush 
                         : companySettings.NearbyTaxiPush,

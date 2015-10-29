@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 		{
 			Annotation = annotation;
 			RefreshPinImage();
-            CreateMedaillonView(annotation.Title, annotation.Market, hidden:true);
+            CreateOrUpdateMedaillonView(annotation.Title, annotation.Market, hidden:true);
 		}
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -37,14 +37,15 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
             var ann = (AddressAnnotation)Annotation;
 
+            // We should only allow changes to the visibility of the medallion for nearby taxi.
+            if (ann.AddressType != AddressAnnotationType.NearbyTaxi)
+            {
+                return;
+            }
+
             ann.HideMedaillonsCommand.ExecuteIfPossible();
 
-            var addressType = ann.AddressType;
-            if (addressType == AddressAnnotationType.NearbyTaxi
-                || addressType == AddressAnnotationType.Taxi)
-            {
-                _lblVehicleNumber.Hidden = !_lblVehicleNumber.Hidden; 
-            }
+            _lblVehicleNumber.Hidden = !_lblVehicleNumber.Hidden; 
         }
 
         public void HideMedaillon()
@@ -68,10 +69,12 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             set
             {
                 base.Annotation = value;
-                if (value != null)
+                if (value == null)
                 {
-                    RefreshPinImage();
+                    return;
                 }
+
+                RefreshPinImage();
             }
         }
 
@@ -83,10 +86,14 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 	        Image = ann.GetImage();
 
 	        // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
-	        if (ann.AddressType == AddressAnnotationType.Taxi && ann.ShowSubtitleOnPin)
+            if (ann.AddressType == AddressAnnotationType.Taxi || ann.AddressType == AddressAnnotationType.NearbyTaxi)
 	        {
 	            var addressAnnotation = (AddressAnnotation) Annotation;
-	            CreateMedaillonView(addressAnnotation.Subtitle, addressAnnotation.Market, hidden: false);
+                var medallion = ann.ShowSubtitleOnPin 
+                    ? addressAnnotation.Subtitle 
+                    : addressAnnotation.Title;
+                
+                CreateOrUpdateMedaillonView(medallion, addressAnnotation.Market, hidden: !ann.ShowMedallionOnStart);
 	        }
 
 	        if (degrees != 0)
@@ -104,19 +111,22 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 	        }
 	    }
 
-	    private void CreateMedaillonView(string text, string market, bool hidden)
+	    private void CreateOrUpdateMedaillonView(string text, string market, bool hidden)
         {
-            var lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
-            lblVehicleNumber.BackgroundColor = GetMedaillonBackgroundColor(market);
-            lblVehicleNumber.TextColor = UIColor.White;
-            lblVehicleNumber.TextAlignment = UITextAlignment.Center;
-            lblVehicleNumber.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 30 / 2);
-            lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
-            lblVehicleNumber.Text = text;
-            lblVehicleNumber.Hidden = hidden;
-            AddSubview(lblVehicleNumber);
+            if (_lblVehicleNumber == null)
+            {
+                var lblVehicleNumber = new UILabel(new CGRect(0, -23, Image.Size.Width, 20));
+                lblVehicleNumber.TextColor = UIColor.White;
+                lblVehicleNumber.TextAlignment = UITextAlignment.Center;
+                lblVehicleNumber.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 30 / 2);
+                lblVehicleNumber.AdjustsFontSizeToFitWidth = true;
+                AddSubview(lblVehicleNumber);
+                _lblVehicleNumber = lblVehicleNumber;
+            }
 
-            _lblVehicleNumber = lblVehicleNumber;
+            _lblVehicleNumber.BackgroundColor = GetMedaillonBackgroundColor(market);
+            _lblVehicleNumber.Text = text;
+            _lblVehicleNumber.Hidden = hidden;
         }
 
 	    private UIColor GetMedaillonBackgroundColor(string market)

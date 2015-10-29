@@ -1213,6 +1213,9 @@
     <value>Chofer asignado</value>
     <comment>Driver Assigned</comment>
   </data>
+  <data name="Notification_DriverBailedPush" xml:space="preserve">
+    <value>Driver bailed</value>
+  </data>
   <data name="Notification_Enabled" xml:space="preserve">
     <value>Notificiaciones</value>
     <comment>Notifications</comment>

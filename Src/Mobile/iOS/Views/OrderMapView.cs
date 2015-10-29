@@ -473,9 +473,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void HandleTouchEnded(object sender, EventArgs e)
         {
-            ViewModel.BookCannotExecute = true;
             _userMovedMapSubsciption.Disposable = Observable
 				.FromEventPattern<MKMapViewChangeEventArgs>(eh =>  RegionChanged += eh, eh => RegionChanged -= eh)
+                .Do(_ => ViewModel.DisableBooking())
                 .Throttle(TimeSpan.FromMilliseconds(1000))
                 .Take(1)
                 .ObserveOn(SynchronizationContext.Current)
@@ -714,11 +714,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		    get { return _taxiLocation; }
 		    set
 		    {
-                if (_taxiLocation == value)
-                {
-                    return;
-                }
-
 			    _taxiLocation = value;
 
 			    UpdateTaxiLocation(value);

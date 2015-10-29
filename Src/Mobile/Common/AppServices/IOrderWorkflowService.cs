@@ -104,6 +104,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    IObservable<OrderValidationResult> GetAndObserveOrderValidationResult();
 
+		IObservable<bool> GetAndObserveCanExecuteBookingOperation();
+
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
 
         Task POIRefPickupList(string textMatch, int maxRespSize);
@@ -141,6 +143,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> ShouldPromptForCvv();
 		bool ValidateAndSetCvv(string cvv);
-    }
+
+		void DisableBooking();
+	}
 }
 

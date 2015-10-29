@@ -1572,6 +1572,9 @@
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
     <value>Chauffeur assigné</value>
   </data>
+  <data name="Notification_DriverBailedPush" xml:space="preserve">
+    <value>Course refusée</value>
+  </data>
   <data name="RateLastRide" xml:space="preserve">
     <value>Évaluer</value>
   </data>
