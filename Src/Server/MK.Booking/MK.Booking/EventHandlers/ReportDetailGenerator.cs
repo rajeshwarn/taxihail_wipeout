@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
+using System.Data.SqlClient;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
@@ -39,6 +41,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OriginalEtaLogged>
     {
         private readonly Func<BookingDbContext> _contextFactory;
+        private const int SQLPrimaryKeyViolationErrorNumber = 2627;
 
         public ReportDetailGenerator(Func<BookingDbContext> contextFactory)
         {
@@ -47,91 +50,101 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderCreated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            Action handling = () =>
             {
-                var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
-                var orderReport = existingReport ?? new OrderReportDetail { Id = @event.SourceId };
-
-                var account = context.Find<AccountDetail>(@event.AccountId);
-
-                orderReport.Account = new OrderReportAccount
+                using (var context = _contextFactory.Invoke())
                 {
-                    AccountId = @event.AccountId,
-                    Name = @event.Settings.Name,
-                    Phone = @event.Settings.Phone,
-                    Email = account.Email,
-                    DefaultCardToken = account.DefaultCreditCard,
-                    IBSAccountId = account.IBSAccountId,
-                    PayBack = account.Settings.PayBack
-                };
-                orderReport.Order = new OrderReportOrder
-                {
-                    IBSOrderId = @event.IBSOrderId,
-                    ChargeType = @event.Settings.ChargeType,
-                    IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
-                    IsPrepaid = @event.IsPrepaid,
-                    PickupDateTime = @event.PickupDate,
-                    CreateDateTime = @event.CreatedDate,
-                    PickupAddress = @event.PickupAddress,
-                    DropOffAddress = @event.DropOffAddress,
-                    CompanyName = @event.CompanyName,
-                    CompanyKey = @event.CompanyKey,
-                    Market = @event.Market
-                };
-                orderReport.Client = new OrderReportClient
-                {
-                    OperatingSystem = @event.UserAgent.GetOperatingSystem(),
-                    UserAgent = @event.UserAgent,
-                    Version = @event.ClientVersion
-                };
+                    var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
+                    var orderReport = existingReport ?? new OrderReportDetail {Id = @event.SourceId};
 
-                context.Save(orderReport);
-            }
+                    var account = context.Find<AccountDetail>(@event.AccountId);
+
+                    orderReport.Account = new OrderReportAccount
+                    {
+                        AccountId = @event.AccountId,
+                        Name = @event.Settings.Name,
+                        Phone = @event.Settings.Phone,
+                        Email = account.Email,
+                        DefaultCardToken = account.DefaultCreditCard,
+                        IBSAccountId = account.IBSAccountId,
+                        PayBack = account.Settings.PayBack
+                    };
+                    orderReport.Order = new OrderReportOrder
+                    {
+                        IBSOrderId = @event.IBSOrderId,
+                        ChargeType = @event.Settings.ChargeType,
+                        IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
+                        IsPrepaid = @event.IsPrepaid,
+                        PickupDateTime = @event.PickupDate,
+                        CreateDateTime = @event.CreatedDate,
+                        PickupAddress = @event.PickupAddress,
+                        DropOffAddress = @event.DropOffAddress,
+                        CompanyName = @event.CompanyName,
+                        CompanyKey = @event.CompanyKey,
+                        Market = @event.Market
+                    };
+                    orderReport.Client = new OrderReportClient
+                    {
+                        OperatingSystem = @event.UserAgent.GetOperatingSystem(),
+                        UserAgent = @event.UserAgent,
+                        Version = @event.ClientVersion
+                    };
+
+                    context.Save(orderReport);
+                }
+            };
+
+            WrapWithSqlPrimaryKeyHandling(handling);
         }
 
 		public void Handle(OrderReportCreated @event)
 		{
-			using (var context = _contextFactory.Invoke())
-			{
-				var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
-				var orderReport = existingReport ?? new OrderReportDetail { Id = @event.SourceId };
+		    Action handling = () =>
+		    {
+		        using (var context = _contextFactory.Invoke())
+		        {
+		            var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
+		            var orderReport = existingReport ?? new OrderReportDetail {Id = @event.SourceId};
 
-				var account = context.Find<AccountDetail>(@event.AccountId);
+		            var account = context.Find<AccountDetail>(@event.AccountId);
 
-				orderReport.Account = new OrderReportAccount
-				{
-					AccountId = @event.AccountId,
-					Name = @event.Settings.Name,
-					Phone = @event.Settings.Phone,
-					Email = (account != null) ? account.Email : null,
-					DefaultCardToken = (account != null) ? account.DefaultCreditCard : null,
-					IBSAccountId = (account != null) ? account.IBSAccountId : null,
-					PayBack = (account != null) ? account.Settings.PayBack : null
-				};
-				orderReport.Order = new OrderReportOrder
-				{
-					IBSOrderId = @event.IBSOrderId,
-					ChargeType = @event.Settings.ChargeType,
-					IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
-					IsPrepaid = @event.IsPrepaid,
-					PickupDateTime = @event.PickupDate,
-					CreateDateTime = @event.CreatedDate,
-					PickupAddress = @event.PickupAddress,
-					DropOffAddress = @event.DropOffAddress,
-					CompanyName = @event.CompanyName,
-					CompanyKey = @event.CompanyKey,
-					Market = @event.Market,
-					Error = @event.Error
-				};
-				orderReport.Client = new OrderReportClient
-				{
-					OperatingSystem = @event.UserAgent.GetOperatingSystem(),
-					UserAgent = @event.UserAgent,
-					Version = @event.ClientVersion
-				};
+		            orderReport.Account = new OrderReportAccount
+		            {
+		                AccountId = @event.AccountId,
+		                Name = @event.Settings.Name,
+		                Phone = @event.Settings.Phone,
+		                Email = (account != null) ? account.Email : null,
+		                DefaultCardToken = (account != null) ? account.DefaultCreditCard : null,
+		                IBSAccountId = (account != null) ? account.IBSAccountId : null,
+		                PayBack = (account != null) ? account.Settings.PayBack : null
+		            };
+		            orderReport.Order = new OrderReportOrder
+		            {
+		                IBSOrderId = @event.IBSOrderId,
+		                ChargeType = @event.Settings.ChargeType,
+		                IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
+		                IsPrepaid = @event.IsPrepaid,
+		                PickupDateTime = @event.PickupDate,
+		                CreateDateTime = @event.CreatedDate,
+		                PickupAddress = @event.PickupAddress,
+		                DropOffAddress = @event.DropOffAddress,
+		                CompanyName = @event.CompanyName,
+		                CompanyKey = @event.CompanyKey,
+		                Market = @event.Market,
+		                Error = @event.Error
+		            };
+		            orderReport.Client = new OrderReportClient
+		            {
+		                OperatingSystem = @event.UserAgent.GetOperatingSystem(),
+		                UserAgent = @event.UserAgent,
+		                Version = @event.ClientVersion
+		            };
 
-				context.Save(orderReport);
-			}
+		            context.Save(orderReport);
+		        }
+		    };
+
+            WrapWithSqlPrimaryKeyHandling(handling);
 		}
 
 		public void Handle(OrderStatusChanged @event)
@@ -193,21 +206,26 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardPaymentInitiated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            Action handling = () =>
             {
-                var existingReport = context.Find<OrderReportDetail>(@event.OrderId);
-                var orderReport = existingReport ?? new OrderReportDetail { Id = @event.OrderId };
+                using (var context = _contextFactory.Invoke())
+                {
+                    var existingReport = context.Find<OrderReportDetail>(@event.OrderId);
+                    var orderReport = existingReport ?? new OrderReportDetail { Id = @event.OrderId };
 
-                orderReport.Payment.PaymentId = @event.SourceId;
-                orderReport.Payment.PreAuthorizedAmount = @event.Amount;
-                orderReport.Payment.FirstPreAuthTransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
-                orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
-                orderReport.Payment.CardToken = @event.CardToken;
-                orderReport.Payment.Type = @event.Provider == PaymentProvider.PayPal ? PaymentType.PayPal : PaymentType.CreditCard;
-                orderReport.Payment.Provider = @event.Provider;
+                    orderReport.Payment.PaymentId = @event.SourceId;
+                    orderReport.Payment.PreAuthorizedAmount = @event.Amount;
+                    orderReport.Payment.FirstPreAuthTransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
+                    orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
+                    orderReport.Payment.CardToken = @event.CardToken;
+                    orderReport.Payment.Type = @event.Provider == PaymentProvider.PayPal ? PaymentType.PayPal : PaymentType.CreditCard;
+                    orderReport.Payment.Provider = @event.Provider;
 
-                context.Save(orderReport);
-            }
+                    context.Save(orderReport);
+                }
+            };
+
+            WrapWithSqlPrimaryKeyHandling(handling);
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
@@ -558,6 +576,28 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderReport.Order.OriginalEta = @event.OriginalEta;
                 
                 context.Save(orderReport);
+            }
+        }
+
+        private void WrapWithSqlPrimaryKeyHandling(Action eventHandling)
+        {
+            try
+            {
+                eventHandling();
+            }
+            catch (Exception ex)
+            {
+                var updateException = ex.InnerException as UpdateException;
+                var sqlException = updateException != null ? updateException.InnerException as SqlException : null;
+                if (sqlException != null && sqlException.Number == SQLPrimaryKeyViolationErrorNumber)
+                {
+                    // retry
+                    eventHandling();
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
     }
