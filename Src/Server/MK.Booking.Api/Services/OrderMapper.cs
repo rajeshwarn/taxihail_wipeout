@@ -31,7 +31,10 @@ namespace apcurium.MK.Booking.Api.Services
                     VehicleTypeId = order.Settings.VehicleTypeId,
                     LargeBags = order.Settings.LargeBags,
                     AccountNumber = order.Settings.AccountNumber,
-                    CustomerNumber = order.Settings.CustomerNumber
+                    CustomerNumber = order.Settings.CustomerNumber,
+                    ServiceType = order.Settings.ServiceType,
+                    Country = order.Settings.Country,
+                    PayBack = order.Settings.PayBack
                 },
                 Note = order.UserNote,
                 Fare = order.Fare,
