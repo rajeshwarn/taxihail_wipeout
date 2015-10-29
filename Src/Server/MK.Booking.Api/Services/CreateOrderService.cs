@@ -909,12 +909,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null, ServiceType? serviceType = null)
         {
-            if (serviceType.HasValue && serviceType.Value != ServiceType.Taxi)
-            {
-                companyKey = ServiceType.Luxury.ToString();
-            }
-
-            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
+            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey, serviceType.HasValue ? serviceType.Value : ServiceType.Taxi);
             if (ibsAccountId.HasValue)
             {
                 return ibsAccountId.Value;
@@ -931,7 +926,9 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 AccountId = account.Id,
                 IbsAccountId = ibsAccountId.Value,
-                CompanyKey = companyKey
+                CompanyKey = serviceType.HasValue && serviceType.Value != ServiceType.Taxi 
+                    ? serviceType.Value.ToString()
+                    : companyKey
             });
 
             return ibsAccountId.Value;
@@ -1358,7 +1355,7 @@ namespace apcurium.MK.Booking.Api.Services
             // Cancel order on current company IBS
             if (order.IBSOrderId.HasValue)
             {
-                var currentIbsAccountId = _accountDao.GetIbsAccountId(accountId, order.CompanyKey);
+                var currentIbsAccountId = _accountDao.GetIbsAccountId(accountId, order.CompanyKey, order.Settings.ServiceType);
                 if (currentIbsAccountId.HasValue)
                 {
                     // We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride...

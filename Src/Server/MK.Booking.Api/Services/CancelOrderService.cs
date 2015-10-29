@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (order.IBSOrderId.HasValue)
             {
-                var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
+                var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey, order.Settings.ServiceType);
                 var orderDetail = _orderDao.FindOrderStatusById(order.Id);
 
                 var canCancelWhenPaired = orderDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded)

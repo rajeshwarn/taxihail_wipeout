@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using apcurium.MK.Common.Enumeration;
 
 #endregion
 
@@ -14,7 +15,7 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
         AccountDetail FindByEmail(string email);
         AccountDetail FindByFacebookId(string id);
         AccountDetail FindByTwitterId(string id);
-        int? GetIbsAccountId(Guid accountId, string companyKey);
+        int? GetIbsAccountId(Guid accountId, string companyKey, ServiceType serviceType);
         string GetPayPalEncryptedRefreshToken(Guid id);
 
 		AccountDetail[] FindByNamePattern(string name);

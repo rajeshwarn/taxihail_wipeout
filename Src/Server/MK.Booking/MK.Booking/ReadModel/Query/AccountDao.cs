@@ -6,6 +6,7 @@ using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 
 #endregion
 
@@ -60,10 +61,15 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public int? GetIbsAccountId(Guid accountId, string companyKey)
+        public int? GetIbsAccountId(Guid accountId, string companyKey, ServiceType serviceType)
         {
             using (var context = _contextFactory.Invoke())
             {
+                if (serviceType != ServiceType.Taxi)
+                {
+                    companyKey = serviceType.ToString();
+                }
+
                 if (companyKey == null)
                 {
                     var account = context.Query<AccountDetail>().First(c => c.Id == accountId);

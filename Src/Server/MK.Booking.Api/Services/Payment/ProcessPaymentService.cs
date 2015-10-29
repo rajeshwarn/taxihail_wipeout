@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
         {
             var order = _orderDao.FindById(request.OrderId);
-            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
+            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null, order.Settings.ServiceType);
 
             if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value, order.Settings.ServiceType))
             {
