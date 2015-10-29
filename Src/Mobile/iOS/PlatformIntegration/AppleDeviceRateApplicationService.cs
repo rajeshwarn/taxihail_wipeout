@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using apcurium.MK.Booking.Mobile.AppServices;
+﻿using apcurium.MK.Booking.Mobile.AppServices;
 using UIKit;
-using Foundation;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration;
 
@@ -15,8 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 	/// https://developer.apple.com/library/ios/qa/qa1629/_index.html
 	/// https://developer.apple.com/library/ios/featuredarticles/iPhoneURLScheme_Reference/iPhoneURLScheme_Reference.pdf
 	/// </summary>
-
-	public class AppleDeviceRateApplicationService:IDeviceRateApplicationService
+	public class AppleDeviceRateApplicationService : IDeviceRateApplicationService
 	{
         private readonly IAppSettings _settings;
 

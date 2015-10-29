@@ -1,17 +1,11 @@
-using apcurium.MK.Common.Enumeration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IRateApplicationService
 	{
-		bool CanShowRateApplicationDialog(int successfulTripsNumber);
+        bool CanShowRateApplicationDialog(int ordersAboveRatingThreshold);
 
-		void ShowRateApplicationDialog();
-
-		RateApplicationState CurrentRateApplicationState();
+		Task ShowRateApplicationDialog();
 	}
 }

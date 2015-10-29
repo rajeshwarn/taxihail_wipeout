@@ -1,97 +1,101 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using apcurium.MK.Booking.Mobile.AppServices;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-	public class RateApplicationService:BaseService, IRateApplicationService
+	public class RateApplicationService : BaseService, IRateApplicationService
 	{
-		public static string RateApplicationServiceSettingsName = "RateApplicationServiceSettings";
+        public const string RateApplicationStateKey = "AppRating.RateApplicationState";
 
 		private readonly IMessageService _messageService;
 		private readonly IDeviceRateApplicationService _deviceRateApplicationService;
 		private readonly ILocalization _localization;
 		private readonly IAppSettings _applicationSettings;
-		private RateApplicationState _currentState;
+	    private readonly ICacheService _applicationCache;
 
-		public RateApplicationService(IMessageService messageService, IDeviceRateApplicationService deviceRateApplicationService, ILocalization localization, IAppSettings applicationSettings)
+        private RateApplicationState _ratingState;
+
+		public RateApplicationService(
+            IMessageService messageService,
+            IDeviceRateApplicationService deviceRateApplicationService,
+            ILocalization localization,
+            IAppSettings applicationSettings,
+            ICacheService cacheService)
 		{
 			_messageService = messageService;
 			_deviceRateApplicationService = deviceRateApplicationService;
 			_localization = localization;
 			_applicationSettings = applicationSettings;
+            _applicationCache = cacheService;
 
-			LoadCurrentSettings();
+            LoadAppRatingState();
 		}
 
-		public void LoadCurrentSettings()
+		public void LoadAppRatingState()
 		{
-			var currentStateText = UserCache.Get<string>(RateApplicationServiceSettingsName);
-			var currentState = RateApplicationState.NotRated;
-
+            var currentStateText = _applicationCache.Get<string>(RateApplicationStateKey);
 			if (currentStateText.HasValue())
 			{
-				Enum.TryParse<RateApplicationState>(currentStateText, out currentState);
+                Enum.TryParse(currentStateText, out _ratingState);
 			}
 		}
 
-		public void SetState(RateApplicationState rateApplicationState, DateTime stateTime, ApplicationVersion applicationVersion)
+        public bool CanShowRateApplicationDialog(int ordersAboveRatingThreshold)
 		{
-			_currentState = rateApplicationState;
-			UserCache.Set<string>(RateApplicationServiceSettingsName, _currentState.ToString());
+            // Modulo is because we want to show the rating pop-up every 'MinimumTripsForAppRating' trips
+            return CanRateApp
+                && (_applicationSettings.Data.MinimumTripsForAppRating == 0
+                    || (ordersAboveRatingThreshold > 0
+                        && ordersAboveRatingThreshold % _applicationSettings.Data.MinimumTripsForAppRating == 0));
 		}
 
-		public bool CanShowRateApplicationDialog(int successfulTripsNumber)
+		public Task ShowRateApplicationDialog()
 		{
-			bool result = false;
-
-			if ((_currentState == RateApplicationState.NotRated || _currentState == RateApplicationState.Postponed)
-				&& (_applicationSettings.Data.MinimumTripsForAppRating == 0
-					|| (successfulTripsNumber > 0 && successfulTripsNumber % _applicationSettings.Data.MinimumTripsForAppRating == 0)))
-			{
-				result = true;
-			}
-
-			return result;
-		}
-
-		public RateApplicationState CurrentRateApplicationState()
-		{
-			return _currentState;
-		}
-
-		public void ShowRateApplicationDialog()
-		{
-			_messageService.ShowMessage(_localization["RateMobileApplicationTitle"], _localization["RateMobileApplicationText"],
+			return _messageService.ShowMessage(_localization["RateMobileApplicationTitle"], _localization["RateMobileApplicationText"],
 				_localization["RateMobileApplicationNow"], RedirectToRatingPage,
 				_localization["RateMobileApplicationNever"], CancelRatingPopup,
 				_localization["RateMobileApplicationLater"], PostponeRatingPopup);
 		}
 
+        private bool CanRateApp
+        {
+            get
+            {
+                return _ratingState == RateApplicationState.NotRated || _ratingState == RateApplicationState.Postponed;
+            }
+        }
+
 		private void RedirectToRatingPage()
 		{
-			UserCache.Set<string>(RateApplicationServiceSettingsName, RateApplicationState.Rated.ToString());
+            SaveRatingState(RateApplicationState.Rated);
+
 			if (!_deviceRateApplicationService.RedirectToRatingPage())
 			{
+                Logger.LogMessage("Tried to show the 'Rate application pop-up' but the store URL was not set.");
+                SaveRatingState(RateApplicationState.NotRated);
+
 				_messageService.ShowMessage(_localization["LinkForApplicationStoreAbsentTitle"], _localization["LinkForApplicationStoreAbsentText"]);
 			}
 		}
 
 		private void PostponeRatingPopup()
 		{
-			UserCache.Set<string>(RateApplicationServiceSettingsName, RateApplicationState.Postponed.ToString());
+            SaveRatingState(RateApplicationState.Postponed);
 		}
 
 		private void CancelRatingPopup()
 		{
-			UserCache.Set<string>(RateApplicationServiceSettingsName, RateApplicationState.Ignored.ToString());
+            SaveRatingState(RateApplicationState.NeverPrompt);
 		}
+
+	    private void SaveRatingState(RateApplicationState ratingState)
+	    {
+	        _ratingState = ratingState;
+            _applicationCache.Set(RateApplicationStateKey, _ratingState.ToString());
+	    }
 	}
 }

@@ -23,8 +23,6 @@ using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using apcurium.MK.Booking.Mobile.Models;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -39,7 +37,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ILocationService _locationService;
 		private readonly IOrientationService _orientationService;
 		private readonly IRateApplicationService _rateApplicationService;
-		private readonly IAppSettings _applicationSettings;
 		private readonly IAccountService _accountService;
 		private readonly SerialDisposable _subscriptions = new SerialDisposable();
 
@@ -57,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _isOrderRefreshing;
 
-		private bool _wasPromptedToRateApp = false;
+		private bool _didCheckForAppRating;
 
 		public static WaitingCarLandscapeViewModelParameters WaitingCarLandscapeViewModelParameters { get; set; }
 
@@ -71,7 +68,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IOrientationService orientationService,
 			ILocationService locationService,
 			IRateApplicationService rateApplicationService,
-			IAppSettings applicationSettings,
 			IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
@@ -83,7 +79,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService = locationService;
 			_orientationService = orientationService;
 			_rateApplicationService = rateApplicationService;
-			_applicationSettings = applicationSettings;
 			_accountService = accountService;
 
 			BottomBar = AddChild<BookingStatusBottomBarViewModel>();
@@ -281,7 +276,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             StopOrientationServiceIfNeeded();
 
-			_wasPromptedToRateApp = false;
             _isStarted = false;
         }
 
@@ -467,7 +461,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Logger.LogMessage("An error occurred when trying to get the trip info for ManualRideLinQ.");
 				Logger.LogError(ex);
 			}
-                return null;
+
+            return null;
 		}
 
         private void RefreshManualRideLinqDetails(OrderManualRideLinqDetail manualRideLinqDetails)
@@ -851,25 +846,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private OrderManualRideLinqDetail _manualRideLinqDetail;
 		private TaxiLocation _taxiLocation;
 
-		private async Task ShowRateApplicationSuggestionDialog()
+		private async Task PromptAppRatingIfNecessary()
 		{
-			if (!_wasPromptedToRateApp && _applicationSettings.Data.EnableRateMobileApplication)
+            if (Settings.EnableApplicationRating && !_didCheckForAppRating)
 			{
-				int successfulTripsNumber = 0;
+                var ordersAboveRatingThreshold = await _accountService.GetOrderCountForAppRating();
 
-				if ((_applicationSettings.Data.RatingEnabled || _applicationSettings.Data.RatingRequired)
-					&& (_rateApplicationService.CurrentRateApplicationState() == RateApplicationState.NotRated
-						|| _rateApplicationService.CurrentRateApplicationState() == RateApplicationState.Postponed))
+                if (_rateApplicationService.CanShowRateApplicationDialog(ordersAboveRatingThreshold))
 				{
-					successfulTripsNumber = await _accountService.GetAccountOrderNumberToAllowRating();
+                    Task.Run(async () => await _rateApplicationService.ShowRateApplicationDialog());
 				}
 
-				if (_rateApplicationService.CanShowRateApplicationDialog(successfulTripsNumber))
-				{
-					_rateApplicationService.ShowRateApplicationDialog();
-				}
-
-				_wasPromptedToRateApp = true;
+                _didCheckForAppRating = true;
 			}
 		}
 
@@ -1058,7 +1046,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
 				{
-					ShowRateApplicationSuggestionDialog();
+                    await PromptAppRatingIfNecessary();
 				}
 
 				if (isDone)

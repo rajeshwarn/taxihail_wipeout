@@ -4,8 +4,8 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
 	[Authenticate]
-	[Route("/account/ordernumbertoallowrating", "GET")]
-	public class AccountOrderNumberToAllowRatingRequest:IReturn<int>
+    [Route("/account/ordercountforapprating", "GET")]
+	public class OrderCountForAppRatingRequest : IReturn<int>
 	{
 	}
 }

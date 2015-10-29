@@ -734,9 +734,9 @@
 "ManualPairing_TimeOut_Title"="Connection error";
 "ManualPairing_TimeOut_Message"="There is a connection error preventing us from providing the status of your ride.";
 "RateMobileApplicationTitle"="Rate this application";
-"RateMobileApplicationText"="If you enjoy using this application would you mind taking a moment to rate it? Thanks for your support!";
-"RateMobileApplicationNow"="Rate It Now";
-"RateMobileApplicationLater"="Remind Me Later";
-"RateMobileApplicationNever"="No, Thanks";
-"LinkForApplicationStoreAbsentTitle"="Link is absent";
-"LinkForApplicationStoreAbsentText"="Link to evaluate application is absent. Call support please";
+"RateMobileApplicationText"="If you enjoy using this application would you mind taking a moment to rate it?";
+"RateMobileApplicationNow"="Rate Now";
+"RateMobileApplicationLater"="Later";
+"RateMobileApplicationNever"="Don't ask again";
+"LinkForApplicationStoreAbsentTitle"="URL is missing";
+"LinkForApplicationStoreAbsentText"="URL to store page was not configured";

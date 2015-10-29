@@ -2337,7 +2337,7 @@
 		<value>Notez cette application</value>
 	</data>
 	<data name="RateMobileApplicationText" xml:space="preserve">
-		<value>Si vous aimez utiliser cette application, n'oubliez pas de donner votre avis. Merci d'avance pour votre soutien !</value>
+		<value>Si vous aimez utiliser cette application, n'oubliez pas de donner votre avis!</value>
 	</data>
 	<data name="RateMobileApplicationNow" xml:space="preserve">
 		<value>Notez maintenant</value>
@@ -2346,12 +2346,12 @@
 		<value>Plus tard</value>
 	</data>
 	<data name="RateMobileApplicationNever" xml:space="preserve">
-		<value>Non merci</value>
+		<value>Ne plus demander</value>
 	</data>
 	<data name="LinkForApplicationStoreAbsentTitle" xml:space="preserve">
-		<value>Le est absent</value>
+		<value>Le lien est absent</value>
 	</data>
 	<data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
-		<value>Le lien pour noter l'application est absent</value>
+		<value>Le lien pour naviger vers la page l'application n'a pas été configuré</value>
 	</data>
 </root>

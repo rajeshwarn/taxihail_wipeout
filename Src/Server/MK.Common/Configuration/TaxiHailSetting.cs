@@ -341,15 +341,15 @@ namespace MK.Common.Configuration
         public bool SendReceiptAvailable { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Rating - Rating Enabled", Description="The user can rate the order at the end of a ride")]
+        [Display(Name = "Rating - Trip Rating Enabled", Description="The user can rate the trip at the end of it")]
 		public bool RatingEnabled { get; protected set; }
 
         [SendToClient]
-		[Display(Name = "Rating - Rating mandatory", Description="If YES, remove the back button on rating screen and message to rate displayed")]
+		[Display(Name = "Rating - Trip Rating mandatory", Description="If YES, remove the back button on rating screen and message to rate displayed")]
 		public bool RatingRequired { get; protected set; }
 
         [SendToClient]
-        [Display(Name = "Rating - Can Skip Required Rating", Description = "If NO, User MUST rate a ride before creating a new order")]
+        [Display(Name = "Rating - Can Skip Required Trip Rating", Description = "If NO, User MUST rate a ride before creating a new order")]
         public bool CanSkipRatingRequired { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
@@ -514,8 +514,8 @@ namespace MK.Common.Configuration
         public string MessagePromptedToDriver { get; protected set; }
 
 		[SendToClient, CustomizableByCompany]
-		[Display(Name = "Configuration - Enable Rate Mobile Application", Description = "Enable Rate Mobile Application")]
-		public bool EnableRateMobileApplication { get; protected set; }
+        [Display(Name = "Rating - Enable App Rating", Description = "User can be prompted to rate the app when on board a taxi")]
+		public bool EnableApplicationRating { get; protected set; }
 
 		[SendToClient, CustomizableByCompany]
 		[Display(Name = "Rating - Minimum Trips For App Rating", Description = "Minimum successful trips to allow user to rate applicatio")]

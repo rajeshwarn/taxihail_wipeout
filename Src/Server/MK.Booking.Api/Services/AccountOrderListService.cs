@@ -56,17 +56,18 @@ namespace apcurium.MK.Booking.Api.Services
 			return response;
 		}
 
-		public object Get(AccountOrderNumberToAllowRatingRequest request)
+        public object Get(OrderCountForAppRatingRequest request)
 		{
 			var acccountId = new Guid(this.GetSession().UserAuthId);
 
-			var successfulTripsForApplicationRating = from rating in _orderRatingsDao.GetRatingsByAccountId(acccountId)
-					  group rating by rating.OrderId into ratingGrouped
-					  select ratingGrouped.Average(rt => rt.Score) into averageScore
-					  where averageScore >= _serverSettings.ServerData.MinimumRideRatingScoreForAppRating
-					  select averageScore;
+            // Count the number of orders for the account where the user left a minimum rating above the one defined in the settings (MinimumRideRatingScoreForAppRating)
+            var ordersAboveThreshold = from allRatings in _orderRatingsDao.GetRatingsByAccountId(acccountId)
+                                       group allRatings by allRatings.OrderId into ordersRatings
+                                       select ordersRatings.Average(rt => rt.Score) into averageOrderRating
+                                       where averageOrderRating >= _serverSettings.ServerData.MinimumRideRatingScoreForAppRating
+                                       select averageOrderRating;
 
-			return successfulTripsForApplicationRating.Count();
+            return ordersAboveThreshold.Count();
 		}
     }
 }
