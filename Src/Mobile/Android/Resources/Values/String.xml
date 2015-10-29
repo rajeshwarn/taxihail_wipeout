@@ -19,7 +19,7 @@
   <string name="CmtConfirmPayment">Confirm</string>
   <string name="StatusViewTitle">Confirmed</string>
   <string name="PaymentDetails.PaymentMethodsLabel">Payment Methods</string>
-  <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
+  <string name="HistoryDetailServiceTypeLabel">Service Type:</string>
   <string name="BookPickupLabel">Confirm your pickup location</string>
   <string name="Tuto03Top">You may also select your pickup location by tapping the pickup address.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
@@ -441,6 +441,7 @@
   <string name="Overdue_TransactionId">Transaction Id:</string>
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
   <string name="ManualRideLinqStatus_Cancelled">You have been unpaired from RideLinQ. Please type in the pairing code again.</string>
+  <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
   <string name="NotificationSettingsActivityName">Notification setting</string>
   <string name="Tuto03Bottom">You can search for a specific address or pick one from your favorites, contacts or a list of nearby places.</string>
   <string name="BookDestinationLabel">Enter your destination</string>

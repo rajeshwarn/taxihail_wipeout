@@ -17,7 +17,7 @@
 "CmtConfirmPayment"="Confirmar";
 "StatusViewTitle"="Confirmado";
 "PaymentDetails.PaymentMethodsLabel"="Payment Methods";
-"PayPalUnlinkError"="No se puede desvincular la cuenta de PayPal";
+"HistoryDetailServiceTypeLabel"="Service Type:";
 "BookPickupLabel"="Confirme su ubicación";
 "Tuto02Top"="Podemos localizarle usando el GPS de su celular";
 "Tuto03Top"="Puede seleccionar su lugar de abordaje tocando en el mapa la dirección.";
@@ -224,7 +224,6 @@
 "CreditCardNumber"="Número de tarjeta";
 "June"="Jun (06)";
 "PromoMustUseCardOnFileMessage"="Para utilizar un código de promoción, tiene que pagar con su método de pago configurado.";
-"OrderNumber"="Reservación#";
 "Error_AccountPaymentTitle"="Error";
 "PaymentDetails.Optional"="(Opcional)";
 "EtaLessThanAMinute"="Nearest taxi is less than a minute away";
@@ -293,7 +292,7 @@
 "ConfirmVehiculeTypeLabel"="Tipo de Vehículo";
 "OrderHistoryListTitle"="Reservación #{0} ({1:ddd, MMM d}, {1:h:mm tt})";
 "InvalidLocalContactTitle"="Contacto inválido";
-"StreetNumber"="Street Number";
+"OrderNumber"="Reservación#";
 "PaymentViewTotalText"="Total";
 "LocationNoHistory"="No hay historial";
 "NoAptText"="Número Depto.";
@@ -437,6 +436,7 @@
 "Overdue_TransactionId"="Id de la Transacción:";
 "TaxiHailNetworkTimeOutPopupAccept"="Accept";
 "ManualRideLinqStatus_Cancelled"="You have been unpaired from RideLinQ. Please type in the pairing code again.";
+"PayPalUnlinkError"="No se puede desvincular la cuenta de PayPal";
 "NotificationSettingsActivityName"="Notification setting";
 "Tuto03Bottom"="Puede buscar una dirección específica o puede seleccionar una de entre sus favoritos, contactos o lugares cercanos";
 "BookDestinationLabel"="Ingrese su destino";
@@ -485,6 +485,7 @@
 "EtaDurationUnit"="min";
 "NoConnectionTitle"="Error en conexión";
 "View_SearchAddress"="Búsqueda de dirección";
+"StreetNumber"="Street Number";
 "CreateAccountEmptyField"="Los datos son inválidos, todos los campos son requeridos";
 "ConfirmPassengerSettingsTitle"="Ajustes de pasajero";
 "CmtRideLinqGenericErrorMessage"="Hubo un error al sincronizar, verifique la información de se tarjeta de crédito o intente nuevamente";

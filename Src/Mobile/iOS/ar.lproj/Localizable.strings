@@ -15,7 +15,7 @@
 "CmtConfirmPayment"="تأكيد";
 "StatusViewTitle"="تم التأكيد";
 "PaymentDetails.PaymentMethodsLabel"="Payment Methods";
-"PayPalUnlinkError"="Unable to unlink your PayPal account";
+"HistoryDetailServiceTypeLabel"="Service Type:";
 "BookPickupLabel"="اكد موقع الإلتقاء المختار";
 "Tuto03Top"="يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.";
 "BookDateLabel"="قم بإرسال السيارة لاحقا";
@@ -79,7 +79,7 @@
 "View_AccountConfirmation_Label_Instructions"="A text message with your code has been sent to your phone.";
 "HistoryDetailBuildingNameLabel"="إسم المبنى:";
 "NoMailClient"="لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .";
-"AboutActivityName"="About";
+"RemoveCreditCardMessage"="هل أنت متأكد من رغبتك في إزالة بطاقة الائتمان هذه؟";
 "DateTimePickerPickTime"="اختر وقت الإلتقاء:";
 "CannotCancelOrderMessage"="لا يمكنك إلغاء هذا الطلب.";
 "AccountCreationActivityName"="Account creation";
@@ -152,7 +152,6 @@
 "PickupMapTitle"="موقع الإلتقاء";
 "AccountNotActivatedCodeBySMS"="Your account has not been activated. Another activation SMS was sent to you.";
 "ManualRideLinqStatus_Driver"="Driver id:";
-"Error_EditAutoTipMessage"="An error occurred while trying to update the tip. Please try again.";
 "OrderNoteGPSApproximate"="(عنوان تقريبي)";
 "Notification_ConfirmPairingPush"="Confirm Pairing";
 "ResetPasswordConfirmationMessage"="تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.";
@@ -223,7 +222,7 @@
 "EtaLessThanAMinute"="Nearest taxi is less than a minute away";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance or try again.";
 "AddPaymentMethod_Multiple"="Add payment method";
-"RemoveCreditCardMessage"="هل أنت متأكد من رغبتك في إزالة بطاقة الائتمان هذه؟";
+"Error_EditAutoTipMessage"="An error occurred while trying to update the tip. Please try again.";
 "LoginSupport"="Need support?";
 "Politeness"="Politeness";
 "BookDropoffLocationButtonTitle"="وجهة";
@@ -428,6 +427,7 @@
 "Overdue_TransactionId"="Transaction Id:";
 "TaxiHailNetworkTimeOutPopupAccept"="Accept";
 "ManualRideLinqStatus_Cancelled"="You have been unpaired from RideLinQ. Please type in the pairing code again.";
+"PayPalUnlinkError"="Unable to unlink your PayPal account";
 "NotificationSettingsActivityName"="Notification setting";
 "Tuto03Bottom"="يمكنك البحث عن عنوان محدد أوإختيار عنوان من المفضلة، إتصالاتك أو قائمة بالأماكن القريبة.";
 "BookDestinationLabel"="ادخل وجهتك";
@@ -467,6 +467,7 @@
 "InvalidLoginMessage"="البريد الإلكتروني و/أو كلمة المرور غير صحيحة.";
 "AccountActivationMessage"="تم إرسال رسالة إلكترونية. اتبع الرابط في الرسالة لتأكيد عنوانك";
 "RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
+"AboutActivityName"="About";
 "PromotionViewNoPromotionLabel"="No promotions available";
 "Tuto01Bottom"="ابدأ باختيار موقعك الحالي.";
 "NearbyPlacesTitle"="أماكن قريبة";

@@ -18,7 +18,7 @@
   <string name="CmtConfirmPayment">Confirmer</string>
   <string name="StatusViewTitle">Confirmé</string>
   <string name="PaymentDetails.PaymentMethodsLabel">Méthodes de paiement</string>
-  <string name="PayPalUnlinkError">Impossible de dissocier votre compte PayPal</string>
+  <string name="HistoryDetailServiceTypeLabel">Type de service:</string>
   <string name="BookPickupLabel">Confirmer votre adresse de départ</string>
   <string name="Tuto03Top">Vous pouvez également nous communiquer votre position en saisissant directement une adresse</string>
   <string name="BookDateLabel">Départ différé</string>
@@ -85,7 +85,7 @@
   <string name="apcuriumUrl">http://www.apcurium.com/</string>
   <string name="HistoryDetailBuildingNameLabel">Nom du bâtiment:</string>
   <string name="NoMailClient">Il n\'y a pas d\'adresse email client enregistrée</string>
-  <string name="AboutActivityName">About</string>
+  <string name="RemoveCreditCardMessage">Etes-vous sûr de vouloir supprimer cette carte de paiement?</string>
   <string name="DateTimePickerPickTime">Sélectionner l\'heure de départ</string>
   <string name="CannotCancelOrderMessage">Désolé, vous ne pouvez plus annuler cette demande</string>
   <string name="AccountCreationActivityName">Account creation</string>
@@ -160,7 +160,6 @@
   <string name="PickupMapTitle">Lieu de départ</string>
   <string name="AccountNotActivatedCodeBySMS">Votre compte n\'a pas pu être activé. Merci d\'activer le compte à l\'aide du SMS qui vient de vous être envoyé</string>
   <string name="ManualRideLinqStatus_Driver">Chauffeur #:</string>
-  <string name="Error_EditAutoTipMessage">Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</string>
   <string name="OrderNoteGPSApproximate">(adresse approximative)</string>
   <string name="Notification_ConfirmPairingPush">Confirmation de pairing</string>
   <string name="ResetPasswordConfirmationMessage">Un nouveau mot de passe vous a été envoyé par email</string>
@@ -232,7 +231,7 @@
   <string name="EtaLessThanAMinute">Le taxi le plus proche est à moins d\'une minute de votre position</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Merci de contacter {0} au {1} pour toute demande d\'assistance</string>
   <string name="AddPaymentMethod_Multiple">Ajouter une méthode de paiement</string>
-  <string name="RemoveCreditCardMessage">Etes-vous sûr de vouloir supprimer cette carte de paiement?</string>
+  <string name="Error_EditAutoTipMessage">Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</string>
   <string name="LoginSupport">Support Technique?</string>
   <string name="Politeness">Politesse</string>
   <string name="BookDropoffLocationButtonTitle">Destination</string>
@@ -441,6 +440,7 @@
   <string name="Overdue_TransactionId">Id de transaction:</string>
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accepter</string>
   <string name="ManualRideLinqStatus_Cancelled">You have been unpaired from RideLinQ. Please type in the pairing code again.</string>
+  <string name="PayPalUnlinkError">Impossible de dissocier votre compte PayPal</string>
   <string name="NotificationSettingsActivityName">Notification setting</string>
   <string name="Tuto03Bottom">Vous pouvez selectionner une nouvelle adresse ou en choisir parmi vos favoris, ou les Points d\'Intérêt les plus proches</string>
   <string name="BookDestinationLabel">Saisir votre destination</string>
@@ -480,6 +480,7 @@
   <string name="InvalidLoginMessage">L\'email et/ou le mot de passe semblent invalides</string>
   <string name="AccountActivationMessage">Vous allez recevoir un email de confirmation. Merci de cliquer sur le lien pour valider votre inscription</string>
   <string name="RateLastRideMessage">Nous aimerions recevoir vos commentaires sur votre dernière course, voulez-vous l\'évaluer?</string>
+  <string name="AboutActivityName">About</string>
   <string name="PromotionViewNoPromotionLabel">Aucune promotion disponible</string>
   <string name="Tuto01Bottom">Commencez par sélectionner votre position actuelle.</string>
   <string name="NearbyPlacesTitle">À proximité</string>
