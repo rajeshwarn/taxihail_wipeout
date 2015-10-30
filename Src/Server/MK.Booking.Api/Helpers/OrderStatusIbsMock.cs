@@ -1,8 +1,8 @@
 ﻿#region
 
 using System;
-using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;

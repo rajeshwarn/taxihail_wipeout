@@ -125,10 +125,6 @@
     <Compile Include="Helpers\ApplicationPathResolver.cs" />
     <Compile Include="Helpers\OrderStatusHelper.cs" />
     <Compile Include="Helpers\OrderStatusIbsMock.cs" />
-    <Compile Include="Jobs\UpdateOrderStatusJobStub.cs" />
-    <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
-    <Compile Include="Jobs\OrderStatusUpdater.cs" />
-    <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
     <Compile Include="Services\ManualRidelinqOrderService.cs" />
     <Compile Include="Services\Maps\PostalCodeService.cs" />
     <Compile Include="Services\Payment\OverduePaymentService.cs" />
@@ -278,6 +274,9 @@
       <Link>AutoMapper.Net4.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Jobs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

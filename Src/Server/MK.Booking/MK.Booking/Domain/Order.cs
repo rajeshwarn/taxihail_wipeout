@@ -46,6 +46,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderUnpairedFromManualRideLinq>(NoAction);
             Handles<ManualRideLinqTripInfoUpdated>(NoAction);
             Handles<OrderNotificationDetailUpdated>(NoAction);
+            Handles<IbsOrderSwitchInitiated>(NoAction);
         }
 
 
@@ -94,7 +95,8 @@ namespace apcurium.MK.Booking.Domain
 
         public Order(Guid id, Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
             double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid)
+            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid,
+            string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList)
             : this(id)
         {
             if ((settings == null) || pickupAddress == null || 
@@ -122,7 +124,15 @@ namespace apcurium.MK.Booking.Domain
                 CompanyKey = companyKey,
                 CompanyName = companyName,
                 Market = market,
-                IsPrepaid = isPrepaid
+                IsPrepaid = isPrepaid,
+                IbsInformationNote = ibsInformationNote,
+                Fare = fare,
+                IbsAccountId = ibsAccountId,
+                Prompts = prompts,
+                PromptsLength = promptsLength,
+                PromotionId = promotionId,
+                IsFutureBooking = isFutureBooking,
+                ReferenceDataCompanyList = referenceDataCompanyList
             });
         }
 
@@ -292,6 +302,26 @@ namespace apcurium.MK.Booking.Domain
             {
                 DispatchCompanyName = dispatchCompanyName,
                 DispatchCompanyKey = dispatchCompanyKey
+            });
+        }
+
+        public void InitiateIbsOrderSwitch(int newIbsAccountId, CreateOrder newOrderCommand)
+        {
+            Update(new IbsOrderSwitchInitiated
+            {
+                IbsAccountId = newIbsAccountId,
+                Settings = newOrderCommand.Settings,
+                AccountId = newOrderCommand.AccountId,
+                ClientLanguageCode = newOrderCommand.ClientLanguageCode,
+                CompanyKey = newOrderCommand.CompanyKey,
+                CompanyName = newOrderCommand.CompanyName,
+                DropOffAddress = newOrderCommand.DropOffAddress,
+                Fare = newOrderCommand.Fare,
+                Market = newOrderCommand.Market,
+                PickupDate = newOrderCommand.PickupDate,
+                PickupAddress = newOrderCommand.PickupAddress,
+                IbsInformationNote = newOrderCommand.IbsInformationNote,
+                ReferenceDataCompanyList = newOrderCommand.ReferenceDataCompanyList
             });
         }
 

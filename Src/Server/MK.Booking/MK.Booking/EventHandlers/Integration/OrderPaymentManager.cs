@@ -81,7 +81,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             // Confirm to IBS that order was payed
             var orderDetail = _dao.FindById(orderId);
             if (orderDetail == null) throw new InvalidOperationException("Order not found");
-            if (orderDetail.IBSOrderId == null) throw new InvalidOperationException("IBSOrderId should not be null");
 
             var payment = _paymentDao.FindByOrderId(orderId);
             if (payment == null) throw new InvalidOperationException("Payment info not found");

@@ -59,6 +59,7 @@
     <Compile Include="CancelOrderBecauseOfError.cs" />
     <Compile Include="CreateOrderForManualRideLinqPair.cs" />
     <Compile Include="DeletePromotion.cs" />
+    <Compile Include="InitiateIbsOrderSwitch.cs" />
     <Compile Include="SaveTemporaryOrderPaymentInfo.cs" />
     <Compile Include="UnapplyPromotion.cs" />
     <Compile Include="UnpairOrderForManualRideLinq.cs" />

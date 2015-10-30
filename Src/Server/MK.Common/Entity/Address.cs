@@ -119,5 +119,12 @@ namespace apcurium.MK.Common.Entity
             address.State = State;
             address.PlaceId = PlaceId;
         }
+
+        public bool IsValid()
+        {
+            return FullAddress.HasValue()
+                && Longitude != 0
+                && Latitude != 0;
+        }
     }
 }
