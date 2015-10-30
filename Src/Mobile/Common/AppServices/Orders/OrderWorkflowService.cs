@@ -112,23 +112,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			_bookingSettingsSubject = new BehaviorSubject<BookingSettings>(_accountService.CurrentAccount.Settings);
 
-			var vehicleTypeId = 
-				_appSettings.Data.VehicleTypeSelectionEnabled
-				? _accountService.CurrentAccount.Settings.VehicleTypeId
-				: null;
+            _serviceTypeSubject = new BehaviorSubject<ServiceType>(ServiceType.Taxi);
 
-			_vehicleTypeSubject = new BehaviorSubject<int?>(vehicleTypeId);
-			_serviceTypeSubject = new BehaviorSubject<ServiceType>(GetServiceTypeForVehicleId(vehicleTypeId));
+            var vehicleTypeId =
+                _appSettings.Data.VehicleTypeSelectionEnabled
+                ? _accountService.CurrentAccount.Settings.VehicleTypeId
+                : null;
 
-			InitializeAsync();
-		}
-			
-		private async Task InitializeAsync()
-		{
-			var vehicleTypeId = await _vehicleTypeSubject.Take(1).ToTask();
+            _vehicleTypeSubject = new BehaviorSubject<int?>(vehicleTypeId);
 
-			var serviceType = await GetServiceTypeForVehicleId(vehicleTypeId);
-			await ChangeServiceTypeIfNecessary(serviceType);
+            SetVehicleType(vehicleTypeId);
 		}
 
 		public async Task SetAddress(Address address)
