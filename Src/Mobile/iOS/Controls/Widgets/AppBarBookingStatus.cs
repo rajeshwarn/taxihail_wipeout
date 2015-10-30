@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
-using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using UIKit;
+using Cirrious.MvvmCross.Binding.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public partial class AppBarBookingStatus : BaseBindableChildView<BookingStatusBottomBarViewModel>
+    public partial class AppBarBookingStatus : MvxView
     {
         public AppBarBookingStatus (IntPtr handle) : base(handle)
         {
