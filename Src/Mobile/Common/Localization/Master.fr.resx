@@ -2270,6 +2270,12 @@
 	<data name="OrderStatus_Medallion" xml:space="preserve">
 		<value>Medallion</value>
 	</data>
+	<data name="OrderStatus_AddDestination" xml:space="preserve">
+		<value>Ajouter votre destination</value>
+	</data>
+	<data name="OrderStatus_RemoveDestination" xml:space="preserve">
+		<value>Enlever votre destination</value>
+	</data>
 	<data name="WaitingCarLandscapeViewCloseButtonText" xml:space="preserve">
 		<value>Retour</value>
 	</data>

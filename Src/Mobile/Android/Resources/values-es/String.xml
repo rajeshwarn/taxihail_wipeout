@@ -457,6 +457,7 @@
   <string name="ProfileSettingsActivityName">Profile</string>
   <string name="MessageToDriverTitle">Message to Driver</string>
   <string name="BookingAirportDetails">Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</string>
+  <string name="OrderStatus_AddDestination">Add your destination</string>
   <string name="StatusCallButton">Llamar</string>
   <string name="OrderNoteGPS">Usando su GPS</string>
   <string name="PaymentConfirmationMessageToDriver">El pasajero ha pagado {0} (auth : {1})</string>
@@ -510,6 +511,7 @@
   <string name="ResendConfirmationCodeText">Confirmation code will be resend shortly</string>
   <string name="PaymentLoadError">No se pueden cargar los datos de pago. Por favor, inténtelo de nuevo más tarde.</string>
   <string name="EmailLabel">Email</string>
+  <string name="OrderStatus_RemoveDestination">Remove your destination</string>
   <string name="ManualPairingForRideLinqActivityName">Manual pairing for RideLinq</string>
   <string name="April">Abr (04)</string>
   <string name="StatusEditAutoPaymentButton">Pago</string>

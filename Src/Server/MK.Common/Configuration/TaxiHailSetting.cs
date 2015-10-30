@@ -60,6 +60,7 @@ namespace MK.Common.Configuration
             ShowVehicleInformation = true;
             ShowOrientedPins = false;
             IsDriverBonusEnabled = false;
+            ChangeDropOffAddressMidTrip = false;
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
@@ -505,6 +506,10 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Display - Message To Prompt To Driver", Description = "Message that will prompt on driver console on the Accept/Decline screen")]
         public string MessagePromptedToDriver { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Configuration - Enable Change Destination MidTrip", Description = "Possibility to add/change/remove the destination while in trip")]
+        public bool ChangeDropOffAddressMidTrip { get; protected set; }
     }
 }
 
