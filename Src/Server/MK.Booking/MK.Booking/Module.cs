@@ -12,6 +12,8 @@ using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.PushNotifications.Impl;
 using apcurium.MK.Booking.ReadModel;
@@ -28,6 +30,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
+using CMTServices;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -41,6 +44,19 @@ namespace apcurium.MK.Booking
     {
         public void Init(IUnityContainer container)
         {
+            container.RegisterType<IUpdateOrderStatusJob>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    var serverSettings = c.Resolve<IServerSettings>();
+                    if (serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
+                    {
+                        return new UpdateOrderStatusJobStub(c.Resolve<IOrderDao>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>());
+                    }
+
+                    return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IIBSServiceProvider>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>(), c.Resolve<HoneyBadgerServiceClient>(), c.Resolve<IServerSettings>());
+                }));
+
             System.Data.Entity.Database.SetInitializer<BookingDbContext>(null);
             container.RegisterType<ISmsService, TwilioService>();
 
@@ -160,6 +176,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, OrderPaymentManager>("OrderPaymentManager");
             container.RegisterType<IEventHandler, OrderPairingManager>("OrderPairingManager");
             container.RegisterType<IEventHandler, OrderDispatchCompanyManager>("OrderDispatchCompanyManager");
+            container.RegisterType<IEventHandler, OrderCreationManager>("OrderCreationManager");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

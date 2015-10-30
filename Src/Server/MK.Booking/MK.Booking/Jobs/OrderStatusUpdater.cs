@@ -1,7 +1,7 @@
 ﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
@@ -25,7 +25,7 @@ using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceClient.Web;
 
-namespace apcurium.MK.Booking.Api.Jobs
+namespace apcurium.MK.Booking.Jobs
 {
     public class OrderStatusUpdater
     {

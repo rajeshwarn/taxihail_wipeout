@@ -47,7 +47,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<AutoTipUpdated>(NoAction);
             Handles<OriginalEtaLogged>(NoAction);
             Handles<OrderNotificationDetailUpdated>(NoAction);
-			Handles<OrderReportCreated>(OnOrderReportCreated);
+		    Handles<OrderReportCreated>(OnOrderReportCreated);
+            Handles<IbsOrderSwitchInitiated>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -58,7 +59,9 @@ namespace apcurium.MK.Booking.Domain
 
 		public void UpdateOrderCreated(Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, double? tipIncentive)
+			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, double? tipIncentive,
+            string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
+            int? ibsOrderId = null)
 		{
 			if ((settings == null) || pickupAddress == null ||
 				(Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
@@ -87,13 +90,24 @@ namespace apcurium.MK.Booking.Domain
 				Market = market,
 				IsPrepaid = isPrepaid,
 				BookingFees = bookingFees,
-                TipIncentive = tipIncentive
+                TipIncentive = tipIncentive,
+                IbsInformationNote = ibsInformationNote,
+                Fare = fare,
+                IbsAccountId = ibsAccountId,
+                Prompts = prompts,
+                PromptsLength = promptsLength,
+                PromotionId = promotionId,
+                IsFutureBooking = isFutureBooking,
+                ReferenceDataCompanyList = referenceDataCompanyList,
+                IBSOrderId = ibsOrderId
 			});
 		}
 
 		public void UpdateOrderReportCreated(Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, string error, double? tipIncentive)
+            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, string error, double? tipIncentive,
+            string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
+            int? ibsOrderId = null)
 		{
 			Update(new OrderReportCreated
 			{
@@ -117,7 +131,16 @@ namespace apcurium.MK.Booking.Domain
 				IsPrepaid = isPrepaid,
 				BookingFees = bookingFees,
 				Error = error,
-                TipIncentive = tipIncentive
+                TipIncentive = tipIncentive,
+                IbsInformationNote = ibsInformationNote,
+                Fare = fare,
+                IbsAccountId = ibsAccountId,
+                Prompts = prompts,
+                PromptsLength = promptsLength,
+                PromotionId = promotionId,
+                IsFutureBooking = isFutureBooking,
+                ReferenceDataCompanyList = referenceDataCompanyList,
+                IBSOrderId = ibsOrderId
 			});
 		}
 
@@ -333,6 +356,26 @@ namespace apcurium.MK.Booking.Domain
             {
                 DispatchCompanyName = dispatchCompanyName,
                 DispatchCompanyKey = dispatchCompanyKey
+            });
+        }
+
+        public void InitiateIbsOrderSwitch(int newIbsAccountId, CreateOrder newOrderCommand)
+        {
+            Update(new IbsOrderSwitchInitiated
+            {
+                IbsAccountId = newIbsAccountId,
+                Settings = newOrderCommand.Settings,
+                AccountId = newOrderCommand.AccountId,
+                ClientLanguageCode = newOrderCommand.ClientLanguageCode,
+                CompanyKey = newOrderCommand.CompanyKey,
+                CompanyName = newOrderCommand.CompanyName,
+                DropOffAddress = newOrderCommand.DropOffAddress,
+                Fare = newOrderCommand.Fare,
+                Market = newOrderCommand.Market,
+                PickupDate = newOrderCommand.PickupDate,
+                PickupAddress = newOrderCommand.PickupAddress,
+                IbsInformationNote = newOrderCommand.IbsInformationNote,
+                ReferenceDataCompanyList = newOrderCommand.ReferenceDataCompanyList
             });
         }
 
