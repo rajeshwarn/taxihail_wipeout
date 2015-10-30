@@ -594,7 +594,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var vehicleNumbersToBeShown = vehiclesArray.Select (x => x.VehicleName);
 
             // check for annotations that needs to be removed
-            var annotationsToRemove = _availableVehicleAnnotations.Where(x => !vehicleNumbersToBeShown.Contains(x.Title));
+            var annotationsToRemove = _availableVehicleAnnotations.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
             foreach (var annotation in annotationsToRemove)
             {
                 DeleteAnnotation(annotation);
