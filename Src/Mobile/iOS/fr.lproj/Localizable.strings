@@ -18,7 +18,7 @@
 "PaymentDetails.PaymentMethodsLabel"="Méthodes de paiement";
 "PayPalUnlinkError"="Impossible de dissocier votre compte PayPal";
 "BookPickupLabel"="Confirmer votre adresse de départ";
-"Notification_DriverBailedPush"="Driver bailed";
+"Notification_DriverBailedPush"="Course refusée";
 "Tuto03Top"="Vous pouvez également nous communiquer votre position en saisissant directement une adresse";
 "BookDateLabel"="Départ différé";
 "Overdue_IBSOrderId"="Commande:";

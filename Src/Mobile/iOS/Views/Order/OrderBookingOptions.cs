@@ -16,8 +16,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		private void Initialize()
 		{
-            BackgroundColor = UIColor.Clear;
-
             Subviews[0].BackgroundColor = UIColor.Black.ColorWithAlpha(0.5f);
 
 			FlatButtonStyle.Green.ApplyTo(btnNow);
