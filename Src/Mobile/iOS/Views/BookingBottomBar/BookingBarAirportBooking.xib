@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BookingBarAirportBooking">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JmU-VE-hSM" userLabel="Cancel" customClass="AppBarLabelButton">
+                    <rect key="frame" x="8" y="5" width="148" height="46"/>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pof-vS-7Fq" userLabel="Next" customClass="FlatButton">
+                    <rect key="frame" x="164" y="5" width="148" height="46"/>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Pof-vS-7Fq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="6Hw-HB-TPd"/>
+                <constraint firstItem="Pof-vS-7Fq" firstAttribute="width" secondItem="JmU-VE-hSM" secondAttribute="width" id="EuP-id-WcE"/>
+                <constraint firstItem="JmU-VE-hSM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="M0e-J7-EnA"/>
+                <constraint firstAttribute="bottom" secondItem="Pof-vS-7Fq" secondAttribute="bottom" constant="5" id="V5R-SL-LMK"/>
+                <constraint firstAttribute="trailing" secondItem="Pof-vS-7Fq" secondAttribute="trailing" constant="8" id="Zok-Fz-S3a"/>
+                <constraint firstItem="Pof-vS-7Fq" firstAttribute="leading" secondItem="JmU-VE-hSM" secondAttribute="trailing" constant="8" id="my4-tW-52o"/>
+                <constraint firstItem="JmU-VE-hSM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="neB-Ck-Qbm"/>
+                <constraint firstAttribute="bottom" secondItem="JmU-VE-hSM" secondAttribute="bottom" constant="5" id="tfX-ke-vkD"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="buttonCancel" destination="JmU-VE-hSM" id="9BD-Bg-FYu"/>
+                <outlet property="buttonNextAirport" destination="Pof-vS-7Fq" id="ESI-Yf-3cI"/>
+            </connections>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

@@ -1,18 +1,47 @@
 using CoreGraphics;
 using UIKit;
+using Foundation;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
+	[Register("AppBarLabelButton")]
     public class AppBarLabelButton : CommandButton
     {
+		public AppBarLabelButton(IntPtr handle):base(handle)
+		{
+		}
+
+		public AppBarLabelButton(CGRect frame):base(frame)
+		{
+		}
+
+		public AppBarLabelButton():base()
+		{
+		}
+
+
         public AppBarLabelButton (string text, UIColor textColor = null):base()
         {
-            Font = UIFont.FromName(FontName.HelveticaNeueLight, 34 / 2);
-            SetTitle(text, UIControlState.Normal);
-            SetTitleColor(textColor ?? UIColor.Black, UIControlState.Normal);
-            SetTitleColor(TitleColor(UIControlState.Normal).ColorWithAlpha(0.5f), UIControlState.Highlighted);
-            SetBackgroundImage(UIImage.FromFile("highlight.png"), UIControlState.Highlighted);
+			Font = UIFont.FromName(FontName.HelveticaNeueLight, 34 / 2);
+			SetTitle(text, UIControlState.Normal);
+			SetTitleColor(textColor ?? UIColor.Black, UIControlState.Normal);
+			SetTitleColor(TitleColor(UIControlState.Normal).ColorWithAlpha(0.5f), UIControlState.Highlighted);
+			SetBackgroundImage(UIImage.FromFile("highlight.png"), UIControlState.Highlighted);
         }
+
+
+
+
+
+		public void Initialize(string text, UIColor textColor = null)
+		{
+			Font = UIFont.FromName(FontName.HelveticaNeueLight, 34 / 2);
+			SetTitle(text, UIControlState.Normal);
+			SetTitleColor(textColor ?? UIColor.Black, UIControlState.Normal);
+			SetTitleColor(TitleColor(UIControlState.Normal).ColorWithAlpha(0.5f), UIControlState.Highlighted);
+			SetBackgroundImage(UIImage.FromFile("highlight.png"), UIControlState.Highlighted);
+		}
 
         public override void Draw(CGRect rect)
         {
@@ -31,4 +60,3 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
     }
 }
-

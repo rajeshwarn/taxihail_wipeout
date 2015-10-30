@@ -288,6 +288,11 @@
     <InterfaceDefinition Include="Views\WaitingCarLandscapeView.xib" />
     <InterfaceDefinition Include="Views\Payments\CreditCardMultipleView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\CreditCardCell.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarAirportBooking.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarConfirmation.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarEdit.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarManualRideLinQ.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarNormalBooking.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -669,6 +674,26 @@
       <DependentUpon>CreditCardCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\CreditCardLabelToInt.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarAirportBooking.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarAirportBooking.designer.cs">
+      <DependentUpon>BookingBarAirportBooking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingBottomBar\BookingBarConfirmation.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarConfirmation.designer.cs">
+      <DependentUpon>BookingBarConfirmation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingBottomBar\BookingBarEdit.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarEdit.designer.cs">
+      <DependentUpon>BookingBarEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingBottomBar\BookingBarManualRideLinQ.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarManualRideLinQ.designer.cs">
+      <DependentUpon>BookingBarManualRideLinQ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingBottomBar\BookingBarNormalBooking.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarNormalBooking.designer.cs">
+      <DependentUpon>BookingBarNormalBooking.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -965,4 +990,7 @@
   <Target Name="_CompileITunesMetadata" DependsOnTargets="_DetectSdkLocations;_DetectAppManifest;_GenerateBundleName;_CompileAppManifest">
     <Message Text="Skipping CompileITunesMetadata task to prevent inclusion of iTunesMetadata.plist in the IPA" />
   </Target>
+  <ItemGroup>
+    <Folder Include="Views\BookingBottomBar\" />
+  </ItemGroup>
 </Project>

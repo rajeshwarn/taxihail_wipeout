@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BookingBarNormalBooking">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3X-BK-PXg" userLabel="Estimate" customClass="AppBarButton">
+                    <rect key="frame" x="8" y="5" width="60" height="46"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="JGf-GC-3IO"/>
+                        <constraint firstAttribute="width" constant="60" id="PT2-rP-JUY"/>
+                    </constraints>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lQi-yx-qZY" userLabel="Booking view">
+                    <rect key="frame" x="76" y="0.0" width="168" height="56"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gG4-I4-Xmi" userLabel="Booking" customClass="FlatButton">
+                            <rect key="frame" x="0.0" y="5" width="168" height="46"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="promo.png" translatesAutoresizingMaskIntoConstraints="NO" id="f6B-H4-CVw" userLabel="Promotion image">
+                            <rect key="frame" x="152" y="5" width="16" height="16"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="gG4-I4-Xmi" firstAttribute="leading" secondItem="lQi-yx-qZY" secondAttribute="leading" id="7Wm-PE-cIe"/>
+                        <constraint firstItem="gG4-I4-Xmi" firstAttribute="top" secondItem="lQi-yx-qZY" secondAttribute="top" constant="5" id="Fed-5U-I8L"/>
+                        <constraint firstItem="f6B-H4-CVw" firstAttribute="top" secondItem="lQi-yx-qZY" secondAttribute="top" constant="5" id="L5o-Wz-UYc"/>
+                        <constraint firstAttribute="trailing" secondItem="f6B-H4-CVw" secondAttribute="trailing" id="LfW-dY-c5T"/>
+                        <constraint firstAttribute="trailing" secondItem="gG4-I4-Xmi" secondAttribute="trailing" id="MEK-v8-o3B"/>
+                        <constraint firstAttribute="bottom" secondItem="gG4-I4-Xmi" secondAttribute="bottom" constant="5" id="cbp-wr-x0l"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18E-rJ-1Dc" userLabel="Reservation booking" customClass="AppBarButton">
+                    <rect key="frame" x="252" y="5" width="60" height="46"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="Dma-BV-4mG"/>
+                        <constraint firstAttribute="width" constant="60" id="lS8-sx-Mba"/>
+                    </constraints>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="lQi-yx-qZY" secondAttribute="bottom" id="0I3-Ep-mYl"/>
+                <constraint firstAttribute="trailing" secondItem="18E-rJ-1Dc" secondAttribute="trailing" constant="8" id="1Es-1J-4TC"/>
+                <constraint firstItem="h3X-BK-PXg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="38Q-f2-cjx"/>
+                <constraint firstItem="lQi-yx-qZY" firstAttribute="leading" secondItem="h3X-BK-PXg" secondAttribute="trailing" constant="8" id="4W7-tY-XRg"/>
+                <constraint firstAttribute="centerY" secondItem="18E-rJ-1Dc" secondAttribute="centerY" id="Lex-D3-bk0"/>
+                <constraint firstAttribute="centerY" secondItem="lQi-yx-qZY" secondAttribute="centerY" id="Rit-5F-omd"/>
+                <constraint firstItem="18E-rJ-1Dc" firstAttribute="leading" secondItem="lQi-yx-qZY" secondAttribute="trailing" constant="8" id="UwB-ld-qFW"/>
+                <constraint firstAttribute="trailing" secondItem="lQi-yx-qZY" secondAttribute="trailing" priority="500" constant="8" id="abp-88-y8Z"/>
+                <constraint firstAttribute="centerY" secondItem="h3X-BK-PXg" secondAttribute="centerY" id="esN-ZI-ZmO"/>
+                <constraint firstItem="lQi-yx-qZY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="500" constant="8" id="jEq-aF-cPz"/>
+                <constraint firstItem="lQi-yx-qZY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="juI-Ci-Oxo"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="buttonBooking" destination="gG4-I4-Xmi" id="iYr-27-mWc"/>
+                <outlet property="buttonEstimate" destination="h3X-BK-PXg" id="aSa-qC-Jpe"/>
+                <outlet property="buttonReservationBooking" destination="18E-rJ-1Dc" id="YBr-DP-o2u"/>
+                <outlet property="imagePromotion" destination="f6B-H4-CVw" id="Kij-gW-7O5"/>
+            </connections>
+            <point key="canvasLocation" x="327" y="252"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="promo.png" width="16" height="16"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
