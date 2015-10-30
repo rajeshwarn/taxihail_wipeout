@@ -19,7 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private bool _isShown;
 		private ViewStates _animatedVisibility;
+        private ViewStates _contactTaxiAnimatedVisibility;
         private LinearLayout _statusLayout;
+        private RelativeLayout _topViewLayout;
         private ImageView _progressImage;
         private FrameLayout _progressLayout;
 
@@ -29,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     _contactTaxiOverlay = FindViewById<OrderStatusContactTaxiOverlay>(Resource.Id.ContactTaxiOverlay);
                     _statusLayout = FindViewById<LinearLayout>(Resource.Id.statusLayout);
+                    _topViewLayout = FindViewById<RelativeLayout>(Resource.Id.topViewLayout);
                     _progressImage = FindViewById<ImageView>(Resource.Id.progressImage);
                     _progressLayout = FindViewById<FrameLayout>(Resource.Id.progressLayout);
 
@@ -38,8 +41,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         .For("DataContext")
                         .To(vm => vm);
 
-                    set.Bind(_contactTaxiOverlay)
-                        .For(v => v.AnimatedVisibility)
+                    set.Bind()
+                        .For(v => v.ContactTaxiAnimatedVisibility)
                         .To(vm => vm.IsContactTaxiVisible)
                         .WithConversion("Visibility");
 
@@ -136,7 +139,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 				HideIfNeeded();
 			}
-		}
+        }
+
+        public ViewStates ContactTaxiAnimatedVisibility
+        {
+            get { return _contactTaxiAnimatedVisibility; }
+            set
+            {
+                _contactTaxiAnimatedVisibility = value;
+                if (value == ViewStates.Visible)
+                {
+                    var layoutParams = (FrameLayout.LayoutParams)_topViewLayout.LayoutParameters;
+                    var desiredHeight = _statusLayout.Height + _contactTaxiOverlay.LayoutParameters.Height;
+
+                    if (layoutParams.Height != desiredHeight)
+                    {
+                        layoutParams.Height = desiredHeight;
+                        _topViewLayout.LayoutParameters = layoutParams;
+                    }
+                }
+                else
+                {
+                    var layoutParams = (FrameLayout.LayoutParams)_topViewLayout.LayoutParameters;
+                    layoutParams.Height = LayoutParams.WrapContent;
+                    _topViewLayout.LayoutParameters = layoutParams;
+                }
+
+                _contactTaxiOverlay.AnimatedVisibility = _contactTaxiAnimatedVisibility;
+            }
+        }
 
 		public void ShowWithoutAnimation()
 		{
