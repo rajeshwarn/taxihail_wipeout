@@ -11,7 +11,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class BookingBarNormalBooking : BaseBindableChildView<BottomBarViewModel>
+	public partial class BookingBarNormalBooking : MvxView
 	{
 		public static BookingBarNormalBooking LoadViewFromFile()
 		{
@@ -29,7 +29,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		public BookingBarNormalBooking(IntPtr handle):base(handle)
 		{
 			this.DelayBind(DataBinding);
-
 		}
 
 		public void DataBinding()
@@ -40,15 +39,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(buttonEstimate).For(v => v.Command).To(vm => vm.ChangeAddressSelectionMode);
 			set.Bind(buttonEstimate).For(v => v.Selected).To(vm => vm.EstimateSelected);
-			set.Bind(buttonEstimate).For(v => v.HiddenWithConstraints).To(vm => vm.Settings.HideDestination);
+			set.Bind(viewEstimate).For(v => v.Hidden).To(vm => vm.Settings.HideDestination);
 
 			set.Bind(buttonBooking).For(v => v.Command).To(vm => vm.Book);
-			set.Bind(buttonBooking).For(v => v.HiddenWithConstraints).To(vm => vm.BookButtonHidden);
+			set.Bind(viewBooking).For(v => v.Hidden).To(vm => vm.BookButtonHidden);
 			set.Bind(buttonBooking).For(v => v.Enabled).To(vm => vm.ParentViewModel.Map.BookCannotExecute).WithConversion("BoolInverter");
 			set.Bind(buttonBooking).For("Title").To(vm => vm.BookButtonText);
 
 			set.Bind(buttonReservationBooking).For(v => v.Command).To(vm => vm.BookLater);
-			set.Bind(buttonReservationBooking).For(v => v.HiddenWithConstraints).To(vm => vm.IsFutureBookingDisabled);
+			set.Bind(viewReservationBooking).For(v => v.Hidden).To(vm => vm.IsFutureBookingDisabled);
 
 			set.Bind(imagePromotion).For(v => v.Hidden).To(vm => vm.IsPromoCodeActive).WithConversion("BoolInverter");
 

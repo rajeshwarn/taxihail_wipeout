@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,60 +11,85 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3X-BK-PXg" userLabel="Estimate" customClass="AppBarButton">
-                    <rect key="frame" x="8" y="5" width="60" height="46"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t2n-xa-unk" userLabel="Estimate view" customClass="HindableView">
+                    <rect key="frame" x="8" y="5" width="72" height="46"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3X-BK-PXg" userLabel="Estimate" customClass="AppBarButton">
+                            <rect key="frame" x="6" y="0.0" width="60" height="46"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="JeW-is-PYf"/>
+                                <constraint firstAttribute="height" constant="46" id="nqL-SP-d6Q"/>
+                            </constraints>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="46" id="JGf-GC-3IO"/>
-                        <constraint firstAttribute="width" constant="60" id="PT2-rP-JUY"/>
+                        <constraint firstAttribute="centerY" secondItem="h3X-BK-PXg" secondAttribute="centerY" id="MbJ-cv-y9z"/>
+                        <constraint firstAttribute="centerX" secondItem="h3X-BK-PXg" secondAttribute="centerX" id="hIc-hS-ebC"/>
                     </constraints>
-                </button>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lQi-yx-qZY" userLabel="Booking view">
-                    <rect key="frame" x="76" y="0.0" width="168" height="56"/>
+                    <rect key="frame" x="88" y="5" width="144" height="46"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gG4-I4-Xmi" userLabel="Booking" customClass="FlatButton">
-                            <rect key="frame" x="0.0" y="5" width="168" height="46"/>
+                            <rect key="frame" x="0.0" y="0.0" width="144" height="46"/>
                             <state key="normal">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="promo.png" translatesAutoresizingMaskIntoConstraints="NO" id="f6B-H4-CVw" userLabel="Promotion image">
-                            <rect key="frame" x="152" y="5" width="16" height="16"/>
+                            <rect key="frame" x="128" y="0.0" width="16" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="16" id="VAK-GY-rRt"/>
+                                <constraint firstAttribute="width" constant="16" id="ui5-VE-3iH"/>
+                            </constraints>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="gG4-I4-Xmi" firstAttribute="leading" secondItem="lQi-yx-qZY" secondAttribute="leading" id="7Wm-PE-cIe"/>
-                        <constraint firstItem="gG4-I4-Xmi" firstAttribute="top" secondItem="lQi-yx-qZY" secondAttribute="top" constant="5" id="Fed-5U-I8L"/>
-                        <constraint firstItem="f6B-H4-CVw" firstAttribute="top" secondItem="lQi-yx-qZY" secondAttribute="top" constant="5" id="L5o-Wz-UYc"/>
-                        <constraint firstAttribute="trailing" secondItem="f6B-H4-CVw" secondAttribute="trailing" id="LfW-dY-c5T"/>
-                        <constraint firstAttribute="trailing" secondItem="gG4-I4-Xmi" secondAttribute="trailing" id="MEK-v8-o3B"/>
-                        <constraint firstAttribute="bottom" secondItem="gG4-I4-Xmi" secondAttribute="bottom" constant="5" id="cbp-wr-x0l"/>
+                        <constraint firstAttribute="trailing" secondItem="gG4-I4-Xmi" secondAttribute="trailing" id="9XW-Hc-Mu9"/>
+                        <constraint firstItem="gG4-I4-Xmi" firstAttribute="leading" secondItem="lQi-yx-qZY" secondAttribute="leading" id="EBw-rW-lnu"/>
+                        <constraint firstAttribute="trailing" secondItem="f6B-H4-CVw" secondAttribute="trailing" id="K2G-i3-CYU"/>
+                        <constraint firstItem="gG4-I4-Xmi" firstAttribute="top" secondItem="lQi-yx-qZY" secondAttribute="top" id="cZE-fK-JjE"/>
+                        <constraint firstAttribute="bottom" secondItem="gG4-I4-Xmi" secondAttribute="bottom" id="jOr-Cm-rqy"/>
+                        <constraint firstItem="f6B-H4-CVw" firstAttribute="top" secondItem="lQi-yx-qZY" secondAttribute="top" id="wi9-s7-bOD"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18E-rJ-1Dc" userLabel="Reservation booking" customClass="AppBarButton">
-                    <rect key="frame" x="252" y="5" width="60" height="46"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MXs-mk-UyI" userLabel="Reservation view" customClass="HindableView">
+                    <rect key="frame" x="240" y="5" width="72" height="46"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18E-rJ-1Dc" userLabel="Reservation booking" customClass="AppBarButton">
+                            <rect key="frame" x="6" y="0.0" width="60" height="46"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="lmk-sJ-ohh"/>
+                                <constraint firstAttribute="height" constant="46" id="uu8-T2-q1h"/>
+                            </constraints>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="46" id="Dma-BV-4mG"/>
-                        <constraint firstAttribute="width" constant="60" id="lS8-sx-Mba"/>
+                        <constraint firstAttribute="centerX" secondItem="18E-rJ-1Dc" secondAttribute="centerX" id="57I-nd-3mQ"/>
+                        <constraint firstAttribute="centerY" secondItem="18E-rJ-1Dc" secondAttribute="centerY" id="lCF-Dn-Xcd"/>
                     </constraints>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="lQi-yx-qZY" secondAttribute="bottom" id="0I3-Ep-mYl"/>
-                <constraint firstAttribute="trailing" secondItem="18E-rJ-1Dc" secondAttribute="trailing" constant="8" id="1Es-1J-4TC"/>
-                <constraint firstItem="h3X-BK-PXg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="38Q-f2-cjx"/>
-                <constraint firstItem="lQi-yx-qZY" firstAttribute="leading" secondItem="h3X-BK-PXg" secondAttribute="trailing" constant="8" id="4W7-tY-XRg"/>
-                <constraint firstAttribute="centerY" secondItem="18E-rJ-1Dc" secondAttribute="centerY" id="Lex-D3-bk0"/>
-                <constraint firstAttribute="centerY" secondItem="lQi-yx-qZY" secondAttribute="centerY" id="Rit-5F-omd"/>
-                <constraint firstItem="18E-rJ-1Dc" firstAttribute="leading" secondItem="lQi-yx-qZY" secondAttribute="trailing" constant="8" id="UwB-ld-qFW"/>
-                <constraint firstAttribute="trailing" secondItem="lQi-yx-qZY" secondAttribute="trailing" priority="500" constant="8" id="abp-88-y8Z"/>
-                <constraint firstAttribute="centerY" secondItem="h3X-BK-PXg" secondAttribute="centerY" id="esN-ZI-ZmO"/>
-                <constraint firstItem="lQi-yx-qZY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="500" constant="8" id="jEq-aF-cPz"/>
-                <constraint firstItem="lQi-yx-qZY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="juI-Ci-Oxo"/>
+                <constraint firstAttribute="bottom" secondItem="lQi-yx-qZY" secondAttribute="bottom" constant="5" id="0I3-Ep-mYl"/>
+                <constraint firstItem="MXs-mk-UyI" firstAttribute="leading" secondItem="lQi-yx-qZY" secondAttribute="trailing" constant="8" id="AbQ-kE-Wl4"/>
+                <constraint firstItem="t2n-xa-unk" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Aej-eA-xG0"/>
+                <constraint firstItem="lQi-yx-qZY" firstAttribute="leading" secondItem="t2n-xa-unk" secondAttribute="trailing" constant="8" id="Prm-kJ-jG4"/>
+                <constraint firstItem="lQi-yx-qZY" firstAttribute="width" secondItem="t2n-xa-unk" secondAttribute="width" multiplier="2" id="Ptv-GH-hld"/>
+                <constraint firstAttribute="bottom" secondItem="MXs-mk-UyI" secondAttribute="bottom" constant="5" id="SB2-A9-UgK"/>
+                <constraint firstItem="MXs-mk-UyI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="TmT-mm-eap"/>
+                <constraint firstAttribute="trailing" secondItem="MXs-mk-UyI" secondAttribute="trailing" constant="8" id="Tyk-uA-zI6"/>
+                <constraint firstAttribute="bottom" secondItem="t2n-xa-unk" secondAttribute="bottom" constant="5" id="WV3-ps-dv1"/>
+                <constraint firstItem="t2n-xa-unk" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="gM6-I5-Q7K"/>
+                <constraint firstItem="lQi-yx-qZY" firstAttribute="width" secondItem="MXs-mk-UyI" secondAttribute="width" multiplier="2" id="jPd-eJ-jkY"/>
+                <constraint firstItem="lQi-yx-qZY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="juI-Ci-Oxo"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -72,8 +98,11 @@
                 <outlet property="buttonEstimate" destination="h3X-BK-PXg" id="aSa-qC-Jpe"/>
                 <outlet property="buttonReservationBooking" destination="18E-rJ-1Dc" id="YBr-DP-o2u"/>
                 <outlet property="imagePromotion" destination="f6B-H4-CVw" id="Kij-gW-7O5"/>
+                <outlet property="viewBooking" destination="lQi-yx-qZY" id="dpK-wC-CZ9"/>
+                <outlet property="viewEstimate" destination="t2n-xa-unk" id="UNl-Uc-BPV"/>
+                <outlet property="viewReservationBooking" destination="MXs-mk-UyI" id="lW4-qg-6sQ"/>
             </connections>
-            <point key="canvasLocation" x="327" y="252"/>
+            <point key="canvasLocation" x="327" y="329.5"/>
         </view>
     </objects>
     <resources>

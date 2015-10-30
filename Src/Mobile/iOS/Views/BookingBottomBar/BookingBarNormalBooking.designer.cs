@@ -6,7 +6,6 @@
 //
 using Foundation;
 using System.CodeDom.Compiler;
-using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -14,24 +13,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class BookingBarNormalBooking
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarButton buttonReservationBooking { get; set; }
-
-		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton buttonBooking { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarButton buttonEstimate { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarButton buttonReservationBooking { get; set; }
+
+		[Outlet]
 		UIKit.UIImageView imagePromotion { get; set; }
+
+		[Outlet]
+		UIKit.UIView viewBooking { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HindableView viewEstimate { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HindableView viewReservationBooking { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (buttonReservationBooking != null) {
-				buttonReservationBooking.Dispose ();
-				buttonReservationBooking = null;
-			}
-
 			if (buttonBooking != null) {
 				buttonBooking.Dispose ();
 				buttonBooking = null;
@@ -42,9 +45,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				buttonEstimate = null;
 			}
 
+			if (buttonReservationBooking != null) {
+				buttonReservationBooking.Dispose ();
+				buttonReservationBooking = null;
+			}
+
 			if (imagePromotion != null) {
 				imagePromotion.Dispose ();
 				imagePromotion = null;
+			}
+
+			if (viewEstimate != null) {
+				viewEstimate.Dispose ();
+				viewEstimate = null;
+			}
+
+			if (viewBooking != null) {
+				viewBooking.Dispose ();
+				viewBooking = null;
+			}
+
+			if (viewReservationBooking != null) {
+				viewReservationBooking.Dispose ();
+				viewReservationBooking = null;
 			}
 		}
 	}

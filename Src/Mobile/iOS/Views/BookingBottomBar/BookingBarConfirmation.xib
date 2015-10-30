@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,19 +12,19 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TwW-ZG-opm" userLabel="Cancel" customClass="AppBarLabelButton">
-                    <rect key="frame" x="8" y="5" width="96" height="46"/>
+                    <rect key="frame" x="8" y="5" width="72" height="46"/>
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rIx-vp-wKB" userLabel="Confirm" customClass="FlatButton">
-                    <rect key="frame" x="112" y="5" width="96" height="46"/>
+                    <rect key="frame" x="88" y="5" width="144" height="46"/>
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tLs-wZ-GWs" userLabel="Edit" customClass="AppBarLabelButton">
-                    <rect key="frame" x="216" y="5" width="96" height="46"/>
+                    <rect key="frame" x="240" y="5" width="72" height="46"/>
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -33,10 +34,10 @@
             <constraints>
                 <constraint firstItem="TwW-ZG-opm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="6yB-Vt-ttE"/>
                 <constraint firstItem="rIx-vp-wKB" firstAttribute="leading" secondItem="TwW-ZG-opm" secondAttribute="trailing" constant="8" id="CYB-Ra-Wpz"/>
-                <constraint firstItem="rIx-vp-wKB" firstAttribute="width" secondItem="tLs-wZ-GWs" secondAttribute="width" id="CsV-qK-LHA"/>
+                <constraint firstItem="rIx-vp-wKB" firstAttribute="width" secondItem="tLs-wZ-GWs" secondAttribute="width" multiplier="2" id="CsV-qK-LHA"/>
                 <constraint firstItem="tLs-wZ-GWs" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="Flo-0m-3Hw"/>
                 <constraint firstItem="tLs-wZ-GWs" firstAttribute="leading" secondItem="rIx-vp-wKB" secondAttribute="trailing" constant="8" id="H4R-VK-HED"/>
-                <constraint firstItem="rIx-vp-wKB" firstAttribute="width" secondItem="TwW-ZG-opm" secondAttribute="width" id="Pop-2Q-zJ7"/>
+                <constraint firstItem="rIx-vp-wKB" firstAttribute="width" secondItem="TwW-ZG-opm" secondAttribute="width" multiplier="2" id="Pop-2Q-zJ7"/>
                 <constraint firstItem="rIx-vp-wKB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="Vhh-6L-AKi"/>
                 <constraint firstAttribute="bottom" secondItem="tLs-wZ-GWs" secondAttribute="bottom" constant="5" id="dJt-zH-hbD"/>
                 <constraint firstAttribute="bottom" secondItem="TwW-ZG-opm" secondAttribute="bottom" constant="5" id="g4x-Ag-8NK"/>

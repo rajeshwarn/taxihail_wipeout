@@ -7,10 +7,11 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using Cirrious.MvvmCross.Binding.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class BookingBarAirportBooking : BaseBindableChildView<BottomBarViewModel>
+	public partial class BookingBarAirportBooking : MvxView
 	{
 		public static BookingBarAirportBooking LoadViewFromFile()
 		{

@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,13 +12,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chl-Ws-X40" userLabel="Cancel" customClass="AppBarLabelButton">
-                    <rect key="frame" x="8" y="5" width="148" height="46"/>
+                    <rect key="frame" x="8" y="5" width="72" height="46"/>
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wFE-ip-ZP1" userLabel="Save" customClass="FlatButton">
-                    <rect key="frame" x="164" y="5" width="148" height="46"/>
+                    <rect key="frame" x="88" y="5" width="144" height="46"/>
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -29,10 +30,10 @@
                 <constraint firstAttribute="bottom" secondItem="chl-Ws-X40" secondAttribute="bottom" constant="5" id="KkV-BG-HEK"/>
                 <constraint firstItem="wFE-ip-ZP1" firstAttribute="leading" secondItem="chl-Ws-X40" secondAttribute="trailing" constant="8" id="L7n-5h-20H"/>
                 <constraint firstAttribute="bottom" secondItem="wFE-ip-ZP1" secondAttribute="bottom" constant="5" id="PEQ-eL-nfO"/>
-                <constraint firstAttribute="trailing" secondItem="wFE-ip-ZP1" secondAttribute="trailing" constant="8" id="PHI-4r-ZkZ"/>
                 <constraint firstItem="chl-Ws-X40" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="Uck-jq-Nrg"/>
+                <constraint firstAttribute="centerX" secondItem="wFE-ip-ZP1" secondAttribute="centerX" id="bQI-um-yeU"/>
                 <constraint firstItem="wFE-ip-ZP1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="fPR-ys-Fgr"/>
-                <constraint firstItem="wFE-ip-ZP1" firstAttribute="width" secondItem="chl-Ws-X40" secondAttribute="width" id="lxx-ai-J1H"/>
+                <constraint firstItem="chl-Ws-X40" firstAttribute="width" secondItem="wFE-ip-ZP1" secondAttribute="width" multiplier="0.5" id="lj4-Y3-XHI"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -40,6 +41,7 @@
                 <outlet property="buttonCancel" destination="chl-Ws-X40" id="y2H-4h-Sal"/>
                 <outlet property="buttonSave" destination="wFE-ip-ZP1" id="vFh-lo-gek"/>
             </connections>
+            <point key="canvasLocation" x="299" y="556.5"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

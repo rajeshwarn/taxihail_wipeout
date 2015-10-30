@@ -694,6 +694,7 @@
     <Compile Include="Views\BookingBottomBar\BookingBarNormalBooking.designer.cs">
       <DependentUpon>BookingBarNormalBooking.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Widgets\HindableView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,28 +11,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Wg-hI-zUm" userLabel="Estimate" customClass="AppBarButton">
-                    <rect key="frame" x="8" y="5" width="60" height="46"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="46" id="Fnc-Sk-Hke"/>
-                        <constraint firstAttribute="width" constant="60" id="aor-Ys-5D4"/>
-                    </constraints>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lRQ-rI-gHz" userLabel="Manual RideLinQ booking view">
-                    <rect key="frame" x="76" y="5" width="114" height="46"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Vf-n7-FjQ" userLabel="Estimate view">
+                    <rect key="frame" x="8" y="5" width="74" height="46"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="promo.png" translatesAutoresizingMaskIntoConstraints="NO" id="r96-S5-ubt" userLabel="Promotion image">
-                            <rect key="frame" x="98" y="0.0" width="16" height="16"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="16" id="d9M-xT-QxV"/>
-                                <constraint firstAttribute="width" constant="16" id="oZD-41-cn3"/>
-                            </constraints>
-                        </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ot-AI-h3e" userLabel="Manual RideLinQ Booking" customClass="FlatButton">
-                            <rect key="frame" x="0.0" y="0.0" width="114" height="46"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Wg-hI-zUm" userLabel="Estimate" customClass="AppBarButton">
+                            <rect key="frame" x="0.0" y="0.0" width="74" height="46"/>
                             <state key="normal">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -39,35 +23,68 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="2Ot-AI-h3e" firstAttribute="top" secondItem="lRQ-rI-gHz" secondAttribute="top" id="6fX-Eg-dxW"/>
-                        <constraint firstAttribute="bottom" secondItem="2Ot-AI-h3e" secondAttribute="bottom" id="E3d-9O-5yW"/>
-                        <constraint firstAttribute="trailing" secondItem="2Ot-AI-h3e" secondAttribute="trailing" id="EuL-wA-c1C"/>
-                        <constraint firstAttribute="trailing" secondItem="r96-S5-ubt" secondAttribute="trailing" id="XIz-qL-8cX"/>
-                        <constraint firstItem="r96-S5-ubt" firstAttribute="top" secondItem="lRQ-rI-gHz" secondAttribute="top" id="dhH-dn-FBC"/>
-                        <constraint firstItem="2Ot-AI-h3e" firstAttribute="leading" secondItem="lRQ-rI-gHz" secondAttribute="leading" id="lmI-lQ-Tkb"/>
+                        <constraint firstAttribute="bottom" secondItem="1Wg-hI-zUm" secondAttribute="bottom" id="eCw-z6-G0N"/>
+                        <constraint firstAttribute="trailing" secondItem="1Wg-hI-zUm" secondAttribute="trailing" id="jQo-d4-fnS"/>
+                        <constraint firstItem="1Wg-hI-zUm" firstAttribute="top" secondItem="9Vf-n7-FjQ" secondAttribute="top" id="jU7-aS-QCt"/>
+                        <constraint firstItem="1Wg-hI-zUm" firstAttribute="leading" secondItem="9Vf-n7-FjQ" secondAttribute="leading" id="zAz-1i-iB3"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZTx-hZ-snK" userLabel="Booking" customClass="FlatButton">
-                    <rect key="frame" x="198" y="5" width="114" height="46"/>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lRQ-rI-gHz" userLabel="Manual RideLinQ booking view">
+                    <rect key="frame" x="87" y="5" width="110" height="46"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="promo.png" translatesAutoresizingMaskIntoConstraints="NO" id="r96-S5-ubt" userLabel="Promotion image">
+                            <rect key="frame" x="94" y="0.0" width="16" height="16"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ot-AI-h3e" userLabel="Manual RideLinQ Booking" customClass="FlatButton">
+                            <rect key="frame" x="0.0" y="0.0" width="110" height="46"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="2Ot-AI-h3e" firstAttribute="top" secondItem="lRQ-rI-gHz" secondAttribute="top" id="OBD-Ai-C0b"/>
+                        <constraint firstAttribute="trailing" secondItem="2Ot-AI-h3e" secondAttribute="trailing" id="ReS-UU-Atr"/>
+                        <constraint firstAttribute="trailing" secondItem="r96-S5-ubt" secondAttribute="trailing" id="XBE-Px-gJE"/>
+                        <constraint firstItem="r96-S5-ubt" firstAttribute="top" secondItem="lRQ-rI-gHz" secondAttribute="top" id="nEf-W6-Zqt"/>
+                        <constraint firstAttribute="bottom" secondItem="2Ot-AI-h3e" secondAttribute="bottom" id="nGT-rH-uch"/>
+                        <constraint firstItem="2Ot-AI-h3e" firstAttribute="leading" secondItem="lRQ-rI-gHz" secondAttribute="leading" id="tTs-cu-Mol"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YtL-0E-qQg" userLabel="Booking view">
+                    <rect key="frame" x="202" y="5" width="110" height="46"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZTx-hZ-snK" userLabel="Booking" customClass="FlatButton">
+                            <rect key="frame" x="0.0" y="0.0" width="110" height="46"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="ZTx-hZ-snK" secondAttribute="bottom" id="A9B-lm-XVK"/>
+                        <constraint firstItem="ZTx-hZ-snK" firstAttribute="leading" secondItem="YtL-0E-qQg" secondAttribute="leading" id="Kn4-ca-uj3"/>
+                        <constraint firstItem="ZTx-hZ-snK" firstAttribute="top" secondItem="YtL-0E-qQg" secondAttribute="top" id="Mgg-tq-uqc"/>
+                        <constraint firstAttribute="trailing" secondItem="ZTx-hZ-snK" secondAttribute="trailing" id="gJg-aX-MHg"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="ZTx-hZ-snK" secondAttribute="bottom" constant="5" id="3va-pQ-1rP"/>
-                <constraint firstItem="ZTx-hZ-snK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="ATm-k3-kh6"/>
-                <constraint firstItem="ZTx-hZ-snK" firstAttribute="leading" secondItem="lRQ-rI-gHz" secondAttribute="trailing" constant="8" id="Mor-Ri-nBt"/>
-                <constraint firstAttribute="trailing" secondItem="lRQ-rI-gHz" secondAttribute="trailing" priority="500" constant="8" id="Ry2-0d-356"/>
-                <constraint firstAttribute="trailing" secondItem="ZTx-hZ-snK" secondAttribute="trailing" constant="8" id="U6v-CK-arN"/>
-                <constraint firstItem="lRQ-rI-gHz" firstAttribute="width" secondItem="ZTx-hZ-snK" secondAttribute="width" id="cLT-v0-Ubz"/>
-                <constraint firstAttribute="centerY" secondItem="1Wg-hI-zUm" secondAttribute="centerY" id="gZr-qj-Dae"/>
-                <constraint firstItem="1Wg-hI-zUm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="iMV-xY-Mag"/>
-                <constraint firstItem="lRQ-rI-gHz" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="ivS-Rn-qFq"/>
-                <constraint firstAttribute="bottom" secondItem="lRQ-rI-gHz" secondAttribute="bottom" constant="5" id="nTK-K0-6eo"/>
-                <constraint firstItem="lRQ-rI-gHz" firstAttribute="leading" secondItem="1Wg-hI-zUm" secondAttribute="trailing" constant="8" id="u1p-YN-83y"/>
-                <constraint firstItem="lRQ-rI-gHz" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="500" constant="8" id="vnA-0c-Wam"/>
+                <constraint firstItem="9Vf-n7-FjQ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="5yN-TJ-4Fk"/>
+                <constraint firstItem="YtL-0E-qQg" firstAttribute="width" secondItem="9Vf-n7-FjQ" secondAttribute="width" multiplier="1.5" id="6Wx-7a-JRx"/>
+                <constraint firstItem="YtL-0E-qQg" firstAttribute="leading" secondItem="lRQ-rI-gHz" secondAttribute="trailing" constant="5" id="9ua-Nu-EiT"/>
+                <constraint firstAttribute="bottom" secondItem="9Vf-n7-FjQ" secondAttribute="bottom" constant="5" id="Gs9-b8-79v"/>
+                <constraint firstAttribute="bottom" secondItem="lRQ-rI-gHz" secondAttribute="bottom" constant="5" id="Jyz-2P-uhd"/>
+                <constraint firstItem="9Vf-n7-FjQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="NJf-WO-gIS"/>
+                <constraint firstItem="lRQ-rI-gHz" firstAttribute="leading" secondItem="9Vf-n7-FjQ" secondAttribute="trailing" constant="5" id="cAE-VX-LGU"/>
+                <constraint firstItem="YtL-0E-qQg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="g6E-jG-6WT"/>
+                <constraint firstItem="lRQ-rI-gHz" firstAttribute="width" secondItem="9Vf-n7-FjQ" secondAttribute="width" multiplier="1.5" id="omn-T1-Jz3"/>
+                <constraint firstAttribute="trailing" secondItem="YtL-0E-qQg" secondAttribute="trailing" constant="8" id="oqT-Ic-3Pd"/>
+                <constraint firstItem="lRQ-rI-gHz" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="vVX-h0-RUW"/>
+                <constraint firstAttribute="bottom" secondItem="YtL-0E-qQg" secondAttribute="bottom" constant="5" id="zL6-dQ-xgx"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -76,8 +93,11 @@
                 <outlet property="buttonEstimate" destination="1Wg-hI-zUm" id="c7W-k4-e1U"/>
                 <outlet property="buttonManualRideLinQBooking" destination="2Ot-AI-h3e" id="qYa-e6-Lzc"/>
                 <outlet property="imagePromotion" destination="r96-S5-ubt" id="sCG-Hv-dhh"/>
+                <outlet property="viewBooking" destination="YtL-0E-qQg" id="j9S-mQ-1Vt"/>
+                <outlet property="viewEstimate" destination="lRQ-rI-gHz" id="3vS-pC-N7Y"/>
+                <outlet property="viewManualRideLinQBooking" destination="lRQ-rI-gHz" id="JVC-np-lnx"/>
             </connections>
-            <point key="canvasLocation" x="312" y="459"/>
+            <point key="canvasLocation" x="312" y="531"/>
         </view>
     </objects>
     <resources>

@@ -23,6 +23,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.UIImageView imagePromotion { get; set; }
+
+		[Outlet]
+		UIKit.UIView viewBooking { get; set; }
+
+		[Outlet]
+		UIKit.UIView viewEstimate { get; set; }
+
+		[Outlet]
+		UIKit.UIView viewManualRideLinQBooking { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -44,6 +53,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (imagePromotion != null) {
 				imagePromotion.Dispose ();
 				imagePromotion = null;
+			}
+
+			if (viewEstimate != null) {
+				viewEstimate.Dispose ();
+				viewEstimate = null;
+			}
+
+			if (viewManualRideLinQBooking != null) {
+				viewManualRideLinQBooking.Dispose ();
+				viewManualRideLinQBooking = null;
+			}
+
+			if (viewBooking != null) {
+				viewBooking.Dispose ();
+				viewBooking = null;
 			}
 		}
 	}
