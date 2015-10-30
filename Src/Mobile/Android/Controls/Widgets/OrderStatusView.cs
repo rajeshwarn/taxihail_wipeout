@@ -56,6 +56,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 });
         }
 
+        protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
+        {
+            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+
+            if (_statusLayout.Height != 0 && ((BookingStatusViewModel)DataContext).IsProgressVisible)
+            {
+                var layoutParams = (RelativeLayout.LayoutParams)_progressLayout.LayoutParameters;
+
+                if (layoutParams.Height != _statusLayout.Height)
+                {
+                    layoutParams.Height = _statusLayout.Height;
+                    _progressLayout.LayoutParameters = layoutParams;
+                }
+            }
+        }
+
         private bool _showAnnimation;
         public bool ShowAnimation
         {
@@ -143,7 +159,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 
 			_isShown = true;
-
 
 			var animation = AnimationHelper.GetForYTranslation(this, 0);
 
