@@ -848,7 +848,7 @@
       <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
       <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\MapBoxSdk2.1\MapBoxSdk2.1\MapBoxSdk2.1.csproj">
+    <ProjectReference Include="MapBoxSdk2.1\MapBoxSdk2.1\MapBoxSdk2.1.csproj">
       <Project>{13802257-329F-4EF6-B845-70CA0652B6AD}</Project>
       <Name>MapBoxSdk2.1</Name>
     </ProjectReference>

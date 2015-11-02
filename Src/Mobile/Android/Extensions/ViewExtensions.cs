@@ -10,8 +10,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
     {
         public static void SetFillParent(this View thisView)
         {
-            thisView.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FillParent,
-                ViewGroup.LayoutParams.FillParent);
+            thisView.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent,
+                ViewGroup.LayoutParams.MatchParent);
         }
 
         public static void SetWrapContent(this View thisView)

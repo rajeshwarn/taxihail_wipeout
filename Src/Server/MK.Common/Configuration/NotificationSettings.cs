@@ -22,5 +22,6 @@ namespace MK.Common.Configuration
         public bool? VehicleAtPickupPush { get; set; }
         public bool? PaymentConfirmationPush { get; set; }
         public bool? PromotionUnlockedPush { get; set; }
+        public bool? DriverBailedPush { get; set; }
     }
 }

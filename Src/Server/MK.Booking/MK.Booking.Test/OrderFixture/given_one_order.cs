@@ -178,6 +178,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         {
             var rateOrder = new RateOrder
             {
+				AccountId = _accountId,
                 OrderId = _orderId,
                 Note = "Note",
                 RatingScores = new List<RatingScore>
@@ -219,6 +220,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             var rateOrder2 = new RateOrder
             {
+				AccountId = _accountId,
                 OrderId = _orderId,
                 Note = "Note",
                 RatingScores = new List<RatingScore>

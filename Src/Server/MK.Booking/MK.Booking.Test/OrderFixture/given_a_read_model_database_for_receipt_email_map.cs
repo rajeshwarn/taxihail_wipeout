@@ -47,7 +47,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                     ReceiptEmail = true,
                     PromotionUnlockedEmail = true,
                     VehicleAtPickupPush = true,
-                    UnpairingReminderPush = true
+                    UnpairingReminderPush = true,
+                    DriverBailedPush = true
                 });
             }
         }

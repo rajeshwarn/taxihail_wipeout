@@ -130,5 +130,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var req = string.Format("/account/orders/{0}/calldriver", orderId);
             return Client.GetAsync<bool>(req);
         }
+
+        public Task<int> GetOrderCountForAppRating()
+		{
+            return Client.GetAsync<int>("/account/ordercountforapprating");
+		}
     }
 }

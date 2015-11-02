@@ -540,11 +540,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void SetSelectedOnBookLater(bool selected)
         {
-            var btnBookLater = (ImageView) FindViewById(Resource.Id.btnBookLater);
-            var txtBookLater = (TextView) FindViewById(Resource.Id.txtBookLater);
             var btnBookLaterLayout = (LinearLayout) FindViewById(Resource.Id.btnBookLaterLayout);
-            btnBookLater.Selected = selected;
-            txtBookLater.Selected = selected;
             btnBookLaterLayout.Selected = selected;
         }
 

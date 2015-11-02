@@ -387,7 +387,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             TouchableMap.Surface.MoveBy = (deltaX, deltaY) =>
             {
-                ViewModel.BookCannotExecute = true;
 
                 var currentLocationPoint = Map.ToScreenLocation(TouchableMap.Map.CenterCoordinate);
 
@@ -412,6 +411,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             Observable
                 .FromEventPattern<MapView.MapChangedEventArgs>(Map, "MapChanged")
+				.Do(_ =>
+				{
+					if (!_bypassCameraChangeEvent)
+					{
+						ViewModel.DisableBooking();
+					}
+				})
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(OnMapChanged)

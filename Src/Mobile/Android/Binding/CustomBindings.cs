@@ -7,6 +7,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
 		public static void Load(IMvxTargetBindingFactoryRegistry registry)
         {
             TextViewBinding.Register(registry);
+            MvxButtonClickBinding.Register(registry);
         }
     }
 }

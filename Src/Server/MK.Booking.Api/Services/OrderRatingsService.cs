@@ -36,6 +36,8 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(OrderRatingsRequest request)
         {
+			var accountId = new Guid(this.GetSession().UserAuthId);
+
             if (request.RatingScores != null)
             {
                 // cleanup ratings in case we were sent duplicates
@@ -52,6 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
             
             var command = new RateOrder
             {
+				AccountId = accountId,
                 Note = request.Note,
                 OrderId = request.OrderId,
                 RatingScores = request.RatingScores

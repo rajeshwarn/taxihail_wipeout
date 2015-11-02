@@ -39,7 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiHail", "Android\TaxiHai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMTPayment.Android", "..\Server\CMTPayment\CMTPayment.Android.csproj", "{FD56EFB1-2ED8-4A8A-B7AB-80EB36CF03EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapBoxSdk2.1", "..\..\..\MapBoxSdk2.1\MapBoxSdk2.1\MapBoxSdk2.1.csproj", "{13802257-329F-4EF6-B845-70CA0652B6AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapBoxSdk2.1", "Android\MapBoxSdk2.1\MapBoxSdk2.1\MapBoxSdk2.1.csproj", "{13802257-329F-4EF6-B845-70CA0652B6AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

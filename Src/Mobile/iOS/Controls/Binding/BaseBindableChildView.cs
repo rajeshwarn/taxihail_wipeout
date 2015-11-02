@@ -3,7 +3,6 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using UIKit;
 using Foundation;
-using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding

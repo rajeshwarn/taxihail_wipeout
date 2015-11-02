@@ -197,14 +197,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 			});
 		}
 
-        protected override void DrawStroke(CoreGraphics.CGColor fillColor, CGRect rect)
+        protected override void DrawStroke()
         {
             //nothing here, no shadow
-        }
-
-        protected override void DrawBackground(CoreGraphics.CGContext context, CGRect rect, UIBezierPath roundedRectanglePath, CoreGraphics.CGColor fillColor)
-        {
-            //nothing here, we don't want the semitransparent background
         }
     }
 }
