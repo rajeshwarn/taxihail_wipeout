@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Api.Payment
         {
             if (companyKey.HasValue() || serviceType != ServiceType.Taxi)
             {
-                var externalIbs = companyKey.HasValue() ? companyKey.Value : serviceType.ToString();
+                var externalIbs = companyKey.HasValue() ? companyKey : serviceType.ToString();
                 _logger.LogMessage(string.Format("Confirming external payment on external company '{0}'", externalIbs));
             }
 
@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Payment
         {
             if (companyKey.HasValue() || serviceType != ServiceType.Taxi)
             {
-                var externalIbs = companyKey.HasValue() ? companyKey.Value : serviceType.ToString();
+                var externalIbs = companyKey.HasValue() ? companyKey : serviceType.ToString();
                 _logger.LogMessage(string.Format("Sending payment notification on external company '{0}'", externalIbs));
             }
 
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Api.Payment
         {
             if (companyKey.HasValue() || serviceType != ServiceType.Taxi)
             {
-                var externalIbs = companyKey.HasValue() ? companyKey.Value : serviceType.ToString();
+                var externalIbs = companyKey.HasValue() ? companyKey : serviceType.ToString();
                 _logger.LogMessage(string.Format("Sending message to driver on external company '{0}'", externalIbs));
             }
 
