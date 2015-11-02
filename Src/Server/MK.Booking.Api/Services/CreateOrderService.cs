@@ -64,8 +64,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IIBSServiceProvider _ibsServiceProvider;
-        private readonly IVehicleTypeDao _vehiculeTypeDao;
-        private readonly IIbsOrderService _ibsOrderService;
+        private readonly IIbsCreateOrderService _ibsCreateOrderService;
         private readonly Resources.Resources _resources;
 
         public CreateOrderService(ICommandBus commandBus,
@@ -85,8 +84,7 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderPaymentDao orderPaymentDao,
             IFeesDao feesDao, 
             ILogger logger,
-            IVehicleTypeDao vehiculeTypeDao,
-            IIbsOrderService ibsOrderService)
+            IIbsCreateOrderService ibsCreateOrderService)
         {
             _accountChargeDao = accountChargeDao;
             _creditCardDao = creditCardDao;
@@ -105,8 +103,7 @@ namespace apcurium.MK.Booking.Api.Services
             _orderPaymentDao = orderPaymentDao;
             _feesDao = feesDao;
 	        _logger = logger;
-            _vehiculeTypeDao = vehiculeTypeDao;
-            _ibsOrderService = ibsOrderService;
+            _ibsCreateOrderService = ibsCreateOrderService;
             _resources = new Resources.Resources(_serverSettings);
         }
 
@@ -444,10 +441,11 @@ namespace apcurium.MK.Booking.Api.Services
                 return paypalWebPaymentResponse;
             }
 
-            // Create order on IBS
             if (isHailRequest)
             {
-                var result = _ibsOrderService.CreateIbsOrder(request.Id, request.PickupAddress, request.DropOffAddress,
+                // VTS hail flow
+
+                var result = _ibsCreateOrderService.CreateIbsOrder(request.Id, request.PickupAddress, request.DropOffAddress,
                     request.Settings.AccountNumber, request.Settings.CustomerNumber, bestAvailableCompany.CompanyKey,
                     account.IBSAccountId.Value, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
                     request.Settings.VehicleTypeId, ibsInformationNote, request.PickupDate.Value, accountValidationResult.Prompts,
@@ -463,36 +461,38 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
+                // Normal flow
+
                 _commandBus.Send(orderCommand);
-            }
 
-            if (request.QuestionsAndAnswers.HasValue())
-            {
-                // Save question answers so we can display them the next time the user books
-                var accountLastAnswers = request.QuestionsAndAnswers
-                  .Where(q => q.SaveAnswer)
-                  .Select(q =>
-                      new AccountChargeQuestionAnswer
-                      {
-                          AccountId = account.Id,
-                          AccountChargeQuestionId = q.Id,
-                          AccountChargeId = q.AccountId,
-                          LastAnswer = q.Answer
-                      });
-
-                if (accountLastAnswers != null)
+                if (request.QuestionsAndAnswers.HasValue())
                 {
-                    _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = account.Id, Answers = accountLastAnswers.ToArray() });
-                }  
-            }
+                    // Save question answers so we can display them the next time the user books
+                    var accountLastAnswers = request.QuestionsAndAnswers
+                      .Where(q => q.SaveAnswer)
+                      .Select(q =>
+                          new AccountChargeQuestionAnswer
+                          {
+                              AccountId = account.Id,
+                              AccountChargeQuestionId = q.Id,
+                              AccountChargeId = q.AccountId,
+                              LastAnswer = q.Answer
+                          });
 
-            return new OrderStatusDetail
-            {
-                OrderId = orderCommand.OrderId,
-                Status = OrderStatus.Created,
-                IBSStatusId = string.Empty,
-                IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
-            };
+                    if (accountLastAnswers != null)
+                    {
+                        _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = account.Id, Answers = accountLastAnswers.ToArray() });
+                    }
+                }
+
+                return new OrderStatusDetail
+                {
+                    OrderId = orderCommand.OrderId,
+                    Status = OrderStatus.Created,
+                    IBSStatusId = string.Empty,
+                    IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
+                };
+            }
         }
 
         public object Get(ExecuteWebPaymentAndProceedWithOrder request)
@@ -590,7 +590,7 @@ namespace apcurium.MK.Booking.Api.Services
 			// We are in a network timeout situation.
 	        if (orderStatusDetail.CompanyKey == request.NextDispatchCompanyKey)
 	        {
-				_ibsOrderService.CancelIbsOrder(order.IBSOrderId, order.CompanyKey, order.Settings.Phone, account.Id);
+                _ibsCreateOrderService.CancelIbsOrder(order.IBSOrderId, order.CompanyKey, order.Settings.Phone, account.Id);
 
 		        orderStatusDetail.IBSStatusId = VehicleStatuses.Common.Timeout;
 		        orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_" + VehicleStatuses.Common.Timeout);

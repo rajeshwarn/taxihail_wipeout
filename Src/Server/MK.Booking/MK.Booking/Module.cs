@@ -76,6 +76,9 @@ namespace apcurium.MK.Booking
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(),
                 new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IServerSettings>())));
 
+            container.RegisterType<IIbsCreateOrderService>(new ContainerControlledLifetimeManager(),
+                new InjectionFactory(c => new IbsCreateOrderService(c.Resolve<IServerSettings>(), c.Resolve<IVehicleTypeDao>(), c.Resolve<IAccountDao>(), c.Resolve<ILogger>(), c.Resolve<IIBSServiceProvider>(), c.Resolve<IUpdateOrderStatusJob>())));
+
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IFeesDao>(new FeesDao(() => container.Resolve<BookingDbContext>()));

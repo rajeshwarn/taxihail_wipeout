@@ -383,11 +383,13 @@
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
     <Compile Include="Services\IFeeService.cs" />
+    <Compile Include="Services\IIbsCreateOrderService.cs" />
     <Compile Include="Services\IIbsOrderService.cs" />
     <Compile Include="Services\Impl\BasePayPalService.cs" />
     <Compile Include="Services\Impl\BraintreePaymentService.cs" />
     <Compile Include="Services\Impl\CmtPaymentService.cs" />
     <Compile Include="Services\Impl\FeeService.cs" />
+    <Compile Include="Services\Impl\IbsCreateOrderService.cs" />
     <Compile Include="Services\Impl\IBSOrderService.cs" />
     <Compile Include="Services\Impl\MonerisPaymentService.cs" />
     <Compile Include="Services\Impl\PairingService.cs" />
