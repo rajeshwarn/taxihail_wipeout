@@ -59,6 +59,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             this.Layer.BorderColor = color.CGColor;
         }
 
+        public override bool Enabled
+        {
+            get
+            {
+                return base.Enabled;
+            }
+            set
+            {
+                base.Enabled = value;
+
+                Alpha = Enabled 
+                    ? 1.0f 
+                    : 0.5f;
+            }
+        }
+
 		private void ApplyDefaultStyle()
         {
             Font = UIFont.FromName(FontName.HelveticaNeueRegular, 40 / 2);
@@ -139,21 +155,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
             base.LayoutSubviews();
-        }
-
-        public override bool Enabled
-        {
-            get
-            {
-                return base.Enabled;
-            }
-            set
-            {
-                base.Enabled = value;
-                Alpha = Enabled
-                    ? 1.0f 
-                    : 0.5f;
-            }
         }
     }
 }

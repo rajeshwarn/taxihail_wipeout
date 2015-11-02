@@ -21,6 +21,7 @@
   <string name="PaymentDetails.PaymentMethodsLabel">Payment Methods</string>
   <string name="HistoryDetailServiceTypeLabel">Service Type:</string>
   <string name="BookPickupLabel">Confirme su ubicación</string>
+  <string name="Notification_DriverBailedPush">Driver bailed</string>
   <string name="Tuto02Top">Podemos localizarle usando el GPS de su celular</string>
   <string name="Tuto03Top">Puede seleccionar su lugar de abordaje tocando en el mapa la dirección.</string>
   <string name="BookDateLabel">Recogerme más tarde</string>
@@ -109,6 +110,7 @@
   <string name="View_CreateAccount">Cree su cuenta</string>
   <string name="UpdateBookingSettingsInvalidCoF">Usted debe tener una tarjeta de crédito en el perfil para usar esta cuenta</string>
   <string name="HistoryDetailsActivityName">History details</string>
+  <string name="RateMobileApplicationText">If you enjoy using this application would you mind taking a moment to rate it?</string>
   <string name="EtaNotAvailable">No hay vehículo dosponible</string>
   <string name="DriverBonusWarningMessage">Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?</string>
   <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
@@ -193,6 +195,7 @@
   <string name="Tuto04Bottom">Haciendo esto se le proveerá un costo estimado para su viaje</string>
   <string name="ManualPairing_TimeOut_Message">There is a connection error preventing us from providing the status of your ride.</string>
   <string name="Toggle_On">Encendido</string>
+  <string name="RateMobileApplicationTitle">Rate this application</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">El código de emparejamiento es inválido.</string>
   <string name="CreditCard">Tarjeta de crédito</string>
   <string name="ResetPasswordEmailPlaceHolder">Email</string>
@@ -400,6 +403,7 @@
   <string name="WarningPromoCodeDontShow">No avisar</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
   <string name="Reset">Reinicializar</string>
+  <string name="RateMobileApplicationNow">Rate Now</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Código Inválido</string>
   <string name="CreditCardErrorTitle">No podemos guardar su tarjeta de crédito</string>
   <string name="View_PaymentPreference">Preferencia de pago</string>
@@ -486,6 +490,7 @@
   <string name="CreateAccountFullNamePlaceHolder">Nombre completo</string>
   <string name="EtaDurationUnit">min</string>
   <string name="NoConnectionTitle">Error en conexión</string>
+  <string name="RateMobileApplicationNever">Don\'t ask again</string>
   <string name="View_SearchAddress">Búsqueda de dirección</string>
   <string name="StreetNumber">Street Number</string>
   <string name="CreateAccountEmptyField">Los datos son inválidos, todos los campos son requeridos</string>
@@ -582,6 +587,7 @@
   <string name="View_InitializeOrderForAccountPayment">Por favor conteste estas preguntas</string>
   <string name="CurrencyPriceFormat">{0:C}</string>
   <string name="NoFareText">Seleccione un destino para proveer estimado de costo</string>
+  <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
   <string name="Notes">Notas</string>
   <string name="EstimatingFare">Estimando costo de su servicio</string>
   <string name="OverduePaymentActivityName">Overdue payment</string>
@@ -636,8 +642,10 @@
   <string name="PromoExpiringSoonMessage">Expira en {0} dias</string>
   <string name="ManualRideLinqNoCardOnFile">Usted necesita tener una tarjeta en el perfil para enparejarse con RideLinQ</string>
   <string name="BookingAirportPickupPointFee">Selecting Pickup Point {0} will incurr an additional Fee of {1}</string>
+  <string name="RateMobileApplicationLater">Later</string>
   <string name="ResetPasswordSucessTitle">Restablecer contraseña</string>
   <string name="SupportEmail">techsupport@apcurium.com</string>
+  <string name="LinkForApplicationStoreAbsentTitle">URL is missing</string>
   <string name="ConfirmPassengersLabel">Pasajeros:</string>
   <string name="PayPalErrorTitle">Error de PayPal</string>
   <string name="Overdue_Succeed_Title">Pago exitoso</string>

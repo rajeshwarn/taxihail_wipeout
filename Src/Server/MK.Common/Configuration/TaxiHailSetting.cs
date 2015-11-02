@@ -55,6 +55,12 @@ namespace MK.Common.Configuration
                 Enabled = false
 		    };
 
+			Store = new StoreSettingContainer()
+			{
+				AppleLink = "http://www.mobile-knowledge.com/",
+                PlayLink = "http://www.mobile-knowledge.com/"
+			};
+
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
@@ -123,6 +129,7 @@ namespace MK.Common.Configuration
         public NetworkSettingContainer Network { get; protected set; }
 
 		public FlightStatsSettingsContainer FlightStats { get; set; }
+		public StoreSettingContainer Store { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Configuration - Can Change Service Url", Description="Display a button on the login page to change the API server url")]
@@ -291,7 +298,7 @@ namespace MK.Common.Configuration
         public bool DisableFutureBooking { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Display - Hide Destination", Description="Hide destination address")]
+        [Display(Name = "Display - Hide Destination Button", Description="Hide destination button that allows user to enter a dropoff address")]
         public bool HideDestination { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
@@ -343,15 +350,15 @@ namespace MK.Common.Configuration
         public bool SendReceiptAvailable { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Rating - Rating Enabled", Description="The user can rate the order at the end of a ride")]
+        [Display(Name = "Rating - Trip Rating Enabled", Description="The user can rate the trip at the end of it")]
 		public bool RatingEnabled { get; protected set; }
 
         [SendToClient]
-		[Display(Name = "Rating - Rating mandatory", Description="If YES, remove the back button on rating screen and message to rate displayed")]
+		[Display(Name = "Rating - Trip Rating mandatory", Description="If YES, remove the back button on rating screen and message to rate displayed")]
 		public bool RatingRequired { get; protected set; }
 
         [SendToClient]
-        [Display(Name = "Rating - Can Skip Required Rating", Description = "If NO, User MUST rate a ride before creating a new order")]
+        [Display(Name = "Rating - Can Skip Required Trip Rating", Description = "If NO, User MUST rate a ride before creating a new order")]
         public bool CanSkipRatingRequired { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
@@ -512,8 +519,19 @@ namespace MK.Common.Configuration
         public bool IsDriverBonusEnabled { get; protected set; }
 
         [CustomizableByCompany]
-        [Display(Name = "Display - Message To Prompt To Driver", Description = "Message that will prompt on driver console on the Accept/Decline screen")]
+        [Display(Name = "Display - Job Offer Prompt mesage to driver", Description = "Message that will prompt on driver console on the Accept/Decline screen")]
         public string MessagePromptedToDriver { get; protected set; }
-    }
-}
 
+		[SendToClient, CustomizableByCompany]
+        [Display(Name = "Rating - Enable App Rating", Description = "User can be prompted to rate the app when on board a taxi")]
+		public bool EnableApplicationRating { get; protected set; }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Rating - Minimum Trips For App Rating", Description = "Minimum successful trips to allow user to rate applicatio")]
+		public int MinimumTripsForAppRating { get; protected set; }
+
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Rating - Minimum Ride Rating Score for App Rating", Description = "Minimum ride rating score to allow user to rate application")]
+		public int MinimumRideRatingScoreForAppRating { get; protected set; }
+	}
+}

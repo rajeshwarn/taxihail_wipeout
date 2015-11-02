@@ -19,6 +19,7 @@
 "PaymentDetails.PaymentMethodsLabel"="Payment Methods";
 "HistoryDetailServiceTypeLabel"="Service Type:";
 "BookPickupLabel"="Confirme su ubicación";
+"Notification_DriverBailedPush"="Driver bailed";
 "Tuto02Top"="Podemos localizarle usando el GPS de su celular";
 "Tuto03Top"="Puede seleccionar su lugar de abordaje tocando en el mapa la dirección.";
 "BookDateLabel"="Recogerme más tarde";
@@ -107,6 +108,7 @@
 "View_CreateAccount"="Cree su cuenta";
 "UpdateBookingSettingsInvalidCoF"="Usted debe tener una tarjeta de crédito en el perfil para usar esta cuenta";
 "HistoryDetailsActivityName"="History details";
+"RateMobileApplicationText"="If you enjoy using this application would you mind taking a moment to rate it?";
 "EtaNotAvailable"="No hay vehículo dosponible";
 "DriverBonusWarningMessage"="Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
@@ -191,6 +193,7 @@
 "Tuto04Bottom"="Haciendo esto se le proveerá un costo estimado para su viaje";
 "ManualPairing_TimeOut_Message"="There is a connection error preventing us from providing the status of your ride.";
 "Toggle_On"="Encendido";
+"RateMobileApplicationTitle"="Rate this application";
 "ManualPairingForRideLinQ_InvalidCode_Message"="El código de emparejamiento es inválido.";
 "CreditCard"="Tarjeta de crédito";
 "ResetPasswordEmailPlaceHolder"="Email";
@@ -398,6 +401,7 @@
 "WarningPromoCodeDontShow"="No avisar";
 "TaxiHailNetworkTimeOutPopupAlways"="Always Accept";
 "Reset"="Reinicializar";
+"RateMobileApplicationNow"="Rate Now";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Código Inválido";
 "CreditCardErrorTitle"="No podemos guardar su tarjeta de crédito";
 "View_PaymentPreference"="Preferencia de pago";
@@ -484,6 +488,7 @@
 "CreateAccountFullNamePlaceHolder"="Nombre completo";
 "EtaDurationUnit"="min";
 "NoConnectionTitle"="Error en conexión";
+"RateMobileApplicationNever"="Don't ask again";
 "View_SearchAddress"="Búsqueda de dirección";
 "StreetNumber"="Street Number";
 "CreateAccountEmptyField"="Los datos son inválidos, todos los campos son requeridos";
@@ -580,6 +585,7 @@
 "View_InitializeOrderForAccountPayment"="Por favor conteste estas preguntas";
 "CurrencyPriceFormat"="{0:C}";
 "NoFareText"="Seleccione un destino para proveer estimado de costo";
+"LinkForApplicationStoreAbsentText"="URL to store page was not configured";
 "Notes"="Notas";
 "EstimatingFare"="Estimando costo de su servicio";
 "OverduePaymentActivityName"="Overdue payment";
@@ -634,8 +640,10 @@
 "PromoExpiringSoonMessage"="Expira en {0} dias";
 "ManualRideLinqNoCardOnFile"="Usted necesita tener una tarjeta en el perfil para enparejarse con RideLinQ";
 "BookingAirportPickupPointFee"="Selecting Pickup Point {0} will incurr an additional Fee of {1}";
+"RateMobileApplicationLater"="Later";
 "ResetPasswordSucessTitle"="Restablecer contraseña";
 "SupportEmail"="techsupport@apcurium.com";
+"LinkForApplicationStoreAbsentTitle"="URL is missing";
 "ConfirmPassengersLabel"="Pasajeros:";
 "PayPalErrorTitle"="Error de PayPal";
 "Overdue_Succeed_Title"="Pago exitoso";

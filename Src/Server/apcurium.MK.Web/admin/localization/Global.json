@@ -136,6 +136,7 @@
     "paymentConfirmationPush": "Payment Confirmation",
     "promotionUnlockedPush": "Promotion Unlocked",
     "unpairingReminderPush": "Unpairing Reminder",
+    "driverBailedPush": "Driver Bailed",
 
     "/******* End notification settings Aliases ******/": ""
 }

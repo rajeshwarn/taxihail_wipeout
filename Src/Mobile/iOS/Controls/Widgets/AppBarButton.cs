@@ -78,4 +78,3 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
     }
 }
-

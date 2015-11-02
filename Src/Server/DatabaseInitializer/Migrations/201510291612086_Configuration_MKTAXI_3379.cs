@@ -7,7 +7,7 @@ namespace apcurium.MK.Common.Migrations
     {
         public override void Up()
         {
-            AddColumn("Config.PaymentSettings", "CmtPaymentSettings_UsePairingCode", c => c.Boolean(nullable: false, defaultValue: false));
+            AddColumn("Config.PaymentSettings", "CmtPaymentSettings_UsePairingCode", c => c.Boolean(nullable: false));
         }
         
         public override void Down()

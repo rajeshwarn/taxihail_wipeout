@@ -182,15 +182,15 @@ namespace apcurium.MK.Common.Configuration
         public int? VehicleTypeId { get; protected internal set; }
     }
 
-    public class StoreSettingContainer
+	public class StoreSettingContainer
     {
-        [CustomizableByCompany]
-        [Display(Name = "Website - App store link", Description = "Link to Apple App Store (Must be HTTP)")]
-        public string AppleLink { get; protected internal set; }
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Website - App store link", Description = "Link to Apple App Store (Must be HTTP)")]
+		public string AppleLink { get; protected internal set; }
 
-        [CustomizableByCompany]
-        [Display(Name = "Website - Google Play store link", Description = "Link to Google Play Store (Must be HTTP)")]
-        public string PlayLink { get; protected internal set; }
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Website - Google Play store link", Description = "Link to Google Play Store (Must be HTTP)")]
+		public string PlayLink { get; protected internal set; }
     }
 
     public class IBSSettingContainer

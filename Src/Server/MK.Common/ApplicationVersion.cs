@@ -125,16 +125,25 @@ namespace apcurium.MK.Common
 			return 1;
 		}
 
+		public override bool Equals(object obj)
+		{
+			return CompareTo(obj) == 0;
+		}
+
 		public override string ToString()
 		{
 			StringBuilder appv = new StringBuilder();
-			for (int i = 0; i < _versionNumbers.Length; i++)
-			{
-				appv.Append(_versionNumbers[i].ToString());
 
-				if (i < _versionNumbers.Length - 1)
+			if (_versionNumbers != null)
+			{
+				for (int i = 0; i < _versionNumbers.Length; i++)
 				{
-					appv.Append('.');
+					appv.Append(_versionNumbers[i].ToString());
+
+					if (i < _versionNumbers.Length - 1)
+					{
+						appv.Append('.');
+					}
 				}
 			}
 

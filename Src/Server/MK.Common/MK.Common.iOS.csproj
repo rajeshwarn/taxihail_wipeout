@@ -112,6 +112,7 @@
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\LocalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\ServiceType.cs" />
+    <Compile Include="Enumeration\RateApplicationState.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />

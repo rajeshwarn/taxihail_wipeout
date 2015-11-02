@@ -157,6 +157,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<OrderServiceClient, Order> (service => service.GetOrder (id));
 		}
 
+        public Task<int> GetOrderCountForAppRating()
+		{
+            return Mvx.Resolve<OrderServiceClient>().GetOrderCountForAppRating();
+		}
+
         public OrderStatusDetail[] GetActiveOrdersStatus()
         {
 			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus()).Result;
@@ -367,9 +372,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        private static void SaveCredentials (AuthenticationData authResponse)
+        private void SaveCredentials (AuthenticationData authResponse)
         {         
-			Mvx.Resolve<ICacheService>().Set (AuthenticationDataCacheKey, authResponse);
+			UserCache.Set(AuthenticationDataCacheKey, authResponse);
         }
 
 		public async Task<Account> GetFacebookAccount (string facebookId)
@@ -767,6 +772,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     DriverAssignedPush = companySettings.DriverAssignedPush.HasValue && userSettings.DriverAssignedPush.HasValue
                         ? userSettings.DriverAssignedPush 
                         : companySettings.DriverAssignedPush,
+					DriverBailedPush = companySettings.DriverBailedPush.HasValue && userSettings.DriverBailedPush.HasValue
+						? userSettings.DriverBailedPush 
+						: companySettings.DriverBailedPush,
                     NearbyTaxiPush = companySettings.NearbyTaxiPush.HasValue && userSettings.NearbyTaxiPush.HasValue
                         ? userSettings.NearbyTaxiPush 
                         : companySettings.NearbyTaxiPush,

@@ -30,7 +30,7 @@ namespace apcurium.MK.Common.Migrations
                         UnpairingReminderPush = c.Boolean(),
                         VehicleAtPickupPush = c.Boolean(),
                         PaymentConfirmationPush = c.Boolean(),
-                        PromotionUnlockedPush = c.Boolean(),
+                        PromotionUnlockedPush = c.Boolean()
                     })
                     .PrimaryKey(t => t.Id);
 

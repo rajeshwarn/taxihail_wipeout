@@ -46,12 +46,6 @@ namespace MK.Common.Configuration
                 ChargeTypeId = ChargeTypes.PaymentInCar.Id
             };
 
-            Store = new StoreSettingContainer
-            {
-                AppleLink = "http://www.mobile-knowledge.com/",
-                PlayLink = "http://www.mobile-knowledge.com/"
-            };
-
             IBS = new IBSSettingContainer
             {
                 AutoDispatch = true,
@@ -119,8 +113,7 @@ namespace MK.Common.Configuration
         public SmtpSettingContainer Smtp { get; protected set; }
         public APNSSettingContainer APNS { get; protected set; }
         public DefaultBookingSettingsSettingContainer DefaultBookingSettings { get; protected set; }
-        public StoreSettingContainer Store { get; protected set; }
-        public IBSSettingContainer IBS { get; protected set; }
+		public IBSSettingContainer IBS { get; protected set; }
         public EmailSettingContainer Email { get; protected set; }
         public ReceiptSettingContainer Receipt { get; protected set; }
         public CustomerPortalSettingContainer CustomerPortal { get; protected set; }

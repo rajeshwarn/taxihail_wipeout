@@ -386,12 +386,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             Observable
                 .FromEventPattern<GoogleMap.CameraChangeEventArgs>(Map, "CameraChange")
-                .Do(_ => { 
-                    if (!_bypassCameraChangeEvent) 
-                    { 
-                        ViewModel.DisableBooking(); 
-                    }})
-                .Throttle(TimeSpan.FromMilliseconds(1000))
+				.Do(_ =>
+				{
+					if (!_bypassCameraChangeEvent)
+					{
+						ViewModel.DisableBooking();
+					}
+				})
+                .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(OnCameraChanged)
                 .DisposeWith(_subscriptions);

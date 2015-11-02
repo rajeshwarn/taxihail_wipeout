@@ -127,6 +127,10 @@
 	History address list distinct and stripped to 50 items in order to decrease memory footprint in mobile application
 	Bug fix - Fixed crash in the address view model
 	Device Orientation improvements
+3.1.18
+	Bug fix - Regression taxi not moving while assigned on iOS
+	Bug fix - Medallion not always correct when taping on car marker (iOS only)
+	
 	
 	
 

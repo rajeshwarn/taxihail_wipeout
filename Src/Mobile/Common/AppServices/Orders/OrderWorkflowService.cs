@@ -668,7 +668,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					if (selectionMode == AddressSelectionMode.PickupSelection)
 					{
 						_pickupAddressSubject.OnNext (address);
-
 						await SetMarket(new Position { Latitude = address.Latitude, Longitude = address.Longitude });
 					} 
 					else 
@@ -895,6 +894,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var orderToValidate = order ?? await GetOrder();
 			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
             _orderValidationResultSubject.OnNext(validationResult);
+
 
 			return validationResult;
 		}
