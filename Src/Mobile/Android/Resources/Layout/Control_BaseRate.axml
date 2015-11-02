@@ -9,6 +9,15 @@
     android:gravity="bottom"
     android:layout_gravity="bottom"
     android:layout_height="fill_parent">
+    <TextView
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        android:textStyle="bold"
+        android:id="@+id/baseRateTitle"
+        android:layout_alignParentLeft="true"
+        android:paddingTop="4dp"
+        android:layout_width="fill_parent"
+        android:layout_height="18dp" />
     <LinearLayout
         android:layout_marginTop="9dp"
         android:orientation="horizontal"
@@ -17,7 +26,6 @@
         <TextView
             android:textColor="@color/black"
             android:textSize="12dp"
-            android:textStyle="bold"
             android:id="@+id/baseRateLabel1"
             android:layout_alignParentLeft="true"
             android:layout_weight="0.45"
@@ -38,7 +46,6 @@
         <TextView
             android:textColor="@color/black"
             android:textSize="12dp"
-            android:textStyle="bold"
             android:id="@+id/baseRateLabel2"
             android:layout_alignParentLeft="true"
             android:layout_weight="0.45"
@@ -59,7 +66,6 @@
         <TextView
             android:textColor="@color/black"
             android:textSize="12dp"
-            android:textStyle="bold"
             android:id="@+id/baseRateLabel3"
             android:layout_alignParentLeft="true"
             android:layout_weight="0.45"
@@ -80,7 +86,6 @@
         <TextView
             android:textColor="@color/black"
             android:textSize="12dp"
-            android:textStyle="bold"
             android:id="@+id/baseRateLabel4"
             android:layout_alignParentLeft="true"
             android:layout_weight="0.45"
@@ -101,7 +106,6 @@
         <TextView
             android:textColor="@color/black"
             android:textSize="12dp"
-            android:textStyle="bold"
             android:id="@+id/baseRateLabel5"
             android:layout_alignParentLeft="true"
             android:layout_weight="0.45"

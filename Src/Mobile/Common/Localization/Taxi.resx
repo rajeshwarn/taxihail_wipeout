@@ -180,4 +180,7 @@
   <data name="StatusConfirmNewBooking_Luxury" xml:space="preserve">
     <value>Booking a new vehicle will keep this order active, do you want to continue ?</value>
   </data>
+  <data name="BaseRate_RateStructure" xml:space="preserve">
+    <value>RATE STRUCTURE</value>
+  </data>
 </root>

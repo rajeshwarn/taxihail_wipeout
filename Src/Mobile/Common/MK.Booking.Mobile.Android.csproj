@@ -359,6 +359,9 @@
     <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardBaseViewModel.cs" />
     <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
+    <Compile Include="Localization\Taxi.Designer.cs">
+      <DependentUpon>Taxi.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
@@ -429,7 +432,7 @@
     <EmbeddedResource Include="Localization\Taxi.resx">
       <SubType>Designer</SubType>
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Mears.Designer.cs</LastGenOutput>
+      <LastGenOutput>Taxi.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

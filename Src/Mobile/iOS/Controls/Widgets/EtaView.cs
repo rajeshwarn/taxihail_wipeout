@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     public class EtaView : UIView
     {
     	private const float EtaLabelHeight = 44f;
-		private const float BaseRateHeight = 100f;
+		private const float BaseRateHeight = 124f;
 
         private CGSize ImageSize = new CGSize(34f, 34f);
 
@@ -244,8 +244,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             AddConstraints (new [] {
                 NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.Height, 1f, 0f),
-
-				NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.CenterY, 1f, -4f),
+				NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, EtaLabel.Superview, NSLayoutAttribute.CenterY, 1f, -2f),
                 NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EtaBadge, NSLayoutAttribute.Right, 1f, 4f),
 				NSLayoutConstraint.Create (EtaLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ArrowImage, NSLayoutAttribute.Left, 1f, 0f)
             });

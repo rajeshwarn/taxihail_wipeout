@@ -13,10 +13,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	[Register("apcurium.mk.booking.mobile.client.controls.widgets.BaseRateControl")]
 	public class BaseRateControl : LinearLayout
     {
-		private const int BaseRateControlHeightInDip = 106;
+		private const int BaseRateControlHeightInDip = 130;
 
 		private List<TextView> _labels = new List<TextView>();
 		private List<TextView> _descriptions = new List<TextView>();
+		private TextView _baseRateTitleLabel;
 
         public BaseRateControl(Context c, IAttributeSet attr) : base(c, attr)
         {
@@ -30,6 +31,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			_labels.Clear();
 			_descriptions.Clear();
+
+			_baseRateTitleLabel = FindViewById<TextView>(Resource.Id.baseRateTitle);
+			_baseRateTitleLabel.Text = Localize("BaseRate_RateStructure");
 
 			var labelTexts = new [] { 
 				Localize ("BaseRate_MinimumFare"),  

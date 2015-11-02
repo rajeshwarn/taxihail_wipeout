@@ -748,6 +748,7 @@
 "EtaNoTaxiAvailable_Luxury"="Sorry, no vehicles currently available nearby.";
 "HomeView_BookTaxi_Luxury"="Need a vehicle";
 "MarketChangedMessage_Luxury"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a company from this area.";
+"BaseRate_RateStructure"="RATE STRUCTURE";
 "EtaLessThanAMinute_Luxury"="Nearest vehicle is less than a minute away";
 "StatusConfirmNewBooking_Luxury"="Booking a new vehicle will keep this order active, do you want to continue ?";
 "ReminderDetails_Luxury"="Reminder: A vehicle will pick you up from {0} at {1} on {2}.";
