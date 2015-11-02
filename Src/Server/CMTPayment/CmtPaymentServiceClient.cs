@@ -29,10 +29,8 @@ namespace CMTPayment
             //Client.Proxy = new WebProxy("192.168.12.122", 8888);
             ConsumerKey = cmtSettings.ConsumerKey;
             ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
+		}
 
-            //todo - Bug accept all certificates
-            ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
-        }
 
         protected string ConsumerKey { get; private set; }
         protected string ConsumerSecretKey { get; private set; }

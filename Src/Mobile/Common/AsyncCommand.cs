@@ -7,7 +7,28 @@ using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile
 {
-    public class AsyncCommand : ICommand, IDisposable
+	public abstract class AsyncCommandBase : ICommand
+	{
+		public abstract bool CanExecute(object parameter);
+		public abstract void Execute(object parameter);
+		public event EventHandler CanExecuteChanged;
+
+		protected virtual void OnCanExecuteChanged()
+		{
+			if (CanExecuteChanged != null)
+			{
+				CanExecuteChanged(this, new EventArgs());
+			}
+		}
+
+		public void RaiseCanExecuteChanged()
+		{
+			OnCanExecuteChanged();
+		}
+	}
+
+
+	public class AsyncCommand : AsyncCommandBase, IDisposable
     {
 		readonly ILogger _logger;
         private Func<bool> _canExecute;
@@ -36,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile
 			_canExecute = canExecute;
 		}
 
-        public bool CanExecute(object parameter)
+        public override bool CanExecute(object parameter)
         {
 			if (_isExecuting)
 			{
@@ -56,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile
             return CanExecute(null);
         }
 
-		public async void Execute(object parameter)
+		public override async void Execute(object parameter)
         {
             if (CanExecute(parameter))
             {
@@ -84,21 +105,6 @@ namespace apcurium.MK.Booking.Mobile
             Execute(null);
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        protected virtual void OnCanExecuteChanged()
-        {
-            if (CanExecuteChanged != null)
-            {
-                CanExecuteChanged(this, new EventArgs());
-            }
-        }
-
-		public void RaiseCanExecuteChanged()
-		{
-			OnCanExecuteChanged ();
-		}
-
         private static TaskScheduler GetTaskScheduler()
 		{
 			try
@@ -113,13 +119,10 @@ namespace apcurium.MK.Booking.Mobile
 
         private static Func<Task> Wrap(Action execute)
 		{
-            return () =>
-            {
-                return Task.Factory.StartNew(execute,
-                    default(CancellationToken),
-                    TaskCreationOptions.None,
-                    GetTaskScheduler());
-            };
+            return () => Task.Factory.StartNew(execute,
+	            default(CancellationToken),
+	            TaskCreationOptions.None,
+	            GetTaskScheduler());
 		}
 
         #region IDisposable implementation
@@ -143,7 +146,7 @@ namespace apcurium.MK.Booking.Mobile
 
     }
 
-    public class AsyncCommand<T> : ICommand, IDisposable
+	public class AsyncCommand<T> : AsyncCommandBase, IDisposable
     {
 		readonly ILogger _logger;
         private Func<T,bool> _canExecute;
@@ -172,7 +175,7 @@ namespace apcurium.MK.Booking.Mobile
 			_canExecute = canExecute;
 		}
 
-        public bool CanExecute(object parameter)
+        public override bool CanExecute(object parameter)
         {
 			if (_isExecuting)
 			{
@@ -192,7 +195,7 @@ namespace apcurium.MK.Booking.Mobile
             return CanExecute(null);
         }
 
-		public async void Execute(object parameter)
+		public override async void Execute(object parameter)
         {
             if (CanExecute(parameter))
             {
@@ -219,16 +222,6 @@ namespace apcurium.MK.Booking.Mobile
         public void Execute()
         {
             Execute(null);
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-        protected virtual void OnCanExecuteChanged()
-        {
-            if (CanExecuteChanged != null)
-            {
-                CanExecuteChanged(this, new EventArgs());
-            }
         }
 
 		public void RaiseCanExecuteChanged()

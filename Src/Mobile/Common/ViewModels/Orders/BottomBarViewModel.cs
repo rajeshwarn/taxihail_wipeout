@@ -270,8 +270,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				|| (orderValidationResult != null && orderValidationResult.DisableFutureBooking) 
                 || Settings.UseSingleButtonForNowAndLaterBooking;
 
-			Book.RaiseCanExecuteChanged();
-			BookLater.RaiseCanExecuteChanged();
+			Book.RaiseCanExecuteChangedIfPossible();
+			BookLater.RaiseCanExecuteChangedIfPossible();
         }
 
         public ICommand ChangeAddressSelectionMode
@@ -316,9 +316,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     
                     try
                     {
-                        await _orderWorkflowService.ValidatePickupAndDestination();
-                        await _orderWorkflowService.ValidatePickupTime();
-						await _orderWorkflowService.ValidateNumberOfPassengers(null);
+						await Task.WhenAll(
+							_orderWorkflowService.ValidatePickupAndDestination(),
+							_orderWorkflowService.ValidatePickupTime(),
+							_orderWorkflowService.ValidateNumberOfPassengers(null)
+						);
                     }
                     catch (OrderValidationException e)
                     {
@@ -354,7 +356,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						return;
 					}
 
-                    ReviewOrderDetails();
+					await ReviewOrderDetails();
 				});
 			}
 		}
@@ -422,7 +424,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        public async void ReviewOrderDetails()
+        public async Task ReviewOrderDetails()
 	    {
 			var shouldContinueGoingToReview = await ValidateOrderDetails();
 			if (shouldContinueGoingToReview)
@@ -699,7 +701,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return false;
 			}
-
 			if(!_orderValidationResult.HasError)
 			{
 				return true;

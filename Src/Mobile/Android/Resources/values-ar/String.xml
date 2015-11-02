@@ -19,6 +19,7 @@
   <string name="PaymentDetails.PaymentMethodsLabel">Payment Methods</string>
   <string name="HistoryDetailServiceTypeLabel">Service Type:</string>
   <string name="BookPickupLabel">اكد موقع الإلتقاء المختار</string>
+  <string name="Notification_DriverBailedPush">Driver bailed</string>
   <string name="Tuto03Top">يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.</string>
   <string name="BookDateLabel">قم بإرسال السيارة لاحقا</string>
   <string name="Overdue_IBSOrderId">Order:</string>
@@ -105,6 +106,7 @@
   <string name="View_CreateAccount">افتح حسابك</string>
   <string name="UpdateBookingSettingsInvalidCoF">You must have a card on file to use this account</string>
   <string name="HistoryDetailsActivityName">History details</string>
+  <string name="RateMobileApplicationText">If you enjoy using this application would you mind taking a moment to rate it?</string>
   <string name="PaymentDetails.InvalidDataTitle">بيانات الدفع غير صحيحة</string>
   <string name="DriverBonusWarningMessage">Bonus amount is in addition to tip. It will be charged automatically at the end of your ride. Continue?</string>
   <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
@@ -187,6 +189,7 @@
   <string name="Tuto04Bottom">بذلك سيتم تزويدك بسعر تقريبي للرحلة.</string>
   <string name="ManualPairing_TimeOut_Message">There is a connection error preventing us from providing the status of your ride.</string>
   <string name="Toggle_On">On</string>
+  <string name="RateMobileApplicationTitle">Rate this application</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">The pairing code is invalid.</string>
   <string name="CreditCard">بطاقة الائتمان</string>
   <string name="ResetPasswordEmailPlaceHolder">البريد الإلكتروني</string>
@@ -389,6 +392,7 @@
   <string name="WarningPromoCodeDontShow">لا تحذر</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
   <string name="Reset">إعادة الضبط</string>
+  <string name="RateMobileApplicationNow">Rate Now</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Invalid code</string>
   <string name="CreditCardErrorTitle">لا يمكنك حفظ هذه البطاقة الائتمانية</string>
   <string name="View_PaymentPreference">طرق الدفع المفضلة</string>
@@ -478,6 +482,7 @@
   <string name="CreateAccountFullNamePlaceHolder">الاسم الكامل</string>
   <string name="EtaDurationUnit">min</string>
   <string name="NoConnectionTitle">خطأ في الإتصال</string>
+  <string name="RateMobileApplicationNever">Don\'t ask again</string>
   <string name="View_SearchAddress">البحث عن عنوان</string>
   <string name="CreateAccountEmptyField">البيانات غير صحيحة، يجب تعبئة كافة الخانات.</string>
   <string name="ConfirmPassengerSettingsTitle">إعدادات الركاب</string>
@@ -570,6 +575,7 @@
   <string name="View_InitializeOrderForAccountPayment">يرجى الإجابة على هذه الأسئلة</string>
   <string name="CurrencyPriceFormat">{0}ر.س</string>
   <string name="NoFareText">اختر وجهة للحصول على سعر تقريبي.</string>
+  <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
   <string name="Notes">ملاحظات</string>
   <string name="EstimatingFare">جاري تقييم قيمة مشوارك...</string>
   <string name="OverduePaymentActivityName">Overdue payment</string>
@@ -623,8 +629,10 @@
   <string name="PromoExpiringSoonMessage">Expires in {0} days</string>
   <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
   <string name="BookingAirportPickupPointFee">Selecting Pickup Point {0} will incurr an additional Fee of {1}</string>
+  <string name="RateMobileApplicationLater">Later</string>
   <string name="ResetPasswordSucessTitle">إعادة ضبط كلمة المرور</string>
   <string name="SupportEmail">techsupport@apcurium.com</string>
+  <string name="LinkForApplicationStoreAbsentTitle">URL is missing</string>
   <string name="ConfirmPassengersLabel">عدد الركاب:</string>
   <string name="PayPalErrorTitle">PayPal Error</string>
   <string name="Overdue_Succeed_Title">Payment Succeeded</string>

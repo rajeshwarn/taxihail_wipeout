@@ -45,7 +45,8 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                     PromotionUnlockedEmail = true,
                     VehicleAtPickupPush = true,
                     PromotionUnlockedPush = true,
-                    UnpairingReminderPush = true
+                    UnpairingReminderPush = true,
+                    DriverBailedPush = true
                 }
             });
 
@@ -64,6 +65,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(true, evt.NotificationSettings.VehicleAtPickupPush);
             Assert.AreEqual(true, evt.NotificationSettings.PromotionUnlockedPush);
             Assert.AreEqual(true, evt.NotificationSettings.UnpairingReminderPush);
+            Assert.AreEqual(true, evt.NotificationSettings.DriverBailedPush);
         }
 
         [Test]
@@ -85,7 +87,8 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                     PromotionUnlockedEmail = true,
                     VehicleAtPickupPush = true,
                     PromotionUnlockedPush = true,
-                    UnpairingReminderPush = true
+                    UnpairingReminderPush = true,
+                    DriverBailedPush = true,
                 }
             });
 
@@ -104,6 +107,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(true, evt.NotificationSettings.VehicleAtPickupPush);
             Assert.AreEqual(true, evt.NotificationSettings.PromotionUnlockedPush);
             Assert.AreEqual(true, evt.NotificationSettings.UnpairingReminderPush);
+            Assert.AreEqual(true, evt.NotificationSettings.DriverBailedPush);
         }
     }
 }

@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendPromotionUnlockedPush(Guid accountId, PromotionDetail promotionDetail)
         {
             var account = _accountDao.FindById(accountId);
-            if (ShouldSendNotification(accountId, x => x.DriverAssignedPush))
+            if (ShouldSendNotification(accountId, x => x.PromotionUnlockedPush))
             {
                 SendPushOrSms(accountId,
                     string.Format(_resources.Get("PushNotification_PromotionUnlocked", account.Language), promotionDetail.Name, promotionDetail.Code),
@@ -131,9 +131,12 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendBailedPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            SendPushOrSms(order.AccountId,
+            if (ShouldSendNotification(order.AccountId, x => x.DriverBailedPush))
+            {
+                SendPushOrSms(order.AccountId,
                         _resources.Get("PushNotification_BAILED", order.ClientLanguageCode, order.Settings.ServiceType == ServiceType.Luxury ? "luxury" : null),
-                        new Dictionary<string, object>());
+                    new Dictionary<string, object>());
+            }
         }
 
         public void SendChangeDispatchCompanyPush(Guid orderId)

@@ -208,9 +208,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 		{
 			_addressEditText.PostDelayed(() => 
 			{
-				_addressEditText.RequestFocusFromTouch();
-				_addressEditText.ShowKeyboard();
-				_addressEditText.SetCursorAtEnd();
+                // if _collectionChangedSubscription is null, we left the screen
+                if(_collectionChangedSubscription.Disposable != null)
+                {
+                    _addressEditText.RequestFocusFromTouch();
+                    _addressEditText.ShowKeyboard();
+                    _addressEditText.SetCursorAtEnd();
+                }
 			}, 400);
 		}
  

@@ -6,13 +6,13 @@ using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    [Register("apcurium.mk.booking.mobile.client.controls.widgets.AppBarButton")]
-    public class AppBarButton : LinearLayout
-    {
-        private ImageView ButtonImage { get; set; }
-        private TextView ButtonLabel { get; set; }
-        private int _imgId;
-        private string _labelText;
+	[Register("apcurium.mk.booking.mobile.client.controls.widgets.AppBarButton")]
+	public class AppBarButton : LinearLayout
+	{
+		private ImageView ButtonImage { get; set; }
+		private TextView ButtonLabel { get; set; }
+		private readonly int _imgId;
+		private readonly string _labelText;
 
         public AppBarButton(Context c, IAttributeSet attr) : base(c, attr)
         {

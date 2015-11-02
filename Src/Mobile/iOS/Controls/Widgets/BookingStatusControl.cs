@@ -80,18 +80,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             get { return _showAnnimation; }
             set
             {
-                if (_showAnnimation != value)
+                if (_showAnnimation == value)
                 {
-                    _showAnnimation = value;
-                    if (ShowAnimation)
-                    {
-                        _annimationView = new LoadingStatusBarView(new CGRect(0, 0, viewStatus.Superview.Frame.Width, viewStatus.Superview.Frame.Height));
-                        viewStatus.InsertSubview(_annimationView, 0);
-                    }
-                    else
-                    {
-                        _annimationView.RemoveFromSuperview();
-                    }
+                    return;
+                }
+                _showAnnimation = value;
+
+                if (_showAnnimation)
+                {
+                    _annimationView = new LoadingStatusBarView(new CGRect(0, 0, viewStatus.Superview.Frame.Width, viewStatus.Superview.Frame.Height));
+                    viewStatus.InsertSubview(_annimationView, 0);
+                }
+                else
+                {
+                    _annimationView.RemoveFromSuperview();
+                    _annimationView = null;
                 }
             }
         }

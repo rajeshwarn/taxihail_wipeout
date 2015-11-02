@@ -199,5 +199,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			
 			await _orderWorkflowService.SetAddressToCoordinate(position, token);
 		}
+
+		
     }
 }

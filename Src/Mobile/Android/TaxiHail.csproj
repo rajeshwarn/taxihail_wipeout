@@ -251,11 +251,13 @@
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
+    <Compile Include="Binding\MvxButtonClickBinding.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\Behavior\PairingCodeBehavior.cs" />
     <Compile Include="Controls\Dialog\PhoneEditorElement.cs" />
     <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
+    <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
     <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
     <Compile Include="Controls\Widgets\EditBoxWithAccessibility.cs" />
@@ -274,6 +276,7 @@
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
     <Compile Include="PlatformIntegration\AndroidDeviceOrientationService.cs" />
+    <Compile Include="PlatformIntegration\AndroidDeviceRateApplicationService.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
@@ -716,13 +719,11 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\textview_rounded_border.xml" />
-    <Compile Include="Binding\MvxButtonClickBinding.cs" />
     <AndroidResource Include="Resources\Layout\Control_AppBarButton.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Controls\Widgets\BaseRateControl.cs" />
     <AndroidResource Include="Resources\Layout\Control_BaseRate.axml" />
-    <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <AndroidResource Include="Resources\Drawable\down_arrow_light.png" />
     <AndroidResource Include="Resources\Drawable\up_arrow_light.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\down_arrow_light.png" />
@@ -878,6 +879,7 @@
     <AndroidResource Include="Resources\Drawable\green_vehicle_medaillon_icon.xml" />
     <AndroidResource Include="Resources\Drawable\yellow_vehicle_medaillon_icon.xml" />
     <AndroidResource Include="Resources\Drawable\blackcar_icon.png" />
+    <AndroidResource Include="Resources\Layout\Control_AppBarButton.xml" />
     <AndroidResource Include="Resources\drawable-xhdpi\blackcar_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

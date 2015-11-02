@@ -566,7 +566,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 // this is the only payment related message sent to the driver when this setting is false
-                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, ibsOrderInfo.MeterAmount + tipAmount, ibsOrderInfo.MeterAmount, tipAmount, orderStatusDetail.ServiceType);
+                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, ibsOrderInfo.MeterAmount + tipAmount, ibsOrderInfo.MeterAmount, tipAmount, orderStatusDetail.ServiceType, orderStatusDetail.CompanyKey);
             }
 
             try
@@ -742,7 +742,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                         account.Email,
                         orderDetail.UserAgent.GetOperatingSystem(),
                         orderDetail.UserAgent,
-                        orderDetail.Settings.ServiceType);
+                        orderDetail.Settings.ServiceType,
+                        orderDetail.CompanyKey);
                 }
                 catch (Exception e)
                 {
@@ -988,16 +989,16 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
-		private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber, ServiceType serviceType, string company)
+		private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber, ServiceType serviceType, string companyKey)
         {
             var paymentBeingProcessedMessage = _resources.Get("PaymentBeingProcessedMessageToDriver");
-            _ibs.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber, serviceType, company);
+            _ibs.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber, serviceType, companyKey);
             _logger.LogMessage(paymentBeingProcessedMessage);
         }
 
-        private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip, ServiceType serviceType)
+        private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip, ServiceType serviceType, string companyKey)
         {
-            _ibs.SendPaymentNotification(amount, meter, tip, null, vehicleNumber, serviceType, null);
+            _ibs.SendPaymentNotification(amount, meter, tip, null, vehicleNumber, serviceType, companyKey);
         }
 
         private void InitializeCmtServiceClient()
