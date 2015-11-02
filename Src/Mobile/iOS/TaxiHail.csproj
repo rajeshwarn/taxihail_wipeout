@@ -669,6 +669,7 @@
       <DependentUpon>CreditCardCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\CreditCardLabelToInt.cs" />
+    <Compile Include="PlatformIntegration\AppleDeviceRateApplicationService.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -617,7 +617,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void OnMapChanged(EventPattern<MapView.MapChangedEventArgs> e)
         {
             var centerLocation = ((MapView)e.Sender).CenterCoordinate;
-            if (centerLocation.DistanceTo(_lastCenterLocation) > 0)
+            if (centerLocation.DistanceTo(_lastCenterLocation) > 0.1)
             {
                 if (_bypassCameraChangeEvent)
                 {

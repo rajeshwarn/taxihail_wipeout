@@ -175,6 +175,7 @@
     <Compile Include="Entity\AddressLocationType.cs" />
     <Compile Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />
+    <Compile Include="Enumeration\RateApplicationState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
