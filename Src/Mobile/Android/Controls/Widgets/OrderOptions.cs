@@ -155,6 +155,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     // close the rate box
                     ToggleBaseRate();
                 }
+                _baseRateExpandImage.Visibility = UserInputDisabled ? ViewStates.Invisible : ViewStates.Visible;
             }
         }
 

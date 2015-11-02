@@ -73,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     // close the rate box
                     ToggleBaseRate();
                 }
+				ArrowImage.Hidden = UserInputDisabled;
             }
         }
 
