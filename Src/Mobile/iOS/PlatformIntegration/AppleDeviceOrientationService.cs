@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-    public class AppleDeviceOrientationService: CommonDeviceOrientationService, IDeviceOrientationService
+    public class AppleDeviceOrientationService: CommonDeviceOrientationService
     {
 		private const double AccelerometerUpdateInterval = 1 / 20; // 20 Hz
 
