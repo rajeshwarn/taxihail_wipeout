@@ -5136,8 +5136,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d0083
 			public const int CellButton = 2131558531;
 			
-			// aapt resource value: 0x7f0d011c
-			public const int ChangeDropOffOverlay = 2131558684;
+			// aapt resource value: 0x7f0d0113
+			public const int ChangeDropOffOverlay = 2131558675;
 			
 			// aapt resource value: 0x7f0d01cb
 			public const int ConfirmButton = 2131558859;
@@ -5148,8 +5148,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d019c
 			public const int ConfirmationTxt = 2131558812;
 			
-			// aapt resource value: 0x7f0d011d
-			public const int ContactTaxiOverlay = 2131558685;
+			// aapt resource value: 0x7f0d0115
+			public const int ContactTaxiOverlay = 2131558677;
 			
 			// aapt resource value: 0x7f0d009c
 			public const int CreditCardImagePath = 2131558556;
@@ -5727,11 +5727,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d007b
 			public const int com_facebook_tooltip_bubble_view_top_pointer = 2131558523;
 			
-			// aapt resource value: 0x7f0d0116
-			public const int companyLayout = 2131558678;
+			// aapt resource value: 0x7f0d011a
+			public const int companyLayout = 2131558682;
 			
-			// aapt resource value: 0x7f0d0117
-			public const int companyValue = 2131558679;
+			// aapt resource value: 0x7f0d011b
+			public const int companyValue = 2131558683;
 			
 			// aapt resource value: 0x7f0d005a
 			public const int contentPanel = 2131558490;
@@ -5847,14 +5847,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d0177
 			public const int driverBonusView = 2131558775;
 			
-			// aapt resource value: 0x7f0d0118
-			public const int driverLayout = 2131558680;
-			
-			// aapt resource value: 0x7f0d0115
-			public const int driverPhotoView = 2131558677;
+			// aapt resource value: 0x7f0d011c
+			public const int driverLayout = 2131558684;
 			
 			// aapt resource value: 0x7f0d0119
-			public const int driverValue = 2131558681;
+			public const int driverPhotoView = 2131558681;
+			
+			// aapt resource value: 0x7f0d011d
+			public const int driverValue = 2131558685;
 			
 			// aapt resource value: 0x7f0d01b5
 			public const int dropOffSelection = 2131558837;
@@ -6105,8 +6105,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d018f
 			public const int mainScroller = 2131558799;
 			
-			// aapt resource value: 0x7f0d011a
-			public const int makeLayout = 2131558682;
+			// aapt resource value: 0x7f0d011e
+			public const int makeLayout = 2131558686;
 			
 			// aapt resource value: 0x7f0d01b2
 			public const int mapOverlay = 2131558834;
@@ -6150,8 +6150,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d0147
 			public const int mk_logo = 2131558727;
 			
-			// aapt resource value: 0x7f0d011b
-			public const int modelValue = 2131558683;
+			// aapt resource value: 0x7f0d011f
+			public const int modelValue = 2131558687;
 			
 			// aapt resource value: 0x7f0d0020
 			public const int monochrome = 2131558432;
@@ -6249,11 +6249,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d0012
 			public const int production = 2131558418;
 			
-			// aapt resource value: 0x7f0d011f
-			public const int progressImage = 2131558687;
+			// aapt resource value: 0x7f0d0117
+			public const int progressImage = 2131558679;
 			
-			// aapt resource value: 0x7f0d011e
-			public const int progressLayout = 2131558686;
+			// aapt resource value: 0x7f0d0116
+			public const int progressLayout = 2131558678;
 			
 			// aapt resource value: 0x7f0d0006
 			public const int progress_circular = 2131558406;
@@ -6450,11 +6450,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0d0040
 			public const int standard = 2131558464;
 			
-			// aapt resource value: 0x7f0d0113
-			public const int statusLayout = 2131558675;
-			
 			// aapt resource value: 0x7f0d0114
-			public const int statusWithEtaLabel = 2131558676;
+			public const int statusLayout = 2131558676;
+			
+			// aapt resource value: 0x7f0d0118
+			public const int statusWithEtaLabel = 2131558680;
 			
 			// aapt resource value: 0x7f0d00e0
 			public const int status_bar_latest_event_content = 2131558624;

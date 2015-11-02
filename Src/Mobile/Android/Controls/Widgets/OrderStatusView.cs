@@ -9,6 +9,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Widget;
 using Android.Views.Animations;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -174,25 +175,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 
                 if (value == ViewStates.Visible)
                 {
-                    layoutParamsChangeDropOff.RemoveRule(LayoutRules.Below);
-                    layoutParamsChangeDropOff.AddRule(LayoutRules.Below, Resource.Id.ContactTaxiOverlay);
+                    var desiredHeight = _statusLayout.Height + _contactTaxiOverlay.LayoutParameters.Height + _changeDropOffOverlay.LayoutParameters.Height;
 
-                    var desiredHeight = _statusLayout.Height + _contactTaxiOverlay.LayoutParameters.Height;
-
-                    if (layoutParamsTopView.Height != desiredHeight && _contactTaxiOverlay.LayoutParameters.Height != 0)
+                    if (layoutParamsTopView.Height != desiredHeight && _contactTaxiOverlay.LayoutParameters.Height != 0 && _statusLayout.Height != 0)
                     {
                         layoutParamsTopView.Height = desiredHeight;
                         _topViewLayout.LayoutParameters = layoutParamsTopView;
+
+                        _contactTaxiOverlay.ActionOnAnimationEnd = new Action(() => 
+                            {
+                                layoutParamsChangeDropOff.RemoveRule(LayoutRules.Below);
+                                layoutParamsChangeDropOff.AddRule(LayoutRules.Below, Resource.Id.ContactTaxiOverlay);
+
+                                _changeDropOffOverlay.LayoutParameters = layoutParamsChangeDropOff;
+
+                                ChangeDropOffAnimatedVisibility = ((BookingStatusViewModel)DataContext).IsChangeDropOffVisible ? ViewStates.Visible : ViewStates.Gone;
+
+                                if (_changeDropOffOverlay.LayoutParameters.Height != 0 && _statusLayout.Height != 0)
+                                {
+                                    layoutParamsTopView.Height = desiredHeight;
+                                    _topViewLayout.LayoutParameters = layoutParamsTopView;
+                                    _changeDropOffOverlay.AnimatedVisibility = ChangeDropOffAnimatedVisibility;
+                                }
+                            });
                     }
                 }
                 else
                 {
                     layoutParamsChangeDropOff.RemoveRule(LayoutRules.Below);
                     layoutParamsChangeDropOff.AddRule(LayoutRules.Below, Resource.Id.statusLayout);
+                    _changeDropOffOverlay.LayoutParameters = layoutParamsChangeDropOff;
                 }
-
-                _changeDropOffOverlay.LayoutParameters = layoutParamsChangeDropOff;
-
                 _contactTaxiOverlay.AnimatedVisibility = _contactTaxiAnimatedVisibility;
             }
         }
@@ -206,22 +219,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 var layoutParamsTopView = (FrameLayout.LayoutParams)_topViewLayout.LayoutParameters;
 
-                if (value == ViewStates.Visible)
+                if (value == ViewStates.Visible && ContactTaxiAnimatedVisibility != ViewStates.Visible)
                 {
-                    var desiredHeight = layoutParamsTopView.Height + _changeDropOffOverlay.LayoutParameters.Height;
+                    var desiredHeight = _statusLayout.Height + _changeDropOffOverlay.LayoutParameters.Height;
 
-                    if (layoutParamsTopView.Height != desiredHeight && _changeDropOffOverlay.LayoutParameters.Height != 0)
+                    if (_statusLayout.Height != desiredHeight && _changeDropOffOverlay.LayoutParameters.Height != 0 && _statusLayout.Height != 0)
                     {
                         layoutParamsTopView.Height = desiredHeight;
                         _topViewLayout.LayoutParameters = layoutParamsTopView;
-                    }
-
-                    if(ContactTaxiAnimatedVisibility == ViewStates.Visible && ((MarginLayoutParams)_contactTaxiOverlay.LayoutParameters).TopMargin == 0)
-                    {
-                        _changeDropOffOverlay.AnimatedVisibility = _changeDropOffAnimatedVisibility;
+                        _changeDropOffOverlay.AnimatedVisibility = ChangeDropOffAnimatedVisibility;
                     }
                 }
-                else
+                else if (value != ViewStates.Visible)
                 {
                     _changeDropOffOverlay.AnimatedVisibility = _changeDropOffAnimatedVisibility;
                 }

@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -15,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	{
 		private ViewStates _animatedVisibility;
 		private bool _isShown;
+        public Action ActionOnAnimationEnd { get; set;}
 
 		public const int CONTACT_TAXI_HIDDEN_Y_OFFSET = -1000;
 
@@ -61,6 +63,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 
 			var animation = AnimationHelper.GetForYTranslation(this, 0);
+
+            if (ActionOnAnimationEnd != null)
+            {
+                animation.AnimationEnd += (sender, e) => 
+                    {
+                        ActionOnAnimationEnd();
+                    };
+            }
 
 			StartAnimation(animation);
 		}
