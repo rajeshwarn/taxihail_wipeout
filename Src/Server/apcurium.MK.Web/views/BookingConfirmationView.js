@@ -6,9 +6,8 @@
         
         events: {
             'click [data-action=cancel]': 'cancel',
-            'change :input': 'onPropertyChanged',
-            "change #countrycode": "onPropertyChanged"
-    },
+            'change :input': 'onPropertyChanged'
+        },
         initialize: function () {
             _.bindAll(this, 'book', "renderResults", 'showErrors');
 
@@ -341,14 +340,14 @@
 
         onPropertyChanged: function (e) {
 
-            var dataNodeName = e.currentTarget.nodeName.toLowerCase();
             var elementName = e.currentTarget.name;
-
 
             var $input = $(e.currentTarget),
                 attr = $input.attr('name').split('.');
-           
-            if (dataNodeName == "input") {
+
+            if (elementName == "countryCode") {
+                this.model.attributes.settings.country.code = $input.find(":selected").val();
+            } else {
                 if (attr.length > 1 && this.model.has(attr[0])) {
                     this.model.get(attr[0])[attr[1]] = $input.val();
 
@@ -357,11 +356,6 @@
                     }
                 } else {
                     this.model.set(attr[0], $input.val());
-                }
-            }
-            else if (dataNodeName == "select") {
-                if (elementName == "countryCode") {
-                    this.model.attributes.settings.country.code = $input.find(":selected").val();
                 }
             }
         }
