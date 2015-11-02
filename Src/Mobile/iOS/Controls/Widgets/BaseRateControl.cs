@@ -11,6 +11,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("BaseRateView")]
 	public class BaseRateControl : UIControl
     {
+    	public const float ItemHeight = 18f;
+		public const float ItemVPadding = 4f;
+		public const float ItemHPadding = 12f;
+		public const float LabelHWeight = 0.45f;
+
 		private UILabel[] _labels;
 		private UILabel[] _descriptions;
 
@@ -50,8 +55,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				ToCurrency (BaseRate.AirportMeetAndGreet)
 			};
 
-			for (int i = 0; i < 5; i++)
-			{
+			for (int i = 4; i > -1; i--)
+			{	
 				_labels [i] = new UILabel
 				{ 
 					TranslatesAutoresizingMaskIntoConstraints = false,
@@ -72,23 +77,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 				AddConstraints (new []
 				{
-					NSLayoutConstraint.Create (_labels [i], NSLayoutAttribute.Left, NSLayoutRelation.Equal, _labels [i].Superview, NSLayoutAttribute.Left, 1f, 12f),
-					NSLayoutConstraint.Create (_labels [i], NSLayoutAttribute.Width, NSLayoutRelation.Equal, _labels [i].Superview, NSLayoutAttribute.Width, 0.45f, 0f),
-					NSLayoutConstraint.Create (_labels [i], NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 18f),
-					NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Right, NSLayoutRelation.Equal, _descriptions [i].Superview, NSLayoutAttribute.Right, 1f, -12f),
-					NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Width, NSLayoutRelation.Equal, _descriptions [i].Superview, NSLayoutAttribute.Width, 0.45f, 0f),
-					NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 18f)
+					NSLayoutConstraint.Create (_labels [i], NSLayoutAttribute.Left, NSLayoutRelation.Equal, _labels [i].Superview, NSLayoutAttribute.Left, 1f, ItemHPadding),
+					NSLayoutConstraint.Create (_labels [i], NSLayoutAttribute.Width, NSLayoutRelation.Equal, _labels [i].Superview, NSLayoutAttribute.Width, LabelHWeight, 0f),
+					NSLayoutConstraint.Create (_labels [i], NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, ItemHeight),
+					NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Right, NSLayoutRelation.Equal, _descriptions [i].Superview, NSLayoutAttribute.Right, 1f, -ItemHPadding),
+					NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Width, NSLayoutRelation.Equal, _descriptions [i].Superview, NSLayoutAttribute.Width, LabelHWeight, 0f),
+					NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, ItemHeight)
 				});
 
-				if (i == 0)
+				if (i == 4)
 				{
-					AddConstraint (NSLayoutConstraint.Create (_labels [i], NSLayoutAttribute.Top, NSLayoutRelation.Equal, _labels [i].Superview, NSLayoutAttribute.Top, 1f, 4f));
-					AddConstraint (NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Top, NSLayoutRelation.Equal, _descriptions [i].Superview, NSLayoutAttribute.Top, 1f, 4f));
+					AddConstraint (NSLayoutConstraint.Create (_labels [i], NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _labels [i].Superview, NSLayoutAttribute.Bottom, 1f, -ItemVPadding));
+					AddConstraint (NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _descriptions [i].Superview, NSLayoutAttribute.Bottom, 1f, -ItemVPadding));
 				} 
                 else
 				{
-					AddConstraint (NSLayoutConstraint.Create (_labels [i], NSLayoutAttribute.Top, NSLayoutRelation.Equal, _labels [i - 1], NSLayoutAttribute.Bottom, 1f, 0f));
-					AddConstraint (NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Top, NSLayoutRelation.Equal, _descriptions [i - 1], NSLayoutAttribute.Bottom, 1f, 0f));
+					AddConstraint (NSLayoutConstraint.Create (_labels [i], NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _labels [i + 1], NSLayoutAttribute.Bottom, 1f, -ItemHeight));
+					AddConstraint (NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _descriptions [i + 1], NSLayoutAttribute.Bottom, 1f, -ItemHeight));
 				}
 			}
 			this.LayoutSubviews();
