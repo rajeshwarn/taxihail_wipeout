@@ -10,9 +10,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class AppleDeviceOrientationService: CommonDeviceOrientationService
     {
-		private const double AccelerometerUpdateInterval = 1 / 20; // 20 Hz
-
-        private readonly CMMotionManager _motionManager;
+		private readonly CMMotionManager _motionManager;
 
 		// we don't use exclusive access here because the consequences are negligible - may cause one additional OrientationChanged event after stop service
 		private bool _isOrientationUpdateThreadActive;
