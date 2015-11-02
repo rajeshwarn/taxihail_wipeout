@@ -846,17 +846,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					AddReminder(status);
 				}
 
-				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived))
-				{
-					if (_orientationService.Start())
-					{
-						WaitingCarLandscapeViewModelParameters = null;
-					}
-				}
-				else
-				{
-					StopOrientationServiceIfNeeded();
-				}
+//				if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) || status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived))
+//				{
+//					if (_orientationService.Start())
+//					{
+//						WaitingCarLandscapeViewModelParameters = null;
+//					}
+//				}
+//				else
+//				{
+//					StopOrientationServiceIfNeeded();
+//				}
 
 				var statusInfoText = status.IBSStatusDescription;
 
