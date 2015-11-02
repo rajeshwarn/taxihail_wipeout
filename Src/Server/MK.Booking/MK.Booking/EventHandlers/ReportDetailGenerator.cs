@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -41,11 +42,13 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OriginalEtaLogged>
     {
         private readonly Func<BookingDbContext> _contextFactory;
+        private readonly ILogger _logger;
         private const int SQLPrimaryKeyViolationErrorNumber = 2627;
 
-        public ReportDetailGenerator(Func<BookingDbContext> contextFactory)
+        public ReportDetailGenerator(Func<BookingDbContext> contextFactory, ILogger logger)
         {
             _contextFactory = contextFactory;
+            _logger = logger;
         }
 
         public void Handle(OrderCreated @event)
@@ -592,6 +595,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (sqlException != null && sqlException.Number == SQLPrimaryKeyViolationErrorNumber)
                 {
                     // retry
+                    _logger.LogMessage("An exception of type SQLPrimaryKeyViolation occurred when inserting in the ReportDetail table. Retrying...");
                     eventHandling();
                 }
                 else
