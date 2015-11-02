@@ -3,6 +3,8 @@ using Foundation;
 using CoreMotion;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -45,7 +47,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 				_motionManager.StartAccelerometerUpdates();
 
 				_isOrientationUpdateThreadActive = true;
-				_orientationUpdateThread = new Thread(OrientationUpdateThread);
+
+                _orientationUpdateThread = new Thread(OrientationUpdateThread);
 				_orientationUpdateThread.Priority = ThreadPriority.BelowNormal;
 				_orientationUpdateThread.Start();
 
@@ -68,21 +71,24 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             return false;
         }
 
-		void OrientationUpdateThread()
+        private void OrientationUpdateThread()
 		{
 			while (_isOrientationUpdateThreadActive)
 			{
-                if (_motionManager.AccelerometerData != null)
+                using (var autoReleasePool = new NSAutoreleasePool())
                 {
-                    OrientationChanged(_motionManager.AccelerometerData.Acceleration.X, _motionManager.AccelerometerData.Acceleration.Y, _motionManager.AccelerometerData.Acceleration.Z, (long)(_motionManager.AccelerometerData.Timestamp * 1000));
+                    if (_motionManager.AccelerometerData != null)
+                    {
+                        OrientationChanged(_motionManager.AccelerometerData.Acceleration.X, _motionManager.AccelerometerData.Acceleration.Y, _motionManager.AccelerometerData.Acceleration.Z, (long)(_motionManager.AccelerometerData.Timestamp * 1000));
+                    }
+
+                    if (!_isOrientationUpdateThreadActive)
+                    {
+                        break;
+                    }                    
                 }
 
-                if (!_isOrientationUpdateThreadActive)
-                {
-                    break;
-                }
-
-				Thread.Sleep((int)(1000 * AccelerometerUpdateInterval));
+                Thread.Sleep(500);
 			}
 		}
     }
