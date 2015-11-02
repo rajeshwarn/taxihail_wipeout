@@ -246,20 +246,23 @@ namespace apcurium.MK.Booking.Api.Services
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Settings.ServiceType);
 
-            if (!_serverSettings.ServerData.DisableFutureBooking && request.PickupDate.HasValue)
+            var ibsPickupDate = request.PickupDate;
+            if (!_serverSettings.ServerData.DisableFutureBooking && ibsPickupDate.HasValue)
             {
                 var futureBookingTimespanSetting = _serviceTypeSettingsProvider.GetSettings(request.Settings.ServiceType).FutureBookingThresholdInMinutes;
                 var timeDifferenceBetweenPickupAndNow = (request.PickupDate.Value - DateTime.Now).TotalMinutes;
                 var isConsideredFutureBooking = timeDifferenceBetweenPickupAndNow >= futureBookingTimespanSetting;
                 if (!isConsideredFutureBooking)
                 {
-                    request.PickupDate = null;
+                    ibsPickupDate = null;
                 }
             }
 
             var isFutureBooking = request.PickupDate.HasValue;
 
-            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Settings.ServiceType);
+            var currentOffsetedTime = GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Settings.ServiceType);
+            var pickupDate = request.PickupDate ?? currentOffsetedTime;
+            ibsPickupDate = ibsPickupDate ?? currentOffsetedTime;
 
             createReportOrder.PickupDate = pickupDate;
 
@@ -451,6 +454,9 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Create order on IBS
+            
+            // change the value of the pickup date to the "nullified" date if future booking was inside the threshold
+            request.PickupDate = ibsPickupDate;
             if (isHailRequest)
             {
                 var result = CreateIBSHailOrder(orderCommand.OrderId, account, request, referenceData, chargeTypeIbs,
