@@ -7,12 +7,12 @@ namespace apcurium.MK.Common.Migrations
     {
         public override void Up()
         {
-            AddColumn("Config.PaymentSettings", "CmtPaymentSettings_UsePairingCode", c => c.Boolean(nullable: false));
+            AddColumn("Config.NotificationSettings", "DriverBailedPush", c => c.Boolean());
         }
         
         public override void Down()
         {
-            DropColumn("Config.PaymentSettings", "CmtPaymentSettings_UsePairingCode");
+            DropColumn("Config.NotificationSettings", "DriverBailedPush");
         }
     }
 }
