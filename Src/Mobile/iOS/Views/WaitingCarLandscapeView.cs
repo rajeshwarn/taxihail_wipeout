@@ -27,8 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             closeButton.SetTitle(Localize.GetValue("WaitingCarLandscapeViewCloseButtonText"), UIControlState.Normal);
             carNumberLabel.AccessibilityLabel = Localize.GetValue("WaitingCarLandscapeViewCarNumber");
 
-            ViewModel_PropertyChanged(null, null);
-
             var bindSet = this.CreateBindingSet<WaitingCarLandscapeView, WaitingCarLandscapeViewModel>();
 
             bindSet.Bind(carNumberLabel)
@@ -39,21 +37,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For("TouchUpInside")
                 .To(vm => vm.CloseView);
 
-            bindSet.Apply();
 
-            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            bindSet.Bind()
+                .For(v => v.DeviceOrientation)
+                .To(vm => vm.DeviceOrientation);
+
+            bindSet.Apply();
         }
 
-        void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+
+        DeviceOrientations _deviceOrientation;
+        public DeviceOrientations DeviceOrientation
         {
-			if (ViewModel.DeviceOrientation == DeviceOrientations.Left)
-			{
-				mainView.Transform = CGAffineTransform.MakeRotation(new nfloat(LeftRotation));
-			}
-			else if (ViewModel.DeviceOrientation == DeviceOrientations.Right)
-			{
-				mainView.Transform = CGAffineTransform.MakeRotation(new nfloat(RightRotation));
-			}
+            get
+            {
+                return _deviceOrientation;
+            }
+            set
+            {
+                if (_deviceOrientation == value)
+                {
+                    return;
+                }
+
+                _deviceOrientation = value;
+
+                if (_deviceOrientation == DeviceOrientations.Left)
+                {
+                    mainView.Transform = CGAffineTransform.MakeRotation(new nfloat(LeftRotation));
+                }
+                else if (_deviceOrientation == DeviceOrientations.Right)
+                {
+                    mainView.Transform = CGAffineTransform.MakeRotation(new nfloat(RightRotation));
+                }
+            }
         }
     }
 }
