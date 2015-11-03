@@ -665,11 +665,6 @@ namespace apcurium.MK.Booking.Api.Services
             newOrderCommand.Fare = fare;
             newOrderCommand.IbsInformationNote = ibsInformationNote;
 
-            // TODO: Check IsHailRequest
-            //var newIbsOrderId = orderResult.IsHailRequest
-            //    ? orderResult.HailResult.OrderKey.IbsOrderId
-            //    : orderResult.CreateOrderResult;
-
             _commandBus.Send(new InitiateIbsOrderSwitch
             {
                 NewIbsAccountId = ibsAccountId,
