@@ -533,7 +533,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                         homeView.LayoutIfNeeded();
                         _datePicker.Hide();  
-                    }, RedrawSubViews);
+                    }, CenterOnMap);
 			}
             else if (state == HomeViewModelState.DropOffAddressSelection)
             {
@@ -624,6 +624,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					RedrawSubViews();
 				});
 		}
+
+        private void CenterOnMap()
+        {
+            RedrawSubViews();
+
+            mapView.MapCenter = mapView.MapCenter;
+        }
 
 		private void RedrawSubViews()
         {
