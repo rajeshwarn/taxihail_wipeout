@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web.Routing;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -15,17 +16,27 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Moq;
 using NUnit.Framework;
+using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
     public class given_an_email_address_and_an_orderStatus : given_a_read_model_database_for_receipt_email_map
     {
+        protected List<ICommand> Commands = new List<ICommand>();
         private Mock<IGeocoding> _geocodingMock;
 
         [SetUp]
         public void Setup()
         {
             base.Setup();
+
+            var bus = new Mock<ICommandBus>();
+            bus.Setup(x => x.Send(It.IsAny<Envelope<ICommand>>()))
+                .Callback<Envelope<ICommand>>(x => Commands.Add(x.Body));
+            bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
+                .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
+
+            Commands = new List<ICommand>();
 
             _geocodingMock = new Mock<IGeocoding>();
             var notificationService = new NotificationService(() => new BookingDbContext(DbName),
@@ -39,11 +50,12 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new StaticMap(),
                 null,
                 _geocodingMock.Object,
-                null);
+                null,
+                bus.Object);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
             Sut.Setup(new EmailCommandHandler(notificationService));
-
+            
             _geocodingMock
                 .Setup(x => x.Search(45, -73, It.IsAny<string>(), It.IsAny<GeoResult>(), false))
                 .Returns(new [] {new Address { FullAddress = "full dropoff" }});

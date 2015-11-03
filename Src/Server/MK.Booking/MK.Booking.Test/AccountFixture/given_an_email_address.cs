@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _accountDaoMock = new Mock<IAccountDao>();
             _serverSettings = new TestServerSettings();
             _serverSettings.SetSetting("TaxiHail.ApplicationName", ApplicationName);
-
+            
             var notificationService = new NotificationService(
                 () => new BookingDbContext(DbName),
                 null,
@@ -88,6 +88,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 _orderDaoMock.Object,
                 _accountDaoMock.Object,
                 new StaticMap(),
+                null,
                 null,
                 null,
                 null);

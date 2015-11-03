@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new StaticMap(),
                 null,
                 new Geocoding(new GoogleApiClient(ConfigurationManager, new Logger()), ConfigurationManager, null, new Logger()),
+                null,
                 null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
