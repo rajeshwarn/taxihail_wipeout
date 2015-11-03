@@ -415,6 +415,29 @@ namespace apcurium.MK.Booking.Api.Services
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
+            if (isHailRequest)
+            {
+                // VTS hail flow
+
+                var result = _ibsCreateOrderService.CreateIbsOrder(request.Id, request.PickupAddress, request.DropOffAddress,
+                    request.Settings.AccountNumber, request.Settings.CustomerNumber, bestAvailableCompany.CompanyKey,
+                    account.IBSAccountId.Value, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
+                    request.Settings.VehicleTypeId, ibsInformationNote, request.PickupDate.Value, accountValidationResult.Prompts,
+                    accountValidationResult.PromptsLength, referenceData.CompaniesList, market, request.Settings.ChargeTypeId,
+                    request.Settings.ProviderId, fare, request.TipIncentive, true);
+
+                orderCommand.IbsOrderId = result.HailResult.OrderKey.IbsOrderId;
+
+                _commandBus.Send(orderCommand);
+
+                return result.HailResult;
+
+            }
+
+            // Normal flow
+
+            _commandBus.Send(orderCommand);
+
             if (paypalWebPaymentResponse != null)
             {
                 // Order prepaid by PayPal
@@ -441,58 +464,33 @@ namespace apcurium.MK.Booking.Api.Services
                 return paypalWebPaymentResponse;
             }
 
-            if (isHailRequest)
+            if (request.QuestionsAndAnswers.HasValue())
             {
-                // VTS hail flow
+                // Save question answers so we can display them the next time the user books
+                var accountLastAnswers = request.QuestionsAndAnswers
+                    .Where(q => q.SaveAnswer)
+                    .Select(q =>
+                        new AccountChargeQuestionAnswer
+                        {
+                            AccountId = account.Id,
+                            AccountChargeQuestionId = q.Id,
+                            AccountChargeId = q.AccountId,
+                            LastAnswer = q.Answer
+                        });
 
-                var result = _ibsCreateOrderService.CreateIbsOrder(request.Id, request.PickupAddress, request.DropOffAddress,
-                    request.Settings.AccountNumber, request.Settings.CustomerNumber, bestAvailableCompany.CompanyKey,
-                    account.IBSAccountId.Value, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
-                    request.Settings.VehicleTypeId, ibsInformationNote, request.PickupDate.Value, accountValidationResult.Prompts,
-                    accountValidationResult.PromptsLength, referenceData.CompaniesList, market, request.Settings.ChargeTypeId,
-                    request.Settings.ProviderId, fare, request.TipIncentive, true);
-
-                orderCommand.IbsOrderId = result.HailResult.OrderKey.IbsOrderId;
-
-                _commandBus.Send(orderCommand);
-
-                return result.HailResult;
-
-            }
-            else
-            {
-                // Normal flow
-
-                _commandBus.Send(orderCommand);
-
-                if (request.QuestionsAndAnswers.HasValue())
+                if (accountLastAnswers != null)
                 {
-                    // Save question answers so we can display them the next time the user books
-                    var accountLastAnswers = request.QuestionsAndAnswers
-                      .Where(q => q.SaveAnswer)
-                      .Select(q =>
-                          new AccountChargeQuestionAnswer
-                          {
-                              AccountId = account.Id,
-                              AccountChargeQuestionId = q.Id,
-                              AccountChargeId = q.AccountId,
-                              LastAnswer = q.Answer
-                          });
-
-                    if (accountLastAnswers != null)
-                    {
-                        _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = account.Id, Answers = accountLastAnswers.ToArray() });
-                    }
+                    _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = account.Id, Answers = accountLastAnswers.ToArray() });
                 }
-
-                return new OrderStatusDetail
-                {
-                    OrderId = orderCommand.OrderId,
-                    Status = OrderStatus.Created,
-                    IBSStatusId = string.Empty,
-                    IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
-                };
             }
+
+            return new OrderStatusDetail
+            {
+                OrderId = orderCommand.OrderId,
+                Status = OrderStatus.Created,
+                IBSStatusId = string.Empty,
+                IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
+            };
         }
 
         public object Get(ExecuteWebPaymentAndProceedWithOrder request)
