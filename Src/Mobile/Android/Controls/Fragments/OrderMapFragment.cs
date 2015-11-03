@@ -197,11 +197,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             valueAnimator.SetDuration (5000);
             valueAnimator.SetInterpolator(new Android.Views.Animations.LinearInterpolator());
             valueAnimator.Start();
-
-            valueAnimator.AnimationEnd += (sender, e) => 
-                {
-                    markerToUpdate.InvokePosition(newPosition);
-                };
         }
 
         private class LatLngEvaluator : Java.Lang.Object, ITypeEvaluator
@@ -245,16 +240,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     var icon = ViewModel.Settings.ShowOrientedPins  && value.CompassCourse.HasValue
                         ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
                         : Map.SpriteFactory.FromBitmap(CreateTaxiBitmap());
-                   
-                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
-                        {
-                            Latitude = value.Latitude.Value, 
-                            Longitude = value.Longitude.Value
-                        });
+                    
+                    _taxiLocationPin.InvokeIcon(icon);
+                    _taxiLocationPin.Marker.Remove();
+                    _taxiLocationPin.InvokePosition( new LatLng(value.Latitude.Value, value.Longitude.Value));
+                    Map.AddMarker(_taxiLocationPin);
+
+//                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
+//                        {
+//                            Latitude = value.Latitude.Value, 
+//                            Longitude = value.Longitude.Value
+//                        });
                     
 					if (_showVehicleNumber)
 					{
 //                        _taxiLocationPin.Marker.ShowInfoWindow();
+                        Map.SelectMarker(_taxiLocationPin.Marker);
 					}
                 }
 
@@ -281,11 +282,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             mapOptions.InvokeTitle(value.VehicleNumber);
                         }
                         _taxiLocationPin = mapOptions;
+
                         Map.AddMarker(mapOptions);
 
                         if (_showVehicleNumber)
                         {
 //                            _taxiLocationPin.Marker.ShowInfoWindow();
+                            Map.SelectMarker(_taxiLocationPin.Marker);
                         }
                     }
                     catch (Exception ex)
@@ -411,13 +414,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             Observable
                 .FromEventPattern<MapView.MapChangedEventArgs>(Map, "MapChanged")
-				.Do(_ =>
-				{
-					if (!_bypassCameraChangeEvent)
-					{
-						ViewModel.DisableBooking();
-					}
-				})
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(OnMapChanged)
@@ -561,7 +557,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (DestinationAddress.HasValidCoordinate())
                 {
                     var position = new LatLng(DestinationAddress.Latitude, DestinationAddress.Longitude);
-                    _pickupPin.InvokeIcon(_destinationIcon);
+                    _destinationPin.InvokeIcon(_destinationIcon);
                     _destinationPin.InvokePosition(GetMarkerPositionWithAnchor(position, _destinationPin.Icon));             
                     _destinationPin.Marker.Remove();
                     Map.AddMarker(_destinationPin);
@@ -623,6 +619,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     _bypassCameraChangeEvent = false;
                     return;
+                }
+                else
+                {
+                    ViewModel.DisableBooking();
                 }
 
                 var bounds = GetMapBoundsFromProjection();
@@ -695,8 +695,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var icon = ViewModel.Settings.ShowOrientedPins
                 ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
                 : _vehicleIcons[logoKey];
+            
+           // markerToUpdate.InvokeIcon(icon);
+//            markerToUpdate.Marker.Remove();
+           // markerToUpdate.InvokePosition( new LatLng(vehicle.Latitude, vehicle.Longitude));
+//            Map.AddMarker(markerToUpdate);
 
-            AnimateMarkerOnMap(icon, markerToUpdate, new LatLng(vehicle.Latitude, vehicle.Longitude), vehicle.CompassCourse, oldPosition);
+//            AnimateMarkerOnMap(icon, markerToUpdate, new LatLng(vehicle.Latitude, vehicle.Longitude), vehicle.CompassCourse, oldPosition);
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
