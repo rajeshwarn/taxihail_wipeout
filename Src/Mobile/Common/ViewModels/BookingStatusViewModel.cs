@@ -481,7 +481,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public IEnumerable<CoordinateViewModel> MapCenter
         {
 			get { return _mapCenter; }
-			private set 
+			set 
             {
 				_mapCenter = value;
 				RaisePropertyChanged ();

@@ -175,7 +175,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 
                 if (value == ViewStates.Visible)
                 {
-                    var desiredHeight = _statusLayout.Height + _contactTaxiOverlay.LayoutParameters.Height + _changeDropOffOverlay.LayoutParameters.Height;
+                    var desiredHeight = _statusLayout.Height + _contactTaxiOverlay.Height + (ChangeDropOffAnimatedVisibility == ViewStates.Visible ? _changeDropOffOverlay.Height : 0);
 
                     if (layoutParamsTopView.Height != desiredHeight && _contactTaxiOverlay.LayoutParameters.Height != 0 && _statusLayout.Height != 0)
                     {

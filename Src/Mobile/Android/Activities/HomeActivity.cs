@@ -491,9 +491,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				.For(v => v.Enabled)
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("EnumToBool", HomeViewModelState.Initial.ToString());
+
+            MapFragment.OverlayOffsetProvider = GetOverlayOffset;
 			
 		    set.Apply();
 	    }
+
+        private int GetOverlayOffset()
+        {
+            return _orderStatus.Height;
+        }
 
 	    protected override void OnRestart ()
         {

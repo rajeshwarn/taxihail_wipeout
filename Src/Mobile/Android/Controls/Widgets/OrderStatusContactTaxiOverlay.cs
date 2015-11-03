@@ -8,6 +8,7 @@ using Android.Widget;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using System;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -62,15 +63,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				((MarginLayoutParams)LayoutParameters).TopMargin = desiredHeight;
 			}
 
-			var animation = AnimationHelper.GetForYTranslation(this, 0);
+            var animation = AnimationHelper.GetForYTranslation(this, 0);
 
             if (ActionOnAnimationEnd != null)
             {
-                animation.AnimationEnd += (sender, e) => 
-                    {
-                        ActionOnAnimationEnd();
-                    };
+                animation.AnimationEnd += (sender, e) =>
+                {
+                    ActionOnAnimationEnd();
+                };
             }
+            else
+            {
+                // If no Change Drop Off overlay, update the map bounding box
+                animation.AnimationEnd += (sender, e) => 
+                {
+                    ((BookingStatusViewModel)DataContext).MapCenter = ((BookingStatusViewModel)DataContext).MapCenter;
+                };
+        }
 
 			StartAnimation(animation);
 		}

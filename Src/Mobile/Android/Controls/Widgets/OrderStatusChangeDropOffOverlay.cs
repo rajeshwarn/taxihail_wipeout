@@ -6,6 +6,7 @@ using Android.Content;
 using Android.Util;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -60,6 +61,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
             var animation = AnimationHelper.GetForYTranslation(this, 0);
+            animation.AnimationEnd += (sender, e) => 
+                {
+                    // Update the map bounding box
+                    ((BookingStatusViewModel)DataContext).MapCenter = ((BookingStatusViewModel)DataContext).MapCenter;
+                };
 
             StartAnimation(animation);
         }
