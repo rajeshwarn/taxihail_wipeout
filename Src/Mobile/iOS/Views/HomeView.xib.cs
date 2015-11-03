@@ -206,7 +206,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Bind(bottomBar)
                 .For(v => v.DataContext)
-                .To(vm => vm.BottomBar);
+				.To(vm => vm);
 
             set.Bind(_datePicker)
                 .For(v => v.DataContext)
@@ -221,10 +221,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(mapView)
                 .For(v => v.MapCenter)
                 .To(vm => vm.BookingStatus.MapCenter);
-
-            set.Bind(bookingStatusBottomBar)
-                .For(v => v.DataContext)
-                .To(vm => vm.BookingStatus.BottomBar);
 
             set.Bind(bookingStatusControl)
                 .For(v => v.DataContext)
@@ -339,7 +335,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				// Date Picker: Hidden
 
 				CloseBookATaxiDialog();
-                constraintAppBarBookingStatus.Constant = BookingStatusAppBarHiddenConstrainValue;
                 constraintContactTaxiTopSpace.Constant = ContactDriverHiddenConstraintValue;
                 homeView.LayoutIfNeeded();
 
@@ -424,7 +419,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 // Booking Status app bar: Visible
 
                 CloseBookATaxiDialog();
-                constraintAppBarBookingStatus.Constant = 0;
 
                 if (ViewModel.BookingStatus != null && !ViewModel.BookingStatus.IsContactTaxiVisible)
                 {
@@ -539,7 +533,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ctrlOrderOptions.SetNeedsDisplay();
 			ctrlOrderBookingOptions.SetNeedsDisplay();
 			orderAirport.SetNeedsDisplay ();
-            bookingStatusBottomBar.SetNeedsDisplay();
             bookingStatusControl.SetNeedsDisplay();
             contactTaxiControl.SetNeedsDisplay();
         }

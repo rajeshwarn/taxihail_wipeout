@@ -73,6 +73,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="YtL-0E-qQg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="500" constant="8" id="44S-zv-BOJ"/>
                 <constraint firstItem="9Vf-n7-FjQ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="5yN-TJ-4Fk"/>
                 <constraint firstItem="YtL-0E-qQg" firstAttribute="width" secondItem="9Vf-n7-FjQ" secondAttribute="width" multiplier="1.5" id="6Wx-7a-JRx"/>
                 <constraint firstItem="YtL-0E-qQg" firstAttribute="leading" secondItem="lRQ-rI-gHz" secondAttribute="trailing" constant="5" id="9ua-Nu-EiT"/>
@@ -81,9 +82,11 @@
                 <constraint firstItem="9Vf-n7-FjQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="NJf-WO-gIS"/>
                 <constraint firstItem="lRQ-rI-gHz" firstAttribute="leading" secondItem="9Vf-n7-FjQ" secondAttribute="trailing" constant="5" id="cAE-VX-LGU"/>
                 <constraint firstItem="YtL-0E-qQg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="g6E-jG-6WT"/>
+                <constraint firstItem="YtL-0E-qQg" firstAttribute="leading" secondItem="9Vf-n7-FjQ" secondAttribute="trailing" priority="500" constant="8" id="oEO-e6-JyW"/>
                 <constraint firstItem="lRQ-rI-gHz" firstAttribute="width" secondItem="9Vf-n7-FjQ" secondAttribute="width" multiplier="1.5" id="omn-T1-Jz3"/>
                 <constraint firstAttribute="trailing" secondItem="YtL-0E-qQg" secondAttribute="trailing" constant="8" id="oqT-Ic-3Pd"/>
                 <constraint firstItem="lRQ-rI-gHz" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="vVX-h0-RUW"/>
+                <constraint firstAttribute="trailing" secondItem="lRQ-rI-gHz" secondAttribute="trailing" priority="500" constant="8" id="yoY-bU-IdD"/>
                 <constraint firstAttribute="bottom" secondItem="YtL-0E-qQg" secondAttribute="bottom" constant="5" id="zL6-dQ-xgx"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

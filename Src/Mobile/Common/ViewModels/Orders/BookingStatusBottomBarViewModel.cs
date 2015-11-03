@@ -264,6 +264,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_isUnpairButtonVisible = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged(() => IsUnpairOrTipChangeButtonsVisible);
 			}
 		}
 
@@ -275,7 +276,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_isCancelButtonVisible = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged(() => IsCancelOrTipChangeButtonsVisible);
 			}
+		}
+
+		public bool IsCancelOrTipChangeButtonsVisible
+		{
+			get { return IsCancelButtonVisible || CanEditAutoTip; }
+		}
+
+		public bool IsUnpairOrTipChangeButtonsVisible
+		{
+			get { return IsUnpairButtonVisible || CanEditAutoTip; }
 		}
 
 		private bool _canEditAutoTip;
@@ -288,6 +300,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					_canEditAutoTip = value;
 					RaisePropertyChanged();
+					RaisePropertyChanged(() => IsCancelOrTipChangeButtonsVisible);
+					RaisePropertyChanged(() => IsUnpairOrTipChangeButtonsVisible);
 				}
 			}
 		}

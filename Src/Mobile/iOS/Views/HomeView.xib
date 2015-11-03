@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeView">
             <connections>
-                <outlet property="bookingStatusBottomBar" destination="eeH-0k-Y1u" id="4lT-KE-LhQ"/>
                 <outlet property="bookingStatusControl" destination="ZLu-Q7-DYG" id="3qT-jb-sA0"/>
                 <outlet property="bookingStatusTopSpaceConstraint" destination="XTy-SW-oPk" id="MIw-Jb-nIz"/>
                 <outlet property="bottomBar" destination="cXg-Q6-nLg" id="wBh-UX-pyq"/>
@@ -14,7 +13,6 @@
                 <outlet property="btnLocateMe" destination="Jqp-iu-ci1" id="Ea5-fR-6Yf"/>
                 <outlet property="btnMenu" destination="MeW-ns-SQv" id="7wz-qB-e5G"/>
                 <outlet property="btnTrain" destination="rTf-vs-kUc" id="csz-MU-0ht"/>
-                <outlet property="constraintAppBarBookingStatus" destination="VYn-pq-Rbv" id="zxh-xY-Neu"/>
                 <outlet property="constraintBookingStatusHeight" destination="Ztr-kp-Q7L" id="vOj-O6-UhM"/>
                 <outlet property="constraintContactTaxiTopSpace" destination="9l2-hu-sB1" id="YUx-lQ-0LO"/>
                 <outlet property="constraintHomeLeadingSpace" destination="Ofk-d3-Xjf" id="rC5-er-L3E"/>
@@ -129,18 +127,6 @@
                                 <constraint firstAttribute="height" constant="56" id="qLD-mj-Ncy"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eeH-0k-Y1u" customClass="AppBarBookingStatus">
-                            <rect key="frame" x="0.0" y="592" width="320" height="56"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="56" id="vP0-Ub-Zeh"/>
-                            </constraints>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
-                                    <integer key="value" value="0"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fsx-d8-MLA" customClass="OrderEditView">
                             <rect key="frame" x="500" y="22" width="304" height="483"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -172,14 +158,12 @@
                         <constraint firstItem="qYq-T6-6x7" firstAttribute="top" secondItem="ZLu-Q7-DYG" secondAttribute="bottom" constant="-288" id="9l2-hu-sB1"/>
                         <constraint firstItem="dKC-iR-zqB" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="AtN-uQ-k8U"/>
                         <constraint firstAttribute="trailing" secondItem="cPP-SX-9eS" secondAttribute="trailing" id="Cdy-Mv-jlG"/>
-                        <constraint firstItem="eeH-0k-Y1u" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="DDA-uB-eCh"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="FRw-GE-bhA"/>
                         <constraint firstItem="MeW-ns-SQv" firstAttribute="top" secondItem="aEE-PN-YXj" secondAttribute="bottom" constant="8" id="GwO-hR-URR"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="HaA-X5-eHm" secondAttribute="bottom" constant="620" id="JSE-qi-pXl"/>
                         <constraint firstItem="ZLu-Q7-DYG" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="Jhf-yG-FJ8"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="MI6-S6-jXH"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="Mlm-GQ-8rc"/>
-                        <constraint firstItem="eeH-0k-Y1u" firstAttribute="bottom" secondItem="lYS-4q-3Mj" secondAttribute="bottom" priority="500" constant="418" id="N7f-dP-yRy"/>
                         <constraint firstItem="cPP-SX-9eS" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="PNq-BA-cDW"/>
                         <constraint firstAttribute="centerX" secondItem="HaA-X5-eHm" secondAttribute="centerX" id="Pnu-1F-Vfo"/>
                         <constraint firstItem="MeW-ns-SQv" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="Q0C-IM-4L9"/>
@@ -187,9 +171,7 @@
                         <constraint firstAttribute="right" secondItem="lYS-4q-3Mj" secondAttribute="right" constant="8" id="Syf-T8-VwL"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="width" secondItem="dKC-iR-zqB" secondAttribute="width" id="V2j-fs-GMs"/>
                         <constraint firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" id="VBK-AW-R7l"/>
-                        <constraint firstItem="eeH-0k-Y1u" firstAttribute="top" secondItem="DgF-jB-8zt" secondAttribute="bottom" constant="80" id="VYn-pq-Rbv"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Fsx-d8-MLA" secondAttribute="bottom" constant="7" id="Vjz-XR-Ktl"/>
-                        <constraint firstItem="eeH-0k-Y1u" firstAttribute="top" secondItem="Fsx-d8-MLA" secondAttribute="bottom" priority="500" constant="7" id="WCu-6T-2pX"/>
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="XF0-qe-pxP"/>
                         <constraint firstItem="ZLu-Q7-DYG" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="-200" id="XTy-SW-oPk"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="Z3E-95-Tkk"/>
@@ -207,7 +189,6 @@
                         <constraint firstAttribute="trailing" secondItem="ZLu-Q7-DYG" secondAttribute="trailing" constant="8" id="sUF-DF-PPi"/>
                         <constraint firstAttribute="trailing" secondItem="dKC-iR-zqB" secondAttribute="trailing" constant="8" id="sal-Ak-hiu"/>
                         <constraint firstItem="dKC-iR-zqB" firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" constant="418" id="sgf-9n-nvL"/>
-                        <constraint firstAttribute="trailing" secondItem="eeH-0k-Y1u" secondAttribute="trailing" id="wiy-MJ-0Ol"/>
                         <constraint firstItem="aEE-PN-YXj" firstAttribute="top" secondItem="rTf-vs-kUc" secondAttribute="bottom" constant="8" id="wm1-iL-Uco"/>
                         <constraint firstItem="qYq-T6-6x7" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="ytw-Dr-i4y"/>
                         <constraint firstItem="4OH-fP-dh3" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="zf0-E1-EOY"/>

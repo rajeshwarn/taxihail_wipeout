@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.Client.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -34,6 +35,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		BookingBarAirportBooking _bookingBarAirportBooking;
 		BookingBarConfirmation _bookingBarConfirmation;
 		BookingBarEdit _bookingBarEdit;
+		BookingBarInTripNormalBooking _bookingBarInTripNormalBooking;
+		BookingBarInTripManualRideLinQBooking _bookingBarInTripManualRideLinQBooking;
 
 
         void Initialize ()
@@ -62,20 +65,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_bookingBarEdit = BookingBarEdit.LoadViewFromFile();
 			Add(_bookingBarEdit);
 
+			_bookingBarInTripNormalBooking = BookingBarInTripNormalBooking.LoadViewFromFile();
+			Add(_bookingBarInTripNormalBooking);
+
+			_bookingBarInTripManualRideLinQBooking = BookingBarInTripManualRideLinQBooking.LoadViewFromFile();
+			Add(_bookingBarInTripManualRideLinQBooking);
+
 			this.DelayBind(DataBinding);
         }
 
 		void DataBinding()
 		{
-			var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
+			var set = this.CreateBindingSet<AppBarView, HomeViewModel>();
 
-			set.Bind(_bookingBarNormalBooking).For(v => v.DataContext).To(vm => vm);
-			set.Bind(_bookingBarManualRideLinQ).For(v => v.DataContext).To(vm => vm);
-			set.Bind(_bookingBarAirportBooking).For(v => v.DataContext).To(vm => vm);
-			set.Bind(_bookingBarConfirmation).For(v => v.DataContext).To(vm => vm);
-			set.Bind(_bookingBarEdit).For(v => v.DataContext).To(vm => vm);
+			set.Bind(_bookingBarNormalBooking).For(v => v.DataContext).To(vm => vm.BottomBar);
+			set.Bind(_bookingBarManualRideLinQ).For(v => v.DataContext).To(vm => vm.BottomBar);
+			set.Bind(_bookingBarAirportBooking).For(v => v.DataContext).To(vm => vm.BottomBar);
+			set.Bind(_bookingBarConfirmation).For(v => v.DataContext).To(vm => vm.BottomBar);
+			set.Bind(_bookingBarEdit).For(v => v.DataContext).To(vm => vm.BottomBar);
 
 			set.Apply();
+
+			var set1 = this.CreateBindingSet<AppBarView, HomeViewModel>();
+
+			set1.Bind(_bookingBarInTripNormalBooking).For(v => v.DataContext).To(vm => vm);
+			set1.Bind(_bookingBarInTripManualRideLinQBooking).For(v => v.DataContext).To(vm => vm);
+
+			set1.Apply();
 		}
 
 		public override void LayoutSubviews()

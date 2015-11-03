@@ -293,6 +293,8 @@
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarEdit.xib" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarManualRideLinQ.xib" />
     <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarNormalBooking.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarInTripNormalBooking.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarInTripManualRideLinQBooking.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -639,7 +641,6 @@
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
     <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
-    <Compile Include="Controls\Widgets\AppBarBookingStatus.designer.cs" />
     <Compile Include="Controls\Widgets\BookingStatusControl.cs" />
     <Compile Include="Controls\Widgets\BookingStatusControl.designer.cs">
       <DependentUpon>BookingStatusControl.cs</DependentUpon>
@@ -648,7 +649,6 @@
     <Compile Include="Controls\Widgets\ContactTaxiControl.designer.cs">
       <DependentUpon>ContactTaxiControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
     <Compile Include="PlatformIntegration\AppleDeviceOrientationService.cs" />
     <Compile Include="Views\WaitingCarLandscapeView.cs" />
     <Compile Include="Views\WaitingCarLandscapeView.designer.cs">
@@ -695,6 +695,14 @@
       <DependentUpon>BookingBarNormalBooking.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Widgets\HindableView.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarInTripNormalBooking.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarInTripNormalBooking.designer.cs">
+      <DependentUpon>BookingBarInTripNormalBooking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingBottomBar\BookingBarInTripManualRideLinQBooking.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarInTripManualRideLinQBooking.designer.cs">
+      <DependentUpon>BookingBarInTripManualRideLinQBooking.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -745,7 +753,6 @@
     <InterfaceDefinition Include="Views\ManualPairingForRideLinqView.xib" />
     <InterfaceDefinition Include="Views\Order\OrderBookingOptions.xib" />
     <InterfaceDefinition Include="Views\EditAutoTipView.xib" />
-    <InterfaceDefinition Include="Controls\Widgets\AppBarBookingStatus.xib" />
     <InterfaceDefinition Include="Controls\Widgets\BookingStatusControl.xib" />
     <InterfaceDefinition Include="Controls\Widgets\ContactTaxiControl.xib" />
   </ItemGroup>
