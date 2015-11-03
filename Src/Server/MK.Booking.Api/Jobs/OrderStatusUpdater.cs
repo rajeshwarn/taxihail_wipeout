@@ -453,7 +453,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     vehicleLongitude = vehicleStatus.Longitude;
                 }
             }
-
+            
             if (orderStatus.VehicleLatitude != vehicleLatitude
                  || orderStatus.VehicleLongitude != vehicleLongitude)
             {
@@ -474,7 +474,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (DateTime.UtcNow >= halfwayUnpairTimeout)
                 {
                     // Send unpair timeout reminder halfway through
-                    _notificationService.SendUnpairingReminderPush(orderStatus.OrderId);
+                    var orderDetail = _orderDao.FindById(orderStatus.OrderId);
+                    _notificationService.SendUnpairingReminderPush(orderStatus.OrderId, orderStatus.AccountId, orderDetail.ClientLanguageCode);
                 }
             }
         }

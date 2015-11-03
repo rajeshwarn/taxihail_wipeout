@@ -26,6 +26,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
+using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -44,6 +45,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
+        private readonly ICommandBus _commandBus;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -61,7 +63,8 @@ namespace apcurium.MK.Booking.Services.Impl
             IStaticMap staticMap,
             ISmsService smsService,
             IGeocoding geocoding,
-            ILogger logger)
+            ILogger logger,
+            ICommandBus commandBus)
         {
             _contextFactory = contextFactory;
             _pushNotificationService = pushNotificationService;
@@ -75,7 +78,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _smsService = smsService;
             _geocoding = geocoding;
             _logger = logger;
-
+            _commandBus = commandBus;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -148,39 +151,36 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendPaymentCapturePush(Guid orderId, decimal amount)
-        {
-            using (var context = _contextFactory.Invoke())
+        {            
+            var order = _orderDao.FindById(orderId);
+
+            if (!ShouldSendNotification(order.AccountId, x => x.PaymentConfirmationPush))
             {
-                var order = context.Find<OrderDetail>(orderId);
-
-                if (!ShouldSendNotification(order.AccountId, x => x.PaymentConfirmationPush))
-                {
-                    return;
-                }
-
-                var formattedAmount = _resources.FormatPrice(Convert.ToDouble(amount));
-                var message = _resources.Get("PushNotification_PaymentReceived", order.ClientLanguageCode);
-                var alert = string.Format(message, formattedAmount);
-                var data = new Dictionary<string, object> { { "orderId", orderId } };
-
-                SendPushOrSms(order.AccountId, alert, data);
+                return;
             }
+
+            var formattedAmount = _resources.FormatPrice(Convert.ToDouble(amount));
+            var message = _resources.Get("PushNotification_PaymentReceived", order.ClientLanguageCode);
+            var alert = string.Format(message, formattedAmount);
+            var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+            SendPushOrSms(order.AccountId, alert, data);
         }
 
         public void SendTaxiNearbyPush(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude)
         {
+            var order = _orderDao.FindById(orderId);
+
+            if (!ShouldSendNotification(order.AccountId, x => x.NearbyTaxiPush))
+            {
+                return;
+            }
+
             using (var context = _contextFactory.Invoke())
             {
-                var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
+                var orderNotifications = context.Query<OrderNotificationDetail>().Single(x => x.Id == orderId);
 
-                if (!ShouldSendNotification(orderStatus.AccountId, x => x.NearbyTaxiPush))
-                {
-                    return;
-                }
-
-                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
-
-                var shouldSendPushNotification = 
+                var shouldSendPushNotification =
                     newLatitude.HasValue
                     && newLongitude.HasValue
                     && ibsStatus == VehicleStatuses.Common.Assigned
@@ -188,122 +188,103 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 if (shouldSendPushNotification)
                 {
-                    var order = context.Find<OrderDetail>(orderId);
-
                     var taxiPosition = new Position(newLatitude.Value, newLongitude.Value);
                     var pickupPosition = new Position(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
                     if (taxiPosition.DistanceTo(pickupPosition) <= TaxiDistanceThresholdForPushNotification)
                     {
-                        if (orderNotifications == null)
+                        orderNotifications.IsTaxiNearbyNotificationSent = true;
+                        _commandBus.Send(new UpdateOrderNotificationDetail
                         {
-                            context.Save(new OrderNotificationDetail
-                            {
-                                Id = order.Id,
-                                IsTaxiNearbyNotificationSent = true
-                            });
-                        }
-                        else
-                        {
-                            orderNotifications.IsTaxiNearbyNotificationSent = true;
-                            context.Save(orderNotifications);
-                        }
-   
+                            Id = orderNotifications.Id,
+                            InfoAboutPaymentWasSentToDriver = orderNotifications.InfoAboutPaymentWasSentToDriver,
+                            IsTaxiNearbyNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
+                            IsUnpairingReminderNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
+                            OrderId = orderId
+                        });
+
                         var alert = string.Format(_resources.Get("PushNotification_NearbyTaxi", order.ClientLanguageCode));
                         var data = new Dictionary<string, object> { { "orderId", order.Id } };
 
                         SendPushOrSms(order.AccountId, alert, data);
                     }
                 }
-            }
+            }            
         }
 
-        public void SendUnpairingReminderPush(Guid orderId)
+        public void SendUnpairingReminderPush(Guid orderId, Guid accountId, string clientLanguage)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
-                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
+                var orderNotifications = context.Query<OrderNotificationDetail>().Single(x => x.Id == orderId);
 
-                if (!ShouldSendNotification(orderStatus.AccountId, x => x.UnpairingReminderPush)
+                if (!ShouldSendNotification(accountId, x => x.UnpairingReminderPush)
                     || (orderNotifications != null && orderNotifications.IsUnpairingReminderNotificationSent))
                 {
                     return;
                 }
 
-                var order = context.Find<OrderDetail>(orderId);
+                orderNotifications.IsUnpairingReminderNotificationSent = true;
 
-                if (orderNotifications == null)
+                _commandBus.Send(new UpdateOrderNotificationDetail
                 {
-                    context.Save(new OrderNotificationDetail
-                    {
-                        Id = order.Id,
-                        IsUnpairingReminderNotificationSent = true
-                    });
-                }
-                else
-                {
-                    orderNotifications.IsUnpairingReminderNotificationSent = true;
-                    context.Save(orderNotifications);
-                }
-
-                var alert = string.Format(_resources.Get("PushNotification_OrderUnpairingTimeOutWarning", order.ClientLanguageCode));
-                var data = new Dictionary<string, object> { { "orderId", order.Id } };
-
-                SendPushOrSms(order.AccountId, alert, data);
+                    Id = orderNotifications.Id,
+                    InfoAboutPaymentWasSentToDriver = orderNotifications.InfoAboutPaymentWasSentToDriver,
+                    IsTaxiNearbyNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
+                    IsUnpairingReminderNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
+                    OrderId = orderId
+                });
             }
+
+            var alert = string.Format(_resources.Get("PushNotification_OrderUnpairingTimeOutWarning", clientLanguage));
+            var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+            SendPushOrSms(accountId, alert, data);
         }
 
         public void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success)
         {
-            using (var context = _contextFactory.Invoke())
+            var order = _orderDao.FindById(orderId);
+            var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+            var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings(order.CompanyKey).IsUnpairingDisabled;
+
+            string successMessage;
+            if (isPayPal)
             {
-                var order = context.Find<OrderDetail>(orderId);
-
-                var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
-                var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings(order.CompanyKey).IsUnpairingDisabled;
-
-                string successMessage;
-                if (isPayPal)
-                {
-                    successMessage = string.Format(
-                        isAutomaticPairingEnabled
-                            ? _resources.Get("PushNotification_OrderPairingSuccessfulPayPalUnpair", order.ClientLanguageCode)
-                            : _resources.Get("PushNotification_OrderPairingSuccessfulPayPal", order.ClientLanguageCode),
-                        order.IBSOrderId,
-                        autoTipPercentage);
-                }
-                else
-                {
-                    successMessage = string.Format(
-                        isAutomaticPairingEnabled
-                            ? _resources.Get("PushNotification_OrderPairingSuccessfulUnpair", order.ClientLanguageCode)
-                            : _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
-                        order.IBSOrderId,
-                        creditCard != null ? creditCard.Last4Digits : "",
-                        autoTipPercentage);
-                }
-                
-                var alert = success
-                    ? successMessage
-                    : string.Format(_resources.Get("PushNotification_OrderPairingFailed", order.ClientLanguageCode), order.IBSOrderId);
-
-                var data = new Dictionary<string, object> { { "orderId", orderId } };
-
-                SendPushOrSms(order.AccountId, alert, data);
+                successMessage = string.Format(
+                    isAutomaticPairingEnabled
+                        ? _resources.Get("PushNotification_OrderPairingSuccessfulPayPalUnpair", order.ClientLanguageCode)
+                        : _resources.Get("PushNotification_OrderPairingSuccessfulPayPal", order.ClientLanguageCode),
+                    order.IBSOrderId,
+                    autoTipPercentage);
             }
+            else
+            {
+                successMessage = string.Format(
+                    isAutomaticPairingEnabled
+                        ? _resources.Get("PushNotification_OrderPairingSuccessfulUnpair", order.ClientLanguageCode)
+                        : _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
+                    order.IBSOrderId,
+                    creditCard != null ? creditCard.Last4Digits : "",
+                    autoTipPercentage);
+            }
+                
+            var alert = success
+                ? successMessage
+                : string.Format(_resources.Get("PushNotification_OrderPairingFailed", order.ClientLanguageCode), order.IBSOrderId);
+
+            var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+            SendPushOrSms(order.AccountId, alert, data);
         }
 
         public void SendOrderCreationErrorPush(Guid orderId, string errorDescription)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                var order = context.Find<OrderDetail>(orderId);
+            var order = _orderDao.FindById(orderId);
 
-                var data = new Dictionary<string, object> { { "orderId", orderId } };
+            var data = new Dictionary<string, object> { { "orderId", orderId } };
 
-                SendPushOrSms(order.AccountId, errorDescription, data);
-            }
+            SendPushOrSms(order.AccountId, errorDescription, data);
         }
 
         public void SendAccountConfirmationEmail(Uri confirmationUrl, string clientEmailAddress, string clientLanguageCode)
@@ -358,13 +339,10 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             if (!bypassNotificationSetting)
             {
-                using (var context = _contextFactory.Invoke())
+                var account = _accountDao.FindByEmail(clientEmailAddress.ToLower());
+                if (account == null || !ShouldSendNotification(account.Id, x => x.BookingConfirmationEmail))
                 {
-                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                    if (account == null || !ShouldSendNotification(account.Id, x => x.BookingConfirmationEmail))
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
 
@@ -426,13 +404,10 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             if (!bypassNotificationSetting)
             {
-                using (var context = _contextFactory.Invoke())
+                var account = _accountDao.FindByEmail(clientEmailAddress.ToLower());
+                if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
                 {
-                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                    if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
             
@@ -457,13 +432,10 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             if (!bypassNotificationSetting)
             {
-                using (var context = _contextFactory.Invoke())
+                var account = _accountDao.FindByEmail(clientEmailAddress.ToLower());
+                if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
                 {
-                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                    if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
 
@@ -492,13 +464,10 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             if (!bypassNotificationSetting)
             {
-                using (var context = _contextFactory.Invoke())
+                var account = _accountDao.FindByEmail(clientEmailAddress.ToLower());
+                if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
                 {
-                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                    if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
 
@@ -707,13 +676,10 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             if (!bypassNotificationSetting)
             {
-                using (var context = _contextFactory.Invoke())
+                var account = _accountDao.FindByEmail(clientEmailAddress.ToLower());
+                if (account == null || !ShouldSendNotification(account.Id, x => x.PromotionUnlockedEmail))
                 {
-                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                    if (account == null || !ShouldSendNotification(account.Id, x => x.PromotionUnlockedEmail))
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
 
@@ -741,13 +707,10 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             if (!bypassNotificationSetting)
             {
-                using (var context = _contextFactory.Invoke())
+                var account = _accountDao.FindByEmail(clientEmailAddress.ToLower());
+                if (account == null)
                 {
-                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                    if (account == null)
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
 
@@ -932,23 +895,20 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private void SendSms(Guid accountId, string alert)
         {
-            using (var context = _contextFactory.Invoke())
+            var account = _accountDao.FindById(accountId);
+
+            libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
+            toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(account.Settings.Country)).CountryDialCode;
+            toPhoneNumber.NationalNumber = long.Parse(account.Settings.Phone);
+            toPhoneNumber.ItalianLeadingZero = (account.Settings.Phone[0] == '0');
+
+            if (!toPhoneNumber.IsValidNumber)
             {
-                var account = context.Set<AccountDetail>().Find(accountId);
-
-                libphonenumber.PhoneNumber toPhoneNumber = new libphonenumber.PhoneNumber();
-                toPhoneNumber.CountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(account.Settings.Country)).CountryDialCode;
-                toPhoneNumber.NationalNumber = long.Parse(account.Settings.Phone);
-                toPhoneNumber.ItalianLeadingZero = (account.Settings.Phone[0] == '0');
-
-                if (!toPhoneNumber.IsValidNumber)
-                {
-                    _logger.Maybe(() => _logger.LogMessage("Cannot send SMS for account {0}, phone number is {1})", accountId, toPhoneNumber.IsPossibleNumberWithReason.ToString()));
-                    return;
-                }
-
-                SendSms(toPhoneNumber, alert);
+                _logger.Maybe(() => _logger.LogMessage("Cannot send SMS for account {0}, phone number is {1})", accountId, toPhoneNumber.IsPossibleNumberWithReason.ToString()));
+                return;
             }
+
+            SendSms(toPhoneNumber, alert);
         }
 
         private void SendSms(libphonenumber.PhoneNumber phoneNumber, string alert)
