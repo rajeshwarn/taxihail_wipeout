@@ -1166,7 +1166,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (estimate == null || !estimate.Price.HasValue)
             {
-                return default(Fare);
+                return new Fare();
             }
 
             return FareHelper.GetFareFromAmountInclTax(estimate.Price.Value, 0);

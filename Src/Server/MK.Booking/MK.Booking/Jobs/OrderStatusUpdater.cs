@@ -201,6 +201,13 @@ namespace apcurium.MK.Booking.Jobs
                 _logger.LogMessage("No manual RideLinQ details found for order {0}", orderstatusDetail.OrderId);
                 return;
             }
+
+            if (rideLinqDetails.EndTime.HasValue)
+            {
+                // Trip ended. Nothing do to has end of trip errors are handled by the event handler.
+                return;
+            }
+
             _logger.LogMessage("Initializing CmdClient for order {0} (RideLinq Pairing Token: {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
 
             InitializeCmtServiceClient();
