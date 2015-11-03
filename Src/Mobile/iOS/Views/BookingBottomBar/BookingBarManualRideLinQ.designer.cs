@@ -22,13 +22,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton buttonManualRideLinQBooking { get; set; }
 
 		[Outlet]
-		UIKit.UIImageView imagePromotion { get; set; }
+		UIKit.UIImageView imagePromotional { get; set; }
 
 		[Outlet]
-		UIKit.UIView viewBooking { get; set; }
-
-		[Outlet]
-		UIKit.UIView viewEstimate { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HindableView viewEstimate { get; set; }
 
 		[Outlet]
 		UIKit.UIView viewManualRideLinQBooking { get; set; }
@@ -50,11 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				buttonManualRideLinQBooking = null;
 			}
 
-			if (imagePromotion != null) {
-				imagePromotion.Dispose ();
-				imagePromotion = null;
-			}
-
 			if (viewEstimate != null) {
 				viewEstimate.Dispose ();
 				viewEstimate = null;
@@ -65,9 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				viewManualRideLinQBooking = null;
 			}
 
-			if (viewBooking != null) {
-				viewBooking.Dispose ();
-				viewBooking = null;
+			if (imagePromotional != null) {
+				imagePromotional.Dispose ();
+				imagePromotional = null;
 			}
 		}
 	}

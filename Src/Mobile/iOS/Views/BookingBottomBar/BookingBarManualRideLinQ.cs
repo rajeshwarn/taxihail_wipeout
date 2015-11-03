@@ -40,16 +40,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(buttonEstimate).For(v => v.Command).To(vm => vm.ChangeAddressSelectionMode);
 			set.Bind(buttonEstimate).For(v => v.Selected).To(vm => vm.EstimateSelected);
-			set.Bind(viewEstimate).For(v => v.Hidden).To(vm => vm.Settings.HideDestination);
+			set.Bind(viewEstimate).For(v => v.HiddenWithConstraints).To(vm => vm.Settings.HideDestination);
 
-			set.Bind(viewBooking).For(v => v.Hidden).To(vm => vm.BookButtonHidden);
+			set.Bind(buttonBooking).For(v => v.HiddenWithConstraints).To(vm => vm.BookButtonHidden);
 			set.Bind(buttonBooking).For(v => v.Command).To(vm => vm.Book);
 			set.Bind(buttonBooking).For(v => v.Enabled).To(vm => vm.ParentViewModel.Map.BookCannotExecute).WithConversion("BoolInverter");
 			set.Bind(buttonBooking).For("Title").To(vm => vm.BookButtonText);
 
 			set.Bind(buttonManualRideLinQBooking).For(v => v.Command).To(vm => vm.ManualPairingRideLinq);
 
-			set.Bind(imagePromotion).For(v => v.Hidden).To(vm => vm.IsPromoCodeActive).WithConversion("BoolInverter");
+			set.Bind(imagePromotional).For(v => v.Hidden).To(vm => vm.IsPromoCodeActive).WithConversion("BoolInverter");
 
 			set.Apply();
 		}
