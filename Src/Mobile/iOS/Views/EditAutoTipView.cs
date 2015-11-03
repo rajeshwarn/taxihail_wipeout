@@ -36,6 +36,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.PaymentMethodsLabel");
             txtCreditCard.Configure(Localize.GetValue("PaymentDetails.PaymentMethodsLabel"), () => ViewModel.CreditCards, () => ViewModel.CreditCardSelected, x => ViewModel.CreditCardSelected = (int)x.Id);
             txtCreditCard.TextAlignment = UITextAlignment.Right;
+            txtCreditCard.Font = UIFont.FromName(FontName.HelveticaNeueLight, 34/2);
+
 
 			btnSave.SetTitle (Localize.GetValue("Save"), UIControlState.Normal);
 			FlatButtonStyle.Green.ApplyTo(btnSave);

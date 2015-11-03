@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(RateOrder command)
         {
             var order = _repository.Find(command.OrderId);
-            order.RateOrder(command.Note, command.RatingScores);
+            order.RateOrder(command.AccountId, command.Note, command.RatingScores);
             _repository.Save(order, command.Id.ToString());
         }
 

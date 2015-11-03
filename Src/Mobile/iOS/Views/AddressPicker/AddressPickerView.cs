@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
             TableView = new UITableView(new CGRect(), UITableViewStyle.Plain)
             {
-                BackgroundView = new  UIView { BackgroundColor = UIColor.Clear },
+                BackgroundView = new  UIView { BackgroundColor = UIColor.FromRGB(242, 242, 242) },
                 BackgroundColor = UIColor.FromRGB(242, 242, 242),
                 SeparatorColor = UIColor.Clear,
                 SeparatorStyle = UITableViewCellSeparatorStyle.None,

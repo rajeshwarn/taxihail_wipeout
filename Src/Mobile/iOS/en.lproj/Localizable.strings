@@ -19,6 +19,7 @@
 "PaymentDetails.PaymentMethodsLabel"="Payment Methods";
 "PayPalUnlinkError"="Unable to unlink your PayPal account";
 "BookPickupLabel"="Confirm your pickup location";
+"Notification_DriverBailedPush"="Driver bailed";
 "Tuto03Top"="You may also select your pickup location by tapping the pickup address.";
 "BookDateLabel"="Pick Me Up Later";
 "Overdue_IBSOrderId"="Order:";
@@ -108,6 +109,7 @@
 "View_CreateAccount"="Create Your Account";
 "UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
 "HistoryDetailsActivityName"="History details";
+"RateMobileApplicationText"="If you enjoy using this application would you mind taking a moment to rate it?";
 "EtaNotAvailable"="No vehicle available";
 "TabLocations"="Locations";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
@@ -189,6 +191,7 @@
 "Tuto04Bottom"="Doing so will provide an estimate for the cost for the trip.";
 "ManualPairing_TimeOut_Message"="There is a connection error preventing us from providing the status of your ride.";
 "Toggle_On"="On";
+"RateMobileApplicationTitle"="Rate this application";
 "ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
 "CreditCard"="Credit Card";
 "ResetPasswordEmailPlaceHolder"="Email";
@@ -398,6 +401,7 @@
 "WarningPromoCodeDontShow"="Don't warn";
 "TaxiHailNetworkTimeOutPopupAlways"="Always Accept";
 "Reset"="Reset";
+"RateMobileApplicationNow"="Rate Now";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";
 "CreditCardErrorTitle"="Cannot save credit card";
 "View_PaymentPreference"="Payment Preference";
@@ -487,6 +491,7 @@
 "EtaDurationUnit"="min";
 "RideHistoryButton"="Ride History";
 "StreetNumberTitle"="Address Details";
+"RateMobileApplicationNever"="Don't ask again";
 "View_SearchAddress"="Address Search";
 "StreetNumber"="Street Number";
 "CreateAccountEmptyField"="The data is invalid, all the fields are required.";
@@ -580,6 +585,7 @@
 "View_InitializeOrderForAccountPayment"="Please answer these questions";
 "CurrencyPriceFormat"="{0:C}";
 "NoFareText"="Choose a destination to get a price estimate.";
+"LinkForApplicationStoreAbsentText"="URL to store page was not configured";
 "Notes"="Notes";
 "EstimatingFare"="Estimating your fare...";
 "OverduePaymentActivityName"="Overdue payment";
@@ -634,8 +640,10 @@
 "PromoExpiringSoonMessage"="Expires in {0} days";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "BookingAirportPickupPointFee"="Selecting Pickup Point {0} will incurr an additional Fee of {1}";
+"RateMobileApplicationLater"="Later";
 "ResetPasswordSucessTitle"="Password reset";
 "SupportEmail"="techsupport@apcurium.com";
+"LinkForApplicationStoreAbsentTitle"="URL is missing";
 "ConfirmPassengersLabel"="Passengers:";
 "PayPalErrorTitle"="PayPal Error";
 "Overdue_Succeed_Title"="Payment Succeeded";

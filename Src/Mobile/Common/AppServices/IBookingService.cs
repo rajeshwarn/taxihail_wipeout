@@ -4,72 +4,73 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Resources;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
-	public interface IBookingService
-	{
-		Task<DirectionInfo> GetFareEstimate(CreateOrder order);
-       
-		string GetFareEstimateDisplay(DirectionInfo direction);
+    public interface IBookingService
+    {
+        Task<DirectionInfo> GetFareEstimate(CreateOrder order);
 
-		bool IsStatusCompleted (OrderStatusDetail status);
+        string GetFareEstimateDisplay(DirectionInfo direction);
+
+        bool IsStatusCompleted(OrderStatusDetail status);
 
         bool IsStatusTimedOut(string statusId);
 
         bool IsStatusDone(string statusId);
 
-		bool IsOrderCancellable(OrderStatusDetail status);
+        bool IsOrderCancellable(OrderStatusDetail status);
 
         bool IsCallboxStatusActive(string statusId);
 
         bool IsCallboxStatusCompleted(string statusId);
-        
-		Task<bool> CancelOrder(Guid orderId);
 
-		Task<bool> SendReceipt(Guid orderId);
+        Task<bool> CancelOrder(Guid orderId);
 
-        bool HasLastOrder{get;}
+        Task<bool> SendReceipt(Guid orderId);
+
+        bool HasLastOrder { get; }
 
         bool HasUnratedLastOrder { get; }
 
-	    Task<bool> IsPaired(Guid orderId);
+        Task<bool> IsPaired(Guid orderId);
 
-		Task<OrderStatusDetail> CreateOrder(CreateOrder info);
+        Task<OrderStatusDetail> CreateOrder(CreateOrder info);
 
         Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(Guid orderId, string nextDispatchCompanyKey, string nextDispatchCompanyName);
 
         Task IgnoreDispatchCompanySwitch(Guid orderId);
 
-        Task<OrderValidationResult> ValidateOrder (CreateOrder order);
+        Task<OrderValidationResult> ValidateOrder(CreateOrder order);
 
-		Task<OrderStatusDetail> GetOrderStatusAsync(Guid orderId);
-        
-		Task<OrderStatusDetail> GetLastOrderStatus();
+        Task<OrderStatusDetail> GetOrderStatusAsync(Guid orderId);
 
-	    Guid GetUnratedLastOrder();
+        Task<OrderStatusDetail> GetLastOrderStatus();
 
-	    void SetLastUnratedOrderId(Guid orderId);
-        
-		void ClearLastOrder();
+        Guid GetUnratedLastOrder();
 
-	    Task RemoveFromHistory(Guid orderId);
+        void SetLastUnratedOrderId(Guid orderId);
 
-		Task<IEnumerable<RatingTypeWrapper>> GetRatingTypes();
+        void ClearLastOrder();
 
-		Task<OrderRatings> GetOrderRatingAsync(Guid orderId);
+        Task RemoveFromHistory(Guid orderId);
 
-	    Task SendRatingReview(OrderRatings orderRatings);
+        Task<IEnumerable<RatingTypeWrapper>> GetRatingTypes();
 
-		Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress);
+        Task<OrderRatings> GetOrderRatingAsync(Guid orderId);
+
+        Task SendRatingReview(OrderRatings orderRatings);
+
+        Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress);
 
         Task UnpairFromManualRideLinq(Guid orderId);
 
-	    Task<bool> UpdateAutoTipForManualRideLinq(Guid orderId, int autoTipPercentage);
+        Task<bool> UpdateAutoTipForManualRideLinq(Guid orderId, int autoTipPercentage);
 
-        Task<OrderManualRideLinqDetail> GetTripInfoFromManualRideLinq(Guid orderId);
+        Task<ManualRideLinqResponse> GetTripInfoFromManualRideLinq(Guid orderId);
 
-	    Task<bool> InitiateCallToDriver(Guid orderId);
-	}
+        Task<bool> InitiateCallToDriver(Guid orderId);
+    }
 }

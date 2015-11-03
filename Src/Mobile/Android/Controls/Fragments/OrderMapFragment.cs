@@ -368,7 +368,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             TouchableMap.Surface.MoveBy = (deltaX, deltaY) =>
             {
-                ViewModel.BookCannotExecute = true;
                 TouchableMap.Map.MoveCamera(CameraUpdateFactory.ScrollBy(deltaX, deltaY));
             };
 
@@ -386,6 +385,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             Observable
                 .FromEventPattern<GoogleMap.CameraChangeEventArgs>(Map, "CameraChange")
+				.Do(_ =>
+				{
+					if (!_bypassCameraChangeEvent)
+					{
+						ViewModel.DisableBooking();
+					}
+				})
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(OnCameraChanged)

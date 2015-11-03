@@ -18,6 +18,7 @@
 "PaymentDetails.PaymentMethodsLabel"="Méthodes de paiement";
 "PayPalUnlinkError"="Impossible de dissocier votre compte PayPal";
 "BookPickupLabel"="Confirmer votre adresse de départ";
+"Notification_DriverBailedPush"="Course refusée";
 "Tuto03Top"="Vous pouvez également nous communiquer votre position en saisissant directement une adresse";
 "BookDateLabel"="Départ différé";
 "Overdue_IBSOrderId"="Commande:";
@@ -107,6 +108,7 @@
 "View_CreateAccount"="Créer votre compte";
 "UpdateBookingSettingsInvalidCoF"="Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte";
 "HistoryDetailsActivityName"="History details";
+"RateMobileApplicationText"="Si vous aimez utiliser cette application, n'oubliez pas de donner votre avis!";
 "PaymentDetails.InvalidDataTitle"="Informations relatives au paiement invalides";
 "DriverBonusWarningMessage"="Le montant du bonus est en supplément du pourboire. Il sera automatiquement prélevé à la fin de la course. Continuez ?";
 "UserTaxiHailNetwork_Enabled"="Réseau TaxiHail";
@@ -192,6 +194,7 @@
 "Tuto04Bottom"="En faisant cela vous aurez une estimation du coût de votre trajet.";
 "ManualPairing_TimeOut_Message"="Un probleme de connexion est survenu lors de la tentative d'obtenir l'état de votre course de taxi.";
 "Toggle_On"="Oui";
+"RateMobileApplicationTitle"="Notez cette application";
 "ManualPairingForRideLinQ_InvalidCode_Message"="Le code d'association est invalide";
 "CreditCard"="Carte de paiement";
 "ResetPasswordEmailPlaceHolder"="Email (adresse électronique)";
@@ -398,6 +401,7 @@
 "WarningPromoCodeDontShow"="Ne pas signaler";
 "TaxiHailNetworkTimeOutPopupAlways"="Toujours accepter";
 "Reset"="Réinitialiser";
+"RateMobileApplicationNow"="Notez maintenant";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Code invalide";
 "CreditCardErrorTitle"="Cette carte ne peut être sauvegardée";
 "View_PaymentPreference"="Paiement: préférences";
@@ -486,6 +490,7 @@
 "CreateAccountFullNamePlaceHolder"="Nom complet";
 "EtaDurationUnit"="minute";
 "NoConnectionTitle"="Erreur de connexion";
+"RateMobileApplicationNever"="Ne plus demander";
 "View_SearchAddress"="Rechercher une adresse";
 "CreateAccountEmptyField"="Votre demande ne peut être validée, merci de remplir les champs obligatoires";
 "ConfirmPassengerSettingsTitle"="Concernant les passagers";
@@ -579,6 +584,7 @@
 "View_InitializeOrderForAccountPayment"="Veuillez répondre à ces questions";
 "CurrencyPriceFormat"="{0:C}";
 "NoFareText"="Vous devez saisir une destination pour obtenir une estimation du prix du trajet";
+"LinkForApplicationStoreAbsentText"="Le lien pour naviger vers la page l'application n'a pas été configuré";
 "Notes"="Commentaires";
 "EstimatingFare"="Calcul du prix en cours…";
 "OverduePaymentActivityName"="Overdue payment";
@@ -633,8 +639,10 @@
 "PromoExpiringSoonMessage"="Expire dans {0} jours";
 "ManualRideLinqNoCardOnFile"="Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ";
 "BookingAirportPickupPointFee"="Selecting Pickup Point {0} will incurr an additional Fee of {1}";
+"RateMobileApplicationLater"="Plus tard";
 "ResetPasswordSucessTitle"="Mot de passe réinitialisé";
 "SupportEmail"="techsupport@apcurium.com";
+"LinkForApplicationStoreAbsentTitle"="Le lien est absent";
 "ConfirmPassengersLabel"="Nombre de passagers:";
 "PayPalErrorTitle"="Erreur PayPal";
 "Overdue_Succeed_Title"="Compte Approuvé";

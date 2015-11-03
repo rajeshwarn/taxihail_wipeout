@@ -43,7 +43,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(buttonBooking).For(v => v.Command).To(vm => vm.Book);
 			set.Bind(viewBooking).For(v => v.Hidden).To(vm => vm.BookButtonHidden);
-			set.Bind(buttonBooking).For(v => v.Enabled).To(vm => vm.ParentViewModel.Map.BookCannotExecute).WithConversion("BoolInverter");
 			set.Bind(buttonBooking).For("Title").To(vm => vm.BookButtonText);
 
 			set.Bind(buttonReservationBooking).For(v => v.Command).To(vm => vm.BookLater);
