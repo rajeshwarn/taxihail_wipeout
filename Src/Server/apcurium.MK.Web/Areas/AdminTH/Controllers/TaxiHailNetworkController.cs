@@ -159,32 +159,35 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             // Fetch only market fees for markets that are available to the company
             var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
 
-            foreach (var market in roamingCompaniesPreferences.Keys)
+            if (roamingCompaniesPreferences != null)
             {
-                var marketFee = fees.FirstOrDefault(f => f.Market == market);
-                if (marketFee == null)
+                foreach (var market in roamingCompaniesPreferences.Keys)
                 {
-                    // Create empty entry
-                    feesPreferences.Fees.Add(market,
-                        new FeeStructure
-                        {
-                            Booking = 0.00m,
-                            Cancellation = 0.00m,
-                            NoShow = 0.00m
-                        });
-                }
-                else
-                {
-                    feesPreferences.Fees.Add(market,
-                        new FeeStructure
-                        {
-                            Booking = marketFee.Booking,
-                            Cancellation = marketFee.Cancellation,
-                            NoShow = marketFee.NoShow
-                        });
+                    var marketFee = fees.FirstOrDefault(f => f.Market == market);
+                    if (marketFee == null)
+                    {
+                        // Create empty entry
+                        feesPreferences.Fees.Add(market,
+                            new FeeStructure
+                            {
+                                Booking = 0.00m,
+                                Cancellation = 0.00m,
+                                NoShow = 0.00m
+                            });
+                    }
+                    else
+                    {
+                        feesPreferences.Fees.Add(market,
+                            new FeeStructure
+                            {
+                                Booking = marketFee.Booking,
+                                Cancellation = marketFee.Cancellation,
+                                NoShow = marketFee.NoShow
+                            });
+                    }
                 }
             }
-
+            
             var paymentSettings = _serverSettings.GetPaymentSettings();
             if (paymentSettings.PaymentMode != PaymentMethod.Cmt
                 && paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)

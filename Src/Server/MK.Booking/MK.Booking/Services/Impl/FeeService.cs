@@ -115,10 +115,13 @@ namespace apcurium.MK.Booking.Services.Impl
             var paymentSettings = _serverSettings.GetPaymentSettings();
             
             if (orderStatusDetail.IsPrepaid
+                || orderStatusDetail.ServiceType != ServiceType.Luxury
                 || (paymentSettings.PaymentMode != PaymentMethod.Cmt &&
                     paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt))
             {
-                // If order is prepaid, if the user prepaid and decided not to show up, the fee is his fare already charged
+                // If the user prepaid and decided not to show up, the fee is his fare already charged
+                // If Payment is not configured with CMT, we can't charge
+                // If it's not ServiceType.Luxury, can't charge
                 return null;
             }
 
