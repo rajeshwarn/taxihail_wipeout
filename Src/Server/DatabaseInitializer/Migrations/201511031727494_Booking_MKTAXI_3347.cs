@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Migrations
     {
         public override void Up()
         {
-            AddColumn("Booking.RatingScoreDetails", "AccountId", c => c.Guid(nullable: true));
+            AddColumn("Booking.RatingScoreDetails", "AccountId", c => c.Guid(nullable: false));
         }
         
         public override void Down()
