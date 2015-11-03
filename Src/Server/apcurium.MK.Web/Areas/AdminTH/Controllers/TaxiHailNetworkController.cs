@@ -158,7 +158,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             // Fetch only market fees for markets that are available to the company
             var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
-
             if (roamingCompaniesPreferences != null)
             {
                 foreach (var market in roamingCompaniesPreferences.Keys)
