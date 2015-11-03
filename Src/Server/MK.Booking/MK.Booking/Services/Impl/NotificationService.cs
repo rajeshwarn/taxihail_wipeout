@@ -176,7 +176,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             using (var context = _contextFactory.Invoke())
             {
-                var orderNotifications = context.Query<OrderNotificationDetail>().Single(x => x.Id == orderId);
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
 
                 var shouldSendPushNotification =
                     newLatitude.HasValue
@@ -191,13 +191,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     if (taxiPosition.DistanceTo(pickupPosition) <= TaxiDistanceThresholdForPushNotification)
                     {
-                        orderNotifications.IsTaxiNearbyNotificationSent = true;
                         _commandBus.Send(new UpdateOrderNotificationDetail
                         {
-                            Id = orderNotifications.Id,
-                            InfoAboutPaymentWasSentToDriver = orderNotifications.InfoAboutPaymentWasSentToDriver,
-                            IsTaxiNearbyNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
-                            IsUnpairingReminderNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
+                            IsTaxiNearbyNotificationSent = true,
                             OrderId = orderId
                         });
 
@@ -216,7 +212,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             using (var context = _contextFactory.Invoke())
             {
-                var orderNotifications = context.Query<OrderNotificationDetail>().Single(x => x.Id == orderId);
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
 
                 if (!ShouldSendNotification(order.AccountId, x => x.UnpairingReminderPush)
                     || (orderNotifications != null && orderNotifications.IsUnpairingReminderNotificationSent))
@@ -224,13 +220,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     return;
                 }
 
-                orderNotifications.IsUnpairingReminderNotificationSent = true;
                 _commandBus.Send(new UpdateOrderNotificationDetail
                 {
-                    Id = orderNotifications.Id,
-                    InfoAboutPaymentWasSentToDriver = orderNotifications.InfoAboutPaymentWasSentToDriver,
-                    IsTaxiNearbyNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
-                    IsUnpairingReminderNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
+                    IsUnpairingReminderNotificationSent = true,
                     OrderId = orderId
                 });
             }
