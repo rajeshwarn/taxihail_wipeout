@@ -111,6 +111,11 @@ namespace apcurium.MK.Booking.IBS
             get { return Status.SoftEqual(VehicleStatuses.Common.Assigned); }
         }
 
+        public bool IsArrived
+        {
+            get { return Status.SoftEqual(VehicleStatuses.Common.Arrived); }
+        }
+
         public bool IsComplete
         {
             get { return VehicleStatuses.DoneStatuses.Any(s => s.SoftEqual(Status)); }

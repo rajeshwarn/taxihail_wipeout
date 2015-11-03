@@ -19,5 +19,7 @@ namespace apcurium.MK.Booking.Commands
         public bool? IsUnpairingReminderNotificationSent { get; set; }
 
         public bool? InfoAboutPaymentWasSentToDriver { get; set; }
+
+        public bool? NoShowWarningSent { get; set; }
     }
 }

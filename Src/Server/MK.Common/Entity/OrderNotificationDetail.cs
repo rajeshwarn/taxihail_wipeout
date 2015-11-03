@@ -11,5 +11,7 @@ namespace apcurium.MK.Common.Entity
         public bool IsUnpairingReminderNotificationSent { get; set; }
 
         public bool InfoAboutPaymentWasSentToDriver { get; set; }
+
+        public bool NoShowWarningSent { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers.Integration;
+using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -84,6 +85,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 new FeeService(PaymentServiceMock.Object, accountDao, new FeesDao(() => new BookingDbContext(DbName)), orderDao, orderPaymentDao, bus.Object, ConfigurationManager, LoggerMock.Object),
                 notificationDetailsDaoMock.Object,
                 new CmtGeoServiceClient(ConfigurationManager, LoggerMock.Object), 
+                new IBSServiceProvider(ConfigurationManager, LoggerMock.Object, null, new ServiceTypeSettingsProvider(() => new ConfigurationDbContext(DbName), ConfigurationManager)),
                 LoggerMock.Object);
         }
         

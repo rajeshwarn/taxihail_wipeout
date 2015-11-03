@@ -6,6 +6,7 @@ namespace apcurium.MK.Booking.Services
     {
         decimal? ChargeBookingFeesIfNecessary(OrderStatusDetail orderStatusDetail);
 
+        bool CouldBeChargedNoShowFee(OrderStatusDetail orderStatusDetail);
         decimal? ChargeNoShowFeeIfNecessary(OrderStatusDetail orderStatusDetail);
 
         decimal? ChargeCancellationFeeIfNecessary(OrderStatusDetail orderStatusDetail);

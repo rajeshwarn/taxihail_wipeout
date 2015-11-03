@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -19,11 +17,9 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
-using CMTPayment.Pair;
 using CMTServices;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -49,6 +45,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IFeeService _feeService;
         private readonly IOrderNotificationsDetailDao _orderNotificationsDetailDao;
         private readonly CmtGeoServiceClient _cmtGeoServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -71,6 +68,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             IFeeService feeService,
             IOrderNotificationsDetailDao orderNotificationsDetailDao,
             CmtGeoServiceClient cmtGeoServiceClient,
+            IIBSServiceProvider ibsServiceProvider,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -89,6 +87,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _paymentDao = paymentDao;
             _orderNotificationsDetailDao = orderNotificationsDetailDao;
             _cmtGeoServiceClient = cmtGeoServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -291,6 +290,37 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned, hasBailed);
         }
 
+        private DateTime GetCurrentOffsetedTime(string companyKey, ServiceType? serviceType = null)
+        {
+            var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey, serviceType).TimeDifference;
+            var offsetedTime = DateTime.Now;
+            if (ibsServerTimeDifference != 0)
+            {
+                offsetedTime = offsetedTime.Add(new TimeSpan(ibsServerTimeDifference));
+            }
+
+            return offsetedTime;
+        }
+
+        private void HandleNoShowWarningIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
+        {
+            if (ibsOrderInfo.IsArrived && orderStatusDetail.NoShowStartTime == null)
+            {
+                var arrivedDateInIBSLocalTime = GetCurrentOffsetedTime(orderStatusDetail.CompanyKey, orderStatusDetail.ServiceType);
+                orderStatusDetail.NoShowStartTime = arrivedDateInIBSLocalTime > orderStatusDetail.PickupDate
+                    ? arrivedDateInIBSLocalTime.ToUniversalTime()
+                    : orderStatusDetail.PickupDate.ToUniversalTime();
+            }
+            
+            if (_feeService.CouldBeChargedNoShowFee(orderStatusDetail)
+                && ibsOrderInfo.IsArrived
+                && orderStatusDetail.NoShowStartTime.HasValue
+                && orderStatusDetail.NoShowStartTime.Value.AddMinutes(10) < DateTime.UtcNow)
+            {
+                _notificationService.SendNoShowWarning(orderStatusDetail.OrderId);
+            }
+        }
+
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
             if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
@@ -310,6 +340,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 orderStatusDetail.TaxiAssignedDate = DateTime.UtcNow;
             }
+
+            HandleNoShowWarningIfNecessary(orderStatusDetail, ibsOrderInfo);
 
             if (ibsOrderInfo.IsCanceled)
             {
@@ -913,7 +945,6 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo, string companyName, bool sendEtaToDriverOnNotifyOnce, bool hasBailed)
         {
-           
             var orderDetail = _orderDao.FindById(orderId);
             _languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : SupportedLanguages.en.ToString();
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
-using System.Security.Cryptography;
 using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -86,7 +85,6 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             this._baseUrls = new BaseUrls(baseUrl, _serverSettings);
         }
-
 
         public void SendPromotionUnlockedPush(Guid accountId, PromotionDetail promotionDetail)
         {
@@ -735,6 +733,11 @@ namespace apcurium.MK.Booking.Services.Impl
             var alert = _resources.Get("PushNotification_CreditCardDeclined", account.Language);
             var data = new Dictionary<string, object>();
             SendPushOrSms(account.Id, alert, data);
+        }
+
+        public void SendNoShowWarning(Guid orderId)
+        {
+            // TODO need to do this
         }
 
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)
