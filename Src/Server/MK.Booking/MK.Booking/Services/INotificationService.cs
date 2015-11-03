@@ -1,7 +1,6 @@
 using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common;
 
@@ -19,7 +18,7 @@ namespace apcurium.MK.Booking.Services
         void SendChangeDispatchCompanyPush(Guid orderId);
         void SendPaymentCapturePush(Guid orderId, decimal amount);
         void SendTaxiNearbyPush(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude);
-        void SendUnpairingReminderPush(Guid orderId, Guid accountId, string clientLanguage);
+        void SendUnpairingReminderPush(Guid orderId);
         void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success);
         void SendOrderCreationErrorPush(Guid orderId, string errorDescription);
 

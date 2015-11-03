@@ -212,20 +212,21 @@ namespace apcurium.MK.Booking.Services.Impl
             }            
         }
 
-        public void SendUnpairingReminderPush(Guid orderId, Guid accountId, string clientLanguage)
+        public void SendUnpairingReminderPush(Guid orderId)
         {
+            var order = _orderDao.FindById(orderId);
+
             using (var context = _contextFactory.Invoke())
             {
                 var orderNotifications = context.Query<OrderNotificationDetail>().Single(x => x.Id == orderId);
 
-                if (!ShouldSendNotification(accountId, x => x.UnpairingReminderPush)
+                if (!ShouldSendNotification(order.AccountId, x => x.UnpairingReminderPush)
                     || (orderNotifications != null && orderNotifications.IsUnpairingReminderNotificationSent))
                 {
                     return;
                 }
 
                 orderNotifications.IsUnpairingReminderNotificationSent = true;
-
                 _commandBus.Send(new UpdateOrderNotificationDetail
                 {
                     Id = orderNotifications.Id,
@@ -236,10 +237,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 });
             }
 
-            var alert = string.Format(_resources.Get("PushNotification_OrderUnpairingTimeOutWarning", clientLanguage));
+            var alert = string.Format(_resources.Get("PushNotification_OrderUnpairingTimeOutWarning", order.ClientLanguageCode));
             var data = new Dictionary<string, object> { { "orderId", orderId } };
 
-            SendPushOrSms(accountId, alert, data);
+            SendPushOrSms(order.AccountId, alert, data);
         }
 
         public void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success)

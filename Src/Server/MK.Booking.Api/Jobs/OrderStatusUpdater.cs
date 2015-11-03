@@ -474,8 +474,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (DateTime.UtcNow >= halfwayUnpairTimeout)
                 {
                     // Send unpair timeout reminder halfway through
-                    var orderDetail = _orderDao.FindById(orderStatus.OrderId);
-                    _notificationService.SendUnpairingReminderPush(orderStatus.OrderId, orderStatus.AccountId, orderDetail.ClientLanguageCode);
+                    _notificationService.SendUnpairingReminderPush(orderStatus.OrderId);
                 }
             }
         }
