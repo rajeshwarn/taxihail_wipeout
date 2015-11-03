@@ -7,7 +7,7 @@ using Android.Hardware;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-	public class AndroidDeviceOrientationService : CommonDeviceOrientationService, IDeviceOrientationService
+	public class AndroidDeviceOrientationService : CommonDeviceOrientationService
 	{
 		private readonly SensorManager _sensorManager;
 		private readonly Sensor _accelerometer;
