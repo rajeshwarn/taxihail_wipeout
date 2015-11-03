@@ -7,13 +7,13 @@ namespace apcurium.MK.Common.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.2-21211")]
-    public sealed partial class Configuration_MTA_54 : IMigrationMetadata
+    public sealed partial class Configuration_Fix : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Configuration_MTA_54));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Configuration_Fix));
         
         string IMigrationMetadata.Id
         {
-            get { return "201510271832588_Configuration_MTA_54"; }
+            get { return "201511031810360_Configuration_Fix"; }
         }
         
         string IMigrationMetadata.Source
