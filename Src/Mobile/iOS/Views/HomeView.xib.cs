@@ -202,6 +202,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.DataContext)
 				.To(vm => vm.BottomBar);
 
+            set.Bind()
+                .For(v => v.HomeViewState)
+                .To(vm => vm.CurrentViewState);
+
             #region BookingStatus
 
             set.Bind(mapView)
