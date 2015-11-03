@@ -31,14 +31,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			txtCode.BecomeFirstResponder ();
 		}
 
+        public override void ViewDidLayoutSubviews()
+        {
+            base.ViewDidLayoutSubviews();
+
+            // ugly fix for iOS 7 bug with horizontal scrolling
+            // unlike iOS 8, the contentSize is a bit larger than the view, resulting in an undesired horizontal bounce
+            if (UIHelper.IsOS7)
+            {
+                if (confirmScrollViewer.ContentSize.Width > UIScreen.MainScreen.Bounds.Width)
+                {
+                    confirmScrollViewer.ContentSize = new CoreGraphics.CGSize(UIScreen.MainScreen.Bounds.Width, confirmScrollViewer.ContentSize.Height);
+                }
+            }
+        }
+
         public override void ViewDidLoad ()
         {
 			base.ViewDidLoad ();
 
             View.BackgroundColor = Theme.LoginColor;
             confirmScrollViewer.BackgroundColor = Theme.LoginColor;
-
-            confirmScrollViewer.ContentSize = new CoreGraphics.CGSize(320f, UIScreen.MainScreen.Bounds.Height);
 
 			lblTitle.TextColor = Theme.LabelTextColor;
 			lblSubTitle.TextColor = Theme.LabelTextColor;

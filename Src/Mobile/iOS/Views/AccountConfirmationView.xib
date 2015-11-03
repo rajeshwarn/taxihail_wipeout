@@ -24,7 +24,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="EN3-FF-rNX">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="EN3-FF-rNX" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="th_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="33">
@@ -113,7 +113,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Your Account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTX-Cf-ywY">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Your Account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTX-Cf-ywY" misplaced="YES">
                             <rect key="frame" x="85" y="114" width="151" height="17"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
@@ -171,5 +171,112 @@
     </objects>
     <resources>
         <image name="th_logo.png" width="107" height="74"/>
+        <image name="cluster_blackcar.png" width="34" height="39"/>
+        <image name="cluster_suv.png" width="34" height="39"/>
+        <image name="nearby_blackcar.png" width="34" height="39"/>
+        <image name="nearby_suv.png" width="34" height="39"/>
+        <image name="tutorial_screen08.png" width="1" height="1"/>
+        <image name="tutorial_screen09.png" width="1" height="1"/>
+        <image name="tutorial_screen10.png" width="1" height="1"/>
+        <image name="tutorial_screen01.png" width="305" height="262"/>
+        <image name="tutorial_screen02.png" width="305" height="262"/>
+        <image name="tutorial_screen03.png" width="305" height="262"/>
+        <image name="tutorial_screen04.png" width="305" height="262"/>
+        <image name="tutorial_screen05.png" width="305" height="262"/>
+        <image name="tutorial_screen06.png" width="305" height="262"/>
+        <image name="tutorial_screen07.png" width="305" height="262"/>
+        <image name="map_bigicon_background.png" width="52" height="58"/>
+        <image name="map_smallicon_background.png" width="34" height="39"/>
+        <image name="poweredBy4sq.png" width="225" height="25"/>
+        <image name="promo.png" width="16" height="16"/>
+        <image name="down_arrow.png" width="13" height="8"/>
+        <image name="paypal_icon.png" width="25" height="25"/>
+        <image name="airport.png" width="28" height="28"/>
+        <image name="train.png" width="28" height="28"/>
+        <image name="message.png" width="22" height="22"/>
+        <image name="cluster_wheelchair.png" width="34" height="39"/>
+        <image name="nearby_wheelchair.png" width="34" height="39"/>
+        <image name="wheelchair_assigned.png" width="52" height="58"/>
+        <image name="wheelchair_available.png" width="52" height="58"/>
+        <image name="wheelchair_badge.png" width="34" height="34"/>
+        <image name="wheelchair_badge_selected.png" width="34" height="34"/>
+        <image name="status_gradient.png" width="384" height="75"/>
+        <image name="nearby_oriented_available.png" width="50" height="50"/>
+        <image name="nearby_oriented_passenger.png" width="50" height="50"/>
+        <image name="app.png" width="57" height="57"/>
+        <image name="clearButton.png" width="10" height="40"/>
+        <image name="left_arrow.png" width="12" height="21"/>
+        <image name="active.png" width="20" height="20"/>
+        <image name="cancelled.png" width="20" height="20"/>
+        <image name="completed.png" width="20" height="20"/>
+        <image name="scheduled.png" width="20" height="20"/>
+        <image name="amex.png" width="46" height="32"/>
+        <image name="apartment.png" width="16" height="16"/>
+        <image name="chargetype.png" width="16" height="16"/>
+        <image name="entrycode.png" width="16" height="16"/>
+        <image name="passengers.png" width="16" height="16"/>
+        <image name="telephone.png" width="16" height="16"/>
+        <image name="time.png" width="16" height="16"/>
+        <image name="vehicle.png" width="16" height="16"/>
+        <image name="account.png" width="16" height="16"/>
+        <image name="blackcar_badge_selected.png" width="34" height="34"/>
+        <image name="blackcar_badge.png" width="34" height="34"/>
+        <image name="cluster_taxi.png" width="34" height="39"/>
+        <image name="destination_icon.png" width="52" height="58"/>
+        <image name="hail_icon.png" width="52" height="58"/>
+        <image name="highlight.png" width="60" height="46"/>
+        <image name="later_icon_pressed.png" width="24" height="20"/>
+        <image name="later_icon.png" width="24" height="20"/>
+        <image name="location_icon_pressed.png" width="19" height="20"/>
+        <image name="location_icon.png" width="19" height="20"/>
+        <image name="menu_icon_pressed.png" width="21" height="14"/>
+        <image name="menu_icon.png" width="21" height="14"/>
+        <image name="nearby_taxi.png" width="34" height="39"/>
+        <image name="suv_badge_selected.png" width="34" height="34"/>
+        <image name="suv_badge.png" width="34" height="34"/>
+        <image name="taxi_badge_selected.png" width="34" height="34"/>
+        <image name="taxi_badge.png" width="34" height="34"/>
+        <image name="taxi_icon.png" width="52" height="58"/>
+        <image name="add_list.png" width="20" height="20"/>
+        <image name="apc_logo_menu.png" width="72" height="19"/>
+        <image name="checked.png" width="22" height="22"/>
+        <image name="credit_card_generic.png" width="46" height="36"/>
+        <image name="delete_card_btn.png" width="38" height="24"/>
+        <image name="facebook_icon.png" width="14" height="26"/>
+        <image name="favorites.png" width="20" height="20"/>
+        <image name="grip.png" width="19" height="14"/>
+        <image name="history.png" width="20" height="20"/>
+        <image name="left_arrow_white.png" width="12" height="21"/>
+        <image name="mastercard.png" width="46" height="32"/>
+        <image name="paypal.png" width="90" height="31"/>
+        <image name="right_arrow.png" width="8" height="13"/>
+        <image name="twitter_icon.png" width="26" height="21"/>
+        <image name="unchecked.png" width="22" height="22"/>
+        <image name="visa_electron.png" width="46" height="32"/>
+        <image name="visa.png" width="46" height="32"/>
+        <image name="background.png" width="640" height="900"/>
+        <image name="bookLaterIcon.png" width="25" height="21"/>
+        <image name="closeButton.png" width="29" height="29"/>
+        <image name="phone.png" width="22" height="22"/>
+        <image name="rideStatusBarBackground.png" width="320" height="19"/>
+        <image name="back.png" width="20" height="20"/>
+        <image name="forward.png" width="20" height="20"/>
+        <image name="tutorial_background.png" width="606" height="868"/>
+        <image name="places.png" width="20" height="20"/>
+        <image name="taxi_progress.png" width="52" height="20"/>
+        <image name="close_tutorial_button.png" width="13" height="13"/>
+        <image name="baggage.png" width="16" height="16"/>
+        <image name="th_logo_small.png" width="50" height="35"/>
+        <image name="destination_small_icon.png" width="24" height="20"/>
+        <image name="destination_small_icon_pressed.png" width="24" height="20"/>
+        <image name="Icon-60.png" width="60" height="60"/>
+        <image name="star_selected.png" width="33" height="32"/>
+        <image name="star_unselected.png" width="33" height="32"/>
+        <image name="suv_no_badge.png" width="34" height="34"/>
+        <image name="suv_no_badge_selected.png" width="34" height="34"/>
+        <image name="taxi_no_badge.png" width="34" height="34"/>
+        <image name="taxi_no_badge_selected.png" width="34" height="34"/>
+        <image name="blackcar_no_badge.png" width="34" height="34"/>
+        <image name="blackcar_no_badge_selected.png" width="34" height="34"/>
     </resources>
 </document>
