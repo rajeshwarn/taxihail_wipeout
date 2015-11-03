@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			GetIsCmtRideLinq();
 
-			((OrientationService)_orientationService).NotifyOrientationChanged += DeviceOrientationChanged;
+            _orientationService.NotifyOrientationChanged += DeviceOrientationChanged;
             _orientationService.Initialize(new[] { DeviceOrientations.Right, DeviceOrientations.Left });
 		}
 
