@@ -729,7 +729,28 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendNoShowWarning(Guid orderId)
         {
-            // TODO need to do this
+            var order = _orderDao.FindById(orderId);
+
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
+
+                if (orderNotifications != null && orderNotifications.NoShowWarningSent)
+                {
+                    return;
+                }
+
+                _commandBus.Send(new UpdateOrderNotificationDetail
+                {
+                    NoShowWarningSent = true,
+                    OrderId = orderId
+                });
+            }
+
+            var alert = string.Format(_resources.Get("PushNotification_NoShowWarning", order.ClientLanguageCode));
+            var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+            SendPushOrSms(order.AccountId, alert, data);
         }
 
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)

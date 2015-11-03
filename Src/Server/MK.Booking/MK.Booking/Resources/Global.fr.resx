@@ -681,4 +681,7 @@
   <data name="CancelOrdeError" xml:space="preserve">
     <value>Il est trop tard pour annuler cette commande</value>
   </data>
+  <data name="PushNotification_NoShowWarning" xml:space="preserve">
+    <value>Votre véhicule attend depuis 10 minutes.  Veuillez contacter votre chauffeur si vous désirez qu'il patiente plus longtemps.</value>
+  </data>
 </root> 
