@@ -42,5 +42,7 @@ namespace apcurium.MK.Booking.Services
         void SendCreditCardDeactivatedEmail(string creditCardCompany, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
 
         void SendCreditCardDeactivatedPush(AccountDetail account);
+
+        void SendNoShowWarning(Guid orderId);
     }
 }

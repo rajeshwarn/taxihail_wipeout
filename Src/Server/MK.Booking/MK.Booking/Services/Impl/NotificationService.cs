@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
-using System.Security.Cryptography;
 using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -86,7 +85,6 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             this._baseUrls = new BaseUrls(baseUrl, _serverSettings);
         }
-
 
         public void SendPromotionUnlockedPush(Guid accountId, PromotionDetail promotionDetail)
         {
@@ -178,7 +176,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             using (var context = _contextFactory.Invoke())
             {
-                var orderNotifications = context.Query<OrderNotificationDetail>().Single(x => x.Id == orderId);
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
 
                 var shouldSendPushNotification =
                     newLatitude.HasValue
@@ -193,13 +191,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     if (taxiPosition.DistanceTo(pickupPosition) <= TaxiDistanceThresholdForPushNotification)
                     {
-                        orderNotifications.IsTaxiNearbyNotificationSent = true;
                         _commandBus.Send(new UpdateOrderNotificationDetail
                         {
-                            Id = orderNotifications.Id,
-                            InfoAboutPaymentWasSentToDriver = orderNotifications.InfoAboutPaymentWasSentToDriver,
-                            IsTaxiNearbyNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
-                            IsUnpairingReminderNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
+                            IsTaxiNearbyNotificationSent = true,
                             OrderId = orderId
                         });
 
@@ -218,7 +212,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             using (var context = _contextFactory.Invoke())
             {
-                var orderNotifications = context.Query<OrderNotificationDetail>().Single(x => x.Id == orderId);
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
 
                 if (!ShouldSendNotification(order.AccountId, x => x.UnpairingReminderPush)
                     || (orderNotifications != null && orderNotifications.IsUnpairingReminderNotificationSent))
@@ -226,13 +220,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     return;
                 }
 
-                orderNotifications.IsUnpairingReminderNotificationSent = true;
                 _commandBus.Send(new UpdateOrderNotificationDetail
                 {
-                    Id = orderNotifications.Id,
-                    InfoAboutPaymentWasSentToDriver = orderNotifications.InfoAboutPaymentWasSentToDriver,
-                    IsTaxiNearbyNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
-                    IsUnpairingReminderNotificationSent = orderNotifications.IsTaxiNearbyNotificationSent,
+                    IsUnpairingReminderNotificationSent = true,
                     OrderId = orderId
                 });
             }
@@ -735,6 +725,32 @@ namespace apcurium.MK.Booking.Services.Impl
             var alert = _resources.Get("PushNotification_CreditCardDeclined", account.Language);
             var data = new Dictionary<string, object>();
             SendPushOrSms(account.Id, alert, data);
+        }
+
+        public void SendNoShowWarning(Guid orderId)
+        {
+            var order = _orderDao.FindById(orderId);
+
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
+
+                if (orderNotifications != null && orderNotifications.NoShowWarningSent)
+                {
+                    return;
+                }
+
+                _commandBus.Send(new UpdateOrderNotificationDetail
+                {
+                    NoShowWarningSent = true,
+                    OrderId = orderId
+                });
+            }
+
+            var alert = string.Format(_resources.Get("PushNotification_NoShowWarning", order.ClientLanguageCode));
+            var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+            SendPushOrSms(order.AccountId, alert, data);
         }
 
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode, SendReceipt.CmtRideLinqReceiptFields cmtRideLinqFields)

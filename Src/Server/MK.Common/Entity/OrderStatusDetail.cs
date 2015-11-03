@@ -27,6 +27,9 @@ namespace apcurium.MK.Common.Entity
         public bool IsPrepaid { get; set; }
         public Guid OrderId { get; set; }
         public Guid AccountId { get; set; }
+        /// <summary>
+        /// In IBS local time
+        /// </summary>
         public DateTime PickupDate { get; set; }
         public DateTime? Eta { get; set; }
         public string Name { get; set; }
@@ -36,7 +39,16 @@ namespace apcurium.MK.Common.Entity
         public DateTime? UnpairingTimeOut { get; set; }
         public string PairingError { get; set; }
 
+        /// <summary>
+        /// In UTC
+        /// </summary>
         public DateTime? TaxiAssignedDate { get; set; }
+
+        /// <summary>
+        /// In UTC. Represents the time where the client should have been on site.
+        /// If the taxi is late, the time is set to the time the driver arrived, otherwise it's the specified pickup date
+        /// </summary>
+        public DateTime? NoShowStartTime { get; set; }
         
         // network stuff
         public string Market { get; set; }

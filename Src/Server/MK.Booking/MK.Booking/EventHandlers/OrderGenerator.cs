@@ -320,6 +320,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         details.PairingError = @event.Status.PairingError;
                         details.RideLinqPairingCode = @event.Status.RideLinqPairingCode;
                         details.TaxiAssignedDate = @event.Status.TaxiAssignedDate;
+                        details.NoShowStartTime = @event.Status.NoShowStartTime;
                     }
                     else
                     {
@@ -722,6 +723,11 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (@event.InfoAboutPaymentWasSentToDriver.HasValue)
                 {
                     orderNotificationDetail.InfoAboutPaymentWasSentToDriver = @event.InfoAboutPaymentWasSentToDriver.Value;
+                }
+
+                if (@event.NoShowWarningSent.HasValue)
+                {
+                    orderNotificationDetail.NoShowWarningSent = @event.NoShowWarningSent.Value;
                 }
 
                 context.Save(orderNotificationDetail);

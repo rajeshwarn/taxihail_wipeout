@@ -110,10 +110,10 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public decimal? ChargeNoShowFeeIfNecessary(OrderStatusDetail orderStatusDetail)
+        public bool CouldBeChargedNoShowFee(OrderStatusDetail orderStatusDetail)
         {
             var paymentSettings = _serverSettings.GetPaymentSettings();
-            
+
             if (orderStatusDetail.IsPrepaid
                 || orderStatusDetail.ServiceType != ServiceType.Luxury
                 || (paymentSettings.PaymentMode != PaymentMethod.Cmt &&
@@ -122,6 +122,28 @@ namespace apcurium.MK.Booking.Services.Impl
                 // If the user prepaid and decided not to show up, the fee is his fare already charged
                 // If Payment is not configured with CMT, we can't charge
                 // If it's not ServiceType.Luxury, can't charge
+                return false;
+            }
+
+            // As requested by MK, we need to charge booking fees on top of cancellation fees
+            var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
+            var feesForMarket = _feesDao.GetMarketFees(orderStatusDetail.Market);
+            var noShowFee = feesForMarket != null
+                ? feesForMarket.NoShow + bookingFees
+                : 0;
+
+            if (noShowFee <= 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public decimal? ChargeNoShowFeeIfNecessary(OrderStatusDetail orderStatusDetail)
+        {
+            if (!CouldBeChargedNoShowFee(orderStatusDetail))
+            {
                 return null;
             }
 
