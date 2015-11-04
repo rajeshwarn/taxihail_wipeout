@@ -60,6 +60,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
+			Logger.LogMessage("CreateOrder ID : {0}", order.Id);
+
             if (!order.PickupDate.HasValue) // Check if this is a scheduled ride
             {
                 UserCache.Set("LastOrderId", orderDetail.OrderId.ToString()); // Need to be cached as a string because of a jit error on device
