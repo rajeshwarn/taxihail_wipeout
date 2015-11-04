@@ -322,7 +322,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 // Hide
                 UIView.Animate(
                     0.6f, 
-                    () => constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstrainValue,
+                    () => constraintContactTaxiTopSpace.Constant = ContactDriverInTaxiHiddenConstraintValue,
                     () => 
                     {
                         RedrawSubViews();
