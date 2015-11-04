@@ -34,11 +34,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			var set = this.CreateBindingSet<BookingBarAirportBooking, BottomBarViewModel>();
 
-			set.Bind(this).For(v => v.Hidden).To(vm => vm.HideAirportButtons);
+			set.Bind()
+				.For(v => v.Hidden)
+				.To(vm => vm.HideAirportButtons);
 
-			set.Bind(buttonCancel).For(v => v.Command).To(vm => vm.CancelAirport);
+			set.Bind(buttonCancel)
+				.For(v => v.Command)
+				.To(vm => vm.CancelAirport);
 
-			set.Bind(buttonNextAirport).For(v => v.Command).To(vm => vm.NextAirport);
+			set.Bind(buttonNextAirport)
+				.For(v => v.Command)
+				.To(vm => vm.NextAirport);
 
 			set.Apply();
 		}

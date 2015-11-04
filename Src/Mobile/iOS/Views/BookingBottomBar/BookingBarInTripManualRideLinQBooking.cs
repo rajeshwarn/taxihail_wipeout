@@ -40,19 +40,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			var set = this.CreateBindingSet<BookingBarInTripManualRideLinQBooking, HomeViewModel>();
 
-			set.Bind(this).For(v => v.Hidden).To(vm => vm.CurrentViewState).WithConversion("EnumToInvertedBool", new[] { HomeViewModelState.ManualRidelinq });
+			set.Bind()
+				.For(v => v.Hidden)
+				.To(vm => vm.CurrentViewState)
+				.WithConversion("EnumToInvertedBool", new[] { HomeViewModelState.ManualRidelinq });
 
-			set.Bind(viewUnpairTipChange).For(v => v.HiddenWithConstraints).To(vm => vm.BookingStatus.BottomBar.IsUnpairOrTipChangeButtonsVisible).WithConversion("BoolInverter");;
+			set.Bind(viewUnpairTipChange)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.BookingStatus.BottomBar.IsUnpairOrTipChangeButtonsVisible)
+				.WithConversion("BoolInverter");;
 
-			set.Bind(buttonUnpair).For(v => v.Command).To(vm => vm.BookingStatus.BottomBar.Unpair);
-			set.Bind(buttonUnpair).For(v => v.HiddenWithConstraints).To(vm => vm.BookingStatus.BottomBar.IsUnpairButtonVisible).WithConversion("BoolInverter");
+			set.Bind(buttonUnpair)
+				.For(v => v.Command)
+				.To(vm => vm.BookingStatus.BottomBar.Unpair);
+			set.Bind(buttonUnpair)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.BookingStatus.BottomBar.IsUnpairButtonVisible)
+				.WithConversion("BoolInverter");
 
-			set.Bind(buttonCall).For(v => v.Command).To(vm => vm.BookingStatus.BottomBar.CallCompany);
-			set.Bind(buttonCall).For(v => v.HiddenWithConstraints).To(vm => vm.BookingStatus.BottomBar.IsCallCompanyHidden);
+			set.Bind(buttonCall)
+				.For(v => v.Command)
+				.To(vm => vm.BookingStatus.BottomBar.CallCompany);
+			set.Bind(buttonCall)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.BookingStatus.BottomBar.IsCallCompanyHidden);
 
-			set.Bind(buttonTipChange).For(v => v.HiddenWithConstraints).To(vm => vm.BookingStatus.BottomBar.CanEditAutoTip).WithConversion("BoolInverter");
-			set.Bind(buttonTipChange).For("Title").To(vm => vm.BookingStatus.BottomBar.ButtonEditTipLabel);
-			set.Bind(buttonTipChange).For(v => v.Command).To(vm => vm.BookingStatus.BottomBar.EditAutoTipCommand);
+			set.Bind(buttonTipChange)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.BookingStatus.BottomBar.CanEditAutoTip)
+				.WithConversion("BoolInverter");
+			set.Bind(buttonTipChange)
+				.For("Title")
+				.To(vm => vm.BookingStatus.BottomBar.ButtonEditTipLabel);
+			set.Bind(buttonTipChange)
+				.For(v => v.Command)
+				.To(vm => vm.BookingStatus.BottomBar.EditAutoTipCommand);
 
 			set.Apply();
 		}

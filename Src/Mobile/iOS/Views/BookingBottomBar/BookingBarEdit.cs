@@ -34,11 +34,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			var set = this.CreateBindingSet<BookingBarEdit, BottomBarViewModel>();
 
-			set.Bind(this).For(v => v.Hidden).To(vm => vm.HideEditButtons);
+			set.Bind()
+				.For(v => v.Hidden)
+				.To(vm => vm.HideEditButtons);
 
-			set.Bind(buttonCancel).For(v => v.Command).To(vm => vm.CancelEdit);
+			set.Bind(buttonCancel).
+			For(v => v.Command)
+				.To(vm => vm.CancelEdit);
 
-			set.Bind(buttonSave).For(v => v.Command).To(vm => vm.Save);
+			set.Bind(buttonSave)
+				.For(v => v.Command)
+				.To(vm => vm.Save);
 
 			set.Apply();
 		}

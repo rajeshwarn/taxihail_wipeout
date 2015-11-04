@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UIImageView imagePromotional { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HindableView viewEstimate { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HideableView viewEstimate { get; set; }
 
 		[Outlet]
 		UIKit.UIView viewManualRideLinQBooking { get; set; }

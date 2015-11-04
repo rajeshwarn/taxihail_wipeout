@@ -403,9 +403,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 // Date Picker: Hidden
 
 				CloseBookATaxiDialog();
-                constraintAppBarBookingStatus.Constant = BookingStatusAppBarHiddenConstrainValue;
-				CloseBookATaxiDialog();
-                CloseBookATaxiDialog();
                 constraintAppBarDropOffSelection.Constant = DropOffSelectionAppBarHiddenConstraintValue;
                 constraintContactTaxiTopSpace.Constant = ContactDriverHiddenConstraintValue;
                 constraintChangeDropOffTopSpace.Constant = ChangeDropOffHiddenConstraintValue;

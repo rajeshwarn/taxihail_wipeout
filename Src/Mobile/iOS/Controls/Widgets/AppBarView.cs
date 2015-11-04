@@ -18,13 +18,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("AppBarView")]
     public class AppBarView : MvxView
     {
-		BookingBarNormalBooking _bookingBarNormalBooking;
-		BookingBarManualRideLinQ _bookingBarManualRideLinQ;
-		BookingBarAirportBooking _bookingBarAirportBooking;
-		BookingBarConfirmation _bookingBarConfirmation;
-		BookingBarEdit _bookingBarEdit;
-		BookingBarInTripNormalBooking _bookingBarInTripNormalBooking;
-		BookingBarInTripManualRideLinQBooking _bookingBarInTripManualRideLinQBooking;
+		private BookingBarNormalBooking _bookingBarNormalBooking;
+		private BookingBarManualRideLinQ _bookingBarManualRideLinQ;
+		private BookingBarAirportBooking _bookingBarAirportBooking;
+		private BookingBarConfirmation _bookingBarConfirmation;
+		private BookingBarEdit _bookingBarEdit;
+		private BookingBarInTripNormalBooking _bookingBarInTripNormalBooking;
+		private BookingBarInTripManualRideLinQBooking _bookingBarInTripManualRideLinQBooking;
 
 		protected UIView Line { get; set; }
 
@@ -83,14 +83,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			setBooking.Bind(_bookingBarConfirmation).For(v => v.DataContext).To(vm => vm.BottomBar);
 			setBooking.Bind(_bookingBarEdit).For(v => v.DataContext).To(vm => vm.BottomBar);
 
+			setBooking.Bind(_bookingBarInTripNormalBooking).For(v => v.DataContext).To(vm => vm);
+			setBooking.Bind(_bookingBarInTripManualRideLinQBooking).For(v => v.DataContext).To(vm => vm);
+
 			setBooking.Apply();
-
-			var setBookingInTrip = this.CreateBindingSet<AppBarView, HomeViewModel>();
-
-			setBookingInTrip.Bind(_bookingBarInTripNormalBooking).For(v => v.DataContext).To(vm => vm);
-			setBookingInTrip.Bind(_bookingBarInTripManualRideLinQBooking).For(v => v.DataContext).To(vm => vm);
-
-			setBookingInTrip.Apply();
 		}
 
 		public override void LayoutSubviews()

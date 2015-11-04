@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton buttonUnpair { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HindableView viewUnpairTipChange { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HideableView viewUnpairTipChange { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

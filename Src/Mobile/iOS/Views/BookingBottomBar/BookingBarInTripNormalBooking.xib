@@ -11,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FlO-7I-ISD" userLabel="Cancel edit tip view" customClass="HindableView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FlO-7I-ISD" userLabel="Cancel edit tip view" customClass="HideableView">
                     <rect key="frame" x="8" y="5" width="223" height="46"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lpC-k7-T0P" userLabel="Cancel" customClass="FlatButton">

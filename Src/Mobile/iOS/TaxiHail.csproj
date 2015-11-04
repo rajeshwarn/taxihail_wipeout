@@ -698,7 +698,6 @@
     <Compile Include="Views\BookingBottomBar\BookingBarNormalBooking.designer.cs">
       <DependentUpon>BookingBarNormalBooking.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Widgets\HindableView.cs" />
     <Compile Include="Views\BookingBottomBar\BookingBarInTripNormalBooking.cs" />
     <Compile Include="Views\BookingBottomBar\BookingBarInTripNormalBooking.designer.cs">
       <DependentUpon>BookingBarInTripNormalBooking.cs</DependentUpon>
@@ -721,6 +720,7 @@
     <Compile Include="Controls\Widgets\AppBarDropOffSelection.designer.cs">
       <DependentUpon>AppBarDropOffSelection.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Widgets\HideableView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

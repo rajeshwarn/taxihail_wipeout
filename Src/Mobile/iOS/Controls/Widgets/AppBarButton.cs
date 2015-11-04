@@ -10,9 +10,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	[Register("AppBarButton")]
     public class AppBarButton : CommandButton
     {
-        UILabel _label;
-        UIColor _selectedTextColor;
-        UIColor _regularTextColor;
+        private UILabel _label;
+		private UIColor _selectedTextColor;
+		private UIColor _regularTextColor;
 
 		public AppBarButton(IntPtr handle):base(handle)
 		{
@@ -26,17 +26,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 		}
 
-		public void Initialize(string text, string image, string selectedImage = null, UIColor selectedTextColor = null)
+		public void Initialize(string text, string imageName, string selectedImageName = null, UIColor selectedTextColor = null)
 		{
 			_regularTextColor = UIColor.FromRGB(41, 43, 45);
 			_selectedTextColor = selectedTextColor ?? UIColor.FromRGB(0, 126, 249);
 
-			var image2 = UIImage.FromFile(image);
-			SetImage(image2, UIControlState.Normal);
-			if (selectedImage.HasValue())
+			var image = UIImage.FromFile(imageName);
+			SetImage(image, UIControlState.Normal);
+			if (selectedImageName.HasValue())
 			{
-				SetImage(UIImage.FromFile(selectedImage), UIControlState.Selected);
-				SetImage(UIImage.FromFile(selectedImage), UIControlState.Highlighted);
+				var selectedImage = UIImage.FromFile(selectedImageName);
+				SetImage(selectedImage, UIControlState.Selected);
+				SetImage(selectedImage, UIControlState.Highlighted);
 			}
 			else
 			{

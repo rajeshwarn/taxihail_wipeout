@@ -28,10 +28,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UIView viewBooking { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HindableView viewEstimate { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HideableView viewEstimate { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HindableView viewReservationBooking { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.HideableView viewReservationBooking { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

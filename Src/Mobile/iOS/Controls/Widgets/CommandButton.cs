@@ -79,30 +79,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 			set
 			{
-				if (base.Hidden != value)
+				if (base.Hidden != value && value)
 				{
 					base.Hidden = value;
-					if (value)
-					{
-						_hiddenContraints = this.Superview.Constraints != null 
-							? this.Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
-							: null;
-						if (_hiddenContraints != null)
-						{
-							this.Superview.RemoveConstraints(_hiddenContraints);
-						}
-					}
-					else
-					{
-						if (_hiddenContraints != null)
-						{
-							this.Superview.AddConstraints(_hiddenContraints);
-							_hiddenContraints = null;
-						}
-					}
+
+					_hiddenContraints = this.Superview.Constraints != null 
+						? this.Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
+						: null;
+
+					this.Superview.RemoveConstraints(_hiddenContraints);
+				}
+
+				if (!value && _hiddenContraints != null)
+				{
+					base.Hidden = value;
+					this.Superview.AddConstraints(_hiddenContraints);
+					_hiddenContraints = null;
 				}
 			}
 		}
     }
 }
-

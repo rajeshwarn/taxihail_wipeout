@@ -14,7 +14,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SJo-EJ-cUL">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Vf-n7-FjQ" userLabel="Estimate view" customClass="HindableView">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Vf-n7-FjQ" userLabel="Estimate view" customClass="HideableView">
                             <rect key="frame" x="8" y="5" width="73" height="46"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Wg-hI-zUm" userLabel="Estimate" customClass="AppBarButton">

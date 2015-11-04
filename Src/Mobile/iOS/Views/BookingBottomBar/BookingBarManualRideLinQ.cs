@@ -36,19 +36,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			var set = this.CreateBindingSet<BookingBarManualRideLinQ, BottomBarViewModel>();
 
-			set.Bind(this).For(v => v.Hidden).To(vm => vm.HideManualRideLinqButtons);
+			set.Bind()
+				.For(v => v.Hidden)
+				.To(vm => vm.HideManualRideLinqButtons);
 
-			set.Bind(buttonEstimate).For(v => v.Command).To(vm => vm.ChangeAddressSelectionMode);
-			set.Bind(buttonEstimate).For(v => v.Selected).To(vm => vm.EstimateSelected);
-			set.Bind(viewEstimate).For(v => v.HiddenWithConstraints).To(vm => vm.Settings.HideDestination);
+			set.Bind(buttonEstimate)
+				.For(v => v.Command)
+				.To(vm => vm.ChangeAddressSelectionMode);
+			set.Bind(buttonEstimate)
+				.For(v => v.Selected)
+				.To(vm => vm.EstimateSelected);
+			set.Bind(viewEstimate)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.Settings.HideDestination);
 
-			set.Bind(buttonBooking).For(v => v.HiddenWithConstraints).To(vm => vm.BookButtonHidden);
-			set.Bind(buttonBooking).For(v => v.Command).To(vm => vm.Book);
-			set.Bind(buttonBooking).For("Title").To(vm => vm.BookButtonText);
+			set.Bind(buttonBooking)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.BookButtonHidden);
+			set.Bind(buttonBooking)
+				.For(v => v.Command)
+				.To(vm => vm.Book);
+			set.Bind(buttonBooking)
+				.For("Title")
+				.To(vm => vm.BookButtonText);
 
-			set.Bind(buttonManualRideLinQBooking).For(v => v.Command).To(vm => vm.ManualPairingRideLinq);
+			set.Bind(buttonManualRideLinQBooking)
+				.For(v => v.Command)
+				.To(vm => vm.ManualPairingRideLinq);
 
-			set.Bind(imagePromotional).For(v => v.Hidden).To(vm => vm.IsPromoCodeActive).WithConversion("BoolInverter");
+			set.Bind(imagePromotional)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsPromoCodeActive)
+				.WithConversion("BoolInverter");
 
 			set.Apply();
 		}
