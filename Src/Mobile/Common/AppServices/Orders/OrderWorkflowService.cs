@@ -569,25 +569,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				_loadingAddressSubject.OnNext(false);
 				return accountAddress;
 			}
-			else
-			{
-				var address = await Task.Run(() => _geolocService.SearchAddress(p.Latitude, p.Longitude));
-				Logger.LogMessage("Found {0} addresses", address.Count());
-				if (address.Any())
-				{
-					_loadingAddressSubject.OnNext(false);
-					return address[0];
-				}
-				else
-				{
-					Logger.LogMessage("clear addresses");
 
-					// TODO: Refactor. We should probably throw an exception here.
-					// Error should be handled by the caller.
-					_loadingAddressSubject.OnNext(false);
-					return new Address(){ Latitude = p.Latitude, Longitude = p.Longitude };
-				}
+			var address = await Task.Run(() => _geolocService.SearchAddress(p.Latitude, p.Longitude));
+			Logger.LogMessage("Found {0} addresses", address.Count());
+			if (address.Any())
+			{
+				_loadingAddressSubject.OnNext(false);
+				return address[0];
 			}
+
+			Logger.LogMessage("clear addresses");
+
+			// TODO: Refactor. We should probably throw an exception here.
+			// Error should be handled by the caller.
+			_loadingAddressSubject.OnNext(false);
+			return new Address(){ Latitude = p.Latitude, Longitude = p.Longitude };
 		}
 
 		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
