@@ -262,6 +262,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Order = null;
             OrderStatusDetail = null;
+			ConfirmationNoTxt = string.Empty;
 
             ManualRideLinqDetail = null;
 
@@ -612,7 +613,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-                return true//Settings.ChangeDropOffAddressMidTrip
+                return Settings.ChangeDropOffAddressMidTrip
                     && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                         || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
                         || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded);
@@ -1139,7 +1140,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				
 			var carNumber = orderStatusDetail.VehicleNumber;
 
-			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && carNumber.HasValueTrimmed())
+			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && (carNumber.HasValueTrimmed() && carNumber.Trim() != "0"))
 			{
 				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 				{
@@ -1152,7 +1153,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 				else
 				{
-					WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, orderStatusDetail.VehicleNumber);
+					WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
 				}
 			}
 		}
