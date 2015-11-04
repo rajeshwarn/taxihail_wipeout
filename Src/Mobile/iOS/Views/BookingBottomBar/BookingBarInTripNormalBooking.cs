@@ -23,8 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			FlatButtonStyle.Silver.ApplyTo(bookingView.buttonCall);
 			FlatButtonStyle.Silver.ApplyTo(bookingView.buttonEditTip);
 
-			bookingView.Hidden = true;
-
 			bookingView.buttonCall.SetTitle(Localize.GetValue("CallButton"), UIControlState.Normal);
 			bookingView.buttonCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
 

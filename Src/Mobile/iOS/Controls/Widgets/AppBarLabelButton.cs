@@ -20,20 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 		}
 
-
-        public AppBarLabelButton (string text, UIColor textColor = null):base()
-        {
-			Font = UIFont.FromName(FontName.HelveticaNeueLight, 34 / 2);
-			SetTitle(text, UIControlState.Normal);
-			SetTitleColor(textColor ?? UIColor.Black, UIControlState.Normal);
-			SetTitleColor(TitleColor(UIControlState.Normal).ColorWithAlpha(0.5f), UIControlState.Highlighted);
-			SetBackgroundImage(UIImage.FromFile("highlight.png"), UIControlState.Highlighted);
-        }
-
-
-
-
-
 		public void Initialize(string text, UIColor textColor = null)
 		{
 			Font = UIFont.FromName(FontName.HelveticaNeueLight, 34 / 2);
@@ -57,6 +43,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 return CGSize.Add(base.IntrinsicContentSize, new CGSize(insets.Left + insets.Right, insets.Top + insets.Bottom));
             }
         }
-
     }
 }

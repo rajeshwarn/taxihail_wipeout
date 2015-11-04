@@ -18,7 +18,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("AppBarView")]
     public class AppBarView : MvxView
     {
-        protected UIView Line { get; set; }
+		BookingBarNormalBooking _bookingBarNormalBooking;
+		BookingBarManualRideLinQ _bookingBarManualRideLinQ;
+		BookingBarAirportBooking _bookingBarAirportBooking;
+		BookingBarConfirmation _bookingBarConfirmation;
+		BookingBarEdit _bookingBarEdit;
+		BookingBarInTripNormalBooking _bookingBarInTripNormalBooking;
+		BookingBarInTripManualRideLinQBooking _bookingBarInTripManualRideLinQBooking;
+
+		protected UIView Line { get; set; }
 
         public AppBarView (IntPtr ptr):base(ptr)
         {
@@ -29,15 +37,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             Initialize ();
         }
-
-		BookingBarNormalBooking _bookingBarNormalBooking;
-		BookingBarManualRideLinQ _bookingBarManualRideLinQ;
-		BookingBarAirportBooking _bookingBarAirportBooking;
-		BookingBarConfirmation _bookingBarConfirmation;
-		BookingBarEdit _bookingBarEdit;
-		BookingBarInTripNormalBooking _bookingBarInTripNormalBooking;
-		BookingBarInTripManualRideLinQBooking _bookingBarInTripManualRideLinQBooking;
-
 
         void Initialize ()
         {
