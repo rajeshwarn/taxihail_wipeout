@@ -21,5 +21,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		/// <param name="z"></param>
 		/// <param name="timestamp"></param>
 		void OrientationChanged(double x, double y, double z, long timestamp);
+
+		event Action<int, bool, bool> NotifyAngleChanged;
 	}
 }

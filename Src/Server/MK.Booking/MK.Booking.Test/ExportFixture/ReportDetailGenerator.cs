@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Test.ExportFixture
 
             accountDetailGenerator.Handle(new AccountConfirmed() { SourceId = _accountId });
 
-            _reportDetailGenerator = new EventHandlers.ReportDetailGenerator(() => new BookingDbContext(DbName));
+            _reportDetailGenerator = new EventHandlers.ReportDetailGenerator(() => new BookingDbContext(DbName), new Logger());
         }
 
         [Test]

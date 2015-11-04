@@ -807,6 +807,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Map.SetCenterCoordinate(new LatLng(lat, lng), true);
 		}
 
+        public Func<int> OverlayOffsetProvider { get; set; }
+
 		private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
 		{
 			var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.SelectOrDefault(addresses => addresses.ToArray(), new CoordinateViewModel[0]);
@@ -855,36 +857,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				return;
 			}
 			
-			// Changes the map zoom to prevent hiding the pin under the booking status.
-			if (Math.Abs(southLat - northLat) > .001)
-			{
-				southLat += .0025;
-
-				var bookingStatusViewModel = ((HomeViewModel) ViewModel.Parent).BookingStatus;
-
-				if (_settings.ShowCallDriver)
-				{
-					southLat += 0.0045;
-				}
-
-				if (_settings.ShowVehicleInformation)
-				{	
-					if (!bookingStatusViewModel.VehicleDriverHidden)
-					{
-						southLat += 0.0007;
-					}
-					if (!bookingStatusViewModel.VehicleFullInfoHidden)
-					{
-						southLat += 0.0007;
-					}
-					if (!bookingStatusViewModel.CompanyHidden)
-					{
-						southLat += 0.0007;
-					}
-				}	
-			}
-
-            Map.SetVisibleCoordinateBounds(new CoordinateBounds(new LatLng(southLat, westLon), new LatLng(northLat, eastLon)), new RectF(40, 40, 40, 40), true);
+            var overlayOffset = OverlayOffsetProvider != null
+                ? OverlayOffsetProvider() + _pickupOverlay.Height
+                : 0;
+            
+            Map.SetVisibleCoordinateBounds(new CoordinateBounds(new LatLng(southLat, westLon), new LatLng(northLat, eastLon)), new RectF(40, overlayOffset, 40, 40), true);
 		}
     }
 }
