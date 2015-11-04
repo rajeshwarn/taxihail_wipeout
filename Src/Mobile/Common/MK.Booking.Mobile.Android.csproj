@@ -374,6 +374,8 @@
     <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardBaseViewModel.cs" />
     <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
+    <Compile Include="ViewModels\Orders\DropOffSelectionMidTripViewModel.cs" />
+    <Compile Include="ViewModels\Orders\DropOffSelectionBottomBarViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">

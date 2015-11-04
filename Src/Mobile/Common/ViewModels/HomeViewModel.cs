@@ -81,6 +81,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar = AddChild<BottomBarViewModel>();
 			AddressPicker = AddChild<AddressPickerViewModel>();
 			BookingStatus = AddChild<BookingStatusViewModel>();
+            DropOffSelection = AddChild<DropOffSelectionMidTripViewModel>();
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
 			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
@@ -461,6 +462,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        private DropOffSelectionMidTripViewModel _dropOffSelection;
+        public DropOffSelectionMidTripViewModel DropOffSelection
+        { 
+            get { return _dropOffSelection; }
+            private set
+            { 
+                _dropOffSelection = value;
+                RaisePropertyChanged();
+            }
+        }
+
 		private CancellableCommand _automaticLocateMeAtPickup;
 		public CancellableCommand AutomaticLocateMeAtPickup
 		{
@@ -614,6 +626,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					_orderWorkflowService.SetAddressSelectionMode(AddressSelectionMode.PickupSelection);
 					_bottomBar.EstimateSelected = false;
+				}
+
+				if (value != HomeViewModelState.AddressSearch)
+				{
+					if (value == HomeViewModelState.DropOffAddressSelection)
+					{
+						_orderWorkflowService.SetAddressSelectionMode(AddressSelectionMode.DropoffSelection);
+						if (DropOffSelection.DestinationAddress.Id == Guid.Empty)
+						{
+							LocateMe.ExecuteIfPossible();
+						}
+						_orderWorkflowService.SetDropOffSelectionMode(true);
+					}
+					else
+					{
+						_orderWorkflowService.SetDropOffSelectionMode(false);
+					}
 				}
 
 				_currentViewState = value;
