@@ -110,7 +110,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			else
 			{
-				ConfirmationNoTxt = string.Empty;
 				BottomBar.PrepareForNewOrder();
 			}
 
@@ -263,6 +262,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Order = null;
             OrderStatusDetail = null;
+			ConfirmationNoTxt = string.Empty;
 
             ManualRideLinqDetail = null;
 
