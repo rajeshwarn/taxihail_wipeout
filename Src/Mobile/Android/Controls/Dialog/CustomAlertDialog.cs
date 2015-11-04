@@ -258,6 +258,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                     _rootView.RemoveView(_dialogRootView);
                 };
             opacityAnimator.Start();
+
+            AlertDialogHelper.LatestAlert = null;
         }
     }
 }
