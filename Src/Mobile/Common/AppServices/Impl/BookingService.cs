@@ -58,8 +58,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             order.ClientLanguageCode = _localize.CurrentLanguage;
 
-            Logger.LogMessage("Starting: *************************************   UseServiceClient : CreateOrder ID : {0}", order.Id);
-
             var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
             if (!order.PickupDate.HasValue) // Check if this is a scheduled ride

@@ -848,8 +848,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             try
             {
-                Logger.LogMessage("RefreshStatus starts");
-
                 var status = await _bookingService.GetOrderStatusAsync(Order.Id);
 
                 if (status == null)
@@ -1049,10 +1047,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 Logger.LogMessage("RefreshStatus ended: an exception occurred.");
                 Logger.LogError(ex);
-            }
-            finally
-            {
-                Logger.LogMessage("RefreshStatus ends");
             }
         }
 
