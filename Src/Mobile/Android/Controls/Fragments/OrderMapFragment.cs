@@ -187,16 +187,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	    }
 
         // Animate Marker on the map between retrieving positions
+        //TODO Not working with MapBox for now
         private void AnimateMarkerOnMap(Sprite icon, MarkerOptions markerToUpdate, LatLng newPosition, double? compassCourse, Position oldPosition)
         {
-            markerToUpdate.InvokeIcon(icon);
-
-            var evaluator = new LatLngEvaluator ();
-            var valueAnimator = ValueAnimator.OfObject (evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
-            valueAnimator.AddUpdateListener(new MarkerAnimatorAdapter(markerToUpdate));
-            valueAnimator.SetDuration (5000);
-            valueAnimator.SetInterpolator(new Android.Views.Animations.LinearInterpolator());
-            valueAnimator.Start();
+//            markerToUpdate.InvokeIcon(icon);
+//
+//            var evaluator = new LatLngEvaluator ();
+//            var valueAnimator = ValueAnimator.OfObject (evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
+//            valueAnimator.AddUpdateListener(new MarkerAnimatorAdapter(markerToUpdate));
+//            valueAnimator.SetDuration (5000);
+//            valueAnimator.SetInterpolator(new Android.Views.Animations.LinearInterpolator());
+//            valueAnimator.Start();
         }
 
         private class LatLngEvaluator : Java.Lang.Object, ITypeEvaluator
@@ -240,21 +241,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     var icon = ViewModel.Settings.ShowOrientedPins  && value.CompassCourse.HasValue
                         ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
                         : Map.SpriteFactory.FromBitmap(CreateTaxiBitmap());
-                    
+
+                    //TODO fix to move marker as the animation are not currently working with MapBox
                     _taxiLocationPin.InvokeIcon(icon);
-                    _taxiLocationPin.Marker.Remove();
                     _taxiLocationPin.InvokePosition( new LatLng(value.Latitude.Value, value.Longitude.Value));
+                    _taxiLocationPin.Marker.Remove();
                     Map.AddMarker(_taxiLocationPin);
 
-//                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
-//                        {
-//                            Latitude = value.Latitude.Value, 
-//                            Longitude = value.Longitude.Value
-//                        });
+                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
+                        {
+                            Latitude = value.Latitude.Value, 
+                            Longitude = value.Longitude.Value
+                        });
                     
 					if (_showVehicleNumber)
 					{
-//                        _taxiLocationPin.Marker.ShowInfoWindow();
                         Map.SelectMarker(_taxiLocationPin.Marker);
 					}
                 }
@@ -271,7 +272,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         var mapOptions = new MarkerOptions()
                             .InvokePosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
                             .InvokeIcon(icon);
-//                            .Visible(true);
 
                         if (_showVehicleNumber)
                         {
@@ -287,7 +287,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                         if (_showVehicleNumber)
                         {
-//                            _taxiLocationPin.Marker.ShowInfoWindow();
                             Map.SelectMarker(_taxiLocationPin.Marker);
                         }
                     }
@@ -491,7 +490,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _pickupPin = new MarkerOptions()
                     .InvokePosition(new LatLng(0, 0))
                     .InvokeIcon(_hailIcon);
-//                    .Visible(false));
+                
                 Map.AddMarker(_pickupPin);
             }     
 
@@ -500,7 +499,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _destinationPin = new MarkerOptions()
                     .InvokePosition(new LatLng(0, 0))
                     .InvokeIcon(_destinationIcon);
-//                    .Visible(false));
 
                 Map.AddMarker(_destinationPin);
             }     
@@ -695,13 +693,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var icon = ViewModel.Settings.ShowOrientedPins
                 ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
                 : _vehicleIcons[logoKey];
-            
-           // markerToUpdate.InvokeIcon(icon);
-//            markerToUpdate.Marker.Remove();
-           // markerToUpdate.InvokePosition( new LatLng(vehicle.Latitude, vehicle.Longitude));
-//            Map.AddMarker(markerToUpdate);
 
-//            AnimateMarkerOnMap(icon, markerToUpdate, new LatLng(vehicle.Latitude, vehicle.Longitude), vehicle.CompassCourse, oldPosition);
+            //TODO fix to move marker as the animation are not currently working with MapBox
+            markerToUpdate.InvokeIcon(icon);
+            markerToUpdate.InvokePosition( new LatLng(vehicle.Latitude, vehicle.Longitude));
+            markerToUpdate.Marker.Remove();
+            Map.AddMarker(markerToUpdate);
+
+            AnimateMarkerOnMap(icon, markerToUpdate, new LatLng(vehicle.Latitude, vehicle.Longitude), vehicle.CompassCourse, oldPosition);
         }
 
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
@@ -750,7 +749,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     CreateMarker(vehicle);
                 }
             } 
-
         }
 
         public void Dispose()
