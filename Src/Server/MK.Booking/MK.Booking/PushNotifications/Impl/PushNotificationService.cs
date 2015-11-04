@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
+using PushSharp.Blackberry;
 using PushSharp.Core;
 using ILogger = apcurium.MK.Common.Diagnostic.ILogger;
 
@@ -38,6 +39,9 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                 case PushNotificationServicePlatform.Android:
                     SendAndroidNotification(alert, data, deviceToken);
                     break;
+                case PushNotificationServicePlatform.BlackBerry:
+                    SendBBNotification(alert, data, deviceToken);
+                    break;
                 default:
                     throw new NotImplementedException();
             }
@@ -63,6 +67,9 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             var apiKey = _serverSettings.ServerData.GCM.APIKey;
             var androidSettings = new GcmPushChannelSettings(test, apiKey, _serverSettings.ServerData.GCM.PackageName);
 
+            var bbSettings = new BlackberryPushChannelSettings("5470-6B77424D8r428M1n1a47957tr6h679R3k44", "74eJpYHU");
+            bbSettings.OverrideSendUrl("https://cp5470.pushapi.eval.blackberry.com");
+
             //Wire up the events
             _push.OnDeviceSubscriptionExpired += OnDeviceSubscriptionExpired;
             _push.OnDeviceSubscriptionChanged += OnDeviceSubscriptionChanged;
@@ -73,6 +80,8 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             _push.OnChannelDestroyed += OnChannelDestroyed;
 
             _push.RegisterGcmService(androidSettings);
+
+            _push.RegisterBlackberryService(bbSettings, null);
 
             // Apple settings placed next for development purpose. (Crashing the method when certificate is missing.)
             var appleCert = File.ReadAllBytes(certificatePath);
@@ -87,10 +96,10 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
 
             _push.QueueNotification(new GcmNotification() { DelayWhileIdle = false }
-	          .ForDeviceRegistrationId(registrationId)
-        	  .WithCollapseKey(Guid.NewGuid().ToString())
-	          .WithDelayWhileIdle(false)
-	          .WithJson(JsonConvert.SerializeObject(payload)));
+              .ForDeviceRegistrationId(registrationId)
+              .WithCollapseKey(Guid.NewGuid().ToString())
+              .WithDelayWhileIdle(false)
+              .WithJson(JsonConvert.SerializeObject(payload)));
 
         }
 
@@ -103,14 +112,30 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
             foreach (var key in data.Keys)
             {
-                notification.WithCustomItem(key, new[] {data[key]});
+                notification.WithCustomItem(key, new[] { data[key] });
             }
 
             _push.QueueNotification(notification);
         }
 
+
+        private void SendBBNotification(string alert, IDictionary<string, object> data, string registrationId)
+        {
+            var payload = new Dictionary<string, object>(data);
+            payload["alert"] = alert;
+
+            var notif = new BlackberryNotification();
+            notif.Recipients.Add(new BlackberryRecipient(registrationId));
+            //_push.QueueNotification(new BlackberryNotification() { DelayWhileIdle = false }
+            //  .ForDeviceRegistrationId(registrationId)
+            //  .WithCollapseKey(Guid.NewGuid().ToString())
+            //  .WithDelayWhileIdle(false)
+            //  .WithJson(JsonConvert.SerializeObject(payload)));
+            //_push.QueueNotification(notification);
+        }
+
         private void OnDeviceSubscriptionChanged(object sender, string oldSubscriptionId, string newSubscriptionId, INotification notification)
-		{
+        {
             //Currently this event will only ever happen for Android GCM
             _logger.LogMessage("Device Registration Changed:  Old-> " + oldSubscriptionId + "  New-> " + newSubscriptionId);
         }
@@ -124,16 +149,11 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
         {
             var message = notificationFailureException.Message;
             var details = notificationFailureException as NotificationFailureException;
-            var deviceToken = details != null
-                ? "for device token:" + details.Notification.DeviceToken
-                : string.Empty;
-
             if (details != null)
             {
                 message = details.ErrorStatusCode + " " + details.ErrorStatusDescription;
             }
-
-            _logger.LogMessage("Failure: " + notification.Tag + deviceToken + " -> " + message + " -> " + notification);
+            _logger.LogMessage("Failure: " + notification.Tag + " -> " + message + " -> " + notification);
         }
 
         private void OnChannelException(object sender, IPushChannel channel, Exception exception)
