@@ -1,24 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Enumeration;
 using CMTPayment;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
+using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
-    public class PaymentPairingService
+    public class PaymentPairingService : Service
     {
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
@@ -72,11 +67,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var tripInfoServiceHelper = GetTripInfoServiceHelper(orderStatusDetail.CompanyKey);
 
             var tripInfo = tripInfoServiceHelper.WaitForTripInfo(request.PairingToken, request.TimeoutSeconds ?? DefaultTimeoutSeconds);
-
+            
             _commandBus.Send(new PairForPayment
             {
                 OrderId = request.OrderUuid,
-                Medallion = tripInfo.Medallion,
+                Medallion = orderStatusDetail.VehicleNumber,
                 DriverId = tripInfo.DriverId.ToString(),
                 PairingToken = tripInfo.PairingToken,
                 TokenOfCardToBeUsedForPayment = creditCard.Token,
