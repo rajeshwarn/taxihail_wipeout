@@ -30,6 +30,7 @@ using Cirrious.CrossCore;
 using Cirrious.CrossCore.Core;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -679,6 +680,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			if (keyCode == Keycode.Back && ViewModel.CanUseCloseCommand())
             {
+                if (AlertDialogHelper.LatestAlert != null)
+                {
+                    AlertDialogHelper.LatestAlert.HideAnimate();
+                }
 	            ViewModel.CloseCommand.ExecuteIfPossible();
 
 	            return false;
