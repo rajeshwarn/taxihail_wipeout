@@ -95,13 +95,6 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
-            // TODO what? we're not even using networkVehicles after that
-            //var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == taxiHailNetworkSettings.Market);
-            //if (!networkVehicles.Any())
-            //{
-            //    return new HttpResponseMessage(HttpStatusCode.NoContent);
-            //}
-
             var marketRepresentation = _marketRepository.FirstOrDefault(x => x.Name == taxiHailNetworkSettings.Market);
             if (marketRepresentation == null || !marketRepresentation.Vehicles.Any())
             {

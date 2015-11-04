@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -8,9 +6,6 @@ using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Entities.Network;
 using MongoRepository;
-
-#endregion
-
 
 namespace CustomerPortal.Web.Areas.Admin.Controllers
 {
@@ -31,10 +26,9 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            // Get all unique market
-            var uniqueMarkets = Repository.ToArray();
+            var allMarkets = Repository.ToArray();
 
-            return View(uniqueMarkets.Select(market => new MarketModel { Market = market.Name }));
+            return View(allMarkets.Select(market => new MarketModel { Market = market.Name }));
         }
 
         public ActionResult VehicleIndex(MarketModel marketModel)
@@ -88,40 +82,21 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             return View(new VehicleModel { Market = marketModel.Market });
         }
-
+        
         [HttpPost]
         public ActionResult CreateVehicle(VehicleModel networkVehicle)
         {
-            networkVehicle.Id = Guid.NewGuid().ToString();
-
-            // Generate the next sequential vehicle network id
-            var allNetworkVehicles = new List<Vehicle>();
-            foreach (var market in Repository)
-            {
-                allNetworkVehicles.AddRange(market.Vehicles);
-            }
-
-            var nextNetworkVehicleId = 0;
-            if (allNetworkVehicles.Any())
-            {
-                nextNetworkVehicleId = allNetworkVehicles
-                    .OrderBy(x => x.NetworkVehicleId)
-                    .Last()
-                    .NetworkVehicleId + 1;
-            }
-            networkVehicle.NetworkVehicleId = nextNetworkVehicleId;
-
             try
             {
                 var marketRepresentation = Repository.First(x => x.Name == networkVehicle.Market);
-                marketRepresentation.Vehicles.Add(networkVehicle.SelectOrDefault(x => new Vehicle
+                marketRepresentation.Vehicles.Add(new Vehicle
                 {
-                    Id = x.Id,
-                    Name = x.Name,
-                    LogoName = x.LogoName,
-                    MaxNumberPassengers = x.MaxNumberPassengers,
-                    NetworkVehicleId = x.NetworkVehicleId
-                }));
+                    Id = Guid.NewGuid().ToString(),
+                    Name = networkVehicle.Name,
+                    LogoName = networkVehicle.LogoName,
+                    MaxNumberPassengers = networkVehicle.MaxNumberPassengers,
+                    NetworkVehicleId = GenerateNextSequentialNetworkVehicleId()
+                });
                 Repository.Update(marketRepresentation);
             }
             catch (Exception)
@@ -136,10 +111,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult EditVehicle(string market, string id)
         {
-            var marketContainingVehicleToEdit = Repository.First(x => x.Name == market);
-            var networkVehicle = marketContainingVehicleToEdit.Vehicles.First(x => x.Id == id).SelectOrDefault(x => new VehicleModel
+            var marketContainingVehicle = Repository.First(x => x.Name == market);
+            var networkVehicle = marketContainingVehicle.Vehicles.First(x => x.Id == id).SelectOrDefault(x => new VehicleModel
             {
-                Market = marketContainingVehicleToEdit.Name,
+                Market = marketContainingVehicle.Name,
                 Id = x.Id,
                 Name = x.Name,
                 LogoName = x.LogoName,
@@ -156,7 +131,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             try
             {
                 var marketContainingVehicle = Repository.First(x => x.Name == networkVehicle.Market);
-                var existingVehicle = marketContainingVehicle.Vehicles.FirstOrDefault(x => x.Id == networkVehicle.Id);
+                var existingVehicle = marketContainingVehicle.Vehicles.First(x => x.Id == networkVehicle.Id);
                 marketContainingVehicle.Vehicles.Remove(existingVehicle);
                 marketContainingVehicle.Vehicles.Add(networkVehicle.SelectOrDefault(x => new Vehicle
                 {
@@ -180,22 +155,12 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult DeleteVehicle(string market, string id)
         {
-            var marketContainingVehicleToDelete = Repository.First(x => x.Name == market);
-            if (marketContainingVehicleToDelete == null)
-            {
-                throw new Exception(string.Format("Vehicle with Id {0} doesn't exist", id));
-            }
-
-            var vehicleToDelete = marketContainingVehicleToDelete.Vehicles.First(x => x.Id == id);
-            if (vehicleToDelete == null)
-            {
-                throw new Exception(string.Format("Vehicle with Id {0} doesn't exist", id));
-            }
-
             try
             {
-                marketContainingVehicleToDelete.Vehicles.Remove(vehicleToDelete);
-                Repository.Update(marketContainingVehicleToDelete);
+                var marketContainingVehicle = Repository.First(x => x.Name == market);
+                var vehicleToDelete = marketContainingVehicle.Vehicles.First(x => x.Id == id);
+                marketContainingVehicle.Vehicles.Remove(vehicleToDelete);
+                Repository.Update(marketContainingVehicle);
             }
             catch (Exception)
             {
@@ -203,6 +168,26 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
 
             return RedirectToAction("VehicleIndex", new MarketModel { Market = market });
+        }
+
+        private int GenerateNextSequentialNetworkVehicleId()
+        {
+            var allNetworkVehicles = new List<Vehicle>();
+            foreach (var market in Repository)
+            {
+                allNetworkVehicles.AddRange(market.Vehicles);
+            }
+
+            var nextNetworkVehicleId = 0;
+            if (allNetworkVehicles.Any())
+            {
+                nextNetworkVehicleId = allNetworkVehicles
+                    .OrderBy(x => x.NetworkVehicleId)
+                    .Last()
+                    .NetworkVehicleId + 1;
+            }
+
+            return nextNetworkVehicleId;
         }
     }
 }
