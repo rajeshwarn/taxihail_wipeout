@@ -9,7 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 
-namespace apcurium.MK.Booking.Api.Helpers
+namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
 {
     public class CreateOrderPaymentValidator
     {
@@ -18,7 +18,11 @@ namespace apcurium.MK.Booking.Api.Helpers
         private readonly IPaymentService _paymentService;
         private readonly IOrderPaymentDao _orderPaymentDao;
 
-        public CreateOrderPaymentValidator(IServerSettings serverSettings, ICommandBus commandBus, IPaymentService paymentService, IOrderPaymentDao orderPaymentDao)
+        public CreateOrderPaymentValidator(
+            IServerSettings serverSettings,
+            ICommandBus commandBus,
+            IPaymentService paymentService,
+            IOrderPaymentDao orderPaymentDao)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
@@ -26,7 +30,17 @@ namespace apcurium.MK.Booking.Api.Helpers
             _orderPaymentDao = orderPaymentDao;
         }
 
-        internal bool PreAuthorizePaymentMethod(string companyKey, Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimateWithTip, decimal bookingFees, bool isPayPal, CreateReportOrder createReportOrder, string cvv = null)
+        internal bool PreAuthorizePaymentMethod(
+            string companyKey,
+            Guid orderId,
+            AccountDetail account,
+            string clientLanguageCode,
+            bool isFutureBooking,
+            decimal? appEstimateWithTip,
+            decimal bookingFees,
+            bool isPayPal,
+            CreateReportOrder createReportOrder,
+            string cvv = null)
         {
             if (!_serverSettings.GetPaymentSettings(companyKey).IsPreAuthEnabled || isFutureBooking)
             {
@@ -53,7 +67,15 @@ namespace apcurium.MK.Booking.Api.Helpers
             return preAuthResponse.IsSuccessful;
         }
 
-        internal BasePaymentResponse CapturePaymentForPrepaidOrder(string companyKey, Guid orderId, AccountDetail account, decimal appEstimateWithTip, int tipPercentage, decimal bookingFees, string cvv, CreateReportOrder createReportOrder)
+        internal BasePaymentResponse CapturePaymentForPrepaidOrder(
+            string companyKey,
+            Guid orderId,
+            AccountDetail account,
+            decimal appEstimateWithTip,
+            int tipPercentage,
+            decimal bookingFees,
+            string cvv,
+            CreateReportOrder createReportOrder)
         {
             // Note: No promotion on web
             var tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(appEstimateWithTip, tipPercentage);

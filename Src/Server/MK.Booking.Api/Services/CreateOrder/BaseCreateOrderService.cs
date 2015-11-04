@@ -3,10 +3,10 @@ using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
+using apcurium.MK.Booking.Api.Helpers.CreateOrder;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
         private readonly Resources.Resources _resources;
 
-        private CreateOrderPaymentValidator _paymentValidator;
+        private readonly CreateOrderPaymentValidator _paymentValidator;
 
         internal BaseCreateOrderService(IServerSettings serverSettings,
             ICommandBus commandBus,

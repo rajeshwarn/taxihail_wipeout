@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Requests.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Helpers.CreateOrder;
 using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
@@ -57,6 +58,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IIbsCreateOrderService _ibsCreateOrderService;
+        private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
         private readonly Resources.Resources _resources;
 
         public CreateOrderService(ICommandBus commandBus,
@@ -92,6 +94,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 	        _logger = logger;
             _ibsCreateOrderService = ibsCreateOrderService;
             _resources = new Resources.Resources(_serverSettings);
+
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, Log);
         }
 
         public object Post(Contract.Requests.CreateOrder request)
@@ -206,11 +210,12 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 				throw createOrderException;
 			}
 
-            UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
+            _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
 
             if (market.HasValue())
             {
-                var isConfiguredForCmtPayment = FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
+                var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
+
                 if (!isConfiguredForCmtPayment)
                 {
                     // Only companies configured for CMT payment can support CoF orders outside of home market
@@ -584,7 +589,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
             var market = _taxiHailNetworkServiceClient.GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
-            var isConfiguredForCmtPayment = FetchCompanyPaymentSettings(request.NextDispatchCompanyKey);
+            var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(request.NextDispatchCompanyKey);
+
             var chargeTypeId = order.Settings.ChargeTypeId;
             var chargeTypeDisplay = order.Settings.ChargeType;
             if (!isConfiguredForCmtPayment)
@@ -979,103 +985,6 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
             // Nothing found
             return new BestAvailableCompany();
-        }
-
-		private void UpdateVehicleTypeFromMarketData(BookingSettings bookingSettings, string marketCompanyId)
-        {
-            if (!bookingSettings.VehicleTypeId.HasValue)
-            {
-                // Nothing to do
-                return;
-            }
-
-            try
-            {
-                // Get the vehicle type defined for the market of the company
-                var matchingMarketVehicle = _taxiHailNetworkServiceClient.GetAssociatedMarketVehicleType(marketCompanyId, bookingSettings.VehicleTypeId.Value);
-                if (matchingMarketVehicle != null)
-                {
-                    // Update the vehicle type info using the vehicle id from the IBS of that company
-                    bookingSettings.VehicleType = matchingMarketVehicle.Name;
-                    bookingSettings.VehicleTypeId = matchingMarketVehicle.ReferenceDataVehicleId;
-                }
-                else
-                {
-                    // No match found
-                    bookingSettings.VehicleType = null;
-                    bookingSettings.VehicleTypeId = null;
-
-                    Log.Info(string.Format("No match found for GetAssociatedMarketVehicleType for company {0}. Maybe no vehicles were linked via the admin panel?", marketCompanyId));
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Info(string.Format("An error occurred when trying to get GetAssociatedMarketVehicleType for company {0}", marketCompanyId));
-                Log.Error(ex);
-            }
-        }
-
-        private bool FetchCompanyPaymentSettings(string companyKey)
-        {
-            try
-            {
-                var paymentSettings = _serverSettings.GetPaymentSettings();
-                var companyPaymentSettings = _taxiHailNetworkServiceClient.GetPaymentSettings(companyKey);
-
-                // Mobile will always keep local settings. The only values that needs to be overridden are the payment providers settings.
-                paymentSettings.Id = Guid.NewGuid();
-                paymentSettings.CompanyKey = companyKey;
-                paymentSettings.PaymentMode = companyPaymentSettings.PaymentMode;
-                paymentSettings.BraintreeServerSettings = new BraintreeServerSettings
-                {
-                    IsSandbox = companyPaymentSettings.BraintreePaymentSettings.IsSandbox,
-                    MerchantId = companyPaymentSettings.BraintreePaymentSettings.MerchantId,
-                    PrivateKey = companyPaymentSettings.BraintreePaymentSettings.PrivateKey,
-                    PublicKey = companyPaymentSettings.BraintreePaymentSettings.PublicKey
-                };
-                paymentSettings.BraintreeClientSettings = new BraintreeClientSettings
-                {
-                    ClientKey = companyPaymentSettings.BraintreePaymentSettings.ClientKey
-                };
-                paymentSettings.MonerisPaymentSettings = new MonerisPaymentSettings
-                {
-                    IsSandbox = companyPaymentSettings.MonerisPaymentSettings.IsSandbox,
-                    ApiToken = companyPaymentSettings.MonerisPaymentSettings.ApiToken,
-                    BaseHost = companyPaymentSettings.MonerisPaymentSettings.BaseHost,
-                    SandboxHost = companyPaymentSettings.MonerisPaymentSettings.SandboxHost,
-                    StoreId = companyPaymentSettings.MonerisPaymentSettings.StoreId
-                };
-                paymentSettings.CmtPaymentSettings = new CmtPaymentSettings
-                {
-                    BaseUrl = companyPaymentSettings.CmtPaymentSettings.BaseUrl,
-                    ConsumerKey = companyPaymentSettings.CmtPaymentSettings.ConsumerKey,
-                    ConsumerSecretKey = companyPaymentSettings.CmtPaymentSettings.ConsumerSecretKey,
-                    CurrencyCode = companyPaymentSettings.CmtPaymentSettings.CurrencyCode,
-                    FleetToken = companyPaymentSettings.CmtPaymentSettings.FleetToken,
-                    IsManualRidelinqCheckInEnabled = companyPaymentSettings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled,
-                    IsSandbox = companyPaymentSettings.CmtPaymentSettings.IsSandbox,
-                    Market = companyPaymentSettings.CmtPaymentSettings.Market,
-                    MobileBaseUrl = companyPaymentSettings.CmtPaymentSettings.MobileBaseUrl,
-                    SandboxBaseUrl = companyPaymentSettings.CmtPaymentSettings.SandboxBaseUrl,
-                    SandboxMobileBaseUrl = companyPaymentSettings.CmtPaymentSettings.SandboxMobileBaseUrl
-                };
-
-                // Save/update company settings
-                _commandBus.Send(new UpdatePaymentSettings
-                {
-                    ServerPaymentSettings = paymentSettings
-                });
-
-                return companyPaymentSettings.PaymentMode == PaymentMethod.Cmt
-                    || companyPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
-            }
-            catch (Exception ex)
-            {
-                Log.Info(string.Format("An error occurred when trying to get PaymentSettings for company {0}", companyKey));
-                Log.Error(ex);
-
-                return false;
-            }
         }
 
         private CreateReportOrder CreateReportOrder(Contract.Requests.CreateOrder request, AccountDetail account)
