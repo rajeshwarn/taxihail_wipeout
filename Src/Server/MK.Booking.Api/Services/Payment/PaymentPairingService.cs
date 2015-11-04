@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using CMTPayment;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -47,6 +48,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public object Post(PaymentPairingRequest request)
         {
+            if (Guid.Empty.Equals(request.OrderUuid) || request.PairingToken.HasValueTrimmed())
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, "400", "Missing required parameter");
+            }
+
             _logger.LogMessage("Pairing info received for order {0}", request.OrderUuid);
             var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderUuid);
 
