@@ -48,12 +48,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public object Post(PaymentPairingRequest request)
         {
+            _logger.LogMessage("Pairing info received for order {0} and PairingToken {1}", request.OrderUuid, request.PairingToken??"Unknown");
             if (Guid.Empty.Equals(request.OrderUuid) || request.PairingToken.HasValueTrimmed())
             {
                 throw new HttpError(HttpStatusCode.BadRequest, "400", "Missing required parameter");
             }
-
-            _logger.LogMessage("Pairing info received for order {0}", request.OrderUuid);
+            
             var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderUuid);
 
             if (orderStatusDetail == null)
