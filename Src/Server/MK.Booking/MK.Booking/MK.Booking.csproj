@@ -185,6 +185,7 @@
     <Compile Include="EventHandlers\CompanyDetailsGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\FeesDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\Integration\CacheServiceManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderPairingManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderDispatchCompanyManager.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
