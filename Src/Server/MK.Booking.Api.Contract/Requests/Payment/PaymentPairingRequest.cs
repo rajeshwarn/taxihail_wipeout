@@ -10,6 +10,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
         public string PairingToken { get; set; }
         public Guid OrderUuid { get; set; }
 
-        public long? TimeoutSeconds { get; set; };
+        public long? TimeoutSeconds { get; set; }
     }
 }
