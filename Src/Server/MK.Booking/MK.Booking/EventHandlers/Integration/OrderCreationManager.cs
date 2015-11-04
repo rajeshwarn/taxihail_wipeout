@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 // If order wasn't already created on IBS (which should be most of the time), we create it here
                 var result = _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
-                    @event.Settings.CustomerNumber, @event.CompanyKey, @event.IbsAccountId,
+                    @event.Settings.CustomerNumber, @event.CompanyKey, @event.Settings.ServiceType, @event.IbsAccountId,
                     @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                     @event.IbsInformationNote, @event.PickupDate, @event.Prompts, @event.PromptsLength,
                     @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             // Order switched to another company
 
             var result = _ibsCreateOrderService.CreateIbsOrder(@event.SourceId, @event.PickupAddress, @event.DropOffAddress, @event.Settings.AccountNumber,
-                @event.Settings.CustomerNumber, @event.CompanyKey, @event.IbsAccountId,
+                @event.Settings.CustomerNumber, @event.CompanyKey, @event.Settings.ServiceType, @event.IbsAccountId,
                 @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                 @event.IbsInformationNote, @event.PickupDate, null, null,
                 @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             DeleteTempOrderData(@event.OrderId);
 
             var result = _ibsCreateOrderService.CreateIbsOrder(orderInfo.Request.OrderId, orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.Settings.AccountNumber,
-                orderInfo.Request.Settings.CustomerNumber, orderInfo.Request.CompanyKey, orderInfo.Request.IbsAccountId,
+                orderInfo.Request.Settings.CustomerNumber, orderInfo.Request.CompanyKey, orderInfo.Request.Settings.ServiceType, orderInfo.Request.IbsAccountId,
                 orderInfo.Request.Settings.Name, orderInfo.Request.Settings.Phone, orderInfo.Request.Settings.Passengers, orderInfo.Request.Settings.VehicleTypeId,
                 orderInfo.Request.IbsInformationNote, orderInfo.Request.PickupDate, orderInfo.Request.Prompts, orderInfo.Request.PromptsLength,
                 orderInfo.Request.ReferenceDataCompanyList.ToList(), orderInfo.Request.Market, orderInfo.Request.Settings.ChargeTypeId,
@@ -148,7 +148,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var orderDetail = _orderDao.FindById(orderId);
 
                 // Cancel order on current company IBS
-                _ibsCreateOrderService.CancelIbsOrder(orderDetail.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, orderDetail.AccountId);
+                _ibsCreateOrderService.CancelIbsOrder(orderDetail.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.ServiceType, orderDetail.Settings.Phone, orderDetail.AccountId);
 
                 _commandBus.Send(new SwitchOrderToNextDispatchCompany
                 {

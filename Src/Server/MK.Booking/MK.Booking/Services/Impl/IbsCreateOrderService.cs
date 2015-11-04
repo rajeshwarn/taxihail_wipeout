@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public IBSOrderResult CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString, string companyKey,
-            int ibsAccountId, string name, string phone, int passengers, int? vehicleTypeId, string ibsInformationNote,
+            ServiceType serviceType, int ibsAccountId, string name, string phone, int passengers, int? vehicleTypeId, string ibsInformationNote,
             DateTime pickupDate, string[] prompts, int?[] promptsLength, IList<ListItem> referenceDataCompanyList, string market, int? chargeTypeId,
             int? requestProviderId, Fare fare, double? tipIncentive, bool isHailRequest = false)
         {
@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     ETATime = (int?)vehicle.Eta ?? 0
                 });
 
-                ibsHailResult = _ibsServiceProvider.Booking(companyKey).Hail(
+                ibsHailResult = _ibsServiceProvider.Booking(companyKey, serviceType).Hail(
                     orderId,
                     providerId,
                     ibsAccountId,
@@ -136,13 +136,13 @@ namespace apcurium.MK.Booking.Services.Impl
                     // Need to wait for vehicles to receive hail request
                     Thread.Sleep(25000);
 
-                    var candidates = _ibsServiceProvider.Booking(companyKey).GetVehicleCandidates(ibsHailResult.OrderKey);
+                    var candidates = _ibsServiceProvider.Booking(companyKey, serviceType).GetVehicleCandidates(ibsHailResult.OrderKey);
                     ibsHailResult.VehicleCandidates = candidates;
                 }
             }
             else
             {
-                createOrderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+                createOrderResult = _ibsServiceProvider.Booking(companyKey, serviceType).CreateOrder(
                     providerId,
                     ibsAccountId,
                     name,
@@ -173,12 +173,12 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId)
+        public void CancelIbsOrder(int? ibsOrderId, string companyKey, ServiceType serviceType, string phone, Guid accountId)
         {
             // Cancel order on current company IBS
             if (ibsOrderId.HasValue)
             {
-                var currentIbsAccountId = _accountDao.GetIbsAccountId(accountId, companyKey);
+                var currentIbsAccountId = _accountDao.GetIbsAccountId(accountId, companyKey, serviceType);
                 if (currentIbsAccountId.HasValue)
                 {
                     _logger.LogMessage(string.Format("Cancelling IBSOrder {0}, on company {1}", ibsOrderId, companyKey));
@@ -187,7 +187,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     // After 5 time, we are giving up. But we assume the order is completed.
                     Task.Factory.StartNew(() =>
                     {
-                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(companyKey)
+                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(companyKey, serviceType)
                             .CancelOrder(ibsOrderId.Value, currentIbsAccountId.Value, phone);
 
                         cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);

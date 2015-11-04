@@ -65,7 +65,6 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IIBSServiceProvider _ibsServiceProvider;
-        private readonly IServiceTypeSettingsProvider _serviceTypeSettingsProvider;
         private readonly IIbsCreateOrderService _ibsCreateOrderService;
         private readonly Resources.Resources _resources;
 
@@ -74,7 +73,6 @@ namespace apcurium.MK.Booking.Api.Services
             IServerSettings serverSettings,
             ReferenceDataService referenceDataService,
             IIBSServiceProvider ibsServiceProvider,
-            IServiceTypeSettingsProvider serviceTypeSettingsProvider,
             IRuleCalculator ruleCalculator,
             IAccountChargeDao accountChargeDao,
             ICreditCardDao creditCardDao,
@@ -96,7 +94,6 @@ namespace apcurium.MK.Booking.Api.Services
             _referenceDataService = referenceDataService;
             _serverSettings = serverSettings;
             _ibsServiceProvider = ibsServiceProvider;
-            _serviceTypeSettingsProvider = serviceTypeSettingsProvider;
             _ruleCalculator = ruleCalculator;
             _orderDao = orderDao;
             _promotionDao = promotionDao;
@@ -243,23 +240,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Settings.ServiceType);
 
-            var ibsPickupDate = request.PickupDate;
-            if (!_serverSettings.ServerData.DisableFutureBooking && ibsPickupDate.HasValue)
-            {
-                var futureBookingTimespanSetting = _serviceTypeSettingsProvider.GetSettings(request.Settings.ServiceType).FutureBookingThresholdInMinutes;
-                var timeDifferenceBetweenPickupAndNow = (request.PickupDate.Value - DateTime.Now).TotalMinutes;
-                var isConsideredFutureBooking = timeDifferenceBetweenPickupAndNow >= futureBookingTimespanSetting;
-                if (!isConsideredFutureBooking)
-                {
-                    ibsPickupDate = null;
-                }
-            }
-
             var isFutureBooking = request.PickupDate.HasValue;
-
-            var currentOffsetedTime = GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Settings.ServiceType);
-            var pickupDate = request.PickupDate ?? currentOffsetedTime;
-            ibsPickupDate = ibsPickupDate ?? currentOffsetedTime;
+            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Settings.ServiceType);
 
             createReportOrder.PickupDate = pickupDate;
 
@@ -440,7 +422,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 var result = _ibsCreateOrderService.CreateIbsOrder(request.Id, request.PickupAddress, request.DropOffAddress,
                     request.Settings.AccountNumber, request.Settings.CustomerNumber, bestAvailableCompany.CompanyKey,
-                    account.IBSAccountId.Value, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
+                    request.Settings.ServiceType, account.IBSAccountId.Value, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
                     request.Settings.VehicleTypeId, ibsInformationNote, request.PickupDate.Value, accountValidationResult.Prompts,
                     accountValidationResult.PromptsLength, referenceData.CompaniesList, market, request.Settings.ChargeTypeId,
                     request.Settings.ProviderId, fare, request.TipIncentive, true);
@@ -483,9 +465,6 @@ namespace apcurium.MK.Booking.Api.Services
                 return paypalWebPaymentResponse;
             }
 
-            
-            // change the value of the pickup date to the "nullified" date if future booking was inside the threshold
-            request.PickupDate = ibsPickupDate;
             if (request.QuestionsAndAnswers.HasValue())
             {
                 // Save question answers so we can display them the next time the user books
@@ -610,7 +589,7 @@ namespace apcurium.MK.Booking.Api.Services
 			// We are in a network timeout situation.
 	        if (orderStatusDetail.CompanyKey == request.NextDispatchCompanyKey)
 	        {
-                _ibsCreateOrderService.CancelIbsOrder(order.IBSOrderId, order.CompanyKey, order.Settings.Phone, account.Id);
+                _ibsCreateOrderService.CancelIbsOrder(order.IBSOrderId, order.CompanyKey, order.Settings.ServiceType, order.Settings.Phone, account.Id);
 
 		        orderStatusDetail.IBSStatusId = VehicleStatuses.Common.Timeout;
 		        orderStatusDetail.IBSStatusDescription = _resources.Get("OrderStatus_" + VehicleStatuses.Common.Timeout);
