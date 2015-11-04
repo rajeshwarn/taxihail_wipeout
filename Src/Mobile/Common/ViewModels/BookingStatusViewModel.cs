@@ -110,6 +110,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			else
 			{
+				ConfirmationNoTxt = string.Empty;
 				BottomBar.PrepareForNewOrder();
 			}
 
