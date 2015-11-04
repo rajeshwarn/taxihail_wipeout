@@ -81,11 +81,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 });
         }
 
+        public BookingStatusViewModel BookingStatusViewModel
+        {
+            get
+            {
+                return (BookingStatusViewModel)DataContext;
+            }
+        }
+
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
 
-            if (_statusLayout.Height != 0 && ((BookingStatusViewModel)DataContext).IsProgressVisible)
+            if (_statusLayout.Height != 0 && BookingStatusViewModel.IsProgressVisible)
             {
                 var layoutParams = (RelativeLayout.LayoutParams)_progressLayout.LayoutParameters;
 
@@ -189,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                                 _changeDropOffOverlay.LayoutParameters = layoutParamsChangeDropOff;
 
-                                ChangeDropOffAnimatedVisibility = ((BookingStatusViewModel)DataContext).IsChangeDropOffVisible ? ViewStates.Visible : ViewStates.Gone;
+                                ChangeDropOffAnimatedVisibility = BookingStatusViewModel.IsChangeDropOffVisible ? ViewStates.Visible : ViewStates.Gone;
 
                                 if (_changeDropOffOverlay.LayoutParameters.Height != 0 && _statusLayout.Height != 0)
                                 {
@@ -267,7 +275,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             animation.AnimationEnd += (sender, args) =>
                 {
-                    if (((BookingStatusViewModel) DataContext).IsContactTaxiVisible)
+                    if (BookingStatusViewModel.IsContactTaxiVisible)
                     {
                         var desiredHeight = -_contactTaxiOverlay.Height;
 
@@ -280,7 +288,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                         animContactTaxi.AnimationEnd += (s, a) =>
                         {
-                                if (((BookingStatusViewModel) DataContext).IsChangeDropOffVisible)
+                                if (BookingStatusViewModel.IsChangeDropOffVisible)
                                 {
                                     desiredHeight = 0;
         
@@ -299,7 +307,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         return;
                     }
 
-                    if (((BookingStatusViewModel) DataContext).IsChangeDropOffVisible)
+                    if (BookingStatusViewModel.IsChangeDropOffVisible)
                     {
                         var desiredHeight = -_changeDropOffOverlay.Height;
 
