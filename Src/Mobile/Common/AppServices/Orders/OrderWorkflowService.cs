@@ -559,38 +559,31 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
 			_loadingAddressSubject.OnNext(true);
-			using (Logger.StartStopwatch("SearchAddress : " + p.Latitude.ToString(CultureInfo.InvariantCulture) + ", " + p.Longitude.ToString(CultureInfo.InvariantCulture)))
+			var accountAddress = await _accountService
+				.FindInAccountAddresses(p.Latitude, p.Longitude)
+				.ConfigureAwait(false);
+
+			if (accountAddress != null)
 			{
-				var accountAddress = await _accountService
-					.FindInAccountAddresses(p.Latitude, p.Longitude)
-					.ConfigureAwait(false);
-
-				if (accountAddress != null)
-				{
-					Logger.LogMessage("Address found in account");
-					_loadingAddressSubject.OnNext(false);
-					return accountAddress;
-				}
-				else
-				{
-					var address = await Task.Run(() => _geolocService.SearchAddress(p.Latitude, p.Longitude));
-					Logger.LogMessage("Found {0} addresses", address.Count());
-					if (address.Any())
-					{
-						_loadingAddressSubject.OnNext(false);
-						return address[0];
-					}
-					else
-					{
-						Logger.LogMessage("clear addresses");
-
-						// TODO: Refactor. We should probably throw an exception here.
-						// Error should be handled by the caller.
-						_loadingAddressSubject.OnNext(false);
-						return new Address(){ Latitude = p.Latitude, Longitude = p.Longitude };
-					}
-				}
+				Logger.LogMessage("Address found in account");
+				_loadingAddressSubject.OnNext(false);
+				return accountAddress;
 			}
+
+			var address = await Task.Run(() => _geolocService.SearchAddress(p.Latitude, p.Longitude));
+			Logger.LogMessage("Found {0} addresses", address.Count());
+			if (address.Any())
+			{
+				_loadingAddressSubject.OnNext(false);
+				return address[0];
+			}
+
+			Logger.LogMessage("clear addresses");
+
+			// TODO: Refactor. We should probably throw an exception here.
+			// Error should be handled by the caller.
+			_loadingAddressSubject.OnNext(false);
+			return new Address(){ Latitude = p.Latitude, Longitude = p.Longitude };
 		}
 
 		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
