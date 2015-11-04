@@ -1,5 +1,5 @@
 ﻿@using CustomerPortal.Web.Areas.Admin.Models
-@model NetworkVehiclesModel
+@model MarketModel
 
 <h2>Market Vehicle Types</h2>
 <div class='row'>
@@ -15,14 +15,14 @@
             {
                 <tr>
                     <td>
-                        <a href="@Url.Action("EditVehicle", new {id = vehicleType.Id})">@vehicleType.Name</a>
+                        <a href="@Url.Action("EditVehicle", new {id = vehicleType.Id, market = Model.Market})">@vehicleType.Name</a>
 
                     </td>
                     <td>
                         @Html.ActionLink(
                             "Delete",
                             "DeleteVehicle",
-                            new {id = vehicleType.Id},
+                            new {id = vehicleType.Id, market = Model.Market},
                             new {@class = "btn span btn-danger", @onclick = "return confirm('Are you sure you wish to delete this vehicle type?');"})
                     </td>
                 </tr>

@@ -23,6 +23,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -183,7 +184,6 @@
     <Compile Include="Areas\Admin\Controllers\API\AppleDevCenterController.cs" />
     <Compile Include="Areas\Admin\Controllers\API\VersionController.cs" />
     <Compile Include="Areas\Admin\Controllers\ChecklistController.cs" />
-    <Compile Include="Areas\Admin\Controllers\NetworkVehiclesBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoreCredentialController.cs" />
     <Compile Include="Areas\Admin\Controllers\CompanyControllerBase.cs" />
@@ -207,7 +207,6 @@
     <Compile Include="Areas\Admin\Models\ChecklistModel.cs" />
     <Compile Include="Areas\Admin\Models\ColorModel.cs" />
     <Compile Include="Areas\Admin\Models\MarketModel.cs" />
-    <Compile Include="Areas\Admin\Models\NetworkVehiclesModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestResponse\BitBucketRepoResponse.cs" />
     <Compile Include="Areas\Admin\Models\RequestResponse\CreateNewVersionRequest.cs" />
     <Compile Include="Areas\Admin\Models\CreateUser.cs" />

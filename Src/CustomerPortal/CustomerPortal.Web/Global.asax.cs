@@ -15,6 +15,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using AutoMapper;
 using CustomerPortal.Web.Entities;
+using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Helpers;
 using CustomerPortal.Web.Services.Impl;
 using log4net.Config;
@@ -79,8 +80,42 @@ namespace CustomerPortal.Web
             EnsureDefaultDevicesAreInit();
             EnsureDefaultSettingsAreInit();
 
+            MigrateNetworkVehiclesToMarketRepresentation();
+
             Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
                 .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
+        }
+
+        private static void MigrateNetworkVehiclesToMarketRepresentation()
+        {
+            var marketRepo = new MongoRepository<Market>();
+
+            var networkVehicles = new MongoRepository<NetworkVehicle>();
+            var markets = networkVehicles.Select(x => x.Market).Distinct();
+            foreach (var market in markets)
+            {
+                var vehiclesForThisMarket = networkVehicles.Where(x => x.Market == market)
+                    .Select(x => new Vehicle
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        LogoName = x.LogoName,
+                        MaxNumberPassengers = x.MaxNumberPassengers,
+                        NetworkVehicleId = x.NetworkVehicleId
+                    })
+                    .ToList();
+                var newMarket = new Market
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = market,
+                    Vehicles = vehiclesForThisMarket
+                };
+
+                marketRepo.Add(newMarket);
+            }
+
+            networkVehicles.DeleteAll();
+            networkVehicles.Collection.Drop();
         }
 
         private static void EnsureMenuColorIsSet()
@@ -96,8 +131,8 @@ namespace CustomerPortal.Web
                     companies.Update(c);
                 }
             }
-
         }
+
         private static void EnsureDefaultDevicesAreInit()
         {
             var devices = new MongoRepository<IosDevice>();
