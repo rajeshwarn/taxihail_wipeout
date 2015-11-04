@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UnpairForPayment>,
         ICommandHandler<NotifyOrderTimedOut>,
         ICommandHandler<PrepareOrderForNextDispatch>,
+        ICommandHandler<InitiateIbsOrderSwitch>,
         ICommandHandler<SwitchOrderToNextDispatchCompany>,
         ICommandHandler<IgnoreDispatchCompanySwitch>,
         ICommandHandler<AddIbsOrderInfoToOrder>,
@@ -88,7 +89,9 @@ namespace apcurium.MK.Booking.CommandHandlers
 					command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
 					command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
 					command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-					command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.TipIncentive);
+                    command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.TipIncentive,
+                    command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
+                    command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.IbsOrderId);
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -112,7 +115,9 @@ namespace apcurium.MK.Booking.CommandHandlers
 				command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
 				command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
 				command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.Error, command.TipIncentive);
+				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.Error, command.TipIncentive,
+                command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
+                command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.IbsOrderId);
 
 			if (command.Payment.PayWithCreditCard)
 			{
@@ -134,7 +139,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(RateOrder command)
         {
             var order = _repository.Find(command.OrderId);
-            order.RateOrder(command.Note, command.RatingScores);
+            order.RateOrder(command.AccountId, command.Note, command.RatingScores);
             _repository.Save(order, command.Id.ToString());
         }
 
@@ -156,6 +161,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Find(command.OrderId);
             order.PrepareForNextDispatch(command.DispatchCompanyName, command.DispatchCompanyKey);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(InitiateIbsOrderSwitch command)
+        {
+            var order = _repository.Get(command.NewOrderCommand.OrderId);
+            order.InitiateIbsOrderSwitch(command.NewIbsAccountId, command.NewOrderCommand);
             _repository.Save(order, command.Id.ToString());
         }
 
@@ -213,12 +225,6 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(MarkPrepaidOrderAsSuccessful command)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                context.RemoveWhere<TemporaryOrderCreationInfoDetail>(x => x.OrderId == command.OrderId);
-                context.SaveChanges();
-            }
-
             var order = _repository.Find(command.OrderId);
 
             order.UpdatePrepaidOrderPaymentInfo(command.OrderId, command.TotalAmount, command.MeterAmount, command.TaxAmount,

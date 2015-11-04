@@ -2,17 +2,16 @@ using System;
 using Foundation;
 using UIKit;
 using CoreGraphics;
-using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using CoreAnimation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("OverlayButton")]
     public class OverlayButton : CommandButton
     {
-        private float _radiusCorner = 2f;
-        private UIView _shadowView = null;
-		private UIColor _fillColor;
+        private const float RadiusCorner = 2f;
+        private UIView _shadowView;
 		private UIColor fillColorNormal = UIColor.White.ColorWithAlpha(0.8f);
 		private UIColor fillColorPressed = UIColor.Gray.ColorWithAlpha(0.8f);
 
@@ -23,12 +22,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            BackgroundColor = UIColor.Clear;
-            _fillColor = fillColorNormal;
+            BackgroundColor = fillColorNormal;
 
             this.TouchDown += (sender, e) => 
 			{
-                _fillColor = fillColorPressed;
+                BackgroundColor = fillColorPressed;
 				this.SetNeedsDisplay();
 			};				
         }
@@ -36,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		public override void TouchesEnded (NSSet touches, UIEvent evt)
 		{
 			base.TouchesEnded (touches, evt);
-            _fillColor = fillColorNormal;
+            BackgroundColor = fillColorNormal;
 			this.SetNeedsDisplay();
 		}
 
@@ -44,47 +42,84 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {   
 			if (!Hidden)
 			{
-				var context = UIGraphics.GetCurrentContext ();
-				var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
-
-				DrawBackground(context, rect, roundedRectanglePath);
-				DrawStroke();	
+                DrawStroke();
 			}
 
             SetNeedsDisplay();
         }
 
-        void DrawBackground (CGContext context, CGRect rect, UIBezierPath roundedRectanglePath)
+        private CAShapeLayer GetMaskForRoundedCorners()
         {
-            context.SaveState ();
-            context.BeginTransparencyLayer (null);
-            roundedRectanglePath.AddClip ();
-            context.SetFillColor(_fillColor.CGColor);
-            context.FillRect(rect);
-            context.EndTransparencyLayer ();
-            context.RestoreState ();
+            var roundedRectanglePath = UIBezierPath.FromRoundedRect (Bounds, RadiusCorner);
+            var biggerRect = Bounds.Copy().Grow(5);
+
+            var maskPath = new UIBezierPath();
+            maskPath.MoveTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMinY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMaxY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMaxX(), biggerRect.GetMaxY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMaxX(), biggerRect.GetMinY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMinY()));
+            maskPath.AppendPath(roundedRectanglePath);
+
+            var maskForRoundedCorners = new CAShapeLayer();
+            var newPath = new CGPath();
+            newPath.AddRect(biggerRect);
+            newPath.AddPath(maskPath.CGPath);
+            maskForRoundedCorners.Path = newPath;
+            maskForRoundedCorners.FillRule = CAShapeLayer.FillRuleEvenOdd;
+
+            newPath.Dispose();
+            maskPath.Dispose();
+            roundedRectanglePath.Dispose();
+
+            return maskForRoundedCorners;
         }
 
-        void DrawStroke()
+        private CGPath GetShadowPath(CGRect biggerRect)
         {
-            Layer.BorderWidth = 1.0f;
-            Layer.BorderColor = _fillColor.CGColor;
-            Layer.CornerRadius = _radiusCorner;
+            var shadowPath = new UIBezierPath();
+            shadowPath.MoveTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMinY()));
+            shadowPath.AddLineTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMaxY()));
+            shadowPath.AddLineTo(new CGPoint(biggerRect.GetMaxX(), biggerRect.GetMaxY()));
+            shadowPath.AddLineTo(new CGPoint(biggerRect.GetMaxX(), biggerRect.GetMinY()));
+            shadowPath.AddLineTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMinY()));;
+            shadowPath.AppendPath(UIBezierPath.FromRoundedRect (Bounds, RadiusCorner));
+            shadowPath.UsesEvenOddFillRule = true;
 
-            if (_shadowView == null)
+            return shadowPath.CGPath;
+        }
+
+        protected virtual void DrawStroke()
+        {
+            this.Layer.Mask = GetMaskForRoundedCorners();
+
+            DrawShadow();
+        }
+
+        private void DrawShadow()
+        {
+            ClearShadowIfNecessary();
+
+            var biggerRect = Bounds.Copy().Grow(2);
+
+            _shadowView = new UIView(Frame);
+            _shadowView.Layer.MasksToBounds = false;
+            _shadowView.Layer.ShadowColor = UIColor.Black.CGColor;
+            _shadowView.Layer.ShadowOpacity = 0.3f;
+            _shadowView.Layer.ShadowOffset = new CGSize(0f, 0f);
+            _shadowView.Layer.ShadowPath = GetShadowPath(biggerRect);
+            _shadowView.Layer.ShouldRasterize = true;   
+            _shadowView.Layer.RasterizationScale = UIScreen.MainScreen.Scale;
+            this.Superview.InsertSubviewBelow(_shadowView, this);   
+        }
+
+        private void ClearShadowIfNecessary()
+        {
+            if (_shadowView != null)
             {
-                _shadowView = new UIView(Frame);
-                _shadowView.BackgroundColor = UIColor.White.ColorWithAlpha(0.7f);
-                _shadowView.Layer.MasksToBounds = false;
-                _shadowView.Layer.ShadowColor = UIColor.FromRGBA(0, 0, 0, 127).CGColor;
-                _shadowView.Layer.ShadowOpacity = 1.0f;
-                _shadowView.Layer.ShadowRadius = _radiusCorner+1;
-                _shadowView.Layer.ShadowOffset = new CGSize(0.3f, 0.3f);
-                _shadowView.Layer.ShouldRasterize = true;        
-
-                this.Superview.InsertSubviewBelow(_shadowView, this);
+                _shadowView.RemoveFromSuperview();
+                _shadowView = null;
             }
-            _shadowView.Frame = Frame.Copy().Shrink(1);
         }
 
         public override bool Hidden

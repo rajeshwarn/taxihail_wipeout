@@ -9,21 +9,20 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Android.Runtime;
 using Cirrious.MvvmCross.Binding.Droid.Views;
-using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 {
     [Register("apcurium.mk.Booking.mobile.client.controls.widgets.addresses.AddressListView")]
     public class AddressListView : MvxFrameControl
     {
-        private bool isCollapsed;
-        private bool HideViewAllButton;
+        private bool _isCollapsed;
+        private readonly bool _hideViewAllButton;
         private LinearLayout _listLinearLayout;
         private Button _viewAllButton;
 
         public AddressListView(Context c, IAttributeSet attr) : base(c, attr)
         {
-            HideViewAllButton = GetAttributeBool(attr, Resource.Attribute.HideViewAllButton);
+            _hideViewAllButton = GetAttributeBool(attr, Resource.Attribute.HideViewAllButton);
         }
 
         private bool GetAttributeBool(IAttributeSet attr, int id)
@@ -75,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
             _viewAllButton.Click += (s, e) =>
             {
-                if (!isCollapsed)
+                if (!_isCollapsed)
                 {
                     Collapse();
                 }
@@ -112,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
             Collapse();
 
-            _viewAllButton.Visibility = (AddressLines.Count() <= 3) || HideViewAllButton ? ViewStates.Gone : ViewStates.Visible;
+            _viewAllButton.Visibility = (AddressLines.Count() <= 3) || _hideViewAllButton ? ViewStates.Gone : ViewStates.Visible;
         }
 
         public void Expand()
@@ -130,19 +129,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                 }
             }
 
-            isCollapsed = false;
+            _isCollapsed = false;
         }
 
         View GetDivider(){
             var v = new View(Context);
-            v.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FillParent, 1);
+            v.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, 1);
             v.SetBackgroundColor(Android.Graphics.Color.Argb(255, 240, 240, 240));
             return v;
         }
 
         public void Collapse()
         {
-            if(HideViewAllButton)
+            if(_hideViewAllButton)
             {
                 Expand();
                 return;
@@ -160,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                     _listLinearLayout.AddView(GetDivider());
                 }
             }
-            isCollapsed = true;
+            _isCollapsed = true;
         }
     }
 }

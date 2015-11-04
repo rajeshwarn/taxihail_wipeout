@@ -65,6 +65,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         readonly ISubject<Airline[]> _poiRefAirlineListSubject = new BehaviorSubject<Airline[]>(new Airline[0]);
         readonly ISubject<double?> _tipIncentiveSubject = new BehaviorSubject<double?>(null);
 
+		private readonly ISubject<bool> _canExecuteBookingOperation = new BehaviorSubject<bool>(true);
+
         private bool _isOrderRebooked;
 
 	    private Position _lastMarketPosition = new Position();
@@ -611,7 +613,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					if (selectionMode == AddressSelectionMode.PickupSelection)
 					{
 						_pickupAddressSubject.OnNext (address);
-
 						await SetMarket(new Position { Latitude = address.Latitude, Longitude = address.Longitude });
 					} 
 					else 
@@ -622,6 +623,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			// Do NOT await this
 			CalculateEstimatedFare(token).FireAndForget();
+
+			_canExecuteBookingOperation.OnNext(true);
 		}
 
 		private CancellationTokenSource _calculateFareCancellationTokenSource = new CancellationTokenSource();
@@ -692,7 +695,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 			_orderCanBeConfirmed.OnNext (false);
 			_cvvSubject.OnNext(string.Empty);
-			_orderValidationResultSubject.OnNext(null);
+			DisableBooking();
 			_loadingAddressSubject.OnNext(false);
 			_dropOffSelectionModeSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
@@ -834,6 +837,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var orderToValidate = order ?? await GetOrder();
 			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
             _orderValidationResultSubject.OnNext(validationResult);
+
 
 			return validationResult;
 		}
@@ -1066,6 +1070,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 
 			return success;
+		}
+
+		public void DisableBooking()
+		{
+			_canExecuteBookingOperation.OnNext(false);
+		}
+
+		public IObservable<bool> GetAndObserveCanExecuteBookingOperation()
+		{
+			return _canExecuteBookingOperation;
 		}
     }
 }

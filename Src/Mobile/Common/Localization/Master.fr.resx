@@ -1572,6 +1572,9 @@
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
     <value>Chauffeur assigné</value>
   </data>
+  <data name="Notification_DriverBailedPush" xml:space="preserve">
+    <value>Course refusée</value>
+  </data>
   <data name="RateLastRide" xml:space="preserve">
     <value>Évaluer</value>
   </data>
@@ -2335,5 +2338,26 @@
 	</data>
 	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
 		<value>Un probleme de connexion est survenu lors de la tentative d'obtenir l'état de votre course de taxi.</value>
+	</data>
+	<data name="RateMobileApplicationTitle" xml:space="preserve">
+		<value>Notez cette application</value>
+	</data>
+	<data name="RateMobileApplicationText" xml:space="preserve">
+		<value>Si vous aimez utiliser cette application, n'oubliez pas de donner votre avis!</value>
+	</data>
+	<data name="RateMobileApplicationNow" xml:space="preserve">
+		<value>Notez maintenant</value>
+	</data>
+	<data name="RateMobileApplicationLater" xml:space="preserve">
+		<value>Plus tard</value>
+	</data>
+	<data name="RateMobileApplicationNever" xml:space="preserve">
+		<value>Ne plus demander</value>
+	</data>
+	<data name="LinkForApplicationStoreAbsentTitle" xml:space="preserve">
+		<value>Le lien est absent</value>
+	</data>
+	<data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
+		<value>Le lien pour naviger vers la page l'application n'a pas été configuré</value>
 	</data>
 </root>

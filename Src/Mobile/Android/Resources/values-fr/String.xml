@@ -20,6 +20,7 @@
   <string name="PaymentDetails.PaymentMethodsLabel">Méthodes de paiement</string>
   <string name="PayPalUnlinkError">Impossible de dissocier votre compte PayPal</string>
   <string name="BookPickupLabel">Confirmer votre adresse de départ</string>
+  <string name="Notification_DriverBailedPush">Course refusée</string>
   <string name="Tuto03Top">Vous pouvez également nous communiquer votre position en saisissant directement une adresse</string>
   <string name="BookDateLabel">Départ différé</string>
   <string name="Overdue_IBSOrderId">Commande:</string>
@@ -109,6 +110,7 @@
   <string name="View_CreateAccount">Créer votre compte</string>
   <string name="UpdateBookingSettingsInvalidCoF">Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte</string>
   <string name="HistoryDetailsActivityName">History details</string>
+  <string name="RateMobileApplicationText">Si vous aimez utiliser cette application, n\'oubliez pas de donner votre avis!</string>
   <string name="PaymentDetails.InvalidDataTitle">Informations relatives au paiement invalides</string>
   <string name="DriverBonusWarningMessage">Le montant du bonus est en supplément du pourboire. Il sera automatiquement prélevé à la fin de la course. Continuez ?</string>
   <string name="UserTaxiHailNetwork_Enabled">Réseau TaxiHail</string>
@@ -194,6 +196,7 @@
   <string name="Tuto04Bottom">En faisant cela vous aurez une estimation du coût de votre trajet.</string>
   <string name="ManualPairing_TimeOut_Message">Un probleme de connexion est survenu lors de la tentative d\'obtenir l\'état de votre course de taxi.</string>
   <string name="Toggle_On">Oui</string>
+  <string name="RateMobileApplicationTitle">Notez cette application</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">Le code d\'association est invalide</string>
   <string name="CreditCard">Carte de paiement</string>
   <string name="ResetPasswordEmailPlaceHolder">Email (adresse électronique)</string>
@@ -400,6 +403,7 @@
   <string name="WarningPromoCodeDontShow">Ne pas signaler</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Toujours accepter</string>
   <string name="Reset">Réinitialiser</string>
+  <string name="RateMobileApplicationNow">Notez maintenant</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Code invalide</string>
   <string name="CreditCardErrorTitle">Cette carte ne peut être sauvegardée</string>
   <string name="View_PaymentPreference">Paiement: préférences</string>
@@ -489,6 +493,7 @@
   <string name="CreateAccountFullNamePlaceHolder">Nom complet</string>
   <string name="EtaDurationUnit">minute</string>
   <string name="NoConnectionTitle">Erreur de connexion</string>
+  <string name="RateMobileApplicationNever">Ne plus demander</string>
   <string name="View_SearchAddress">Rechercher une adresse</string>
   <string name="CreateAccountEmptyField">Votre demande ne peut être validée, merci de remplir les champs obligatoires</string>
   <string name="ConfirmPassengerSettingsTitle">Concernant les passagers</string>
@@ -583,6 +588,7 @@
   <string name="View_InitializeOrderForAccountPayment">Veuillez répondre à ces questions</string>
   <string name="CurrencyPriceFormat">{0:C}</string>
   <string name="NoFareText">Vous devez saisir une destination pour obtenir une estimation du prix du trajet</string>
+  <string name="LinkForApplicationStoreAbsentText">Le lien pour naviger vers la page l\'application n\'a pas été configuré</string>
   <string name="Notes">Commentaires</string>
   <string name="EstimatingFare">Calcul du prix en cours…</string>
   <string name="OverduePaymentActivityName">Overdue payment</string>
@@ -637,8 +643,10 @@
   <string name="PromoExpiringSoonMessage">Expire dans {0} jours</string>
   <string name="ManualRideLinqNoCardOnFile">Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</string>
   <string name="BookingAirportPickupPointFee">Selecting Pickup Point {0} will incurr an additional Fee of {1}</string>
+  <string name="RateMobileApplicationLater">Plus tard</string>
   <string name="ResetPasswordSucessTitle">Mot de passe réinitialisé</string>
   <string name="SupportEmail">techsupport@apcurium.com</string>
+  <string name="LinkForApplicationStoreAbsentTitle">Le lien est absent</string>
   <string name="ConfirmPassengersLabel">Nombre de passagers:</string>
   <string name="PayPalErrorTitle">Erreur PayPal</string>
   <string name="Overdue_Succeed_Title">Compte Approuvé</string>

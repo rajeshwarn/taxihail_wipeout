@@ -437,12 +437,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			set.Bind(_searchAddress)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch });
+				.WithConversion("HomeViewStateToVisibility", new[]{ HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch });
 			
 			set.Bind(_appBar)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Initial, HomeViewModelState.Review, HomeViewModelState.Edit, HomeViewModelState.BookATaxi, HomeViewModelState.AirportDetails });
+                .WithConversion("HomeViewStateToVisibility", new[] { 
+                    HomeViewModelState.Initial, 
+                    HomeViewModelState.Review, 
+                    HomeViewModelState.Edit, 
+                    HomeViewModelState.BookATaxi, 
+                    HomeViewModelState.AirportDetails, 
+                    HomeViewModelState.PickDate,
+                    HomeViewModelState.AirportPickDate
+                });
 
 			set.Bind(_appBarBookingStatus)
 				.For(v => v.Visibility)
@@ -590,11 +598,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void SetSelectedOnBookLater(bool selected)
         {
-            var btnBookLater = (ImageView) FindViewById(Resource.Id.btnBookLater);
-            var txtBookLater = (TextView) FindViewById(Resource.Id.txtBookLater);
             var btnBookLaterLayout = (LinearLayout) FindViewById(Resource.Id.btnBookLaterLayout);
-            btnBookLater.Selected = selected;
-            txtBookLater.Selected = selected;
             btnBookLaterLayout.Selected = selected;
         }
 

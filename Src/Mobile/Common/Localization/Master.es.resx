@@ -1213,6 +1213,9 @@
     <value>Chofer asignado</value>
     <comment>Driver Assigned</comment>
   </data>
+  <data name="Notification_DriverBailedPush" xml:space="preserve">
+    <value>Driver bailed</value>
+  </data>
   <data name="Notification_Enabled" xml:space="preserve">
     <value>Notificiaciones</value>
     <comment>Notifications</comment>
@@ -2938,5 +2941,26 @@
 	</data>
 	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
 		<value>There is a connection error preventing us from providing the status of your ride.</value>
+	</data>
+	<data name="RateMobileApplicationTitle" xml:space="preserve">
+		<value>Rate this application</value>
+	</data>
+	<data name="RateMobileApplicationText" xml:space="preserve">
+		<value>If you enjoy using this application would you mind taking a moment to rate it?</value>
+	</data>
+	<data name="RateMobileApplicationNow" xml:space="preserve">
+		<value>Rate Now</value>
+	</data>
+	<data name="RateMobileApplicationLater" xml:space="preserve">
+		<value>Later</value>
+	</data>
+	<data name="RateMobileApplicationNever" xml:space="preserve">
+		<value>Don't ask again</value>
+	</data>
+	<data name="LinkForApplicationStoreAbsentTitle" xml:space="preserve">
+		<value>URL is missing</value>
+	</data>
+	<data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
+		<value>URL to store page was not configured</value>
 	</data>
 </root>

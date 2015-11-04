@@ -1,7 +1,7 @@
 ﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
@@ -25,7 +25,7 @@ using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceClient.Web;
 
-namespace apcurium.MK.Booking.Api.Jobs
+namespace apcurium.MK.Booking.Jobs
 {
     public class OrderStatusUpdater
     {
@@ -201,6 +201,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                 _logger.LogMessage("No manual RideLinQ details found for order {0}", orderstatusDetail.OrderId);
                 return;
             }
+
+            if (rideLinqDetails.EndTime.HasValue)
+            {
+                // Trip ended. Nothing do to has end of trip errors are handled by the event handler.
+                return;
+            }
+
             _logger.LogMessage("Initializing CmdClient for order {0} (RideLinq Pairing Token: {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
 
             InitializeCmtServiceClient();
@@ -566,7 +573,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 // this is the only payment related message sent to the driver when this setting is false
-                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, ibsOrderInfo.MeterAmount + tipAmount, ibsOrderInfo.MeterAmount, tipAmount);
+                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, ibsOrderInfo.MeterAmount + tipAmount, ibsOrderInfo.MeterAmount, tipAmount, orderStatusDetail.CompanyKey);
             }
 
             try
@@ -741,7 +748,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                         orderDetail.Settings.Phone,
                         account.Email,
                         orderDetail.UserAgent.GetOperatingSystem(),
-                        orderDetail.UserAgent);
+                        orderDetail.UserAgent,
+                        orderDetail.CompanyKey);
                 }
                 catch (Exception e)
                 {
@@ -987,16 +995,16 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
-		private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber, string company)
+		private void SendPaymentBeingProcessedMessageToDriver(string vehicleNumber, string companyKey)
         {
             var paymentBeingProcessedMessage = _resources.Get("PaymentBeingProcessedMessageToDriver");
-			_ibs.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber, company);
+            _ibs.SendMessageToDriver(paymentBeingProcessedMessage, vehicleNumber, companyKey);
             _logger.LogMessage(paymentBeingProcessedMessage);
         }
 
-        private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip)
+        private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip, string companyKey)
         {
-            _ibs.SendPaymentNotification(amount, meter, tip, null, vehicleNumber);
+            _ibs.SendPaymentNotification(amount, meter, tip, null, vehicleNumber, companyKey);
         }
 
         private void InitializeCmtServiceClient()

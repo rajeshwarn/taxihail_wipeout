@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 			{
 				_previousTrustZRotation = true;
 				_started = true;
-				((CommonDeviceOrientationService)_deviceOrientationService).NotifyAngleChanged += AngleChanged;
+				_deviceOrientationService.NotifyAngleChanged += AngleChanged;
 				_started = _deviceOrientationService.Start();
 
 				return _started;
