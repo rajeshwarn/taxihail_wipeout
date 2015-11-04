@@ -612,7 +612,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return false;
 				}
 
-                return true//Settings.ChangeDropOffAddressMidTrip
+                return Settings.ChangeDropOffAddressMidTrip
                     && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                         || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
                         || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded);
