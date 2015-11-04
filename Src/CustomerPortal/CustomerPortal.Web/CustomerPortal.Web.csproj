@@ -222,6 +222,7 @@
     <Compile Include="Areas\Admin\Models\LayoutRejectModel.cs" />
     <Compile Include="Areas\Admin\Models\StoreInfoModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestResponse\TestAppleDevCenterLoginRequest.cs" />
+    <Compile Include="Areas\Admin\Models\TaxiHailNetworkSettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\VersionEmailViewModel.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\NetworkApiController.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\NetworkVehiclesApiController.cs" />

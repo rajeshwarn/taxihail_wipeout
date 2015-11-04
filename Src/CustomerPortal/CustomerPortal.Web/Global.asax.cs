@@ -13,16 +13,15 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
-using CustomerPortal.Web.Helpers;
 using CustomerPortal.Web.Services.Impl;
 using log4net.Config;
 using MongoRepository;
 using Newtonsoft.Json;
 using WebMatrix.WebData;
-using Environment = CustomerPortal.Web.Entities.Environment;
 
 #endregion
 
@@ -88,13 +87,26 @@ namespace CustomerPortal.Web
 
         private static void MigrateNetworkVehiclesToMarketRepresentation()
         {
+            var networkVehicles = new MongoRepository<NetworkVehicle>();
+            if (!networkVehicles.Any())
+            {
+                // Migration already done
+                return;
+            }
+
+            var allMarketsDefinedInNetworkSettings = new MongoRepository<TaxiHailNetworkSettings>().Select(x => x.Market).Distinct().ToList();
+            var allMarketsDefinedInNetworkVehicles = networkVehicles.Select(x => x.Market).Distinct().ToList();
+            var allMarketsDefined = new List<string>();
+            allMarketsDefined.AddRange(allMarketsDefinedInNetworkSettings);
+            allMarketsDefined.AddRange(allMarketsDefinedInNetworkVehicles);
+            allMarketsDefined = allMarketsDefined.Distinct().ToList();
+
             var marketRepo = new MongoRepository<Market>();
 
-            var networkVehicles = new MongoRepository<NetworkVehicle>();
-            var markets = networkVehicles.Select(x => x.Market).Distinct();
-            foreach (var market in markets)
+            foreach (var market in allMarketsDefined)
             {
-                var vehiclesForThisMarket = networkVehicles.Where(x => x.Market == market)
+                var vehiclesForThisMarket = networkVehicles
+                    .Where(x => x.Market == market)
                     .Select(x => new Vehicle
                     {
                         Id = x.Id,
@@ -104,6 +116,7 @@ namespace CustomerPortal.Web
                         NetworkVehicleId = x.NetworkVehicleId
                     })
                     .ToList();
+
                 var newMarket = new Market
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -169,7 +182,7 @@ namespace CustomerPortal.Web
                 {"TwitterEnabled","false"},{"TwitterRequestTokenUrl","https://api.twitter.com/oauth/request_token"}, {"TaxiHail.Version", "2.0"}, {"Client.CreditCardIsMandatory", "false"} 
             };
 
-            var settings = new MongoRepository<Entities.DefaultCompanySetting>();
+            var settings = new MongoRepository<DefaultCompanySetting>();
 
             foreach (var defaultSetting in defaultsClient)
             {
