@@ -33,6 +33,7 @@ namespace apcurium.MK.Web.Tests
         public async void when_getting_the_company_market()
         {
             var market = await _sut.GetHashedCompanyMarket(99.99, -99.99);
+            
             Assert.AreEqual(string.Empty, market);
         }
     }
