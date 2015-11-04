@@ -10,8 +10,6 @@ namespace MK.Common.Configuration
 
         public string IBSWebServicesUrl { get; set; }
 
-        public int FutureBookingThresholdInMinutes { get; set; }
-
         public double WaitTimeRatePerMinute { get; set; }
 
         public double AirportMeetAndGreetRate { get; set; }

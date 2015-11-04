@@ -24,16 +24,12 @@
                 rules: {
                     serviceType: "required",
                     ibsWebServicesUrl: "required",
-                    futureBookingThresholdInMinutes: "required",
                     waitTimeRatePerMinute: "required",
                     airportMeetAndGreetRate: "required"
                 },
                 messages: {
                     ibsWebServicesUrl: {
                         required: TaxiHail.localize('error.serviceTypeIbsWebServicesUrlRequired')
-                    },
-                    futureBookingThresholdInMinutes: {
-                        required: TaxiHail.localize('error.serviceTypeFutureBookingThresholdInMinutesRequired')
                     },
                     waitTimeRatePerMinute: {
                         required: TaxiHail.localize('error.serviceTypeWaitTimeRatePerMinuteRequired')
