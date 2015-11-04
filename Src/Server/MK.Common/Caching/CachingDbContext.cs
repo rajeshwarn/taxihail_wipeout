@@ -35,7 +35,9 @@ namespace apcurium.MK.Common.Caching
             var entry = Entry(entity);
 
             if (entry.State == EntityState.Detached)
+            {
                 Set<CacheItem>().Add(entity);
+            }
 
             SaveChanges();
         }
