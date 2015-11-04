@@ -66,13 +66,31 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult DeleteMarket(MarketModel marketModel)
         {
-            try
+            var companiesUsingThisMarketInTheirNetworkSettings = new MongoRepository<TaxiHailNetworkSettings>()
+                .Where(x => x.Market == marketModel.Market)
+                .OrderBy(x => x.Id)
+                .Select(x => x.Id)
+                .ToList();
+
+            if (companiesUsingThisMarketInTheirNetworkSettings.Any())
             {
-                Repository.Delete(v => v.Name == marketModel.Market);
+                TempData["warning"] = "Couldn't delete the market because some compagnies are configured to use it:"
+                                      + companiesUsingThisMarketInTheirNetworkSettings.Aggregate("",
+                                          (current, company) => current + string.Format(
+                                                  company == companiesUsingThisMarketInTheirNetworkSettings.Last()
+                                                      ? "{0}"
+                                                      : "{0}, ", company));
             }
-            catch (Exception)
+            else
             {
-                ViewBag.Error = "An error occured. Unable to delete the market";
+                try
+                {
+                    Repository.Delete(v => v.Name == marketModel.Market);
+                }
+                catch (Exception)
+                {
+                    ViewBag.Error = "An error occured. Unable to delete the market";
+                }
             }
             
             return RedirectToAction("Index");
