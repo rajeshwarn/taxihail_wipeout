@@ -7,6 +7,8 @@ using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using System;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -15,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	{
 		private ViewStates _animatedVisibility;
 		private bool _isShown;
+        public Action ActionOnAnimationEnd { get; set;}
 
 		public const int CONTACT_TAXI_HIDDEN_Y_OFFSET = -1000;
 
@@ -53,14 +56,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 			_isShown = true;
 
-			var desigredHeight = -Height;
+			var desiredHeight = -Height;
 
-			if (((MarginLayoutParams) LayoutParameters).TopMargin != desigredHeight)
+			if (((MarginLayoutParams) LayoutParameters).TopMargin != desiredHeight)
 			{
-				((MarginLayoutParams)LayoutParameters).TopMargin = desigredHeight;
+				((MarginLayoutParams)LayoutParameters).TopMargin = desiredHeight;
 			}
 
-			var animation = AnimationHelper.GetForYTranslation(this, 0);
+            var animation = AnimationHelper.GetForYTranslation(this, 0);
+
+            if (ActionOnAnimationEnd != null)
+            {
+                animation.AnimationEnd += (sender, e) =>
+                {
+                    ActionOnAnimationEnd();
+                };
+            }
+            else
+            {
+                // If no Change Drop Off overlay, update the map bounding box
+                animation.AnimationEnd += (sender, e) => 
+                {
+                    ((BookingStatusViewModel)DataContext).MapCenter = ((BookingStatusViewModel)DataContext).MapCenter;
+                };
+        }
 
 			StartAnimation(animation);
 		}

@@ -184,6 +184,9 @@
     <Reference Include="Xamarin.Android.Support.v4">
       <HintPath>..\packages\Xamarin.Android.Support.v4.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
+    <Reference Include="MapBoxSdk2.1">
+      <HintPath>MapBoxSdk2.1\MapBoxSdk2.1\bin\Release\MapBoxSdk2.1.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -671,6 +674,13 @@
     <Compile Include="Binding\MvxButtonClickBinding.cs" />
     <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <AndroidResource Include="Resources\Layout\Control_AppBarButton.xml" />
+    <AndroidResource Include="Resources\Layout\SubView_ChangeDropOffOverlay.axml" />
+    <Compile Include="Controls\Widgets\OrderStatusChangeDropOffOverlay.cs" />
+    <AndroidResource Include="Resources\Drawable\destination_small_icon_white.png" />
+    <AndroidResource Include="Resources\Layout\SubView_DropOffSelection.axml" />
+    <Compile Include="Controls\Widgets\DropOffSelection.cs" />
+    <Compile Include="Controls\Widgets\AppBarDropOffSelection.cs" />
+    <AndroidResource Include="Resources\Layout\SubView_AppBar_DropOffSelection.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -851,10 +861,6 @@
     <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj">
       <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
       <Name>MK.Booking.MapDataProvider.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="MapBoxSdk2.1\MapBoxSdk2.1\MapBoxSdk2.1.csproj">
-      <Project>{13802257-329F-4EF6-B845-70CA0652B6AD}</Project>
-      <Name>MapBoxSdk2.1</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -39,8 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiHail", "Android\TaxiHai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMTPayment.Android", "..\Server\CMTPayment\CMTPayment.Android.csproj", "{FD56EFB1-2ED8-4A8A-B7AB-80EB36CF03EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapBoxSdk2.1", "Android\MapBoxSdk2.1\MapBoxSdk2.1\MapBoxSdk2.1.csproj", "{13802257-329F-4EF6-B845-70CA0652B6AD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AdHoc|Any CPU = AdHoc|Any CPU
@@ -90,38 +88,6 @@ Global
 		{0C54E2DC-0852-4EED-A882-60B68FE41C8D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{0C54E2DC-0852-4EED-A882-60B68FE41C8D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0C54E2DC-0852-4EED-A882-60B68FE41C8D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AdHoc|Any CPU.ActiveCfg = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AdHoc|Any CPU.Build.0 = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AdHoc|iPhone.ActiveCfg = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AdHoc|iPhone.Build.0 = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AdHoc|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AdHoc|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AdHoc|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AdHoc|Mixed Platforms.Build.0 = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AppStore|Any CPU.ActiveCfg = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AppStore|Any CPU.Build.0 = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AppStore|iPhone.ActiveCfg = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AppStore|iPhone.Build.0 = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AppStore|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AppStore|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AppStore|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.AppStore|Mixed Platforms.Build.0 = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Release|iPhone.Build.0 = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{13802257-329F-4EF6-B845-70CA0652B6AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}.AdHoc|Any CPU.ActiveCfg = AdHoc|Any CPU
 		{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}.AdHoc|Any CPU.Build.0 = AdHoc|Any CPU
 		{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}.AdHoc|iPhone.ActiveCfg = Release|Any CPU
@@ -563,7 +529,6 @@ Global
 		{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9} = {4982DCA0-B205-47C3-A4C2-364755A3D7D5}
 		{9F666743-C8EE-4553-A079-03FB36F979E0} = {4982DCA0-B205-47C3-A4C2-364755A3D7D5}
 		{FD56EFB1-2ED8-4A8A-B7AB-80EB36CF03EB} = {4982DCA0-B205-47C3-A4C2-364755A3D7D5}
-		{13802257-329F-4EF6-B845-70CA0652B6AD} = {4982DCA0-B205-47C3-A4C2-364755A3D7D5}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

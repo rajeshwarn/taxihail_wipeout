@@ -2,9 +2,8 @@
     
     var View = TaxiHail.ProfileView = TaxiHail.TemplatedView.extend({
         events: {
-            'change :input': 'onPropertyChanged',
-            "change #countrycode": "onPropertyChanged"
-    },
+            'change :input': 'onPropertyChanged'
+        },
 
         initialize: function () {
 
@@ -179,21 +178,19 @@
 
         onPropertyChanged: function (e) {
 
-            var dataNodeName = e.currentTarget.nodeName.toLowerCase();
             var elementName = e.currentTarget.name;
 
             var $input = $(e.currentTarget);
             var settings = this.model.get('settings');
 
-            if (dataNodeName == "input") {
+            if (elementName == "countryCode") {
+                settings.country.code = $input.find(":selected").val();
+            } else {
                 var name = $input.attr("name");
                 var value = $input.val();
+                settings[name] = value;
             }
-            else if (dataNodeName == "select") {
-                if (elementName == "countryCode") {
-                    settings.country.code = $input.find(":selected").val();
-                }
-            }
+
 
             this.$(':submit').removeClass('disabled');
         }
