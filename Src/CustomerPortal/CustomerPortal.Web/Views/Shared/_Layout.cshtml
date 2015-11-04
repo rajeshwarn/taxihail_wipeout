@@ -8,17 +8,12 @@
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/bundles/bootstrap/less")
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-
-    
     </head>
     <body>
         <div class="container">
             <div class="navbar navbar-fixed-top">
                 <div class="navbar-inner">
-                
                     <div class="container">
-                    
-                    
                         <a class="brand" href="/">TaxiHail Customer Portal</a>
                         <section class="pull-right">
                             @Html.Partial("_LoginStatusPartial")
@@ -28,25 +23,14 @@
                     {
                     <div class="container" style="height:40px">
                         <a href='@Url.RouteUrl("Default", new { action = "Home", controller = "Admin", id = "Index"})' class="btn">Company list</a>
-				            
                         <a href='@Url.RouteUrl("Default", new { action = "Home", controller = "Admin", id = "Create"})' class="btn">New Company</a>
-				            
-                        <a href='@Url.RouteUrl("Default", new { action = "Membership", controller = "Admin", id = "Index"})' class="btn">Users</a>
-				            
+                        <a href='@Url.RouteUrl("Default", new { action = "Membership", controller = "Admin", id = "Index"})' class="btn">Users</a>				            
                         <a href='@Url.RouteUrl("Default", new { action = "Deployment", controller = "Admin", id = "Index"})' class="btn">Deployment</a>
-				            
                         <a href='@Url.RouteUrl("Default", new { action = "Payment", controller = "Admin", id = "Index"})' class="btn">Payment</a>
-				            
-                        <a href='@Url.RouteUrl("Default", new { action = "NetworkVehicles", controller = "Admin", id = "Index"})' class="btn">Network Vehicles</a>
-				            
+                        <a href='@Url.RouteUrl("Default", new { action = "Markets", controller = "Admin", id = "Index"})' class="btn">Markets</a>
                         <a href='@Url.RouteUrl("Default", new { action = "StoreCredential", controller = "Admin"})' class="btn">Store Credentials</a>
-				            
                         <a href='@Url.RouteUrl("Default", new { action = "Checklist", controller = "Admin", id = "Index"})' class="btn">Checklist</a>
-                        
                         <br />
-                        
-                        
-                        
 				      </div>
 				     }
                 </div>

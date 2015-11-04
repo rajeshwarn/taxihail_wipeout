@@ -198,7 +198,7 @@
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TaxiHailNetworkSettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TaxiHailNetworkSettingsControllerBase.cs" />
-    <Compile Include="Areas\Admin\Controllers\NetworkVehiclesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MarketsController.cs" />
     <Compile Include="Areas\Admin\Controllers\VersionController.cs" />
     <Compile Include="Areas\Admin\Models\AddDeploymentJobModel.cs" />
     <Compile Include="Areas\Admin\Models\AppleSearchByBundle.cs" />
@@ -229,6 +229,7 @@
     <Compile Include="Areas\Customer\Controllers\Api\RoamingApiController.cs" />
     <Compile Include="Areas\Customer\Models\RequestResponse\CompanyPreferencesRequest.cs" />
     <Compile Include="Attributes\NoCacheAttribute.cs" />
+    <Compile Include="Entities\Network\Market.cs" />
     <Compile Include="Services\SourceControlFactory.cs" />
     <Compile Include="Services\Impl\BitBucketVersionUpdater.cs" />
     <Compile Include="Services\Impl\GitHubVersionUpdater.cs" />
@@ -255,7 +256,7 @@
     <Compile Include="Entities\CompanyVehicle.cs" />
     <Compile Include="Entities\Network\MapRegion.cs" />
     <Compile Include="Entities\Network\TaxiHailNetworkSettings.cs" />
-    <Compile Include="Entities\Network\NetworkVehicle.cs" />
+    <Compile Include="Entities\Network\ObsoleteEntities.cs" />
     <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\Network\PaymentSettings.cs" />
     <Compile Include="Entities\Questionnaire.cs" />
@@ -513,11 +514,11 @@
     <Content Include="Areas\Admin\Views\TaxiHailNetworkSettings\Index.cshtml" />
     <Content Include="Grid.mvc.readme" />
     <Content Include="Areas\Admin\Views\Checklist\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\NetworkVehicles\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\NetworkVehicles\CreateMarket.cshtml" />
-    <Content Include="Areas\Admin\Views\NetworkVehicles\CreateVehicle.cshtml" />
-    <Content Include="Areas\Admin\Views\NetworkVehicles\EditVehicle.cshtml" />
-    <Content Include="Areas\Admin\Views\NetworkVehicles\VehicleIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\Markets\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Markets\CreateMarket.cshtml" />
+    <Content Include="Areas\Admin\Views\Markets\CreateVehicle.cshtml" />
+    <Content Include="Areas\Admin\Views\Markets\EditVehicle.cshtml" />
+    <Content Include="Areas\Admin\Views\Markets\VehicleIndex.cshtml" />
     <Content Include="Areas\Admin\Views\Deployment\DeploymentHistory.cshtml">
       <SubType>Code</SubType>
       <BrowseToURL>~/Admin/Deployment/History</BrowseToURL>
