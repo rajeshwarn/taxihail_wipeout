@@ -2957,4 +2957,10 @@
 	<data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
 		<value>URL to store page was not configured</value>
 	</data>
+  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+		<value>Your session has expired, please login again.</value>
+	</data>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+		<value>Server error</value>
+	</data>
 </root>
