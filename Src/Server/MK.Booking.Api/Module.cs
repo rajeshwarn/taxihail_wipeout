@@ -144,7 +144,6 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<PopularAddress, UpdatePopularAddress>();
 
             Mapper.CreateMap<HailRequest, CreateOrder>();
-            Mapper.CreateMap<HailRequest.RideEstimate, CreateOrder.RideEstimate>();
             Mapper.CreateMap<OrderKey, IbsOrderKey>();
             Mapper.CreateMap<IbsOrderKey, OrderKey>();
             Mapper.CreateMap<VehicleCandidate, IbsVehicleCandidate>();

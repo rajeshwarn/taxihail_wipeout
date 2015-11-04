@@ -128,10 +128,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ApplicationPathResolver.cs" />
-    <Compile Include="Helpers\CreateOrderPaymentValidator.cs" />
+    <Compile Include="Helpers\CreateOrder\CreateOrderPaymentHelper.cs" />
+    <Compile Include="Helpers\CreateOrder\TaxiHailNetworkHelper.cs" />
     <Compile Include="Helpers\OrderStatusHelper.cs" />
     <Compile Include="Helpers\OrderStatusIbsMock.cs" />
     <Compile Include="Services\CreateOrder\BaseCreateOrderService.cs" />
+    <Compile Include="Services\CreateOrder\ChargeAccountValidationResult.cs" />
+    <Compile Include="Services\CreateOrder\PayPalCheckoutService.cs" />
     <Compile Include="Services\DriverService.cs" />
     <Compile Include="Services\FlightInformationService.cs" />
     <Compile Include="Services\ManualRidelinqOrderService.cs" />

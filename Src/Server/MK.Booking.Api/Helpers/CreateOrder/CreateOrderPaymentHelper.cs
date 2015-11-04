@@ -1,33 +1,40 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
 
 namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
 {
-    public class CreateOrderPaymentValidator
+    public class CreateOrderPaymentHelper
     {
         private readonly IServerSettings _serverSettings;
         private readonly ICommandBus _commandBus;
         private readonly IPaymentService _paymentService;
         private readonly IOrderPaymentDao _orderPaymentDao;
+        private readonly IPayPalServiceFactory _payPalServiceFactory;
 
-        public CreateOrderPaymentValidator(
+        public CreateOrderPaymentHelper(
             IServerSettings serverSettings,
             ICommandBus commandBus,
             IPaymentService paymentService,
-            IOrderPaymentDao orderPaymentDao)
+            IOrderPaymentDao orderPaymentDao,
+            IPayPalServiceFactory payPalServiceFactory)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
             _paymentService = paymentService;
             _orderPaymentDao = orderPaymentDao;
+            _payPalServiceFactory = payPalServiceFactory;
         }
 
         internal bool PreAuthorizePaymentMethod(
@@ -146,6 +153,28 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             }
 
             return new BasePaymentResponse { IsSuccessful = true };
+        }
+
+        internal InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(Guid accountId, bool isPrepaid, Guid orderId, Contract.Requests.CreateOrder request, decimal bookingFees, string companyKey, CreateReportOrder createReportOrder, string absoluteRequestUri)
+        {
+            if (isPrepaid
+                && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+            {
+                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance(companyKey).InitializeWebPayment(accountId, orderId, absoluteRequestUri, request.Estimate.Price, bookingFees, request.ClientLanguageCode);
+
+                if (paypalWebPaymentResponse.IsSuccessful)
+                {
+                    return paypalWebPaymentResponse;
+                }
+
+                var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
+
+                createReportOrder.Error = createOrderException.ToString();
+                _commandBus.Send(createReportOrder);
+                throw createOrderException;
+            }
+
+            return null;
         }
     }
 }

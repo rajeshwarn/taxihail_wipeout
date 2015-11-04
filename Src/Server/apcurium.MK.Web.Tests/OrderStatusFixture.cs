@@ -48,7 +48,7 @@ namespace apcurium.MK.Web.Tests
                     NumberOfTaxi = 1,
                     Name = "Joe Smith"
                 },
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Distance = 3,
                     Price = 10

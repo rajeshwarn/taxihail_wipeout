@@ -141,7 +141,7 @@ namespace apcurium.MK.Web.Tests
                     PickupAddress = TestAddresses.GetAddress1(),
                     PickupDate = null,
                     DropOffAddress = TestAddresses.GetAddress2(),
-                    Estimate = new CreateOrder.RideEstimate
+                    Estimate = new RideEstimate
                         {
                             Price = 10,
                             Distance = 3

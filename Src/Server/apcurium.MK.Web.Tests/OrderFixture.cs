@@ -51,7 +51,7 @@ namespace apcurium.MK.Web.Tests
                     PickupAddress = TestAddresses.GetAddress1(),
                     PickupDate = DateTime.Now,
                     DropOffAddress = TestAddresses.GetAddress2(),
-                    Estimate = new CreateOrder.RideEstimate
+                    Estimate = new RideEstimate
                         {
                             Price = 10,
                             Distance = 3
@@ -118,7 +118,7 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Price = 10,
                     Distance = 3
@@ -168,7 +168,7 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Price = 10,
                     Distance = 3
@@ -208,12 +208,12 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Price = 10,
                     Distance = 3
                 },
-                Settings = new BookingSettings()
+                Settings = new BookingSettings
                 {
                     Phone = "5145551212",
                     Country = new CountryISOCode("CA")
@@ -235,7 +235,7 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Price = 10,
                     Distance = 3
@@ -302,7 +302,7 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Price = 10,
                     Distance = 3

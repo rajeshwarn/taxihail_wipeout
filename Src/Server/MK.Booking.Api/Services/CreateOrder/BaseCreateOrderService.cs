@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Helpers.CreateOrder;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
@@ -32,10 +31,12 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IPromotionDao _promotionDao;
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
+        private readonly IAccountDao _accountDao;
+        private readonly IPayPalServiceFactory _payPalServiceFactory;
 
         private readonly Resources.Resources _resources;
 
-        private readonly CreateOrderPaymentValidator _paymentValidator;
+        protected readonly CreateOrderPaymentHelper PaymentHelper;
 
         internal BaseCreateOrderService(IServerSettings serverSettings,
             ICommandBus commandBus,
@@ -45,7 +46,9 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             IIBSServiceProvider ibsServiceProvider,
             IPromotionDao promotionDao,
             IEventSourcedRepository<Promotion> promoRepository,
-            IOrderPaymentDao orderPaymentDao)
+            IOrderPaymentDao orderPaymentDao,
+            IAccountDao accountDao,
+            IPayPalServiceFactory payPalServiceFactory)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
@@ -55,9 +58,11 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             _ibsServiceProvider = ibsServiceProvider;
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
+            _accountDao = accountDao;
+            _payPalServiceFactory = payPalServiceFactory;
             _resources = new Resources.Resources(_serverSettings);
 
-            _paymentValidator = new CreateOrderPaymentValidator(serverSettings, commandBus, paymentService, orderPaymentDao);
+            PaymentHelper = new CreateOrderPaymentHelper(serverSettings, commandBus, paymentService, orderPaymentDao, payPalServiceFactory);
         }
 
         protected internal void ValidateAppVersion(string clientLanguage, CreateReportOrder createReportOrder)
@@ -154,7 +159,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
             if (accountChargeDetail == null)
             {
-                Exception createOrderException = new HttpError(HttpStatusCode.BadRequest,
+                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.AccountCharge_InvalidAccountNumber.ToString(),
                     GetCreateOrderServiceErrorMessage(ErrorCode.AccountCharge_InvalidAccountNumber, clientLanguageCode));
 
@@ -171,19 +176,19 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 if (validation.ValidResponse != null)
                 {
                     int firstError = validation.ValidResponse.IndexOf(false);
-                    Exception createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
+                    var invalidAnswerException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
                                             accountChargeDetail.Questions[firstError].ErrorMessage);
 
-                    createReportOrder.Error = createOrderException.ToString();
+                    createReportOrder.Error = invalidAnswerException.ToString();
                     _commandBus.Send(createReportOrder);
-                    throw createOrderException;
+                    throw invalidAnswerException;
                 }
 
-                Exception createOrderException1 = new HttpError(HttpStatusCode.BadRequest, ErrorCode.AccountCharge_InvalidAccountNumber.ToString(), validation.Message);
+                var invalidAccountException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.AccountCharge_InvalidAccountNumber.ToString(), validation.Message);
 
-                createReportOrder.Error = createOrderException1.ToString();
+                createReportOrder.Error = invalidAccountException.ToString();
                 _commandBus.Send(createReportOrder);
-                throw createOrderException1;
+                throw invalidAccountException;
             }
         }
 
@@ -204,7 +209,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 // Verify that prepaid is enabled on the server
                 if (!_serverSettings.GetPaymentSettings(companyKey).IsPrepaidEnabled)
                 {
-                    Exception createOrderException = new HttpError(HttpStatusCode.BadRequest,
+                    var createOrderException = new HttpError(HttpStatusCode.BadRequest,
                         ErrorCode.CreateOrder_RuleDisable.ToString(),
                          _resources.Get("CannotCreateOrder_PrepaidButPrepaidNotEnabled", request.ClientLanguageCode));
 
@@ -221,7 +226,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 {
                     if (!appEstimateWithTip.HasValue)
                     {
-                        Exception createOrderException = new HttpError(HttpStatusCode.BadRequest,
+                        var createOrderException = new HttpError(HttpStatusCode.BadRequest,
                             ErrorCode.CreateOrder_RuleDisable.ToString(),
                             _resources.Get("CannotCreateOrder_PrepaidNoEstimate", request.ClientLanguageCode));
 
@@ -232,7 +237,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
                     ValidateCreditCard(account, request.ClientLanguageCode, request.Cvv, createReportOrder);
 
-                    var result = _paymentValidator.CapturePaymentForPrepaidOrder(companyKey, orderId, account, Convert.ToDecimal(appEstimateWithTip), tipPercent, bookingFees, request.Cvv, createReportOrder);
+                    var result = PaymentHelper.CapturePaymentForPrepaidOrder(companyKey, orderId, account, Convert.ToDecimal(appEstimateWithTip), tipPercent, bookingFees, request.Cvv, createReportOrder);
                     if (!result.IsSuccessful)
                     {
                         var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), result.Message);
@@ -251,8 +256,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                     && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
                 {
                     ValidateCreditCard(account, request.ClientLanguageCode, request.Cvv, createReportOrder);
-                    
-                    var isSuccessful = _paymentValidator.PreAuthorizePaymentMethod(companyKey, orderId, account,
+
+                    var isSuccessful = PaymentHelper.PreAuthorizePaymentMethod(companyKey, orderId, account,
                         request.ClientLanguageCode, isFutureBooking, appEstimateWithTip, bookingFees,
                         false, createReportOrder, request.Cvv);
 
@@ -282,7 +287,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
             {
-                Exception createOrderException = new HttpError(HttpStatusCode.BadRequest,
+                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString(),
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
 
@@ -294,7 +299,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
             if (creditCard.IsExpired())
             {
-                Exception createOrderException = new HttpError(HttpStatusCode.BadRequest,
+                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.CreateOrder_RuleDisable.ToString(),
                      _resources.Get("CannotCreateOrder_CreditCardExpired", clientLanguageCode));
 
@@ -304,7 +309,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             }
             if (creditCard.IsDeactivated)
             {
-                Exception createOrderException = new HttpError(HttpStatusCode.BadRequest,
+                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.CreateOrder_CardOnFileDeactivated.ToString(),
                     _resources.Get("CannotCreateOrder_CreditCardDeactivated", clientLanguageCode));
 
@@ -316,7 +321,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             if (_serverSettings.GetPaymentSettings().AskForCVVAtBooking
                 && !cvv.HasValue())
             {
-                Exception createOrderException = new HttpError(HttpStatusCode.BadRequest,
+                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.CreateOrder_RuleDisable.ToString(),
                      _resources.Get("CannotCreateOrder_CreditCardCvvRequired", clientLanguageCode));
 
@@ -331,7 +336,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             if (!_serverSettings.GetPaymentSettings(companyKey).PayPalClientSettings.IsEnabled
                     || !account.IsPayPalAccountLinked)
             {
-                Exception createOrderException = new HttpError(HttpStatusCode.BadRequest,
+                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.CreateOrder_RuleDisable.ToString(),
                      _resources.Get("CannotCreateOrder_PayPalButNoPayPal", clientLanguageCode));
 
@@ -340,7 +345,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 throw createOrderException;
             }
 
-            var isSuccessful =_paymentValidator.PreAuthorizePaymentMethod(companyKey, orderId, account, clientLanguageCode, isFutureBooking, appEstimateWithTip, bookingFees, true, createReportOrder);
+            var isSuccessful = PaymentHelper.PreAuthorizePaymentMethod(companyKey, orderId, account, clientLanguageCode, isFutureBooking, appEstimateWithTip, bookingFees, true, createReportOrder);
             if (!isSuccessful)
             {
                 var errorMessage = _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode);
@@ -378,7 +383,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 }
 
                 // Should never happen since we will check client-side if there's a promocode and not paying with CoF/PayPal
-                Exception createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get(promotionErrorResourceKey, clientLanguageCode));
 
                 createReportOrder.Error = createOrderException.ToString();
@@ -401,7 +406,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             string errorMessage;
             if (!promoDomainObject.CanApply(accountId, pickupDate, isFutureBooking, out errorMessage))
             {
-                Exception createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get(errorMessage, clientLanguageCode));
 
                 createReportOrder.Error = createOrderException.ToString();
@@ -410,6 +415,28 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             }
 
             return promo.Id;
+        }
+
+        protected void ValidateProvider(Contract.Requests.CreateOrder request, ReferenceData referenceData, bool isInExternalMarket, CreateReportOrder createReportOrder)
+        {
+            // Provider is optional for home market
+            // But if a provider is specified, it must match with one of the ReferenceData values
+            if (!isInExternalMarket
+                && request.Settings.ProviderId.HasValue
+                && referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
+            {
+
+                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.CreateOrder_InvalidProvider.ToString(),
+                    GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_InvalidProvider, request.ClientLanguageCode));
+
+                if (createReportOrder != null)
+                {
+                    createReportOrder.Error = createOrderException.ToString();
+                    _commandBus.Send(createReportOrder);
+                }
+                throw createOrderException;
+            }
         }
 
         protected string GetCreateOrderServiceErrorMessage(ErrorCode errorCode, string language)
@@ -423,15 +450,51 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             return _serverSettings.ServerData.HideCallDispatchButton ? noCallMessage : callMessage;
         }
 
-        protected class ChargeAccountValidationResult
+        protected int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
         {
-            public string[] Prompts { get; set; }
+            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
+            if (ibsAccountId.HasValue)
+            {
+                return ibsAccountId.Value;
+            }
 
-            public int?[] PromptsLength { get; set; }
+            // Account doesn't exist, create it
+            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
+                account.Email,
+                string.Empty,
+                account.Name,
+                account.Settings.Phone);
 
-            public string ChargeTypeKeyOverride { get; set; }
+            _commandBus.Send(new LinkAccountToIbs
+            {
+                AccountId = account.Id,
+                IbsAccountId = ibsAccountId.Value,
+                CompanyKey = companyKey
+            });
 
-            public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
+            return ibsAccountId.Value;
+        }
+
+        protected CreateReportOrder CreateReportOrder(Contract.Requests.CreateOrder request, AccountDetail account)
+        {
+            return new CreateReportOrder
+            {
+                PickupDate = request.PickupDate ?? DateTime.Now,
+                UserNote = request.Note,
+                PickupAddress = request.PickupAddress,
+                DropOffAddress = request.DropOffAddress,
+                Settings = request.Settings,
+                ClientLanguageCode = request.ClientLanguageCode,
+                UserLatitude = request.UserLatitude,
+                UserLongitude = request.UserLongitude,
+                CompanyKey = request.OrderCompanyKey,
+                AccountId = account.Id,
+                OrderId = request.Id,
+                EstimatedFare = request.Estimate.Price,
+                UserAgent = Request.UserAgent,
+                ClientVersion = Request.Headers.Get("ClientVersion"),
+                TipIncentive = request.TipIncentive
+            };
         }
     }
 }

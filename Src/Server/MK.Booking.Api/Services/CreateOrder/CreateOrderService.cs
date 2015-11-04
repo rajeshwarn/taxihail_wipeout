@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Requests.Client;
@@ -16,24 +15,19 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Helpers;
-using apcurium.MK.Common.Resources;
 using AutoMapper;
-using CMTServices;
 using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using log4net;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
@@ -44,13 +38,10 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 {
     public class CreateOrderService : BaseCreateOrderService
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (CreateOrderService));
-
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
 	    private readonly ILogger _logger;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
-        private readonly IPayPalServiceFactory _payPalServiceFactory;
         private readonly IFeesDao _feesDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -79,7 +70,9 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             IFeesDao feesDao, 
             ILogger logger,
             IIbsCreateOrderService ibsCreateOrderService)
-            : base(serverSettings, commandBus, accountChargeDao, paymentService, creditCardDao, ibsServiceProvider, promotionDao, promoRepository, orderPaymentDao)
+            : base(serverSettings, commandBus, accountChargeDao, paymentService, creditCardDao,
+                   ibsServiceProvider, promotionDao, promoRepository, orderPaymentDao, accountDao,
+                   payPalServiceFactory)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
@@ -89,13 +82,12 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             _ruleCalculator = ruleCalculator;
             _orderDao = orderDao;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
-            _payPalServiceFactory = payPalServiceFactory;
             _feesDao = feesDao;
 	        _logger = logger;
             _ibsCreateOrderService = ibsCreateOrderService;
             _resources = new Resources.Resources(_serverSettings);
 
-            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, Log);
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, _logger);
         }
 
         public object Post(Contract.Requests.CreateOrder request)
@@ -105,7 +97,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
         public object Post(HailRequest request)
         {
-            Log.Info(string.Format("Starting Hail. Request : {0}", request.ToJson()));
+            _logger.LogMessage(string.Format("Starting Hail. Request : {0}", request.ToJson()));
 
             var createOrderRequest = Mapper.Map<Contract.Requests.CreateOrder>(request);
 
@@ -120,7 +112,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 throw new HttpError(string.Format("Order {0} doesn't exist", request.OrderKey.TaxiHailOrderId));
             }
 
-            Log.Info(string.Format("Trying to confirm Hail. Request : {0}", request.ToJson()));
+            _logger.LogMessage(string.Format("Trying to confirm Hail. Request : {0}", request.ToJson()));
 
             var ibsOrderKey = Mapper.Map<IbsOrderKey>(request.OrderKey);
             var ibsVehicleCandidate = Mapper.Map<IbsVehicleCandidate>(request.VehicleCandidate);
@@ -129,12 +121,12 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             if (confirmHailResult == null || confirmHailResult < 0)
             {
                 var errorMessage = string.Format("Error while trying to confirm the hail. IBS response code : {0}", confirmHailResult);
-                Log.Error(errorMessage);
+                _logger.LogMessage(errorMessage);
 
                 return new HttpResult(HttpStatusCode.InternalServerError, errorMessage);
             }
 
-            Log.Info("Hail request confirmed");
+            _logger.LogMessage("Hail request confirmed");
 
             return new OrderStatusDetail
             {
@@ -155,7 +147,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
 			Exception createOrderException;
 
-            Log.Info("Create order request : " + request.ToJson());
+            _logger.LogMessage("Create order request : " + request.ToJson());
 
             var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
 
@@ -190,11 +182,11 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             if (request.OrderCompanyKey.HasValue() || request.OrderFleetId.HasValue)
             {
                 // For API user, it's possible to manually specify which company to dispatch to by using a fleet id
-                bestAvailableCompany = FindSpecificCompany(market, createReportOrder, request.OrderCompanyKey, request.OrderFleetId);
+                bestAvailableCompany = _taxiHailNetworkHelper.FindSpecificCompany(market, createReportOrder, request.OrderCompanyKey, request.OrderFleetId);
             }
             else
             {
-                bestAvailableCompany = FindBestAvailableCompany(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+                bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
 
 			createReportOrder.CompanyKey = bestAvailableCompany.CompanyKey;
@@ -285,7 +277,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 // External market, query company site directly to validate their rules
                 var orderServiceClient = new RoamingValidationServiceClient(bestAvailableCompany.CompanyKey, _serverSettings.ServerData.Target);
 
-                Log.Info(string.Format("Validating rules for company in external market... Target: {0}, Server: {1}", _serverSettings.ServerData.Target, orderServiceClient.Url));
+                _logger.LogMessage(string.Format("Validating rules for company in external market... Target: {0}, Server: {1}", _serverSettings.ServerData.Target, orderServiceClient.Url));
 
                 var validationResult = orderServiceClient.ValidateOrder(request, true);
                 if (validationResult.HasError)
@@ -358,7 +350,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             }
             
             // Initialize PayPal if user is using PayPal web
-            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(account.Id, isPrepaid, orderCommand.OrderId, request, orderCommand.BookingFees, bestAvailableCompany.CompanyKey, createReportOrder);
+            var  paypalWebPaymentResponse = PaymentHelper.InitializePayPalCheckoutIfNecessary(account.Id, isPrepaid, orderCommand.OrderId, request, orderCommand.BookingFees, bestAvailableCompany.CompanyKey, createReportOrder, Request.AbsoluteUri);
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
@@ -385,7 +377,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 .FirstOrDefault();
 
             var ibsInformationNote = BuildNote(chargeTypeIbs, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
-            var fare = GetFare(request.Estimate);
+            var fare = FareHelper.GetFareFromEstimate(request.Estimate);
 
             orderCommand.AccountId = account.Id;
             orderCommand.UserAgent = Request.UserAgent;
@@ -485,87 +477,9 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             };
         }
 
-        public object Get(ExecuteWebPaymentAndProceedWithOrder request)
-        {
-            Log.Info("ExecuteWebPaymentAndProceedWithOrder request : " + request.ToJson());
-
-            var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
-            var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
-
-            if (request.Cancel || orderInfo == null)
-            {
-                var clientLanguageCode = orderInfo == null
-                    ? SupportedLanguages.en.ToString()
-                    : orderInfo.Request.ClientLanguageCode;
-
-                _commandBus.Send(new CancelOrderBecauseOfError
-                {
-                    OrderId = request.OrderId,
-                    WasPrepaid = true,
-                    ErrorDescription = _resources.Get("CannotCreateOrder_PrepaidPayPalPaymentCancelled", clientLanguageCode)
-                });
-            }
-            else
-            {
-                // Execute PayPal payment
-                var response = _payPalServiceFactory.GetInstance(orderInfo.BestAvailableCompany.CompanyKey).ExecuteWebPayment(request.PayerId, request.PaymentId);
-
-                if (response.IsSuccessful)
-                {
-                    var tipPercentage = orderInfo.Account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
-                    var tipAmount = FareHelper.CalculateTipAmount(orderInfo.Request.Fare.AmountInclTax, tipPercentage);
-
-                    _commandBus.Send(new MarkPrepaidOrderAsSuccessful
-                    {
-                        OrderId = request.OrderId,
-                        TotalAmount = orderInfo.Request.Fare.AmountInclTax + tipAmount,
-                        MeterAmount = orderInfo.Request.Fare.AmountExclTax,
-                        TaxAmount = orderInfo.Request.Fare.TaxAmount,
-                        TipAmount = tipAmount,
-                        TransactionId = response.TransactionId,
-                        Provider = PaymentProvider.PayPal,
-                        Type = PaymentType.PayPal
-                    });
-                }
-                else
-                {
-                    _commandBus.Send(new CancelOrderBecauseOfError
-                    {
-                        OrderId = request.OrderId,
-                        WasPrepaid = true,
-                        ErrorDescription = response.Message
-                    });
-                }
-            }
-
-            // Build url used to redirect the web client to the booking status view
-            string baseUrl;
-
-            if (_serverSettings.ServerData.BaseUrl.HasValue())
-            {
-                baseUrl = _serverSettings.ServerData.BaseUrl;
-            }
-            else
-            {
-                baseUrl = Request.AbsoluteUri
-                    .Replace(Request.PathInfo, string.Empty)
-                    .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, string.Empty)
-                    .Replace(Request.QueryString.ToString(), string.Empty)
-                    .Replace("?", string.Empty);
-            }    
-
-            var redirectUrl = string.Format("{0}#status/{1}", baseUrl, request.OrderId);
-
-            return new HttpResult
-            {
-                StatusCode = HttpStatusCode.Redirect,
-                Headers = { { HttpHeaders.Location, redirectUrl } }
-            };
-        }
-
         public object Post(SwitchOrderToNextDispatchCompanyRequest request)
         {
-            Log.Info("Switching order to another IBS : " + request.ToJson());
+            _logger.LogMessage("Switching order to another IBS : " + request.ToJson());
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             var order = _orderDao.FindById(request.OrderId);
@@ -625,7 +539,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 ClientLanguageCode = account.Language
             };
 
-            var fare = GetFare(new Contract.Requests.CreateOrder.RideEstimate { Price = order.EstimatedFare });
+            var fare = FareHelper.GetFareFromEstimate(new RideEstimate { Price = order.EstimatedFare });
             var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey });
 
             // This must be localized with the priceformat to be localized in the language of the company
@@ -643,7 +557,9 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             }
             catch (Exception ex)
             {
-                Log.Error(networkErrorMessage, ex);
+                _logger.LogMessage(networkErrorMessage);
+                _logger.LogError(ex);
+
                 throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
             }
 
@@ -691,78 +607,6 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             });
 
             return new HttpResult(HttpStatusCode.OK);
-        }
-
-		
-
-		private InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(Guid accountId, bool isPrepaid, Guid orderId, Contract.Requests.CreateOrder request, decimal bookingFees, string companyKey, CreateReportOrder createReportOrder)
-        {
-            if (isPrepaid
-                && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
-            {
-                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance(companyKey).InitializeWebPayment(accountId, orderId, Request.AbsoluteUri, request.Estimate.Price, bookingFees, request.ClientLanguageCode);
-
-                if (paypalWebPaymentResponse.IsSuccessful)
-                {
-                    return paypalWebPaymentResponse;
-                }
-
-                Exception createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
-
-				createReportOrder.Error = createOrderException.ToString();
-				_commandBus.Send(createReportOrder);
-				throw createOrderException;
-            }
-
-            return null;
-        }
-
-		private void ValidateProvider(Contract.Requests.CreateOrder request, ReferenceData referenceData, bool isInExternalMarket, CreateReportOrder createReportOrder)
-        {
-            // Provider is optional for home market
-            // But if a provider is specified, it must match with one of the ReferenceData values
-            if (!isInExternalMarket
-                && request.Settings.ProviderId.HasValue
-                && referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
-            {
-
-                Exception createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                    ErrorCode.CreateOrder_InvalidProvider.ToString(), 
-                    GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_InvalidProvider, request.ClientLanguageCode));
-
-				if (createReportOrder != null)
-				{
-					createReportOrder.Error = createOrderException.ToString();
-					_commandBus.Send(createReportOrder);
-				}
-				throw createOrderException;
-            }
-        }
-
-
-        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
-        {
-            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
-            if (ibsAccountId.HasValue)
-            {
-                return ibsAccountId.Value;
-            }
-
-            // Account doesn't exist, create it
-            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
-                account.Email,
-                string.Empty,
-                account.Name,
-                account.Settings.Phone);
-
-            _commandBus.Send(new LinkAccountToIbs
-            {
-                AccountId = account.Id,
-                IbsAccountId = ibsAccountId.Value,
-                CompanyKey = companyKey
-            });
-
-            return ibsAccountId.Value;
         }
 
         private DateTime GetCurrentOffsetedTime(string companyKey)
@@ -847,16 +691,6 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             return formattedNote;
         }
 
-        private Fare GetFare(Contract.Requests.CreateOrder.RideEstimate estimate)
-        {
-            if (estimate == null || !estimate.Price.HasValue)
-            {
-                return new Fare();
-            }
-
-            return FareHelper.GetFareFromAmountInclTax(estimate.Price.Value, 0);
-        }
-
         private Guid? GetPendingOrder()
         {
             var activeOrders = _orderDao.GetOrdersInProgressByAccountId(new Guid(this.GetSession().UserAuthId));
@@ -868,145 +702,6 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             }
 
             return null;
-        }
-
-	    private bool IsCmtGeoServiceMode(string market)
-	    {
-		    var externalMarketMode = market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode ==ExternalAvailableVehiclesModes.Geo;
-
-		    var internalMarketMode = !market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo;
-
-		    return internalMarketMode || externalMarketMode;
-	    }
-
-		private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
-		{
-			if (IsCmtGeoServiceMode(market))
-			{
-				return new CmtGeoServiceClient(_serverSettings, _logger);
-			}
-
-			return new HoneyBadgerServiceClient(_serverSettings, _logger);
-		}
-
-
-        private BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude)
-        {
-            if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
-            {
-                // Do nothing if in home market or if we don't have position
-                return new BestAvailableCompany();
-            }
-
-            int? bestFleetId = null;
-            const int searchExpendLimit = 10;
-            var searchRadius = 2000; // In meters
-
-            for (var i = 1; i < searchExpendLimit; i++)
-            {
-                var marketVehicles = GetAvailableVehiclesServiceClient(market)
-					.GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, null, true)
-					.ToArray();
-
-                if (marketVehicles.Any())
-                {
-                    // Group vehicles by fleet
-                    var vehiclesGroupedByFleet = marketVehicles.GroupBy(v => v.FleetId).Select(g => g.ToArray()).ToArray();
-
-                    // Take fleet with most number of available vehicles
-                    bestFleetId = vehiclesGroupedByFleet.Aggregate(
-                        (fleet1, fleet2) => fleet1.Length > fleet2.Length ? fleet1 : fleet2).First().FleetId;
-                    break;
-                }
-
-                // Nothing found, extend search radius (total radius after 10 iterations: 3375m)
-                searchRadius += (i * 25);
-            }
-
-            if (bestFleetId.HasValue)
-            {
-                var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
-                var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
-
-                // Fallback: If for some reason, we cannot find a match for the best fleet id in the fleets
-                // that were setup for the market, we take the first one
-                var bestFleet = marketFleets.FirstOrDefault(f => f.FleetId == bestFleetId.Value)
-                    ?? marketFleets.FirstOrDefault();
-
-                return new BestAvailableCompany
-                {
-                    CompanyKey = bestFleet != null ? bestFleet.CompanyKey : null,
-                    CompanyName = bestFleet != null ? bestFleet.CompanyName : null
-                };
-            }
-
-            // Nothing found
-            return new BestAvailableCompany();
-        }
-
-        private BestAvailableCompany FindSpecificCompany(string market, CreateReportOrder createReportOrder, string orderCompanyKey = null, int? orderFleetId = null)
-        {
-            if (!orderCompanyKey.HasValue() && !orderFleetId.HasValue)
-            {
-                Exception createOrderException = new ArgumentNullException("You must at least provide a value for orderCompanyKey or orderFleetId");
-				createReportOrder.Error = createOrderException.ToString();
-				_commandBus.Send(createReportOrder);
-				throw createOrderException;
-            }
-
-            var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
-            var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
-
-            if (orderCompanyKey.HasValue())
-            {
-                var match = marketFleets.FirstOrDefault(f => f.CompanyKey == orderCompanyKey);
-                if (match != null)
-                {
-                    return new BestAvailableCompany
-                    {
-                        CompanyKey = match.CompanyKey,
-                        CompanyName = match.CompanyName
-                    };
-                }
-            }
-
-            if (orderFleetId.HasValue)
-            {
-                var match = marketFleets.FirstOrDefault(f => f.FleetId == orderFleetId.Value);
-                if (match != null)
-                {
-                    return new BestAvailableCompany
-                    {
-                        CompanyKey = match.CompanyKey,
-                        CompanyName = match.CompanyName
-                    };
-                }
-            }
-
-            // Nothing found
-            return new BestAvailableCompany();
-        }
-
-        private CreateReportOrder CreateReportOrder(Contract.Requests.CreateOrder request, AccountDetail account)
-        {
-            return new CreateReportOrder
-            {
-                PickupDate = request.PickupDate ?? DateTime.Now,
-                UserNote = request.Note,
-                PickupAddress = request.PickupAddress,
-                DropOffAddress = request.DropOffAddress,
-                Settings = request.Settings,
-                ClientLanguageCode = request.ClientLanguageCode,
-                UserLatitude = request.UserLatitude,
-                UserLongitude = request.UserLongitude,
-                CompanyKey = request.OrderCompanyKey,
-                AccountId = account.Id,
-                OrderId = request.Id,
-                EstimatedFare = request.Estimate.Price,
-                UserAgent = Request.UserAgent,
-                ClientVersion = Request.Headers.Get("ClientVersion"),
-                TipIncentive = request.TipIncentive
-            };
         }
     }
 }

@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Linq;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Data;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
+using CMTServices;
 using CustomerPortal.Client;
 using Infrastructure.Messaging;
 using log4net;
@@ -14,9 +20,9 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
         private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly ICommandBus _commandBus;
-        private readonly ILog _logger;
+        private readonly ILogger _logger;
 
-        public TaxiHailNetworkHelper(IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient, ICommandBus commandBus, ILog logger)
+        public TaxiHailNetworkHelper(IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient, ICommandBus commandBus, ILogger logger)
         {
             _serverSettings = serverSettings;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
@@ -80,8 +86,8 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             }
             catch (Exception ex)
             {
-                _logger.Info(string.Format("An error occurred when trying to get PaymentSettings for company {0}", companyKey));
-                _logger.Error(ex);
+                _logger.LogMessage(string.Format("An error occurred when trying to get PaymentSettings for company {0}", companyKey));
+                _logger.LogError(ex);
 
                 return false;
             }
@@ -111,14 +117,130 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                     bookingSettings.VehicleType = null;
                     bookingSettings.VehicleTypeId = null;
 
-                    _logger.Info(string.Format("No match found for GetAssociatedMarketVehicleType for company {0}. Maybe no vehicles were linked via the admin panel?", marketCompanyId));
+                    _logger.LogMessage(string.Format("No match found for GetAssociatedMarketVehicleType for company {0}. Maybe no vehicles were linked via the admin panel?", marketCompanyId));
                 }
             }
             catch (Exception ex)
             {
-                _logger.Info(string.Format("An error occurred when trying to get GetAssociatedMarketVehicleType for company {0}", marketCompanyId));
-                _logger.Error(ex);
+                _logger.LogMessage(string.Format("An error occurred when trying to get GetAssociatedMarketVehicleType for company {0}", marketCompanyId));
+                _logger.LogError(ex);
             }
+        }
+
+        internal BestAvailableCompany FindSpecificCompany(string market, CreateReportOrder createReportOrder, string orderCompanyKey = null, int? orderFleetId = null)
+        {
+            if (!orderCompanyKey.HasValue() && !orderFleetId.HasValue)
+            {
+                Exception createOrderException = new ArgumentNullException("You must at least provide a value for orderCompanyKey or orderFleetId");
+                createReportOrder.Error = createOrderException.ToString();
+                _commandBus.Send(createReportOrder);
+                throw createOrderException;
+            }
+
+            var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+            var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
+
+            if (orderCompanyKey.HasValue())
+            {
+                var match = marketFleets.FirstOrDefault(f => f.CompanyKey == orderCompanyKey);
+                if (match != null)
+                {
+                    return new BestAvailableCompany
+                    {
+                        CompanyKey = match.CompanyKey,
+                        CompanyName = match.CompanyName
+                    };
+                }
+            }
+
+            if (orderFleetId.HasValue)
+            {
+                var match = marketFleets.FirstOrDefault(f => f.FleetId == orderFleetId.Value);
+                if (match != null)
+                {
+                    return new BestAvailableCompany
+                    {
+                        CompanyKey = match.CompanyKey,
+                        CompanyName = match.CompanyName
+                    };
+                }
+            }
+
+            // Nothing found
+            return new BestAvailableCompany();
+        }
+
+        internal BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude)
+        {
+            if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
+            {
+                // Do nothing if in home market or if we don't have position
+                return new BestAvailableCompany();
+            }
+
+            int? bestFleetId = null;
+            const int searchExpendLimit = 10;
+            var searchRadius = 2000; // In meters
+
+            for (var i = 1; i < searchExpendLimit; i++)
+            {
+                var marketVehicles = GetAvailableVehiclesServiceClient(market)
+                    .GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, null, true)
+                    .ToArray();
+
+                if (marketVehicles.Any())
+                {
+                    // Group vehicles by fleet
+                    var vehiclesGroupedByFleet = marketVehicles.GroupBy(v => v.FleetId).Select(g => g.ToArray()).ToArray();
+
+                    // Take fleet with most number of available vehicles
+                    bestFleetId = vehiclesGroupedByFleet.Aggregate(
+                        (fleet1, fleet2) => fleet1.Length > fleet2.Length ? fleet1 : fleet2).First().FleetId;
+                    break;
+                }
+
+                // Nothing found, extend search radius (total radius after 10 iterations: 3375m)
+                searchRadius += (i * 25);
+            }
+
+            if (bestFleetId.HasValue)
+            {
+                var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+                var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
+
+                // Fallback: If for some reason, we cannot find a match for the best fleet id in the fleets
+                // that were setup for the market, we take the first one
+                var bestFleet = marketFleets.FirstOrDefault(f => f.FleetId == bestFleetId.Value)
+                    ?? marketFleets.FirstOrDefault();
+
+                return new BestAvailableCompany
+                {
+                    CompanyKey = bestFleet != null ? bestFleet.CompanyKey : null,
+                    CompanyName = bestFleet != null ? bestFleet.CompanyName : null
+                };
+            }
+
+            // Nothing found
+            return new BestAvailableCompany();
+        }
+
+        private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
+        {
+            if (IsCmtGeoServiceMode(market))
+            {
+                return new CmtGeoServiceClient(_serverSettings, _logger);
+            }
+
+            return new HoneyBadgerServiceClient(_serverSettings, _logger);
+        }
+
+        private bool IsCmtGeoServiceMode(string market)
+        {
+            var externalMarketMode = market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo;
+
+            var internalMarketMode = !market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo;
+
+            return internalMarketMode || externalMarketMode;
         }
     }
 }
