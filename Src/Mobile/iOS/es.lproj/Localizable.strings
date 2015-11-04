@@ -459,6 +459,7 @@
 "ProfileSettingsActivityName"="Profile";
 "MessageToDriverTitle"="Message to Driver";
 "BookingAirportDetails"="Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}";
+"OrderStatus_AddDestination"="Add your destination";
 "StatusCallButton"="Llamar";
 "OrderNoteGPS"="Usando su GPS";
 "PaymentConfirmationMessageToDriver"="El pasajero ha pagado {0} (auth : {1})";
@@ -513,6 +514,7 @@
 "ResendConfirmationCodeText"="Confirmation code will be resend shortly";
 "PaymentLoadError"="No se pueden cargar los datos de pago. Por favor, inténtelo de nuevo más tarde.";
 "EmailLabel"="Email";
+"OrderStatus_RemoveDestination"="Remove your destination";
 "ManualPairingForRideLinqActivityName"="Manual pairing for RideLinq";
 "April"="Abr (04)";
 "StatusEditAutoPaymentButton"="Pago";

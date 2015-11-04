@@ -5,19 +5,19 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Requests.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
-using apcurium.MK.Booking.Api.Jobs;
-using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.Api.Services.Maps;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources;
+using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
@@ -46,19 +46,6 @@ namespace apcurium.MK.Booking.Api
             container.RegisterType<IIbsOrderService, IbsOrderService>();
 
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
-
-            container.RegisterType<IUpdateOrderStatusJob>(
-                new TransientLifetimeManager(),
-                new InjectionFactory(c =>
-                {
-                    var serverSettings = c.Resolve<IServerSettings>();
-                    if (serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
-                    {
-                        return new UpdateOrderStatusJobStub(c.Resolve<IOrderDao>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>() );
-                    }
-                    
-                    return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IIBSServiceProvider>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>(), c.Resolve<HoneyBadgerServiceClient>(), c.Resolve<IServerSettings>());
-                }));
 
             container.RegisterType<OrderStatusHelper>(
                 new TransientLifetimeManager(),

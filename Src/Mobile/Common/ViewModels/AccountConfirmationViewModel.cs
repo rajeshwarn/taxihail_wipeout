@@ -117,13 +117,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					if(Code.HasValue())
 					{
-						try{
+						try
+						{
 							await _registerService.ConfirmAccount(Code);
 							_account.IsConfirmed = true;
 							Close(this);
 							_registerService.RegistrationFinished();
-
-						}catch(WebServiceException e)
+						}
+						catch(WebServiceException e)
 						{
 							var errorMessage = this.Services().Localize["ServiceError" + e.Message];
 							if(errorMessage == "ServiceError" + e.Message)

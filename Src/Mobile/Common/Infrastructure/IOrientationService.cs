@@ -1,4 +1,5 @@
 using apcurium.MK.Common.Enumeration;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
@@ -11,5 +12,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		bool Start();
 
 		bool Stop();
+
+		event Action<DeviceOrientations> NotifyOrientationChanged;
+		event Action<int, bool> NotifyAngleChanged;
 	}
 }

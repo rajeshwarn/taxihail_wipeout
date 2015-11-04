@@ -1,9 +1,10 @@
 using System;
 using apcurium.MK.Common;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 {
-	public abstract class CommonDeviceOrientationService
+	public abstract class CommonDeviceOrientationService: IDeviceOrientationService
 	{
 		private const double RadiansToDegrees = 360 / (2 * Math.PI);
 		private const double ThetaTrustedAngle = 40; // maximum angle in PI space between z axis of device and horizontal x-z plane when orientation events will be generated

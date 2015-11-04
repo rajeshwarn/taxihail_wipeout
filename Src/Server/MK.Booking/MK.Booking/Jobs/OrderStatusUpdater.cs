@@ -1,7 +1,7 @@
 ﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
@@ -25,7 +25,7 @@ using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceClient.Web;
 
-namespace apcurium.MK.Booking.Api.Jobs
+namespace apcurium.MK.Booking.Jobs
 {
     public class OrderStatusUpdater
     {
@@ -201,6 +201,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                 _logger.LogMessage("No manual RideLinQ details found for order {0}", orderstatusDetail.OrderId);
                 return;
             }
+
+            if (rideLinqDetails.EndTime.HasValue)
+            {
+                // Trip ended. Nothing do to has end of trip errors are handled by the event handler.
+                return;
+            }
+
             _logger.LogMessage("Initializing CmdClient for order {0} (RideLinq Pairing Token: {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
 
             InitializeCmtServiceClient();

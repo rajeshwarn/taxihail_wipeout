@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			GetIsCmtRideLinq();
 
-			((OrientationService)_orientationService).NotifyOrientationChanged += DeviceOrientationChanged;
+            _orientationService.NotifyOrientationChanged += DeviceOrientationChanged;
             _orientationService.Initialize(new[] { DeviceOrientations.Right, DeviceOrientations.Left });
 		}
 
@@ -262,6 +262,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Order = null;
             OrderStatusDetail = null;
+			ConfirmationNoTxt = string.Empty;
 
             ManualRideLinqDetail = null;
 
@@ -541,7 +542,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public IEnumerable<CoordinateViewModel> MapCenter
         {
 			get { return _mapCenter; }
-			private set 
+			set 
             {
 				_mapCenter = value;
                 RaisePropertyChanged();
@@ -602,6 +603,50 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived);
             }
         }
+
+        public bool IsChangeDropOffVisible
+        {
+            get
+			{
+                if (OrderStatusDetail == null)
+				{
+					return false;
+				}
+
+                return Settings.ChangeDropOffAddressMidTrip
+                    && (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+                        || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
+                        || OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded);
+            }
+        }
+
+        public string ChangeDropOffText
+        {
+            get
+            {
+                if (Order != null && Order.DropOffAddress.Id != Guid.Empty)
+                {
+                    return this.Services().Localize["OrderStatus_RemoveDestination"];
+                }
+                return this.Services().Localize["OrderStatus_AddDestination"];
+            }
+        }
+
+		public ICommand AddOrRemoveDropOffCommand
+		{
+			get 
+			{ 
+				return this.GetCommand(() =>
+					{
+						if (Order != null && Order.DropOffAddress.Id != Guid.Empty)
+						{
+							//Need endpoint to remove destination address
+							return;
+						}
+                        ((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.DropOffAddressSelection;
+					}); 
+			}
+		}
 
         public bool IsDriverInfoAvailable
         {
@@ -714,7 +759,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				_order = value;
 				RaisePropertyChanged();
-				RaisePropertyChanged(() => CanGoBack);
+                RaisePropertyChanged(() => CanGoBack);
+                RaisePropertyChanged(() => ChangeDropOffText);
 			}
 		}
 		
@@ -740,6 +786,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        RaisePropertyChanged(() => IsCallTaxiVisible);
 	        RaisePropertyChanged(() => IsMessageTaxiVisible);
             RaisePropertyChanged(() => IsContactTaxiVisible);
+            RaisePropertyChanged(() => IsChangeDropOffVisible);
 			RaisePropertyChanged(() => IsProgressVisible);
 	        RaisePropertyChanged(() => CanGoBack);
 	        RaisePropertyChanged(() => VehicleMedallionHidden);
@@ -1093,7 +1140,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				
 			var carNumber = orderStatusDetail.VehicleNumber;
 
-			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && carNumber.HasValueTrimmed())
+			if ((deviceOrientation == DeviceOrientations.Left || deviceOrientation == DeviceOrientations.Right) && (carNumber.HasValueTrimmed() && carNumber.Trim() != "0"))
 			{
 				if (WaitingCarLandscapeViewModelParameters == null || (WaitingCarLandscapeViewModelParameters != null && WaitingCarLandscapeViewModelParameters.WaitingWindowClosed))
 				{
@@ -1106,7 +1153,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 				else
 				{
-					WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, orderStatusDetail.VehicleNumber);
+					WaitingCarLandscapeViewModelParameters.UpdateModelParameters(deviceOrientation, carNumber);
 				}
 			}
 		}

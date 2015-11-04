@@ -2,7 +2,7 @@ using System;
 
 namespace apcurium.MK.Common
 {
-    public struct Fare
+    public class Fare
     {
         public decimal AmountInclTax { get; internal set; }
         public decimal AmountExclTax { get; internal set; }

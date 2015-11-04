@@ -39,7 +39,7 @@ namespace apcurium.MK.Web.Tests
                 PickupDate = DateTime.Now,
                 Settings = new BookingSettings
                 {
-                    ChargeTypeId = 99,
+                    ChargeTypeId = 3,
                     VehicleTypeId = 1,
                     ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "5145551212",
