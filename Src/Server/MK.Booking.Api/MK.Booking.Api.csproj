@@ -128,8 +128,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ApplicationPathResolver.cs" />
+    <Compile Include="Helpers\CreateOrderPaymentValidator.cs" />
     <Compile Include="Helpers\OrderStatusHelper.cs" />
     <Compile Include="Helpers\OrderStatusIbsMock.cs" />
+    <Compile Include="Services\CreateOrder\BaseCreateOrderService.cs" />
     <Compile Include="Services\DriverService.cs" />
     <Compile Include="Services\FlightInformationService.cs" />
     <Compile Include="Services\ManualRidelinqOrderService.cs" />
@@ -170,7 +172,7 @@
     <Compile Include="Services\ValidateOrderService.cs" />
     <Compile Include="Services\RuleActivateService.cs" />
     <Compile Include="Services\RuleDeactivateService.cs" />
-    <Compile Include="Services\CreateOrderService.cs" />
+    <Compile Include="Services\CreateOrder\CreateOrderService.cs" />
     <Compile Include="Services\CreditCardService.cs" />
     <Compile Include="Services\DefaultFavoriteAddressService.cs" />
     <Compile Include="Services\GrantAdminRightService.cs" />
@@ -281,9 +283,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Jobs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
