@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
         protected Mock<IIbsOrderService> IbsOrderServiceMock;
         protected Mock<INotificationService> NotificationServiceMock;
         protected Mock<ILogger> LoggerMock;
-        protected Api.Jobs.OrderStatusUpdater Sut { get; set; }
+        protected Jobs.OrderStatusUpdater Sut { get; set; }
 
         [SetUp]
         public void Setup()
@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
 
             var notificationDetailsDaoMock = new Mock<IOrderNotificationsDetailDao>(MockBehavior.Loose);
 
-            Sut = new Api.Jobs.OrderStatusUpdater(ConfigurationManager,
+            Sut = new Jobs.OrderStatusUpdater(ConfigurationManager,
                 bus.Object,
                 orderPaymentDao,
                 orderDao,

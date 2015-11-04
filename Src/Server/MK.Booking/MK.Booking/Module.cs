@@ -12,6 +12,8 @@ using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.PushNotifications.Impl;
 using apcurium.MK.Booking.ReadModel;
@@ -29,6 +31,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
 using AutoMapper;
+using CMTServices;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -42,6 +45,19 @@ namespace apcurium.MK.Booking
     {
         public void Init(IUnityContainer container)
         {
+            container.RegisterType<IUpdateOrderStatusJob>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    var serverSettings = c.Resolve<IServerSettings>();
+                    if (serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
+                    {
+                        return new UpdateOrderStatusJobStub(c.Resolve<IOrderDao>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>());
+                    }
+
+                    return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IIBSServiceProvider>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>(), c.Resolve<HoneyBadgerServiceClient>(), c.Resolve<IServerSettings>());
+                }));
+
             System.Data.Entity.Database.SetInitializer<BookingDbContext>(null);
             container.RegisterType<ISmsService, TwilioService>();
 
@@ -60,6 +76,9 @@ namespace apcurium.MK.Booking
                     
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(),
                 new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IServerSettings>())));
+
+            container.RegisterType<IIbsCreateOrderService>(new ContainerControlledLifetimeManager(),
+                new InjectionFactory(c => new IbsCreateOrderService(c.Resolve<IServerSettings>(), c.Resolve<IVehicleTypeDao>(), c.Resolve<IAccountDao>(), c.Resolve<ILogger>(), c.Resolve<IIBSServiceProvider>(), c.Resolve<IUpdateOrderStatusJob>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
@@ -162,6 +181,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, OrderPaymentManager>("OrderPaymentManager");
             container.RegisterType<IEventHandler, OrderPairingManager>("OrderPairingManager");
             container.RegisterType<IEventHandler, OrderDispatchCompanyManager>("OrderDispatchCompanyManager");
+            container.RegisterType<IEventHandler, OrderCreationManager>("OrderCreationManager");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

@@ -600,7 +600,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
                 if (rideLinqDetails != null)
                 {
+                    // Must set an endtime to end order on client side
+                    rideLinqDetails.EndTime = DateTime.UtcNow;
                     rideLinqDetails.IsCancelled = true;
+                    
                     context.Save(rideLinqDetails);
                 }
             }

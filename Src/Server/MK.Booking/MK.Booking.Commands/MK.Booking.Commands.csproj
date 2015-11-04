@@ -63,6 +63,7 @@
     <Compile Include="CreateReportOrder.cs" />
     <Compile Include="DeletePromotion.cs" />
     <Compile Include="LogOriginalEta.cs" />
+    <Compile Include="InitiateIbsOrderSwitch.cs" />
     <Compile Include="SaveTemporaryOrderPaymentInfo.cs" />
     <Compile Include="UnapplyPromotion.cs" />
     <Compile Include="UnpairOrderForManualRideLinq.cs" />

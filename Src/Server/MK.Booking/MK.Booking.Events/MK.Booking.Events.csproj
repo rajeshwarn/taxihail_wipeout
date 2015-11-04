@@ -75,6 +75,7 @@
     <Compile Include="DispatchCompanySwitchIgnored.cs" />
     <Compile Include="FeesUpdated.cs" />
     <Compile Include="IbsOrderInfoAddedToOrder.cs" />
+    <Compile Include="IbsOrderSwitchInitiated.cs" />
     <Compile Include="OrderManuallyPairedForRideLinq.cs" />
     <Compile Include="OrderNotificationDetailUpdated.cs" />
     <Compile Include="OrderReportCreated.cs" />

@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var deleteCommand = new ResDelete(cardToken);
                 var deleteRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId,
-                    monerisSettings.ApiToken, deleteCommand);
+                     monerisSettings.ApiToken, deleteCommand);
                 var receipt = deleteRequest.GetAndLogReceipt(_logger);
 
                 string message;
@@ -228,6 +228,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var preAuthRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                     var preAuthReceipt = preAuthRequest.GetAndLogReceipt(_logger);
+
                     isSuccessful = RequestSuccesful(preAuthReceipt, out message);
                     isCardDeclined = IsCardDeclined(preAuthReceipt);
                     transactionId = preAuthReceipt.GetTxnNumber();

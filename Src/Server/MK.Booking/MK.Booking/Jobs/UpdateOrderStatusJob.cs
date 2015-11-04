@@ -3,27 +3,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common;
-using System.Threading;
-using log4net;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Configuration;
 using System.Reactive.Linq;
-using System.Diagnostics;
+using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using CMTServices;
+using apcurium.MK.Common.Extensions;
 using CMTServices.Responses;
-using ServiceStack.Common;
+using log4net;
 
 #endregion
 
-namespace apcurium.MK.Booking.Api.Jobs
+namespace apcurium.MK.Booking.Jobs
 {
     public class UpdateOrderStatusJob : IUpdateOrderStatusJob
     {

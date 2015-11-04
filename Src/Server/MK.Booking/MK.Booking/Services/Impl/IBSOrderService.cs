@@ -1,16 +1,28 @@
 ﻿#region
 
-using apcurium.MK.Booking.IBS;
 using System;
-using apcurium.MK.Booking.Services;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Data;
+using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Jobs;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using AutoMapper;
+using CMTServices;
+
 
 #endregion
 
-namespace apcurium.MK.Booking.Api.Payment
+namespace apcurium.MK.Booking.Services.Impl
 {
     public class IbsOrderService : IIbsOrderService
     {
@@ -18,7 +30,10 @@ namespace apcurium.MK.Booking.Api.Payment
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
-        public IbsOrderService(IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings, ILogger logger)
+        public IbsOrderService(
+            IIBSServiceProvider ibsServiceProvider,
+            IServerSettings serverSettings,
+            ILogger logger)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _logger = logger;
@@ -27,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Payment
         }
 
         public void ConfirmExternalPayment(Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
-                                           string authorizationCode, string cardToken, int accountId, string name, string phone, string email, string os, string userAgent, ServiceType serviceType, string companyKey = null)
+                                           string authorizationCode, string cardToken, int accountId, string name, string phone, string email, string os, string userAgent, ServiceType serviceType, string companyKey)
         {
             if (companyKey.HasValue() || serviceType != ServiceType.Taxi)
             {
