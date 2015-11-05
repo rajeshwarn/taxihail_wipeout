@@ -195,7 +195,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var result = new IBSDistanceEstimate();
             UseService(service =>
             {
-                var frDate = new TWEBTimeStamp { Year = DateTime.Now.Year, Month = DateTime.Now.Month, Day = DateTime.Now.Day };
+                var frDate = new TWEBTimeStamp { Year = DateTime.Now.Year, Month = DateTime.Now.Month, Day = DateTime.Now.Day, Hour = DateTime.Now.Hour, Minute = DateTime.Now.Minute + 5, Second = DateTime.Now.Second };
 
                 waitTime = waitTime.HasValue && waitTime > 0 ? waitTime.Value : 0;
                 distance = distance.HasValue && distance > 0 ? distance.Value : 0;
