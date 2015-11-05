@@ -6,6 +6,9 @@ using CustomerPortal.Web.Areas.Customer.Controllers.Api;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Test.Helpers.Repository;
+using MongoDB.Driver;
+using MongoRepository;
+using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -32,14 +35,14 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private Company _bobTaxiCompany;
         private Company _blacklistedTaxiCompany;
         private Company _taxiWhenBlacklistedProhibitedCompany;
-
+        
         [SetUp]
         public void Setup()
         {
             NetworkRepository = new InMemoryRepository<TaxiHailNetworkSettings>();
             CompanyRepository = new InMemoryRepository<Company>();
-
-            Sut = new RoamingApiController(NetworkRepository, CompanyRepository);
+            
+            Sut = new RoamingApiController(NetworkRepository, CompanyRepository, GetMockedMarketRepo());
 
             _chrisTaxi = new TaxiHailNetworkSettings
             {
@@ -398,6 +401,48 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         }
 
         [Test]
+        public void When_Getting_Company_Market_Settings_In_Unknown_Market()
+        {
+            var response = Sut.GetCompanyMarketSettings("abc", 10, -70);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<CompanyMarketSettingsResponse>(json);
+
+            Assert.IsNull(result.Market);
+            Assert.NotNull(result.DispatcherSettings);
+            Assert.AreEqual(0, result.DispatcherSettings.NumberOfOffersPerCycle);
+            Assert.AreEqual(0, result.DispatcherSettings.NumberOfCycles);
+            Assert.AreEqual(15, result.DispatcherSettings.DurationOfOfferInSeconds);
+        }
+
+        [Test]
+        public void When_Getting_Company_Market_Settings_In_Home_Market()
+        {
+            var response = Sut.GetCompanyMarketSettings("ChrisTaxi", 45.423513, -73.653214);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<CompanyMarketSettingsResponse>(json);
+
+            Assert.IsNull(result.Market);
+            Assert.NotNull(result.DispatcherSettings);
+            Assert.AreEqual(4, result.DispatcherSettings.NumberOfOffersPerCycle);
+            Assert.AreEqual(5, result.DispatcherSettings.NumberOfCycles);
+            Assert.AreEqual(55, result.DispatcherSettings.DurationOfOfferInSeconds);
+        }
+
+        [Test]
+        public void When_Getting_Company_Market_Settings_And_Changed_Market()
+        {
+            var response = Sut.GetCompanyMarketSettings("ChrisTaxi", 45.412042, -75.695321);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var result = JsonConvert.DeserializeObject<CompanyMarketSettingsResponse>(json);
+
+            Assert.AreEqual("SYD", result.Market);
+            Assert.NotNull(result.DispatcherSettings);
+            Assert.AreEqual(4, result.DispatcherSettings.NumberOfOffersPerCycle);
+            Assert.AreEqual(5, result.DispatcherSettings.NumberOfCycles);
+            Assert.AreEqual(55, result.DispatcherSettings.DurationOfOfferInSeconds);
+        }
+
+        [Test]
         public void When_Getting_Fleets_From_a_Market()
         {
             var response = Sut.GetMarketFleets("ChrisTaxi", "MTL");
@@ -449,6 +494,23 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual("http://google.com", fleet.IbsUrl);
             Assert.AreEqual("Taxi", fleet.IbsUserName);
             Assert.AreEqual("test", fleet.IbsPassword);
+        }
+
+        private IRepository<Market> GetMockedMarketRepo()
+        {
+            var marketRepositoryMock = new Mock<IRepository<Market>>();
+            var mongoServerMock = new Mock<MongoServer>(new MongoServerSettings());
+            string message;
+            mongoServerMock.Setup(x => x.IsDatabaseNameValid(It.IsAny<string>(), out message)).Returns(true);
+            mongoServerMock.Setup(x => x.Settings).Returns(new MongoServerSettings());
+            var mongoDatabaseMock = new Mock<MongoDatabase>(mongoServerMock.Object, "dbname", new MongoDatabaseSettings());
+            mongoDatabaseMock.Setup(x => x.IsCollectionNameValid(It.IsAny<string>(), out message)).Returns(true);
+            mongoDatabaseMock.Setup(x => x.Settings).Returns(new MongoDatabaseSettings() { ReadPreference = new ReadPreference(), WriteConcern = new WriteConcern() });
+            var collection = new Mock<MongoCollection<Market>>(mongoDatabaseMock.Object, "tablename", new MongoCollectionSettings());
+            collection.Setup(x => x.FindOne(It.IsAny<IMongoQuery>())).Returns(new Market { DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 4, NumberOfCycles = 5, DurationOfOfferInSeconds = 55 } });
+            marketRepositoryMock.Setup(x => x.Collection).Returns(collection.Object);
+
+            return marketRepositoryMock.Object;
         }
     }
 }

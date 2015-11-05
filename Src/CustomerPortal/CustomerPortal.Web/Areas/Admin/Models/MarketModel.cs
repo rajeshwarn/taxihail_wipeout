@@ -1,6 +1,6 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Entities.Network;
 
 namespace CustomerPortal.Web.Areas.Admin.Models
