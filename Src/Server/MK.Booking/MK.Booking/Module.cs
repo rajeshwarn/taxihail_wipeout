@@ -179,6 +179,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, OrderPaymentManager>("OrderPaymentManager");
             container.RegisterType<IEventHandler, OrderPairingManager>("OrderPairingManager");
             container.RegisterType<IEventHandler, OrderDispatchCompanyManager>("OrderDispatchCompanyManager");
+            container.RegisterType<IEventHandler, CacheServiceManager>("CacheServiceManager");
             container.RegisterType<IEventHandler, OrderCreationManager>("OrderCreationManager");
         }
 

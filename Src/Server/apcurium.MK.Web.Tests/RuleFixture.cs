@@ -113,7 +113,7 @@ namespace apcurium.MK.Web.Tests
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = Provider.ApcuriumIbsProviderId,
                             Phone = "5145551212",
@@ -148,7 +148,7 @@ namespace apcurium.MK.Web.Tests
                         },
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = Provider.ApcuriumIbsProviderId,
                             Phone = "5145551212",
@@ -364,7 +364,7 @@ namespace apcurium.MK.Web.Tests
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = 13,
                             Phone = "5145551212",
@@ -652,7 +652,7 @@ namespace apcurium.MK.Web.Tests
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = 13,
                             Phone = "5145551212",
@@ -705,7 +705,7 @@ namespace apcurium.MK.Web.Tests
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Settings = new BookingSettings
                 {
-                    ChargeTypeId = 99,
+                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                     VehicleTypeId = 1,
                     ProviderId = 13,
                     Phone = "5145551212",
@@ -741,7 +741,7 @@ namespace apcurium.MK.Web.Tests
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = 13,
                             Phone = "5145551212",
@@ -774,7 +774,7 @@ namespace apcurium.MK.Web.Tests
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = 13,
                             Phone = "5145551212",

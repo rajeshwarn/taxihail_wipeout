@@ -288,6 +288,16 @@
     <InterfaceDefinition Include="Views\WaitingCarLandscapeView.xib" />
     <InterfaceDefinition Include="Views\Payments\CreditCardMultipleView.xib" />
     <InterfaceDefinition Include="Controls\Widgets\CreditCardCell.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarAirportBooking.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarConfirmation.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarEdit.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarManualRideLinQ.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarNormalBooking.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarInTripNormalBooking.xib" />
+    <InterfaceDefinition Include="Views\BookingBottomBar\BookingBarInTripManualRideLinQBooking.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\ChangeDropOffControl.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\DropOffSelectionControl.xib" />
+    <InterfaceDefinition Include="Controls\Widgets\AppBarDropOffSelection.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -635,7 +645,6 @@
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
     <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
-    <Compile Include="Controls\Widgets\AppBarBookingStatus.designer.cs" />
     <Compile Include="Controls\Widgets\BookingStatusControl.cs" />
     <Compile Include="Controls\Widgets\BookingStatusControl.designer.cs">
       <DependentUpon>BookingStatusControl.cs</DependentUpon>
@@ -644,7 +653,6 @@
     <Compile Include="Controls\Widgets\ContactTaxiControl.designer.cs">
       <DependentUpon>ContactTaxiControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
     <Compile Include="PlatformIntegration\AppleDeviceOrientationService.cs" />
     <Compile Include="Views\WaitingCarLandscapeView.cs" />
     <Compile Include="Views\WaitingCarLandscapeView.designer.cs">
@@ -670,6 +678,49 @@
       <DependentUpon>CreditCardCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\CreditCardLabelToInt.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarAirportBooking.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarAirportBooking.designer.cs">
+      <DependentUpon>BookingBarAirportBooking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingBottomBar\BookingBarConfirmation.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarConfirmation.designer.cs">
+      <DependentUpon>BookingBarConfirmation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingBottomBar\BookingBarEdit.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarEdit.designer.cs">
+      <DependentUpon>BookingBarEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingBottomBar\BookingBarManualRideLinQ.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarManualRideLinQ.designer.cs">
+      <DependentUpon>BookingBarManualRideLinQ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingBottomBar\BookingBarNormalBooking.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarNormalBooking.designer.cs">
+      <DependentUpon>BookingBarNormalBooking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingBottomBar\BookingBarInTripNormalBooking.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarInTripNormalBooking.designer.cs">
+      <DependentUpon>BookingBarInTripNormalBooking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookingBottomBar\BookingBarInTripManualRideLinQBooking.cs" />
+    <Compile Include="Views\BookingBottomBar\BookingBarInTripManualRideLinQBooking.designer.cs">
+      <DependentUpon>BookingBarInTripManualRideLinQBooking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\ChangeDropOffControl.cs" />
+    <Compile Include="Controls\Widgets\ChangeDropOffControl.designer.cs">
+      <DependentUpon>ChangeDropOffControl.cs</DependentUpon>
+    </Compile>
+    <BundleResource Include="Resources\destination_small_icon_white.png" />
+    <BundleResource Include="Resources\destination_small_icon_white%402x.png" />
+    <Compile Include="Controls\Widgets\DropOffSelectionControl.cs" />
+    <Compile Include="Controls\Widgets\DropOffSelectionControl.designer.cs">
+      <DependentUpon>DropOffSelectionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\AppBarDropOffSelection.cs" />
+    <Compile Include="Controls\Widgets\AppBarDropOffSelection.designer.cs">
+      <DependentUpon>AppBarDropOffSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\HideableView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -720,7 +771,6 @@
     <InterfaceDefinition Include="Views\ManualPairingForRideLinqView.xib" />
     <InterfaceDefinition Include="Views\Order\OrderBookingOptions.xib" />
     <InterfaceDefinition Include="Views\EditAutoTipView.xib" />
-    <InterfaceDefinition Include="Controls\Widgets\AppBarBookingStatus.xib" />
     <InterfaceDefinition Include="Controls\Widgets\BookingStatusControl.xib" />
     <InterfaceDefinition Include="Controls\Widgets\ContactTaxiControl.xib" />
   </ItemGroup>
@@ -966,4 +1016,7 @@
   <Target Name="_CompileITunesMetadata" DependsOnTargets="_DetectSdkLocations;_DetectAppManifest;_GenerateBundleName;_CompileAppManifest">
     <Message Text="Skipping CompileITunesMetadata task to prevent inclusion of iTunesMetadata.plist in the IPA" />
   </Target>
+  <ItemGroup>
+    <Folder Include="Views\BookingBottomBar\" />
+  </ItemGroup>
 </Project>

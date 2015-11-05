@@ -266,9 +266,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void RemoveAllCreditCards()
+        public void RemoveAllCreditCards(bool forceUserDisconnect)
         {
-            Update(new AllCreditCardsRemoved());
+            Update(new AllCreditCardsRemoved
+            {
+                ForceUserDisconnect = forceUserDisconnect
+            });
         }
 
         public void AddRole(string rolename)

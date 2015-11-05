@@ -9,40 +9,25 @@ using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-	[Register ("AppBarBookingStatus")]
-	partial class AppBarBookingStatus
+	[Register ("AppBarDropOffSelection")]
+	partial class AppBarDropOffSelection
 	{
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCall { get; set; }
-
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnEditTip { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnOk { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (btnCall != null) {
-				btnCall.Dispose ();
-				btnCall = null;
+			if (btnOk != null) {
+				btnOk.Dispose ();
+				btnOk = null;
 			}
 
 			if (btnCancel != null) {
 				btnCancel.Dispose ();
 				btnCancel = null;
-			}
-
-			if (btnUnpair != null) {
-				btnUnpair.Dispose ();
-				btnUnpair = null;
-			}
-			if (btnEditTip != null) {
-				btnEditTip.Dispose ();
-				btnEditTip = null;
 			}
 		}
 	}

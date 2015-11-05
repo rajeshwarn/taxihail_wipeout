@@ -2273,6 +2273,12 @@
 	<data name="OrderStatus_Medallion" xml:space="preserve">
 		<value>Medallion</value>
 	</data>
+	<data name="OrderStatus_AddDestination" xml:space="preserve">
+		<value>Ajouter votre destination</value>
+	</data>
+	<data name="OrderStatus_RemoveDestination" xml:space="preserve">
+		<value>Enlever votre destination</value>
+	</data>
 	<data name="WaitingCarLandscapeViewCloseButtonText" xml:space="preserve">
 		<value>Retour</value>
 	</data>
@@ -2353,5 +2359,11 @@
 	</data>
 	<data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
 		<value>Le lien pour naviger vers la page l'application n'a pas été configuré</value>
+	</data>
+  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+		<value>Votre session est expirée. Veuillez vous authentifier a nouveau.</value>
+	</data>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+		<value>Erreur serveur</value>
 	</data>
 </root>

@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 
@@ -39,7 +40,7 @@ namespace apcurium.MK.Web.Tests
                 PickupDate = DateTime.Now,
                 Settings = new BookingSettings
                 {
-                    ChargeTypeId = 99,
+                    ChargeTypeId = ChargeTypes.CardOnFile.Id,
                     VehicleTypeId = 1,
                     ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "5145551212",

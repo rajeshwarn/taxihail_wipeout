@@ -66,6 +66,7 @@ namespace MK.Common.Configuration
             ShowVehicleInformation = true;
             ShowOrientedPins = false;
             IsDriverBonusEnabled = false;
+            ChangeDropOffAddressMidTrip = false;
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
@@ -513,16 +514,20 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Job Offer Prompt mesage to driver", Description = "Message that will prompt on driver console on the Accept/Decline screen")]
         public string MessagePromptedToDriver { get; protected set; }
 
-		[SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, Hidden]
+        [Display(Name = "Configuration - Enable Change Destination MidTrip", Description = "Possibility to add/change/remove the destination while in trip")]
+        public bool ChangeDropOffAddressMidTrip { get; protected set; }
+        
+	[SendToClient, CustomizableByCompany]
         [Display(Name = "Rating - Enable App Rating", Description = "User can be prompted to rate the app when on board a taxi")]
-		public bool EnableApplicationRating { get; protected set; }
+	public bool EnableApplicationRating { get; protected set; }
 
-		[SendToClient, CustomizableByCompany]
-		[Display(Name = "Rating - Minimum Trips For App Rating", Description = "Minimum successful trips to allow user to rate applicatio")]
-		public int MinimumTripsForAppRating { get; protected set; }
+	[SendToClient, CustomizableByCompany]
+	[Display(Name = "Rating - Minimum Trips For App Rating", Description = "Minimum successful trips to allow user to rate applicatio")]
+	public int MinimumTripsForAppRating { get; protected set; }
 
-		[SendToClient, CustomizableByCompany]
-		[Display(Name = "Rating - Minimum Ride Rating Score for App Rating", Description = "Minimum ride rating score to allow user to rate application")]
-		public int MinimumRideRatingScoreForAppRating { get; protected set; }
+	[SendToClient, CustomizableByCompany]
+	[Display(Name = "Rating - Minimum Ride Rating Score for App Rating", Description = "Minimum ride rating score to allow user to rate application")]
+	public int MinimumRideRatingScoreForAppRating { get; protected set; }
 	}
 }
