@@ -10,8 +10,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
 	public static class MessageHelper
-	{
-		
+	{		
         public static Task Show (string title, string message, string additionalActionTitle, Action additionalAction)
         {
             var tcs = new TaskCompletionSource<object>();

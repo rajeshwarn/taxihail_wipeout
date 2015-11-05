@@ -1,0 +1,33 @@
+﻿@using CustomerPortal.Web.Areas.Admin.Models
+@model MarketModel
+
+<h2>Market @Model.Market Configuration</h2>
+<div class='row'>
+    <div class='span12'>
+        <p>
+            <a class="btn" href='@Url.Action("CreateVehicle", new MarketModel { Market = Model.Market })'>Add Vehicle Type</a>
+        </p>
+    </div>
+    <div class="span12">
+        <h5>Vehicle Types</h5>
+        <table class="table table-striped">
+            @foreach (var vehicleType in Model.Vehicles)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("EditVehicle", new {id = vehicleType.Id, market = Model.Market})">@vehicleType.Name</a>
+
+                    </td>
+                    <td>
+                        @Html.ActionLink(
+                            "Delete",
+                            "DeleteVehicle",
+                            new {id = vehicleType.Id, market = Model.Market},
+                            new {@class = "btn span btn-danger", @onclick = "return confirm('Are you sure you wish to delete this vehicle type?');"})
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    @Html.ActionLink("Back", "Index", null, new { @class = "btn span" })
+</div>

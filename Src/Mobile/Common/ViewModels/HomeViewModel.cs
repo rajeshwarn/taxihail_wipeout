@@ -562,7 +562,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						case HomeViewModelState.AddressSearch:
 						case HomeViewModelState.AirportSearch:
 						case HomeViewModelState.TrainStationSearch:
-						case HomeViewModelState.BookATaxi:
+                        case HomeViewModelState.BookATaxi:
+                            CurrentViewState = HomeViewModelState.Initial;
+                            break;
 						case HomeViewModelState.AirportDetails:
 							CurrentViewState = HomeViewModelState.Initial;
 							break;
@@ -572,7 +574,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						case HomeViewModelState.AirportPickDate:
 							CurrentViewState = HomeViewModelState.AirportDetails;
 							break;
-
 						default:
 							base.CloseCommand.ExecuteIfPossible();
 							break;

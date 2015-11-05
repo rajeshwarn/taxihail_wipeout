@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Test.Integration
 
             Commands = new List<ICommand>();
 
-            Sut = new PaymentSettingsUpdater(new AccountDao(() => new BookingDbContext(DbName)), bus.Object);
+            Sut = new PaymentSettingsUpdater(new AccountDao(() => new BookingDbContext(DbName)), bus.Object, new TestServerSettings());
         }
 
         protected PaymentSettingsUpdater Sut;

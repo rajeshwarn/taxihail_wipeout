@@ -59,10 +59,10 @@
                 .IsCustomHtmlColumn(true)
                 .RenderValueAs(job =>
                     @<div>
-                        <a href="@Url.Action("Copy", new {id = job.Id})">
+                        <a href="@Url.Action("Copy", new {id = job.Id})" data-title title="Copy deployment settings for a new deployment">
                             <img src="~/Images/copy.png" width="20"/>
                         </a>
-                        <a href="@Url.Action("Index", "Version", new {area = "Admin", id = job.Company.Id})">
+                        <a href="@Url.Action("Index", "Version", new {area = "Admin", id = job.Company.Id})" data-title title="Navigate to company version list">
                             <img src="~/Images/download.jpg" width="20"/>
                         </a>
                     </div>
@@ -74,7 +74,7 @@
                .Titled("Actions")
                .IsCustomHtmlColumn(true)
                .RenderValueAs(job =>
-                    @<a href="@Url.Action("Index", "Version", new {area = "Admin", id = job.Company.Id})">
+                    @<a href="@Url.Action("Index", "Version", new {area = "Admin", id = job.Company.Id})" data-title title="Navigate to company version list">
                         <img src="~/Images/download.jpg" width="20" />
                     </a>
                 ); 
@@ -90,8 +90,10 @@
     <script type="text/javascript">
         $(function () {
             $('[data-status]').tipsy({ html: true, gravity: 'nw' });
+            $('[data-title]').tipsy({ html: false, gravity: 'nw' });
         });
         $('[data-status]').tipsy({ html: true, gravity: 'nw' });
+        $('[data-title]').tipsy({ html: false, gravity: 'nw' });
 
     </script>
 
