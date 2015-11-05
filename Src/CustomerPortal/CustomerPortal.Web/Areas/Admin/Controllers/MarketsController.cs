@@ -33,12 +33,17 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return View(allMarkets.Select(market => new MarketModel { Market = market.Name }));
         }
 
-        public ActionResult VehicleIndex(MarketModel marketModel)
+        public ActionResult MarketIndex(MarketModel marketModel)
         {
             // Find all vehicle type for this market
             var market = GetMarket(marketModel.Market);
             
-            return View(new MarketModel { Market = marketModel.Market, Vehicles = market.Vehicles });
+            return View(new MarketModel
+            {
+                Market = marketModel.Market,
+                DispatcherSettings = market.DispatcherSettings,
+                Vehicles = market.Vehicles
+            });
         }
 
         public ActionResult CreateMarket()
@@ -64,7 +69,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 Name = marketModel.Market
             });
 
-            return RedirectToAction("VehicleIndex", marketModel);
+            return RedirectToAction("MarketIndex", marketModel);
         }
 
         public ActionResult DeleteMarket(MarketModel marketModel)
@@ -99,9 +104,34 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult CreateVehicle(MarketModel marketModel)
+        public ActionResult EditDispatcherSettings(string market)
         {
-            return View(new VehicleModel { Market = marketModel.Market });
+            var marketRepresentation = GetMarket(market);
+            return View(new MarketModel { Market = marketRepresentation.Name, DispatcherSettings = marketRepresentation.DispatcherSettings });
+        }
+
+        [HttpPost]
+        public ActionResult EditDispatcherSettings(MarketModel marketModel)
+        {
+            try
+            {
+                var marketRepresentation = GetMarket(marketModel.Market);
+                marketRepresentation.DispatcherSettings = marketModel.DispatcherSettings;
+                Repository.Update(marketRepresentation);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "An error occured. Unable to edit dispatcher settings.";
+
+                return View(marketModel);
+            }
+
+            return RedirectToAction("MarketIndex", new MarketModel { Market = marketModel.Market });
+        }
+
+        public ActionResult CreateVehicle(string market)
+        {
+            return View(new VehicleModel { Market = market });
         }
         
         [HttpPost]
@@ -127,7 +157,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 return View(networkVehicle);
             }
 
-            return RedirectToAction("VehicleIndex", new MarketModel { Market = networkVehicle.Market });
+            return RedirectToAction("MarketIndex", new MarketModel { Market = networkVehicle.Market });
         }
 
         public ActionResult EditVehicle(string market, string id)
@@ -168,7 +198,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 return View(networkVehicle);
             }
 
-            return RedirectToAction("VehicleIndex", new MarketModel { Market = networkVehicle.Market });
+            return RedirectToAction("MarketIndex", new MarketModel { Market = networkVehicle.Market });
         }
 
         public ActionResult DeleteVehicle(string market, string id)
@@ -185,7 +215,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 ViewBag.Error = "An error occured. Unable to delete the vehicle.";
             }
 
-            return RedirectToAction("VehicleIndex", new MarketModel { Market = market });
+            return RedirectToAction("MarketIndex", new MarketModel { Market = market });
         }
 
         private int GenerateNextSequentialNetworkVehicleId()

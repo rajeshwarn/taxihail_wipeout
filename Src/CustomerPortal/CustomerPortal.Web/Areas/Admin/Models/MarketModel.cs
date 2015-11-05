@@ -11,6 +11,8 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         [Display(Name = "Name")]
         public string Market { get; set; }
 
+        public DispatcherSettings DispatcherSettings { get; set; }
+
         public IEnumerable<Vehicle> Vehicles { get; set; }
     }
 
