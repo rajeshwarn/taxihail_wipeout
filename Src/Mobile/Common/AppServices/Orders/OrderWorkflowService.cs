@@ -578,20 +578,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			if (accountAddress != null)
 			{
-				Logger.LogMessage("Address found in account");
 				_loadingAddressSubject.OnNext(false);
 				return accountAddress;
 			}
 
 			var address = await Task.Run(() => _geolocService.SearchAddress(p.Latitude, p.Longitude));
-			Logger.LogMessage("Found {0} addresses", address.Count());
 			if (address.Any())
 			{
 				_loadingAddressSubject.OnNext(false);
 				return address[0];
 			}
-
-			Logger.LogMessage("clear addresses");
 
 			// TODO: Refactor. We should probably throw an exception here.
 			// Error should be handled by the caller.
@@ -628,12 +624,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			if (!_calculateFareCancellationTokenSource.IsCancellationRequested)
 			{
-				Logger.LogMessage("Fare Estimate - CANCEL");
 				_calculateFareCancellationTokenSource.Cancel ();
 			}
 			_calculateFareCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(token);
-
-			Logger.LogMessage("Fare Estimate - START");
 
 			var newCancelToken = _calculateFareCancellationTokenSource.Token;
 
@@ -647,7 +640,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				return;
 			}
 
-			Logger.LogMessage("Fare Estimate - DONE");
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
 		}

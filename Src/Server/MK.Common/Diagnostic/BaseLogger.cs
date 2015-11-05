@@ -23,6 +23,8 @@ namespace apcurium.MK.Common.Diagnostic
 		private string activeFileFullName;
 		private string inactiveFileFullName;
 
+		private object _fileSwitchExclusiveAccess = new object();
+
 		private string messageBase;
 		
 		public void LogError(Exception ex)
@@ -159,9 +161,14 @@ namespace apcurium.MK.Common.Diagnostic
 
 			var messageWithUserName = message + messageBase;
 
-			SetActiveLogFile(messageWithUserName.Length);
 
-			File.AppendAllLines(activeFileFullName, new[] { messageWithUserName });
+			lock (_fileSwitchExclusiveAccess)
+			{
+				SetActiveLogFile(messageWithUserName.Length);
+
+				File.AppendAllLines(activeFileFullName, new[] { messageWithUserName });
+			}
+
 
 			Console.WriteLine(messageWithUserName);
 		}
@@ -172,14 +179,17 @@ namespace apcurium.MK.Common.Diagnostic
 
 			var nonEmptyLogs = new List<string>();
 
-			if (File.Exists(inactiveFileFullName) && (new FileInfo(inactiveFileFullName)).Length > 0)
+			lock (_fileSwitchExclusiveAccess)
 			{
-				nonEmptyLogs.Add(inactiveFileFullName);
-			}
+				if (File.Exists(inactiveFileFullName) && (new FileInfo(inactiveFileFullName)).Length > 0)
+				{
+					nonEmptyLogs.Add(inactiveFileFullName);
+				}
 
-			if (File.Exists(activeFileFullName) && (new FileInfo(activeFileFullName)).Length > 0)
-			{
-				nonEmptyLogs.Add(activeFileFullName);
+				if (File.Exists(activeFileFullName) && (new FileInfo(activeFileFullName)).Length > 0)
+				{
+					nonEmptyLogs.Add(activeFileFullName);
+				}
 			}
 
 			return nonEmptyLogs.ToArray();
