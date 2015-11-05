@@ -231,6 +231,7 @@
     <Compile Include="Areas\Customer\Models\RequestResponse\CompanyPreferencesRequest.cs" />
     <Compile Include="Attributes\NoCacheAttribute.cs" />
     <Compile Include="Entities\Network\Market.cs" />
+    <Compile Include="Extensions\MarketCollectionExtensions.cs" />
     <Compile Include="Services\SourceControlFactory.cs" />
     <Compile Include="Services\Impl\BitBucketVersionUpdater.cs" />
     <Compile Include="Services\Impl\GitHubVersionUpdater.cs" />

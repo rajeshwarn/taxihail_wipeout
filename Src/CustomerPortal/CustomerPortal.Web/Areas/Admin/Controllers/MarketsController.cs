@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Entities.Network;
+using CustomerPortal.Web.Extensions;
 using MongoDB.Bson;
 using MongoDB.Driver.Builders;
 using MongoRepository;
@@ -36,7 +37,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         public ActionResult MarketIndex(MarketModel marketModel)
         {
             // Find all vehicle type for this market
-            var market = GetMarket(marketModel.Market);
+            var market = Repository.GetMarket(marketModel.Market);
             
             return View(new MarketModel
             {
@@ -54,7 +55,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult CreateMarket(MarketModel marketModel)
         {
-            var existing = GetMarket(marketModel.Market);
+            var existing = Repository.GetMarket(marketModel.Market);
 
             if (existing != null)
             {
@@ -106,7 +107,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult EditDispatcherSettings(string market)
         {
-            var marketRepresentation = GetMarket(market);
+            var marketRepresentation = Repository.GetMarket(market);
             return View(new MarketModel { Market = marketRepresentation.Name, DispatcherSettings = marketRepresentation.DispatcherSettings });
         }
 
@@ -115,7 +116,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             try
             {
-                var marketRepresentation = GetMarket(marketModel.Market);
+                var marketRepresentation = Repository.GetMarket(marketModel.Market);
                 marketRepresentation.DispatcherSettings = marketModel.DispatcherSettings;
                 Repository.Update(marketRepresentation);
             }
@@ -139,7 +140,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             try
             {
-                var marketRepresentation = GetMarket(networkVehicle.Market);
+                var marketRepresentation = Repository.GetMarket(networkVehicle.Market);
                 marketRepresentation.Vehicles.Add(new Vehicle
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -162,7 +163,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult EditVehicle(string market, string id)
         {
-            var marketContainingVehicle = GetMarket(market);
+            var marketContainingVehicle = Repository.GetMarket(market);
             var networkVehicle = marketContainingVehicle.Vehicles.First(x => x.Id == id).SelectOrDefault(x => new VehicleModel
             {
                 Market = marketContainingVehicle.Name,
@@ -181,7 +182,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             try
             {
-                var marketContainingVehicle = GetMarket(networkVehicle.Market);
+                var marketContainingVehicle = Repository.GetMarket(networkVehicle.Market);
                 var existingVehicle = marketContainingVehicle.Vehicles.First(x => x.Id == networkVehicle.Id);
 
                 existingVehicle.Name = networkVehicle.Name;
@@ -205,7 +206,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             try
             {
-                var marketContainingVehicle = GetMarket(market);
+                var marketContainingVehicle = Repository.GetMarket(market);
                 var vehicleToDelete = marketContainingVehicle.Vehicles.First(x => x.Id == id);
                 marketContainingVehicle.Vehicles.Remove(vehicleToDelete);
                 Repository.Update(marketContainingVehicle);
@@ -236,12 +237,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
 
             return nextNetworkVehicleId;
-        }
-
-        private Market GetMarket(string market)
-        {
-            var nameQuery = Query<Market>.Matches(x => x.Name, new BsonRegularExpression(market, "i"));
-            return Repository.Collection.FindOne(nameQuery);
         }
     }
 }

@@ -312,8 +312,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 return new DispatcherSettings();
             }
 
-            var nameQuery = Query<Market>.Matches(x => x.Name, new BsonRegularExpression(marketName, "i"));
-            var market = _marketRepository.Collection.FindOne(nameQuery);
+            var market = _marketRepository.GetMarket(marketName);
             return market != null ? market.DispatcherSettings : new DispatcherSettings();
         }
     }
