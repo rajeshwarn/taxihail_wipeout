@@ -94,8 +94,8 @@ namespace CustomerPortal.Web
                 return;
             }
 
-            var allMarketsDefinedInNetworkSettings = new MongoRepository<TaxiHailNetworkSettings>().Select(x => x.Market).Distinct().ToList();
-            var allMarketsDefinedInNetworkVehicles = networkVehicles.Select(x => x.Market).Distinct().ToList();
+            var allMarketsDefinedInNetworkSettings = new MongoRepository<TaxiHailNetworkSettings>().Select(x => x.Market).Distinct();
+            var allMarketsDefinedInNetworkVehicles = networkVehicles.Select(x => x.Market).Distinct();
             var allMarketsDefined = new List<string>();
             allMarketsDefined.AddRange(allMarketsDefinedInNetworkSettings);
             allMarketsDefined.AddRange(allMarketsDefinedInNetworkVehicles);

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CustomerPortal.Web.Entities.Network
 {
-    [Obsolete]
+    [Obsolete("Use the Vehicles list in the new Market entity")]
     public class NetworkVehicle : IEntity
     {
         public string Id { get; set; }

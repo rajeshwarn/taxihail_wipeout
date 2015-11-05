@@ -5,6 +5,8 @@ using System.Web.Mvc;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Entities.Network;
+using MongoDB.Bson;
+using MongoDB.Driver.Builders;
 using MongoRepository;
 
 namespace CustomerPortal.Web.Areas.Admin.Controllers
@@ -26,16 +28,16 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            var allMarkets = Repository.ToArray();
-
+            var allMarkets = Repository.OrderBy(x => x.Name).ToArray();
+            
             return View(allMarkets.Select(market => new MarketModel { Market = market.Name }));
         }
 
         public ActionResult VehicleIndex(MarketModel marketModel)
         {
             // Find all vehicle type for this market
-            var market = Repository.First(x => x.Name == marketModel.Market);
-
+            var market = GetMarket(marketModel.Market);
+            
             return View(new MarketModel { Market = marketModel.Market, Vehicles = market.Vehicles });
         }
 
@@ -47,8 +49,9 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult CreateMarket(MarketModel marketModel)
         {
-            var existingMarket = Repository.FirstOrDefault(v => v.Name == marketModel.Market);
-            if (existingMarket != null)
+            var existing = GetMarket(marketModel.Market);
+
+            if (existing != null)
             {
                 ViewBag.Error = "A market with that name already exists.";
 
@@ -106,7 +109,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             try
             {
-                var marketRepresentation = Repository.First(x => x.Name == networkVehicle.Market);
+                var marketRepresentation = GetMarket(networkVehicle.Market);
                 marketRepresentation.Vehicles.Add(new Vehicle
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -129,7 +132,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult EditVehicle(string market, string id)
         {
-            var marketContainingVehicle = Repository.First(x => x.Name == market);
+            var marketContainingVehicle = GetMarket(market);
             var networkVehicle = marketContainingVehicle.Vehicles.First(x => x.Id == id).SelectOrDefault(x => new VehicleModel
             {
                 Market = marketContainingVehicle.Name,
@@ -148,17 +151,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             try
             {
-                var marketContainingVehicle = Repository.First(x => x.Name == networkVehicle.Market);
+                var marketContainingVehicle = GetMarket(networkVehicle.Market);
                 var existingVehicle = marketContainingVehicle.Vehicles.First(x => x.Id == networkVehicle.Id);
-                marketContainingVehicle.Vehicles.Remove(existingVehicle);
-                marketContainingVehicle.Vehicles.Add(networkVehicle.SelectOrDefault(x => new Vehicle
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    LogoName = x.LogoName,
-                    MaxNumberPassengers = x.MaxNumberPassengers,
-                    NetworkVehicleId = x.NetworkVehicleId
-                }));
+
+                existingVehicle.Name = networkVehicle.Name;
+                existingVehicle.LogoName = networkVehicle.LogoName;
+                existingVehicle.MaxNumberPassengers = networkVehicle.MaxNumberPassengers;
+                existingVehicle.NetworkVehicleId = networkVehicle.NetworkVehicleId;
+
                 Repository.Update(marketContainingVehicle);
             }
             catch (Exception)
@@ -175,7 +175,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             try
             {
-                var marketContainingVehicle = Repository.First(x => x.Name == market);
+                var marketContainingVehicle = GetMarket(market);
                 var vehicleToDelete = marketContainingVehicle.Vehicles.First(x => x.Id == id);
                 marketContainingVehicle.Vehicles.Remove(vehicleToDelete);
                 Repository.Update(marketContainingVehicle);
@@ -206,6 +206,12 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
 
             return nextNetworkVehicleId;
+        }
+
+        private Market GetMarket(string market)
+        {
+            var nameQuery = Query<Market>.Matches(x => x.Name, new BsonRegularExpression(market, "i"));
+            return Repository.Collection.FindOne(nameQuery);
         }
     }
 }
