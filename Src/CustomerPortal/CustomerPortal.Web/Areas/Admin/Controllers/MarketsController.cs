@@ -74,7 +74,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             if (companiesUsingThisMarketInTheirNetworkSettings.Any())
             {
-                TempData["warning"] = "Couldn't delete the market because some compagnies are configured to use it:"
+                TempData["warning"] = "Couldn't delete the market because some companies are configured to use it:"
                                       + companiesUsingThisMarketInTheirNetworkSettings.Aggregate("",
                                           (current, company) => current + string.Format(
                                                   company == companiesUsingThisMarketInTheirNetworkSettings.Last()
