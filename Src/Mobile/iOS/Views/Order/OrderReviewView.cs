@@ -242,13 +242,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             this.DelayBind(InitializeBinding);
         }
 
-        public override void LayoutSubviews()
-        {
-            base.LayoutSubviews();
-
-            constraintHeight.Constant = this.Frame.Height;
-        }
-
         private bool _removeBonusFromView;
         public bool RemoveBonusFromView
         {
