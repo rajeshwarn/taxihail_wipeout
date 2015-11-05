@@ -216,6 +216,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             if (!this.Services().Settings.ShowPassengerPhone)
             {
                 lblPhone.RemoveFromSuperview();
+                lblCountryDialCode.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();
             }
                 
