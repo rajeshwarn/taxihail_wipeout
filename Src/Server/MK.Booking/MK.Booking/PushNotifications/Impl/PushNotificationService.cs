@@ -62,7 +62,10 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
         private void EnsureAppleStarted()
         {
-            if (_appleStarted) return;
+            if (_appleStarted)
+            {
+                return;
+            }
 
             _appleStarted = true;
 
@@ -84,7 +87,10 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
         private void EnsureAndroidStarted()
         {
-            if (_androidStarted) return;
+            if (_androidStarted)
+            {
+                return;
+            }
 
             _androidStarted = true;
 
@@ -97,7 +103,10 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
         private void EnsureBlackberryStarted()
         {
-            if (_blackberryStarted) return;
+            if (_blackberryStarted)
+            {
+                return;
+            }
 
             _blackberryStarted = true;
 
