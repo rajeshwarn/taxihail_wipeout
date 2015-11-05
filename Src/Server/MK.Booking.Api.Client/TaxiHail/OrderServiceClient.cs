@@ -25,8 +25,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<OrderStatusDetail> CreateOrder(CreateOrderRequest orderRequest)
         {
             var req = string.Format("/account/orders");
-            var result = Client.PostAsync<OrderStatusDetail>(req, orderRequest);
-            return result;
+            return Client.PostAsync<OrderStatusDetail>(req, orderRequest);
         }
 
         public Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(SwitchOrderToNextDispatchCompanyRequest request)

@@ -264,7 +264,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			{
                 var pickupAddress = (await _accountService.GetFavoriteAddresses()).FirstOrDefault();
 
-				var newOrderCreated = new CreateOrder();
+                var newOrderCreated = new CreateOrderRequest();
 				newOrderCreated.Id = Guid.NewGuid();
                 newOrderCreated.Settings = _accountService.CurrentAccount.Settings;
 				newOrderCreated.PickupAddress = pickupAddress;

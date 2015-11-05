@@ -3,9 +3,9 @@ using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Messages
 {
-    public class OrderConfirmed : GenericTinyMessage<CreateOrder>
+    public class OrderConfirmed : GenericTinyMessage<CreateOrderRequest>
     {
-        public OrderConfirmed(object sender, CreateOrder address, bool isCancelled)
+        public OrderConfirmed(object sender, CreateOrderRequest address, bool isCancelled)
             : base(sender, address)
         {            
             IsCancelled = isCancelled;

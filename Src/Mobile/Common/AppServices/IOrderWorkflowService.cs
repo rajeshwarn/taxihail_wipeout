@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         bool ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers);
 
-		Task<OrderValidationResult> ValidateOrder(CreateOrder order = null);
+        Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order = null);
 
 		void ConfirmValidationOrder ();
 

@@ -105,6 +105,7 @@
     <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\RatingTypeWrapper.cs" />
+    <Compile Include="Entity\RideEstimate.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Enumeration\AssignedVehicleMarkets.cs" />
     <Compile Include="Enumeration\DeviceOrientations.cs" />

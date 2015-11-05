@@ -76,22 +76,36 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             var orderCommand = CreateOrder(createOrderRequest, account, createReportOrder);
 
-            var result = _ibsCreateOrderService.CreateIbsOrder(request.Id, request.PickupAddress, request.DropOffAddress,
-                request.Settings.AccountNumber, request.Settings.CustomerNumber, orderCommand.CompanyKey,
-                orderCommand.IbsAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
-                request.Settings.VehicleTypeId, orderCommand.IbsInformationNote, request.PickupDate.Value, orderCommand.Prompts,
-                orderCommand.PromptsLength, orderCommand.ReferenceDataCompanyList, orderCommand.Market, request.Settings.ChargeTypeId,
-                request.Settings.ProviderId, orderCommand.Fare, createOrderRequest.TipIncentive, true);
+            var result = _ibsCreateOrderService.CreateIbsOrder(orderCommand.OrderId, orderCommand.PickupAddress,
+                orderCommand.DropOffAddress, orderCommand.Settings.AccountNumber, orderCommand.Settings.CustomerNumber,
+                orderCommand.CompanyKey, orderCommand.IbsAccountId, orderCommand.Settings.Name, orderCommand.Settings.Phone,
+                orderCommand.Settings.Passengers, orderCommand.Settings.VehicleTypeId, orderCommand.IbsInformationNote,
+                orderCommand.PickupDate, orderCommand.Prompts, orderCommand.PromptsLength, orderCommand.ReferenceDataCompanyList,
+                orderCommand.Market, orderCommand.Settings.ChargeTypeId, orderCommand.Settings.ProviderId, orderCommand.Fare,
+                orderCommand.TipIncentive, true);
 
-            orderCommand.IbsOrderId = result.HailResult.OrderKey.IbsOrderId;
+            if (result.HailResult.OrderKey.IbsOrderId > -1)
+            {
+                orderCommand.IbsOrderId = result.HailResult.OrderKey.IbsOrderId;
 
-            _commandBus.Send(orderCommand);
+                _commandBus.Send(orderCommand);
+            }
 
             return result.HailResult;
         }
 
         public object Post(ConfirmHailRequest request)
         {
+            if (request.OrderKey.IbsOrderId < 0)
+            {
+                throw new HttpError(string.Format("Cannot confirm hail because IBS returned error code {0}", request.OrderKey.IbsOrderId));
+            }
+
+            if (request.VehicleCandidate == null)
+            {
+                throw new HttpError("You need to specify a vehicle in order to confirm the hail.");
+            }
+
             var orderDetail = _orderDao.FindById(request.OrderKey.TaxiHailOrderId);
             if (orderDetail == null)
             {
