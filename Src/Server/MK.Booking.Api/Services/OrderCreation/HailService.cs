@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Requests.Client;
 using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Domain;
@@ -18,7 +19,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Api.Services.CreateOrder
+namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
     public class HailService : BaseCreateOrderService
     {
@@ -68,7 +69,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
         {
             _logger.LogMessage(string.Format("Starting Hail. Request : {0}", request.ToJson()));
 
-            var createOrderRequest = Mapper.Map<Contract.Requests.CreateOrder>(request);
+            var createOrderRequest = Mapper.Map<CreateOrderRequest>(request);
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             var createReportOrder = CreateReportOrder(createOrderRequest, account);

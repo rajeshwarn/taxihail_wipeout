@@ -45,7 +45,7 @@ namespace apcurium.MK.Web.Tests
         public async void create_order()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
@@ -111,7 +111,7 @@ namespace apcurium.MK.Web.Tests
             });
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo { UserAgent = "FireFox" });
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 FromWebApp = true,
@@ -160,7 +160,7 @@ namespace apcurium.MK.Web.Tests
         public async void create_order_with_user_location()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 UserLatitude = 46.50643,
@@ -202,7 +202,7 @@ namespace apcurium.MK.Web.Tests
         public void when_creating_order_without_passing_settings()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 PickupAddress = TestAddresses.GetAddress1(),
@@ -229,7 +229,7 @@ namespace apcurium.MK.Web.Tests
         public void when_creating_order_with_promotion_but_not_using_card_on_file()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 PickupAddress = TestAddresses.GetAddress1(),
@@ -296,7 +296,7 @@ namespace apcurium.MK.Web.Tests
             SessionId = auth.SessionId;
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
             {
                 Id = _orderId,
                 PickupAddress = TestAddresses.GetAddress1(),

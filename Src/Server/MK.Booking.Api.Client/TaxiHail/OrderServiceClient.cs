@@ -22,10 +22,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public Task<OrderStatusDetail> CreateOrder(CreateOrder order)
+        public Task<OrderStatusDetail> CreateOrder(CreateOrderRequest orderRequest)
         {
             var req = string.Format("/account/orders");
-            var result = Client.PostAsync<OrderStatusDetail>(req, order);
+            var result = Client.PostAsync<OrderStatusDetail>(req, orderRequest);
             return result;
         }
 
@@ -111,17 +111,17 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.GetAsync<OrderRatings>(req);
         }
 
-		public Task<OrderValidationResult> ValidateOrder(CreateOrder order, string testZone = null, bool forError = false)
+		public Task<OrderValidationResult> ValidateOrder(CreateOrderRequest orderRequest, string testZone = null, bool forError = false)
 		{
             if (testZone.HasValue())
             {
                 var req = string.Format("/account/orders/validate/{0}/{1}", forError, testZone);
-                return Client.PostAsync<OrderValidationResult>(req, order);
+                return Client.PostAsync<OrderValidationResult>(req, orderRequest);
             }
             else
             {
                 var req = string.Format("/account/orders/validate/{0}", forError);
-                return Client.PostAsync<OrderValidationResult>(req, order);
+                return Client.PostAsync<OrderValidationResult>(req, orderRequest);
             }
         }
 

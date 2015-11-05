@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
         }
 
         internal InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(
-            Guid accountId, bool isPrepaid, Guid orderId, Contract.Requests.CreateOrder request,
+            Guid accountId, bool isPrepaid, Guid orderId, Contract.Requests.CreateOrderRequest request,
             decimal bookingFees, string companyKey, CreateReportOrder createReportOrder, string absoluteRequestUri)
         {
             if (isPrepaid

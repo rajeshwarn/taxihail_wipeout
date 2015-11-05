@@ -139,7 +139,7 @@
     <Compile Include="Requests\ConfigurationResetRequest.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\ConfigurationsRequest.cs" />
-    <Compile Include="Requests\CreateOrder.cs" />
+    <Compile Include="Requests\CreateOrderRequest.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Requests\DefaultFavoriteAddress.cs" />
     <Compile Include="Requests\DefaultGeoLocationRequest.cs" />

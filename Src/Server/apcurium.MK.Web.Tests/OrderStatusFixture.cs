@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
 
             _orderId = Guid.NewGuid();
             var sut = new OrderServiceClient(BaseUrl, authResponse.SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
             {
                 Id = _orderId,
                 PickupAddress = TestAddresses.GetAddress1(),

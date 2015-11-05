@@ -29,7 +29,7 @@ using ServiceStack.Text;
 
 #endregion
 
-namespace apcurium.MK.Booking.Api.Services.CreateOrder
+namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
     public class CreateOrderService : BaseCreateOrderService
     {
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, _logger);
         }
 
-        public object Post(Contract.Requests.CreateOrder request)
+        public object Post(CreateOrderRequest request)
         {
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             var createReportOrder = CreateReportOrder(request, account);
@@ -182,7 +182,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 chargeTypeDisplay = ChargeTypes.PaymentInCar.Display;
             }
 
-            var newOrderRequest = new Contract.Requests.CreateOrder
+            var newOrderRequest = new CreateOrderRequest
             {
                 PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey),
                 PickupAddress = order.PickupAddress,
@@ -240,7 +240,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
             ValidateProvider(newOrderRequest, newReferenceData, market.HasValue(), null);
 
-            var newOrderCommand = Mapper.Map<Commands.CreateOrder>(newOrderRequest);
+            var newOrderCommand = Mapper.Map<CreateOrder>(newOrderRequest);
             newOrderCommand.OrderId = request.OrderId;
             newOrderCommand.ReferenceDataCompanyList = newReferenceData.CompaniesList.ToArray();
             newOrderCommand.Market = market;

@@ -1,5 +1,5 @@
 ﻿
-namespace apcurium.MK.Booking.Api.Services.CreateOrder
+namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
     public class ChargeAccountValidationResult
     {

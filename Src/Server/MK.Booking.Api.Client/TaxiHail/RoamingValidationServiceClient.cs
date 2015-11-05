@@ -19,12 +19,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             _client = new HttpClient { BaseAddress = new Uri(Url) };
         }
 
-        public OrderValidationResult ValidateOrder(CreateOrder order, bool forError = false)
+        public OrderValidationResult ValidateOrder(CreateOrderRequest orderRequest, bool forError = false)
         {
             try
             {
                 var req = string.Format("api/account/orders/validate/" + forError);
-                return _client.Post(req, order)
+                return _client.Post(req, orderRequest)
                         .Deserialize<OrderValidationResult>()
                         .Result;
             }

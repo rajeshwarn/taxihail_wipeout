@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
-            await sut.CreateOrder(new CreateOrder
+            await sut.CreateOrder(new CreateOrderRequest
                 {
                     Id = orderId,
                     PickupDate = DateTime.Now,

@@ -102,10 +102,10 @@ namespace apcurium.MK.Web.Tests
             }
         }
 
-        private async Task<OrderValidationResult> ValidateOrder(Action<CreateOrder> update, string testZone = null)
+        private async Task<OrderValidationResult> ValidateOrder(Action<CreateOrderRequest> update, string testZone = null)
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
@@ -132,10 +132,10 @@ namespace apcurium.MK.Web.Tests
             return await sut.ValidateOrder(order, testZone);
         }
 
-        private async Task<string> CreateOrder(Action<CreateOrder> update)
+        private async Task<string> CreateOrder(Action<CreateOrderRequest> update)
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
@@ -356,7 +356,7 @@ namespace apcurium.MK.Web.Tests
             });
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
@@ -644,7 +644,7 @@ namespace apcurium.MK.Web.Tests
             });
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
@@ -697,7 +697,7 @@ namespace apcurium.MK.Web.Tests
             });
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 PickupAddress = TestAddresses.GetAddress1(),
@@ -733,7 +733,7 @@ namespace apcurium.MK.Web.Tests
             rules.UpdateRule(rule);
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
@@ -766,7 +766,7 @@ namespace apcurium.MK.Web.Tests
             rules.DeactivateRule(rule.Id);
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),

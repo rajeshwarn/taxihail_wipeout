@@ -30,7 +30,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Api.Services.CreateOrder
+namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
     public class BaseCreateOrderService : Service
     {
@@ -95,10 +95,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             PaymentHelper = new CreateOrderPaymentHelper(serverSettings, commandBus, paymentService, orderPaymentDao, payPalServiceFactory);
         }
 
-        protected Commands.CreateOrder CreateOrder(Contract.Requests.CreateOrder request, AccountDetail account, CreateReportOrder createReportOrder)
+        protected CreateOrder CreateOrder(CreateOrderRequest request, AccountDetail account, CreateReportOrder createReportOrder)
         {
-            Exception createOrderException;
-
             _logger.LogMessage("Create order request : " + request.ToJson());
 
             var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
@@ -109,10 +107,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             }
             else
             {
-                createOrderException = new HttpError(string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable,
+                    string.Format(_resources.Get("PhoneNumberFormat", request.ClientLanguageCode), countryCode.GetPhoneExample()));
             }
 
             // TODO: Find a better way to do this...
@@ -147,11 +143,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             if (market.HasValue() && !bestAvailableCompany.CompanyKey.HasValue())
             {
                 // No companies available that are desserving this region for the company
-                createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                            _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
             }
 
             _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
@@ -190,10 +182,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                     && pendingOrderId != null
                     && !isFromWebApp)
                 {
-                    createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
-                    createReportOrder.Error = createOrderException.ToString();
-                    _commandBus.Send(createReportOrder);
-                    throw createOrderException;
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_PendingOrder, pendingOrderId.ToString());
                 }
             }
 
@@ -217,10 +206,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
             if (rule != null)
             {
-                createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, rule.Message);
             }
 
             // We need to validate the rules of the roaming market.
@@ -234,19 +220,13 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 var validationResult = orderServiceClient.ValidateOrder(request, true);
                 if (validationResult.HasError)
                 {
-                    createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), validationResult.Message);
-                    createReportOrder.Error = createOrderException.ToString();
-                    _commandBus.Send(createReportOrder);
-                    throw createOrderException;
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, validationResult.Message);
                 }
             }
 
             if (Params.Get(request.Settings.Name, request.Settings.Phone).Any(p => p.IsNullOrEmpty()))
             {
-                createOrderException = new HttpError(ErrorCode.CreateOrder_SettingsRequired.ToString());
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_SettingsRequired);
             }
 
             ReferenceData referenceData;
@@ -269,12 +249,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             if (_serverSettings.ServerData.Direction.NeedAValidTarif
                 && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
             {
-                createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                    ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString(),
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_NoFareEstimateAvailable,
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_NoFareEstimateAvailable, request.ClientLanguageCode));
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
             }
 
             // IBS provider validation
@@ -355,7 +331,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             return orderCommand;
         }
 
-        protected void ValidateProvider(Contract.Requests.CreateOrder request, ReferenceData referenceData, bool isInExternalMarket, CreateReportOrder createReportOrder)
+        protected void ValidateProvider(CreateOrderRequest request, ReferenceData referenceData, bool isInExternalMarket, CreateReportOrder createReportOrder)
         {
             // Provider is optional for home market
             // But if a provider is specified, it must match with one of the ReferenceData values
@@ -363,17 +339,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 && request.Settings.ProviderId.HasValue
                 && referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
             {
-
-                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                    ErrorCode.CreateOrder_InvalidProvider.ToString(),
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_InvalidProvider,
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_InvalidProvider, request.ClientLanguageCode));
-
-                if (createReportOrder != null)
-                {
-                    createReportOrder.Error = createOrderException.ToString();
-                    _commandBus.Send(createReportOrder);
-                }
-                throw createOrderException;
             }
         }
 
@@ -416,7 +383,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             return ibsAccountId.Value;
         }
 
-        protected CreateReportOrder CreateReportOrder(Contract.Requests.CreateOrder request, AccountDetail account)
+        protected CreateReportOrder CreateReportOrder(CreateOrderRequest request, AccountDetail account)
         {
             return new CreateReportOrder
             {
@@ -458,17 +425,13 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
                 if (appVersionItem < minimumVersionItem)
                 {
-                    Exception createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                                        _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
-
-                    createReportOrder.Error = createOrderException.ToString();
-                    _commandBus.Send(createReportOrder);
-                    throw createOrderException;
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable,
+                        _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
                 }
             }
         }
 
-        private ChargeAccountValidationResult ValidateChargeAccountIfNecessary(string companyKey, Contract.Requests.CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, bool isFromWebApp, decimal bookingFees, CreateReportOrder createReportOrder)
+        private ChargeAccountValidationResult ValidateChargeAccountIfNecessary(string companyKey, CreateOrderRequest request, Guid orderId, AccountDetail account, bool isFutureBooking, bool isFromWebApp, decimal bookingFees, CreateReportOrder createReportOrder)
         {
             string[] prompts = null;
             int?[] promptsLength = null;
@@ -485,12 +448,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                     if (isFromWebApp)
                     {
                         // Charge account cannot support prepaid orders
-                        Exception createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                        ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable,
                             _resources.Get("CannotCreateOrderChargeAccountNotSupportedOnWeb", request.ClientLanguageCode));
-
-                        createReportOrder.Error = createOrderException.ToString();
-                        _commandBus.Send(createReportOrder);
-                        throw createOrderException;
                     }
 
                     if (_paymentService.IsPayPal(account.Id))
@@ -533,13 +492,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
             if (accountChargeDetail == null)
             {
-                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                    ErrorCode.AccountCharge_InvalidAccountNumber.ToString(),
+                ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAccountNumber,
                     GetCreateOrderServiceErrorMessage(ErrorCode.AccountCharge_InvalidAccountNumber, clientLanguageCode));
-
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
             }
 
             var answers = userQuestionsDetails.Select(x => x.Answer);
@@ -550,23 +504,20 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 if (validation.ValidResponse != null)
                 {
                     int firstError = validation.ValidResponse.IndexOf(false);
-                    var invalidAnswerException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
-                                            accountChargeDetail.Questions[firstError].ErrorMessage);
+                    string errorMessage = null;
+                    if (accountChargeDetail != null)
+                    {
+                        errorMessage = accountChargeDetail.Questions[firstError].ErrorMessage;
+                    }
 
-                    createReportOrder.Error = invalidAnswerException.ToString();
-                    _commandBus.Send(createReportOrder);
-                    throw invalidAnswerException;
+                    ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAnswer, errorMessage);
                 }
 
-                var invalidAccountException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.AccountCharge_InvalidAccountNumber.ToString(), validation.Message);
-
-                createReportOrder.Error = invalidAccountException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw invalidAccountException;
+                ThrowAndLogException(createReportOrder, ErrorCode.AccountCharge_InvalidAccountNumber, validation.Message);
             }
         }
 
-        private void ValidatePayment(string companyKey, Contract.Requests.CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, double? appEstimate, decimal bookingFees, bool isPrepaid, CreateReportOrder createReportOrder)
+        private void ValidatePayment(string companyKey, CreateOrderRequest request, Guid orderId, AccountDetail account, bool isFutureBooking, double? appEstimate, decimal bookingFees, bool isPrepaid, CreateReportOrder createReportOrder)
         {
             var tipPercent = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
 
@@ -583,13 +534,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 // Verify that prepaid is enabled on the server
                 if (!_serverSettings.GetPaymentSettings(companyKey).IsPrepaidEnabled)
                 {
-                    var createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                        ErrorCode.CreateOrder_RuleDisable.ToString(),
-                         _resources.Get("CannotCreateOrder_PrepaidButPrepaidNotEnabled", request.ClientLanguageCode));
-
-                    createReportOrder.Error = createOrderException.ToString();
-                    _commandBus.Send(createReportOrder);
-                    throw createOrderException;
+                    ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable,
+                        _resources.Get("CannotCreateOrder_PrepaidButPrepaidNotEnabled", request.ClientLanguageCode));
                 }
 
                 // Payment mode is CardOnFile
@@ -598,13 +544,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 {
                     if (!appEstimateWithTip.HasValue)
                     {
-                        var createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                            ErrorCode.CreateOrder_RuleDisable.ToString(),
+                        ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable,
                             _resources.Get("CannotCreateOrder_PrepaidNoEstimate", request.ClientLanguageCode));
-
-                        createReportOrder.Error = createOrderException.ToString();
-                        _commandBus.Send(createReportOrder);
-                        throw createOrderException;
                     }
 
                     ValidateCreditCard(account, request.ClientLanguageCode, request.Cvv, createReportOrder);
@@ -612,12 +553,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                     var result = PaymentHelper.CapturePaymentForPrepaidOrder(companyKey, orderId, account, Convert.ToDecimal(appEstimateWithTip), tipPercent, bookingFees, request.Cvv, createReportOrder);
                     if (!result.IsSuccessful)
                     {
-                        var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), result.Message);
-
-                        createReportOrder.Error = createOrderException.ToString();
-                        _commandBus.Send(createReportOrder);
-
-                        throw createOrderException;
+                        ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, result.Message);
                     }
                 }
             }
@@ -635,13 +571,8 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
                     if (!isSuccessful)
                     {
-                        var errorMessage = _resources.Get("CannotCreateOrder_CreditCardWasDeclined", request.ClientLanguageCode);
-                        var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), errorMessage);
-
-                        createReportOrder.Error = createOrderException.ToString();
-                        _commandBus.Send(createReportOrder);
-
-                        throw createOrderException;
+                        ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable,
+                            _resources.Get("CannotCreateOrder_CreditCardWasDeclined", request.ClientLanguageCode));
                     }
                 }
 
@@ -659,47 +590,24 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
             {
-                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                    ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString(),
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_CardOnFileButNoCreditCard,
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
-
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
             }
 
             var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
             if (creditCard.IsExpired())
             {
-                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                    ErrorCode.CreateOrder_RuleDisable.ToString(),
-                     _resources.Get("CannotCreateOrder_CreditCardExpired", clientLanguageCode));
-
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_CreditCardExpired", clientLanguageCode));
             }
             if (creditCard.IsDeactivated)
             {
-                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                    ErrorCode.CreateOrder_CardOnFileDeactivated.ToString(),
-                    _resources.Get("CannotCreateOrder_CreditCardDeactivated", clientLanguageCode));
-
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_CardOnFileDeactivated, _resources.Get("CannotCreateOrder_CreditCardDeactivated", clientLanguageCode));
             }
 
             if (_serverSettings.GetPaymentSettings().AskForCVVAtBooking
                 && !cvv.HasValue())
             {
-                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                    ErrorCode.CreateOrder_RuleDisable.ToString(),
-                     _resources.Get("CannotCreateOrder_CreditCardCvvRequired", clientLanguageCode));
-
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_CreditCardCvvRequired", clientLanguageCode));
             }
         }
 
@@ -708,25 +616,13 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             if (!_serverSettings.GetPaymentSettings(companyKey).PayPalClientSettings.IsEnabled
                     || !account.IsPayPalAccountLinked)
             {
-                var createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                    ErrorCode.CreateOrder_RuleDisable.ToString(),
-                     _resources.Get("CannotCreateOrder_PayPalButNoPayPal", clientLanguageCode));
-
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_PayPalButNoPayPal", clientLanguageCode));
             }
 
             var isSuccessful = PaymentHelper.PreAuthorizePaymentMethod(companyKey, orderId, account, clientLanguageCode, isFutureBooking, appEstimateWithTip, bookingFees, true, createReportOrder);
             if (!isSuccessful)
             {
-                var errorMessage = _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode);
-                var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), errorMessage);
-
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode));
             }
         }
 
@@ -755,35 +651,20 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                 }
 
                 // Should never happen since we will check client-side if there's a promocode and not paying with CoF/PayPal
-                var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                    _resources.Get(promotionErrorResourceKey, clientLanguageCode));
-
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get(promotionErrorResourceKey, clientLanguageCode));
             }
 
             var promo = _promotionDao.FindByPromoCode(promoCode);
             if (promo == null)
             {
-                Exception createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                    _resources.Get("CannotCreateOrder_PromotionDoesNotExist", clientLanguageCode));
-
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_PromotionDoesNotExist", clientLanguageCode));
             }
 
             var promoDomainObject = _promoRepository.Get(promo.Id);
             string errorMessage;
             if (!promoDomainObject.CanApply(accountId, pickupDate, isFutureBooking, out errorMessage))
             {
-                var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                    _resources.Get(errorMessage, clientLanguageCode));
-
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
+                ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get(errorMessage, clientLanguageCode));
             }
 
             return promo.Id;
@@ -811,6 +692,16 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             }
 
             return null;
+        }
+
+        private void ThrowAndLogException(CreateReportOrder createReportOrder, ErrorCode errorCodeType, string errorMessage = null)
+        {
+            var createOrderException = new HttpError(HttpStatusCode.BadRequest, errorCodeType.ToString(), errorMessage);
+
+            createReportOrder.Error = createOrderException.ToString();
+            _commandBus.Send(createReportOrder);
+
+            throw createOrderException;
         }
     }
 }
