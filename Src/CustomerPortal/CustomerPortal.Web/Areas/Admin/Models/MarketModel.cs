@@ -1,5 +1,7 @@
 ﻿
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CustomerPortal.Web.Entities.Network;
 
 namespace CustomerPortal.Web.Areas.Admin.Models
 {
@@ -7,6 +9,13 @@ namespace CustomerPortal.Web.Areas.Admin.Models
     {
         [Required]
         [Display(Name = "Name")]
+        public string Market { get; set; }
+
+        public IEnumerable<Vehicle> Vehicles { get; set; }
+    }
+
+    public class VehicleModel : Vehicle
+    {
         public string Market { get; set; }
     }
 }

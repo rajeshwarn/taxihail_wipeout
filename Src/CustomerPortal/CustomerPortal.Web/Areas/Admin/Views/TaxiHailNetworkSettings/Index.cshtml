@@ -1,9 +1,6 @@
-﻿@model CustomerPortal.Web.Entities.Network.TaxiHailNetworkSettings
-
+﻿@model CustomerPortal.Web.Areas.Admin.Models.TaxiHailNetworkSettingsModel
     
-    <div id="validationPanel" class="alert-success alert" style="display: none" > </div>
-
-   
+<div id="validationPanel" class="alert-success alert" style="display: none" > </div>
     
 @using (Html.BeginForm("Index", "TaxiHailNetworkSettings", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
 {
@@ -12,25 +9,25 @@
 
     <fieldset>
         <legend>
-            @Html.DisplayNameFor(x => x.Region)
+            @Html.DisplayNameFor(x => x.TaxiHailNetworkSettings.Region)
         </legend>
         <div class="editor-coordinate-field">
-            @Html.LabelFor(x => x.Region.CoordinateStart)
-            @Html.TextBoxFor(x => x.Region.CoordinateStart.Latitude, new {id = "StartLatitude", placeholder = "Latitude"})
-            @Html.TextBoxFor(x => x.Region.CoordinateStart.Longitude, new {id = "StartLongitude", placeholder = "Longitude"})
+            @Html.LabelFor(x => x.TaxiHailNetworkSettings.Region.CoordinateStart)
+            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.Region.CoordinateStart.Latitude, new {id = "StartLatitude", placeholder = "Latitude"})
+            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.Region.CoordinateStart.Longitude, new {id = "StartLongitude", placeholder = "Longitude"})
         </div>
         <div class="validation-message">
-            @Html.ValidationMessageFor(x => x.Region.CoordinateStart.Latitude)
-            @Html.ValidationMessageFor(x => x.Region.CoordinateStart.Longitude)
+            @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.Region.CoordinateStart.Latitude)
+            @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.Region.CoordinateStart.Longitude)
         </div>
         <div class="editor-coordinate-field">
-            @Html.LabelFor(x => x.Region.CoordinateEnd)
-            @Html.TextBoxFor(x => x.Region.CoordinateEnd.Latitude, new {id = "EndLatitude", placeholder = "Latitude"})
-            @Html.TextBoxFor(x => x.Region.CoordinateEnd.Longitude, new {id = "EndLongitude", placeholder = "Longitude"})
+            @Html.LabelFor(x => x.TaxiHailNetworkSettings.Region.CoordinateEnd)
+            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.Region.CoordinateEnd.Latitude, new {id = "EndLatitude", placeholder = "Latitude"})
+            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.Region.CoordinateEnd.Longitude, new {id = "EndLongitude", placeholder = "Longitude"})
         </div>
         <div class="validation-message">
-            @Html.ValidationMessageFor(x => x.Region.CoordinateEnd.Latitude)
-            @Html.ValidationMessageFor(x => x.Region.CoordinateEnd.Longitude)
+            @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.Region.CoordinateEnd.Latitude)
+            @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.Region.CoordinateEnd.Longitude)
         </div>
     </fieldset>
     
@@ -38,34 +35,35 @@
         <legend>
         </legend>
         <div class="editor-fleet-field">
-            @Html.LabelFor(x => x.Market)
-            @Html.TextBoxFor(x => x.Market, new { id = "MarketTextBox" })
-            @Html.ValidationMessageFor(x => x.Market)
+            @Html.LabelFor(x => x.TaxiHailNetworkSettings.Market)
+            @*@Html.TextBoxFor(x => x.TaxiHailNetworkSettings.Market, new { id = "MarketTextBox" })*@
+            @Html.DropDownListFor(x => x.TaxiHailNetworkSettings.Market, Model.AvailableMarkets, new { id = "MarketTextBox" })
+            @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.Market)
         </div>
         <div class="editor-fleet-field">
-            @Html.LabelFor(x => x.FleetId)
-            @Html.TextBoxFor(x => x.FleetId, new {id = "FleetTextBox"})
-            @Html.ValidationMessageFor(x => x.FleetId)
+            @Html.LabelFor(x => x.TaxiHailNetworkSettings.FleetId)
+            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.FleetId, new {id = "FleetTextBox"})
+            @Html.ValidationMessageFor(x => x.TaxiHailNetworkSettings.FleetId)
         </div>
         <div class="editor-fleet-field">
-            @Html.LabelFor(x => x.WhiteListedFleetIds)
-            @Html.TextBoxFor(x => x.WhiteListedFleetIds, new { id = "FleetIdWhiteList", placeholder = "Comma delimited FleetIds" })
+            @Html.LabelFor(x => x.TaxiHailNetworkSettings.WhiteListedFleetIds)
+            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.WhiteListedFleetIds, new { id = "FleetIdWhiteList", placeholder = "Comma delimited FleetIds" })
         </div>
         <div class="editor-fleet-field">
-            @Html.LabelFor(x => x.BlackListedFleetIds)
-            @Html.TextBoxFor(x => x.BlackListedFleetIds, new { id = "FleetIdBlackist", placeholder = "Comma delimited FleetIds" })
+            @Html.LabelFor(x => x.TaxiHailNetworkSettings.BlackListedFleetIds)
+            @Html.TextBoxFor(x => x.TaxiHailNetworkSettings.BlackListedFleetIds, new { id = "FleetIdBlackist", placeholder = "Comma delimited FleetIds" })
         </div>
     </fieldset>
     
     <fieldset>
         <br/>
         <div class="editor-field">
-            @Html.LabelFor(x => x.IsInNetwork)
-            @Html.CheckBoxFor(x => x.IsInNetwork, new { id = "IsInNetworkCheckBox", onchange = "checkChanged(this)" })
+            @Html.LabelFor(x => x.TaxiHailNetworkSettings.IsInNetwork)
+            @Html.CheckBoxFor(x => x.TaxiHailNetworkSettings.IsInNetwork, new { id = "IsInNetworkCheckBox", onchange = "checkChanged(this)" })
         </div>
     </fieldset>
 
-    @Html.Hidden("networkId", Model.Id, new { id="networkId" })
+    @Html.Hidden("networkId", Model.TaxiHailNetworkSettings.Id, new { id="networkId" })
 
     <br/>
     <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick="save()">Save</a>
@@ -73,11 +71,8 @@
      
 <div id="map-canvas"  style="height:320px;width: 600px"></div>
 
-
-
 <script type="text/javascript">
-
-
+    
     function displayValidationMessage(control, message, valid) {
         var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
         if (valid) {
@@ -126,8 +121,7 @@
     }
 
     google.maps.event.addDomListener(window, 'load', initialize);
-
-
+    
     function coordinatesChanged() {
         var startLat = $("#StartLatitude").val();
         var startLon = $("#StartLongitude").val();
@@ -159,7 +153,6 @@
             map.fitBounds(bounds);
         }
     }
-
 
     function checkChanged(checkbox) {
         if (checkbox.checked && !$('#taxiHailNetworkForm').valid()) {
