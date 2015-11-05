@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
         private readonly ICommandBus _commandBus;
         private readonly ILogger _logger;
         private readonly IOrderDao _orderDao;
+        private readonly IAccountDao _accountDao;
         private readonly IPayPalServiceFactory _payPalServiceFactory;
         private readonly IServerSettings _serverSettings;
         private readonly Resources.Resources _resources;
@@ -29,12 +30,14 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             ICommandBus commandBus,
             ILogger logger,
             IOrderDao orderDao,
+            IAccountDao accountDao,
             IPayPalServiceFactory payPalServiceFactory,
             IServerSettings serverSettings)
         {
             _commandBus = commandBus;
             _logger = logger;
             _orderDao = orderDao;
+            _accountDao = accountDao;
             _payPalServiceFactory = payPalServiceFactory;
             _serverSettings = serverSettings;
             _resources = new Resources.Resources(_serverSettings);
@@ -67,7 +70,9 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
                 if (response.IsSuccessful)
                 {
-                    var tipPercentage = orderInfo.Account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
+                    var account = _accountDao.FindById(orderInfo.AccountId);
+
+                    var tipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
                     var tipAmount = FareHelper.CalculateTipAmount(orderInfo.Request.Fare.AmountInclTax, tipPercentage);
 
                     _commandBus.Send(new MarkPrepaidOrderAsSuccessful

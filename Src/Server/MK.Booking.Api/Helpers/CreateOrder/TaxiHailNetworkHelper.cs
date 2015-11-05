@@ -11,7 +11,6 @@ using apcurium.MK.Common.Extensions;
 using CMTServices;
 using CustomerPortal.Client;
 using Infrastructure.Messaging;
-using log4net;
 
 namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
 {

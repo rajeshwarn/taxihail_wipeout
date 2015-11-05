@@ -10,15 +10,13 @@ namespace apcurium.MK.Booking.Data
     {
         public Guid OrderId { get; set; }
 
-        public AccountDetail Account { get; set; }
+        public Guid AccountId { get; set; }
 
         public CreateOrder Request { get; set; }
 
         public IList<ListItem> ReferenceDataCompaniesList { get; set; }
 
         public string ChargeTypeIbs { get; set; }
-
-        public string ChargeTypeEmail { get; set; }
 
         public string VehicleType { get; set; }
 

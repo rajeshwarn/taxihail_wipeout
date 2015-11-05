@@ -1,13 +1,9 @@
 ﻿#region
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Requests.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers.CreateOrder;
 using apcurium.MK.Booking.Calculator;
@@ -23,7 +19,6 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Helpers;
 using AutoMapper;
 using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
@@ -42,12 +37,9 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
         private readonly IOrderDao _orderDao;
 	    private readonly ILogger _logger;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
-        private readonly IFeesDao _feesDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly ReferenceDataService _referenceDataService;
-        private readonly IRuleCalculator _ruleCalculator;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IIbsCreateOrderService _ibsCreateOrderService;
         private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
         private readonly Resources.Resources _resources;
@@ -72,17 +64,15 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             IIbsCreateOrderService ibsCreateOrderService)
             : base(serverSettings, commandBus, accountChargeDao, paymentService, creditCardDao,
                    ibsServiceProvider, promotionDao, promoRepository, orderPaymentDao, accountDao,
-                   payPalServiceFactory)
+                   payPalServiceFactory, logger, taxiHailNetworkServiceClient, ruleCalculator,
+                   feesDao, referenceDataService, orderDao)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
             _serverSettings = serverSettings;
-            _ibsServiceProvider = ibsServiceProvider;
-            _ruleCalculator = ruleCalculator;
             _orderDao = orderDao;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
-            _feesDao = feesDao;
 	        _logger = logger;
             _ibsCreateOrderService = ibsCreateOrderService;
             _resources = new Resources.Resources(_serverSettings);
@@ -92,333 +82,15 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
 
         public object Post(Contract.Requests.CreateOrder request)
         {
-            return CreaterOrder(request, false);
-        }
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var createReportOrder = CreateReportOrder(request, account);
 
-        public object Post(HailRequest request)
-        {
-            _logger.LogMessage(string.Format("Starting Hail. Request : {0}", request.ToJson()));
+            var orderCommand = CreateOrder(request, account, createReportOrder);
 
-            var createOrderRequest = Mapper.Map<Contract.Requests.CreateOrder>(request);
-
-            return CreaterOrder(createOrderRequest, true);
-        }
-
-        public object Post(ConfirmHailRequest request)
-        {
-            var orderDetail = _orderDao.FindById(request.OrderKey.TaxiHailOrderId);
-            if (orderDetail == null)
-            {
-                throw new HttpError(string.Format("Order {0} doesn't exist", request.OrderKey.TaxiHailOrderId));
-            }
-
-            _logger.LogMessage(string.Format("Trying to confirm Hail. Request : {0}", request.ToJson()));
-
-            var ibsOrderKey = Mapper.Map<IbsOrderKey>(request.OrderKey);
-            var ibsVehicleCandidate = Mapper.Map<IbsVehicleCandidate>(request.VehicleCandidate);
-
-            var confirmHailResult = _ibsServiceProvider.Booking(orderDetail.CompanyKey).ConfirmHail(ibsOrderKey, ibsVehicleCandidate);
-            if (confirmHailResult == null || confirmHailResult < 0)
-            {
-                var errorMessage = string.Format("Error while trying to confirm the hail. IBS response code : {0}", confirmHailResult);
-                _logger.LogMessage(errorMessage);
-
-                return new HttpResult(HttpStatusCode.InternalServerError, errorMessage);
-            }
-
-            _logger.LogMessage("Hail request confirmed");
-
-            return new OrderStatusDetail
-            {
-                OrderId = request.OrderKey.TaxiHailOrderId,
-                Status = OrderStatus.Created,
-                IBSStatusId = VehicleStatuses.Common.Assigned,
-                IBSStatusDescription = string.Format(
-                    _resources.Get("OrderStatus_CabDriverNumberAssigned", orderDetail.ClientLanguageCode),
-                    request.VehicleCandidate.VehicleId)
-            };
-        }
-
-        private object CreaterOrder(Contract.Requests.CreateOrder request, bool isHailRequest)
-        {
-			var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-
-			var createReportOrder = CreateReportOrder(request, account);
-
-			Exception createOrderException;
-
-            _logger.LogMessage("Create order request : " + request.ToJson());
-
-            var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
-
-			if (PhoneHelper.IsNumberPossible(countryCode, request.Settings.Phone))
-            {
-                request.Settings.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Settings.Phone);
-            }
-            else
-            {
-                createOrderException = new HttpError(string.Format(_resources.Get("PhoneNumberFormat"), countryCode.GetPhoneExample()));
-				createReportOrder.Error = createOrderException.ToString();
-				_commandBus.Send(createReportOrder);
-				throw createOrderException;
-            }
-
-            // TODO: Find a better way to do this...
-            var isFromWebApp = request.FromWebApp;
-
-            if (!isFromWebApp)
-            {
-                ValidateAppVersion(request.ClientLanguageCode, createReportOrder);
-            }
-
-            // Find market
-            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            market = market.HasValue() ? market : null;
-
-			createReportOrder.Market = market;
-
-            BestAvailableCompany bestAvailableCompany;
-
-            if (request.OrderCompanyKey.HasValue() || request.OrderFleetId.HasValue)
-            {
-                // For API user, it's possible to manually specify which company to dispatch to by using a fleet id
-                bestAvailableCompany = _taxiHailNetworkHelper.FindSpecificCompany(market, createReportOrder, request.OrderCompanyKey, request.OrderFleetId);
-            }
-            else
-            {
-                bestAvailableCompany = _taxiHailNetworkHelper.FindBestAvailableCompany(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            }
-
-			createReportOrder.CompanyKey = bestAvailableCompany.CompanyKey;
-			createReportOrder.CompanyName = bestAvailableCompany.CompanyName;
-
-            if (market.HasValue() && !bestAvailableCompany.CompanyKey.HasValue())
-            {
-                // No companies available that are desserving this region for the company
-				createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                            _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
-				createReportOrder.Error = createOrderException.ToString();
-				_commandBus.Send(createReportOrder);
-				throw createOrderException;
-			}
-
-            _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
-
-            if (market.HasValue())
-            {
-                var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
-
-                if (!isConfiguredForCmtPayment)
-                {
-                    // Only companies configured for CMT payment can support CoF orders outside of home market
-                    request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
-                }
-            }
-
-            var isPrepaid = isFromWebApp
-                && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                    || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
-
-			createReportOrder.IsPrepaid = isPrepaid;
-
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
-            
-            var isFutureBooking = request.PickupDate.HasValue;
-            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
-
-			createReportOrder.PickupDate = pickupDate;
-
-            // User can still create future order, but we allow only one active Book now order.
-            if (!isFutureBooking)
-            {
-                var pendingOrderId = GetPendingOrder();
-
-                // We don't allow order creation if there's already an order scheduled
-                if (!_serverSettings.ServerData.AllowSimultaneousAppOrders
-                    && pendingOrderId != null
-                    && !isFromWebApp)
-                {
-                    createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
-					createReportOrder.Error = createOrderException.ToString();
-					_commandBus.Send(createReportOrder);
-					throw createOrderException;
-                }
-            }
-
-            var rule = _ruleCalculator.GetActiveDisableFor(
-                isFutureBooking,
-                pickupDate,
-                () =>
-                    _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
-                        .GetZoneByCoordinate(
-                            request.Settings.ProviderId,
-                            request.PickupAddress.Latitude,
-                            request.PickupAddress.Longitude),
-                () => request.DropOffAddress != null
-                    ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
-                        .GetZoneByCoordinate(
-                            request.Settings.ProviderId,
-                            request.DropOffAddress.Latitude,
-                            request.DropOffAddress.Longitude)
-                        : null,
-                market);
-
-            if (rule != null)
-            {
-                createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
-				createReportOrder.Error = createOrderException.ToString();
-				_commandBus.Send(createReportOrder);
-				throw createOrderException;
-            }
-
-            // We need to validate the rules of the roaming market.
-            if(market.HasValue())
-            {
-                // External market, query company site directly to validate their rules
-                var orderServiceClient = new RoamingValidationServiceClient(bestAvailableCompany.CompanyKey, _serverSettings.ServerData.Target);
-
-                _logger.LogMessage(string.Format("Validating rules for company in external market... Target: {0}, Server: {1}", _serverSettings.ServerData.Target, orderServiceClient.Url));
-
-                var validationResult = orderServiceClient.ValidateOrder(request, true);
-                if (validationResult.HasError)
-                {
-                    createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), validationResult.Message);
-					createReportOrder.Error = createOrderException.ToString();
-					_commandBus.Send(createReportOrder);
-					throw createOrderException;
-				}
-            }
-
-            if (Params.Get(request.Settings.Name, request.Settings.Phone).Any(p => p.IsNullOrEmpty()))
-            {
-                createOrderException = new HttpError(ErrorCode.CreateOrder_SettingsRequired.ToString());
-				createReportOrder.Error = createOrderException.ToString();
-				_commandBus.Send(createReportOrder);
-				throw createOrderException;
-            }
-
-            ReferenceData referenceData;
-
-            if (market.HasValue())
-            {
-                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
-            }
-            else
-            {
-                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
-            }
-
-            request.PickupDate = pickupDate;
-
-            request.Settings.Passengers = request.Settings.Passengers <= 0
-                ? 1
-                : request.Settings.Passengers;
-
-            if (_serverSettings.ServerData.Direction.NeedAValidTarif
-                && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
-            {
-                createOrderException = new HttpError(HttpStatusCode.BadRequest,
-                    ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString(),
-                    GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_NoFareEstimateAvailable, request.ClientLanguageCode));
-				createReportOrder.Error = createOrderException.ToString();
-				_commandBus.Send(createReportOrder);
-				throw createOrderException;
-            }
-
-            // IBS provider validation
-            ValidateProvider(request, referenceData, market.HasValue(), createReportOrder);
-
-            // Map the command to obtain a OrderId (web doesn't prepopulate it in the request)
-            var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
-
-            var marketFees = _feesDao.GetMarketFees(market);
-            orderCommand.BookingFees = marketFees != null ? marketFees.Booking : 0;
-			createReportOrder.BookingFees = orderCommand.BookingFees;
-
-            // Promo code validation
-            var promotionId = ValidatePromotion(bestAvailableCompany.CompanyKey, request.PromoCode, request.Settings.ChargeTypeId, account.Id, pickupDate, isFutureBooking, request.ClientLanguageCode, createReportOrder);
-
-            // Charge account validation
-            var accountValidationResult = ValidateChargeAccountIfNecessary(bestAvailableCompany.CompanyKey, request, orderCommand.OrderId, account, isFutureBooking, isFromWebApp, orderCommand.BookingFees, createReportOrder);
-			createReportOrder.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
-
-            // if ChargeAccount uses payment with card on file, payment validation was already done
-            if (!accountValidationResult.IsChargeAccountPaymentWithCardOnFile)
-            {
-                // Payment method validation
-                ValidatePayment(bestAvailableCompany.CompanyKey, request, orderCommand.OrderId, account, isFutureBooking, request.Estimate.Price, orderCommand.BookingFees, isPrepaid, createReportOrder);
-            }
-            
             // Initialize PayPal if user is using PayPal web
-            var  paypalWebPaymentResponse = PaymentHelper.InitializePayPalCheckoutIfNecessary(account.Id, isPrepaid, orderCommand.OrderId, request, orderCommand.BookingFees, bestAvailableCompany.CompanyKey, createReportOrder, Request.AbsoluteUri);
-
-            var chargeTypeIbs = string.Empty;
-            var chargeTypeEmail = string.Empty;
-            var chargeTypeKey = ChargeTypes.GetList()
-                    .Where(x => x.Id == request.Settings.ChargeTypeId)
-                    .Select(x => x.Display)
-                    .FirstOrDefault();
-
-            chargeTypeKey = accountValidationResult.ChargeTypeKeyOverride ?? chargeTypeKey;
-
-            if (chargeTypeKey != null)
-            {
-                // this must be localized with the priceformat to be localized in the language of the company
-                // because it is sent to the driver
-                chargeTypeIbs = _resources.Get(chargeTypeKey, _serverSettings.ServerData.PriceFormat);
-
-                chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
-            }
-
-            // Get Vehicle Type from reference data
-            var vehicleType = referenceData.VehiclesList
-                .Where(x => x.Id == request.Settings.VehicleTypeId)
-                .Select(x => x.Display)
-                .FirstOrDefault();
-
-            var ibsInformationNote = BuildNote(chargeTypeIbs, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
-            var fare = FareHelper.GetFareFromEstimate(request.Estimate);
-
-            orderCommand.AccountId = account.Id;
-            orderCommand.UserAgent = Request.UserAgent;
-            orderCommand.ClientVersion = Request.Headers.Get("ClientVersion");
-            orderCommand.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
-            orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
-            orderCommand.CompanyName = bestAvailableCompany.CompanyName;
-            orderCommand.Market = market;
-            orderCommand.IsPrepaid = isPrepaid;
-            orderCommand.Settings.ChargeType = chargeTypeIbs;
-            orderCommand.Settings.VehicleType = vehicleType;
-            orderCommand.IbsAccountId = account.IBSAccountId.Value;
-            orderCommand.ReferenceDataCompanyList = referenceData.CompaniesList.ToArray();
-            orderCommand.IbsInformationNote = ibsInformationNote;
-            orderCommand.Fare = fare;
-            orderCommand.Prompts = accountValidationResult.Prompts;
-            orderCommand.PromptsLength = accountValidationResult.PromptsLength;
-            orderCommand.PromotionId = promotionId;
-
-            Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
-
-            if (isHailRequest)
-            {
-                // VTS hail flow
-
-                var result = _ibsCreateOrderService.CreateIbsOrder(request.Id, request.PickupAddress, request.DropOffAddress,
-                    request.Settings.AccountNumber, request.Settings.CustomerNumber, bestAvailableCompany.CompanyKey,
-                    account.IBSAccountId.Value, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
-                    request.Settings.VehicleTypeId, ibsInformationNote, request.PickupDate.Value, accountValidationResult.Prompts,
-                    accountValidationResult.PromptsLength, referenceData.CompaniesList, market, request.Settings.ChargeTypeId,
-                    request.Settings.ProviderId, fare, request.TipIncentive, true);
-
-                orderCommand.IbsOrderId = result.HailResult.OrderKey.IbsOrderId;
-
-                _commandBus.Send(orderCommand);
-
-                return result.HailResult;
-
-            }
-
-            // Normal flow
+            var paypalWebPaymentResponse = PaymentHelper.InitializePayPalCheckoutIfNecessary(
+                orderCommand.AccountId, orderCommand.IsPrepaid, orderCommand.OrderId,
+                request, orderCommand.BookingFees, orderCommand.CompanyKey, createReportOrder, Request.AbsoluteUri);
 
             _commandBus.Send(orderCommand);
 
@@ -432,16 +104,15 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                     SerializedOrderCreationInfo = new TemporaryOrderCreationInfo
                     {
                         OrderId = orderCommand.OrderId,
-                        Account = account,
+                        AccountId = orderCommand.AccountId,
                         Request = orderCommand,
-                        ReferenceDataCompaniesList = referenceData.CompaniesList,
-                        ChargeTypeIbs = chargeTypeIbs,
-                        ChargeTypeEmail = chargeTypeEmail,
-                        VehicleType = vehicleType,
-                        Prompts = accountValidationResult.Prompts,
-                        PromptsLength = accountValidationResult.PromptsLength,
-                        BestAvailableCompany = bestAvailableCompany,
-                        PromotionId = promotionId
+                        ReferenceDataCompaniesList = orderCommand.ReferenceDataCompanyList,
+                        ChargeTypeIbs = orderCommand.Settings.ChargeType,
+                        VehicleType = orderCommand.Settings.VehicleType,
+                        Prompts = orderCommand.Prompts,
+                        PromptsLength = orderCommand.PromptsLength,
+                        BestAvailableCompany = new BestAvailableCompany { CompanyKey = orderCommand.CompanyKey, CompanyName = orderCommand.CompanyName },
+                        PromotionId = orderCommand.PromotionId
                     }.ToJson()
                 });
 
@@ -456,16 +127,13 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
                     .Select(q =>
                         new AccountChargeQuestionAnswer
                         {
-                            AccountId = account.Id,
+                            AccountId = orderCommand.AccountId,
                             AccountChargeQuestionId = q.Id,
                             AccountChargeId = q.AccountId,
                             LastAnswer = q.Answer
                         });
 
-                if (accountLastAnswers != null)
-                {
-                    _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = account.Id, Answers = accountLastAnswers.ToArray() });
-                }
+                _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = orderCommand.AccountId, Answers = accountLastAnswers.ToArray() });
             }
 
             return new OrderStatusDetail
@@ -545,7 +213,14 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             // This must be localized with the priceformat to be localized in the language of the company
             // because it is sent to the driver
             var chargeTypeIbs = _resources.Get(chargeTypeDisplay, _serverSettings.ServerData.PriceFormat);
-            var ibsInformationNote = BuildNote(chargeTypeIbs, order.UserNote, order.PickupAddress.BuildingName, newOrderRequest.Settings.LargeBags);
+
+            var ibsInformationNote = IbsNoteBuilder.BuildNote(
+                _serverSettings.ServerData.IBS.NoteTemplate,
+                chargeTypeIbs,
+                order.UserNote,
+                order.PickupAddress.BuildingName,
+                newOrderRequest.Settings.LargeBags,
+                _serverSettings.ServerData.IBS.HideChargeTypeInUserNote);
 
             var networkErrorMessage = string.Format(_resources.Get("Network_CannotCreateOrder", order.ClientLanguageCode), request.NextDispatchCompanyName);
 
@@ -607,101 +282,6 @@ namespace apcurium.MK.Booking.Api.Services.CreateOrder
             });
 
             return new HttpResult(HttpStatusCode.OK);
-        }
-
-        private DateTime GetCurrentOffsetedTime(string companyKey)
-        {
-            //TODO : need to check ibs setup for shortesst time
-
-            var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey).TimeDifference;
-            var offsetedTime = DateTime.Now.AddMinutes(2);
-            if (ibsServerTimeDifference != 0)
-            {
-                offsetedTime = offsetedTime.Add(new TimeSpan(ibsServerTimeDifference));
-            }
-
-            return offsetedTime;
-        }
-
-        private string BuildNote(string chargeType, string note, string buildingName, int largeBags)
-        {
-            // Building Name is not handled by IBS
-            // Put Building Name in note, if specified
-
-            // Get NoteTemplate from app settings, if it exists
-            var noteTemplate = _serverSettings.ServerData.IBS.NoteTemplate;
-
-            if (!string.IsNullOrWhiteSpace(buildingName))
-            {
-                // Quickfix: If the address comes from our Google Places service
-                // the building name will be formatted like this: "Building Name (Place Type)"
-                // We need to remove the text in parenthesis
-
-                const string pattern = @"
-\(         # Look for an opening parenthesis
-[^\)]+     # Take all characters that are not a closing parenthesis
-\)$        # Look for a closing parenthesis at the end of the string";
-
-                buildingName = new Regex(pattern, RegexOptions.IgnorePatternWhitespace)
-                    .Replace(buildingName, string.Empty).Trim();
-                buildingName = "Building name: " + buildingName;
-            }
-
-            var largeBagsString = string.Empty;
-            if (largeBags > 0)
-            {
-                largeBagsString = "Large bags: " + largeBags;
-            }
-
-            if (!string.IsNullOrWhiteSpace(noteTemplate))
-            {
-                if (!_serverSettings.ServerData.IBS.HideChargeTypeInUserNote)
-                {
-                    noteTemplate = string.Format("{0}{1}{2}",
-                        chargeType,
-                        Environment.NewLine,
-                        noteTemplate);
-                }
-                
-                var transformedTemplate = noteTemplate
-                    .Replace("\\r", "\r")
-                    .Replace("\\n", "\n")
-                    .Replace("\\t", "\t")
-                    .Replace("{{userNote}}", note ?? string.Empty)
-                    .Replace("{{buildingName}}", buildingName ?? string.Empty)
-                    .Replace("{{largeBags}}", largeBagsString)
-                    .Trim();
-
-                return transformedTemplate;
-            }
-
-            // In versions prior to 1.4, there was no note template
-            // So if the IBS.NoteTemplate setting does not exist, use the old way 
-            var formattedNote = string.Format("{0}{0}{1}{2}{3}", 
-                    Environment.NewLine, 
-                    chargeType,
-                    Environment.NewLine,
-                    note);
-
-            if (!string.IsNullOrWhiteSpace(buildingName))
-            {
-                formattedNote += (Environment.NewLine + buildingName).Trim();
-            }
-            // "Large bags" appeared in 1.4, no need to concat it here
-            return formattedNote;
-        }
-
-        private Guid? GetPendingOrder()
-        {
-            var activeOrders = _orderDao.GetOrdersInProgressByAccountId(new Guid(this.GetSession().UserAuthId));
-
-            var latestActiveOrder = activeOrders.FirstOrDefault(o => o.IBSStatusId != VehicleStatuses.Common.Scheduled);
-            if (latestActiveOrder != null)
-            {
-                return latestActiveOrder.OrderId;
-            }
-
-            return null;
         }
     }
 }

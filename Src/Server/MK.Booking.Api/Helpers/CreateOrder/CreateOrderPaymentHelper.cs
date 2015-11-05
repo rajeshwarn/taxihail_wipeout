@@ -155,7 +155,9 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             return new BasePaymentResponse { IsSuccessful = true };
         }
 
-        internal InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(Guid accountId, bool isPrepaid, Guid orderId, Contract.Requests.CreateOrder request, decimal bookingFees, string companyKey, CreateReportOrder createReportOrder, string absoluteRequestUri)
+        internal InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(
+            Guid accountId, bool isPrepaid, Guid orderId, Contract.Requests.CreateOrder request,
+            decimal bookingFees, string companyKey, CreateReportOrder createReportOrder, string absoluteRequestUri)
         {
             if (isPrepaid
                 && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
