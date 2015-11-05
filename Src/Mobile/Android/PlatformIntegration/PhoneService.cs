@@ -1,4 +1,4 @@
-using System;
+\using System;
 using System.IO;
 using Android.Content;
 using Android.OS;
@@ -41,7 +41,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var logger = TinyIoCContainer.Current.Resolve<ILogger> ();
 			var logFile = logger.MergeLogFiles();
-			emailIntent.PutExtra(Intent.ExtraStream, Uri.FromFile(new Java.IO.File(logFile)));
+
+			if (logFile != null)
+			{
+				emailIntent.PutExtra(Intent.ExtraStream, Uri.FromFile(new Java.IO.File(logFile)));
+			}
 
 			try
             {
