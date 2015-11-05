@@ -94,6 +94,13 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             _commandBus.Send(orderCommand);
 
+            var chargeTypeKey = ChargeTypes.GetList()
+                    .Where(x => x.Id == orderCommand.Settings.ChargeTypeId)
+                    .Select(x => x.Display)
+                    .FirstOrDefault();
+
+            var chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
+
             if (paypalWebPaymentResponse != null)
             {
                 // Order prepaid by PayPal
@@ -108,6 +115,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                         Request = orderCommand,
                         ReferenceDataCompaniesList = orderCommand.ReferenceDataCompanyList,
                         ChargeTypeIbs = orderCommand.Settings.ChargeType,
+                        ChargeTypeEmail = chargeTypeEmail,
                         VehicleType = orderCommand.Settings.VehicleType,
                         Prompts = orderCommand.Prompts,
                         PromptsLength = orderCommand.PromptsLength,

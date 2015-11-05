@@ -32,7 +32,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
-    public class BaseCreateOrderService : Service
+    public abstract class BaseCreateOrderService : Service
     {
         private readonly IServerSettings _serverSettings;
         private readonly ICommandBus _commandBus;

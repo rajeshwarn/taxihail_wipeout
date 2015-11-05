@@ -18,6 +18,8 @@ namespace apcurium.MK.Booking.Data
 
         public string ChargeTypeIbs { get; set; }
 
+        public string ChargeTypeEmail { get; set; }
+
         public string VehicleType { get; set; }
 
         public string[] Prompts { get; set; }
