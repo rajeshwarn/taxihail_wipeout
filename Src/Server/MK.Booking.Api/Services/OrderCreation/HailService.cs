@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         private readonly IIbsCreateOrderService _ibsCreateOrderService;
         private readonly Resources.Resources _resources;
 
-        internal HailService(
+        public HailService(
             IServerSettings serverSettings,
             ICommandBus commandBus,
             ILogger logger,
