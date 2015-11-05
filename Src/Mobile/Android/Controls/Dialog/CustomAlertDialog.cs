@@ -16,7 +16,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
 {
     public class CustomAlertDialog
     {
-        
         private ViewGroup _rootView;
         private RelativeLayout _dialogRootView;
         private FrameLayout _dialogOpacityView;
