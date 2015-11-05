@@ -57,15 +57,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IEventSourcedRepository<Account> _repository;
-        private readonly IServerSettings _settings;
 
 
-        public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService, Func<BookingDbContext> contextFactory, IServerSettings settings)
+        public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService, Func<BookingDbContext> contextFactory)
         {
             _repository = repository;
             _passwordService = passwordService;
             _contextFactory = contextFactory;
-            _settings = settings;
         }
 
         public void Handle(AddOrUpdateCreditCard command)
@@ -177,13 +175,9 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(DeleteCreditCardsFromAccounts command)
         {
-            var forceUserDisconnects = _settings.ServerData.CreditCardIsMandatory &&
-                           _settings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
-
-
             foreach (var account in command.AccountIds.Select(_repository.Find))
             {
-                account.RemoveAllCreditCards(forceUserDisconnects);
+                account.RemoveAllCreditCards(command.ForceUserDisconnect);
                 _repository.Save(account, command.Id.ToString());
             }
         }

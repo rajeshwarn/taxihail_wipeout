@@ -266,11 +266,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void RemoveAllCreditCards(bool forceUserDisconnects)
+        public void RemoveAllCreditCards(bool forceUserDisconnect)
         {
             Update(new AllCreditCardsRemoved
             {
-                ForceUserDisconnect = forceUserDisconnects
+                ForceUserDisconnect = forceUserDisconnect
             });
         }
 
