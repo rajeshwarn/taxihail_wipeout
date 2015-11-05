@@ -99,36 +99,11 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         [Route("api/customer/roaming/market")]
         public HttpResponseMessage GetCompanyMarket(string companyId, double latitude, double longitude)
         {
-            string companyMarket = null;
-
-            var userPosition = new MapCoordinate
-            {
-                Latitude = latitude,
-                Longitude = longitude
-            };
-
-            // Get all companies in network
-            var companiesInNetwork = _networkRepository.Where(n => n.IsInNetwork).ToArray();
-
-            // Find the first company that includes the user position
-            // (it doesn't matter which one because they will all share the same market key anyway)
-            var localCompany = companiesInNetwork.FirstOrDefault(x => x.Region.Contains(userPosition));
-            if (localCompany != null)
-            {
-                // Check if we have changed market
-                var homeCompany = _networkRepository.FirstOrDefault(n => n.Id == companyId);
-                if (homeCompany != null)
-                {
-                    if (localCompany.Market != homeCompany.Market)
-                    {
-                        companyMarket = localCompany.Market;
-                    }
-                }
-            }
+            var response = GetCompanyMarketSettingsInternal(companyId, latitude, longitude);
 
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(JsonConvert.SerializeObject(companyMarket)) 
+                Content = new StringContent(JsonConvert.SerializeObject(response.Market)) 
             };
         }
 
@@ -141,6 +116,16 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         /// <returns></returns>
         [Route("api/customer/roaming/marketsettings")]
         public HttpResponseMessage GetCompanyMarketSettings(string companyId, double latitude, double longitude)
+        {
+            var response = GetCompanyMarketSettingsInternal(companyId, latitude, longitude);
+
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(response))
+            };
+        }
+
+        private CompanyMarketSettingsResponse GetCompanyMarketSettingsInternal(string companyId, double latitude, double longitude)
         {
             var response = new CompanyMarketSettingsResponse();
 
@@ -171,10 +156,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 }
             }
 
-            return new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(response))
-            };
+            return response;
         }
 
         /// <summary>

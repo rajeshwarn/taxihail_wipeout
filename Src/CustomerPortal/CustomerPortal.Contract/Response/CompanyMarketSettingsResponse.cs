@@ -6,7 +6,6 @@ namespace CustomerPortal.Contract.Response
     {
         public CompanyMarketSettingsResponse()
         {
-            Market = null;
             DispatcherSettings = new DispatcherSettings();
         }
 
