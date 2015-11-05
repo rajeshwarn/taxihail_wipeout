@@ -46,6 +46,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 if (networkId != null)
                 {
                     model.TaxiHailNetworkSettings.Id = networkId;
+
+                    // fetch existing entry to put data not included in form (Preferences property for now)
+                    var existing = Repository.GetById(networkId);
+                    model.TaxiHailNetworkSettings.Preferences = existing.Preferences;
                 }
 
                 if (!string.IsNullOrEmpty(model.TaxiHailNetworkSettings.BlackListedFleetIds))

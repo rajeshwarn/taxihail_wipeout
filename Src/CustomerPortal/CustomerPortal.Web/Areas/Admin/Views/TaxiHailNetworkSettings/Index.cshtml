@@ -71,11 +71,8 @@
      
 <div id="map-canvas"  style="height:320px;width: 600px"></div>
 
-
-
 <script type="text/javascript">
-
-
+    
     function displayValidationMessage(control, message, valid) {
         var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
         if (valid) {
@@ -124,8 +121,7 @@
     }
 
     google.maps.event.addDomListener(window, 'load', initialize);
-
-
+    
     function coordinatesChanged() {
         var startLat = $("#StartLatitude").val();
         var startLon = $("#StartLongitude").val();
@@ -157,7 +153,6 @@
             map.fitBounds(bounds);
         }
     }
-
 
     function checkChanged(checkbox) {
         if (checkbox.checked && !$('#taxiHailNetworkForm').valid()) {
