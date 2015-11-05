@@ -63,13 +63,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
             
             var mailComposer = new MFMailComposeViewController ();
-
-			var nonEmptyLogs = _logger.GetFullNameLogFiles();
-
-			for (int i = 0; i < nonEmptyLogs.Length; i++)
-			{
-				mailComposer.AddAttachmentData(NSData.FromFile(nonEmptyLogs[i]), "text", Path.GetFileName(nonEmptyLogs[i]));
-			}
+			var logFile = _logger.MergeLogFiles();
+			mailComposer.AddAttachmentData(NSData.FromFile(logFile), "text", Path.GetFileName(logFile));
 
             mailComposer.SetToRecipients (new [] { supportEmail });
             mailComposer.SetMessageBody ("", false);

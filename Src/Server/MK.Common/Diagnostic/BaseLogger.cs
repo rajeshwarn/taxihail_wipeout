@@ -150,7 +150,7 @@ namespace apcurium.MK.Common.Diagnostic
 			}
 		}
 
-		protected void Write(string message)
+		private void Write(string message)
 		{
 			if (messageBase == null)
 			{

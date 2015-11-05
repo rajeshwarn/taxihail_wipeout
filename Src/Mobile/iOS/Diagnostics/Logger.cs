@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
             }
         }
 
-		public override string GetBaseDirectory()
+		protected override string GetBaseDirectory()
         {
             return BaseDir;
         }
