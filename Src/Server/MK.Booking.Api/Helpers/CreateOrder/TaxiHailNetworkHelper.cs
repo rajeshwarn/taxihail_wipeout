@@ -235,7 +235,8 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                 return new BestAvailableCompany
                 {
                     CompanyKey = bestFleet != null ? bestFleet.CompanyKey : null,
-                    CompanyName = bestFleet != null ? bestFleet.CompanyName : null
+                    CompanyName = bestFleet != null ? bestFleet.CompanyName : null,
+                    FleetId = bestFleet != null ? (int?)bestFleet.FleetId : null
                 };
             }
 

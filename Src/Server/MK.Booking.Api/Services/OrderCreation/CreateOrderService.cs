@@ -85,14 +85,14 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             var createReportOrder = CreateReportOrder(request, account);
 
-            var orderCommand = CreateOrder(request, account, createReportOrder);
+            var createOrderCommand = BuildCreateOrderCommand(request, account, createReportOrder);
 
             // Initialize PayPal if user is using PayPal web
             var paypalWebPaymentResponse = PaymentHelper.InitializePayPalCheckoutIfNecessary(
-                orderCommand.AccountId, orderCommand.IsPrepaid, orderCommand.OrderId,
-                request, orderCommand.BookingFees, orderCommand.CompanyKey, createReportOrder, Request.AbsoluteUri);
+                createOrderCommand.AccountId, createOrderCommand.IsPrepaid, createOrderCommand.OrderId,
+                request, createOrderCommand.BookingFees, createOrderCommand.CompanyKey, createReportOrder, Request.AbsoluteUri);
 
-            _commandBus.Send(orderCommand);
+            _commandBus.Send(createOrderCommand);
 
             if (paypalWebPaymentResponse != null)
             {
@@ -100,20 +100,24 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
                 _commandBus.Send(new SaveTemporaryOrderCreationInfo
                 {
-                    OrderId = orderCommand.OrderId,
+                    OrderId = createOrderCommand.OrderId,
                     SerializedOrderCreationInfo = new TemporaryOrderCreationInfo
                     {
-                        OrderId = orderCommand.OrderId,
-                        AccountId = orderCommand.AccountId,
-                        Request = orderCommand,
-                        ReferenceDataCompaniesList = orderCommand.ReferenceDataCompanyList,
-                        ChargeTypeIbs = orderCommand.Settings.ChargeType,
-                        ChargeTypeEmail = orderCommand.ChargeTypeEmail,
-                        VehicleType = orderCommand.Settings.VehicleType,
-                        Prompts = orderCommand.Prompts,
-                        PromptsLength = orderCommand.PromptsLength,
-                        BestAvailableCompany = new BestAvailableCompany { CompanyKey = orderCommand.CompanyKey, CompanyName = orderCommand.CompanyName },
-                        PromotionId = orderCommand.PromotionId
+                        OrderId = createOrderCommand.OrderId,
+                        AccountId = createOrderCommand.AccountId,
+                        Request = createOrderCommand,
+                        ReferenceDataCompaniesList = createOrderCommand.ReferenceDataCompanyList,
+                        ChargeTypeIbs = createOrderCommand.Settings.ChargeType,
+                        ChargeTypeEmail = createOrderCommand.ChargeTypeEmail,
+                        VehicleType = createOrderCommand.Settings.VehicleType,
+                        Prompts = createOrderCommand.Prompts,
+                        PromptsLength = createOrderCommand.PromptsLength,
+                        BestAvailableCompany = new BestAvailableCompany
+                        {
+                            CompanyKey = createOrderCommand.CompanyKey,
+                            CompanyName = createOrderCommand.CompanyName
+                        },
+                        PromotionId = createOrderCommand.PromotionId
                     }.ToJson()
                 });
 
@@ -128,21 +132,21 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                     .Select(q =>
                         new AccountChargeQuestionAnswer
                         {
-                            AccountId = orderCommand.AccountId,
+                            AccountId = createOrderCommand.AccountId,
                             AccountChargeQuestionId = q.Id,
                             AccountChargeId = q.AccountId,
                             LastAnswer = q.Answer
                         });
 
-                _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = orderCommand.AccountId, Answers = accountLastAnswers.ToArray() });
+                _commandBus.Send(new AddUpdateAccountQuestionAnswer { AccountId = createOrderCommand.AccountId, Answers = accountLastAnswers.ToArray() });
             }
 
             return new OrderStatusDetail
             {
-                OrderId = orderCommand.OrderId,
+                OrderId = createOrderCommand.OrderId,
                 Status = OrderStatus.Created,
                 IBSStatusId = string.Empty,
-                IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
+                IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", createOrderCommand.ClientLanguageCode),
             };
         }
 
