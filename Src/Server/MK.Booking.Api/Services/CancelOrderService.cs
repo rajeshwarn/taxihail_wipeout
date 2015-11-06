@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Api.Services
                     var command = new Commands.CancelOrder { OrderId = request.OrderId };
                     _commandBus.Send(command);
 
-                    UpdateStatusAsync(command.Id);
+                    UpdateStatusAsync(command.OrderId);
 
                     return new HttpResult(HttpStatusCode.OK);
                 }
