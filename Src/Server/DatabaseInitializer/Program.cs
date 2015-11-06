@@ -243,20 +243,17 @@ namespace DatabaseInitializer
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
 
 #if DEBUG
-                if (IsUpdate)
-                {
-                    var iisManager = new ServerManager();
-                    var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+                var iisManager = new ServerManager();
+                var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
 
-                    if (appPool != null
-                        && appPool.State == ObjectState.Stopped)
-                    {
-                        appPool.Start();
-                        Console.WriteLine("App Pool started.");
-                    }
+                if (appPool != null
+                    && appPool.State == ObjectState.Stopped)
+                {
+                    appPool.Start();
+                    Console.WriteLine("App Pool started.");
                 }
 #endif
-                
+
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
             catch (Exception e)
