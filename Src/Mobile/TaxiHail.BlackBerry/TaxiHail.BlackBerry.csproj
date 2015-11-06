@@ -181,6 +181,12 @@
     <Folder Include="Resources\drawable-mdpi\" />
     <Folder Include="Resources\drawable-xhdpi\" />
     <Folder Include="Resources\drawable-xxhdpi\" />
+    <Folder Include="Resources\Values\" />
+    <Folder Include="Resources\values-ar\" />
+    <Folder Include="Resources\values-es\" />
+    <Folder Include="Resources\values-sw600dp\" />
+    <Folder Include="Resources\values-fr\" />
+    <Folder Include="Resources\values-v11\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="facebookandroid">
@@ -227,20 +233,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Values\AddressLineAttributes.xml" />
-    <AndroidResource Include="Resources\Values\Color.xml" />
-    <AndroidResource Include="Resources\Values\FontSize.xml" />
-    <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
-    <AndroidResource Include="Resources\Values\SetThemes.xml" />
-    <AndroidResource Include="Resources\Values\String.xml" />
-    <AndroidResource Include="Resources\Values\Styles.xml" />
-    <AndroidResource Include="Resources\Values\Themes.xml" />
-    <AndroidResource Include="Resources\Values\attrs.xml" />
-    <AndroidResource Include="Resources\values-ar\String.xml" />
-    <AndroidResource Include="Resources\values-es\String.xml" />
-    <AndroidResource Include="Resources\values-fr\String.xml" />
-    <AndroidResource Include="Resources\values-sw600dp\Themes.xml" />
-    <AndroidResource Include="Resources\values-v11\SetThemes.xml" />
     <AndroidResource Include="..\Android\Resources\Layout\Control_AddressBar.axml">
       <Link>Resources\Layout\Control_AddressBar.axml</Link>
     </AndroidResource>
@@ -1527,6 +1519,48 @@
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\drawable-xxhdpi\train.png">
       <Link>Resources\drawable-xxhdpi\train.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Values\AddressLineAttributes.xml">
+      <Link>Resources\Values\AddressLineAttributes.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Values\attrs.xml">
+      <Link>Resources\Values\attrs.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Values\Color.xml">
+      <Link>Resources\Values\Color.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Values\FontSize.xml">
+      <Link>Resources\Values\FontSize.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Values\MvxBindingAttributes.xml">
+      <Link>Resources\Values\MvxBindingAttributes.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Values\SetThemes.xml">
+      <Link>Resources\Values\SetThemes.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Values\String.xml">
+      <Link>Resources\Values\String.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Values\Styles.xml">
+      <Link>Resources\Values\Styles.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Values\Themes.xml">
+      <Link>Resources\Values\Themes.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\values-ar\String.xml">
+      <Link>Resources\values-ar\String.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\values-es\String.xml">
+      <Link>Resources\values-es\String.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\values-fr\String.xml">
+      <Link>Resources\values-fr\String.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\values-sw600dp\Themes.xml">
+      <Link>Resources\values-sw600dp\Themes.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\values-v11\SetThemes.xml">
+      <Link>Resources\values-v11\SetThemes.xml</Link>
     </AndroidResource>
   </ItemGroup>
 </Project>
