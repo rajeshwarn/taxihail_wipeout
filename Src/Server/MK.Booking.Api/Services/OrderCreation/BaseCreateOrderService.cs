@@ -317,7 +317,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             orderCommand.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
             orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
             orderCommand.CompanyName = bestAvailableCompany.CompanyName;
-            orderCommand.CompanyFleetId = bestAvailableCompany.FleetId.Value;
+            orderCommand.CompanyFleetId = bestAvailableCompany.FleetId;
             orderCommand.Market = market;
             orderCommand.IsPrepaid = isPrepaid;
             orderCommand.Settings.ChargeType = chargeTypeIbs;
