@@ -1,7 +1,5 @@
 using System;
 using Android.Content;
-using Google.Android.M4b.Maps;
-using Google.Android.M4b.Maps.Model;
 using Android.OS;
 using Android.Util;
 using Android.Views;
@@ -10,19 +8,26 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using TinyIoC;
 using Android.Runtime;
+using Com.Mapbox.Mapboxsdk;
+using Com.Mapbox.Mapboxsdk.Geometry;
+using Com.Mapbox.Mapboxsdk.Views;
+using Android.App;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     [Register("apcurium.mk.booking.mobile.client.controls.TouchableMap")]
-    public class TouchableMap : MapFragment
+    public class TouchableMap : Fragment
     {
         public View mOriginalContentView;
 
         public TouchableWrapper Surface;
 
+        public MapView Map;
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState)
         {
-            mOriginalContentView = base.OnCreateView(inflater, parent, savedInstanceState);
+            Map = new MapView(Activity.ApplicationContext,  "pk.eyJ1IjoiZGV2dG9ueSIsImEiOiJjaWZ5OGJ0NXc0eWtxdXBrcXl2czF1eGY5In0.6qUEJWLnvqZ0_0Q6Xh2Gaw");
+            Map.OnCreate(savedInstanceState);
 
             var bestPosition = TinyIoCContainer.Current.Resolve<ILocationService>().BestPosition;
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
@@ -30,20 +35,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var latitude = bestPosition != null ? bestPosition.Latitude : settings.GeoLoc.DefaultLatitude;
 			var longitude = bestPosition != null ? bestPosition.Longitude : settings.GeoLoc.DefaultLongitude;
 
+            Map.SetLogoVisibility((int)ViewStates.Gone);
+            Map.SetAttributionVisibility((int)ViewStates.Gone);
 
-            Map.MapType = GoogleMap.MapTypeNormal;
-            Map.MoveCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(latitude, longitude) , 12f));
+            Map.StyleUrl = Com.Mapbox.Mapboxsdk.Constants.Style.MapboxStreets;
+            Map.SetCenterCoordinate(new LatLngZoom(new LatLng(latitude, longitude), 12f), true);
 
             // disable gestures on the map since we're handling them ourselves
-            Map.UiSettings.CompassEnabled = false;
-            Map.UiSettings.ZoomControlsEnabled = false;
-            Map.UiSettings.ZoomGesturesEnabled = false;
-            Map.UiSettings.RotateGesturesEnabled = false;
-            Map.UiSettings.TiltGesturesEnabled = false;
-            Map.UiSettings.ScrollGesturesEnabled = false;
+            Map.CompassEnabled = false;
+            Map.ZoomEnabled = false;
+            Map.RotateEnabled = false;
+            Map.ScrollEnabled = false;
 
             Surface = new TouchableWrapper(Activity);
-            Surface.AddView(mOriginalContentView);
+            Surface.AddView(Map);
             return Surface;                          
         }
 
@@ -57,8 +62,44 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             get
             {
-                return mOriginalContentView;
+                return Map;
             }
+        }
+
+        public override void OnStop()
+        {
+            base.OnStop();
+            Map.OnStop();
+        }
+
+        public override void OnStart()
+        {
+            base.OnStart();
+            Map.OnStart();
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
+            Map.OnPause();
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+            Map.OnResume();
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            Map.OnDestroy();
+        }
+
+        public override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            Map.OnSaveInstanceState(outState);
         }
     }
 

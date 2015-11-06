@@ -5,12 +5,12 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Enumeration;
-using Google.Android.M4b.Maps;
-using Google.Android.M4b.Maps.Model;
+using Com.Mapbox.Mapboxsdk.Annotations;
+using Com.Mapbox.Mapboxsdk.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-    public class CustomMarkerPopupAdapter : Java.Lang.Object, GoogleMap.IInfoWindowAdapter
+    public class CustomMarkerPopupAdapter : Java.Lang.Object, MapView.IInfoWindowAdapter
     {
         private const int BottomMargin = 5;
 

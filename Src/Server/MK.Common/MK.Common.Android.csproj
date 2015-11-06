@@ -104,7 +104,6 @@
     <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\LocalAvailableVehiclesModes.cs" />
-    <Compile Include="Enumeration\RateApplicationState.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
@@ -159,6 +158,7 @@
     <Compile Include="Diagnostic\BaseLogger.cs" />
     <Compile Include="Configuration\Attributes\RequiresTaxiHailPro.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />
+    <Compile Include="Enumeration\RateApplicationState.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

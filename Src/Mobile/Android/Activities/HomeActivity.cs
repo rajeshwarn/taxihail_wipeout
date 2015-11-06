@@ -5,7 +5,6 @@ using System.Reactive.Linq;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Gms.Common;
 using Android.Graphics;
 using Android.OS;
 using Android.Views;
@@ -68,15 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnCreate(bundle);
             _mainBundle = bundle;
-
-			var errorCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(ApplicationContext);
-
-            if (errorCode == ConnectionResult.ServiceMissing || errorCode == ConnectionResult.ServiceVersionUpdateRequired || errorCode == ConnectionResult.ServiceDisabled)
-            {
-				var dialog = GoogleApiAvailability.Instance.GetErrorDialog(this,errorCode, 0);
-                dialog.Show();
-                dialog.DismissEvent += (s, e) => Finish();
-            }    
+		
         }
 
         protected override void OnNewIntent(Intent intent)
@@ -261,7 +252,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             // Creating a view controller for MapFragment
             var mapViewSavedInstanceState = _mainBundle != null ? _mainBundle.GetBundle("mapViewSaveState") : null;
             _touchMap = (TouchableMap)FragmentManager.FindFragmentById(Resource.Id.mapPickup);
+
             _touchMap.OnCreate(mapViewSavedInstanceState);
+
 			MapFragment = new OrderMapFragment(_touchMap, Resources, this.Services().Settings);
 
             var inputManager = (InputMethodManager)ApplicationContext.GetSystemService(InputMethodService);
