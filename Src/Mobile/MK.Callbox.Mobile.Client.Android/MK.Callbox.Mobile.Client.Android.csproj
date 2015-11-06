@@ -278,6 +278,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\button_text_selector.xml" />
+    <AndroidResource Include="Resources\Values-ar\Strings.xml" />
+    <AndroidResource Include="Resources\Values-fr\Strings.xml" />
+    <AndroidResource Include="Resources\Values-es\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
