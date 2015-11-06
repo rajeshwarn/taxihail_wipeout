@@ -9,6 +9,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using CMTServices;
+using CMTServices.Responses;
 using CustomerPortal.Client;
 using Infrastructure.Messaging;
 
@@ -193,8 +194,34 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                     var vehiclesGroupedByFleet = marketVehicles.GroupBy(v => v.FleetId).Select(g => g.ToArray()).ToArray();
 
                     // Take fleet with most number of available vehicles
-                    bestFleetId = vehiclesGroupedByFleet.Aggregate(
-                        (fleet1, fleet2) => fleet1.Length > fleet2.Length ? fleet1 : fleet2).First().FleetId;
+                    var result = new VehicleResponse[] {};
+                    var first = true;
+                    foreach (var response in vehiclesGroupedByFleet)
+                    {
+                        if (first)
+                        {
+                            first = false;
+                            result = response;
+                            continue;
+                        }
+
+                        if (response.Length > result.Length)
+                        {
+                            // this fleet has more vehicles
+                            result = response;
+                            continue;
+                        }
+
+                        if (response.Length == result.Length)
+                        {
+                            // two fleets have the same number of vehicles, take the one with the shortest ETA
+                            if (result.Where(x => x.Eta.HasValue).Min(x => x.Eta) > response.Where(x => x.Eta.HasValue).Min(x => x.Eta))
+                            {
+                                result = response;
+                            }
+                        }
+                    }
+                    bestFleetId = result.First().FleetId;
                     break;
                 }
 
