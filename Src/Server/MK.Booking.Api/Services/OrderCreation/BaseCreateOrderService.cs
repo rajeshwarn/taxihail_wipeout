@@ -145,11 +145,10 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 // No companies available that are desserving this region for the company
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
             }
-
-            _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
-
+            
             if (market.HasValue())
             {
+                _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
                 var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
 
                 if (!isConfiguredForCmtPayment)
