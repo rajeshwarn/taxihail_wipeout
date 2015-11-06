@@ -193,18 +193,11 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
                     // Group vehicles by fleet
                     var vehiclesGroupedByFleet = marketVehicles.GroupBy(v => v.FleetId).Select(g => g.ToArray()).ToArray();
 
-                    // Take fleet with most number of available vehicles
-                    var result = new VehicleResponse[] {};
-                    var first = true;
-                    foreach (var response in vehiclesGroupedByFleet)
-                    {
-                        if (first)
-                        {
-                            first = false;
-                            result = response;
-                            continue;
-                        }
+                    var result = vehiclesGroupedByFleet.FirstOrDefault() ?? new VehicleResponse[0];
 
+                    // Take fleet with most number of available vehicles
+                    foreach (var response in vehiclesGroupedByFleet.Skip(1))
+                    {
                         if (response.Length > result.Length)
                         {
                             // this fleet has more vehicles
