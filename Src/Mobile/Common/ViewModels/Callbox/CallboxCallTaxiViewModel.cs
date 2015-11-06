@@ -12,9 +12,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			{
 				return this.GetCommand (async () =>
 				{
-					var name = await this.Services ().Message.ShowPromptDialog (
-					           this.Services ().Localize["BookTaxiTitle"],
-					           this.Services ().Localize["BookTaxiPassengerName"]);
+				    var localize = this.Services().Localize;
+
+                    var name = await this.Services().Message
+                        .ShowPromptDialog(localize["BookTaxiTitle"],localize["BookTaxiPassengerName"]);
 
 					try
 					{
