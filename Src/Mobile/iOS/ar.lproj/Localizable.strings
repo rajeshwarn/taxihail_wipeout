@@ -536,6 +536,7 @@
 "Date"="التاريخ";
 "ParameterButton"="المعايير";
 "Overdue_AddNewCard"="Update Credit Card";
+"ServiceErrorUnauthorized"="Your session has expired, please login again.";
 "LocationHistoryTitle"="مشاوير سابقة";
 "ReceiptSent"="تم إرسال الإيصال";
 "View_RideLinqStatus"="Status";
@@ -593,6 +594,7 @@
 "LinkPayPalConfirmation"="Link";
 "Notification_PaymentConfirmationPush"="Payment Confirmation";
 "HistoryDetailAuthorizationLabel"="التصريح:";
+"ServiceErrorCallTitle"="Server error";
 "OrderAirportView_BAD_AIRPORT_CODE"="An error occurred with the flight status provider.";
 "DestinationMapTitle"="موقع وجهتك";
 "CreateAccountPhonePlaceHolder"="الجوال";

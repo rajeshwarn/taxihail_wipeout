@@ -14,8 +14,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
         {
             pairingCodeEditText1.KeyPress += (sender, args) =>
             {
-                // We need to ignore the KeyUp event as well as any events if we have lower then 3 characters in the left textbox.
-                if (args.Event.Action == KeyEventActions.Up || pairingCodeEditText1.Text.Length < PairingCode1MaxLength)
+                // We need to ignore the KeyUp event as well as any events if we have lower then 2 characters in the left textbox.
+                if (args.Event.Action == KeyEventActions.Up || pairingCodeEditText1.Text.Length < PairingCode1MaxLength-1)
                 {
                     args.Handled = false;
                     return;
@@ -28,9 +28,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
                 // We check if the caret is at the end of the first textbox And we have typed a number And the second textbox is not at max length.
                 if (pairingCodeEditText2.Text.Length < PairingCode2MaxLength && keyPressed.HasValue() && isCaretAtEnd)
                 {
-                    pairingCodeEditText2.Text = keyPressed + pairingCodeEditText2.Text;
+                    pairingCodeEditText1.Text = pairingCodeEditText1.Text + keyPressed;
                     pairingCodeEditText2.RequestFocus();
-                    pairingCodeEditText2.SetSelection(1);
+                    pairingCodeEditText2.SetSelection(pairingCodeEditText2.Text.Length);
                     return;
                 }
 
@@ -46,9 +46,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
                     return;
                 }
 
-                if (pairingCodeEditText2.Text.Length == 0 && args.KeyCode == Keycode.Del)
+                if (pairingCodeEditText2.Text.Length == 1 && args.KeyCode == Keycode.Del)
                 {
-                    pairingCodeEditText1.Text = pairingCodeEditText1.Text.Substring(0, pairingCodeEditText1.Text.Length - 1);
+                    pairingCodeEditText2.Text = string.Empty;
                     pairingCodeEditText1.RequestFocus();
                     pairingCodeEditText1.SetSelection(pairingCodeEditText1.Text.Length);
 
