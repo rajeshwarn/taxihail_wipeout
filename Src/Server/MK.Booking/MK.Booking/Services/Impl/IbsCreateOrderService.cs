@@ -86,23 +86,24 @@ namespace apcurium.MK.Booking.Services.Impl
                 : null;
 
             var customerNumber = GetCustomerNumber(accountNumberString, customerNumberString);
-
-            int? createOrderResult = null;
+            
             var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
             var defaultVehicleTypeId = defaultVehicleType != null ? defaultVehicleType.ReferenceDataVehicleId : -1;
 
-            IbsHailResponse ibsHailResult = null;
+            int? createOrderResult = null;
+            IbsResponse ibsResult;
 
             if (isHailRequest)
             {
-                ibsHailResult = Hail(orderId, providerId, market, companyKey, companyFleetId, pickupAddress, ibsAccountId, name, phone,
+                ibsResult = Hail(orderId, providerId, market, companyKey, companyFleetId, pickupAddress, ibsAccountId, name, phone,
                     passengers, vehicleTypeId, ibsChargeTypeId, ibsInformationNote, pickupDate, ibsPickupAddress,
                     ibsDropOffAddress, accountNumberString, customerNumber, prompts, promptsLength, defaultVehicleTypeId,
                     tipIncentive, fare);
             }
             else
             {
-                createOrderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+                ibsResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+                    orderId,
                     providerId,
                     ibsAccountId,
                     name,
@@ -121,9 +122,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     defaultVehicleTypeId,
                     tipIncentive,
                     fare);
+                createOrderResult = ibsResult.OrderKey.IbsOrderId;
             }
 
-            var hailResult = Mapper.Map<OrderHailResult>(ibsHailResult);
+            var hailResult = Mapper.Map<OrderHailResult>(ibsResult);
 
             return new IBSOrderResult
             {
@@ -163,7 +165,7 @@ namespace apcurium.MK.Booking.Services.Impl
             new TaskFactory().StartNew(() => _updateOrderStatusJob.CheckStatus(orderId));
         }
 
-        private IbsHailResponse Hail(Guid orderId, int? providerId, string market, string companyKey, int? companyFleetId, Address pickupAddress, int ibsAccountId,
+        private IbsResponse Hail(Guid orderId, int? providerId, string market, string companyKey, int? companyFleetId, Address pickupAddress, int ibsAccountId,
             string name, string phone, int passengers, int? vehicleTypeId, int? ibsChargeTypeId, string ibsInformationNote, DateTime pickupDate, IbsAddress ibsPickupAddress,
             IbsAddress ibsDropOffAddress, string accountNumberString, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehicleTypeId, double? tipIncentive, Fare fare)
         {
@@ -175,7 +177,7 @@ namespace apcurium.MK.Booking.Services.Impl
             if (!availableVehicles.Any())
             {
                 // Don't query IBS if we don't find any vehicles
-                return new IbsHailResponse
+                return new IbsResponse
                 {
                     OrderKey = new IbsOrderKey { IbsOrderId = -1, TaxiHailOrderId = orderId }
                 };
@@ -189,7 +191,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ETATime = (int?)vehicle.Eta ?? 0
             });
 
-            var ibsHailResult = _ibsServiceProvider.Booking(companyKey).Hail(
+            var ibsHailResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
                 orderId,
                 providerId,
                 ibsAccountId,
@@ -207,9 +209,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 prompts,
                 promptsLength,
                 defaultVehicleTypeId,
-                vehicleCandidates,
                 tipIncentive,
-                fare);
+                fare,
+                vehicleCandidates);
 
             // Fetch vehicle candidates (who have accepted the hail request) only if order was successfully created on IBS
             if (ibsHailResult.OrderKey.IbsOrderId > -1)

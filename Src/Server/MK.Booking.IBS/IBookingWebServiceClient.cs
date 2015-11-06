@@ -1,19 +1,12 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Entity;
-
-#endregion
 
 namespace apcurium.MK.Booking.IBS
 {
     public interface IBookingWebServiceClient
     {
-        int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare));
-
-        IbsHailResponse Hail(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, IEnumerable<IbsVehicleCandidate> vehicleCandidates, double? tipIncentive, Fare fare = default(Fare));
+        IbsResponse CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare), IEnumerable<IbsVehicleCandidate> vehicleCandidates = default(IEnumerable<IbsVehicleCandidate>));
 
         IbsVehicleCandidate[] GetVehicleCandidates(IbsOrderKey orderKey);
 

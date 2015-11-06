@@ -100,7 +100,7 @@
     <Compile Include="IBSAddress.cs" />
     <Compile Include="IBSAutoMapperProfile.cs" />
     <Compile Include="IBSFareEstimate.cs" />
-    <Compile Include="IBSHailResponse.cs" />
+    <Compile Include="IbsResponse.cs" />
     <Compile Include="IBSOrderKey.cs" />
     <Compile Include="IBSVehicleCandidate.cs" />
     <Compile Include="IBSVehiclePosition.cs" />

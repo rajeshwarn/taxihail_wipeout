@@ -1,7 +1,7 @@
 ﻿
 namespace apcurium.MK.Booking.IBS
 {
-    public class IbsHailResponse
+    public class IbsResponse
     {
         public IbsOrderKey OrderKey { get; set; }
 
