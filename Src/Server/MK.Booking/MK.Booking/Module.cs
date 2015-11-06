@@ -192,6 +192,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<ICommandHandler, CreditCardPaymentCommandHandler>("CreditCardPaymentCommandHandler");
             container.RegisterType<ICommandHandler, SmsCommandHandler>("SmsCommandHandler");
             container.RegisterType<ICommandHandler, PromotionCommandHandler>("PromotionCommandHandler");
+            container.RegisterType<ICommandHandler, NonDomainRelatedCommandHandler>("NonDomainRelatedCommandHandler");
         }
     }
 }

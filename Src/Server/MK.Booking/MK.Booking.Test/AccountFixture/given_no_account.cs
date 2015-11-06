@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
@@ -8,8 +6,6 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Booking.Test.AccountFixture
 {
@@ -20,7 +16,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         public void given_no_account_setup()
         {
             _sut = new EventSourcingTestHelper<Account>();
-            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService(), null));
+            _sut.Setup(new AccountCommandHandler(_sut.Repository, new PasswordService()));
         }
 
         private EventSourcingTestHelper<Account> _sut;

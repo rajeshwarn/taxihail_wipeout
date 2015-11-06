@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -122,6 +123,15 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             // Find market
             var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
+
+            // we already have the settings in this scope so no need to wait for them to save
+            Task.Run(() => _commandBus.Send(new SaveDispatcherSettings
+            {
+                Market = market,
+                NumberOfOffersPerCycle = marketSettings.DispatcherSettings.NumberOfOffersPerCycle,
+                NumberOfCycles = marketSettings.DispatcherSettings.NumberOfCycles,
+                DurationOfOfferInSeconds = marketSettings.DispatcherSettings.DurationOfOfferInSeconds
+            }));
 
             createReportOrder.Market = market;
 

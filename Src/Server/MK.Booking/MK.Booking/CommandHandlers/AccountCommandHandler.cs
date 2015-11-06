@@ -1,26 +1,16 @@
-﻿#region
-
-using System;
-using System.Linq;
-using System.Reflection;
+﻿using System.Linq;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
-using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
 
-#endregion
-
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class AccountCommandHandler : ICommandHandler<RegisterAccount>,
+    public class AccountCommandHandler : 
+        ICommandHandler<RegisterAccount>,
         ICommandHandler<ConfirmAccount>,
         ICommandHandler<EnableAccountByAdmin>,
         ICommandHandler<DisableAccountByAdmin>,
@@ -43,7 +33,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<RemoveFavoriteAddress>,
         ICommandHandler<UpdateFavoriteAddress>,
         ICommandHandler<RemoveAddressFromHistory>,
-        ICommandHandler<LogApplicationStartUp>,
         ICommandHandler<LinkAccountToIbs>,
         ICommandHandler<AddOrUpdateUserTaxiHailNetworkSettings>,
         ICommandHandler<UnlinkAccountFromIbs>,
@@ -55,15 +44,12 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<AddUpdateAccountQuestionAnswer>
     {
         private readonly IPasswordService _passwordService;
-        private readonly Func<BookingDbContext> _contextFactory;
         private readonly IEventSourcedRepository<Account> _repository;
 
-
-        public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService, Func<BookingDbContext> contextFactory)
+        public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService)
         {
             _repository = repository;
             _passwordService = passwordService;
-            _contextFactory = contextFactory;
         }
 
         public void Handle(AddOrUpdateCreditCard command)
@@ -231,8 +217,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account, command.Id.ToString());
         }
 
-        #region Addresses
-
         public void Handle(AddFavoriteAddress command)
         {
             var account = _repository.Get(command.AccountId);
@@ -260,65 +244,32 @@ namespace apcurium.MK.Booking.CommandHandlers
             account.UpdateFavoriteAddress(command.Address);
             _repository.Save(account, command.Id.ToString());
         }
-
-        #endregion
-
-        public void Handle(LogApplicationStartUp command)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                // Check if a log from this user already exists. If not, create it.
-                var log = context.Find<AppStartUpLogDetail>(command.UserId) ?? new AppStartUpLogDetail
-                {
-                    UserId = command.UserId,
-                };
-
-                // Update log details
-                log.DateOccured = command.DateOccured;
-                log.ApplicationVersion = command.ApplicationVersion;
-                log.Platform = command.Platform;
-                log.PlatformDetails = command.PlatformDetails;
-                log.ServerVersion = Assembly.GetAssembly(typeof (AppStartUpLogDetail)).GetName().Version.ToString();
-                log.Latitude = command.Latitude;
-                log.Longitude = command.Longitude;
-
-                context.Save(log);
-            }
-        }
-
+        
         public void Handle(LinkAccountToIbs command)
         {
             var account = _repository.Find(command.AccountId);
-
             account.LinkToIbs(command.CompanyKey, command.IbsAccountId);
-
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(UnlinkAccountFromIbs command)
         {
             var account = _repository.Find(command.AccountId);
-
             account.UnlinkFromIbs();
-
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(LinkPayPalAccount command)
         {
             var account = _repository.Find(command.AccountId);
-
             account.LinkPayPalAccount(command.EncryptedRefreshToken);
-
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(UnlinkPayPalAccount command)
         {
             var account = _repository.Find(command.AccountId);
-
             account.UnlinkPayPalAccount();
-
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -335,20 +286,17 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(ReactToPaymentFailure command)
         {
             var account = _repository.Find(command.AccountId);
-
             account.ReactToPaymentFailure(command.OrderId, command.IBSOrderId, command.OverdueAmount, command.TransactionId, command.TransactionDate, command.FeeType);
-
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(SettleOverduePayment command)
         {
             var account = _repository.Find(command.AccountId);
-
             account.SettleOverduePayment(command.OrderId);
-
             _repository.Save(account, command.Id.ToString());
         }
+
         public void Handle(AddUpdateAccountQuestionAnswer command)
         {
             var account = _repository.Find(command.AccountId);

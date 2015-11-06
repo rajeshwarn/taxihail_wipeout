@@ -1,19 +1,14 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
@@ -24,7 +19,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         public void Setup()
         {
             _sut = new EventSourcingTestHelper<Order>();
-            _sut.Setup(new OrderCommandHandler(_sut.Repository, () => new BookingDbContext(DbName)));
+            _sut.Setup(new OrderCommandHandler(_sut.Repository));
             _sut.Given(new AccountRegistered
             {
                 SourceId = _accountId,
@@ -98,7 +93,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         [Test]
         public void when_change_status_with_same_status_twice_no_event_published()
         {
-            _sut.Given(new OrderStatusChanged() { SourceId = _orderId, IsCompleted = true, Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed, IBSStatusId = VehicleStatuses.Common.Done } });
+            _sut.Given(new OrderStatusChanged { SourceId = _orderId, IsCompleted = true, Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed, IBSStatusId = VehicleStatuses.Common.Done } });
             _sut.When(new ChangeOrderStatus { Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed, IBSStatusId = VehicleStatuses.Common.Done } });
 
             Assert.AreEqual(false, _sut.ThenContains<OrderStatusChanged>());
@@ -108,7 +103,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         [Test]
         public void when_change_status_with_same_status_twice_but_different_fare_then_event_published()
         {
-            _sut.Given(new OrderStatusChanged() { SourceId = _orderId, IsCompleted = true, Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed, IBSStatusId = VehicleStatuses.Common.Done } });
+            _sut.Given(new OrderStatusChanged { SourceId = _orderId, IsCompleted = true, Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed, IBSStatusId = VehicleStatuses.Common.Done } });
             _sut.When(new ChangeOrderStatus { Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed, IBSStatusId = VehicleStatuses.Common.Done }, Fare = 12 });
 
             var @event = _sut.ThenHasOne<OrderStatusChanged>();

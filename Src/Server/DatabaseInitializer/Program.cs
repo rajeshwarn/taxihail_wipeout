@@ -275,14 +275,15 @@ namespace DatabaseInitializer
 
             StopAppPools(param);
 
-            DbMigrationsConfiguration configuration = new apcurium.MK.Booking.Migrations.ConfigMigrationBookingContext();
-            configuration.TargetDatabase = new DbConnectionInfo(param.MkWebConnectionString, "System.Data.SqlClient");
+            DbMigrationsConfiguration configuration = new apcurium.MK.Booking.Migrations.ConfigMigrationBookingContext
+            {
+                TargetDatabase = new DbConnectionInfo(param.MkWebConnectionString, "System.Data.SqlClient")
+            };
 
             var migrator = new DbMigrator(configuration);
             DisplayPendingMigrations(migrator);
             migrator.Update();
             
-
             configuration = new apcurium.MK.Common.Migrations.ConfigMigrationConfigurationContext
             {
                 TargetDatabase = new DbConnectionInfo(param.MkWebConnectionString, "System.Data.SqlClient")

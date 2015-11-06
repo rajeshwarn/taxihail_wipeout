@@ -1,7 +1,6 @@
 ﻿using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Test.Integration;
@@ -19,7 +18,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         public void Setup()
         {
             _sut = new EventSourcingTestHelper<Order>();
-            _sut.Setup(new OrderCommandHandler(_sut.Repository, () => new BookingDbContext(DbName)));
+            _sut.Setup(new OrderCommandHandler(_sut.Repository));
             _sut.Given(new AccountRegistered
             {
                 SourceId = _accountId,

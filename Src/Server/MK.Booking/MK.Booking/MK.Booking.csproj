@@ -180,6 +180,7 @@
     <Compile Include="CommandHandlers\CompanyCommandHandler.cs" />
     <Compile Include="CommandHandlers\CreditCardPaymentCommandHandler.cs" />
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
+    <Compile Include="CommandHandlers\NonDomainRelatedCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />

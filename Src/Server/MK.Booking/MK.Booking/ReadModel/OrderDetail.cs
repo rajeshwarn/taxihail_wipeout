@@ -1,11 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Entity;
-using CustomerPortal.Contract.Resources;
-
-#endregion
 
 namespace apcurium.MK.Booking.ReadModel
 {
