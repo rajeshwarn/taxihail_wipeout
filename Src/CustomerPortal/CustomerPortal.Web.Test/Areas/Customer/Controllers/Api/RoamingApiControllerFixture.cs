@@ -5,6 +5,7 @@ using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Areas.Customer.Controllers.Api;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
+using CustomerPortal.Web.Test.Helpers;
 using CustomerPortal.Web.Test.Helpers.Repository;
 using MongoDB.Driver;
 using MongoRepository;
@@ -410,7 +411,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.IsNull(result.Market);
             Assert.NotNull(result.DispatcherSettings);
             Assert.AreEqual(0, result.DispatcherSettings.NumberOfOffersPerCycle);
-            Assert.AreEqual(0, result.DispatcherSettings.NumberOfCycles);
+            Assert.AreEqual(1, result.DispatcherSettings.NumberOfCycles);
             Assert.AreEqual(15, result.DispatcherSettings.DurationOfOfferInSeconds);
         }
 
@@ -437,9 +438,9 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
             Assert.AreEqual("SYD", result.Market);
             Assert.NotNull(result.DispatcherSettings);
-            Assert.AreEqual(4, result.DispatcherSettings.NumberOfOffersPerCycle);
-            Assert.AreEqual(5, result.DispatcherSettings.NumberOfCycles);
-            Assert.AreEqual(55, result.DispatcherSettings.DurationOfOfferInSeconds);
+            Assert.AreEqual(0, result.DispatcherSettings.NumberOfOffersPerCycle);
+            Assert.AreEqual(1, result.DispatcherSettings.NumberOfCycles);
+            Assert.AreEqual(15, result.DispatcherSettings.DurationOfOfferInSeconds);
         }
 
         [Test]
@@ -499,16 +500,18 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private IRepository<Market> GetMockedMarketRepo()
         {
             var marketRepositoryMock = new Mock<IRepository<Market>>();
-            var mongoServerMock = new Mock<MongoServer>(new MongoServerSettings());
-            string message;
-            mongoServerMock.Setup(x => x.IsDatabaseNameValid(It.IsAny<string>(), out message)).Returns(true);
-            mongoServerMock.Setup(x => x.Settings).Returns(new MongoServerSettings());
-            var mongoDatabaseMock = new Mock<MongoDatabase>(mongoServerMock.Object, "dbname", new MongoDatabaseSettings());
-            mongoDatabaseMock.Setup(x => x.IsCollectionNameValid(It.IsAny<string>(), out message)).Returns(true);
-            mongoDatabaseMock.Setup(x => x.Settings).Returns(new MongoDatabaseSettings() { ReadPreference = new ReadPreference(), WriteConcern = new WriteConcern() });
-            var collection = new Mock<MongoCollection<Market>>(mongoDatabaseMock.Object, "tablename", new MongoCollectionSettings());
-            collection.Setup(x => x.FindOne(It.IsAny<IMongoQuery>())).Returns(new Market { DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 4, NumberOfCycles = 5, DurationOfOfferInSeconds = 55 } });
-            marketRepositoryMock.Setup(x => x.Collection).Returns(collection.Object);
+
+            var serverMock = MongoMock.CreateMongoServer();
+            var databaseMock = MongoMock.CreateMongoDatabase(serverMock.Object);
+            var collectionMock = MongoMock.CreateMongoCollection<Market>(databaseMock.Object, "FooCollection");
+            var cursorMock = MongoMock.CreateMongoCursor(collectionMock.Object, new List<Market>
+            {
+                new Market { Name = "MTL", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 4, NumberOfCycles = 5, DurationOfOfferInSeconds = 55 } },
+                new Market { Name = "NYC", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 1, NumberOfCycles = 2, DurationOfOfferInSeconds = 50 } },
+                new Market { Name = "NYCSS", DispatcherSettings = new DispatcherSettings { NumberOfOffersPerCycle = 3, NumberOfCycles = 4, DurationOfOfferInSeconds = 60 } }
+            });
+            collectionMock.Setup(x => x.Find(It.IsAny<IMongoQuery>())).Returns(cursorMock.Object);
+            marketRepositoryMock.Setup(x => x.Collection).Returns(collectionMock.Object);
 
             return marketRepositoryMock.Object;
         }
