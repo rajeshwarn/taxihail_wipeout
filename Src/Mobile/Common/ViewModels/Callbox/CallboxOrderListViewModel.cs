@@ -292,8 +292,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 				{
 					var pickupAddress = (await _accountService.GetFavoriteAddresses()).FirstOrDefault();
 
-					var newOrderCreated = new CreateOrder
-					{
+					var newOrderCreated = new CreateOrderRequest
+                    {
 						Id = Guid.NewGuid(),
 						Settings = _accountService.CurrentAccount.Settings,
 						PickupAddress = pickupAddress,
