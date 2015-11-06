@@ -597,6 +597,7 @@
     <Compile Include="Activities\HomeActivity.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
+    <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -868,4 +869,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controls\Widgets\" />
+  </ItemGroup>
 </Project>

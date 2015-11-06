@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/orderOptionsControl"
+    android:background="@drawable/drop_shadow"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:layout_marginBottom="0dp">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_margin="0px"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <apcurium.mk.booking.mobile.client.controls.widgets.AddressTextBox
+            android:id="@+id/viewPickup"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/PickupAddress" />
+        <apcurium.mk.booking.mobile.client.controls.widgets.AddressTextBox
+            android:id="@+id/viewDestination"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/DestinationAddress" />
+        <apcurium.mk.booking.mobile.client.controls.widgets.VehicleTypeAndEstimateControl
+            android:id="@+id/viewEstimate"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/EtaContainer"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_width="fill_parent"
+            android:layout_height="23dp">
+            <LinearLayout
+                android:id="@+id/EtaBadge"
+                android:orientation="horizontal"
+                android:gravity="clip_vertical"
+                android:paddingLeft="8dp"
+                android:layout_width="45dp"
+                android:layout_height="fill_parent" />
+            <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
+                android:paddingLeft="8dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="2dp"
+                android:id="@+id/EtaLabelInVehicleSelection"
+                android:textColor="@color/label_text_color"
+                android:textSize="16dp"
+                android:gravity="left|center"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

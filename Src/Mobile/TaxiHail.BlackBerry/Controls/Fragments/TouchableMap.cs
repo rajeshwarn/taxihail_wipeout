@@ -1,0 +1,232 @@
+using System;
+using Android.Content;
+using Android.OS;
+using Android.Util;
+using Android.Views;
+using Android.Widget;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration;
+using TinyIoC;
+using Android.Runtime;
+using Com.Mapbox.Mapboxsdk;
+using Com.Mapbox.Mapboxsdk.Geometry;
+using Com.Mapbox.Mapboxsdk.Views;
+using Android.App;
+
+namespace apcurium.MK.Booking.Mobile.Client.Controls
+{
+    [Register("apcurium.mk.booking.mobile.client.controls.TouchableMap")]
+    public class TouchableMap : Fragment
+    {
+        public View mOriginalContentView;
+
+        public TouchableWrapper Surface;
+
+        public MapView Map;
+
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState)
+        {
+            Map = new MapView(Activity.ApplicationContext,  "pk.eyJ1IjoiZGV2dG9ueSIsImEiOiJjaWZ5OGJ0NXc0eWtxdXBrcXl2czF1eGY5In0.6qUEJWLnvqZ0_0Q6Xh2Gaw");
+            Map.OnCreate(savedInstanceState);
+
+            var bestPosition = TinyIoCContainer.Current.Resolve<ILocationService>().BestPosition;
+			var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ().Data;
+
+			var latitude = bestPosition != null ? bestPosition.Latitude : settings.GeoLoc.DefaultLatitude;
+			var longitude = bestPosition != null ? bestPosition.Longitude : settings.GeoLoc.DefaultLongitude;
+
+            Map.SetLogoVisibility((int)ViewStates.Gone);
+            Map.SetAttributionVisibility((int)ViewStates.Gone);
+
+            Map.StyleUrl = Com.Mapbox.Mapboxsdk.Constants.Style.MapboxStreets;
+            Map.SetCenterCoordinate(new LatLngZoom(new LatLng(latitude, longitude), 12f), true);
+
+            // disable gestures on the map since we're handling them ourselves
+            Map.CompassEnabled = false;
+            Map.ZoomEnabled = false;
+            Map.RotateEnabled = false;
+            Map.ScrollEnabled = false;
+
+            Surface = new TouchableWrapper(Activity);
+            Surface.AddView(Map);
+            return Surface;                          
+        }
+
+	    public bool IsMapGestuesEnabled
+	    {
+		    get { return Surface.IsGestuesEnabled; } 
+		    set { Surface.IsGestuesEnabled = value; }
+	    }
+
+	    public override View View
+        {
+            get
+            {
+                return Map;
+            }
+        }
+
+        public override void OnStop()
+        {
+            base.OnStop();
+            Map.OnStop();
+        }
+
+        public override void OnStart()
+        {
+            base.OnStart();
+            Map.OnStart();
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
+            Map.OnPause();
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+            Map.OnResume();
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            Map.OnDestroy();
+        }
+
+        public override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            Map.OnSaveInstanceState(outState);
+        }
+    }
+
+    public class TouchableWrapper : FrameLayout 
+    {
+        private GestureDetector _gestureDetector;
+        private ScaleGestureDetector _scaleDetector;
+
+        private static DateTime _blockScrollUntilDate = DateTime.MinValue;
+
+        public event EventHandler<MotionEvent> Touched;
+        public Action<bool, float> ZoomBy;
+        public Action<float, float> MoveBy;
+	    private bool _isGestuesEnabled;
+
+	    public bool IsGestuesEnabled
+	    {
+		    get { return _isGestuesEnabled; }
+		    set
+		    {
+			    _isGestuesEnabled = value;
+
+			    Alpha = value ? 1f : .3f;
+		    }
+	    }
+
+	    public TouchableWrapper(Context context) :
+        base(context)
+        {
+            Initialize ();
+        }
+
+        public TouchableWrapper(Context context, IAttributeSet attrs) :
+        base(context, attrs)
+        {
+            Initialize ();
+        }
+
+        public TouchableWrapper(Context context, IAttributeSet attrs, int defStyle) :
+        base(context, attrs, defStyle)
+        {
+            Initialize ();
+        }
+
+        private void Initialize()
+        {
+            _gestureDetector = new GestureDetector (Context, new GestureListener (this));
+            _scaleDetector = new ScaleGestureDetector (Context, new ScaleListener (this));
+
+	        IsGestuesEnabled = true;
+        }
+
+        public override bool DispatchTouchEvent(MotionEvent e)
+        {
+	        if (!IsGestuesEnabled)
+	        {
+				// Map control disabled.
+		        return true;
+	        }
+
+            if (Touched != null)
+            {
+                Touched(this, e);
+            }
+
+            _gestureDetector.OnTouchEvent (e);
+            _scaleDetector.OnTouchEvent (e);
+
+            return true;
+        }
+
+        private class GestureListener : GestureDetector.SimpleOnGestureListener
+        {
+            private readonly TouchableWrapper _view;
+            public GestureListener (TouchableWrapper view)
+            {   
+                _view = view;
+            }
+
+            public override bool OnScroll (MotionEvent firstDownMotionEvent, MotionEvent moveMotionEvent, float distanceX, float distanceY)
+            {
+                if (firstDownMotionEvent.PointerCount > 1 || moveMotionEvent.PointerCount > 1)
+                {
+                    // don't scroll if we have more than one finger
+                    return false;
+                }
+
+                if (_blockScrollUntilDate >= DateTime.Now)
+                {
+                    return false;
+                }
+
+                _view.MoveBy.Invoke (distanceX, distanceY);
+                return true;
+            }
+
+            public override bool OnDoubleTap (MotionEvent e)
+            {
+                if (e.PointerCount > 1)
+                {
+                    // Zooming out on double tap with multitouch
+                    _view.ZoomBy.Invoke (true, -1f);
+                }
+                else
+                {
+                    // Zooming in on double tap with one finger
+                    _view.ZoomBy.Invoke (true, 1f);
+                }
+
+                return true;
+            }
+        }
+
+        private class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener 
+        {
+            private readonly TouchableWrapper _view;
+            public ScaleListener (TouchableWrapper view)
+            {   
+                _view = view;
+            }
+
+            public override bool OnScale (ScaleGestureDetector detector)
+            {
+                _view.ZoomBy.Invoke (false, (detector.ScaleFactor - 1f) * 4);
+                _blockScrollUntilDate = DateTime.Now.AddMilliseconds (500);
+                return true;
+            }
+        }
+    }
+}

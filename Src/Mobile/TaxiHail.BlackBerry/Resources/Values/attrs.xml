@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EditTextSpinner">
+        <attr name="allowEmptySelection" format="boolean"/>
+        <attr name="allowOtherSelection" format="boolean"/>
+    </declare-styleable>
+	<declare-styleable name="AppBarButton">
+		    <attr name="ImgSrc" format="integer"/>
+		    <attr name="LabelText" format="string"/>
+	</declare-styleable>
+</resources>

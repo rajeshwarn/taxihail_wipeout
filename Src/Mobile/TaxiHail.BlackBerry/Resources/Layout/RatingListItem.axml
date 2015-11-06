@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="2dip"
+    android:paddingBottom="2dip">
+    <TextView
+        android:id="@+id/RatingTypeNameId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        local:MvxBind="Text RatingTypeName"
+        android:gravity="left"
+        android:text=""
+        android:textAppearance="@style/ListTitle" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="2dip"
+        android:paddingBottom="2dip"
+        android:gravity="center_horizontal">
+        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+            android:id="@+id/RatingScore1"
+            android:background="@drawable/star_state"
+            android:layout_height="40dip"
+            android:layout_gravity="fill"
+            android:layout_width="40dip"
+            android:padding="7dip"
+            android:layout_marginTop="1dip"
+            android:tag="ScoreA"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected ScoreASelected; Enabled CanRate"
+            android:layout_marginRight="15dip"
+            android:contentDescription="@string/Rating1" />
+        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+            android:id="@+id/RatingScore2"
+            android:background="@drawable/star_state"
+            android:layout_height="40dip"
+            android:layout_gravity="fill"
+            android:layout_width="40dip"
+            android:padding="7dip"
+            android:layout_marginTop="1dip"
+            android:tag="ScoreB"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected ScoreBSelected; Enabled CanRate"
+            android:layout_marginRight="15dip"
+            android:contentDescription="@string/Rating2" />
+        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+            android:id="@+id/RatingScore3"
+            android:background="@drawable/star_state"
+            android:layout_height="40dip"
+            android:layout_gravity="fill"
+            android:layout_width="40dip"
+            android:padding="7dip"
+            android:layout_marginTop="1dip"
+            android:tag="ScoreC"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected ScoreCSelected; Enabled CanRate"
+            android:layout_marginRight="15dip"
+            android:contentDescription="@string/Rating3" />
+        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+            android:id="@+id/RatingScore4"
+            android:background="@drawable/star_state"
+            android:layout_height="40dip"
+            android:layout_gravity="fill"
+            android:layout_width="40dip"
+            android:padding="7dip"
+            android:layout_marginTop="1dip"
+            android:tag="ScoreD"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected ScoreDSelected; Enabled CanRate"
+            android:layout_marginRight="15dip"
+            android:contentDescription="@string/Rating4" />
+        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+            android:id="@+id/RatingScore5"
+            android:background="@drawable/star_state"
+            android:layout_height="40dip"
+            android:layout_gravity="fill"
+            android:layout_width="40dip"
+            android:padding="7dip"
+            android:layout_marginTop="1dip"
+            android:tag="ScoreE"
+            local:MvxBind="SelectedChangedCommand SetRateCommand; Selected ScoreESelected; Enabled CanRate"
+            android:contentDescription="@string/Rating5" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <LinearLayout
+        android:layout_margin="0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/top_bar_color"
+            android:orientation="horizontal">
+            <TextView
+                android:text="@string/View_BookRating"
+                style="@style/TopTitleText"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/top_bar_title_height"
+                android:gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/top_bar_separator_color"
+            android:orientation="horizontal" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="8dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_horizontal">
+            <cirrious.mvvmcross.binding.droid.views.MvxListView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/RatingListView"
+                android:layout_margin="12dip"
+                local:MvxItemTemplate="@layout/ratinglistitem"
+                local:MvxBind="ItemsSource RatingList" />
+            <Button
+                style="@style/ButtonActionGreenStyle"
+                android:layout_marginTop="6dip"
+                android:id="@+id/RateOrderButton"
+                android:layout_below="@id/RatingListView"
+                android:text="@string/Submit"
+                android:layout_height="@dimen/HeightButton"
+                android:layout_width="fill_parent"
+                local:MvxBind="Click RateOrder; Visibility CanRate, Converter=Visibility" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

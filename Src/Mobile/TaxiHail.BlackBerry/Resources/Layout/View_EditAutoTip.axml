@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <LinearLayout
+        android:layout_margin="0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/top_bar_color"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/TopTitleText"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/top_bar_title_height"
+                android:gravity="center"
+                local:MvxBind="Text ViewTitle" />
+        </LinearLayout>
+        <LinearLayout
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="8dp"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/paymentMethodsLabel"
+                android:text="@string/PaymentDetails.PaymentMethodsLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                style="@style/BlackTextLabel"
+                local:MvxBind="Visibility CanShowCreditCard, Converter=Visibility" />
+            <apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner
+                android:id="@+id/tipPicker"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightEditTextFlat"
+                android:layout_marginBottom="10dip"
+                local:MvxBind="Text CreditCardSelectedDisplay; Data CreditCards; SelectedItem CreditCardSelected; LeftImage CreditCardSelectedImage; Visibility CanShowCreditCard, Converter=Visibility" />
+            <TextView
+                android:id="@+id/tipAmountLabel"
+                android:text="@string/PaymentDetails.TipAmountLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                style="@style/BlackTextLabel" />
+            <apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner
+                android:id="@+id/tipPicker"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightEditTextFlat"
+                android:layout_marginBottom="10dip"
+                local:allowOtherSelection="true"
+                local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip" />
+            <Button
+                style="@style/ButtonActionGreenStyle"
+                android:layout_marginTop="8dip"
+                android:id="@+id/SaveSettingsButton"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"
+                android:text="@string/Save"
+                local:MvxBind="Click SaveAutoTipChangeCommand" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

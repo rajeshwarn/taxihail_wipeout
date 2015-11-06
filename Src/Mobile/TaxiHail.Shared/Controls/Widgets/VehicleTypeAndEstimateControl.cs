@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System;
 using apcurium.MK.Common.Extensions;
 using Android.Runtime;
-using Android.Gms.Analytics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {

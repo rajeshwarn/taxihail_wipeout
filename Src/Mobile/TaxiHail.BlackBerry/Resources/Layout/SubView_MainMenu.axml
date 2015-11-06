@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:background="@color/setting_menu_color">
+    <RelativeLayout
+        android:id="@+id/fakeLayoutRight"
+        android:layout_alignParentRight="true"
+        android:layout_width="105px"
+        android:layout_height="fill_parent" />
+    <RelativeLayout
+        android:id="@+id/DShadow"
+        android:layout_alignParentRight="true"
+        android:layout_width="4px"
+        android:layout_height="fill_parent"
+        android:layout_toLeftOf="@id/fakeLayoutRight"
+        android:background="@drawable/drop_shadow_old"
+        android:layout_marginRight="98px" />
+    <RelativeLayout
+        android:id="@+id/HeaderLayoutMenu"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_toLeftOf="@id/DShadow">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:layout_weight="0.3">
+                <ImageView
+                    android:paddingTop="8dp"
+                    android:src="@drawable/th_logo"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/imgLogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+                <ScrollView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/listContainer"
+                        android:orientation="vertical"
+                        android:layout_marginRight="10dip"
+                        android:layout_marginLeft="10dip"
+                        android:layout_marginTop="0dip"
+                        android:layout_marginBottom="10dip">
+                        <View
+                            android:id="@+id/separator1"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="5dip"
+                            android:layout_marginTop="0dip"
+                            android:layout_alignParentTop="true" />
+                        <Button
+                            android:id="@+id/settingsFavorites"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewLocationsText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="start|center_vertical"
+                            android:textAlignment="viewStart"
+                            local:MvxBind="Click Panel.NavigateToMyLocations"
+                            android:layout_below="@id/separator1" />
+                        <View
+                            android:id="@+id/separator2"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsFavorites" />
+                        <Button
+                            android:id="@+id/settingsHistory"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewOrderHistoryText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            local:MvxBind="Click Panel.NavigateToOrderHistory"
+                            android:layout_below="@id/separator2" />
+                        <View
+                            android:id="@+id/separator3"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsHistory" />
+                        <Button
+                            android:id="@+id/settingsProfile"
+                            local:MvxBind="Click Panel.NavigateToUpdateProfile"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewUpdateProfileText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator3" />
+                        <View
+                            android:id="@+id/separator4"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsProfile" />
+                        <Button
+                            android:id="@+id/settingsPayment"
+                            local:MvxBind="Click Panel.NavigateToPaymentInformation; Visibility Panel.IsPayInTaxiEnabled, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewPaymentInfoText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator4" />
+                        <View
+                            android:id="@+id/separator5"
+                            local:MvxBind="Visibility Panel.IsPayInTaxiEnabled, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsPayment" />
+                        <Button
+                            android:id="@+id/promotions"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:text="@string/PanelMenuViewPromotionsText"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator5"
+                            local:MvxBind="Click Panel.NavigateToPromotions; Visibility Settings.PromotionEnabled, Converter=Visibility"
+                            style="@style/SettingItemTitle" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="120dip"
+                            android:layout_below="@id/separator5"
+                            android:id="@+id/promoCodeBadge"
+                            android:layout_marginTop="9dip"
+                            local:MvxBind="Text Panel.PromoCodeAlert; Visibility Panel.PromoCodeAlert, Converter=HasValueToVisibilityConverter"
+                            style="@style/NotificationBadge" />
+                        <View
+                            android:id="@+id/separator6"
+                            local:MvxBind="Visibility Panel.Settings.PromotionEnabled, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/promotions" />
+                        <Button
+                            android:id="@+id/notificationsSettings"
+                            local:MvxBind="Click Panel.NavigateToNotificationsSettings; Visibility Panel.IsNotificationsEnabled, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewNotificationsText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator6" />
+                        <View
+                            android:id="@+id/separator7"
+                            local:MvxBind="Visibility Panel.IsNotificationsEnabled, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/notificationsSettings" />
+                        <Button
+                            android:id="@+id/userTaxiHailNetworkSettings"
+                            local:MvxBind="Click Panel.NavigateToUserTaxiHailNetworkSettings; Visibility Panel.IsTaxiHailNetworkEnabled, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewTaxiHailNetworkText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator7" />
+                        <View
+                            android:id="@+id/separator8"
+                            local:MvxBind="Visibility Panel.IsTaxiHailNetworkEnabled, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/userTaxiHailNetworkSettings" />
+                        <Button
+                            android:id="@+id/settingsTutorial"
+                            local:MvxBind="Click Panel.NavigateToTutorial; Visibility Panel.Settings.TutorialEnabled, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewTutorialText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator8" />
+                        <View
+                            android:id="@+id/separator9"
+                            local:MvxBind="Visibility Panel.Settings.TutorialEnabled, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsTutorial" />
+                        <Button
+                            android:id="@+id/settingsCallCompany"
+                            local:MvxBind="Click Panel.Call; Visibility Panel.Settings.HideCallDispatchButton, Converter=InvertedVisibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewCallDispatchText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator9" />
+                        <View
+                            android:id="@+id/separator10"
+                            local:MvxBind="Visibility Panel.Settings.Settings.HideCallDispatchButton, Converter=InvertedVisibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsCallCompany" />
+                        <Button
+                            android:id="@+id/settingsAbout"
+                            local:MvxBind="Click Panel.NavigateToAboutUs"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewAboutUsText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator10" />
+                        <View
+                            android:id="@+id/separator11"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsAbout" />
+                        <Button
+                            android:id="@+id/settingsSupport"
+                            local:MvxBind="Click Panel.NavigateToReportProblem; Visibility Panel.DisplayReportProblem, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewReportProblemText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator11" />
+                        <View
+                            android:id="@+id/separator12"
+                            local:MvxBind="Visibility Panel.DisplayReportProblem, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsSupport" />
+                        <Button
+                            android:id="@+id/settingsLogout"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewSignOutText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator12" />
+                    </RelativeLayout>
+                </ScrollView>
+            </LinearLayout>
+            <FrameLayout
+                android:id="@+id/apcuriumLogoLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/imgsLogosLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5">
+                        <ImageView
+                            android:id="@+id/mk_logo"
+                            android:orientation="horizontal"
+                            android:clickable="true"
+                            android:src="@drawable/th_logo_small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:adjustViewBounds="true" />
+                        <ImageView
+                            android:id="@+id/apc_logo_menu"
+                            android:clickable="true"
+                            android:src="@drawable/apc_logo_menu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:adjustViewBounds="true"
+                            android:layout_marginStart="17dp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25" />
+                </LinearLayout>
+                <TextView
+                    android:alpha="0.5"
+                    local:MvxBind="Text Panel.ServerWatermarkText; Visibility Panel.ServerWatermarkText, Converter=HasValueToVisibilityConverter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="bottom|left"
+                    android:textColor="@color/red"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:gravity="left" />
+                <TextView
+                    android:text="2.0.17"
+                    local:MvxBind="Text Panel.Version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_gravity="bottom|right"
+                    style="@style/FinePrint"
+                    android:gravity="right" />
+            </FrameLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

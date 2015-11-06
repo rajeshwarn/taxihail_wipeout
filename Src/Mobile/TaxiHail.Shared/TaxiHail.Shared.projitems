@@ -84,7 +84,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Widgets\AppBarDropOffSelection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Widgets\AutoResizeTextView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Widgets\BindableSelectionButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\Widgets\CustomMarkerPopupAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Widgets\DropOffSelection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Widgets\EditBoxWithAccessibility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Widgets\EditTextEntry.cs" />
