@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile
 {
 	public class StartCallboxNavigation: MvxNavigatingObject, IMvxAppStart
 	{
-		public void Start(object hint)
+		public async void Start(object hint)
 		{
 			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile
 			{
 				var accountService = Mvx.Resolve<IAccountService>();
 
-				var activeOrderStatusDetails = accountService.GetActiveOrdersStatus();
+				var activeOrderStatusDetails = await accountService.GetActiveOrdersStatus();
 
 			    var bookingService = Mvx.Resolve<IBookingService>();
 

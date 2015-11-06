@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			_orderNotified = new List<Guid>();
 
 			_serialDisposable.Disposable = ObserveTimerForRefresh()
-				.Select(_ => GetActiveOrderStatus())
+				.SelectMany(_ => GetActiveOrderStatus())
 				.ObserveOn(SynchronizationContext.Current)
 				.Where(_ => _refreshGate)
 				.Subscribe(orderStatusDetails =>
@@ -156,12 +156,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			}
 		}
 
-		private OrderStatusDetail[] GetActiveOrderStatus()
+		private async Task<OrderStatusDetail[]> GetActiveOrderStatus()
 		{
 			try
 			{
-				return _accountService.GetActiveOrdersStatus()
-					.OrderByDescending(o => o.PickupDate)
+			    var activeOrders = await _accountService.GetActiveOrdersStatus();
+
+                return activeOrders
+                    .OrderByDescending(o => o.PickupDate)
 					.Where(status => _bookingService.IsCallboxStatusActive(status.IBSStatusId))
 					.ToArray();
 			}
@@ -256,14 +258,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 				_orderToCreate = null;
 			}
 
-			InvokeOnMainThread ( ()=>
+			InvokeOnMainThread(()=>
 			{
 				Orders.Remove(orderToRemove) ;
-				if (!Orders.Any())
-				{                                                   
-					ShowViewModel<CallboxCallTaxiViewModel>();
-					Close();
-				}
+
+			    if (Orders.Any())
+			    {
+			        return;
+			    }
+
+			    Close();
 			});
 		}
 
@@ -300,15 +304,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					}
 				
 					var orderInfo = await _bookingService.CreateOrder(newOrderCreated);
-
-					//TODO: modify to make the UI more reactive, aka we should not be needing to wait for the IbsOrderId.
-					//We need to wait for an ibsOrderId
-					while (!orderInfo.IBSOrderId.HasValue && VehicleStatuses.CancelStatuses.None(status => status == orderInfo.IBSStatusId))
-					{
-						await Task.Delay(TimeSpan.FromMilliseconds(200));
-
-						orderInfo = await _bookingService.GetOrderStatusAsync(orderInfo.OrderId);
-					}
 
 					await InvokeOnMainThreadAsync(() =>
 					{

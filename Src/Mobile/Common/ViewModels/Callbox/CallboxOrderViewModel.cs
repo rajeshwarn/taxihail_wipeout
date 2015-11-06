@@ -50,7 +50,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
         public string IbsOrderIdString
         {
-            get { return IbsOrderId.ToString(); }
+            get
+            {
+                return IbsOrderId.HasValue 
+                    ? IbsOrderId.ToString() 
+                    : "N/A";
+            }
         }
 
         public ICommand CancelOrder

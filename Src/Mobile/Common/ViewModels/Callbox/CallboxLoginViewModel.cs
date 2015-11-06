@@ -87,7 +87,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 if (account != null)
                 {
                     Password = string.Empty;
-					if (_accountService.GetActiveOrdersStatus().Any(c => _bookingService.IsCallboxStatusActive(c.IBSStatusId)))
+
+                    var activeOrders = await _accountService.GetActiveOrdersStatus();
+
+                    if (activeOrders.Any(c => _bookingService.IsCallboxStatusActive(c.IBSStatusId)))
                     {
 						ShowViewModel<CallboxOrderListViewModel>();
                     }

@@ -1,6 +1,5 @@
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Android.App;
-using Android.OS;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
@@ -8,11 +7,6 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
     [Activity(Theme = "@android:style/Theme.Dialog")]
     public class AlertDialogActivity : BaseDialogActivity
     {
-        protected override void OnCreate(Bundle bundle)
-        {
-            base.OnCreate(bundle);
-        }
-
         protected override void Display()
         {
             if (_ownerId.HasValue() && _negativeButtonTitle.HasValue() && _positiveButtonTitle.HasValue() && !_neutralButtonTitle.HasValue())

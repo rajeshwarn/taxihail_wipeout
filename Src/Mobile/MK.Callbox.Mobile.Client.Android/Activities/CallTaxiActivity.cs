@@ -1,12 +1,9 @@
 using System;
-using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Input;
-using apcurium.MK.Booking.Mobile.Extensions;
 using Android.App;
-using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Droid.Views;
