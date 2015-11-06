@@ -37,6 +37,7 @@
   <string name="InvalidLoginMessageTitle">Invalid information</string>
   <string name="InvalidLoginMessage">The email or/and password is invalid.</string>
   <string name="ServiceErrorCallTitle">Server Error</string>
+  <string name="ServiceErrorUnauthorized">Your email/passsword is incorrect, try again.</string>
   <string name="ServiceErrorDefaultMessage">An error occurred. Please try again.</string>
   <string name="NotSpecified">Not Specified</string>
   <string name="PassengerName">Passenger</string>

@@ -22,8 +22,7 @@ using ErrorHandler = apcurium.MK.Callbox.Mobile.Client.Diagnostic.ErrorHandler;
 
 namespace apcurium.MK.Callbox.Mobile.Client
 {
-    public class Setup
-        : MvxAndroidSetup
+    public class Setup : MvxAndroidSetup
     {
         public Setup(Context applicationContext)
             : base(applicationContext)

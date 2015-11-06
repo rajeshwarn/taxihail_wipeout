@@ -6,9 +6,7 @@ using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Diagnostic;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
-using TinyIoC;
 using Android.App;
 using Android.Net;
 using Cirrious.CrossCore;
@@ -66,16 +64,18 @@ namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
             else if (ex is WebException)
             {
 				_logger.LogError(ex);
-                if (LastConnectError.Subtract(DateTime.Now).TotalSeconds < -2)
+                if (!(LastConnectError.Subtract(DateTime.Now).TotalSeconds < -2))
                 {
-                    LastConnectError = DateTime.Now;
-                    var cm = (ConnectivityManager)Application.Context.GetSystemService(Context.ConnectivityService);
-                    if ((cm == null) || (cm.ActiveNetworkInfo == null) || (!cm.ActiveNetworkInfo.IsConnectedOrConnecting))
-                    {
-						var title = _localize["NetworkErrorTitle"];
-						var message = _localize["NetworkErrorMessage"];
-						_messageService.ShowMessage(title, message);
-                    }
+                    return true;
+                }
+
+                LastConnectError = DateTime.Now;
+                var cm = (ConnectivityManager)Application.Context.GetSystemService(Context.ConnectivityService);
+                if ((cm == null) || (cm.ActiveNetworkInfo == null) || (!cm.ActiveNetworkInfo.IsConnectedOrConnecting))
+                {
+                    var title = _localize["NetworkErrorTitle"];
+                    var message = _localize["NetworkErrorMessage"];
+                    _messageService.ShowMessage(title, message);
                 }
             }
 

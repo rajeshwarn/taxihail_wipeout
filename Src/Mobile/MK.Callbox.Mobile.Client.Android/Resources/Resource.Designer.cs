@@ -502,8 +502,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f070019
 			public const int NoPickupAddress = 2131165209;
 			
-			// aapt resource value: 0x7f070025
-			public const int NotSpecified = 2131165221;
+			// aapt resource value: 0x7f070026
+			public const int NotSpecified = 2131165222;
 			
 			// aapt resource value: 0x7f070012
 			public const int Ok = 2131165202;
@@ -517,8 +517,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f070006
 			public const int OrderNote = 2131165190;
 			
-			// aapt resource value: 0x7f070026
-			public const int PassengerName = 2131165222;
+			// aapt resource value: 0x7f070027
+			public const int PassengerName = 2131165223;
 			
 			// aapt resource value: 0x7f070003
 			public const int PasswordLabel = 2131165187;
@@ -529,8 +529,11 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f070023
 			public const int ServiceErrorCallTitle = 2131165219;
 			
+			// aapt resource value: 0x7f070025
+			public const int ServiceErrorDefaultMessage = 2131165221;
+			
 			// aapt resource value: 0x7f070024
-			public const int ServiceErrorDefaultMessage = 2131165220;
+			public const int ServiceErrorUnauthorized = 2131165220;
 			
 			// aapt resource value: 0x7f07001a
 			public const int ServiceError_ErrorCreatingOrderMessage = 2131165210;
