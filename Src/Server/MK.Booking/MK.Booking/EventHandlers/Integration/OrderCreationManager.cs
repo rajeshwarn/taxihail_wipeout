@@ -189,6 +189,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             var accountDetail = _accountDao.FindById(accountId);
 
+            chargeTypeEmail = chargeTypeEmail ?? GetChargeTypeEmail(bookingSettings.ChargeTypeId, clientLanguage);
+
             var emailCommand = new SendBookingConfirmationEmail
             {
                 IBSOrderId = ibsOrderId,
@@ -251,6 +253,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 _logger.LogMessage(string.Format("Unable to delete temporary data for order {0}", orderId));
                 _logger.LogError(ex);
             }
+        }
+
+        private string GetChargeTypeEmail(int? chargeTypeId, string clientLanguageCode)
+        {
+            var chargeTypeKey = ChargeTypes.GetList()
+                    .Where(x => x.Id == chargeTypeId)
+                    .Select(x => x.Display)
+                    .FirstOrDefault();
+
+            return _resources.Get(chargeTypeKey, clientLanguageCode);
         }
     }
 }
