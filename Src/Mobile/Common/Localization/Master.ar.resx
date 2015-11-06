@@ -2314,4 +2314,5 @@
   <data name="ServiceErrorCallTitle" xml:space="preserve">
 		<value>Server error</value>
 	</data>
+  <data name="Callbox.ApplicationName">TaxiHail Callbox</data>
 </root>
