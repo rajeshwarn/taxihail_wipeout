@@ -399,11 +399,11 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
-                promptsLength, defaultVehiculeTypeId, tipIncentive, fare, orderId);
+                promptsLength, defaultVehiculeTypeId, tipIncentive, orderId, fare);
 
             var orderKey = new TBookOrderKey();
 
-            var vehicleComps = Mapper.Map<TVehicleComp[]>(vehicleCandidates);
+            var vehicleComps = Mapper.Map<TVehicleComp[]>(vehicleCandidates) ?? new TVehicleComp[0];
 
             Logger.LogMessage("WebService Creating IBS Order pickup : " + JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
             Logger.LogMessage("WebService Creating IBS Order dest : " + JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
@@ -419,6 +419,11 @@ namespace apcurium.MK.Booking.IBS.Impl
                 {
                     Logger.LogMessage("WebService Creating IBS Order : " + JsonSerializer.SerializeToString(order, typeof(TBookOrder_11)));
                     orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, vehicleComps);
+                    if (orderKey.OrderID < 0)
+                    {
+                        throw new Exception("Received a negative ibs order id");
+                    }
+
                     Logger.LogMessage("WebService Create Order, orderKey.OrderID received : " + orderKey.OrderID + ", orderkey.GUID received : " + orderKey.GUID);
                 }
                 catch (Exception ex)
@@ -510,23 +515,19 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        private TBookOrder_11 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare), Guid? taxiHailOrderId = null)
+        private TBookOrder_11 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Guid taxiHailOrderId, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
             var order = new TBookOrder_11
             {
+                GUID = taxiHailOrderId.ToString(),
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,
                 Customer = passengerName,
                 Phone = CleanPhone(phone),
                 AccountNum = accountNumber
             };
-
-            if (taxiHailOrderId.HasValue)
-            {
-                order.GUID = taxiHailOrderId.ToString();
-            }
 
             if (!_serverSettings.ServerData.HideFareEstimateFromIBS)
             {
