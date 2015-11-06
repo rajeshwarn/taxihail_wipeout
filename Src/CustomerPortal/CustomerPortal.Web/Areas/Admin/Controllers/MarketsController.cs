@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Entities.Network;
+using CustomerPortal.Web.Extensions;
 using MongoDB.Bson;
 using MongoDB.Driver.Builders;
 using MongoRepository;
@@ -33,12 +34,17 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return View(allMarkets.Select(market => new MarketModel { Market = market.Name }));
         }
 
-        public ActionResult VehicleIndex(MarketModel marketModel)
+        public ActionResult MarketIndex(MarketModel marketModel)
         {
             // Find all vehicle type for this market
-            var market = GetMarket(marketModel.Market);
+            var market = Repository.GetMarket(marketModel.Market);
             
-            return View(new MarketModel { Market = marketModel.Market, Vehicles = market.Vehicles });
+            return View(new MarketModel
+            {
+                Market = marketModel.Market,
+                DispatcherSettings = market.DispatcherSettings,
+                Vehicles = market.Vehicles
+            });
         }
 
         public ActionResult CreateMarket()
@@ -49,7 +55,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult CreateMarket(MarketModel marketModel)
         {
-            var existing = GetMarket(marketModel.Market);
+            var existing = Repository.GetMarket(marketModel.Market);
 
             if (existing != null)
             {
@@ -64,7 +70,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 Name = marketModel.Market
             });
 
-            return RedirectToAction("VehicleIndex", marketModel);
+            return RedirectToAction("MarketIndex", marketModel);
         }
 
         public ActionResult DeleteMarket(MarketModel marketModel)
@@ -99,9 +105,34 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult CreateVehicle(MarketModel marketModel)
+        public ActionResult EditDispatcherSettings(string market)
         {
-            return View(new VehicleModel { Market = marketModel.Market });
+            var marketRepresentation = Repository.GetMarket(market);
+            return View(new MarketModel { Market = marketRepresentation.Name, DispatcherSettings = marketRepresentation.DispatcherSettings });
+        }
+
+        [HttpPost]
+        public ActionResult EditDispatcherSettings(MarketModel marketModel)
+        {
+            try
+            {
+                var marketRepresentation = Repository.GetMarket(marketModel.Market);
+                marketRepresentation.DispatcherSettings = marketModel.DispatcherSettings;
+                Repository.Update(marketRepresentation);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "An error occured. Unable to edit dispatcher settings.";
+
+                return View(marketModel);
+            }
+
+            return RedirectToAction("MarketIndex", new MarketModel { Market = marketModel.Market });
+        }
+
+        public ActionResult CreateVehicle(string market)
+        {
+            return View(new VehicleModel { Market = market });
         }
         
         [HttpPost]
@@ -109,7 +140,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             try
             {
-                var marketRepresentation = GetMarket(networkVehicle.Market);
+                var marketRepresentation = Repository.GetMarket(networkVehicle.Market);
                 marketRepresentation.Vehicles.Add(new Vehicle
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -127,12 +158,12 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 return View(networkVehicle);
             }
 
-            return RedirectToAction("VehicleIndex", new MarketModel { Market = networkVehicle.Market });
+            return RedirectToAction("MarketIndex", new MarketModel { Market = networkVehicle.Market });
         }
 
         public ActionResult EditVehicle(string market, string id)
         {
-            var marketContainingVehicle = GetMarket(market);
+            var marketContainingVehicle = Repository.GetMarket(market);
             var networkVehicle = marketContainingVehicle.Vehicles.First(x => x.Id == id).SelectOrDefault(x => new VehicleModel
             {
                 Market = marketContainingVehicle.Name,
@@ -151,7 +182,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             try
             {
-                var marketContainingVehicle = GetMarket(networkVehicle.Market);
+                var marketContainingVehicle = Repository.GetMarket(networkVehicle.Market);
                 var existingVehicle = marketContainingVehicle.Vehicles.First(x => x.Id == networkVehicle.Id);
 
                 existingVehicle.Name = networkVehicle.Name;
@@ -168,14 +199,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 return View(networkVehicle);
             }
 
-            return RedirectToAction("VehicleIndex", new MarketModel { Market = networkVehicle.Market });
+            return RedirectToAction("MarketIndex", new MarketModel { Market = networkVehicle.Market });
         }
 
         public ActionResult DeleteVehicle(string market, string id)
         {
             try
             {
-                var marketContainingVehicle = GetMarket(market);
+                var marketContainingVehicle = Repository.GetMarket(market);
                 var vehicleToDelete = marketContainingVehicle.Vehicles.First(x => x.Id == id);
                 marketContainingVehicle.Vehicles.Remove(vehicleToDelete);
                 Repository.Update(marketContainingVehicle);
@@ -185,7 +216,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 ViewBag.Error = "An error occured. Unable to delete the vehicle.";
             }
 
-            return RedirectToAction("VehicleIndex", new MarketModel { Market = market });
+            return RedirectToAction("MarketIndex", new MarketModel { Market = market });
         }
 
         private int GenerateNextSequentialNetworkVehicleId()
@@ -206,12 +237,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
 
             return nextNetworkVehicleId;
-        }
-
-        private Market GetMarket(string market)
-        {
-            var nameQuery = Query<Market>.Matches(x => x.Name, new BsonRegularExpression(market, "i"));
-            return Repository.Collection.FindOne(nameQuery);
         }
     }
 }

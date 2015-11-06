@@ -231,6 +231,7 @@
     <Compile Include="Areas\Customer\Models\RequestResponse\CompanyPreferencesRequest.cs" />
     <Compile Include="Attributes\NoCacheAttribute.cs" />
     <Compile Include="Entities\Network\Market.cs" />
+    <Compile Include="Extensions\MarketCollectionExtensions.cs" />
     <Compile Include="Services\SourceControlFactory.cs" />
     <Compile Include="Services\Impl\BitBucketVersionUpdater.cs" />
     <Compile Include="Services\Impl\GitHubVersionUpdater.cs" />
@@ -519,11 +520,12 @@
     <Content Include="Areas\Admin\Views\Markets\CreateMarket.cshtml" />
     <Content Include="Areas\Admin\Views\Markets\CreateVehicle.cshtml" />
     <Content Include="Areas\Admin\Views\Markets\EditVehicle.cshtml" />
-    <Content Include="Areas\Admin\Views\Markets\VehicleIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\Markets\MarketIndex.cshtml" />
     <Content Include="Areas\Admin\Views\Deployment\DeploymentHistory.cshtml">
       <SubType>Code</SubType>
       <BrowseToURL>~/Admin/Deployment/History</BrowseToURL>
     </Content>
+    <Content Include="Areas\Admin\Views\Markets\EditDispatcherSettings.cshtml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />

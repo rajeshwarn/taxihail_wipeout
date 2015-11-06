@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CustomerPortal.Contract.Resources;
 using MongoRepository;
 
 namespace CustomerPortal.Web.Entities.Network
@@ -9,12 +10,15 @@ namespace CustomerPortal.Web.Entities.Network
         public Market()
         {
             Vehicles = new List<Vehicle>();
+            DispatcherSettings = new DispatcherSettings();
         }
 
         public string Id { get; set; }
 
         [Required]
         public string Name { get; set; }
+
+        public DispatcherSettings DispatcherSettings { get; set; }
 
         public List<Vehicle> Vehicles { get; set; } 
     }

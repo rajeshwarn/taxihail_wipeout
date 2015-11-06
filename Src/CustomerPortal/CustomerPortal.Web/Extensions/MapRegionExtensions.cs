@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Web;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Entities.Network;
-using CustomerPortal.Web.HtmlHelpers;
 
 namespace CustomerPortal.Web.Extensions
 {

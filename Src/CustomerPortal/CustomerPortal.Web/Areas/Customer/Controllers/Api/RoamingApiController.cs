@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Web.Http;
-using apcurium.MK.Common.Extensions;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Extensions;
+using MongoDB.Bson;
+using MongoDB.Driver.Builders;
 using MongoRepository;
 using Newtonsoft.Json;
 
@@ -20,17 +20,18 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
     {
         private readonly IRepository<TaxiHailNetworkSettings> _networkRepository;
         private readonly IRepository<Company> _companyRepository;
-
-
+        private readonly IRepository<Market> _marketRepository;
+         
         public RoamingApiController() 
-            : this(new MongoRepository<TaxiHailNetworkSettings>(), new MongoRepository<Company>())
+            : this(new MongoRepository<TaxiHailNetworkSettings>(), new MongoRepository<Company>(), new MongoRepository<Market>())
         {
         }
 
-        public RoamingApiController(IRepository<TaxiHailNetworkSettings> networkRepository, IRepository<Company> companyRepository)
+        public RoamingApiController(IRepository<TaxiHailNetworkSettings> networkRepository, IRepository<Company> companyRepository, IRepository<Market> marketRepository)
         {
             _networkRepository = networkRepository;
             _companyRepository = companyRepository;
+            _marketRepository = marketRepository;
         }
 
         [Route("api/customer/{companyId}/roaming/networkfleets")]
@@ -98,7 +99,35 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         [Route("api/customer/roaming/market")]
         public HttpResponseMessage GetCompanyMarket(string companyId, double latitude, double longitude)
         {
-            string companyMarket = null;
+            var response = GetCompanyMarketSettingsInternal(companyId, latitude, longitude);
+
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(response.Market)) 
+            };
+        }
+
+        /// <summary>
+        /// Like GetCompanyMarket but returns dispatcher settings
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <returns></returns>
+        [Route("api/customer/roaming/marketsettings")]
+        public HttpResponseMessage GetCompanyMarketSettings(string companyId, double latitude, double longitude)
+        {
+            var response = GetCompanyMarketSettingsInternal(companyId, latitude, longitude);
+
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(response))
+            };
+        }
+
+        private CompanyMarketSettingsResponse GetCompanyMarketSettingsInternal(string companyId, double latitude, double longitude)
+        {
+            var response = new CompanyMarketSettingsResponse();
 
             var userPosition = new MapCoordinate
             {
@@ -114,21 +143,20 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var localCompany = companiesInNetwork.FirstOrDefault(x => x.Region.Contains(userPosition));
             if (localCompany != null)
             {
+                response.DispatcherSettings = GetMarketSettings(localCompany.Market);
+
                 // Check if we have changed market
                 var homeCompany = _networkRepository.FirstOrDefault(n => n.Id == companyId);
                 if (homeCompany != null)
                 {
                     if (localCompany.Market != homeCompany.Market)
                     {
-                        companyMarket = localCompany.Market;
+                        response.Market = localCompany.Market;
                     }
                 }
             }
 
-            return new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(companyMarket)) 
-            };
+            return response;
         }
 
         /// <summary>
@@ -257,6 +285,17 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             }
 
             return allowed;
+        }
+
+        private DispatcherSettings GetMarketSettings(string marketName)
+        {
+            if (marketName == null)
+            {
+                return new DispatcherSettings();
+            }
+
+            var market = _marketRepository.GetMarket(marketName);
+            return market != null ? market.DispatcherSettings : new DispatcherSettings();
         }
     }
 }
