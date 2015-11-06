@@ -9,21 +9,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class LoadingStatusBarView : UIView
     {
+        private LoadingAnimation _loader;
 
         public LoadingStatusBarView (CGRect frame)
         {
-            var loader = new LoadingAnimation(frame);
+            _loader = new LoadingAnimation(frame);
 
             Frame = frame;
-            Add(loader);
+            Add(_loader);
             ClipsToBounds = true;
 
-            loader.Animate();
+            _loader.RunAnimation = true;
+            _loader.Animate();
         }
 
         private class LoadingAnimation : UIImageView
         {
             CGRect _startingRect { get; set; }
+
+            public bool RunAnimation { get; set; }
 
             public void ResetFrame ()
             {
@@ -46,12 +50,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ResetFrame();
                 UIView.Animate(4, 
                     animation: () => { Frame = Frame.IncrementX(Frame.Width); }, 
-                    completion: () => UIView.Animate(4, () => 
-                        { 
-                            Frame = Frame.IncrementX(Frame.Width);
-                        }, 
-                        completion : ()=> Animate()));
+                    completion: () => 
+                    {
+                        UIView.Animate(4, 
+                            animation: () => Frame = Frame.IncrementX(Frame.Width), 
+                            completion : ()=>
+                            {
+                                if(!RunAnimation)
+                                {
+                                    return;
+                                }
+
+                                Animate();
+                            });
+                    });
             }
+        }
+
+        public override void RemoveFromSuperview()
+        {
+            base.RemoveFromSuperview();
+
+            _loader.RunAnimation = false;
+
+            _loader.RemoveFromSuperview();
+
+            _loader = null;
         }
     }
 }

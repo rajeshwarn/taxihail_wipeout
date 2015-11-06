@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 
@@ -132,7 +133,7 @@ namespace apcurium.MK.Web.Tests
 
             var settings = new BookingSettingsRequest
             {
-                ChargeTypeId = 3,
+                ChargeTypeId = ChargeTypes.CardOnFile.Id,
                 Name = "toto",
                 NumberOfTaxi = 6,
                 Passengers = 8,
@@ -166,7 +167,7 @@ namespace apcurium.MK.Web.Tests
         {
             var settings = new BookingSettingsRequest
             {
-                ChargeTypeId = 3,
+                ChargeTypeId = ChargeTypes.CardOnFile.Id,
                 Name = "toto",
                 NumberOfTaxi = 6,
                 Passengers = 8,

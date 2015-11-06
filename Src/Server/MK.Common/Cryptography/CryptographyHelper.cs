@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Common.Cryptography
 {
@@ -19,7 +20,7 @@ namespace apcurium.MK.Common.Cryptography
 
         public static string GetHashString(string inputString)
         {
-            if (inputString == null)
+            if (!inputString.HasValue())
             {
                 return null;
             }

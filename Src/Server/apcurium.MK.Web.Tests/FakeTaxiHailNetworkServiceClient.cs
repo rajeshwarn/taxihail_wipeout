@@ -55,6 +55,11 @@ namespace apcurium.MK.Web.Tests
             return string.Empty;
         }
 
+        public CompanyMarketSettingsResponse GetCompanyMarketSettings(double latitude, double longitude)
+        {
+            return new CompanyMarketSettingsResponse();
+        }
+
         public IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market)
         {
             throw new NotImplementedException();

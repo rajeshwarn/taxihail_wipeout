@@ -146,6 +146,22 @@
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Reactive.Core, Version=2.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Rx-Core.2.2.4\lib\net45\System.Reactive.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Rx-Interfaces.2.2.4\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=2.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Rx-Linq.2.2.4\lib\net45\System.Reactive.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=2.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Rx-PlatformServices.2.2.4\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -168,6 +184,9 @@
     <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
+    <Compile Include="Data\BestAvailableCompany.cs" />
+    <Compile Include="Data\IBSOrderResult.cs" />
+    <Compile Include="Data\TemporaryOrderCreationInfo.cs" />
     <Compile Include="Domain\Account.cs" />
     <Compile Include="Domain\Company.cs" />
     <Compile Include="Domain\CreditCardPayment.cs" />
@@ -185,7 +204,8 @@
     <Compile Include="EventHandlers\CompanyDetailsGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\FeesDetailsGenerator.cs" />
-    <Compile Include="EventHandlers\Integration\IIBSOrderService.cs" />
+    <Compile Include="EventHandlers\Integration\CacheServiceManager.cs" />
+    <Compile Include="EventHandlers\Integration\OrderCreationManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderPairingManager.cs" />
     <Compile Include="EventHandlers\Integration\OrderDispatchCompanyManager.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
@@ -208,6 +228,10 @@
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
     <Compile Include="EventHandlers\UserTaxiHailNetworkSettingsGenerator.cs" />
     <Compile Include="EventHandlers\VehicleTypeDetailGenerator.cs" />
+    <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
+    <Compile Include="Jobs\OrderStatusUpdater.cs" />
+    <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
+    <Compile Include="Jobs\UpdateOrderStatusJobStub.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotifications\Impl\PushNotificationService.cs" />
@@ -309,10 +333,10 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="Resources\ArroDemo.Designer.cs">
+    <Compile Include="Resources\CheckerYellowCabPalmetto.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ArroDemo.resx</DependentUpon>
+      <DependentUpon>CheckerYellowCabPalmetto.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Global.ar.Designer.cs">
       <DependentUpon>Global.ar.resx</DependentUpon>
@@ -360,10 +384,14 @@
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
     <Compile Include="Services\IFeeService.cs" />
+    <Compile Include="Services\IIbsCreateOrderService.cs" />
+    <Compile Include="Services\IIbsOrderService.cs" />
     <Compile Include="Services\Impl\BasePayPalService.cs" />
     <Compile Include="Services\Impl\BraintreePaymentService.cs" />
     <Compile Include="Services\Impl\CmtPaymentService.cs" />
     <Compile Include="Services\Impl\FeeService.cs" />
+    <Compile Include="Services\Impl\IbsCreateOrderService.cs" />
+    <Compile Include="Services\Impl\IBSOrderService.cs" />
     <Compile Include="Services\Impl\MonerisPaymentService.cs" />
     <Compile Include="Services\Impl\PairingService.cs" />
     <Compile Include="Services\Impl\PayPalService.cs" />
@@ -477,6 +505,11 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Arro.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\CheckerYellowCabPalmetto.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CheckerYellowCabPalmetto.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\ArroDemo.resx">
       <SubType>Designer</SubType>

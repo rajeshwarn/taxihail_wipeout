@@ -28,7 +28,7 @@
                     android:layout_weight="1"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:background="@color/setting_menu_color">
+                    android:background="@color/transparent">
                     <fragment
                         android:name="apcurium.mk.booking.mobile.client.controls.TouchableMap"
                         android:id="@+id/mapPickup"
@@ -61,6 +61,10 @@
                         android:visibility="gone"
                         android:src="@drawable/destination_icon" />
                 <!-- Order Options -->
+                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.DropOffSelection
+                        android:layout_width="fill_parent"
+                        android:id="@+id/dropOffSelection"
+                        android:layout_height="wrap_content" />
                     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptions
                         android:layout_width="fill_parent"
                         android:id="@+id/orderOptions"
@@ -172,12 +176,17 @@
                     android:layout_width="fill_parent"
                     android:id="@+id/appBar"
                     android:layout_height="wrap_content"
-                    android:background="@color/setting_menu_color" />
+                    android:background="@color/transparent" />
                 <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarBookingStatus
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/appBarBookingStatus"
-                    android:background="@color/setting_menu_color" />
+                    android:background="@color/transparent" />
+                <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarDropOffSelection
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/appBarDropOffSelection"
+                    android:background="@color/transparent" />
             </LinearLayout>
         <!-- Address Search -->
             <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressPicker

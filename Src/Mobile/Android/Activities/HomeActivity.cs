@@ -30,6 +30,7 @@ using Cirrious.CrossCore;
 using Cirrious.CrossCore.Core;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -49,9 +50,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		private OrderReview _orderReview;
         private OrderEdit _orderEdit;
         private OrderOptions _orderOptions;
+        private DropOffSelection _dropOffSelection;
         private OrderAirport _orderAirport;
         private AddressPicker _searchAddress;
 	    private AppBarBookingStatus _appBarBookingStatus;
+        private AppBarDropOffSelection _appBarDropOffSelection;
 		private OrderStatusView _orderStatus;
 		private LinearLayout _btnLocation; 
 		private LinearLayout _btnSettings;
@@ -223,6 +226,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _bigButton = (Button) FindViewById(Resource.Id.BigButtonTransparent);
             
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
+            _dropOffSelection = (DropOffSelection) FindViewById(Resource.Id.dropOffSelection);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
             _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
             _orderAirport = (OrderAirport) FindViewById(Resource.Id.orderAirport);
@@ -232,10 +236,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			_btnSettings = FindViewById<LinearLayout>(Resource.Id.btnSettings);
 			_btnLocation = FindViewById<LinearLayout>(Resource.Id.btnLocation);
 	        _appBarBookingStatus = FindViewById<AppBarBookingStatus>(Resource.Id.appBarBookingStatus);
+            _appBarDropOffSelection = FindViewById<AppBarDropOffSelection>(Resource.Id.appBarDropOffSelection);
 	        _orderStatus = FindViewById<OrderStatusView>(Resource.Id.orderStatus);
 
             // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside
             _orderOptions.BigInvisibleButton = _bigButton;
+            _dropOffSelection.BigInvisibleButton = _bigButton;
 
             ((ViewGroup.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 			((ViewGroup.MarginLayoutParams)_orderReview.LayoutParameters).TopMargin = screenSize.Y;
@@ -307,12 +313,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			// The current state is the initial state, we don't need to do anything
 			if (ViewModel.CurrentViewState == HomeViewModelState.Initial)
 			{
+                _dropOffSelection.HideWithoutAnimation();
 				return;
 			}
 
 			if (ViewModel.CurrentViewState == HomeViewModelState.Review || ViewModel.CurrentViewState == HomeViewModelState.AirportDetails)
 			{
 				_orderOptions.SizeChanged += OrderOptionsSizeChanged;
+                _dropOffSelection.HideWithoutAnimation();
 
 				return;
 			}
@@ -320,6 +328,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			if (ViewModel.CurrentViewState == HomeViewModelState.Edit)
 			{
 				_orderOptions.HideWithoutAnimation();
+                _dropOffSelection.HideWithoutAnimation();
 				_orderEdit.ShowWithoutAnimations();
 
 				return;
@@ -330,6 +339,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			{
 				_orderStatus.ShowWithoutAnimation();
 				_orderOptions.HideWithoutAnimation();
+                _dropOffSelection.HideWithoutAnimation();
 
 				_appBar.Visibility = ViewStates.Gone;
 			}
@@ -347,8 +357,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		    set.Bind(_orderReview).For("DataContext").To(vm => vm.OrderReview); // OrderReview View Bindings
 		    set.Bind(_searchAddress).For("DataContext").To(vm => vm.AddressPicker); // OrderReview View Bindings
 		    set.Bind(_appBar).For("DataContext").To(vm => vm.BottomBar); // AppBar View Bindings
-		    set.Bind(_appBarBookingStatus).For("DataContext").To(vm => vm.BookingStatus.BottomBar);
-		    set.Bind(_orderStatus).For("DataContext").To(vm => vm.BookingStatus);
+            set.Bind(_appBarBookingStatus).For("DataContext").To(vm => vm.BookingStatus.BottomBar);
+            set.Bind(_appBarDropOffSelection).For("DataContext").To(vm => vm.DropOffSelection.BottomBar);
+            set.Bind(_orderStatus).For("DataContext").To(vm => vm.BookingStatus);
+            set.Bind(_dropOffSelection).For("DataContext").To(vm => vm.DropOffSelection);
 
 			// Setup bookingStatusMode
 		    set.Bind(MapFragment)
@@ -396,7 +408,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 					HomeViewModelState.PickDate, 
 					HomeViewModelState.TrainStationSearch, 
 					HomeViewModelState.AirportDetails,
-				});
+                    });
+
+            set.Bind(_orderOptions)
+                .For(v => v.AnimatedVisibility)
+                .To(vm => vm.CurrentViewState)
+                .WithConversion("HomeViewStateToVisibility", new[]
+                    {
+                        HomeViewModelState.Initial,
+                        HomeViewModelState.AddressSearch,
+                        HomeViewModelState.AirportSearch,
+                        HomeViewModelState.BookATaxi, 
+                        HomeViewModelState.Review, 
+                        HomeViewModelState.PickDate, 
+                        HomeViewModelState.TrainStationSearch, 
+                        HomeViewModelState.AirportDetails,
+                    });
+
+            set.Bind(_dropOffSelection)
+                .For(v => v.AnimatedVisibility)
+                .To(vm => vm.CurrentViewState)
+                .WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.DropOffAddressSelection });
 
 			set.Bind(_orderStatus)
 				.For(v => v.AnimatedVisibility)
@@ -406,17 +438,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			set.Bind(_searchAddress)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[]{HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch });
+				.WithConversion("HomeViewStateToVisibility", new[]{ HomeViewModelState.AddressSearch, HomeViewModelState.AirportSearch, HomeViewModelState.TrainStationSearch });
 			
 			set.Bind(_appBar)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
-				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.Initial, HomeViewModelState.Review, HomeViewModelState.Edit, HomeViewModelState.BookATaxi, HomeViewModelState.AirportDetails });
+                .WithConversion("HomeViewStateToVisibility", new[] { 
+                    HomeViewModelState.Initial, 
+                    HomeViewModelState.Review, 
+                    HomeViewModelState.Edit, 
+                    HomeViewModelState.BookATaxi, 
+                    HomeViewModelState.AirportDetails, 
+                    HomeViewModelState.PickDate,
+                    HomeViewModelState.AirportPickDate
+                });
 
 			set.Bind(_appBarBookingStatus)
 				.For(v => v.Visibility)
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq });
+            
+            set.Bind(_appBarDropOffSelection)
+                .For(v => v.Visibility)
+                .To(vm => vm.CurrentViewState)
+                .WithConversion("HomeViewStateToVisibility", new[] { HomeViewModelState.DropOffAddressSelection });
 
 			var settingsAndLocationVisibleStates = new[]
 		    {
@@ -444,7 +489,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		    set.Bind(_touchMap)
 			    .For(v => v.IsMapGestuesEnabled)
 			    .To(vm => vm.CurrentViewState)
-				.WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq });
+                .WithConversion("EnumToBool", new[] { HomeViewModelState.Initial, HomeViewModelState.BookingStatus, HomeViewModelState.ManualRidelinq, HomeViewModelState.DropOffAddressSelection });
 
 			set.Bind(_btnLocation)
 				.For(v => v.Enabled)
@@ -455,9 +500,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				.For(v => v.Enabled)
 				.To(vm => vm.CurrentViewState)
 				.WithConversion("EnumToBool", HomeViewModelState.Initial.ToString());
+
+            MapFragment.OverlayOffsetProvider = GetOverlayOffset;
 			
 		    set.Apply();
 	    }
+
+        private int GetOverlayOffset()
+        {
+            return _orderStatus.Height;
+        }
 
 	    protected override void OnRestart ()
         {
@@ -547,11 +599,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void SetSelectedOnBookLater(bool selected)
         {
-            var btnBookLater = (ImageView) FindViewById(Resource.Id.btnBookLater);
-            var txtBookLater = (TextView) FindViewById(Resource.Id.txtBookLater);
             var btnBookLaterLayout = (LinearLayout) FindViewById(Resource.Id.btnBookLaterLayout);
-            btnBookLater.Selected = selected;
-            txtBookLater.Selected = selected;
             btnBookLaterLayout.Selected = selected;
         }
 
@@ -632,6 +680,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			if (keyCode == Keycode.Back && ViewModel.CanUseCloseCommand())
             {
+                if (AlertDialogHelper.LatestAlert != null)
+                {
+                    AlertDialogHelper.LatestAlert.HideAnimate();
+                }
 	            ViewModel.CloseCommand.ExecuteIfPossible();
 
 	            return false;

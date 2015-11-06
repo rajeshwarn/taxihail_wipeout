@@ -50,18 +50,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
-		private readonly ILocationService _locationService;
-        private readonly IPaymentService _paymentService;
 
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
-			ILocalization localize,
-			ILocationService locationService,
-            IPaymentService paymentService)
+			ILocalization localize)
 		{
-			_locationService = locationService;
-            _paymentService = paymentService;
             _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
@@ -163,6 +157,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public Task<Order> GetHistoryOrderAsync (Guid id)
 		{
 			return UseServiceClientAsync<OrderServiceClient, Order> (service => service.GetOrder (id));
+		}
+
+        public Task<int> GetOrderCountForAppRating()
+		{
+            return Mvx.Resolve<OrderServiceClient>().GetOrderCountForAppRating();
 		}
 
         public OrderStatusDetail[] GetActiveOrdersStatus()
@@ -375,9 +374,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        private static void SaveCredentials (AuthenticationData authResponse)
+        private void SaveCredentials (AuthenticationData authResponse)
         {         
-			Mvx.Resolve<ICacheService>().Set (AuthenticationDataCacheKey, authResponse);
+			UserCache.Set(AuthenticationDataCacheKey, authResponse);
         }
 
 		public async Task<Account> GetFacebookAccount (string facebookId)
@@ -769,6 +768,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     DriverAssignedPush = companySettings.DriverAssignedPush.HasValue && userSettings.DriverAssignedPush.HasValue
                         ? userSettings.DriverAssignedPush 
                         : companySettings.DriverAssignedPush,
+					DriverBailedPush = companySettings.DriverBailedPush.HasValue && userSettings.DriverBailedPush.HasValue
+						? userSettings.DriverBailedPush 
+						: companySettings.DriverBailedPush,
                     NearbyTaxiPush = companySettings.NearbyTaxiPush.HasValue && userSettings.NearbyTaxiPush.HasValue
                         ? userSettings.NearbyTaxiPush 
                         : companySettings.NearbyTaxiPush,

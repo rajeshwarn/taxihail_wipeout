@@ -16,7 +16,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
 {
     public class CustomAlertDialog
     {
-        
         private ViewGroup _rootView;
         private RelativeLayout _dialogRootView;
         private FrameLayout _dialogOpacityView;
@@ -50,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                     {
                         onClose();
                     }
-                    hideAnimate();
+                    HideAnimate();
                 };
 
             showAnimate();
@@ -70,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                     {
                         negativeAction();
                     }
-                    hideAnimate();
+                    HideAnimate();
                 };
             _twoButtonsPositive.Text = positiveButtonTitle;
             _twoButtonsPositive.Click += (sender, e) => 
@@ -79,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                     {
                         positiveAction();
                     }
-                    hideAnimate();
+                    HideAnimate();
                 };
 
             showAnimate();
@@ -100,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                     {
                         negativeAction();
                     }
-                    hideAnimate();
+                    HideAnimate();
                 };
             _threeButtonsPositive.Text = positiveButtonTitle;
             _threeButtonsPositive.Click += (sender, e) => 
@@ -109,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                     {
                         positiveAction();
                     }
-                    hideAnimate();
+                    HideAnimate();
                 };
             _threeButtonsNeutral.Text = neutralButtonTitle;
             _threeButtonsNeutral.Click += (sender, e) => 
@@ -118,7 +117,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                     {
                         neutralAction();
                     }
-                    hideAnimate();
+                    HideAnimate();
                 };
 
             showAnimate();
@@ -200,7 +199,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                         cancelAction();
                     }
                     ToogleKeyboard(true, owner);
-                    hideAnimate();
+                    HideAnimate();
 
                 };
             _twoButtonsPositive.Text = Mvx.Resolve<ILocalization>()["OkButtonText"];
@@ -208,7 +207,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                 {  
                     tcs.TrySetResult(_inputText.Text);
                     ToogleKeyboard(true, owner);
-                    hideAnimate();
+                    HideAnimate();
                 };
 
             showAnimate(); 
@@ -245,7 +244,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
             opacityAnimator.Start(); 
         }
 
-        private void hideAnimate()
+        public void HideAnimate()
         {
             var objectAnimator = ObjectAnimator.OfFloat(_dialogView, "alpha", 1, 0);
             objectAnimator.SetDuration(300);
@@ -258,6 +257,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                     _rootView.RemoveView(_dialogRootView);
                 };
             opacityAnimator.Start();
+
+            AlertDialogHelper.LatestAlert = null;
         }
     }
 }

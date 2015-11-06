@@ -27,6 +27,8 @@ using ServiceStack.WebHost.Endpoints;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 using apcurium.MK.Common.Configuration;
+using ServiceStack.Common;
+using ServiceStack.ServiceHost;
 
 #endregion
 
@@ -94,12 +96,10 @@ namespace apcurium.MK.Web
             RequestFilters.Add((httpReq, httpResp, requestDto) =>
             {
                 var authSession = httpReq.GetSession();
-                if (authSession != null && authSession.UserAuthId != null)
+                if (authSession != null && !string.IsNullOrEmpty(authSession.UserAuthId))
                 {
-                    var account =
-                        UnityContainerExtensions.Resolve<IAccountDao>(container)
-                            .FindById(new Guid(authSession.UserAuthId));
-                    if (account.DisabledByAdmin)
+                    var account = container.Resolve<IAccountDao>().FindById(new Guid(authSession.UserAuthId));
+                    if (account == null || account.DisabledByAdmin)
                     {
                         httpReq.RemoveSession();
                     }
@@ -113,6 +113,8 @@ namespace apcurium.MK.Web
                     {"Access-Control-Allow-Origin", "*"},
                     {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
                 },
+
+				EnableFeatures = Feature.All.Remove(Feature.Metadata)
             });
 
 

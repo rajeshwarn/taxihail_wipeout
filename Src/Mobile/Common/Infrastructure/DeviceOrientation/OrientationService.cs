@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 		private readonly IDeviceOrientationService _deviceOrientationService;
 		private DeviceOrientations _currentOrientation = DeviceOrientations.Up;
 
-		bool _previousTrustZRotation = false;
+		bool _previousTrustZRotation = true;
 		bool _currentTrustZRotation = false;
 
 		private readonly int[] _axes = { 45, 135, 225, 315 };
@@ -47,8 +47,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation
 		{
 			if (_initialized && !_started && IsAvailable())
 			{
+				_previousTrustZRotation = true;
 				_started = true;
-				((CommonDeviceOrientationService)_deviceOrientationService).NotifyAngleChanged += AngleChanged;
+				_deviceOrientationService.NotifyAngleChanged += AngleChanged;
 				_started = _deviceOrientationService.Start();
 
 				return _started;

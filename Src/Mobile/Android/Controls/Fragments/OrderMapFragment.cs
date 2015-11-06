@@ -368,7 +368,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             TouchableMap.Surface.MoveBy = (deltaX, deltaY) =>
             {
-                ViewModel.BookCannotExecute = true;
                 TouchableMap.Map.MoveCamera(CameraUpdateFactory.ScrollBy(deltaX, deltaY));
             };
 
@@ -386,6 +385,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             Observable
                 .FromEventPattern<GoogleMap.CameraChangeEventArgs>(Map, "CameraChange")
+				.Do(_ =>
+				{
+					if (!_bypassCameraChangeEvent)
+					{
+						ViewModel.DisableBooking();
+					}
+				})
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(OnCameraChanged)
@@ -753,6 +759,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(lat, lng)));
 		}
 
+        public Func<int> OverlayOffsetProvider { get; set; }
+
 		private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
 		{
 			var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.SelectOrDefault(addresses => addresses.ToArray(), new CoordinateViewModel[0]);
@@ -801,37 +809,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				MoveCameraTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 16);
 				return;
 			}
-			
-			// Changes the map zoom to prevent hiding the pin under the booking status.
-			if (Math.Abs(maxLat - minLat) > .001)
-			{
-				maxLat += .0025;
 
-				var bookingStatusViewModel = ((HomeViewModel) ViewModel.Parent).BookingStatus;
+            var overlayOffset = OverlayOffsetProvider != null
+                ? OverlayOffsetProvider() + _pickupOverlay.Height
+                : 0;
 
-				if (_settings.ShowCallDriver)
-				{
-					maxLat += 0.0045;
-				}
+            Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(new LatLngBounds(new LatLng(minLat, minLon), new LatLng(maxLat, maxLon)), TouchableMap.View.Width, TouchableMap.View.Height - overlayOffset, DrawHelper.ToPixels(50)));
 
-				if (_settings.ShowVehicleInformation)
-				{	
-					if (!bookingStatusViewModel.VehicleDriverHidden)
-					{
-						maxLat += 0.0007;
-					}
-					if (!bookingStatusViewModel.VehicleFullInfoHidden)
-					{
-						maxLat += 0.0007;
-					}
-					if (!bookingStatusViewModel.CompanyHidden)
-					{
-						maxLat += 0.0007;
-					}
-				}	
-			}
+            overlayOffset = (TouchableMap.View.Height / 2) - (((TouchableMap.View.Height - overlayOffset)/2) + overlayOffset);
 
-			Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(new LatLngBounds(new LatLng(minLat, minLon), new LatLng(maxLat, maxLon)), DrawHelper.GetPixels(100)));
+            animateLatLngZoom(Map.CameraPosition.Target, 0, overlayOffset);
 		}
+
+        private void animateLatLngZoom(LatLng latlng, int offsetX, int offsetY) 
+        {
+            Point pointInScreen = Map.Projection.ToScreenLocation(latlng);
+
+            Point newPoint = new Point();
+            newPoint.X = pointInScreen.X + offsetX;
+            newPoint.Y = pointInScreen.Y + offsetY;
+
+            LatLng newCenterLatLng = Map.Projection.FromScreenLocation(newPoint);
+
+            // Animate a camera with new latlng center and required zoom.
+            Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(newCenterLatLng, Map.CameraPosition.Zoom));
+        }
     }
 }

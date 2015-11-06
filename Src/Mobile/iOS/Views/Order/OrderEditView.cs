@@ -29,8 +29,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
         private void Initialize()
         {
-            BackgroundColor = UIColor.Clear;
-
             foreach (FlatTextField textField in ContentView.Subviews.Where(x => x is FlatTextField))
             {
                 textField.BackgroundColor = UIColor.FromRGB(242, 242, 242);

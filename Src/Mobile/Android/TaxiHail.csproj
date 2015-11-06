@@ -257,11 +257,13 @@
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
+    <Compile Include="Binding\MvxButtonClickBinding.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\Behavior\PairingCodeBehavior.cs" />
     <Compile Include="Controls\Dialog\PhoneEditorElement.cs" />
     <Compile Include="Controls\Widgets\AppBarBookingStatus.cs" />
+    <Compile Include="Controls\Widgets\AppBarButton.cs" />
     <Compile Include="Controls\Widgets\AutoResizeTextView.cs" />
     <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
     <Compile Include="Controls\Widgets\EditBoxWithAccessibility.cs" />
@@ -280,6 +282,7 @@
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
     <Compile Include="PlatformIntegration\AndroidDeviceOrientationService.cs" />
+    <Compile Include="PlatformIntegration\AndroidDeviceRateApplicationService.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
@@ -721,6 +724,13 @@
     <AndroidResource Include="Resources\values-ar\String.xml" />
     <AndroidResource Include="Resources\values-es\String.xml" />
     <AndroidResource Include="Resources\values-fr\String.xml" />
+    <AndroidResource Include="Resources\Layout\SubView_ChangeDropOffOverlay.axml" />
+    <Compile Include="Controls\Widgets\OrderStatusChangeDropOffOverlay.cs" />
+    <AndroidResource Include="Resources\Drawable\destination_small_icon_white.png" />
+    <AndroidResource Include="Resources\Layout\SubView_DropOffSelection.axml" />
+    <Compile Include="Controls\Widgets\DropOffSelection.cs" />
+    <Compile Include="Controls\Widgets\AppBarDropOffSelection.cs" />
+    <AndroidResource Include="Resources\Layout\SubView_AppBar_DropOffSelection.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -871,6 +881,7 @@
     <AndroidResource Include="Resources\Drawable\default_vehicle_medaillon_icon.xml" />
     <AndroidResource Include="Resources\Drawable\green_vehicle_medaillon_icon.xml" />
     <AndroidResource Include="Resources\Drawable\yellow_vehicle_medaillon_icon.xml" />
+    <AndroidResource Include="Resources\Layout\Control_AppBarButton.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

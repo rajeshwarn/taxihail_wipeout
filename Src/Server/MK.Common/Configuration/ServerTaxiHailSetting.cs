@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration;
@@ -43,12 +44,6 @@ namespace MK.Common.Configuration
             {
                 NbPassenger = 1,
                 ChargeTypeId = ChargeTypes.PaymentInCar.Id
-            };
-
-            Store = new StoreSettingContainer
-            {
-                AppleLink = "http://www.mobile-knowledge.com/",
-                PlayLink = "http://www.mobile-knowledge.com/"
             };
 
             IBS = new IBSSettingContainer
@@ -118,8 +113,7 @@ namespace MK.Common.Configuration
         public SmtpSettingContainer Smtp { get; protected set; }
         public APNSSettingContainer APNS { get; protected set; }
         public DefaultBookingSettingsSettingContainer DefaultBookingSettings { get; protected set; }
-        public StoreSettingContainer Store { get; protected set; }
-        public IBSSettingContainer IBS { get; protected set; }
+		public IBSSettingContainer IBS { get; protected set; }
         public EmailSettingContainer Email { get; protected set; }
         public ReceiptSettingContainer Receipt { get; protected set; }
         public CustomerPortalSettingContainer CustomerPortal { get; protected set; }
@@ -191,7 +185,8 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
         public bool ValidateAdminRulesForExternalMarket { get; protected set; }
 
-        [CustomizableByCompany]
+        [Obsolete("Use PaymentSetting 'UsePairingCode' instead")]
+        [Hidden]
         [Display(Name = "Configuration - Use Pairing Code When RideLinq Payment", Description = "If enable, will wait for Pairing Code from IBS before processing Cmt Payment")]
         public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; protected set; }        
         

@@ -128,18 +128,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ApplicationPathResolver.cs" />
+    <Compile Include="Helpers\CreateOrder\CreateOrderPaymentHelper.cs" />
+    <Compile Include="Helpers\CreateOrder\IbsNoteBuilder.cs" />
+    <Compile Include="Helpers\CreateOrder\TaxiHailNetworkHelper.cs" />
     <Compile Include="Helpers\OrderStatusHelper.cs" />
     <Compile Include="Helpers\OrderStatusIbsMock.cs" />
-    <Compile Include="Jobs\UpdateOrderStatusJobStub.cs" />
-    <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
-    <Compile Include="Jobs\OrderStatusUpdater.cs" />
-    <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
+    <Compile Include="Services\OrderCreation\BaseCreateOrderService.cs" />
+    <Compile Include="Services\OrderCreation\ChargeAccountValidationResult.cs" />
+    <Compile Include="Services\OrderCreation\HailService.cs" />
+    <Compile Include="Services\OrderCreation\PayPalCheckoutService.cs" />
     <Compile Include="Services\DriverService.cs" />
     <Compile Include="Services\FlightInformationService.cs" />
     <Compile Include="Services\ManualRidelinqOrderService.cs" />
     <Compile Include="Services\Maps\PostalCodeService.cs" />
     <Compile Include="Services\Payment\OverduePaymentService.cs" />
-    <Compile Include="Payment\IBSOrderService.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Providers\PopularAddressProvider.cs" />
@@ -175,7 +177,7 @@
     <Compile Include="Services\ValidateOrderService.cs" />
     <Compile Include="Services\RuleActivateService.cs" />
     <Compile Include="Services\RuleDeactivateService.cs" />
-    <Compile Include="Services\CreateOrderService.cs" />
+    <Compile Include="Services\OrderCreation\CreateOrderService.cs" />
     <Compile Include="Services\CreditCardService.cs" />
     <Compile Include="Services\DefaultFavoriteAddressService.cs" />
     <Compile Include="Services\GrantAdminRightService.cs" />
@@ -286,6 +288,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
