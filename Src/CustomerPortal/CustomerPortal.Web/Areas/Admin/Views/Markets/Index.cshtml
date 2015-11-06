@@ -1,0 +1,30 @@
+﻿@model System.Collections.Generic.IEnumerable<CustomerPortal.Web.Areas.Admin.Models.MarketModel>
+    
+<div class='row'>
+    <h4>Markets</h4>
+    <div class='span12'>
+        <p>
+            <a class="btn" href='@Url.Action("CreateMarket")'>Create Market</a>
+        </p>
+    </div>
+    <div class="span12">
+        <h5>Market</h5>
+        <table class="table table-striped">
+            @foreach (var market in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("MarketIndex", market)">@market.Market</a>
+                    </td>
+                    <td>
+                        @Html.ActionLink(
+                            "Delete",
+                            "DeleteMarket",
+                            market,
+                            new {@class = "btn span btn-danger", @onclick = "return confirm('Are you sure you wish to delete this market and all of its associated vehicle types and settings?');"})
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

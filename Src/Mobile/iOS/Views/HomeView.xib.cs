@@ -1,4 +1,4 @@
-using Cirrious.MvvmCross.Binding.BindingContext;
+﻿using Cirrious.MvvmCross.Binding.BindingContext;
 using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
@@ -212,7 +212,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Bind(bottomBar)
                 .For(v => v.DataContext)
-                .To(vm => vm.BottomBar);
+				.To(vm => vm);
 
             set.Bind(_datePicker)
                 .For(v => v.DataContext)
@@ -231,10 +231,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(mapView)
                 .For(v => v.MapCenter)
                 .To(vm => vm.BookingStatus.MapCenter);
-
-            set.Bind(bookingStatusBottomBar)
-                .For(v => v.DataContext)
-                .To(vm => vm.BookingStatus.BottomBar);
 
             set.Bind(dropOffSelectionBottomBar)
                 .For(v => v.DataContext)
@@ -406,9 +402,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 // Order Edit: Hidden
                 // Date Picker: Hidden
 
-                CloseBookATaxiDialog();
+				CloseBookATaxiDialog();
                 constraintAppBarDropOffSelection.Constant = DropOffSelectionAppBarHiddenConstraintValue;
-                constraintAppBarBookingStatus.Constant = BookingStatusAppBarHiddenConstraintValue;
                 constraintContactTaxiTopSpace.Constant = ContactDriverHiddenConstraintValue;
                 constraintChangeDropOffTopSpace.Constant = ChangeDropOffHiddenConstraintValue;
                 constraintDropOffSelectionTopSpace.Constant = -ctrlDropOffSelection.Frame.Height - 200f;
@@ -500,7 +495,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 CloseBookATaxiDialog();
                 _bookingStatusContactDriverSubscription.Disposable = ObserveIsContactTaxiVisible();
                 _bookingStatusChangeDropOffSubscription.Disposable = ObserveIsChangeDropOffVisible();
-                constraintAppBarBookingStatus.Constant = 0;
 
                 if (ViewModel.BookingStatus != null && !ViewModel.BookingStatus.IsContactTaxiVisible)
                 {
@@ -647,7 +641,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ctrlDropOffSelection.SetNeedsDisplay();
 			ctrlOrderBookingOptions.SetNeedsDisplay();
 			orderAirport.SetNeedsDisplay ();
-            bookingStatusBottomBar.SetNeedsDisplay();
             bookingStatusControl.SetNeedsDisplay();
             contactTaxiControl.SetNeedsDisplay();
             changeDropOffControl.SetNeedsDisplay();

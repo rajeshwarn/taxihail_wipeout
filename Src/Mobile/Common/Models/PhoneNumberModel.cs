@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool IsNumberPossible()
         {
             CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(Country));
-            return PhoneHelper.IsNumberPossible(countryCode, PhoneNumber);
+            return PhoneHelper.IsPossibleNumber(countryCode, PhoneNumber);
         }
 
         public string GetPhoneExample()

@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Domain
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
 			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, double? tipIncentive,
             string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
-            int? ibsOrderId = null)
+            string chargeTypeEmail, int? ibsOrderId = null)
 		{
 			if ((settings == null) || pickupAddress == null ||
 				(Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
@@ -99,7 +99,8 @@ namespace apcurium.MK.Booking.Domain
                 PromotionId = promotionId,
                 IsFutureBooking = isFutureBooking,
                 ReferenceDataCompanyList = referenceDataCompanyList,
-                IBSOrderId = ibsOrderId
+                IBSOrderId = ibsOrderId,
+                ChargeTypeEmail = chargeTypeEmail
 			});
 		}
 

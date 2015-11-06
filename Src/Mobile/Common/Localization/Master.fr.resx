@@ -2360,4 +2360,10 @@
 	<data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
 		<value>Le lien pour naviger vers la page l'application n'a pas été configuré</value>
 	</data>
+  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+		<value>Votre session est expirée. Veuillez vous authentifier a nouveau.</value>
+	</data>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+		<value>Erreur serveur</value>
+	</data>
 </root>

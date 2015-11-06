@@ -54,6 +54,8 @@ namespace apcurium.MK.Booking.Commands
 
         public string CompanyName { get; set; }
 
+        public int? CompanyFleetId { get; set; }
+
         public string Market { get; set; }
 
         public bool IsPrepaid { get; set; }
@@ -90,5 +92,7 @@ namespace apcurium.MK.Booking.Commands
         public ListItem[] ReferenceDataCompanyList { get; set; }
 
         public int? IbsOrderId { get; set; }
+
+        public string ChargeTypeEmail { get; set; }
     }
 }
