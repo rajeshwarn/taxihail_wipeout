@@ -172,6 +172,15 @@
     <Folder Include="Controls\" />
     <Folder Include="PlatformIntegration\" />
     <Folder Include="Resources\" />
+    <Folder Include="Resources\Layout\" />
+    <Folder Include="Resources\Drawable\" />
+    <Folder Include="Resources\drawable-ar\" />
+    <Folder Include="Resources\drawable-ar-xhdpi\" />
+    <Folder Include="Resources\drawable-hdpi\" />
+    <Folder Include="Resources\drawable-ldpi\" />
+    <Folder Include="Resources\drawable-mdpi\" />
+    <Folder Include="Resources\drawable-xhdpi\" />
+    <Folder Include="Resources\drawable-xxhdpi\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="facebookandroid">
@@ -218,293 +227,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\._.DS_Store" />
-    <AndroidResource Include="Resources\Drawable\Icon.png" />
-    <AndroidResource Include="Resources\Drawable\Logo.png" />
-    <AndroidResource Include="Resources\Drawable\StatusBottomBarBackground.xml" />
-    <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
-    <AndroidResource Include="Resources\Drawable\account.png" />
-    <AndroidResource Include="Resources\Drawable\active.png" />
-    <AndroidResource Include="Resources\Drawable\add_list.png" />
-    <AndroidResource Include="Resources\Drawable\airport.png" />
-    <AndroidResource Include="Resources\Drawable\amex.png" />
-    <AndroidResource Include="Resources\Drawable\apartment.png" />
-    <AndroidResource Include="Resources\Drawable\apc_logo_menu.png" />
-    <AndroidResource Include="Resources\Drawable\apcuriumLogo.png" />
-    <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
-    <AndroidResource Include="Resources\Drawable\background.png" />
-    <AndroidResource Include="Resources\Drawable\baggage.png" />
-    <AndroidResource Include="Resources\Drawable\black_button.xml" />
-    <AndroidResource Include="Resources\Drawable\blackcar_badge.png" />
-    <AndroidResource Include="Resources\Drawable\blackcar_badge_selected.png" />
-    <AndroidResource Include="Resources\Drawable\blackcar_no_badge.png" />
-    <AndroidResource Include="Resources\Drawable\blackcar_no_badge_selected.png" />
-    <AndroidResource Include="Resources\Drawable\button_action_black_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_black_text_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_blue_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_blue_text_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_borderlessgray_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_company_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_company_text_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_gray_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_green_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_green_text_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_label_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_label_text_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_red_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_red_text_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_booklater_image_selector.axml" />
-    <AndroidResource Include="Resources\Drawable\button_destination_image_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_highlight_background_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_highlight_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_highlight_text_selector.axml" />
-    <AndroidResource Include="Resources\Drawable\button_main_pressed.xml" />
-    <AndroidResource Include="Resources\Drawable\button_main_rounded.xml" />
-    <AndroidResource Include="Resources\Drawable\button_main_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_main_text_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_pressed.xml" />
-    <AndroidResource Include="Resources\Drawable\button_rounded.xml" />
-    <AndroidResource Include="Resources\Drawable\button_rounded_positive.xml" />
-    <AndroidResource Include="Resources\Drawable\button_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_selector_positive.xml" />
-    <AndroidResource Include="Resources\Drawable\button_text_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\cancel.png" />
-    <AndroidResource Include="Resources\Drawable\cell_bottom_state.xml" />
-    <AndroidResource Include="Resources\Drawable\cell_full_state.xml" />
-    <AndroidResource Include="Resources\Drawable\cell_middle_state.xml" />
-    <AndroidResource Include="Resources\Drawable\cell_selected.xml" />
-    <AndroidResource Include="Resources\Drawable\cell_top_state.xml" />
-    <AndroidResource Include="Resources\Drawable\chargetype.png" />
-    <AndroidResource Include="Resources\Drawable\checked_custom.png" />
-    <AndroidResource Include="Resources\Drawable\closeButton.png" />
-    <AndroidResource Include="Resources\Drawable\close_tutorial_button.png" />
-    <AndroidResource Include="Resources\Drawable\cluster_blackcar.png" />
-    <AndroidResource Include="Resources\Drawable\cluster_suv.png" />
-    <AndroidResource Include="Resources\Drawable\cluster_taxi.png" />
-    <AndroidResource Include="Resources\Drawable\cluster_wheelchair.png" />
-    <AndroidResource Include="Resources\Drawable\colored_dot.xml" />
-    <AndroidResource Include="Resources\Drawable\completed.png" />
-    <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
-    <AndroidResource Include="Resources\Drawable\default_vehicle_medaillon_icon.xml" />
-    <AndroidResource Include="Resources\Drawable\delete_card_btn.png" />
-    <AndroidResource Include="Resources\Drawable\destination_icon.png" />
-    <AndroidResource Include="Resources\Drawable\destination_small_icon.png" />
-    <AndroidResource Include="Resources\Drawable\destination_small_icon_pressed.png" />
-    <AndroidResource Include="Resources\Drawable\destination_small_icon_white.png" />
-    <AndroidResource Include="Resources\Drawable\dialog_background.xml" />
-    <AndroidResource Include="Resources\Drawable\dialog_bottom.xml" />
-    <AndroidResource Include="Resources\Drawable\dialog_center.xml" />
-    <AndroidResource Include="Resources\Drawable\dialog_top.xml" />
-    <AndroidResource Include="Resources\Drawable\down_arrow.png" />
-    <AndroidResource Include="Resources\Drawable\driverInfosBackGrey.png" />
-    <AndroidResource Include="Resources\Drawable\driverInfosBackGreyRepeat.xml" />
-    <AndroidResource Include="Resources\Drawable\driverInfosBackLightGrey.png" />
-    <AndroidResource Include="Resources\Drawable\driverInfosBackLightGreyRepeat.xml" />
-    <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
-    <AndroidResource Include="Resources\Drawable\drop_shadow_old.xml" />
-    <AndroidResource Include="Resources\Drawable\drop_shadow_opaque.xml" />
-    <AndroidResource Include="Resources\Drawable\drop_shadow_pressed.xml" />
-    <AndroidResource Include="Resources\Drawable\drop_shadow_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\edit_text_flat.xml" />
-    <AndroidResource Include="Resources\Drawable\edit_text_rounded.xml" />
-    <AndroidResource Include="Resources\Drawable\empty.xml" />
-    <AndroidResource Include="Resources\Drawable\entrycode.png" />
-    <AndroidResource Include="Resources\Drawable\erase_cross_btn.png" />
-    <AndroidResource Include="Resources\Drawable\facebook_account_icon.png" />
-    <AndroidResource Include="Resources\Drawable\facebook_icon.png" />
-    <AndroidResource Include="Resources\Drawable\facebook_icon_state.xml" />
-    <AndroidResource Include="Resources\Drawable\favorites.png" />
-    <AndroidResource Include="Resources\Drawable\flag.png" />
-    <AndroidResource Include="Resources\Drawable\flag_selected.png" />
-    <AndroidResource Include="Resources\Drawable\flag_state.xml" />
-    <AndroidResource Include="Resources\Drawable\gray_button.xml" />
-    <AndroidResource Include="Resources\Drawable\green_button.xml" />
-    <AndroidResource Include="Resources\Drawable\green_button_left.xml" />
-    <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
-    <AndroidResource Include="Resources\Drawable\green_vehicle_medaillon_icon.xml" />
-    <AndroidResource Include="Resources\Drawable\grip.png" />
-    <AndroidResource Include="Resources\Drawable\hail.png" />
-    <AndroidResource Include="Resources\Drawable\hail_icon.png" />
-    <AndroidResource Include="Resources\Drawable\hail_selected.png" />
-    <AndroidResource Include="Resources\Drawable\hail_state.xml" />
-    <AndroidResource Include="Resources\Drawable\header.png" />
-    <AndroidResource Include="Resources\Drawable\highlight.png" />
-    <AndroidResource Include="Resources\Drawable\history.png" />
-    <AndroidResource Include="Resources\Drawable\home_car_text_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\later_icon.png" />
-    <AndroidResource Include="Resources\Drawable\later_icon_pressed.png" />
-    <AndroidResource Include="Resources\Drawable\loading_overlay.xml" />
-    <AndroidResource Include="Resources\Drawable\location_icon.png" />
-    <AndroidResource Include="Resources\Drawable\location_info.png" />
-    <AndroidResource Include="Resources\Drawable\logo3.png" />
-    <AndroidResource Include="Resources\Drawable\loupe.png" />
-    <AndroidResource Include="Resources\Drawable\main_settings.png" />
-    <AndroidResource Include="Resources\Drawable\map_bigicon_background.png" />
-    <AndroidResource Include="Resources\Drawable\map_smallicon_background.png" />
-    <AndroidResource Include="Resources\Drawable\mastercard.png" />
-    <AndroidResource Include="Resources\Drawable\menu_icon.png" />
-    <AndroidResource Include="Resources\Drawable\message.png" />
-    <AndroidResource Include="Resources\Drawable\nearby_blackcar.png" />
-    <AndroidResource Include="Resources\Drawable\nearby_suv.png" />
-    <AndroidResource Include="Resources\Drawable\nearby_taxi.png" />
-    <AndroidResource Include="Resources\Drawable\nearby_wheelchair.png" />
-    <AndroidResource Include="Resources\Drawable\notification_background.xml" />
-    <AndroidResource Include="Resources\Drawable\notification_icon.png" />
-    <AndroidResource Include="Resources\Drawable\number_icon.png" />
-    <AndroidResource Include="Resources\Drawable\passengers.png" />
-    <AndroidResource Include="Resources\Drawable\paypal.png" />
-    <AndroidResource Include="Resources\Drawable\paypal_icon.png" />
-    <AndroidResource Include="Resources\Drawable\phone.png" />
-    <AndroidResource Include="Resources\Drawable\places.png" />
-    <AndroidResource Include="Resources\Drawable\poweredby2.png" />
-    <AndroidResource Include="Resources\Drawable\promo.png" />
-    <AndroidResource Include="Resources\Drawable\red_button.xml" />
-    <AndroidResource Include="Resources\Drawable\right_arrow.png" />
-    <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
-    <AndroidResource Include="Resources\Drawable\rounded_dialog_background.xml" />
-    <AndroidResource Include="Resources\Drawable\scheduled.png" />
-    <AndroidResource Include="Resources\Drawable\segmented_button_left.xml" />
-    <AndroidResource Include="Resources\Drawable\segmented_button_right.xml" />
-    <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
-    <AndroidResource Include="Resources\Drawable\server_button.png" />
-    <AndroidResource Include="Resources\Drawable\server_button_state.xml" />
-    <AndroidResource Include="Resources\Drawable\setting_cell.xml" />
-    <AndroidResource Include="Resources\Drawable\star_selected.png" />
-    <AndroidResource Include="Resources\Drawable\star_state.xml" />
-    <AndroidResource Include="Resources\Drawable\star_unselected.png" />
-    <AndroidResource Include="Resources\Drawable\statusDropShadow.xml" />
-    <AndroidResource Include="Resources\Drawable\suv_badge.png" />
-    <AndroidResource Include="Resources\Drawable\suv_badge_selected.png" />
-    <AndroidResource Include="Resources\Drawable\suv_no_badge.png" />
-    <AndroidResource Include="Resources\Drawable\suv_no_badge_selected.png" />
-    <AndroidResource Include="Resources\Drawable\target_selected.png" />
-    <AndroidResource Include="Resources\Drawable\taxi_badge.png" />
-    <AndroidResource Include="Resources\Drawable\taxi_badge_selected.png" />
-    <AndroidResource Include="Resources\Drawable\taxi_icon.png" />
-    <AndroidResource Include="Resources\Drawable\taxi_no_badge.png" />
-    <AndroidResource Include="Resources\Drawable\taxi_no_badge_selected.png" />
-    <AndroidResource Include="Resources\Drawable\taxi_progress.png" />
-    <AndroidResource Include="Resources\Drawable\telephone.png" />
-    <AndroidResource Include="Resources\Drawable\th_logo_small.png" />
-    <AndroidResource Include="Resources\Drawable\time.png" />
-    <AndroidResource Include="Resources\Drawable\train.png" />
-    <AndroidResource Include="Resources\Drawable\transparentAllStates.xml" />
-    <AndroidResource Include="Resources\Drawable\tutorial_background.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_background_rounded.xml" />
-    <AndroidResource Include="Resources\Drawable\tutorial_black_circle.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_grey_circle.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_root_background_insets.xml" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen01.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen02.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen03.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen04.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen05.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen06.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen09.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen10.png" />
-    <AndroidResource Include="Resources\Drawable\twitter_icon.png" />
-    <AndroidResource Include="Resources\Drawable\twitter_icon_state.xml" />
-    <AndroidResource Include="Resources\Drawable\unchecked_custom.png" />
-    <AndroidResource Include="Resources\Drawable\vehicle.png" />
-    <AndroidResource Include="Resources\Drawable\visa.png" />
-    <AndroidResource Include="Resources\Drawable\visa_electron.png" />
-    <AndroidResource Include="Resources\Drawable\waitingcarclosebutton.xml" />
-    <AndroidResource Include="Resources\Drawable\wheelchair_assigned.png" />
-    <AndroidResource Include="Resources\Drawable\wheelchair_available.png" />
-    <AndroidResource Include="Resources\Drawable\wheelchair_badge.png" />
-    <AndroidResource Include="Resources\Drawable\wheelchair_badge_selected.png" />
-    <AndroidResource Include="Resources\Drawable\white_button.xml" />
-    <AndroidResource Include="Resources\Drawable\yellow_vehicle_medaillon_icon.xml" />
-    <AndroidResource Include="Resources\Layout\Control_AddressBar.axml" />
-    <AndroidResource Include="Resources\Layout\Control_AddressLine.axml" />
-    <AndroidResource Include="Resources\Layout\Control_AddressList.axml" />
-    <AndroidResource Include="Resources\Layout\Control_AddressPicker.axml" />
-    <AndroidResource Include="Resources\Layout\Control_AddressTextBox.axml" />
-    <AndroidResource Include="Resources\Layout\Control_AppBarButton.xml" />
-    <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
-    <AndroidResource Include="Resources\Layout\Control_EditTextLeftImage.axml" />
-    <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml" />
-    <AndroidResource Include="Resources\Layout\Control_LoadingOverlay.axml" />
-    <AndroidResource Include="Resources\Layout\Control_VehicleType.xml" />
-    <AndroidResource Include="Resources\Layout\Control_VehicleTypeAndEstimate.xml" />
-    <AndroidResource Include="Resources\Layout\CountryCodeItem.axml" />
-    <AndroidResource Include="Resources\Layout\CountryCodeItemDropDown.axml" />
-    <AndroidResource Include="Resources\Layout\CountryCodeItemDropDownMVX.axml" />
-    <AndroidResource Include="Resources\Layout\CountryCodeItemMVX.axml" />
-    <AndroidResource Include="Resources\Layout\CreditCardListItem.axml" />
-    <AndroidResource Include="Resources\Layout\CustomAlertDialogView.axml" />
-    <AndroidResource Include="Resources\Layout\DialogBottom.axml" />
-    <AndroidResource Include="Resources\Layout\DialogCenter.axml" />
-    <AndroidResource Include="Resources\Layout\DialogTop.axml" />
-    <AndroidResource Include="Resources\Layout\LabelValueCell.axml" />
-    <AndroidResource Include="Resources\Layout\ListHeader.axml" />
-    <AndroidResource Include="Resources\Layout\ListItemAutoComplete.axml" />
-    <AndroidResource Include="Resources\Layout\MenuItem.axml" />
-    <AndroidResource Include="Resources\Layout\PhoneEditor.axml" />
-    <AndroidResource Include="Resources\Layout\PhoneEditorBottom.axml" />
-    <AndroidResource Include="Resources\Layout\PromotionListItem.axml" />
-    <AndroidResource Include="Resources\Layout\RatingListItem.axml" />
-    <AndroidResource Include="Resources\Layout\SimpleListItem.axml" />
-    <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
-    <AndroidResource Include="Resources\Layout\SpinnerCell.axml" />
-    <AndroidResource Include="Resources\Layout\SpinnerCellTextRight.axml" />
-    <AndroidResource Include="Resources\Layout\SpinnerText.axml" />
-    <AndroidResource Include="Resources\Layout\SpinnerTextWithImage.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_AppBar.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_AppBar_DropOffSelection.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_Appbar_BookingStatus.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_BookingStatus.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_ChangeDropOffOverlay.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_ContactTaxiOverlay.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_DropOffSelection.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderAirport.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderEdit.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderEdit_Thriev.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderOptions.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderReview.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderReview_Thriev.axml" />
-    <AndroidResource Include="Resources\Layout\TogglableSettingsListItem.axml" />
-    <AndroidResource Include="Resources\Layout\TutorialListItem.axml" />
-    <AndroidResource Include="Resources\Layout\VehicleInfoWindow.axml" />
-    <AndroidResource Include="Resources\Layout\View_About.axml" />
-    <AndroidResource Include="Resources\Layout\View_AccountConfirmation.axml" />
-    <AndroidResource Include="Resources\Layout\View_AddressPickerContainer.axml" />
-    <AndroidResource Include="Resources\Layout\View_BookEditInformation.axml" />
-    <AndroidResource Include="Resources\Layout\View_BookEditInformation_Thriev.axml" />
-    <AndroidResource Include="Resources\Layout\View_Book_RideSummaryPage.axml" />
-    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml" />
-    <AndroidResource Include="Resources\Layout\View_BookingDetail_Thriev.axml" />
-    <AndroidResource Include="Resources\Layout\View_BookingRating.axml" />
-    <AndroidResource Include="Resources\Layout\View_CreateAccount.axml" />
-    <AndroidResource Include="Resources\Layout\View_DateTimePicker.axml" />
-    <AndroidResource Include="Resources\Layout\View_EditAutoTip.axml" />
-    <AndroidResource Include="Resources\Layout\View_ExtendedSplashScreen.axml" />
-    <AndroidResource Include="Resources\Layout\View_HistoryDetail.axml" />
-    <AndroidResource Include="Resources\Layout\View_HistoryList.axml" />
-    <AndroidResource Include="Resources\Layout\View_Home.axml" />
-    <AndroidResource Include="Resources\Layout\View_InitializeOrderForAccountPayment.axml" />
-    <AndroidResource Include="Resources\Layout\View_LocationDetail.axml" />
-    <AndroidResource Include="Resources\Layout\View_LocationList.axml" />
-    <AndroidResource Include="Resources\Layout\View_Login.axml" />
-    <AndroidResource Include="Resources\Layout\View_ManualPairingForRideLinq.axml" />
-    <AndroidResource Include="Resources\Layout\View_NotificationSettings.axml" />
-    <AndroidResource Include="Resources\Layout\View_OverduePayment.axml" />
-    <AndroidResource Include="Resources\Layout\View_PasswordRecovery.axml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_CreditCardMultiple.axml" />
-    <AndroidResource Include="Resources\Layout\View_Promotion.axml" />
-    <AndroidResource Include="Resources\Layout\View_RideSettings.axml" />
-    <AndroidResource Include="Resources\Layout\View_TermsAndConditions.axml" />
-    <AndroidResource Include="Resources\Layout\View_UpdatePassword.axml" />
-    <AndroidResource Include="Resources\Layout\View_UpdatedTermsAndConditions.axml" />
-    <AndroidResource Include="Resources\Layout\View_UserTaxiHailNetworkSettings.axml" />
-    <AndroidResource Include="Resources\Layout\View_WaitingCarLandscape.axml" />
-    <AndroidResource Include="Resources\Layout\View_tutorial.axml" />
     <AndroidResource Include="Resources\Values\AddressLineAttributes.xml" />
     <AndroidResource Include="Resources\Values\Color.xml" />
     <AndroidResource Include="Resources\Values\FontSize.xml" />
@@ -514,153 +236,1297 @@
     <AndroidResource Include="Resources\Values\Styles.xml" />
     <AndroidResource Include="Resources\Values\Themes.xml" />
     <AndroidResource Include="Resources\Values\attrs.xml" />
-    <AndroidResource Include="Resources\drawable-ar\tutorial_screen01.png" />
-    <AndroidResource Include="Resources\drawable-ar\tutorial_screen02.png" />
-    <AndroidResource Include="Resources\drawable-ar\tutorial_screen03.png" />
-    <AndroidResource Include="Resources\drawable-ar\tutorial_screen04.png" />
-    <AndroidResource Include="Resources\drawable-ar\tutorial_screen05.png" />
-    <AndroidResource Include="Resources\drawable-ar\tutorial_screen06.png" />
-    <AndroidResource Include="Resources\drawable-ar\tutorial_screen07.png" />
-    <AndroidResource Include="Resources\drawable-ar\tutorial_screen08.png" />
-    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen01.png" />
-    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen02.png" />
-    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen03.png" />
-    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen04.png" />
-    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen05.png" />
-    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen06.png" />
-    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen07.png" />
-    <AndroidResource Include="Resources\drawable-ar-xhdpi\tutorial_screen08.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\splash.9.png" />
-    <AndroidResource Include="Resources\drawable-ldpi\splash.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_available.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\nearby_oriented_passenger.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\splash.9.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\Logo.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\account.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\active.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\add_list.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\airport.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\amex.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\apartment.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\apc_logo_menu.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\backPickupDestination.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\baggage.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_badge.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_badge_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\blackcar_no_badge_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\blank_bottom.9.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\bookLaterIcon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\cancel.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\cancelled.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\chargetype.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\checked_custom.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\closeButton.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\close_tutorial_button.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\cluster_blackcar.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\cluster_suv.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\cluster_taxi.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\cluster_wheelchair.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\completed.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\credit_card_generic.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\delete_card_btn.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\destination_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\destination_small_icon_pressed.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\down_arrow.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\email_cell.9.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\entrycode.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\erase_cross_btn.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\facebook_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\favorites.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\flag.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\flag_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\grip.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\hail.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\hail_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\hail_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\highlight.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\history.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\later_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\later_icon_pressed.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\location_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\location_icon_pressed.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\location_info.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\loupe.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\main_btn_selected.9.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\main_settings.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\map_bigicon_background.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\map_smallicon_background.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\mastercard.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\menu_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\menu_icon_pressed.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\message.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\nearby_blackcar.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_available.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\nearby_oriented_passenger.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\nearby_suv.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\nearby_taxi.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\nearby_wheelchair.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\notification_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\number_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\passengers.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\password_cell.9.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\paypal.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\paypal_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\phone.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\places.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\promo.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\right_arrow.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\scheduled.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\server_button.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\splash.9.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\star_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\star_unselected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\status_gradient.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\suv_badge.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\suv_badge_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\suv_no_badge.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\suv_no_badge_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\target_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\taxi_badge.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\taxi_badge_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\taxi_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\taxi_no_badge.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\taxi_no_badge_selected.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\taxi_progress.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\telephone.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\th_logo.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\th_logo_small.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\time.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\train.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen01.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen02.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen03.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen04.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen05.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen06.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen07.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen08.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen09.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\tutorial_screen10.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\twitter_icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\unchecked_custom.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\vehicle.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\visa.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_assigned.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_available.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\wheelchair_badge_selected.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\airport.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_available.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\nearby_oriented_passenger.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\phone.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\splash.9.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\train.png" />
     <AndroidResource Include="Resources\values-ar\String.xml" />
     <AndroidResource Include="Resources\values-es\String.xml" />
     <AndroidResource Include="Resources\values-fr\String.xml" />
     <AndroidResource Include="Resources\values-sw600dp\Themes.xml" />
     <AndroidResource Include="Resources\values-v11\SetThemes.xml" />
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressBar.axml">
+      <Link>Resources\Layout\Control_AddressBar.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressLine.axml">
+      <Link>Resources\Layout\Control_AddressLine.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressList.axml">
+      <Link>Resources\Layout\Control_AddressList.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressPicker.axml">
+      <Link>Resources\Layout\Control_AddressPicker.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressTextBox.axml">
+      <Link>Resources\Layout\Control_AddressTextBox.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AppBarButton.xml">
+      <Link>Resources\Layout\Control_AppBarButton.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_CreditCardButton.axml">
+      <Link>Resources\Layout\Control_CreditCardButton.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_EditTextLeftImage.axml">
+      <Link>Resources\Layout\Control_EditTextLeftImage.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_EditTextNavigate.axml">
+      <Link>Resources\Layout\Control_EditTextNavigate.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_LoadingOverlay.axml">
+      <Link>Resources\Layout\Control_LoadingOverlay.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_VehicleType.xml">
+      <Link>Resources\Layout\Control_VehicleType.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_VehicleTypeAndEstimate.xml">
+      <Link>Resources\Layout\Control_VehicleTypeAndEstimate.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItem.axml">
+      <Link>Resources\Layout\CountryCodeItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItemDropDown.axml">
+      <Link>Resources\Layout\CountryCodeItemDropDown.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItemDropDownMVX.axml">
+      <Link>Resources\Layout\CountryCodeItemDropDownMVX.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItemMVX.axml">
+      <Link>Resources\Layout\CountryCodeItemMVX.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CreditCardListItem.axml">
+      <Link>Resources\Layout\CreditCardListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CustomAlertDialogView.axml">
+      <Link>Resources\Layout\CustomAlertDialogView.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\DialogBottom.axml">
+      <Link>Resources\Layout\DialogBottom.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\DialogCenter.axml">
+      <Link>Resources\Layout\DialogCenter.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\DialogTop.axml">
+      <Link>Resources\Layout\DialogTop.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\LabelValueCell.axml">
+      <Link>Resources\Layout\LabelValueCell.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\ListHeader.axml">
+      <Link>Resources\Layout\ListHeader.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\ListItemAutoComplete.axml">
+      <Link>Resources\Layout\ListItemAutoComplete.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\MenuItem.axml">
+      <Link>Resources\Layout\MenuItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\PhoneEditor.axml">
+      <Link>Resources\Layout\PhoneEditor.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\PhoneEditorBottom.axml">
+      <Link>Resources\Layout\PhoneEditorBottom.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\PromotionListItem.axml">
+      <Link>Resources\Layout\PromotionListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\RatingListItem.axml">
+      <Link>Resources\Layout\RatingListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SimpleListItem.axml">
+      <Link>Resources\Layout\SimpleListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SimpleOrderListItem.axml">
+      <Link>Resources\Layout\SimpleOrderListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SpinnerCell.axml">
+      <Link>Resources\Layout\SpinnerCell.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SpinnerCellTextRight.axml">
+      <Link>Resources\Layout\SpinnerCellTextRight.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SpinnerText.axml">
+      <Link>Resources\Layout\SpinnerText.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SpinnerTextWithImage.axml">
+      <Link>Resources\Layout\SpinnerTextWithImage.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_Appbar_BookingStatus.axml">
+      <Link>Resources\Layout\SubView_Appbar_BookingStatus.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_AppBar_DropOffSelection.axml">
+      <Link>Resources\Layout\SubView_AppBar_DropOffSelection.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_AppBar.axml">
+      <Link>Resources\Layout\SubView_AppBar.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_BookingStatus.axml">
+      <Link>Resources\Layout\SubView_BookingStatus.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_ChangeDropOffOverlay.axml">
+      <Link>Resources\Layout\SubView_ChangeDropOffOverlay.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_ContactTaxiOverlay.axml">
+      <Link>Resources\Layout\SubView_ContactTaxiOverlay.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_DropOffSelection.axml">
+      <Link>Resources\Layout\SubView_DropOffSelection.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_MainMenu.axml">
+      <Link>Resources\Layout\SubView_MainMenu.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderAirport.axml">
+      <Link>Resources\Layout\SubView_OrderAirport.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderEdit_Thriev.axml">
+      <Link>Resources\Layout\SubView_OrderEdit_Thriev.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderEdit.axml">
+      <Link>Resources\Layout\SubView_OrderEdit.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderOptions.axml">
+      <Link>Resources\Layout\SubView_OrderOptions.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderReview_Thriev.axml">
+      <Link>Resources\Layout\SubView_OrderReview_Thriev.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderReview.axml">
+      <Link>Resources\Layout\SubView_OrderReview.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\TogglableSettingsListItem.axml">
+      <Link>Resources\Layout\TogglableSettingsListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\TutorialListItem.axml">
+      <Link>Resources\Layout\TutorialListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\VehicleInfoWindow.axml">
+      <Link>Resources\Layout\VehicleInfoWindow.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_About.axml">
+      <Link>Resources\Layout\View_About.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_AccountConfirmation.axml">
+      <Link>Resources\Layout\View_AccountConfirmation.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_AddressPickerContainer.axml">
+      <Link>Resources\Layout\View_AddressPickerContainer.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Book_RideSummaryPage.axml">
+      <Link>Resources\Layout\View_Book_RideSummaryPage.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_BookEditInformation_Thriev.axml">
+      <Link>Resources\Layout\View_BookEditInformation_Thriev.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_BookEditInformation.axml">
+      <Link>Resources\Layout\View_BookEditInformation.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_BookingDetail_Thriev.axml">
+      <Link>Resources\Layout\View_BookingDetail_Thriev.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_BookingDetail.axml">
+      <Link>Resources\Layout\View_BookingDetail.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_BookingRating.axml">
+      <Link>Resources\Layout\View_BookingRating.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_CreateAccount.axml">
+      <Link>Resources\Layout\View_CreateAccount.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_DateTimePicker.axml">
+      <Link>Resources\Layout\View_DateTimePicker.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_EditAutoTip.axml">
+      <Link>Resources\Layout\View_EditAutoTip.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_ExtendedSplashScreen.axml">
+      <Link>Resources\Layout\View_ExtendedSplashScreen.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_HistoryDetail.axml">
+      <Link>Resources\Layout\View_HistoryDetail.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_HistoryList.axml">
+      <Link>Resources\Layout\View_HistoryList.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Home.axml">
+      <Link>Resources\Layout\View_Home.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_InitializeOrderForAccountPayment.axml">
+      <Link>Resources\Layout\View_InitializeOrderForAccountPayment.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_LocationDetail.axml">
+      <Link>Resources\Layout\View_LocationDetail.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_LocationList.axml">
+      <Link>Resources\Layout\View_LocationList.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Login.axml">
+      <Link>Resources\Layout\View_Login.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_ManualPairingForRideLinq.axml">
+      <Link>Resources\Layout\View_ManualPairingForRideLinq.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_NotificationSettings.axml">
+      <Link>Resources\Layout\View_NotificationSettings.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_OverduePayment.axml">
+      <Link>Resources\Layout\View_OverduePayment.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_PasswordRecovery.axml">
+      <Link>Resources\Layout\View_PasswordRecovery.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml">
+      <Link>Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Payments_CreditCardAdd.axml">
+      <Link>Resources\Layout\View_Payments_CreditCardAdd.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Payments_CreditCardMultiple.axml">
+      <Link>Resources\Layout\View_Payments_CreditCardMultiple.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Promotion.axml">
+      <Link>Resources\Layout\View_Promotion.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_RideSettings.axml">
+      <Link>Resources\Layout\View_RideSettings.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_TermsAndConditions.axml">
+      <Link>Resources\Layout\View_TermsAndConditions.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_tutorial.axml">
+      <Link>Resources\Layout\View_tutorial.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_UpdatedTermsAndConditions.axml">
+      <Link>Resources\Layout\View_UpdatedTermsAndConditions.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_UpdatePassword.axml">
+      <Link>Resources\Layout\View_UpdatePassword.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_UserTaxiHailNetworkSettings.axml">
+      <Link>Resources\Layout\View_UserTaxiHailNetworkSettings.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_WaitingCarLandscape.axml">
+      <Link>Resources\Layout\View_WaitingCarLandscape.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\account.png">
+      <Link>Resources\Drawable\account.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\active.png">
+      <Link>Resources\Drawable\active.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\add_list.png">
+      <Link>Resources\Drawable\add_list.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\airport.png">
+      <Link>Resources\Drawable\airport.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\amex.png">
+      <Link>Resources\Drawable\amex.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\apartment.png">
+      <Link>Resources\Drawable\apartment.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\apc_logo_menu.png">
+      <Link>Resources\Drawable\apc_logo_menu.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\apcuriumLogo.png">
+      <Link>Resources\Drawable\apcuriumLogo.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\background.png">
+      <Link>Resources\Drawable\background.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\backPickupDestination.png">
+      <Link>Resources\Drawable\backPickupDestination.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\baggage.png">
+      <Link>Resources\Drawable\baggage.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\black_button.xml">
+      <Link>Resources\Drawable\black_button.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\blackcar_badge_selected.png">
+      <Link>Resources\Drawable\blackcar_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\blackcar_badge.png">
+      <Link>Resources\Drawable\blackcar_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\blackcar_no_badge_selected.png">
+      <Link>Resources\Drawable\blackcar_no_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\blackcar_no_badge.png">
+      <Link>Resources\Drawable\blackcar_no_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_black_selector.xml">
+      <Link>Resources\Drawable\button_action_black_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_black_text_selector.xml">
+      <Link>Resources\Drawable\button_action_black_text_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_blue_selector.xml">
+      <Link>Resources\Drawable\button_action_blue_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_blue_text_selector.xml">
+      <Link>Resources\Drawable\button_action_blue_text_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_borderlessgray_selector.xml">
+      <Link>Resources\Drawable\button_action_borderlessgray_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_company_selector.xml">
+      <Link>Resources\Drawable\button_action_company_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_company_text_selector.xml">
+      <Link>Resources\Drawable\button_action_company_text_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_gray_selector.xml">
+      <Link>Resources\Drawable\button_action_gray_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_gray_text_selector.xml">
+      <Link>Resources\Drawable\button_action_gray_text_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_green_selector.xml">
+      <Link>Resources\Drawable\button_action_green_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_green_text_selector.xml">
+      <Link>Resources\Drawable\button_action_green_text_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_label_selector.xml">
+      <Link>Resources\Drawable\button_action_label_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_label_text_selector.xml">
+      <Link>Resources\Drawable\button_action_label_text_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_red_selector.xml">
+      <Link>Resources\Drawable\button_action_red_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_action_red_text_selector.xml">
+      <Link>Resources\Drawable\button_action_red_text_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_booklater_image_selector.axml">
+      <Link>Resources\Drawable\button_booklater_image_selector.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_destination_image_selector.xml">
+      <Link>Resources\Drawable\button_destination_image_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_highlight_background_selector.xml">
+      <Link>Resources\Drawable\button_highlight_background_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_highlight_selector.xml">
+      <Link>Resources\Drawable\button_highlight_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_highlight_text_selector.axml">
+      <Link>Resources\Drawable\button_highlight_text_selector.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_main_pressed.xml">
+      <Link>Resources\Drawable\button_main_pressed.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_main_rounded.xml">
+      <Link>Resources\Drawable\button_main_rounded.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_main_selector.xml">
+      <Link>Resources\Drawable\button_main_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_main_text_selector.xml">
+      <Link>Resources\Drawable\button_main_text_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_pressed.xml">
+      <Link>Resources\Drawable\button_pressed.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_rounded_positive.xml">
+      <Link>Resources\Drawable\button_rounded_positive.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_rounded.xml">
+      <Link>Resources\Drawable\button_rounded.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_selector_positive.xml">
+      <Link>Resources\Drawable\button_selector_positive.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_selector.xml">
+      <Link>Resources\Drawable\button_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\button_text_selector.xml">
+      <Link>Resources\Drawable\button_text_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\cancel.png">
+      <Link>Resources\Drawable\cancel.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\cell_bottom_state.xml">
+      <Link>Resources\Drawable\cell_bottom_state.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\cell_full_state.xml">
+      <Link>Resources\Drawable\cell_full_state.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\cell_middle_state.xml">
+      <Link>Resources\Drawable\cell_middle_state.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\cell_selected.xml">
+      <Link>Resources\Drawable\cell_selected.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\cell_top_state.xml">
+      <Link>Resources\Drawable\cell_top_state.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\chargetype.png">
+      <Link>Resources\Drawable\chargetype.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\checked_custom.png">
+      <Link>Resources\Drawable\checked_custom.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\close_tutorial_button.png">
+      <Link>Resources\Drawable\close_tutorial_button.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\closeButton.png">
+      <Link>Resources\Drawable\closeButton.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\cluster_blackcar.png">
+      <Link>Resources\Drawable\cluster_blackcar.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\cluster_suv.png">
+      <Link>Resources\Drawable\cluster_suv.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\cluster_taxi.png">
+      <Link>Resources\Drawable\cluster_taxi.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\cluster_wheelchair.png">
+      <Link>Resources\Drawable\cluster_wheelchair.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\colored_dot.xml">
+      <Link>Resources\Drawable\colored_dot.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\completed.png">
+      <Link>Resources\Drawable\completed.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\credit_card_generic.png">
+      <Link>Resources\Drawable\credit_card_generic.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\default_vehicle_medaillon_icon.xml">
+      <Link>Resources\Drawable\default_vehicle_medaillon_icon.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\delete_card_btn.png">
+      <Link>Resources\Drawable\delete_card_btn.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\destination_icon.png">
+      <Link>Resources\Drawable\destination_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\destination_small_icon_pressed.png">
+      <Link>Resources\Drawable\destination_small_icon_pressed.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\destination_small_icon_white.png">
+      <Link>Resources\Drawable\destination_small_icon_white.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\destination_small_icon.png">
+      <Link>Resources\Drawable\destination_small_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\dialog_background.xml">
+      <Link>Resources\Drawable\dialog_background.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\dialog_bottom.xml">
+      <Link>Resources\Drawable\dialog_bottom.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\dialog_center.xml">
+      <Link>Resources\Drawable\dialog_center.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\dialog_top.xml">
+      <Link>Resources\Drawable\dialog_top.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\down_arrow.png">
+      <Link>Resources\Drawable\down_arrow.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\driverInfosBackGrey.png">
+      <Link>Resources\Drawable\driverInfosBackGrey.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\driverInfosBackGreyRepeat.xml">
+      <Link>Resources\Drawable\driverInfosBackGreyRepeat.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\driverInfosBackLightGrey.png">
+      <Link>Resources\Drawable\driverInfosBackLightGrey.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\driverInfosBackLightGreyRepeat.xml">
+      <Link>Resources\Drawable\driverInfosBackLightGreyRepeat.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\drop_shadow_old.xml">
+      <Link>Resources\Drawable\drop_shadow_old.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\drop_shadow_opaque.xml">
+      <Link>Resources\Drawable\drop_shadow_opaque.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\drop_shadow_pressed.xml">
+      <Link>Resources\Drawable\drop_shadow_pressed.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\drop_shadow_selector.xml">
+      <Link>Resources\Drawable\drop_shadow_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\drop_shadow.xml">
+      <Link>Resources\Drawable\drop_shadow.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\edit_text_flat.xml">
+      <Link>Resources\Drawable\edit_text_flat.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\edit_text_rounded.xml">
+      <Link>Resources\Drawable\edit_text_rounded.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\empty.xml">
+      <Link>Resources\Drawable\empty.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\entrycode.png">
+      <Link>Resources\Drawable\entrycode.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\erase_cross_btn.png">
+      <Link>Resources\Drawable\erase_cross_btn.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\facebook_account_icon.png">
+      <Link>Resources\Drawable\facebook_account_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\facebook_icon_state.xml">
+      <Link>Resources\Drawable\facebook_icon_state.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\facebook_icon.png">
+      <Link>Resources\Drawable\facebook_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\favorites.png">
+      <Link>Resources\Drawable\favorites.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\flag_selected.png">
+      <Link>Resources\Drawable\flag_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\flag_state.xml">
+      <Link>Resources\Drawable\flag_state.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\flag.png">
+      <Link>Resources\Drawable\flag.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\gray_button.xml">
+      <Link>Resources\Drawable\gray_button.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\green_button_left.xml">
+      <Link>Resources\Drawable\green_button_left.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\green_button_right.xml">
+      <Link>Resources\Drawable\green_button_right.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\green_button.xml">
+      <Link>Resources\Drawable\green_button.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\green_vehicle_medaillon_icon.xml">
+      <Link>Resources\Drawable\green_vehicle_medaillon_icon.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\grip.png">
+      <Link>Resources\Drawable\grip.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\hail_icon.png">
+      <Link>Resources\Drawable\hail_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\hail_selected.png">
+      <Link>Resources\Drawable\hail_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\hail_state.xml">
+      <Link>Resources\Drawable\hail_state.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\hail.png">
+      <Link>Resources\Drawable\hail.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\header.png">
+      <Link>Resources\Drawable\header.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\highlight.png">
+      <Link>Resources\Drawable\highlight.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\history.png">
+      <Link>Resources\Drawable\history.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\home_car_text_selector.xml">
+      <Link>Resources\Drawable\home_car_text_selector.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\Icon.png">
+      <Link>Resources\Drawable\Icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\later_icon_pressed.png">
+      <Link>Resources\Drawable\later_icon_pressed.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\later_icon.png">
+      <Link>Resources\Drawable\later_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\loading_overlay.xml">
+      <Link>Resources\Drawable\loading_overlay.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\location_icon.png">
+      <Link>Resources\Drawable\location_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\location_info.png">
+      <Link>Resources\Drawable\location_info.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\Logo.png">
+      <Link>Resources\Drawable\Logo.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\logo3.png">
+      <Link>Resources\Drawable\logo3.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\loupe.png">
+      <Link>Resources\Drawable\loupe.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\main_settings.png">
+      <Link>Resources\Drawable\main_settings.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\map_bigicon_background.png">
+      <Link>Resources\Drawable\map_bigicon_background.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\map_smallicon_background.png">
+      <Link>Resources\Drawable\map_smallicon_background.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\mastercard.png">
+      <Link>Resources\Drawable\mastercard.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\menu_icon.png">
+      <Link>Resources\Drawable\menu_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\message.png">
+      <Link>Resources\Drawable\message.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\nearby_blackcar.png">
+      <Link>Resources\Drawable\nearby_blackcar.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\nearby_suv.png">
+      <Link>Resources\Drawable\nearby_suv.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\nearby_taxi.png">
+      <Link>Resources\Drawable\nearby_taxi.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\nearby_wheelchair.png">
+      <Link>Resources\Drawable\nearby_wheelchair.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\notification_background.xml">
+      <Link>Resources\Drawable\notification_background.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\notification_icon.png">
+      <Link>Resources\Drawable\notification_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\number_icon.png">
+      <Link>Resources\Drawable\number_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\passengers.png">
+      <Link>Resources\Drawable\passengers.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\paypal_icon.png">
+      <Link>Resources\Drawable\paypal_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\paypal.png">
+      <Link>Resources\Drawable\paypal.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\phone.png">
+      <Link>Resources\Drawable\phone.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\places.png">
+      <Link>Resources\Drawable\places.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\poweredby2.png">
+      <Link>Resources\Drawable\poweredby2.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\promo.png">
+      <Link>Resources\Drawable\promo.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\red_button.xml">
+      <Link>Resources\Drawable\red_button.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\right_arrow_light.png">
+      <Link>Resources\Drawable\right_arrow_light.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\right_arrow.png">
+      <Link>Resources\Drawable\right_arrow.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\rounded_dialog_background.xml">
+      <Link>Resources\Drawable\rounded_dialog_background.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\scheduled.png">
+      <Link>Resources\Drawable\scheduled.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\segmented_button_left.xml">
+      <Link>Resources\Drawable\segmented_button_left.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\segmented_button_right.xml">
+      <Link>Resources\Drawable\segmented_button_right.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\segmented_button_text_color.xml">
+      <Link>Resources\Drawable\segmented_button_text_color.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\server_button_state.xml">
+      <Link>Resources\Drawable\server_button_state.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\server_button.png">
+      <Link>Resources\Drawable\server_button.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\setting_cell.xml">
+      <Link>Resources\Drawable\setting_cell.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\star_selected.png">
+      <Link>Resources\Drawable\star_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\star_state.xml">
+      <Link>Resources\Drawable\star_state.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\star_unselected.png">
+      <Link>Resources\Drawable\star_unselected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\StatusBottomBarBackground.xml">
+      <Link>Resources\Drawable\StatusBottomBarBackground.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\statusDropShadow.xml">
+      <Link>Resources\Drawable\statusDropShadow.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\suv_badge_selected.png">
+      <Link>Resources\Drawable\suv_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\suv_badge.png">
+      <Link>Resources\Drawable\suv_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\suv_no_badge_selected.png">
+      <Link>Resources\Drawable\suv_no_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\suv_no_badge.png">
+      <Link>Resources\Drawable\suv_no_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\target_selected.png">
+      <Link>Resources\Drawable\target_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\taxi_badge_selected.png">
+      <Link>Resources\Drawable\taxi_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\taxi_badge.png">
+      <Link>Resources\Drawable\taxi_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\taxi_icon.png">
+      <Link>Resources\Drawable\taxi_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\taxi_no_badge_selected.png">
+      <Link>Resources\Drawable\taxi_no_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\taxi_no_badge.png">
+      <Link>Resources\Drawable\taxi_no_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\taxi_progress.png">
+      <Link>Resources\Drawable\taxi_progress.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\telephone.png">
+      <Link>Resources\Drawable\telephone.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\th_logo_small.png">
+      <Link>Resources\Drawable\th_logo_small.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\time.png">
+      <Link>Resources\Drawable\time.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\train.png">
+      <Link>Resources\Drawable\train.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\transparentAllStates.xml">
+      <Link>Resources\Drawable\transparentAllStates.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_background_rounded.xml">
+      <Link>Resources\Drawable\tutorial_background_rounded.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_background.png">
+      <Link>Resources\Drawable\tutorial_background.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_black_circle.png">
+      <Link>Resources\Drawable\tutorial_black_circle.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_grey_circle.png">
+      <Link>Resources\Drawable\tutorial_grey_circle.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_root_background_insets.xml">
+      <Link>Resources\Drawable\tutorial_root_background_insets.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_screen01.png">
+      <Link>Resources\Drawable\tutorial_screen01.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_screen02.png">
+      <Link>Resources\Drawable\tutorial_screen02.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_screen03.png">
+      <Link>Resources\Drawable\tutorial_screen03.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_screen04.png">
+      <Link>Resources\Drawable\tutorial_screen04.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_screen05.png">
+      <Link>Resources\Drawable\tutorial_screen05.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_screen06.png">
+      <Link>Resources\Drawable\tutorial_screen06.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_screen07.png">
+      <Link>Resources\Drawable\tutorial_screen07.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_screen08.png">
+      <Link>Resources\Drawable\tutorial_screen08.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_screen09.png">
+      <Link>Resources\Drawable\tutorial_screen09.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\tutorial_screen10.png">
+      <Link>Resources\Drawable\tutorial_screen10.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\twitter_icon_state.xml">
+      <Link>Resources\Drawable\twitter_icon_state.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\twitter_icon.png">
+      <Link>Resources\Drawable\twitter_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\unchecked_custom.png">
+      <Link>Resources\Drawable\unchecked_custom.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\vehicle.png">
+      <Link>Resources\Drawable\vehicle.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\visa_electron.png">
+      <Link>Resources\Drawable\visa_electron.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\visa.png">
+      <Link>Resources\Drawable\visa.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\waitingcarclosebutton.xml">
+      <Link>Resources\Drawable\waitingcarclosebutton.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\wheelchair_assigned.png">
+      <Link>Resources\Drawable\wheelchair_assigned.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\wheelchair_available.png">
+      <Link>Resources\Drawable\wheelchair_available.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\wheelchair_badge_selected.png">
+      <Link>Resources\Drawable\wheelchair_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\wheelchair_badge.png">
+      <Link>Resources\Drawable\wheelchair_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\white_button.xml">
+      <Link>Resources\Drawable\white_button.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\WindowDisplay.xml">
+      <Link>Resources\Drawable\WindowDisplay.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Drawable\yellow_vehicle_medaillon_icon.xml">
+      <Link>Resources\Drawable\yellow_vehicle_medaillon_icon.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar\tutorial_screen01.png">
+      <Link>Resources\drawable-ar\tutorial_screen01.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar\tutorial_screen02.png">
+      <Link>Resources\drawable-ar\tutorial_screen02.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar\tutorial_screen03.png">
+      <Link>Resources\drawable-ar\tutorial_screen03.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar\tutorial_screen04.png">
+      <Link>Resources\drawable-ar\tutorial_screen04.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar\tutorial_screen05.png">
+      <Link>Resources\drawable-ar\tutorial_screen05.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar\tutorial_screen06.png">
+      <Link>Resources\drawable-ar\tutorial_screen06.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar\tutorial_screen07.png">
+      <Link>Resources\drawable-ar\tutorial_screen07.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar\tutorial_screen08.png">
+      <Link>Resources\drawable-ar\tutorial_screen08.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar-xhdpi\tutorial_screen01.png">
+      <Link>Resources\drawable-ar-xhdpi\tutorial_screen01.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar-xhdpi\tutorial_screen02.png">
+      <Link>Resources\drawable-ar-xhdpi\tutorial_screen02.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar-xhdpi\tutorial_screen03.png">
+      <Link>Resources\drawable-ar-xhdpi\tutorial_screen03.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar-xhdpi\tutorial_screen04.png">
+      <Link>Resources\drawable-ar-xhdpi\tutorial_screen04.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar-xhdpi\tutorial_screen05.png">
+      <Link>Resources\drawable-ar-xhdpi\tutorial_screen05.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar-xhdpi\tutorial_screen06.png">
+      <Link>Resources\drawable-ar-xhdpi\tutorial_screen06.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar-xhdpi\tutorial_screen07.png">
+      <Link>Resources\drawable-ar-xhdpi\tutorial_screen07.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ar-xhdpi\tutorial_screen08.png">
+      <Link>Resources\drawable-ar-xhdpi\tutorial_screen08.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-hdpi\splash.9.png">
+      <Link>Resources\drawable-hdpi\splash.9.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-ldpi\splash.9.png">
+      <Link>Resources\drawable-ldpi\splash.9.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-mdpi\nearby_oriented_available.png">
+      <Link>Resources\drawable-mdpi\nearby_oriented_available.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-mdpi\nearby_oriented_passenger.png">
+      <Link>Resources\drawable-mdpi\nearby_oriented_passenger.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-mdpi\splash.9.png">
+      <Link>Resources\drawable-mdpi\splash.9.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\account.png">
+      <Link>Resources\drawable-xhdpi\account.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\active.png">
+      <Link>Resources\drawable-xhdpi\active.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\add_list.png">
+      <Link>Resources\drawable-xhdpi\add_list.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\airport.png">
+      <Link>Resources\drawable-xhdpi\airport.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\amex.png">
+      <Link>Resources\drawable-xhdpi\amex.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\apartment.png">
+      <Link>Resources\drawable-xhdpi\apartment.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\apc_logo_menu.png">
+      <Link>Resources\drawable-xhdpi\apc_logo_menu.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\backPickupDestination.png">
+      <Link>Resources\drawable-xhdpi\backPickupDestination.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\baggage.png">
+      <Link>Resources\drawable-xhdpi\baggage.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\blackcar_badge_selected.png">
+      <Link>Resources\drawable-xhdpi\blackcar_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\blackcar_badge.png">
+      <Link>Resources\drawable-xhdpi\blackcar_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\blackcar_no_badge_selected.png">
+      <Link>Resources\drawable-xhdpi\blackcar_no_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\blackcar_no_badge.png">
+      <Link>Resources\drawable-xhdpi\blackcar_no_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\blank_bottom.9.png">
+      <Link>Resources\drawable-xhdpi\blank_bottom.9.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\bookLaterIcon.png">
+      <Link>Resources\drawable-xhdpi\bookLaterIcon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\cancel.png">
+      <Link>Resources\drawable-xhdpi\cancel.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\cancelled.png">
+      <Link>Resources\drawable-xhdpi\cancelled.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\chargetype.png">
+      <Link>Resources\drawable-xhdpi\chargetype.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\checked_custom.png">
+      <Link>Resources\drawable-xhdpi\checked_custom.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\close_tutorial_button.png">
+      <Link>Resources\drawable-xhdpi\close_tutorial_button.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\closeButton.png">
+      <Link>Resources\drawable-xhdpi\closeButton.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\cluster_blackcar.png">
+      <Link>Resources\drawable-xhdpi\cluster_blackcar.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\cluster_suv.png">
+      <Link>Resources\drawable-xhdpi\cluster_suv.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\cluster_taxi.png">
+      <Link>Resources\drawable-xhdpi\cluster_taxi.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\cluster_wheelchair.png">
+      <Link>Resources\drawable-xhdpi\cluster_wheelchair.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\completed.png">
+      <Link>Resources\drawable-xhdpi\completed.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\credit_card_generic.png">
+      <Link>Resources\drawable-xhdpi\credit_card_generic.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\delete_card_btn.png">
+      <Link>Resources\drawable-xhdpi\delete_card_btn.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\destination_icon.png">
+      <Link>Resources\drawable-xhdpi\destination_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\destination_small_icon_pressed.png">
+      <Link>Resources\drawable-xhdpi\destination_small_icon_pressed.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\destination_small_icon.png">
+      <Link>Resources\drawable-xhdpi\destination_small_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\down_arrow.png">
+      <Link>Resources\drawable-xhdpi\down_arrow.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\email_cell.9.png">
+      <Link>Resources\drawable-xhdpi\email_cell.9.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\entrycode.png">
+      <Link>Resources\drawable-xhdpi\entrycode.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\erase_cross_btn.png">
+      <Link>Resources\drawable-xhdpi\erase_cross_btn.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\facebook_icon.png">
+      <Link>Resources\drawable-xhdpi\facebook_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\favorites.png">
+      <Link>Resources\drawable-xhdpi\favorites.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\flag_selected.png">
+      <Link>Resources\drawable-xhdpi\flag_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\flag.png">
+      <Link>Resources\drawable-xhdpi\flag.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\grip.png">
+      <Link>Resources\drawable-xhdpi\grip.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\hail_icon.png">
+      <Link>Resources\drawable-xhdpi\hail_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\hail_selected.png">
+      <Link>Resources\drawable-xhdpi\hail_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\hail.png">
+      <Link>Resources\drawable-xhdpi\hail.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\highlight.png">
+      <Link>Resources\drawable-xhdpi\highlight.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\history.png">
+      <Link>Resources\drawable-xhdpi\history.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\later_icon_pressed.png">
+      <Link>Resources\drawable-xhdpi\later_icon_pressed.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\later_icon.png">
+      <Link>Resources\drawable-xhdpi\later_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\location_icon_pressed.png">
+      <Link>Resources\drawable-xhdpi\location_icon_pressed.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\location_icon.png">
+      <Link>Resources\drawable-xhdpi\location_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\location_info.png">
+      <Link>Resources\drawable-xhdpi\location_info.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\Logo.png">
+      <Link>Resources\drawable-xhdpi\Logo.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\loupe.png">
+      <Link>Resources\drawable-xhdpi\loupe.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\main_btn_selected.9.png">
+      <Link>Resources\drawable-xhdpi\main_btn_selected.9.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\main_settings.png">
+      <Link>Resources\drawable-xhdpi\main_settings.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\map_bigicon_background.png">
+      <Link>Resources\drawable-xhdpi\map_bigicon_background.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\map_smallicon_background.png">
+      <Link>Resources\drawable-xhdpi\map_smallicon_background.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\mastercard.png">
+      <Link>Resources\drawable-xhdpi\mastercard.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\menu_icon_pressed.png">
+      <Link>Resources\drawable-xhdpi\menu_icon_pressed.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\menu_icon.png">
+      <Link>Resources\drawable-xhdpi\menu_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\message.png">
+      <Link>Resources\drawable-xhdpi\message.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\nearby_blackcar.png">
+      <Link>Resources\drawable-xhdpi\nearby_blackcar.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\nearby_oriented_available.png">
+      <Link>Resources\drawable-xhdpi\nearby_oriented_available.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\nearby_oriented_passenger.png">
+      <Link>Resources\drawable-xhdpi\nearby_oriented_passenger.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\nearby_suv.png">
+      <Link>Resources\drawable-xhdpi\nearby_suv.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\nearby_taxi.png">
+      <Link>Resources\drawable-xhdpi\nearby_taxi.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\nearby_wheelchair.png">
+      <Link>Resources\drawable-xhdpi\nearby_wheelchair.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\notification_icon.png">
+      <Link>Resources\drawable-xhdpi\notification_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\number_icon.png">
+      <Link>Resources\drawable-xhdpi\number_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\passengers.png">
+      <Link>Resources\drawable-xhdpi\passengers.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\password_cell.9.png">
+      <Link>Resources\drawable-xhdpi\password_cell.9.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\paypal_icon.png">
+      <Link>Resources\drawable-xhdpi\paypal_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\paypal.png">
+      <Link>Resources\drawable-xhdpi\paypal.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\phone.png">
+      <Link>Resources\drawable-xhdpi\phone.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\places.png">
+      <Link>Resources\drawable-xhdpi\places.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\promo.png">
+      <Link>Resources\drawable-xhdpi\promo.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\right_arrow.png">
+      <Link>Resources\drawable-xhdpi\right_arrow.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\scheduled.png">
+      <Link>Resources\drawable-xhdpi\scheduled.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\server_button.png">
+      <Link>Resources\drawable-xhdpi\server_button.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\splash.9.png">
+      <Link>Resources\drawable-xhdpi\splash.9.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\star_selected.png">
+      <Link>Resources\drawable-xhdpi\star_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\star_unselected.png">
+      <Link>Resources\drawable-xhdpi\star_unselected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\status_gradient.png">
+      <Link>Resources\drawable-xhdpi\status_gradient.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\suv_badge_selected.png">
+      <Link>Resources\drawable-xhdpi\suv_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\suv_badge.png">
+      <Link>Resources\drawable-xhdpi\suv_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\suv_no_badge_selected.png">
+      <Link>Resources\drawable-xhdpi\suv_no_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\suv_no_badge.png">
+      <Link>Resources\drawable-xhdpi\suv_no_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\target_selected.png">
+      <Link>Resources\drawable-xhdpi\target_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\taxi_badge_selected.png">
+      <Link>Resources\drawable-xhdpi\taxi_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\taxi_badge.png">
+      <Link>Resources\drawable-xhdpi\taxi_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\taxi_icon.png">
+      <Link>Resources\drawable-xhdpi\taxi_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\taxi_no_badge_selected.png">
+      <Link>Resources\drawable-xhdpi\taxi_no_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\taxi_no_badge.png">
+      <Link>Resources\drawable-xhdpi\taxi_no_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\taxi_progress.png">
+      <Link>Resources\drawable-xhdpi\taxi_progress.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\telephone.png">
+      <Link>Resources\drawable-xhdpi\telephone.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\th_logo_small.png">
+      <Link>Resources\drawable-xhdpi\th_logo_small.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\th_logo.png">
+      <Link>Resources\drawable-xhdpi\th_logo.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\time.png">
+      <Link>Resources\drawable-xhdpi\time.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\train.png">
+      <Link>Resources\drawable-xhdpi\train.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\tutorial_screen01.png">
+      <Link>Resources\drawable-xhdpi\tutorial_screen01.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\tutorial_screen02.png">
+      <Link>Resources\drawable-xhdpi\tutorial_screen02.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\tutorial_screen03.png">
+      <Link>Resources\drawable-xhdpi\tutorial_screen03.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\tutorial_screen04.png">
+      <Link>Resources\drawable-xhdpi\tutorial_screen04.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\tutorial_screen05.png">
+      <Link>Resources\drawable-xhdpi\tutorial_screen05.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\tutorial_screen06.png">
+      <Link>Resources\drawable-xhdpi\tutorial_screen06.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\tutorial_screen07.png">
+      <Link>Resources\drawable-xhdpi\tutorial_screen07.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\tutorial_screen08.png">
+      <Link>Resources\drawable-xhdpi\tutorial_screen08.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\tutorial_screen09.png">
+      <Link>Resources\drawable-xhdpi\tutorial_screen09.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\tutorial_screen10.png">
+      <Link>Resources\drawable-xhdpi\tutorial_screen10.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\twitter_icon.png">
+      <Link>Resources\drawable-xhdpi\twitter_icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\unchecked_custom.png">
+      <Link>Resources\drawable-xhdpi\unchecked_custom.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\vehicle.png">
+      <Link>Resources\drawable-xhdpi\vehicle.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\visa.png">
+      <Link>Resources\drawable-xhdpi\visa.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\wheelchair_assigned.png">
+      <Link>Resources\drawable-xhdpi\wheelchair_assigned.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\wheelchair_available.png">
+      <Link>Resources\drawable-xhdpi\wheelchair_available.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\wheelchair_badge_selected.png">
+      <Link>Resources\drawable-xhdpi\wheelchair_badge_selected.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xhdpi\wheelchair_badge.png">
+      <Link>Resources\drawable-xhdpi\wheelchair_badge.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xxhdpi\airport.png">
+      <Link>Resources\drawable-xxhdpi\airport.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xxhdpi\nearby_oriented_available.png">
+      <Link>Resources\drawable-xxhdpi\nearby_oriented_available.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xxhdpi\nearby_oriented_passenger.png">
+      <Link>Resources\drawable-xxhdpi\nearby_oriented_passenger.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xxhdpi\phone.png">
+      <Link>Resources\drawable-xxhdpi\phone.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xxhdpi\splash.9.png">
+      <Link>Resources\drawable-xxhdpi\splash.9.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\drawable-xxhdpi\train.png">
+      <Link>Resources\drawable-xxhdpi\train.png</Link>
+    </AndroidResource>
   </ItemGroup>
 </Project>
