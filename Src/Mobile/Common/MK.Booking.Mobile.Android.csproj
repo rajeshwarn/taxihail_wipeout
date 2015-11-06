@@ -242,6 +242,7 @@
     <Compile Include="ViewModels\Callbox\CallboxOrderListViewModel.cs" />
     <Compile Include="ViewModels\Callbox\CallboxOrderViewModel.cs" />
     <Compile Include="Models\PhoneNumberModel.cs" />
+    <Compile Include="ViewModels\Callbox\CreateOrderInfo.cs" />
     <Compile Include="ViewModels\EditAutoTipViewModel.cs" />
     <Compile Include="ViewModels\enum\ColorEnum.cs" />
     <Compile Include="ViewModels\ExtendedSplashScreenViewModel.cs" />

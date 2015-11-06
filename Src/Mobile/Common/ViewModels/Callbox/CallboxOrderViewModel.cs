@@ -65,37 +65,5 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get { return !_bookingService.IsCallboxStatusCompleted(OrderStatus.IBSStatusId); }
         }
-
-        public ColorEnum TextColor
-        {
-            get
-            {
-				if (OrderStatus.IBSStatusId != null)
-                {
-					switch (OrderStatus.IBSStatusId)
-                    {
-                        case "wosWAITING":
-                            return ColorEnum.LightGray;
-                        case "wosARRIVED":
-                            return ColorEnum.Green;
-                        case "wosASSIGNED":
-                            return ColorEnum.Black;
-                    }
-                }
-                return ColorEnum.LightGray;
-            }
-        }
-
-        public int TextSize
-        {
-            get
-            {
-				if (OrderStatus.IBSStatusId != null && OrderStatus.IBSStatusId.Equals("wosARRIVED"))
-                {
-                    return 25;
-                }
-                return 18;
-            }
-        }
     }
 }  

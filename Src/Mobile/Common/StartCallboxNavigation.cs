@@ -1,21 +1,16 @@
 using System;
 using System.Linq;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class StartCallboxNavigation:
-			MvxNavigatingObject,
-			IMvxAppStart
+	public class StartCallboxNavigation: MvxNavigatingObject, IMvxAppStart
 	{
 		public void Start(object hint)
 		{
@@ -28,11 +23,13 @@ namespace apcurium.MK.Booking.Mobile
 
 				var activeOrderStatusDetails = accountService.GetActiveOrdersStatus();
 
-				if (accountService.CurrentAccount == null)
+			    var bookingService = Mvx.Resolve<IBookingService>();
+
+                if (accountService.CurrentAccount == null)
 				{
 					ShowViewModel<CallboxLoginViewModel>();
 				}
-				else if (activeOrderStatusDetails != null && activeOrderStatusDetails.Any(c => TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
+				else if (activeOrderStatusDetails != null && activeOrderStatusDetails.Any(c => bookingService.IsCallboxStatusActive(c.IBSStatusId)))
 				{
 					ShowViewModel<CallboxOrderListViewModel>();
 				}
@@ -41,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile
 					ShowViewModel<CallboxCallTaxiViewModel>();
 				}
 
-				logger.LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().Data.ServiceUrl);
+				logger.LogMessage("Startup with server {0}", Mvx.Resolve<IAppSettings>().Data.ServiceUrl);
 			}
 			catch (Exception ex)
 			{

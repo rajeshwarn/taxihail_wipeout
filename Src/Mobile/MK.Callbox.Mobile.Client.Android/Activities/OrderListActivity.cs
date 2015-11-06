@@ -111,7 +111,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 			base.OnDestroy();
 			ViewModel.OrderCompleted -= ViewModelOnOrderCompleted; 
 			ViewModel.NoMoreTaxiWaiting -= ViewModelOnNoMoreTaxiWaiting; 
-			ViewModel.UnsubscribeToken();
+			ViewModel.Unsubscribe();
 		}
 	}
 }
