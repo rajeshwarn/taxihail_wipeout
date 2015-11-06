@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             var countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Settings.Country));
 
-            if (PhoneHelper.IsNumberPossible(countryCode, request.Settings.Phone))
+            if (PhoneHelper.IsPossibleNumber(countryCode, request.Settings.Phone))
             {
                 request.Settings.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Settings.Phone);
             }
@@ -278,6 +278,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             var chargeTypeIbs = string.Empty;
+            var chargeTypeEmail = string.Empty;
             var chargeTypeKey = ChargeTypes.GetList()
                     .Where(x => x.Id == request.Settings.ChargeTypeId)
                     .Select(x => x.Display)
@@ -290,6 +291,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 // this must be localized with the priceformat to be localized in the language of the company
                 // because it is sent to the driver
                 chargeTypeIbs = _resources.Get(chargeTypeKey, _serverSettings.ServerData.PriceFormat);
+
+                chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
             // Get Vehicle Type from reference data
@@ -325,6 +328,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             orderCommand.Prompts = accountValidationResult.Prompts;
             orderCommand.PromptsLength = accountValidationResult.PromptsLength;
             orderCommand.PromotionId = promotionId;
+            orderCommand.ChargeTypeEmail = chargeTypeEmail;
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 

@@ -79,6 +79,6 @@ namespace apcurium.MK.Booking.Events
 
         public ListItem[] ReferenceDataCompanyList { get; set; }
 
-        public bool IsHailRequest { get; set; }
+        public string ChargeTypeEmail { get; set; }
     }
 }

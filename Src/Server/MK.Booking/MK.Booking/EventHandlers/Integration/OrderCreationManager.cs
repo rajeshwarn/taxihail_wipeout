@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection.Emit;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Database;
@@ -9,6 +10,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
@@ -72,7 +74,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     @event.Settings.Name, @event.Settings.Phone, @event.Settings.Passengers, @event.Settings.VehicleTypeId,
                     @event.IbsInformationNote, @event.PickupDate, @event.Prompts, @event.PromptsLength,
                     @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
-                    @event.TipIncentive, @event.IsHailRequest);
+                    @event.TipIncentive);
 
                 ibsOrderId = result.CreateOrderResult;
             }
@@ -80,7 +82,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var success = SendOrderCreationCommands(@event.SourceId, ibsOrderId, @event.IsPrepaid, @event.ClientLanguageCode);
             if (success)
             {
-                SendConfirmationEmail(ibsOrderId.Value, @event);
+                SendConfirmationEmail(ibsOrderId.Value, @event.AccountId, @event.Settings, @event.ChargeTypeEmail,
+                    @event.PickupAddress, @event.DropOffAddress, @event.PickupDate, @event.UserNote, @event.ClientLanguageCode);
 
                 ApplyPromotionIfNecessary(@event);
             }
@@ -118,7 +121,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 orderInfo.Request.ReferenceDataCompanyList.ToList(), orderInfo.Request.Market, orderInfo.Request.Settings.ChargeTypeId,
                 orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive);
 
-            SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, true, orderInfo.Request.ClientLanguageCode);
+            var success = SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, true, orderInfo.Request.ClientLanguageCode);
+            if (success)
+            {
+                SendConfirmationEmail(result.CreateOrderResult.Value, orderInfo.AccountId, orderInfo.Request.Settings, orderInfo.ChargeTypeEmail,
+                    orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.PickupDate, orderInfo.Request.UserNote, orderInfo.Request.ClientLanguageCode);
+            }
 
             _ibsCreateOrderService.UpdateOrderStatusAsync(@event.SourceId);
         }
@@ -176,15 +184,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        public void SendConfirmationEmail(int ibsOrderId, OrderCreated @event)
+        public void SendConfirmationEmail(int ibsOrderId, Guid accountId, BookingSettings bookingSettings, string chargeTypeEmail,
+            Address pickupAddress, Address dropOffAddress, DateTime pickupDate, string userNote, string clientLanguage)
         {
-            var chargeTypeKey = ChargeTypes.GetList()
-                    .Where(x => x.Id == @event.Settings.ChargeTypeId)
-                    .Select(x => x.Display)
-                    .FirstOrDefault();
-
-            var accountDetail = _accountDao.FindById(@event.AccountId);
-            var chargeTypeEmail = _resources.Get(chargeTypeKey, @event.ClientLanguageCode);
+            var accountDetail = _accountDao.FindById(accountId);
 
             var emailCommand = new SendBookingConfirmationEmail
             {
@@ -192,24 +195,24 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 EmailAddress = accountDetail.Email,
                 Settings = new SendBookingConfirmationEmail.BookingSettings
                 {
-                    ChargeType = @event.Settings.ChargeType,
-                    LargeBags = @event.Settings.LargeBags,
-                    Name = @event.Settings.Name,
-                    Passengers = @event.Settings.Passengers,
-                    Phone = @event.Settings.Phone,
-                    VehicleType = @event.Settings.VehicleType
+                    ChargeType = bookingSettings.ChargeType,
+                    LargeBags = bookingSettings.LargeBags,
+                    Name = bookingSettings.Name,
+                    Passengers = bookingSettings.Passengers,
+                    Phone = bookingSettings.Phone,
+                    VehicleType = bookingSettings.VehicleType
                 },
-                ClientLanguageCode = @event.ClientLanguageCode,
-                DropOffAddress = @event.DropOffAddress,
-                Note = @event.UserNote,
-                PickupAddress = @event.PickupAddress,
-                PickupDate = @event.PickupDate
+                ClientLanguageCode = clientLanguage,
+                DropOffAddress = dropOffAddress,
+                Note = userNote,
+                PickupAddress = pickupAddress,
+                PickupDate = pickupDate
             };
 
             emailCommand.IBSOrderId = ibsOrderId;
             emailCommand.EmailAddress = accountDetail.Email;
             emailCommand.Settings.ChargeType = chargeTypeEmail;
-            emailCommand.Settings.VehicleType = @event.Settings.VehicleType;
+            emailCommand.Settings.VehicleType = bookingSettings.VehicleType;
 
             _commandBus.Send(emailCommand);
         }
