@@ -27,6 +27,8 @@ using ServiceStack.WebHost.Endpoints;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 using apcurium.MK.Common.Configuration;
+using ServiceStack.Common;
+using ServiceStack.ServiceHost;
 
 #endregion
 
@@ -112,7 +114,7 @@ namespace apcurium.MK.Web
                     {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
                 },
 
-				EnableFeatures = (ServiceStack.ServiceHost.Feature)((int)ServiceStack.ServiceHost.Feature.All - (int)ServiceStack.ServiceHost.Feature.Metadata)
+				EnableFeatures = Feature.All.Remove(Feature.Metadata)
             });
 
 
