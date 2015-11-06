@@ -1,16 +1,20 @@
-﻿using System;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 
-namespace apcurium.MK.Booking.Api.Contract.Requests.Client
+#endregion
+
+namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [Route("/client/hail", "POST")]
-    public class HailRequest
+    [Route("/account/orders", "POST")]
+    public class CreateOrderRequest : BaseDto
     {
-        public HailRequest()
+        public CreateOrderRequest()
         {
             PickupAddress = new Address();
             DropOffAddress = new Address();

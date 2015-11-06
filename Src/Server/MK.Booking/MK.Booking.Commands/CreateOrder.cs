@@ -90,5 +90,7 @@ namespace apcurium.MK.Booking.Commands
         public ListItem[] ReferenceDataCompanyList { get; set; }
 
         public int? IbsOrderId { get; set; }
+
+        public string ChargeTypeEmail { get; set; }
     }
 }

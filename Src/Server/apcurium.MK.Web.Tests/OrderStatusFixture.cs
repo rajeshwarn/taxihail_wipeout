@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
 
             _orderId = Guid.NewGuid();
             var sut = new OrderServiceClient(BaseUrl, authResponse.SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
             {
                 Id = _orderId,
                 PickupAddress = TestAddresses.GetAddress1(),
@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
                     NumberOfTaxi = 1,
                     Name = "Joe Smith"
                 },
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Distance = 3,
                     Price = 10
