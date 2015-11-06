@@ -311,10 +311,10 @@ namespace MK.DeploymentService.Mobile
 			return result;
 		}
 
-		void Customize (string sourceDirectory, DeploymentJob job)
+		private void Customize (string sourceDirectory, DeploymentJob job)
 		{
-			Company company = job.Company;
-			CustomerPortal.Web.Entities.Environment taxiHailEnv = job.Server;
+			var company = job.Company;
+			var taxiHailEnv = job.Server;
 			UpdateJob ("Service Url : " + job.ServerUrl);
 
 			_logger.DebugFormat ("Build Config Tool Customization");
@@ -322,18 +322,24 @@ namespace MK.DeploymentService.Mobile
 			 
 			var sln = string.Format ("{0}/ConfigTool.iOS.sln", Path.Combine (sourceDirectory, "Src", "ConfigTool"));
 			var projectName = "NinePatchMaker.Lib";
-			if (_builder.ProjectIsInSolution (sln, projectName)) {
+			if (_builder.ProjectIsInSolution (sln, projectName))
+            {
 				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Release");
 				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
-			} else {
+			}
+            else
+            {
 				UpdateJob("Skipping NinePatch.Lib because it does not exist on this version");
 			}
 
 			projectName = "NinePatchMaker";
-			if (_builder.ProjectIsInSolution (sln, projectName)) {
+			if (_builder.ProjectIsInSolution (sln, projectName))
+            {
 				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Release");
 				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
-			} else {
+			}
+            else
+            {
 				UpdateJob ("Skipping NinePatch because it does not exist on this version");
 			}
 			
@@ -346,13 +352,15 @@ namespace MK.DeploymentService.Mobile
 			var workingDirectory = Path.Combine (sourceDirectory, "Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Release");
 			var configToolRun = ProcessEx.GetProcess ("mono", string.Format ("apcurium.MK.Booking.ConfigTool.exe {0} {1}", company.CompanyKey, job.ServerUrl), workingDirectory);
 
-			using (var exeProcess = Process.Start (configToolRun)) {
-				var output = ProcessEx.GetOutput (exeProcess);
-				if (exeProcess.ExitCode > 0) {
-					throw new Exception ("Error during customization, " + output);
-				}
-				UpdateJob ("Customize Successful");
-			}
+            using (var exeProcess = Process.Start(configToolRun))
+            {
+                var output = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess != null && exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during customization, " + output);
+                }
+                UpdateJob("Customize Successful");
+            }
 
 			UpdateJob("Customization Finished");
 			UpdateJob ("Run Localization tool for Android");
@@ -366,13 +374,15 @@ namespace MK.DeploymentService.Mobile
 				Arguments = "output/LocalizationTool.exe -t=android -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/Android/Resources/Values/String.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
 			};
 
-			using (var exeProcess = Process.Start (localizationToolRun)) {
-				var outputAndroid = ProcessEx.GetOutput (exeProcess);
-				if (exeProcess.ExitCode > 0) {
-					throw new Exception ("Error during localization tool for android");
-				}
-				UpdateJob (outputAndroid);
-			}
+            using (var exeProcess = Process.Start(localizationToolRun))
+            {
+                var outputAndroid = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess != null && exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during localization tool for android");
+                }
+                UpdateJob(outputAndroid);
+            }
 
 			UpdateJob ("Run Localization tool for Android Finished");
 
@@ -391,7 +401,7 @@ namespace MK.DeploymentService.Mobile
             using (var exeProcess = Process.Start(localizationToolRun))
             {
 				var outputiOS = ProcessEx.GetOutput (exeProcess);
-                if (exeProcess.ExitCode > 0)
+                if (exeProcess != null && exeProcess.ExitCode > 0)
                 {
                     throw new Exception("Error during localization tool for iOS");
                 }
@@ -400,7 +410,36 @@ namespace MK.DeploymentService.Mobile
 
 			UpdateJob("Run Localization tool for iOS Finished");
 
-		}
+
+		    if (!job.CallBox)
+		    {
+		        return;
+		    }
+
+            UpdateJob("Run Localization tool for Callbox");
+
+            localizationToolRun = new ProcessStartInfo
+            {
+                FileName = "mono",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                WorkingDirectory = Path.Combine(sourceDirectory, "Src", "LocalizationTool"),
+                Arguments = "output/LocalizationTool.exe -t=android -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/MK.Callbox.Mobile.Client.Android/Resources/Values/String.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
+            };
+
+            using (var exeProcess = Process.Start(localizationToolRun))
+            {
+                var outputCallbox = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess != null && exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during localization tool for callbox");
+                }
+                UpdateJob(outputCallbox);
+            }
+
+            UpdateJob("Run Localization tool for Callbox Finished");
+        }
 
 		private void BuildMobile (string sourceDirectory)
 		{			
