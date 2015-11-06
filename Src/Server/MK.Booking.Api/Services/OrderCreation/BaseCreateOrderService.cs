@@ -120,8 +120,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             // Find market
-            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            market = market.HasValue() ? market : null;
+            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
 
             createReportOrder.Market = market;
 

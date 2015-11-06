@@ -12,7 +12,7 @@ namespace CustomerPortal.Contract.Resources
         }
 
         [Required]
-        [Display(Name = "Number of Offers Per Cycle (N)", Description = "A value of 0 means we are not handling the dispatch ourselves")]
+        [Display(Name = "Number of Offers Per Cycle (N)", Description = "A value of 0 means that IBS is handling the dispatch")]
         [Range(0, 10)]
         public int NumberOfOffersPerCycle { get; set; }
 

@@ -1,11 +1,9 @@
 ﻿using System;
-using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -19,11 +17,9 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
-using CMTPayment.Pair;
 using CMTServices;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Jobs
 {
@@ -269,8 +265,8 @@ namespace apcurium.MK.Booking.Jobs
 
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
-            var hasBailed = orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned &&
-                           ibsOrderInfo.IsWaitingToBeAssigned;
+            var hasBailed = orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
+                && (ibsOrderInfo.IsWaitingToBeAssigned || ibsOrderInfo.IsCanceled);
 
             var ibsStatusId = orderStatusDetail.IBSStatusId;
            
@@ -294,8 +290,14 @@ namespace apcurium.MK.Booking.Jobs
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
             var wasProcessingOrderOrWaitingForDiver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
+
             // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
             orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned, hasBailed);
+
+            if (hasBailed && true)
+            {
+                // TODO: do the dispatcher dance (again)
+            }
         }
 
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
