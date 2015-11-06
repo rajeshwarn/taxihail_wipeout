@@ -658,6 +658,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f070295
 			public const int CallDriverUsingProxyPrompt = 2131165845;
 			
+			// aapt resource value: 0x7f070306
+			public const int Callbox_ApplicationName = 2131165958;
+			
 			// aapt resource value: 0x7f07000c
 			public const int Callbox_noPassengerName = 2131165196;
 			

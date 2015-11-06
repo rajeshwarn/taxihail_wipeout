@@ -746,3 +746,4 @@
 "LinkForApplicationStoreAbsentText"="Le lien pour naviger vers la page l'application n'a pas été configuré";
 "ServiceErrorUnauthorized"="Votre session est expirée. Veuillez vous authentifier a nouveau.";
 "ServiceErrorCallTitle"="Erreur serveur";
+"Callbox.ApplicationName"="TaxiHail Callbox";

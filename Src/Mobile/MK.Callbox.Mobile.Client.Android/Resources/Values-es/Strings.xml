@@ -774,4 +774,5 @@
   <string name="RateMobileApplicationNever">Don\'t ask again</string>
   <string name="LinkForApplicationStoreAbsentTitle">URL is missing</string>
   <string name="LinkForApplicationStoreAbsentText">URL to store page was not configured</string>
+  <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
 </resources>

@@ -745,3 +745,4 @@
 "LinkForApplicationStoreAbsentText"="URL to store page was not configured";
 "ServiceErrorUnauthorized"="Your session has expired, please login again.";
 "ServiceErrorCallTitle"="Server error";
+"Callbox.ApplicationName"="TaxiHail Callbox";

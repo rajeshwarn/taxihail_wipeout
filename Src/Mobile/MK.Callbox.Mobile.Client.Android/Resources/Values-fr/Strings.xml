@@ -774,4 +774,5 @@
   <string name="RateMobileApplicationNever">Ne plus demander</string>
   <string name="LinkForApplicationStoreAbsentTitle">Le lien est absent</string>
   <string name="LinkForApplicationStoreAbsentText">Le lien pour naviger vers la page l\'application n\'a pas été configuré</string>
+  <string name="Callbox.ApplicationName">TaxiHail Callbox</string>
 </resources>
