@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             PaymentHelper = new CreateOrderPaymentHelper(serverSettings, commandBus, paymentService, orderPaymentDao, payPalServiceFactory);
         }
 
-        protected CreateOrder CreateOrder(CreateOrderRequest request, AccountDetail account, CreateReportOrder createReportOrder)
+        protected CreateOrder BuildCreateOrderCommand(CreateOrderRequest request, AccountDetail account, CreateReportOrder createReportOrder)
         {
             _logger.LogMessage("Create order request : " + request.ToJson());
 
@@ -317,6 +317,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             orderCommand.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
             orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
             orderCommand.CompanyName = bestAvailableCompany.CompanyName;
+            orderCommand.CompanyFleetId = bestAvailableCompany.FleetId.Value;
             orderCommand.Market = market;
             orderCommand.IsPrepaid = isPrepaid;
             orderCommand.Settings.ChargeType = chargeTypeIbs;
