@@ -343,26 +343,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 switch (e.StatusCode)
                 {
 					case (int)HttpStatusCode.Unauthorized:
-					{
-						if (e.Message == AuthFailure.AccountNotActivated.ToString ())
+                    {
+                        if (e.Message == AuthFailure.AccountNotActivated.ToString ())
 						{
 							throw new AuthException ("Account not validated", AuthFailure.AccountNotActivated, e);
 						}
-						else if(e.Message == AuthFailure.FacebookEmailAlreadyUsed.ToString())
-						{
-							throw new AuthException("Facebook Email Already Used", AuthFailure.FacebookEmailAlreadyUsed, e);
-						}
-						else
-						{
-							throw new AuthException ("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
-						}
-					}
-					case (int)HttpStatusCode.NotFound:
+
+                        if(e.Message == AuthFailure.FacebookEmailAlreadyUsed.ToString())
+                        {
+                            throw new AuthException("Facebook Email Already Used", AuthFailure.FacebookEmailAlreadyUsed, e);
+                        }
+
+                        throw new AuthException ("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
+                    }
+                    case (int)HttpStatusCode.NotFound:
 					{
 						throw new AuthException ("Invalid service url", AuthFailure.InvalidServiceUrl, e);
 					}
                 }
-                throw;
+
+                if(!Mvx.Resolve<IErrorHandler>().HandleError(e))
+                {
+                    throw;
+                }
             }
             catch (Exception e)
             {
@@ -370,8 +373,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 {
                     throw new AuthException("Account disabled", AuthFailure.AccountDisabled, e);
                 }
-                throw;
+
+                if (Mvx.Resolve<IErrorHandler>().HandleError(e))
+                {
+                    throw;
+                }
             }
+
+		    return null;
         }
 
         private void SaveCredentials (AuthenticationData authResponse)
