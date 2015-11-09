@@ -359,7 +359,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     return response.Data;
                 }
 
-				Exception pairWithManualRideLinqException = new Exception();
+				var pairWithManualRideLinqException = new Exception();
 				pairWithManualRideLinqException.Data.Add("TripInfoHttpStatusCode", response.TripInfoHttpStatusCode);
 				pairWithManualRideLinqException.Data.Add("ErrorCode", response.ErrorCode);
 				throw pairWithManualRideLinqException;

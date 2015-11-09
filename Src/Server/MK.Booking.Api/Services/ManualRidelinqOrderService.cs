@@ -318,7 +318,7 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     IsSuccessful = false,
                     Message = errorResponse != null ? errorResponse.Message : ex.ErrorMessage,
-                    //ErrorCode = errorResponse != null ? errorResponse.ResponseCode.ToString() : ex.ErrorCode
+                    ErrorCode = errorResponse != null ? errorResponse.ResponseCode.ToString() : ex.ErrorCode
                 };
             }
             catch (Exception ex)

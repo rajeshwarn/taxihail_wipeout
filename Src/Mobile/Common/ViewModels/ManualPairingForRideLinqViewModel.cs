@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         Logger.LogError(ex);
 
-						int tripInfoHttpStatusCode = (int)HttpStatusCode.BadRequest;
+						var tripInfoHttpStatusCode = (int)HttpStatusCode.BadRequest;
 						string errorCode = null;
 
 						if (ex.Data != null && ex.Data.Contains("TripInfoHttpStatusCode") && ex.Data.Contains("ErrorCode"))
