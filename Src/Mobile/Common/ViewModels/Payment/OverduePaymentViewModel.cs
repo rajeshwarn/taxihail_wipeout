@@ -56,6 +56,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
+		public bool CanShowOrderNumber
+		{
+			get
+			{
+				return Settings.ShowOrderNumber;
+			}
+		}
+
 		public ICommand SettleOverduePayment
 		{
 			get

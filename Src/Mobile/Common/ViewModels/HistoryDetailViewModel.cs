@@ -200,7 +200,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 		}
 
-        public bool ShowConfirmationTxt
+        public bool CanShowConfirmationTxt
         {
             get
             {          
