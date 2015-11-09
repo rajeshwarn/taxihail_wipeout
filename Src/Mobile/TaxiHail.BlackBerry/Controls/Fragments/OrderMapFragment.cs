@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     /*
      * PARTIAL CLASS : the other part of the code is situated in the TaxiHail.Shared Project 
     */
-    public partial class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
+    public partial class OrderMapFragment
     {
         public MapView Map { get; set;} 
 

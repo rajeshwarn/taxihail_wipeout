@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     /*
      * PARTIAL CLASS : the other part of the rest is situated in the TaxiHail.Shared Project 
     */
-    public partial class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
+    public partial class OrderMapFragment
     {
         public GoogleMap Map { get; set;}
         private Marker _pickupPin;
@@ -82,8 +82,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             CreatePins();
         }
-
-
 
 	    public OrderStatusDetail OrderStatusDetail
 	    {

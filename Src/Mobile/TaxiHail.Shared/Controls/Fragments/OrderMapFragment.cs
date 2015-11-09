@@ -37,27 +37,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     public partial class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
     {
         public TouchableMap TouchableMap { get; set;}
-
         private ImageView _pickupOverlay;
         private ImageView _destinationOverlay;
+
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
-	    private bool _bypassCameraChangeEvent;
+        private bool _bypassCameraChangeEvent;
 
-		private IEnumerable<CoordinateViewModel> _center;
-
+        private IEnumerable<CoordinateViewModel> _center;
 
         private readonly Resources _resources;
-		private readonly TaxiHailSetting _settings;
+        private readonly TaxiHailSetting _settings;
 
-		private const int MapPadding = 60;
+        private const int MapPadding = 60;
 
-		private readonly bool _showVehicleNumber;
+        private readonly bool _showVehicleNumber;
 
-	    private bool _isBookingMode;
+        private bool _isBookingMode;
 
-		private bool _lockGeocoding;
-		private TaxiLocation _taxiLocation;
-		private OrderStatusDetail _orderStatusDetail;
+        private bool _lockGeocoding;
+        private TaxiLocation _taxiLocation;
+        private OrderStatusDetail _orderStatusDetail;
 
         private void InitializeOverlayIcons()
         {
@@ -89,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-	    private Address _destinationAddress;
+        private Address _destinationAddress;
         public Address DestinationAddress
         {
             get { return _destinationAddress; }
@@ -115,30 +114,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-		public IEnumerable<CoordinateViewModel> Center
-		{
-			get { return _center; }
-			set
-			{
-				_center = value;
-				SetZoom(value); 
-			}
-		}
+        public IEnumerable<CoordinateViewModel> Center
+        {
+            get { return _center; }
+            set
+            {
+                _center = value;
+                SetZoom(value); 
+            }
+        }
 
-	    public TaxiLocation TaxiLocation
-	    {
-		    get { return _taxiLocation; }
-		    set
-		    {
-				_taxiLocation = value;
-			    UpdateTaxiLocation(value);
-		    }
-	    }
+        public TaxiLocation TaxiLocation
+        {
+            get { return _taxiLocation; }
+            set
+            {
+                _taxiLocation = value;
+                UpdateTaxiLocation(value);
+            }
+        }
 
-		private Bitmap CreateTaxiBitmap()
-		{
-			return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
-	    }
+        private Bitmap CreateTaxiBitmap()
+        {
+            return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
+        }
 
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IList<AvailableVehicle> AvailableVehicles
@@ -149,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             set
             {
-                if (_availableVehicles == null || (value != null && _availableVehicles.SequenceEqual(value)))
+                if (_availableVehicles == null || _availableVehicles.SequenceEqual(value))
                 {
                     return;
                 }
@@ -164,9 +163,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public IMvxBindingContext BindingContext { get; set; }
 
-	    public ICommand CancelAutoFollow { get; set; }
+        public ICommand CancelAutoFollow { get; set; }
 
-	    [MvxSetToNullAfterBinding]
+        [MvxSetToNullAfterBinding]
         public object DataContext
         {
             get { return BindingContext.DataContext; }
@@ -192,14 +191,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             ViewModel.UserMovedMap.Cancel();
         }
 
-
         private void OnPickupAddressChanged()
         {
             if (PickupAddress == null)
             {
                 return;
             }
-                
+
             ShowMarkers();
         }
 
@@ -209,7 +207,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 return; 
             }
-                
+
             ShowMarkers();
         }
 
