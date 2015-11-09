@@ -314,7 +314,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			settings.CustomerNumber = customerNumber;
 
 			// no need to await since we're change it locally
-			UpdateSettings (settings, CurrentAccount.Email, CurrentAccount.DefaultTipPercent);
+			UpdateSettings(settings, CurrentAccount.Email, CurrentAccount.DefaultTipPercent).FireAndForget();
 		}
 
         public Task<string> UpdatePassword (Guid accountId, string currentPassword, string newPassword)
