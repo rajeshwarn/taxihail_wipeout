@@ -5,7 +5,7 @@ using ServiceStack.ServiceHost;
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
     [Route("/order/pairing", "POST")]
-    public class PaymentPairingRequest : IReturn<PaymentPairingResponse>
+    public class CmtPaymentPairingRequest : IReturn<CmtPaymentPairingResponse>
     {
         public string PairingToken { get; set; }
         public Guid OrderUuid { get; set; }

@@ -14,7 +14,7 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
-    public class PaymentPairingService : Service
+    public class CmtPaymentPairingService : Service
     {
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
@@ -22,12 +22,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ICommandBus _commandBus;
         private readonly ILogger _logger;
         private readonly IServerSettings _serverSettings;
-        private readonly Resources.Resources _resources;
 
-        private const long DefaultTimeoutSeconds = 30;
+        // We need to wait until we get a trip info. If Cmt does not give us a timeout, use this default value.
+        private const long DefaultTimeoutSeconds = 30; 
 
 
-        public PaymentPairingService(IOrderDao orderDao, IAccountDao accountDao, ICreditCardDao creditCardDao, ILogger logger, ICommandBus commandBus, IServerSettings serverSettings)
+        public CmtPaymentPairingService(IOrderDao orderDao, IAccountDao accountDao, ICreditCardDao creditCardDao, ILogger logger, ICommandBus commandBus, IServerSettings serverSettings)
         {
             _orderDao = orderDao;
             _accountDao = accountDao;
@@ -35,8 +35,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _logger = logger;
             _commandBus = commandBus;
             _serverSettings = serverSettings;
-
-            _resources = new Resources.Resources(_serverSettings);
         }
 
         private CmtTripInfoServiceHelper GetTripInfoServiceHelper(string companyKey)
@@ -45,11 +43,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
 
-
-        public object Post(PaymentPairingRequest request)
+        /// <summary>
+        /// This endpoint is used by Cmt to send us the pairing token.
+        /// </summary>
+        public object Post(CmtPaymentPairingRequest request)
         {
             _logger.LogMessage("Pairing info received for order {0} and PairingToken {1}", request.OrderUuid, request.PairingToken??"Unknown");
-            if (Guid.Empty.Equals(request.OrderUuid) || request.PairingToken.HasValueTrimmed())
+            if (Guid.Empty == request.OrderUuid || request.PairingToken.HasValueTrimmed())
             {
                 throw new HttpError(HttpStatusCode.BadRequest, "400", "Missing required parameter");
             }
@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 AutoTipPercentage = tripInfo.AutoTipPercentage
             });
             
-            return new PaymentPairingResponse
+            return new CmtPaymentPairingResponse
             {
                 CustomerId = account.Id,
                 CustomerName =  account.Name,

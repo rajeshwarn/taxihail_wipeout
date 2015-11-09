@@ -2,7 +2,7 @@
 
 namespace apcurium.MK.Booking.Api.Contract.Resources.Payments
 {
-    public class PaymentPairingResponse
+    public class CmtPaymentPairingResponse
     {
         public Guid CustomerId { get; set; }
         public string CustomerName { get; set; }
