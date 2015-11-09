@@ -17,6 +17,8 @@ using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
 using ManualRideLinqPairingRequest = apcurium.MK.Booking.Api.Contract.Requests.Payment.ManualRideLinqPairingRequest;
+using apcurium.MK.Booking.Services;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -31,6 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly CmtMobileServiceClient _cmtMobileServiceClient;
         private readonly CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
         private readonly Resources.Resources _resources;
+		private readonly INotificationService _notificationService;
 
         public ManualRidelinqOrderService(
             ICommandBus commandBus,
@@ -38,7 +41,8 @@ namespace apcurium.MK.Booking.Api.Services
             IAccountDao accountDao,
             ICreditCardDao creditCardDao,
             IServerSettings serverSettings,
-            ILogger logger)
+            ILogger logger,
+			INotificationService notificationService)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
@@ -46,6 +50,7 @@ namespace apcurium.MK.Booking.Api.Services
             _creditCardDao = creditCardDao;
             _serverSettings = serverSettings;
             _logger = logger;
+			_notificationService = notificationService;
 
             // Since CMT will handle the payment on their ends. We do not need to know the actual company of the cab from wich we do the manual pairing.
             _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
@@ -197,6 +202,25 @@ namespace apcurium.MK.Booking.Api.Services
 				}
 				else
 				{
+					if (trip.HttpStatusCode == (int)HttpStatusCode.BadRequest)
+					{
+						switch (trip.ErrorCode)
+						{
+							case 104:
+								_notificationService.SendPush(accountId, _resources.Get("CreditCardDeclinedOnPreauthorizationErrorText", request.ClientLanguageCode), new Dictionary<string, object>());
+								break;
+
+							case 110:
+								_notificationService.SendPush(accountId, _resources.Get("CreditCardUnanbleToPreathorizeErrorText", request.ClientLanguageCode), new Dictionary<string, object>());
+								break;
+
+							case 103:
+							default:
+								_notificationService.SendPush(accountId, _resources.Get("TripUnableToPairErrorText", request.ClientLanguageCode), new Dictionary<string, object>());
+								break;
+						}
+					}
+
 					return new ManualRideLinqResponse
 					{
 						IsSuccessful = false,

@@ -916,7 +916,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private void SendPush(Guid accountId, string alert, Dictionary<string, object> data)
+        public void SendPush(Guid accountId, string alert, Dictionary<string, object> data)
         {
             using (var context = _contextFactory.Invoke())
             {
