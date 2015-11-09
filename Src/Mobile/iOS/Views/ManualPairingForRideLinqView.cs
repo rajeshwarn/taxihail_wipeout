@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				}
 			};
 
-            PairingCode2.BackButtonPressed += (object sender, EventArgs e) => 
+            PairingCode2.EditingChanged += (sender, e) =>
             {
                 if(PairingCode2.Text.Length == 0)
                 {

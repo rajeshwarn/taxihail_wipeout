@@ -546,6 +546,7 @@
 "Date"="Date";
 "ParameterButton"="Paramètres";
 "Overdue_AddNewCard"="Modifier la Carte de Crédit";
+"ServiceErrorUnauthorized"="Votre session est expirée. Veuillez vous authentifier a nouveau.";
 "LocationHistoryTitle"="Historique des positions";
 "ReceiptSent"="Facture envoyée";
 "View_RideLinqStatus"="Status";
@@ -607,6 +608,7 @@
 "LinkPayPalConfirmation"="Associer";
 "Notification_PaymentConfirmationPush"="Confirmation de paiement";
 "HistoryDetailAuthorizationLabel"="Autorisation:";
+"ServiceErrorCallTitle"="Erreur serveur";
 "OrderAirportView_BAD_AIRPORT_CODE"="Une erreur est survenue avec le fournisseur d'informations de vol.";
 "DestinationMapTitle"="Lieu de destination";
 "CreateAccountPhonePlaceHolder"="Ligne mobile";

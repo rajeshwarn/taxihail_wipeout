@@ -545,6 +545,7 @@
 "Date"="Fecha";
 "ParameterButton"="Paramétros";
 "Overdue_AddNewCard"="Actualizar Tarjeta de Crédito";
+"ServiceErrorUnauthorized"="Your session has expired, please login again.";
 "LocationHistoryTitle"="Historial de lugares";
 "ReceiptSent"="Comprobante enviado";
 "View_RideLinqStatus"="Status";
@@ -606,6 +607,7 @@
 "LinkPayPalConfirmation"="Vincular";
 "Notification_PaymentConfirmationPush"="Confirmación de pago";
 "HistoryDetailAuthorizationLabel"="Autorización";
+"ServiceErrorCallTitle"="Server error";
 "OrderAirportView_BAD_AIRPORT_CODE"="An error occurred with the flight status provider.";
 "DestinationMapTitle"="Ubicacion de destino";
 "CreateAccountPhonePlaceHolder"="Celular";
