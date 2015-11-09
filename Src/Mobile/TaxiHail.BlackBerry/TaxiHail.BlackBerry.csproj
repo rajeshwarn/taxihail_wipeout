@@ -1551,9 +1551,6 @@
     <AndroidResource Include="..\Android\Resources\Layout\View_TermsAndConditions.axml">
       <Link>Resources\Layout\View_TermsAndConditions.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_tutorial.axml">
-      <Link>Resources\Layout\View_tutorial.axml</Link>
-    </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\View_UpdatedTermsAndConditions.axml">
       <Link>Resources\Layout\View_UpdatedTermsAndConditions.axml</Link>
     </AndroidResource>
@@ -1565,6 +1562,9 @@
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\View_WaitingCarLandscape.axml">
       <Link>Resources\Layout\View_WaitingCarLandscape.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Tutorial.axml">
+      <Link>Resources\Layout\View_Tutorial.axml</Link>
     </AndroidResource>
   </ItemGroup>
 </Project>
