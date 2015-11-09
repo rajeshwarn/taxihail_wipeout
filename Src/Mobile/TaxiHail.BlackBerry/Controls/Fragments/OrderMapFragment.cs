@@ -40,17 +40,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     public class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
     {
         public MapView Map { get; set;}
-	    public TouchableMap TouchableMap { get; set;}
+        public TouchableMap TouchableMap { get; set;}
         private ImageView _pickupOverlay;
         private ImageView _destinationOverlay;
         private MarkerOptions _pickupPin;
         private MarkerOptions _destinationPin;
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
-	    private bool _bypassCameraChangeEvent;
+        private bool _bypassCameraChangeEvent;
 
-		private IEnumerable<CoordinateViewModel> _center;
+        private IEnumerable<CoordinateViewModel> _center;
 
-	    private MarkerOptions _taxiLocationPin;
+        private MarkerOptions _taxiLocationPin;
 
         private readonly List<MarkerOptions> _availableVehicleMarkers = new List<MarkerOptions> ();
 
@@ -58,30 +58,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private Sprite _hailIcon;
 
         private readonly Resources _resources;
-		private readonly TaxiHailSetting _settings;
+        private readonly TaxiHailSetting _settings;
 
         private IDictionary<string, Sprite> _vehicleIcons; 
 
-		private const int MapPadding = 60;
+        private const int MapPadding = 60;
 
-		private readonly bool _showVehicleNumber;
+        private readonly bool _showVehicleNumber;
 
-	    private bool _isBookingMode;
+        private bool _isBookingMode;
 
-		private bool _lockGeocoding;
-		private TaxiLocation _taxiLocation;
-		private OrderStatusDetail _orderStatusDetail;
+        private bool _lockGeocoding;
+        private TaxiLocation _taxiLocation;
+        private OrderStatusDetail _orderStatusDetail;
 
-		public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
+        public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
             _resources = resources;
-			_settings = settings;
-			_showVehicleNumber = settings.ShowAssignedVehicleNumberOnPin;
+            _settings = settings;
+            _showVehicleNumber = settings.ShowAssignedVehicleNumberOnPin;
 
             this.CreateBindingContext();  
-                      
+
             Map = mapFragment.Map;
-		    Map.MyLocationEnabled = true;
+            Map.MyLocationEnabled = true;
 
             _lastCenterLocation = Map.CenterCoordinate;
 
@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-	    private Address _destinationAddress;
+        private Address _destinationAddress;
         public Address DestinationAddress
         {
             get { return _destinationAddress; }
@@ -152,52 +152,52 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-		public IEnumerable<CoordinateViewModel> Center
-		{
-			get { return _center; }
-			set
-			{
-				_center = value;
-				SetZoom(value); 
-			}
-		}
+        public IEnumerable<CoordinateViewModel> Center
+        {
+            get { return _center; }
+            set
+            {
+                _center = value;
+                SetZoom(value); 
+            }
+        }
 
-	    public OrderStatusDetail OrderStatusDetail
-	    {
-		    get { return _orderStatusDetail; }
-		    set
-		    {
-			    _orderStatusDetail = value;
+        public OrderStatusDetail OrderStatusDetail
+        {
+            get { return _orderStatusDetail; }
+            set
+            {
+                _orderStatusDetail = value;
 
-			    if (value != null && _orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
-			    {
+                if (value != null && _orderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded))
+                {
                     _pickupPin.Marker.Remove();
-			    }
-		    }
-	    }
+                }
+            }
+        }
 
-	    public TaxiLocation TaxiLocation
-	    {
-		    get { return _taxiLocation; }
-		    set
-		    {
-				_taxiLocation = value;
-			    UpdateTaxiLocation(value);
-		    }
-	    }
+        public TaxiLocation TaxiLocation
+        {
+            get { return _taxiLocation; }
+            set
+            {
+                _taxiLocation = value;
+                UpdateTaxiLocation(value);
+            }
+        }
 
         // Animate Marker on the map between retrieving positions
         //TODO Not working with MapBox for now
-        private void AnimateMarkerOnMap(Sprite icon, MarkerOptions markerToUpdate, LatLng newPosition, double? compassCourse, LatLng oldPosition)
+        private void AnimateMarkerOnMap(Sprite icon, MarkerOptions markerToUpdate, LatLng newPosition, double? compassCourse, Position oldPosition)
         {
-//            markerToUpdate.InvokeIcon(icon);
-//
-//            var evaluator = new LatLngEvaluator ();
-//            var valueAnimator = ValueAnimator.OfObject (evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
-//            valueAnimator.AddUpdateListener(new MarkerAnimatorAdapter(markerToUpdate));
-//            valueAnimator.SetDuration (5000);
-//            valueAnimator.SetInterpolator(new Android.Views.Animations.LinearInterpolator());
-//            valueAnimator.Start();
+            //            markerToUpdate.InvokeIcon(icon);
+            //
+            //            var evaluator = new LatLngEvaluator ();
+            //            var valueAnimator = ValueAnimator.OfObject (evaluator, new LatLng(oldPosition.Latitude, oldPosition.Longitude), newPosition);
+            //            valueAnimator.AddUpdateListener(new MarkerAnimatorAdapter(markerToUpdate));
+            //            valueAnimator.SetDuration (5000);
+            //            valueAnimator.SetInterpolator(new Android.Views.Animations.LinearInterpolator());
+            //            valueAnimator.Start();
         }
 
         private class LatLngEvaluator : Java.Lang.Object, ITypeEvaluator
@@ -213,7 +213,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private class MarkerAnimatorAdapter : Java.Lang.Object, ValueAnimator.IAnimatorUpdateListener
         {
-            
+
             private MarkerOptions _markerOptions;
 
             public MarkerAnimatorAdapter(MarkerOptions markerOptions)
@@ -248,16 +248,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     _taxiLocationPin.Marker.Remove();
                     Map.AddMarker(_taxiLocationPin);
 
-                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new LatLng()
+                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
                         {
                             Latitude = value.Latitude.Value, 
                             Longitude = value.Longitude.Value
                         });
-                    
-					if (_showVehicleNumber)
-					{
+
+                    if (_showVehicleNumber)
+                    {
                         Map.SelectMarker(_taxiLocationPin.Marker);
-					}
+                    }
                 }
 
                 // Create Marker the first time
@@ -268,15 +268,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         var icon = ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue
                             ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_passenger, value.CompassCourse.Value))
                             : Map.SpriteFactory.FromBitmap(CreateTaxiBitmap());
-                        
+
                         var mapOptions = new MarkerOptions()
                             .InvokePosition(new LatLng(value.Latitude.Value, value.Longitude.Value))
                             .InvokeIcon(icon);
 
                         if (_showVehicleNumber)
                         {
-							var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
-							var addBottomMargin = !(ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue);
+                            var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
+                            var addBottomMargin = !(ViewModel.Settings.ShowOrientedPins && value.CompassCourse.HasValue);
                             var markerAdapter = new CustomMarkerPopupAdapter(inflater, addBottomMargin, _resources, value.Market);
                             Map.InfoWindowAdapter = markerAdapter;
                             mapOptions.InvokeTitle(value.VehicleNumber);
@@ -301,19 +301,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
 
-			// Booking is now over, so we need to clean up.
+            // Booking is now over, so we need to clean up.
             if (value == null && _taxiLocationPin != null)
             {
                 _isBookingMode = false;
                 _taxiLocationPin.Marker.Remove();
-			    _taxiLocationPin = null;
+                _taxiLocationPin = null;
             }
-	    }
+        }
 
-		private Bitmap CreateTaxiBitmap()
-		{
-			return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
-	    }
+        private Bitmap CreateTaxiBitmap()
+        {
+            return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
+        }
 
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IList<AvailableVehicle> AvailableVehicles
@@ -324,7 +324,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             set
             {
-				if (_availableVehicles == null || _availableVehicles.SequenceEqual(value))
+                if (_availableVehicles == null || _availableVehicles.SequenceEqual(value))
                 {
                     return;
                 }
@@ -339,9 +339,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public IMvxBindingContext BindingContext { get; set; }
 
-	    public ICommand CancelAutoFollow { get; set; }
+        public ICommand CancelAutoFollow { get; set; }
 
-	    [MvxSetToNullAfterBinding]
+        [MvxSetToNullAfterBinding]
         public object DataContext
         {
             get { return BindingContext.DataContext; }
@@ -372,34 +372,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var set = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
 
             TouchableMap.Surface.Touched += (sender, e) =>
-            {
-                switch (e.Action)
                 {
-                    case MotionEventActions.Down:
-                        CancelAddressSearch();
-                        break;                    
-                    case MotionEventActions.Move:                
-                        CancelAddressSearch();
-                        break;                       
-                    default:
-                        _lockGeocoding = false;
-                        break;
-                }               
-            };
+                    switch (e.Action)
+                    {
+                        case MotionEventActions.Down:
+                            CancelAddressSearch();
+                            break;                    
+                        case MotionEventActions.Move:                
+                            CancelAddressSearch();
+                            break;                       
+                        default:
+                            _lockGeocoding = false;
+                            break;
+                    }               
+                };
 
             TouchableMap.Surface.MoveBy = (deltaX, deltaY) =>
-            {
+                {
 
-                var currentLocationPoint = Map.ToScreenLocation(TouchableMap.Map.CenterCoordinate);
+                    var currentLocationPoint = Map.ToScreenLocation(TouchableMap.Map.CenterCoordinate);
 
-                TouchableMap.Map.SetCenterCoordinate(Map.FromScreenLocation(new PointF(deltaX + currentLocationPoint.X, deltaY + currentLocationPoint.Y)), false);
-            };
+                    TouchableMap.Map.SetCenterCoordinate(Map.FromScreenLocation(new PointF(deltaX + currentLocationPoint.X, deltaY + currentLocationPoint.Y)), false);
+                };
 
             TouchableMap.Surface.ZoomBy = (animate, zoomByAmount) =>
-            {
-                var zoomLevel = TouchableMap.Map.ZoomLevel + zoomByAmount;
-                if(zoomLevel< MapView.MaximumZoomLevel && zoomLevel > 0)
                 {
+                    var zoomLevel = TouchableMap.Map.ZoomLevel + zoomByAmount;
+                    if(zoomLevel< MapView.MaximumZoomLevel && zoomLevel > 0)
+                    {
                         try
                         {
                             TouchableMap.Map.SetZoomLevel(zoomLevel, animate); 
@@ -408,8 +408,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         {
                             Logger.LogError(ex);
                         }
-                }
-            };
+                    }
+                };
 
             Observable
                 .FromEventPattern<MapView.MapChangedEventArgs>(Map, "MapChanged")
@@ -417,7 +417,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(OnMapChanged)
                 .DisposeWith(_subscriptions);
-			
+
             set.Bind()
                 .For(v => v.AddressSelectionMode)
                 .To(vm => vm.AddressSelectionMode);
@@ -425,7 +425,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set.Bind()
                 .For(v => v.PickupAddress)
                 .To(vm => vm.PickupAddress);
-            
+
             set.Bind()
                 .For(v => v.DestinationAddress)
                 .To(vm => vm.DestinationAddress);
@@ -441,7 +441,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {     
             _vehicleIcons = new Dictionary<string, Sprite>();
 
-			var useCompanyColor = _settings.UseThemeColorForMapIcons;
+            var useCompanyColor = _settings.UseThemeColorForMapIcons;
             var companyColor = _resources.GetColor (Resource.Color.company_color);
 
             var red = Color.Argb(255, 255, 0, 23);
@@ -469,19 +469,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var swCoord = Map.FromScreenLocation(swPoint);
 
             var newMapBounds = new MapBounds()
-            { 
-                SouthBound = swCoord.Latitude, 
-                WestBound = swCoord.Longitude, 
-                NorthBound = neCoord.Latitude, 
-                EastBound = neCoord.Longitude
-            };
+                { 
+                    SouthBound = swCoord.Latitude, 
+                    WestBound = swCoord.Longitude, 
+                    NorthBound = neCoord.Latitude, 
+                    EastBound = neCoord.Longitude
+                };
             return newMapBounds;
         }
 
         private BoundingBox GetRegionFromMapBounds(MapBounds bounds)
-		{
+        {
             return new BoundingBox (bounds.NorthBound, bounds.EastBound, bounds.SouthBound, bounds.WestBound);
-		}
+        }
 
         private void CreatePins()
         {
@@ -490,7 +490,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _pickupPin = new MarkerOptions()
                     .InvokePosition(new LatLng(0, 0))
                     .InvokeIcon(_hailIcon);
-                
+
                 Map.AddMarker(_pickupPin);
             }     
 
@@ -510,7 +510,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 return;
             }
-                
+
             ShowMarkers();
         }
 
@@ -520,7 +520,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 return; 
             }
-                
+
             ShowMarkers();
         }
 
@@ -567,35 +567,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             else
             {
-				_destinationOverlay.Visibility = ViewStates.Gone;
-				_pickupOverlay.Visibility = ViewStates.Gone;
+                _destinationOverlay.Visibility = ViewStates.Gone;
+                _pickupOverlay.Visibility = ViewStates.Gone;
 
 
-	            if (PickupAddress.HasValidCoordinate())
-	            {
+                if (PickupAddress.HasValidCoordinate())
+                {
                     var position = new LatLng(PickupAddress.Latitude, PickupAddress.Longitude);
                     _pickupPin.InvokeIcon(_hailIcon);
                     _pickupPin.InvokePosition(GetMarkerPositionWithAnchor(position, _pickupPin.Icon));  
                     _pickupPin.Marker.Remove();
                     Map.AddMarker(_pickupPin);
-	            }
-	            else
-	            {
+                }
+                else
+                {
                     _pickupPin.Marker.Remove();
-	            }
+                }
 
-	            if (DestinationAddress.HasValidCoordinate())
-	            {
+                if (DestinationAddress.HasValidCoordinate())
+                {
                     var position = new LatLng(DestinationAddress.Latitude, DestinationAddress.Longitude);
                     _destinationPin.InvokeIcon(_destinationIcon);
                     _destinationPin.InvokePosition(GetMarkerPositionWithAnchor(position, _destinationPin.Icon)); 
                     _destinationPin.Marker.Remove();
                     Map.AddMarker(_destinationPin);
-	            }
-	            else
-	            {
+                }
+                else
+                {
                     _destinationPin.Marker.Remove();
-	            }
+                }
             }
         }
 
@@ -661,15 +661,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";
-			var logoKey = isCluster
-				? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
-				: string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
-            
-			// if it uses pin message in future - it has to use RotateImageByDegreesWithСenterCrop instead of RotateImageByDegrees
+            var logoKey = isCluster
+                ? string.Format ("cluster_{0}", vehicle.LogoName ?? defaultLogoName)
+                : string.Format ("nearby_{0}", vehicle.LogoName ?? defaultLogoName);
+
+            // if it uses pin message in future - it has to use RotateImageByDegreesWithСenterCrop instead of RotateImageByDegrees
             var icon = ViewModel.Settings.ShowOrientedPins
                 ? Map.SpriteFactory.FromBitmap(DrawHelper.RotateImageByDegreesWithСenterCrop(Resource.Drawable.nearby_oriented_available, vehicle.CompassCourse))
                 : _vehicleIcons[logoKey];
-            
+
             var vehicleMarker = new MarkerOptions()
                 .InvokePosition(new LatLng(vehicle.Latitude, vehicle.Longitude))
                 .InvokeTitle(vehicle.VehicleName)
@@ -682,7 +682,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         // Update Marker and Animate it to see it move on the map
-        private void UpdateMarker(MarkerOptions markerToUpdate, AvailableVehicle vehicle, LatLng oldPosition)
+        private void UpdateMarker(MarkerOptions markerToUpdate, AvailableVehicle vehicle, Position oldPosition)
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";
@@ -711,9 +711,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 return;
             }
 
-	        var vehicleArray = vehicles.ToArray();
+            var vehicleArray = vehicles.ToArray();
 
-			var vehicleNumbersToBeShown = vehicleArray.Select(x => x.VehicleName);
+            var vehicleNumbersToBeShown = vehicleArray.Select(x => x.VehicleName);
 
             // check for markers that needs to be removed
             var markersToRemove = _availableVehicleMarkers.Where(x => !vehicleNumbersToBeShown.Contains(x.Title)).ToList();
@@ -729,18 +729,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (existingMarkerForVehicle != null)
                 {
                     if (Math.Abs(existingMarkerForVehicle.Position.Latitude - vehicle.Latitude) < double.Epsilon 
-                      && Math.Abs(existingMarkerForVehicle.Position.Longitude - vehicle.Longitude) < double.Epsilon)
+                        && Math.Abs(existingMarkerForVehicle.Position.Longitude - vehicle.Longitude) < double.Epsilon)
                     {
                         // vehicle not updated, nothing to do
                         continue;
                     }
 
-                    var oldPosition = new LatLng()
-                    {
-                        Latitude = existingMarkerForVehicle.Position.Latitude,
-                        Longitude = existingMarkerForVehicle.Position.Longitude,
-                    };
-                    
+                    var oldPosition = new Position()
+                        {
+                            Latitude = existingMarkerForVehicle.Position.Latitude,
+                            Longitude = existingMarkerForVehicle.Position.Longitude,
+                        };
+
                     // coordinates were updated, remove and add later with new position
                     UpdateMarker(existingMarkerForVehicle, vehicle, oldPosition);
                 }
@@ -758,8 +758,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public void ChangePresentation(ChangePresentationHint hint)
         {
-			var streetLevelZoomHint = hint as ZoomToStreetLevelPresentationHint;
-			if (streetLevelZoomHint != null)
+            var streetLevelZoomHint = hint as ZoomToStreetLevelPresentationHint;
+            if (streetLevelZoomHint != null)
             {
                 // When doing this presentation change, we don't want to reverse geocode the position since we already know the address and it's already set
                 // It occurs on Android only, because of a Camera Change event
@@ -778,17 +778,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
 
-			var zoomHint = hint as ChangeZoomPresentationHint;
-			if (zoomHint != null) 
-			{
-				var newBounds = zoomHint.Bounds;
-				var currentBounds = GetMapBoundsFromProjection();
+            var zoomHint = hint as ChangeZoomPresentationHint;
+            if (zoomHint != null) 
+            {
+                var newBounds = zoomHint.Bounds;
+                var currentBounds = GetMapBoundsFromProjection();
 
-				if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
-				{
+                if (Math.Abs(currentBounds.LongitudeDelta) <= Math.Abs(newBounds.LongitudeDelta))
+                {
                     Map.SetCenterCoordinate(GetRegionFromMapBounds(newBounds).Center, true); 
-				}
-			}
+                }
+            }
 
             var centerHint = hint as CenterMapPresentationHint;
             if(centerHint != null)
@@ -797,71 +797,71 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-		private void MoveCameraTo(double lat, double lng, float zoom)
-		{
+        private void MoveCameraTo(double lat, double lng, float zoom)
+        {
             Map.SetCenterCoordinate(new LatLngZoom(new LatLng(lat, lng), zoom), true);
-		}
+        }
 
-		private void MoveCameraTo(double lat, double lng)
-		{
+        private void MoveCameraTo(double lat, double lng)
+        {
             Map.SetCenterCoordinate(new LatLng(lat, lng), true);
-		}
+        }
 
         public Func<int> OverlayOffsetProvider { get; set; }
 
-		private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
-		{
-			var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.SelectOrDefault(addresses => addresses.ToArray(), new CoordinateViewModel[0]);
+        private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
+        {
+            var coordinateViewModels = addresseesToDisplay as CoordinateViewModel[] ?? addresseesToDisplay.SelectOrDefault(addresses => addresses.ToArray(), new CoordinateViewModel[0]);
             if(!coordinateViewModels.Any())
             {
                 return;
             }
-			
-			// We should not trigger the camera change event since this is an automated camera change.
-			_bypassCameraChangeEvent = true;
 
-			if (coordinateViewModels.Length == 1)
-			{
-				var lat = coordinateViewModels[0].Coordinate.Latitude;
-				var lon = coordinateViewModels[0].Coordinate.Longitude;
+            // We should not trigger the camera change event since this is an automated camera change.
+            _bypassCameraChangeEvent = true;
 
-				if (coordinateViewModels[0].Zoom != ZoomLevel.DontChange)
-				{
-					MoveCameraTo(lat, lon, 16);
-				}
-				else
-				{
-					MoveCameraTo(lat, lon);
-				}
-				return;
-			}
+            if (coordinateViewModels.Length == 1)
+            {
+                var lat = coordinateViewModels[0].Coordinate.Latitude;
+                var lon = coordinateViewModels[0].Coordinate.Longitude;
+
+                if (coordinateViewModels[0].Zoom != ZoomLevel.DontChange)
+                {
+                    MoveCameraTo(lat, lon, 16);
+                }
+                else
+                {
+                    MoveCameraTo(lat, lon);
+                }
+                return;
+            }
 
             double northLat = 90;
             double southLat = -90;
             double eastLon = 180;
             double westLon = -180;
 
-			foreach (var item in coordinateViewModels)
-			{
-				var lat = item.Coordinate.Latitude;
-				var lon = item.Coordinate.Longitude;
-				southLat = Math.Max(lat, southLat);
-				northLat = Math.Min(lat, northLat);
-				westLon = Math.Max(lon, westLon);
-				eastLon = Math.Min(lon, eastLon);
-			}
+            foreach (var item in coordinateViewModels)
+            {
+                var lat = item.Coordinate.Latitude;
+                var lon = item.Coordinate.Longitude;
+                southLat = Math.Max(lat, southLat);
+                northLat = Math.Min(lat, northLat);
+                westLon = Math.Max(lon, westLon);
+                eastLon = Math.Min(lon, eastLon);
+            }
 
-			if ((Math.Abs(southLat - northLat) < 0.004) && (Math.Abs(westLon - eastLon) < 0.004))
-			{
-				MoveCameraTo((southLat + northLat) / 2, (westLon + eastLon) / 2, 16);
-				return;
-			}
-			
+            if ((Math.Abs(southLat - northLat) < 0.004) && (Math.Abs(westLon - eastLon) < 0.004))
+            {
+                MoveCameraTo((southLat + northLat) / 2, (westLon + eastLon) / 2, 16);
+                return;
+            }
+
             var overlayOffset = OverlayOffsetProvider != null
                 ? OverlayOffsetProvider() + _pickupOverlay.Height
                 : 0;
-            
+
             Map.SetVisibleCoordinateBounds(new CoordinateBounds(new LatLng(southLat, westLon), new LatLng(northLat, eastLon)), new RectF(40, overlayOffset, 40, 40), true);
-		}
+        }
     }
 }
