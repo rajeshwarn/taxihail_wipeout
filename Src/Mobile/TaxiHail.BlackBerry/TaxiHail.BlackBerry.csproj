@@ -165,6 +165,7 @@
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="PlatformIntegration\PushHandlerService.cs" />
+    <Compile Include="Activities\HomeActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -191,6 +192,7 @@
     <Folder Include="Resources\values-sw600dp\" />
     <Folder Include="Resources\values-fr\" />
     <Folder Include="Resources\values-v11\" />
+    <Folder Include="Activities\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="facebookandroid">

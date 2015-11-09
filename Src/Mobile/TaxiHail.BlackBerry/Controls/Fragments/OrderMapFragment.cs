@@ -42,7 +42,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     */
     public partial class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
     {
-        public MapView Map { get; set;}
+        public MapView Map { get; set;} 
+
         private MarkerOptions _pickupPin;
         private MarkerOptions _destinationPin;
 
@@ -55,7 +56,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private IDictionary<string, Sprite> _vehicleIcons; 
 
-
         public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
             _resources = resources;
@@ -66,8 +66,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             Map = mapFragment.Map;
             Map.MyLocationEnabled = true;
-
-            _lastCenterLocation = Map.CenterCoordinate;
 
             TouchableMap = mapFragment;
 
@@ -151,10 +149,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         : Map.SpriteFactory.FromBitmap(CreateTaxiBitmap());
 
                     //TODO fix to move marker as the animation are not currently working with MapBox
-                    _taxiLocationPin.Marker.Remove();
                     _taxiLocationPin.InvokeIcon(icon);
                     _taxiLocationPin.InvokePosition( new LatLng(value.Latitude.Value, value.Longitude.Value));
-                    Map.AddMarker(_taxiLocationPin);
 
                     AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new LatLng()
                         {
@@ -264,9 +260,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             Observable
                 .FromEventPattern<MapView.MapChangedEventArgs>(Map, "MapChanged")
+                .Where(arg =>
+                    {
+                        return arg.EventArgs.Change == MapView.RegionDidChange;
+                    })
                 .Throttle(TimeSpan.FromMilliseconds(500))
+                .Do(_ =>
+                    {
+                        if (!_bypassCameraChangeEvent)
+                        {
+                            ViewModel.DisableBooking();
+                        }
+                    })
                 .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(OnMapChanged)
+                .Subscribe(OnMapChanged, Logger.LogError)
                 .DisposeWith(_subscriptions);
 
             set.Bind()
@@ -438,39 +445,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             return Map.FromScreenLocation(point);
         }
 
-        private LatLng _lastCenterLocation;
         private void OnMapChanged(EventPattern<MapView.MapChangedEventArgs> e)
         {
-            var centerLocation = ((MapView)e.Sender).CenterCoordinate;
-            if (centerLocation.DistanceTo(_lastCenterLocation) > 0.1)
+            if (_bypassCameraChangeEvent)
             {
-                if (_bypassCameraChangeEvent)
-                {
-                    _bypassCameraChangeEvent = false;
-                    return;
-                }
-                else
-                {
-                    ViewModel.DisableBooking();
-                }
-
-                var bounds = GetMapBoundsFromProjection();
-                if (!_lockGeocoding)
-                {
-                    ViewModel.UserMovedMap.ExecuteIfPossible(bounds);
-                }
-
-                if (!_settings.ShowIndividualTaxiMarkerOnly)
-                {
-                    ShowAvailableVehicles(VehicleClusterHelper.Clusterize(AvailableVehicles, bounds)); 
-                }
-
-                if (TaxiLocation != null)
-                {
-                    CancelAutoFollow.ExecuteIfPossible();
-                } 
-                _lastCenterLocation = centerLocation;
+                _bypassCameraChangeEvent = false;
+                return;
             }
+
+            var bounds = GetMapBoundsFromProjection();
+            if (!_lockGeocoding)
+            {
+                ViewModel.UserMovedMap.ExecuteIfPossible(bounds);
+            }
+
+            if (!_settings.ShowIndividualTaxiMarkerOnly)
+            {
+                ShowAvailableVehicles(VehicleClusterHelper.Clusterize(AvailableVehicles, bounds)); 
+            }
+
+            if (TaxiLocation != null)
+            {
+                CancelAutoFollow.ExecuteIfPossible();
+            } 
         }
 
         private void ClearAllMarkers()
@@ -526,10 +523,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 : _vehicleIcons[logoKey];
 
             //TODO fix to move marker as the animation are not currently working with MapBox
-            markerToUpdate.Marker.Remove();
             markerToUpdate.InvokeIcon(icon);
             markerToUpdate.InvokePosition( new LatLng(vehicle.Latitude, vehicle.Longitude));
-            Map.AddMarker(markerToUpdate);
 
             AnimateMarkerOnMap(icon, markerToUpdate, new LatLng(vehicle.Latitude, vehicle.Longitude), vehicle.CompassCourse, oldPosition);
         }
@@ -673,12 +668,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 northLat = Math.Min(lat, northLat);
                 westLon = Math.Max(lon, westLon);
                 eastLon = Math.Min(lon, eastLon);
-            }
-
-            if ((Math.Abs(southLat - northLat) < 0.004) && (Math.Abs(westLon - eastLon) < 0.004))
-            {
-                MoveCameraTo((southLat + northLat) / 2, (westLon + eastLon) / 2, 16);
-                return;
             }
 
             var overlayOffset = OverlayOffsetProvider != null

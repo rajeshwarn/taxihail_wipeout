@@ -149,7 +149,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             set
             {
-				if (_availableVehicles == null || _availableVehicles.SequenceEqual(value))
+                if (_availableVehicles == null || (value != null && _availableVehicles.SequenceEqual(value)))
                 {
                     return;
                 }

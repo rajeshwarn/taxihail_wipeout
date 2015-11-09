@@ -630,12 +630,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				minLon = Math.Min(lon, minLon);
 			}
 
-			if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
-			{
-				MoveCameraTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 16);
-				return;
-			}
-
             var overlayOffset = OverlayOffsetProvider != null
                 ? OverlayOffsetProvider() + _pickupOverlay.Height
                 : 0;
