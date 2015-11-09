@@ -593,6 +593,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
                 + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
 
+            var showOrderNumber = _serverSettings.ServerData.ShowOrderNumber; 
             
             var templateData = new
             {
@@ -694,7 +695,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
                 promoCode,
-                AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion))
+                AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion)),
+                ShowOrderNumber = showOrderNumber
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
