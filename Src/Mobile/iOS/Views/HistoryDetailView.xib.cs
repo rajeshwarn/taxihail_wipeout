@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtDestination.RemoveFromSuperview();
 			}
 
-            if (!ViewModel.ShowConfirmationTxt)
+            if (!ViewModel.CanShowConfirmationTxt)
             {
                 txtOrder.RemoveFromSuperview();
                 lblOrder.RemoveFromSuperview();
