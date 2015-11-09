@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -11,8 +9,6 @@ using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Text;
 using System.Text.RegularExpressions;
-
-#endregion
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -431,12 +427,12 @@ namespace apcurium.MK.Booking.IBS.Impl
                     if (vehicleComps.Any())
                     {
                         Logger.LogMessage("Error occured while calling SaveBookOrder_12 with vehicles, is IBS up to date?");
-                        throw ex;
+                        throw;
                     }
 
-                    Logger.LogMessage("Error occured while calling SaveBookOrder_12 without vehicles, retrying with SaveBookOrder_8");
-                    Logger.LogMessage("WebService Creating IBS Order : " + JsonSerializer.SerializeToString(order, typeof(TBookOrder_8)));
-                    orderKey.OrderID = service.SaveBookOrder_8(UserNameApp, PasswordApp, order);
+                    Logger.LogMessage("Error occured while calling SaveBookOrder_12 without vehicles, retrying with SaveBookOrder_10");
+                    Logger.LogMessage("WebService Creating IBS Order : " + JsonSerializer.SerializeToString(order, typeof(TBookOrder_10)));
+                    orderKey.OrderID = service.SaveBookOrder_10(UserNameApp, PasswordApp, order);
                     Logger.LogMessage("WebService Create Order, orderid received : " + orderKey.OrderID);
                 }
             });
