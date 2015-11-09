@@ -233,267 +233,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressBar.axml">
-      <Link>Resources\Layout\Control_AddressBar.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressLine.axml">
-      <Link>Resources\Layout\Control_AddressLine.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressList.axml">
-      <Link>Resources\Layout\Control_AddressList.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressPicker.axml">
-      <Link>Resources\Layout\Control_AddressPicker.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressTextBox.axml">
-      <Link>Resources\Layout\Control_AddressTextBox.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_AppBarButton.xml">
-      <Link>Resources\Layout\Control_AppBarButton.xml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_CreditCardButton.axml">
-      <Link>Resources\Layout\Control_CreditCardButton.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_EditTextLeftImage.axml">
-      <Link>Resources\Layout\Control_EditTextLeftImage.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_EditTextNavigate.axml">
-      <Link>Resources\Layout\Control_EditTextNavigate.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_LoadingOverlay.axml">
-      <Link>Resources\Layout\Control_LoadingOverlay.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_VehicleType.xml">
-      <Link>Resources\Layout\Control_VehicleType.xml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\Control_VehicleTypeAndEstimate.xml">
-      <Link>Resources\Layout\Control_VehicleTypeAndEstimate.xml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItem.axml">
-      <Link>Resources\Layout\CountryCodeItem.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItemDropDown.axml">
-      <Link>Resources\Layout\CountryCodeItemDropDown.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItemDropDownMVX.axml">
-      <Link>Resources\Layout\CountryCodeItemDropDownMVX.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItemMVX.axml">
-      <Link>Resources\Layout\CountryCodeItemMVX.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\CreditCardListItem.axml">
-      <Link>Resources\Layout\CreditCardListItem.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\CustomAlertDialogView.axml">
-      <Link>Resources\Layout\CustomAlertDialogView.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\DialogBottom.axml">
-      <Link>Resources\Layout\DialogBottom.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\DialogCenter.axml">
-      <Link>Resources\Layout\DialogCenter.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\DialogTop.axml">
-      <Link>Resources\Layout\DialogTop.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\LabelValueCell.axml">
-      <Link>Resources\Layout\LabelValueCell.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\ListHeader.axml">
-      <Link>Resources\Layout\ListHeader.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\ListItemAutoComplete.axml">
-      <Link>Resources\Layout\ListItemAutoComplete.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\MenuItem.axml">
-      <Link>Resources\Layout\MenuItem.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\PhoneEditor.axml">
-      <Link>Resources\Layout\PhoneEditor.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\PhoneEditorBottom.axml">
-      <Link>Resources\Layout\PhoneEditorBottom.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\PromotionListItem.axml">
-      <Link>Resources\Layout\PromotionListItem.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\RatingListItem.axml">
-      <Link>Resources\Layout\RatingListItem.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SimpleListItem.axml">
-      <Link>Resources\Layout\SimpleListItem.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SimpleOrderListItem.axml">
-      <Link>Resources\Layout\SimpleOrderListItem.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SpinnerCell.axml">
-      <Link>Resources\Layout\SpinnerCell.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SpinnerCellTextRight.axml">
-      <Link>Resources\Layout\SpinnerCellTextRight.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SpinnerText.axml">
-      <Link>Resources\Layout\SpinnerText.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SpinnerTextWithImage.axml">
-      <Link>Resources\Layout\SpinnerTextWithImage.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_Appbar_BookingStatus.axml">
-      <Link>Resources\Layout\SubView_Appbar_BookingStatus.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_AppBar_DropOffSelection.axml">
-      <Link>Resources\Layout\SubView_AppBar_DropOffSelection.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_AppBar.axml">
-      <Link>Resources\Layout\SubView_AppBar.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_BookingStatus.axml">
-      <Link>Resources\Layout\SubView_BookingStatus.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_ChangeDropOffOverlay.axml">
-      <Link>Resources\Layout\SubView_ChangeDropOffOverlay.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_ContactTaxiOverlay.axml">
-      <Link>Resources\Layout\SubView_ContactTaxiOverlay.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_DropOffSelection.axml">
-      <Link>Resources\Layout\SubView_DropOffSelection.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_MainMenu.axml">
-      <Link>Resources\Layout\SubView_MainMenu.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderAirport.axml">
-      <Link>Resources\Layout\SubView_OrderAirport.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderEdit_Thriev.axml">
-      <Link>Resources\Layout\SubView_OrderEdit_Thriev.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderEdit.axml">
-      <Link>Resources\Layout\SubView_OrderEdit.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderOptions.axml">
-      <Link>Resources\Layout\SubView_OrderOptions.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderReview_Thriev.axml">
-      <Link>Resources\Layout\SubView_OrderReview_Thriev.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderReview.axml">
-      <Link>Resources\Layout\SubView_OrderReview.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\TogglableSettingsListItem.axml">
-      <Link>Resources\Layout\TogglableSettingsListItem.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\TutorialListItem.axml">
-      <Link>Resources\Layout\TutorialListItem.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\VehicleInfoWindow.axml">
-      <Link>Resources\Layout\VehicleInfoWindow.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_About.axml">
-      <Link>Resources\Layout\View_About.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_AccountConfirmation.axml">
-      <Link>Resources\Layout\View_AccountConfirmation.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_AddressPickerContainer.axml">
-      <Link>Resources\Layout\View_AddressPickerContainer.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_Book_RideSummaryPage.axml">
-      <Link>Resources\Layout\View_Book_RideSummaryPage.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_BookEditInformation_Thriev.axml">
-      <Link>Resources\Layout\View_BookEditInformation_Thriev.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_BookEditInformation.axml">
-      <Link>Resources\Layout\View_BookEditInformation.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_BookingDetail_Thriev.axml">
-      <Link>Resources\Layout\View_BookingDetail_Thriev.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_BookingDetail.axml">
-      <Link>Resources\Layout\View_BookingDetail.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_BookingRating.axml">
-      <Link>Resources\Layout\View_BookingRating.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_CreateAccount.axml">
-      <Link>Resources\Layout\View_CreateAccount.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_DateTimePicker.axml">
-      <Link>Resources\Layout\View_DateTimePicker.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_EditAutoTip.axml">
-      <Link>Resources\Layout\View_EditAutoTip.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_ExtendedSplashScreen.axml">
-      <Link>Resources\Layout\View_ExtendedSplashScreen.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_HistoryDetail.axml">
-      <Link>Resources\Layout\View_HistoryDetail.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_HistoryList.axml">
-      <Link>Resources\Layout\View_HistoryList.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_Home.axml">
-      <Link>Resources\Layout\View_Home.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_InitializeOrderForAccountPayment.axml">
-      <Link>Resources\Layout\View_InitializeOrderForAccountPayment.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_LocationDetail.axml">
-      <Link>Resources\Layout\View_LocationDetail.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_LocationList.axml">
-      <Link>Resources\Layout\View_LocationList.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_Login.axml">
-      <Link>Resources\Layout\View_Login.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_ManualPairingForRideLinq.axml">
-      <Link>Resources\Layout\View_ManualPairingForRideLinq.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_NotificationSettings.axml">
-      <Link>Resources\Layout\View_NotificationSettings.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_OverduePayment.axml">
-      <Link>Resources\Layout\View_OverduePayment.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_PasswordRecovery.axml">
-      <Link>Resources\Layout\View_PasswordRecovery.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml">
-      <Link>Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_Payments_CreditCardAdd.axml">
-      <Link>Resources\Layout\View_Payments_CreditCardAdd.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_Payments_CreditCardMultiple.axml">
-      <Link>Resources\Layout\View_Payments_CreditCardMultiple.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_Promotion.axml">
-      <Link>Resources\Layout\View_Promotion.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_RideSettings.axml">
-      <Link>Resources\Layout\View_RideSettings.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_TermsAndConditions.axml">
-      <Link>Resources\Layout\View_TermsAndConditions.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_tutorial.axml">
-      <Link>Resources\Layout\View_tutorial.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_UpdatedTermsAndConditions.axml">
-      <Link>Resources\Layout\View_UpdatedTermsAndConditions.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_UpdatePassword.axml">
-      <Link>Resources\Layout\View_UpdatePassword.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_UserTaxiHailNetworkSettings.axml">
-      <Link>Resources\Layout\View_UserTaxiHailNetworkSettings.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\Android\Resources\Layout\View_WaitingCarLandscape.axml">
-      <Link>Resources\Layout\View_WaitingCarLandscape.axml</Link>
-    </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Drawable\account.png">
       <Link>Resources\Drawable\account.png</Link>
     </AndroidResource>
@@ -1561,6 +1300,267 @@
     </AndroidResource>
     <AndroidResource Include="..\Android\Resources\values-v11\SetThemes.xml">
       <Link>Resources\values-v11\SetThemes.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressBar.axml">
+      <Link>Resources\Layout\Control_AddressBar.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressLine.axml">
+      <Link>Resources\Layout\Control_AddressLine.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressList.axml">
+      <Link>Resources\Layout\Control_AddressList.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressPicker.axml">
+      <Link>Resources\Layout\Control_AddressPicker.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AddressTextBox.axml">
+      <Link>Resources\Layout\Control_AddressTextBox.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_AppBarButton.xml">
+      <Link>Resources\Layout\Control_AppBarButton.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_CreditCardButton.axml">
+      <Link>Resources\Layout\Control_CreditCardButton.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_EditTextLeftImage.axml">
+      <Link>Resources\Layout\Control_EditTextLeftImage.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_EditTextNavigate.axml">
+      <Link>Resources\Layout\Control_EditTextNavigate.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_LoadingOverlay.axml">
+      <Link>Resources\Layout\Control_LoadingOverlay.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_VehicleType.xml">
+      <Link>Resources\Layout\Control_VehicleType.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\Control_VehicleTypeAndEstimate.xml">
+      <Link>Resources\Layout\Control_VehicleTypeAndEstimate.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItem.axml">
+      <Link>Resources\Layout\CountryCodeItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItemDropDown.axml">
+      <Link>Resources\Layout\CountryCodeItemDropDown.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItemDropDownMVX.axml">
+      <Link>Resources\Layout\CountryCodeItemDropDownMVX.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItemMVX.axml">
+      <Link>Resources\Layout\CountryCodeItemMVX.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CreditCardListItem.axml">
+      <Link>Resources\Layout\CreditCardListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\CustomAlertDialogView.axml">
+      <Link>Resources\Layout\CustomAlertDialogView.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\DialogBottom.axml">
+      <Link>Resources\Layout\DialogBottom.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\DialogCenter.axml">
+      <Link>Resources\Layout\DialogCenter.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\DialogTop.axml">
+      <Link>Resources\Layout\DialogTop.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\LabelValueCell.axml">
+      <Link>Resources\Layout\LabelValueCell.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\ListHeader.axml">
+      <Link>Resources\Layout\ListHeader.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\ListItemAutoComplete.axml">
+      <Link>Resources\Layout\ListItemAutoComplete.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\MenuItem.axml">
+      <Link>Resources\Layout\MenuItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\PhoneEditor.axml">
+      <Link>Resources\Layout\PhoneEditor.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\PhoneEditorBottom.axml">
+      <Link>Resources\Layout\PhoneEditorBottom.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\PromotionListItem.axml">
+      <Link>Resources\Layout\PromotionListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\RatingListItem.axml">
+      <Link>Resources\Layout\RatingListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SimpleListItem.axml">
+      <Link>Resources\Layout\SimpleListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SimpleOrderListItem.axml">
+      <Link>Resources\Layout\SimpleOrderListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SpinnerCell.axml">
+      <Link>Resources\Layout\SpinnerCell.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SpinnerCellTextRight.axml">
+      <Link>Resources\Layout\SpinnerCellTextRight.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SpinnerText.axml">
+      <Link>Resources\Layout\SpinnerText.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SpinnerTextWithImage.axml">
+      <Link>Resources\Layout\SpinnerTextWithImage.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_Appbar_BookingStatus.axml">
+      <Link>Resources\Layout\SubView_Appbar_BookingStatus.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_AppBar_DropOffSelection.axml">
+      <Link>Resources\Layout\SubView_AppBar_DropOffSelection.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_AppBar.axml">
+      <Link>Resources\Layout\SubView_AppBar.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_BookingStatus.axml">
+      <Link>Resources\Layout\SubView_BookingStatus.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_ChangeDropOffOverlay.axml">
+      <Link>Resources\Layout\SubView_ChangeDropOffOverlay.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_ContactTaxiOverlay.axml">
+      <Link>Resources\Layout\SubView_ContactTaxiOverlay.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_DropOffSelection.axml">
+      <Link>Resources\Layout\SubView_DropOffSelection.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_MainMenu.axml">
+      <Link>Resources\Layout\SubView_MainMenu.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderAirport.axml">
+      <Link>Resources\Layout\SubView_OrderAirport.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderEdit_Thriev.axml">
+      <Link>Resources\Layout\SubView_OrderEdit_Thriev.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderEdit.axml">
+      <Link>Resources\Layout\SubView_OrderEdit.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderOptions.axml">
+      <Link>Resources\Layout\SubView_OrderOptions.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderReview_Thriev.axml">
+      <Link>Resources\Layout\SubView_OrderReview_Thriev.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\SubView_OrderReview.axml">
+      <Link>Resources\Layout\SubView_OrderReview.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\TogglableSettingsListItem.axml">
+      <Link>Resources\Layout\TogglableSettingsListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\TutorialListItem.axml">
+      <Link>Resources\Layout\TutorialListItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\VehicleInfoWindow.axml">
+      <Link>Resources\Layout\VehicleInfoWindow.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_About.axml">
+      <Link>Resources\Layout\View_About.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_AccountConfirmation.axml">
+      <Link>Resources\Layout\View_AccountConfirmation.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_AddressPickerContainer.axml">
+      <Link>Resources\Layout\View_AddressPickerContainer.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Book_RideSummaryPage.axml">
+      <Link>Resources\Layout\View_Book_RideSummaryPage.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_BookEditInformation_Thriev.axml">
+      <Link>Resources\Layout\View_BookEditInformation_Thriev.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_BookEditInformation.axml">
+      <Link>Resources\Layout\View_BookEditInformation.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_BookingDetail_Thriev.axml">
+      <Link>Resources\Layout\View_BookingDetail_Thriev.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_BookingDetail.axml">
+      <Link>Resources\Layout\View_BookingDetail.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_BookingRating.axml">
+      <Link>Resources\Layout\View_BookingRating.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_CreateAccount.axml">
+      <Link>Resources\Layout\View_CreateAccount.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_DateTimePicker.axml">
+      <Link>Resources\Layout\View_DateTimePicker.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_EditAutoTip.axml">
+      <Link>Resources\Layout\View_EditAutoTip.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_ExtendedSplashScreen.axml">
+      <Link>Resources\Layout\View_ExtendedSplashScreen.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_HistoryDetail.axml">
+      <Link>Resources\Layout\View_HistoryDetail.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_HistoryList.axml">
+      <Link>Resources\Layout\View_HistoryList.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Home.axml">
+      <Link>Resources\Layout\View_Home.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_InitializeOrderForAccountPayment.axml">
+      <Link>Resources\Layout\View_InitializeOrderForAccountPayment.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_LocationDetail.axml">
+      <Link>Resources\Layout\View_LocationDetail.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_LocationList.axml">
+      <Link>Resources\Layout\View_LocationList.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Login.axml">
+      <Link>Resources\Layout\View_Login.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_ManualPairingForRideLinq.axml">
+      <Link>Resources\Layout\View_ManualPairingForRideLinq.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_NotificationSettings.axml">
+      <Link>Resources\Layout\View_NotificationSettings.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_OverduePayment.axml">
+      <Link>Resources\Layout\View_OverduePayment.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_PasswordRecovery.axml">
+      <Link>Resources\Layout\View_PasswordRecovery.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml">
+      <Link>Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Payments_CreditCardAdd.axml">
+      <Link>Resources\Layout\View_Payments_CreditCardAdd.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Payments_CreditCardMultiple.axml">
+      <Link>Resources\Layout\View_Payments_CreditCardMultiple.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_Promotion.axml">
+      <Link>Resources\Layout\View_Promotion.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_RideSettings.axml">
+      <Link>Resources\Layout\View_RideSettings.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_TermsAndConditions.axml">
+      <Link>Resources\Layout\View_TermsAndConditions.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_tutorial.axml">
+      <Link>Resources\Layout\View_tutorial.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_UpdatedTermsAndConditions.axml">
+      <Link>Resources\Layout\View_UpdatedTermsAndConditions.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_UpdatePassword.axml">
+      <Link>Resources\Layout\View_UpdatePassword.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_UserTaxiHailNetworkSettings.axml">
+      <Link>Resources\Layout\View_UserTaxiHailNetworkSettings.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\View_WaitingCarLandscape.axml">
+      <Link>Resources\Layout\View_WaitingCarLandscape.axml</Link>
     </AndroidResource>
   </ItemGroup>
 </Project>

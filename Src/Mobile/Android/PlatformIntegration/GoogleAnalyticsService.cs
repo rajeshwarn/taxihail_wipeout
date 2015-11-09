@@ -6,38 +6,36 @@ using Java.Lang;
 using Exception = System.Exception;
 using System.Collections.Generic;
 using apcurium.MK.Common.Extensions;
-using Xamarin.GoogleAnalyticsV2.Tracking;
+using Android.Gms.Analytics;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-    // V2
+    // V3
     public class GoogleAnalyticsService : IAnalyticsService
     {
         private List<Tracker> Trackers { get; set; }
 
         public GoogleAnalyticsService(Context c, IPackageInfo packageInfo, IAppSettings settings, ILogger logger)
         {
-
             Trackers = new List<Tracker>();
 
             try
             {
-                GAServiceManager.Instance.SetDispatchPeriod(20);
-
                 var instance = GoogleAnalytics.GetInstance(c);
+                instance.SetLocalDispatchPeriod(20);
 
                 // Prevent testing/debugging data from being sent to GA
                 #if DEBUG
-                instance.SetDebug(true);
+                instance.SetDryRun(true);
                 #endif
 
                 // MK's tracking id
-                Trackers.Add(instance.GetTracker("UA-44714416-1"));
+                Trackers.Add(instance.NewTracker("UA-44714416-1"));
 
                 if (settings.Data.GoogleAnalyticsTrackingId.HasValue())
                 {
                     // Company's own tracking id
-                    Trackers.Add(instance.GetTracker(settings.Data.GoogleAnalyticsTrackingId));
+                    Trackers.Add(instance.NewTracker(settings.Data.GoogleAnalyticsTrackingId));
                 }
 
                 var appName = settings.Data.TaxiHail.ApplicationName.Replace(' ', '_');
@@ -55,27 +53,35 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void LogViewModel(string name)
         {
-            Trackers.ForEach(x => x.SendView(name));
-        }
-
-        public void LogNavigation(string source, string destination)
-        {
-            Trackers.ForEach(x => x.TrackEvent("Interaction", "NavigationRequested", source + " to " + destination, new Long(0)));
-        }
-
-        public void LogCommand(string commandName, string parameter)
-        {
-            Trackers.ForEach(x => x.SendEvent("Interaction", "Command Issued", commandName + "(" + parameter + ")", new Long(0)));
-        }
-
-        public void LogException(string className, string methodName, Exception e, bool isFatal = false)
-        {
-            Trackers.ForEach(x => x.TrackException(className + ":" + methodName + ": " + e.Message, isFatal));
+            Trackers.ForEach(x => { 
+                x.SetScreenName(name);
+                x.Send(new HitBuilders.ScreenViewBuilder().Build()); 
+            });
         }
 
         public void LogEvent(string @event)
         {
-            Trackers.ForEach(x => x.SendEvent("Interaction", "Event", @event, new Long(0)));
+            var eventBuilder = new HitBuilders.EventBuilder("Interaction", "Event");
+            eventBuilder.SetLabel(@event);
+
+            Trackers.ForEach(x => x.Send(eventBuilder.Build()));
+        }
+
+        public void LogException(string className, string methodName, Exception e, bool isFatal = false)
+        {
+            var exceptionBuilder = new HitBuilders.ExceptionBuilder();
+            exceptionBuilder.SetDescription(className + ":" + methodName + ": " + e.Message);
+            exceptionBuilder.SetFatal(isFatal);
+
+            Trackers.ForEach(x => x.Send(exceptionBuilder.Build()));
+        }
+
+        public void LogNavigation(string source, string destination)
+        {
+        }
+
+        public void LogCommand(string commandName, string parameter)
+        {
         }
 
         public void ReportConversion()
