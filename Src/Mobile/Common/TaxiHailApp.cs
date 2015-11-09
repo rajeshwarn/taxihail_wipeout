@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Payments.PayPal;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -31,7 +32,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
-
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -43,10 +44,7 @@ namespace apcurium.MK.Booking.Mobile
 		{
 			// early loading of libphone library
 			// do not remove, it impoves the time during the binding
-			Task.Run(() =>
-			{
-				System.Diagnostics.Trace.Write(CountryCode.CountryCodes[0].CountryName.Substring(0, 0));
-			});
+			(new Task(() => { Trace.Write(CountryCode.CountryCodes[0].CountryName.Substring(0, 0)); })).FireAndForget();
 
 			_container = TinyIoCContainer.Current;
 
