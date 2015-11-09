@@ -183,6 +183,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 					_progressDialogs.Push(progress);
 					progress.SetTitle(string.Empty);
 					progress.SetMessage(activity.GetString(Resource.String.LoadingMessage));
+                    progress.SetCanceledOnTouchOutside(false);
 					progress.Show();
 
 				}
@@ -208,7 +209,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			});
         }
 
-	    public void ShowProgressNonModal(bool show)
+        public void ShowProgressNonModal(bool show)
 	    {
 			var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>();
 			var rootView = topActivity.Activity.Window.DecorView.RootView as ViewGroup;
