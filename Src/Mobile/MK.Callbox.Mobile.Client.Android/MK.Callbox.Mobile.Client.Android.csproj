@@ -159,7 +159,6 @@
     <Compile Include="Converters\ColorEnumToAndroidColorConverter.cs" />
     <Compile Include="Converters\CoordinateConverter.cs" />
     <Compile Include="Converters\OrderStatusToTextColorConverter.cs" />
-    <Compile Include="Diagnostic\ErrorHandler.cs" />
     <Compile Include="Diagnostic\Logger.cs">
       <SubType>Code</SubType>
     </Compile>

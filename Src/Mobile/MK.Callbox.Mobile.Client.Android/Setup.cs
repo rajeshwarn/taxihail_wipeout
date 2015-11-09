@@ -18,7 +18,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Common.Configuration;
 using Cirrious.CrossCore.Droid;
-using ErrorHandler = apcurium.MK.Callbox.Mobile.Client.Diagnostic.ErrorHandler;
+using ErrorHandler = apcurium.MK.Booking.Mobile.ErrorHandler;
 
 namespace apcurium.MK.Callbox.Mobile.Client
 {
