@@ -151,9 +151,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         : Map.SpriteFactory.FromBitmap(CreateTaxiBitmap());
 
                     //TODO fix to move marker as the animation are not currently working with MapBox
+                    _taxiLocationPin.Marker.Remove();
                     _taxiLocationPin.InvokeIcon(icon);
                     _taxiLocationPin.InvokePosition( new LatLng(value.Latitude.Value, value.Longitude.Value));
-                    _taxiLocationPin.Marker.Remove();
                     Map.AddMarker(_taxiLocationPin);
 
                     AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new LatLng()
@@ -367,9 +367,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 if (PickupAddress.HasValidCoordinate())
                 {
+                    _pickupPin.Marker.Remove();
                     _pickupPin.InvokeIcon(_hailIcon);
                     _pickupPin.InvokePosition(GetMarkerPositionWithAnchor(position, _pickupPin.Icon));
-                    _pickupPin.Marker.Remove();
                     Map.AddMarker(_pickupPin);
                 }
                 else
@@ -386,9 +386,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (DestinationAddress.HasValidCoordinate())
                 {
                     var position = new LatLng(DestinationAddress.Latitude, DestinationAddress.Longitude);
+                    _destinationPin.Marker.Remove();
                     _destinationPin.InvokeIcon(_destinationIcon);
                     _destinationPin.InvokePosition(GetMarkerPositionWithAnchor(position, _destinationPin.Icon));             
-                    _destinationPin.Marker.Remove();
                     Map.AddMarker(_destinationPin);
                 }
                 else
@@ -405,9 +405,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (PickupAddress.HasValidCoordinate())
                 {
                     var position = new LatLng(PickupAddress.Latitude, PickupAddress.Longitude);
+                    _pickupPin.Marker.Remove();
                     _pickupPin.InvokeIcon(_hailIcon);
                     _pickupPin.InvokePosition(GetMarkerPositionWithAnchor(position, _pickupPin.Icon));  
-                    _pickupPin.Marker.Remove();
                     Map.AddMarker(_pickupPin);
                 }
                 else
@@ -418,9 +418,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (DestinationAddress.HasValidCoordinate())
                 {
                     var position = new LatLng(DestinationAddress.Latitude, DestinationAddress.Longitude);
+                    _destinationPin.Marker.Remove();
                     _destinationPin.InvokeIcon(_destinationIcon);
                     _destinationPin.InvokePosition(GetMarkerPositionWithAnchor(position, _destinationPin.Icon)); 
-                    _destinationPin.Marker.Remove();
                     Map.AddMarker(_destinationPin);
                 }
                 else
@@ -526,9 +526,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 : _vehicleIcons[logoKey];
 
             //TODO fix to move marker as the animation are not currently working with MapBox
+            markerToUpdate.Marker.Remove();
             markerToUpdate.InvokeIcon(icon);
             markerToUpdate.InvokePosition( new LatLng(vehicle.Latitude, vehicle.Longitude));
-            markerToUpdate.Marker.Remove();
             Map.AddMarker(markerToUpdate);
 
             AnimateMarkerOnMap(icon, markerToUpdate, new LatLng(vehicle.Latitude, vehicle.Longitude), vehicle.CompassCourse, oldPosition);
