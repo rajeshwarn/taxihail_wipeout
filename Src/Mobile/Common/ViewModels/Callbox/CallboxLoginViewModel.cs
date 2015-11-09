@@ -68,21 +68,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             {
                 Logger.LogMessage("SignIn with server {0}", Settings.ServiceUrl);
 				this.Services().Message.ShowProgress(true);
-                var account = default(Account);
 
-                try
-                {
-                    account = await _accountService.SignIn(Email, Password);
-                }
-                catch (Exception e)
-                {
-                    var title = this.Services().Localize["InvalidLoginMessageTitle"];
-                    var message = this.Services().Localize["InvalidLoginMessage"];
-
-                    Logger.LogError( e );
-
-					this.Services().Message.ShowMessage(title, message).FireAndForget();
-                }
+                var account = await _accountService.SignIn(Email, Password);
 
                 if (account != null)
                 {
@@ -92,13 +79,49 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
                     if (activeOrders.Any(c => _bookingService.IsCallboxStatusActive(c.IBSStatusId)))
                     {
-						ShowViewModel<CallboxOrderListViewModel>();
+						ShowViewModelAndRemoveFromHistory<CallboxOrderListViewModel>();
                     }
                     else
                     {
-						ShowViewModel<CallboxCallTaxiViewModel>();
+                        ShowViewModelAndRemoveFromHistory<CallboxCallTaxiViewModel>();
                     }
-                    Close(this);
+                }
+            }
+            catch (AuthException e)
+            {
+                var localize = this.Services().Localize;
+                switch (e.Failure)
+                {
+                    case AuthFailure.InvalidServiceUrl:
+                    case AuthFailure.NetworkError:
+                    {
+                        var title = localize["NoConnectionTitle"];
+                        var msg = localize["NoConnectionMessage"];
+                        this.Services().Message.ShowMessage(title, msg);
+                    }
+                    break;
+                    case AuthFailure.InvalidUsernameOrPassword:
+                    {
+                        var title = localize["InvalidLoginMessageTitle"];
+                        var message = localize["InvalidLoginMessage"];
+                        this.Services().Message.ShowMessage(title, message);
+                    }
+                    break;
+                    case AuthFailure.AccountDisabled:
+                    {
+                        var title = this.Services().Localize["InvalidLoginMessageTitle"];
+                        var message = localize["AccountDisabled_NoCall"];
+                        this.Services().Message.ShowMessage(title, message);
+                    }
+                    break;
+                    case AuthFailure.AccountNotActivated:
+                    {
+                        var title = localize["InvalidLoginMessageTitle"];
+                        var message = localize["AccountNotActivated"];
+
+                        this.Services().Message.ShowMessage(title, message);
+                    }
+                    break;
                 }
             }
             finally
