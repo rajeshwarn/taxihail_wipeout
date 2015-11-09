@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile
             _messageService.ShowMessage(
                 _localize["ServiceErrorCallTitle"],
                 _localize["ServiceErrorUnauthorized"],
-                () => Task.Run(SignOutUser).FireAndForget());
+                () => SignOutUser().FireAndForget());
         }
 
         private async Task SignOutUser()

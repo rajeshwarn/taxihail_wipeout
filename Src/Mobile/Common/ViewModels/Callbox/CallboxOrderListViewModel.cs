@@ -75,7 +75,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					RefreshOrderStatus(orderStatusDetails);
 					_refreshGate = true;
 				},
-				Logger.LogError);                           
+				ex =>
+				{
+				    Logger.LogError(ex);
+				});                           
 
 			_token = this.Services().MessengerHub.Subscribe<OrderDeleted>(orderId =>
     			{
@@ -158,21 +161,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 		private async Task<OrderStatusDetail[]> GetActiveOrderStatus()
 		{
-			try
-			{
-			    var activeOrders = await _accountService.GetActiveOrdersStatus();
+            var activeOrders = await _accountService.GetActiveOrdersStatus();
 
-                return activeOrders
-                    .OrderByDescending(o => o.PickupDate)
-					.Where(status => _bookingService.IsCallboxStatusActive(status.IBSStatusId))
-					.ToArray();
-			}
-			catch (Exception ex)
-			{
-				Logger.LogError(ex);
-				return new OrderStatusDetail[0];
-			}
-		}
+		    if (activeOrders == null)
+		    {
+		        return new OrderStatusDetail[0];
+		    }
+
+            return activeOrders
+                .OrderByDescending(o => o.PickupDate)
+                .Where(status => _bookingService.IsCallboxStatusActive(status.IBSStatusId))
+                .ToArray();
+        }
 
 
 		protected void Close()

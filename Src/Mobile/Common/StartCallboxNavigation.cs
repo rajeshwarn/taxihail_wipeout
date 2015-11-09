@@ -19,26 +19,28 @@ namespace apcurium.MK.Booking.Mobile
 			var logger = Mvx.Resolve<ILogger>();
 			try
 			{
-				var accountService = Mvx.Resolve<IAccountService>();
-
-				var activeOrderStatusDetails = await accountService.GetActiveOrdersStatus();
-
-			    var bookingService = Mvx.Resolve<IBookingService>();
+                logger.LogMessage("Startup with server {0}", Mvx.Resolve<IAppSettings>().Data.ServiceUrl);
+                var accountService = Mvx.Resolve<IAccountService>();
 
                 if (accountService.CurrentAccount == null)
 				{
+                    accountService.SignOut();
 					ShowViewModel<CallboxLoginViewModel>();
-				}
-				else if (activeOrderStatusDetails != null && activeOrderStatusDetails.Any(c => bookingService.IsCallboxStatusActive(c.IBSStatusId)))
-				{
-					ShowViewModel<CallboxOrderListViewModel>();
-				}
-				else
-				{
-					ShowViewModel<CallboxCallTaxiViewModel>();
+				    return;
 				}
 
-				logger.LogMessage("Startup with server {0}", Mvx.Resolve<IAppSettings>().Data.ServiceUrl);
+                var activeOrderStatusDetails = await accountService.GetActiveOrdersStatus();
+
+                var bookingService = Mvx.Resolve<IBookingService>();
+
+                if (activeOrderStatusDetails != null && activeOrderStatusDetails.Any(c => bookingService.IsCallboxStatusActive(c.IBSStatusId)))
+				{
+					ShowViewModel<CallboxOrderListViewModel>();
+				    return;
+				}
+
+
+			    ShowViewModel<CallboxCallTaxiViewModel>();
 			}
 			catch (Exception ex)
 			{
