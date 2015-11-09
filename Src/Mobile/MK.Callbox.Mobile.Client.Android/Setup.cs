@@ -53,8 +53,13 @@ namespace apcurium.MK.Callbox.Mobile.Client
         {
 			return new CallBoxApp();
         }
-                
-		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
+
+        protected override Cirrious.MvvmCross.Droid.Views.IMvxAndroidViewPresenter CreateViewPresenter()
+        {
+            return new CallboxPresenter();
+        }
+
+        protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
 		{
 			return new TinyIoCProvider(TinyIoCContainer.Current);
 		}

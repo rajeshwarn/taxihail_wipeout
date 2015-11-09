@@ -151,6 +151,7 @@
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
+    <Compile Include="CallboxPresenter.cs" />
     <Compile Include="Controls\Dialog\CustomAlertDialog.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\StyledButton.cs" />
