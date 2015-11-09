@@ -79,9 +79,20 @@
   <ItemGroup>
     <Compile Include="ContractDocument.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
+    <Compile Include="Requests\AccountOrderListRequestWithUserIdRequest.cs" />
+    <Compile Include="Requests\OrderCountForAppRatingRequest.cs" />
+    <Compile Include="Requests\AccountUpdateRequest.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
+    <Compile Include="Requests\Client\ConfirmHailRequest.cs" />
+    <Compile Include="Requests\Client\HailRequest.cs" />
     <Compile Include="Requests\ConfirmationCodeRequest.cs" />
+    <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
+    <Compile Include="Requests\DefaultCreditCardRequest.cs" />
+    <Compile Include="Requests\DeleteCreditCardsWithAccountRequest.cs" />
     <Compile Include="Requests\EtaForPickupRequest.cs" />
+    <Compile Include="Requests\FindAccountRequest.cs" />
+    <Compile Include="Requests\FindAccountsRequest.cs" />
+    <Compile Include="Requests\FlightInformationRequest.cs" />
     <Compile Include="Requests\InitiateCallToDriverRequest.cs" />
     <Compile Include="Requests\GetAddressesFromPostcalCodeRequest.cs" />
     <Compile Include="Requests\LogOriginalEtaRequest.cs" />
@@ -128,7 +139,7 @@
     <Compile Include="Requests\ConfigurationResetRequest.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\ConfigurationsRequest.cs" />
-    <Compile Include="Requests\CreateOrder.cs" />
+    <Compile Include="Requests\CreateOrderRequest.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Requests\DefaultFavoriteAddress.cs" />
     <Compile Include="Requests\DefaultGeoLocationRequest.cs" />
@@ -171,6 +182,7 @@
     <Compile Include="Requests\SendReceipt.cs" />
     <Compile Include="Requests\EmailTemplateNamesRequest.cs" />
     <Compile Include="Requests\PrivacyPolicyRequest.cs" />
+    <Compile Include="Requests\TaxiLocationRequest.cs" />
     <Compile Include="Requests\UnassignedNetworkVehicleTypeRequest.cs" />
     <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
@@ -191,6 +203,11 @@
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
+    <Compile Include="Resources\FlightInformation.cs" />
+    <Compile Include="Resources\FlightStats\AirportResource.cs" />
+    <Compile Include="Resources\FlightStats\FlightStatsError.cs" />
+    <Compile Include="Resources\FlightStats\FlightStatsResponse.cs" />
+    <Compile Include="Resources\FlightStats\FlightStatus.cs" />
     <Compile Include="Resources\IbsChargeAccountImportReport.cs" />
     <Compile Include="Resources\IbsChargeAccountValidation.cs" />
     <Compile Include="Resources\IbsChargeAccount.cs" />
@@ -209,6 +226,7 @@
     <Compile Include="Resources\VehicleType.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Security\AuthorizationRequiredAttribute.cs" />
+    <Compile Include="Requests\UpdateCreditCardLabelRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.csproj">

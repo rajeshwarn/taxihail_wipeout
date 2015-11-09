@@ -6,6 +6,7 @@ using ObjCRuntime;
 using UIKit;
 using System.Collections.Generic;
 using RatingState = apcurium.MK.Booking.Mobile.Models.RatingModel.RatingState;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
@@ -70,6 +71,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
             btnScoreC.TouchUpInside += OnScoreCTouchUpInside;
             btnScoreD.TouchUpInside += OnScoreDTouchUpInside;
             btnScoreE.TouchUpInside += OnScoreETouchUpInside;
+
+            btnScoreA.AccessibilityLabel = Localize.GetValue("Rating1");
+            btnScoreB.AccessibilityLabel = Localize.GetValue("Rating2");
+            btnScoreC.AccessibilityLabel = Localize.GetValue("Rating3");
+            btnScoreD.AccessibilityLabel = Localize.GetValue("Rating4");
+            btnScoreE.AccessibilityLabel = Localize.GetValue("Rating5");
 		}	
 		
 		protected override void Dispose (bool disposing)

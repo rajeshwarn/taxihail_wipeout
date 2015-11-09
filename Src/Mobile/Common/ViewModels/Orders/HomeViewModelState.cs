@@ -38,11 +38,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         /// Choose pickup date and time for Airport booking
         /// </summary>
         AirportPickDate,
+		/// <summary>
+		/// Booking Status mode (replaces the old booking status page).
+		/// </summary>
+		BookingStatus,
+		/// <summary>
+		/// Manual ridelinq mode (replaces the old manual ridelinq status page).
+		/// </summary>
+		ManualRidelinq,
         /// <summary>
         /// Airport Details selection
         /// </summary>
         AirportDetails,
-
+        /// <summary>
+        /// Drop Off Address selection while in trip
+        /// </summary>
+        DropOffAddressSelection
     }
 }
 

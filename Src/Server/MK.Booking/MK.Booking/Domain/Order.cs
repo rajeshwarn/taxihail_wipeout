@@ -12,7 +12,6 @@ using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
 
 #endregion
-
 namespace apcurium.MK.Booking.Domain
 {
     public class Order : EventSourced
@@ -23,7 +22,7 @@ namespace apcurium.MK.Booking.Domain
         private double? _fare;
         private bool _isTimedOut;
 
-        protected Order(Guid id)
+        public Order(Guid id)
             : base(id)
         {
             Handles<OrderCreated>(OnOrderCreated);
@@ -48,6 +47,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<AutoTipUpdated>(NoAction);
             Handles<OriginalEtaLogged>(NoAction);
             Handles<OrderNotificationDetailUpdated>(NoAction);
+		    Handles<OrderReportCreated>(OnOrderReportCreated);
+            Handles<IbsOrderSwitchInitiated>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -56,80 +57,93 @@ namespace apcurium.MK.Booking.Domain
             LoadFrom(history);
         }
 
-        /// <summary>
-        /// Constructor for RideLinq
-        /// </summary>
-        public Order(Guid id, Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, Address pickupAddress,
-            string userAgent, string clientLanguageCode, string clientVersion, double? distance,
-            double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
-            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion,
-            int tripId, int driverId, double? accessFee, string lastFour) 
-            : this(id)
-        {
-            Update(new OrderManuallyPairedForRideLinq
-            {
-                AccountId = accountId,
-                PairingDate = pairingDate,
-                UserAgent = userAgent,
-                ClientLanguageCode = clientLanguageCode,
-                ClientVersion = clientVersion,
-                PairingCode = pairingCode,
-                PairingToken = pairingToken,
-                PickupAddress = pickupAddress,
-                Total = total,
+		public void UpdateOrderCreated(Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
+			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
+			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, double? tipIncentive,
+            string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
+            string chargeTypeEmail, int? ibsOrderId = null)
+		{
+			if ((settings == null) || pickupAddress == null ||
+				(Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
+			{
+				throw new InvalidOperationException("Missing required fields");
+			}
+
+			Update(new OrderCreated
+			{
+				AccountId = accountId,
+				PickupDate = pickupDate,
+				PickupAddress = pickupAddress,
+				DropOffAddress = dropOffAddress,
+				Settings = settings,
+				EstimatedFare = estimatedFare,
+				CreatedDate = DateTime.Now,
+				UserAgent = userAgent,
+				ClientLanguageCode = clientLanguageCode,
+				UserLatitude = userLatitude,
+				UserLongitude = userLongitude,
+				UserNote = userNote,
+				ClientVersion = clientVersion,
+				IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
+				CompanyKey = companyKey,
+				CompanyName = companyName,
+				Market = market,
+				IsPrepaid = isPrepaid,
+				BookingFees = bookingFees,
+                TipIncentive = tipIncentive,
+                IbsInformationNote = ibsInformationNote,
                 Fare = fare,
-                FareAtAlternateRate = faireAtAlternateRate,
-                Tax = tax,
-                Tip = tip,
-                Toll = toll,
-                Surcharge = surcharge,
-                Extra = extra,
-                RateAtTripStart = rateAtTripStart,
-                RateAtTripEnd = rateAtTripEnd,
-                RateChangeTime = rateChangeTime,
-                Distance = distance,
-                Medallion = medallion,
-                TripId = tripId,
-                DriverId = driverId,
-                AccessFee = accessFee,
-                LastFour = lastFour
-            });
-        }
+                IbsAccountId = ibsAccountId,
+                Prompts = prompts,
+                PromptsLength = promptsLength,
+                PromotionId = promotionId,
+                IsFutureBooking = isFutureBooking,
+                ReferenceDataCompanyList = referenceDataCompanyList,
+                IBSOrderId = ibsOrderId,
+                ChargeTypeEmail = chargeTypeEmail
+			});
+		}
 
-        public Order(Guid id, Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
-            double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees)
-            : this(id)
-        {
-            if ((settings == null) || pickupAddress == null || 
-                (Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
-            {
-                throw new InvalidOperationException("Missing required fields");
-            }
-
-            Update(new OrderCreated
-            {
-                AccountId = accountId,
-                PickupDate = pickupDate,
-                PickupAddress = pickupAddress,
-                DropOffAddress = dropOffAddress,
-                Settings = settings,
-                EstimatedFare = estimatedFare,
-                CreatedDate = DateTime.Now,
-                UserAgent = userAgent,
-                ClientLanguageCode = clientLanguageCode,
-                UserLatitude = userLatitude,
-                UserLongitude = userLongitude,
-                UserNote = userNote,
-                ClientVersion = clientVersion,
-                IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
-                CompanyKey = companyKey,
-                CompanyName = companyName,
-                Market = market,
-                IsPrepaid = isPrepaid,
-                BookingFees = bookingFees
-            });
-        }
+		public void UpdateOrderReportCreated(Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
+			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
+            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, string error, double? tipIncentive,
+            string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
+            int? ibsOrderId = null)
+		{
+			Update(new OrderReportCreated
+			{
+				AccountId = accountId,
+				PickupDate = pickupDate,
+				PickupAddress = pickupAddress,
+				DropOffAddress = dropOffAddress,
+				Settings = settings,
+				EstimatedFare = estimatedFare,
+				CreatedDate = DateTime.Now,
+				UserAgent = userAgent,
+				ClientLanguageCode = clientLanguageCode,
+				UserLatitude = userLatitude,
+				UserLongitude = userLongitude,
+				UserNote = userNote,
+				ClientVersion = clientVersion,
+				IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
+				CompanyKey = companyKey,
+				CompanyName = companyName,
+				Market = market,
+				IsPrepaid = isPrepaid,
+				BookingFees = bookingFees,
+				Error = error,
+                TipIncentive = tipIncentive,
+                IbsInformationNote = ibsInformationNote,
+                Fare = fare,
+                IbsAccountId = ibsAccountId,
+                Prompts = prompts,
+                PromptsLength = promptsLength,
+                PromotionId = promotionId,
+                IsFutureBooking = isFutureBooking,
+                ReferenceDataCompanyList = referenceDataCompanyList,
+                IBSOrderId = ibsOrderId
+			});
+		}
 
         public void AddIbsOrderInfo(int ibsOrderId)
         {
@@ -139,9 +153,46 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+		public void UpdateOrderManuallyPairedForRideLinq(Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, Address pickupAddress,
+			string userAgent, string clientLanguageCode, string clientVersion, double? distance,
+			double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
+			double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion,
+			string deviceName, int tripId, int driverId, double? accessFee, string lastFour)
+		{
+			Update(new OrderManuallyPairedForRideLinq
+			{
+				AccountId = accountId,
+				PairingDate = pairingDate,
+				UserAgent = userAgent,
+				ClientLanguageCode = clientLanguageCode,
+				ClientVersion = clientVersion,
+				PairingCode = pairingCode,
+				PairingToken = pairingToken,
+				PickupAddress = pickupAddress,
+				Total = total,
+				Fare = fare,
+				FareAtAlternateRate = faireAtAlternateRate,
+				Tax = tax,
+				Tip = tip,
+				Toll = toll,
+				Surcharge = surcharge,
+				Extra = extra,
+				RateAtTripStart = rateAtTripStart,
+				RateAtTripEnd = rateAtTripEnd,
+				RateChangeTime = rateChangeTime,
+				Distance = distance,
+				Medallion = medallion,
+				DeviceName = deviceName,
+				TripId = tripId,
+				DriverId = driverId,
+				AccessFee = accessFee,
+				LastFour = lastFour
+			});
+		}
+
         public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
             double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, DateTime? startTime,
-            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId, double? accessFee, string lastFour, TollDetail[] tolls, double? lat, double? lon)
+            DateTime? endTime, string pairingToken, int tripId, int driverId, double? accessFee, string lastFour, TollDetail[] tolls, double? lat, double? lon, string pairingError)
         {
             Update(new ManualRideLinqTripInfoUpdated
             {
@@ -160,14 +211,14 @@ namespace apcurium.MK.Booking.Domain
                 StartTime = startTime,
                 EndTime = endTime,
                 PairingToken = pairingToken,
-                Medallion = medallion,
                 TripId = tripId,
                 DriverId = driverId,
                 AccessFee = accessFee,
                 LastFour = lastFour,
                 Tolls = tolls,
                 LastLatitudeOfVehicle = lat,
-                LastLongitudeOfVehicle = lon
+                LastLongitudeOfVehicle = lon,
+                PairingError = pairingError
             });
         }
 
@@ -230,13 +281,14 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderRemovedFromHistory());
         }
 
-        public void RateOrder(string note, List<RatingScore> ratingScores)
+        public void RateOrder(Guid accountId, string note, List<RatingScore> ratingScores)
         {
             if (!_isRated)
             {
                 _isRated = true;
                 Update(new OrderRated
                 {
+					AccountId = accountId,
                     Note = note,
                     RatingScores = ratingScores
                 });
@@ -257,7 +309,8 @@ namespace apcurium.MK.Booking.Domain
                     Toll = toll,
                     Tax = tax,
                     Surcharge = surcharge,
-                    IsCompleted = status.Status == OrderStatus.Completed
+                    IsCompleted = status.Status == OrderStatus.Completed,
+                    PreviousIBSStatusId = _ibsStatus,
                 });
             }
         }
@@ -304,6 +357,26 @@ namespace apcurium.MK.Booking.Domain
             {
                 DispatchCompanyName = dispatchCompanyName,
                 DispatchCompanyKey = dispatchCompanyKey
+            });
+        }
+
+        public void InitiateIbsOrderSwitch(int newIbsAccountId, CreateOrder newOrderCommand)
+        {
+            Update(new IbsOrderSwitchInitiated
+            {
+                IbsAccountId = newIbsAccountId,
+                Settings = newOrderCommand.Settings,
+                AccountId = newOrderCommand.AccountId,
+                ClientLanguageCode = newOrderCommand.ClientLanguageCode,
+                CompanyKey = newOrderCommand.CompanyKey,
+                CompanyName = newOrderCommand.CompanyName,
+                DropOffAddress = newOrderCommand.DropOffAddress,
+                Fare = newOrderCommand.Fare,
+                Market = newOrderCommand.Market,
+                PickupDate = newOrderCommand.PickupDate,
+                PickupAddress = newOrderCommand.PickupAddress,
+                IbsInformationNote = newOrderCommand.IbsInformationNote,
+                ReferenceDataCompanyList = newOrderCommand.ReferenceDataCompanyList
             });
         }
 
@@ -384,6 +457,11 @@ namespace apcurium.MK.Booking.Domain
         {
             _status = OrderStatus.Created;
         }
+
+		public void OnOrderReportCreated(OrderReportCreated obj)
+		{
+			_status = OrderStatus.Unknown;
+		}
 
         private void OnOrderCancelled(OrderCancelled obj)
         {

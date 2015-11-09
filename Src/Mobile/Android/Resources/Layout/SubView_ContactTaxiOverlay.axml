@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_gravity="center_vertical"
+    android:layout_height="75dip"
+    android:id="@+id/overlayFrameLayout"
+    android:background="@color/company_color">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:layout_marginLeft="15dip"
+        android:orientation="vertical">
+        <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
+            android:id="@+id/medallionLabel"
+            style="@style/WhiteText"
+            android:text="@string/OrderStatus_Medallion"
+            android:gravity="center_vertical|end"
+            android:layout_width="60dip"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/medallionValue"
+            style="@style/WhiteText"
+            local:MvxBind="Text OrderStatusDetail.VehicleNumber"
+            android:gravity="center_vertical|start"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dip"
+            android:lines="1"
+            android:ellipsize="end"
+            android:singleLine="true" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginRight="5dip"
+        android:orientation="horizontal">
+        <ImageButton
+            local:MvxBind="Click SendMessageToDriverCommand; Visibility IsMessageTaxiVisible, Converter=Visibility"
+            android:src="@drawable/message"
+            style="@style/ButtonActionBorderlessGrayStyle"
+            android:layout_width="40dip"
+            android:layout_height="@dimen/HeightButton"
+            android:layout_marginEnd="10dip"
+            android:scaleType="fitCenter" />
+        <ImageButton
+            local:MvxBind="Click CallTaxiCommand; Visibility IsCallTaxiVisible, Converter=Visibility"
+            android:src="@drawable/phone"
+            style="@style/ButtonActionBorderlessGrayStyle"
+            android:layout_marginLeft="13dip"
+            android:layout_width="40dip"
+            android:layout_height="@dimen/HeightButton"
+            android:layout_marginEnd="10dip"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+</FrameLayout>

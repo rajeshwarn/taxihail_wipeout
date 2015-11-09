@@ -67,14 +67,18 @@
     <Compile Include="AllCreditCardsRemoved.cs" />
     <Compile Include="CreditCardDeactivated.cs" />
     <Compile Include="CreditCardErrorThrown.cs" />
+    <Compile Include="CreditCardLabelUpdated.cs" />
     <Compile Include="CreditCardPaymentCaptured.cs" />
     <Compile Include="CreditCardPaymentCaptured_V2.cs" />
     <Compile Include="CreditCardPaymentInitiated.cs" />
+    <Compile Include="DefaultCreditCardUpdated.cs" />
     <Compile Include="DispatchCompanySwitchIgnored.cs" />
     <Compile Include="FeesUpdated.cs" />
     <Compile Include="IbsOrderInfoAddedToOrder.cs" />
+    <Compile Include="IbsOrderSwitchInitiated.cs" />
     <Compile Include="OrderManuallyPairedForRideLinq.cs" />
     <Compile Include="OrderNotificationDetailUpdated.cs" />
+    <Compile Include="OrderReportCreated.cs" />
     <Compile Include="OrderUnpairedFromManualRideLinq.cs" />
     <Compile Include="NotificationSettingsAddedOrUpdated.cs" />
     <Compile Include="OrderCancelledBecauseOfError.cs" />
@@ -109,6 +113,7 @@
     <Compile Include="PromotionApplied.cs" />
     <Compile Include="RatingTypeDeleted.cs" />
     <Compile Include="RoleAddedToUserAccount.cs" />
+    <Compile Include="RoleUpdatedToUserAccount.cs" />
     <Compile Include="RuleActivated.cs" />
     <Compile Include="RuleDeactivated.cs" />
     <Compile Include="RuleCreated.cs" />

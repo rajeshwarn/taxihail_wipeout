@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblTitle.Text = Localize.GetValue ("ResetPasswordTitleText");
 			lblSubTitle.Text = Localize.GetValue ("ResetPasswordSubtitleText");
 			txtEmail.Placeholder = Localize.GetValue("ResetPasswordEmailPlaceHolder");
+            txtEmail.AccessibilityLabel = txtEmail.Placeholder;
 			btnReset.SetTitle(Localize.GetValue("Reset"), UIControlState.Normal);
 			btnCancel.SetTitle(Localize.GetValue("Cancel"), UIControlState.Normal);
 

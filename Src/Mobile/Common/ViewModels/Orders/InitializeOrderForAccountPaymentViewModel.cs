@@ -13,7 +13,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
-	public class InitializeOrderForAccountPaymentViewModel : PageViewModel
+	public class InitializeOrderForAccountPaymentViewModel : PageViewModel, ISubViewModel<Tuple<Order, OrderStatusDetail>>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IMvxPhoneCallTask _phone;
@@ -71,11 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 							var result = await _orderWorkflowService.ConfirmOrder();
 
-                            ShowViewModelAndClearHistory<BookingStatusViewModel>(new
-							{
-								order = result.Item1.ToJson(),
-								orderStatus = result.Item2.ToJson()
-							});
+							this.ReturnResult(result);
 						}
 					}
 					catch(OrderCreationException e)

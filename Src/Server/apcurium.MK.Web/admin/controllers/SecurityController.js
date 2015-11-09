@@ -11,12 +11,6 @@
 
             return new TaxiHail.GrantAdminAccessView();
 
-        },
-        
-        confirmemail: function() {
-
-            return new TaxiHail.ConfirmEmailView();
-
         }
     });
 

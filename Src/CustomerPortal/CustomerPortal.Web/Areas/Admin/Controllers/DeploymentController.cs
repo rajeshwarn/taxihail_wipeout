@@ -455,7 +455,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     deploy.Android = model.Android;
                     deploy.CallBox = model.CallBox;
                     deploy.IosAdhoc = model.IosAdhoc;
-                    deploy.IosAppStore = (model.ServerUrlOptions == ServerUrlOptions.Production) && model.IosAppStore;
+                    deploy.IosAppStore = model.IosAppStore;
                 }
 
 
@@ -518,6 +518,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             if (model.ServerUrlOptions == ServerUrlOptions.Dev)
             {
                 return string.Format("http://test.taxihail.biz:8181/{0}/api/", company.CompanyKey);
+            }
+            if (model.ServerUrlOptions == ServerUrlOptions.Arro)
+            {
+                return string.Format("http://api.goarro.com/{0}/api/", company.CompanyKey);
             }
             return null;
         }

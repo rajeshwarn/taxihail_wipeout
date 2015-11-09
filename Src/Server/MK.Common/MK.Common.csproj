@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppConstants.cs" />
+    <Compile Include="ApplicationVersion.cs" />
     <Compile Include="Caching\CacheItem.cs" />
     <Compile Include="Caching\CachingDbContext.cs" />
     <Compile Include="Caching\EFCacheClient.cs" />
@@ -134,7 +135,16 @@
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
+    <Compile Include="Entity\OrderHailResult.cs" />
+    <Compile Include="CreditCardLabelConstants.cs" />
+    <Compile Include="Entity\OrderKey.cs" />
+    <Compile Include="Entity\PickupPoint.cs" />
+    <Compile Include="Entity\Airline.cs" />
+    <Compile Include="Entity\RideEstimate.cs" />
+    <Compile Include="Entity\VehicleCandidate.cs" />
+    <Compile Include="Entity\VehicleCandidateTypes.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="CountryCode.cs" />
     <Compile Include="CreditCard.cs" />

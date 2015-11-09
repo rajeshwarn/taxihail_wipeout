@@ -43,11 +43,19 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			var data = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
 			if (data != null && data.TaxiHail.ApplicationName.HasValue())
 			{
-                // Use cached settings until settings are done loading
-				Data = data;
+				// Use cached settings until settings are done loading
+				if (!data.CanChangeServiceUrl)
+				{
+					// Always use service URL from file, not from cache in case it changes
+					var bundledServiceUrl = GetSettingFromFile("ServiceUrl");
 
-                // Update settings asynchronously
-                Task.Run(() => { RefreshSettingsFromServer(); });
+					data.ServiceUrl = bundledServiceUrl;
+				}
+
+
+				Data = data;
+                // Update settings asynchronously. NB: ServiceUrl is never returned from the server settings
+				Task.Run(() => RefreshSettingsFromServer());
 			    
 			}
             else
@@ -88,18 +96,43 @@ namespace apcurium.MK.Booking.Mobile.Settings
 		{
 			_logger.LogMessage("load settings from file");
 			using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly
-														.GetManifestResourceNames()
-														.FirstOrDefault(x => x.Contains("Settings.json")))) 
+						.GetManifestResourceNames()
+						.FirstOrDefault(x => x.Contains("Settings.json")))) 
 			{
 				if (stream != null)
 				{
 					using (var reader = new StreamReader(stream))
 					{
-						string serializedData = reader.ReadToEnd();
+						var serializedData = reader.ReadToEnd();
 						Dictionary<string,string> values = JsonObject.Parse(serializedData);
 						SettingsLoader.InitializeDataObjects (Data, values, _logger);
 					}
 				}
+			}
+		}
+
+		private string GetSettingFromFile(string settingName)
+		{
+			_logger.LogMessage("loading setting {0} from file", settingName);
+
+			using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly
+						.GetManifestResourceNames()
+						.FirstOrDefault(x => x.Contains("Settings.json")))) 
+			{
+				if (stream != null)
+				{
+					using (var reader = new StreamReader(stream))
+					{
+						var serializedData = reader.ReadToEnd();
+						Dictionary<string,string> values = JsonObject.Parse(serializedData);
+
+						string settingValue = null;
+						values.TryGetValue(settingName, out settingValue);
+
+						return settingValue;
+					}
+				}
+				return null;
 			}
 		}
 
@@ -121,7 +154,14 @@ namespace apcurium.MK.Booking.Mobile.Settings
 		private static bool IsNullableType(Type type)
 		{
 			return type.IsGenericType 
-				&& type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+				&& type.GetGenericTypeDefinition() == typeof(Nullable<>);
 		}
+
+	    public void SetAppleTestAccountMode(bool isAppleTestAccountUsed)
+	    {
+		    Data.AppleTestAccountUsed = isAppleTestAccountUsed;
+
+			SaveSettings();
+	    }
     }
 }

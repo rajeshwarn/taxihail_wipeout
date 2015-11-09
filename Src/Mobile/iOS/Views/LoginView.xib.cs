@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.BackgroundColor = Theme.LoginColor;
 
 			txtEmail.Placeholder = Localize.GetValue("LoginViewEmailPlaceHolder");
+            txtEmail.AccessibilityLabel = txtEmail.Placeholder;
             txtEmail.ReturnKeyType = UIReturnKeyType.Next;
 			txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
 			txtEmail.ShouldReturn = delegate {                          
@@ -46,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			};
 
 			txtPassword.Placeholder = Localize.GetValue("LoginViewPasswordPlaceHolder");
+            txtPassword.AccessibilityLabel = txtPassword.Placeholder;
 			txtPassword.SecureTextEntry = true;
 			txtPassword.ReturnKeyType = UIReturnKeyType.Done;
 			txtPassword.ShouldReturn = delegate {                          
@@ -151,7 +153,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         async void ChangeServerTouchUpInside (object sender, EventArgs e)
         {
             try
-            {
+            {            
                 var serviceUrl = await this.Services().Message.ShowPromptDialog(
                     "Server Url",
                     string.Empty,

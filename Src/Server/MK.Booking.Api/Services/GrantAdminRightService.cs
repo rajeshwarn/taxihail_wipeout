@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Services
             var account = Dao.FindByEmail(request.AccountEmail);
             if (account == null) throw new HttpError(HttpStatusCode.BadRequest, "Bad request");
 
-            _commandBus.Send(new AddRoleToUserAccount
+            _commandBus.Send(new UpdateRoleToUserAccount
             {
                 AccountId = account.Id,
                 RoleName = RoleName.Admin
@@ -42,12 +42,43 @@ namespace apcurium.MK.Booking.Api.Services
             var account = Dao.FindByEmail(request.AccountEmail);
             if (account == null) throw new HttpError(HttpStatusCode.BadRequest, "Bad request");
 
-            _commandBus.Send(new AddRoleToUserAccount
+            _commandBus.Send(new UpdateRoleToUserAccount
             {
                 AccountId = account.Id,
                 RoleName = RoleName.SuperAdmin
             });
             return new HttpResult(HttpStatusCode.OK, "OK");
+        }
+
+        public object Put(GrantSupportRightRequest request)
+        {
+            var account = Dao.FindByEmail(request.AccountEmail);
+            if (account != null)
+            {
+                _commandBus.Send(new UpdateRoleToUserAccount
+                {
+                    AccountId = account.Id,
+                    RoleName = RoleName.Support
+                });
+                return new HttpResult(HttpStatusCode.OK, "OK");
+            }
+
+            throw new HttpError(HttpStatusCode.BadRequest, "Account not found");
+        }
+        public object Put(RevokeAccessRequest request)
+        {
+            var account = Dao.FindByEmail(request.AccountEmail);
+            if (account != null)
+            {
+                _commandBus.Send(new UpdateRoleToUserAccount
+                {
+                    AccountId = account.Id,
+                    RoleName = RoleName.None
+                });
+                return new HttpResult(HttpStatusCode.OK, "OK");
+            }
+
+            throw new HttpError(HttpStatusCode.BadRequest, "Account not found");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using apcurium.MK.Common.Entity;
+using System;
 
 namespace CMTPayment.Pair
 {
@@ -6,7 +7,7 @@ namespace CMTPayment.Pair
     {
         public Trip()
         {
-            TollHistory = new Toll[0];
+            TollHistory = new TollDetail[0];
         }
 
         public string Type { get; set; }
@@ -31,26 +32,27 @@ namespace CMTPayment.Pair
         public double Distance { get; set; }
         public int? AutoTipPercentage { get; set; }
         public int? AutoTipAmount { get; set; }
-        public Toll[] TollHistory { get; set; }
+        public TollDetail[] TollHistory { get; set; }
         public bool AutoCompletePayment { get; set; }
         public string CustomerId { get; set; }
         public string CustomerName { get; set; }
         public string LastFour { get; set; }
         public int AccessFee { get; set; }
+        public int? ErrorCode { get; set; }
 
         public bool Compare(Trip otherTrip)
         {
             if (otherTrip.AutoTipPercentage != AutoTipPercentage)
+            {
                 return false;
-            if (otherTrip.AutoTipAmount != AutoTipAmount)
-                return false;
-            return true;
-        }
+            }
 
-        public class Toll
-        {
-            public string TollName { get; set; }
-            public int TollAmount { get; set; }
+            if (otherTrip.AutoTipAmount != AutoTipAmount)
+            {
+                return false;
+            }
+                
+            return true;
         }
     }
 }

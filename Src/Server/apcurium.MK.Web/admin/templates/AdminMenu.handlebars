@@ -4,6 +4,7 @@
     <li data-route=""><a href="#">{{localize "Default favorite addresses"}}</a></li>
     <li data-route="addresses/popular"><a href="#">{{localize "Popular addresses"}}</a></li>
 
+    {{#if isAdmin}}
     <li class="nav-header">{{localize "Settings"}}</li>
     <li><a href="../AdminTh/CompanySettings/">{{localize "Company Settings"}}</a></li>
     <li data-route="notificationSettings"><a href="#">{{localize "Notification Settings"}}</a></li>
@@ -20,11 +21,10 @@
     <li data-route="termsandconditions"><a href="#">{{localize "Terms and Conditions"}}</a></li>
     <li><a href="../AdminTh/Privacy/">{{localize "Privacy Policy"}}</a></li>
 
-    {{#if isTaxiHailPro}}
-        <li class="nav-header">{{localize "TaxiHail Network"}}</li>
-        <li><a href="../AdminTh/TaxiHailNetwork/">{{localize "Configure"}}</a></li>
-    {{/if}}
+    <li class="nav-header">{{localize "TaxiHail Network"}}</li>
+    <li><a href="../AdminTh/TaxiHailNetwork/">{{localize "Configure"}}</a></li>
     <li><a href="../AdminTh/TaxiHailNetwork/Fees">{{localize "Fees"}}</a></li>
+    {{/if}}
 
     {{#if isTaxiHailPro}}
         <li class="nav-header">{{localize "Promo Codes"}}</li>
@@ -33,10 +33,12 @@
     {{/if}}
 
     <li class="nav-header">{{localize "User Management"}}</li>
+    {{#if isAdmin}}
     <li data-route="security"><a href="#">{{localize "Grant access admin"}}</a></li>
-    <li data-route="confirmemail"><a href="#">{{localize "Enable Disable Account"}}</a></li>
+    {{/if}}
+  	<li data-route="accountsManagement"><a href="#">{{localize "Accounts Management"}}</a></li>
     <li data-route="signup"><a href="#">{{localize "Signup"}}</a></li>
-      
+
     <li class="nav-header">{{localize "Test Notifications"}}</li>  
     <li data-route="sendpushnotification"><a href="#">{{localize "Send Push"}}</a></li>
     <li data-route="sendtestemail"><a href="#">{{localize "Send Test Email"}}</a></li>
@@ -44,6 +46,7 @@
     <li class="nav-header">{{localize "Export"}}</li>
     <li data-route="exportaccounts"><a href="#" >{{localize "ExportAccounts"}}</a></li>
     <li data-route="exportorders"><a href="#">{{localize "ExportOrders"}}</a></li>
+  	<li data-route="exportpromotions"><a href="#">{{localize "ExportPromotions"}}</a></li>
     <li class="nav-header">{{localize "Version"}}</li>
     <li>{{version}}</li>
   </ul>

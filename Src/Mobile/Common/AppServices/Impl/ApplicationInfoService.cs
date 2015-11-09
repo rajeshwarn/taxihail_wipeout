@@ -1,10 +1,10 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -12,23 +12,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
         private const string AppInfoCacheKey = "ApplicationInfo";
 
-		readonly ILocalization _localize;
-		readonly IMessageService _messageService;
-		readonly IPackageInfo _packageInfo;
-		readonly ICacheService _cacheService;
+		private readonly ILocalization _localize;
+		private readonly IMessageService _messageService;
+		private readonly IPackageInfo _packageInfo;
+		private readonly ICacheService _cacheService;
+        private readonly ILogger _logger;
 
-		public ApplicationInfoService(ILocalization localize, 
-									IMessageService messageService, 
-									IPackageInfo packageInfo,
-									ICacheService cacheService)
+		private DateTime _minimalVersionChecked;
+		private const int CheckMinimumSupportedVersionWhenIntervalExpired = 6; // hours
+
+		public ApplicationInfoService(ILocalization localize,
+            IMessageService messageService,
+            IPackageInfo packageInfo,
+            ICacheService cacheService,
+            ILogger logger)
 		{
 			_packageInfo = packageInfo;
 			_messageService = messageService;
 			_localize = localize;
 			_cacheService = cacheService;
+		    _logger = logger;
 		}
 
-        public async Task<ApplicationInfo> GetAppInfoAsync( )
+        public async Task<ApplicationInfo> GetAppInfoAsync()
         {
 			var cached = _cacheService.Get<ApplicationInfo>(AppInfoCacheKey);
             if (cached == null)
@@ -44,51 +50,44 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			_cacheService.Clear (AppInfoCacheKey);
         }
-        
-        
-        public async void CheckVersionAsync()
+
+
+        public async Task CheckVersionAsync()
         {
-			var isUpToDate = true;
-            try
+			if ((DateTime.Now - _minimalVersionChecked).TotalHours >= CheckMinimumSupportedVersionWhenIntervalExpired)
+			{
+				_minimalVersionChecked = DateTime.Now;
+			}
+			else
+			{
+				return;
+			}
+
+			var isSupported = true;
+            
+			try
             {
-                var app = await GetAppInfoAsync();
-				if ( _packageInfo.Version.Count( c=>  c == '.' ) == 2 )
+                var appInfo = await GetAppInfoAsync();
+
+				var mobileVersion = new ApplicationVersion(_packageInfo.Version);
+                var minimumRequiredVersion = new ApplicationVersion(appInfo.MinimumRequiredAppVersion);
+
+				if (mobileVersion < minimumRequiredVersion)
 				{
-
-
-					if ( ( app.Version.Count( c=>  c == '.' ) >= 2 ) &&
-						( _packageInfo.Version.Split( '.' ).Take(2).All( s=> s.All(c=> char.IsDigit(c) ) ) )  && 
-						( app.Version.Split( '.' ).Take(2).All( s=> s.All(c=> char.IsDigit(c) ) ) ) )
-					{
-						var packageNumber =  int.Parse( _packageInfo.Version.Split( '.' ).ElementAt(0) ) * 10000 + int.Parse( _packageInfo.Version.Split( '.' ).ElementAt(1) ) * 100;
-
-							var appNumber =  int.Parse( app.Version.Split( '.' ).ElementAt(0) ) * 10000 + int.Parse( app.Version.Split( '.' ).ElementAt(1) ) * 100;
-						isUpToDate = packageNumber >=  appNumber;
-
-
-
-					}
-					else 
-					{
-						var v = _packageInfo.Version.Split( '.' ).Take(2).JoinBy(".")+".";
-						isUpToDate = app.Version.StartsWith(v);
-					}
+					isSupported = false;
 				}
-
             }
-            catch
+            catch (Exception ex)
             {
-                isUpToDate = true;
+                _logger.LogMessage("An error occured when trying to check the minimum app version.");
+                _logger.LogError(ex);
             }
 
-            if (!isUpToDate)
+            if (!isSupported)
             {
-
-				var title = _localize["AppNeedUpdateTitle"];
-				var msg = _localize["AppNeedUpdateMessage"];
-				await _messageService.ShowMessage(title, msg);
+                // App is not supported anymore (also means that an update is available so don't display the other pop-up)
+                await _messageService.ShowMessage(_localize["UpdateNoticeTitle"], _localize["UpdateNoticeText"]);
             }
-        }
+		}
     }
 }
-

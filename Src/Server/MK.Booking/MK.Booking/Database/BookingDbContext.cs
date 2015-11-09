@@ -26,7 +26,6 @@ namespace apcurium.MK.Booking.Database
         public BookingDbContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
-
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -87,6 +86,9 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<TemporaryOrderCreationInfoDetail>().ToTable("TemporaryOrderCreationInfoDetail", SchemaName);
             modelBuilder.Entity<TemporaryOrderPaymentInfoDetail>().ToTable("TemporaryOrderPaymentInfoDetail", SchemaName);
             modelBuilder.Entity<AccountChargeQuestionAnswer>().ToTable("AccountChargeQuestionAnswer", SchemaName);
+
+            modelBuilder.Entity<Airline>().ToTable("Airline", SchemaName);
+            modelBuilder.Entity<PickupPoint>().ToTable("PickupPoint", SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class
@@ -110,5 +112,13 @@ namespace apcurium.MK.Booking.Database
 
             SaveChanges();
         }
+
+		public static DateTime MinimumDatabaseDateTime
+		{
+			get
+			{
+				return new DateTime(System.Data.SqlTypes.SqlDateTime.MinValue.TimeTicks);
+			}
+		}
     }
 }

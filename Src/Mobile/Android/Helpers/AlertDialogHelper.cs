@@ -2,9 +2,6 @@ using System;
 using Android.App;
 using Android.Content;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using Android.Views;
-using Android.Animation;
 using apcurium.MK.Booking.Mobile.Client.Controls.Dialog;
 using System.Threading.Tasks;
 
@@ -12,6 +9,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
     public static class AlertDialogHelper
     {
+        public static CustomAlertDialog LatestAlert { get; set;}
+
         public static void ShowAlert(this Activity owner, string title, string message, Action onClose = null)
         {
             Show(owner, title, message, onClose);
@@ -35,13 +34,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
         public static void Show(Activity owner, string title, string message, Action onClose = null)
         {
-            new CustomAlertDialog(owner, title, message, onClose);
+            LatestAlert = new CustomAlertDialog(owner, title, message, onClose);
         }
 
         public static void Show(Activity owner, string title, string message, string positiveButtonTitle,
             Action positiveAction)
         {
-            new CustomAlertDialog(owner, title, message, positiveAction, positiveButtonTitle);
+            LatestAlert = new CustomAlertDialog(owner, title, message, positiveAction, positiveButtonTitle);
         }
 
         public static void Show(Activity owner, string title, string message, string positiveButtonTitle,
@@ -49,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             Action negativeAction)
         {
 
-            new CustomAlertDialog(owner, title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction);
+            LatestAlert = new CustomAlertDialog(owner, title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction);
         }
 
         public static void Show(Activity owner, string title, string message, string positiveButtonTitle,
@@ -57,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             Action negativeAction, string neutralButtonTitle,
             Action neutralAction)
         {
-            new CustomAlertDialog(owner, title, message, positiveButtonTitle, positiveAction, 
+            LatestAlert = new CustomAlertDialog(owner, title, message, positiveButtonTitle, positiveAction, 
                 negativeButtonTitle, negativeAction, neutralButtonTitle, neutralAction);
         }
 
@@ -81,8 +80,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
         }
         public static Task<string> ShowPromptDialog(Activity owner, string title, string message, Action cancelAction, bool isNumericOnly = false, string inputText = "")
         {
-            var cad = new CustomAlertDialog();
-            return cad.ShowPrompt(owner, title, message, cancelAction, isNumericOnly, inputText);
+            LatestAlert = new CustomAlertDialog();
+            return LatestAlert.ShowPrompt(owner, title, message, cancelAction, isNumericOnly, inputText);
         }
     }
 }

@@ -4,6 +4,8 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using apcurium.MK.Common;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -29,11 +31,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			txtCode.BecomeFirstResponder ();
 		}
 
+        public override void ViewDidLayoutSubviews()
+        {
+            base.ViewDidLayoutSubviews();
+
+            if (confirmScrollViewer.ContentSize.Width > UIScreen.MainScreen.Bounds.Width)
+            {
+                confirmScrollViewer.ContentSize = new CoreGraphics.CGSize(UIScreen.MainScreen.Bounds.Width, confirmScrollViewer.ContentSize.Height);
+            }
+        }
+
         public override void ViewDidLoad ()
         {
 			base.ViewDidLoad ();
 
             View.BackgroundColor = Theme.LoginColor;
+            confirmScrollViewer.BackgroundColor = Theme.LoginColor;
+
 			lblTitle.TextColor = Theme.LabelTextColor;
 			lblSubTitle.TextColor = Theme.LabelTextColor;
             lblTitle.TextColor = Theme.GetTextColor(Theme.LoginColor);
@@ -50,9 +64,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblTitle.Text = Localize.GetValue ("View_AccountConfirmationTitle");
 			lblSubTitle.Text = Localize.GetValue ("View_AccountConfirmation_Label_Instructions");
 			txtCode.Placeholder = Localize.GetValue("View_AccountConfirmation_Label_Code");
+            txtCode.AccessibilityLabel = txtCode.Placeholder;
 			btnConfirm.SetTitle(Localize.GetValue("View_AccountConfirmation_Button"), UIControlState.Normal);
             btnResend.SetTitle(Localize.GetValue("ResendConfirmationCodeButtonText"), UIControlState.Normal);
+            lblPhoneNumberTitle.Text = Localize.GetValue("RideSettingsPhone");
+            txtPhoneNumber.Placeholder = Localize.GetValue("RideSettingsPhone");
+            txtPhoneNumber.AccessibilityLabel = txtPhoneNumber.Placeholder;
+            lblDialCode.AccessibilityLabel = Localize.GetValue("DialCodeSelectorTitle");
 
+
+            if (UIHelper.IsOS7orHigher) 
+            {
+                lblDialCode.TintColor = UIColor.FromRGB (44, 44, 44); // cursor color
+            } 
+
+            lblDialCode.TextColor = UIColor.FromRGB(44, 44, 44);
+            lblDialCode.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
+
+
+            lblDialCode.Configure(this.NavigationController, (DataContext as AccountConfirmationViewModel).PhoneNumber);
+            lblDialCode.NotifyChanges += (object sender, PhoneNumberChangedEventArgs e) =>
+                {
+                    this.ViewModel.SelectedCountryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(e.Country));
+                };
 
 			var set = this.CreateBindingSet<AccountConfirmationView, AccountConfirmationViewModel>();
 
@@ -67,6 +101,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnResend)
                 .For("TouchUpInside")
                 .To(x => x.ResendConfirmationCode);
+
+            set.Bind(txtPhoneNumber)
+                .For(v => v.Text)
+                .To(vm => vm.Phone);
 
             set.Apply();
         }

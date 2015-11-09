@@ -18,6 +18,8 @@ namespace apcurium.MK.Booking.Api.Client
         
         Task<EtaForPickupResponse> GetEtaFromGeo(double latitude, double longitude, string vehicleRegistration, Guid orderId);
 
-        Task SendMessageToDriver(string message, string vehicleNumber);
+	    Task<AvailableVehicle> GetTaxiLocation(Guid orderId, string medallion);
+
+		Task SendMessageToDriver(string message, string vehicleNumber, Guid orderId);
     }
 }

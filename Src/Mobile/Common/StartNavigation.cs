@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
@@ -11,6 +10,7 @@ using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -50,6 +50,8 @@ namespace apcurium.MK.Booking.Mobile
                     accountService.SignOut();
 				}
 
+                // Don't check the app version here since it's done in the LoginViewModel
+
 				ShowViewModel<LoginViewModel>();
             }
 			else if (@params.ContainsKey ("orderId"))
@@ -59,10 +61,13 @@ namespace apcurium.MK.Booking.Mobile
                 bool.TryParse(@params["isPairingNotification"], out isPairingNotification);
 
 				// Make sure to reload notification/payment/network settings even if the user has killed the app
-                await accountService.GetNotificationSettings(true);
-                await accountService.GetUserTaxiHailNetworkSettings(true);
-				await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
-                
+	            await Task.WhenAll(
+						accountService.GetNotificationSettings(true).HandleErrors(),
+						accountService.GetUserTaxiHailNetworkSettings(true).HandleErrors(),
+						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors(),
+						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync().HandleErrors()
+		            );
+
                 try
                 {
                     var orderStatus = await Mvx.Resolve<IBookingService>().GetOrderStatusAsync(orderId);
@@ -70,30 +75,45 @@ namespace apcurium.MK.Booking.Mobile
 
                     if (order != null && orderStatus != null)
                     {
-                        ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
-						    {"order", order.ToJson()},
-                            {"orderStatus", orderStatus.ToJson()}
-                        });
+						ShowViewModel<HomeViewModel>(new
+						{
+							locateUser = false,
+							order = order.ToJson(),
+							orderStatusDetail = orderStatus.ToJson()
+						});
                     }
                 }
-                catch(Exception)
+                catch(Exception ex)
                 {
+					var logger = Mvx.Resolve<ILogger>();
+
+					logger.LogMessage("An error occurred while handling notifications");
+					logger.LogError(ex);
+
                     ShowViewModel<HomeViewModel>(new { locateUser = true });
                 }
             }
             else
             {
-                Task.Run(() =>
-                {
-                    // Make sure to refresh notification/payment settings even if the user has killed the app
-                    accountService.GetNotificationSettings(true);
-                    Mvx.Resolve<IPaymentService>().GetPaymentSettings();
-                });
+				// Make sure to refresh notification/payment settings even if the user has killed the app
+				await Task.WhenAll(
+						accountService.GetNotificationSettings(true).HandleErrors(),
+						Mvx.Resolve<IPaymentService>().GetPaymentSettings().HandleErrors(),
+						Mvx.Resolve<IApplicationInfoService>().CheckVersionAsync().HandleErrors()
+					);
 
                 // Log user session start
                 metricsService.LogApplicationStartUp();
 
-                ShowViewModel<HomeViewModel>(new { locateUser = true });
+				var hasLastOrder = Mvx.Resolve<IBookingService>().HasLastOrder;
+				if (hasLastOrder)
+				{
+					ShowViewModel<ExtendedSplashScreenViewModel>(new { preventShowViewAnimation = "NotUsed" });
+				}
+				else
+				{
+					ShowViewModel<HomeViewModel>(new { locateUser = true });
+				}
             }
 
             Mvx.Resolve<ILogger>().LogMessage("Startup with server {0}", appSettings.Data.ServiceUrl);

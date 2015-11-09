@@ -41,7 +41,8 @@
                     android:layout_height="@dimen/HeightEditTextFlat"
                     android:inputType="textCapWords"
                     android:background="#f2f2f2"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:hint="@string/PassengerNameLabel" />
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:paddingTop="6dp"
@@ -72,6 +73,7 @@
                                 android:layout_height="@dimen/HeightEditTextFlat"
                                 android:layout_marginBottom="10dip"
                                 android:background="@color/ordereditbackgroundfield"
+                                android:contentDescription="@string/DialCodeSelectorTitle"
                                 style="@style/MainTheme"
                                 local:MvxItemTemplate="@layout/countrycodeitemmvx"
                                 local:MvxDropDownItemTemplate="@layout/countrycodeitemdropdownmvx"
@@ -84,7 +86,8 @@
                                 android:background="#f2f2f2"
                                 android:maxLines="1"
                                 android:inputType="phone"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:hint="@string/PassengerPhoneLabel" />
                         </LinearLayout>
                     </LinearLayout>
                     <View
@@ -114,7 +117,8 @@
                             android:lines="0"
                             android:singleLine="true"
                             android:ellipsize="end"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:hint="@string/PassengerNumberLabel" />
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -146,7 +150,8 @@
                             android:background="#f2f2f2"
                             android:lines="0"
                             android:singleLine="true"
-                            android:ellipsize="end" />
+                            android:ellipsize="end"
+                            android:hint="@string/ApartmentLabel" />
                     </LinearLayout>
                     <View
                         android:layout_height="1dip"
@@ -175,7 +180,8 @@
                             android:lines="0"
                             android:singleLine="true"
                             android:ellipsize="end"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:hint="@string/EntryCodeLabel" />
                     </LinearLayout>
                 </LinearLayout>
                 <TextView

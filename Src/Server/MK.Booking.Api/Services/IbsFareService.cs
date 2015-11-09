@@ -9,6 +9,8 @@ using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using System.Linq;
 
 #endregion
 
@@ -18,17 +20,21 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IServerSettings _serverSettings;
+        private readonly IVehicleTypeDao _vehicleTypeDao;
         private readonly Resources.Resources _resources;
-        public IbsFareService(IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings)
+        public IbsFareService(IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings, IVehicleTypeDao vehicleTypeDao)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
+            _vehicleTypeDao = vehicleTypeDao;
             _resources = new Resources.Resources(serverSettings);
         }
 
         public DirectionInfo Get(IbsFareRequest request)
         {
             var tripDurationInMinutes = (request.TripDurationInSeconds.HasValue ? (int?)TimeSpan.FromSeconds(request.TripDurationInSeconds.Value).TotalMinutes : null);
+
+            var defaultVehiculeType = _vehicleTypeDao.GetAll().FirstOrDefault();
 
             var fare = _ibsServiceProvider.Booking().GetFareEstimate(
                 request.PickupLatitude,
@@ -41,7 +47,8 @@ namespace apcurium.MK.Booking.Api.Services
                 request.CustomerNumber,
                 tripDurationInMinutes, 
                 _serverSettings.ServerData.DefaultBookingSettings.ProviderId,
-                request.VehicleType);
+                request.VehicleType,
+                defaultVehiculeType != null ? defaultVehiculeType.ReferenceDataVehicleId : -1);
 
             if (fare.FareEstimate != null)
             {

@@ -23,5 +23,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public double? Longitude { get; set; }
 
         public double? Latitude { get; set; }
+
+        public string Market { get; set; }
+        
+        public double? CompassCourse { get; set; }
     }
 }

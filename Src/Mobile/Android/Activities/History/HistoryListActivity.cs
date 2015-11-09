@@ -7,7 +7,7 @@ using Android.Graphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
-	[Activity(Label = "History", Theme = "@style/MainTheme",
+	[Activity(Label = "@string/HistoryActivityName", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class HistoryListActivity : BaseBindingActivity<HistoryListViewModel>
     {

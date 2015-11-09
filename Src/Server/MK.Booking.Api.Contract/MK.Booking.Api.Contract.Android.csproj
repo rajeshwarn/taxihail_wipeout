@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>apcurium.MK.Booking.Api.Contract</RootNamespace>
     <AssemblyName>MK.Booking.Api.Contract.Android</AssemblyName>
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -62,11 +63,13 @@
     <Compile Include="Requests\ClientPopularAddress.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\ConfirmationCodeRequest.cs" />
-    <Compile Include="Requests\CreateOrder.cs" />
+    <Compile Include="Requests\CreateOrderRequest.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
+    <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\EtaForPickupRequest.cs" />
+    <Compile Include="Requests\FlightInformationRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\LogOriginalEtaRequest.cs" />
@@ -96,6 +99,7 @@
     <Compile Include="Requests\SendReceipt.cs" />
     <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
     <Compile Include="Requests\Tariff.cs" />
+    <Compile Include="Requests\TaxiLocationRequest.cs" />
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
@@ -103,6 +107,7 @@
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\ActivePromotion.cs" />
     <Compile Include="Resources\AddressList.cs" />
+    <Compile Include="Resources\FlightInformation.cs" />
     <Compile Include="Resources\IbsFare.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
@@ -126,6 +131,8 @@
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
     <Compile Include="Resources\VehicleType.cs" />
     <Compile Include="Requests\ActivationMethod.cs" />
+    <Compile Include="Requests\DefaultCreditCardRequest.cs" />
+    <Compile Include="Requests\UpdateCreditCardLabelRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -11,6 +11,7 @@ using apcurium.MK.Common.Http.Extensions;
 using CMTServices.Enums;
 using CMTServices.Responses;
 using ServiceStack.Common;
+using ServiceStack.Text;
 
 namespace CMTServices
 {
@@ -43,10 +44,16 @@ namespace CMTServices
                 return new List<VehicleResponse>();
             }
 
+			@params.AddRange(new []
+			{
+				new KeyValuePair<string, object>("availState", ((int)AvailabilityStates.Available).ToString()),
+				new KeyValuePair<string, object>("includeETA", "true")
+			});
+
             CmtGeoResponse response = null;
             try
             {
-                response = Client.Post("/availability", ToDictionary(@params))
+				response = Client.Post("/availability", ToDictionary(@params))
                     .Deserialize<CmtGeoResponse>()
                     .Result;
             }
@@ -85,6 +92,10 @@ namespace CMTServices
             var response = base.ToVehicleResponse(entity);
 
             response.Eta = entity.ETASeconds;
+            response.DistanceToArrival = entity.ETAMeters;
+            response.DeviceName = entity.DeviceName;
+            response.CompassCourse = entity.CompassCourse;
+            response.Market = entity.Market;
 
             return response;
         }
@@ -95,6 +106,7 @@ namespace CMTServices
             {
                 new KeyValuePair<string, object>("lat", latitude),
                 new KeyValuePair<string, object>("lon", longitude),
+				new KeyValuePair<string, object>("includeMapMatch", "true"),
                 new KeyValuePair<string, object>("deviceName", vehicleRegistration)
             };
 
@@ -134,7 +146,15 @@ namespace CMTServices
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
-        protected List<KeyValuePair<string, object>> GetAvailableVehicleParams(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false, bool wheelchairAccessibleOnly = false)
+        protected List<KeyValuePair<string, object>> GetAvailableVehicleParams(
+			string market, 
+			double latitude, 
+			double longitude, 
+			int? searchRadius = null, 
+			IList<int> fleetIds = null, 
+			bool returnAll = false, 
+			bool wheelchairAccessibleOnly = false,
+			bool hired = false)
         {
             if (fleetIds != null && !fleetIds.Any())
             {
@@ -142,9 +162,15 @@ namespace CMTServices
                 return null;
             }
 
+	        var meterState = hired
+		        ? MeterStates.Hired
+		        : MeterStates.ForHire;
+
+			
+
             var @params = new List<KeyValuePair<string, object>>
                 {
-                    new KeyValuePair<string, object>("meterState", ((int)MeterStates.ForHire).ToString()),
+                    new KeyValuePair<string, object>("meterState", ((int)meterState).ToString()),
                     new KeyValuePair<string, object>("logonState", ((int)LogonStates.LoggedOn).ToString()),
                     new KeyValuePair<string, object>("lat", latitude.ToString(CultureInfo.InvariantCulture)),
                     new KeyValuePair<string, object>("lon", longitude.ToString(CultureInfo.InvariantCulture)),
@@ -152,11 +178,9 @@ namespace CMTServices
 
                     // the following have different defaults from badger service
                     new KeyValuePair<string, object>("includeMapMatch", "true"),
-                    new KeyValuePair<string, object>("includeETA", "true"),
 
                     // required for geo service
-                    new KeyValuePair<string, object>("limit", "10"),
-                    new KeyValuePair<string, object>("availState", ((int)AvailabilityStates.Available).ToString())
+                    new KeyValuePair<string, object>("limit", "10")
                 };
 
             if (market.HasValue())
@@ -172,7 +196,11 @@ namespace CMTServices
 
             if (fleetIds != null)
             {
-                @params.AddRange(fleetIds.Select(fleetId => new KeyValuePair<string, object>("fleets", fleetId.ToString())));
+	            var fleetIdsArray = fleetIds
+					.Select(fleet => fleet.ToString())
+					.ToArray();
+
+				@params.Add(new KeyValuePair<string, object>("fleets", fleetIdsArray));
             }
 
             return @params;

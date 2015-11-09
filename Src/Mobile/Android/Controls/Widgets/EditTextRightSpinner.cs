@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private int _selectedKey = int.MinValue;
         private SpinnerOtherSupport _spinner;
         private string _text;
+		private Button _button;
         bool _fromUI = false;
         bool _allowOther = false;
 
@@ -66,7 +67,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 _text = value;
-                if (_label != null) _label.Text = value;
+				if (_label != null)
+				{
+					_label.Text = value;
+					_button.ContentDescription = this.ContentDescription + " " + Text;
+				}
             }
         }
 
@@ -82,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     if (resource != 0)
                     {
                         _imageLeftView.SetImageResource(resource);
-                        _label.OffsetLeftAndRight(70);
+                        _label.SetPadding(55.ToPixels (), 0, 0, 0);
                     }
                 }
             }
@@ -163,15 +168,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     _imageLeftView.SetImageResource(resource);
                     if (this.Services ().Localize.IsRightToLeft) {
-                        _label.SetPadding (0, 0, 70.ToPixels (), 0);
+                        _label.SetPadding (0, 0, 55.ToPixels (), 0);
                     } else {
-                        _label.SetPadding (70.ToPixels (), 0, 0, 0);
+                        _label.SetPadding (55.ToPixels (), 0, 0, 0);
                     }
                 }
             }
-            var button = (Button) layout.FindViewById(Resource.Id.openSpinnerButton);
 
-            button.Click += (sender, e) =>
+			_button = (Button)layout.FindViewById(Resource.Id.openSpinnerButton);
+
+			_button.ContentDescription = this.ContentDescription + " " + Text;
+
+			_button.Click += (sender, e) =>
                 {
                     if (Enabled)
                     {

@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class RideSettingsView
 	{
 		[Outlet]
+		UIKit.UIImageView imgFacebook { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblAccountNumber { get; set; }
 
 		[Outlet]
@@ -22,7 +25,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblCustomerNumber { get; set; }
 
 		[Outlet]
-        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.CountrySelector lblDialCode { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.CountrySelector lblDialCode { get; set; }
+
+		[Outlet]
+        apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtEmail { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblEmailTitle { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblName { get; set; }
@@ -35,9 +44,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.UILabel lblPhone { get; set; }
-
-		[Outlet]
-		UIKit.UILabel lblTip { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblVehicleType { get; set; }
@@ -64,13 +70,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPhone { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtTip { get; set; }
-
-		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtVehicleType { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (imgFacebook != null) {
+				imgFacebook.Dispose ();
+				imgFacebook = null;
+			}
+
 			if (lblAccountNumber != null) {
 				lblAccountNumber.Dispose ();
 				lblAccountNumber = null;
@@ -84,6 +92,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblCustomerNumber != null) {
 				lblCustomerNumber.Dispose ();
 				lblCustomerNumber = null;
+			}
+
+			if (lblDialCode != null) {
+				lblDialCode.Dispose ();
+				lblDialCode = null;
+			}
+
+            if (txtEmail != null) {
+                txtEmail.Dispose ();
+                txtEmail = null;
+			}
+
+			if (lblEmailTitle != null) {
+				lblEmailTitle.Dispose ();
+				lblEmailTitle = null;
 			}
 
 			if (lblName != null) {
@@ -104,11 +127,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblPhone != null) {
 				lblPhone.Dispose ();
 				lblPhone = null;
-			}
-
-			if (lblTip != null) {
-				lblTip.Dispose ();
-				lblTip = null;
 			}
 
 			if (lblVehicleType != null) {
@@ -151,19 +169,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtPhone = null;
 			}
 
-			if (txtTip != null) {
-				txtTip.Dispose ();
-				txtTip = null;
-			}
-
 			if (txtVehicleType != null) {
 				txtVehicleType.Dispose ();
 				txtVehicleType = null;
-			}
-
-			if (lblDialCode != null) {
-				lblDialCode.Dispose ();
-				lblDialCode = null;
 			}
 		}
 	}

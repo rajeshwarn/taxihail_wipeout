@@ -34,47 +34,97 @@
             android:layout_height="@dimen/Height"
             android:text="@string/View_AccountConfirmationTitle"
             style="@style/TitleTextBold" />
-        <View
-            android:orientation="vertical"
-            android:layout_height="6dip"
-            android:layout_width="fill_parent" />
-        <TextView
-            android:gravity="center_horizontal"
-            android:layout_width="200dip"
-            android:layout_height="wrap_content"
-            android:text="@string/View_AccountConfirmation_Label_Instructions"
-            style="@style/TitleTextMultine"
-            android:textColor="@color/label_text_color" />
-        <View
-            android:orientation="vertical"
-            android:layout_height="12dip"
-            android:layout_width="fill_parent" />
-        <EditText
-            android:id="@+id/ConfirmationCode"
-            local:MvxBind="Text Code"
+        <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/HeightEditText"
-            android:hint="@string/View_AccountConfirmation_Label_Code"
-            android:inputType="number">
-            <requestFocus />
-        </EditText>
-        <View
-            android:orientation="vertical"
-            android:layout_height="12dip"
-            android:layout_width="fill_parent" />
-        <Button
-            android:id="@+id/btnConfirm"
-            local:MvxBind="Click ConfirmAccount"
-            android:text="@string/View_AccountConfirmation_Button"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/HeightButton"
-            style="@style/ButtonMainStyle" />
-        <Button
-            android:id="@+id/btnResend"
-            local:MvxBind="Click ResendConfirmationCode"
-            android:text="@string/ResendConfirmationCodeButtonText"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/HeightButton"
-            style="@style/ButtonMainStyle" />
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+                <View
+                    android:orientation="vertical"
+                    android:layout_height="6dip"
+                    android:layout_width="fill_parent" />
+                <TextView
+                    android:gravity="center_horizontal"
+                    android:layout_width="200dip"
+                    android:layout_height="wrap_content"
+                    android:text="@string/View_AccountConfirmation_Label_Instructions"
+                    style="@style/TitleTextMultine"
+                    android:textColor="@color/label_text_color" />
+                <View
+                    android:orientation="vertical"
+                    android:layout_height="12dip"
+                    android:layout_width="fill_parent" />
+                <EditText
+                    android:id="@+id/ConfirmationCode"
+                    local:MvxBind="Text Code"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightEditText"
+                    android:hint="@string/View_AccountConfirmation_Label_Code"
+                    android:inputType="number">
+                    <requestFocus />
+                </EditText>
+                <View
+                    android:orientation="vertical"
+                    android:layout_height="12dip"
+                    android:layout_width="fill_parent" />
+                <Button
+                    android:id="@+id/btnConfirm"
+                    local:MvxBind="Click ConfirmAccount"
+                    android:text="@string/View_AccountConfirmation_Button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightButton"
+                    style="@style/ButtonMainStyle" />
+                <View
+                    android:orientation="vertical"
+                    android:layout_height="12dip"
+                    android:layout_width="fill_parent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/RideSettingsPhone"
+                    style="@style/TitleText" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightEditTextFlat">
+                    <MvxSpinner
+                        android:layout_width="60dp"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_marginBottom="10dip"
+                        android:background="@drawable/edit_text_rounded"
+                        android:contentDescription="@string/DialCodeSelectorTitle"
+                        style="@style/MainTheme"
+                        local:MvxItemTemplate="@layout/countrycodeitemmvx"
+                        local:MvxDropDownItemTemplate="@layout/countrycodeitemdropdownmvx"
+                        local:MvxBind="ItemsSource CountryCodes;SelectedItem SelectedCountryCode" />
+                    <apcurium.mk.booking.mobile.client.controls.widgets.EditTextWithAccessibility
+                        android:layout_width="fill_parent"
+                        android:layout_marginBottom="10dip"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:maxLines="1"
+                        android:inputType="phone"
+                        android:singleLine="true"
+                        android:layout_marginLeft="10dp"
+                        android:hint="@string/RideSettingsPhone"
+                        android:contentDescription="@string/RideSettingsPhone"
+                        local:MvxBind="Text Phone" />
+                </LinearLayout>
+                <View
+                    android:orientation="vertical"
+                    android:layout_height="12dip"
+                    android:layout_width="fill_parent" />
+                <Button
+                    android:id="@+id/btnResend"
+                    local:MvxBind="Click ResendConfirmationCode"
+                    android:text="@string/ResendConfirmationCodeButtonText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightButton"
+                    style="@style/ButtonMainStyle" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </RelativeLayout>

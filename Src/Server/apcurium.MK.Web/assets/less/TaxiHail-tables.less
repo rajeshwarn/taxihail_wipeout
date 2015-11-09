@@ -6,3 +6,68 @@
         }
     }
 }
+
+.table-accountslist, .table-orders
+{
+	border:none;
+	border-spacing:0px;
+}
+
+.table-accountslist	th
+{
+	padding:5px;
+}
+
+.table-accountslist	td
+{
+	vertical-align:central;
+	text-align:center;
+	padding:5px;
+}
+
+.table-orders td
+{
+	vertical-align:central;
+	text-align:center;
+	color:black;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.divPayment
+{
+	clear:both;
+	margin:0;
+	overflow: hidden;
+}
+
+.divPayment .divText
+{
+	width:80px;
+	float:left;
+	text-align:right;
+}
+
+.divPayment .divAmount
+{
+	width:50px;
+	float:left;
+	text-align:left;
+	margin-left:5px;
+}
+
+.table-accountslist tbody tr:nth-child(odd), .table-orders tbody tr:nth-child(odd)
+{
+	background: rgba(238, 238, 238, 1);
+}
+
+.table-accountslist tbody tr:nth-child(even), .table-orders tbody tr:nth-child(even)
+{
+	background: rgba(210, 210, 210, 1);
+}
+
+.table-accountslist tbody tr:hover
+{
+	background: rgba(70, 70, 70, 0.8);
+	color:rgba(255, 255, 255, 1)
+}

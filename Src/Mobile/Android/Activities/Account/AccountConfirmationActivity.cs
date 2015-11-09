@@ -15,7 +15,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-	[Activity(Label = "Account Confirmation", Theme = "@style/LoginTheme", ScreenOrientation = ScreenOrientation.Portrait)]
+	[Activity(Label = "@string/AccountConfirmationActivityName", Theme = "@style/LoginTheme", ScreenOrientation = ScreenOrientation.Portrait)]
 	public class AccountConfirmationActivity : BaseBindingActivity<AccountConfirmationViewModel>
 	{
 		protected override void OnViewModelSet()

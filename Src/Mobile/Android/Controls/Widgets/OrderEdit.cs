@@ -8,9 +8,10 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Extensions;
+using Android.Graphics;
+using Android.Runtime;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
-using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -32,7 +33,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private EditTextSpinner _txtChargeType;
         private LinearLayout _bottomPadding;
 
-		public OrderEdit(Context context, IAttributeSet attrs) : base(LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderEdit, context), context, attrs)
+	    private bool _isShown;
+	    private ViewStates _animatedVisibility;
+
+	    public OrderEdit(Context context, IAttributeSet attrs) : base(LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderEdit, context), context, attrs)
         {
             this.DelayBind(() => 
             {
@@ -62,7 +66,85 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
         }
 
-        private OrderEditViewModel ViewModel { get { return (OrderEditViewModel)DataContext; } }
+		public LayoutParams GetLayoutParameters()
+		{
+			return (LayoutParams)LayoutParameters;
+		}
+
+		public void SetLayoutParameters(int width, int height, int leftMargin, int rigthMargin, int topMargin, int bottomMargin, GravityFlags gravityFlags)
+		{
+			LayoutParameters = new LayoutParams(width, height, gravityFlags);
+
+			((MarginLayoutParams)LayoutParameters).LeftMargin = leftMargin;
+			((MarginLayoutParams)LayoutParameters).RightMargin = rigthMargin;
+			((MarginLayoutParams)LayoutParameters).TopMargin = topMargin;
+			((MarginLayoutParams)LayoutParameters).BottomMargin = bottomMargin;
+		}
+
+	    public void ShowWithoutAnimations()
+	    {
+		    _isShown = true;
+
+		    if (Animation != null)
+		    {
+			    Animation.Cancel();
+		    }
+
+		    ((MarginLayoutParams) LayoutParameters).LeftMargin = 0;
+	    }
+
+	    public Point ScreenSize { get; set; }
+
+		public FrameLayout ParentFrameLayout{ get; set; }
+
+	    public ViewStates AnimatedVisibility
+	    {
+		    get { return _animatedVisibility; }
+		    set
+		    {
+			    _animatedVisibility = value;
+			    if (value == ViewStates.Visible)
+			    {
+					ShowIfNeeded();
+				    return;
+			    }
+				HideIfNeeded();
+		    }
+	    }
+
+		private void ShowIfNeeded()
+	    {
+		    if (_isShown)
+		    {
+			    return;
+		    }
+		    _isShown = true;
+
+			var animation = AnimationHelper.GetForXTranslation(this, 0, this.Services().Localize.IsRightToLeft);
+
+			StartAnimation(animation);
+	    }
+
+		private void HideIfNeeded()
+	    {
+			if (!_isShown)
+		    {
+			    return;
+		    }
+		    _isShown = false;
+
+
+			var animation = AnimationHelper.GetForXTranslation(this, ScreenSize.X, this.Services().Localize.IsRightToLeft);
+			animation.AnimationStart += (sender, e) =>
+			{
+				if (((MarginLayoutParams)LayoutParameters).Width != ParentFrameLayout.Width)
+				{
+					((MarginLayoutParams)LayoutParameters).Width = ParentFrameLayout.Width;
+				}
+			};
+
+			StartAnimation(animation);
+	    }
 
         private void InitializeBinding()
         {

@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Converters;
+using apcurium.MK.Common.Extensions;
 using Foundation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
     {
         // Offset to fix potential issue with iPhone 6+ that would not scroll the viewport completely.
         private const float ScrollingOffset = 3f;
+        private const float SliderStepValue = 5f;
 
         public OrderReviewView(IntPtr handle) : base(handle)
         {
@@ -26,20 +28,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
         private void Initialize()
         {
-            BackgroundColor = UIColor.Clear;
-
             txtNote.BackgroundColor = UIColor.FromRGB(208, 208, 208);
             txtNote.Font = UIFont.FromName(FontName.HelveticaNeueBold, 18f);
             txtNote.Placeholder = Localize.GetValue("NotesToDriveLabel");
 	        txtNote.PlaceholderColor = UIColor.FromRGB(75, 75, 75);
+            txtNote.AccessibilityLabel = txtNote.Placeholder;
             txtNote.ShowCloseButtonOnKeyboard();
+
+            lblBonus.Text = Localize.GetValue("DriverBonusTitle");
+            lblBonusDescription.Text = Localize.GetValue("DriverBonusDescription");
+            lblBonusDescription.PreferredMaxLayoutWidth = this.Superview.Bounds.Size.Width - 20;
+            lblBonusAmount.TextColor = UIColor.FromRGB(208, 208, 208);
 
             Foundation.NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, ObserveKeyboardShown);
 
             FlatButtonStyle.CompanyColor.ApplyTo(btnViewPromo);
 			btnViewPromo.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2);
         }
-            
+
         // Places the visible area of the scrollviewer at the top of the driver note.
         private void ObserveKeyboardShown(NSNotification notification)
         {    
@@ -86,6 +92,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Name);
 
+            lblName.AccessibilityHint = Localize.GetValue("PassengerNameLabel");
+
             set.Bind(lblCountryDialCode)
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Country)
@@ -95,29 +103,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Phone);
 
+            lblPhone.AccessibilityHint = Localize.GetValue("PassengerPhoneLabel");
+
             set.BindSafe(lblNbPassengers)
                 .For(v => v.Text)
                 .To(vm => vm.Settings.Passengers);
+
+            lblNbPassengers.AccessibilityHint = Localize.GetValue("PassengerNumberLabel");
 
             set.Bind(lblDate)
                 .For(v => v.Text)
                 .To(vm => vm.Date);
 
+            lblDate.AccessibilityHint = Localize.GetValue("ConfirmDateTimeLabel");
+
             set.Bind(lblVehicule)
                 .For(v => v.Text)
                 .To(vm => vm.VehiculeType);
+
+            lblVehicule.AccessibilityHint = Localize.GetValue("ConfirmVehiculeTypeLabel");
 
             set.Bind(lblChargeType)
                 .For(v => v.Text)
                 .To(vm => vm.ChargeType);
 
+            lblChargeType.AccessibilityHint = Localize.GetValue("ChargeTypeLabel");
+
             set.BindSafe(lblApt)
                 .For(v => v.Text)
                 .To(vm => vm.Apartment);
 
+            lblApt.Maybe(ve => ve.AccessibilityHint = Localize.GetValue("ApartmentLabel"));
+
             set.BindSafe(lblRingCode)
                 .For(v => v.Text)
                 .To(vm => vm.RingCode);
+
+            lblRingCode.Maybe(ve => ve.AccessibilityHint = Localize.GetValue("EntryCodeLabel"));
 
             set.BindSafe(lblNbLargeBags)
                 .For(v => v.Text)
@@ -138,8 +160,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			set.Bind(iconPromo)
 				.For(v => v.Hidden)
 				.To(vm => vm.PromoCode)
-				.WithConversion("HasValueToVisibility");
+                .WithConversion("HasValueToVisibility");
+            
+            set.Bind(switchBonus)
+                .For(v => v.On)
+                .To(vm => vm.DriverBonusEnabled);
 
+            set.Bind(sliderBonus)
+                .For(v => v.Value)
+                .To(vm => vm.DriverBonus);
+
+            set.Bind(lblBonusAmount)
+                .For(v => v.Text)
+                .To(vm => vm.DriverBonus)
+                .WithConversion("CurrencyFormat");
+
+            set.Bind(this)
+                .For(v => v.RemoveBonusFromView)
+                .To(vm => vm.CanShowDriverBonus)
+                .WithConversion("BoolInverter");
+
+            set.Bind(this)
+                .For(v => v.DriverBonusEnabled)
+                .To(vm => vm.DriverBonusEnabled);
+            
             if (!this.Services().Settings.ShowPassengerName)
             {
                 lblName.RemoveFromSuperview();
@@ -172,6 +216,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             if (!this.Services().Settings.ShowPassengerPhone)
             {
                 lblPhone.RemoveFromSuperview();
+                lblCountryDialCode.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();
             }
                 
@@ -197,12 +242,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             this.DelayBind(InitializeBinding);
         }
 
-        public override void LayoutSubviews()
+        private bool _removeBonusFromView;
+        public bool RemoveBonusFromView
         {
-            base.LayoutSubviews();
+            get { return _removeBonusFromView; }
+            set
+            {
+                _removeBonusFromView = value;
+                if (RemoveBonusFromView)
+                {
+                    driverBonusView.RemoveFromSuperview();
+                }
+            }
+        }
 
-            constraintHeight.Constant = this.Frame.Height;
+        private bool _driverBonusEnabled;
+        public bool DriverBonusEnabled
+        {
+            get { return _driverBonusEnabled; }
+            set
+            {
+                _driverBonusEnabled = value;
+                if (DriverBonusEnabled)
+                {
+                    sliderBonus.Enabled = true;
+                    lblBonusAmount.Enabled = true;
+                    lblBonusAmount.TextColor = UIColor.Black;
+                }
+                else
+                {
+                    sliderBonus.Enabled = false;
+                    lblBonusAmount.Enabled = false;
+                    lblBonusAmount.TextColor = UIColor.FromRGB(208, 208, 208);
+                }
+            }
         }
     }
 }
-

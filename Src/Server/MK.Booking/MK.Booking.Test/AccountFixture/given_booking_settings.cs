@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _sut.When(new UpdateBookingSettings
             {
                 AccountId = _accountId,
+				Email = "Robert2Smither2@net.net",
                 Name = "Robert2 Smither2",
                 ChargeTypeId = 12,
                 NumberOfTaxi = 3,
@@ -57,6 +58,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var @event = _sut.ThenHasOne<BookingSettingsUpdated>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
+			Assert.AreEqual("Robert2Smither2@net.net", @event.Email);
             Assert.AreEqual("Robert2 Smither2", @event.Name);
             Assert.AreEqual(12, @event.ChargeTypeId);
             Assert.AreEqual(3, @event.NumberOfTaxi);

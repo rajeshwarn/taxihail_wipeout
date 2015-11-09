@@ -42,13 +42,15 @@ namespace apcurium.MK.Web.Tests
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
             const string token = "jjwcnSLWm85";
+            const string label = "Personal";
 
             await AccountService.AddCreditCard(new CreditCardRequest
             {
                 CreditCardCompany = creditCardComapny,
                 CreditCardId = creditCardId,
                 Last4Digits = last4Digits,
-                Token = token
+                Token = token,
+                Label = label
             });
 
             var creditCards = await AccountService.GetCreditCards();
@@ -70,6 +72,7 @@ namespace apcurium.MK.Web.Tests
 
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
+            const string label = "Personal";
 
             var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt);
             var tokenResponse = await client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2 + "");
@@ -82,7 +85,8 @@ namespace apcurium.MK.Web.Tests
                 Last4Digits = last4Digits,
                 ExpirationMonth = cc.Discover.ExpirationDate.Month.ToString(),
                 ExpirationYear = cc.Discover.ExpirationDate.Year.ToString(),
-                Token = tokenResponse.CardOnFileToken
+                Token = tokenResponse.CardOnFileToken,
+                Label = label
             });
 
             var tokenResponse2 = await client.Tokenize(cc.AmericanExpress.Number, cc.AmericanExpress.ExpirationDate, cc.AmericanExpress.AvcCvvCvv2 + "");
@@ -95,7 +99,8 @@ namespace apcurium.MK.Web.Tests
                 Last4Digits = "1234",
                 ExpirationMonth = cc.AmericanExpress.ExpirationDate.Month.ToString(),
                 ExpirationYear = cc.AmericanExpress.ExpirationDate.Year.ToString(),
-                Token = tokenResponse2.CardOnFileToken
+                Token = tokenResponse2.CardOnFileToken,
+                Label = "Business"
             });
 
             var creditCards = await AccountService.GetCreditCards();
@@ -106,6 +111,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(creditCardId, creditcard.CreditCardId);
             Assert.AreEqual("1234", creditcard.Last4Digits);
             Assert.AreEqual(tokenResponse2.CardOnFileToken, creditcard.Token);
+            Assert.AreEqual("Business", creditcard.Label.ToString());
         }
 
         [Test]
@@ -121,6 +127,7 @@ namespace apcurium.MK.Web.Tests
             const string last4Digits = "4025";
             const string expirationMonth = "5";
             const string expirationYear = "2020";
+            const string label = "Personal";
 
             var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt);
             var tokenResponse = await client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2 + "");
@@ -133,10 +140,11 @@ namespace apcurium.MK.Web.Tests
                 Last4Digits = last4Digits,
                 ExpirationMonth = expirationMonth,
                 ExpirationYear = expirationYear,
-                Token = tokenResponse.CardOnFileToken
+                Token = tokenResponse.CardOnFileToken,
+                Label = label
             });
 
-            await sut.RemoveCreditCard();
+            await sut.RemoveCreditCard(creditCardId);
 
             var creditCards = await sut.GetCreditCards();
             Assert.IsEmpty(creditCards);

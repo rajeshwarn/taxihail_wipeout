@@ -50,7 +50,7 @@ namespace apcurium.MK.Common.Entity
 
         public string RideLinqPairingCode { get; set; }
         public long? OriginalEta { get; set; }
-        
+
         public override string ToString()
         {
             return Status + " " + Name;

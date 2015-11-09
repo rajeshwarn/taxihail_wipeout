@@ -1,19 +1,20 @@
 using System;
+using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.AppServices;
 using Android.App;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.CrossCore;
 using Cirrious.CrossCore.Platform;
 using Cirrious.MvvmCross.Droid.Views;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
     public class PhonePresenter : MvxAndroidViewPresenter
     {
-        public PhonePresenter()
-        {
-        }
-
-        public override void Show(Cirrious.MvvmCross.ViewModels.MvxViewModelRequest request)
+	    public override void Show(Cirrious.MvvmCross.ViewModels.MvxViewModelRequest request)
         {
             var removeFromHistory = request.ParameterValues != null
                                      && request.ParameterValues.ContainsKey("removeFromHistory");
@@ -21,16 +22,19 @@ namespace apcurium.MK.Booking.Mobile.Client
             var clearHistory = request.ParameterValues != null
                                      && request.ParameterValues.ContainsKey("clearNavigationStack");
 
-            var intent = this.CreateIntentForRequest (request);
+		    var preventShowViewAnimation = request.ParameterValues != null && request.ParameterValues.ContainsKey("preventShowViewAnimation");
 
-            this.Show(intent, removeFromHistory, clearHistory);
+            var intent = CreateIntentForRequest (request);
+
+			Show(intent, removeFromHistory, clearHistory, preventShowViewAnimation);
         }
 
-        public override void ChangePresentation(Cirrious.MvvmCross.ViewModels.MvxPresentationHint hint)
+        public override void ChangePresentation(MvxPresentationHint hint)
         {
-            if (hint is ChangePresentationHint)
+	        var presentationHint = hint as ChangePresentationHint;
+	        if (presentationHint != null)
             {
-                TryChangeViewPresentation((ChangePresentationHint)hint);
+                TryChangeViewPresentation(presentationHint);
             }
             else
             {
@@ -38,12 +42,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        private void Show (Intent intent, bool removeFromHistory, bool clearHistory)
+	    private void Show (Intent intent, bool removeFromHistory, bool clearHistory, bool preventShowViewAnimation)
         {
-            var activity = this.Activity;
+            var activity = Activity;
             if (activity == null)
             {
-                MvxTrace.Warning ("Cannot Resolve current top activity", new object[0]);
+                MvxTrace.Warning ("Cannot Resolve current top activity");
                 return;
             }
 
@@ -52,25 +56,42 @@ namespace apcurium.MK.Booking.Mobile.Client
                 intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
             }
 
-            activity.StartActivity (intent);
+		    if(preventShowViewAnimation)
+		    {
+			    intent.AddFlags(ActivityFlags.NoAnimation);
+		    }
+
+            activity.StartActivity(intent);
             if (removeFromHistory)
             {
                 activity.Finish();
             }
         }
 
-        private void TryChangeViewPresentation(ChangePresentationHint hint)
+	    public override void Close(IMvxViewModel viewModel)
+	    {
+		    base.Close(viewModel);
+
+			if (viewModel is TutorialViewModel)
+			{
+				var tutorialService = Mvx.Resolve<ITutorialService>();
+
+				tutorialService.NotifyTutorialEnded();
+		    }
+	    }
+
+	    private void TryChangeViewPresentation(ChangePresentationHint hint)
         {
             var homeView = Activity as IChangePresentation;
+
             if (homeView != null)
             {
                 homeView.ChangePresentation(hint);
             }
             else
             {
-                MvxTrace.Warning("Can't change home view state");
+                MvxTrace.Warning("Can't change home view state, keeping last presentation hint");
             }
-
         }
     }
 }

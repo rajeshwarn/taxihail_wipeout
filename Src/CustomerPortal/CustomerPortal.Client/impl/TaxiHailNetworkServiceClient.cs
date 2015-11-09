@@ -75,6 +75,24 @@ namespace CustomerPortal.Client.Impl
                          .Result;
         }
 
+        public CompanyMarketSettingsResponse GetCompanyMarketSettings(double latitude, double longitude)
+        {
+            var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+
+            var @params = new Dictionary<string, string>
+            {
+                { "companyId", homeCompanyKey },
+                { "latitude", latitude.ToString(CultureInfo.InvariantCulture) },
+                { "longitude", longitude.ToString(CultureInfo.InvariantCulture) }
+            };
+
+            var queryString = BuildQueryString(@params);
+
+            return Client.Get("customer/roaming/marketsettings" + queryString)
+                         .Deserialize<CompanyMarketSettingsResponse>()
+                         .Result;
+        }
+
         public IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market)
         {
             var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;

@@ -30,5 +30,9 @@ namespace CMTPayment.Pair
         public string Market { get; set; }
 
         public string TripRequestNumber { get; set; }
+
+        public string LastFour { get; set; }
+        
+        public double? TipIncentive { get; set; }
     }
 }

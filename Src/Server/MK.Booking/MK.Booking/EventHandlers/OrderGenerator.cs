@@ -118,7 +118,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     CompanyKey = @event.CompanyKey,
                     CompanyName = @event.CompanyName,
                     Market = @event.Market,
-                    BookingFees = @event.BookingFees
+                    BookingFees = @event.BookingFees,
+                    TipIncentive = @event.TipIncentive
                 };
 
                 if (@event.IsPrepaid)
@@ -149,6 +150,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.CompanyName = @event.CompanyName;
                         order.Market = @event.Market;
                         order.BookingFees = @event.BookingFees;
+                        order.TipIncentive = @event.TipIncentive;
 
                         context.SaveChanges();
                     }
@@ -220,7 +222,10 @@ namespace apcurium.MK.Booking.EventHandlers
                     if (!paymentSettings.IsUnpairingDisabled)
                     {
                         // Unpair only available if automatic pairing is disabled
-                        orderStatus.UnpairingTimeOut = @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);
+                        orderStatus.UnpairingTimeOut = paymentSettings.UnpairingTimeOut == 0
+                            ? DateTime.MaxValue                                                 // Unpair will be available for the duration of the ride
+                            : @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);    // Unpair will be available until timeout reached
+                        
                         context.Save(orderStatus);
                     }
                 }
@@ -243,6 +248,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Set<RatingScoreDetails>().Add(new RatingScoreDetails
                     {
                         Id = Guid.NewGuid(),
+						AccountId = @event.AccountId,
                         OrderId = @event.SourceId,
                         Score = ratingScore.Score,
                         RatingTypeId = ratingScore.RatingTypeId,
@@ -374,7 +380,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderPairingDetail = context.Find<OrderPairingDetail>(@event.SourceId);
                 if (orderPairingDetail != null)
                 {
-                    context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
+                    //context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
+                    orderPairingDetail.WasUnpaired = true;
                     context.Save(orderPairingDetail);
                 }
 
@@ -560,6 +567,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         RateAtTripEnd = @event.RateAtTripEnd,
                         RateChangeTime = @event.RateChangeTime,
                         Medallion = @event.Medallion,
+						DeviceName = @event.DeviceName,
                         TripId = @event.TripId,
                         DriverId = @event.DriverId,
                         LastFour = @event.LastFour,
@@ -590,7 +598,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
                 if (rideLinqDetails != null)
                 {
+                    // Must set an endtime to end order on client side
+                    rideLinqDetails.EndTime = DateTime.UtcNow;
                     rideLinqDetails.IsCancelled = true;
+                    
                     context.Save(rideLinqDetails);
                 }
             }
@@ -624,8 +635,6 @@ namespace apcurium.MK.Booking.EventHandlers
                         orderStatusDetails.Status = OrderStatus.Completed;
                     }
 
-                    orderStatusDetails.VehicleNumber = @event.Medallion;
-
                     context.Save(orderStatusDetails);
                 }
 
@@ -653,9 +662,9 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.RateAtTripStart = @event.RateAtTripStart;
                 rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
                 rideLinqDetails.RateChangeTime = @event.RateChangeTime;
-                rideLinqDetails.Medallion = @event.Medallion;
                 rideLinqDetails.AccessFee = @event.AccessFee;
                 rideLinqDetails.LastFour = @event.LastFour;
+                rideLinqDetails.PairingError = @event.PairingError;
 
                 context.Save(rideLinqDetails);
             }

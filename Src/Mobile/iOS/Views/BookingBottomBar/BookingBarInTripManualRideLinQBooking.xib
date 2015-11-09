@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookingBarInTripManualRideLinQBooking"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view hidden="YES" contentMode="scaleToFill" id="iN0-l3-epB" customClass="BookingBarInTripManualRideLinQBooking">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qjw-El-hpb">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fTu-z6-NbE" userLabel="Unpair tip change view" customClass="HideableView">
+                            <rect key="frame" x="8" y="5" width="223" height="46"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7uH-tc-0PB" userLabel="Unpair" customClass="FlatButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="108" height="46"/>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6rb-9n-LwA" userLabel="Tip change" customClass="FlatButton">
+                                    <rect key="frame" x="116" y="0.0" width="107" height="46"/>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="6rb-9n-LwA" firstAttribute="width" secondItem="7uH-tc-0PB" secondAttribute="width" id="9YJ-6x-Kxl"/>
+                                <constraint firstItem="7uH-tc-0PB" firstAttribute="top" secondItem="fTu-z6-NbE" secondAttribute="top" id="AJL-9j-MtZ"/>
+                                <constraint firstItem="7uH-tc-0PB" firstAttribute="leading" secondItem="fTu-z6-NbE" secondAttribute="leading" id="MSg-YT-Tvx"/>
+                                <constraint firstItem="6rb-9n-LwA" firstAttribute="leading" secondItem="fTu-z6-NbE" secondAttribute="leading" priority="500" id="NqN-Rl-XAt"/>
+                                <constraint firstItem="6rb-9n-LwA" firstAttribute="top" secondItem="fTu-z6-NbE" secondAttribute="top" id="U58-Nc-HDM"/>
+                                <constraint firstAttribute="bottom" secondItem="7uH-tc-0PB" secondAttribute="bottom" id="XtJ-Fq-D6Q"/>
+                                <constraint firstItem="6rb-9n-LwA" firstAttribute="leading" secondItem="7uH-tc-0PB" secondAttribute="trailing" constant="8" id="bcq-cx-RGk"/>
+                                <constraint firstAttribute="bottom" secondItem="6rb-9n-LwA" secondAttribute="bottom" id="cgP-q6-j2d"/>
+                                <constraint firstAttribute="trailing" secondItem="6rb-9n-LwA" secondAttribute="trailing" id="tak-aM-fbd"/>
+                                <constraint firstAttribute="trailing" secondItem="7uH-tc-0PB" secondAttribute="trailing" priority="500" id="zzh-Qr-jOc"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vls-DM-QBg" userLabel="Call" customClass="FlatButton">
+                            <rect key="frame" x="239" y="5" width="73" height="46"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="fTu-z6-NbE" secondAttribute="trailing" priority="500" constant="8" id="E7d-3q-408"/>
+                        <constraint firstAttribute="bottom" secondItem="fTu-z6-NbE" secondAttribute="bottom" constant="5" id="FuF-YE-qTV"/>
+                        <constraint firstItem="Vls-DM-QBg" firstAttribute="leading" secondItem="qjw-El-hpb" secondAttribute="leading" priority="500" constant="8" id="GKF-we-8dx"/>
+                        <constraint firstAttribute="bottom" secondItem="Vls-DM-QBg" secondAttribute="bottom" constant="5" id="HgB-HU-XFu"/>
+                        <constraint firstAttribute="trailing" secondItem="Vls-DM-QBg" secondAttribute="trailing" constant="8" id="Ucf-iW-gA9"/>
+                        <constraint firstItem="Vls-DM-QBg" firstAttribute="top" secondItem="qjw-El-hpb" secondAttribute="top" constant="5" id="VfP-dh-8mV"/>
+                        <constraint firstItem="fTu-z6-NbE" firstAttribute="width" secondItem="qjw-El-hpb" secondAttribute="width" priority="500" id="dTb-oA-xgt"/>
+                        <constraint firstItem="Vls-DM-QBg" firstAttribute="width" secondItem="qjw-El-hpb" secondAttribute="width" priority="500" id="hZT-gU-pN7"/>
+                        <constraint firstItem="Vls-DM-QBg" firstAttribute="width" secondItem="fTu-z6-NbE" secondAttribute="width" multiplier="0.33" id="j4a-EN-7I6"/>
+                        <constraint firstItem="Vls-DM-QBg" firstAttribute="leading" secondItem="fTu-z6-NbE" secondAttribute="trailing" constant="8" id="kNR-wJ-rad"/>
+                        <constraint firstItem="fTu-z6-NbE" firstAttribute="leading" secondItem="qjw-El-hpb" secondAttribute="leading" constant="8" id="o1J-UQ-c1i"/>
+                        <constraint firstItem="fTu-z6-NbE" firstAttribute="top" secondItem="qjw-El-hpb" secondAttribute="top" constant="5" id="pTa-8l-bhE"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="qjw-El-hpb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="3Sj-5h-DUi"/>
+                <constraint firstItem="qjw-El-hpb" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DLO-2l-HzH"/>
+                <constraint firstAttribute="trailing" secondItem="qjw-El-hpb" secondAttribute="trailing" id="Es8-XX-C2n"/>
+                <constraint firstAttribute="bottom" secondItem="qjw-El-hpb" secondAttribute="bottom" id="plt-UW-lWE"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="buttonCall" destination="Vls-DM-QBg" id="Wmg-c3-XxB"/>
+                <outlet property="buttonTipChange" destination="6rb-9n-LwA" id="YdF-k8-Ses"/>
+                <outlet property="buttonUnpair" destination="7uH-tc-0PB" id="ROy-YR-7FD"/>
+                <outlet property="viewUnpairTipChange" destination="fTu-z6-NbE" id="S8i-cZ-Yji"/>
+            </connections>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

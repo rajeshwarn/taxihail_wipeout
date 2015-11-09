@@ -29,8 +29,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
         private void Initialize()
         {
-            BackgroundColor = UIColor.Clear;
-
             foreach (FlatTextField textField in ContentView.Subviews.Where(x => x is FlatTextField))
             {
                 textField.BackgroundColor = UIColor.FromRGB(242, 242, 242);
@@ -49,12 +47,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             txtPassengers.Maybe(x => x.ShowCloseButtonOnKeyboard());
 
             lblName.Maybe(x => x.Text = Localize.GetValue("PassengerNameLabel"));
+            txtName.Maybe(x => x.Placeholder = Localize.GetValue("PassengerNameLabel"));
+            txtName.Maybe(x => x.AccessibilityLabel = Localize.GetValue("PassengerNameLabel"));
+
             lblPhone.Maybe(x => x.Text = Localize.GetValue("PassengerPhoneLabel"));
+            txtPhone.Maybe(x => x.Placeholder = Localize.GetValue("PassengerPhoneLabel"));
+            txtPhone.Maybe(x => x.AccessibilityLabel = Localize.GetValue("PassengerPhoneLabel"));
+            lblPhoneDialCode.Maybe(x => x.AccessibilityLabel = Localize.GetValue("DialCodeSelectorTitle"));
+
             lblPassengers.Maybe(x => x.Text = Localize.GetValue("PassengerNumberLabel"));
+            txtPassengers.Maybe(x => x.Placeholder = Localize.GetValue("PassengerNumberLabel"));
+            txtPassengers.Maybe(x => x.AccessibilityLabel = Localize.GetValue("PassengerNumberLabel"));
+
             lblApartment.Maybe(x => x.Text = Localize.GetValue("ApartmentLabel"));
+            txtApartment.Maybe(x => x.Placeholder = Localize.GetValue("ApartmentLabel"));
+            txtApartment.Maybe(x => x.AccessibilityLabel = Localize.GetValue("ApartmentLabel"));
+
             lblEntryCode.Maybe(x => x.Text = Localize.GetValue("EntryCodeLabel"));
-            lblChargeType.Maybe(x => x.Text = Localize.GetValue("ChargeTypeLabel"));                     
+            txtEntryCode.Maybe(x => x.Placeholder = Localize.GetValue("EntryCodeLabel"));
+            txtEntryCode.Maybe(x => x.AccessibilityLabel = Localize.GetValue("EntryCodeLabel"));
+
+            lblChargeType.Maybe(x => x.Text = Localize.GetValue("ChargeTypeLabel"));
+            txtChargeType.Maybe(x => x.Placeholder = Localize.GetValue("ChargeTypeLabel"));
+            txtChargeType.Maybe(x => x.AccessibilityLabel = Localize.GetValue("ChargeTypeLabel"));
+
             lblLargeBags.Maybe(x => x.Text = Localize.GetValue ("LargeBagsLabel"));
+            txtLargeBags.Maybe(x => x.Placeholder = Localize.GetValue ("LargeBagsLabel"));
+            txtLargeBags.Maybe(x => x.AccessibilityLabel = Localize.GetValue ("LargeBagsLabel"));
            
             txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.ChargeTypes.ToArray(), () => ViewModel.ChargeTypeId, x => ViewModel.ChargeTypeId = x.Id);
         }
@@ -145,4 +164,3 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
         }
     }
 }
-

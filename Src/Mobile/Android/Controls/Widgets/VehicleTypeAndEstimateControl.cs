@@ -94,7 +94,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-        public string EstimatedFare
+	    public bool ShowEta
+	    {
+		    get { return _showEta; }
+		    set
+		    {
+			    _showEta = value;
+
+			    Redraw();
+		    }
+	    }
+
+	    public string EstimatedFare
         {
             get{ return _estimatedFareLabel.Text; }
             set
@@ -126,7 +137,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		}
 
 		private string _eta;
-		public string Eta
+	    private bool _showEta;
+
+	    public string Eta
 		{
 			get { return _eta; }
 			set
@@ -148,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _horizontalDivider.Background.SetColorFilter(Resources.GetColor(Resource.Color.company_color), PorterDuff.Mode.SrcAtop);
 				_rideEstimate.Visibility = ViewStates.Visible;
 				_vehicleSelection.Visibility = ViewStates.Gone;
-                _etaLabel.Visibility = Eta.HasValue() ? ViewStates.Visible : ViewStates.Gone;
+				_etaLabel.Visibility = (Eta.HasValue() && _showEta) ? ViewStates.Visible : ViewStates.Gone;
             }
             else
             {
@@ -166,12 +179,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					_horizontalDivider.SetBackgroundColor(Resources.GetColor(Resource.Color.orderoptions_horizontal_divider));
 				}
 
-				if (ShowVehicleSelection) {
+				if (ShowVehicleSelection && Vehicles != null) {
 
 					foreach (var vehicle in Vehicles) {
 						var vehicleView = new VehicleTypeControl (base.Context, vehicle, SelectedVehicle == null ? false : vehicle.Id == SelectedVehicle.Id);
 
-						var layoutParameters = new LinearLayout.LayoutParams (0, LayoutParams.FillParent);
+                        var layoutParameters = new LinearLayout.LayoutParams (0, ViewGroup.LayoutParams.MatchParent);
 						layoutParameters.Weight = 1.0f;
 						vehicleView.LayoutParameters = layoutParameters;
 

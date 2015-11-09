@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -101,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			connection
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(x => onNext(x));
+				.Subscribe(onNext,Logger.LogError);
 
 			_disposableFactories.Add(() => connection.Connect());
         }
@@ -134,24 +135,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             return ShowSubViewModel<TViewModel, TResult>(parameterValuesObject.ToSimplePropertyDictionary(), onResult);
         }
 
-        protected bool ShowSubViewModel<TViewModel, TResult>(IDictionary<string, string> parameterValues,
-            Action<TResult> onResult)
+        protected bool ShowSubViewModel<TViewModel, TResult>(IDictionary<string, string> parameterValues, Action<TResult> onResult)
             where TViewModel : MvxViewModel, ISubViewModel<TResult>
         {
             parameterValues = parameterValues ?? new Dictionary<string, string>();
 
-            if (parameterValues.ContainsKey("messageId"))
-                throw new ArgumentException("parameterValues cannot contain an item with the key 'messageId'");
+	        if (parameterValues.ContainsKey("messageId"))
+	        {
+				throw new ArgumentException("parameterValues cannot contain an item with the key 'messageId'");
+	        }
 
-            string messageId = Guid.NewGuid().ToString();
+            var messageId = Guid.NewGuid().ToString();
             parameterValues["messageId"] = messageId;
             TinyMessageSubscriptionToken token = null;
             // ReSharper disable once RedundantAssignment
             token = this.Services().MessengerHub.Subscribe<SubNavigationResultMessage<TResult>>(msg =>
             {
                 // ReSharper disable AccessToModifiedClosure
-                if (token != null)
-                    this.Services().MessengerHub.Unsubscribe<SubNavigationResultMessage<TResult>>(token);
+	            if (token != null)
+	            {
+					this.Services().MessengerHub.Unsubscribe<SubNavigationResultMessage<TResult>>(token);
+	            }
                 // ReSharper restore AccessToModifiedClosure
 
                 onResult(msg.Result);
@@ -161,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             return ShowViewModel<TViewModel>(parameterValues);
         }
 
-        protected void ShowViewModelAndRemoveFromHistory<TViewModel>(object parameter) where TViewModel : IMvxViewModel
+        protected void ShowViewModelAndRemoveFromHistory<TViewModel>(object parameter = null) where TViewModel : IMvxViewModel
         {
             var dictionary = parameter.ToSimplePropertyDictionary();
             dictionary = dictionary ?? new Dictionary<string,string>();

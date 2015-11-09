@@ -1,17 +1,15 @@
-using System;
+﻿using System;
 using Android.App;
 using Android.Content.Res;
-using Google.Android.M4b.Maps.Model;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Util;
-using Android.Views;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Style;
 using System.Drawing;
 using Color = Android.Graphics.Color;
 using Point = System.Drawing.Point;
 using SizeF = System.Drawing.SizeF;
+using Android.Support.V4.Content;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
@@ -29,14 +27,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
         public static int GetPixels(float dipValue)
         {
-            return (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, dipValue,Application.Context.Resources.DisplayMetrics);
+            return (int)Math.Round(TypedValue.ApplyDimension(ComplexUnitType.Dip, dipValue, Application.Context.Resources.DisplayMetrics), MidpointRounding.AwayFromZero);
         }
-
-        public static int GetPixelsFromPt(float ptValue)
-        {
-            return (int)TypedValue.ApplyDimension(ComplexUnitType.Pt, ptValue, Application.Context.Resources.DisplayMetrics);
-        }
-            
+ 
         private static Bitmap DrawableToBitmap (Drawable drawable, Color? colorFilter = null) 
         {
             if (colorFilter != null)
@@ -55,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
         public static Bitmap ApplyColorToMapIcon(int foregroundResource, Color color, bool isBigIcon)
         {
-            var foreground = Application.Context.Resources.GetDrawable(foregroundResource);
+            var foreground = ContextCompat.GetDrawable(Application.Context, foregroundResource);
 
             var originalImageSize = isBigIcon 
                 ? new SizeF(52, 58)
@@ -67,8 +60,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             }
 
             var backgroundToColorize = isBigIcon
-                ? Application.Context.Resources.GetDrawable (Resource.Drawable.map_bigicon_background)
-                : Application.Context.Resources.GetDrawable (Resource.Drawable.map_smallicon_background);
+                ? ContextCompat.GetDrawable(Application.Context, Resource.Drawable.map_bigicon_background)
+                : ContextCompat.GetDrawable(Application.Context, Resource.Drawable.map_smallicon_background);
 
             var bitmapOverlay = Bitmap.CreateBitmap(backgroundToColorize.IntrinsicWidth, backgroundToColorize.IntrinsicHeight, Bitmap.Config.Argb8888);
             var canvas = new Canvas(bitmapOverlay);
@@ -93,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
         public static Bitmap ApplyThemeColorToImage(int drawableResource, bool skipApplyIfCustomImage = false, SizeF originalImageSize = new SizeF(), Color? expectedColor = null, Point? expectedColorCoordinate = null)
         {
-            var drawable = Application.Context.Resources.GetDrawable(drawableResource);
+            var drawable = ContextCompat.GetDrawable(Application.Context, drawableResource);
             if (skipApplyIfCustomImage)
             {
                 if (ImageWasOverridden(drawable, originalImageSize, expectedColor, expectedColorCoordinate))
@@ -116,7 +109,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
         private static bool ImageWasOverridden(Drawable image, SizeF originalImageSize, Color? expectedColor, Point? expectedColorCoordinate)
         {
-            var differentSize = image.IntrinsicWidth != originalImageSize.Width.ToPixels();
+            var densityAdjustedWidth = originalImageSize.Width.ToPixels();
+            var differentSize = image.IntrinsicWidth != densityAdjustedWidth;
             if (differentSize)
             {
                 return true;
@@ -139,5 +133,45 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
             return differentColorThanExpected;
         }
+
+		public static Bitmap RotateImageByDegrees(int imageResource, double degrees)
+		{
+			var image = DrawHelper.DrawableToBitmap (Application.Context.Resources.GetDrawable(imageResource));
+
+			Matrix matrix = new Matrix();
+			matrix.PostRotate((float)degrees);
+
+			return Bitmap.CreateBitmap(image, 0, 0, image.Width, image.Height, matrix, true);
+		}
+
+		public static Bitmap RotateImageByDegreesWithСenterCrop(int imageResource, double degrees)
+		{
+			var originalImage = Application.Context.Resources.GetDrawable(imageResource);
+
+			var rotatedImage = RotateImageByDegrees(imageResource, degrees);
+			var croppedImage = Bitmap.CreateBitmap(originalImage.IntrinsicWidth, originalImage.IntrinsicHeight, Bitmap.Config.Argb8888);
+
+			var rectDestination = new Rect()
+			{
+				Left = 0,
+				Right = originalImage.IntrinsicWidth,
+				Top = 0,
+				Bottom = originalImage.IntrinsicHeight
+			};
+
+			var rectSource = new Rect()
+			{
+				Left = (rotatedImage.Width / 2) - (originalImage.IntrinsicWidth / 2),
+				Right = (rotatedImage.Width / 2) + (originalImage.IntrinsicWidth / 2),
+				Top = (rotatedImage.Height / 2) - (originalImage.IntrinsicHeight / 2),
+				Bottom = (rotatedImage.Height / 2) + (originalImage.IntrinsicHeight / 2)
+			};
+
+			var croppedImageCanvas = new Canvas(croppedImage);
+
+			croppedImageCanvas.DrawBitmap(rotatedImage, rectSource, rectDestination, new Paint());
+
+			return croppedImage;
+		}
     }
 }

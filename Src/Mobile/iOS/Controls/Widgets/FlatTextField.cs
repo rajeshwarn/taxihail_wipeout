@@ -42,6 +42,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 ? UIColor.White 
                 : UIColor.Clear;
 
+            HasRightArrow = Enabled && HasRightArrow;
+
             TextAlignment = NaturalLanguageHelper.GetTextAlignment();
 
 			if (UIHelper.IsOS7orHigher) 
@@ -58,21 +60,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             RightView = new UIView();
             RightViewMode = UITextFieldViewMode.UnlessEditing;
             ClearButtonMode = UITextFieldViewMode.WhileEditing;
-
-			HasRightArrow = Enabled && HasRightArrow;
 		}
 
 		public override void Draw (CGRect rect)
 		{   
             var fillColor = BackgroundColor;
 			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
-
-			HasRightArrow = Enabled && HasRightArrow;
-
+            if (!ForceWhiteBackground)
+            {
+                HasRightArrow = Enabled && HasRightArrow;
+            }
 			DrawBackground(UIGraphics.GetCurrentContext(), rect, roundedRectanglePath, fillColor.CGColor);
 			DrawStroke(fillColor.CGColor);
 			SetNeedsDisplay();
 		}
+
+        bool _forceWhiteBackground;
+        public bool ForceWhiteBackground
+        {
+            get
+            {
+                return _forceWhiteBackground;
+            }
+            set
+            {
+                _forceWhiteBackground = value;
+                BackgroundColor = UIColor.White;
+                SetNeedsDisplay();
+            }
+        }
 
 		public override bool Enabled 
         {
@@ -97,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     _imageLeftSource = value;
 
-                    var image = UIImage.FromFile(value);
+                    var image = UIImage.FromBundle(value);
 
                     // remove previous image if it exists
                     if (_leftImageView != null)
@@ -165,7 +181,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             if (ImageLeftSource.HasValue())
             {
-                if (_leftImageView != null)
+                if (_leftImageView != null && _leftImageView.Image != null)
                 {
                     _leftImageView.Frame = new CGRect(
                         0, 

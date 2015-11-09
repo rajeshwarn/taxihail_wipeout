@@ -168,6 +168,9 @@
   <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
     <value>Sorry no cars are available due to high demand, please try later.</value>
   </data>
+  <data name="PushNotification_BAILED" xml:space="preserve">
+    <value>Sorry, your driver canceled. Finding you another taxi...</value>
+  </data>
   <data name="PaymentConfirmationToDriver1" xml:space="preserve">
     <value>The passenger has paid</value>
   </data>
@@ -297,6 +300,9 @@
   <data name="Email_Body_Tip" xml:space="preserve">
     <value>Tip</value>
   </data>
+  <data name="Email_Body_TipIncentive" xml:space="preserve">
+    <value>Driver Bonus</value>
+  </data>
   <data name="Email_Body_Promo" xml:space="preserve">
     <value>Promo Code</value>
   </data>
@@ -383,6 +389,9 @@
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>Fare will be paid using the selected payment method</value>
+  </data>
+  <data name="OrderStatus_BAILED" xml:space="preserve">
+    <value>Sorry, your driver canceled. Finding you another taxi...</value>
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>
@@ -657,7 +666,19 @@
   <data name="OrderStatus_PairingFailed" xml:space="preserve">
     <value>Unable to pair you to the car. Please pay your driver at the end of the ride.</value>
   </data>
+  <data name="OrderStatus_PairingSuccess" xml:space="preserve">
+    <value>OK you're checked in. Payment will be automatic at the end of your trip.</value>
+  </data>
   <data name="PhoneNumberFormat" xml:space="preserve">
     <value>The phone number is invalid. It must have format {0}</value>
+  </data>
+	<data name="EmailUsedMessage" xml:space="preserve">
+    <value>This email is already used by another account</value>
+  </data>
+	<data name="EmailChangeWithFacebookAccountErrorMessage" xml:space="preserve">
+    <value>Cannot change the email of an account linked with Facebook</value>
+  </data>
+  <data name="CancelOrdeError" xml:space="preserve">
+    <value>It is too late to cancel this order</value>
   </data>
 </root>

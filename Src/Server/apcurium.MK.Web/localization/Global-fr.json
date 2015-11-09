@@ -18,6 +18,8 @@
     "error.fullAddressRequired": "Adresse est requise.",
     "error.accountNotSupported": "Ce compte n'est pas supporté par le site web",
     "error.accountUpdate": "Un erreur est survenue en mettant à jour votre profil",
+    "error.accountUpdateDefaultCreditCard": "Un erreur est survenue en mettant à jour votre defaut carte de édit",
+    "error.accountUpdateCreditCardLabel": "AUn erreur est survenue en mettant à jour le label de votre carte de crédit",
     "error.InvalidCvv" : "Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres",
 	"signup.confirmation" : "Vous allez recevoir un email de confirmation. Merci de cliquer sur le lien pour valider votre inscription.",	
 	"signup.confirmationWithoutActivation" : "Votre compte a été créé, merci",	

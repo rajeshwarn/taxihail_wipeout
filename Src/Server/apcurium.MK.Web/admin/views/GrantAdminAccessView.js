@@ -6,7 +6,8 @@
         className: 'form-horizontal',
         
         events: {
-            'click [data-action^=grant]': 'grantadmin'
+            'click [data-action^=grant]': 'grantadmin',
+            'click [data-action^=revoke]': 'grantadmin'
         },
         
         render: function () {
@@ -28,14 +29,12 @@
                 },
                 dataType: 'json',
                 success : _.bind(function() {
-                    this.$('.errors').text(TaxiHail.localize('grantAdminSuccess'));
+                    this.$('.errors').text(TaxiHail.localize(action + 'Success'));
                 },this)
             }).fail(_.bind(function (e) {
-                this.$('.errors').text(TaxiHail.localize('grantAdminError'));
+                this.$('.errors').text(TaxiHail.localize('grantAccessError'));
             }),this);
         }
-
-   
     });
 
     

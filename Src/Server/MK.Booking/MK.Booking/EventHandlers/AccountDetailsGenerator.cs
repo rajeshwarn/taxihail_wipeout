@@ -10,6 +10,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
+using apcurium.MK.Common.Helpers;
 
 #endregion
 
@@ -24,7 +25,9 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountPasswordReset>,
         IEventHandler<AccountPasswordUpdated>,
         IEventHandler<RoleAddedToUserAccount>,
+        IEventHandler<RoleUpdatedToUserAccount>,
         IEventHandler<CreditCardAddedOrUpdated>,
+        IEventHandler<DefaultCreditCardUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
         IEventHandler<CreditCardDeactivated>,
@@ -151,7 +154,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.AccountNumber = @event.AccountNumber;
                 settings.CustomerNumber = @event.CustomerNumber;
                 settings.PayBack = @event.PayBack;
-
+				account.Email = @event.Email;
                 account.DefaultTipPercent = @event.DefaultTipPercent;
 
                 account.Settings = settings;
@@ -169,13 +172,37 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
+        public void Handle(RoleUpdatedToUserAccount @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.Roles = (int)Enum.Parse(typeof(Roles), @event.RoleName);
+                context.Save(account);
+            }
+        }
+
         public void Handle(CreditCardAddedOrUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                account.DefaultCreditCard = @event.CreditCardId;
+                if (!account.DefaultCreditCard.HasValue)
+                {
+                    account.DefaultCreditCard = @event.CreditCardId;
+                    account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                }
+                context.Save(account);
+            }
+        }
+
+        public void Handle(DefaultCreditCardUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                account.DefaultCreditCard = @event.CreditCardId;
                 context.Save(account);
             }
         }
@@ -186,9 +213,8 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 // used for migration, if user removed one card but had another one, we set this one as the default card
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                account.DefaultCreditCard = @event.NewDefaultCreditCardId;
-                account.Settings.ChargeTypeId = @event.NewDefaultCreditCardId == null
-                    ? ChargeTypes.PaymentInCar.Id
+                account.DefaultCreditCard = @event.NextDefaultCreditCardId;
+                account.Settings.ChargeTypeId = @event.NextDefaultCreditCardId.HasValue ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
                     : ChargeTypes.CardOnFile.Id;
                 context.Save(account);
             }

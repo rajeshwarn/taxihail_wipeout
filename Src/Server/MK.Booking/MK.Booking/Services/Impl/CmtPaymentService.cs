@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -412,6 +413,8 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
+                var creditCardDetail = _creditCardDao.FindByToken(cardToken);
+                var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
 
                 // send pairing request                                
                 var cmtPaymentSettings = _serverPaymentSettings.CmtPaymentSettings;
@@ -427,7 +430,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
                     CardOnFileId = cardToken,
                     Market = cmtPaymentSettings.Market,
-                    TripRequestNumber = orderStatusDetail.IBSOrderId.GetValueOrDefault().ToString()
+                    TripRequestNumber = orderStatusDetail.IBSOrderId.GetValueOrDefault().ToString(),
+                    LastFour = creditCardDetail.Last4Digits,
+                    TipIncentive = orderDetail.TipIncentive
                 };
 
                 if (orderStatusDetail.RideLinqPairingCode.HasValue())
@@ -493,6 +498,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             MerchantAuthorizationRequest merchantRequest = null;
 
+
             if (!_serverPaymentSettings.CmtPaymentSettings.SubmitAsFleetAuthorization)
             {
                 merchantRequest = new MerchantAuthorizationRequest(request)
@@ -536,36 +542,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private TokenizeDeleteResponse DeleteCreditCard(TokenizeDeleteRequest request)
         {
-            InitializeServiceClient();
-
-            TokenizeDeleteResponse response;
-
-            try
+            return new TokenizeDeleteResponse
             {
-                var responseTask = _cmtPaymentServiceClient.DeleteAsync(request);
-                responseTask.Wait();
-                response = responseTask.Result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-
-                var aggregateException = ex as AggregateException;
-                if (aggregateException == null)
-                {
-                    throw ex;
-                }
-
-                var webServiceException = aggregateException.InnerException as WebServiceException;
-                if (webServiceException == null)
-                {
-                    throw ex;
-                }
-
-                response = JsonConvert.DeserializeObject<TokenizeDeleteResponse>(webServiceException.ResponseBody);
-            }
-            
-            return response;
+                ResponseCode = 1
+            };
         }
 
         private ReverseResponse Reverse(ReverseRequest request)

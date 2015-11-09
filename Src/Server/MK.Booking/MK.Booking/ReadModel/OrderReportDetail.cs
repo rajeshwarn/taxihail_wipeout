@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.ReadModel
 {
     public class OrderReportDetail
     {
-        [Key]
+		[Key]
         public Guid Id { get; set; }
 
         public OrderReportAccount Account { get; set; }
@@ -58,7 +58,10 @@ namespace apcurium.MK.Booking.ReadModel
 
     public class OrderReportOrder
     {
-        public OrderReportOrder()
+		private DateTime? _pickupDateTime;
+		private DateTime? _createDateTime;
+
+		public OrderReportOrder()
         {
             PickupAddress = new Address();
             DropOffAddress = new Address();
@@ -78,9 +81,59 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsPrepaid { get; set; }
 
-        public DateTime? PickupDateTime { get; set; }
+        public DateTime? PickupDateTime
+		{
+			get
+			{
+				if (_pickupDateTime == null || (_pickupDateTime != null && _pickupDateTime >= apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime))
+				{
+					return _pickupDateTime;
+				}
+				else
+				{
+					return apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime;
+				}
+			}
 
-        public DateTime? CreateDateTime { get; set; }
+			set
+			{
+				if (value == null || (value != null && value >= apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime))
+				{
+					_pickupDateTime = value;
+				}
+				else
+				{
+					_pickupDateTime = apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime;
+				}
+			}
+		}
+
+        public DateTime? CreateDateTime
+		{
+			get
+			{
+				if (_createDateTime == null || (_createDateTime != null && _createDateTime >= apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime))
+				{
+					return _createDateTime;
+				}
+				else
+				{
+					return apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime;
+				}
+			}
+
+			set
+			{
+				if (value == null || (value != null && value >= apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime))
+				{
+					_createDateTime = value;
+				}
+				else
+				{
+					_createDateTime = apcurium.MK.Booking.Database.BookingDbContext.MinimumDatabaseDateTime;
+				}
+			}
+		}
 
         public Address PickupAddress { get; set; }
 
@@ -91,6 +144,8 @@ namespace apcurium.MK.Booking.ReadModel
         public bool HasTimedOut { get; set; }
 
         public long? OriginalEta { get; set; }
+
+		public string Error { get; set; }
     }
 
     public class OrderReportOrderStatus
@@ -141,6 +196,8 @@ namespace apcurium.MK.Booking.ReadModel
         public decimal? BookingFees { get; set; }
 
         public bool IsPaired { get; set; }
+
+        public bool WasUnpaired { get; set; }
 
         public bool IsCompleted { get; set; }
 

@@ -11,7 +11,8 @@
     <AssemblyName>apcurium.MK.Booking.Mobile</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
+    <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -34,6 +35,15 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cirrious.CrossCore.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.CrossCore.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Binding.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Localization">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -50,9 +60,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Xamarin.Facebook">
-      <HintPath>..\Libraries\Monodroid\Xamarin.Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="System.Json" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -69,20 +76,11 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.CrossCore.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.CrossCore.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Binding.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.CrossCore">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.CrossCore.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Binding.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Localization">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Binding.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Binding.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
@@ -122,8 +120,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppServices\IAirportInformationService.cs" />
     <Compile Include="AppServices\IGeolocService.cs" />
     <Compile Include="AppServices\IMetricsService.cs" />
+    <Compile Include="AppServices\Impl\AirportInformationService.cs" />
     <Compile Include="AppServices\Impl\MetricsService.cs" />
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
     <Compile Include="AppServices\Impl\POIProvider.cs" />
@@ -139,6 +139,7 @@
     <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\CurrencyFormatConverter.cs" />
+    <Compile Include="BindingConverter\HomeViewStateToVisibilityConverter.cs" />
     <Compile Include="BindingConverter\NoValueToVisibilityConverter.cs" />
     <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
@@ -186,10 +187,18 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\CommonDeviceOrientationService.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\DeviceOrientationFilter.cs" />
+    <Compile Include="Infrastructure\DeviceOrientation\OrientationService.cs" />
+    <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
+    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
+    <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
+    <Compile Include="AppServices\IRateApplicationService.cs" />
+    <Compile Include="AppServices\Impl\RateApplicationService.cs" />
     <Compile Include="Localization\Taxiworld.Designer.cs">
       <DependentUpon>Taxiworld.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -205,6 +214,7 @@
     <Compile Include="Messages\OrderDeleted.cs" />
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />
+    <Compile Include="Models\PairedTaxiPosition.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
@@ -234,10 +244,13 @@
     <Compile Include="Models\PhoneNumberModel.cs" />
     <Compile Include="ViewModels\EditAutoTipViewModel.cs" />
     <Compile Include="ViewModels\enum\ColorEnum.cs" />
+    <Compile Include="ViewModels\ExtendedSplashScreenViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\ManualPairingForRideLinqViewModel.cs" />
-    <Compile Include="ViewModels\ManualRideLinqStatusViewModel.cs" />
     <Compile Include="ViewModels\Orders\OrderAirportViewModel.cs" />
+    <Compile Include="ViewModels\Map\TaxiLocation.cs" />
+    <Compile Include="ViewModels\Orders\BookingStatusBottomBarViewModel.cs" />
+    <Compile Include="ViewModels\Orders\WaitingCarLandscapeViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
@@ -289,9 +302,6 @@
     <Compile Include="AppServices\IVehicleService.cs" />
     <Compile Include="AppServices\Social\IFacebookService.cs" />
     <Compile Include="AppServices\Social\FacebookUserInfo.cs" />
-    <Compile Include="AppServices\Social\FacebookUserInfo.android.cs">
-      <DependentUpon>FacebookUserInfo.cs</DependentUpon>
-    </Compile>
     <Compile Include="AppServices\Social\ITwitterService.cs" />
     <Compile Include="AppServices\Social\TwitterServiceBase.cs" />
     <Compile Include="AppServices\Social\OAuth\OAuthAuthorizer.cs" />
@@ -341,7 +351,6 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="ViewModels\UpdatedTermsAndConditionsViewModel.cs" />
     <Compile Include="ViewModels\IRequestPresentationState.cs" />
-    <Compile Include="ViewModels\Orders\HomeViewModelStateRequestedEventArgs.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="ViewModels\ISubViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
@@ -362,6 +371,11 @@
     <Compile Include="BindingConverter\DialCodeConverter.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardBaseViewModel.cs" />
+    <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
+    <Compile Include="ViewModels\Orders\DropOffSelectionMidTripViewModel.cs" />
+    <Compile Include="ViewModels\Orders\DropOffSelectionBottomBarViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
@@ -393,6 +407,9 @@
     <None Include="Localization\Master.resx">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Localization\Aeroport Taxi.resx" />
+    <EmbeddedResource Include="Localization\Arro.resx" />
+    <EmbeddedResource Include="Localization\ArroDemo.resx" />
     <EmbeddedResource Include="Localization\BlackCabNow.resx" />
     <EmbeddedResource Include="Localization\Master.es.resx">
       <SubType>Designer</SubType>

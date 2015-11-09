@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -13,6 +13,7 @@ using apcurium.MK.Common.Helpers;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 using apcurium.MK.Common;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -22,10 +23,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 	    private readonly IAccountPaymentService _accountPaymentService;
 	    private readonly IOrderWorkflowService _orderWorkflowService;
-		private const int TipMaxPercent = 100;
 
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
+
+		private string _email;
 
 		public RideSettingsViewModel(IAccountService accountService, 
 			IPaymentService paymentService,
@@ -39,13 +41,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             PhoneNumber = new PhoneNumberModel();
 		}
 
-		public async void Init(string bookingSettings)
+		public async void Init()
         {
 		    using (this.Services ().Message.ShowProgress ())
 			{
 			    try
 			    {
-                    _bookingSettings = bookingSettings.FromJson<BookingSettings>();
+					_bookingSettings = _accountService.CurrentAccount.Settings;
+					_email = _accountService.CurrentAccount.Email;
                     _paymentSettings = await _paymentService.GetPaymentSettings();
 
 					PhoneNumber.Country = _bookingSettings.Country;
@@ -61,6 +64,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     RaisePropertyChanged(() => IsChargeTypesEnabled);
                     RaisePropertyChanged(() => IsChargeAccountPaymentEnabled);
                     RaisePropertyChanged(() => IsPayBackFieldEnabled);
+					RaisePropertyChanged(() => Email);
+					RaisePropertyChanged(() => PhoneNumber);
+					RaisePropertyChanged(() => SelectedCountryCode);
 
                     // this should be called last since it calls the server, we don't want to slow down other controls
                     var v = await _accountService.GetVehiclesList();
@@ -68,8 +74,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     RaisePropertyChanged(() => Vehicles);
                     RaisePropertyChanged(() => VehicleTypeId);
                     RaisePropertyChanged(() => VehicleTypeName);
-                    RaisePropertyChanged(() => PhoneNumber);
-                    RaisePropertyChanged(() => SelectedCountryCode);
 			    }
 			    catch (Exception ex)
 			    {
@@ -78,14 +82,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    }
 			}
 		}
-
-        public bool ShouldDisplayTip
-        {
-            get
-            {
-                return _paymentSettings.IsPayInTaxiEnabled || _paymentSettings.PayPalClientSettings.IsEnabled;
-            }
-        }
 
 	    public bool IsChargeTypesEnabled
 	    {
@@ -249,6 +245,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public string Email
+		{
+			get
+			{
+				return _email;
+			}
+			set
+			{
+				_email = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool CanEditEmail
+		{
+			get
+			{
+				return !IsLinkedWithFacebook;
+			}
+		}
+
+		public bool IsLinkedWithFacebook
+		{
+			get
+			{
+				return _accountService.CurrentAccount.FacebookId.HasValue();
+			}
+		}
+
         public PhoneNumberModel PhoneNumber { get; set; }
 
         public CountryCode[] CountryCodes
@@ -400,7 +425,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					    {
 					        try
 					        {
-					            await _accountService.UpdateSettings(_bookingSettings, PaymentPreferences.Tip);
+								await _accountService.UpdateSettings(_bookingSettings, Email, _accountService.CurrentAccount.DefaultTipPercent);
 					            _orderWorkflowService.SetAccountNumber(_bookingSettings.AccountNumber, _bookingSettings.CustomerNumber);
 					            Close(this);
 					        }
@@ -413,6 +438,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					                        .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
 					                            this.Services().Localize["UpdateBookingSettingsInvalidAccount"]);
 					                    break;
+
+									case "EmailAlreadyUsed":
+											this.Services()
+												.Message.ShowMessage(this.Services().Localize["EmailUsedMessageTitle"],
+													this.Services().Localize["EmailUsedMessage"]);
+										break;
+
 					                default:
 					                    this.Services()
 					                        .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
@@ -428,6 +460,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public async Task<bool> ValidateRideSettings()
         {
+			if (!EmailHelper.IsEmail(Email))
+			{
+				await this.Services().Message.ShowMessage(this.Services().Localize["InvalidEmailTitle"], this.Services().Localize["InvalidEmailMessage"]);
+				return false;
+			}
+
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Phone))
             {
                 await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyField"]);
@@ -446,11 +484,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyAccount"]);
                 return false;
             }
-			if (PaymentPreferences.Tip > TipMaxPercent)
-			{
-				await this.Services().Message.ShowMessage(null, this.Services().Localize["TipPercent_Error"]);
-				return false;
-			}
 
             if (Settings.IsPayBackRegistrationFieldRequired == true && !PayBack.HasValue())
             {
@@ -486,7 +519,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         return false;
                     }
                 }
-                catch
+				catch
                 {
                     this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
                         this.Services().Localize["UpdateBookingSettingsInvalidAccount"]).HandleErrors();

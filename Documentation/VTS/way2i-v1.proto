@@ -1,0 +1,530 @@
+//  Copyright (c) 2013 by VeriFone, Inc. 
+//  All Rights Reserved.
+//
+//  THIS FILE CONTAINS PROPRIETARY AND CONFIDENTIAL INFORMATION 
+//  AND REMAINS THE UNPUBLISHED PROPERTY OF VERIFONE, INC.
+//
+//  Use, disclosure, or reproduction is prohibited 
+//  without prior written approval from VeriFone, Inc.
+//
+// $Id: way2i-v1.proto 10177 2015-04-15 14:42:30Z dramanovich $
+//
+
+
+
+package com.verifone.way2i.protocol;
+
+option optimize_for = SPEED;
+option java_outer_classname = "Way2I"; //response technical details
+ message
+ResponseData {
+	required string responseTime = 1;
+	// ISO 8601 format  timestamp of response generation
+ required int32
+	status = 2 [default = 0]; //status of report, 0 if success
+ required string
+	responseId = 3; // unique id of the response (for technical use only)
+
+	optional ErrorData error = 4; // filled if status <> 0
+ } //error info
+
+	
+	
+message ErrorData {
+	required int32 errorCode = 1; // code of the error TBD: list of error codes
+
+	required string errorMessage = 2; // detailed message of the error
+ }
+
+enum CardType {
+	VISA = 0;
+	AMEX = 1;
+	MC = 2;
+	DINERS = 3;
+	DISCOVER = 4;
+	JCB = 5;
+}
+
+enum PlatformType {
+	IOS = 0;
+	ANDROID = 1;
+	WINCE = 2;
+	WINRT = 3;
+	BLACKBERRY = 4; //
+ }
+
+message PaymentInstrument {
+	enum Type {
+		CREDIT_CARD = 0;
+		PREPAID = 1;
+	}
+
+	required string paymentInstrumentID = 1;
+	required Type type = 2;
+	required string shortName = 3;
+	optional string customName = 4;
+	optional CardType cardType = 5;
+}
+
+enum PaymentType {
+	PAY_WAY2I = 0;
+	PAY_VTS_NYC_TAXI = 1;
+}
+
+message Attribute {
+	required string key = 1;
+	required string value = 2;
+}
+
+message PaymentResult {
+	required string transactionId = 1;
+	optional string extendedAuthCode = 3;
+}
+
+message PaymentInfo {
+	required string state = 1;
+	required double amount = 2;
+	required string currency = 3 [default = "USD"];
+	required string operationDate = 4;
+	required PaymentType paymentType = 5;
+	repeated Attribute paymentAttributes = 6;
+} /**
+ *
+ * Services related messages
+ **/
+/*
+createWallet Operation
+HTTP Method: POST
+Resource: /wallet
+Payload: CreateWalletRequest
+Response: ResponseData
+*/
+message CreateWalletRequest {
+	required string walletId = 1;
+	// string representation of the wallet to be created
+ }
+/*
+registerPrepaid Operation
+HTTP Method: POST
+Resource: /paymentInstrument/prepaid
+Payload: RegisterPrepaidRequest
+Response: RegisterPrepaidResponse
+ */
+message RegisterPrepaidRequest {
+	required string walletId = 1; //wallet which will be use for
+ optional string
+	customName = 2; //optional name of the account
+ }
+
+message RegisterPrepaidResponse {
+	required PaymentInstrument paymentInstrument = 1;
+	required ResponseData response = 2;
+}
+/*
+registerCreditCard Operation
+HTTP Method: POST
+Resource: /paymentInstrument/creditcard
+Payload: RegisterCreditCardRequest
+Response: RegisterCreditCardResponse
+*/
+message RegisterCreditCardRequest {
+	required string serviceProviderId = 1;
+	required string walletId = 2; //wallet which will be use for
+ required
+	CardType cardType = 3;
+	required string pan = 4;
+	optional string cvv = 5;
+	required string expMonth = 6;
+	required string expYear = 7;
+	optional string cardHolderName = 8;
+	optional string cardZIP = 9;
+	optional string cardName = 10;
+	// optional name of the card it will be assigned with
+ }
+
+message RegisterCreditCardResponse {
+	required string confirmationCode = 1;
+	required string expirationDate = 2;
+	required ResponseData response = 3;
+}
+
+message RegisteredPaymentInstrumentResponse {
+	optional PaymentInstrument paymentInstruments = 1;
+	required ResponseData response = 2;
+}
+/*
+getRegisteredPaymentInstruments Operation
+HTTP Method: GET
+Resource: /wallet/{walletId}/paymentInstruments
+Response: RegisteredPaymentInstrumentsResponse
+ */
+message RegisteredPaymentInstrumentsResponse {
+	repeated PaymentInstrument paymentInstruments = 1;
+	required ResponseData response = 2;
+}
+/*
+getSupportedPaymentTypes Operation
+HTTP Method: GET
+Resource: /wallet/{walletId}/paymentTypes
+Response: SupportedPaymentTypesResponse
+ */
+message SupportedPaymentTypesResponse {
+	repeated PaymentType paymentTypes = 1;
+	required ResponseData response = 2;
+}
+/*
+pay Operation
+HTTP Method: POST
+Resource: /payment
+Payload: PaymentRequest
+Response: PaymentResultResponse */
+message PaymentRequest {
+	optional string paymentInstrument = 1;
+	optional string wallet = 2;
+	optional string pan = 3;
+	optional string expMonth = 4;
+	optional string expYear = 5;
+	required double amount = 6;
+	required string currency = 7 [default = "USD"];
+	required PaymentType paymentType = 8; //one of the supported paymentType
+
+	repeated Attribute payeeAttributes = 9;
+	//additional payee attributes depending on paymentType
+ } /*
+pay Operation
+HTTP Method: POST
+Resource: /paymentExt
+Payload: PaymentRequestExt
+Response: PaymentResultResponse */ message PaymentRequestExt {
+	message SplitPaymentInstrument {
+		optional string paymentInstrument = 1;
+		optional string wallet = 2;
+		optional string pan = 3;
+       	optional string expMonth = 4;
+       	optional string expYear = 5;
+		required double amount = 6;
+		required string currency = 7 [default = "USD"];
+	}
+
+	repeated SplitPaymentInstrument paymentInstruments = 1;
+	required PaymentType paymentType = 2; //one of the supported paymentType
+	repeated Attribute payeeAttributes = 3;
+}
+
+message PaymentResponse {
+	optional PaymentResult paymentResult = 1;
+	optional PaymentInfo paymentInfo = 2;
+	required ResponseData response = 3;
+}
+/*
+ rollbackPayment Operation
+HTTP Method: DELETE
+Resource: /payment/{transactionId}
+Response: PaymentRollbackResponse
+ */
+message PaymentRollbackResponse {
+	optional PaymentResult paymentResult = 1;
+	required ResponseData response = 2;
+}
+/*
+getPaymentState Operation
+HTTP Method: GET
+Resource: /payment/{transactionId}
+Response: PaymentStateResponse
+
+ */
+message PaymentStateResponse {
+	required PaymentInfo paymentInfo = 1;
+	required ResponseData response = 2;
+}
+/*
+topup Operation
+HTTP Method: POST
+Resource: /topup
+Payload: TopupRequest
+Response: TopupResponse
+ */
+message TopupRequest {
+	required string wallet = 1;
+	required string sourcePaymentInstrument = 2;
+	required string targetPaymentInstrument = 3;
+	required double amount = 4;
+	required string currency = 5 [default = "USD"];
+}
+
+message TopupResponse {
+	required PaymentResult paymentResult = 1;
+	required ResponseData response = 2;
+}
+/*
+registerAutoTopup Operation
+HTTP Method: POST
+Resource: /autotopup/{walletID}/{paymentInstrumentID}
+Payload:  AutoTopup
+Response: ResponseData
+ */
+message AutoTopup {
+	required double amount = 1;
+	required string currency = 2 [default = "USD"];
+	repeated string sourcePaymentInstruments = 3;
+	optional bool disabled = 4 [default = false];
+	optional double threshold = 5 [default = 0.0];
+}
+/*
+getAutoTopupInfo Operation
+HTTP Method: GET
+Resource: /autotopup/{walletID}/{paymentInstrumentID}
+Response: AutoTopupResponse
+ */
+message AutoTopupResponse {
+	optional AutoTopup autoTopup = 1;
+	required ResponseData response = 2;
+}
+/*
+getBalance Operation
+HTTP Method: GET
+Resource: /balance/{walletID}/{paymentInstrumentID}
+Response: BalanceResponse
+ */
+message BalanceResponse {
+	required double amount = 1;
+	required string currency = 2 [default = "USD"];
+	required ResponseData response = 3;
+}
+/*
+history Operation
+HTTP Method: GET
+Resource: /history/{walletID}/{paymentInstrumentID}/{start}
+Response: HistoryResponse
+ */
+message HistoryResponse {
+	repeated PaymentInfo payments = 1;
+	required ResponseData response = 2;
+}
+
+enum TAXI_EVENT_TYPE {
+	METER_TIME_OFF = 0;
+	METER_REHIRED = 1;
+	FARE_UPDATED = 2;
+	METER_PAYMENT_ACKNOWLEDGED = 3;
+	METER_HIRED = 4;
+	WAY2RIDE_CANCELED = 5;
+    HAIL_SUBMITTED = 6;
+    HAIL_REVOKED = 7;
+    HAIL_EXPIRED = 8;
+    HAIL_CONFIRMED = 9;
+    HAIL_TAXI_ARRIVED = 10;
+    HAIL_RIDER_INVEHICLE = 11;
+    HAIL_RIDER_NOSHOW = 12;
+    HAIL_RIDE_STARTED = 13;
+    HAIL_DRIVER_CANCELED = 14;
+    HAIL_SERVER_CANCELED = 15;
+    HAIL_PAIRING_FAILED = 16;
+    HAIL_LOCATION = 17;
+    HAIL_VEHICLE_ASSIGNMENT_STATE_CHANGED = 18;
+}
+/*
+connectTaxi Operation
+HTTP Method: POST
+Payload:  TaxiSessionRequest
+Resource: /taxi/{checkInCode}
+Response: ResponseData
+ */
+
+enum CALLBACK_TYPE {
+    CHECK_IN_CODE = 0;
+    SESSION_ID = 1;
+}
+
+message TaxiSessionRequest {
+	optional string medallionNumber = 1;
+	required string callbackEndpoint = 2;
+	//endpoint should be  URL like http(s)://server:port/path/to/endpoint/{checkInCode}  TaxiEvent message will be sent with POST method
+
+	optional float lat = 3;
+	optional float lon = 4;
+	optional PlatformType platform = 5;
+	optional string deviceId = 6;
+	repeated TAXI_EVENT_TYPE eventTypes = 7;
+	optional CALLBACK_TYPE callbackType = 8 [default = CHECK_IN_CODE];
+	optional ServiceFee ehailFee = 9;
+	optional double tipsPercentage = 10;
+	optional bool ehail = 11 [default = false];
+}
+
+message TaxiSessionResponse {
+   optional string taxiSessionId = 1;
+   required ResponseData response = 2;
+   optional string medallion = 3;
+   optional string market = 4;
+}
+
+/*
+disconnectTaxi Operation
+HTTP Method: DELETE
+Resource: /taxi/{cabConnectCode}
+Response: ResponseData
+ */
+/*
+ * Payload from customer's endpoint
+ */ message TaxiEvent {
+	required TAXI_EVENT_TYPE eventType = 1;
+	repeated Attribute attributes = 2;
+}
+
+message TripInfo {
+	message RateFare {
+		required string rateNumber = 1;
+		required string rateDescription = 2;
+		required double rateFare = 3;
+		required double rateDistance = 4;
+	}
+
+	required string medallionNumber = 1;
+	required string hackNumber = 2;
+	required string tripId = 3;
+	repeated RateFare rates = 4;
+	required float startLatitude = 5;
+	required float startLongitude = 6;
+	required string startTime = 7;
+	required float endLatitude = 8;
+	required float endLongitude = 9;
+	required string endTime = 10;
+	required double extras = 11;
+	repeated double tolls = 12;
+	required double stateSurcharge = 13;
+	required double tips = 14;
+	repeated ServiceFee serviceFee = 15;
+	required double totalFare = 16;
+}
+
+message ServiceFee {
+	required string code = 1;
+	required string description = 2;
+	required double amount = 3 [default = 0.0];
+}
+
+message PayTaxiRequest {
+	required string medallionNumber = 1;
+	required string walletId = 2;
+	required string paymentInstrument = 3;
+	optional double tips = 4;
+	repeated ServiceFee serviceFee = 5;
+	optional bool printReceipt = 6 [default = false];
+}
+
+message PayTaxiRequestExt {
+	message PaymentToken {
+		required string walletId = 1;
+		required string paymentInstrument = 2;
+		optional double share = 3 [default = 1];
+	}
+
+	repeated PaymentToken tokens = 1;
+	required string medallionNumber = 2;
+	optional double tips = 3;
+	repeated ServiceFee serviceFee = 4;
+	optional bool printReceipt = 5 [default = false];
+}
+
+message PayTaxiResponse {
+	optional PaymentResult paymentResult = 1;
+	optional TripInfo tripInfo = 2;
+	required ResponseData response = 3;
+}
+
+message ConfigurePaymentRequest {
+	required string medallionNumber = 1;
+	optional double tips = 2;
+	repeated ServiceFee serviceFee = 3;
+	optional bool printReceipt = 4 [default = false];
+}
+
+
+message ConfigurePaymentResponse {
+	required string sessionId = 1;
+	required ResponseData response = 2;
+}
+
+message PayPreparedTaxiSessionRequest {
+	required string pan = 1;
+	required string expMonth = 2;
+	required string expYear = 3;
+}
+
+message PayPreparedTaxiSessionWithTokenRequest {
+    required string walletId = 1;
+	required string paymentInstrument = 2;
+}
+
+/*
+    hail stuff
+*/
+
+message Position {
+	required float latitude = 1;
+	required float longitude = 2;
+	optional float direction = 3;
+	optional float speed = 4;
+}
+
+message Driver {
+    optional string driverId = 1;
+    optional string firstName = 2;
+    optional float rating = 3;
+    optional string phone = 4;
+    optional bool hasPhone = 5;
+}
+
+message Vehicle {
+    optional string vehicleId = 1;
+    optional string tag = 2;
+    optional string type = 3;
+    optional Driver driver = 4;
+    optional string description = 5;
+    required Position position = 6;
+}
+
+message VehicleCandidate {
+    optional string vehicleId = 1;
+    optional string state = 2;
+    optional float rating = 3;
+    optional string tag = 4;
+}
+
+message VehicleCongregationResponse {
+    repeated Vehicle vehicle = 1;
+	required ResponseData response = 2;
+}
+
+message VehicleCongregationRequest {
+    required Position position = 1;
+    required int32 radius = 2;
+ }
+
+message HailTaxiSessionRequest {
+	required string callbackEndpoint = 1;
+	//endpoint should be  URL like http(s)://server:port/path/to/endpoint/{checkInCode}  TaxiEvent message will be sent with POST method
+	required float lat = 2;
+	required float lon = 3;
+	required string address = 4;
+	optional string notes = 5;
+	required string firstName = 6;
+	required string lastName = 7;
+	required string email = 8;
+	required string phone = 9;
+	optional ServiceFee ehailFee = 10;
+	optional double tipsPercentage = 11;
+}
+
+message HailTaxiSessionResponse {
+   optional string taxiSessionId = 1;
+   required ResponseData response = 2;
+   optional string market = 3;
+   repeated VehicleCandidate candidates = 4;
+}
+
+message RateRequest {
+    required int32 rate = 1;
+    optional string notes = 2;
+}

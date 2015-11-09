@@ -4,8 +4,11 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceInterface;
+using ServiceStack.Common.Web;
+using System.Net;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -30,6 +33,13 @@ namespace apcurium.MK.Booking.Api.Services
             var creditCard = account.DefaultCreditCard.HasValue
                 ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
                 : null;
+
+            var creditCardLabel = CreditCardLabelConstants.Personal;
+            if (creditCard != null)
+            {
+                Enum.TryParse(creditCard.Label, out creditCardLabel);
+            }
+
             var creditCardResource = creditCard != null
                 ? new CreditCardDetails
                     {
@@ -41,7 +51,9 @@ namespace apcurium.MK.Booking.Api.Services
                         CreditCardCompany = creditCard.CreditCardCompany,
                         ExpirationMonth = creditCard.ExpirationMonth,
                         ExpirationYear = creditCard.ExpirationYear,
-                        IsDeactivated = creditCard.IsDeactivated
+                        IsDeactivated = creditCard.IsDeactivated,
+                        Label = creditCardLabel,
+                        ZipCode = creditCard.ZipCode
                     }
                 : null;
 
@@ -55,7 +67,7 @@ namespace apcurium.MK.Booking.Api.Services
                 TwitterId = account.TwitterId,
                 Settings = account.Settings,
                 Language = account.Language,
-                IsAdmin = account.IsAdmin,
+                HasAdminAccess = account.HasAdminAccess,
                 IsSuperAdmin = account.RoleNames.Contains(RoleName.SuperAdmin),
                 DefaultCreditCard = creditCardResource,
                 DefaultTipPercent = account.DefaultTipPercent,
@@ -68,5 +80,26 @@ namespace apcurium.MK.Booking.Api.Services
 
             return currentAccount;
         }
+
+		public object Get(CurrentAccountPhoneRequest currentAccountPhoneRequest)
+		{
+			var account = _accountDao.FindByEmail(currentAccountPhoneRequest.Email);
+
+			if (account == null)
+			{
+				throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
+			}
+
+			if (account.IsConfirmed)
+			{
+				throw new HttpError(HttpStatusCode.PreconditionFailed, "To get phone number the account should not be confirmed");
+			}
+
+			return new CurrentAccountPhoneResponse()
+			{
+				CountryCode = account.Settings.Country,
+				PhoneNumber = account.Settings.Phone
+			};
+		}
     }
 }

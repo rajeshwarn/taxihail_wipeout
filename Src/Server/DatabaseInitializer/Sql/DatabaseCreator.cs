@@ -454,10 +454,8 @@ namespace DatabaseInitializer.Sql
             var contexts = new DbContext[]
             {
                 new CachingDbContext(connectionString.ConnectionString),
-                new ConfigurationDbContext(connectionString.ConnectionString),
                 new EventStoreDbContext(connectionString.ConnectionString),
-                new MessageLogDbContext(connectionString.ConnectionString),
-                new BookingDbContext(connectionString.ConnectionString)
+                new MessageLogDbContext(connectionString.ConnectionString)
             };
 
             try

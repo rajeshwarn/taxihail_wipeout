@@ -37,6 +37,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public ActionResult Index()
         {
+            ValidateFakeIBS();
             return View(GetAvailableSettingsForUser());
         }
 
@@ -137,8 +138,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             }
 
 
-			bool disableImmediateBooking = bool.Parse(appSettings.Where(x => x.Key == "DisableImmediateBooking").First().Value);
-            bool disableFutureBooking = bool.Parse(appSettings.Where(x => x.Key == "DisableFutureBooking").First().Value);
+			var disableImmediateBooking = appSettings.ContainsKey("DisableImmediateBooking") ?
+                bool.Parse(appSettings.Where(x => x.Key == "DisableImmediateBooking").First().Value) 
+                : false;
+
+            var disableFutureBooking = appSettings.ContainsKey("DisableFutureBooking") ?
+                bool.Parse(appSettings.Where(x => x.Key == "DisableFutureBooking").First().Value) 
+                : false;
 
             if (disableImmediateBooking && disableFutureBooking)
             {
@@ -224,6 +230,16 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             }
 
             return companySettings;
+        }
+
+        private void ValidateFakeIBS()
+        {
+            var isfakeIBS = _serverSettings.ServerData.IBS.FakeOrderStatusUpdate;
+
+            if (isfakeIBS)
+            {
+                TempData["FakeIBSErrors"] = "WARNING: Site is running in Fake IBS Mode";
+            }
         }
     }
 }

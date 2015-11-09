@@ -17,5 +17,7 @@ namespace CMTPayment.Tokenize
         public bool ValidateAccountInformation { get; set; }
 
         public string Cvv { get; set; }
+
+        public string ZipCode { get; set; }
     }
 }

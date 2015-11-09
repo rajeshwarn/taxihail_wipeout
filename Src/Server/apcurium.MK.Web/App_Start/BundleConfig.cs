@@ -92,7 +92,9 @@ namespace apcurium.MK.Web
                 "~/views/ConfirmCVVView.js",
                 "~/views/QuestionItemView.js",
                 "~/views/FavoritesView.js",
+                "~/views/PaymentDetailView.js",
                 "~/views/PaymentView.js",
+                "~/views/PaymentItemView.js",
                 "~/services/OrderService.js",
                 "~/services/DirectionInfoService.js",
                 "~/common/services/AuthService.js",
@@ -173,6 +175,8 @@ namespace apcurium.MK.Web
                 "~/admin/models/UnassignedReferenceDataVehicles.js",
                 "~/admin/models/NetworkVehicleTypes.js",
                 "~/admin/models/RideRatings.js",
+				"~/admin/models/AccountsManagementModel.js",
+				"~/admin/models/AccountManagementModel.js",
                 /* Collections */
                 "~/common/collections/AddressCollection.js",
                 "~/common/collections/AvailableVehicleCollection.js",
@@ -198,6 +202,7 @@ namespace apcurium.MK.Web
                 "~/admin/controllers/AccountsChargeController.js",
                 "~/admin/controllers/VehicleTypesController.js",
                 "~/admin/controllers/RideRatingsController.js",
+				"~/admin/controllers/AccountsManagementController.js",
                 /* Views */
                 "~/admin/views/AddPopularAddressView.js",
                 "~/common/views/AlertView.js",
@@ -213,6 +218,7 @@ namespace apcurium.MK.Web
                 "~/admin/views/SendTestEmailView.js",
                 "~/admin/views/ExportAccountsView.js",
                 "~/admin/views/ExportOrdersView.js",
+				"~/admin/views/ExportPromotionsView.js",
                 "~/admin/views/AdminMenuView.js",
                 "~/admin/views/ManageDefaultAddressesView.js",
                 "~/admin/views/ManageTariffsView.js",
@@ -235,6 +241,8 @@ namespace apcurium.MK.Web
                 "~/admin/views/AddVehicleTypeView.js",
                 "~/admin/views/ManageVehicleTypesView.js",
                 "~/admin/views/VehicleTypeItemView.js",
+				"~/admin/views/AccountsManagementView.js",
+				"~/admin/views/AccountManagementView.js",
                 /* Services */
                 "~/common/services/AuthService.js",
                 "~/common/services/GeocodingService.js",

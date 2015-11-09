@@ -15,6 +15,11 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         public const string SchemaName = "Config";
 
+        public ConfigurationDbContext()
+        {
+            
+        }
+
         public ConfigurationDbContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {

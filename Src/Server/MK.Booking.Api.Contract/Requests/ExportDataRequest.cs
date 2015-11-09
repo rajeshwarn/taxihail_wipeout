@@ -7,7 +7,7 @@ using System;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [AuthorizationRequired(ApplyTo.Get, RoleName.Admin)]
+    [AuthorizationRequired(ApplyTo.Post, RoleName.Support)]
     [Route("/admin/export/{Target}", "POST")]
     public class ExportDataRequest
     {
@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     public enum DataType
     {
         Orders,
-        Accounts
+        Accounts,
+		Promotions
     }
 }

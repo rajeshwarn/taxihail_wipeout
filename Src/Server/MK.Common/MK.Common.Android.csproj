@@ -11,7 +11,7 @@
     <AssemblyName>MK.Common.Android</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -58,7 +58,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationVersion.cs" />
     <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
+    <Compile Include="Configuration\Attributes\HiddenAttribute.cs" />
     <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />
     <Compile Include="Configuration\Attributes\SendToClientAttribute.cs" />
     <Compile Include="Configuration\Helpers\SettingsLoader.cs" />
@@ -72,10 +74,13 @@
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
+    <Compile Include="CoordinateSystemOrientation.cs" />
     <Compile Include="CountryCode.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\AddressLocationType.cs" />
+    <Compile Include="Entity\Airline.cs" />
+    <Compile Include="Entity\AssignedVehicleMarkets.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />
@@ -83,8 +88,10 @@
     <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
     <Compile Include="Entity\OrderPairingDetail.cs" />
     <Compile Include="Entity\OrderRatings.cs" />
+    <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\RatingScore.cs" />
     <Compile Include="Entity\RatingTypeWrapper.cs" />
+    <Compile Include="Entity\RideEstimate.cs" />
     <Compile Include="Entity\Rule.cs" />
     <Compile Include="Entity\RuleCategory.cs" />
     <Compile Include="Entity\RuleType.cs" />
@@ -93,9 +100,11 @@
     <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
+    <Compile Include="Enumeration\DeviceOrientations.cs" />
     <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\LocalAvailableVehiclesModes.cs" />
+    <Compile Include="Enumeration\RateApplicationState.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
@@ -111,6 +120,8 @@
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Geography\GeographyHelper.cs" />
+    <Compile Include="Helpers\AirlineComparer.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IPackageInfo.cs" />
@@ -136,6 +147,7 @@
     <Compile Include="Resources\PairingResponse.cs" />
     <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
+    <Compile Include="Vector3.cs" />
     <Compile Include="VehicleStatuses.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
@@ -146,6 +158,7 @@
     <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Diagnostic\BaseLogger.cs" />
     <Compile Include="Configuration\Attributes\RequiresTaxiHailPro.cs" />
+    <Compile Include="CreditCardLabelConstants.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

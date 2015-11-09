@@ -28,6 +28,9 @@ using MK.Common.Configuration;
 using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
+using apcurium.MK.Common.Helpers;
+using System.Text.RegularExpressions;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -46,18 +49,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly IFacebookService _facebookService;
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
-		private readonly ILocationService _locationService;
-        private readonly IPaymentService _paymentService;
 
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
-			ILocalization localize,
-			ILocationService locationService,
-            IPaymentService paymentService)
+			ILocalization localize)
 		{
-			_locationService = locationService;
-            _paymentService = paymentService;
             _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
@@ -161,6 +158,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<OrderServiceClient, Order> (service => service.GetOrder (id));
 		}
 
+        public Task<int> GetOrderCountForAppRating()
+		{
+            return Mvx.Resolve<OrderServiceClient>().GetOrderCountForAppRating();
+		}
+
         public OrderStatusDetail[] GetActiveOrdersStatus()
         {
 			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus()).Result;
@@ -244,7 +246,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				try
 				{
 					var oldDeprecatedAccount = UserCache.Get<DeprecatedAccount>("LoggedUser");
-					if(oldDeprecatedAccount.DefaultCreditCard.HasValue)
+					if(oldDeprecatedAccount != null && oldDeprecatedAccount.DefaultCreditCard.HasValue)
 					{
 						// there's an old account cached, force logout to set the new account object in cache
 						return null;
@@ -271,7 +273,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 		
-        public async Task UpdateSettings (BookingSettings settings, int? tipPercent)
+        public async Task UpdateSettings (BookingSettings settings, string email, int? tipPercent)
         {
             //This is to make sure we only save the phone number
             var phoneNumberChars = settings.Phone
@@ -280,6 +282,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             var bsr = new BookingSettingsRequest
             {
+				Email = email,
                 Name = settings.Name,
                 Country = settings.Country,
                 Phone = new string(phoneNumberChars),
@@ -297,9 +300,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			// Update cached account
             var account = CurrentAccount;
             account.Settings = settings;
-            account.DefaultTipPercent = tipPercent;
+			account.Email = email;
+			account.DefaultTipPercent = tipPercent;
             CurrentAccount = account;
         }
+
 
         public void UpdateAccountNumber(string accountNumber, string customerNumber)
 		{
@@ -308,7 +313,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			settings.CustomerNumber = customerNumber;
 
 			// no need to await since we're change it locally
-			UpdateSettings (settings, CurrentAccount.DefaultTipPercent);
+			UpdateSettings (settings, CurrentAccount.Email, CurrentAccount.DefaultTipPercent);
 		}
 
         public Task<string> UpdatePassword (Guid accountId, string currentPassword, string newPassword)
@@ -342,6 +347,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						{
 							throw new AuthException ("Account not validated", AuthFailure.AccountNotActivated, e);
 						}
+						else if(e.Message == AuthFailure.FacebookEmailAlreadyUsed.ToString())
+						{
+							throw new AuthException("Facebook Email Already Used", AuthFailure.FacebookEmailAlreadyUsed, e);
+						}
 						else
 						{
 							throw new AuthException ("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
@@ -364,9 +373,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        private static void SaveCredentials (AuthenticationData authResponse)
+        private void SaveCredentials (AuthenticationData authResponse)
         {         
-			Mvx.Resolve<ICacheService>().Set (AuthenticationDataCacheKey, authResponse);
+			UserCache.Set(AuthenticationDataCacheKey, authResponse);
         }
 
 		public async Task<Account> GetFacebookAccount (string facebookId)
@@ -557,7 +566,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
 		    }
 
-			var creditCard = await GetCreditCard();
+			var creditCard = await GetDefaultCreditCard();
             if (creditCard == null
                 || CurrentAccount.IsPayPalAccountLinked
                 || creditCard.IsDeactivated)
@@ -568,11 +577,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return refData.PaymentsList;
         }
 
-        public async Task<CreditCardDetails> GetCreditCard ()
+        public async Task<CreditCardDetails> GetDefaultCreditCard ()
         {
-			// the server can return multiple credit cards if the user added more cards with a previous version, we get the first one only.
-            var result = await UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
-			var creditCard = result.FirstOrDefault();
+			
+			var account = await GetAccount();
+
+			var creditCard = account.DefaultCreditCard;
 
 			// refresh credit card in cache
 			UpdateCachedAccount(creditCard, CurrentAccount.Settings.ChargeTypeId, CurrentAccount.IsPayPalAccountLinked);
@@ -580,12 +590,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return creditCard;
         }
 
+		public Task<IEnumerable<CreditCardDetails>> GetCreditCards ()
+		{
+			return UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(client => client.GetCreditCards());
+		}
+
 		private async Task TokenizeCard(CreditCardInfos creditCard)
 		{
+			var usRegex = new Regex("^\\d{5}([ \\-]\\d{4})?$", RegexOptions.IgnoreCase);
+			var zipCode = usRegex.Matches(creditCard.ZipCode).Count > 0 && _appSettings.Data.SendZipCodeWhenTokenizingCard ? creditCard.ZipCode : null;
+
 			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
 				creditCard.CardNumber, 
 				new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
-				creditCard.CCV));
+				creditCard.CCV,
+				zipCode));
 
 		    if (!response.IsSuccessful)
 		    {
@@ -614,38 +633,77 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Last4Digits = creditCard.Last4Digits,
                 Token = creditCard.Token,
 				ExpirationMonth = creditCard.ExpirationMonth,
-				ExpirationYear = creditCard.ExpirationYear
+				ExpirationYear = creditCard.ExpirationYear,
+				Label = creditCard.Label.ToString(),
+				ZipCode = creditCard.ZipCode,
+				
             };
 
 			await UseServiceClientAsync<IAccountServiceClient> (client => 
-				isUpdate 
+				!isUpdate 
 					? client.AddCreditCard (request)
 					: client.UpdateCreditCard(request));  
 
-			var creditCardDetails = new CreditCardDetails
+
+			if (isUpdate || CurrentAccount.DefaultCreditCard == null)
 			{
-				AccountId = CurrentAccount.Id,
-				CreditCardId = request.CreditCardId,
-				CreditCardCompany = request.CreditCardCompany,
-				NameOnCard = request.NameOnCard,
-				Token = request.Token,
-				Last4Digits = request.Last4Digits,
-				ExpirationMonth = request.ExpirationMonth,
-				ExpirationYear = request.ExpirationYear,
-				IsDeactivated = false
-			};
-			UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false);
+				var creditCardDetails = new CreditCardDetails
+					{
+						AccountId = CurrentAccount.Id,
+						CreditCardId = request.CreditCardId,
+						CreditCardCompany = request.CreditCardCompany,
+						NameOnCard = request.NameOnCard,
+						Token = request.Token,
+						Last4Digits = request.Last4Digits,
+						ExpirationMonth = request.ExpirationMonth,
+						ExpirationYear = request.ExpirationYear,
+						IsDeactivated = false
+					};
+				UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false);
+			}	
 
 			return true;
         }
 			
-		public async Task RemoveCreditCard(bool replacedByPayPal = false)
+		public async Task RemoveCreditCard(Guid creditCardId, bool replacedByPayPal = false)
 		{
-            var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
+			var defaultCreditCard = await UseServiceClientAsync<IAccountServiceClient, CreditCardDetails>(client => client.RemoveCreditCard(creditCardId));
 
-            UpdateCachedAccount(null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
+			var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
 
-			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
+			UpdateCachedAccount(defaultCreditCard != null ? defaultCreditCard : null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
+		}
+
+		public async Task<bool> UpdateDefaultCreditCard(Guid creditCardId)
+		{
+			try
+			{
+				var creditCard = (await GetCreditCards()).First(cc => cc.CreditCardId == creditCardId);
+
+				UpdateCachedAccount(creditCard, CurrentAccount.Settings.ChargeTypeId, CurrentAccount.IsPayPalAccountLinked);
+
+				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateDefaultCreditCard(new DefaultCreditCardRequest {CreditCardId = creditCardId})); 
+
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public async Task<bool> UpdateCreditCardLabel(Guid creditCardId, CreditCardLabelConstants label)
+		{
+			try
+			{
+				await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateCreditCardLabel(new UpdateCreditCardLabelRequest {CreditCardId = creditCardId, Label = label.ToString()})); 
+			}
+			catch
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		public Task LinkPayPalAccount(string authCode)
@@ -709,6 +767,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     DriverAssignedPush = companySettings.DriverAssignedPush.HasValue && userSettings.DriverAssignedPush.HasValue
                         ? userSettings.DriverAssignedPush 
                         : companySettings.DriverAssignedPush,
+					DriverBailedPush = companySettings.DriverBailedPush.HasValue && userSettings.DriverBailedPush.HasValue
+						? userSettings.DriverBailedPush 
+						: companySettings.DriverBailedPush,
                     NearbyTaxiPush = companySettings.NearbyTaxiPush.HasValue && userSettings.NearbyTaxiPush.HasValue
                         ? userSettings.NearbyTaxiPush 
                         : companySettings.NearbyTaxiPush,

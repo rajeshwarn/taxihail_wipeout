@@ -11,7 +11,7 @@ using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
-	[Activity(Label = "Tutorial", Theme = "@style/TutorialDialog", ScreenOrientation = ScreenOrientation.Portrait)]
+	[Activity(Label = "@string/TutorialActivityName", Theme = "@style/TutorialDialog", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TutorialActivity : MvxActivity
     {
         private BitmapDrawable _grayCircle;
@@ -44,17 +44,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             _blackCircle = Resources.GetDrawable(Resource.Drawable.tutorial_black_circle) as BitmapDrawable;
             _grayCircle = Resources.GetDrawable(Resource.Drawable.tutorial_grey_circle) as BitmapDrawable;
 
-            var maxWidth = Window.WindowManager.DefaultDisplay.Width;
+            var maxWidth = Resources.DisplayMetrics.WidthPixels;
 
             var lp = ((View)containerLayout.Parent).LayoutParameters;
             lp.Width = maxWidth;
-            lp.Height = WindowManagerLayoutParams.MatchParent;
+            lp.Height = ViewGroup.LayoutParams.MatchParent;
             ((View)containerLayout.Parent).LayoutParameters = lp;
 
             lp = ((View)containerLayout).LayoutParameters;
 
-            lp.Width = maxWidth - (_tutorialInsetPixels * (PlatformHelper.IsAndroid23 ? 2 : 1));
-            lp.Height = WindowManagerLayoutParams.MatchParent;
+            lp.Width = maxWidth - _tutorialInsetPixels;
+            lp.Height = ViewGroup.LayoutParams.MatchParent;
             ((View)containerLayout).LayoutParameters = lp;
 
             lp = ((View)pipsLayout).LayoutParameters;

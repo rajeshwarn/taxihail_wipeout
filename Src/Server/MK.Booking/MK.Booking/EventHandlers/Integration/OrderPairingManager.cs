@@ -74,8 +74,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
-                        if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode == PaymentMethod.RideLinqCmt
-                            && _serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment 
+                        var paymentSettings = _serverSettings.GetPaymentSettings(order.CompanyKey);
+
+                        if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
+                            && paymentSettings.CmtPaymentSettings.UsePairingCode
                             && !orderStatus.RideLinqPairingCode.HasValue())
                         {
                             return;
@@ -90,8 +92,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                         if (!response.IsSuccessful)
                         {
-                            UpdatePairingFailedStatusDescription(order.Id, account.Language);
+                            UpdateIBSStatusDescription(order.Id, account.Language, "OrderStatus_PairingFailed");
                         }
+                        else
+                        {
+                            UpdateIBSStatusDescription(order.Id, account.Language, "OrderStatus_PairingSuccess");
+                         }
 
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful);
                     } 
@@ -100,14 +106,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void UpdatePairingFailedStatusDescription(Guid orderId, string language)
+        private void UpdateIBSStatusDescription(Guid orderId, string language, string resourceName)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var details = context.Find<OrderStatusDetail>(orderId);
                 if (details != null)
                 {
-                    details.IBSStatusDescription = _resources.Get("OrderStatus_PairingFailed", language ?? SupportedLanguages.en.ToString());
+                    details.IBSStatusDescription = _resources.Get(resourceName, language ?? SupportedLanguages.en.ToString());
                     context.Save(details);
                 }
             }

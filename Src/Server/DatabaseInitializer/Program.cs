@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -16,6 +18,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
@@ -32,6 +35,7 @@ using Microsoft.Web.Administration;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using DeploymentServiceTools;
+using ServiceStack.Messaging.Rcon;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 
@@ -79,11 +83,11 @@ namespace DatabaseInitializer
                 Module module;
 
                 var creatorDb = new DatabaseCreator();
-                var isUpdate = creatorDb.DatabaseExists(param.MasterConnectionString, param.CompanyName);
+                IsUpdate = creatorDb.DatabaseExists(param.MasterConnectionString, param.CompanyName);
                 IDictionary<string, string> appSettings;
 
                 //for dev company, delete old database to prevent keeping too many databases
-                if (param.CompanyName == LocalDevProjectName && isUpdate)
+                if (param.CompanyName == LocalDevProjectName && IsUpdate)
                 {
 #if DEBUG
                     Console.WriteLine("Drop Existing Database? Y or N");
@@ -98,52 +102,21 @@ namespace DatabaseInitializer
                         {
                             creatorDb.DropDatabase(param.MasterConnectionString, param.CompanyName);
                         }
-                        isUpdate = false;
+                        IsUpdate = false;
                     }
 #endif
                 }
 
-                if (isUpdate)
+                if (IsUpdate)
                 {
-                    var temporaryDatabaseName = param.CompanyName + "_New";
-
-                    PerformUpdate(param, creatorDb, param.CompanyName, temporaryDatabaseName);
-
-                    return 0;
+                    UpdateSchema(param);
 
                     if (param.ReuseTemporaryDb)
                     {
                         // the idea behind reuse of temp db is that account doesn't have permission to rename db 
                         // so we instead we need to re-migrate from the temp db to the actual name
-                        PerformUpdate(param, creatorDb, temporaryDatabaseName, param.CompanyName);
+                        UpdateSchema(param);
                     }
-                    else
-                    {
-                        var oldDatabase = creatorDb.RenameDatabase(param.MasterConnectionString, param.CompanyName);
-
-                        Console.WriteLine("Rename New Database to use Company Name...");
-                        creatorDb.RenameDatabase(param.MasterConnectionString, temporaryDatabaseName, param.CompanyName);
-
-                        if (param.MkWebConnectionString.ToLower().Contains("integrated security=true"))
-                        {
-                            creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
-                                "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
-                        }
-
-                        SetupMirroring(param);
-
-                        if (!string.IsNullOrEmpty(param.BackupFolder))
-                        {
-                            Console.WriteLine("Backup of old database...");
-                            var backupFolder = Path.Combine(param.BackupFolder, param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
-                            Directory.CreateDirectory(backupFolder);
-                            creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, oldDatabase);
-
-                            Console.WriteLine("Dropping of old database...");
-                            creatorDb.DropDatabase(param.MasterConnectionString, oldDatabase);
-                        }
-                    }
-
 
                 }
                 else
@@ -154,6 +127,9 @@ namespace DatabaseInitializer
                         creatorDb.CreateDatabase(param.MasterConnectionString, param.CompanyName, param.SqlServerDirectory);
                     }
                     creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", param.MkWebConnectionString));
+
+                    UpdateSchema(param);
+
                     creatorDb.CreateIndexes(param.MasterConnectionString, param.CompanyName);
 
                     Console.WriteLine("Add user for IIS...");
@@ -177,7 +153,7 @@ namespace DatabaseInitializer
                 Console.WriteLine("Checking Company Created...");
                 CheckCompanyCreated(container, commandBus);
 
-                if (!isUpdate)
+                if (!IsUpdate)
                 {
                     appSettings = GetCompanySettings(param.CompanyName);
 
@@ -190,8 +166,15 @@ namespace DatabaseInitializer
                 }
                 else
                 {
+                    EnsureSupportRoleIsSupported(connectionString, commandBus);
                     appSettings = serverSettings.GetSettings();
                 }
+
+				// If we are deploying to staging, regardless if we are updating or creating a new DB, create the apple test account.
+				if (param.IsStaging)
+				{
+					CreateAppleTestAccountIfNeeded(container, commandBus);
+				}
 
                 Console.WriteLine("Checking Rules...");
                 CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
@@ -247,15 +230,32 @@ namespace DatabaseInitializer
                             ReceiptEmail = true,
                             PromotionUnlockedEmail = true,
                             VehicleAtPickupPush = true,
-                            PromotionUnlockedPush = true
+                            PromotionUnlockedPush = true,
+                            DriverBailedPush = true
                         }
                     });
                 }
 
                 Console.WriteLine("Migration of Payment Settings ...");
+
                 MigratePaymentSettings(serverSettings, commandBus);
 
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
+
+#if DEBUG
+                if (IsUpdate)
+                {
+                    var iisManager = new ServerManager();
+                    var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == param.AppPoolName);
+
+                    if (appPool != null
+                        && appPool.State == ObjectState.Stopped)
+                    {
+                        appPool.Start();
+                        Console.WriteLine("App Pool started.");
+                    }
+                }
+#endif
                 
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
@@ -270,77 +270,47 @@ namespace DatabaseInitializer
             // ReSharper restore LocalizableElement
         }
 
-        public static void PerformUpdate(DatabaseInitializerParams param, DatabaseCreator creatorDb, string sourceDatabaseName, string targetDatabaseName)
+        public static bool IsUpdate { get; set; }
+
+        public static void UpdateSchema(DatabaseInitializerParams param)
         {
-            Console.WriteLine("Update");
-
-            //we don' t use a new database anymore
-            var builder = new SqlConnectionStringBuilder(param.MkWebConnectionString);
-            builder.InitialCatalog = sourceDatabaseName;
-
-            //var temporaryDatabaseName = targetDatabaseName;
-            //var builder = new SqlConnectionStringBuilder(param.MkWebConnectionString);
-            //builder.InitialCatalog = temporaryDatabaseName;
-
-            //var temporaryDbExists = creatorDb.DatabaseExists(param.MasterConnectionString, temporaryDatabaseName);
-            //if (temporaryDbExists && param.ReuseTemporaryDb)
-            //{
-            //    creatorDb.DropSchema(builder.ConnectionString, temporaryDatabaseName);
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Create Empty Database");
-            //    creatorDb.DropDatabase(param.MasterConnectionString, temporaryDatabaseName);
-            //    creatorDb.CreateDatabase(param.MasterConnectionString, temporaryDatabaseName, param.SqlServerDirectory);
-            //}
-            //creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", builder.ConnectionString));
-
-            //creatorDb.UpdateSchemas(new ConnectionStringSettings("MkWeb", param.MkWebConnectionString));
-
-            //Console.WriteLine("Copy Events to the Empty Database");
-            //creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
-            //creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
-            //creatorDb.FixUnorderedEvents(builder.ConnectionString);
-
-            var container = new UnityContainer();
-            var module = new Module();
-            module.Init(container, new ConnectionStringSettings("MkWeb", builder.ConnectionString), param.MkWebConnectionString);
-
-            //Console.WriteLine("Creating index...");
-            //creatorDb.CreateIndexes(param.MasterConnectionString, temporaryDatabaseName);
-
-           // Console.WriteLine("Migrating events...");
-           // var migrator = container.Resolve<IEventsMigrator>();
-            //migrator.Do();
-
-            //truncate AccountDetails table TODO Remove
-            //DatabaseHelper.ExecuteNonQuery(builder.ConnectionString, "Truncate Table [Booking].[AccountDetail]");
-
-            Console.WriteLine("Replaying events...");
-            var replayService = container.Resolve<IEventsPlayBackService>();
-            replayService.ReplayAllEvents();
-            Console.WriteLine("Done playing events...");
+            Console.WriteLine("Update Schemas");
 
             StopAppPools(param);
 
-            //var lastEventCopyDateTime = creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
+            DbMigrationsConfiguration configuration = new apcurium.MK.Booking.Migrations.ConfigMigrationBookingContext();
+            configuration.TargetDatabase = new DbConnectionInfo(param.MkWebConnectionString, "System.Data.SqlClient");
 
-            //Console.WriteLine("Migrating Events Raised Since the Copy...");
-            //migrator.Do(lastEventCopyDateTime);
+            var migrator = new DbMigrator(configuration);
+            DisplayPendingMigrations(migrator);
+            migrator.Update();
+            
 
-            //Console.WriteLine("Replaying Events Raised Since the Copy...");
-
-
-            //replayService.ReplayAllEvents(lastEventCopyDateTime);
-            //creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, sourceDatabaseName, temporaryDatabaseName);
-
-            Console.WriteLine("Rename Previous Database...");
-            var mirrored = creatorDb.IsMirroringSet(param.MasterConnectionString, sourceDatabaseName);
-            if (mirrored)
+            configuration = new apcurium.MK.Common.Migrations.ConfigMigrationConfigurationContext
             {
-                Console.WriteLine("Turning off database mirroring...");
-                creatorDb.TurnOffMirroring(param.MasterConnectionString, sourceDatabaseName);
-                Console.WriteLine("Database mirroring turned off.");
+                TargetDatabase = new DbConnectionInfo(param.MkWebConnectionString, "System.Data.SqlClient")
+            };
+
+            migrator = new DbMigrator(configuration);
+            DisplayPendingMigrations(migrator);
+            migrator.Update();
+            Console.WriteLine("Update Schemas Done");
+        }
+
+        private static void DisplayPendingMigrations(DbMigrator migrator)
+        {
+            var pendingMigrations = migrator.GetPendingMigrations().ToList();
+            if (pendingMigrations.Any())
+            {
+                Console.WriteLine("Migration(s) To Be Applied on {0} context", migrator.Configuration.GetType().Name);
+                foreach (var migration in pendingMigrations)
+                {
+                    Console.WriteLine(migration);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No Pending Migration To Be Applied for {0} context", migrator.Configuration.GetType().Name);
             }
         }
 
@@ -546,6 +516,41 @@ namespace DatabaseInitializer
             }
         }
 
+	    private static void CreateAppleTestAccountIfNeeded(UnityContainer container, ICommandBus commandBus)
+	    {
+		    var accountDao = container.Resolve<IAccountDao>();
+
+		    if (accountDao.FindByEmail("appletest@taxihail.com") != null)
+		    {
+				//Account is already present.
+			    return;
+		    }
+
+			Console.WriteLine(@"Registering test account for Apple");
+			//Register normal account
+			var registerAccountCommand = new RegisterAccount
+			{
+				Id = Guid.NewGuid(),
+				AccountId = Guid.NewGuid(),
+				Email = "appletest@taxihail.com",
+				Name = "John Doe",
+				Country = new CountryISOCode("CA"),
+				Phone = "6132875020",
+				Password = "W$yQv9R"
+			};
+
+			var confirmationToken = Guid.NewGuid();
+			registerAccountCommand.ConfimationToken = confirmationToken.ToString();
+
+			commandBus.Send(registerAccountCommand);
+
+			commandBus.Send(new ConfirmAccount
+			{
+				AccountId = registerAccountCommand.AccountId,
+				ConfimationToken = registerAccountCommand.ConfimationToken
+			});
+	    }
+
         private static void CreateDefaultAccounts(UnityContainer container, ICommandBus commandBus)
         {
             Console.WriteLine("Register normal account...");
@@ -590,7 +595,7 @@ namespace DatabaseInitializer
             registerAdminAccountCommand.ConfimationToken = confirmationAdminToken.ToString();
 
             commandBus.Send(registerAdminAccountCommand);
-            commandBus.Send(new AddRoleToUserAccount
+            commandBus.Send(new UpdateRoleToUserAccount
             {
                 AccountId = registerAdminAccountCommand.AccountId,
                 RoleName = RoleName.SuperAdmin,
@@ -707,20 +712,46 @@ namespace DatabaseInitializer
             AddOrUpdateAppSettings(commandBus, appSettings);
         }
 
+        private static void EnsureSupportRoleIsSupported(ConnectionStringSettings connectionString, ICommandBus commandBus)
+        {
+            var accounts = new AccountDao(() => new BookingDbContext(connectionString.ConnectionString));
+
+            var allAdmins = accounts.GetAll();
+            var admins = allAdmins.Where(a => a.Roles == (int)OldRoles.Admin);
+            foreach (var admin in admins)
+            {
+                commandBus.Send(new UpdateRoleToUserAccount
+                {
+                    AccountId = admin.Id,
+                    RoleName = RoleName.Admin,
+                });
+            }
+
+            var superAdmins = allAdmins.Where(a => a.Roles == (int)OldRoles.SuperAdmin);
+            foreach (var admin in superAdmins)
+            {
+                commandBus.Send(new UpdateRoleToUserAccount
+                {
+                    AccountId = admin.Id,
+                    RoleName = RoleName.SuperAdmin,
+                });
+            }
+
+        }
+
         private static void EnsureDefaultAccountsHasCorrectSettings(ConnectionStringSettings connectionString, ICommandBus commandBus)
         {
             var accounts = new AccountDao(() => new BookingDbContext(connectionString.ConnectionString));
             var admin = accounts.FindByEmail("taxihail@apcurium.com");
 
             if (admin != null
-                && (!admin.IsAdmin || !admin.IsConfirmed))
+                && (!admin.HasAdminAccess || !admin.IsConfirmed))
             {
-                commandBus.Send(new AddRoleToUserAccount
+                commandBus.Send(new UpdateRoleToUserAccount
                 {
                     AccountId = admin.Id,
                     RoleName = RoleName.SuperAdmin,
                 });
-
 
                 commandBus.Send(new ConfirmAccount
                 {
@@ -739,6 +770,7 @@ namespace DatabaseInitializer
                     Country = new CountryISOCode("CA"),
                     Phone = "6132875020",
                     Name = "John Doe",
+                    Email = "john@taxihail.com",
                     NumberOfTaxi = john.Settings.NumberOfTaxi,
                     ChargeTypeId = john.Settings.ChargeTypeId,
                     DefaultTipPercent = john.DefaultTipPercent
@@ -975,6 +1007,12 @@ namespace DatabaseInitializer
                 });
 
                 paymentSettings.NoShowFee = null;
+                needsUpdate = true;
+            }
+
+            if (serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment)
+            {
+                paymentSettings.CmtPaymentSettings.UsePairingCode = true;
                 needsUpdate = true;
             }
 

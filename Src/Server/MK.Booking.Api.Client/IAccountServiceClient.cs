@@ -17,6 +17,13 @@ namespace apcurium.MK.Booking.Api.Client
     public interface IAccountServiceClient
     {
         Task<Account> GetMyAccount();
+
+		/// <summary>
+		/// Get phone number without authorization
+		/// </summary>
+		/// <returns></returns>
+		Task<CurrentAccountPhoneResponse> GetAccountPhoneNumber(CurrentAccountPhoneRequest currentAccountPhoneRequest);
+
         Task RegisterAccount(RegisterAccount account);
 
         Task GetConfirmationCode(ConfirmationCodeRequest request);
@@ -34,8 +41,10 @@ namespace apcurium.MK.Booking.Api.Client
 
         Task<IEnumerable<CreditCardDetails>> GetCreditCards();
         Task AddCreditCard(CreditCardRequest creditCardRequest);
-        Task RemoveCreditCard();
+        Task<CreditCardDetails> RemoveCreditCard(Guid creditCardId);
         Task UpdateCreditCard(CreditCardRequest creditCardRequest);
+        Task UpdateDefaultCreditCard(DefaultCreditCardRequest defaultCreditCardRequest);
+        Task UpdateCreditCardLabel(UpdateCreditCardLabelRequest updateCreditCardLabelRequest);
 
         Task<NotificationSettings> GetNotificationSettings(Guid accountId);
         Task UpdateNotificationSettings(NotificationSettingsRequest notificationSettingsRequest);

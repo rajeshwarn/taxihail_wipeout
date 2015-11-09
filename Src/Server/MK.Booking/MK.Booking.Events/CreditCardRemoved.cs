@@ -10,6 +10,6 @@ namespace apcurium.MK.Booking.Events
     public class CreditCardRemoved : VersionedEvent
     {
         public Guid CreditCardId { get; set; }
-        public Guid? NewDefaultCreditCardId { get; set; }
+        public Guid? NextDefaultCreditCardId { get; set; }
     }
 }

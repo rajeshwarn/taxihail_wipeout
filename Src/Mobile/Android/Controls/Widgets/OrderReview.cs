@@ -1,3 +1,4 @@
+using System;
 using Android.Content;
 using Android.Util;
 using Android.Views;
@@ -9,6 +10,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using System.Collections.Generic;
+using Android.Graphics;
 using Android.Runtime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -26,12 +28,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblApt;
         private TextView _lblRingCode;
         private TextView _lblLargeBags;
+        private TextView _lblBonusAmount;
         private EditTextEntry _editNote;
         private EditTextEntry _editPromoCode;
         private Button _btnPromo;
         private LinearLayout _bottomPadding;
-                
-        public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
+        private RelativeLayout _driverBonusView;
+        private SeekBar _sliderBonus;
+        private Switch _switchBonus;
+
+	    private bool _isShown;
+	    private ViewStates _animatedVisibility;
+
+	    public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
         {
             this.DelayBind (() => 
 			{
@@ -45,11 +54,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblChargeType = Content.FindViewById<TextView>(Resource.Id.lblChargeType);
                 _lblApt = Content.FindViewById<TextView>(Resource.Id.lblApt);
                 _lblRingCode = Content.FindViewById<TextView>(Resource.Id.lblRingCode);
+                _lblBonusAmount = FindViewById<TextView>(Resource.Id.lblBonusAmount);
                 _editNote = FindViewById<EditTextEntry>(Resource.Id.txtNotes);
                 _editPromoCode = FindViewById<EditTextEntry>(Resource.Id.txtPromoCode);
                 _btnPromo = FindViewById<Button>(Resource.Id.btnPromo);
+                _sliderBonus = FindViewById<SeekBar>(Resource.Id.sliderBonus);
+                _switchBonus = FindViewById<Switch>(Resource.Id.switchBonus);
+                _driverBonusView = FindViewById<RelativeLayout>(Resource.Id.driverBonusView);
 
                 _editNote.SetClickAnywhereToDismiss();
+
+                _switchBonus.CheckedChange += (sender, e) => 
+                    {
+                        if(_switchBonus.Checked)
+                        {
+                            _lblBonusAmount.SetTextColor(Color.Black);
+                        }
+                        else
+                        {
+                            _lblBonusAmount.SetTextColor(Color.Rgb(208, 208, 208));
+                        }
+                    };
 
                 // hack for scroll in view when in EditText
                 _bottomPadding = Content.FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
@@ -65,7 +90,85 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });              
         }
 
-        private OrderReviewViewModel ViewModel { get { return (OrderReviewViewModel)DataContext; } }
+	    public Point ScreenSize { get; set; }
+
+		public Func<int> OrderReviewShownHeightProvider { get; set; }
+
+		public Func<int> OrderReviewHiddenHeightProvider { get; set; }
+
+	    public void ShowWithoutAnimation()
+	    {
+		    _isShown = true;
+
+		    if (Animation != null)
+		    {
+			    Animation.Cancel();
+		    }
+
+			((MarginLayoutParams)LayoutParameters).TopMargin = OrderReviewShownHeightProvider();
+	    }
+
+	    public ViewStates AnimatedVisibility
+	    {
+		    get { return _animatedVisibility; }
+		    set
+		    {
+			    _animatedVisibility = value;
+			    if (value == ViewStates.Visible)
+			    {
+				    ShowIfNeeded();
+				    return;
+			    }
+			    HideIfNeeded();
+		    }
+	    }
+
+		private void ShowIfNeeded()
+	    {
+			if (_isShown)
+			{
+				return;
+			}
+
+		    _isShown = true;
+
+			var animation = AnimationHelper.GetForYTranslation(this, OrderReviewShownHeightProvider());
+            animation.AnimationStart += (sender, e) =>
+            {
+                // set it to fill_parent to allow the subview to take the remaining space in the screen 
+                // and to allow the view to resize when keyboard is up
+                if (((MarginLayoutParams)LayoutParameters).Height != ViewGroup.LayoutParams.MatchParent)
+                {
+                    ((MarginLayoutParams)LayoutParameters).Height = ViewGroup.LayoutParams.MatchParent;
+                }
+            };
+
+			StartAnimation(animation);
+	    }
+
+		private void HideIfNeeded()
+	    {
+		    if (!_isShown)
+		    {
+			    return;
+		    }
+
+		    _isShown = false;
+
+
+			var animation = AnimationHelper.GetForYTranslation(this, ScreenSize.Y);
+			animation.AnimationEnd += (sender, e) =>
+			{
+				var desiredHeight = OrderReviewHiddenHeightProvider();
+				// reset to a fix height in order to have a smooth translation animation next time we show the review screen
+				if (((MarginLayoutParams)LayoutParameters).Height != desiredHeight)
+				{
+					((MarginLayoutParams)LayoutParameters).Height = desiredHeight;
+				}
+			};
+
+			StartAnimation(animation);
+	    }
 
         private void InitializeBinding()
         {
@@ -124,6 +227,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For("Click")
                 .To(vm => vm.NavigateToPromotions);
 
+            set.Bind(_sliderBonus)
+                .For(v => v.Progress)
+                .To(vm => vm.DriverBonus);
+
+            set.Bind(_lblBonusAmount)
+                .For(v => v.Text)
+                .To(vm => vm.DriverBonus)
+                .WithConversion("CurrencyFormat");
+
+            set.Bind(_switchBonus)
+                .For(v => v.Checked)
+                .To(vm => vm.DriverBonusEnabled);
+
+            set.Bind(_sliderBonus)
+                .For(v => v.Enabled)
+                .To(vm => vm.DriverBonusEnabled);
+
+            set.Bind(_lblBonusAmount)
+                .For(v => v.Enabled)
+                .To(vm => vm.DriverBonusEnabled);
+
+            set.Bind(this)
+                .For(v => v.RemoveBonusFromView)
+                .To(vm => vm.CanShowDriverBonus)
+                .WithConversion("BoolInverter");
+
 			if (!this.Services().Settings.ShowPassengerName)
             {
                 FindViewById<LinearLayout>(Resource.Id.passengerNameLayout).Visibility = ViewStates.Gone;
@@ -162,6 +291,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
             set.Apply();
+        }
+
+        private bool _removeBonusFromView;
+        public bool RemoveBonusFromView
+        {
+            get { return _removeBonusFromView; }
+            set
+            {
+                _removeBonusFromView = value;
+                if (RemoveBonusFromView)
+                {
+                    _driverBonusView.Visibility = ViewStates.Gone;
+                }
+            }
         }
     }
 }

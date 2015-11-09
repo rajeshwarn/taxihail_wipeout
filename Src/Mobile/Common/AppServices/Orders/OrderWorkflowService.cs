@@ -8,7 +8,6 @@ using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
@@ -55,14 +54,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<string> _promoCodeSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<bool> _loadingAddressSubject = new BehaviorSubject<bool>(false);
+		readonly ISubject<bool> _dropOffSelectionModeSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _hashedMarketSubject = new BehaviorSubject<string>(string.Empty);
         readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
-        readonly ISubject<string> _objPOIRefPickupListSubject = new BehaviorSubject<string>(string.Empty);
-        readonly ISubject<string> _objPOIRefAirlineListSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<PickupPoint[]> _poiRefPickupListSubject = new BehaviorSubject<PickupPoint[]>(new PickupPoint[0]);
+        readonly ISubject<Airline[]> _poiRefAirlineListSubject = new BehaviorSubject<Airline[]>(new Airline[0]);
+        readonly ISubject<double?> _tipIncentiveSubject = new BehaviorSubject<double?>(null);
+
+		private readonly ISubject<bool> _canExecuteBookingOperation = new BehaviorSubject<bool>(true);
 
         private bool _isOrderRebooked;
 
@@ -126,8 +129,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             var address = await SearchAddressForCoordinate(position);
 			cancellationToken.ThrowIfCancellationRequested();
-			await SetAddressToCurrentSelection(address);
+			await SetAddressToCurrentSelection(address, cancellationToken);
 			return address;
+		}
+
+		public void SetAddresses(Address pickupAddress, Address destinationAddress)
+		{
+			_pickupAddressSubject.OnNext(pickupAddress);
+			_destinationAddressSubject.OnNext(destinationAddress);
+		}
+
+		public void SetDropOffSelectionMode(bool isDropOffSelectionMode)
+		{
+			_dropOffSelectionModeSubject.OnNext(isDropOffSelectionMode);
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
@@ -157,14 +171,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
 
-			if (currentSelectionMode == AddressSelectionMode.PickupSelection)
-			{
-				_addressSelectionModeSubject.OnNext (AddressSelectionMode.DropoffSelection);
-			} 
-			else 
-			{
-				_addressSelectionModeSubject.OnNext (AddressSelectionMode.PickupSelection);
-			}
+			_addressSelectionModeSubject.OnNext(currentSelectionMode == AddressSelectionMode.PickupSelection
+				? AddressSelectionMode.DropoffSelection
+				: AddressSelectionMode.PickupSelection);
+		}
+
+		public void SetAddressSelectionMode(AddressSelectionMode mode = AddressSelectionMode.None)
+		{
+			_addressSelectionModeSubject.OnNext(mode);
 		}
 
 		public async Task ValidatePickupTime()
@@ -268,12 +282,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					Id = order.Id,
                     PickupAddress = order.PickupAddress,
 					Note = order.Note,
+                    TipIncentive = order.TipIncentive,
                     PickupDate = order.PickupDate ?? currentDate,
 					Settings = order.Settings,
 					PromoCode = order.PromoCode
 				};
-
-				PrepareForNewOrder();
 
 				// TODO: Refactor so we don't have to return two distinct objects
 				return Tuple.Create(orderCreated, orderStatus);
@@ -364,12 +377,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			if (_bookingService.HasLastOrder) 
 			{
                 var status = await _bookingService.GetLastOrderStatus();
-                if (status == null)
-                {
-                    return null;
-                }
 
-                if (!_bookingService.IsStatusCompleted(status))
+				if (status != null && !_bookingService.IsStatusCompleted(status))
                 {
                     try
                     {
@@ -385,32 +394,40 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                         return null;
                     }
                 }
-                else
-                {
-                    try
-                    {
-                        var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
-                        if (order.IsRated)
-                        {
-                            _bookingService.ClearLastOrder();
-                        }
-                        else
-                        {
-                            if (!order.IsManualRideLinq)
-                            {
-                                // Rating only for "normal" rides
-                                _bookingService.SetLastUnratedOrderId(status.OrderId);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogMessage(string.Format("Error trying to get status of order {0}", status.OrderId));
-                        _logger.LogError(ex);
 
-                        return null;
-                    }
-                }
+				try
+				{
+					var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
+
+					// For some reason, the OrderId is not found. This should not normally happen in production.
+					if(order == null)
+					{
+						_logger.LogMessage(string.Format("Order {0} was not found on server.", status.OrderId));
+
+						_bookingService.ClearLastOrder();
+						return null;
+					}
+
+					if (order.IsRated)
+					{
+						_bookingService.ClearLastOrder();
+					}
+					else
+					{
+						if (!order.IsManualRideLinq)
+						{
+							// Rating only for "normal" rides
+							_bookingService.SetLastUnratedOrderId(status.OrderId);
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					_logger.LogMessage(string.Format("Error trying to get status of order {0}", status.OrderId));
+					_logger.LogError(ex);
+
+					return null;
+				}
 			}
 
 			return null;
@@ -418,15 +435,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task POIRefPickupList(string textMatch, int maxRespSize)
         {
-            var pObject = await _poiProvider.GetPOIRefPickupList(_appSettings.Data.TaxiHail.ApplicationKey, textMatch, maxRespSize);
-            _objPOIRefPickupListSubject.OnNext(pObject);
+			var pickupPointLists = await _poiProvider.GetPOIRefPickupList(string.Empty, textMatch, maxRespSize);
+			_poiRefPickupListSubject.OnNext(pickupPointLists);
 
         }
 
         public async Task POIRefAirLineList(string textMatch, int maxRespSize)
         {
-            var pObject = await _poiProvider.GetPOIRefAirLineList(_appSettings.Data.TaxiHail.ApplicationKey, textMatch, maxRespSize);
-            _objPOIRefAirlineListSubject.OnNext(pObject);
+			var airlines = await _poiProvider.GetPOIRefAirLineList(string.Empty, textMatch, maxRespSize);
+			_poiRefAirlineListSubject.OnNext(airlines);
         }
 
         public Guid? GetLastUnratedRide()
@@ -453,14 +470,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _addressSelectionModeSubject;
 		}
 
-        public IObservable<string> GetAndObservePOIRefPickupList()
+		public IObservable<PickupPoint[]> GetAndObservePOIRefPickupList()
         {
-            return _objPOIRefPickupListSubject;
+            return _poiRefPickupListSubject;
         }
 
-        public IObservable<string> GetAndObservePOIRefAirlineList()
+		public IObservable<Airline[]> GetAndObservePOIRefAirlineList()
         {
-            return _objPOIRefAirlineListSubject;
+            return _poiRefAirlineListSubject;
         }
 
         public async Task<Address> GetCurrentAddress()
@@ -499,7 +516,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<string> GetAndObserveNoteToDriver()
 		{
 			return _noteToDriverSubject;
-		}
+        }
+
+        public IObservable<double?> GetAndObserveTipIncentive()
+        {
+            return _tipIncentiveSubject;
+        }
 
 		public IObservable<string> GetAndObservePromoCode()
 		{
@@ -521,9 +543,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _loadingAddressSubject;
 		}
 
+		public IObservable<bool> GetAndObserveDropOffSelectionMode()
+		{
+			return _dropOffSelectionModeSubject;
+		}
+
 		public IObservable<string> GetAndObserveHashedMarket()
 		{
 			return _hashedMarketSubject;
+		}
+
+		public IObservable<bool> GetAndObserveIsUsingGeo()
+		{
+			return _hashedMarketSubject
+				.Select(hashedMarket => hashedMarket.HasValue()
+					? _appSettings.Data.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo
+					: _appSettings.Data.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
+				);
 		}
 
 	    public IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes()
@@ -573,11 +609,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			// Needs to run in a background thread to prevent a potential deadlock issue.
 			await Task.Run(async () =>
 				{
-					var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask();
+					var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask(token);
 					if (selectionMode == AddressSelectionMode.PickupSelection)
 					{
 						_pickupAddressSubject.OnNext (address);
-
 						await SetMarket(new Position { Latitude = address.Latitude, Longitude = address.Longitude });
 					} 
 					else 
@@ -586,8 +621,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					}
 				}, token);
 
-			// do NOT await this
-			CalculateEstimatedFare (token);
+			// Do NOT await this
+			CalculateEstimatedFare(token).FireAndForget();
+
+			_canExecuteBookingOperation.OnNext(true);
 		}
 
 		private CancellationTokenSource _calculateFareCancellationTokenSource = new CancellationTokenSource();
@@ -596,12 +633,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			if (!_calculateFareCancellationTokenSource.IsCancellationRequested)
 			{
-				this.Logger.LogMessage("Fare Estimate - CANCEL");
+				Logger.LogMessage("Fare Estimate - CANCEL");
 				_calculateFareCancellationTokenSource.Cancel ();
 			}
-			_calculateFareCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(new [] { token });
+			_calculateFareCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(token);
 
-			this.Logger.LogMessage("Fare Estimate - START");
+			Logger.LogMessage("Fare Estimate - START");
 
 			var newCancelToken = _calculateFareCancellationTokenSource.Token;
 
@@ -615,7 +652,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				return;
 			}
 
-			this.Logger.LogMessage("Fare Estimate - DONE");
+			Logger.LogMessage("Fare Estimate - DONE");
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
 		}
@@ -623,7 +660,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		private async Task<DirectionInfo> GetFareEstimate()
 		{
 			// Create order for fare estimate
-		    var order = new CreateOrder
+            var order = new CreateOrderRequest
 		    {
 		        Id = Guid.NewGuid(),
 		        PickupDate = await _pickupDateSubject.Take(1).ToTask(),
@@ -658,11 +695,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 			_orderCanBeConfirmed.OnNext (false);
 			_cvvSubject.OnNext(string.Empty);
-			_orderValidationResultSubject.OnNext(null);
+			DisableBooking();
 			_loadingAddressSubject.OnNext(false);
+			_dropOffSelectionModeSubject.OnNext(false);
 			_accountPaymentQuestions.OnNext(null);
-            _objPOIRefPickupListSubject.OnNext(string.Empty);
-            _objPOIRefAirlineListSubject.OnNext(string.Empty);
+            _poiRefPickupListSubject.OnNext(new PickupPoint[0]);
+            _poiRefAirlineListSubject.OnNext(new Airline[0]);
+            _tipIncentiveSubject.OnNext(null);
         }
 
 		public void BeginCreateOrder()
@@ -677,18 +716,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task ResetOrderSettings()
 		{
-			_noteToDriverSubject.OnNext(string.Empty);
+            _noteToDriverSubject.OnNext(string.Empty);
+            _tipIncentiveSubject.OnNext(null);
 			await SetBookingSettings(_accountService.CurrentAccount.Settings);
 		}
 
 		public void SetNoteToDriver(string text)
 		{
 			_noteToDriverSubject.OnNext(text);
-		}
+        }
+
+        public void SetTipIncentive(double? tipIncentive)
+        {
+            _tipIncentiveSubject.OnNext(tipIncentive);
+        }
 
 		public void SetPromoCode(string code)
 		{
 			_promoCodeSubject.OnNext(code);
+		}
+
+		public async Task<double?> GetTipIncentive()
+		{
+			return await _tipIncentiveSubject.Take(1).ToTask();
 		}
 
 		public async Task<bool> ShouldWarnAboutEstimate()
@@ -782,11 +832,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return await _accountPaymentQuestions.Take (1).ToTask ();
 		}
 
-		public async Task<OrderValidationResult> ValidateOrder(CreateOrder order = null)
+        public async Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order = null)
 		{
 			var orderToValidate = order ?? await GetOrder();
 			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
             _orderValidationResultSubject.OnNext(validationResult);
+
 
 			return validationResult;
 		}
@@ -808,7 +859,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var orderToValidate = await GetOrder();	
 			if (orderToValidate.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 			{
-				var creditCard = await _accountService.GetCreditCard();
+				var creditCard = await _accountService.GetDefaultCreditCard();
 
 				if (creditCard == null)
                 {
@@ -823,7 +874,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         public async Task<bool> ValidateIsCardDeactivated()
         {
-            var creditCard = await _accountService.GetCreditCard();
+            var creditCard = await _accountService.GetDefaultCreditCard();
 
             return creditCard == null || creditCard.IsDeactivated;
         }
@@ -848,21 +899,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_orderCanBeConfirmed.OnNext (true);
 		}
 
-		private async Task<CreateOrder> GetOrder()
+        private async Task<CreateOrderRequest> GetOrder()
 		{
-			var order = new CreateOrder();
+            var order = new CreateOrderRequest();
 			order.Id = Guid.NewGuid();
 			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
 			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
 			order.Note = await _noteToDriverSubject.Take(1).ToTask();
-			order.PromoCode = await _promoCodeSubject.Take(1).ToTask();
+            order.PromoCode = await _promoCodeSubject.Take(1).ToTask();
+            order.TipIncentive = await _tipIncentiveSubject.Take(1).ToTask();
 			
 			var estimatedFare = await _estimatedFareDetailSubject.Take (1).ToTask();
 			if (estimatedFare != null) 
 			{
-				order.Estimate = new CreateOrder.RideEstimate
+				order.Estimate = new RideEstimate
 				{ 
 					Price = estimatedFare.Price, 
 					Distance = estimatedFare.Distance ?? 0
@@ -889,7 +941,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupAddressSubject.OnNext(previous.PickupAddress);
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
-			_noteToDriverSubject.OnNext(previous.Note);
+            _noteToDriverSubject.OnNext(previous.Note);
+            _tipIncentiveSubject.OnNext(previous.TipIncentive);
             await CalculateEstimatedFare();
 		}
 
@@ -919,12 +972,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     if (hashedMarket.HasValue())
                     {
                         // Set vehicles list with data from external market
-                        SetMarketVehicleTypes(currentPosition);
+                        await SetMarketVehicleTypes(currentPosition);
                     }
                     else
                     {
                         // Load and cache local vehicle types
-                        SetLocalVehicleTypes();
+                        await SetLocalVehicleTypes();
                     }
 	            }
 
@@ -945,7 +998,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	            selectedVehicleId = networkVehicles.First().ReferenceDataVehicleId;
 	        }
 
-            SetVehicleType(selectedVehicleId);
+            await SetVehicleType(selectedVehicleId);
 	    }
 
 	    private async Task SetLocalVehicleTypes()
@@ -965,12 +1018,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     : localVehicles.First().ReferenceDataVehicleId;
             }
 
-	        SetVehicleType(selectedVehicleId);
+	        await SetVehicleType(selectedVehicleId);
 	    }
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)
 		{
-			bool currentValue = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+			var currentValue = await _isDestinationModeOpenedSubject.Take(1).ToTask();
 			_isDestinationModeOpenedSubject.OnNext(forceValue ?? !currentValue);
 		}
 			
@@ -1017,6 +1070,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 
 			return success;
+		}
+
+		public void DisableBooking()
+		{
+			_canExecuteBookingOperation.OnNext(false);
+		}
+
+		public IObservable<bool> GetAndObserveCanExecuteBookingOperation()
+		{
+			return _canExecuteBookingOperation;
 		}
     }
 }

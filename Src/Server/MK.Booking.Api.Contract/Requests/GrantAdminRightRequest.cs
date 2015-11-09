@@ -23,4 +23,19 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     public class GrantSuperAdminRightRequest : GrantAdminRightRequest
     {
     }
+
+    [Authenticate]
+    [AuthorizationRequired(ApplyTo.All, RoleName.Admin)]
+    [Route("/account/grantsupport", "PUT")]
+    public class GrantSupportRightRequest : GrantAdminRightRequest
+    {
+    }
+
+    [Authenticate]
+    [AuthorizationRequired(ApplyTo.All, RoleName.Admin)]
+    [Route("/account/revokeaccess", "PUT")]
+    public class RevokeAccessRequest : GrantAdminRightRequest
+    {
+    }
+    
 }

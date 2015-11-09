@@ -66,6 +66,7 @@
                 @Html.RadioButtonFor(x => x.ServerUrlOptions, ServerUrlOptions.Staging) Staging
                 @Html.RadioButtonFor(x => x.ServerUrlOptions, ServerUrlOptions.Production) Production
                 @Html.RadioButtonFor(x => x.ServerUrlOptions, ServerUrlOptions.Dev) Dev
+                @Html.RadioButtonFor(x => x.ServerUrlOptions, ServerUrlOptions.Arro) Arro
                 @Html.RadioButtonFor(x => x.ServerUrlOptions, ServerUrlOptions.Other) Other :
          
                 @Html.TextBoxFor(m => m.ServerUrl)
@@ -118,8 +119,10 @@
     <script type="text/javascript">
         function ProductionConfirm() {
             if ($('#ServerId').find(":selected").text() == 'Production'
-             || $('#ServerId').find(":selected").text() == 'ProductionV2') {
-                if (confirm("Are you sure you want to deploy on the PRODUCTION server?"))
+             || $('#ServerId').find(":selected").text() == 'ProductionV2'
+             || $('#ServerId').find(":selected").text() == 'Prod3'
+             || $('#ServerId').find(":selected").text() == 'OVH'                ) {
+                if (confirm("Are you sure you want to deploy on a PRODUCTION server?"))
                     return true;
                 else
                     return false;

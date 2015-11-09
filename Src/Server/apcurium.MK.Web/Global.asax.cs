@@ -10,7 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using apcurium.MK.Booking.Api.Jobs;
+using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;

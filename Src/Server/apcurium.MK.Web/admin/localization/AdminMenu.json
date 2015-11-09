@@ -7,7 +7,6 @@
 	"Terms and Conditions" : "Terms and Conditions",
 	"Privacy Policy" : "Privacy Policy",
 	"Grant access admin" : "Grant access admin",
-	"Enable Disable Account" : "Account management",
 	"Send Push" : "Send Push",
 	"Send Test Email" : "Send Test Email",
 	"Company Settings" : "Company Settings",
@@ -20,5 +19,7 @@
 	"Version" : "Version",
     "Signup": "Signup",
     "TaxiHail Network": "TaxiHail Network",
-    "Configure": "Configure"
+	"Configure": "Configure",
+	"Account Management": "Account Management",
+	"ExportPromotions": "Promotions"
 }

@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using System.Reflection;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -9,6 +10,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.EventSourcing;
@@ -29,9 +31,12 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<RegisterTwitterAccount>,
         ICommandHandler<UpdateAccountPassword>,
         ICommandHandler<AddRoleToUserAccount>,
+        ICommandHandler<UpdateRoleToUserAccount>,
         ICommandHandler<AddOrUpdateCreditCard>,
-        ICommandHandler<DeleteAllCreditCards>,
-        ICommandHandler<DeleteAccountCreditCards>,
+        ICommandHandler<UpdateDefaultCreditCard>,
+        ICommandHandler<UpdateCreditCardLabel>,
+        ICommandHandler<DeleteCreditCardsFromAccounts>,
+        ICommandHandler<DeleteAccountCreditCard>,
         ICommandHandler<RegisterDeviceForPushNotifications>,
         ICommandHandler<UnregisterDeviceForPushNotifications>,
         ICommandHandler<AddFavoriteAddress>,
@@ -72,7 +77,23 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.Last4Digits,
                 command.ExpirationMonth,
                 command.ExpirationYear,
-                command.Token);
+                command.Token,
+                command.Label,
+                command.ZipCode);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateDefaultCreditCard command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateDefaultCreditCard(command.CreditCardId);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateCreditCardLabel command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateCreditCardLabel(command.CreditCardId, command.Label);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -80,6 +101,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
             account.AddRole(command.RoleName);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateRoleToUserAccount command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdateRole(command.RoleName);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -139,19 +167,18 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(DeleteAccountCreditCards command)
+        public void Handle(DeleteAccountCreditCard command)
         {
             var account = _repository.Find(command.AccountId);
-            account.RemoveAllCreditCards();
+            account.RemoveCreditCard(command.CreditCardId, command.NextDefaultCreditCardId);
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(DeleteAllCreditCards command)
+        public void Handle(DeleteCreditCardsFromAccounts command)
         {
-            foreach (var accountId in command.AccountIds)
+            foreach (var account in command.AccountIds.Select(_repository.Find))
             {
-                var account = _repository.Find(accountId);
-                account.RemoveAllCreditCards();
+                account.RemoveAllCreditCards(command.ForceUserDisconnect);
                 _repository.Save(account, command.Id.ToString());
             }
         }
@@ -208,7 +235,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                 settings.ProviderId = null;
             }
 
-            account.UpdateBookingSettings(settings, command.DefaultTipPercent);
+            account.UpdateBookingSettings(settings, command.Email, command.DefaultTipPercent);
 
             _repository.Save(account, command.Id.ToString());
         }

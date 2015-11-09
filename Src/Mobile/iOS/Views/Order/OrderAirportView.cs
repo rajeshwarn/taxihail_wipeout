@@ -32,8 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		private void Initialize()
 		{
-			BackgroundColor = UIColor.Clear;
-
 			foreach (FlatTextField textField in ContentView.Subviews.Where(x => x is FlatTextField))
 			{
 				textField.BackgroundColor = UIColor.FromRGB(242, 242, 242);
@@ -51,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 
 			txtAirlines.Configure (Localize.GetValue ("BookingAirportAirlineslbl"), () => ViewModel.Airlines.ToArray (), () => ViewModel.AirlineId, x => ViewModel.AirlineId = x.Id ?? 0);
-			txtPUPoints.Configure (Localize.GetValue ("BookingAirportPUPointslbl"), () => ViewModel.PUPoints.ToArray (), () => ViewModel.PUPointsId, x => ViewModel.PUPointsId = x.Id ?? 0);
+			txtPUPoints.Configure (Localize.GetValue ("BookingAirportPUPointslbl"), () => ViewModel.PickupPoints.ToArray (), () => ViewModel.SelectedPickupPointsId, x => ViewModel.SelectedPickupPointsId = x.Id ?? 0);
 
 			Foundation.NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, ObserveKeyboardShown);
 		}
@@ -105,13 +103,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				.To(vm => vm.PickupTimeStamp);
 					
 			set.BindSafe (txtFlightNum)
-				.To (vm => vm.FlightNum);
+				.To (vm => vm.FlightNumber);
 
 			set.BindSafe (txtAirlines)
 				.To (vm => vm.AirlineName);
 
 			set.BindSafe (txtPUPoints)
-				.To (vm => vm.PUPointsName);
+				.To (vm => vm.SelectedPickupPointName);
 			
 			set.Apply();
 		}

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookingStatusControl">
+            <connections>
+                <outlet property="driverPhoto" destination="qrO-wp-i5w" id="nrL-HW-pUW"/>
+                <outlet property="lblDriverName" destination="3xS-xg-ldX" id="NOa-1J-OPR"/>
+                <outlet property="lblOrderNumber" destination="F3w-Jg-zVD" id="pV9-lI-hvR"/>
+                <outlet property="lblOrderStatus" destination="KtK-9e-n0C" id="OeL-hT-CYu"/>
+                <outlet property="lblVehicleInfos" destination="chP-UF-A70" id="vgA-nc-Uvm"/>
+                <outlet property="viewDriverInfos" destination="kLg-86-8qE" id="HHg-xo-Z1t"/>
+                <outlet property="viewStatus" destination="QS4-3I-Wm4" id="1s4-AM-iAN"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="304" height="163"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QS4-3I-Wm4" userLabel="Status">
+                    <rect key="frame" x="0.0" y="0.0" width="304" height="80"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order #1234" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F3w-Jg-zVD">
+                            <rect key="frame" x="8" y="5" width="288" height="21"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Taxi is at pickup location" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KtK-9e-n0C">
+                            <rect key="frame" x="8" y="31" width="288" height="20"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="F3w-Jg-zVD" secondAttribute="trailing" constant="8" id="FH3-RU-p8m"/>
+                        <constraint firstItem="KtK-9e-n0C" firstAttribute="leading" secondItem="QS4-3I-Wm4" secondAttribute="leading" constant="8" id="Mcx-64-Hww"/>
+                        <constraint firstItem="F3w-Jg-zVD" firstAttribute="top" secondItem="QS4-3I-Wm4" secondAttribute="top" constant="5" id="Qe8-r9-RhO"/>
+                        <constraint firstAttribute="trailing" secondItem="KtK-9e-n0C" secondAttribute="trailing" constant="8" id="RX3-27-AU5"/>
+                        <constraint firstItem="KtK-9e-n0C" firstAttribute="top" secondItem="F3w-Jg-zVD" secondAttribute="bottom" constant="5" id="hCj-5h-UOb"/>
+                        <constraint firstItem="F3w-Jg-zVD" firstAttribute="leading" secondItem="QS4-3I-Wm4" secondAttribute="leading" constant="8" id="xP6-mL-X8G"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kLg-86-8qE" userLabel="Driver Infos">
+                    <rect key="frame" x="0.0" y="88" width="304" height="75"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qrO-wp-i5w" customClass="MvxImageView">
+                            <rect key="frame" x="8" y="0.0" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="WnW-uP-SaK"/>
+                                <constraint firstAttribute="height" constant="70" id="gBg-qr-qg3"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3xS-xg-ldX" userLabel="Name">
+                            <rect key="frame" x="86" y="0.0" width="210" height="21"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vehicle Infos" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="chP-UF-A70" userLabel="Vehicle Infos">
+                            <rect key="frame" x="86" y="25" width="210" height="20"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="3xS-xg-ldX" firstAttribute="leading" secondItem="qrO-wp-i5w" secondAttribute="trailing" constant="8" id="1Os-MQ-RgS"/>
+                        <constraint firstItem="qrO-wp-i5w" firstAttribute="leading" secondItem="kLg-86-8qE" secondAttribute="leading" constant="8" id="315-yS-CMo"/>
+                        <constraint firstAttribute="centerY" secondItem="qrO-wp-i5w" secondAttribute="centerY" constant="2.5" id="9uM-2p-DBQ"/>
+                        <constraint firstItem="qrO-wp-i5w" firstAttribute="top" secondItem="kLg-86-8qE" secondAttribute="top" id="CGw-vJ-lhN"/>
+                        <constraint firstAttribute="trailing" secondItem="chP-UF-A70" secondAttribute="trailing" constant="8" id="DOa-Ty-nog"/>
+                        <constraint firstAttribute="trailing" secondItem="3xS-xg-ldX" secondAttribute="trailing" constant="8" id="FWt-Hx-l6W"/>
+                        <constraint firstItem="3xS-xg-ldX" firstAttribute="top" secondItem="kLg-86-8qE" secondAttribute="top" id="Rgn-tI-JPL"/>
+                        <constraint firstItem="chP-UF-A70" firstAttribute="leading" secondItem="qrO-wp-i5w" secondAttribute="trailing" constant="8" id="Z7E-sm-h9f"/>
+                        <constraint firstItem="chP-UF-A70" firstAttribute="top" secondItem="3xS-xg-ldX" secondAttribute="bottom" constant="4" id="uPi-a6-fAs"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="kLg-86-8qE" firstAttribute="top" secondItem="QS4-3I-Wm4" secondAttribute="bottom" constant="8" id="1V2-QV-UTb"/>
+                <constraint firstItem="QS4-3I-Wm4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="8Nh-3m-SwS"/>
+                <constraint firstItem="kLg-86-8qE" firstAttribute="trailing" secondItem="QS4-3I-Wm4" secondAttribute="trailing" id="AKH-T7-vlH"/>
+                <constraint firstItem="kLg-86-8qE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="AVY-36-b90"/>
+                <constraint firstAttribute="bottom" secondItem="kLg-86-8qE" secondAttribute="bottom" id="akC-fA-dlD"/>
+                <constraint firstAttribute="trailing" secondItem="QS4-3I-Wm4" secondAttribute="trailing" id="gR6-Ck-Wmb"/>
+                <constraint firstItem="QS4-3I-Wm4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="jQz-Ne-uCU"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="340" y="489"/>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination"/>
+    </simulatedMetricsContainer>
+</document>

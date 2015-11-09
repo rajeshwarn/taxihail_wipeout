@@ -42,8 +42,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
+            TranslatesAutoresizingMaskIntoConstraints = false;
+
             _vehicleTypeImage = new UIImageView();
             _vehicleTypeImage.TranslatesAutoresizingMaskIntoConstraints = false;
+            _vehicleTypeImage.IsAccessibilityElement = true;
+
 			AddSubview (_vehicleTypeImage);
 
             // Constraints for VehicleTypeImage
@@ -129,6 +133,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     _vehicleTypeImage.Image = GetColoredImage (value.LogoName, Theme.LabelTextColor);
                     _vehicleTypeLabel.TextColor = DefaultColorForTextAndImage;
                     _vehicleTypeLabel.Text = Localize.GetValue (value.Name.ToUpper ());
+                    _vehicleTypeImage.AccessibilityLabel = _vehicle.Name;
                     _vehicleTypeLabel.SizeToFit ();
                 }
             }

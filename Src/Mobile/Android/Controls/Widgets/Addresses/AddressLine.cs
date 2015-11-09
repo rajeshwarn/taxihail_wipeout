@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             _address = address;
             _select = select;
 
-            LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.WrapContent);
+            LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
 
             var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
             var layout = inflater.Inflate(Resource.Layout.Control_AddressLine, this, true);
@@ -40,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 			_nameTextView.Text = _address.DisplayLine1;
 			_addressTextView.Text = _address.DisplayLine2;
 
+			_button.ContentDescription = _address.DisplayLine1 + " " + _address.DisplayLine2;
            
             var imageSrc = AddressTypeToDrawableConverter.GetDrawable(_address.Type);
             _imageView.SetImageResource(imageSrc);

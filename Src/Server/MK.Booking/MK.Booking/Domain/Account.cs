@@ -34,9 +34,12 @@ namespace apcurium.MK.Booking.Domain
             Handles<AccountPasswordUpdated>(NoAction);
             Handles<AddressRemovedFromHistory>(NoAction);
             Handles<RoleAddedToUserAccount>(NoAction);
+            Handles<RoleUpdatedToUserAccount>(NoAction);
             Handles<CreditCardAddedOrUpdated>(NoAction);
             Handles<CreditCardRemoved>(NoAction);
             Handles<AllCreditCardsRemoved>(NoAction);
+            Handles<DefaultCreditCardUpdated>(NoAction);
+            Handles<CreditCardLabelUpdated>(NoAction);
             Handles<DeviceRegisteredForPushNotifications>(NoAction);
             Handles<DeviceUnregisteredForPushNotifications>(NoAction);
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
@@ -162,11 +165,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateBookingSettings(BookingSettings settings, int? defaultTipPercent)
+        public void UpdateBookingSettings(BookingSettings settings, string email, int? defaultTipPercent)
         {
             Update(new BookingSettingsUpdated
             {
                 SourceId = Id,
+				Email = email,
                 Name = settings.Name,
                 ChargeTypeId = settings.ChargeTypeId,
                 NumberOfTaxi = settings.NumberOfTaxi,
@@ -221,7 +225,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void AddOrUpdateCreditCard(string creditCardCompany, Guid creditCardId, string nameOnCard, 
-            string last4Digits, string expirationMonth, string expirationYear, string token)
+            string last4Digits, string expirationMonth, string expirationYear, string token, string label, string zipCode)
         {
             Update(new CreditCardAddedOrUpdated
             {
@@ -231,18 +235,57 @@ namespace apcurium.MK.Booking.Domain
                 Last4Digits = last4Digits,
                 ExpirationMonth = expirationMonth,
                 ExpirationYear = expirationYear,
-                Token = token
+                Token = token,
+                Label = label,
+                ZipCode = zipCode,
             });
         }
 
-        public void RemoveAllCreditCards()
+        public void UpdateDefaultCreditCard(Guid creditCardId)
         {
-            Update(new AllCreditCardsRemoved());
+            Update(new DefaultCreditCardUpdated
+            {
+                CreditCardId = creditCardId,
+            });
+        }
+
+        public void UpdateCreditCardLabel(Guid creditCardId,string label)
+        {
+            Update(new CreditCardLabelUpdated()
+            {
+                CreditCardId = creditCardId,
+                Label = label
+            });
+        }
+
+        public void RemoveCreditCard(Guid creditCardId, Guid? nextDefaultCreditCardId)
+        {
+            Update(new CreditCardRemoved()
+            {
+                CreditCardId = creditCardId,
+                NextDefaultCreditCardId = nextDefaultCreditCardId,
+            });
+        }
+
+        public void RemoveAllCreditCards(bool forceUserDisconnect)
+        {
+            Update(new AllCreditCardsRemoved
+            {
+                ForceUserDisconnect = forceUserDisconnect
+            });
         }
 
         public void AddRole(string rolename)
         {
             Update(new RoleAddedToUserAccount
+            {
+                RoleName = rolename,
+            });
+        }
+
+        public void UpdateRole(string rolename)
+        {
+            Update(new RoleUpdatedToUserAccount
             {
                 RoleName = rolename,
             });

@@ -2,21 +2,22 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Requests.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
-using apcurium.MK.Booking.Api.Jobs;
-using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.Api.Services.Maps;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources;
+using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
@@ -25,7 +26,6 @@ using apcurium.MK.Common.Provider;
 using AutoMapper;
 using CMTServices;
 using Microsoft.Practices.Unity;
-using CreateOrder = apcurium.MK.Booking.Api.Contract.Requests.CreateOrder;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
 using Tariff = apcurium.MK.Booking.Api.Contract.Requests.Tariff;
 
@@ -46,19 +46,6 @@ namespace apcurium.MK.Booking.Api
 
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
 
-            container.RegisterType<IUpdateOrderStatusJob>(
-                new TransientLifetimeManager(),
-                new InjectionFactory(c =>
-                {
-                    var serverSettings = c.Resolve<IServerSettings>();
-                    if (serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
-                    {
-                        return new UpdateOrderStatusJobStub(c.Resolve<IOrderDao>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>() );
-                    }
-                    
-                    return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IIBSServiceProvider>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>(), c.Resolve<HoneyBadgerServiceClient>(), c.Resolve<IServerSettings>());
-                }));
-
             container.RegisterType<OrderStatusHelper>(
                 new TransientLifetimeManager(),
                 new InjectionFactory(c =>
@@ -78,14 +65,14 @@ namespace apcurium.MK.Booking.Api
             Mapper.AssertConfigurationIsValid(profile.ProfileName);
 
             Mapper.CreateMap<BookingSettingsRequest, UpdateBookingSettings>();
-            Mapper.CreateMap<CreateOrder, Commands.CreateOrder>()
+            Mapper.CreateMap<CreateOrderRequest, Commands.CreateOrder>()
                 .ForMember(p => p.Id, options => options.Ignore())
                 .ForMember(p => p.EstimatedFare, opt => opt.ResolveUsing(x => x.Estimate.Price))
                 .ForMember(p => p.UserNote, opt => opt.ResolveUsing(x => x.Note))
                 .ForMember(p => p.OrderId,
                     options => options.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
 
-            Mapper.CreateMap<CreateOrder, SendBookingConfirmationEmail>()
+            Mapper.CreateMap<CreateOrderRequest, SendBookingConfirmationEmail>()
                 .ForMember(p => p.Id, options => options.Ignore());
 
             Mapper.CreateMap<PaymentSettings, Commands.CreateOrder.PaymentInformation>();
@@ -154,6 +141,13 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<PopularAddress, AddPopularAddress>();
             Mapper.CreateMap<PopularAddress, UpdatePopularAddress>();
+
+            Mapper.CreateMap<HailRequest, CreateOrderRequest>();
+            Mapper.CreateMap<OrderKey, IbsOrderKey>();
+            Mapper.CreateMap<IbsOrderKey, OrderKey>();
+            Mapper.CreateMap<VehicleCandidate, IbsVehicleCandidate>();
+            Mapper.CreateMap<IbsHailResponse, OrderHailResult>();
+            Mapper.CreateMap<IbsVehicleCandidate, VehicleCandidate>();
         }
     }
 
@@ -163,22 +157,19 @@ namespace apcurium.MK.Booking.Api
         {
             CreateMap<IbsVehiclePosition, AvailableVehicle>()
                 .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => GetNumberOnly(x.VehicleNumber)))
-                .ForMember(p => p.LogoName, opt => opt.Ignore());
+				.ForMember(p => p.VehicleName, opt => opt.ResolveUsing(x => x.VehicleNumber))
+                .ForMember(p => p.LogoName, opt => opt.Ignore())
+                .ForMember(p => p.Market, opt => opt.Ignore());
         }
 
         private object GetNumberOnly(string text)
         {
-            if ( !string.IsNullOrWhiteSpace(text) && text.Any(t=> Char.IsNumber(t) ) )
+	        if ( !string.IsNullOrWhiteSpace(text) && text.Any(char.IsNumber ) )
             {
-                var r = new string( text.Where(t => char.IsNumber(t)).ToArray());
+                var r = new string( text.Where(char.IsNumber).ToArray());
                 return r;
             }
-            else
-            {
-                return 0;
-            }
+	        return 0;
         }
-
-
     }
 }

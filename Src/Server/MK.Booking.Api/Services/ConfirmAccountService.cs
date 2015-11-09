@@ -11,10 +11,14 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Helpers;
+
 
 #endregion
 
@@ -98,21 +102,55 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var account = _accountDao.FindByEmail(request.Email);
 
-            if (account == null)
-            {
-                throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
-            }
-                
+			if (account == null)
+			{
+				throw new HttpError(HttpStatusCode.NotFound, "No account matching this email address");
+			}
+
             if (!_serverSettings.ServerData.AccountActivationDisabled)
             {
                 if (_serverSettings.ServerData.SMSConfirmationEnabled)
                 {
+					var countryCodeForSMS = account.Settings.Country;
+					var phoneNumberForSMS = account.Settings.Phone;
+
+					CountryCode countryCodeFromRequest = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.CountryCode));
+
+					if (countryCodeFromRequest.IsValid()
+						&& request.PhoneNumber.HasValue()
+                        && PhoneHelper.IsPossibleNumber(countryCodeFromRequest, request.PhoneNumber)
+						&& (account.Settings.Country.Code != countryCodeFromRequest.CountryISOCode.Code || account.Settings.Phone != request.PhoneNumber))
+					{
+						countryCodeForSMS = countryCodeFromRequest.CountryISOCode;
+						phoneNumberForSMS = request.PhoneNumber;
+
+						var updateBookingSettings = new UpdateBookingSettings()
+						{
+							AccountId = account.Id,
+							Email = account.Email,
+							Name = account.Name,
+							Country = countryCodeFromRequest.CountryISOCode,
+							Phone = request.PhoneNumber,
+							Passengers = account.Settings.Passengers,
+							VehicleTypeId = account.Settings.VehicleTypeId,
+							ChargeTypeId = account.Settings.ChargeTypeId,
+							ProviderId = account.Settings.ProviderId,
+							NumberOfTaxi = account.Settings.NumberOfTaxi,
+							AccountNumber = account.Settings.AccountNumber,
+							CustomerNumber = account.Settings.CustomerNumber,
+							DefaultTipPercent = account.DefaultTipPercent,
+							PayBack = account.Settings.PayBack
+						};
+
+						_commandBus.Send(updateBookingSettings);
+					}
+
                     _commandBus.Send(new SendAccountConfirmationSMS
                     {
                         ClientLanguageCode = account.Language,
                         Code = account.ConfirmationToken,
-                        CountryCode = account.Settings.Country,
-                        PhoneNumber = account.Settings.Phone
+						CountryCode = countryCodeForSMS,
+						PhoneNumber = phoneNumberForSMS
                     });
                 }
                 else

@@ -82,7 +82,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void InitializeEstimateContainer()
         {
             EstimateSelectedVehicleType = new VehicleTypeView(new CGRect(0f, 0f, 50f, this.Frame.Height));
-            EstimateSelectedVehicleType.TranslatesAutoresizingMaskIntoConstraints = false;
 
             EstimatedFareLabel = new UILabel
             {
@@ -221,6 +220,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
+        private bool _showEta;
+        public bool ShowEta
+        {
+            get
+            {
+                return _showEta;
+            }
+            set
+            {
+                _showEta = value;
+
+                EtaLabel.Hidden = !value;
+
+                Redraw();
+            }
+        }
+
 		public string Eta
 		{
 			get { return EtaLabel.Text; }
@@ -243,7 +259,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 EstimateContainer.Hidden = false;
 				VehicleSelectionContainer.Hidden = true;
 
-                if (Eta.HasValue())
+                if (Eta.HasValue() && ShowEta)
                 {
                     EstimateContainer.RemoveConstraint(_constraintEstimatedFareLabelHeight);
                     _constraintEstimatedFareLabelHeight = _estimatedFareLabelHeightValueWithEta;
@@ -276,7 +292,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				foreach (var vehicle in Vehicles) 
                 {
                     var vehicleView = new VehicleTypeView(new CGRect(), vehicle, SelectedVehicle != null ? vehicle.Id == SelectedVehicle.Id : false);
-                    vehicleView.TranslatesAutoresizingMaskIntoConstraints = false;
 					vehicleView.TouchUpInside += (sender, e) => { 
 						if (!IsReadOnly && VehicleSelected != null) {
 							VehicleSelected (vehicle);

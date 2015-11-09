@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         InitializeCmtServiceClient(order.CompanyKey);
 
                         var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
-                        if (tripInfo != null && tripInfo.EndTime.HasValue)
+                        if (tripInfo != null && !tripInfo.ErrorCode.HasValue && tripInfo.EndTime.HasValue)
                         {
 							var tollHistory = tripInfo.TollHistory != null
 								? tripInfo.TollHistory.Sum(p => p.TollAmount)
@@ -145,7 +145,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                     FareAtAlternateRate = fareAtAlternateRate,
                                     RateAtTripEnd = tripInfo.RateAtTripEnd,
                                     RateAtTripStart = tripInfo.RateAtTripStart,
-                                    Tolls = tolls.ToArray()
+                                    Tolls = tolls.ToArray(),
+                                    TipIncentive = (order.TipIncentive.HasValue) ? order.TipIncentive.Value : 0
                                 });
                         }
                     }
@@ -217,7 +218,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             RateAtTripStart = @event.RateAtTripStart.HasValue ? Convert.ToInt32(@event.RateAtTripStart) : 0,
                             Tolls = @event.Tolls,
                             LastLatitudeOfVehicle = @event.LastLatitudeOfVehicle,
-                            LastLongitudeOfVehicle = @event.LastLongitudeOfVehicle
+                            LastLongitudeOfVehicle = @event.LastLongitudeOfVehicle,
+                            TipIncentive = (order.TipIncentive.HasValue) ? order.TipIncentive.Value : 0
                         });
                 }
             }

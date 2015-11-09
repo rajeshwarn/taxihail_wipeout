@@ -1,21 +1,11 @@
 ﻿#region
 
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.Maps.Geo;
-using apcurium.MK.Booking.PushNotifications;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Resources;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 using log4net;
@@ -62,6 +52,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         if (!_serverSettings.ServerData.Network.Enabled)
                         {
                             _notificationService.SendTimeoutPush(@event.Status);
+                        }
+                        break;
+                    case VehicleStatuses.Common.Waiting:
+                        if (@event.PreviousIBSStatusId == VehicleStatuses.Common.Assigned)
+                        {
+                            _notificationService.SendBailedPush(@event.Status);
                         }
                         break;
                     default:

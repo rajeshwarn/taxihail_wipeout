@@ -13,21 +13,23 @@ using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
+using ServiceStack.ServiceClient.Web;
+using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class VehicleService : BaseService, IVehicleService
     {
-		readonly IConnectableObservable<AvailableVehicle[]> _availableVehiclesObservable;
-        readonly IObservable<AvailableVehicle[]> _availableVehiclesWhenTypeChangesObservable;
-		readonly IObservable<Direction> _etaObservable;
+		private readonly IConnectableObservable<AvailableVehicle[]> _availableVehiclesObservable;
+        private readonly IObservable<AvailableVehicle[]> _availableVehiclesWhenTypeChangesObservable;
+		private readonly IObservable<Direction> _etaObservable;
+		private readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 	    private readonly IObservable<bool> _isUsingGeoServicesObservable; 
-		readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
+		private readonly ISubject<bool> _availableVehicleEnabled = new BehaviorSubject<bool>(true);
+		
 
-		readonly IDirections _directions;
-		readonly IAppSettings _settings;
+		private readonly IDirections _directions;
+		private readonly IAppSettings _settings;
 
 	    private bool _isStarted;
 
@@ -42,11 +44,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			// because there was 2 subscriptions
             _availableVehiclesObservable = _timerSubject
                 .Switch()
-                .CombineLatest(orderWorkflowService.GetAndObservePickupAddress(), (_, address) => address)
-                .Where(x => x.HasValidCoordinate())
-                .SelectMany(async x => {
-                    var vehicleTypeId = await orderWorkflowService.GetAndObserveVehicleType().Take(1).ToTask();
-                    return await CheckForAvailableVehicles(x, vehicleTypeId);
+                .CombineLatest(
+					orderWorkflowService.GetAndObservePickupAddress(),
+					_availableVehicleEnabled.DistinctUntilChanged(), 
+					(_, address, enableAvailableVehicle) => new { address, enableAvailableVehicle}
+				)
+                .Where(x => x.enableAvailableVehicle && x.address.HasValidCoordinate())
+				.Select(x => x.address)
+                .SelectMany(async x => 
+				{
+                    var vehicleTypeId = await orderWorkflowService.GetAndObserveVehicleType()
+						.Take(1)
+						.ToTask()
+						.ConfigureAwait(false);
+
+                    return await CheckForAvailableVehicles(x, vehicleTypeId).ConfigureAwait(false);
                 })
 				.Publish();
 			_availableVehiclesObservable.Connect ();
@@ -54,17 +66,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _availableVehiclesWhenTypeChangesObservable = orderWorkflowService.GetAndObserveVehicleType()
                 .SelectMany(async vehicleTypeId => 
                     { 
-                        var address = await orderWorkflowService.GetAndObservePickupAddress().Take(1).ToTask();
+                        var address = await orderWorkflowService.GetAndObservePickupAddress()
+							.Take(1)
+							.ToTask()
+							.ConfigureAwait(false);
+
                         return new { vehicleTypeId, address };
                     })
                 .Where(x => x.address.HasValidCoordinate())
                 .SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId));
 
-		    _isUsingGeoServicesObservable = orderWorkflowService.GetAndObserveHashedMarket()
-                .Select(hashedMarket => !hashedMarket.HasValue()
-                    ? _settings.Data.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo
-                    : _settings.Data.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo
-                );
+			_isUsingGeoServicesObservable = orderWorkflowService.GetAndObserveIsUsingGeo();
 
             _etaObservable = _availableVehiclesObservable
 				.Where (_ => _settings.Data.ShowEta)
@@ -88,6 +100,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.SelectMany(x => CheckForEta(x.isUsingGeoServices, x.address, x.vehicle));
 		}
 
+		public void SetAvailableVehicle(bool enable)
+		{
+			_availableVehicleEnabled.OnNext(enable);
+		}
+
+
 		public void Start()
 		{   
 			if(_isStarted)
@@ -109,7 +127,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			try
 			{
 				return await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
-					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude, vehicleTypeId))
+					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude,vehicleTypeId),
+					ex =>
+					{
+						// Do not use the default event handler because we do not want to show the
+						// connection error message for GAV requests
+						Logger.LogMessage("Error while trying to get available vehicles");
+						Logger.LogError(ex);
+					})
 					.ConfigureAwait(false);
 			}
 			catch (Exception e)
@@ -163,7 +188,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 		    return isUsingGeoServices
                 // Ensure that the cars are ordered correctly.
-                ? cars.OrderBy(car => car.Eta.HasValue ? 0 : 1).ThenBy(car => car.Eta).ThenBy(car  => car.VehicleNumber)
+                ? cars.OrderBy(car => car.Eta.HasValue ? 0 : 1).ThenBy(car => car.Eta).ThenBy(car  => car.VehicleName)
                 : cars.OrderBy (car => Position.CalculateDistance (car.Latitude, car.Longitude, pickup.Latitude, pickup.Longitude));
 		}
 
@@ -188,26 +213,53 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		
 		public async Task<GeoDataEta> GetVehiclePositionInfoFromGeo(double fromLat, double fromLng, string vehicleRegistration, Guid orderId)
 	    {
-            var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleRegistration, orderId));
+			try
+			{
+				var etaFromGeo = await UseServiceClientAsync<IVehicleClient, EtaForPickupResponse>(service => service.GetEtaFromGeo(fromLat, fromLng, vehicleRegistration, orderId));
 
-		    return new GeoDataEta
-		    {
-		        Eta = etaFromGeo.Eta / 60,
-                Latitude = etaFromGeo.Latitude,
-                Longitude = etaFromGeo.Longitude
-        };
+				return new GeoDataEta
+				{
+					Eta = etaFromGeo.Eta / 60,
+					Latitude = etaFromGeo.Latitude,
+					Longitude = etaFromGeo.Longitude,
+					CompassCourse = etaFromGeo.CompassCourse,
+                Market = etaFromGeo.Market
+				};
+			}
+			catch(WebServiceException ex)
+			{
+				Logger.LogMessage("An error occurred while obtaining vehicle: {0} from Geo in order {1}",vehicleRegistration??"Unknown vehicle", orderId);
+				Logger.LogError(ex);
+
+				return null;
+			}
+            
 	    }
+
+		private async Task<AvailableVehicle> GetVehiclePositionFromGeo(Guid orderId, string medallion)
+		{
+			try
+			{
+				return await UseServiceClientAsync<IVehicleClient, AvailableVehicle>(service => service.GetTaxiLocation(orderId, medallion));
+			}
+			catch (Exception ex)
+			{
+				Logger.LogError(ex);
+				return null;
+			}
+		}
+
 
 		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
 		{
 			return _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, null, null, true);  
 		}
 
-	    public async Task<bool> SendMessageToDriver(string message, string vehicleNumber)
+	    public async Task<bool> SendMessageToDriver(string message, string vehicleNumber, Guid orderId)
 	    {
             try
             {
-                await UseServiceClientAsync<IVehicleClient>(service => service.SendMessageToDriver(message, vehicleNumber))
+                await UseServiceClientAsync<IVehicleClient>(service => service.SendMessageToDriver(message, vehicleNumber, orderId))
                     .ConfigureAwait(false);
 
                 return true;
@@ -227,6 +279,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				_timerSubject.OnNext(Observable.Never<long>());
 				_isStarted = false;
 			}
+		}
+
+		public IObservable<AvailableVehicle> GetAndObserveCurrentTaxiLocation(string medallion, Guid orderId)
+		{
+			return _timerSubject.Switch()
+				.SelectMany(_ => _availableVehicleEnabled.DistinctUntilChanged())
+				.Where(enabled => enabled)
+				.SelectMany(_ => GetVehiclePositionFromGeo(orderId, medallion))
+				.Where(vehicle => vehicle != null);
 		}
 
 		public IObservable<AvailableVehicle[]> GetAndObserveAvailableVehicles()
@@ -252,6 +313,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public double? Latitude { get; set; }
 
         public double? Longitude { get; set; }
+
+        public double? CompassCourse { get; set; }
+        
+        public string Market { get; set; }
 
 		public bool IsPositionValid
 		{

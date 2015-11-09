@@ -23,7 +23,7 @@ using Android.Views.InputMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-    [Activity(Label = "CreditCardAddActivity", 
+	[Activity(Label = "@string/CreditCardAddingActivityName", 
         Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait
     )]
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
             if (CardIOActivity.CanReadCardWithCamera()
                 // CardIOToken is only used to know if the company wants it or not
-                && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
+                && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken) && ViewModel.CanScanCreditCard)
             {
                 _scanIntent = new Intent(this, typeof(CardIOActivity));
                 _scanIntent.PutExtra(CardIOActivity.ExtraRequireExpiry, false);

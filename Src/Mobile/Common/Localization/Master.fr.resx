@@ -138,6 +138,12 @@
   <data name="AccountNotActivatedCodeBySMS" xml:space="preserve">
     <value>Votre compte n'a pas pu être activé. Merci d'activer le compte à l'aide du SMS qui vient de vous être envoyé</value>
   </data>
+  <data name="FacebookLoginErrorTitle" xml:space="preserve">
+    <value>Email existant</value>
+  </data>
+  <data name="FacebookLoginErrorMessage" xml:space="preserve">
+    <value>Cet email est déjà utilisé pour un compte Facebook. Merci de vous enregistrer via Facebook ou d'utiliser un autre email.</value>
+  </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Merci de saisir un numéro de compte valide</value>
   </data>
@@ -167,12 +173,6 @@
   </data>
   <data name="ApplicationName" xml:space="preserve">
     <value>TaxiHail</value>
-  </data>
-  <data name="AppNeedUpdateMessage" xml:space="preserve">
-    <value>Une nouvelle version de l'application est disponible, merci de la télécharger pour continuer</value>
-  </data>
-  <data name="AppNeedUpdateTitle" xml:space="preserve">
-    <value>Nouvelle version disponible</value>
   </data>
   <data name="app_id" xml:space="preserve">
     <value>134284363380764</value>
@@ -391,7 +391,7 @@
     <value>Données invalides</value>
   </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
-    <value>Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.</value>
+    <value>Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit contenir au minimum 6 caractères.</value>
   </data>
   <data name="CreateAccountLanguageEnglish" xml:space="preserve">
     <value>English</value>
@@ -429,6 +429,9 @@
   <data name="CreditCardErrorTitle" xml:space="preserve">
     <value>Cette carte ne peut être sauvegardée</value>
   </data>
+  <data name="CreditCardError_Label" xml:space="preserve">
+    <value>Le label de cette carte n'a pas pu être sauvergardée. S'il vous plait réessayer</value>
+  </data>
   <data name="CreditCardExpMonth" xml:space="preserve">
     <value>Date d'expiration (mois)</value>
   </data>
@@ -443,6 +446,9 @@
   </data>
   <data name="CreditCardErrorInvalid" xml:space="preserve">
     <value>La carte ne semble pas être valide</value>
+  </data>
+  <data name="CreditCardLabel" xml:space="preserve">
+    <value>Label</value>
   </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Nom du titulaire (tel qu'il apparaît sur la carte)</value>
@@ -528,9 +534,6 @@
   <data name="DriverInfoColor" xml:space="preserve">
     <value>Coloris:</value>
   </data>
-  <data name="DriverInfoDriver" xml:space="preserve">
-    <value>Chauffeur:</value>
-  </data>
   <data name="DriverInfoLicence" xml:space="preserve">
     <value>Licence:</value>
   </data>
@@ -542,9 +545,6 @@
   </data>
   <data name="DriverInfoTaxiType" xml:space="preserve">
     <value>Type de véhicule:</value>
-  </data>
-  <data name="dummyaaa" xml:space="preserve">
-    <value>xaaa</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Editer</value>
@@ -858,6 +858,18 @@
   <data name="NotesToDriveLabel" xml:space="preserve">
     <value>Commentaires à destination du chauffeur</value>
   </data>
+  <data name="DriverBonusTitle" xml:space="preserve">
+    <value>Bonus Conducteur:</value>
+  </data>
+  <data name="DriverBonusDescription" xml:space="preserve">
+    <value>Augmentez la probabilité d'avoir un taxi en offrant un bonus garanti au conducteur.</value>
+  </data>
+  <data name="DriverBonusWarningTitle" xml:space="preserve">
+    <value>Confirmation du Bonus Conducteur</value>
+  </data>
+  <data name="DriverBonusWarningMessage" xml:space="preserve">
+    <value>Le montant du bonus est en supplément du pourboire. Il sera automatiquement prélevé à la fin de la course. Continuez ?</value>
+  </data>
   <data name="November" xml:space="preserve">
     <value>Novembre (11)</value>
   </data>
@@ -933,6 +945,12 @@
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
     <value>Paiement effectué par le passager pour un montant de {0} (code: {1})</value>
   </data>
+  <data name="PaymentDetails.PaymentMethodsLabel" xml:space="preserve">
+    <value>Méthodes de paiement</value>
+  </data>
+  <data name="PaymentDetails.AddNewCreditCardButtonLabel" xml:space="preserve">
+    <value>Ajouter une carte de crédit</value>
+  </data>
   <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
     <value>Cartes de paiement</value>
   </data>
@@ -948,8 +966,20 @@
   <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
     <value>Montant du pourboire</value>
   </data>
+  <data name="PaymentDetails.Label.Personal" xml:space="preserve">
+    <value>Personnelle</value>
+  </data>
+  <data name="PaymentDetails.Label.Business" xml:space="preserve">
+    <value>Entreprise</value>
+  </data>
+  <data name="PaymentDetails.LabelName" xml:space="preserve">
+    <value>Label</value>
+  </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
     <value>Montant</value>
+  </data>
+     <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Code Postal</value>
   </data>
   <data name="PaymentViewTipText" xml:space="preserve">
     <value>Pourboire</value>
@@ -1023,10 +1053,10 @@
   <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
     <value>Email (adresse électronique)</value>
   </data>
-  <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
+  <data name="InvalidEmailMessage" xml:space="preserve">
     <value>Désolé, cet email n'est pas valide</value>
   </data>
-  <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
+  <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Cet email n'est pas valide</value>
   </data>
   <data name="ResetPasswordSubtitleText" xml:space="preserve">
@@ -1077,6 +1107,9 @@
   <data name="RideSettingsVehiculeType" xml:space="preserve">
     <value>Type de véhicule</value>
   </data>
+  <data name="RideSettingsEmailTitle" xml:space="preserve">
+    <value>Courriel</value>
+  </data>
   <data name="RideSummarySubTitleText" xml:space="preserve">
     <value>Merci d'avoir choisi {0} pour votre trajet, nous espérons vous revoir bientôt.</value>
   </data>
@@ -1103,6 +1136,9 @@
   </data>
   <data name="ScanCreditCard" xml:space="preserve">
     <value>Scanner la carte de paiement</value>
+  </data>
+  <data name="SetAsDefaultCreditCard" xml:space="preserve">
+    <value>Définir comme carte par défault</value>
   </data>
   <data name="searchHint" xml:space="preserve">
     <value>Rechercher</value>
@@ -1536,6 +1572,9 @@
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
     <value>Chauffeur assigné</value>
   </data>
+  <data name="Notification_DriverBailedPush" xml:space="preserve">
+    <value>Course refusée</value>
+  </data>
   <data name="RateLastRide" xml:space="preserve">
     <value>Évaluer</value>
   </data>
@@ -1699,8 +1738,11 @@
   <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
   </data>
-  <data name="UnpairWarningCancelButton" xml:space="preserve">
+  <data name="UnpairWarningOkButton" xml:space="preserve">
     <value>Payer dans le taxi</value>
+  </data>
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
+    <value>Annuler</value>
   </data>
   <data name="View_Promotions" xml:space="preserve">
     <value>Promotions</value>
@@ -1885,9 +1927,6 @@
   <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
     <value>Tarif:</value>
   </data>
-  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
-    <value>Code d'association:</value>
-  </data>
   <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
     <value>Taxes:</value>
   </data>
@@ -1902,6 +1941,9 @@
   </data>
   <data name="ManualRideLinqSummary_Done" xml:space="preserve">
     <value>Ok</value>
+  </data>
+  <data name="ManualRideLinqStatus_PairingError" xml:space="preserve">
+    <value>Une erreur est survenue. Veuillez essayer de vous connecter de nouveau en utilisant le code affiché sur l'écran dans le taxi.</value>
   </data>
   <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
     <value>Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</value>
@@ -1971,15 +2013,39 @@
   </data>
   <data name="ManualRideLinqStatus_Extra" xml:space="preserve">
     <value>Extra:</value>
+   </data>
+  <data name="MenuButton" xml:space="preserve">
+    <value>Menu</value>
   </data>
   <data name="StatusEditAutoTipButton" xml:space="preserve">
-    <value>Pourboire</value>
+    <value>Tip</value>
+    </data>
+  <data name="StatusEditAutoPaymentButton" xml:space="preserve">
+    <value>Paiement</value>
+    </data>
+  <data name="LocateMeButton" xml:space="preserve">
+    <value>Localiser moi</value>
   </data>
   <data name="ManualRideLinqStatus_Toll" xml:space="preserve">
     <value>Péage:</value>
+    </data>
+  <data name="AirportsButton" xml:space="preserve">
+    <value>Aéroports</value>
   </data>
+  <data name="View_EditAutoPayment" xml:space="preserve">
+    <value>Modifier Paiement</value>
+    </data>
   <data name="View_EditAutoTip" xml:space="preserve">
     <value>Modifier Pourboire</value>
+    </data>
+   <data name="TrainStationsButton" xml:space="preserve">
+    <value>Stations de trains</value>
+  </data>
+  <data name="StreetNumber" xml:space="preserve">
+    <value>Numéro d'immeuble</value>
+  </data>
+  <data name="CloseTutorial" xml:space="preserve">
+    <value>Fermer l'aide</value>
   </data>
   <data name="Error_EditAutoTipMessage" xml:space="preserve">
     <value>Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</value>
@@ -2039,6 +2105,12 @@
   <data name="TipPercent_Error" xml:space="preserve">
     <value>Le pourboire ne peut être supérieur à 100%</value>
   </data>
+  <data name="SetCreditCardAsDefault_Error" xml:space="preserve">
+    <value>Impossible de mettre à jour de votre carte de crédit par défaut, s'il vous plait réessayer</value>
+  </data>
+  <data name="DefaultCreditCard_Label" xml:space="preserve">
+    <value>(DÉFAUT)</value>
+  </data>
   <data name="EtaNoTaxiAvailable" xml:space="preserve">
     <value>Désolé, aucun taxi disponible dans les environs.</value>
   </data>
@@ -2048,4 +2120,250 @@
   <data name="PanelMenuViewSignOutPopupLogout" xml:space="preserve">
     <value>Déconnexion</value>
   </data>
+	<data name="AddressSearch" xml:space="preserve">
+    <value>Address search</value>
+  </data>
+	<data name="PickupAddress" xml:space="preserve">
+    <value>Pickup address</value>
+  </data>
+	<data name="DestinationAddress" xml:space="preserve">
+    <value>Destination address</value>
+  </data>
+	<data name="CallDriver" xml:space="preserve">
+    <value>Call driver</value>
+  </data>
+	<data name="BookingAirportTitle" xml:space="preserve">
+    <value>Airport</value>
+  </data>
+	<data name="BookingAirportAirlineslbl" xml:space="preserve">
+    <value>Airlines</value>
+  </data>
+	<data name="BookingAirportFlightNumlbl" xml:space="preserve">
+    <value>Flight Number</value>
+  </data>
+	<data name="BookingAirportPUPointslbl" xml:space="preserve">
+    <value>Pickup Point</value>
+  </data>
+	<data name="BookingAirportPUDatelbl" xml:space="preserve">
+    <value>Pickup Date</value>
+  </data>
+	<data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+	<data name="BookingAirportPickupPointFee" xml:space="preserve">
+    <value>Selecting Pickup Point {0} will incurr an additional Fee of {1}</value>
+  </data>
+	<data name="BookingAirportDetails" xml:space="preserve">
+    <value>Airport: {0},\nAirline: {1},\nFlight #: {2},\nPickup Point: {3}</value>
+  </data>
+	<data name="BookingAirportDetailsFee" xml:space="preserve">
+    <value>, (Pickup Fee: {0})</value>
+  </data>
+	<data name="ManualRideLinqStatus_Cancelled" xml:space="preserve">
+    <value>You have been unpaired from RideLinQ. Please type in the pairing code again.</value>
+  </data>
+	<data name="TutorialActivityName" xml:space="preserve">
+    <value>Tutorial</value>
+  </data>
+	<data name="HomeActivityName" xml:space="preserve">
+    <value>Home</value>
+  </data>
+	<data name="PasswordRecoveryActivityName" xml:space="preserve">
+    <value>Password recovery</value>
+  </data>
+	<data name="LocationDetailsActivityName" xml:space="preserve">
+    <value>Location Details</value>
+  </data>
+	<data name="LoginActivityName" xml:space="preserve">
+    <value>Login</value>
+  </data>
+	<data name="LocationsActivityName" xml:space="preserve">
+    <value>Favorite locations</value>
+  </data>
+	<data name="PromotionActivityName" xml:space="preserve">
+    <value>Promotion</value>
+  </data>
+	<data name="BookingRateActivityName" xml:space="preserve">
+    <value>Booking rate</value>
+  </data>
+	<data name="AboutActivityName" xml:space="preserve">
+    <value>About</value>
+  </data>
+	<data name="HistoryActivityName" xml:space="preserve">
+    <value>History</value>
+  </data>
+	<data name="HistoryDetailsActivityName" xml:space="preserve">
+    <value>History details</value>
+  </data>
+	<data name="TermsAndConditionsActivityName" xml:space="preserve">
+    <value>Terms and conditions</value>
+  </data>
+	<data name="CreditCardAddingActivityName" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+	<data name="CreditCardMultipleActivityName" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+	<data name="AccountCreationActivityName" xml:space="preserve">
+    <value>Account creation</value>
+  </data>
+	<data name="OverduePaymentActivityName" xml:space="preserve">
+    <value>Overdue payment</value>
+  </data>
+	<data name="ProfileSettingsActivityName" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+	<data name="NotificationSettingsActivityName" xml:space="preserve">
+    <value>Notification setting</value>
+  </data>
+	<data name="InitializeOrderForAccountPaymentActivityName" xml:space="preserve">
+    <value>Initialition of order of account payment</value>
+  </data>
+	<data name="AccountConfirmationActivityName" xml:space="preserve">
+    <value>Account confirmation</value>
+  </data>
+	<data name="UpdatePasswordActivityName" xml:space="preserve">
+    <value>Update password</value>
+  </data>
+	<data name="UserTaxiHailNetworkSettingsActivityName" xml:space="preserve">
+    <value>User TaxiHail network settings</value>
+  </data>
+	<data name="ManualPairingForRideLinqActivityName" xml:space="preserve">
+    <value>Manual pairing for RideLinq</value>
+  </data>
+	<data name="ManualRideLinqStatusActivityName" xml:space="preserve">
+    <value>Manual RideLinq Status</value>
+  </data>
+	<data name="MessageActivityName" xml:space="preserve">
+    <value>Message</value>
+  </data>
+	<data name="BookSummaryActivityName" xml:space="preserve">
+    <value>Book summary</value>
+  </data>
+	<data name="BookStatusActivityName" xml:space="preserve">
+    <value>Booking status</value>
+  </data>
+	<data name="Rating1" xml:space="preserve">
+    <value>Terrible</value>
+  </data>
+	<data name="Rating2" xml:space="preserve">
+    <value>Mauvais</value>
+  </data>
+	<data name="Rating3" xml:space="preserve">
+    <value>Moyenne</value>
+  </data>
+	<data name="Rating4" xml:space="preserve">
+    <value>Bien</value>
+  </data>
+	<data name="Rating5" xml:space="preserve">
+    <value>Excellent</value>
+  </data>
+ <data name="SendMessageDriver" xml:space="preserve">
+    <value>Envoyer message au chauffeur</value>
+  </data>
+	<data name="Error_EditAutoTipTitle" xml:space="preserve">
+    <value>Error</value>
+    </data>
+	<data name="View_RideLinqSummary" xml:space="preserve">
+    <value>Order summary</value>
+  </data>
+	<data name="View_RideLinqStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+	<data name="OrderStatus_Medallion" xml:space="preserve">
+		<value>Medallion</value>
+	</data>
+	<data name="OrderStatus_AddDestination" xml:space="preserve">
+		<value>Ajouter votre destination</value>
+	</data>
+	<data name="OrderStatus_RemoveDestination" xml:space="preserve">
+		<value>Enlever votre destination</value>
+	</data>
+	<data name="WaitingCarLandscapeViewCloseButtonText" xml:space="preserve">
+		<value>Retour</value>
+	</data>
+	<data name="WaitingCarLandscapeViewCarNumber" xml:space="preserve">
+		<value>Numéro de voiture</value>
+	</data>
+	<data name="WaitingCarLandscapeActivityName" xml:space="preserve">
+    	<value>Numéro de voiture</value>
+	</data>
+	<data name="BookingAirportDetailsTerminal">
+		<value>, \nTerminal: {0}</value>
+	</data>
+	<data name="UpdateNoticeTitle" xml:space="preserve">
+    		<value>Update Notice</value>
+	</data>
+	<data name="BookingAirportNoFlights_Title" xml:space="preserve">
+    <value>Aucun vol</value>
+  </data>
+	<data name="BookingAirportNoFlights_Message" xml:space="preserve">
+    <value>Nous n'avons trouvé aucun vol avec les informations que vous avez fournis.\nEst-ce que les informations suivantes sont exactes? \nCompagnie aérienne: {0}\nNuméro de vol: {1}\nDate: {2}</value>
+  </data>
+	<data name="UpdateNoticeText" xml:space="preserve">
+    	<value>Désolé, cette version d'application n'est plus maintenue. Mettez à jour l'application s'il vous plaît</value>
+	</data>
+	<data name="AccountLinkedWithFAcebook" xml:space="preserve">
+    	<value>Ce compte est associé avec un compte Facebook</value>
+	</data>
+   <data name="EmailUsedMessageTitle" xml:space="preserve">
+    <value>Courriel déjà utilisé</value>
+  </data>
+   <data name="EmailUsedMessage" xml:space="preserve">
+        <value>Ce courriel est déjà utilisé par un autre compte</value>
+  </data>
+	<data name="OrderStatus_PairingSuccess" xml:space="preserve">
+ 		<value>Association effectuée. Le paiement sera fait automatiquement à la fin de la course.</value>
+  	</data>
+	<data name="BookingAirportMissingInfo_Title" xml:space="preserve">
+    <value>Informations manquantes</value>
+  </data>
+	<data name="BookingAirportMissingInfo_Message" xml:space="preserve">
+    <value>Le numéro de vol et la compagnie aérienne sont nécessaires.</value>
+  </data>
+	<data name="OrderAirportView_BAD_FLIGHT_NUMBER" xml:space="preserve">
+			<value>Numéro de vol invalide</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRPORT_CODE" xml:space="preserve">
+			<value>Une erreur est survenue avec le fournisseur d'informations de vol.</value>
+	</data>
+	<data name="OrderAirportView_DATE_OUT_OF_RANGE" xml:space="preserve">
+			<value>La date fournis est à l'extérieur des limites du fournisseur.</value>
+	</data>
+	<data name="OrderAirportView_BAD_AIRLINE_CODE" xml:space="preserve">
+			<value>Une erreur est survenue avec le fournisseur d'information de vol.</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Title" xml:space="preserve">
+		<value>Erreur de connection</value>
+	</data>
+	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
+		<value>Un probleme de connexion est survenu lors de la tentative d'obtenir l'état de votre course de taxi.</value>
+	</data>
+	<data name="RateMobileApplicationTitle" xml:space="preserve">
+		<value>Notez cette application</value>
+	</data>
+	<data name="RateMobileApplicationText" xml:space="preserve">
+		<value>Si vous aimez utiliser cette application, n'oubliez pas de donner votre avis!</value>
+	</data>
+	<data name="RateMobileApplicationNow" xml:space="preserve">
+		<value>Notez maintenant</value>
+	</data>
+	<data name="RateMobileApplicationLater" xml:space="preserve">
+		<value>Plus tard</value>
+	</data>
+	<data name="RateMobileApplicationNever" xml:space="preserve">
+		<value>Ne plus demander</value>
+	</data>
+	<data name="LinkForApplicationStoreAbsentTitle" xml:space="preserve">
+		<value>Le lien est absent</value>
+	</data>
+	<data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
+		<value>Le lien pour naviger vers la page l'application n'a pas été configuré</value>
+	</data>
+  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+		<value>Votre session est expirée. Veuillez vous authentifier a nouveau.</value>
+	</data>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+		<value>Erreur serveur</value>
+	</data>
 </root>

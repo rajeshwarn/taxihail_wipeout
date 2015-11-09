@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			this.AutocorrectionType = UITextAutocorrectionType.No;
             textField.AdjustsFontSizeToFitWidth = true;
+            textField.AccessibilityLabel = Placeholder;
 
 			if (_isPassword) 
             {

@@ -12,11 +12,11 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
 	public class AddressPickerViewModel : PageViewModel,
-		IRequestPresentationState<HomeViewModelStateRequestedEventArgs>,
 		ISubViewModel<Address>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
@@ -36,11 +36,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
         public AddressViewModel[] FilteredPlaces { get; private set; }
 
-		private AddressLocationType _currentActiveFilter;
-
-	    private string _previousPostCode = string.Empty;
-
-		public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
+		private string _previousPostCode = string.Empty;
 
 		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
 			IPlaces placesService,
@@ -56,6 +52,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_locationService = locationService;
 		    _postalCodeService = postalCodeService;
 
+			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
+			Observe(_orderWorkflowService.GetAndObserveDropOffSelectionMode(), dropOffSelectionMode => IsDropOffSelectionMode = dropOffSelectionMode);
 
 		    FilteredPlaces = new AddressViewModel[0];
 		}
@@ -68,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			if (searchCriteria != null) 
 			{
 				_isInLocationDetail = true;
-				SearchAddress (searchCriteria);
+				SearchAddress (searchCriteria).FireAndForget();
 				StartingText = searchCriteria;
 			} 
 			else 
@@ -126,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        }
 	        catch (Exception ex)
 	        {
-	            this.Logger.LogError(ex);
+	            Logger.LogError(ex);
 	        }
 	    }
 
@@ -142,14 +140,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 	    }
 
-	    public async Task LoadAddresses(AddressLocationType filter)
+		public async Task LoadAddresses(AddressLocationType filter)
 		{
             _ignoreTextChange = true;
+
 	        try
 	        {
-				_currentActiveFilter = filter;
-
-	            if (filter == AddressLocationType.Unspeficied)
+		        if (filter == AddressLocationType.Unspeficied)
 	            {
                     await LoadAddressesUnspecified();
 	            }
@@ -283,21 +280,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				await _orderWorkflowService.SetAddress(detailedAddress);
 
-                if (_currentActiveFilter == AddressLocationType.Airport)
-                {
-                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AirportDetails));
-                }
-                else
-                {
-
-					if (returnToHome)
+				if (returnToHome)
+				{
+					if(IsDropOffSelectionMode)
 					{
-						// This needs to be called if we are displaying the AddressPickerViewModel from the home view.
-						PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.DropOffAddressSelection;
 					}
-	
-					ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+					else
+					{
+						((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+					}
 				}
+
+				ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
 			}
 			catch(Exception ex)
 			{
@@ -320,7 +315,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}
 					else
 					{
-						PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+						if(IsDropOffSelectionMode)
+						{
+							((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.DropOffAddressSelection;
+						}
+						else
+						{
+							((HomeViewModel)Parent).CurrentViewState = HomeViewModelState.Initial;
+						}
 					}
 				}); 
 			}
@@ -478,6 +480,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				Latitude = userPosition.Latitude,
 				Longitude = userPosition.Longitude
 			};
+		}
+
+		private AddressSelectionMode _addressSelectionMode; 
+		public AddressSelectionMode AddressSelectionMode
+		{ 
+			get { return _addressSelectionMode; }
+			set
+			{
+				_addressSelectionMode = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private bool _isDropOffSelectionMode; 
+		public bool IsDropOffSelectionMode
+		{ 
+			get { return _isDropOffSelectionMode; }
+			set
+			{
+				_isDropOffSelectionMode = value;
+				RaisePropertyChanged();
+			}
 		}
 	}
 }
