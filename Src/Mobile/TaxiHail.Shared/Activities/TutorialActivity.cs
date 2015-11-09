@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 			base.OnViewModelSet ();
 
             Window.SetFlags(WindowManagerFlags.Dither, WindowManagerFlags.Fullscreen);
-            SetContentView(Resource.Layout.View_tutorial);
+            SetContentView(Resource.Layout.View_Tutorial);
 
             var pipsLayout = FindViewById<LinearLayout>(Resource.Id.layout_pips);
             var horizontalPager = FindViewById<HorizontalPager>(Resource.Id.details);

@@ -37,18 +37,14 @@ using Com.Mapbox.Mapboxsdk.Geometry;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
+    /*
+     * PARTIAL CLASS : the rest code is situated in the TaxiHail.Shared Project 
+    */
+    public partial class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
     {
         public MapView Map { get; set;}
-        public TouchableMap TouchableMap { get; set;}
-        private ImageView _pickupOverlay;
-        private ImageView _destinationOverlay;
         private MarkerOptions _pickupPin;
         private MarkerOptions _destinationPin;
-        private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
-        private bool _bypassCameraChangeEvent;
-
-        private IEnumerable<CoordinateViewModel> _center;
 
         private MarkerOptions _taxiLocationPin;
 
@@ -57,20 +53,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private Sprite _destinationIcon;
         private Sprite _hailIcon;
 
-        private readonly Resources _resources;
-        private readonly TaxiHailSetting _settings;
-
         private IDictionary<string, Sprite> _vehicleIcons; 
 
-        private const int MapPadding = 60;
-
-        private readonly bool _showVehicleNumber;
-
-        private bool _isBookingMode;
-
-        private bool _lockGeocoding;
-        private TaxiLocation _taxiLocation;
-        private OrderStatusDetail _orderStatusDetail;
 
         public OrderMapFragment(TouchableMap mapFragment, Resources resources, TaxiHailSetting settings)
         {
@@ -96,72 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             InitDrawables();
         }
 
-        private void InitializeOverlayIcons()
-        {
-            var useCompanyColor = _settings.UseThemeColorForMapIcons;
-            var companyColor = _resources.GetColor (Resource.Color.company_color);
-
-            var red = Color.Argb(255, 255, 0, 23);
-            var green = Color.Argb(255, 30, 192, 34);
-
-            _pickupOverlay = (ImageView)TouchableMap.Activity.FindViewById(Resource.Id.pickupOverlay);
-            _pickupOverlay.Visibility = ViewStates.Visible;
-            _pickupOverlay.SetPadding(0, 0, 0, _pickupOverlay.Drawable.IntrinsicHeight / 2);
-            _pickupOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.hail_icon, useCompanyColor ? companyColor : green, true));
-
-            _destinationOverlay = (ImageView)TouchableMap.Activity.FindViewById(Resource.Id.destinationOverlay);
-            _destinationOverlay.Visibility = ViewStates.Visible;
-            _destinationOverlay.SetPadding(0, 0, 0, _destinationOverlay.Drawable.IntrinsicHeight / 2);
-            _destinationOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.destination_icon, useCompanyColor ? companyColor : red, true));
-        }
-
-        private Address _pickupAddress;
-        public Address PickupAddress
-        {
-            get { return _pickupAddress; }
-            set
-            { 
-                _pickupAddress = value;
-                OnPickupAddressChanged();
-            }
-        }
-
-        private Address _destinationAddress;
-        public Address DestinationAddress
-        {
-            get { return _destinationAddress; }
-            set
-            { 
-                _destinationAddress = value;
-                OnDestinationAddressChanged();
-            }
-        }
-
-        private AddressSelectionMode _addressSelectionMode; 
-        public AddressSelectionMode AddressSelectionMode
-        { 
-            get
-            {
-                return _addressSelectionMode;
-            }
-            set
-            {
-                _addressSelectionMode = value;
-
-                ShowMarkers();
-            }
-        }
-
-        public IEnumerable<CoordinateViewModel> Center
-        {
-            get { return _center; }
-            set
-            {
-                _center = value;
-                SetZoom(value); 
-            }
-        }
-
         public OrderStatusDetail OrderStatusDetail
         {
             get { return _orderStatusDetail; }
@@ -176,19 +94,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public TaxiLocation TaxiLocation
-        {
-            get { return _taxiLocation; }
-            set
-            {
-                _taxiLocation = value;
-                UpdateTaxiLocation(value);
-            }
-        }
-
         // Animate Marker on the map between retrieving positions
         //TODO Not working with MapBox for now
-        private void AnimateMarkerOnMap(Sprite icon, MarkerOptions markerToUpdate, LatLng newPosition, double? compassCourse, Position oldPosition)
+        private void AnimateMarkerOnMap(Sprite icon, MarkerOptions markerToUpdate, LatLng newPosition, double? compassCourse, LatLng oldPosition)
         {
             //            markerToUpdate.InvokeIcon(icon);
             //
@@ -248,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     _taxiLocationPin.Marker.Remove();
                     Map.AddMarker(_taxiLocationPin);
 
-                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new Position()
+                    AnimateMarkerOnMap(icon, _taxiLocationPin, new LatLng(value.Latitude.Value, value.Longitude.Value), value.CompassCourse, new LatLng()
                         {
                             Latitude = value.Latitude.Value, 
                             Longitude = value.Longitude.Value
@@ -308,63 +216,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _taxiLocationPin.Marker.Remove();
                 _taxiLocationPin = null;
             }
-        }
-
-        private Bitmap CreateTaxiBitmap()
-        {
-            return DrawHelper.ApplyColorToMapIcon(Resource.Drawable.taxi_icon, _resources.GetColor(Resource.Color.company_color), true);
-        }
-
-        private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
-        public IList<AvailableVehicle> AvailableVehicles
-        {
-            get
-            {
-                return _availableVehicles;
-            }
-            set
-            {
-                if (_availableVehicles == null || _availableVehicles.SequenceEqual(value))
-                {
-                    return;
-                }
-
-                _availableVehicles = _settings.ShowIndividualTaxiMarkerOnly
-                    ? value
-                    : VehicleClusterHelper.Clusterize(value, GetMapBoundsFromProjection());
-
-                ShowAvailableVehicles(_availableVehicles);
-            }
-        }
-
-        public IMvxBindingContext BindingContext { get; set; }
-
-        public ICommand CancelAutoFollow { get; set; }
-
-        [MvxSetToNullAfterBinding]
-        public object DataContext
-        {
-            get { return BindingContext.DataContext; }
-            set 
-            { 
-                BindingContext.DataContext = value; 
-            }
-        }
-
-        public MapViewModel ViewModel
-        {
-            get
-            {
-                return (MapViewModel)DataContext;
-            }
-        }
-
-        private void CancelAddressSearch()
-        {
-            _lockGeocoding = true;
-            ((HomeViewModel)(ViewModel.Parent)).LocateMe.Cancel();
-            ((HomeViewModel)(ViewModel.Parent)).AutomaticLocateMeAtPickup.Cancel();
-            ViewModel.UserMovedMap.Cancel();
         }
 
         public void InitializeBinding()
@@ -502,26 +353,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 Map.AddMarker(_destinationPin);
             }     
-        }
-
-        private void OnPickupAddressChanged()
-        {
-            if (PickupAddress == null)
-            {
-                return;
-            }
-
-            ShowMarkers();
-        }
-
-        private void OnDestinationAddressChanged()
-        {
-            if (DestinationAddress == null)
-            {
-                return; 
-            }
-
-            ShowMarkers();
         }
 
         private void ShowMarkers()
@@ -682,7 +513,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         // Update Marker and Animate it to see it move on the map
-        private void UpdateMarker(MarkerOptions markerToUpdate, AvailableVehicle vehicle, Position oldPosition)
+        private void UpdateMarker(MarkerOptions markerToUpdate, AvailableVehicle vehicle, LatLng oldPosition)
         {
             var isCluster = vehicle is AvailableVehicleCluster;
             const string defaultLogoName = "taxi";
@@ -735,7 +566,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         continue;
                     }
 
-                    var oldPosition = new Position()
+                    var oldPosition = new LatLng()
                         {
                             Latitude = existingMarkerForVehicle.Position.Latitude,
                             Longitude = existingMarkerForVehicle.Position.Longitude,
@@ -749,11 +580,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     CreateMarker(vehicle);
                 }
             } 
-        }
-
-        public void Dispose()
-        {
-            _subscriptions.Dispose();
         }
 
         public void ChangePresentation(ChangePresentationHint hint)
@@ -806,8 +632,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             Map.SetCenterCoordinate(new LatLng(lat, lng), true);
         }
-
-        public Func<int> OverlayOffsetProvider { get; set; }
 
         private void SetZoom(IEnumerable<CoordinateViewModel> addresseesToDisplay)
         {

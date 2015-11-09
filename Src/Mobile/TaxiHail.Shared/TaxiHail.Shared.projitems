@@ -142,6 +142,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Setup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaxiHailAndroidLifetimeMonitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LinkerPleaseInclude.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Fragments\OrderMapFragment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Fragments\TouchableWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformIntegration\PushNotificationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Activities\HomeActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Calabash\calabash.keystore" />
