@@ -115,81 +115,95 @@ namespace apcurium.MK.Booking.Api.Services
 
 		        _logger.LogMessage("Pairing for manual RideLinq with Pairing Code {0}", request.PairingCode);
 
-		        var response = _cmtMobileServiceClient.Post(pairingRequest);
+				var response = _cmtMobileServiceClient.Post(pairingRequest);
 
 		        _logger.LogMessage("Pairing result: {0}", response.ToJson());
 
 		        var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
 
-		        var command = new CreateOrderForManualRideLinqPair
-		        {
-			        OrderId = Guid.NewGuid(),
-			        AccountId = accountId,
-			        UserAgent = Request.UserAgent,
-			        ClientVersion = Request.Headers.Get("ClientVersion"),
-			        PairingCode = request.PairingCode,
-			        PickupAddress = request.PickupAddress,
-			        PairingToken = response.PairingToken,
-			        PairingDate = DateTime.Now,
-			        ClientLanguageCode = request.ClientLanguageCode,
-			        Distance = trip.Distance,
-			        StartTime = trip.StartTime,
-			        EndTime = trip.EndTime,
-			        Extra = Math.Round(((double) trip.Extra/100), 2),
-			        Fare = Math.Round(((double) trip.Fare/100), 2),
-			        Tax = Math.Round(((double) trip.Tax/100), 2),
-			        Tip = Math.Round(((double) trip.Tip/100), 2),
-			        Toll = trip.TollHistory.Sum(toll => Math.Round(((double) toll.TollAmount/100), 2)),
-			        Surcharge = Math.Round(((double) trip.Surcharge/100), 2),
-			        Total = Math.Round(((double) trip.Total/100), 2),
-			        FareAtAlternateRate = Math.Round(((double) trip.FareAtAlternateRate/100), 2),
-			        Medallion = response.Medallion,
-			        DeviceName = response.DeviceName,
-			        RateAtTripStart = trip.RateAtTripStart,
-			        RateAtTripEnd = trip.RateAtTripEnd,
-			        RateChangeTime = trip.RateChangeTime,
-			        TripId = trip.TripId,
-			        DriverId = trip.DriverId,
-			        LastFour = trip.LastFour,
-			        AccessFee = Math.Round(((double) trip.AccessFee/100), 2)
-		        };
+				if (trip.HttpStatusCode == (int)HttpStatusCode.OK)
+				{
+					var command = new CreateOrderForManualRideLinqPair
+					{
+						OrderId = Guid.NewGuid(),
+						AccountId = accountId,
+						UserAgent = Request.UserAgent,
+						ClientVersion = Request.Headers.Get("ClientVersion"),
+						PairingCode = request.PairingCode,
+						PickupAddress = request.PickupAddress,
+						PairingToken = response.PairingToken,
+						PairingDate = DateTime.Now,
+						ClientLanguageCode = request.ClientLanguageCode,
+						Distance = trip.Distance,
+						StartTime = trip.StartTime,
+						EndTime = trip.EndTime,
+						Extra = Math.Round(((double)trip.Extra / 100), 2),
+						Fare = Math.Round(((double)trip.Fare / 100), 2),
+						Tax = Math.Round(((double)trip.Tax / 100), 2),
+						Tip = Math.Round(((double)trip.Tip / 100), 2),
+						Toll = trip.TollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2)),
+						Surcharge = Math.Round(((double)trip.Surcharge / 100), 2),
+						Total = Math.Round(((double)trip.Total / 100), 2),
+						FareAtAlternateRate = Math.Round(((double)trip.FareAtAlternateRate / 100), 2),
+						Medallion = response.Medallion,
+						DeviceName = response.DeviceName,
+						RateAtTripStart = trip.RateAtTripStart,
+						RateAtTripEnd = trip.RateAtTripEnd,
+						RateChangeTime = trip.RateChangeTime,
+						TripId = trip.TripId,
+						DriverId = trip.DriverId,
+						LastFour = trip.LastFour,
+						AccessFee = Math.Round(((double)trip.AccessFee / 100), 2)
+					};
 
-		        _commandBus.Send(command);
+					_commandBus.Send(command);
 
-		        var data = new OrderManualRideLinqDetail
-		        {
-			        OrderId = command.OrderId,
-			        Distance = trip.Distance,
-			        StartTime = trip.StartTime,
-			        EndTime = trip.EndTime,
-			        Extra = command.Extra,
-			        Fare = command.Fare,
-			        Tax = command.Tax,
-			        Tip = command.Tip,
-			        Toll = command.Toll,
-			        Surcharge = command.Surcharge,
-			        Total = command.Total,
-			        FareAtAlternateRate = command.FareAtAlternateRate,
-			        Medallion = response.Medallion,
-			        DeviceName = response.DeviceName,
-			        RateAtTripStart = command.RateAtTripStart,
-			        RateAtTripEnd = command.RateAtTripEnd,
-			        RateChangeTime = trip.RateChangeTime,
-			        AccountId = accountId,
-			        PairingDate = command.PairingDate,
-			        PairingCode = pairingRequest.PairingCode,
-			        PairingToken = trip.PairingToken,
-			        DriverId = trip.DriverId,
-			        LastFour = command.LastFour,
-			        AccessFee = command.AccessFee
-		        };
+					var data = new OrderManualRideLinqDetail
+					{
+						OrderId = command.OrderId,
+						Distance = trip.Distance,
+						StartTime = trip.StartTime,
+						EndTime = trip.EndTime,
+						Extra = command.Extra,
+						Fare = command.Fare,
+						Tax = command.Tax,
+						Tip = command.Tip,
+						Toll = command.Toll,
+						Surcharge = command.Surcharge,
+						Total = command.Total,
+						FareAtAlternateRate = command.FareAtAlternateRate,
+						Medallion = response.Medallion,
+						DeviceName = response.DeviceName,
+						RateAtTripStart = command.RateAtTripStart,
+						RateAtTripEnd = command.RateAtTripEnd,
+						RateChangeTime = trip.RateChangeTime,
+						AccountId = accountId,
+						PairingDate = command.PairingDate,
+						PairingCode = pairingRequest.PairingCode,
+						PairingToken = trip.PairingToken,
+						DriverId = trip.DriverId,
+						LastFour = command.LastFour,
+						AccessFee = command.AccessFee
+					};
 
-		        return new ManualRideLinqResponse
-		        {
-			        Data = data,
-			        IsSuccessful = true,
-			        Message = "Ok"
-		        };
+					return new ManualRideLinqResponse
+					{
+						Data = data,
+						IsSuccessful = true,
+						Message = "Ok",
+						TripInfoHttpStatusCode = trip.HttpStatusCode,
+						ErrorCode = trip.ErrorCode.ToString()
+					};
+				}
+				else
+				{
+					return new ManualRideLinqResponse
+					{
+						IsSuccessful = false,
+						TripInfoHttpStatusCode = trip.HttpStatusCode,
+						ErrorCode = trip.ErrorCode != null ? trip.ErrorCode.ToString() : null
+					};
+				}
 	        }
 	        catch (WebServiceException ex)
 	        {
@@ -211,7 +225,7 @@ namespace apcurium.MK.Booking.Api.Services
 		        {
 			        IsSuccessful = false,
 			        Message = errorResponse != null ? errorResponse.Message : ex.ErrorMessage,
-			        ErrorCode = errorResponse != null ? errorResponse.ResponseCode.ToString() : ex.ErrorCode
+					ErrorCode = errorResponse != null ? errorResponse.ResponseCode.ToString() : ex.ErrorCode
 		        };
 	        }
             catch (Exception ex)
@@ -280,7 +294,7 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     IsSuccessful = false,
                     Message = errorResponse != null ? errorResponse.Message : ex.ErrorMessage,
-                    ErrorCode = errorResponse != null ? errorResponse.ResponseCode.ToString() : ex.ErrorCode
+                    //ErrorCode = errorResponse != null ? errorResponse.ResponseCode.ToString() : ex.ErrorCode
                 };
             }
             catch (Exception ex)
