@@ -2,6 +2,8 @@
 using System.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
+using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -13,24 +15,26 @@ using CMTServices.Responses;
 using CustomerPortal.Client;
 using Infrastructure.Messaging;
 
-namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
+namespace apcurium.MK.Booking.Helpers
 {
     public class TaxiHailNetworkHelper
     {
         private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly ICommandBus _commandBus;
+        private readonly IDispatcherSettingsDao _dispatcherSettingsDao;
         private readonly ILogger _logger;
 
-        public TaxiHailNetworkHelper(IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient, ICommandBus commandBus, ILogger logger)
+        public TaxiHailNetworkHelper(IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient, ICommandBus commandBus, IDispatcherSettingsDao dispatcherSettingsDao, ILogger logger)
         {
             _serverSettings = serverSettings;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _commandBus = commandBus;
+            _dispatcherSettingsDao = dispatcherSettingsDao;
             _logger = logger;
         }
 
-        internal bool FetchCompanyPaymentSettings(string companyKey)
+        public bool FetchCompanyPaymentSettings(string companyKey)
         {
             try
             {
@@ -93,7 +97,41 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             }
         }
 
-        internal void UpdateVehicleTypeFromMarketData(BookingSettings bookingSettings, string marketCompanyId)
+        public DispatcherSettingsDetail FetchDispatcherSettings(double pickupLatitude, double pickupLongitude)
+        {
+            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(pickupLatitude, pickupLongitude);
+
+            // ensure we return null for market and not string.Empty
+            marketSettings.Market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
+
+            _commandBus.Send(new SaveDispatcherSettings
+            {
+                Market = marketSettings.Market,
+                NumberOfOffersPerCycle = marketSettings.DispatcherSettings.NumberOfOffersPerCycle,
+                NumberOfCycles = marketSettings.DispatcherSettings.NumberOfCycles,
+                DurationOfOfferInSeconds = marketSettings.DispatcherSettings.DurationOfOfferInSeconds
+            });
+
+            return new DispatcherSettingsDetail
+            {
+                Market = marketSettings.Market,
+                NumberOfOffersPerCycle = marketSettings.DispatcherSettings.NumberOfOffersPerCycle,
+                NumberOfCycles = marketSettings.DispatcherSettings.NumberOfCycles,
+                DurationOfOfferInSeconds = marketSettings.DispatcherSettings.DurationOfOfferInSeconds
+            };
+        }
+
+        public DispatcherSettingsDetail GetDispatcherSettingsForMarket(string market)
+        {
+            if (!market.HasValue())
+            {
+                market = null;
+            }
+
+            return _dispatcherSettingsDao.GetSettings(market);
+        }
+
+        public void UpdateVehicleTypeFromMarketData(BookingSettings bookingSettings, string marketCompanyId)
         {
             if (!bookingSettings.VehicleTypeId.HasValue)
             {
@@ -127,7 +165,7 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             }
         }
 
-        internal BestAvailableCompany FindSpecificCompany(string market, CreateReportOrder createReportOrder, string orderCompanyKey = null, int? orderFleetId = null)
+        public BestAvailableCompany FindSpecificCompany(string market, CreateReportOrder createReportOrder, string orderCompanyKey = null, int? orderFleetId = null)
         {
             if (!orderCompanyKey.HasValue() && !orderFleetId.HasValue)
             {
@@ -170,7 +208,7 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             return new BestAvailableCompany();
         }
 
-        internal BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude)
+        public BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude)
         {
             if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
             {

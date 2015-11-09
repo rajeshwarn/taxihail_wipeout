@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -10,6 +8,7 @@ using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
@@ -26,8 +25,6 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Services.OrderCreation
 {
@@ -61,11 +58,12 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             IOrderPaymentDao orderPaymentDao,
             IFeesDao feesDao, 
             ILogger logger,
-            IIbsCreateOrderService ibsCreateOrderService)
+            IIbsCreateOrderService ibsCreateOrderService,
+            IDispatcherSettingsDao dispatcherSettingsDao)
             : base(serverSettings, commandBus, accountChargeDao, paymentService, creditCardDao,
                    ibsServiceProvider, promotionDao, promoRepository, orderPaymentDao, accountDao,
                    payPalServiceFactory, logger, taxiHailNetworkServiceClient, ruleCalculator,
-                   feesDao, referenceDataService, orderDao)
+                   feesDao, referenceDataService, orderDao, dispatcherSettingsDao)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
@@ -77,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _ibsCreateOrderService = ibsCreateOrderService;
             _resources = new Resources.Resources(_serverSettings);
 
-            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, _logger);
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, dispatcherSettingsDao, _logger);
         }
 
         public object Post(CreateOrderRequest request)

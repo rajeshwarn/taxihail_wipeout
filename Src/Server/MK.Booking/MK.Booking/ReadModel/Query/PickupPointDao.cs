@@ -1,14 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Configuration;
-
-#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -44,6 +39,5 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return context.Query<PickupPoint>().Where(c => c.Name.IndexOf(text, StringComparison.InvariantCultureIgnoreCase) >= 0).ToList();
             }
         }
-
     }
 }

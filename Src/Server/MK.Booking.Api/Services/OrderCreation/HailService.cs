@@ -50,11 +50,12 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             IPayPalServiceFactory payPalServiceFactory,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             IRuleCalculator ruleCalculator,
+            IDispatcherSettingsDao dispatcherSettingsDao,
             Resources.Resources resources)
             : base(serverSettings, commandBus, accountChargeDao, paymentService, creditCardDao,
                   ibsServiceProvider, promotionDao, promoRepository, orderPaymentDao, accountDao,
                   payPalServiceFactory, logger, taxiHailNetworkServiceClient, ruleCalculator,
-                  feesDao, referenceDataService, orderDao)
+                  feesDao, referenceDataService, orderDao, dispatcherSettingsDao)
         {
             _orderDao = orderDao;
             _logger = logger;

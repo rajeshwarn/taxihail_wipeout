@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -12,6 +11,7 @@ using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -72,7 +72,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             IRuleCalculator ruleCalculator,
             IFeesDao feesDao,
             ReferenceDataService referenceDataService,
-            IOrderDao orderDao)
+            IOrderDao orderDao,
+            IDispatcherSettingsDao dispatcherSettingsDao)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
@@ -91,7 +92,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _orderDao = orderDao;
 
             _resources = new Resources.Resources(_serverSettings);
-            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, _logger);
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, dispatcherSettingsDao, _logger);
 
             PaymentHelper = new CreateOrderPaymentHelper(serverSettings, commandBus, paymentService, orderPaymentDao, payPalServiceFactory);
         }
@@ -121,17 +122,8 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             // Find market
-            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            var market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
-
-            // we already have the settings in this scope so no need to wait for them to save
-            Task.Run(() => _commandBus.Send(new SaveDispatcherSettings
-            {
-                Market = market,
-                NumberOfOffersPerCycle = marketSettings.DispatcherSettings.NumberOfOffersPerCycle,
-                NumberOfCycles = marketSettings.DispatcherSettings.NumberOfCycles,
-                DurationOfOfferInSeconds = marketSettings.DispatcherSettings.DurationOfOfferInSeconds
-            }));
+            var marketSettings = _taxiHailNetworkHelper.FetchDispatcherSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            var market = marketSettings.Market;
 
             createReportOrder.Market = market;
 
