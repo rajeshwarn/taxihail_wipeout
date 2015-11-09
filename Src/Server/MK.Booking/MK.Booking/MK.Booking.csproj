@@ -231,7 +231,6 @@
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
     <Compile Include="EventHandlers\UserTaxiHailNetworkSettingsGenerator.cs" />
     <Compile Include="EventHandlers\VehicleTypeDetailGenerator.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\OrderStatusUpdater.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />

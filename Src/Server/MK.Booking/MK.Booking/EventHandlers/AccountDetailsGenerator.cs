@@ -215,7 +215,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.DefaultCreditCard = @event.NextDefaultCreditCardId;
                 account.Settings.ChargeTypeId = @event.NextDefaultCreditCardId.HasValue ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
-                    : ChargeTypes.CardOnFile.Id;
                 context.Save(account);
             }
             

@@ -478,37 +478,6 @@ namespace DatabaseInitializer.Sql
             }
         }
 
-        public void UpdateSchemas(ConnectionStringSettings connectionString)
-        {
-            try
-            {
-                var configuration = new BookingDbMigrationConfiguration();
-                configuration.TargetDatabase = new DbConnectionInfo(connectionString.ConnectionString,
-                    "System.Data.SqlClient");
-                var migrator = new DbMigrator(configuration);
-
-
-                var scriptor = new MigratorScriptingDecorator(migrator);
-                var script = scriptor.ScriptUpdate(sourceMigration: null, targetMigration: null);
-                Console.WriteLine(script);
-
-                //list tables from the script
-                
-
-                //run the script
-
-                //truncate tables
-
-                //get event handler from the tables and so the list of events
-
-                //register event handler
-
-                //replay only some events 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
+        
     }
 }

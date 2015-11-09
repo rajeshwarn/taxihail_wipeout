@@ -113,9 +113,9 @@ namespace apcurium.MK.Events.Migration.Projections
                                         && x.CreditCardId != @event.CreditCardId);
 
                 if (otherCreditCardForAccount != null
-                    && @event.NewDefaultCreditCardId == null)
+                    && @event.NextDefaultCreditCardId == null)
                 {
-                    @event.NewDefaultCreditCardId = otherCreditCardForAccount.CreditCardId;
+                    @event.NextDefaultCreditCardId = otherCreditCardForAccount.CreditCardId;
                     return @event;
                 }
                 else

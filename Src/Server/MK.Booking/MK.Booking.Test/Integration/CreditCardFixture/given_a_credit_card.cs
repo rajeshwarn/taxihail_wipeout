@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
             {
                 SourceId = _accountId,
                 CreditCardId = _creditCardId,
-                NewDefaultCreditCardId = null
+                NextDefaultCreditCardId = null
             });
 
             using (var context = new BookingDbContext(DbName))
