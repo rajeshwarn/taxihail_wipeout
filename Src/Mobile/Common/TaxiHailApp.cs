@@ -30,6 +30,7 @@ using apcurium.MK.Booking.MapDataProvider.CraftyClicks;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
 
 
 namespace apcurium.MK.Booking.Mobile
@@ -37,9 +38,16 @@ namespace apcurium.MK.Booking.Mobile
     public class TaxiHailApp  : MvxApplication
     {
 		readonly TinyIoCContainer _container;
-    
+
 		public TaxiHailApp()
 		{
+			// early loading of libphone library
+			// do not remove, it impoves the time during the binding
+			Task.Run(() =>
+			{
+				System.Diagnostics.Trace.Write(CountryCode.CountryCodes[0].CountryName.Substring(0, 0));
+			});
+
 			_container = TinyIoCContainer.Current;
 
             InitalizeServices();
