@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Data;
+using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Jobs;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
@@ -13,8 +15,11 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Resources;
 using AutoMapper;
 using CMTServices;
+using CustomerPortal.Client;
+using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -26,13 +31,15 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ILogger _logger;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
+        private readonly IDispatcherService _dispatcherService;
 
         public IbsCreateOrderService(IServerSettings serverSettings,
             IVehicleTypeDao vehicleTypeDao,
             IAccountDao accountDao,
             ILogger logger,
             IIBSServiceProvider ibsServiceProvider,
-            IUpdateOrderStatusJob updateOrderStatusJob)
+            IUpdateOrderStatusJob updateOrderStatusJob,
+            IDispatcherService dispatcherService)
         {
             _serverSettings = serverSettings;
             _vehicleTypeDao = vehicleTypeDao;
@@ -40,6 +47,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger = logger;
             _ibsServiceProvider = ibsServiceProvider;
             _updateOrderStatusJob = updateOrderStatusJob;
+            _dispatcherService = dispatcherService;
         }
 
         public IBSOrderResult CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
@@ -52,8 +60,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 // Fake IBS order id
                 return new IBSOrderResult
                 {
-                    CreateOrderResult = new Random(Guid.NewGuid().GetHashCode()).Next(90000, 90000000),
-                    IsHailRequest = isHailRequest
+                    OrderKey = new OrderKey
+                    {
+                        IbsOrderId = new Random(Guid.NewGuid().GetHashCode()).Next(90000, 90000000),
+                        TaxiHailOrderId = orderId
+                    }
                 };
             }
 
@@ -90,19 +101,32 @@ namespace apcurium.MK.Booking.Services.Impl
             var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
             var defaultVehicleTypeId = defaultVehicleType != null ? defaultVehicleType.ReferenceDataVehicleId : -1;
 
-            int? createOrderResult = null;
-            IbsResponse ibsResult;
+            var dispatcherSettings = _dispatcherService.GetSettings(market, isHailRequest: isHailRequest);
+            IbsResponse orderResult = null;
 
-            if (isHailRequest)
+            // TODO Keep track of vehicles that were already called
+            for (int i = 0; i < dispatcherSettings.NumberOfCycles; i++)
             {
-                ibsResult = Hail(orderId, providerId, market, companyKey, companyFleetId, pickupAddress, ibsAccountId, name, phone,
-                    passengers, vehicleTypeId, ibsChargeTypeId, ibsInformationNote, pickupDate, ibsPickupAddress,
-                    ibsDropOffAddress, accountNumberString, customerNumber, prompts, promptsLength, defaultVehicleTypeId,
-                    tipIncentive, fare);
-            }
-            else
-            {
-                ibsResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+                var vehicleCandidates = _dispatcherService.GetVehicleCandidates(
+                    new BestAvailableCompany
+                    {
+                        CompanyKey = companyKey,
+                        FleetId = companyFleetId
+                    },
+                    dispatcherSettings,
+                    pickupAddress.Latitude,
+                    pickupAddress.Longitude);
+
+                if (!vehicleCandidates.Any())
+                {
+                    // Don't query IBS if we don't find any vehicles
+                    Thread.Sleep(dispatcherSettings.DurationOfOfferInSeconds);
+                    continue;
+                }
+
+                var ibsVehicleCandidates = Mapper.Map<IbsVehicleCandidate[]>(vehicleCandidates);
+
+                orderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
                     orderId,
                     providerId,
                     ibsAccountId,
@@ -121,18 +145,36 @@ namespace apcurium.MK.Booking.Services.Impl
                     promptsLength,
                     defaultVehicleTypeId,
                     tipIncentive,
-                    fare);
-                createOrderResult = ibsResult.OrderKey.IbsOrderId;
+                    fare,
+                    ibsVehicleCandidates);
+
+                // Fetch vehicle candidates (who have accepted the hail request) only if order was successfully created on IBS
+                var candidatesResponse = _dispatcherService.WaitForCandidatesResponse(companyKey, orderResult.OrderKey, dispatcherSettings).ToArray();
+
+                if (candidatesResponse.Any())
+                {
+                    if (isHailRequest)
+                    {
+                        orderResult.VehicleCandidates = Mapper.Map<IbsVehicleCandidate[]>(candidatesResponse);
+                    }
+                    else
+                    {
+                        // TODO: find best vehicle
+                        var bestVehicle = Mapper.Map<IbsVehicleCandidate>(candidatesResponse.FirstOrDefault());
+
+                        try
+                        {
+                            _dispatcherService.AssignJobToVehicle(companyKey, orderResult.OrderKey, bestVehicle);
+                        }
+                        catch (Exception)
+                        {
+                            // Do nothing    
+                        }
+                    }
+                }
             }
 
-            var hailResult = Mapper.Map<OrderHailResult>(ibsResult);
-
-            return new IBSOrderResult
-            {
-                CreateOrderResult = createOrderResult,
-                HailResult = hailResult,
-                IsHailRequest = isHailRequest
-            };
+            return Mapper.Map<IBSOrderResult>(orderResult);
         }
 
         public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId)
@@ -165,68 +207,6 @@ namespace apcurium.MK.Booking.Services.Impl
             new TaskFactory().StartNew(() => _updateOrderStatusJob.CheckStatus(orderId));
         }
 
-        private IbsResponse Hail(Guid orderId, int? providerId, string market, string companyKey, int? companyFleetId, Address pickupAddress, int ibsAccountId,
-            string name, string phone, int passengers, int? vehicleTypeId, int? ibsChargeTypeId, string ibsInformationNote, DateTime pickupDate, IbsAddress ibsPickupAddress,
-            IbsAddress ibsDropOffAddress, string accountNumberString, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehicleTypeId, double? tipIncentive, Fare fare)
-        {
-            // Query only the avaiable vehicles from the selected company for the order
-            var availableVehicleService = GetAvailableVehiclesServiceClient(market);
-            var availableVehicles = availableVehicleService.GetAvailableVehicles(market, pickupAddress.Latitude, pickupAddress.Longitude)
-                .Where(v => v.FleetId == companyFleetId).ToArray();
-
-            if (!availableVehicles.Any())
-            {
-                // Don't query IBS if we don't find any vehicles
-                return new IbsResponse
-                {
-                    OrderKey = new IbsOrderKey { IbsOrderId = -1, TaxiHailOrderId = orderId }
-                };
-            }
-
-            var vehicleCandidates = availableVehicles.Select(vehicle => new IbsVehicleCandidate
-            {
-                CandidateType = VehicleCandidateTypes.VctPimId,
-                VehicleId = vehicle.DeviceName,
-                ETADistance = (int?)vehicle.DistanceToArrival ?? 0,
-                ETATime = (int?)vehicle.Eta ?? 0
-            });
-
-            var ibsHailResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
-                orderId,
-                providerId,
-                ibsAccountId,
-                name,
-                phone,
-                passengers,
-                vehicleTypeId,
-                ibsChargeTypeId,
-                ibsInformationNote,
-                pickupDate,
-                ibsPickupAddress,
-                ibsDropOffAddress,
-                accountNumberString,
-                customerNumber,
-                prompts,
-                promptsLength,
-                defaultVehicleTypeId,
-                tipIncentive,
-                fare,
-                vehicleCandidates);
-
-            // Fetch vehicle candidates (who have accepted the hail request) only if order was successfully created on IBS
-            if (ibsHailResult.OrderKey.IbsOrderId > -1)
-            {
-                // TODO: replace hardcoded value by timeout returned by IBS
-                // Need to wait for vehicles to receive hail request
-                Thread.Sleep(30000);
-
-                var candidates = _ibsServiceProvider.Booking(companyKey).GetVehicleCandidates(ibsHailResult.OrderKey);
-                ibsHailResult.VehicleCandidates = candidates;
-            }
-
-            return ibsHailResult;
-        }
-
         private int? GetCustomerNumber(string accountNumber, string customerNumber)
         {
             if (!accountNumber.HasValue() || !customerNumber.HasValue())
@@ -241,25 +221,6 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             return null;
-        }
-
-        private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
-        {
-            if (IsCmtGeoServiceMode(market))
-            {
-                return new CmtGeoServiceClient(_serverSettings, _logger);
-            }
-
-            return new HoneyBadgerServiceClient(_serverSettings, _logger);
-        }
-
-        private bool IsCmtGeoServiceMode(string market)
-        {
-            var externalMarketMode = market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo;
-
-            var internalMarketMode = !market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo;
-
-            return internalMarketMode || externalMarketMode;
         }
     }
 }

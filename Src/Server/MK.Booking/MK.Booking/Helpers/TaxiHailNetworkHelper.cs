@@ -22,15 +22,13 @@ namespace apcurium.MK.Booking.Helpers
         private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly ICommandBus _commandBus;
-        private readonly IDispatcherSettingsDao _dispatcherSettingsDao;
         private readonly ILogger _logger;
 
-        public TaxiHailNetworkHelper(IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient, ICommandBus commandBus, IDispatcherSettingsDao dispatcherSettingsDao, ILogger logger)
+        public TaxiHailNetworkHelper(IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient, ICommandBus commandBus, ILogger logger)
         {
             _serverSettings = serverSettings;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _commandBus = commandBus;
-            _dispatcherSettingsDao = dispatcherSettingsDao;
             _logger = logger;
         }
 
@@ -95,40 +93,6 @@ namespace apcurium.MK.Booking.Helpers
 
                 return false;
             }
-        }
-
-        public DispatcherSettingsDetail FetchDispatcherSettings(double pickupLatitude, double pickupLongitude)
-        {
-            var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(pickupLatitude, pickupLongitude);
-
-            // ensure we return null for market and not string.Empty
-            marketSettings.Market = marketSettings.Market.HasValue() ? marketSettings.Market : null;
-
-            _commandBus.Send(new SaveDispatcherSettings
-            {
-                Market = marketSettings.Market,
-                NumberOfOffersPerCycle = marketSettings.DispatcherSettings.NumberOfOffersPerCycle,
-                NumberOfCycles = marketSettings.DispatcherSettings.NumberOfCycles,
-                DurationOfOfferInSeconds = marketSettings.DispatcherSettings.DurationOfOfferInSeconds
-            });
-
-            return new DispatcherSettingsDetail
-            {
-                Market = marketSettings.Market,
-                NumberOfOffersPerCycle = marketSettings.DispatcherSettings.NumberOfOffersPerCycle,
-                NumberOfCycles = marketSettings.DispatcherSettings.NumberOfCycles,
-                DurationOfOfferInSeconds = marketSettings.DispatcherSettings.DurationOfOfferInSeconds
-            };
-        }
-
-        public DispatcherSettingsDetail GetDispatcherSettingsForMarket(string market)
-        {
-            if (!market.HasValue())
-            {
-                market = null;
-            }
-
-            return _dispatcherSettingsDao.GetSettings(market);
         }
 
         public void UpdateVehicleTypeFromMarketData(BookingSettings bookingSettings, string marketCompanyId)
@@ -282,7 +246,7 @@ namespace apcurium.MK.Booking.Helpers
             return new BestAvailableCompany();
         }
 
-        private BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
+        public BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)
         {
             if (IsCmtGeoServiceMode(market))
             {

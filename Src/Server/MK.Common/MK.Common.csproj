@@ -135,7 +135,6 @@
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
-    <Compile Include="Entity\OrderHailResult.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />
     <Compile Include="Entity\OrderKey.cs" />
     <Compile Include="Entity\PickupPoint.cs" />
@@ -240,6 +239,7 @@
     <Compile Include="Resources\BasePaymentResponse.cs" />
     <Compile Include="Resources\CommitPreauthorizedPaymentResponse.cs" />
     <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\DispatcherSettingsResponse.cs" />
     <Compile Include="Resources\InitializePayPalCheckoutResponse.cs" />
     <Compile Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="Resources\PairingResponse.cs" />

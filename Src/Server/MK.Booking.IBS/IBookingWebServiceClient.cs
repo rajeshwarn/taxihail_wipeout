@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.IBS
     {
         IbsResponse CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare), IEnumerable<IbsVehicleCandidate> vehicleCandidates = default(IEnumerable<IbsVehicleCandidate>));
 
-        IbsVehicleCandidate[] GetVehicleCandidates(IbsOrderKey orderKey);
+        IbsVehicleCandidate[] GetCandidatesResponse(IbsOrderKey orderKey);
 
         int? ConfirmHail(IbsOrderKey orderKey, IbsVehicleCandidate selectedVehicle);
 

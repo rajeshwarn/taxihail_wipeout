@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
                     @event.TipIncentive);
 
-                ibsOrderId = result.CreateOrderResult;
+                ibsOrderId = result.OrderKey.IbsOrderId;
             }
 
             var success = SendOrderCreationCommands(@event.SourceId, ibsOrderId, @event.IsPrepaid, @event.ClientLanguageCode);
@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
                 @event.TipIncentive);
 
-            SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, @event.IsPrepaid, @event.ClientLanguageCode, true, @event.CompanyKey, @event.CompanyName, @event.Market);
+            SendOrderCreationCommands(@event.SourceId, result.OrderKey.IbsOrderId, @event.IsPrepaid, @event.ClientLanguageCode, true, @event.CompanyKey, @event.CompanyName, @event.Market);
         }
 
         public void Handle(PrepaidOrderPaymentInfoUpdated @event)
@@ -120,10 +120,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 orderInfo.Request.ReferenceDataCompanyList.ToList(), orderInfo.Request.Market, orderInfo.Request.Settings.ChargeTypeId,
                 orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive);
 
-            var success = SendOrderCreationCommands(@event.SourceId, result.CreateOrderResult, true, orderInfo.Request.ClientLanguageCode);
+            var success = SendOrderCreationCommands(@event.SourceId, result.OrderKey.IbsOrderId, true, orderInfo.Request.ClientLanguageCode);
             if (success)
             {
-                SendConfirmationEmail(result.CreateOrderResult.Value, orderInfo.AccountId, orderInfo.Request.Settings, orderInfo.ChargeTypeEmail,
+                SendConfirmationEmail(result.OrderKey.IbsOrderId, orderInfo.AccountId, orderInfo.Request.Settings, orderInfo.ChargeTypeEmail,
                     orderInfo.Request.PickupAddress, orderInfo.Request.DropOffAddress, orderInfo.Request.PickupDate, orderInfo.Request.UserNote, orderInfo.Request.ClientLanguageCode);
             }
 

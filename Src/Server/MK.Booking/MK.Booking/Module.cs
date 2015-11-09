@@ -31,6 +31,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using CMTServices;
+using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -77,7 +78,13 @@ namespace apcurium.MK.Booking
                 new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IServerSettings>())));
 
             container.RegisterType<IIbsCreateOrderService>(new ContainerControlledLifetimeManager(),
-                new InjectionFactory(c => new IbsCreateOrderService(c.Resolve<IServerSettings>(), c.Resolve<IVehicleTypeDao>(), c.Resolve<IAccountDao>(), c.Resolve<ILogger>(), c.Resolve<IIBSServiceProvider>(), c.Resolve<IUpdateOrderStatusJob>())));
+                new InjectionFactory(c => new IbsCreateOrderService(c.Resolve<IServerSettings>(),
+                    c.Resolve<IVehicleTypeDao>(),
+                    c.Resolve<IAccountDao>(),
+                    c.Resolve<ILogger>(),
+                    c.Resolve<IIBSServiceProvider>(),
+                    c.Resolve<IUpdateOrderStatusJob>(),
+                    c.Resolve<IDispatcherService>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
@@ -102,7 +109,6 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IOrderNotificationsDetailDao>(new OrderNotificationsDetailDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAirlineDao>(new AirlineDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPickupPointDao>(new PickupPointDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IDispatcherSettingsDao>(new DispatcherSettingsDao(() => container.Resolve<BookingDbContext>()));
             
             RegisterMaps();
             RegisterCommandHandlers(container);
@@ -110,6 +116,7 @@ namespace apcurium.MK.Booking
 
             container.RegisterType<IPayPalServiceFactory, PayPalServiceFactory>();
             container.RegisterType<IPaymentService, PaymentService>();
+            container.RegisterType<IDispatcherService, DispatcherService>();
 
             container.RegisterType<IFeeService, FeeService>();
         }

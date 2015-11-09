@@ -46,11 +46,11 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         private readonly IAccountDao _accountDao;
         private readonly ILogger _logger;
         private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
-        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IRuleCalculator _ruleCalculator;
         private readonly IFeesDao _feesDao;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IOrderDao _orderDao;
+        private readonly IDispatcherService _dispatcherService;
 
         private readonly Resources.Resources _resources;
 
@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             IFeesDao feesDao,
             ReferenceDataService referenceDataService,
             IOrderDao orderDao,
-            IDispatcherSettingsDao dispatcherSettingsDao)
+            IDispatcherService dispatcherService)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
@@ -85,14 +85,14 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _promoRepository = promoRepository;
             _accountDao = accountDao;
             _logger = logger;
-            _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _ruleCalculator = ruleCalculator;
             _feesDao = feesDao;
             _referenceDataService = referenceDataService;
             _orderDao = orderDao;
+            _dispatcherService = dispatcherService;
 
             _resources = new Resources.Resources(_serverSettings);
-            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, dispatcherSettingsDao, _logger);
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, taxiHailNetworkServiceClient, _commandBus, _logger);
 
             PaymentHelper = new CreateOrderPaymentHelper(serverSettings, commandBus, paymentService, orderPaymentDao, payPalServiceFactory);
         }
@@ -122,8 +122,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             // Find market
-            var marketSettings = _taxiHailNetworkHelper.FetchDispatcherSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            var market = marketSettings.Market;
+            var market = _dispatcherService.GetSettings(request.PickupAddress.Latitude, request.PickupAddress.Longitude).Market;
 
             createReportOrder.Market = market;
 

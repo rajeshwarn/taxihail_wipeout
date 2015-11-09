@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Reflection;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -11,8 +10,7 @@ namespace apcurium.MK.Booking.CommandHandlers
     public class NonDomainRelatedCommandHandler : 
         ICommandHandler<LogApplicationStartUp>,
         ICommandHandler<SaveTemporaryOrderCreationInfo>,
-        ICommandHandler<SaveTemporaryOrderPaymentInfo>,
-        ICommandHandler<SaveDispatcherSettings>
+        ICommandHandler<SaveTemporaryOrderPaymentInfo>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -28,7 +26,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                 // Check if a log from this user already exists. If not, create it.
                 var log = context.Find<AppStartUpLogDetail>(command.UserId) ?? new AppStartUpLogDetail
                 {
-                    UserId = command.UserId,
+                    UserId = command.UserId
                 };
 
                 // Update log details
@@ -65,21 +63,6 @@ namespace apcurium.MK.Booking.CommandHandlers
                     OrderId = command.OrderId,
                     Cvv = command.Cvv
                 });
-            }
-        }
-
-        public void Handle(SaveDispatcherSettings command)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var dispatcherSettings = context.Query<DispatcherSettingsDetail>().FirstOrDefault(x => x.Market == command.Market) 
-                    ?? new DispatcherSettingsDetail();
-
-                dispatcherSettings.NumberOfOffersPerCycle = command.NumberOfOffersPerCycle;
-                dispatcherSettings.NumberOfCycles = command.NumberOfCycles;
-                dispatcherSettings.DurationOfOfferInSeconds = command.DurationOfOfferInSeconds;
-
-                context.Save(dispatcherSettings);
             }
         }
     }

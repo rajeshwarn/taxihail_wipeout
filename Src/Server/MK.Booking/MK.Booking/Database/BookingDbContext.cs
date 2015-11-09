@@ -74,7 +74,6 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<OrderNotificationDetail>().ToTable("OrderNotificationDetail", SchemaName);
             modelBuilder.Entity<OverduePaymentDetail>().ToTable("OverduePaymentDetail", SchemaName);
             modelBuilder.Entity<FeesDetail>().ToTable("FeesDetail", SchemaName);
-            modelBuilder.Entity<DispatcherSettingsDetail>().ToTable("DispatcherSettingsDetail", SchemaName);
 
             modelBuilder.Entity<AccountChargeQuestion>().ToTable("AccountChargeQuestion", SchemaName);
             modelBuilder.Entity<AccountChargeDetail>().ToTable("AccountChargeDetail", SchemaName)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -18,6 +19,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
 using CMTServices;
+using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 
@@ -45,6 +47,7 @@ namespace apcurium.MK.Booking.Jobs
         private readonly IFeeService _feeService;
         private readonly IOrderNotificationsDetailDao _orderNotificationsDetailDao;
         private readonly CmtGeoServiceClient _cmtGeoServiceClient;
+        private readonly IDispatcherService _dispatcherService;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -67,6 +70,7 @@ namespace apcurium.MK.Booking.Jobs
             IFeeService feeService,
             IOrderNotificationsDetailDao orderNotificationsDetailDao,
             CmtGeoServiceClient cmtGeoServiceClient,
+            IDispatcherService dispatcherService,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -85,6 +89,7 @@ namespace apcurium.MK.Booking.Jobs
             _paymentDao = paymentDao;
             _orderNotificationsDetailDao = orderNotificationsDetailDao;
             _cmtGeoServiceClient = cmtGeoServiceClient;
+            _dispatcherService = dispatcherService;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -294,7 +299,11 @@ namespace apcurium.MK.Booking.Jobs
             // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
             orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned, hasBailed);
 
-            if (hasBailed && true)
+            var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
+
+            var dispatcherSettings = _dispatcherService.GetSettings(orderStatusDetail.Market, orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude);
+
+            if (hasBailed && dispatcherSettings.NumberOfOffersPerCycle > 0)
             {
                 // TODO: do the dispatcher dance (again)
             }

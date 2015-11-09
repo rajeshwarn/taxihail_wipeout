@@ -242,7 +242,6 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AccountIbsDetail.cs" />
-    <Compile Include="ReadModel\DispatcherSettingsDetail.cs" />
     <Compile Include="ReadModel\FeesDetail.cs" />
     <Compile Include="ReadModel\OverduePaymentDetail.cs" />
     <Compile Include="ReadModel\PayPalAccountDetails.cs" />
@@ -256,8 +255,6 @@
     <Compile Include="ReadModel\PromotionDetail.cs" />
     <Compile Include="ReadModel\PromotionUsageDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
-    <Compile Include="ReadModel\Query\Contract\IDispatcherSettingsDao.cs" />
-    <Compile Include="ReadModel\Query\DispatcherSettingsDao.cs" />
     <Compile Include="ReadModel\Query\PickupPointDao.cs" />
     <Compile Include="ReadModel\Query\AirlineDao.cs" />
     <Compile Include="ReadModel\Query\AppStartUpLogDao.cs" />
@@ -388,12 +385,14 @@
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
+    <Compile Include="Services\IDispatcherService.cs" />
     <Compile Include="Services\IFeeService.cs" />
     <Compile Include="Services\IIbsCreateOrderService.cs" />
     <Compile Include="Services\IIbsOrderService.cs" />
     <Compile Include="Services\Impl\BasePayPalService.cs" />
     <Compile Include="Services\Impl\BraintreePaymentService.cs" />
     <Compile Include="Services\Impl\CmtPaymentService.cs" />
+    <Compile Include="Services\Impl\DispatcherService.cs" />
     <Compile Include="Services\Impl\FeeService.cs" />
     <Compile Include="Services\Impl\IbsCreateOrderService.cs" />
     <Compile Include="Services\Impl\IBSOrderService.cs" />

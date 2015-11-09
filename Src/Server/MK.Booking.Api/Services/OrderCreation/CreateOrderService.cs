@@ -59,11 +59,11 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             IFeesDao feesDao, 
             ILogger logger,
             IIbsCreateOrderService ibsCreateOrderService,
-            IDispatcherSettingsDao dispatcherSettingsDao)
+            IDispatcherService dispatcherService)
             : base(serverSettings, commandBus, accountChargeDao, paymentService, creditCardDao,
                    ibsServiceProvider, promotionDao, promoRepository, orderPaymentDao, accountDao,
                    payPalServiceFactory, logger, taxiHailNetworkServiceClient, ruleCalculator,
-                   feesDao, referenceDataService, orderDao, dispatcherSettingsDao)
+                   feesDao, referenceDataService, orderDao, dispatcherService)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _ibsCreateOrderService = ibsCreateOrderService;
             _resources = new Resources.Resources(_serverSettings);
 
-            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, dispatcherSettingsDao, _logger);
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, _logger);
         }
 
         public object Post(CreateOrderRequest request)
