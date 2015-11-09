@@ -271,7 +271,6 @@
     <AndroidResource Include="Resources\Drawable\segmented_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
-    <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <AndroidResource Include="Resources\Drawable\notification_icon.png" />
     <AndroidResource Include="Resources\Drawable\statusDropShadow.xml" />
     <AndroidResource Include="Resources\Drawable\cell_full_state.xml" />
@@ -598,6 +597,7 @@
     <AndroidResource Include="Resources\Drawable\destination_small_icon_white.png" />
     <AndroidResource Include="Resources\Layout\SubView_DropOffSelection.axml" />
     <AndroidResource Include="Resources\Layout\SubView_AppBar_DropOffSelection.axml" />
+    <Compile Include="PlatformIntegration\PushHandlerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

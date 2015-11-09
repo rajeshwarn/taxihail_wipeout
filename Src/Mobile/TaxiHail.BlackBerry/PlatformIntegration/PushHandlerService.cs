@@ -21,13 +21,14 @@ using PushSharp.Client;
 using ServiceStack.Text;
 using Android.Support.V4.App;
 
+
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     /*
-     * PARTIAL CLASS : the rest  code is situated in the TaxiHail.Shared Project 
+     * PARTIAL CLASS : the other part of the code is situated in the TaxiHail.Shared Project 
     */
     public partial class PushHandlerService : PushHandlerServiceBase,
-    IUseServiceClient
+        IUseServiceClient
     {
         protected override void OnRegistered(Context context, string registrationId)
         {

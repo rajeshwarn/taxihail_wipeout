@@ -163,8 +163,8 @@
     <Compile Include="Controls\Fragments\TouchableMap.cs" />
     <Compile Include="Controls\Widgets\CustomMarkerPopupAdapter.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
-    <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="PlatformIntegration\PushHandlerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

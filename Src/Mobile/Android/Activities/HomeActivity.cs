@@ -35,7 +35,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     /*
-     * PARTIAL CLASS : the rest code is situated in the TaxiHail.Shared Project 
+     * PARTIAL CLASS : the other part of the code is situated in the TaxiHail.Shared Project 
     */
     public partial class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {

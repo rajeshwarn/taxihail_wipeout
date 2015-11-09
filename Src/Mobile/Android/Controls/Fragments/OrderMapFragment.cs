@@ -37,7 +37,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     /*
-     * PARTIAL CLASS : the code rest is situated in the TaxiHail.Shared Project 
+     * PARTIAL CLASS : the other part of the rest is situated in the TaxiHail.Shared Project 
     */
     public partial class OrderMapFragment: IMvxBindable, IDisposable, IChangePresentation
     {
