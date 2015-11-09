@@ -119,7 +119,10 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             try
             {
-                _dispatcherService.AssignJobToVehicle(orderDetail.CompanyKey, request.OrderKey, request.VehicleCandidate);
+                var ibsOrderKey = Mapper.Map<IbsOrderKey>(request.OrderKey);
+                var ibsVehicleCandidate = Mapper.Map<IbsVehicleCandidate>(request.VehicleCandidate);
+
+                _dispatcherService.AssignJobToVehicle(orderDetail.CompanyKey, ibsOrderKey, ibsVehicleCandidate);
 
                 return new OrderStatusDetail
                 {
