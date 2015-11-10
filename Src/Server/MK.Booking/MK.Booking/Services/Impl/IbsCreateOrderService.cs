@@ -108,8 +108,36 @@ namespace apcurium.MK.Booking.Services.Impl
             var dispatcherSettings = _dispatcherService.GetSettings(market, isHailRequest: isHailRequest);
             IbsResponse orderResult = null;
 
-            // TODO Keep track of vehicles that were already called
-            for (int i = 0; i < dispatcherSettings.NumberOfCycles; i++)
+            if (dispatcherSettings.NumberOfOffersPerCycle == 0)
+            {
+                // IBS is handling the dispatch
+                orderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+                    orderId,
+                    providerId,
+                    ibsAccountId,
+                    name,
+                    phone,
+                    passengers,
+                    vehicleTypeId,
+                    ibsChargeTypeId,
+                    ibsInformationNote,
+                    pickupDate,
+                    ibsPickupAddress,
+                    ibsDropOffAddress,
+                    accountNumberString,
+                    customerNumber,
+                    prompts,
+                    promptsLength,
+                    defaultVehicleTypeId,
+                    tipIncentive,
+                    fare);
+
+                return Mapper.Map<IBSOrderResult>(orderResult);
+            }
+
+            var vehicleCandidatesOfferedTheJob = new List<VehicleCandidate>();
+
+            for (var i = 0; i < dispatcherSettings.NumberOfCycles; i++)
             {
                 var vehicleCandidates = _dispatcherService.GetVehicleCandidates(
                     orderId,
@@ -121,6 +149,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     dispatcherSettings,
                     pickupAddress.Latitude,
                     pickupAddress.Longitude);
+
+                vehicleCandidates = FilterOutVehiclesAlreadyOfferedTheJobAndTakeBySetting(vehicleCandidates, vehicleCandidatesOfferedTheJob, dispatcherSettings);
 
                 if (!vehicleCandidates.Any())
                 {
@@ -189,6 +219,18 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             return Mapper.Map<IBSOrderResult>(orderResult);
+        }
+
+        private IEnumerable<VehicleCandidate> FilterOutVehiclesAlreadyOfferedTheJobAndTakeBySetting(IEnumerable<VehicleCandidate> vehicleCandidates, List<VehicleCandidate> vehicleCandidatesOfferedTheJob, DispatcherSettingsResponse dispatcherSettings)
+        {
+            var filteredList = vehicleCandidates
+                .Where(vehicleCandidate => !vehicleCandidatesOfferedTheJob.Exists(x => x.VehicleId == vehicleCandidate.VehicleId))
+                .Take(dispatcherSettings.NumberOfOffersPerCycle)
+                .ToList();
+
+            vehicleCandidatesOfferedTheJob.AddRange(filteredList);
+
+            return filteredList;
         }
 
         public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId)
