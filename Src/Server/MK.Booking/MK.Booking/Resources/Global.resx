@@ -681,4 +681,13 @@
   <data name="CancelOrdeError" xml:space="preserve">
     <value>It is too late to cancel this order</value>
   </data>
+	<data name="Email_Body_DriverPhoto" xml:space="preserve">
+    <value>Driver photo</value>
+  </data>
+	<data name="Email_Body_VehicleRegistration" xml:space="preserve">
+    <value>Vehicle registration</value>
+  </data>
+	<data name="Email_Body_VehicleColor" xml:space="preserve">
+    <value>Vehicle color</value>
+  </data>
 </root>

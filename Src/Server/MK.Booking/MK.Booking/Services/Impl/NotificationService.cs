@@ -26,6 +26,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -593,7 +594,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 + (cmtRideLinqFields.SelectOrDefault(x => x.FareAtAlternateRate) ?? 0.0)
                 + (cmtRideLinqFields.SelectOrDefault(x => x.AccessFee) ?? 0.0);
 
-            
             var templateData = new
             {
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
@@ -604,10 +604,14 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowMinimalDriverInfo = showMinimalDriverInfo,
                 HasDriverInfo = hasDriverInfo,
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
+				HasDriverPhoto = hasDriverInfo ? driverInfos.DriverPhotoUrl.HasValue() : false,
+				DriverPhotoURL = hasDriverInfo ? driverInfos.DriverPhotoUrl : null,
                 VehicleNumber = vehicleNumber,
                 DriverName = hasDriverInfo ? driverInfos.FullName : string.Empty,
+				VehicleRegistration = hasDriverInfo ? driverInfos.VehicleRegistration : null,
                 VehicleMake = hasDriverInfo ? driverInfos.VehicleMake : string.Empty,
                 VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
+				VehicleColor = hasDriverInfo ? driverInfos.VehicleColor : null,
                 DriverInfos = driverInfos,
                 DriverId = hasDriverInfo || cmtRideLinqFields != null ? driverInfos.DriverId : string.Empty,
                 PickupDate = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
