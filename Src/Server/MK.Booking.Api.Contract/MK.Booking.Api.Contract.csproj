@@ -116,6 +116,7 @@
     <Compile Include="Requests\Payment\ManualRideLinqPairingRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqUpdateAutoTipRequest.cs" />
     <Compile Include="Requests\Payment\OverduePaymentRequest.cs" />
+    <Compile Include="Requests\Payment\CmtPaymentPairingRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\LinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\ManualRideLinqRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\UnlinkPayPalAccountRequest.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
     <Compile Include="Resources\Payments\OverduePayment.cs" />
+    <Compile Include="Resources\Payments\CmtPaymentPairingResponse.cs" />
     <Compile Include="Resources\Payments\ServerPaymentSettingsResponse.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />

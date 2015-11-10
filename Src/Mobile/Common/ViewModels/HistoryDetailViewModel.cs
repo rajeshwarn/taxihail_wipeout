@@ -200,6 +200,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 		}
 
+        public bool CanShowConfirmationTxt
+        {
+            get
+            {          
+                return Settings.ShowOrderNumber;
+            }
+        }
+
         private string _authorizationNumber;
         public string AuthorizationNumber 
 		{

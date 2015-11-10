@@ -44,7 +44,8 @@
                 android:paddingTop="15dip"
                 android:paddingBottom="5dip"
                 android:gravity="center_horizontal"
-                android:weightSum="100">
+                android:weightSum="100"
+                local:MvxBind="Visibility CanShowOrderNumber, Converter=Visibility">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

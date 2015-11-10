@@ -112,7 +112,6 @@
     <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\LocalAvailableVehiclesModes.cs" />
-    <Compile Include="Enumeration\RateApplicationState.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
@@ -177,6 +176,7 @@
     <Compile Include="Entity\AddressLocationType.cs" />
     <Compile Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="CreditCardLabelConstants.cs" />
+    <Compile Include="Enumeration\RateApplicationState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />

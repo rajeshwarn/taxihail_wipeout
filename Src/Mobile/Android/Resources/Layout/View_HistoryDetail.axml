@@ -47,7 +47,8 @@
                 android:paddingTop="15dip"
                 android:paddingBottom="5dip"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                local:MvxBind="Visibility ShowConfirmationTxt, Converter=Visibility">
                 <TextView
                     style="@style/BlackTextLabel"
                     android:text="@string/HistoryDetailOrderLabel"
