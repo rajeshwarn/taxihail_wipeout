@@ -5,9 +5,13 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Views;
 using Android.Widget;
+#if CALLBOX
+using apcurium.MK.Callbox.Mobile.Client;
+#endif
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Cirrious.CrossCore.Droid.Platform;
 using System.Threading;
+
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {

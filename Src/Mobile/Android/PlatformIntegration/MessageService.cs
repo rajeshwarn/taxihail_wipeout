@@ -7,11 +7,20 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Activities;
-using apcurium.MK.Booking.Mobile.Client.Controls.Message;
+
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Messages;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
+#if CALLBOX
+using apcurium.MK.Callbox.Mobile.Client.Helpers;
+using apcurium.MK.Callbox.Mobile.Client;
+#else
+using apcurium.MK.Booking.Mobile.Client.Controls.Message;
+#endif
+using apcurium.MK.Common.Extensions;
+using Android.App;
+using Cirrious.CrossCore;
 using Cirrious.CrossCore.Droid.Platform;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
@@ -133,6 +142,48 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             return tcs.Task;
         }
 
+
+#if CALLBOX
+        private readonly Stack<ProgressDialog> _progressDialogs = new Stack<ProgressDialog>();
+        public void ShowProgress(bool show)
+        {
+            var dispatcher = Mvx.Resolve<IMvxViewDispatcher>();
+
+            dispatcher.RequestMainThreadAction(() => {
+                var topActivity = Mvx.Resolve<IMvxAndroidCurrentTopActivity>();
+
+                if (show)
+                {
+                    var progress = new ProgressDialog(topActivity.Activity);
+                    _progressDialogs.Push(progress);
+                    progress.SetTitle(string.Empty);
+                    progress.SetMessage(topActivity.Activity.GetString(Resource.String.LoadingMessage));
+                    progress.SetCanceledOnTouchOutside(false);
+                    progress.Show();
+
+                }
+                else
+                {
+                    if (_progressDialogs.None())
+                    {
+                        return;
+                    }
+                    var progressPrevious = _progressDialogs.Pop();
+                    if (progressPrevious != null && progressPrevious.IsShowing)
+                    {
+                        try
+                        {
+                            progressPrevious.Dismiss();
+                        }
+                        catch
+                        {
+                            // on peut avoir une exception ici si activity est plus présente, pas grave
+                        }
+                    }
+                }
+            });
+        }
+#else
         private readonly object _progressLock = new object();
         public void ShowProgress(bool show)
         {
@@ -148,10 +199,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 }
             }
         }
+#endif
+
 
         public void ShowProgressNonModal(bool show)
         {
-            var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>();
+            var topActivity = Mvx.Resolve<IMvxAndroidCurrentTopActivity>();
             var rootView = topActivity.Activity.Window.DecorView.RootView as ViewGroup;
 
             if (rootView != null)
@@ -267,7 +320,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                         isNumericOnly,
                         inputText);
                     
-                    if(!string.IsNullOrEmpty(result))
+                    if(result != null)
                     {
                         tcs.TrySetResult (result);
                     }

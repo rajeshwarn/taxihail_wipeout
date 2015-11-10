@@ -26,7 +26,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CALLBOX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
@@ -52,7 +52,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;CALLBOX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
@@ -88,6 +88,15 @@
     <Reference Include="Cirrious.MvvmCross.Droid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Droid.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="CrossUI.Core">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\CrossUI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CrossUI.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\CrossUI.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Dialog.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Dialog.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Localization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
@@ -138,24 +147,41 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Android\Activities\EditTextDialogActivity.cs">
+      <Link>Activities\EditTextDialogActivity.cs</Link>
+    </Compile>
+    <Compile Include="..\Android\Activities\SelectItemDialogActivity.cs">
+      <Link>Activities\SelectItemDialogActivity.cs</Link>
+    </Compile>
+    <Compile Include="..\Android\Controls\Dialog\CustomAlertDialog.cs">
+      <Link>Controls\Dialog\CustomAlertDialog.cs</Link>
+    </Compile>
     <Compile Include="..\Android\Diagnostic\Logger.cs">
       <Link>Diagnostic\Logger.cs</Link>
     </Compile>
-    <Compile Include="Activities\AlertDialogActivity.cs" />
+    <Compile Include="..\Android\Extensions\ViewServicesExtensions.cs">
+      <Link>Extensions\ViewServicesExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Android\Helpers\AlertDialogHelper.cs">
+      <Link>Helpers\AlertDialogHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Android\Messages\ActivityCompleted.cs">
+      <Link>Messages\ActivityCompleted.cs</Link>
+    </Compile>
+    <Compile Include="..\Android\PlatformIntegration\MessageService.cs">
+      <Link>PlatformIntegration\MessageService.cs</Link>
+    </Compile>
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\CallTaxiActivity.cs" />
     <Compile Include="Activities\BaseDialogActivity.cs" />
-    <Compile Include="Activities\EditTextDialogActivity.cs" />
     <Compile Include="Activities\LoginActivity.cs" />
     <Compile Include="Activities\OrderListActivity.cs" />
-    <Compile Include="Activities\SelectItemDialogActivity.cs" />
     <Compile Include="Activities\SplashScreenActivity.cs" />
     <Compile Include="AppFonts.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="CallboxPresenter.cs" />
-    <Compile Include="Controls\Dialog\CustomAlertDialog.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\StyledButton.cs" />
     <Compile Include="Controls\TextViewColor.cs" />
@@ -164,13 +190,10 @@
     <Compile Include="Converters\CoordinateConverter.cs" />
     <Compile Include="Converters\OrderStatusToTextColorConverter.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
-    <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Localization\Localize.cs" />
-    <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="PlatformIntegration\AndroidMapApiClient.cs" />
     <Compile Include="PlatformIntegration\DummyAnalyticsService.cs" />
-    <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PhoneService.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />

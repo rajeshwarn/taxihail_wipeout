@@ -26,6 +26,48 @@ namespace apcurium.MK.Callbox.Mobile.Client
 		
 		public static void UpdateIdValues()
 		{
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Drawable.dialog_disclosure = global::apcurium.MK.Callbox.Mobile.Client.Resource.Drawable.dialog_disclosure;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Drawable.dialog_expander_ic_minimized = global::apcurium.MK.Callbox.Mobile.Client.Resource.Drawable.dialog_expander_ic_minimized;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Drawable.dialog_icon = global::apcurium.MK.Callbox.Mobile.Client.Resource.Drawable.dialog_icon;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Drawable.dialog_spinner_default_holo_dark = global::apcurium.MK.Callbox.Mobile.Client.Resource.Drawable.dialog_spinner_default_holo_dark;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Drawable.dialog_spinner_default_holo_light = global::apcurium.MK.Callbox.Mobile.Client.Resource.Drawable.dialog_spinner_default_holo_light;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_BoolField = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_BoolField;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_Button = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_Button;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_DisclosureField = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_DisclosureField;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_HtmlField = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_HtmlField;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_ImageLeft = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_ImageLeft;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_ImageRight = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_ImageRight;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_LabelField = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_LabelField;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_LabelPercentageField = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_LabelPercentageField;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_LabelSubtextField = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_LabelSubtextField;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_Panel = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_Panel;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_RadioButtonList = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_RadioButtonList;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_SliderField = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_SliderField;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_Spinner = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_Spinner;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.dialog_ValueField = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.dialog_ValueField;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Id.iFormFieldValue = global::apcurium.MK.Callbox.Mobile.Client.Resource.Id.iFormFieldValue;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_achievements = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_achievements;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_boolfieldleft = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_boolfieldleft;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_boolfieldright = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_boolfieldright;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_boolfieldsubleft = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_boolfieldsubleft;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_boolfieldsubright = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_boolfieldsubright;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_button = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_button;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_datefield = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_datefield;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_fieldsetlabel = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_fieldsetlabel;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_floatimage = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_floatimage;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_html = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_html;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_labeldisclosure = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_labeldisclosure;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_labelfieldbelow = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_labelfieldbelow;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_labelfieldright = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_labelfieldright;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_multiline_labelfieldbelow = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_multiline_labelfieldbelow;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_onofffieldright = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_onofffieldright;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_panel = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_panel;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_root = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_root;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_selectlist = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_selectlist;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_selectlistfield = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_selectlistfield;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_textarea = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_textarea;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_textfieldbelow = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_textfieldbelow;
+			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_textfieldright = global::apcurium.MK.Callbox.Mobile.Client.Resource.Layout.dialog_textfieldright;
 		}
 		
 		public partial class Attribute
@@ -184,55 +226,70 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			public const int button_text_selector = 2130837514;
 			
 			// aapt resource value: 0x7f02000b
-			public const int email_cell = 2130837515;
+			public const int dialog_disclosure = 2130837515;
 			
 			// aapt resource value: 0x7f02000c
-			public const int gray_button = 2130837516;
+			public const int dialog_expander_ic_minimized = 2130837516;
 			
 			// aapt resource value: 0x7f02000d
-			public const int icon = 2130837517;
+			public const int dialog_icon = 2130837517;
 			
 			// aapt resource value: 0x7f02000e
-			public const int Logo = 2130837518;
+			public const int dialog_spinner_default_holo_dark = 2130837518;
 			
 			// aapt resource value: 0x7f02000f
-			public const int main_settings = 2130837519;
+			public const int dialog_spinner_default_holo_light = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int navBar = 2130837520;
+			public const int email_cell = 2130837520;
 			
 			// aapt resource value: 0x7f020011
-			public const int newBlackButton = 2130837521;
+			public const int gray_button = 2130837521;
 			
 			// aapt resource value: 0x7f020012
-			public const int orderListBackground = 2130837522;
+			public const int icon = 2130837522;
 			
 			// aapt resource value: 0x7f020013
-			public const int password_cell = 2130837523;
+			public const int Logo = 2130837523;
 			
 			// aapt resource value: 0x7f020014
-			public const int red_button = 2130837524;
+			public const int main_settings = 2130837524;
 			
 			// aapt resource value: 0x7f020015
-			public const int rounded_dialog_background = 2130837525;
+			public const int navBar = 2130837525;
 			
 			// aapt resource value: 0x7f020016
-			public const int server_button = 2130837526;
+			public const int newBlackButton = 2130837526;
 			
 			// aapt resource value: 0x7f020017
-			public const int server_button_state = 2130837527;
+			public const int orderListBackground = 2130837527;
 			
 			// aapt resource value: 0x7f020018
-			public const int sign_in_btn = 2130837528;
+			public const int password_cell = 2130837528;
 			
 			// aapt resource value: 0x7f020019
-			public const int social_media_login_btn = 2130837529;
+			public const int red_button = 2130837529;
 			
 			// aapt resource value: 0x7f02001a
-			public const int social_media_login_btn_hit = 2130837530;
+			public const int rounded_dialog_background = 2130837530;
 			
 			// aapt resource value: 0x7f02001b
-			public const int social_media_login_btn_state = 2130837531;
+			public const int server_button = 2130837531;
+			
+			// aapt resource value: 0x7f02001c
+			public const int server_button_state = 2130837532;
+			
+			// aapt resource value: 0x7f02001d
+			public const int sign_in_btn = 2130837533;
+			
+			// aapt resource value: 0x7f02001e
+			public const int social_media_login_btn = 2130837534;
+			
+			// aapt resource value: 0x7f02001f
+			public const int social_media_login_btn_hit = 2130837535;
+			
+			// aapt resource value: 0x7f020020
+			public const int social_media_login_btn_state = 2130837536;
 			
 			static Drawable()
 			{
@@ -253,8 +310,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060006
 			public const int ContentLayout = 2131099654;
 			
-			// aapt resource value: 0x7f06001e
-			public const int ContentSection = 2131099678;
+			// aapt resource value: 0x7f06002d
+			public const int ContentSection = 2131099693;
 			
 			// aapt resource value: 0x7f060015
 			public const int CustomDialog2ButtonsLayout = 2131099669;
@@ -298,14 +355,14 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060011
 			public const int CustomDialogTitle = 2131099665;
 			
-			// aapt resource value: 0x7f06001f
-			public const int HeaderSection = 2131099679;
+			// aapt resource value: 0x7f06002e
+			public const int HeaderSection = 2131099694;
 			
-			// aapt resource value: 0x7f060022
-			public const int LoginButton = 2131099682;
+			// aapt resource value: 0x7f060031
+			public const int LoginButton = 2131099697;
 			
-			// aapt resource value: 0x7f06001d
-			public const int LogoutButton = 2131099677;
+			// aapt resource value: 0x7f06002c
+			public const int LogoutButton = 2131099692;
 			
 			// aapt resource value: 0x7f060008
 			public const int MainLogo = 2131099656;
@@ -313,8 +370,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060000
 			public const int MvxBindingTagUnique = 2131099648;
 			
-			// aapt resource value: 0x7f06001c
-			public const int MyButton = 2131099676;
+			// aapt resource value: 0x7f06002b
+			public const int MyButton = 2131099691;
 			
 			// aapt resource value: 0x7f060007
 			public const int NavBarImage = 2131099655;
@@ -325,17 +382,17 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060002
 			public const int NavBarSectionBackground = 2131099650;
 			
-			// aapt resource value: 0x7f060029
-			public const int OrderList = 2131099689;
+			// aapt resource value: 0x7f060038
+			public const int OrderList = 2131099704;
 			
-			// aapt resource value: 0x7f060021
-			public const int Password = 2131099681;
+			// aapt resource value: 0x7f060030
+			public const int Password = 2131099696;
 			
-			// aapt resource value: 0x7f060024
-			public const int ServerButton = 2131099684;
+			// aapt resource value: 0x7f060033
+			public const int ServerButton = 2131099699;
 			
-			// aapt resource value: 0x7f060020
-			public const int Username = 2131099680;
+			// aapt resource value: 0x7f06002f
+			public const int Username = 2131099695;
 			
 			// aapt resource value: 0x7f060004
 			public const int ViewNavBarRightButton = 2131099652;
@@ -349,17 +406,62 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060009
 			public const int dateTextView = 2131099657;
 			
-			// aapt resource value: 0x7f060025
-			public const int frameLayout = 2131099685;
+			// aapt resource value: 0x7f060020
+			public const int dialog_BoolField = 2131099680;
 			
-			// aapt resource value: 0x7f060023
-			public const int linearLayout0 = 2131099683;
-			
-			// aapt resource value: 0x7f060027
-			public const int listTitle = 2131099687;
+			// aapt resource value: 0x7f060021
+			public const int dialog_Button = 2131099681;
 			
 			// aapt resource value: 0x7f060026
-			public const int orderListLayout = 2131099686;
+			public const int dialog_DisclosureField = 2131099686;
+			
+			// aapt resource value: 0x7f060025
+			public const int dialog_HtmlField = 2131099685;
+			
+			// aapt resource value: 0x7f060023
+			public const int dialog_ImageLeft = 2131099683;
+			
+			// aapt resource value: 0x7f06001e
+			public const int dialog_ImageRight = 2131099678;
+			
+			// aapt resource value: 0x7f06001c
+			public const int dialog_LabelField = 2131099676;
+			
+			// aapt resource value: 0x7f06001f
+			public const int dialog_LabelPercentageField = 2131099679;
+			
+			// aapt resource value: 0x7f06001d
+			public const int dialog_LabelSubtextField = 2131099677;
+			
+			// aapt resource value: 0x7f060027
+			public const int dialog_Panel = 2131099687;
+			
+			// aapt resource value: 0x7f060028
+			public const int dialog_RadioButtonList = 2131099688;
+			
+			// aapt resource value: 0x7f060024
+			public const int dialog_SliderField = 2131099684;
+			
+			// aapt resource value: 0x7f060029
+			public const int dialog_Spinner = 2131099689;
+			
+			// aapt resource value: 0x7f060022
+			public const int dialog_ValueField = 2131099682;
+			
+			// aapt resource value: 0x7f060034
+			public const int frameLayout = 2131099700;
+			
+			// aapt resource value: 0x7f06002a
+			public const int iFormFieldValue = 2131099690;
+			
+			// aapt resource value: 0x7f060032
+			public const int linearLayout0 = 2131099698;
+			
+			// aapt resource value: 0x7f060036
+			public const int listTitle = 2131099702;
+			
+			// aapt resource value: 0x7f060035
+			public const int orderListLayout = 2131099701;
 			
 			// aapt resource value: 0x7f06000b
 			public const int orderNumberTextView = 2131099659;
@@ -370,8 +472,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f06000a
 			public const int passengerTextView = 2131099658;
 			
-			// aapt resource value: 0x7f060028
-			public const int stroke = 2131099688;
+			// aapt resource value: 0x7f060037
+			public const int stroke = 2131099703;
 			
 			static Id()
 			{
@@ -396,16 +498,82 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			public const int CustomAlertDialogView = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int Main = 2130903043;
+			public const int dialog_achievements = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int View_CallTaxi = 2130903044;
+			public const int dialog_boolfieldleft = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int View_Login = 2130903045;
+			public const int dialog_boolfieldright = 2130903045;
 			
 			// aapt resource value: 0x7f030006
-			public const int View_OrderList = 2130903046;
+			public const int dialog_boolfieldsubleft = 2130903046;
+			
+			// aapt resource value: 0x7f030007
+			public const int dialog_boolfieldsubright = 2130903047;
+			
+			// aapt resource value: 0x7f030008
+			public const int dialog_button = 2130903048;
+			
+			// aapt resource value: 0x7f030009
+			public const int dialog_datefield = 2130903049;
+			
+			// aapt resource value: 0x7f03000a
+			public const int dialog_fieldsetlabel = 2130903050;
+			
+			// aapt resource value: 0x7f03000b
+			public const int dialog_floatimage = 2130903051;
+			
+			// aapt resource value: 0x7f03000c
+			public const int dialog_html = 2130903052;
+			
+			// aapt resource value: 0x7f03000d
+			public const int dialog_labeldisclosure = 2130903053;
+			
+			// aapt resource value: 0x7f03000e
+			public const int dialog_labelfieldbelow = 2130903054;
+			
+			// aapt resource value: 0x7f03000f
+			public const int dialog_labelfieldright = 2130903055;
+			
+			// aapt resource value: 0x7f030010
+			public const int dialog_multiline_labelfieldbelow = 2130903056;
+			
+			// aapt resource value: 0x7f030011
+			public const int dialog_onofffieldright = 2130903057;
+			
+			// aapt resource value: 0x7f030012
+			public const int dialog_panel = 2130903058;
+			
+			// aapt resource value: 0x7f030013
+			public const int dialog_root = 2130903059;
+			
+			// aapt resource value: 0x7f030014
+			public const int dialog_selectlist = 2130903060;
+			
+			// aapt resource value: 0x7f030015
+			public const int dialog_selectlistfield = 2130903061;
+			
+			// aapt resource value: 0x7f030016
+			public const int dialog_textarea = 2130903062;
+			
+			// aapt resource value: 0x7f030017
+			public const int dialog_textfieldbelow = 2130903063;
+			
+			// aapt resource value: 0x7f030018
+			public const int dialog_textfieldright = 2130903064;
+			
+			// aapt resource value: 0x7f030019
+			public const int Main = 2130903065;
+			
+			// aapt resource value: 0x7f03001a
+			public const int View_CallTaxi = 2130903066;
+			
+			// aapt resource value: 0x7f03001b
+			public const int View_Login = 2130903067;
+			
+			// aapt resource value: 0x7f03001c
+			public const int View_OrderList = 2130903068;
 			
 			static Layout()
 			{

@@ -113,10 +113,12 @@ namespace apcurium.MK.Booking.Mobile
 
         private async Task SignOutUser()
         {
-            _dispatcher.ShowViewModel(new MvxViewModelRequest(typeof (LoginViewModel), null, null, MvxRequestedBy.UserAction));
-
-            await Mvx.Resolve<IOrderWorkflowService>().PrepareForNewOrder();
+            _dispatcher.RequestMainThreadAction(() =>
+            {
+                _dispatcher.ShowViewModel(new MvxViewModelRequest(typeof (LoginViewModel), null, null, MvxRequestedBy.UserAction));
+            });
             Mvx.Resolve<IAccountService>().SignOut();
+            await Mvx.Resolve<IOrderWorkflowService>().PrepareForNewOrder();
         }
     }
 }

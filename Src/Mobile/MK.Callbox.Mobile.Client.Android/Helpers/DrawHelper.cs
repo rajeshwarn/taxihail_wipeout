@@ -9,6 +9,12 @@ namespace apcurium.MK.Callbox.Mobile.Client.Helpers
 {
     public static class DrawHelper
     {
+
+        public static int ToPixels(this int dip)
+        {
+            return GetPixels(dip);
+        }
+
         public static  int GetPixels(float dipValue)
         {
             var px = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, dipValue , Application.Context.Resources.DisplayMetrics); // getDisplayMetrics());

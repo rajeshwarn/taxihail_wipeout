@@ -1,5 +1,4 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
 using Android.OS;
 using Android.Widget;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Client.Messages;
 using Android.Text;
-using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
