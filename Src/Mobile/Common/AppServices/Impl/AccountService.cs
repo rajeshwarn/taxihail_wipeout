@@ -434,11 +434,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			catch (WebException ex)
 			{
 				Mvx.Resolve<IErrorHandler>().HandleError (ex);
-                return null;
 			}
-			catch
+			catch(Exception ex)
 			{
-                return null;
+                Logger.LogError(ex);
             }
 
             return data;
