@@ -102,10 +102,10 @@ namespace apcurium.MK.Web.Tests
             }
         }
 
-        private async Task<OrderValidationResult> ValidateOrder(Action<CreateOrder> update, string testZone = null)
+        private async Task<OrderValidationResult> ValidateOrder(Action<CreateOrderRequest> update, string testZone = null)
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
@@ -113,7 +113,7 @@ namespace apcurium.MK.Web.Tests
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = Provider.ApcuriumIbsProviderId,
                             Phone = "5145551212",
@@ -132,23 +132,23 @@ namespace apcurium.MK.Web.Tests
             return await sut.ValidateOrder(order, testZone);
         }
 
-        private async Task<string> CreateOrder(Action<CreateOrder> update)
+        private async Task<string> CreateOrder(Action<CreateOrderRequest> update)
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
                     PickupDate = null,
                     DropOffAddress = TestAddresses.GetAddress2(),
-                    Estimate = new CreateOrder.RideEstimate
+                    Estimate = new RideEstimate
                         {
                             Price = 10,
                             Distance = 3
                         },
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 1,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = Provider.ApcuriumIbsProviderId,
                             Phone = "5145551212",
@@ -356,7 +356,7 @@ namespace apcurium.MK.Web.Tests
             });
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
@@ -364,7 +364,7 @@ namespace apcurium.MK.Web.Tests
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = 13,
                             Phone = "5145551212",
@@ -644,7 +644,7 @@ namespace apcurium.MK.Web.Tests
             });
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
@@ -652,7 +652,7 @@ namespace apcurium.MK.Web.Tests
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = 13,
                             Phone = "5145551212",
@@ -697,7 +697,7 @@ namespace apcurium.MK.Web.Tests
             });
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 PickupAddress = TestAddresses.GetAddress1(),
@@ -705,7 +705,7 @@ namespace apcurium.MK.Web.Tests
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Settings = new BookingSettings
                 {
-                    ChargeTypeId = 99,
+                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                     VehicleTypeId = 1,
                     ProviderId = 13,
                     Phone = "5145551212",
@@ -733,7 +733,7 @@ namespace apcurium.MK.Web.Tests
             rules.UpdateRule(rule);
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
@@ -741,7 +741,7 @@ namespace apcurium.MK.Web.Tests
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = 13,
                             Phone = "5145551212",
@@ -766,7 +766,7 @@ namespace apcurium.MK.Web.Tests
             rules.DeactivateRule(rule.Id);
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
@@ -774,7 +774,7 @@ namespace apcurium.MK.Web.Tests
                     DropOffAddress = TestAddresses.GetAddress2(),
                     Settings = new BookingSettings
                         {
-                            ChargeTypeId = 99,
+                            ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                             VehicleTypeId = 1,
                             ProviderId = 13,
                             Phone = "5145551212",

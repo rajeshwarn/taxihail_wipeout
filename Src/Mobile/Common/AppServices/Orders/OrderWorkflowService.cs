@@ -647,7 +647,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		private async Task<DirectionInfo> GetFareEstimate()
 		{
 			// Create order for fare estimate
-		    var order = new CreateOrder
+            var order = new CreateOrderRequest
 		    {
 		        Id = Guid.NewGuid(),
 		        PickupDate = await _pickupDateSubject.Take(1).ToTask(),
@@ -664,7 +664,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		}
 
 		public async Task PrepareForNewOrder()
-		{
+		{          
 			var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
 			if (isDestinationModeOpened)
 			{
@@ -678,8 +678,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_destinationAddressSubject.OnNext(new Address());
 			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
 			_pickupDateSubject.OnNext(null);
-			await SetBookingSettings (_accountService.CurrentAccount.Settings);
-			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
+		    if (_accountService.CurrentAccount != null)
+		    {
+                await SetBookingSettings(_accountService.CurrentAccount.Settings);
+            }
+            _estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 			_orderCanBeConfirmed.OnNext (false);
 			_cvvSubject.OnNext(string.Empty);
 			DisableBooking();
@@ -819,7 +822,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return await _accountPaymentQuestions.Take (1).ToTask ();
 		}
 
-		public async Task<OrderValidationResult> ValidateOrder(CreateOrder order = null)
+        public async Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order = null)
 		{
 			var orderToValidate = order ?? await GetOrder();
 			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
@@ -886,9 +889,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_orderCanBeConfirmed.OnNext (true);
 		}
 
-		private async Task<CreateOrder> GetOrder()
+        private async Task<CreateOrderRequest> GetOrder()
 		{
-			var order = new CreateOrder();
+            var order = new CreateOrderRequest();
 			order.Id = Guid.NewGuid();
 			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
 			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
@@ -901,7 +904,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var estimatedFare = await _estimatedFareDetailSubject.Take (1).ToTask();
 			if (estimatedFare != null) 
 			{
-				order.Estimate = new CreateOrder.RideEstimate
+				order.Estimate = new RideEstimate
 				{ 
 					Price = estimatedFare.Price, 
 					Distance = estimatedFare.Distance ?? 0

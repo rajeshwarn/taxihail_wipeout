@@ -548,6 +548,7 @@
 "Date"="Date";
 "ParameterButton"="Parameters";
 "Overdue_AddNewCard"="Update Credit Card";
+"ServiceErrorUnauthorized"="Your session has expired, please login again.";
 "LocationHistoryTitle"="Locations history";
 "ReceiptSent"="Receipt sent";
 "View_RideLinqStatus"="Status";
@@ -608,6 +609,7 @@
 "LinkPayPalConfirmation"="Link";
 "Notification_PaymentConfirmationPush"="Payment Confirmation";
 "HistoryDetailAuthorizationLabel"="Authorization:";
+"ServiceErrorCallTitle"="Server error";
 "OrderAirportView_BAD_AIRPORT_CODE"="An error occurred with the flight status provider. Airport code might not be set.";
 "DestinationMapTitle"="Destination location";
 "CreateAccountPhonePlaceHolder"="Mobile";

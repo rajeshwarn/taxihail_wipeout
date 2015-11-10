@@ -1,5 +1,9 @@
 ﻿<a href="#" data-action='select-order'>
-  <span class="location-title">{{localize "ibsOrderIdLabel"}} {{ibsOrderId}} ({{niceShortDateAndTime pickupDate}}) </span>
+  {{#if showOrderNumber}}
+    <span class="location-title">{{localize "ibsOrderIdLabel"}} {{ibsOrderId}} ({{niceShortDateAndTime pickupDate}}) </span>    
+  {{else}}
+    <span class="location-title">{{niceShortDateAndTime pickupDate}} </span>
+  {{/if}}
   <span class="location-value">{{pickupAddress.fullAddress}}</span>
   <span class="location-status">{{localize "statusLabel"}} <span class="location-status-display">{{orderStatusDisplay status}}</span> {{localize "statusClickLabel"}}</span>
 </a>

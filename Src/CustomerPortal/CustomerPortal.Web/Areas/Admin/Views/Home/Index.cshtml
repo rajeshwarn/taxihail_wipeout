@@ -51,8 +51,10 @@
                         <br />
                         <small><i>PO#: @company.Payment.PONumber</i></small>
                     </td>
-                    <td><span data-version data-key="@company.CompanyKey">P:@company.LastKnownProductionVersion</span> <br/>
-                        <span data-version-staging data-key="@company.CompanyKey">S:@company.LastKnownStagingVersion</span></td>
+                    <td>
+                        <span data-version data-key="@company.CompanyKey">P:@company.LastKnownProductionVersion</span><br/>
+                        <span data-version-staging data-key="@company.CompanyKey">S:@company.LastKnownStagingVersion</span>
+                    </td>
                     <td><a href="@Url.Action("Status", new { company.Id })">@company.Status</a></td>
                     <td>                        
                         <a href="@Url.Action("Index", "IBS", new { company.Id })" data-status title="IBS Setup">
@@ -64,29 +66,24 @@
                         <a href="@Url.Action("DeployCustomer", "Deployment", new { company.Id })" data-status title="Deployment">
                             <img src="~/Images/deploy.png" width="20" />
                         </a>
-                        
                     </td>
-                   
                     <td>
-                        
                         @if (!string.IsNullOrEmpty(company.Store.AndroidStoreUrl))
                         {
                             <a href="@company.Store.AndroidStoreUrl" data-status title="@company.Store.PublishedDateDisplay">
-                                <img src="~/Images/android.png" width="20" />
+                                <img src="~/Images/android.png" width="20"/>
                             </a>
                         }
                         @if (!string.IsNullOrEmpty(company.Store.AppleStoreId))
                         {
                             <a href="@company.Store.AppleStoreUrl" data-status title="@company.Store.PublishedDateDisplay">
-                                <img src="~/Images/apple.png" width="20" />
+                                <img src="~/Images/apple.png" width="20"/>
                             </a>
                         }
-                        
-                           <br />
-                            
-                        
+                        <br/>
+                    </td>
                 </tr>
-            }   
+            }
         </table>
     </div>
 </div>
@@ -102,17 +99,11 @@
             });
         }
     </script>
-    
-    
 
     <script type="text/javascript">
         $(function() {
             $('[data-status]').tipsy({ html: true, gravity: 'nw' });
         });
         $('[data-status]').tipsy({ html: true, gravity: 'nw' });
-
     </script>
-
-
-
 }

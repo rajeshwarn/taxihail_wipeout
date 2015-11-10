@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using apcurium.MK.Common.Diagnostic;
 using ServiceStack.CacheAccess;
 using ServiceStack.Text;
 
@@ -155,7 +154,11 @@ namespace apcurium.MK.Common.Caching
         {
             using (var context = _contextFactory.Invoke())
             {
-                if (context.Find(key) != null) return false;
+                if (context.Find(key) != null)
+                {
+                    return false;
+                }
+                
                 var item = new CacheItem(key, JsonSerializer.SerializeToString(value), expiresAt);
                 context.Set<CacheItem>().Add(item);
                 context.SaveChanges();
@@ -212,7 +215,13 @@ namespace apcurium.MK.Common.Caching
                 {
                     if (regex.IsMatch(item.Key))
                     {
-                        this.Remove(item.Key);
+                        Remove(item.Key);
+                        continue;
+                    }
+
+                    if (regex.IsMatch(item.Value))
+                    {
+                        Remove(item.Key);
                     }
                 }
             }

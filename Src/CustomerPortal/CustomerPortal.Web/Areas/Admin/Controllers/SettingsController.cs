@@ -2,33 +2,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Security.Cryptography;
-using System.Security.Principal;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
-using System.Web.Routing;
 using CustomerPortal.Web.Android;
 using CustomerPortal.Web.Areas.Admin.Models;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Helpers;
+using CustomerPortal.Web.Services;
 using CustomerPortal.Web.Services.Impl;
-using MongoDB.Bson;
 using MongoRepository;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Web.Script.Serialization;
-using CustomerPortal.Web.Services;
-using System.Globalization;
-using CustomerPortal.Web.Models;
-using CustomerPortal.Web.Entities.Network;
 
 #endregion
 
@@ -61,6 +48,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 "TwitterAuthorizeUrl", "TwitterCallback", "TwitterConsumerKey", "TwitterConsumerSecret",
                 "TwitterEnabled", "TwitterRequestTokenUrl", "ServiceUrl"
             };
+
             var company = Repository.GetById(id);
 
             foreach (var setting in company.CompanySettings)
@@ -98,8 +86,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("Index", new { id });
         }
 
-
-
         public ActionResult InitWebTheme(string id)
         {
             var templateCompany = Repository.First(c => c.CompanyKey == "TaxiHailDemo");
@@ -111,11 +97,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 Directory.CreateDirectory(destination);
             }
 
+            // copy everything from TaxiHailDemo WebThemes except logo.png and email_logo.png
             foreach (var sourceFile in sourceFiles)
             {
-
                 var fileName = Path.GetFileName(sourceFile);
-                if (fileName.ToLower() != "logo.png")
+                if (fileName.ToLower() != "logo.png" && fileName.ToLower() != "email_logo.png")
                 {
                     var destFile = Path.Combine(destination, fileName);
 
@@ -124,11 +110,9 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                         System.IO.File.Copy(sourceFile, destFile);
                     }
                 }
-
-
-
             }
 
+            // Get the logo from assets (logo.png or logo_1_5.png if it exists)
             var logo = new AssetsManager(id).GetAll().FirstOrDefault(f => Path.GetFileName(f).ToLower() == "logo.png");
             if (!string.IsNullOrEmpty(logo))
             {
@@ -138,8 +122,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     System.IO.File.Copy(logo, logoDestination);
                 }
             }
-
-
             logo = new AssetsManager(id).GetAll().FirstOrDefault(f => Path.GetFileName(f).ToLower() == "logo_1_5.png");
             if (!string.IsNullOrEmpty(logo))
             {
@@ -150,6 +132,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 }
             }
 
+            // Get the email_logo from logo_1_5.png
             var emailLogo = new AssetsManager(id).GetAll().FirstOrDefault(f => Path.GetFileName(f).ToLower() == "logo_1_5.png");
             if (!string.IsNullOrEmpty(emailLogo))
             {
@@ -166,7 +149,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         public ActionResult InitWithCity(string id, string city = null)
         {
             return RedirectToAction("Init", new { id = id, city = city });
-
         }
         public ActionResult Init(string id, string city = null)
         {
@@ -177,8 +159,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
 
             var company = Repository.GetById(id);
-            if (company == null) return HttpNotFound();
-
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
 
             var model = new InitSettingsModel { Company = company };
 
@@ -241,14 +225,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             if (cityInfo == null)
             {
                 model.Settings.Add("IBS.TimeDifference", new Value("0", true));
-                
             }
             else
             {
                 model.Settings.Add("IBS.TimeDifference", new Value((-1 * (TimeSpan.FromHours(-5).Ticks - cityInfo.TimeDifference.Ticks)).ToString(), true));
-                
             }
-
 
             model.Settings.Add("TaxiHail.ApplicationName", new Value(company.Application.AppName, true));
             model.Settings.Add("TaxiHail.ApplicationKey", new Value(company.CompanyKey, true));
@@ -262,21 +243,15 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             model.Settings.Add("ApplicationName", new Value(company.Application.AppName, true));
             model.Settings.Add("AppName", new Value(company.Application.AppName, true));
 
-
-
             model.Settings.Add("Package", new Value("com.apcurium.MK." + company.CompanyKey, false));
 
             model.Settings.Add("Client.AboutUsUrl", new Value(company.Application.AboutUsLink, true));
 
-
             model.Settings.Add("SupportEmail", new Value(company.Application.SupportContactEmail, true));
             model.Settings.Add("Client.SupportEmail", new Value(company.Application.SupportContactEmail, true));
 
-
             return View(model);
         }
-
-
 
         [HttpPost]
         [ValidateInput(false)]
@@ -284,7 +259,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             var company = Repository.GetById(id);
             company.CompanySettings = new List<CompanySetting>();
-
 
             var path = HostingEnvironment.MapPath("~/assets/DefaultSettings/Common.json");
             if (System.IO.File.Exists(path))
@@ -306,7 +280,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             UpdateCompany(company);
 
             return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
-
         }
 
         private static void AddOrUpdateSettings(Dictionary<string, Value> settings, Company company)
@@ -324,13 +297,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
         }
 
-
-
         public ActionResult Edit(string id)
         {
             var company = Repository.GetById(id);
-
-            if (company == null) return HttpNotFound();
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
 
             return PartialView(company);
         }
@@ -346,7 +319,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 var k = key.Substring(4, key.Length - 4);
 
                 company.CompanySettings.First(s => s.Key == k).Value = value;
-
             }
 
             if (form.AllKeys.Contains("NKEY1_Key") && !string.IsNullOrWhiteSpace(form["NKEY1_Key"]))
@@ -375,14 +347,12 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 });
             }
 
-
             UpdateCompany(company);
             return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
         }
 
         private void UpdateCompany(Company company)
         {
-
             var clientSettings = new[]
             {
                 "ApplicationName", "AppName",
@@ -459,15 +429,12 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     {
                         setting.IsClientSetting = true;
                     }
-
                 }
                 companies.Update(company);
             }
+
             return RedirectToAction("DefaultSettings");
         }
-
-
-
 
         public ActionResult Delete(string id, string key, bool isClient)
         {
@@ -481,12 +448,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
         }
 
-
         public ActionResult WebTheme(string id)
         {
-
             var company = Repository.GetById(id);
-            if (company == null) return HttpNotFound();
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
 
             var model = new FileModel
             {
@@ -500,11 +468,12 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
         public ActionResult Color(string id)
         {
-
             var company = Repository.GetById(id);
-            if (company == null) return HttpNotFound();
-
-
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            
             var model = new ColorModel
             {
                 Company = company,
@@ -524,25 +493,26 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         public ActionResult Color(string id, ColorModel model)
         {
             var company = Repository.GetById(id);
-            if (company == null) return HttpNotFound();
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
 
             if (!string.IsNullOrEmpty(model.WebAccentColor))
             {
                 new WebThemeFilesManager(id).SetAccentColor(ColorHelper.ColorFromHex("#FF" + model.WebAccentColor));
                 company.Style.WebAccentColor = "#" + model.WebAccentColor;
             }
+
             if (!string.IsNullOrEmpty(model.EmailFontColor))
             {
-
                 new WebThemeFilesManager(id).SetEmailFontColor(ColorHelper.ColorFromHex("#00" + model.EmailFontColor));
                 company.Style.EmailFontColor = "#" + model.EmailFontColor;
             }
 
             if (!string.IsNullOrEmpty(model.CompanyColor))
             {
-                new AssetsManager(id).SetStyleNavigationBarColor(
-                    ColorHelper.ColorFromHex("#FF" + model.CompanyColor));
-
+                new AssetsManager(id).SetStyleNavigationBarColor(ColorHelper.ColorFromHex("#FF" + model.CompanyColor));
                 company.Style.CompanyColor = "#" + model.CompanyColor;
             }
 
@@ -553,10 +523,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             if (!string.IsNullOrEmpty(model.TitleColor))
             {
-
-                new AssetsManager(id).SetStyleNavigationTitleBarColor(
-                    ColorHelper.ColorFromHex("#FF" + model.TitleColor));
-
+                new AssetsManager(id).SetStyleNavigationTitleBarColor(ColorHelper.ColorFromHex("#FF" + model.TitleColor));
                 company.Style.TitleColor = "#" + model.TitleColor;
             }
 
@@ -564,22 +531,19 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             {
                 company.Style.LoginColor = "#" + model.LoginColor;
             }
-
-          
-
+            
             Repository.Update(company);
-
-
-
-
+            
             return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
         }
-
-      
+        
         public ActionResult Assets(string id)
         {
             var company = Repository.GetById(id);
-            if (company == null) return HttpNotFound();
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
 
             var model = new FileModel
             {
@@ -597,7 +561,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             if (files != null)
             {
                 var company = Repository.GetById(id);
-                if (company == null) return HttpNotFound();
+                if (company == null)
+                {
+                    return HttpNotFound();
+                }
 
                 var fileManager = GetFileManager(type, id);
 
@@ -620,8 +587,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             var companyId = (string)filterContext.RouteData.Values["companyId"];
             filterContext.ToString();
         }
-
-
+        
         public ActionResult Image(string id, string filename, string type)
         {
             string filepath;
@@ -640,7 +606,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         public ActionResult DeleteFile(string id, string path, string type)
         {
             var company = Repository.GetById(id);
-            if (company == null) return HttpNotFound();
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+
             if (path != null)
             {
                 GetFileManager(type, id).Delete(path);
@@ -659,7 +629,6 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 {
                     GetFileManager(type, id).Delete(path[i]);
                 }
-
             }
             return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
         }

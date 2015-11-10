@@ -36,7 +36,8 @@
                 canCancel: status.isActive(),
                 isActive: status.isActive(),
                 canDelete:      !status.isActive(),
-                canPrintReceipt: status.canSendReceipt()
+                canPrintReceipt: status.canSendReceipt(),
+                showOrderNumber: TaxiHail.parameters.showOrderNumber
             });
 
             this.$el.html(this.renderTemplate(data));

@@ -216,6 +216,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             if (!this.Services().Settings.ShowPassengerPhone)
             {
                 lblPhone.RemoveFromSuperview();
+                lblCountryDialCode.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();
             }
                 
@@ -239,13 +240,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             Initialize();
 
             this.DelayBind(InitializeBinding);
-        }
-
-        public override void LayoutSubviews()
-        {
-            base.LayoutSubviews();
-
-            constraintHeight.Constant = this.Frame.Height;
         }
 
         private bool _removeBonusFromView;

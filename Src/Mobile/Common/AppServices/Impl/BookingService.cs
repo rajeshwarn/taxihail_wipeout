@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _accountService = accountService;
         }
 
-        public Task<OrderValidationResult> ValidateOrder(CreateOrder order)
+        public Task<OrderValidationResult> ValidateOrder(CreateOrderRequest order)
         {
             return Mvx.Resolve<OrderServiceClient>().ValidateOrder(order);
         }
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return isPairedResult != null;
         }
 
-        public async Task<OrderStatusDetail> CreateOrder(CreateOrder order)
+        public async Task<OrderStatusDetail> CreateOrder(CreateOrderRequest order)
         {
             order.ClientLanguageCode = _localize.CurrentLanguage;
 
@@ -212,7 +212,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 statusId.SoftEqual(VehicleStatuses.Common.MeterOffNotPayed);
         }
 
-        public async Task<DirectionInfo> GetFareEstimate(CreateOrder order)
+        public async Task<DirectionInfo> GetFareEstimate(CreateOrderRequest order)
         {
             var tarifMode = _appSettings.Data.Direction.TarifMode;
             var validationResult = await UseServiceClientAsync<OrderServiceClient, OrderValidationResult>(service => service.ValidateOrder(order, null, true));

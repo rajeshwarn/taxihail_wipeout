@@ -26,7 +26,6 @@ using apcurium.MK.Common.Provider;
 using AutoMapper;
 using CMTServices;
 using Microsoft.Practices.Unity;
-using CreateOrder = apcurium.MK.Booking.Api.Contract.Requests.CreateOrder;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
 using Tariff = apcurium.MK.Booking.Api.Contract.Requests.Tariff;
 
@@ -66,14 +65,14 @@ namespace apcurium.MK.Booking.Api
             Mapper.AssertConfigurationIsValid(profile.ProfileName);
 
             Mapper.CreateMap<BookingSettingsRequest, UpdateBookingSettings>();
-            Mapper.CreateMap<CreateOrder, Commands.CreateOrder>()
+            Mapper.CreateMap<CreateOrderRequest, Commands.CreateOrder>()
                 .ForMember(p => p.Id, options => options.Ignore())
                 .ForMember(p => p.EstimatedFare, opt => opt.ResolveUsing(x => x.Estimate.Price))
                 .ForMember(p => p.UserNote, opt => opt.ResolveUsing(x => x.Note))
                 .ForMember(p => p.OrderId,
                     options => options.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
 
-            Mapper.CreateMap<CreateOrder, SendBookingConfirmationEmail>()
+            Mapper.CreateMap<CreateOrderRequest, SendBookingConfirmationEmail>()
                 .ForMember(p => p.Id, options => options.Ignore());
 
             Mapper.CreateMap<PaymentSettings, Commands.CreateOrder.PaymentInformation>();
@@ -143,8 +142,7 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<PopularAddress, AddPopularAddress>();
             Mapper.CreateMap<PopularAddress, UpdatePopularAddress>();
 
-            Mapper.CreateMap<HailRequest, CreateOrder>();
-            Mapper.CreateMap<HailRequest.RideEstimate, CreateOrder.RideEstimate>();
+            Mapper.CreateMap<HailRequest, CreateOrderRequest>();
             Mapper.CreateMap<OrderKey, IbsOrderKey>();
             Mapper.CreateMap<IbsOrderKey, OrderKey>();
             Mapper.CreateMap<VehicleCandidate, IbsVehicleCandidate>();

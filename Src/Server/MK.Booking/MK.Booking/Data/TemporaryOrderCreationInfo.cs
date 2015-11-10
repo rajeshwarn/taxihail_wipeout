@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Data
     {
         public Guid OrderId { get; set; }
 
-        public AccountDetail Account { get; set; }
+        public Guid AccountId { get; set; }
 
         public CreateOrder Request { get; set; }
 

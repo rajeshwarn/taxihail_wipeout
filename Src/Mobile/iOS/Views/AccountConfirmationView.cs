@@ -35,14 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLayoutSubviews();
 
-            // ugly fix for iOS 7 bug with horizontal scrolling
-            // unlike iOS 8, the contentSize is a bit larger than the view, resulting in an undesired horizontal bounce
-            if (UIHelper.IsOS7)
+            if (confirmScrollViewer.ContentSize.Width > UIScreen.MainScreen.Bounds.Width)
             {
-                if (confirmScrollViewer.ContentSize.Width > UIScreen.MainScreen.Bounds.Width)
-                {
-                    confirmScrollViewer.ContentSize = new CoreGraphics.CGSize(UIScreen.MainScreen.Bounds.Width, confirmScrollViewer.ContentSize.Height);
-                }
+                confirmScrollViewer.ContentSize = new CoreGraphics.CGSize(UIScreen.MainScreen.Bounds.Width, confirmScrollViewer.ContentSize.Height);
             }
         }
 

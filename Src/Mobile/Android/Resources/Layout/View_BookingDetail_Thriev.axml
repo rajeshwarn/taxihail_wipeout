@@ -93,7 +93,6 @@
                 android:layout_height="wrap_content">
                 <TextView
                     style="@style/FormLabelDataText"
-                    android:text="@string/EstimatePrice"
                     android:layout_width="110dp"
                     android:gravity="right"
                     android:layout_height="wrap_content" />

@@ -1,25 +1,8 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Data;
+﻿using System;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.Jobs;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using AutoMapper;
-using CMTServices;
-
-
-#endregion
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -29,10 +12,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
-        public IbsOrderService(
-            IIBSServiceProvider ibsServiceProvider,
-            IServerSettings serverSettings,
-            ILogger logger)
+        public IbsOrderService(IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings, ILogger logger)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _logger = logger;

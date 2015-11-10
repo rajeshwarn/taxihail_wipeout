@@ -803,7 +803,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool IsConfirmationNoHidden
 		{
-			get { return !ConfirmationNoTxt.HasValue(); }
+			get 
+			{ 
+				return !ConfirmationNoTxt.HasValue() || !Settings.ShowOrderNumber; 
+			}
 		}
 
 	    public ICommand CallTaxiCommand

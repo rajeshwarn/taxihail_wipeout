@@ -37,13 +37,13 @@ namespace apcurium.MK.Web.Tests
             var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
             //Act
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
                     PickupDate = DateTime.Now,
                     DropOffAddress = TestAddresses.GetAddress2(),
-                    Estimate = new CreateOrder.RideEstimate
+                    Estimate = new RideEstimate
                         {
                             Distance = 3,
                             Price = 10
@@ -84,7 +84,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = await CreateAndAuthenticateTestAccount();
             var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
             {
                 Id = Guid.NewGuid(),
                 PickupDate = DateTime.Now,
@@ -125,7 +125,7 @@ namespace apcurium.MK.Web.Tests
                     NumberOfTaxi = 1,
                     Name = "Joe Smith"
                 },
-                Estimate = new CreateOrder.RideEstimate
+                Estimate = new RideEstimate
                 {
                     Distance = 3,
                     Price = 10
@@ -163,13 +163,13 @@ namespace apcurium.MK.Web.Tests
             var newAccount = await CreateAndAuthenticateTestAccount();
             var orderService = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             
-            var order = new CreateOrder
+            var order = new CreateOrderRequest
                 {
                     Id = Guid.NewGuid(),
                     PickupAddress = TestAddresses.GetAddress1(),
                     PickupDate = DateTime.Now,
                     DropOffAddress = TestAddresses.GetAddress2(),
-                    Estimate = new CreateOrder.RideEstimate
+                    Estimate = new RideEstimate
                         {
                             Distance = 3,
                             Price = 10
