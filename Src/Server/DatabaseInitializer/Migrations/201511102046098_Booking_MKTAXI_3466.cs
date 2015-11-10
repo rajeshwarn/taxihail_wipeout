@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.Migrations
                         OrderId = c.Guid(nullable: false),
                         LegacyDispatchId = c.String(),
                         DeviceName = c.String(),
+                        CreationDate = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.OrderId);
             

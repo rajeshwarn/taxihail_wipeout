@@ -10,7 +10,8 @@ namespace apcurium.MK.Booking.CommandHandlers
     public class NonDomainRelatedCommandHandler : 
         ICommandHandler<LogApplicationStartUp>,
         ICommandHandler<SaveTemporaryOrderCreationInfo>,
-        ICommandHandler<SaveTemporaryOrderPaymentInfo>
+        ICommandHandler<SaveTemporaryOrderPaymentInfo>,
+        ICommandHandler<AddVehicleIdMapping>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -62,6 +63,20 @@ namespace apcurium.MK.Booking.CommandHandlers
                 {
                     OrderId = command.OrderId,
                     Cvv = command.Cvv
+                });
+            }
+        }
+
+        public void Handle(AddVehicleIdMapping command)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new VehicleIdMappingDetail
+                {
+                    OrderId = command.OrderId,
+                    DeviceName = command.DeviceName,
+                    LegacyDispatchId = command.LegacyDispatchId,
+                    CreationDate = DateTime.UtcNow
                 });
             }
         }

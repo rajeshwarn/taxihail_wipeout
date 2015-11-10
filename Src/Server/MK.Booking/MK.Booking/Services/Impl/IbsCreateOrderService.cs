@@ -137,6 +137,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var vehicleCandidatesOfferedTheJob = new List<VehicleCandidate>();
 
+            // TODO
+
             for (var i = 0; i < dispatcherSettings.NumberOfCycles; i++)
             {
                 var vehicleCandidates = _dispatcherService.GetVehicleCandidates(
@@ -144,7 +146,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     new BestAvailableCompany
                     {
                         CompanyKey = companyKey,
-                        FleetId = companyFleetId
+                        FleetId = companyFleetId ?? _serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId
                     },
                     dispatcherSettings,
                     pickupAddress.Latitude,
@@ -155,7 +157,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (!vehicleCandidates.Any())
                 {
                     // Don't query IBS if we don't find any vehicles
-                    Thread.Sleep(dispatcherSettings.DurationOfOfferInSeconds);
+                    Thread.Sleep(TimeSpan.FromSeconds(dispatcherSettings.DurationOfOfferInSeconds));
                     continue;
                 }
 
@@ -200,7 +202,19 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         _dispatcherService.AssignJobToVehicle(companyKey, orderResult.OrderKey, bestVehicle);
 
-                        var vehicleMapping = _dispatcherService.GetLegacyVehicleIdMapping()[orderId];
+                        Tuple<string, string> vehicleMapping = null;
+                        if (bestVehicle.CandidateType == VehicleCandidateTypes.VctPimId)
+                        {
+                            vehicleMapping =
+                                _dispatcherService.GetLegacyVehicleIdMapping()[orderId].FirstOrDefault(
+                                    m => m.Item1 == bestVehicle.VehicleId);
+                        }
+                        else if (bestVehicle.CandidateType == VehicleCandidateTypes.VctNumber)
+                        {
+                            vehicleMapping =
+                                _dispatcherService.GetLegacyVehicleIdMapping()[orderId].FirstOrDefault(
+                                    m => m.Item2 == bestVehicle.VehicleId);
+                        }
 
                         _commandBus.Send(new AddVehicleIdMapping
                         {
