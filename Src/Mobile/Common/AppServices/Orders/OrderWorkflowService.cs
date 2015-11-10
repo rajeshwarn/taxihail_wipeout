@@ -677,7 +677,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		}
 
 		public async Task PrepareForNewOrder()
-		{
+		{          
 			var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
 			if (isDestinationModeOpened)
 			{
@@ -693,14 +693,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_pickupDateSubject.OnNext(null);
 		    if (_accountService.CurrentAccount != null)
 		    {
-		        await SetBookingSettings(_accountService.CurrentAccount.Settings);
-		    }
-		    else
-		    {
-                _bookingSettingsSubject.OnNext(new BookingSettings());
+                await SetBookingSettings(_accountService.CurrentAccount.Settings);
             }
-			
-			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
+            _estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 			_orderCanBeConfirmed.OnNext (false);
 			_cvvSubject.OnNext(string.Empty);
 			DisableBooking();

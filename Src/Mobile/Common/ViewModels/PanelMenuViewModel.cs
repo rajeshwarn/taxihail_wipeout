@@ -264,10 +264,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void SignOutAccepted()
 		{
-			CloseMenu();
-			_orderWorkflowService.PrepareForNewOrder().FireAndForget();
-			_accountService.SignOut();         
-			ShowViewModelAndClearHistory<LoginViewModel> ();
+            _accountService.SignOut();
+            Task.Run(() => _orderWorkflowService.PrepareForNewOrder()).FireAndForget();
+            CloseMenu();
+			ShowViewModelAndClearHistory<LoginViewModel>();
 		}
 
 		public ICommand NavigateToOrderHistory
