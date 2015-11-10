@@ -920,27 +920,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			try
 			{
-				Logger.LogMessage("RefreshStatus starts");
-
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
 
 				if (status == null)
 				{
-					Logger.LogMessage("Status for order {0} is not currently available.".InvariantCultureFormat(Order.Id));
-
 					return;
 				}
 
 				while (!CanRefreshStatus(status))
 				{
-					Logger.LogMessage("Waiting for Ibs Order Creation (ibs order id)");
 					await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
 					status = await _bookingService.GetOrderStatusAsync(Order.Id);
-
-					if (status.IBSOrderId.HasValue)
-					{
-						Logger.LogMessage("Received Ibs Order Id: {0}", status.IBSOrderId.Value);
-					}
 				}
 
 				cancellationToken.ThrowIfCancellationRequested();
@@ -1127,10 +1117,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Logger.LogMessage("RefreshStatus ended: an exception occurred.");
                 Logger.LogError(ex);
             }
-			finally
-			{			
-				Logger.LogMessage("RefreshStatus ends");
-			}
         }
 
 		private void DeviceOrientationChanged(DeviceOrientations deviceOrientation)

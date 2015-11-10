@@ -1,4 +1,6 @@
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reactive.Disposables;
@@ -7,9 +9,25 @@ namespace apcurium.MK.Common.Diagnostic
 {
     public abstract class BaseLogger : ILogger
     {
-        private static bool _flushNextWrite;
+		private static int LogFileMaximumSize = 200 * 1024;
 
-        public void LogError(Exception ex)
+		private static string FirstLogFileName = "taxihail_log_1.txt";
+		private static string SecondLogFileName = "taxihail_log_2.txt";
+		private static string MergedLogFileName = "taxihail_log.txt";
+
+		private static int RetainMergedFileTime = 1; // hours
+
+		private string firstLogFileFullName;
+		private string secondLogFileFullName;
+		private string mergedLogFileFullName;
+		private string activeFileFullName;
+		private string inactiveFileFullName;
+
+		private object _fileSwitchExclusiveAccess = new object();
+
+		private string messageBase;
+		
+		public void LogError(Exception ex)
         {
             if (ex is AggregateException) 
             {
@@ -86,24 +104,131 @@ namespace apcurium.MK.Common.Diagnostic
             }
         }
 
-        public void FlushNextWrite ()
-        {
-            _flushNextWrite = true;
-        }
+		protected abstract string GetBaseDirectory();
 
-        protected void DeleteLogIfNecessary()
-        {
-            var filePath = GetErrorLogPath ();
-            if (File.Exists(filePath) && _flushNextWrite)
-            {
-                File.Delete(filePath);
-            }
+		protected abstract string GetMessageBase();
 
-            _flushNextWrite = false;
-        }
+		private void SetActiveLogFile(long nextMessageLength)
+		{
+			if (!Directory.Exists(GetBaseDirectory()))
+			{
+				Directory.CreateDirectory(GetBaseDirectory());
+			}
 
-        public abstract string GetErrorLogPath();
+			if (firstLogFileFullName == null || secondLogFileFullName == null || mergedLogFileFullName == null)
+			{
+				firstLogFileFullName = Path.Combine(GetBaseDirectory(), FirstLogFileName);
+				secondLogFileFullName = Path.Combine(GetBaseDirectory(), SecondLogFileName);
 
-        protected abstract void Write(string message);
-    }
+				activeFileFullName = firstLogFileFullName;
+				inactiveFileFullName = secondLogFileFullName;
+
+				mergedLogFileFullName = Path.Combine(GetBaseDirectory(), MergedLogFileName);
+			}
+
+			long activeFileLength = 0;
+
+			if (File.Exists(activeFileFullName))
+			{
+				var activeFileInfo = new FileInfo(activeFileFullName);
+				activeFileLength = activeFileInfo.Length;
+			}
+
+			if (activeFileLength + nextMessageLength >= LogFileMaximumSize)
+			{
+				if (File.Exists(inactiveFileFullName))
+				{
+					File.Delete(inactiveFileFullName);
+				}
+
+				var tempFN = activeFileFullName;
+				activeFileFullName = inactiveFileFullName;
+				inactiveFileFullName = tempFN;
+			}
+
+			if (File.Exists(mergedLogFileFullName) && (DateTime.Now - (new FileInfo(mergedLogFileFullName)).LastWriteTime).TotalHours >= RetainMergedFileTime)
+			{
+				File.Delete(inactiveFileFullName);
+			}
+		}
+
+		private void Write(string message)
+		{
+			if (messageBase == null)
+			{
+				messageBase = GetMessageBase();
+			}
+
+			var messageWithUserName = message + messageBase;
+
+
+			lock (_fileSwitchExclusiveAccess)
+			{
+				SetActiveLogFile(messageWithUserName.Length);
+
+				File.AppendAllLines(activeFileFullName, new[] { messageWithUserName });
+			}
+
+
+			Console.WriteLine(messageWithUserName);
+		}
+
+		public string[] GetLogFilesFullName()
+		{
+			SetActiveLogFile(0);
+
+			var nonEmptyLogs = new List<string>();
+
+			lock (_fileSwitchExclusiveAccess)
+			{
+				if (File.Exists(inactiveFileFullName) && (new FileInfo(inactiveFileFullName)).Length > 0)
+				{
+					nonEmptyLogs.Add(inactiveFileFullName);
+				}
+
+				if (File.Exists(activeFileFullName) && (new FileInfo(activeFileFullName)).Length > 0)
+				{
+					nonEmptyLogs.Add(activeFileFullName);
+				}
+			}
+
+			return nonEmptyLogs.ToArray();
+		}
+
+		public string MergeLogFiles()
+		{
+			var logFiles = GetLogFilesFullName();
+
+			if (logFiles.Length > 0)
+			{
+				var mergedLogFile = Path.Combine(GetBaseDirectory(), MergedLogFileName);
+
+				File.Copy(logFiles[0], mergedLogFile, true);
+
+				for (int i = 1; i < logFiles.Length; i++)
+				{
+					var currentLogStream = File.OpenRead(logFiles[i]);
+					var currentStreamReader = new StreamReader(currentLogStream);
+
+					var h = currentStreamReader.ReadToEnd();
+					currentStreamReader.Close();
+					currentLogStream.Close();
+
+					File.AppendAllText(mergedLogFile, h);
+				}
+
+				return mergedLogFile;
+			}
+
+			return null;
+		}
+
+		public void RemoveMergedFile()
+		{
+			if (mergedLogFileFullName != null && File.Exists(mergedLogFileFullName))
+			{
+				File.Delete(mergedLogFileFullName);
+			}
+		}
+	}
 }

@@ -31,7 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     {
         protected override void OnRegistered(Context context, string registrationId)
         {
-            Log.Verbose(PushHandlerBroadcastReceiver.Tag, "GCM Registered: " + registrationId);
             //Send back to the server
             this.UseServiceClient<PushNotificationRegistrationServiceClient>(
                 service => { service.Register(registrationId, PushNotificationServicePlatform.BlackBerry); });
