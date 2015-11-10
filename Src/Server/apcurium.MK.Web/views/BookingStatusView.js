@@ -52,7 +52,8 @@
             var status = this.model.getStatus(),
                 data = _.extend(status.toJSON(), {
                     isActive: status.isActive(),
-                    callNumber: TaxiHail.parameters.defaultPhoneNumber
+                    callNumber: TaxiHail.parameters.defaultPhoneNumber,
+                    showOrderNumber: TaxiHail.parameters.showOrderNumber
                 });
 
             

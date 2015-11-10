@@ -375,9 +375,11 @@
                                                 <tr>
                                                     <td class="receipt_date">{{PickupDate}} - {{PickupTime}}</td>
                                                 </tr>
+                                                {{#ShowOrderNumber}}
                                                 <tr>
-                                                    <td valign=top style="text-align: center">{{ localize "Email_Body_OrderNo" }}{{IBSOrderId}}</td>
+                                                    <td valign=top style="text-align: center">{{ localize "Email_Body_OrderNo" }}{{iBSOrderId}}</td>
                                                 </tr>
+                                                {{/ShowOrderNumber}}
                                                 {{#ShowFareAndPaymentDetails}}
                                                 <tr>
                                                     <td class="receipt_price">{{ TotalFare }}</td>
