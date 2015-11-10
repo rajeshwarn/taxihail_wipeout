@@ -138,6 +138,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Android\Diagnostic\Logger.cs">
+      <Link>Diagnostic\Logger.cs</Link>
+    </Compile>
     <Compile Include="Activities\AlertDialogActivity.cs" />
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\CallTaxiActivity.cs" />
@@ -160,9 +163,6 @@
     <Compile Include="Converters\ColorEnumToAndroidColorConverter.cs" />
     <Compile Include="Converters\CoordinateConverter.cs" />
     <Compile Include="Converters\OrderStatusToTextColorConverter.cs" />
-    <Compile Include="Diagnostic\Logger.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
@@ -304,9 +304,7 @@
       <Name>MK.Booking.Mobile.Android</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Localization\Mapper\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
       <Visible>False</Visible>
