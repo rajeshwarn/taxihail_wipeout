@@ -8,6 +8,7 @@ using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CustomerPortal.Client;
 using Infrastructure.Messaging;
@@ -18,10 +19,10 @@ namespace apcurium.MK.Booking.Services.Impl
     {
         private readonly ILogger _logger;
         private readonly IIBSServiceProvider _ibsServiceProvider;
-        private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
         private readonly Dictionary<string, DispatcherSettingsResponse> _dispatcherSettings = new Dictionary<string, DispatcherSettingsResponse>();
+        private readonly Dictionary<Guid, Tuple<string, string>> _legacyVehicleIdMapping = new Dictionary<Guid, Tuple<string, string>>();
 
         public DispatcherService(
             ILogger logger,
@@ -32,7 +33,6 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             _logger = logger;
             _ibsServiceProvider = ibsServiceProvider;
-            _serverSettings = serverSettings;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
 
             _taxiHailNetworkHelper = new TaxiHailNetworkHelper(serverSettings, taxiHailNetworkServiceClient, commandBus, _logger);
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage("Hail request confirmed");
         }
 
-        public IEnumerable<VehicleCandidate> GetVehicleCandidates(BestAvailableCompany bestAvailableCompany, DispatcherSettingsResponse dispatcherSettings, double pickupLatitude, double pickupLongitude)
+        public IEnumerable<VehicleCandidate> GetVehicleCandidates(Guid orderId, BestAvailableCompany bestAvailableCompany, DispatcherSettingsResponse dispatcherSettings, double pickupLatitude, double pickupLongitude)
         {
             if (!bestAvailableCompany.FleetId.HasValue)
             {
@@ -86,12 +86,20 @@ namespace apcurium.MK.Booking.Services.Impl
                 .ThenBy(v => v.Eta)
                 .ToArray();
 
-            return availableVehicles.Select(vehicle => new VehicleCandidate
+            return availableVehicles.Select(vehicle =>
             {
-                CandidateType = VehicleCandidateTypes.VctPimId,
-                VehicleId = vehicle.DeviceName,
-                ETADistance = (int?)vehicle.DistanceToArrival ?? 0,
-                ETATime = (int?)vehicle.Eta ?? 0
+                _legacyVehicleIdMapping.Add(orderId, new Tuple<string, string>(vehicle.DeviceName, vehicle.LegacyDispatchId));
+
+                return new VehicleCandidate
+                {
+                    CandidateType =
+                        vehicle.LegacyDispatchId.HasValue()
+                            ? VehicleCandidateTypes.VctNumber
+                            : VehicleCandidateTypes.VctPimId,
+                    VehicleId = vehicle.LegacyDispatchId.HasValue() ? vehicle.LegacyDispatchId : vehicle.DeviceName,
+                    ETADistance = (int?) vehicle.DistanceToArrival ?? 0,
+                    ETATime = (int?) vehicle.Eta ?? 0
+                };
             });
         }
 
@@ -156,6 +164,11 @@ namespace apcurium.MK.Booking.Services.Impl
             _dispatcherSettings[response.Market] = dispatcherSettings;
 
             return dispatcherSettings;
+        }
+
+        public Dictionary<Guid, Tuple<string, string>> GetLegacyVehicleIdMapping()
+        {
+            return _legacyVehicleIdMapping;
         }
 
         private DispatcherSettingsResponse GetHailDispatcherSettings(string market)

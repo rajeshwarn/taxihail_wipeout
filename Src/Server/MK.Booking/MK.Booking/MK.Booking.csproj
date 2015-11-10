@@ -228,6 +228,7 @@
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
     <Compile Include="EventHandlers\UserTaxiHailNetworkSettingsGenerator.cs" />
+    <Compile Include="EventHandlers\VehicleIdMappingGenerator.cs" />
     <Compile Include="EventHandlers\VehicleTypeDetailGenerator.cs" />
     <Compile Include="Helpers\TaxiHailNetworkHelper.cs" />
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
@@ -319,6 +320,7 @@
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
     <Compile Include="ReadModel\TemporaryOrderCreationInfo.cs" />
     <Compile Include="ReadModel\TemporaryOrderPaymentInfoDetail.cs" />
+    <Compile Include="ReadModel\VehicleIdMappingDetail.cs" />
     <Compile Include="ReadModel\VehicleTypeDetail.cs" />
     <Compile Include="Resources\Aexid.fr.Designer.cs">
       <DependentUpon>Aexid.fr.resx</DependentUpon>

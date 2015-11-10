@@ -3,13 +3,19 @@ namespace apcurium.MK.Common.Entity
 {
     public enum VehicleCandidateTypes
     {
-        // Vehicle number type
+        /// <summary>
+        /// Vehicle number type
+        /// </summary>
         VctNumber,
 
-        // DevieName type
+        /// <summary>
+        /// DeviceName type
+        /// </summary>
         VctPimId,
 
-        // Medallion type
+        /// <summary>
+        /// Medallion type
+        /// </summary>
         VctMedallion
     }
 }

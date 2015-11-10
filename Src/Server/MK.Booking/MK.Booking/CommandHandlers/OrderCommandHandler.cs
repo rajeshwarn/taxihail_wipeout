@@ -29,7 +29,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateAutoTip>,
         ICommandHandler<LogOriginalEta>,
         ICommandHandler<UpdateOrderNotificationDetail>,
-		ICommandHandler<CreateReportOrder>
+		ICommandHandler<CreateReportOrder>,
+        ICommandHandler<AddVehicleIdMapping>
     {
         private readonly IEventSourcedRepository<Order> _repository;
 
@@ -244,6 +245,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Get(command.OrderId);
             order.UpdateOrderNotificationDetail(command);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(AddVehicleIdMapping command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.AddVehicleIdMapping(command.DeviceName, command.LegacyDispatchId);
             _repository.Save(order, command.Id.ToString());
         }
     }

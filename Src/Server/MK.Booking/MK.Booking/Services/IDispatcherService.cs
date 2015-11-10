@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common.Entity;
@@ -18,6 +19,8 @@ namespace apcurium.MK.Booking.Services
 
         DispatcherSettingsResponse GetSettings(double latitude, double longitude, bool isHailRequest = false);
 
-        IEnumerable<VehicleCandidate> GetVehicleCandidates(BestAvailableCompany bestAvailableCompany, DispatcherSettingsResponse dispatcherSettings, double pickupLatitude, double pickupLongitude);
+        IEnumerable<VehicleCandidate> GetVehicleCandidates(Guid orderId, BestAvailableCompany bestAvailableCompany, DispatcherSettingsResponse dispatcherSettings, double pickupLatitude, double pickupLongitude);
+
+        Dictionary<Guid, Tuple<string, string>> GetLegacyVehicleIdMapping();
     }
 }

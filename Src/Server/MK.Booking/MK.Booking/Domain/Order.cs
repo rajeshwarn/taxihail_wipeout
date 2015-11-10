@@ -433,6 +433,15 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void AddVehicleIdMapping(string deviceName, string legacyDispatchId)
+        {
+            Update(new VehicleIdMappingAdded
+            {
+                DeviceName = deviceName,
+                LegacyDispatchId = legacyDispatchId
+            });
+        }
+
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
             // special case for migration

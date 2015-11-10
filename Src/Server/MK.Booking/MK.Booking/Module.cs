@@ -84,7 +84,8 @@ namespace apcurium.MK.Booking
                     c.Resolve<ILogger>(),
                     c.Resolve<IIBSServiceProvider>(),
                     c.Resolve<IUpdateOrderStatusJob>(),
-                    c.Resolve<IDispatcherService>())));
+                    c.Resolve<IDispatcherService>(),
+                    c.Resolve<ICommandBus>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
@@ -178,6 +179,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, PromotionTriggerGenerator>("PromotionTriggerGenerator");
             container.RegisterType<IEventHandler, OverduePaymentDetailGenerator>("OverduePaymentDetailGenerator");
             container.RegisterType<IEventHandler, FeesDetailsGenerator>("FeesDetailsGenerator");
+            container.RegisterType<IEventHandler, VehicleIdMappingGenerator>("VehicleIdMappingGenerator");
 
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");

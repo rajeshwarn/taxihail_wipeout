@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
@@ -32,6 +33,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly IDispatcherService _dispatcherService;
+        private readonly ICommandBus _commandBus;
 
         public IbsCreateOrderService(IServerSettings serverSettings,
             IVehicleTypeDao vehicleTypeDao,
@@ -39,7 +41,8 @@ namespace apcurium.MK.Booking.Services.Impl
             ILogger logger,
             IIBSServiceProvider ibsServiceProvider,
             IUpdateOrderStatusJob updateOrderStatusJob,
-            IDispatcherService dispatcherService)
+            IDispatcherService dispatcherService,
+            ICommandBus commandBus)
         {
             _serverSettings = serverSettings;
             _vehicleTypeDao = vehicleTypeDao;
@@ -48,6 +51,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _ibsServiceProvider = ibsServiceProvider;
             _updateOrderStatusJob = updateOrderStatusJob;
             _dispatcherService = dispatcherService;
+            _commandBus = commandBus;
         }
 
         public IBSOrderResult CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
@@ -108,6 +112,7 @@ namespace apcurium.MK.Booking.Services.Impl
             for (int i = 0; i < dispatcherSettings.NumberOfCycles; i++)
             {
                 var vehicleCandidates = _dispatcherService.GetVehicleCandidates(
+                    orderId,
                     new BestAvailableCompany
                     {
                         CompanyKey = companyKey,
@@ -165,6 +170,15 @@ namespace apcurium.MK.Booking.Services.Impl
                         try
                         {
                             _dispatcherService.AssignJobToVehicle(companyKey, orderResult.OrderKey, bestVehicle);
+
+                            var vehicleMapping = _dispatcherService.GetLegacyVehicleIdMapping()[orderId];
+
+                            _commandBus.Send(new AddVehicleIdMapping
+                            {
+                                OrderId = orderResult.OrderKey.TaxiHailOrderId,
+                                DeviceName = vehicleMapping.Item1,
+                                LegacyDispatchId = vehicleMapping.Item2
+                            });
                         }
                         catch (Exception)
                         {
