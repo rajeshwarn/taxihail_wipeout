@@ -204,7 +204,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                     }
                     ToogleKeyboard(true, owner);
                     HideAnimate();
-
                 };
             _twoButtonsPositive.Text = Mvx.Resolve<ILocalization>()["OkButtonText"];
             _twoButtonsPositive.Click += (sender, e) => 

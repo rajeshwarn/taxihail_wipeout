@@ -7,7 +7,7 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Activities;
-
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Messages;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -305,25 +305,33 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             dispatcher.RequestMainThreadAction(async () => 
                 {
-                    var result = await AlertDialogHelper.ShowPromptDialog(
-                        Context.Activity,
-                        title,
-                        message,
-                        () => 
-                        {
-                            tcs.TrySetResult (null);
-                            if(cancelAction != null)
-                            {
-                                cancelAction();
-                            }
-                        },
-                        isNumericOnly,
-                        inputText);
-                    
-                    if(result != null)
+                    try
                     {
-                        tcs.TrySetResult (result);
+                        var result = await AlertDialogHelper.ShowPromptDialog(
+                            Context.Activity,
+                            title,
+                            message,
+                            () =>
+                            {
+                                tcs.TrySetResult(null);
+                                if (cancelAction != null)
+                                {
+                                    cancelAction();
+                                }
+                            },
+                            isNumericOnly,
+                            inputText);
+
+                        if (result != null)
+                        {
+                            tcs.TrySetResult(result);
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(ex);
+                    }
+                    
                 });
 
 			return tcs.Task;

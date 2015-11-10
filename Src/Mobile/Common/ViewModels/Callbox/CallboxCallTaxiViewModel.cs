@@ -17,6 +17,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                     var name = await this.Services().Message
                         .ShowPromptDialog(localize["BookTaxiTitle"],localize["BookTaxiPassengerName"]);
 
+				    if (name == null)
+				    {
+				        return;
+				    }
+
 					try
 					{
 						ShowViewModel<CallboxOrderListViewModel> (new { passengerName = name });

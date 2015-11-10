@@ -1,4 +1,5 @@
 using System;
+using apcurium.MK.Booking.Mobile.Client;
 using Android.App;
 using Android.Views;
 using Android.Widget;
@@ -30,33 +31,26 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 #endif 
         }
 
-        private void PromptServer()
+        private async void PromptServer()
         {
-            var alert = new AlertDialog.Builder(this);
-            alert.SetTitle("Server Configuration");
-            alert.SetMessage("Enter Server Url");
-
-	        var settings = ViewModel.Settings;
-			var input = new EditText(this)
-			{
-				Text = settings.ServiceUrl
-			};
-
-	        alert.SetView(input);
-
-            alert.SetPositiveButton("Ok", (s, e) =>
+            try
             {
-                var serverUrl = input.Text;
-				settings.ServiceUrl = serverUrl;
-	
-            });
+                var serviceUrl = await this.Services().Message.ShowPromptDialog("Server Configuration",
+                    "Enter Server Url",
+                    null,
+                    false,
+                    this.Services().Settings.ServiceUrl
+                );
 
-            alert.SetNegativeButton("Cancel", (s, e) =>
+                if (serviceUrl != null)
+                {
+                    ViewModel.SetServerUrl(serviceUrl);
+                }
+            }
+            catch (Exception ex)
             {
-
-            });
-
-            alert.Show();
+                Console.WriteLine(ex.Message);
+            }
         }
 
         protected override int ViewTitleResourceId

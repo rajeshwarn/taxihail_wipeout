@@ -5,6 +5,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
@@ -60,6 +61,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					return SignIn();
                 });
             }
+        }
+
+        public async void SetServerUrl(string serverUrl)
+        {
+            using (this.Services().Message.ShowProgress())
+            {
+                await InnerSetServerUrl(serverUrl);
+            }
+        }
+
+        private async Task InnerSetServerUrl(string serverUrl)
+        {
+            await Container.Resolve<IAppSettings>().ChangeServerUrl(serverUrl);
+            this.Services().ApplicationInfo.ClearAppInfo();
+            _accountService.ClearReferenceData();
         }
 
         private async Task SignIn()
