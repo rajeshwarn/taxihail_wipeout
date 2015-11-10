@@ -108,7 +108,7 @@ namespace apcurium.MK.Common.Diagnostic
 
 		protected abstract string GetMessageBase();
 
-		void SetActiveLogFile(long nextMessageLength)
+		private void SetActiveLogFile(long nextMessageLength)
 		{
 			if (!Directory.Exists(GetBaseDirectory()))
 			{

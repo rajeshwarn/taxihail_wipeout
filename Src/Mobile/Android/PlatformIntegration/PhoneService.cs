@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 eventValues.Put("eventTimezone", "UTC");
                 eventValues.Put("eventEndTimezone", "UTC");
 
-                Uri eventUri = Context.ApplicationContext.ContentResolver.Insert(Uri.Parse(eventUriString), eventValues);
+                var eventUri = Context.ApplicationContext.ContentResolver.Insert(Uri.Parse(eventUriString), eventValues);
                 long eventId = long.Parse(eventUri.LastPathSegment);
 
 

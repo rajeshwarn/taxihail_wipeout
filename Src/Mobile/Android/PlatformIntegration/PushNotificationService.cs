@@ -149,11 +149,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-        protected override bool OnRecoverableError(Context context, string errorId)
-        {
-            return base.OnRecoverableError(context, errorId);
-        }
-
         protected override void OnError(Context context, string errorId)
         {
             Log.Error(PushHandlerBroadcastReceiver.Tag, "GCM Error: " + errorId);
