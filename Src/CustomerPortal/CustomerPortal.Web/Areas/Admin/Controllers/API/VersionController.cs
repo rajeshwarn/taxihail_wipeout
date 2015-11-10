@@ -60,8 +60,9 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
                 var data = JsonConvert.DeserializeObject<CreateNewVersionRequest>(provider.FormData["data"]);
 
-                if (String.IsNullOrEmpty(data.CompanyKey) || String.IsNullOrEmpty(data.VersionNumber) ||
-                    String.IsNullOrEmpty(data.WebsiteUrl))
+                if (string.IsNullOrEmpty(data.CompanyKey) || 
+                    string.IsNullOrEmpty(data.VersionNumber) ||
+                    string.IsNullOrEmpty(data.WebsiteUrl))
                 {
                     DeleteTemporaryFiles(provider.FileData);
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Missing parameters");
