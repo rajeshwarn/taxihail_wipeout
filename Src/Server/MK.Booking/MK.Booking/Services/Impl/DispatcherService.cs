@@ -81,7 +81,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 dispatcherSettings.Market,
                 pickupLatitude,
                 pickupLongitude,
-                fleetIds: new[] { bestAvailableCompany.FleetId.Value })
+                fleetIds: new[] { bestAvailableCompany.FleetId.Value },
+                returnAll: true)
                 .OrderBy(v => v.Eta.HasValue)
                 .ThenBy(v => v.Eta)
                 .ToArray();
