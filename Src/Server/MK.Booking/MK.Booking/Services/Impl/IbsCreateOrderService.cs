@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     pickupAddress.Latitude,
                     pickupAddress.Longitude);
 
-                vehicleCandidates = FilterOutVehiclesAlreadyOfferedTheJobAndTakeBySetting(vehicleCandidates, vehicleCandidatesOfferedTheJob, dispatcherSettings);
+                vehicleCandidates = FilterOutVehiclesAlreadyOfferedTheJob(vehicleCandidates, vehicleCandidatesOfferedTheJob, dispatcherSettings);
 
                 if (!vehicleCandidates.Any())
                 {
@@ -186,42 +186,51 @@ namespace apcurium.MK.Booking.Services.Impl
                 // Fetch vehicle candidates (who have accepted the hail request) only if order was successfully created on IBS
                 var candidatesResponse = _dispatcherService.WaitForCandidatesResponse(companyKey, orderResult.OrderKey, dispatcherSettings).ToArray();
 
+                if (isHailRequest)
+                {
+                    orderResult.VehicleCandidates = Mapper.Map<IbsVehicleCandidate[]>(candidatesResponse);
+                    break;
+                }
+
                 if (candidatesResponse.Any())
                 {
-                    if (isHailRequest)
+                    var bestVehicle = Mapper.Map<IbsVehicleCandidate>(FindBestVehicleCandidate(candidatesResponse));
+
+                    try
                     {
-                        orderResult.VehicleCandidates = Mapper.Map<IbsVehicleCandidate[]>(candidatesResponse);
+                        _dispatcherService.AssignJobToVehicle(companyKey, orderResult.OrderKey, bestVehicle);
+
+                        var vehicleMapping = _dispatcherService.GetLegacyVehicleIdMapping()[orderId];
+
+                        _commandBus.Send(new AddVehicleIdMapping
+                        {
+                            OrderId = orderResult.OrderKey.TaxiHailOrderId,
+                            DeviceName = vehicleMapping.Item1,
+                            LegacyDispatchId = vehicleMapping.Item2
+                        });
+
+                        break;
+
                     }
-                    else
+                    catch (Exception)
                     {
-                        // TODO: find best vehicle
-                        var bestVehicle = Mapper.Map<IbsVehicleCandidate>(candidatesResponse.FirstOrDefault());
-
-                        try
-                        {
-                            _dispatcherService.AssignJobToVehicle(companyKey, orderResult.OrderKey, bestVehicle);
-
-                            var vehicleMapping = _dispatcherService.GetLegacyVehicleIdMapping()[orderId];
-
-                            _commandBus.Send(new AddVehicleIdMapping
-                            {
-                                OrderId = orderResult.OrderKey.TaxiHailOrderId,
-                                DeviceName = vehicleMapping.Item1,
-                                LegacyDispatchId = vehicleMapping.Item2
-                            });
-                        }
-                        catch (Exception)
-                        {
-                            // Do nothing    
-                        }
+                        // Do nothing
                     }
                 }
+
+                CancelIbsOrder(orderResult.OrderKey.IbsOrderId, companyKey, phone, ibsAccountId);
             }
 
             return Mapper.Map<IBSOrderResult>(orderResult);
         }
 
-        private IEnumerable<VehicleCandidate> FilterOutVehiclesAlreadyOfferedTheJobAndTakeBySetting(IEnumerable<VehicleCandidate> vehicleCandidates, List<VehicleCandidate> vehicleCandidatesOfferedTheJob, DispatcherSettingsResponse dispatcherSettings)
+        private VehicleCandidate FindBestVehicleCandidate(IEnumerable<VehicleCandidate> vehicleCandidates)
+        {
+            // Order by ETA
+            return vehicleCandidates.OrderBy(vehicle => vehicle.ETATime).First();
+        }
+
+        private IEnumerable<VehicleCandidate> FilterOutVehiclesAlreadyOfferedTheJob(IEnumerable<VehicleCandidate> vehicleCandidates, List<VehicleCandidate> vehicleCandidatesOfferedTheJob, DispatcherSettingsResponse dispatcherSettings)
         {
             var filteredList = vehicleCandidates
                 .Where(vehicleCandidate => !vehicleCandidatesOfferedTheJob.Exists(x => x.VehicleId == vehicleCandidate.VehicleId))
@@ -233,26 +242,31 @@ namespace apcurium.MK.Booking.Services.Impl
             return filteredList;
         }
 
-        public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId)
+        private void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, int ibsAccountId)
         {
             // Cancel order on current company IBS
             if (ibsOrderId.HasValue)
             {
-                var currentIbsAccountId = _accountDao.GetIbsAccountId(accountId, companyKey);
-                if (currentIbsAccountId.HasValue)
+                _logger.LogMessage(string.Format("Cancelling IBSOrder {0}, on company {1}", ibsOrderId, companyKey));
+
+                // We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride...
+                // After 5 time, we are giving up. But we assume the order is completed.
+                Task.Factory.StartNew(() =>
                 {
-                    _logger.LogMessage(string.Format("Cancelling IBSOrder {0}, on company {1}", ibsOrderId, companyKey));
+                    Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(companyKey)
+                        .CancelOrder(ibsOrderId.Value, ibsAccountId, phone);
 
-                    // We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride...
-                    // After 5 time, we are giving up. But we assume the order is completed.
-                    Task.Factory.StartNew(() =>
-                    {
-                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(companyKey)
-                            .CancelOrder(ibsOrderId.Value, currentIbsAccountId.Value, phone);
+                    cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
+                });
+            }
+        }
 
-                        cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
-                    });
-                }
+        public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId)
+        {
+            var ibsAccountId = _accountDao.GetIbsAccountId(accountId, companyKey);
+            if (ibsAccountId.HasValue)
+            {
+                CancelIbsOrder(ibsOrderId, companyKey, phone, ibsAccountId.Value);
             }
         }
 
