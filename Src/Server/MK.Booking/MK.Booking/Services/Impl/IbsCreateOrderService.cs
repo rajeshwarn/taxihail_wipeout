@@ -104,6 +104,35 @@ namespace apcurium.MK.Booking.Services.Impl
             var dispatcherSettings = _dispatcherService.GetSettings(market, isHailRequest: isHailRequest);
             IbsResponse orderResult = null;
 
+            if (dispatcherSettings.NumberOfOffersPerCycle == 0)
+            {
+                // IBS is handling the dispatch
+                orderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+                    orderId,
+                    providerId,
+                    ibsAccountId,
+                    name,
+                    phone,
+                    passengers,
+                    vehicleTypeId,
+                    ibsChargeTypeId,
+                    ibsInformationNote,
+                    pickupDate,
+                    ibsPickupAddress,
+                    ibsDropOffAddress,
+                    accountNumberString,
+                    customerNumber,
+                    prompts,
+                    promptsLength,
+                    defaultVehicleTypeId,
+                    tipIncentive,
+                    fare);
+
+                return Mapper.Map<IBSOrderResult>(orderResult);
+            }
+
+            var vehicleCandidatesOfferedTheJob = new List<VehicleCandidate>();
+
             // TODO Keep track of vehicles that were already called
             for (int i = 0; i < dispatcherSettings.NumberOfCycles; i++)
             {
