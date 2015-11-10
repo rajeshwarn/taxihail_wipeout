@@ -916,7 +916,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendPush(Guid accountId, string alert, Dictionary<string, object> data)
+        private void SendPush(Guid accountId, string alert, Dictionary<string, object> data)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -954,7 +954,12 @@ namespace apcurium.MK.Booking.Services.Impl
             _smsService.Send(phoneNumber, alert);
         }
 
-        private bool ShouldSendNotification(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
+		public void SendCmtPaymentFail(Guid accountId, string alertText)
+		{
+			SendPushOrSms(accountId, alertText, new Dictionary<string, object>());
+		}
+
+		private bool ShouldSendNotification(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
         {
             var companySettings = _configurationDao.GetNotificationSettings();
             var accountSettings = _configurationDao.GetNotificationSettings(accountId);

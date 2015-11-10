@@ -206,17 +206,17 @@ namespace apcurium.MK.Booking.Api.Services
 					{
 						switch (trip.ErrorCode)
 						{
-							case 104:
-								_notificationService.SendPush(accountId, _resources.Get("CreditCardDeclinedOnPreauthorizationErrorText", request.ClientLanguageCode), new Dictionary<string, object>());
+							case CmtErrorCodes.CreditCardDeclinedOnPreauthorization:
+								_notificationService.SendCmtPaymentFail(accountId, _resources.Get("CreditCardDeclinedOnPreauthorizationErrorText", request.ClientLanguageCode));
 								break;
 
-							case 110:
-								_notificationService.SendPush(accountId, _resources.Get("CreditCardUnanbleToPreathorizeErrorText", request.ClientLanguageCode), new Dictionary<string, object>());
+							case CmtErrorCodes.UnablePreauthorizeCreditCard:
+								_notificationService.SendCmtPaymentFail(accountId, _resources.Get("CreditCardUnanbleToPreathorizeErrorText", request.ClientLanguageCode));
 								break;
 
-							case 103:
+							case CmtErrorCodes.UnableToPair:
 							default:
-								_notificationService.SendPush(accountId, _resources.Get("TripUnableToPairErrorText", request.ClientLanguageCode), new Dictionary<string, object>());
+								_notificationService.SendCmtPaymentFail(accountId, _resources.Get("TripUnableToPairErrorText", request.ClientLanguageCode));
 								break;
 						}
 					}
