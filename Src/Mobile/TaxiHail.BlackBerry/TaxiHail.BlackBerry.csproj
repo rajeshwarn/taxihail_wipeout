@@ -225,14 +225,6 @@
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
-      <Project>{FD56EFB1-2ED8-4A8A-B7AB-80EB36CF03EB}</Project>
-      <Name>CMTPayment.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.Android.csproj">
-      <Project>{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}</Project>
-      <Name>MK.Booking.Maps.Android</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Libraries\SourceCode\MapBox.Sdk\MapBox.Sdk\MapBox.Sdk.csproj">
       <Project>{13802257-329F-4EF6-B845-70CA0652B6AD}</Project>
       <Name>MapBox.Sdk</Name>
