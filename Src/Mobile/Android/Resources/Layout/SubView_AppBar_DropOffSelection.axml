@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="56dp"
+    android:layout_gravity="center_horizontal|bottom"
+    android:gravity="center_vertical"
+    android:background="@drawable/StatusBottomBarBackground">
+    <Button
+        android:id="@+id/CancelBtn"
+        style="@style/ButtonActionRedStyle"
+        android:layout_marginTop="13dip"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/HeightButton"
+        android:layout_weight="1"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip"
+        android:layout_gravity="center_vertical"
+        android:text="@string/Cancel"
+        local:MvxBind="Click Cancel" />
+    <Button
+        android:id="@+id/OkBtn"
+        style="@style/ButtonActionGreenStyle"
+        android:layout_marginTop="13dip"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/HeightButton"
+        android:layout_weight="1"
+        android:layout_marginRight="8dip"
+        android:layout_gravity="center_vertical"
+        android:text="@string/OkButtonText"
+        local:MvxBind="Click SaveDropOff" />
+</LinearLayout>

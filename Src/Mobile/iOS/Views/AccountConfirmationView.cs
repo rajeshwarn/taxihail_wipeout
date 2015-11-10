@@ -31,6 +31,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			txtCode.BecomeFirstResponder ();
 		}
 
+        public override void ViewDidLayoutSubviews()
+        {
+            base.ViewDidLayoutSubviews();
+
+            if (confirmScrollViewer.ContentSize.Width > UIScreen.MainScreen.Bounds.Width)
+            {
+                confirmScrollViewer.ContentSize = new CoreGraphics.CGSize(UIScreen.MainScreen.Bounds.Width, confirmScrollViewer.ContentSize.Height);
+            }
+        }
+
         public override void ViewDidLoad ()
         {
 			base.ViewDidLoad ();

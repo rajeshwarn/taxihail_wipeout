@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             CountryCode countryCode = CountryCode.GetCountryCodeByIndex(CountryCode.GetCountryCodeIndexByCountryISOCode(request.Country));
 
-            if (PhoneHelper.IsNumberPossible(countryCode, request.Phone))
+            if (PhoneHelper.IsPossibleNumber(countryCode, request.Phone))
             {
                 request.Phone = PhoneHelper.GetDigitsFromPhoneNumber(request.Phone);
             }

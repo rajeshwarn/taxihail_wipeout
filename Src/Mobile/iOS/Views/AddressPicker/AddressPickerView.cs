@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
             TableView = new UITableView(new CGRect(), UITableViewStyle.Plain)
             {
-                BackgroundView = new  UIView { BackgroundColor = UIColor.Clear },
+                BackgroundView = new  UIView { BackgroundColor = UIColor.FromRGB(242, 242, 242) },
                 BackgroundColor = UIColor.FromRGB(242, 242, 242),
                 SeparatorColor = UIColor.Clear,
                 SeparatorStyle = UITableViewCellSeparatorStyle.None,
@@ -197,14 +197,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 			});
 		}
 
-        protected override void DrawStroke(CoreGraphics.CGColor fillColor, CGRect rect)
+        protected override void DrawStroke()
         {
             //nothing here, no shadow
-        }
-
-        protected override void DrawBackground(CoreGraphics.CGContext context, CGRect rect, UIBezierPath roundedRectanglePath, CoreGraphics.CGColor fillColor)
-        {
-            //nothing here, we don't want the semitransparent background
         }
     }
 }

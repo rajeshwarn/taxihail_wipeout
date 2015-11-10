@@ -63,7 +63,7 @@
     <Compile Include="Requests\ClientPopularAddress.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\ConfirmationCodeRequest.cs" />
-    <Compile Include="Requests\CreateOrder.cs" />
+    <Compile Include="Requests\CreateOrderRequest.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
     <Compile Include="Requests\CurrentAccountPhoneRequest.cs" />

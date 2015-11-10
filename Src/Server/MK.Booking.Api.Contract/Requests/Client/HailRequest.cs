@@ -58,18 +58,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Client
         /// </summary>
         public int? OrderFleetId { get; set; }
 
-        public class RideEstimate
-        {
-            /// <summary>
-            ///     Price including VAT
-            /// </summary>
-            public double? Price { get; set; }
-
-            public double Distance { get; set; }
-        }
-
         public bool FromWebApp { get; set; }
 
         public string Cvv { get; set; }
+
+        public double? TipIncentive { get; set; }
     }
 }

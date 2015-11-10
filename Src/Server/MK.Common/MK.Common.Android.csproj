@@ -91,6 +91,7 @@
     <Compile Include="Entity\PickupPoint.cs" />
     <Compile Include="Entity\RatingScore.cs" />
     <Compile Include="Entity\RatingTypeWrapper.cs" />
+    <Compile Include="Entity\RideEstimate.cs" />
     <Compile Include="Entity\Rule.cs" />
     <Compile Include="Entity\RuleCategory.cs" />
     <Compile Include="Entity\RuleType.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\LocalAvailableVehiclesModes.cs" />
+    <Compile Include="Enumeration\RateApplicationState.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />

@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using System.Reflection;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -8,6 +9,8 @@ using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.EventSourcing;
@@ -54,6 +57,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IEventSourcedRepository<Account> _repository;
+
 
         public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService, Func<BookingDbContext> contextFactory)
         {
@@ -171,10 +175,9 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(DeleteCreditCardsFromAccounts command)
         {
-            foreach (var accountId in command.AccountIds)
+            foreach (var account in command.AccountIds.Select(_repository.Find))
             {
-                var account = _repository.Find(accountId);
-                account.RemoveAllCreditCards();
+                account.RemoveAllCreditCards(command.ForceUserDisconnect);
                 _repository.Save(account, command.Id.ToString());
             }
         }

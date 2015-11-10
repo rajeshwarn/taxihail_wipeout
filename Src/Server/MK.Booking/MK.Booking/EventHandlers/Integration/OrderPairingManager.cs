@@ -90,14 +90,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                         var response = _paymentFacadeService.Pair(order.CompanyKey, @event.SourceId, cardToken, defaultTipPercentage);
 
-                        if (!response.IsSuccessful)
-                        {
-                            UpdateIBSStatusDescription(order.Id, account.Language, "OrderStatus_PairingFailed");
-                        }
-                        else
-                        {
-                            UpdateIBSStatusDescription(order.Id, account.Language, "OrderStatus_PairingSuccess");
-                         }
+                        var pairingResultMessagKey = response.IsSuccessful
+                            ? "OrderStatus_PairingSuccess"
+                            : "OrderStatus_PairingFailed";
+
+                        UpdateIBSStatusDescription(order.Id, account.Language, pairingResultMessagKey);
 
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful);
                     } 

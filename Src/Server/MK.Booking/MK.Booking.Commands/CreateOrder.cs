@@ -1,6 +1,8 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using Infrastructure.Messaging;
 
@@ -52,6 +54,8 @@ namespace apcurium.MK.Booking.Commands
 
         public string CompanyName { get; set; }
 
+        public int? CompanyFleetId { get; set; }
+
         public string Market { get; set; }
 
         public bool IsPrepaid { get; set; }
@@ -67,5 +71,28 @@ namespace apcurium.MK.Booking.Commands
             public double? TipAmount { get; set; }
             public double? TipPercent { get; set; }
         }
+
+        /// <summary>
+        /// Contains User Note and other informations
+        /// </summary>
+        public string IbsInformationNote { get; set; }
+
+        public Fare Fare { get; set; }
+
+        public int IbsAccountId { get; set; }
+
+        public string[] Prompts { get; set; }
+
+        public int?[] PromptsLength { get; set; }
+
+        public Guid? PromotionId { get; set; }
+
+        public bool IsFutureBooking { get; set; }
+
+        public ListItem[] ReferenceDataCompanyList { get; set; }
+
+        public int? IbsOrderId { get; set; }
+
+        public string ChargeTypeEmail { get; set; }
     }
 }

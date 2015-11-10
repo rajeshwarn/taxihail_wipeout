@@ -6,9 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Api.Services
                     var command = new Commands.CancelOrder { OrderId = request.OrderId };
                     _commandBus.Send(command);
 
-                    UpdateStatusAsync(command.Id);
+                    UpdateStatusAsync(command.OrderId);
 
                     return new HttpResult(HttpStatusCode.OK);
                 }

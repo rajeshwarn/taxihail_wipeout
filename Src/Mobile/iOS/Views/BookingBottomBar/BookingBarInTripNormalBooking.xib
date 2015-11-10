@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view hidden="YES" contentMode="scaleToFill" id="iN0-l3-epB" customClass="BookingBarInTripNormalBooking">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FlO-7I-ISD" userLabel="Cancel edit tip view" customClass="HideableView">
+                    <rect key="frame" x="8" y="5" width="223" height="46"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lpC-k7-T0P" userLabel="Cancel" customClass="FlatButton">
+                            <rect key="frame" x="0.0" y="0.0" width="108" height="46"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azG-FP-mRK" userLabel="Edit tip" customClass="FlatButton">
+                            <rect key="frame" x="116" y="0.0" width="107" height="46"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="azG-FP-mRK" firstAttribute="top" secondItem="FlO-7I-ISD" secondAttribute="top" id="JZ2-en-r13"/>
+                        <constraint firstAttribute="bottom" secondItem="azG-FP-mRK" secondAttribute="bottom" id="JbM-DS-pzE"/>
+                        <constraint firstItem="azG-FP-mRK" firstAttribute="leading" secondItem="lpC-k7-T0P" secondAttribute="trailing" constant="8" id="Tu5-mK-V3r"/>
+                        <constraint firstAttribute="trailing" secondItem="lpC-k7-T0P" secondAttribute="trailing" priority="500" id="X63-H6-Wco"/>
+                        <constraint firstItem="lpC-k7-T0P" firstAttribute="leading" secondItem="FlO-7I-ISD" secondAttribute="leading" id="ZMc-Jt-lP8"/>
+                        <constraint firstItem="lpC-k7-T0P" firstAttribute="width" secondItem="azG-FP-mRK" secondAttribute="width" id="elt-GH-oRG"/>
+                        <constraint firstItem="lpC-k7-T0P" firstAttribute="top" secondItem="FlO-7I-ISD" secondAttribute="top" id="ipV-bb-YJl"/>
+                        <constraint firstAttribute="bottom" secondItem="lpC-k7-T0P" secondAttribute="bottom" id="j5h-H9-C6Y"/>
+                        <constraint firstItem="azG-FP-mRK" firstAttribute="leading" secondItem="FlO-7I-ISD" secondAttribute="leading" priority="500" id="jYW-Ol-su9"/>
+                        <constraint firstAttribute="trailing" secondItem="azG-FP-mRK" secondAttribute="trailing" id="tyi-Zz-gwU"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFS-Kl-7O8" userLabel="Call" customClass="FlatButton">
+                    <rect key="frame" x="239" y="5" width="73" height="46"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="pFS-Kl-7O8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="500" constant="8" id="7HR-mv-IDI"/>
+                <constraint firstAttribute="trailing" secondItem="FlO-7I-ISD" secondAttribute="trailing" priority="500" constant="8" id="8cB-hu-W9o"/>
+                <constraint firstAttribute="bottom" secondItem="pFS-Kl-7O8" secondAttribute="bottom" constant="5" id="ETo-1P-D6O"/>
+                <constraint firstAttribute="trailing" secondItem="pFS-Kl-7O8" secondAttribute="trailing" constant="8" id="EdT-lh-Rjh"/>
+                <constraint firstItem="FlO-7I-ISD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="H6z-of-14a"/>
+                <constraint firstItem="pFS-Kl-7O8" firstAttribute="leading" secondItem="FlO-7I-ISD" secondAttribute="trailing" constant="8" id="IE2-Qh-ltU"/>
+                <constraint firstAttribute="bottom" secondItem="FlO-7I-ISD" secondAttribute="bottom" constant="5" id="Mm3-Wd-abL"/>
+                <constraint firstItem="pFS-Kl-7O8" firstAttribute="width" secondItem="FlO-7I-ISD" secondAttribute="width" multiplier="0.33" id="bt3-lv-hVL"/>
+                <constraint firstItem="FlO-7I-ISD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="oM3-9D-Jjq"/>
+                <constraint firstItem="pFS-Kl-7O8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="qht-94-pKM"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="buttonCall" destination="pFS-Kl-7O8" id="M8Q-9L-4TK"/>
+                <outlet property="buttonCancel" destination="lpC-k7-T0P" id="WkN-Rl-gDW"/>
+                <outlet property="buttonEditTip" destination="azG-FP-mRK" id="VwW-GC-Wpi"/>
+                <outlet property="viewCancelEditTip" destination="FlO-7I-ISD" id="pyF-Sq-vYT"/>
+            </connections>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

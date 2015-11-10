@@ -16,23 +16,23 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 {
     public class NetworkVehiclesApiController : ApiController
     {
-        private readonly IRepository<NetworkVehicle> _networkVehiclesRepository;
+        private readonly IRepository<Market> _marketRepository;
         private readonly IRepository<TaxiHailNetworkSettings> _taxiHailNetworkRepository;
         private readonly IRepository<Company> _companyRepository;
 
         public NetworkVehiclesApiController()
-            : this(new MongoRepository<NetworkVehicle>(),
+            : this(new MongoRepository<Market>(),
                    new MongoRepository<Company>(),
                    new MongoRepository<TaxiHailNetworkSettings>())
         {
         }
 
         public NetworkVehiclesApiController(
-            IRepository<NetworkVehicle> networkVehiclesRepository,
+            IRepository<Market> marketRepository,
             IRepository<Company> companyRepository,
             IRepository<TaxiHailNetworkSettings> taxiHailNetworkRepository)
         {
-            _networkVehiclesRepository = networkVehiclesRepository;
+            _marketRepository = marketRepository;
             _companyRepository = companyRepository;
             _taxiHailNetworkRepository = taxiHailNetworkRepository;
         }
@@ -62,8 +62,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 vehiclesMarket = taxiHailNetworkSettings.Market;
             }
 
-            var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == vehiclesMarket);
-            if (!networkVehicles.Any())
+            var marketRepresentation = _marketRepository.FirstOrDefault(x => x.Name == vehiclesMarket);
+            if (marketRepresentation == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
@@ -71,7 +71,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 };
             }
 
-            var response = networkVehicles.Select(v => new NetworkVehicleResponse
+            var response = marketRepresentation.Vehicles.Select(v => new NetworkVehicleResponse
             {
                 Id = Guid.Parse(v.Id),
                 Name = v.Name,
@@ -95,10 +95,13 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
-            var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == taxiHailNetworkSettings.Market);
-            if (!networkVehicles.Any())
+            var marketRepresentation = _marketRepository.FirstOrDefault(x => x.Name == taxiHailNetworkSettings.Market);
+            if (marketRepresentation == null || !marketRepresentation.Vehicles.Any())
             {
-                return new HttpResponseMessage(HttpStatusCode.NoContent);
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new NetworkVehicleResponse[0]))
+                };
             }
 
             var company = _companyRepository.GetById(companyId);

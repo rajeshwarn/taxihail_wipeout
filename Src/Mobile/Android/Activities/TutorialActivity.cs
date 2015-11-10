@@ -44,17 +44,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             _blackCircle = Resources.GetDrawable(Resource.Drawable.tutorial_black_circle) as BitmapDrawable;
             _grayCircle = Resources.GetDrawable(Resource.Drawable.tutorial_grey_circle) as BitmapDrawable;
 
-            var maxWidth = Window.WindowManager.DefaultDisplay.Width;
+            var maxWidth = Resources.DisplayMetrics.WidthPixels;
 
             var lp = ((View)containerLayout.Parent).LayoutParameters;
             lp.Width = maxWidth;
-            lp.Height = WindowManagerLayoutParams.MatchParent;
+            lp.Height = ViewGroup.LayoutParams.MatchParent;
             ((View)containerLayout.Parent).LayoutParameters = lp;
 
             lp = ((View)containerLayout).LayoutParameters;
 
             lp.Width = maxWidth - _tutorialInsetPixels;
-            lp.Height = WindowManagerLayoutParams.MatchParent;
+            lp.Height = ViewGroup.LayoutParams.MatchParent;
             ((View)containerLayout).LayoutParameters = lp;
 
             lp = ((View)pipsLayout).LayoutParameters;

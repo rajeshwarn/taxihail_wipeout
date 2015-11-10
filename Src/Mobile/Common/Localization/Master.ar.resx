@@ -1555,6 +1555,9 @@
   <data name="Notification_DriverAssignedPush" xml:space="preserve">
     <value>Driver Assigned</value>
   </data>
+  <data name="Notification_DriverBailedPush" xml:space="preserve">
+    <value>Driver bailed</value>
+  </data>
   <data name="RateLastRideMessage" xml:space="preserve">
     <value>We would appreciate your feedback on your last ride, would you like to rate it?</value>
   </data>
@@ -2218,6 +2221,12 @@
 	<data name="OrderStatus_Medallion" xml:space="preserve">
 		<value>Medallion</value>
 	</data>
+	<data name="OrderStatus_AddDestination" xml:space="preserve">
+		<value>Add your destination</value>
+	</data>
+	<data name="OrderStatus_RemoveDestination" xml:space="preserve">
+		<value>Remove your destination</value>
+	</data>
 	<data name="WaitingCarLandscapeViewCloseButtonText" xml:space="preserve">
 		<value>Back</value>
 	</data>
@@ -2277,5 +2286,32 @@
 	</data>
 	<data name="ManualPairing_TimeOut_Message" xml:space="preserve">
 		<value>There is a connection error preventing us from providing the status of your ride.</value>
+	</data>
+	<data name="RateMobileApplicationTitle" xml:space="preserve">
+		<value>Rate this application</value>
+	</data>
+	<data name="RateMobileApplicationText" xml:space="preserve">
+		<value>If you enjoy using this application would you mind taking a moment to rate it?</value>
+	</data>
+	<data name="RateMobileApplicationNow" xml:space="preserve">
+		<value>Rate Now</value>
+	</data>
+	<data name="RateMobileApplicationLater" xml:space="preserve">
+		<value>Later</value>
+	</data>
+	<data name="RateMobileApplicationNever" xml:space="preserve">
+		<value>Don't ask again</value>
+	</data>
+	<data name="LinkForApplicationStoreAbsentTitle" xml:space="preserve">
+		<value>URL is missing</value>
+	</data>
+	<data name="LinkForApplicationStoreAbsentText" xml:space="preserve">
+		<value>URL to store page was not configured</value>
+	</data>
+  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+		<value>Your session has expired, please login again.</value>
+	</data>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+		<value>Server error</value>
 	</data>
 </root>

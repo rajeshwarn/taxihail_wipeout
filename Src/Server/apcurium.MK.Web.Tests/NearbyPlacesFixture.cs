@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
-            await sut.CreateOrder(new CreateOrder
+            await sut.CreateOrder(new CreateOrderRequest
                 {
                     Id = orderId,
                     PickupDate = DateTime.Now,
@@ -66,7 +66,7 @@ namespace apcurium.MK.Web.Tests
                                 NumberOfTaxi = 1,
                                 Name = "Joe Smith"
                             },
-                    Estimate = new CreateOrder.RideEstimate
+                    Estimate = new RideEstimate
                         {
                             Distance = 3,
                             Price = 10
