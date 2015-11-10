@@ -40,6 +40,13 @@ namespace MK.Common.Configuration
 
             APNS = new APNSSettingContainer();
 
+            BBNotificationSettings = new BlackberrySettingContainer
+            {
+                AppId = "5470-6B77424D8r428M1n1a47957tr6h679R3k44",
+                Password = "74eJpYHU",
+                Url = "https://cp5470.pushapi.eval.blackberry.com"
+            };
+
             DefaultBookingSettings = new DefaultBookingSettingsSettingContainer
             {
                 NbPassenger = 1,
@@ -112,6 +119,7 @@ namespace MK.Common.Configuration
 
         public SmtpSettingContainer Smtp { get; protected set; }
         public APNSSettingContainer APNS { get; protected set; }
+        public BlackberrySettingContainer BBNotificationSettings { get; protected set; }
         public DefaultBookingSettingsSettingContainer DefaultBookingSettings { get; protected set; }
 		public IBSSettingContainer IBS { get; protected set; }
         public EmailSettingContainer Email { get; protected set; }

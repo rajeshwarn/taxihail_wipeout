@@ -191,14 +191,11 @@
     <Compile Include="Infrastructure\DeviceOrientation\DeviceOrientationFilter.cs" />
     <Compile Include="Infrastructure\DeviceOrientation\OrientationService.cs" />
     <Compile Include="Infrastructure\IDeviceOrientationService.cs" />
-    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="Infrastructure\IOrientationService.cs" />
     <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
-    <Compile Include="AppServices\IRateApplicationService.cs" />
-    <Compile Include="AppServices\Impl\RateApplicationService.cs" />
     <Compile Include="Localization\Taxiworld.Designer.cs">
       <DependentUpon>Taxiworld.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -374,8 +371,11 @@
     <Compile Include="ViewModels\Payment\CreditCardMultipleViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardBaseViewModel.cs" />
     <Compile Include="BindingConverter\CreditCardNumberToTypeImageConverter.cs" />
+    <Compile Include="AppServices\IRateApplicationService.cs" />
+    <Compile Include="AppServices\Impl\RateApplicationService.cs" />
     <Compile Include="ViewModels\Orders\DropOffSelectionMidTripViewModel.cs" />
     <Compile Include="ViewModels\Orders\DropOffSelectionBottomBarViewModel.cs" />
+    <Compile Include="AppServices\IDeviceRateApplicationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
