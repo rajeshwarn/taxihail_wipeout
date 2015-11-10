@@ -254,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						await this.Services().Message.ShowMessage(null, 
 							this.Services().Localize["PanelMenuViewSignOutPopupMessage"],
                             this.Services().Localize["PanelMenuViewSignOutPopupLogout"],
-							()=> SignOutAccepted().FireAndForget(),
+							SignOutAccepted,
 							this.Services().Localize["Cancel"],
                             ()=> { } 
 						);
@@ -262,10 +262,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		private async Task SignOutAccepted()
+		private void SignOutAccepted()
 		{
 			CloseMenu();
-			await _orderWorkflowService.PrepareForNewOrder();
+			_orderWorkflowService.PrepareForNewOrder().FireAndForget();
 			_accountService.SignOut();         
 			ShowViewModelAndClearHistory<LoginViewModel> ();
 		}
