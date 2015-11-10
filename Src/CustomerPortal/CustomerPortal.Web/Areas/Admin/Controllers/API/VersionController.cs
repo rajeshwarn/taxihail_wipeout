@@ -95,7 +95,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
                 foreach (var file in provider.FileData)
                 {
-                    if (IsAPK(file.Headers.ContentDisposition.FileName))
+                    if (IsAPK(file.Headers.ContentDisposition.FileName) && !IsCallboxAPK(file.Headers.ContentDisposition.FileName))
                     {
                         version.ApkFilename = file.Headers.ContentDisposition.FileName;
                     }
@@ -106,6 +106,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
                     else if ((!IsAppStoreIpa(file.Headers.ContentDisposition.FileName)) && (IsIpa(file.Headers.ContentDisposition.FileName)))
                     {
                         version.IpaFilename = file.Headers.ContentDisposition.FileName;
+                    }
+                    else if (IsCallboxAPK(file.Headers.ContentDisposition.FileName))
+                    {
+                        version.ApkCallboxFileName = file.Headers.ContentDisposition.FileName;
                     }
 
                     var path =
@@ -157,6 +161,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
             }
 
             return false;
+        }
+
+        private bool IsCallboxAPK(string filenName)
+        {
+            return filenName.ToLowerInvariant().EndsWith("callbox.apk");
         }
 
         private bool IsIpa(string fileName)
