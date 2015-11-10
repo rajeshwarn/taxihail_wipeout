@@ -26,6 +26,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -504,7 +505,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 ibsOrderId,
                 HasDriverInfo = hasDriverInfo,
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
+				HasDriverPhoto = hasDriverInfo ? driverInfos.DriverPhotoUrl.HasValue() : false,
+				DriverPhotoURL = hasDriverInfo ? driverInfos.DriverPhotoUrl : null,
                 VehicleNumber = vehicleNumber,
+				VehicleRegistration = hasDriverInfo ? driverInfos.VehicleRegistration : null,
+				VehicleColor = hasDriverInfo ? driverInfos.VehicleColor : null,
                 DriverInfos = driverInfos,
                 DriverId = hasDriverInfo ? driverInfos.DriverId : "",
                 PickupDate = pickupDate.ToString("D", dateFormat),
