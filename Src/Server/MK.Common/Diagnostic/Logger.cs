@@ -85,12 +85,12 @@ namespace apcurium.MK.Common.Diagnostic
 
 		public string MergeLogFiles()
 		{
-			throw new NotImplementedException();
+			throw new NotSupportedException();
 		}
 
 		public void RemoveMergedFile()
 		{
-			throw new NotImplementedException();
+			throw new NotSupportedException();
 		}
 	}
 }
