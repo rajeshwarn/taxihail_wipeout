@@ -137,7 +137,6 @@ Global
 		{DE9A07FE-A2EE-4669-934E-FF6D1805D858}.Mac|Any CPU.Deploy.0 = Release|Any CPU
 		{DE9A07FE-A2EE-4669-934E-FF6D1805D858}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE9A07FE-A2EE-4669-934E-FF6D1805D858}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE9A07FE-A2EE-4669-934E-FF6D1805D858}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
