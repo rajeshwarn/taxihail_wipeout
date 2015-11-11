@@ -5,6 +5,7 @@ using apcurium.MK.Common.Diagnostic;
 using CMTPayment.Pair;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
+using System.Net;
 
 namespace CMTPayment
 {
@@ -43,6 +44,8 @@ namespace CMTPayment
 
                 _logger.LogMessage("Following trip info found from pairing token {0} \n\r {1}", pairingToken, trip.ToJson());
 
+				trip.HttpStatusCode = (int)HttpStatusCode.OK;
+
                 return trip;
             }
             catch (WebServiceException ex)
@@ -57,7 +60,7 @@ namespace CMTPayment
                     _logger.LogMessage("Error Response: {0}", ex.ResponseBody);
 
                     var errorResponse = ex.ResponseBody.FromJson<ErrorResponse>();
-                    return new Trip { ErrorCode = errorResponse.ResponseCode };
+                    return new Trip { HttpStatusCode = ex.StatusCode, ErrorCode = errorResponse.ResponseCode };
                 }
 
                 _logger.LogError(ex);
@@ -84,6 +87,11 @@ namespace CMTPayment
 
             while (trip == null || trip.ErrorCode.HasValue)
             {
+				if (trip.HttpStatusCode == (int)HttpStatusCode.BadRequest && (trip.ErrorCode == CmtErrorCodes.UnableToPair || trip.ErrorCode == CmtErrorCodes.CreditCardDeclinedOnPreauthorization || trip.ErrorCode == CmtErrorCodes.UnablePreauthorizeCreditCard))
+				{
+					return trip;
+				}
+
                 Thread.Sleep(2000);
                 trip = GetTripInfo(pairingToken);
 

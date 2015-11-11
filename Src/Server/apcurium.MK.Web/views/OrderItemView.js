@@ -10,7 +10,10 @@
         },
 
         render: function () {
-            this.$el.html(this.renderTemplate(this.model.toJSON()));
+            var data = _.extend(this.model.toJSON(), {
+                showOrderNumber:TaxiHail.parameters.showOrderNumber
+            });
+            this.$el.html(this.renderTemplate(data));
 
             return this;
         },

@@ -1,4 +1,4 @@
-//VERY VERY VERY IMPORTANT NOTE!!!!
+﻿//VERY VERY VERY IMPORTANT NOTE!!!!
 // Your package name MUST NOT start with an uppercase letter.
 // Android does not allow permissions to start with an upper case letter
 // If it does you will get a very cryptic error in logcat and it will not be obvious why you are crying!
@@ -61,15 +61,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			if (!registered || force)
             {
-                Log.Info(tag, "Registering...");
-
                 //Call to register
                 var registerIdDebug = _appSettings.Data.GCM.SenderId;
                 PushClient.Register(_context, registerIdDebug);
-            }
-            else
-            {
-                Log.Info(tag, "Already registered");
             }
         }
 
@@ -101,15 +95,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         protected override void OnUnRegistered(Context context, string registrationId)
         {
-            Log.Verbose(PushHandlerBroadcastReceiver.Tag, "GCM Unregistered: " + registrationId);
             this.UseServiceClient<PushNotificationRegistrationServiceClient>(
                 service => { service.Unregister(registrationId); });
         }
 
         protected override void OnMessage(Context context, Intent intent)
         {
-            Log.Info(PushHandlerBroadcastReceiver.Tag, "GCM Message Received!");
-
             var msg = new StringBuilder();
 
             if (intent != null && intent.Extras != null)
@@ -126,7 +117,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             if (intent != null)
             {
-                Log.Info(PushHandlerBroadcastReceiver.Tag, "INTENT NOT NULL!");
                 if (intent.Extras != null)
                 {
                     var alert =
@@ -151,13 +141,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-        protected override bool OnRecoverableError(Context context, string errorId)
-        {
-            Log.Warn(PushHandlerBroadcastReceiver.Tag, "Recoverable Error: " + errorId);
-
-            return base.OnRecoverableError(context, errorId);
-        }
-
         protected override void OnError(Context context, string errorId)
         {
             Log.Error(PushHandlerBroadcastReceiver.Tag, "GCM Error: " + errorId);
@@ -167,8 +150,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		private void CreateNotification(string title, string desc, Guid orderId, bool isPairingNotification)
 		{
-            Log.Info(PushHandlerBroadcastReceiver.Tag, "Creating notification!");
-
 			//Create notification
 			var notificationManager = GetSystemService(NotificationService) as NotificationManager;
 
@@ -203,7 +184,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			//Show the notification
 			if (notificationManager != null) {
 				notificationManager.Notify (1, notification);
-                Log.Info(PushHandlerBroadcastReceiver.Tag, "Notification sent");
 			}
 		}
     }

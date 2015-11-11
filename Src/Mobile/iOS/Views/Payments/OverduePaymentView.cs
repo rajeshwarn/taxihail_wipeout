@@ -43,6 +43,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			FlatButtonStyle.Silver.ApplyTo(btnAddNewCard);
 			FlatButtonStyle.Green.ApplyTo(btnRetry);
 
+            if (!ViewModel.CanShowOrderNumber)
+            {
+                IbsOrder.RemoveFromSuperview();
+                lblOrderId.RemoveFromSuperview();
+            }
+
 			var set = this.CreateBindingSet<OverduePaymentView, OverduePaymentViewModel>();
 
 			set.Bind(TransactionId)
