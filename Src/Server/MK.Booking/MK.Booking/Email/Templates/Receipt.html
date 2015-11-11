@@ -458,8 +458,6 @@
                                                         <tr>
                                                             <td>
                                                                 <table class="yourdriver" cellpadding="0" cellspacing="0">
-                                                                    <tr style="color: {{EmailFontColor}}! important">
-                                                                        <td class="driver_name" rowspan="3">{{ DriverInfos.FullName }}</td>
 																	{{#HasDriverPhoto}}
 																	<tr style="color: {{EmailFontColor}}! important">
 																		<td class="driver_list_title" style="vertical-align:middle">{{ localize "Email_Body_DriverPhoto" }}</td>
@@ -474,6 +472,20 @@
 																		</td>
 																	</tr>
 																	{{/HasDriverPhoto}}
+
+																	{{#HasDriverInfo}}
+																		<tr style="color: {{EmailFontColor}}! important">
+																			<td class="driver_list_title">{{ localize "Email_Body_Driver" }}</td>
+																			<td class="driver_name">{{ DriverName }}</td>
+																		</tr>
+																	{{/HasDriverInfo}}
+
+																	{{#HasDriverId}}
+																		<tr>
+																			<td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
+																			<td class="list_value">{{ DriverId }}</td>
+																		</tr>
+																	{{/HasDriverId}}
 
 																	<tr>
 																		<td class="driver_list_title">{{ localize "Email_Body_VehicleRegistration" }}</td>
