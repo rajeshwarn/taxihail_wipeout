@@ -2,6 +2,7 @@
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using MK.Common.Configuration;
 
 namespace apcurium.MK.Common.Configuration
@@ -287,6 +288,10 @@ namespace apcurium.MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "IBS - Payment Type Charge Account Id", Description = "Set IBS Payment Type Charge Account Id")]
         public int? PaymentTypeChargeAccountId { get; set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "IBS - Jobs Provider", Description = "Indicator of who entered the Job")]
+        public IbsJobProviders JobProviders { get; protected set; }
     }
 
     public class EmailSettingContainer
