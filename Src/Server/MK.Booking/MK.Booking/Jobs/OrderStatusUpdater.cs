@@ -307,7 +307,13 @@ namespace apcurium.MK.Booking.Jobs
                 if (hasBailed && dispatcherSettings.NumberOfOffersPerCycle > 0)
                 {
                     // TODO: do the dispatcher dance (again)
-                    //_dispatcherService.Dispatch()
+                    var ibsAccountId = _accountDao.GetIbsAccountId(orderDetail.AccountId, orderDetail.CompanyKey);
+                    if (ibsAccountId.HasValue)
+                    {
+                        _dispatcherService.CancelIbsOrder(orderDetail.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, ibsAccountId.Value);
+
+                        //_dispatcherService.Dispatch()
+                    }
                 }
             }
         }
