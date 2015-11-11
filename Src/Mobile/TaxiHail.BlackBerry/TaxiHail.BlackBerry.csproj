@@ -27,6 +27,16 @@
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
     <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Build" command="xbuild /t:SignAndroidPackage" />
+        <Command type="AfterBuild" command="cp bin/Debug/com.apcurium.MK.TaxiHailDemo-Signed.apk ../../BBTools/Outputs/" />
+        <Command type="AfterBuild" command="java -Djava.awt.headless=true -Xmx512M -cp &quot;lib/AndroidTools.jar&quot; net.rim.tools.apk2bar.Apk2Bar &quot;Outputs/&quot; -r" workingdir="../../BBTools/" />
+        <Command type="AfterBuild" command="java -Djava.awt.headless=true -Xmx512M -cp &quot;lib/BarSigner.jar:lib/AndroidTools.jar&quot; net.rim.tools.signing.SigningMain -bbidtoken &quot;Outputs/bbidtoken.csk&quot; -storepass apcurium72 &quot;Outputs/com.apcurium.MK.TaxiHailDemo-Signed.bar&quot;" workingdir="../../BBTools/" />
+        <Command type="AfterBuild" command="rm -rf  com.apcurium.MK.TaxiHailDemo-Signed.apk" workingdir="../../BBTools/Outputs" />
+        <Command type="Execute" command="java -Djava.awt.headless=true -Xmx512M -jar &quot;lib/BarDeploy.jar&quot; -installApp -launchApp -device 169.254.0.1 -password 0000 -package Outputs/com.apcurium.MK.TaxiHailDemo-Signed.bar" workingdir="../../BBTools/" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -105,9 +115,6 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.File.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.File.3.5.1\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.File.Droid.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Facebook">
-      <HintPath>..\packages\Xamarin.Facebook.Android.4.4.0.1\lib\MonoAndroid403\Xamarin.Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -135,15 +142,6 @@
     <Reference Include="AnalyticsV2">
       <HintPath>..\Libraries\Monodroid\AnalyticsV2.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
-      <HintPath>..\packages\Xamarin.Android.Support.v7.AppCompat.22.2.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
-      <HintPath>..\packages\Xamarin.Android.Support.v7.MediaRouter.22.2.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v13">
-      <HintPath>..\packages\Xamarin.Android.Support.v13.22.2.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v13.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.v4">
       <HintPath>..\packages\Xamarin.Android.Support.v4.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
@@ -155,6 +153,18 @@
     </Reference>
     <Reference Include="Square.OkHttp">
       <HintPath>..\packages\Square.OkHttp.2.5.0.0\lib\MonoAndroid\Square.OkHttp.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v13">
+      <HintPath>..\packages\Xamarin.Android.Support.v13.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v13.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.AppCompat.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.MediaRouter.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Facebook">
+      <HintPath>..\packages\Xamarin.Facebook.Android.4.7.0.1\lib\MonoAndroid403\Xamarin.Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
