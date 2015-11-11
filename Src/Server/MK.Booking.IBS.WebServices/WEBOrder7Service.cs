@@ -157,6 +157,8 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     
     private System.Threading.SendOrPostCallback EstimateFare_9OperationCompleted;
     
+    private System.Threading.SendOrPostCallback EstimateFare_10OperationCompleted;
+    
     private System.Threading.SendOrPostCallback EstimateDistanceOperationCompleted;
     
     private System.Threading.SendOrPostCallback RideCurrentFareOperationCompleted;
@@ -175,7 +177,7 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     
     /// <remarks/>
     public WebOrder7Service() {
-        this.Url = "http://54.84.8.232:16928/IBSCab/IBSCab.dll/soap/IWEBOrder_7";
+        this.Url = "http://54.194.131.231:15928/xds_iaspi.dll/soap/IWEBOrder_7";
     }
     
     /// <remarks/>
@@ -366,6 +368,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     
     /// <remarks/>
     public event EstimateFare_9CompletedEventHandler EstimateFare_9Completed;
+    
+    /// <remarks/>
+    public event EstimateFare_10CompletedEventHandler EstimateFare_10Completed;
     
     /// <remarks/>
     public event EstimateDistanceCompletedEventHandler EstimateDistanceCompleted;
@@ -4288,9 +4293,57 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     }
     
     /// <remarks/>
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare_10", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [return: System.Xml.Serialization.SoapElementAttribute("return")]
+    public TEstimateFare_10Result EstimateFare_10(string Login, string Password, TBookOrder_8 aBookOrder) {
+        object[] results = this.Invoke("EstimateFare_10", new object[] {
+                    Login,
+                    Password,
+                    aBookOrder});
+        return ((TEstimateFare_10Result)(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginEstimateFare_10(string Login, string Password, TBookOrder_8 aBookOrder, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("EstimateFare_10", new object[] {
+                    Login,
+                    Password,
+                    aBookOrder}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public TEstimateFare_10Result EndEstimateFare_10(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((TEstimateFare_10Result)(results[0]));
+    }
+    
+    /// <remarks/>
+    public void EstimateFare_10Async(string Login, string Password, TBookOrder_8 aBookOrder) {
+        this.EstimateFare_10Async(Login, Password, aBookOrder, null);
+    }
+    
+    /// <remarks/>
+    public void EstimateFare_10Async(string Login, string Password, TBookOrder_8 aBookOrder, object userState) {
+        if ((this.EstimateFare_10OperationCompleted == null)) {
+            this.EstimateFare_10OperationCompleted = new System.Threading.SendOrPostCallback(this.OnEstimateFare_10OperationCompleted);
+        }
+        this.InvokeAsync("EstimateFare_10", new object[] {
+                    Login,
+                    Password,
+                    aBookOrder}, this.EstimateFare_10OperationCompleted, userState);
+    }
+    
+    private void OnEstimateFare_10OperationCompleted(object arg) {
+        if ((this.EstimateFare_10Completed != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.EstimateFare_10Completed(this, new EstimateFare_10CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
     [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateDistance", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("TotalFare")]
-    public double EstimateDistance(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassangerCount, TWEBTimeStamp FrDate, string CabType, int AccountNum, string CustomerNum, out int TripTime, out int @return) {
+    public double EstimateDistance(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassangerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, out int TripTime, out int @return) {
         object[] results = this.Invoke("EstimateDistance", new object[] {
                     Login,
                     Password,
@@ -4299,16 +4352,16 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     StopCount,
                     PassangerCount,
                     FrDate,
-                    CabType,
                     AccountNum,
-                    CustomerNum});
+                    CustomerNum,
+                    CabType});
         TripTime = ((int)(results[1]));
         @return = ((int)(results[2]));
         return ((double)(results[0]));
     }
     
     /// <remarks/>
-    public System.IAsyncResult BeginEstimateDistance(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassangerCount, TWEBTimeStamp FrDate, string CabType, int AccountNum, string CustomerNum, System.AsyncCallback callback, object asyncState) {
+    public System.IAsyncResult BeginEstimateDistance(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassangerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("EstimateDistance", new object[] {
                     Login,
                     Password,
@@ -4317,9 +4370,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     StopCount,
                     PassangerCount,
                     FrDate,
-                    CabType,
                     AccountNum,
-                    CustomerNum}, callback, asyncState);
+                    CustomerNum,
+                    CabType}, callback, asyncState);
     }
     
     /// <remarks/>
@@ -4331,12 +4384,12 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     }
     
     /// <remarks/>
-    public void EstimateDistanceAsync(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassangerCount, TWEBTimeStamp FrDate, string CabType, int AccountNum, string CustomerNum) {
-        this.EstimateDistanceAsync(Login, Password, Distance, WaitTime, StopCount, PassangerCount, FrDate, CabType, AccountNum, CustomerNum, null);
+    public void EstimateDistanceAsync(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassangerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType) {
+        this.EstimateDistanceAsync(Login, Password, Distance, WaitTime, StopCount, PassangerCount, FrDate, AccountNum, CustomerNum, CabType, null);
     }
     
     /// <remarks/>
-    public void EstimateDistanceAsync(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassangerCount, TWEBTimeStamp FrDate, string CabType, int AccountNum, string CustomerNum, object userState) {
+    public void EstimateDistanceAsync(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassangerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, object userState) {
         if ((this.EstimateDistanceOperationCompleted == null)) {
             this.EstimateDistanceOperationCompleted = new System.Threading.SendOrPostCallback(this.OnEstimateDistanceOperationCompleted);
         }
@@ -4348,9 +4401,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     StopCount,
                     PassangerCount,
                     FrDate,
-                    CabType,
                     AccountNum,
-                    CustomerNum}, this.EstimateDistanceOperationCompleted, userState);
+                    CustomerNum,
+                    CabType}, this.EstimateDistanceOperationCompleted, userState);
     }
     
     private void OnEstimateDistanceOperationCompleted(object arg) {
@@ -4560,7 +4613,7 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     /// <remarks/>
     [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_12", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderKey SaveBookOrder_12(string Login, string Password, TBookOrder_11 BookOrder, TVehicleComp[] Vehicles) {
+    public TBookOrderKey SaveBookOrder_12(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles) {
         object[] results = this.Invoke("SaveBookOrder_12", new object[] {
                     Login,
                     Password,
@@ -4570,7 +4623,7 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     }
     
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_12(string Login, string Password, TBookOrder_11 BookOrder, TVehicleComp[] Vehicles, System.AsyncCallback callback, object asyncState) {
+    public System.IAsyncResult BeginSaveBookOrder_12(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_12", new object[] {
                     Login,
                     Password,
@@ -4585,12 +4638,12 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     }
     
     /// <remarks/>
-    public void SaveBookOrder_12Async(string Login, string Password, TBookOrder_11 BookOrder, TVehicleComp[] Vehicles) {
+    public void SaveBookOrder_12Async(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles) {
         this.SaveBookOrder_12Async(Login, Password, BookOrder, Vehicles, null);
     }
     
     /// <remarks/>
-    public void SaveBookOrder_12Async(string Login, string Password, TBookOrder_11 BookOrder, TVehicleComp[] Vehicles, object userState) {
+    public void SaveBookOrder_12Async(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles, object userState) {
         if ((this.SaveBookOrder_12OperationCompleted == null)) {
             this.SaveBookOrder_12OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_12OperationCompleted);
         }
@@ -4833,6 +4886,7 @@ public enum TWEBOrderStatusValue {
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_8))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_10))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_11))]
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -5454,6 +5508,147 @@ public enum TVehicleCompType {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TEstimateFare_10Result {
+    
+    private double fareField;
+    
+    private double extrasField;
+    
+    private double taxField;
+    
+    private double tipField;
+    
+    private double tollsField;
+    
+    private double vATField;
+    
+    private double totalField;
+    
+    private double distanceField;
+    
+    private double tripTimeField;
+    
+    private int pBTokenField;
+    
+    private string cabTypeField;
+    
+    /// <remarks/>
+    public double Fare {
+        get {
+            return this.fareField;
+        }
+        set {
+            this.fareField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double Extras {
+        get {
+            return this.extrasField;
+        }
+        set {
+            this.extrasField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double Tax {
+        get {
+            return this.taxField;
+        }
+        set {
+            this.taxField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double Tip {
+        get {
+            return this.tipField;
+        }
+        set {
+            this.tipField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double Tolls {
+        get {
+            return this.tollsField;
+        }
+        set {
+            this.tollsField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double VAT {
+        get {
+            return this.vATField;
+        }
+        set {
+            this.vATField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double Total {
+        get {
+            return this.totalField;
+        }
+        set {
+            this.totalField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double Distance {
+        get {
+            return this.distanceField;
+        }
+        set {
+            this.distanceField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double TripTime {
+        get {
+            return this.tripTimeField;
+        }
+        set {
+            this.tripTimeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public int PBToken {
+        get {
+            return this.pBTokenField;
+        }
+        set {
+            this.pBTokenField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string CabType {
+        get {
+            return this.cabTypeField;
+        }
+        set {
+            this.cabTypeField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
 public partial class TPaymentAuthorization3dParty {
     
     private string authorizationNumberField;
@@ -5916,10 +6111,6 @@ public partial class TOrderStatus_2 : TOrderStatus {
     private string referenceNumberField;
     
     private string terminalIdField;
-
-    private double vatField;
-
-    public double VAT { get { return this.vatField; } set { this.vatField = value; } }
     
     /// <remarks/>
     public string CallNumber {
@@ -5950,6 +6141,10 @@ public partial class TOrderStatus_2 : TOrderStatus {
             this.terminalIdField = value;
         }
     }
+
+    private double vatField;
+
+    public double VAT { get { return this.vatField; } set { this.vatField = value; } }
 }
 
 /// <remarks/>
@@ -6080,6 +6275,7 @@ public partial class TBookOrderList_7 {
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_8))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_10))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_11))]
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -6109,6 +6305,7 @@ public partial class TBookOrder_7 : TBookOrder_6 {
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_8))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_10))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_11))]
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -6135,6 +6332,7 @@ public partial class TBookOrder_6 : TBookOrder_5 {
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_8))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_10))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_11))]
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -6291,6 +6489,7 @@ public partial class TException {
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_8))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_10))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_11))]
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -6367,6 +6566,7 @@ public partial class TBookOrder_4 : TBookOrder_3 {
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_8))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_10))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_11))]
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -6883,6 +7083,7 @@ public partial class TWEBFavotiteAddress : TWEBAddress {
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_8))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_10))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_11))]
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -7002,6 +7203,7 @@ public partial class TBookOrder_2 : TBookOrder {
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_10))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_11))]
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -7048,6 +7250,7 @@ public partial class TBookOrder_8 : TBookOrder_7 {
 
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_11))]
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -7105,6 +7308,7 @@ public partial class TBookOrder_10 : TBookOrder_8 {
 }
 
 /// <remarks/>
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -7161,6 +7365,50 @@ public partial class TBookOrder_11 : TBookOrder_10 {
     }
 }
 
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_12 : TBookOrder_11 {
+    
+    private int jobOfferAcceptTimeoutField;
+    
+    private int jobProviderField;
+    
+    private double tipIncentiveField;
+    
+    /// <remarks/>
+    public int JobOfferAcceptTimeout {
+        get {
+            return this.jobOfferAcceptTimeoutField;
+        }
+        set {
+            this.jobOfferAcceptTimeoutField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public int JobProvider {
+        get {
+            return this.jobProviderField;
+        }
+        set {
+            this.jobProviderField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double TipIncentive {
+        get {
+            return this.tipIncentiveField;
+        }
+        set {
+            this.tipIncentiveField = value;
+        }
+    }
+}
 
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_2))]
@@ -7222,6 +7470,7 @@ public partial class TVehiclePosition {
 }
 
 /// <remarks/>
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_4))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -7248,7 +7497,7 @@ public partial class TVehiclePosition_2 : TVehiclePosition {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
-public partial class TVehiclePosition_4 : TVehiclePosition {
+public partial class TVehiclePosition_4 : TVehiclePosition_2 {
     
     private TVehicleTypeItem vehicleTypeField;
     
@@ -9362,6 +9611,32 @@ public partial class EstimateFare_9CompletedEventArgs : System.ComponentModel.As
         get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[5]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+public delegate void EstimateFare_10CompletedEventHandler(object sender, EstimateFare_10CompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class EstimateFare_10CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal EstimateFare_10CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public TEstimateFare_10Result Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((TEstimateFare_10Result)(this.results[0]));
         }
     }
 }
