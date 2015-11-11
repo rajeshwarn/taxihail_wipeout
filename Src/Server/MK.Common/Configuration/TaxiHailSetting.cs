@@ -534,5 +534,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Display - Show Order Number", Description = "Show order number")]
         public bool ShowOrderNumber { get; protected set; }
+
+
+		[CustomizableByCompany]
+		[Display(Name = "Configuration - Display Extra Info in Receipt", Description = "Display extra info in receipt: vehicle info, vehicle registration, driver photo")]
+		public bool ShowExtraInfoInReceipt { get; protected set; }
     }
 }

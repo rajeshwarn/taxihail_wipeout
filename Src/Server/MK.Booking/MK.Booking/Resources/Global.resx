@@ -681,6 +681,12 @@
   <data name="CancelOrdeError" xml:space="preserve">
     <value>It is too late to cancel this order</value>
   </data>
+	<data name="Email_Body_DriverPhoto" xml:space="preserve">
+    <value>Driver Photo</value>
+  </data>
+	<data name="Email_Body_VehicleRegistration" xml:space="preserve">
+    <value>Vehicle Licence Plate</value>
+  </data>
 	<data name="TripUnableToPairErrorText" xml:space="preserve">
 		<value>Sorry, there was a problem, please pay in the taxi</value>
 	</data>

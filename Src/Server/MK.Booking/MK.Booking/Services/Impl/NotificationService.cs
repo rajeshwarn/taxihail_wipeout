@@ -26,6 +26,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -584,7 +585,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var localDropOffDate = cmtRideLinqFields.SelectOrDefault(x => x.DropOffDateTime);
             var nullSafeDropOffDate = localDropOffDate ?? GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
             var dropOffTime = dropOffDateInUtc.HasValue || localDropOffDate.HasValue
-                ? nullSafeDropOffDate.ToString("t" /* Short time pattern */)
+                ? nullSafeDropOffDate.ToString("t", dateFormat /* Short time pattern */)
                 : string.Empty;
 
             var baseUrls = GetBaseUrls();
@@ -606,10 +607,16 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowMinimalDriverInfo = showMinimalDriverInfo,
                 HasDriverInfo = hasDriverInfo,
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
+				HasDriverPhoto = hasDriverInfo ? driverInfos.DriverPhotoUrl.HasValue() : false,
+				DriverPhotoURL = hasDriverInfo ? driverInfos.DriverPhotoUrl : null,
+				HasVehicleRegistration = hasDriverInfo && driverInfos.VehicleRegistration.HasValue(),
                 VehicleNumber = vehicleNumber,
+				ShowExtraInfoInReceipt = _serverSettings.ServerData.ShowExtraInfoInReceipt,
                 DriverName = hasDriverInfo ? driverInfos.FullName : string.Empty,
+				VehicleRegistration = hasDriverInfo ? driverInfos.VehicleRegistration : null,
                 VehicleMake = hasDriverInfo ? driverInfos.VehicleMake : string.Empty,
                 VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
+				VehicleColor = hasDriverInfo ? driverInfos.VehicleColor : null,
                 DriverInfos = driverInfos,
                 DriverId = hasDriverInfo || cmtRideLinqFields != null ? driverInfos.DriverId : string.Empty,
                 PickupDate = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
