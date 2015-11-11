@@ -12,8 +12,6 @@ namespace apcurium.MK.Common.Diagnostic
 
         IDisposable StartStopwatch(string message);
 
-		string[] GetLogFilesFullName();
-
 		string MergeLogFiles();
 
 		void RemoveMergedFile();
