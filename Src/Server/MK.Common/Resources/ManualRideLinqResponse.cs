@@ -7,6 +7,8 @@ namespace apcurium.MK.Common.Resources
     {
         public OrderManualRideLinqDetail Data { get; set; }
 
-        public string ErrorCode { get; set; }
+		public string ErrorCode { get; set; }
+
+		public int TripInfoHttpStatusCode { get; set; }
     }
 }
