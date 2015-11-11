@@ -145,38 +145,22 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
         private bool IsAPK(string fileName)
         {
-            if (fileName.Contains(".apk"))
-            {
-                return true;
-            }
-
-            return false;
+            return fileName.EndsWith(".apk", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private bool IsAppStoreIpa(string fileName)
         {
-            if (fileName.ToLower().Contains("appstore.ipa"))
-            {
-                return true;
-            }
-
-            return false;
+            return fileName.EndsWith(".appstore.ipa", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private bool IsCallboxAPK(string filenName)
         {
-            return filenName.ToLowerInvariant().EndsWith("callbox.apk");
+            return filenName.EndsWith(".callbox-signed.apk", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private bool IsIpa(string fileName)
         {
-            if (fileName.Contains(".ipa"))
-            {
-                return true;
-            }
-
-            return false;
+            return fileName.EndsWith(".ipa", StringComparison.InvariantCultureIgnoreCase);
         }
-
     }
 }
