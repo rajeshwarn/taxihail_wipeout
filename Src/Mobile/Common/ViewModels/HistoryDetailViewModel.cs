@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				return (Status != null) 
 						&& Status.Status == OrderStatus.Completed
-						&& Status.FareAvailable 
+						&& ( Status.FareAvailable || Status.IsManualRideLinq )
 						&& Settings.SendReceiptAvailable;
             }
         }
@@ -199,6 +199,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return null;
             }
 		}
+
+        public bool CanShowConfirmationTxt
+        {
+            get
+            {          
+                return Settings.ShowOrderNumber;
+            }
+        }
 
         private string _authorizationNumber;
         public string AuthorizationNumber 

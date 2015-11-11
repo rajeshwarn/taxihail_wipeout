@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -137,6 +137,7 @@
                         <constraint firstAttribute="centerX" secondItem="lTp-MB-rfG" secondAttribute="centerX" id="o0d-cv-58q"/>
                         <constraint firstItem="vOh-F1-i8X" firstAttribute="baseline" secondItem="ojW-w8-dIt" secondAttribute="baseline" id="pvy-xz-cwl"/>
                         <constraint firstAttribute="centerX" secondItem="vOh-F1-i8X" secondAttribute="leading" id="rMT-yT-OJ7"/>
+                        <constraint firstItem="ojW-w8-dIt" firstAttribute="top" secondItem="Fmj-7w-as9" secondAttribute="bottom" priority="750" constant="9" id="u52-L5-SJG"/>
                         <constraint firstItem="Fmj-7w-as9" firstAttribute="top" secondItem="1SN-EP-ZDo" secondAttribute="top" constant="10" id="u5z-yM-8Re"/>
                         <constraint firstAttribute="centerX" secondItem="k3L-Hg-fEU" secondAttribute="centerX" id="yOl-G2-rzW"/>
                         <constraint firstItem="7Oc-RR-yxa" firstAttribute="leading" secondItem="RDI-Py-cRU" secondAttribute="trailing" constant="8" id="yvl-JJ-DEb"/>

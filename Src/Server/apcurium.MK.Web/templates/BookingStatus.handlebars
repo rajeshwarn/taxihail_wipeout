@@ -3,12 +3,14 @@
         <div class='well'>
             <div class='form-horizontal clearfix'>
                 <legend>{{localize "Status"}}</legend>
+                {{#if showOrderNumber}}
                 <div class='clearfix'>
                     <label class="control-label">{{localize "ConfirmationNumber"}}</label>
                     <div class="controls">
                         <label>{{ibsOrderId}}</label>
                     </div>
                 </div>
+                {{/if}}
                 <div class='clearfix'>
                     <label class="control-label">{{localize "Status"}}</label>
                     <div class="controls">
