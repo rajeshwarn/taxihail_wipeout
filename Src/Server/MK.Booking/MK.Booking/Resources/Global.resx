@@ -622,9 +622,9 @@
     <value>Cannot cancel order because of no IBSOrderID</value>
   </data>
 	<data name="Email_Body_DriverPhoto" xml:space="preserve">
-    <value>Driver photo</value>
+    <value>Driver Photo</value>
   </data>
 	<data name="Email_Body_VehicleRegistration" xml:space="preserve">
-    <value>Vehicle registration</value>
+    <value>Vehicle Licence Plate</value>
   </data>
 </root>
