@@ -210,7 +210,7 @@ namespace MK.DeploymentService.Mobile
 	    private string GetAndroidCallboxFile(string apkPathCallBox)
 	    {
 	        return Directory.Exists (apkPathCallBox)
-                ? Directory.EnumerateFiles(apkPathCallBox, "*.Callbox-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault()
+                ? Directory.EnumerateFiles(apkPathCallBox, "*Callbox-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault()
                 : null;
 	    }
 

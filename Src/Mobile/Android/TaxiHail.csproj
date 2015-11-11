@@ -308,9 +308,6 @@
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
     <AndroidResource Include="Resources\Layout\View_UpdatePassword.axml" />
     <Compile Include="Activities\Account\UpdatePasswordActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -1011,6 +1008,7 @@
     <AndroidResource Include="Resources\Layout\View_ExtendedSplashScreen.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_Tutorial.axml" />
   </ItemGroup>
   <ItemGroup />
 </Project>
