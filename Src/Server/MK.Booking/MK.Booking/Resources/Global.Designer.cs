@@ -565,7 +565,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Driver photo.
+        ///   Looks up a localized string similar to Driver Photo.
         /// </summary>
         public static string Email_Body_DriverPhoto {
             get {
@@ -1006,7 +1006,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vehicle registration.
+        ///   Looks up a localized string similar to Vehicle Licence Plate.
         /// </summary>
         public static string Email_Body_VehicleRegistration {
             get {

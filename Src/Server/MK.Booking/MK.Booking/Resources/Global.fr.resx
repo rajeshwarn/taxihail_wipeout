@@ -682,9 +682,9 @@
     <value>Il est trop tard pour annuler cette commande</value>
   </data>
 	<data name="Email_Body_DriverPhoto" xml:space="preserve">
-    <value>Photo de chauffeur</value>
+    <value>Photo du chauffeur</value>
   </data>
 	<data name="Email_Body_VehicleRegistration" xml:space="preserve">
-    <value>Enregistrement de véhicule</value>
+    <value>Plaque d'immatriculation</value>
   </data>
 </root> 
