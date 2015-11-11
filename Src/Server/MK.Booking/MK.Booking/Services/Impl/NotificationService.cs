@@ -490,7 +490,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var timeZoneOfTheOrder = TryToGetOrderTimeZone(orderId);
             var nullSafeDropOffDate = GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
             var dropOffTime = dropOffDateInUtc.HasValue
-                ? nullSafeDropOffDate.ToString("t" /* Short time pattern */)
+                ? nullSafeDropOffDate.ToString("t", dateFormat /* Short time pattern */)
                 : string.Empty;
 
             var baseUrls = GetBaseUrls();
@@ -507,7 +507,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
 				HasDriverPhoto = hasDriverInfo ? driverInfos.DriverPhotoUrl.HasValue() : false,
 				DriverPhotoURL = hasDriverInfo ? driverInfos.DriverPhotoUrl : null,
+				HasVehicleRegistration = hasDriverInfo && driverInfos.VehicleRegistration.HasValue(),
                 VehicleNumber = vehicleNumber,
+				ShowExtraInfoInReceipt = _serverSettings.ServerData.ShowExtraInfoInReceipt,
 				VehicleRegistration = hasDriverInfo ? driverInfos.VehicleRegistration : null,
 				VehicleColor = hasDriverInfo ? driverInfos.VehicleColor : null,
                 DriverInfos = driverInfos,

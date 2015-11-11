@@ -633,7 +633,4 @@
 	<data name="Email_Body_VehicleRegistration" xml:space="preserve">
     <value>Enregistrement de véhicule</value>
   </data>
-	<data name="Email_Body_VehicleColor" xml:space="preserve">
-    <value>Couler de véhicule</value>
-  </data>
 </root>
