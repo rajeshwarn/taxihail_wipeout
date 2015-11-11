@@ -18,10 +18,12 @@ namespace apcurium.MK.Booking.Migrations
                     })
                 .PrimaryKey(t => t.OrderId);
             
+            AddColumn("Booking.OrderDetail", "CompanyFleetId", c => c.Int());
         }
         
         public override void Down()
         {
+            DropColumn("Booking.OrderDetail", "CompanyFleetId");
             DropTable("Booking.VehicleIdMappingDetail");
         }
     }

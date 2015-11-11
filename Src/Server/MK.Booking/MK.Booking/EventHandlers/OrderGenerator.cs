@@ -148,6 +148,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.ClientVersion = @event.ClientVersion;
                         order.CompanyKey = @event.CompanyKey;
                         order.CompanyName = @event.CompanyName;
+                        order.CompanyFleetId = @event.CompanyFleetId;
                         order.Market = @event.Market;
                         order.BookingFees = @event.BookingFees;
                         order.TipIncentive = @event.TipIncentive;

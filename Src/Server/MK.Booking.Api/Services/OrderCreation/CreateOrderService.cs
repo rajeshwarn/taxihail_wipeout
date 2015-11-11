@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _ibsCreateOrderService = ibsCreateOrderService;
             _resources = new Resources.Resources(_serverSettings);
 
-            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, _taxiHailNetworkServiceClient, _commandBus, _logger);
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_accountDao, ibsServiceProvider, _serverSettings, _taxiHailNetworkServiceClient, _commandBus, _logger);
         }
 
         public object Post(CreateOrderRequest request)
@@ -231,7 +231,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             try
             {
                 // Recreate order on next dispatch company IBS
-                ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
+                ibsAccountId = _taxiHailNetworkHelper.CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
             }
             catch (Exception ex)
             {

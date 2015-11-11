@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 					command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
 					command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
 					command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-                    command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.TipIncentive,
+                    command.CompanyKey, command.CompanyName, command.CompanyFleetId, command.Market, command.IsPrepaid, command.BookingFees, command.TipIncentive,
                     command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
                     command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.ChargeTypeEmail, command.IbsOrderId);
 
@@ -98,8 +98,8 @@ namespace apcurium.MK.Booking.CommandHandlers
 				command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
 				command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
 				command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-				command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid, command.BookingFees, command.Error, command.TipIncentive,
-                command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
+				command.CompanyKey, command.CompanyName, command.CompanyFleetId, command.Market, command.IsPrepaid, command.BookingFees,
+                command.Error, command.TipIncentive, command.IbsInformationNote, command.Fare, command.IbsAccountId, command.Prompts, command.PromptsLength,
                 command.PromotionId, command.IsFutureBooking, command.ReferenceDataCompanyList, command.IbsOrderId);
 
 			if (command.Payment.PayWithCreditCard)

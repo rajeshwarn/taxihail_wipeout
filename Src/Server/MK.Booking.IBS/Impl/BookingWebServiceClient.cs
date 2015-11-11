@@ -389,7 +389,13 @@ namespace apcurium.MK.Booking.IBS.Impl
                 try
                 {
                     Logger.LogMessage("WebService Creating IBS Order : " + JsonSerializer.SerializeToString(order, typeof(TBookOrder_11)));
+
                     orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, vehicleComps);
+                    if (!orderKey.GUID.HasValue())
+                    {
+                        orderKey.GUID = orderId.ToString();
+                    }
+                    
                     if (orderKey.OrderID < 0)
                     {
                         throw new Exception("Received a negative ibs order id");
@@ -431,7 +437,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Getting Vehicle Candidates : " + JsonSerializer.SerializeToString(orderKey, typeof(IbsOrderKey)));
 
                 vehicleCandidates = service.GetVehicleCandidates(UserNameApp, PasswordApp, new TBookOrderKey { GUID = orderKey.ToString(), OrderID = orderKey.IbsOrderId });
-                Logger.LogMessage("WebService Getting Vehicle Candidates, candidates received : " + JsonSerializer.SerializeToString(vehicleCandidates, typeof(TVehicleComp)));            
+                Logger.LogMessage("WebService Getting Vehicle Candidates, candidates received : " + JsonSerializer.SerializeToString(vehicleCandidates, typeof(TVehicleComp[])));            
             });
 
             return Mapper.Map<IbsVehicleCandidate[]>(vehicleCandidates);

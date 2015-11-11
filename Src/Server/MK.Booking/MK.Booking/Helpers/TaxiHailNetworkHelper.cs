@@ -2,6 +2,7 @@
 using System.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
+using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
@@ -19,13 +20,23 @@ namespace apcurium.MK.Booking.Helpers
 {
     public class TaxiHailNetworkHelper
     {
+        private readonly IAccountDao _accountDao;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly ICommandBus _commandBus;
         private readonly ILogger _logger;
 
-        public TaxiHailNetworkHelper(IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient, ICommandBus commandBus, ILogger logger)
+        public TaxiHailNetworkHelper(
+            IAccountDao accountDao,
+            IIBSServiceProvider ibsServiceProvider,
+            IServerSettings serverSettings,
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
+            ICommandBus commandBus,
+            ILogger logger)
         {
+            _accountDao = accountDao;
+            _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _commandBus = commandBus;
@@ -192,31 +203,12 @@ namespace apcurium.MK.Booking.Helpers
 
                 if (marketVehicles.Any())
                 {
-                    // Group vehicles by fleet
-                    var vehiclesGroupedByFleet = marketVehicles.GroupBy(v => v.FleetId).Select(g => g.ToArray()).ToArray();
+                    bestFleetId = marketVehicles
+                        .OrderBy(vehicle => vehicle.Eta.HasValue)
+                        .ThenBy(vehicle => vehicle.Eta)
+                        .First()
+                        .FleetId;
 
-                    var result = vehiclesGroupedByFleet.FirstOrDefault() ?? new VehicleResponse[0];
-
-                    // Take fleet with most number of available vehicles
-                    foreach (var response in vehiclesGroupedByFleet.Skip(1))
-                    {
-                        if (response.Length > result.Length)
-                        {
-                            // this fleet has more vehicles
-                            result = response;
-                            continue;
-                        }
-
-                        if (response.Length == result.Length)
-                        {
-                            // two fleets have the same number of vehicles, take the one with the shortest ETA
-                            if (result.Where(x => x.Eta.HasValue).Min(x => x.Eta) > response.Where(x => x.Eta.HasValue).Min(x => x.Eta))
-                            {
-                                result = response;
-                            }
-                        }
-                    }
-                    bestFleetId = result.First().FleetId;
                     break;
                 }
 
@@ -244,6 +236,31 @@ namespace apcurium.MK.Booking.Helpers
 
             // Nothing found
             return new BestAvailableCompany();
+        }
+
+        public int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
+        {
+            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
+            if (ibsAccountId.HasValue)
+            {
+                return ibsAccountId.Value;
+            }
+
+            // Account doesn't exist, create it
+            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
+                account.Email,
+                string.Empty,
+                account.Name,
+                account.Settings.Phone);
+
+            _commandBus.Send(new LinkAccountToIbs
+            {
+                AccountId = account.Id,
+                IbsAccountId = ibsAccountId.Value,
+                CompanyKey = companyKey
+            });
+
+            return ibsAccountId.Value;
         }
 
         public BaseAvailableVehicleServiceClient GetAvailableVehiclesServiceClient(string market)

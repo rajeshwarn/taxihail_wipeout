@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _dispatcherService = dispatcherService;
 
             _resources = new Resources.Resources(_serverSettings);
-            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_serverSettings, taxiHailNetworkServiceClient, _commandBus, _logger);
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_accountDao, _ibsServiceProvider, _serverSettings, taxiHailNetworkServiceClient, _commandBus, _logger);
 
             PaymentHelper = new CreateOrderPaymentHelper(serverSettings, commandBus, paymentService, orderPaymentDao, payPalServiceFactory);
         }
@@ -140,6 +140,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             createReportOrder.CompanyKey = bestAvailableCompany.CompanyKey;
             createReportOrder.CompanyName = bestAvailableCompany.CompanyName;
+            createReportOrder.CompanyFleetId = bestAvailableCompany.FleetId;
 
             if (market.HasValue() && !bestAvailableCompany.CompanyKey.HasValue())
             {
@@ -165,7 +166,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
 
             createReportOrder.IsPrepaid = isPrepaid;
 
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
+            account.IBSAccountId = _taxiHailNetworkHelper.CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
 
             var isFutureBooking = request.PickupDate.HasValue;
             var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
@@ -361,31 +362,6 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             }
 
             return offsetedTime;
-        }
-
-        protected int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
-        {
-            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
-            if (ibsAccountId.HasValue)
-            {
-                return ibsAccountId.Value;
-            }
-
-            // Account doesn't exist, create it
-            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
-                account.Email,
-                string.Empty,
-                account.Name,
-                account.Settings.Phone);
-
-            _commandBus.Send(new LinkAccountToIbs
-            {
-                AccountId = account.Id,
-                IbsAccountId = ibsAccountId.Value,
-                CompanyKey = companyKey
-            });
-
-            return ibsAccountId.Value;
         }
 
         protected CreateReportOrder CreateReportOrder(CreateOrderRequest request, AccountDetail account)

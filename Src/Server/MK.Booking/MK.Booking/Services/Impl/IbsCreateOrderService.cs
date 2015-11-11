@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Data;
-using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Jobs;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
@@ -16,10 +12,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Resources;
 using AutoMapper;
-using CMTServices;
-using CustomerPortal.Client;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Services.Impl
@@ -54,7 +47,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _commandBus = commandBus;
         }
 
-        public IBSOrderResult CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
+        public IBSOrderResult CreateIbsOrder(Guid accountId, Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
             string companyKey, int ibsAccountId, string name, string phone, int passengers, int? vehicleTypeId, string ibsInformationNote,
             DateTime pickupDate, string[] prompts, int?[] promptsLength, IList<ListItem> referenceDataCompanyList, string market, int? chargeTypeId,
             int? requestProviderId, Fare fare, double? tipIncentive, bool isHailRequest = false, int? companyFleetId = null)
@@ -88,6 +81,16 @@ namespace apcurium.MK.Booking.Services.Impl
                 ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
             }
 
+            var ibsPickupAddress = Mapper.Map<IbsAddress>(pickupAddress);
+            var ibsDropOffAddress = dropOffAddress != null && dropOffAddress.IsValid()
+                ? Mapper.Map<IbsAddress>(dropOffAddress)
+                : null;
+
+            var customerNumber = GetCustomerNumber(accountNumberString, customerNumberString);
+
+            var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
+            var defaultVehicleTypeId = defaultVehicleType != null ? defaultVehicleType.ReferenceDataVehicleId : -1;
+
             var defaultCompany = referenceDataCompanyList.FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
                     ?? referenceDataCompanyList.FirstOrDefault();
 
@@ -95,23 +98,12 @@ namespace apcurium.MK.Booking.Services.Impl
                     ? defaultCompany.Id
                     : requestProviderId;
 
-            var ibsPickupAddress = Mapper.Map<IbsAddress>(pickupAddress);
-            var ibsDropOffAddress = dropOffAddress != null && dropOffAddress.IsValid()
-                ? Mapper.Map<IbsAddress>(dropOffAddress)
-                : null;
-
-            var customerNumber = GetCustomerNumber(accountNumberString, customerNumberString);
-            
-            var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
-            var defaultVehicleTypeId = defaultVehicleType != null ? defaultVehicleType.ReferenceDataVehicleId : -1;
-
             var dispatcherSettings = _dispatcherService.GetSettings(market, isHailRequest: isHailRequest);
-            IbsResponse orderResult = null;
 
             if (dispatcherSettings.NumberOfOffersPerCycle == 0)
             {
                 // IBS is handling the dispatch
-                orderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+                var orderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
                     orderId,
                     providerId,
                     ibsAccountId,
@@ -135,144 +127,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 return Mapper.Map<IBSOrderResult>(orderResult);
             }
 
-            var vehicleCandidatesOfferedTheJob = new List<VehicleCandidate>();
-
-            // TODO
-
-            for (var i = 0; i < dispatcherSettings.NumberOfCycles; i++)
-            {
-                var vehicleCandidates = _dispatcherService.GetVehicleCandidates(
-                    orderId,
-                    new BestAvailableCompany
-                    {
-                        CompanyKey = companyKey,
-                        FleetId = companyFleetId ?? _serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId
-                    },
-                    dispatcherSettings,
-                    pickupAddress.Latitude,
-                    pickupAddress.Longitude);
-
-                vehicleCandidates = FilterOutVehiclesAlreadyOfferedTheJob(vehicleCandidates, vehicleCandidatesOfferedTheJob, dispatcherSettings);
-
-                if (!vehicleCandidates.Any())
-                {
-                    // Don't query IBS if we don't find any vehicles
-                    Thread.Sleep(TimeSpan.FromSeconds(dispatcherSettings.DurationOfOfferInSeconds));
-                    continue;
-                }
-
-                var ibsVehicleCandidates = Mapper.Map<IbsVehicleCandidate[]>(vehicleCandidates);
-
-                orderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
-                    orderId,
-                    providerId,
-                    ibsAccountId,
-                    name,
-                    phone,
-                    passengers,
-                    vehicleTypeId,
-                    ibsChargeTypeId,
-                    ibsInformationNote,
-                    pickupDate,
-                    ibsPickupAddress,
-                    ibsDropOffAddress,
-                    accountNumberString,
-                    customerNumber,
-                    prompts,
-                    promptsLength,
-                    defaultVehicleTypeId,
-                    tipIncentive,
-                    fare,
-                    ibsVehicleCandidates);
-
-                // Fetch vehicle candidates (who have accepted the hail request) only if order was successfully created on IBS
-                var candidatesResponse = _dispatcherService.WaitForCandidatesResponse(companyKey, orderResult.OrderKey, dispatcherSettings).ToArray();
-
-                if (isHailRequest)
-                {
-                    orderResult.VehicleCandidates = Mapper.Map<IbsVehicleCandidate[]>(candidatesResponse);
-                    break;
-                }
-
-                if (candidatesResponse.Any())
-                {
-                    var bestVehicle = Mapper.Map<IbsVehicleCandidate>(FindBestVehicleCandidate(candidatesResponse));
-
-                    try
-                    {
-                        _dispatcherService.AssignJobToVehicle(companyKey, orderResult.OrderKey, bestVehicle);
-
-                        Tuple<string, string> vehicleMapping = null;
-                        if (bestVehicle.CandidateType == VehicleCandidateTypes.VctPimId)
-                        {
-                            vehicleMapping =
-                                _dispatcherService.GetLegacyVehicleIdMapping()[orderId].FirstOrDefault(
-                                    m => m.Item1 == bestVehicle.VehicleId);
-                        }
-                        else if (bestVehicle.CandidateType == VehicleCandidateTypes.VctNumber)
-                        {
-                            vehicleMapping =
-                                _dispatcherService.GetLegacyVehicleIdMapping()[orderId].FirstOrDefault(
-                                    m => m.Item2 == bestVehicle.VehicleId);
-                        }
-
-                        _commandBus.Send(new AddVehicleIdMapping
-                        {
-                            OrderId = orderResult.OrderKey.TaxiHailOrderId,
-                            DeviceName = vehicleMapping.Item1,
-                            LegacyDispatchId = vehicleMapping.Item2
-                        });
-
-                        break;
-
-                    }
-                    catch (Exception)
-                    {
-                        // Do nothing
-                    }
-                }
-
-                CancelIbsOrder(orderResult.OrderKey.IbsOrderId, companyKey, phone, ibsAccountId);
-            }
-
-            return Mapper.Map<IBSOrderResult>(orderResult);
-        }
-
-        private VehicleCandidate FindBestVehicleCandidate(IEnumerable<VehicleCandidate> vehicleCandidates)
-        {
-            // Order by ETA
-            return vehicleCandidates.OrderBy(vehicle => vehicle.ETATime).First();
-        }
-
-        private IEnumerable<VehicleCandidate> FilterOutVehiclesAlreadyOfferedTheJob(IEnumerable<VehicleCandidate> vehicleCandidates, List<VehicleCandidate> vehicleCandidatesOfferedTheJob, DispatcherSettingsResponse dispatcherSettings)
-        {
-            var filteredList = vehicleCandidates
-                .Where(vehicleCandidate => !vehicleCandidatesOfferedTheJob.Exists(x => x.VehicleId == vehicleCandidate.VehicleId))
-                .Take(dispatcherSettings.NumberOfOffersPerCycle)
-                .ToList();
-
-            vehicleCandidatesOfferedTheJob.AddRange(filteredList);
-
-            return filteredList;
-        }
-
-        private void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, int ibsAccountId)
-        {
-            // Cancel order on current company IBS
-            if (ibsOrderId.HasValue)
-            {
-                _logger.LogMessage(string.Format("Cancelling IBSOrder {0}, on company {1}", ibsOrderId, companyKey));
-
-                // We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride...
-                // After 5 time, we are giving up. But we assume the order is completed.
-                Task.Factory.StartNew(() =>
-                {
-                    Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(companyKey)
-                        .CancelOrder(ibsOrderId.Value, ibsAccountId, phone);
-
-                    cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
-                });
-            }
+            return _dispatcherService.Dispatch(accountId, orderId, new BestAvailableCompany { CompanyKey = companyKey, FleetId = companyFleetId}, dispatcherSettings, ibsPickupAddress,
+                ibsDropOffAddress, accountNumberString, customerNumber, ibsAccountId, name, phone, passengers, defaultVehicleTypeId, ibsInformationNote,
+                pickupDate, prompts, promptsLength, referenceDataCompanyList, market, chargeTypeId, providerId, requestProviderId, fare, tipIncentive, isHailRequest);
         }
 
         public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId)
@@ -280,7 +137,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var ibsAccountId = _accountDao.GetIbsAccountId(accountId, companyKey);
             if (ibsAccountId.HasValue)
             {
-                CancelIbsOrder(ibsOrderId, companyKey, phone, ibsAccountId.Value);
+                _dispatcherService.CancelIbsOrder(ibsOrderId, companyKey, phone, ibsAccountId.Value);
             }
         }
 

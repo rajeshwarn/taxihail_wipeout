@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Domain
 
 		public void UpdateOrderCreated(Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, double? tipIncentive,
+			bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, int? companyFleetId, string market, bool isPrepaid, decimal bookingFees, double? tipIncentive,
             string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
             string chargeTypeEmail, int? ibsOrderId = null)
 		{
@@ -87,6 +87,7 @@ namespace apcurium.MK.Booking.Domain
 				IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
 				CompanyKey = companyKey,
 				CompanyName = companyName,
+                CompanyFleetId = companyFleetId,
 				Market = market,
 				IsPrepaid = isPrepaid,
 				BookingFees = bookingFees,
@@ -106,9 +107,9 @@ namespace apcurium.MK.Booking.Domain
 
 		public void UpdateOrderReportCreated(Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
 			double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees, string error, double? tipIncentive,
-            string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking, ListItem[] referenceDataCompanyList,
-            int? ibsOrderId = null)
+            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, int? companyFleetId, string market, bool isPrepaid, decimal bookingFees, string error,
+            double? tipIncentive, string ibsInformationNote, Fare fare, int ibsAccountId, string[] prompts, int?[] promptsLength, Guid? promotionId, bool isFutureBooking,
+            ListItem[] referenceDataCompanyList, int? ibsOrderId = null)
 		{
 			Update(new OrderReportCreated
 			{
@@ -128,6 +129,7 @@ namespace apcurium.MK.Booking.Domain
 				IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
 				CompanyKey = companyKey,
 				CompanyName = companyName,
+                CompanyFleetId = companyFleetId,
 				Market = market,
 				IsPrepaid = isPrepaid,
 				BookingFees = bookingFees,

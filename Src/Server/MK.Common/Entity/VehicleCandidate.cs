@@ -12,5 +12,7 @@ namespace apcurium.MK.Common.Entity
         public int ETATime { get; set; }
 
         public string Rating { get; set; }
+
+        public int FleetId { get; set; }
     }
 }
