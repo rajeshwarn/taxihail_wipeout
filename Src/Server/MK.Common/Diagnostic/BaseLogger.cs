@@ -173,23 +173,20 @@ namespace apcurium.MK.Common.Diagnostic
 			Console.WriteLine(messageWithUserName);
 		}
 
-		public string[] GetLogFilesFullName()
+		private string[] GetLogFilesFullName()
 		{
 			SetActiveLogFile(0);
 
 			var nonEmptyLogs = new List<string>();
 
-			lock (_fileSwitchExclusiveAccess)
+			if (File.Exists(inactiveFileFullName) && (new FileInfo(inactiveFileFullName)).Length > 0)
 			{
-				if (File.Exists(inactiveFileFullName) && (new FileInfo(inactiveFileFullName)).Length > 0)
-				{
-					nonEmptyLogs.Add(inactiveFileFullName);
-				}
+				nonEmptyLogs.Add(inactiveFileFullName);
+			}
 
-				if (File.Exists(activeFileFullName) && (new FileInfo(activeFileFullName)).Length > 0)
-				{
-					nonEmptyLogs.Add(activeFileFullName);
-				}
+			if (File.Exists(activeFileFullName) && (new FileInfo(activeFileFullName)).Length > 0)
+			{
+				nonEmptyLogs.Add(activeFileFullName);
 			}
 
 			return nonEmptyLogs.ToArray();
@@ -197,27 +194,30 @@ namespace apcurium.MK.Common.Diagnostic
 
 		public string MergeLogFiles()
 		{
-			var logFiles = GetLogFilesFullName();
-
-			if (logFiles.Length > 0)
+			lock (_fileSwitchExclusiveAccess)
 			{
-				var mergedLogFile = Path.Combine(GetBaseDirectory(), MergedLogFileName);
+				var logFiles = GetLogFilesFullName();
 
-				File.Copy(logFiles[0], mergedLogFile, true);
-
-				for (int i = 1; i < logFiles.Length; i++)
+				if (logFiles.Length > 0)
 				{
-					var currentLogStream = File.OpenRead(logFiles[i]);
-					var currentStreamReader = new StreamReader(currentLogStream);
+					var mergedLogFile = Path.Combine(GetBaseDirectory(), MergedLogFileName);
 
-					var h = currentStreamReader.ReadToEnd();
-					currentStreamReader.Close();
-					currentLogStream.Close();
+					File.Copy(logFiles[0], mergedLogFile, true);
 
-					File.AppendAllText(mergedLogFile, h);
+					for (int i = 1; i < logFiles.Length; i++)
+					{
+						var currentLogStream = File.OpenRead(logFiles[i]);
+						var currentStreamReader = new StreamReader(currentLogStream);
+
+						var h = currentStreamReader.ReadToEnd();
+						currentStreamReader.Close();
+						currentLogStream.Close();
+
+						File.AppendAllText(mergedLogFile, h);
+					}
+
+					return mergedLogFile;
 				}
-
-				return mergedLogFile;
 			}
 
 			return null;
@@ -225,9 +225,12 @@ namespace apcurium.MK.Common.Diagnostic
 
 		public void RemoveMergedFile()
 		{
-			if (mergedLogFileFullName != null && File.Exists(mergedLogFileFullName))
+			lock (_fileSwitchExclusiveAccess)
 			{
-				File.Delete(mergedLogFileFullName);
+				if (mergedLogFileFullName != null && File.Exists(mergedLogFileFullName))
+				{
+					File.Delete(mergedLogFileFullName);
+				}
 			}
 		}
 	}

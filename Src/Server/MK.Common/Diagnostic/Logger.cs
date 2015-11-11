@@ -60,16 +60,6 @@ namespace apcurium.MK.Common.Diagnostic
             });
         }
 
-        public string GetErrorLogPath()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FlushNextWrite()
-        {
-            throw new NotImplementedException();
-        }
-
         private class Disposable : IDisposable
         {
             private readonly Action _action;
@@ -92,5 +82,15 @@ namespace apcurium.MK.Common.Diagnostic
                 return new Disposable(action);
             }
         }
-    }
+
+		public string MergeLogFiles()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void RemoveMergedFile()
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
