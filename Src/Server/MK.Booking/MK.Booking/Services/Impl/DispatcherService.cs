@@ -118,6 +118,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     promptsLength,
                     vehicleTypeId,
                     tipIncentive,
+                    dispatcherSettings.DurationOfOfferInSeconds,
                     fare,
                     ibsVehicleCandidates);
 

@@ -15,7 +15,6 @@ namespace apcurium.MK.Booking.IBS.Impl
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
         private readonly IServerSettings _serverSettings;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
 
         public BookingWebServiceClient(IServerSettings serverSettings, ILogger logger)
             : base(serverSettings.ServerData.IBS, logger)
@@ -366,11 +365,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IbsResponse CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Fare fare = default(Fare), IEnumerable<IbsVehicleCandidate> vehicleCandidates = default(IEnumerable<IbsVehicleCandidate>))
+        public IbsResponse CreateOrder(Guid orderId, int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, int durationOfOfferInSeconds, Fare fare = default(Fare), IEnumerable<IbsVehicleCandidate> vehicleCandidates = default(IEnumerable<IbsVehicleCandidate>))
         {
             var order = CreateIbsOrderObject(providerId, accountId, passengerName, phone, nbPassengers, vehicleTypeId,
                 chargeTypeId, note, pickupDateTime, pickup, dropoff, accountNumber, customerNumber, prompts,
-                promptsLength, defaultVehiculeTypeId, tipIncentive, orderId, fare);
+                promptsLength, defaultVehiculeTypeId, tipIncentive, orderId, durationOfOfferInSeconds, fare);
 
             var orderKey = new TBookOrderKey();
 
@@ -388,7 +387,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 try
                 {
-                    Logger.LogMessage("WebService Creating IBS Order : " + JsonSerializer.SerializeToString(order, typeof(TBookOrder_11)));
+                    Logger.LogMessage("WebService Creating IBS Order : " + JsonSerializer.SerializeToString(order, typeof(TBookOrder_12)));
 
                     orderKey = service.SaveBookOrder_12(UserNameApp, PasswordApp, order, vehicleComps);
                     if (!orderKey.GUID.HasValue())
@@ -492,18 +491,22 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        private TBookOrder_11 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Guid taxiHailOrderId, Fare fare = default(Fare))
+        private TBookOrder_12 CreateIbsOrderObject(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId,
+            int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts,
+            int?[] promptsLength, int defaultVehiculeTypeId, double? tipIncentive, Guid taxiHailOrderId, int durationOfOfferInSeconds, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
 
-            var order = new TBookOrder_11
+            var order = new TBookOrder_12
             {
                 GUID = taxiHailOrderId.ToString(),
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,
                 Customer = passengerName,
                 Phone = CleanPhone(phone),
-                AccountNum = accountNumber
+                AccountNum = accountNumber,
+                JobProvider = (int)_serverSettings.ServerData.IBS.JobProviders,
+                JobOfferAcceptTimeout = durationOfOfferInSeconds
             };
 
             if (!_serverSettings.ServerData.HideFareEstimateFromIBS)

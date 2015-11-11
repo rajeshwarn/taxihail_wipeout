@@ -122,6 +122,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     promptsLength,
                     defaultVehicleTypeId,
                     tipIncentive,
+                    dispatcherSettings.DurationOfOfferInSeconds,
                     fare);
 
                 return Mapper.Map<IBSOrderResult>(orderResult);
