@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Data;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
@@ -48,6 +49,7 @@ namespace apcurium.MK.Booking.Jobs
         private readonly IOrderNotificationsDetailDao _orderNotificationsDetailDao;
         private readonly CmtGeoServiceClient _cmtGeoServiceClient;
         private readonly IDispatcherService _dispatcherService;
+        private readonly IIbsCreateOrderService _ibsCreateOrderService;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -71,6 +73,7 @@ namespace apcurium.MK.Booking.Jobs
             IOrderNotificationsDetailDao orderNotificationsDetailDao,
             CmtGeoServiceClient cmtGeoServiceClient,
             IDispatcherService dispatcherService,
+            IIbsCreateOrderService ibsCreateOrderService,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -90,6 +93,7 @@ namespace apcurium.MK.Booking.Jobs
             _orderNotificationsDetailDao = orderNotificationsDetailDao;
             _cmtGeoServiceClient = cmtGeoServiceClient;
             _dispatcherService = dispatcherService;
+            _ibsCreateOrderService = ibsCreateOrderService;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -306,13 +310,49 @@ namespace apcurium.MK.Booking.Jobs
 
                 if (hasBailed && dispatcherSettings.NumberOfOffersPerCycle > 0)
                 {
-                    // TODO: do the dispatcher dance (again)
+                    // Do the dispatcher dance (again)
                     var ibsAccountId = _accountDao.GetIbsAccountId(orderDetail.AccountId, orderDetail.CompanyKey);
                     if (ibsAccountId.HasValue)
                     {
                         _dispatcherService.CancelIbsOrder(orderDetail.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, ibsAccountId.Value);
 
-                        //_dispatcherService.Dispatch()
+                        var ibsOrderParams = _ibsCreateOrderService.PrepareForIbsOrder(
+                            orderDetail.Settings.ChargeTypeId, orderDetail.PickupAddress,
+                            orderDetail.DropOffAddress, orderDetail.Settings.AccountNumber,
+                            orderDetail.Settings.CustomerNumber, null, orderDetail.Market,
+                            orderDetail.Settings.ProviderId);
+
+                        var chargeTypeKey = ChargeTypes.GetList()
+                            .Where(x => x.Id == orderDetail.Settings.ChargeTypeId)
+                            .Select(x => x.Display)
+                            .FirstOrDefault();
+
+                        _dispatcherService.Dispatch(orderDetail.AccountId, orderDetail.Id,
+                            ibsOrderParams,
+                            new BestAvailableCompany
+                            {
+                                CompanyKey = orderDetail.CompanyKey,
+                                CompanyName = orderDetail.CompanyName,
+                                FleetId = orderDetail.CompanyFleetId
+                            },
+                            dispatcherSettings,
+                            orderDetail.Settings.AccountNumber,
+                            ibsAccountId.Value,
+                            orderDetail.Settings.Name,
+                            orderDetail.Settings.Phone,
+                            orderDetail.Settings.Passengers,
+                            orderDetail.Settings.VehicleTypeId,
+                            IbsNoteBuilder.BuildNote(
+                                _serverSettings.ServerData.IBS.NoteTemplate,
+                                _resources.Get(chargeTypeKey, _serverSettings.ServerData.PriceFormat),
+                                orderDetail.UserNote, orderDetail.PickupAddress.BuildingName,
+                                orderDetail.Settings.LargeBags, _serverSettings.ServerData.IBS.HideChargeTypeInUserNote),
+                            orderDetail.PickupDate,
+                            null,
+                            null,
+                            orderDetail.Market,
+                            FareHelper.GetFareFromEstimate(new RideEstimate {Price = orderDetail.EstimatedFare}),
+                            orderDetail.TipIncentive);
                     }
                 }
             }

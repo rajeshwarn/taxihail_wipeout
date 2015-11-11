@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 null,
                 accountDao,
                 IbsOrderServiceMock.Object,
-                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), ConfigurationManager, null), 
+                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), ConfigurationManager, null),
                 null,
                 PaymentServiceMock.Object,
                 new CreditCardDao(() => new BookingDbContext(DbName)),
@@ -87,6 +87,7 @@ namespace apcurium.MK.Booking.Test.OrderStatusUpdater
                 notificationDetailsDaoMock.Object,
                 new CmtGeoServiceClient(ConfigurationManager, LoggerMock.Object),
                 new DispatcherService(LoggerMock.Object, new IBSServiceProvider(ConfigurationManager, LoggerMock.Object, new TaxiHailNetworkServiceClient(ConfigurationManager)), ConfigurationManager, bus.Object, new TaxiHailNetworkServiceClient(ConfigurationManager), accountDao),
+                null, // TODO
                 LoggerMock.Object);
         }
         

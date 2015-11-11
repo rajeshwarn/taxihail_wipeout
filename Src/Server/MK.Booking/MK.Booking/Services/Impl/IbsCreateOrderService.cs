@@ -65,6 +65,47 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
 
+            var ibsOrderParams = PrepareForIbsOrder(chargeTypeId, pickupAddress, dropOffAddress, accountNumberString,
+                customerNumberString, referenceDataCompanyList, market, requestProviderId);
+
+            var dispatcherSettings = _dispatcherService.GetSettings(market, isHailRequest: isHailRequest);
+
+            if (dispatcherSettings.NumberOfOffersPerCycle == 0)
+            {
+                // IBS is handling the dispatch
+                var orderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+                    orderId,
+                    ibsOrderParams.ProviderId,
+                    ibsAccountId,
+                    name,
+                    phone,
+                    passengers,
+                    vehicleTypeId,
+                    ibsOrderParams.IbsChargeTypeId,
+                    ibsInformationNote,
+                    pickupDate,
+                    ibsOrderParams.IbsPickupAddress,
+                    ibsOrderParams.IbsDropOffAddress,
+                    accountNumberString,
+                    ibsOrderParams.CustomerNumber,
+                    prompts,
+                    promptsLength,
+                    ibsOrderParams.DefaultVehicleTypeId,
+                    tipIncentive,
+                    dispatcherSettings.DurationOfOfferInSeconds,
+                    fare);
+
+                return Mapper.Map<IBSOrderResult>(orderResult);
+            }
+
+            return _dispatcherService.Dispatch(accountId, orderId, ibsOrderParams, new BestAvailableCompany { CompanyKey = companyKey, FleetId = companyFleetId},
+                dispatcherSettings, accountNumberString, ibsAccountId, name, phone, passengers,
+                vehicleTypeId, ibsInformationNote, pickupDate, prompts, promptsLength, market, fare, tipIncentive, isHailRequest);
+        }
+
+        public IbsOrderParams PrepareForIbsOrder(int? chargeTypeId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
+            IList<ListItem> referenceDataCompanyList, string market, int? requestProviderId)
+        {
             int? ibsChargeTypeId;
 
             if (chargeTypeId == ChargeTypes.CardOnFile.Id
@@ -98,39 +139,15 @@ namespace apcurium.MK.Booking.Services.Impl
                     ? defaultCompany.Id
                     : requestProviderId;
 
-            var dispatcherSettings = _dispatcherService.GetSettings(market, isHailRequest: isHailRequest);
-
-            if (dispatcherSettings.NumberOfOffersPerCycle == 0)
+            return new IbsOrderParams
             {
-                // IBS is handling the dispatch
-                var orderResult = _ibsServiceProvider.Booking(companyKey).CreateOrder(
-                    orderId,
-                    providerId,
-                    ibsAccountId,
-                    name,
-                    phone,
-                    passengers,
-                    vehicleTypeId,
-                    ibsChargeTypeId,
-                    ibsInformationNote,
-                    pickupDate,
-                    ibsPickupAddress,
-                    ibsDropOffAddress,
-                    accountNumberString,
-                    customerNumber,
-                    prompts,
-                    promptsLength,
-                    defaultVehicleTypeId,
-                    tipIncentive,
-                    dispatcherSettings.DurationOfOfferInSeconds,
-                    fare);
-
-                return Mapper.Map<IBSOrderResult>(orderResult);
-            }
-
-            return _dispatcherService.Dispatch(accountId, orderId, new BestAvailableCompany { CompanyKey = companyKey, FleetId = companyFleetId}, dispatcherSettings, ibsPickupAddress,
-                ibsDropOffAddress, accountNumberString, customerNumber, ibsAccountId, name, phone, passengers, defaultVehicleTypeId, ibsInformationNote,
-                pickupDate, prompts, promptsLength, referenceDataCompanyList, market, chargeTypeId, providerId, requestProviderId, fare, tipIncentive, isHailRequest);
+                CustomerNumber = customerNumber,
+                DefaultVehicleTypeId = defaultVehicleTypeId,
+                IbsChargeTypeId = ibsChargeTypeId,
+                IbsPickupAddress = ibsPickupAddress,
+                IbsDropOffAddress = ibsDropOffAddress,
+                ProviderId = providerId
+            };
         }
 
         public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId)

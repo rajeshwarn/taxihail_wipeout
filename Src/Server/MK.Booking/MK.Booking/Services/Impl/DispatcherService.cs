@@ -56,11 +56,10 @@ namespace apcurium.MK.Booking.Services.Impl
             _taxiHailNetworkHelper = new TaxiHailNetworkHelper(accountDao, ibsServiceProvider, serverSettings, taxiHailNetworkServiceClient, commandBus, _logger);
         }
 
-        public IBSOrderResult Dispatch(Guid accountId, Guid orderId, BestAvailableCompany initialBestAvailableCompany, DispatcherSettingsResponse dispatcherSettings,
-            IbsAddress pickupAddress, IbsAddress dropOffAddress, string accountNumberString, int? customerNumber,
-            int initialIbsAccountId, string name, string phone, int passengers, int vehicleTypeId, string ibsInformationNote,
-            DateTime pickupDate, string[] prompts, int?[] promptsLength, IList<ListItem> initialReferenceDataCompanyList, string market, int? chargeTypeId,
-            int? initialProviderId, int? homeMarketProviderId, Fare fare, double? tipIncentive, bool isHailRequest = false)
+        public IBSOrderResult Dispatch(Guid accountId, Guid orderId, IbsOrderParams ibsOrderParams, BestAvailableCompany initialBestAvailableCompany,
+            DispatcherSettingsResponse dispatcherSettings, string accountNumberString, int initialIbsAccountId, string name, string phone, int passengers,
+            int? vehicleTypeId, string ibsInformationNote, DateTime pickupDate, string[] prompts, int?[] promptsLength, string market, Fare fare,
+            double? tipIncentive, bool isHailRequest = false)
         {
             IbsResponse orderResult = null;
 
@@ -69,12 +68,12 @@ namespace apcurium.MK.Booking.Services.Impl
             initialBestAvailableCompany.FleetId = initialBestAvailableCompany.FleetId ?? _serverSettings.ServerData.CmtGeo.AvailableVehiclesFleetId;
 
             _bestAvailableCompany = initialBestAvailableCompany;
-            _providerId = initialProviderId;
+            _providerId = ibsOrderParams.ProviderId;
             _ibsAccountId = initialIbsAccountId;
 
             var availableFleetsInMarket = market.HasValue()
                 ? _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, market).ToArray()
-                : _taxiHailNetworkServiceClient.GetNetworkFleet(_serverSettings.ServerData.TaxiHail.ApplicationKey, pickupAddress.Latitude, pickupAddress.Longitude).ToArray();
+                : _taxiHailNetworkServiceClient.GetNetworkFleet(_serverSettings.ServerData.TaxiHail.ApplicationKey, ibsOrderParams.IbsPickupAddress.Latitude, ibsOrderParams.IbsPickupAddress.Longitude).ToArray();
             
             for (var i = 0; i < dispatcherSettings.NumberOfCycles; i++)
             {
@@ -83,8 +82,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     orderId,
                     _bestAvailableCompany,
                     dispatcherSettings,
-                    pickupAddress.Latitude,
-                    pickupAddress.Longitude);
+                    ibsOrderParams.IbsPickupAddress.Latitude,
+                    ibsOrderParams.IbsPickupAddress.Longitude);
 
                 // 2. Filter vehicle list to remove vehicle already sent offer
                 vehicleCandidates = FilterOutVehiclesAlreadyOfferedTheJob(vehicleCandidates, vehicleCandidatesOfferedTheJob, dispatcherSettings, true);
@@ -107,16 +106,16 @@ namespace apcurium.MK.Booking.Services.Impl
                     phone,
                     passengers,
                     vehicleTypeId,
-                    chargeTypeId,
+                    ibsOrderParams.IbsChargeTypeId,
                     ibsInformationNote,
                     pickupDate,
-                    pickupAddress,
-                    dropOffAddress,
+                    ibsOrderParams.IbsPickupAddress,
+                    ibsOrderParams.IbsDropOffAddress,
                     accountNumberString,
-                    customerNumber,
+                    ibsOrderParams.CustomerNumber,
                     prompts,
                     promptsLength,
-                    vehicleTypeId,
+                    ibsOrderParams.DefaultVehicleTypeId,
                     tipIncentive,
                     dispatcherSettings.DurationOfOfferInSeconds,
                     fare,
@@ -181,9 +180,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     accountId,
                     orderId,
                     dispatcherSettings,
-                    pickupAddress.Latitude,
-                    pickupAddress.Longitude,
-                    homeMarketProviderId,
+                    ibsOrderParams.IbsPickupAddress.Latitude,
+                    ibsOrderParams.IbsPickupAddress.Longitude,
+                    ibsOrderParams.ProviderId,
                     vehicleCandidatesOfferedTheJob,
                     availableFleetsInMarket);
             }

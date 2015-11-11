@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
+namespace apcurium.MK.Booking.Helpers
 {
     public static class IbsNoteBuilder
     {

@@ -10,11 +10,10 @@ namespace apcurium.MK.Booking.Services
 {
     public interface IDispatcherService
     {
-        IBSOrderResult Dispatch(Guid accountId, Guid orderId, BestAvailableCompany initialBestAvailableCompany, DispatcherSettingsResponse dispatcherSettings,
-            IbsAddress pickupAddress, IbsAddress dropOffAddress, string accountNumberString, int? customerNumber,
-            int initialIbsAccountId, string name, string phone, int passengers, int vehicleTypeId, string ibsInformationNote,
-            DateTime pickupDate, string[] prompts, int?[] promptsLength, IList<ListItem> initialReferenceDataCompanyList, string market, int? chargeTypeId,
-            int? initialProviderId, int? homeMarketProviderId, Fare fare, double? tipIncentive, bool isHailRequest = false);
+        IBSOrderResult Dispatch(Guid accountId, Guid orderId, IbsOrderParams ibsOrderParams, BestAvailableCompany initialBestAvailableCompany,
+            DispatcherSettingsResponse dispatcherSettings, string accountNumberString, int initialIbsAccountId, string name, string phone, int passengers,
+            int? vehicleTypeId, string ibsInformationNote, DateTime pickupDate, string[] prompts, int?[] promptsLength, string market, Fare fare,
+            double? tipIncentive, bool isHailRequest = false);
 
         void AssignJobToVehicle(string companyKey, IbsOrderKey ibsOrderKey, IbsVehicleCandidate ibsVehicleCandidate);
 

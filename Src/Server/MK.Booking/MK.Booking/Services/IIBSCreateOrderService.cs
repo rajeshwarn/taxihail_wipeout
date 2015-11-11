@@ -16,5 +16,8 @@ namespace apcurium.MK.Booking.Services
         void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId);
 
         void UpdateOrderStatusAsync(Guid orderId);
+
+        IbsOrderParams PrepareForIbsOrder(int? chargeTypeId, Address pickupAddress, Address dropOffAddress, string accountNumberString,
+            string customerNumberString, IList<ListItem> referenceDataCompanyList, string market, int? requestProviderId);
     }
 }
