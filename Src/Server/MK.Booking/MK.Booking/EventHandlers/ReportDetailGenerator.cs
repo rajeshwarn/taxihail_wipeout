@@ -84,6 +84,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         DropOffAddress = @event.DropOffAddress,
                         CompanyName = @event.CompanyName,
                         CompanyKey = @event.CompanyKey,
+                        CompanyFleetId = @event.CompanyFleetId,
                         Market = @event.Market
                     };
                     orderReport.Client = new OrderReportClient
@@ -133,7 +134,8 @@ namespace apcurium.MK.Booking.EventHandlers
 		                DropOffAddress = @event.DropOffAddress,
 		                CompanyName = @event.CompanyName,
 		                CompanyKey = @event.CompanyKey,
-		                Market = @event.Market,
+                        CompanyFleetId = @event.CompanyFleetId,
+                        Market = @event.Market,
 		                Error = @event.Error
 		            };
 		            orderReport.Client = new OrderReportClient
@@ -442,6 +444,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.Order.CompanyName = @event.CompanyName;
                 orderReport.Order.CompanyKey = @event.CompanyKey;
+                orderReport.Order.CompanyFleetId = null;
                 orderReport.Order.Market = @event.Market;
                 orderReport.Order.IBSOrderId = @event.IBSOrderId;
                 orderReport.Order.WasSwitchedToAnotherCompany = true;
