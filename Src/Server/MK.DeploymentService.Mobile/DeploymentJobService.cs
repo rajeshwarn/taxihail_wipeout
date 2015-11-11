@@ -202,7 +202,8 @@ namespace MK.DeploymentService.Mobile
 
 		private string GetAndroidFile(string apkPath)
 		{
-			if (Directory.Exists (apkPath)) {
+			if (Directory.Exists (apkPath))
+            {
 				return Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ();
 			}
 			return null;
@@ -210,16 +211,18 @@ namespace MK.DeploymentService.Mobile
 
 		private string GetAndroidCallboxFile(string apkPathCallBox)
 		{
-			if (Directory.Exists (apkPathCallBox)) {
-				return Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			if (Directory.Exists (apkPathCallBox))
+            {
+				return Directory.EnumerateFiles(apkPathCallBox, "*.Callbox-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
 			}
 			return null;
 		}
 
 		private string GetiOSFile(string ipaPath)
 		{
-					if (Directory.Exists (ipaPath)) {
-						return Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+			if (Directory.Exists (ipaPath))
+            {
+				return Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 			}
 			return null;
 		}
