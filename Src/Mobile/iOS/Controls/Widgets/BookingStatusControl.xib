@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookingStatusControl">
@@ -38,6 +38,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="KtK-9e-n0C" firstAttribute="top" secondItem="QS4-3I-Wm4" secondAttribute="top" priority="750" constant="5" id="Cqi-1l-Egh"/>
                         <constraint firstAttribute="trailing" secondItem="F3w-Jg-zVD" secondAttribute="trailing" constant="8" id="FH3-RU-p8m"/>
                         <constraint firstItem="KtK-9e-n0C" firstAttribute="leading" secondItem="QS4-3I-Wm4" secondAttribute="leading" constant="8" id="Mcx-64-Hww"/>
                         <constraint firstItem="F3w-Jg-zVD" firstAttribute="top" secondItem="QS4-3I-Wm4" secondAttribute="top" constant="5" id="Qe8-r9-RhO"/>

@@ -163,6 +163,18 @@ namespace apcurium.MK.Common.Configuration
         public string ProductionCertificatePath { get; protected internal set; }
     }
 
+    public class BlackberrySettingContainer
+    {
+        [Display(Name = "Notification - Blackberry App Id", Description = "Balckberry Notification Application Id")]
+        public string AppId { get; protected internal set; }
+
+        [Display(Name = "Notification - Blackberry App Password", Description = "Balckberry Notification Password")]
+        public string Password { get; protected internal set; }
+
+        [Display(Name = "Notification - Blackberry Url", Description = "Blackerry Send Url")]
+        public string Url { get; protected internal set; }
+    }
+
     public class DefaultBookingSettingsSettingContainer
     {
         [CustomizableByCompany]
