@@ -1,1 +1,1 @@
-{"CompanyName":"MKWebDev","MkWebConnectionString":"Data Source=.;Initial Catalog=MkWebDev;Integrated Security=True;MultipleActiveResultSets=True","MasterConnectionString":"Data Source=.;Initial Catalog=master;Integrated Security=True; MultipleActiveResultSets=True"}
+{"CompanyName":"MearsTaxi","MkWebConnectionString":"Data Source=taxihail02;Initial Catalog=MearsTaxi;User Id=sa;Password=Apcurium7250@@;MultipleActiveResultSets=True","MasterConnectionString":"Data Source=taxihail02;Initial Catalog=master;User Id=sa;Password=Apcurium7250@@; MultipleActiveResultSets=True"}

@@ -108,5 +108,9 @@ namespace apcurium.MK.Booking.Test
                 _serverPaymentSettings.Add(companyKey, settings);
             }
         }
+
+        public void SetAppleTestAccountMode(bool isAppleTestAccountUsed)
+        {
+        }
     }
 }

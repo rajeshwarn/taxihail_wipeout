@@ -11,6 +11,12 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Common.Helpers;
+using System.Runtime.Caching;
+using System.Collections.Generic;
+using System.Collections;
+using EntityFramework.BulkInsert.Extensions;
+using System.Data.Common;
+using System.Data.EntityClient;
 
 #endregion
 
@@ -38,108 +44,94 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OverduePaymentSettled>,
         IEventHandler<ChargeAccountPaymentDisabled>
     {
-        private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IProjectionStore<AccountDetail> _store;
 
-        public AccountDetailsGenerator(Func<BookingDbContext> contextFactory)
+        public AccountDetailsGenerator(IProjectionStore<AccountDetail> projectionStore)
         {
-            _contextFactory = contextFactory;
+            _store = projectionStore;
         }
 
         public void Handle(AccountConfirmed @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = true;
                 account.DisabledByAdmin = false;
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(AccountDisabled @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = false;
                 account.DisabledByAdmin = true;
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(AccountPasswordReset @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Password = @event.Password;
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(AccountPasswordUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Password = @event.Password;
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(AccountRegistered @event)
         {
-            using (var context = _contextFactory.Invoke())
+            var account = new AccountDetail
             {
-                var account = new AccountDetail
-                {
-                    Name = @event.Name,
-                    Email = @event.Email,
-                    Password = @event.Password,
-                    Id = @event.SourceId,
-                    IBSAccountId = @event.IbsAcccountId,
-                    FacebookId = @event.FacebookId,
-                    TwitterId = @event.TwitterId,
-                    Language = @event.Language,
-                    CreationDate = @event.EventDate,
-                    ConfirmationToken = @event.ConfirmationToken,
-                    IsConfirmed = @event.AccountActivationDisabled
-                };
+                Name = @event.Name,
+                Email = @event.Email,
+                Password = @event.Password,
+                Id = @event.SourceId,
+                IBSAccountId = @event.IbsAcccountId,
+                FacebookId = @event.FacebookId,
+                TwitterId = @event.TwitterId,
+                Language = @event.Language,
+                CreationDate = @event.EventDate,
+                ConfirmationToken = @event.ConfirmationToken,
+                IsConfirmed = @event.AccountActivationDisabled
+            };
 
-                if (@event.IsAdmin)
-                {
-                    account.Roles |= (int) Roles.Admin;
-                }
-
-                account.Settings = new BookingSettings
-                {
-                    Name = account.Name,
-                    NumberOfTaxi = 1,
-                    Passengers = @event.NbPassengers.Value,
-                    Country = @event.Country,
-                    Phone = @event.Phone,
-                    PayBack = @event.PayBack
-                };
-
-                context.Save(account);
+            if (@event.IsAdmin)
+            {
+                account.Roles |= (int) Roles.Admin;
             }
+
+            account.Settings = new BookingSettings
+            {
+                Name = account.Name,
+                NumberOfTaxi = 1,
+                Passengers = @event.NbPassengers.Value,
+                Country = @event.Country,
+                Phone = @event.Phone,
+                PayBack = @event.PayBack
+            };
+
+            _store.Add(account);
         }
 
         public void Handle(AccountUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Name = @event.Name;
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(BookingSettingsUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 var settings = account.Settings ?? new BookingSettings();
                 settings.Name = @event.Name;
 
@@ -154,159 +146,128 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.AccountNumber = @event.AccountNumber;
                 settings.CustomerNumber = @event.CustomerNumber;
                 settings.PayBack = @event.PayBack;
-				account.Email = @event.Email;
+                account.Email = @event.Email;
                 account.DefaultTipPercent = @event.DefaultTipPercent;
 
                 account.Settings = settings;
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(RoleAddedToUserAccount @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
-                account.Roles |= (int) Enum.Parse(typeof (Roles), @event.RoleName);
-                context.Save(account);
-            }
+                account.Roles |= (int)Enum.Parse(typeof(Roles), @event.RoleName);
+            });
         }
 
         public void Handle(RoleUpdatedToUserAccount @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Roles = (int)Enum.Parse(typeof(Roles), @event.RoleName);
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(CreditCardAddedOrUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 if (!account.DefaultCreditCard.HasValue)
                 {
                     account.DefaultCreditCard = @event.CreditCardId;
                     account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                 }
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(DefaultCreditCardUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                 account.DefaultCreditCard = @event.CreditCardId;
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(CreditCardRemoved @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
                 // used for migration, if user removed one card but had another one, we set this one as the default card
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.DefaultCreditCard = @event.NextDefaultCreditCardId;
                 account.Settings.ChargeTypeId = @event.NextDefaultCreditCardId.HasValue ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
-                context.Save(account);
-            }
+            });
             
         }
 
         public void Handle(AllCreditCardsRemoved @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.DefaultCreditCard = null;
 
                 account.Settings.ChargeTypeId = account.IsPayPalAccountLinked
                     ? ChargeTypes.PayPal.Id
                     : ChargeTypes.PaymentInCar.Id;
-                
-                context.Save(account);
-            }
+
+            });
         }
 
         public void Handle(CreditCardDeactivated @event)
         {
             if (!@event.IsOutOfAppPaymentDisabled.Value)
             {
-                using (var context = _contextFactory.Invoke())
+                _store.Update(@event.SourceId, account =>
                 {
-                    var account = context.Find<AccountDetail>(@event.SourceId);
                     account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
-                    context.Save(account);
-                }
+                });
             }
     }
 
         public void Handle(AccountLinkedToIbs @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
                 if (!@event.CompanyKey.HasValue())
                 {
-                    var account = context.Find<AccountDetail>(@event.SourceId);
                     account.IBSAccountId = @event.IbsAccountId;
-                    context.Save(account);
                 }
-            }
+            });
         }
 
         public void Handle(AccountUnlinkedFromIbs @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IBSAccountId = null;
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(PayPalAccountLinked @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsPayPalAccountLinked = true;
                 account.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(PayPalAccountUnlinked @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(@event.SourceId, account =>
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsPayPalAccountLinked = false;
-                context.Save(account);
-            }
+            });
         }
 
         public void Handle(ChargeAccountPaymentDisabled @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _store.Update(HasChargeAccount, account =>
             {
-                var accounts = context.Set<AccountDetail>()
-                    .Where(HasChargeAccount);
-
-                foreach (var account in accounts)
-                {
-                    account.Settings.CustomerNumber = null;
-                    account.Settings.AccountNumber = null;
-                }
-                
-                context.SaveChanges();
-            }
+                account.Settings.CustomerNumber = null;
+                account.Settings.AccountNumber = null;
+            });
         }
 
         private bool HasChargeAccount(AccountDetail accountDetail)
@@ -319,16 +280,164 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             if (@event.IsPayInTaxiEnabled.Value)
             {
-                using (var context = _contextFactory.Invoke())
+                _store.Update(@event.SourceId, account =>
                 {
                     //Re-enable card on file as the default payment method
-                    var account = context.Find<AccountDetail>(@event.SourceId);
                     account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
-                    context.Save(account);
-                }
+                });
             }
         }
 
         
+    }
+
+    public interface IProjectionStore: IProjectionStore<object>
+    {
+
+    }
+
+    public interface IProjectionStore<TProjection>: IProjectionStore<TProjection, Guid> where TProjection : class
+    {
+
+    }
+
+    public interface IProjectionStore<TProjection, TIdentifier>: IEnumerable<TProjection> where TProjection :class
+    {
+        void Update(TIdentifier identifier, Action<TProjection> action);
+        void Update(Func<TProjection, bool> predicate, Action<TProjection> action);
+        void Add(TProjection projection);
+        void AddRange(IEnumerable<TProjection> projections);
+    }
+
+    public class MemoryProjectionStore<TProjection> : IProjectionStore<TProjection> where TProjection : class
+    {
+        readonly IDictionary<Guid, TProjection> _cache = new Dictionary<Guid, TProjection>();
+        readonly Func<TProjection, Guid> _getId;
+        public MemoryProjectionStore(Func<TProjection, Guid> getId)
+        {
+            _getId = getId;
+        }
+
+        public void Add(TProjection projection)
+        {
+            _cache.Add(_getId(projection), projection);
+        }
+
+        public void AddRange(IEnumerable<TProjection> projections)
+        {
+            foreach(var projection in projections)
+            {
+                Add(projection);
+            }
+        }
+
+        public void Update(Guid identifier, Action<TProjection> action)
+        {
+            TProjection item;
+            if(!_cache.TryGetValue(identifier, out item))
+            {
+                throw new InvalidOperationException("Projection not found");
+            }
+            action.Invoke(item);
+        }
+
+        public void Update(Func<TProjection, bool> predicate, Action<TProjection> action)
+        {
+
+            foreach (var item in _cache
+                .Select(x => x.Value)
+                .Where(predicate))
+            {
+                action(item);
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _cache.Values.GetEnumerator();
+        }
+
+        IEnumerator<TProjection> IEnumerable<TProjection>.GetEnumerator()
+        {
+            return _cache.Values.GetEnumerator();
+        }
+    }
+
+    public class EntityProjectionStore<TProjection> : IProjectionStore<TProjection> where TProjection : class
+    {
+        private readonly BookingDbContext _context;
+        private readonly Func<BookingDbContext> _contextFactory;
+        public EntityProjectionStore(Func<BookingDbContext> contextFactory)
+        {
+            _context = contextFactory.Invoke();
+            _contextFactory = contextFactory;
+        }
+
+        public void Add(TProjection projection)
+        {
+            _context.Set<TProjection>().Add(projection);
+            _context.SaveChanges();
+        }
+
+        public void AddRange(IEnumerable<TProjection> projections)
+        {
+            int count = 0;
+            var context = _contextFactory.Invoke();
+            context.BulkInsert(projections, new BulkInsertOptions
+            {
+                EnableStreaming = true,
+            });
+            ////context.Configuration.AutoDetectChangesEnabled = false;
+            //context.Configuration.ValidateOnSaveEnabled = false;
+            //foreach(var p in projections)
+            //{
+            //    count++;
+            //    context.Set<TProjection>().Add(p);
+
+            //    if((count % 100) == 0)
+            //    {
+            //        context.SaveChanges();
+            //        context.Dispose();
+            //        context = _contextFactory.Invoke();
+            //        context.Configuration.AutoDetectChangesEnabled = false;
+            //        context.Configuration.ValidateOnSaveEnabled = false;
+            //    }
+            //}
+            //context.SaveChanges();
+            context.Dispose();
+        }
+
+        public void Update(Guid identifier, Action<TProjection> action)
+        {
+            var projection = _context.Set<TProjection>().Find(identifier);
+            if(projection == null)
+            {
+                throw new InvalidOperationException("Projection not found");
+            }
+            action.Invoke(projection);
+            _context.SaveChanges();
+        }
+
+        public void Update(Func<TProjection, bool> predicate, Action<TProjection> action)
+        {
+            var projections = _context.Set<TProjection>().Where(predicate);
+            foreach(var projection in projections)
+            {
+                action.Invoke(projection);
+
+            }
+            _context.SaveChanges();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)_context.Set<TProjection>()).GetEnumerator();
+        }
+
+        IEnumerator<TProjection> IEnumerable<TProjection>.GetEnumerator()
+        {
+            return ((IEnumerable<TProjection>)_context.Set<TProjection>()).GetEnumerator();
+        }
+
     }
 }

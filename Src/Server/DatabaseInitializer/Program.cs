@@ -38,6 +38,8 @@ using DeploymentServiceTools;
 using ServiceStack.Messaging.Rcon;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
+using apcurium.MK.Booking.EventHandlers;
+using System.Diagnostics;
 
 #endregion
 
@@ -107,17 +109,42 @@ namespace DatabaseInitializer
 #endif
                 }
 
+                var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
+                container = new UnityContainer();
+                module = new Module();
+
+                var accountDetailProjectionStore = new MemoryProjectionStore<AccountDetail>(a => a.Id);
+                container.RegisterInstance<IProjectionStore<AccountDetail>>(accountDetailProjectionStore);
+
+                module.Init(container, connectionString, param.MkWebConnectionString);
+
                 if (IsUpdate)
                 {
-                    UpdateSchema(param);
+                    //UpdateSchema(param);
 
-                    if (param.ReuseTemporaryDb)
-                    {
-                        // the idea behind reuse of temp db is that account doesn't have permission to rename db 
-                        // so we instead we need to re-migrate from the temp db to the actual name
-                        UpdateSchema(param);
-                    }
+                    //if (param.ReuseTemporaryDb)
+                    //{
+                    //    // the idea behind reuse of temp db is that account doesn't have permission to rename db 
+                    //    // so we instead we need to re-migrate from the temp db to the actual name
+                    //    UpdateSchema(param);
+                    //}
+                   
 
+                    var replayService = container.Resolve<EventsPlayBackService>();
+                    replayService.Register(container.Resolve<AccountDetailsGenerator>());
+                    replayService.ReplayAllEvents();
+
+                    var accountDetailsEntityProjectionStore = new EntityProjectionStore<AccountDetail>(container.Resolve<Func<BookingDbContext>>());
+                    var stopwatch = new Stopwatch();
+                    stopwatch.Start();
+                    Console.WriteLine("Dump projection to SQL database");
+
+                    accountDetailsEntityProjectionStore.AddRange(accountDetailProjectionStore);
+                    Console.WriteLine("End : " + stopwatch.Elapsed);
+
+
+
+                    Debugger.Break();
                 }
                 else
                 {
@@ -142,10 +169,7 @@ namespace DatabaseInitializer
                     SetupMirroring(param);
                 }
 
-                var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
-                container = new UnityContainer();
-                module = new Module();
-                module.Init(container, connectionString, param.MkWebConnectionString);
+                
 
                 var serverSettings = container.Resolve<IServerSettings>();
                 var commandBus = container.Resolve<ICommandBus>();

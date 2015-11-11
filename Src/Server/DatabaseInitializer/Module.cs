@@ -46,7 +46,7 @@ namespace DatabaseInitializer
 
             //ReplayEventService
             container.RegisterInstance<IEventsPlayBackService>(
-                new EventsPlayBackService(() => container.Resolve<EventStoreDbContext>(), container.Resolve<IEventBus>(),
+                new EventsPlayBackService(() => container.Resolve<EventStoreDbContext>(),
                     container.Resolve<ITextSerializer>(), container.Resolve<EventMigrator>(), container.Resolve<ILogger>()));
 
             container.RegisterInstance<IEventsMigrator>(

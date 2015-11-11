@@ -172,7 +172,7 @@ namespace MK.Events.Migration.Tests
 
             @event = Sut.Migrate(@event);
 
-            Assert.AreEqual(newCCId, @event.NewDefaultCreditCardId);
+            Assert.AreEqual(newCCId, @event.NextDefaultCreditCardId);
 
         }
 
@@ -192,7 +192,7 @@ namespace MK.Events.Migration.Tests
             }
             var @event = new CreditCardRemoved
             {
-                NewDefaultCreditCardId = Guid.NewGuid(),
+                NextDefaultCreditCardId = Guid.NewGuid(),
                 SourceId = accountId
             };
 

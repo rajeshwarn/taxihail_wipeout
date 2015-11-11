@@ -91,6 +91,8 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<PickupPoint>().ToTable("PickupPoint", SchemaName);
         }
 
+        public virtual DbSet<AccountDetail> AccountDetail { get; set; }
+
         public T Find<T>(Guid id) where T : class
         {
             return Set<T>().Find(id);
