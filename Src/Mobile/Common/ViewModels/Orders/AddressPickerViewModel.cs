@@ -440,7 +440,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		protected async Task<AddressViewModel[]> SearchGeocodeAddresses(string criteria)
 		{
-			Logger.LogMessage("Starting SearchAddresses : " + criteria);
 			var position = _currentAddress;
 
 			Address[] addresses;

@@ -403,6 +403,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, your card could not be authorized. Please pay in the taxi.
+        /// </summary>
+        public static string CreditCardDeclinedOnPreauthorizationErrorText {
+            get {
+                return ResourceManager.GetString("CreditCardDeclinedOnPreauthorizationErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, there was an error processing your card. Please pay in the taxi.
+        /// </summary>
+        public static string CreditCardUnanbleToPreathorizeErrorText {
+            get {
+                return ResourceManager.GetString("CreditCardUnanbleToPreathorizeErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0:c}.
         /// </summary>
         public static string CurrencyPriceFormat {
@@ -1758,6 +1776,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string ServiceErrorUpdatePassword_NotSame {
             get {
                 return ResourceManager.GetString("ServiceErrorUpdatePassword_NotSame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, there was a problem, please pay in the taxi.
+        /// </summary>
+        public static string TripUnableToPairErrorText {
+            get {
+                return ResourceManager.GetString("TripUnableToPairErrorText", resourceCulture);
             }
         }
         

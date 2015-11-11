@@ -40,16 +40,18 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             emailIntent.PutExtra(Intent.ExtraSubject, subject);
 
             var logger = TinyIoCContainer.Current.Resolve<ILogger> ();
-            if (File.Exists(logger.GetErrorLogPath()))
-            {
-                emailIntent.PutExtra(Intent.ExtraStream,  Uri.FromFile(new Java.IO.File(logger.GetErrorLogPath())));
-            }
-            try
+			var logFile = logger.MergeLogFiles();
+
+			if (logFile != null)
+			{
+				emailIntent.PutExtra(Intent.ExtraStream, Uri.FromFile(new Java.IO.File(logFile)));
+			}
+
+			try
             {
                 var intent = Intent.CreateChooser(emailIntent, TinyIoCContainer.Current.Resolve<ILocalization>()["SendEmail"]);
                 intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
                 Context.StartActivity(intent);
-                logger.FlushNextWrite();
             }
             catch
             {
@@ -90,8 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 eventValues.Put("eventTimezone", "UTC");
                 eventValues.Put("eventEndTimezone", "UTC");
 
-                Uri eventUri =
-                    Context.ApplicationContext.ContentResolver.Insert(Uri.Parse(eventUriString), eventValues);
+                var eventUri = Context.ApplicationContext.ContentResolver.Insert(Uri.Parse(eventUriString), eventValues);
                 long eventId = long.Parse(eventUri.LastPathSegment);
 
 
@@ -101,8 +102,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 reminderValues.Put("minutes", 120);
                 reminderValues.Put("method", 1);
 
-                Context.ApplicationContext.ContentResolver.Insert(Uri.Parse(reminderUriString),
-                    reminderValues);
+                Context.ApplicationContext.ContentResolver.Insert(Uri.Parse(reminderUriString), reminderValues);
             }
             catch (Exception e)
             {

@@ -58,9 +58,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             order.ClientLanguageCode = _localize.CurrentLanguage;
 
-            Logger.LogMessage("Starting: *************************************   UseServiceClient : CreateOrder ID : {0}", order.Id);
+			Logger.LogMessage("CreateOrder ID : {0}", order.Id);
 
-            var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
+			var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
             if (!order.PickupDate.HasValue) // Check if this is a scheduled ride
             {
@@ -299,6 +299,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             try
             {
                 await UseServiceClientAsync<OrderServiceClient>(service => service.CancelOrder(orderId));
+
+				Logger.LogMessage("Order cancelled ID [" + orderId.ToString() + "]" );
             }
             catch
             {
@@ -359,7 +361,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     return response.Data;
                 }
 
-                throw new Exception(response.ErrorCode);
+				var pairWithManualRideLinqException = new Exception();
+				pairWithManualRideLinqException.Data.Add("TripInfoHttpStatusCode", response.TripInfoHttpStatusCode);
+				pairWithManualRideLinqException.Data.Add("ErrorCode", response.ErrorCode);
+				throw pairWithManualRideLinqException;
             }
             catch (AggregateException ex)
             {

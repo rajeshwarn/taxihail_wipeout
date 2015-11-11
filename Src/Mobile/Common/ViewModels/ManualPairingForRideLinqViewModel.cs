@@ -5,6 +5,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceClient.Web;
+using System.Net;
+using CMTPayment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -90,7 +92,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     catch (Exception ex)
                     {
                         Logger.LogError(ex);
-						this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]).FireAndForget();
+
+						var tripInfoHttpStatusCode = (int)HttpStatusCode.BadRequest;
+						int errorCode = 0;
+
+						if (ex.Data != null && ex.Data.Contains("TripInfoHttpStatusCode") && ex.Data.Contains("ErrorCode"))
+						{
+							tripInfoHttpStatusCode = (int)ex.Data["TripInfoHttpStatusCode"];
+
+							if (ex.Data["ErrorCode"] != null)
+							{
+								int.TryParse((string)ex.Data["ErrorCode"], out errorCode);
+							}
+						}
+
+						if (tripInfoHttpStatusCode == (int)HttpStatusCode.BadRequest)
+						{
+							switch (errorCode)
+							{
+								case CmtErrorCodes.CreditCardDeclinedOnPreauthorization:
+									this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardDeclinedOnPreauthorizationErrorText"]).FireAndForget();
+									break;
+
+								case CmtErrorCodes.UnablePreauthorizeCreditCard:
+									this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["CreditCardUnanbleToPreathorizeErrorText"]).FireAndForget();
+									break;
+
+								case CmtErrorCodes.UnableToPair:
+								default:
+									this.Services().Message.ShowMessage(localize["PairingProcessingErrorTitle"], localize["TripUnableToPairErrorText"]).FireAndForget();
+									break;
+							}
+						}
                     } 
                 });
             }

@@ -964,7 +964,12 @@ namespace apcurium.MK.Booking.Services.Impl
             _smsService.Send(phoneNumber, alert);
         }
 
-        private bool ShouldSendNotification(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
+		public void SendCmtPaymentFailedPush(Guid accountId, string alertText)
+		{
+			SendPushOrSms(accountId, alertText, new Dictionary<string, object>());
+		}
+
+		private bool ShouldSendNotification(Guid accountId, Expression<Func<NotificationSettings, bool?>> propertySelector)
         {
             var companySettings = _configurationDao.GetNotificationSettings();
             var accountSettings = _configurationDao.GetNotificationSettings(accountId);

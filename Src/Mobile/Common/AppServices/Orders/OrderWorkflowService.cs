@@ -288,6 +288,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					PromoCode = order.PromoCode
 				};
 
+				Logger.LogMessage("Order created: ID [" + orderCreated.Id.ToString() + "], IBS ID [" + orderStatus.IBSOrderId.ToString() + "]");
+
 				// TODO: Refactor so we don't have to return two distinct objects
 				return Tuple.Create(orderCreated, orderStatus);
 			}
@@ -570,38 +572,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
 			_loadingAddressSubject.OnNext(true);
-			using (Logger.StartStopwatch("SearchAddress : " + p.Latitude.ToString(CultureInfo.InvariantCulture) + ", " + p.Longitude.ToString(CultureInfo.InvariantCulture)))
+			var accountAddress = await _accountService
+				.FindInAccountAddresses(p.Latitude, p.Longitude)
+				.ConfigureAwait(false);
+
+			if (accountAddress != null)
 			{
-				var accountAddress = await _accountService
-					.FindInAccountAddresses(p.Latitude, p.Longitude)
-					.ConfigureAwait(false);
-
-				if (accountAddress != null)
-				{
-					Logger.LogMessage("Address found in account");
-					_loadingAddressSubject.OnNext(false);
-					return accountAddress;
-				}
-				else
-				{
-					var address = await Task.Run(() => _geolocService.SearchAddress(p.Latitude, p.Longitude));
-					Logger.LogMessage("Found {0} addresses", address.Count());
-					if (address.Any())
-					{
-						_loadingAddressSubject.OnNext(false);
-						return address[0];
-					}
-					else
-					{
-						Logger.LogMessage("clear addresses");
-
-						// TODO: Refactor. We should probably throw an exception here.
-						// Error should be handled by the caller.
-						_loadingAddressSubject.OnNext(false);
-						return new Address(){ Latitude = p.Latitude, Longitude = p.Longitude };
-					}
-				}
+				_loadingAddressSubject.OnNext(false);
+				return accountAddress;
 			}
+
+			var address = await Task.Run(() => _geolocService.SearchAddress(p.Latitude, p.Longitude));
+			if (address.Any())
+			{
+				_loadingAddressSubject.OnNext(false);
+				return address[0];
+			}
+
+			// TODO: Refactor. We should probably throw an exception here.
+			// Error should be handled by the caller.
+			_loadingAddressSubject.OnNext(false);
+			return new Address(){ Latitude = p.Latitude, Longitude = p.Longitude };
 		}
 
 		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
@@ -633,12 +624,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			if (!_calculateFareCancellationTokenSource.IsCancellationRequested)
 			{
-				Logger.LogMessage("Fare Estimate - CANCEL");
 				_calculateFareCancellationTokenSource.Cancel ();
 			}
 			_calculateFareCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(token);
-
-			Logger.LogMessage("Fare Estimate - START");
 
 			var newCancelToken = _calculateFareCancellationTokenSource.Token;
 
@@ -652,7 +640,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				return;
 			}
 
-			Logger.LogMessage("Fare Estimate - DONE");
 			_estimatedFareDetailSubject.OnNext (direction);
 			_estimatedFareDisplaySubject.OnNext(estimatedFareString);
 		}

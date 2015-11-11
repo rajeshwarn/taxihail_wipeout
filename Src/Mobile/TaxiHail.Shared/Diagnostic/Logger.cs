@@ -30,57 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
    {
         private readonly string BaseDir = Path.Combine (Environment.ExternalStorageDirectory.ToString (), "TaxiHail");
 
-        public override string GetErrorLogPath ()
-        {
-            return Path.Combine (BaseDir, "errorlog.txt");
-        }
-
-        protected override void Write (string message)
-        {
-            try
-            {
-                if (!Directory.Exists(BaseDir))
-                {
-                    Directory.CreateDirectory(BaseDir);
-                }            
-
-                var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
-                var account = TinyIoCContainer.Current.CanResolve<IAccountService> () 
-                    ? TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount
-                    : null;         
-                var user = account == null
-                    ? @" N\A "
-                    : account.Email;
-
-                message += string.Format(" by : {0} with version {1} - company {2} - platform {3}",
-                    user,
-                    packageInfo.Version,
-                    GetCompanyName(),
-                    packageInfo.PlatformDetails);
-
-                Console.WriteLine(message);
-
-                DeleteLogIfNecessary();
-
-                var filePath = GetErrorLogPath ();
-                if (File.Exists(filePath))
-                {
-                    var f = new FileInfo(filePath);
-                    var lenKb = f.Length/1024;
-                    if (lenKb > 375)
-                    {
-                        File.Delete(filePath);
-                    }
-                }
-
-                File.AppendAllLines(filePath, new[] { message });
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine (e.Message);
-            }
-        }
-
         private TaxiHailSetting GetSettings()
         {
             try
@@ -101,5 +50,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
                 ? settings.TaxiHail.ApplicationName
                 : "Unknown";
         }
-    }
+
+		protected override string GetBaseDirectory()
+		{
+			return BaseDir;
+		}
+
+		protected override string GetMessageBase()
+		{
+			var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
+			var account = TinyIoCContainer.Current.CanResolve<IAccountService>()
+				? TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount : null;
+
+			return " by : " + (account == null ? @" N\A " : account.Email)
+				+ string.Format("with version {0} - company {1} - platform {2}", packageInfo.Version, GetCompanyName(), packageInfo.PlatformDetails);
+		}
+   }
 }
