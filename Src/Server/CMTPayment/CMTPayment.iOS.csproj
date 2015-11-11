@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseServiceClient.cs" />
+    <Compile Include="CmtErrorCodes.cs" />
     <Compile Include="CmtPaymentServiceClient.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="OAuthAuthorizer.cs" />

@@ -55,6 +55,7 @@
     <Compile Include="BaseServiceClient.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CmtErrorCodes.cs" />
     <Compile Include="CmtPaymentServiceClient.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="OAuthAuthorizer.cs" />

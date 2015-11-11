@@ -4,6 +4,7 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Services
 {
@@ -43,5 +44,7 @@ namespace apcurium.MK.Booking.Services
         void SendCreditCardDeactivatedEmail(string creditCardCompany, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
 
         void SendCreditCardDeactivatedPush(AccountDetail account);
+
+		void SendCmtPaymentFailedPush(Guid accountId, string alertText);
     }
 }
