@@ -954,7 +954,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _smsService.Send(phoneNumber, alert);
         }
 
-		public void SendCmtPaymentFail(Guid accountId, string alertText)
+		public void SendCmtPaymentFailedPush(Guid accountId, string alertText)
 		{
 			SendPushOrSms(accountId, alertText, new Dictionary<string, object>());
 		}
