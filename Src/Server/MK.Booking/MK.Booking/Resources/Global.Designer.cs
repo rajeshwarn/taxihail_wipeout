@@ -988,15 +988,6 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vehicle color.
-        /// </summary>
-        public static string Email_Body_VehicleColor {
-            get {
-                return ResourceManager.GetString("Email_Body_VehicleColor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Vehicle.
         /// </summary>
         public static string Email_Body_VehicleModel {

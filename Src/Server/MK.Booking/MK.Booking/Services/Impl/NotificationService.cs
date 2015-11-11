@@ -585,7 +585,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var localDropOffDate = cmtRideLinqFields.SelectOrDefault(x => x.DropOffDateTime);
             var nullSafeDropOffDate = localDropOffDate ?? GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
             var dropOffTime = dropOffDateInUtc.HasValue || localDropOffDate.HasValue
-                ? nullSafeDropOffDate.ToString("t" /* Short time pattern */)
+                ? nullSafeDropOffDate.ToString("t", dateFormat /* Short time pattern */)
                 : string.Empty;
 
             var baseUrls = GetBaseUrls();
@@ -609,7 +609,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
 				HasDriverPhoto = hasDriverInfo ? driverInfos.DriverPhotoUrl.HasValue() : false,
 				DriverPhotoURL = hasDriverInfo ? driverInfos.DriverPhotoUrl : null,
+				HasVehicleRegistration = hasDriverInfo && driverInfos.VehicleRegistration.HasValue(),
                 VehicleNumber = vehicleNumber,
+				ShowExtraInfoInReceipt = _serverSettings.ServerData.ShowExtraInfoInReceipt,
                 DriverName = hasDriverInfo ? driverInfos.FullName : string.Empty,
 				VehicleRegistration = hasDriverInfo ? driverInfos.VehicleRegistration : null,
                 VehicleMake = hasDriverInfo ? driverInfos.VehicleMake : string.Empty,
