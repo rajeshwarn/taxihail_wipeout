@@ -307,10 +307,9 @@ namespace apcurium.MK.Booking.Jobs
                 if (hasBailed && dispatcherSettings.NumberOfOffersPerCycle > 0)
                 {
                     // TODO: do the dispatcher dance (again)
+                    //_dispatcherService.Dispatch()
                 }
             }
-
-            
         }
 
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
