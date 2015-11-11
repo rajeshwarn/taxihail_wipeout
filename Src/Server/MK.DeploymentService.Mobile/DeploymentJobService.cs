@@ -202,134 +202,130 @@ namespace MK.DeploymentService.Mobile
 
 		private string GetAndroidFile(string apkPath)
 		{
-			if (Directory.Exists (apkPath))
-            {
-				return Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ();
-			}
-			return null;
+		    return Directory.Exists (apkPath) 
+                ? Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ()
+                : null;
 		}
 
-		private string GetAndroidCallboxFile(string apkPathCallBox)
-		{
-			if (Directory.Exists (apkPathCallBox))
-            {
-				return Directory.EnumerateFiles(apkPathCallBox, "*.Callbox-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
-			}
-			return null;
-		}
+	    private string GetAndroidCallboxFile(string apkPathCallBox)
+	    {
+	        return Directory.Exists (apkPathCallBox)
+                ? Directory.EnumerateFiles(apkPathCallBox, "*.Callbox-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault()
+                : null;
+	    }
 
-		private string GetiOSFile(string ipaPath)
-		{
-			if (Directory.Exists (ipaPath))
-            {
-				return Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
-			}
-			return null;
-		}
+	    private string GetiOSFile(string ipaPath)
+	    {
+	        return Directory.Exists (ipaPath) 
+                ? Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault() 
+                : null;
+	    }
 
-		
 
-		DeployInfo Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
+	    private DeployInfo Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
 		{
 
 			var result = new DeployInfo ();
-			if (_job.Android || _job.CallBox || _job.IosAdhoc || _job.IosAppStore)
-            {
-				string targetDirWithoutFileName = Path.Combine (ConfigurationManager.AppSettings ["DeployDir"], 
-					company.CompanyKey,
-					string.Format ("{0}.{1}", _job.Revision.Tag,_job.Revision.Commit));
-				if (!Directory.Exists (targetDirWithoutFileName))
-                {
-					Directory.CreateDirectory (targetDirWithoutFileName);
-				}
+		    if (!_job.Android && !_job.CallBox && !_job.IosAdhoc && !_job.IosAppStore)
+		    {
+		        return result;
+		    }
 
-				result.RootPath = targetDirWithoutFileName;
+		    var targetDirWithoutFileName = Path.Combine (ConfigurationManager.AppSettings ["DeployDir"], 
+		        company.CompanyKey,
+		        string.Format ("{0}.{1}", _job.Revision.Tag,_job.Revision.Commit));
 
-				if (_job.Android)
-                {
-					_logger.DebugFormat ("Copying Apk");
-					var apkFile = GetAndroidFile(apkPath);
+		    if (!Directory.Exists (targetDirWithoutFileName))
+		    {
+		        Directory.CreateDirectory (targetDirWithoutFileName);
+		    }
 
-					if (apkFile != null)
-                    {
-						var fileInfo = new FileInfo (apkFile); 
-						var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
-                        if (File.Exists(targetDir))
-                        {
-                            File.Delete(targetDir);
-                        }
-						File.Copy (apkFile, targetDir);
+		    result.RootPath = targetDirWithoutFileName;
 
-						result.AndroidApkFileName = fileInfo.Name;
+		    if (_job.Android)
+		    {
+		        _logger.DebugFormat ("Copying Apk");
+		        var apkFile = GetAndroidFile(apkPath);
 
-					} else
-                    {
-						throw new Exception ("Can't find the APK file in the release dir");
-					}
-				}
+		        if (apkFile != null)
+		        {
+		            var fileInfo = new FileInfo (apkFile); 
+		            var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
+		            if (File.Exists(targetDir))
+		            {
+		                File.Delete(targetDir);
+		            }
+		            File.Copy (apkFile, targetDir);
 
-				if (_job.CallBox)
-                {
-					_logger.DebugFormat ("Copying CallBox Apk");
-					var apkFile = GetAndroidCallboxFile(apkPathCallBox);
-					if (apkFile != null)
-                    {
-						var fileInfo = new FileInfo (apkFile); 
-						var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
-                        if (File.Exists(targetDir))
-                        {
-                            File.Delete(targetDir);
-                        }
-						File.Copy (apkFile, targetDir);
-						result.CallboxApkFileName = fileInfo.Name;
-					} else
-                    {
-						throw new Exception ("Can't find the CallBox APK file in the release dir");
-					}
-				}
+		            result.AndroidApkFileName = fileInfo.Name;
 
-				if (_job.IosAdhoc)
-                {
-					_logger.DebugFormat ("Uploading and copying IPA AdHoc");
-					var ipaFile = GetiOSFile(ipaAdHocPath);
-					if (ipaFile != null)
-                    {
+		        } else
+		        {
+		            throw new Exception ("Can't find the APK file in the release dir");
+		        }
+		    }
 
-						var fileInfo = new FileInfo (ipaFile); 
-						var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
-						if (File.Exists (targetDir))
-							File.Delete (targetDir);
-						File.Copy (ipaFile, targetDir);
-						result.iOSAdhocFileName = fileInfo.Name;
+		    if (_job.CallBox)
+		    {
+		        _logger.DebugFormat ("Copying CallBox Apk");
+		        var apkFile = GetAndroidCallboxFile(apkPathCallBox);
+		        if (apkFile != null)
+		        {
+		            var fileInfo = new FileInfo (apkFile); 
+		            var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
+		            if (File.Exists(targetDir))
+		            {
+		                File.Delete(targetDir);
+		            }
+		            File.Copy (apkFile, targetDir);
+		            result.CallboxApkFileName = fileInfo.Name;
+		        } else
+		        {
+		            throw new Exception ("Can't find the CallBox APK file in the release dir");
+		        }
+		    }
 
-					} else
-                    {
-						throw new Exception ("Can't find the IPA file in the AdHoc dir");
-					}
-				}
+		    if (_job.IosAdhoc)
+		    {
+		        _logger.DebugFormat ("Uploading and copying IPA AdHoc");
+		        var ipaFile = GetiOSFile(ipaAdHocPath);
+		        if (ipaFile != null)
+		        {
 
-				if (_job.IosAppStore)
-                {
-					_logger.DebugFormat ("Uploading and copying IPA AppStore");
-					var ipaFile = GetiOSFile(ipaAppStorePath);
-					if (ipaFile != null)
-                    {
+		            var fileInfo = new FileInfo (ipaFile); 
+		            var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
+		            if (File.Exists (targetDir))
+		                File.Delete (targetDir);
+		            File.Copy (ipaFile, targetDir);
+		            result.iOSAdhocFileName = fileInfo.Name;
 
-						var fileInfo = new FileInfo (ipaFile); 
-						var newName = fileInfo.Name.Replace (".ipa", ".appstore.ipa");
-						var targetDir = Path.Combine (targetDirWithoutFileName, newName);
-						if (File.Exists (targetDir))
-							File.Delete (targetDir);
-						File.Copy (ipaFile, targetDir);
-						result.iOSAppStoreFileName = newName;
-					} else
-                    {
-						throw new Exception ("Can't find the IPA file in the AppStore dir");
-					}
-				}
-			}
+		        } else
+		        {
+		            throw new Exception ("Can't find the IPA file in the AdHoc dir");
+		        }
+		    }
 
-			return result;
+		    if (_job.IosAppStore)
+		    {
+		        _logger.DebugFormat ("Uploading and copying IPA AppStore");
+		        var ipaFile = GetiOSFile(ipaAppStorePath);
+		        if (ipaFile != null)
+		        {
+
+		            var fileInfo = new FileInfo (ipaFile); 
+		            var newName = fileInfo.Name.Replace (".ipa", ".appstore.ipa");
+		            var targetDir = Path.Combine (targetDirWithoutFileName, newName);
+		            if (File.Exists (targetDir))
+		                File.Delete (targetDir);
+		            File.Copy (ipaFile, targetDir);
+		            result.iOSAppStoreFileName = newName;
+		        } else
+		        {
+		            throw new Exception ("Can't find the IPA file in the AppStore dir");
+		        }
+		    }
+
+		    return result;
 		}
 
 		private void Customize (string sourceDirectory, DeploymentJob job)
