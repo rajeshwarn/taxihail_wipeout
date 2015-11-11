@@ -274,17 +274,7 @@ namespace apcurium.MK.Booking.Jobs
                 && (ibsOrderInfo.IsWaitingToBeAssigned || ibsOrderInfo.IsCanceled);
 
             var ibsStatusId = orderStatusDetail.IBSStatusId;
-            var vehicleRegistration = ibsOrderInfo.VehicleRegistration.GetValue(orderStatusDetail.DriverInfos.VehicleRegistration);
 
-            if (!orderStatusDetail.DriverInfos.VehicleRegistration.HasValue())
-            {
-                var vehicleMapping = _orderDao.GetVehicleMapping(orderStatusDetail.OrderId);
-                if (vehicleMapping != null)
-                {
-                    vehicleRegistration = vehicleMapping.DeviceName;
-                }
-            }
-            
             orderStatusDetail.IBSStatusId =                     ibsOrderInfo.Status;
             orderStatusDetail.DriverInfos.FirstName =           ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
             orderStatusDetail.DriverInfos.LastName =            ibsOrderInfo.LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
@@ -292,7 +282,7 @@ namespace apcurium.MK.Booking.Jobs
             orderStatusDetail.DriverInfos.VehicleColor =        ibsOrderInfo.VehicleColor.GetValue(orderStatusDetail.DriverInfos.VehicleColor);
             orderStatusDetail.DriverInfos.VehicleMake =         ibsOrderInfo.VehicleMake.GetValue(orderStatusDetail.DriverInfos.VehicleMake);
             orderStatusDetail.DriverInfos.VehicleModel =        ibsOrderInfo.VehicleModel.GetValue(orderStatusDetail.DriverInfos.VehicleModel);
-            orderStatusDetail.DriverInfos.VehicleRegistration = vehicleRegistration;
+            orderStatusDetail.DriverInfos.VehicleRegistration = GetVehicleRegistration(ibsOrderInfo, orderStatusDetail);
             orderStatusDetail.DriverInfos.VehicleType =         ibsOrderInfo.VehicleType.GetValue(orderStatusDetail.DriverInfos.VehicleType);
             orderStatusDetail.DriverInfos.DriverId =            ibsOrderInfo.DriverId.GetValue(orderStatusDetail.DriverInfos.DriverId);
             orderStatusDetail.VehicleNumber =                   ibsOrderInfo.VehicleNumber.GetValue(orderStatusDetail.VehicleNumber);
@@ -458,6 +448,21 @@ namespace apcurium.MK.Booking.Jobs
             return false;
         }
 
+        private string GetVehicleRegistration(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
+        {
+            var vehicleRegistration = orderStatusDetail.DriverInfos.VehicleRegistration;
+
+            if (!vehicleRegistration.HasValue())
+            {
+                var vehicleMapping = _orderDao.GetVehicleMapping(orderStatusDetail.OrderId);
+                vehicleRegistration = vehicleMapping != null
+                    ? vehicleMapping.DeviceName
+                    : ibsOrderInfo.VehicleRegistration;
+            }
+
+            return vehicleRegistration;
+        }
+
         private void UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus)
         {
 			// We are not supposed to attempt to show the vehicle position when not in the proper state.
@@ -473,11 +478,13 @@ namespace apcurium.MK.Booking.Jobs
             var isUsingGeo = (!orderStatus.Market.HasValue() && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.Geo)
                 || (orderStatus.Market.HasValue() && _serverSettings.ServerData.ExternalAvailableVehiclesMode == ExternalAvailableVehiclesModes.Geo);
 
+            var vehicleRegistration = GetVehicleRegistration(ibsOrderInfo, orderStatus);
+
             // Override with Geo position if enabled and if we have a vehicle registration.
-            if (isUsingGeo && ibsOrderInfo.VehicleRegistration.HasValue())
+            if (isUsingGeo && vehicleRegistration.HasValue())
             {
                 var orderDetail = _orderDao.FindById(orderStatus.OrderId);
-                var vehicleStatus = _cmtGeoServiceClient.GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, ibsOrderInfo.VehicleRegistration);
+                var vehicleStatus = _cmtGeoServiceClient.GetEta(orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude, vehicleRegistration);
 
                 if (vehicleStatus.Latitude != 0.0f && vehicleStatus.Longitude != 0.0f)
                 {
