@@ -61,6 +61,7 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         public bool CallBox { get; set; }
         public bool IosAdhoc { get; set; }
         public bool IosAppStore { get; set; }
+        public bool BlackBerry { get; set; }
         public bool ShowCompanyDetails { get; set; }
     }
 }
