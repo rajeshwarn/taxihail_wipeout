@@ -155,7 +155,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
         private bool IsCallboxAPK(string filenName)
         {
-            return filenName.EndsWith(".callbox-signed.apk", StringComparison.InvariantCultureIgnoreCase);
+            return filenName.EndsWith("callbox-signed.apk", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private bool IsIpa(string fileName)

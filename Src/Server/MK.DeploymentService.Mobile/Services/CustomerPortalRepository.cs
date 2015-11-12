@@ -60,13 +60,10 @@ namespace DeploymentServiceTools
 
 			    if (deployment.CallboxApkFileExist)
 			    {
-                    if (deployment.AndroidApkFileExist)
-                    {
-                        var apkContent = new StreamContent(deployment.GetCallboxApkStream());
-                        apkContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                        apkContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.CallboxApkFileName };
-                        multipartFormDataContent.Add(apkContent);
-                    }
+                    var apkContent = new StreamContent(deployment.GetCallboxApkStream());
+                    apkContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    apkContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.CallboxApkFileName };
+                    multipartFormDataContent.Add(apkContent);
                 }
 
                 using (var client = CustomerPortalHttpClientProvider.Get())

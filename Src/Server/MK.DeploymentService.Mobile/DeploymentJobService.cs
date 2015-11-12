@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using MK.DeploymentService.Service;
 using CustomerPortal.Web.Entities;
 using System.Threading.Tasks;
+using ServiceStack.Text;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -202,17 +203,10 @@ namespace MK.DeploymentService.Mobile
 
 		private string GetAndroidFile(string apkPath)
 		{
-		    return Directory.Exists (apkPath) 
+            return Directory.Exists (apkPath) 
                 ? Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ()
                 : null;
 		}
-
-	    private string GetAndroidCallboxFile(string apkPathCallBox)
-	    {
-	        return Directory.Exists (apkPathCallBox)
-                ? Directory.EnumerateFiles(apkPathCallBox, "*Callbox-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault()
-                : null;
-	    }
 
 	    private string GetiOSFile(string ipaPath)
 	    {
@@ -268,10 +262,10 @@ namespace MK.DeploymentService.Mobile
 		    if (_job.CallBox)
 		    {
 		        _logger.DebugFormat ("Copying CallBox Apk");
-		        var apkFile = GetAndroidCallboxFile(apkPathCallBox);
+		        var apkFile = GetAndroidFile(apkPathCallBox);
 		        if (apkFile != null)
 		        {
-		            var fileInfo = new FileInfo (apkFile); 
+                    var fileInfo = new FileInfo (apkFile); 
 		            var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
 		            if (File.Exists(targetDir))
 		            {
