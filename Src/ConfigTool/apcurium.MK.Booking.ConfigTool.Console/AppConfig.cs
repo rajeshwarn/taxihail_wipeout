@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.ConfigTool
         {
 
             var androidPackage = string.IsNullOrWhiteSpace(Config.PackageAndroid) ? Config.Package : Config.PackageAndroid;
+            var blackBerryPackage = string.Format(@"BBTools\Outputs\{0}-Signed.cfg", androidPackage);
 
             var c = new Config[]
            {
@@ -87,7 +88,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\TaxiHail.BlackBerry.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass},               
                     new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\TaxiHail.BlackBerry.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass },               
 
-                    new ConfigFile(this){ Source=@"..\..\Src\BBTools\Outputs\com.apcurium.MK.TaxiHailDemo-Signed.cfg", Destination=@"BBTools\Outputs\"+androidPackage+".cfg" },
+                    new ConfigFile(this){ Source=@"..\..\Src\BBTools\Outputs\com.apcurium.MK.TaxiHailDemo-Signed.cfg", Destination=blackBerryPackage },
                     new ConfigFile(this){ Source=@"bbidtoken.csk", Destination=@"BBTools\Outputs\bbidtoken.csk" },
                    
                     /**TaxiHail **/
@@ -293,7 +294,7 @@ namespace apcurium.MK.Booking.ConfigTool
             var bbAppId =Company.CompanySettings.FirstOrDefault(k => k.Key.Equals("BBNotificationSettings.AppId"));
             _configs.Add(new ConfigXML(this)
                 {  
-                    Destination = @"BBTools\Outputs\"+androidPackage+".cfg", 
+                    Destination = blackBerryPackage, 
                     NodeSelector = @"//android/push/appid", 
                     SetterEle = (app, ele) => ele.InnerText = bbAppId != null ? bbAppId.Value : ""
                 });
@@ -301,7 +302,7 @@ namespace apcurium.MK.Booking.ConfigTool
             var bbUrl =Company.CompanySettings.FirstOrDefault(k => k.Key.Equals("BBNotificationSettings.Url"));
             _configs.Add(new ConfigXML(this)
                 {  
-                    Destination = @"BBTools\Outputs\"+androidPackage+".cfg", 
+                    Destination = blackBerryPackage, 
                     NodeSelector = @"//android/push/ppgurl", 
                     SetterEle = (app, ele) => ele.InnerText = bbUrl != null ? bbUrl.Value : ""
                 });
