@@ -276,7 +276,8 @@ namespace MK.DeploymentService.Mobile
 
                     if (apkBlackBerryFile != null) {
                         var fileInfo = new FileInfo (apkBlackBerryFile); 
-                        var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
+                        var newName = fileInfo.Name.Replace (".apk", "_blackberry.apk");
+                        var targetDir = Path.Combine (targetDirWithoutFileName, newName);
                         if (File.Exists (targetDir))
                             File.Delete (targetDir);
                         File.Copy (apkBlackBerryFile, targetDir);
