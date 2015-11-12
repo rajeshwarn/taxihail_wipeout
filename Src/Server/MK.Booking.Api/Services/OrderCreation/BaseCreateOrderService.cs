@@ -43,7 +43,6 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IPromotionDao _promotionDao;
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
-        private readonly IAccountDao _accountDao;
         private readonly ILogger _logger;
         private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
         private readonly IRuleCalculator _ruleCalculator;
@@ -83,7 +82,6 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _ibsServiceProvider = ibsServiceProvider;
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
-            _accountDao = accountDao;
             _logger = logger;
             _ruleCalculator = ruleCalculator;
             _feesDao = feesDao;
@@ -92,7 +90,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             _dispatcherService = dispatcherService;
 
             _resources = new Resources.Resources(_serverSettings);
-            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(_accountDao, _ibsServiceProvider, _serverSettings, taxiHailNetworkServiceClient, _commandBus, _logger);
+            _taxiHailNetworkHelper = new TaxiHailNetworkHelper(accountDao, _ibsServiceProvider, _serverSettings, taxiHailNetworkServiceClient, _commandBus, _logger);
 
             PaymentHelper = new CreateOrderPaymentHelper(serverSettings, commandBus, paymentService, orderPaymentDao, payPalServiceFactory);
         }
@@ -302,7 +300,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 .Select(x => x.Display)
                 .FirstOrDefault();
 
-            var ibsInformationNote = IbsNoteBuilder.BuildNote(
+            var ibsInformationNote = IbsHelper.BuildNote(
                 _serverSettings.ServerData.IBS.NoteTemplate,
                 chargeTypeIbs,
                 request.Note,

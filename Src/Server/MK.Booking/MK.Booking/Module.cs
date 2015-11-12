@@ -84,8 +84,7 @@ namespace apcurium.MK.Booking
                     c.Resolve<ILogger>(),
                     c.Resolve<IIBSServiceProvider>(),
                     c.Resolve<IUpdateOrderStatusJob>(),
-                    c.Resolve<IDispatcherService>(),
-                    c.Resolve<ICommandBus>())));
+                    c.Resolve<IDispatcherService>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));

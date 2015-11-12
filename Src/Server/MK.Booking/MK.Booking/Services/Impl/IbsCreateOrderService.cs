@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Data;
+using apcurium.MK.Booking.Helpers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Jobs;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -10,10 +11,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
 using AutoMapper;
-using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -26,7 +24,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly IDispatcherService _dispatcherService;
-        private readonly ICommandBus _commandBus;
 
         public IbsCreateOrderService(IServerSettings serverSettings,
             IVehicleTypeDao vehicleTypeDao,
@@ -34,8 +31,7 @@ namespace apcurium.MK.Booking.Services.Impl
             ILogger logger,
             IIBSServiceProvider ibsServiceProvider,
             IUpdateOrderStatusJob updateOrderStatusJob,
-            IDispatcherService dispatcherService,
-            ICommandBus commandBus)
+            IDispatcherService dispatcherService)
         {
             _serverSettings = serverSettings;
             _vehicleTypeDao = vehicleTypeDao;
@@ -44,7 +40,6 @@ namespace apcurium.MK.Booking.Services.Impl
             _ibsServiceProvider = ibsServiceProvider;
             _updateOrderStatusJob = updateOrderStatusJob;
             _dispatcherService = dispatcherService;
-            _commandBus = commandBus;
         }
 
         public IBSOrderResult CreateIbsOrder(Guid accountId, Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
@@ -65,7 +60,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
 
-            var ibsOrderParams = PrepareForIbsOrder(chargeTypeId, pickupAddress, dropOffAddress, accountNumberString,
+            var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
+            var ibsOrderParams = IbsHelper.PrepareForIbsOrder(_serverSettings.ServerData.IBS, defaultVehicleType, chargeTypeId, pickupAddress, dropOffAddress, accountNumberString,
                 customerNumberString, referenceDataCompanyList, market, requestProviderId);
 
             var dispatcherSettings = _dispatcherService.GetSettings(market, isHailRequest: isHailRequest);
@@ -103,53 +99,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 vehicleTypeId, ibsInformationNote, pickupDate, prompts, promptsLength, market, fare, tipIncentive, isHailRequest);
         }
 
-        public IbsOrderParams PrepareForIbsOrder(int? chargeTypeId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
-            IList<ListItem> referenceDataCompanyList, string market, int? requestProviderId)
-        {
-            int? ibsChargeTypeId;
-
-            if (chargeTypeId == ChargeTypes.CardOnFile.Id
-                || chargeTypeId == ChargeTypes.PayPal.Id)
-            {
-                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId;
-            }
-            else if (chargeTypeId == ChargeTypes.Account.Id)
-            {
-                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypeChargeAccountId;
-            }
-            else
-            {
-                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
-            }
-
-            var ibsPickupAddress = Mapper.Map<IbsAddress>(pickupAddress);
-            var ibsDropOffAddress = dropOffAddress != null && dropOffAddress.IsValid()
-                ? Mapper.Map<IbsAddress>(dropOffAddress)
-                : null;
-
-            var customerNumber = GetCustomerNumber(accountNumberString, customerNumberString);
-
-            var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
-            var defaultVehicleTypeId = defaultVehicleType != null ? defaultVehicleType.ReferenceDataVehicleId : -1;
-
-            var defaultCompany = referenceDataCompanyList.FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
-                    ?? referenceDataCompanyList.FirstOrDefault();
-
-            var providerId = market.HasValue() && referenceDataCompanyList.Any() && defaultCompany != null
-                    ? defaultCompany.Id
-                    : requestProviderId;
-
-            return new IbsOrderParams
-            {
-                CustomerNumber = customerNumber,
-                DefaultVehicleTypeId = defaultVehicleTypeId,
-                IbsChargeTypeId = ibsChargeTypeId,
-                IbsPickupAddress = ibsPickupAddress,
-                IbsDropOffAddress = ibsDropOffAddress,
-                ProviderId = providerId
-            };
-        }
-
         public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, Guid accountId)
         {
             var ibsAccountId = _accountDao.GetIbsAccountId(accountId, companyKey);
@@ -164,22 +113,6 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage(string.Format("Starting status updater for order {0}", orderId));
 
             new TaskFactory().StartNew(() => _updateOrderStatusJob.CheckStatus(orderId));
-        }
-
-        private int? GetCustomerNumber(string accountNumber, string customerNumber)
-        {
-            if (!accountNumber.HasValue() || !customerNumber.HasValue())
-            {
-                return null;
-            }
-
-            int result;
-            if (int.TryParse(customerNumber, out result))
-            {
-                return result;
-            }
-
-            return null;
         }
     }
 }

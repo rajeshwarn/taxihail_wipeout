@@ -20,7 +20,6 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
 using CMTServices;
-using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 
@@ -49,7 +48,7 @@ namespace apcurium.MK.Booking.Jobs
         private readonly IOrderNotificationsDetailDao _orderNotificationsDetailDao;
         private readonly CmtGeoServiceClient _cmtGeoServiceClient;
         private readonly IDispatcherService _dispatcherService;
-        private readonly IIbsCreateOrderService _ibsCreateOrderService;
+        private readonly IVehicleTypeDao _vehicleTypeDao;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -73,7 +72,7 @@ namespace apcurium.MK.Booking.Jobs
             IOrderNotificationsDetailDao orderNotificationsDetailDao,
             CmtGeoServiceClient cmtGeoServiceClient,
             IDispatcherService dispatcherService,
-            IIbsCreateOrderService ibsCreateOrderService,
+            IVehicleTypeDao vehicleTypeDao,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -93,7 +92,7 @@ namespace apcurium.MK.Booking.Jobs
             _orderNotificationsDetailDao = orderNotificationsDetailDao;
             _cmtGeoServiceClient = cmtGeoServiceClient;
             _dispatcherService = dispatcherService;
-            _ibsCreateOrderService = ibsCreateOrderService;
+            _vehicleTypeDao = vehicleTypeDao;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -316,7 +315,9 @@ namespace apcurium.MK.Booking.Jobs
                     {
                         _dispatcherService.CancelIbsOrder(orderDetail.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, ibsAccountId.Value);
 
-                        var ibsOrderParams = _ibsCreateOrderService.PrepareForIbsOrder(
+                        var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
+                        var ibsOrderParams = IbsHelper.PrepareForIbsOrder(
+                            _serverSettings.ServerData.IBS, defaultVehicleType,
                             orderDetail.Settings.ChargeTypeId, orderDetail.PickupAddress,
                             orderDetail.DropOffAddress, orderDetail.Settings.AccountNumber,
                             orderDetail.Settings.CustomerNumber, null, orderDetail.Market,
@@ -342,7 +343,7 @@ namespace apcurium.MK.Booking.Jobs
                             orderDetail.Settings.Phone,
                             orderDetail.Settings.Passengers,
                             orderDetail.Settings.VehicleTypeId,
-                            IbsNoteBuilder.BuildNote(
+                            IbsHelper.BuildNote(
                                 _serverSettings.ServerData.IBS.NoteTemplate,
                                 _resources.Get(chargeTypeKey, _serverSettings.ServerData.PriceFormat),
                                 orderDetail.UserNote, orderDetail.PickupAddress.BuildingName,
