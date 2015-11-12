@@ -120,4 +120,7 @@
   <data name="BookATaxi_Message" xml:space="preserve">
     <value>When would you like to be picked up?</value>
   </data>
+  <data name="HomeView_BookTaxi" xml:space="preserve">
+    <value>Book</value>
+  </data>
 </root>
