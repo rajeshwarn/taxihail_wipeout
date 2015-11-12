@@ -29,6 +29,11 @@ namespace apcurium.MK.Booking.ConfigTool
 				return;
 			}
 
+            if (File.Exists(destPath))
+            {
+                File.Delete(destPath);
+            }
+
             File.Copy(sourcePath, destPath, true);
         }
 
