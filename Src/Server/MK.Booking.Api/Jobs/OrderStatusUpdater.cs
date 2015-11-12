@@ -228,41 +228,41 @@ namespace apcurium.MK.Booking.Api.Jobs
                 pairingError = tripInfo.ErrorCode.ToString();
             }
 
-            if (!tripInfo.EndTime.HasValue || !pairingError.HasValueTrimmed())
+            if (tripInfo.EndTime.HasValue || pairingError.HasValueTrimmed())
             {
-                _logger.LogMessage("Trip info not ended yet for order {0} is not ended yet", orderstatusDetail.OrderId);
+                _logger.LogMessage("Trip ended for trip id: {0} (order {1})", tripInfo.TripId, orderstatusDetail.OrderId);
+
+                _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
+                {
+                    StartTime = tripInfo.StartTime,
+                    EndTime = tripInfo.EndTime,
+                    Distance = tripInfo.Distance,
+                    Extra = Math.Round(((double)tripInfo.Extra / 100), 2),
+                    Fare = Math.Round(((double)tripInfo.Fare / 100), 2),
+                    Tax = Math.Round(((double)tripInfo.Tax / 100), 2),
+                    Tip = Math.Round(((double)tripInfo.Tip / 100), 2),
+                    TollTotal = tripInfo.TollHistory.SelectOrDefault(tollHistory => tollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2))),
+                    Surcharge = Math.Round(((double)tripInfo.Surcharge / 100), 2),
+                    Total = Math.Round(((double)tripInfo.Total / 100), 2),
+                    FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
+                    RateAtTripStart = tripInfo.RateAtTripStart,
+                    RateAtTripEnd = tripInfo.RateAtTripEnd,
+                    RateChangeTime = tripInfo.RateChangeTime,
+                    OrderId = orderstatusDetail.OrderId,
+                    PairingToken = tripInfo.PairingToken,
+                    TripId = tripInfo.TripId,
+                    DriverId = tripInfo.DriverId,
+                    AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
+                    LastFour = tripInfo.LastFour,
+                    Tolls = tripInfo.TollHistory.SelectOrDefault(tollHistory => tollHistory.ToArray(), new TollDetail[0]),
+                    LastLatitudeOfVehicle = tripInfo.Lat,
+                    LastLongitudeOfVehicle = tripInfo.Lon,
+                    PairingError = pairingError
+                });                
                 return;
             }
 
-            _logger.LogMessage("Trip ended for trip id: {0} (order {1})", tripInfo.TripId, orderstatusDetail.OrderId);
-
-            _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
-            {
-                StartTime = tripInfo.StartTime,
-                EndTime = tripInfo.EndTime,
-                Distance = tripInfo.Distance,
-                Extra = Math.Round(((double)tripInfo.Extra / 100), 2),
-                Fare = Math.Round(((double)tripInfo.Fare / 100), 2),
-                Tax = Math.Round(((double)tripInfo.Tax / 100), 2),
-                Tip = Math.Round(((double)tripInfo.Tip / 100), 2),
-				TollTotal = tripInfo.TollHistory.SelectOrDefault(tollHistory => tollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2))),
-                Surcharge = Math.Round(((double)tripInfo.Surcharge / 100), 2),
-                Total = Math.Round(((double)tripInfo.Total / 100), 2),
-                FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
-                RateAtTripStart = tripInfo.RateAtTripStart,
-                RateAtTripEnd = tripInfo.RateAtTripEnd,
-                RateChangeTime = tripInfo.RateChangeTime,
-                OrderId = orderstatusDetail.OrderId,
-                PairingToken = tripInfo.PairingToken,
-                TripId = tripInfo.TripId,
-                DriverId = tripInfo.DriverId,
-                AccessFee = Math.Round(((double)tripInfo.AccessFee / 100), 2),
-                LastFour = tripInfo.LastFour,
-				Tolls = tripInfo.TollHistory.SelectOrDefault(tollHistory => tollHistory.ToArray(), new TollDetail[0]),
-                LastLatitudeOfVehicle = tripInfo.Lat,
-                LastLongitudeOfVehicle = tripInfo.Lon,
-                PairingError = pairingError
-            });
+            _logger.LogMessage("Trip for order {0} is in progress. Nothing to update.", orderstatusDetail.OrderId);
         }
 
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
