@@ -2314,9 +2314,6 @@
   <data name="ServiceErrorCallTitle" xml:space="preserve">
 		<value>Server error</value>
 	</data>
-	<data name="Callbox.ApplicationName" Title" xml:space="preserve">
-  		<value>TaxiHail Callbox</value>
- 	</data>
 	<data name="PairingProcessingErrorTitle" xml:space="preserve">
 		<value>Pairing payment problem</value>
 	</data>
@@ -2329,4 +2326,7 @@
 	<data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
 		<value>Sorry, there was an error processing your card. Please pay in the taxi</value>
 	</data>
+  <data name="Callbox.ApplicationName" xml:space="preserve">
+    <value>TaxiHail Callbox</value>
+  </data>
 </root>

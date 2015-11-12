@@ -2378,4 +2378,7 @@
 	<data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
 		<value>Désolé, une erreur est survenue pendant le traitement de votre carte de credit. S'il vous plaît payez dans taxi</value>
 	</data>
+  <data name="Callbox.ApplicationName" xml:space="preserve">
+    <value>TaxiHail Callbox</value>
+  </data>
 </root>

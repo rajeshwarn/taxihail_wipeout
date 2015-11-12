@@ -147,29 +147,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Android\Activities\EditTextDialogActivity.cs">
+    <Compile Include="..\TaxiHail.Shared\Activities\EditTextDialogActivity.cs">
       <Link>Activities\EditTextDialogActivity.cs</Link>
     </Compile>
-    <Compile Include="..\Android\Activities\SelectItemDialogActivity.cs">
+    <Compile Include="..\TaxiHail.Shared\Activities\SelectItemDialogActivity.cs">
       <Link>Activities\SelectItemDialogActivity.cs</Link>
     </Compile>
-    <Compile Include="..\Android\Controls\Dialog\CustomAlertDialog.cs">
+    <Compile Include="..\TaxiHail.Shared\Controls\Dialog\CustomAlertDialog.cs">
       <Link>Controls\Dialog\CustomAlertDialog.cs</Link>
     </Compile>
-    <Compile Include="..\Android\Diagnostic\Logger.cs">
+    <Compile Include="..\TaxiHail.Shared\Diagnostic\Logger.cs">
       <Link>Diagnostic\Logger.cs</Link>
     </Compile>
-    <Compile Include="..\Android\Extensions\ViewServicesExtensions.cs">
+    <Compile Include="..\TaxiHail.Shared\Extensions\ViewServicesExtensions.cs">
       <Link>Extensions\ViewServicesExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Android\Helpers\AlertDialogHelper.cs">
+    <Compile Include="..\TaxiHail.Shared\Helpers\AlertDialogHelper.cs">
       <Link>Helpers\AlertDialogHelper.cs</Link>
     </Compile>
-    <Compile Include="..\Android\Messages\ActivityCompleted.cs">
+    <Compile Include="..\TaxiHail.Shared\Messages\ActivityCompleted.cs">
       <Link>Messages\ActivityCompleted.cs</Link>
     </Compile>
-    <Compile Include="..\Android\PlatformIntegration\MessageService.cs">
+    <Compile Include="..\TaxiHail.Shared\PlatformIntegration\MessageService.cs">
       <Link>PlatformIntegration\MessageService.cs</Link>
+    </Compile>
+    <Compile Include="..\TaxiHail.Shared\PlatformIntegration\PhoneService.cs">
+      <Link>PlatformIntegration\PhoneService.cs</Link>
     </Compile>
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\CallTaxiActivity.cs" />
@@ -195,7 +198,6 @@
     <Compile Include="PlatformIntegration\AndroidMapApiClient.cs" />
     <Compile Include="PlatformIntegration\DummyAnalyticsService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
-    <Compile Include="PlatformIntegration\PhoneService.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup.cs" />

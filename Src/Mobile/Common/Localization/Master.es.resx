@@ -2981,4 +2981,7 @@
 	<data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
 		<value>Sorry, there was an error processing your card. Please pay in the taxi</value>
 	</data>
+  <data name="Callbox.ApplicationName" xml:space="preserve">
+    <value>TaxiHail Callbox</value>
+  </data>
 </root>
