@@ -111,6 +111,7 @@
     <Compile Include="Enumeration\DeviceOrientations.cs" />
     <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\ExternalAvailableVehiclesModes.cs" />
+    <Compile Include="Enumeration\IbsJobProviders.cs" />
     <Compile Include="Enumeration\LocalAvailableVehiclesModes.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
