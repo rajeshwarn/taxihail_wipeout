@@ -15,7 +15,8 @@ namespace apcurium.MK.Booking.Helpers
 {
     public static class IbsHelper
     {
-        public static IbsOrderParams PrepareForIbsOrder(IBSSettingContainer ibsSettingsContainer, VehicleTypeDetail defaultVehicleType, int? chargeTypeId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
+        public static IbsOrderParams PrepareForIbsOrder(IBSSettingContainer ibsSettingsContainer, VehicleTypeDetail defaultVehicleType,
+            int? chargeTypeId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
             IList<ListItem> referenceDataCompanyList, string market, int? requestProviderId)
         {
             int? ibsChargeTypeId;

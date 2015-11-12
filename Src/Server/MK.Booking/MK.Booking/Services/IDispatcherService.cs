@@ -25,8 +25,6 @@ namespace apcurium.MK.Booking.Services
 
         IEnumerable<VehicleCandidate> GetVehicleCandidates(Guid orderId, BestAvailableCompany bestAvailableCompany, DispatcherSettingsResponse dispatcherSettings, double pickupLatitude, double pickupLongitude);
 
-        Dictionary<Guid, List<Tuple<string, string>>> GetLegacyVehicleIdMapping();
-
         void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, int ibsAccountId);
     }
 }

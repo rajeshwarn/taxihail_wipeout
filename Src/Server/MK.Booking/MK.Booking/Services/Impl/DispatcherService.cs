@@ -30,13 +30,13 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IAccountDao _accountDao;
         private readonly TaxiHailNetworkHelper _taxiHailNetworkHelper;
-        
-        private static readonly Dictionary<string, DispatcherSettingsResponse> DispatcherSettings = new Dictionary<string, DispatcherSettingsResponse>();
-        private static readonly Dictionary<Guid, List<Tuple<string, string>>> LegacyVehicleIdMapping = new Dictionary<Guid, List<Tuple<string, string>>>();
 
         private BestAvailableCompany _bestAvailableCompany;
         private int? _providerId;
         private int _ibsAccountId;
+
+        private static readonly Dictionary<Guid, List<Tuple<string, string>>> LegacyVehicleIdMapping = new Dictionary<Guid, List<Tuple<string, string>>>();
+        private static readonly Dictionary<string, DispatcherSettingsResponse> DispatcherSettings = new Dictionary<string, DispatcherSettingsResponse>();
 
         public DispatcherService(
             ILogger logger,
@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Services.Impl
             
             for (var i = 0; i < dispatcherSettings.NumberOfCycles; i++)
             {
-                // 1. Call geo
+                // Call geo to get a list of available vehicles
                 var vehicleCandidates = GetVehicleCandidates(
                     orderId,
                     _bestAvailableCompany,
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     ibsOrderParams.IbsPickupAddress.Latitude,
                     ibsOrderParams.IbsPickupAddress.Longitude);
 
-                // 2. Filter vehicle list to remove vehicle already sent offer
+                // Filter vehicle list to remove vehicle already sent offer
                 vehicleCandidates = FilterOutVehiclesAlreadyOfferedTheJob(vehicleCandidates, vehicleCandidatesOfferedTheJob, dispatcherSettings, true);
 
                 if (!vehicleCandidates.Any())
@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     continue;
                 }
 
-                // 3. Call CreateIbsOrder from IbsCreateOrderService
+                // Call CreateIbsOrder from IbsCreateOrderService
                 var ibsVehicleCandidates = Mapper.Map<IbsVehicleCandidate[]>(vehicleCandidates);
 
                 orderResult = _ibsServiceProvider.Booking(_bestAvailableCompany.CompanyKey).CreateOrder(
@@ -121,8 +121,6 @@ namespace apcurium.MK.Booking.Services.Impl
                     fare,
                     ibsVehicleCandidates);
 
-                // 4. Wait D time + padding
-                // 5. GetVehicle candidates
                 // Fetch vehicle candidates (who have accepted the hail request) only if order was successfully created on IBS
                 var candidatesResponse = WaitForCandidatesResponse(_bestAvailableCompany.CompanyKey, orderResult.OrderKey, dispatcherSettings).ToArray();
 
@@ -134,29 +132,27 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 if (candidatesResponse.Any())
                 {
-                    // 6. Pick best vehicle candidate based on ETA
+                    // Pick best vehicle candidate based on ETA
                     var bestVehicle = Mapper.Map<IbsVehicleCandidate>(FindBestVehicleCandidate(candidatesResponse));
 
                     try
                     {
-                        // 7. Update job to Vehicle
+                        // Update job to Vehicle
                         AssignJobToVehicle(_bestAvailableCompany.CompanyKey, orderResult.OrderKey, bestVehicle);
 
                         Tuple<string, string> vehicleMapping = null;
+
+                        // Get proper vehicle id mapping (using device name or ldi) depending on candidate type
                         if (bestVehicle.CandidateType == VehicleCandidateTypes.VctPimId)
                         {
-                            vehicleMapping =
-                                GetLegacyVehicleIdMapping()[orderId].FirstOrDefault(
-                                    m => m.Item1 == bestVehicle.VehicleId);
+                            vehicleMapping = LegacyVehicleIdMapping[orderId].FirstOrDefault(m => m.Item1 == bestVehicle.VehicleId);
                         }
                         else if (bestVehicle.CandidateType == VehicleCandidateTypes.VctNumber)
                         {
-                            vehicleMapping =
-                                GetLegacyVehicleIdMapping()[orderId].FirstOrDefault(
-                                    m => m.Item2 == bestVehicle.VehicleId);
+                            vehicleMapping = LegacyVehicleIdMapping[orderId].FirstOrDefault(m => m.Item2 == bestVehicle.VehicleId);
                         }
 
-                        // 8. Send vehicle mapping command
+                        // Send vehicle mapping command
                         _commandBus.Send(new AddVehicleIdMapping
                         {
                             OrderId = orderResult.OrderKey.TaxiHailOrderId,
@@ -176,7 +172,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 // 9. If nothing found: cancel ibs order + find best available company based on ETA + start over
                 CancelIbsOrder(orderResult.OrderKey.IbsOrderId, _bestAvailableCompany.CompanyKey, phone, _ibsAccountId);
 
-                PrepareForNewLoop(
+                PrepareForNewDispatchLoop(
                     accountId,
                     orderId,
                     dispatcherSettings,
@@ -213,7 +209,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private void PrepareForNewLoop(
+        private void PrepareForNewDispatchLoop(
             Guid accountId,
             Guid orderId,
             DispatcherSettingsResponse dispatcherSettings,
@@ -230,7 +226,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     pickupLatitude,
                     pickupLongitude);
 
-            // 2. Filter vehicle list to remove vehicle already sent offer
+            // Filter vehicle list to remove vehicle already sent offer
             vehicleCandidates = FilterOutVehiclesAlreadyOfferedTheJob(vehicleCandidates, vehicleCandidatesOfferedTheJob, dispatcherSettings, false);
 
             var newBestAvailableVehicle = vehicleCandidates.FirstOrDefault();
@@ -365,7 +361,6 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public DispatcherSettingsResponse GetSettings(string market, double? latitude = null, double? longitude = null, bool isHailRequest = false)
         {
-
             if (isHailRequest)
             {
                 return GetHailDispatcherSettings(market);
@@ -406,11 +401,6 @@ namespace apcurium.MK.Booking.Services.Impl
             DispatcherSettings[response.Market ?? string.Empty] = dispatcherSettings;
 
             return dispatcherSettings;
-        }
-
-        public Dictionary<Guid, List<Tuple<string, string>>> GetLegacyVehicleIdMapping()
-        {
-            return LegacyVehicleIdMapping;
         }
 
         private DispatcherSettingsResponse GetHailDispatcherSettings(string market)

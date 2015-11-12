@@ -49,6 +49,7 @@ namespace apcurium.MK.Booking.Jobs
         private readonly CmtGeoServiceClient _cmtGeoServiceClient;
         private readonly IDispatcherService _dispatcherService;
         private readonly IVehicleTypeDao _vehicleTypeDao;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -73,6 +74,7 @@ namespace apcurium.MK.Booking.Jobs
             CmtGeoServiceClient cmtGeoServiceClient,
             IDispatcherService dispatcherService,
             IVehicleTypeDao vehicleTypeDao,
+            IIBSServiceProvider ibsServiceProvider,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -93,6 +95,7 @@ namespace apcurium.MK.Booking.Jobs
             _cmtGeoServiceClient = cmtGeoServiceClient;
             _dispatcherService = dispatcherService;
             _vehicleTypeDao = vehicleTypeDao;
+            _ibsServiceProvider = ibsServiceProvider;
             _resources = new Resources.Resources(serverSettings);
         }
 
@@ -273,6 +276,7 @@ namespace apcurium.MK.Booking.Jobs
 
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
+            // Detect if a bail occurred
             var hasBailed = orderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
                 && (ibsOrderInfo.IsWaitingToBeAssigned || ibsOrderInfo.IsCanceled);
 
@@ -302,60 +306,71 @@ namespace apcurium.MK.Booking.Jobs
             // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
             orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned, hasBailed);
 
-            var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
-            if (orderDetail != null)
+            DispatchAgainIfDriverBailed(orderStatusDetail.OrderId, orderStatusDetail.Market, hasBailed);
+        }
+
+        private void DispatchAgainIfDriverBailed(Guid orderId, string market, bool hasBailed)
+        {
+            var dispatcherSettings = _dispatcherService.GetSettings(market);
+
+            if (!hasBailed || dispatcherSettings.NumberOfOffersPerCycle <= 0)
             {
-                var dispatcherSettings = _dispatcherService.GetSettings(orderStatusDetail.Market, orderDetail.PickupAddress.Latitude, orderDetail.PickupAddress.Longitude);
+                return;
+            }
+            
+            var orderDetail = _orderDao.FindById(orderId);
 
-                if (hasBailed && dispatcherSettings.NumberOfOffersPerCycle > 0)
-                {
-                    // Do the dispatcher dance (again)
-                    var ibsAccountId = _accountDao.GetIbsAccountId(orderDetail.AccountId, orderDetail.CompanyKey);
-                    if (ibsAccountId.HasValue)
+            // Prepare order for re-dispatch
+            var ibsAccountId = _accountDao.GetIbsAccountId(orderDetail.AccountId, orderDetail.CompanyKey);
+            if (ibsAccountId.HasValue)
+            {
+                _dispatcherService.CancelIbsOrder(orderDetail.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, ibsAccountId.Value);
+
+                var referenceDataCompanyList = _ibsServiceProvider.StaticData(orderDetail.CompanyKey).GetCompaniesList();
+
+                var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
+
+                var ibsOrderParams = IbsHelper.PrepareForIbsOrder(
+                    _serverSettings.ServerData.IBS, defaultVehicleType,
+                    orderDetail.Settings.ChargeTypeId, orderDetail.PickupAddress,
+                    orderDetail.DropOffAddress, orderDetail.Settings.AccountNumber,
+                    orderDetail.Settings.CustomerNumber, referenceDataCompanyList,
+                    orderDetail.Market, orderDetail.Settings.ProviderId);
+
+                var chargeTypeKey = ChargeTypes.GetList()
+                    .Where(x => x.Id == orderDetail.Settings.ChargeTypeId)
+                    .Select(x => x.Display)
+                    .FirstOrDefault();
+
+                // Re-dispatch order
+                _dispatcherService.Dispatch(orderDetail.AccountId, orderDetail.Id,
+                    ibsOrderParams,
+                    new BestAvailableCompany
                     {
-                        _dispatcherService.CancelIbsOrder(orderDetail.IBSOrderId, orderDetail.CompanyKey, orderDetail.Settings.Phone, ibsAccountId.Value);
-
-                        var defaultVehicleType = _vehicleTypeDao.GetAll().FirstOrDefault();
-                        var ibsOrderParams = IbsHelper.PrepareForIbsOrder(
-                            _serverSettings.ServerData.IBS, defaultVehicleType,
-                            orderDetail.Settings.ChargeTypeId, orderDetail.PickupAddress,
-                            orderDetail.DropOffAddress, orderDetail.Settings.AccountNumber,
-                            orderDetail.Settings.CustomerNumber, null, orderDetail.Market,
-                            orderDetail.Settings.ProviderId);
-
-                        var chargeTypeKey = ChargeTypes.GetList()
-                            .Where(x => x.Id == orderDetail.Settings.ChargeTypeId)
-                            .Select(x => x.Display)
-                            .FirstOrDefault();
-
-                        _dispatcherService.Dispatch(orderDetail.AccountId, orderDetail.Id,
-                            ibsOrderParams,
-                            new BestAvailableCompany
-                            {
-                                CompanyKey = orderDetail.CompanyKey,
-                                CompanyName = orderDetail.CompanyName,
-                                FleetId = orderDetail.CompanyFleetId
-                            },
-                            dispatcherSettings,
-                            orderDetail.Settings.AccountNumber,
-                            ibsAccountId.Value,
-                            orderDetail.Settings.Name,
-                            orderDetail.Settings.Phone,
-                            orderDetail.Settings.Passengers,
-                            orderDetail.Settings.VehicleTypeId,
-                            IbsHelper.BuildNote(
-                                _serverSettings.ServerData.IBS.NoteTemplate,
-                                _resources.Get(chargeTypeKey, _serverSettings.ServerData.PriceFormat),
-                                orderDetail.UserNote, orderDetail.PickupAddress.BuildingName,
-                                orderDetail.Settings.LargeBags, _serverSettings.ServerData.IBS.HideChargeTypeInUserNote),
-                            orderDetail.PickupDate,
-                            null,
-                            null,
-                            orderDetail.Market,
-                            FareHelper.GetFareFromEstimate(new RideEstimate {Price = orderDetail.EstimatedFare}),
-                            orderDetail.TipIncentive);
-                    }
-                }
+                        CompanyKey = orderDetail.CompanyKey,
+                        CompanyName = orderDetail.CompanyName,
+                        FleetId = orderDetail.CompanyFleetId
+                    },
+                    dispatcherSettings,
+                    orderDetail.Settings.AccountNumber,
+                    ibsAccountId.Value,
+                    orderDetail.Settings.Name,
+                    orderDetail.Settings.Phone,
+                    orderDetail.Settings.Passengers,
+                    orderDetail.Settings.VehicleTypeId,
+                    IbsHelper.BuildNote(
+                        _serverSettings.ServerData.IBS.NoteTemplate,
+                        _resources.Get(chargeTypeKey, _serverSettings.ServerData.PriceFormat),
+                        orderDetail.UserNote,
+                        orderDetail.PickupAddress.BuildingName,
+                        orderDetail.Settings.LargeBags,
+                        _serverSettings.ServerData.IBS.HideChargeTypeInUserNote),
+                    orderDetail.PickupDate,
+                    null,
+                    null,
+                    orderDetail.Market,
+                    FareHelper.GetFareFromEstimate(new RideEstimate { Price = orderDetail.EstimatedFare }),
+                    orderDetail.TipIncentive);
             }
         }
 
