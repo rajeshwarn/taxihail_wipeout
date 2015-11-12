@@ -18,6 +18,7 @@ namespace MK.Common.Configuration
                 ServerPollingInterval = 10
             };
 
+
             GCM = new GCMSettingContainer
             {
                 SenderId = "385816297456",
