@@ -228,8 +228,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                 pairingError = tripInfo.ErrorCode.ToString();
             }
 
-            _logger.LogMessage("Sending Trip update command for trip {0} (order {1}; pairing token {2})", tripInfo.TripId, orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
-            _logger.LogMessage("Trip end time is {0}.", tripInfo.EndTime.HasValue ? tripInfo.EndTime.Value.ToString(CultureInfo.CurrentCulture) : "Not set yet");
+            if (!tripInfo.EndTime.HasValue || !pairingError.HasValueTrimmed())
+            {
+                _logger.LogMessage("Trip info not ended yet for order {0} is not ended yet", orderstatusDetail.OrderId);
+                return;
+            }
+
+            _logger.LogMessage("Trip ended for trip id: {0} (order {1})", tripInfo.TripId, orderstatusDetail.OrderId);
 
             _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
             {
