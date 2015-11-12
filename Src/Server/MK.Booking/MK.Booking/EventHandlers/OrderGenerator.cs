@@ -637,7 +637,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     }
                     else if (@event.PairingError.HasValueTrimmed())
                     {
-                        orderStatusDetails.Status = OrderStatus.Completed;
+                        orderStatusDetails.Status = OrderStatus.TimedOut;
                     }
 
                     context.Save(orderStatusDetails);
