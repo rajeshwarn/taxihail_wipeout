@@ -60,6 +60,21 @@ namespace apcurium.MK.Common.Diagnostic
             });
         }
 
+        public string[] GetLogFilesFullName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string MergeLogFiles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveMergedFile()
+        {
+            throw new NotImplementedException();
+        }
+
         private class Disposable : IDisposable
         {
             private readonly Action _action;
