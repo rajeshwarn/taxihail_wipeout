@@ -2314,5 +2314,19 @@
   <data name="ServiceErrorCallTitle" xml:space="preserve">
 		<value>Server error</value>
 	</data>
-  <data name="Callbox.ApplicationName">TaxiHail Callbox</data>
+	<data name="Callbox.ApplicationName" Title" xml:space="preserve">
+  		<value>TaxiHail Callbox</value>
+ 	</data>
+	<data name="PairingProcessingErrorTitle" xml:space="preserve">
+		<value>Pairing payment problem</value>
+	</data>
+	<data name="TripUnableToPairErrorText" xml:space="preserve">
+		<value>Sorry, there was a problem, please pay in the taxi</value>
+	</data>
+	<data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
+		<value>Sorry, your card could not be authorized. Please pay in the taxi</value>
+	</data>
+	<data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
+		<value>Sorry, there was an error processing your card. Please pay in the taxi</value>
+	</data>
 </root>

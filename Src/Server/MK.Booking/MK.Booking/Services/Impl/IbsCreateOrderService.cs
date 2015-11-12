@@ -42,10 +42,10 @@ namespace apcurium.MK.Booking.Services.Impl
             _updateOrderStatusJob = updateOrderStatusJob;
         }
 
-        public IBSOrderResult CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString, string companyKey,
-            int ibsAccountId, string name, string phone, int passengers, int? vehicleTypeId, string ibsInformationNote,
+        public IBSOrderResult CreateIbsOrder(Guid orderId, Address pickupAddress, Address dropOffAddress, string accountNumberString, string customerNumberString,
+            string companyKey, int ibsAccountId, string name, string phone, int passengers, int? vehicleTypeId, string ibsInformationNote,
             DateTime pickupDate, string[] prompts, int?[] promptsLength, IList<ListItem> referenceDataCompanyList, string market, int? chargeTypeId,
-            int? requestProviderId, Fare fare, double? tipIncentive, bool isHailRequest = false)
+            int? requestProviderId, Fare fare, double? tipIncentive, bool isHailRequest = false, int? companyFleetId = null)
         {
             if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
             {
@@ -95,8 +95,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             if (isHailRequest)
             {
-                ibsHailResult = Hail(orderId, providerId, market, companyKey, pickupAddress, ibsAccountId, name, phone, passengers,
-                    vehicleTypeId, ibsChargeTypeId, ibsInformationNote, pickupDate, ibsPickupAddress,
+                ibsHailResult = Hail(orderId, providerId, market, companyKey, companyFleetId, pickupAddress, ibsAccountId, name, phone,
+                    passengers, vehicleTypeId, ibsChargeTypeId, ibsInformationNote, pickupDate, ibsPickupAddress,
                     ibsDropOffAddress, accountNumberString, customerNumber, prompts, promptsLength, defaultVehicleTypeId,
                     tipIncentive, fare);
             }
@@ -163,13 +163,14 @@ namespace apcurium.MK.Booking.Services.Impl
             new TaskFactory().StartNew(() => _updateOrderStatusJob.CheckStatus(orderId));
         }
 
-        private IbsHailResponse Hail(Guid orderId, int? providerId, string market, string companyKey, Address pickupAddress, int ibsAccountId, string name, string phone, int passengers,
-            int? vehicleTypeId, int? ibsChargeTypeId, string ibsInformationNote, DateTime pickupDate, IbsAddress ibsPickupAddress, IbsAddress ibsDropOffAddress, string accountNumberString,
-            int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehicleTypeId, double? tipIncentive, Fare fare)
+        private IbsHailResponse Hail(Guid orderId, int? providerId, string market, string companyKey, int? companyFleetId, Address pickupAddress, int ibsAccountId,
+            string name, string phone, int passengers, int? vehicleTypeId, int? ibsChargeTypeId, string ibsInformationNote, DateTime pickupDate, IbsAddress ibsPickupAddress,
+            IbsAddress ibsDropOffAddress, string accountNumberString, int? customerNumber, string[] prompts, int?[] promptsLength, int defaultVehicleTypeId, double? tipIncentive, Fare fare)
         {
-            // Query avaiable vehicles
+            // Query only the avaiable vehicles from the selected company for the order
             var availableVehicleService = GetAvailableVehiclesServiceClient(market);
-            var availableVehicles = availableVehicleService.GetAvailableVehicles(market, pickupAddress.Latitude, pickupAddress.Longitude).ToArray();
+            var availableVehicles = availableVehicleService.GetAvailableVehicles(market, pickupAddress.Latitude, pickupAddress.Longitude)
+                .Where(v => v.FleetId == companyFleetId).ToArray();
 
             if (!availableVehicles.Any())
             {

@@ -1,6 +1,8 @@
 # use glob syntax
 syntax: glob
 
+*.bar
+*.wrn
 *.obj
 *.pdb
 *.user
@@ -130,4 +132,4 @@ MK-Taxi.C02P407VG3QRW.Alexandre_Marcoux.pui
 MK-Taxi.prj
 syntax: regexp
 Deployment/Database/*
-Src/CustomerPortal/.vs/
+Src/CustomerPortal/.vs/*

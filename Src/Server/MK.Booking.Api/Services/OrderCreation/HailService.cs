@@ -74,21 +74,21 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             var createReportOrder = CreateReportOrder(createOrderRequest, account);
 
-            var orderCommand = CreateOrder(createOrderRequest, account, createReportOrder);
+            var createOrderCommand = BuildCreateOrderCommand(createOrderRequest, account, createReportOrder);
 
-            var result = _ibsCreateOrderService.CreateIbsOrder(orderCommand.OrderId, orderCommand.PickupAddress,
-                orderCommand.DropOffAddress, orderCommand.Settings.AccountNumber, orderCommand.Settings.CustomerNumber,
-                orderCommand.CompanyKey, orderCommand.IbsAccountId, orderCommand.Settings.Name, orderCommand.Settings.Phone,
-                orderCommand.Settings.Passengers, orderCommand.Settings.VehicleTypeId, orderCommand.IbsInformationNote,
-                orderCommand.PickupDate, orderCommand.Prompts, orderCommand.PromptsLength, orderCommand.ReferenceDataCompanyList,
-                orderCommand.Market, orderCommand.Settings.ChargeTypeId, orderCommand.Settings.ProviderId, orderCommand.Fare,
-                orderCommand.TipIncentive, true);
+            var result = _ibsCreateOrderService.CreateIbsOrder(createOrderCommand.OrderId, createOrderCommand.PickupAddress,
+                createOrderCommand.DropOffAddress, createOrderCommand.Settings.AccountNumber, createOrderCommand.Settings.CustomerNumber,
+                createOrderCommand.CompanyKey, createOrderCommand.IbsAccountId, createOrderCommand.Settings.Name, createOrderCommand.Settings.Phone,
+                createOrderCommand.Settings.Passengers, createOrderCommand.Settings.VehicleTypeId, createOrderCommand.IbsInformationNote,
+                createOrderCommand.PickupDate, createOrderCommand.Prompts, createOrderCommand.PromptsLength, createOrderCommand.ReferenceDataCompanyList,
+                createOrderCommand.Market, createOrderCommand.Settings.ChargeTypeId, createOrderCommand.Settings.ProviderId, createOrderCommand.Fare,
+                createOrderCommand.TipIncentive, true, createOrderCommand.CompanyFleetId);
 
             if (result.HailResult.OrderKey.IbsOrderId > -1)
             {
-                orderCommand.IbsOrderId = result.HailResult.OrderKey.IbsOrderId;
+                createOrderCommand.IbsOrderId = result.HailResult.OrderKey.IbsOrderId;
 
-                _commandBus.Send(orderCommand);
+                _commandBus.Send(createOrderCommand);
             }
 
             return result.HailResult;

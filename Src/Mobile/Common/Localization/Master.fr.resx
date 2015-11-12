@@ -2366,5 +2366,16 @@
   <data name="ServiceErrorCallTitle" xml:space="preserve">
 		<value>Erreur serveur</value>
 	</data>
-  <data name="Callbox.ApplicationName">TaxiHail Callbox</data>
+	<data name="PairingProcessingErrorTitle" xml:space="preserve">
+		<value>Problème de paiement</value>
+	</data>
+	<data name="TripUnableToPairErrorText" xml:space="preserve">
+		<value>Désolé, une erreur de paiement avec la carte de credit est survenue, s'il vous plaît payez dans taxi</value>
+	</data>
+	<data name="CreditCardDeclinedOnPreauthorizationErrorText" xml:space="preserve">
+		<value>Désolé, votre carte de credit n'a pas pu être autorisée. S'il vous plaît payez dans taxi</value>
+	</data>
+	<data name="CreditCardUnanbleToPreathorizeErrorText" xml:space="preserve">
+		<value>Désolé, une erreur est survenue pendant le traitement de votre carte de credit. S'il vous plaît payez dans taxi</value>
+	</data>
 </root>

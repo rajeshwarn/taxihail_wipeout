@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             PaymentHelper = new CreateOrderPaymentHelper(serverSettings, commandBus, paymentService, orderPaymentDao, payPalServiceFactory);
         }
 
-        protected CreateOrder CreateOrder(CreateOrderRequest request, AccountDetail account, CreateReportOrder createReportOrder)
+        protected CreateOrder BuildCreateOrderCommand(CreateOrderRequest request, AccountDetail account, CreateReportOrder createReportOrder)
         {
             _logger.LogMessage("Create order request : " + request.ToJson());
 
@@ -145,11 +145,10 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
                 // No companies available that are desserving this region for the company
                 ThrowAndLogException(createReportOrder, ErrorCode.CreateOrder_RuleDisable, _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
             }
-
-            _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
-
+            
             if (market.HasValue())
             {
+                _taxiHailNetworkHelper.UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
                 var isConfiguredForCmtPayment = _taxiHailNetworkHelper.FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
 
                 if (!isConfiguredForCmtPayment)
@@ -317,6 +316,7 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             orderCommand.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
             orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
             orderCommand.CompanyName = bestAvailableCompany.CompanyName;
+            orderCommand.CompanyFleetId = bestAvailableCompany.FleetId;
             orderCommand.Market = market;
             orderCommand.IsPrepaid = isPrepaid;
             orderCommand.Settings.ChargeType = chargeTypeIbs;

@@ -50,11 +50,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             try
             {
-                using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
-                {
-                    return await action(service)
-                            .ConfigureAwait(false);
-                }
+                return await action(service)
+                        .ConfigureAwait(false);
             }
             catch (Exception ex)
             {                    
@@ -88,10 +85,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			try
 			{
-				using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
-				{
-					await action(service).ConfigureAwait(false);
-				}
+				await action(service).ConfigureAwait(false);
 			}
 			catch (Exception ex)
 			{                    

@@ -22,6 +22,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleMaps.M4B", "Libraries\SourceCode\GoogleMapsForBusiness\binding\android\GoogleMaps.M4B\GoogleMaps.M4B.csproj", "{8CB25019-45B3-4E49-90C8-5C9B03A2A75C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Callbox.Mobile.Client.Android", "MK.Callbox.Mobile.Client.Android\MK.Callbox.Mobile.Client.Android.csproj", "{DE9A07FE-A2EE-4669-934E-FF6D1805D858}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TaxiHail.Shared", "TaxiHail.Shared\TaxiHail.Shared.shproj", "{FC73F5E3-8AD2-4845-9B35-C0326CE25A9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -142,7 +143,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Android\TaxiHail.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 120

@@ -84,6 +84,7 @@ namespace MK.Common.Configuration
 			ZoomOnNearbyVehiclesCount = 6;
 			ZoomOnNearbyVehiclesRadius = 2400;
             HideTHNetworkAppMenu = true;
+            ShowOrderNumber = false;
 
             CardIOToken = "af444ebbc4844f57999c52cc82d50478";
 			
@@ -518,16 +519,25 @@ namespace MK.Common.Configuration
         [Display(Name = "Configuration - Enable Change Destination MidTrip", Description = "Possibility to add/change/remove the destination while in trip")]
         public bool ChangeDropOffAddressMidTrip { get; protected set; }
         
-	[SendToClient, CustomizableByCompany]
-        [Display(Name = "Rating - Enable App Rating", Description = "User can be prompted to rate the app when on board a taxi")]
-	public bool EnableApplicationRating { get; protected set; }
+	    [SendToClient, CustomizableByCompany]
+            [Display(Name = "Rating - Enable App Rating", Description = "User can be prompted to rate the app when on board a taxi")]
+	    public bool EnableApplicationRating { get; protected set; }
 
-	[SendToClient, CustomizableByCompany]
-	[Display(Name = "Rating - Minimum Trips For App Rating", Description = "Minimum successful trips to allow user to rate applicatio")]
-	public int MinimumTripsForAppRating { get; protected set; }
+	    [SendToClient, CustomizableByCompany]
+	    [Display(Name = "Rating - Minimum Trips For App Rating", Description = "Minimum successful trips to allow user to rate applicatio")]
+	    public int MinimumTripsForAppRating { get; protected set; }
 
-	[SendToClient, CustomizableByCompany]
-	[Display(Name = "Rating - Minimum Ride Rating Score for App Rating", Description = "Minimum ride rating score to allow user to rate application")]
-	public int MinimumRideRatingScoreForAppRating { get; protected set; }
-	}
+	    [SendToClient, CustomizableByCompany]
+	    [Display(Name = "Rating - Minimum Ride Rating Score for App Rating", Description = "Minimum ride rating score to allow user to rate application")]
+	    public int MinimumRideRatingScoreForAppRating { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Display - Show Order Number", Description = "Show order number")]
+        public bool ShowOrderNumber { get; protected set; }
+
+
+		[CustomizableByCompany]
+		[Display(Name = "Configuration - Display Extra Info in Receipt", Description = "Display extra info in receipt: vehicle info, vehicle registration, driver photo")]
+		public bool ShowExtraInfoInReceipt { get; protected set; }
+    }
 }

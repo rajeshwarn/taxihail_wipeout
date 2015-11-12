@@ -147,6 +147,9 @@
   <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
     <value>Sorry, no driver accepted. Please try again in a bit.</value>
   </data>
+  <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
+    <value>Sorry, no driver accepted. Please try again in a bit.</value>
+  </data>
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
     <value>Meter is on. Checking you in now...</value>
   </data>

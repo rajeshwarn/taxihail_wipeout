@@ -28,8 +28,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 					VehicleTypeId = vehicleTypeId
 				});
 
-			_logger.Maybe (() => _logger.LogMessage (string.Format ("Available vehicle found for lat {0}, long {1}, count = {2}", latitude, longitude, response.Count)));
-
 			return response.ToArray();
 		}
 
