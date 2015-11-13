@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 // bad practice to rely on reflection should be replaced in future
                 var result = CreateEmptyTypedArray<TResult>(null) as TResult;
 
-                return result ?? default(TResult);
+                return result;
             }
         }
 
