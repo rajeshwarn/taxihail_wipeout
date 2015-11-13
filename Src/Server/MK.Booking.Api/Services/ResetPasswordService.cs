@@ -11,6 +11,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using System;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -30,9 +31,16 @@ namespace apcurium.MK.Booking.Api.Services
         public object Post(ResetPassword request)
         {
             var user = _dao.FindByEmail(request.EmailAddress);
-            if (user == null) throw new HttpError(ErrorCode.ResetPassword_AccountNotFound.ToString());
+            if (user == null)
+            {
+                throw new HttpError(ErrorCode.ResetPassword_AccountNotFound.ToString());
+            }
 
-			var currentUserId = new Guid(this.GetSession().UserAuthId);
+            var currentSession = this.GetSession();
+
+            var currentUserId = currentSession.UserAuthId.HasValueTrimmed()
+                ? new Guid(currentSession.UserAuthId) 
+                : Guid.Empty;
 
 			if (user.Id == currentUserId)
 			{
