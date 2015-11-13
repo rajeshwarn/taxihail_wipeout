@@ -7,6 +7,7 @@ using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using TinyIoC;
 using System.Linq;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -66,20 +67,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					errorHandler (ex);
 					handled = true;
 				} 
-				if (!handled) {
+				if (!handled)
+                {
 					throw;
 				}
-                else
-                {
-                    // this patch try to return empty typed list to avoid exceptions in program where result.FirstOrDefault calls happen
-                    // bad practice to rely on reflection should be replaced in future
-                    TResult result = CreateEmptyTypedArray<TResult>(null) as TResult;
-
-                    if (result == null)
-                        result = default(TResult);
-
-                    return result;
-				}
+                // this patch try to return empty typed list to avoid exceptions in program where result.FirstOrDefault calls happen
+                // bad practice to rely on reflection should be replaced in future
+                var result = CreateEmptyTypedArray<TResult>(null) as TResult;
+                    
+                return result;
             }
         }
 
@@ -104,7 +100,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					errorHandler (ex);
 					handled = true;
 				} 
-				if (!handled) {
+				if (!handled)
+                {
 					throw;
 				}
 			}
@@ -127,41 +124,36 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        static object CreateEmptyTypedArray<T>(Type type, int counter = 0)
+	    private static object CreateEmptyTypedArray<T>(Type type, int counter = 0)
         {
             if (counter > 5)
+            {
                 return null;
+            }
 
             try
             {
-                Type genericType;
+                var genericType = type ?? typeof(T);
 
-                if (type != null)
-                    genericType = type;
-                else
-                    genericType = typeof(T);
-
-                if (genericType.IsInterface && genericType.IsGenericType && !genericType.IsGenericTypeDefinition)
+                if (!genericType.IsInterface || !genericType.IsGenericType || genericType.IsGenericTypeDefinition)
                 {
-                    Type[] typeInterfaces = genericType.GetInterfaces();
+                    return null;
+                }
+                    
+                var typeInterfaces = genericType.GetInterfaces();
 
-                    if (typeInterfaces.Where(t => t.Name == "IEnumerable").Count() > 0)
-                    {
-                        object result = null;
-
-                        if (!genericType.GenericTypeArguments[0].IsInterface)
-                        {
-                            return Array.CreateInstance(genericType.GenericTypeArguments[0], 0);
-                        }
-                        else
-                        {
-                            result = CreateEmptyTypedArray<T>(genericType.GenericTypeArguments[0], ++counter);
-                            return Array.CreateInstance(result.GetType(), 0);
-                        }
-                    }
+                if (typeInterfaces.None(t => t.Name == "IEnumerable"))
+                {
+                    return null;
                 }
 
-                return null;
+                if (!genericType.GenericTypeArguments[0].IsInterface)
+                {
+                    return Array.CreateInstance(genericType.GenericTypeArguments[0], 0);
+                }
+
+                var result = CreateEmptyTypedArray<T>(genericType.GenericTypeArguments[0], ++counter);
+                return Array.CreateInstance(result.GetType(), 0);
             }
             catch (Exception)
             {
