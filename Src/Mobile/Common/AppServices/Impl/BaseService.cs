@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class BaseService: IUseServiceClient
     {
-
+        
 		protected static async Task<TResult> RunWithRetryAsync<TResult>(
 			Func<Task<TResult>> action,
 			TimeSpan retryInterval,
@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				}
                 // this patch try to return empty typed list to avoid exceptions in program where result.FirstOrDefault calls happen
                 // bad practice to rely on reflection should be replaced in future
-                var result = CreateEmptyTypedArray<TResult>(null) as TResult;
+                var result = CreateEmptyTypedArray<TResult>(null) as TResult ?? default(TResult);
                     
                 return result;
             }
