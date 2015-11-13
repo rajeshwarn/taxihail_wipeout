@@ -91,6 +91,10 @@ namespace MK.DeploymentService.Mobile
 					if (Directory.Exists (releaseAndroidDir))
 						Directory.Delete (releaseAndroidDir, true);
 
+                    var releaseBlackBerryDir = Path.Combine (sourceDirectory, "Src", "Mobile", "TaxiHail.BlackBerry", "bin", "Release");
+                    if (Directory.Exists (releaseBlackBerryDir))
+                        Directory.Delete (releaseBlackBerryDir, true);
+
 					var releaseCallboxAndroidDir = Path.Combine (sourceDirectory, "Src", "Mobile", "MK.Callbox.Mobile.Client.Android", "bin", "Release");
 					if (Directory.Exists (releaseCallboxAndroidDir))
 						Directory.Delete (releaseCallboxAndroidDir, true);
@@ -113,7 +117,7 @@ namespace MK.DeploymentService.Mobile
 					BuildMobile (sourceDirectory);
 
 					UpdateJob ("Deploy");
-					var deploymentInfo = Deploy (sourceDirectory, _job.Company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir);
+                    var deploymentInfo = Deploy (sourceDirectory, _job.Company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir, releaseBlackBerryDir);
 
 					CreateNewVersionInCustomerPortal(deploymentInfo);
 					UpdateJob ("Done", JobStatus.Success);
@@ -208,6 +212,14 @@ namespace MK.DeploymentService.Mobile
 			return null;
 		}
 
+        private string GetBlackBerryFile(string apkPath)
+        {
+            if (Directory.Exists (apkPath)) {
+                return Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ();
+            }
+            return null;
+        }
+
 		private string GetAndroidCallboxFile(string apkPathCallBox)
 		{
 			if (Directory.Exists (apkPathCallBox)) {
@@ -226,11 +238,11 @@ namespace MK.DeploymentService.Mobile
 
 		
 
-		DeployInfo Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
+        DeployInfo Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox, string apkBlackBerryPath)
 		{
 
 			var result = new DeployInfo ();
-			if (_job.Android || _job.CallBox || _job.IosAdhoc || _job.IosAppStore) {
+            if (_job.Android || _job.CallBox || _job.IosAdhoc || _job.IosAppStore || _job.BlackBerry) {
 				string targetDirWithoutFileName = Path.Combine (System.Configuration.ConfigurationManager.AppSettings ["DeployDir"], 
 					company.CompanyKey,
 					string.Format ("{0}.{1}", _job.Revision.Tag,_job.Revision.Commit));
@@ -257,6 +269,25 @@ namespace MK.DeploymentService.Mobile
 						throw new Exception ("Can't find the APK file in the release dir");
 					}
 				}
+
+                if (_job.BlackBerry) {
+                    _logger.DebugFormat ("Copying BlackBerry Apk");
+                    var apkBlackBerryFile = GetBlackBerryFile(apkBlackBerryPath);
+
+                    if (apkBlackBerryFile != null) {
+                        var fileInfo = new FileInfo (apkBlackBerryFile); 
+                        var newName = fileInfo.Name.Replace (".apk", "_blackberry.apk");
+                        var targetDir = Path.Combine (targetDirWithoutFileName, newName);
+                        if (File.Exists (targetDir))
+                            File.Delete (targetDir);
+                        File.Copy (apkBlackBerryFile, targetDir);
+
+                        result.AndroidApkFileName = fileInfo.Name;
+
+                    } else {
+                        throw new Exception ("Can't find the APK BlackBerry file in the release dir");
+                    }
+                }
 
 				if (_job.CallBox) {
 					_logger.DebugFormat ("Copying CallBox Apk");
@@ -450,32 +481,66 @@ namespace MK.DeploymentService.Mobile
 				_logger.Debug ("Build iOS AppStore done");
 			}
 
-			if (!_job.Android && !_job.CallBox)
+            if (!_job.Android && !_job.CallBox && !_job.BlackBerry)
 				return;
 
 			const string configAndroid = "Release";
+
 			var projectLists = new List<string> {
-                "GoogleMaps.M4B",
 				"MK.Common.Android",
 				"MK.Booking.Google.Android", 
 				"MK.Booking.Maps.Android", 
 				"MK.Booking.Api.Contract.Android", 
 				"MK.Booking.Api.Client.Android",
-				"MK.Booking.Mobile.Android"
-			};
+				"MK.Booking.Mobile.Android",
+                "GoogleMaps.M4B",
+                "MapBox.Sdk"
+            };
 
-			_builder.BuildAndroidProject (projectLists, configAndroid, string.Format ("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
+			if (_job.Android)
+            {
+                _builder.BuildAndroidProject(projectLists, configAndroid, string.Format("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
 
-			if (_job.Android) {
-				UpdateJob ("Building project  Android");
+                UpdateJob ("Building project Android");
 
-				var buildClient = string.Format ("build \"--project:TaxiHail\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.Android.sln\"",
+                var buildClient = string.Format ("build \"--project:TaxiHail\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.Android.sln\"",
 					configAndroid,
 					sourceMobileFolder);
 				_builder.BuildProject (buildClient);
 
 				_logger.Debug ("Build Android done");
 			}
+
+            if (_job.BlackBerry)
+            {
+                _builder.BuildAndroidProject(projectLists, configAndroid, string.Format("{0}/MK.Booking.Mobile.Solution.BlackBerry.sln", sourceMobileFolder));
+
+                UpdateJob ("Building project BlackBerry");
+
+                var buildClient = string.Format ("build \"--project:TaxiHail.BlackBerry\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.BlackBerry.sln\"",
+                    configAndroid,
+                    sourceMobileFolder);
+                _builder.BuildProject (buildClient);
+
+                _logger.Debug ("Build BlackBerry done");
+
+                _logger.DebugFormat ("Copying BlackBerry Apk For Packaging .Bar");
+                var releaseBlackBerryDir = Path.Combine (sourceDirectory, "Src", "Mobile", "TaxiHail.BlackBerry", "bin", "Release");
+                var bbToolsPath = Path.Combine (sourceDirectory, "Src", "BBTools");
+                var apkBlackBerryFile = GetBlackBerryFile(releaseBlackBerryDir);
+
+                if (apkBlackBerryFile != null) {
+                    var fileInfo = new FileInfo (apkBlackBerryFile); 
+                    var targetDir = Path.Combine (bbToolsPath, "Outputs", fileInfo.Name);
+                    if (File.Exists (targetDir))
+                        File.Delete (targetDir);
+                    File.Copy (apkBlackBerryFile, targetDir);
+                } else {
+                    throw new Exception ("Can't find the APK BlackBerry file in the release dir");
+                }
+
+                _builder.SignAndGenerateBlackBerryProject(bbToolsPath);
+            }
 
 			if (!_job.CallBox)
 				return;

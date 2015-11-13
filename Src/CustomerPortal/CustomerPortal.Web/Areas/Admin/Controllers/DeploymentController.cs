@@ -107,7 +107,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     || deploymentJob.ServerUrl.Contains("api.taxihail.com");
                 bool isStaging = deploymentJob.ServerUrl.Contains("staging.taxihail.com");                
                 return RedirectToAction("DeployClient", new { companyId = deploymentJob.Company.CompanyKey, serverId = deploymentJob.Server.Id, revisionId = FindRevisionId(deploymentJob.Revision.Tag),
-                                                                serverUrlIsProduction = isProduction, serverUrlIsStaging = isStaging, android = deploymentJob.Android, callbox = deploymentJob.CallBox, iosAdhoc = deploymentJob.IosAdhoc, iosAppStore = deploymentJob.IosAppStore});
+                                                                serverUrlIsProduction = isProduction, serverUrlIsStaging = isStaging, android = deploymentJob.Android, callbox = deploymentJob.CallBox, iosAdhoc = deploymentJob.IosAdhoc, iosAppStore = deploymentJob.IosAppStore, blackBerry = deploymentJob.BlackBerry});
             }
             if (deploymentJob.Type == DeploymentJobType.DeployServer)
             {
@@ -175,7 +175,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             if (model.DeployOptions == DeployOptions.Both || model.DeployOptions == DeployOptions.MobileApp)
             {
-                var job = new AddDeploymentJobModel { Android = true, CallBox = false, CompanyId = model.CompanyKey, CreateType = (int) DeploymentJobType.DeployClient , Database = false, IosAdhoc = true, IosAppStore = true, RevisionId = model.RevisionId , ServerUrlOptions = model.ServerUrlOptions  };                
+                var job = new AddDeploymentJobModel { Android = true, CallBox = false, CompanyId = model.CompanyKey, CreateType = (int) DeploymentJobType.DeployClient , Database = false, IosAdhoc = true, IosAppStore = true, BlackBerry = true, RevisionId = model.RevisionId , ServerUrlOptions = model.ServerUrlOptions  };                
                 
                 var environments = new MongoRepository<Environment>();
                 job.ServerId = environments.Single(e => e.Name == "MobileBuildServer").Id;                  
@@ -190,7 +190,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 var tagComponents = rev.Tag.Split( '.');
                 bool useNewDeploymentService = (tagComponents.Length == 3) && (tagComponents[1] == "5") && (int.Parse(tagComponents[2]) >= 25);
 
-                var job = new AddDeploymentJobModel { Android = false, CallBox = false, CompanyId = model.CompanyKey , CreateType = (int)DeploymentJobType.DeployServer, Database = true, IosAdhoc = false, IosAppStore = false, RevisionId = model.RevisionId, ServerUrlOptions = model.ServerUrlOptions };
+                var job = new AddDeploymentJobModel { Android = false, CallBox = false, CompanyId = model.CompanyKey , CreateType = (int)DeploymentJobType.DeployServer, Database = true, IosAdhoc = false, IosAppStore = false, BlackBerry = false, RevisionId = model.RevisionId, ServerUrlOptions = model.ServerUrlOptions };
                 var environments = new MongoRepository<Environment>();
                 job.ServerId = model.ServerUrlOptions == ServerUrlOptions.Production ? environments.Single(e =>  e.Name == "ProductionV2").Id : environments.Single(e => e.Name == "Staging").Id;
                 AddDeploymentJob(job);                
@@ -248,7 +248,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [NoCache]
-        public ActionResult DeployClient(string companyId = null, string serverId = null, string revisionId = null, bool serverUrlIsProduction = false, bool serverUrlIsStaging = false, bool android =false, bool callbox = false, bool iosAdhoc = false, bool iosAppStore = false)
+        public ActionResult DeployClient(string companyId = null, string serverId = null, string revisionId = null, bool serverUrlIsProduction = false, bool serverUrlIsStaging = false, bool android =false, bool callbox = false, bool iosAdhoc = false, bool iosAppStore = false, bool blackBerry = false)
         {
             var model = GetAddJobModel(e => e.Role == EnvironmentRole.BuildMobile);
 
@@ -266,6 +266,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             model.CallBox = callbox;
             model.IosAdhoc = iosAdhoc;
             model.IosAppStore= iosAppStore;
+            model.BlackBerry = blackBerry;
 
             ViewBag.MaxTag = TempData["UpdateTagLimitError"];
 
@@ -456,6 +457,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     deploy.CallBox = model.CallBox;
                     deploy.IosAdhoc = model.IosAdhoc;
                     deploy.IosAppStore = model.IosAppStore;
+                    deploy.BlackBerry = model.BlackBerry;
                 }
 
 

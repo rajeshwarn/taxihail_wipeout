@@ -98,8 +98,9 @@ namespace MK.Common.Configuration
             AllowSimultaneousAppOrders = false;
 
 		    MaxFareEstimate = 100;
+            MapBoxKey = "pk.eyJ1IjoiZGV2dG9ueSIsImEiOiJjaWZ5OGJ0NXc0eWtxdXBrcXl2czF1eGY5In0.6qUEJWLnvqZ0_0Q6Xh2Gaw";
 
-		    AvailableVehicleRefreshRate = 5;
+            AvailableVehicleRefreshRate = 5;
 
 		    TwitterAccessTokenUrl = "https://api.twitter.com/oauth/access_token";
             TwitterAuthorizeUrl = "https://api.twitter.com/oauth/authorize";
@@ -539,5 +540,9 @@ namespace MK.Common.Configuration
 		[CustomizableByCompany]
 		[Display(Name = "Configuration - Display Extra Info in Receipt", Description = "Display extra info in receipt: vehicle info, vehicle registration, driver photo")]
 		public bool ShowExtraInfoInReceipt { get; protected set; }
+		
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Map - MapBox Key", Description = "BlackBerry MapBox Key")]
+        public string MapBoxKey { get; protected set; }
     }
 }
