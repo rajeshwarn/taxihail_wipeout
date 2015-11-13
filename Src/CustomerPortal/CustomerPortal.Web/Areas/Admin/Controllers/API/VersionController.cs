@@ -19,6 +19,7 @@ using CustomerPortal.Web.Services.Impl;
 using MongoRepository;
 using Newtonsoft.Json;
 using Version = CustomerPortal.Web.Entities.Version;
+using System.Globalization;
 
 #endregion
 
@@ -106,6 +107,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
                     {
                         version.IpaFilename = file.Headers.ContentDisposition.FileName;
                     }
+                    else if ((IsApkBlackBerry(file.Headers.ContentDisposition.FileName)))
+                    {
+                        version.ApkBlackBerryFilename = file.Headers.ContentDisposition.FileName;
+                    }
+                    else if ((IsBar(file.Headers.ContentDisposition.FileName)))
+                    {
+                        version.BarFilename = file.Headers.ContentDisposition.FileName;
+                    }
 
                     var path =
                         ((PackageManager) _packageManagerFactory.Invoke(company.Id, data.VersionNumber)).GetFolderPath();
@@ -140,7 +149,27 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
         private bool IsAPK(string fileName)
         {
-            if (fileName.Contains(".apk"))
+            if (fileName.EndsWith(".apk", true, CultureInfo.InvariantCulture))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsApkBlackBerry(string fileName)
+        {
+            if (fileName.EndsWith("blackberry.apk", true, CultureInfo.InvariantCulture))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsBar(string fileName)
+        {
+            if (fileName.EndsWith(".bar", true, CultureInfo.InvariantCulture))
             {
                 return true;
             }
@@ -150,7 +179,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
         private bool IsAppStoreIpa(string fileName)
         {
-            if (fileName.ToLower().Contains("appstore.ipa"))
+            if (fileName.EndsWith("appstore.ipa", true, CultureInfo.InvariantCulture))
             {
                 return true;
             }
@@ -160,7 +189,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
         private bool IsIpa(string fileName)
         {
-            if (fileName.Contains(".ipa"))
+            if (fileName.EndsWith(".ipa", true, CultureInfo.InvariantCulture))
             {
                 return true;
             }

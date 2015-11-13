@@ -17,9 +17,10 @@ namespace CustomerPortal.Web.Models
         public string CompanyId { get; set; }
         public string ApkFilename { get; set; }
         public string IpaFilename { get; set; }
-
         public string IpaAppStoreFilename { get; set; }
-        
+        public string ApkBlackBerryFilename { get; set; }
+        public string BarFilename { get; set; }
+
         public string WebsiteUrl { get; set; }
         public DateTime CreatedOn { get; set; }
 
@@ -33,10 +34,19 @@ namespace CustomerPortal.Web.Models
             get { return IpaAppStoreFilename != null; }
         }
 
-
         public bool HasApk
         {
             get { return ApkFilename != null; }
+        }
+
+        public bool HasApkBlackBerry
+        {
+            get { return ApkBlackBerryFilename != null; }
+        }
+
+        public bool HasBar
+        {
+            get { return BarFilename != null; }
         }
 
         public bool HasWebsite
@@ -54,6 +64,8 @@ namespace CustomerPortal.Web.Models
                 ApkFilename = version.ApkFilename,
                 IpaFilename = version.IpaFilename,
                 IpaAppStoreFilename = version.IpaAppStoreFilename,
+                ApkBlackBerryFilename = version.ApkBlackBerryFilename,
+                BarFilename = version.BarFilename,
                 WebsiteUrl = version.WebsiteUrl,
                 VersionId = version.VersionId,
                 Number = version.Number,

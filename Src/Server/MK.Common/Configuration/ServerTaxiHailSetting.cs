@@ -18,6 +18,7 @@ namespace MK.Common.Configuration
                 ServerPollingInterval = 10
             };
 
+
             GCM = new GCMSettingContainer
             {
                 SenderId = "385816297456",
@@ -42,9 +43,9 @@ namespace MK.Common.Configuration
 
             BBNotificationSettings = new BlackberrySettingContainer
             {
-                AppId = "5470-6B77424D8r428M1n1a47957tr6h679R3k44",
-                Password = "74eJpYHU",
-                Url = "https://cp5470.pushapi.eval.blackberry.com"
+                AppId = "5477-85B539832ir39I6O1af3803i53aM33255i0",
+                Password = "8E6vv6eC",
+                Url = "https://cp5477.pushapi.eval.blackberry.com"
             };
 
             DefaultBookingSettings = new DefaultBookingSettingsSettingContainer
