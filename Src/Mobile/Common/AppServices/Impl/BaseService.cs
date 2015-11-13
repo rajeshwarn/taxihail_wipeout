@@ -73,9 +73,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				}
                 // this patch try to return empty typed list to avoid exceptions in program where result.FirstOrDefault calls happen
                 // bad practice to rely on reflection should be replaced in future
-                var result = CreateEmptyTypedArray<TResult>(null) as TResult ?? default(TResult);
-                    
-                return result;
+                var result = CreateEmptyTypedArray<TResult>(null) as TResult;
+
+                return result ?? default(TResult);
             }
         }
 
