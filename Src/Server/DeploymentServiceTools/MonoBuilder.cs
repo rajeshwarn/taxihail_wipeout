@@ -43,7 +43,7 @@ namespace DeploymentServiceTools
 
         public void SignAndGenerateBlackBerryProject(string bbToolsPath)
         {
-            _logger(" Running Signing BlackBerry ");
+            _logger(" Running Packaging BlackBerry ");
             var signArgs = "-Djava.awt.headless=true -Xmx512M -cp \"lib/AndroidTools.jar\" net.rim.tools.apk2bar.Apk2Bar \"Outputs/\" -r";
 
             var signBBProject = ProcessEx.GetProcess("java",
@@ -56,10 +56,10 @@ namespace DeploymentServiceTools
                 {
                     throw new Exception("Error during build project step" + output.Replace("\n", "\r\n"));
                 }
-                _logger("Signing Successful");
+                _logger("Packaging Successful");
             }
 
-            _logger(" Running Packaging BlackBerry ");
+            _logger(" Running Signing BlackBerry ");
             var pkgArgs = "-Djava.awt.headless=true -Xmx512M -cp \"lib/BarSigner.jar:lib/AndroidTools.jar\" net.rim.tools.signing.SigningMain -bbidtoken \"Outputs/bbidtoken.csk\" -storepass apcurium72 -keystore \"Outputs/author.p12\" \"Outputs/com.apcurium.MK.TaxiHailDemo-Signed.bar\"";
 
             var pkgdBBProject = ProcessEx.GetProcess("java",
@@ -72,7 +72,7 @@ namespace DeploymentServiceTools
                 {
                     throw new Exception("Error during build project step" + output.Replace("\n", "\r\n"));
                 }
-                _logger("Packaging Successful");
+                _logger("Signing Successful");
             }
         }
 

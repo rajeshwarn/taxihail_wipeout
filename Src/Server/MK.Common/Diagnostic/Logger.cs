@@ -62,17 +62,17 @@ namespace apcurium.MK.Common.Diagnostic
 
         public string[] GetLogFilesFullName()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This call is only supported on mobile.");
         }
 
         public string MergeLogFiles()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This call is only supported on mobile.");
         }
 
         public void RemoveMergedFile()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This call is only supported on mobile.");
         }
 
         private class Disposable : IDisposable
@@ -97,15 +97,5 @@ namespace apcurium.MK.Common.Diagnostic
                 return new Disposable(action);
             }
         }
-
-		public string MergeLogFiles()
-		{
-			throw new NotSupportedException();
-		}
-
-		public void RemoveMergedFile()
-		{
-			throw new NotSupportedException();
-		}
 	}
 }
