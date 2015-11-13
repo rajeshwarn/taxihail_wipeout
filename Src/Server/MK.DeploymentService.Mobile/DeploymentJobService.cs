@@ -492,19 +492,16 @@ namespace MK.DeploymentService.Mobile
 				"MK.Booking.Maps.Android", 
 				"MK.Booking.Api.Contract.Android", 
 				"MK.Booking.Api.Client.Android",
-				"MK.Booking.Mobile.Android"
-			};
+				"MK.Booking.Mobile.Android",
+                "GoogleMaps.M4B",
+                "MapBox.Sdk"
+            };
 
-            projectLists.Add(_job.BlackBerry ? "MapBox.Sdk" : "GoogleMaps.M4B");
+			if (_job.Android)
+            {
+                _builder.BuildAndroidProject(projectLists, configAndroid, string.Format("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
 
-            var solutionName = _job.BlackBerry 
-                ? "MK.Booking.Mobile.Solution.BlackBerry.sln" 
-                : "MK.Booking.Mobile.Solution.Android.sln";
-            
-            _builder.BuildAndroidProject (projectLists, configAndroid, string.Format ("{0}/{1}", sourceMobileFolder, solutionName));
-
-			if (_job.Android) {
-				UpdateJob ("Building project Android");
+                UpdateJob ("Building project Android");
 
                 var buildClient = string.Format ("build \"--project:TaxiHail\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.Android.sln\"",
 					configAndroid,
@@ -514,7 +511,10 @@ namespace MK.DeploymentService.Mobile
 				_logger.Debug ("Build Android done");
 			}
 
-            if (_job.BlackBerry) {
+            if (_job.BlackBerry)
+            {
+                _builder.BuildAndroidProject(projectLists, configAndroid, string.Format("{0}/MK.Booking.Mobile.Solution.BlackBerry.sln", sourceMobileFolder));
+
                 UpdateJob ("Building project BlackBerry");
 
                 var buildClient = string.Format ("build \"--project:TaxiHail.BlackBerry\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.BlackBerry.sln\"",
