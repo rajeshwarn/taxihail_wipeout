@@ -40,6 +40,7 @@ using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 using apcurium.MK.Booking.EventHandlers;
 using System.Diagnostics;
+using apcurium.MK.Booking.Projections;
 
 #endregion
 
@@ -113,9 +114,13 @@ namespace DatabaseInitializer
                 container = new UnityContainer();
                 module = new Module();
 
-                var accountDetailProjectionStore = new MemoryProjectionStore<AccountDetail>(a => a.Id);
-                container.RegisterInstance<IProjectionStore<AccountDetail>>(accountDetailProjectionStore);
-
+                var accountDetailProjectionSet = new MemoryProjectionSet<AccountDetail>(a => a.Id);
+                var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
+                container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
+                container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
+                container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
+                    new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
+                container.RegisterType<IProjectionSet<ServerPaymentSettings, string>, NetworkCompanyPaymentSettingsEntityProjections>(new ContainerControlledLifetimeManager());
                 module.Init(container, connectionString, param.MkWebConnectionString);
 
                 if (IsUpdate)
@@ -132,14 +137,17 @@ namespace DatabaseInitializer
 
                     var replayService = container.Resolve<EventsPlayBackService>();
                     replayService.Register(container.Resolve<AccountDetailsGenerator>());
+                    replayService.Register(container.Resolve<AppSettingsGenerator>());
+                    replayService.Register(container.Resolve<PaymentSettingGenerator>());
                     replayService.ReplayAllEvents();
 
-                    var accountDetailsEntityProjectionStore = new EntityProjectionStore<AccountDetail>(container.Resolve<Func<BookingDbContext>>());
+                    var accountDetailEntityProjectionSet = new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>());
                     var stopwatch = new Stopwatch();
                     stopwatch.Start();
                     Console.WriteLine("Dump projection to SQL database");
 
-                    accountDetailsEntityProjectionStore.AddRange(accountDetailProjectionStore);
+                    accountDetailEntityProjectionSet.AddRange(accountDetailProjectionSet);
+                    //container.Resolve<AppSettingsEntityProjection>().Save(appSettingsProjection.Load());
                     Console.WriteLine("End : " + stopwatch.Elapsed);
 
 

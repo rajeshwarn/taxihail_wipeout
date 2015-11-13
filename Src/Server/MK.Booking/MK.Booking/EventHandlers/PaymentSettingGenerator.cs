@@ -1,12 +1,17 @@
 ﻿#region
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
+using System.Data.Entity;
+using System.Linq;
+using apcurium.MK.Booking.Projections;
 
 #endregion
 
@@ -16,10 +21,13 @@ namespace apcurium.MK.Booking.EventHandlers
         : IEventHandler<PaymentSettingUpdated>
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
+        private readonly IProjectionSet<ServerPaymentSettings, string> _networkCompanyPaymentSettingsProjections;
+        private readonly IProjection<ServerPaymentSettings> _companyPaymentSettingsProjection;
 
-        public PaymentSettingGenerator(Func<ConfigurationDbContext> contextFactory)
+        public PaymentSettingGenerator(IProjectionSet<ServerPaymentSettings, string> networkCompanyPaymentSettingsProjections, IProjection<ServerPaymentSettings> companyPaymentSettingsProjection)
         {
-            _contextFactory = contextFactory;
+            _networkCompanyPaymentSettingsProjections = networkCompanyPaymentSettingsProjections;
+            _companyPaymentSettingsProjection = companyPaymentSettingsProjection;
         }
 
         public void Handle(PaymentSettingUpdated @event)
@@ -30,20 +38,63 @@ namespace apcurium.MK.Booking.EventHandlers
                 @event.ServerPaymentSettings.PreAuthAmount = new ServerPaymentSettings().PreAuthAmount;
             }
 
+            if (@event.ServerPaymentSettings.CompanyKey.HasValue())
+            {
+                _networkCompanyPaymentSettingsProjections.AddOrReplace(@event.ServerPaymentSettings);
+            }
+            else
+            {
+                _companyPaymentSettingsProjection.Save(@event.ServerPaymentSettings);
+            }
+
+        }
+    }
+
+    public class NetworkCompanyPaymentSettingsEntityProjections : IProjectionSet<ServerPaymentSettings, string>
+    {
+        Func<DbContext> _contextFactory;
+        public NetworkCompanyPaymentSettingsEntityProjections(Func<ConfigurationDbContext> contextFactory)
+        {
+            _contextFactory = contextFactory;
+        }
+
+        public void Add(ServerPaymentSettings projection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddRange(IEnumerable<ServerPaymentSettings> projections)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<ServerPaymentSettings> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddOrReplace(ServerPaymentSettings projection)
+        {
             using (var context = _contextFactory.Invoke())
             {
-                if (@event.ServerPaymentSettings.CompanyKey.HasValue())
-                {
-                    context.RemoveWhere<ServerPaymentSettings>(x => x.CompanyKey == @event.ServerPaymentSettings.CompanyKey);
-                }
-                else
-                {
-                    context.RemoveWhere<ServerPaymentSettings>(x => x.Id == AppConstants.CompanyId);
-                }
+                context
+                    .Set<ServerPaymentSettings>()
+                    .RemoveRange(context.Set<ServerPaymentSettings>()
+                        .Where(x => x.CompanyKey == projection.CompanyKey));
 
-                context.ServerPaymentSettings.Add(@event.ServerPaymentSettings);
+                context.Set<ServerPaymentSettings>().Add(projection);
                 context.SaveChanges();
             }
+        }
+
+        public void Update(Func<ServerPaymentSettings, bool> predicate, Action<ServerPaymentSettings> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(string identifier, Action<ServerPaymentSettings> action)
+        {
+            throw new NotImplementedException();
         }
     }
 }

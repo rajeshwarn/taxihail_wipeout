@@ -10,13 +10,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
-using apcurium.MK.Common.Helpers;
-using System.Runtime.Caching;
-using System.Collections.Generic;
-using System.Collections;
-using EntityFramework.BulkInsert.Extensions;
-using System.Data.Common;
-using System.Data.EntityClient;
+using apcurium.MK.Booking.Projections;
 
 #endregion
 
@@ -44,16 +38,16 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OverduePaymentSettled>,
         IEventHandler<ChargeAccountPaymentDisabled>
     {
-        private readonly IProjectionStore<AccountDetail> _store;
+        private readonly IProjectionSet<AccountDetail> _projections;
 
-        public AccountDetailsGenerator(IProjectionStore<AccountDetail> projectionStore)
+        public AccountDetailsGenerator(IProjectionSet<AccountDetail> projections)
         {
-            _store = projectionStore;
+            _projections = projections;
         }
 
         public void Handle(AccountConfirmed @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.IsConfirmed = true;
                 account.DisabledByAdmin = false;
@@ -62,7 +56,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountDisabled @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.IsConfirmed = false;
                 account.DisabledByAdmin = true;
@@ -71,7 +65,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountPasswordReset @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.Password = @event.Password;
             });
@@ -79,7 +73,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountPasswordUpdated @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.Password = @event.Password;
             });
@@ -117,12 +111,12 @@ namespace apcurium.MK.Booking.EventHandlers
                 PayBack = @event.PayBack
             };
 
-            _store.Add(account);
+            _projections.Add(account);
         }
 
         public void Handle(AccountUpdated @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.Name = @event.Name;
             });
@@ -130,7 +124,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(BookingSettingsUpdated @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 var settings = account.Settings ?? new BookingSettings();
                 settings.Name = @event.Name;
@@ -155,7 +149,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(RoleAddedToUserAccount @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.Roles |= (int)Enum.Parse(typeof(Roles), @event.RoleName);
             });
@@ -163,7 +157,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(RoleUpdatedToUserAccount @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.Roles = (int)Enum.Parse(typeof(Roles), @event.RoleName);
             });
@@ -171,7 +165,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardAddedOrUpdated @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 if (!account.DefaultCreditCard.HasValue)
                 {
@@ -183,7 +177,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(DefaultCreditCardUpdated @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                 account.DefaultCreditCard = @event.CreditCardId;
@@ -192,7 +186,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardRemoved @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 // used for migration, if user removed one card but had another one, we set this one as the default card
                 account.DefaultCreditCard = @event.NextDefaultCreditCardId;
@@ -203,7 +197,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AllCreditCardsRemoved @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.DefaultCreditCard = null;
 
@@ -218,7 +212,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             if (!@event.IsOutOfAppPaymentDisabled.Value)
             {
-                _store.Update(@event.SourceId, account =>
+                _projections.Update(@event.SourceId, account =>
                 {
                     account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
                 });
@@ -227,7 +221,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountLinkedToIbs @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 if (!@event.CompanyKey.HasValue())
                 {
@@ -238,7 +232,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountUnlinkedFromIbs @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.IBSAccountId = null;
             });
@@ -246,7 +240,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(PayPalAccountLinked @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.IsPayPalAccountLinked = true;
                 account.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
@@ -255,7 +249,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(PayPalAccountUnlinked @event)
         {
-            _store.Update(@event.SourceId, account =>
+            _projections.Update(@event.SourceId, account =>
             {
                 account.IsPayPalAccountLinked = false;
             });
@@ -263,7 +257,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(ChargeAccountPaymentDisabled @event)
         {
-            _store.Update(HasChargeAccount, account =>
+            _projections.Update(HasChargeAccount, account =>
             {
                 account.Settings.CustomerNumber = null;
                 account.Settings.AccountNumber = null;
@@ -280,7 +274,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             if (@event.IsPayInTaxiEnabled.Value)
             {
-                _store.Update(@event.SourceId, account =>
+                _projections.Update(@event.SourceId, account =>
                 {
                     //Re-enable card on file as the default payment method
                     account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
@@ -290,154 +284,5 @@ namespace apcurium.MK.Booking.EventHandlers
 
         
     }
-
-    public interface IProjectionStore: IProjectionStore<object>
-    {
-
-    }
-
-    public interface IProjectionStore<TProjection>: IProjectionStore<TProjection, Guid> where TProjection : class
-    {
-
-    }
-
-    public interface IProjectionStore<TProjection, TIdentifier>: IEnumerable<TProjection> where TProjection :class
-    {
-        void Update(TIdentifier identifier, Action<TProjection> action);
-        void Update(Func<TProjection, bool> predicate, Action<TProjection> action);
-        void Add(TProjection projection);
-        void AddRange(IEnumerable<TProjection> projections);
-    }
-
-    public class MemoryProjectionStore<TProjection> : IProjectionStore<TProjection> where TProjection : class
-    {
-        readonly IDictionary<Guid, TProjection> _cache = new Dictionary<Guid, TProjection>();
-        readonly Func<TProjection, Guid> _getId;
-        public MemoryProjectionStore(Func<TProjection, Guid> getId)
-        {
-            _getId = getId;
-        }
-
-        public void Add(TProjection projection)
-        {
-            _cache.Add(_getId(projection), projection);
-        }
-
-        public void AddRange(IEnumerable<TProjection> projections)
-        {
-            foreach(var projection in projections)
-            {
-                Add(projection);
-            }
-        }
-
-        public void Update(Guid identifier, Action<TProjection> action)
-        {
-            TProjection item;
-            if(!_cache.TryGetValue(identifier, out item))
-            {
-                throw new InvalidOperationException("Projection not found");
-            }
-            action.Invoke(item);
-        }
-
-        public void Update(Func<TProjection, bool> predicate, Action<TProjection> action)
-        {
-
-            foreach (var item in _cache
-                .Select(x => x.Value)
-                .Where(predicate))
-            {
-                action(item);
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _cache.Values.GetEnumerator();
-        }
-
-        IEnumerator<TProjection> IEnumerable<TProjection>.GetEnumerator()
-        {
-            return _cache.Values.GetEnumerator();
-        }
-    }
-
-    public class EntityProjectionStore<TProjection> : IProjectionStore<TProjection> where TProjection : class
-    {
-        private readonly BookingDbContext _context;
-        private readonly Func<BookingDbContext> _contextFactory;
-        public EntityProjectionStore(Func<BookingDbContext> contextFactory)
-        {
-            _context = contextFactory.Invoke();
-            _contextFactory = contextFactory;
-        }
-
-        public void Add(TProjection projection)
-        {
-            _context.Set<TProjection>().Add(projection);
-            _context.SaveChanges();
-        }
-
-        public void AddRange(IEnumerable<TProjection> projections)
-        {
-            int count = 0;
-            var context = _contextFactory.Invoke();
-            context.BulkInsert(projections, new BulkInsertOptions
-            {
-                EnableStreaming = true,
-            });
-            ////context.Configuration.AutoDetectChangesEnabled = false;
-            //context.Configuration.ValidateOnSaveEnabled = false;
-            //foreach(var p in projections)
-            //{
-            //    count++;
-            //    context.Set<TProjection>().Add(p);
-
-            //    if((count % 100) == 0)
-            //    {
-            //        context.SaveChanges();
-            //        context.Dispose();
-            //        context = _contextFactory.Invoke();
-            //        context.Configuration.AutoDetectChangesEnabled = false;
-            //        context.Configuration.ValidateOnSaveEnabled = false;
-            //    }
-            //}
-            //context.SaveChanges();
-            context.Dispose();
-        }
-
-        public void Update(Guid identifier, Action<TProjection> action)
-        {
-            var projection = _context.Set<TProjection>().Find(identifier);
-            if(projection == null)
-            {
-                throw new InvalidOperationException("Projection not found");
-            }
-            action.Invoke(projection);
-            _context.SaveChanges();
-        }
-
-        public void Update(Func<TProjection, bool> predicate, Action<TProjection> action)
-        {
-            var projections = _context.Set<TProjection>().Where(predicate);
-            foreach(var projection in projections)
-            {
-                action.Invoke(projection);
-
-            }
-            _context.SaveChanges();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable)_context.Set<TProjection>()).GetEnumerator();
-        }
-
-        IEnumerator<TProjection> IEnumerable<TProjection>.GetEnumerator()
-        {
-            return ((IEnumerable<TProjection>)_context.Set<TProjection>()).GetEnumerator();
-        }
-
-    }
+ 
 }

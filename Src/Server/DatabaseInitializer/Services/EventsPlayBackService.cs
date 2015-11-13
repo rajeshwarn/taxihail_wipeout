@@ -187,7 +187,7 @@ namespace DatabaseInitializer.Services
 
                         // order by date then by version in case two events happened at the same time
                         var events = context.Set<Event>().AsNoTracking()
-                                    .Where(x => x.AggregateType == "Account" || x.AggregateType == "Company")
+                                    //.Where(x => new[] { "Order", "Company", "Account" }.Contains(x.AggregateType) )
                                     .OrderBy(x => x.EventDate)
                                     .ThenBy(x => x.Version)
                                     .Skip(skip)
