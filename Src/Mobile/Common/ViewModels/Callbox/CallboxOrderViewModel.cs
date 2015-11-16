@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		    }
 	    }
 
-	    public string FormatedCreatedDate
+	    public string FormattedCreatedDate
         {
             get {  return CreatedDate.ToShortTimeString(); }
         }
