@@ -190,7 +190,6 @@
     <Compile Include="Controls\TextViewColor.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Converters\ColorEnumToAndroidColorConverter.cs" />
-    <Compile Include="Converters\CoordinateConverter.cs" />
     <Compile Include="Converters\OrderStatusToTextColorConverter.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
