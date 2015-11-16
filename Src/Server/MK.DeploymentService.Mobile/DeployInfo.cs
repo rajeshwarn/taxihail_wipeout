@@ -23,6 +23,16 @@ namespace MK.DeploymentService.Mobile
 			set;
 		}
 
+        public string BlackBerryApkFileName {
+            get;
+            set;
+        }
+
+        public string BlackBerryBarFileName {
+            get;
+            set;
+        }
+
 		public string CallboxApkFileName {
 			get;
 			set;
@@ -70,17 +80,43 @@ namespace MK.DeploymentService.Mobile
 			get{ return Path.Combine (RootPath, AndroidApkFileName); }
 		}
 
+        public string BlackBerryApkFile {
+            get{ return Path.Combine (RootPath, BlackBerryApkFileName); }
+        }
+
+        public string BlackBerryBarFile {
+            get{ return Path.Combine (RootPath, BlackBerryBarFileName); }
+        }
+
 		public bool AndroidApkFileExist
 		{
 			get{ return !string.IsNullOrEmpty (RootPath) && !string.IsNullOrEmpty (AndroidApkFileName) && File.Exists (AndroidApkFile); }
 		}
+
+        public bool BlackBerryApkFileExist
+        {
+            get{ return !string.IsNullOrEmpty (RootPath) && !string.IsNullOrEmpty (BlackBerryApkFileName) && File.Exists (BlackBerryApkFile); }
+        }
+
+        public bool BlackBerryBarFileExist
+        {
+            get{ return !string.IsNullOrEmpty (RootPath) && !string.IsNullOrEmpty (BlackBerryBarFileName) && File.Exists (BlackBerryBarFile); }
+        }
 
 		public FileStream GetAndroidApkStream()
 		{
 			return File.OpenRead (AndroidApkFile);
 		}
 
+        public FileStream GetBlackBerryApkStream()
+        {
+            return File.OpenRead (BlackBerryApkFile);
+        }
 
+        public FileStream GetBlackBerryBarStream()
+        {
+            return File.OpenRead (BlackBerryBarFile);
+        }
 	}
 }
 
