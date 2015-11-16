@@ -75,11 +75,25 @@ namespace MK.DeploymentService.Mobile
 			get{ return !string.IsNullOrEmpty (RootPath) && !string.IsNullOrEmpty (AndroidApkFileName) && File.Exists (AndroidApkFile); }
 		}
 
-		public FileStream GetAndroidApkStream()
+	    public string CallboxApkFile
+	    {
+	        get { return Path.Combine(RootPath, CallboxApkFileName); }
+	    }
+
+        public bool CallboxApkFileExist
+        {
+            get { return !string.IsNullOrEmpty(RootPath) && !string.IsNullOrEmpty(CallboxApkFileName) && File.Exists(CallboxApkFile); }
+        }
+
+        public FileStream GetAndroidApkStream()
 		{
 			return File.OpenRead (AndroidApkFile);
 		}
 
+	    public FileStream GetCallboxApkStream()
+	    {
+	        return File.OpenRead(CallboxApkFile);
+	    }
 
 	}
 }

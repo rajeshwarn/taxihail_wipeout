@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using MK.DeploymentService.Service;
 using CustomerPortal.Web.Entities;
 using System.Threading.Tasks;
+using ServiceStack.Text;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -206,12 +207,9 @@ namespace MK.DeploymentService.Mobile
 
 		private string GetAndroidFile(string apkPath)
 		{
-			if (Directory.Exists (apkPath)) {
-				return Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ();
-			}
-			return null;
-		}
-
+            return Directory.Exists (apkPath) 
+                ? Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ()
+                : null;
         private string GetBlackBerryFile(string apkPath)
         {
             if (Directory.Exists (apkPath)) {
@@ -220,57 +218,62 @@ namespace MK.DeploymentService.Mobile
             return null;
         }
 
-		private string GetAndroidCallboxFile(string apkPathCallBox)
-		{
-			if (Directory.Exists (apkPathCallBox)) {
-				return Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
-			}
-			return null;
 		}
 
-		private string GetiOSFile(string ipaPath)
-		{
-					if (Directory.Exists (ipaPath)) {
-						return Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
-			}
-			return null;
-		}
+	    private string GetiOSFile(string ipaPath)
+	    {
+	        return Directory.Exists (ipaPath) 
+                ? Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault() 
+                : null;
+	    }
 
-		
 
-        DeployInfo Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox, string apkBlackBerryPath)
+	    private DeployInfo Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox, string apkBlackBerryPath)
 		{
 
 			var result = new DeployInfo ();
-            if (_job.Android || _job.CallBox || _job.IosAdhoc || _job.IosAppStore || _job.BlackBerry) {
-				string targetDirWithoutFileName = Path.Combine (System.Configuration.ConfigurationManager.AppSettings ["DeployDir"], 
-					company.CompanyKey,
-					string.Format ("{0}.{1}", _job.Revision.Tag,_job.Revision.Commit));
-				if (!Directory.Exists (targetDirWithoutFileName)) {
-					Directory.CreateDirectory (targetDirWithoutFileName);
-				}
+		    if (!_job.Android && !_job.CallBox && !_job.IosAdhoc && !_job.IosAppStore && !_job.BlackBerry)
+		    {
+		        return result;
+		    }
 
-				result.RootPath = targetDirWithoutFileName;
+		    var targetDirWithoutFileName = Path.Combine (ConfigurationManager.AppSettings ["DeployDir"], 
+		        company.CompanyKey,
+		        string.Format ("{0}.{1}", _job.Revision.Tag,_job.Revision.Commit));
 
-				if (_job.Android) {
-					_logger.DebugFormat ("Copying Apk");
-					var apkFile = GetAndroidFile(apkPath);
+		    if (!Directory.Exists (targetDirWithoutFileName))
+		    {
+		        Directory.CreateDirectory (targetDirWithoutFileName);
+		    }
 
-					if (apkFile != null) {
-						var fileInfo = new FileInfo (apkFile); 
-						var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
-						if (File.Exists (targetDir))
-							File.Delete (targetDir);
-						File.Copy (apkFile, targetDir);
+		    result.RootPath = targetDirWithoutFileName;
 
-						result.AndroidApkFileName = fileInfo.Name;
+		    if (_job.Android)
+		    {
+		        _logger.DebugFormat ("Copying Apk");
+		        var apkFile = GetAndroidFile(apkPath);
 
-					} else {
-						throw new Exception ("Can't find the APK file in the release dir");
-					}
-				}
+		        if (apkFile != null)
+		        {
+		            var fileInfo = new FileInfo (apkFile); 
+		            var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
+		            if (File.Exists(targetDir))
+		            {
+		                File.Delete(targetDir);
+		            }
+		            File.Copy (apkFile, targetDir);
 
-                if (_job.BlackBerry) {
+		            result.AndroidApkFileName = fileInfo.Name;
+
+		        } 
+		        else
+		        {
+		            throw new Exception ("Can't find the APK file in the release dir");
+		        }
+		    }
+
+                if (_job.BlackBerry) 
+                {
                     _logger.DebugFormat ("Copying BlackBerry Apk");
                     var apkBlackBerryFile = GetBlackBerryFile(apkBlackBerryPath);
 
@@ -284,68 +287,83 @@ namespace MK.DeploymentService.Mobile
 
                         result.AndroidApkFileName = fileInfo.Name;
 
-                    } else {
+                    } 
+                    else 
+                    {
                         throw new Exception ("Can't find the APK BlackBerry file in the release dir");
                     }
                 }
 
-				if (_job.CallBox) {
-					_logger.DebugFormat ("Copying CallBox Apk");
-					var apkFile = GetAndroidCallboxFile(apkPathCallBox);
-					if (apkFile != null) {
-						var fileInfo = new FileInfo (apkFile); 
-						var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
-						if (File.Exists (targetDir))
-							File.Delete (targetDir);
-						File.Copy (apkFile, targetDir);
-						result.CallboxApkFileName = fileInfo.Name;
-					} else {
-						throw new Exception ("Can't find the CallBox APK file in the release dir");
-					}
-				}
+		    if (_job.CallBox)
+		    {
+		        _logger.DebugFormat ("Copying CallBox Apk");
+		        var apkFile = GetAndroidFile(apkPathCallBox);
+		        if (apkFile != null)
+		        {
+                    var fileInfo = new FileInfo (apkFile); 
+		            var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
+		            if (File.Exists(targetDir))
+		            {
+		                File.Delete(targetDir);
+		            }
+		            File.Copy (apkFile, targetDir);
+		            result.CallboxApkFileName = fileInfo.Name;
+		        } 
+		        else
+		        {
+		            throw new Exception ("Can't find the CallBox APK file in the release dir");
+		        }
+		    }
 
-				if (_job.IosAdhoc) {
-					_logger.DebugFormat ("Uploading and copying IPA AdHoc");
-					var ipaFile = GetiOSFile(ipaAdHocPath);
-					if (ipaFile != null) {
+		    if (_job.IosAdhoc)
+		    {
+		        _logger.DebugFormat ("Uploading and copying IPA AdHoc");
+		        var ipaFile = GetiOSFile(ipaAdHocPath);
+		        if (ipaFile != null)
+		        {
 
-						var fileInfo = new FileInfo (ipaFile); 
-						var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
-						if (File.Exists (targetDir))
-							File.Delete (targetDir);
-						File.Copy (ipaFile, targetDir);
-						result.iOSAdhocFileName = fileInfo.Name;
+		            var fileInfo = new FileInfo (ipaFile); 
+		            var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
+		            if (File.Exists (targetDir))
+		                File.Delete (targetDir);
+		            File.Copy (ipaFile, targetDir);
+		            result.iOSAdhocFileName = fileInfo.Name;
 
-					} else {
-						throw new Exception ("Can't find the IPA file in the AdHoc dir");
-					}
-				}
+		        } 
+		        else
+		        {
+		            throw new Exception ("Can't find the IPA file in the AdHoc dir");
+		        }
+		    }
 
-				if (_job.IosAppStore) {
-					_logger.DebugFormat ("Uploading and copying IPA AppStore");
-					var ipaFile = GetiOSFile(ipaAppStorePath);
-					if (ipaFile != null) {
+		    if (_job.IosAppStore)
+		    {
+		        _logger.DebugFormat ("Uploading and copying IPA AppStore");
+		        var ipaFile = GetiOSFile(ipaAppStorePath);
+		        if (ipaFile != null)
+		        {
 
-						var fileInfo = new FileInfo (ipaFile); 
-						var newName = fileInfo.Name.Replace (".ipa", ".appstore.ipa");
-						var targetDir = Path.Combine (targetDirWithoutFileName, newName);
-						if (File.Exists (targetDir))
-							File.Delete (targetDir);
-						File.Copy (ipaFile, targetDir);
-						result.iOSAppStoreFileName = newName;
-					} else {
-						throw new Exception ("Can't find the IPA file in the AppStore dir");
-					}
-				}
-			}
+		            var fileInfo = new FileInfo (ipaFile); 
+		            var newName = fileInfo.Name.Replace (".ipa", ".appstore.ipa");
+		            var targetDir = Path.Combine (targetDirWithoutFileName, newName);
+		            if (File.Exists (targetDir))
+		                File.Delete (targetDir);
+		            File.Copy (ipaFile, targetDir);
+		            result.iOSAppStoreFileName = newName;
+		        } 
+		        else
+		        {
+		            throw new Exception ("Can't find the IPA file in the AppStore dir");
+		        }
+		    }
 
-			return result;
+		    return result;
 		}
 
-		void Customize (string sourceDirectory, DeploymentJob job)
+		private void Customize (string sourceDirectory, DeploymentJob job)
 		{
-			Company company = job.Company;
-			CustomerPortal.Web.Entities.Environment taxiHailEnv = job.Server;
+			var company = job.Company;
+			var taxiHailEnv = job.Server;
 			UpdateJob ("Service Url : " + job.ServerUrl);
 
 			_logger.DebugFormat ("Build Config Tool Customization");
@@ -353,18 +371,24 @@ namespace MK.DeploymentService.Mobile
 			 
 			var sln = string.Format ("{0}/ConfigTool.iOS.sln", Path.Combine (sourceDirectory, "Src", "ConfigTool"));
 			var projectName = "NinePatchMaker.Lib";
-			if (_builder.ProjectIsInSolution (sln, projectName)) {
+			if (_builder.ProjectIsInSolution (sln, projectName))
+            {
 				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Release");
 				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
-			} else {
+			}
+            else
+            {
 				UpdateJob("Skipping NinePatch.Lib because it does not exist on this version");
 			}
 
 			projectName = "NinePatchMaker";
-			if (_builder.ProjectIsInSolution (sln, projectName)) {
+			if (_builder.ProjectIsInSolution (sln, projectName))
+            {
 				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Release");
 				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
-			} else {
+			}
+            else
+            {
 				UpdateJob ("Skipping NinePatch because it does not exist on this version");
 			}
 			
@@ -377,13 +401,15 @@ namespace MK.DeploymentService.Mobile
 			var workingDirectory = Path.Combine (sourceDirectory, "Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Release");
 			var configToolRun = ProcessEx.GetProcess ("mono", string.Format ("apcurium.MK.Booking.ConfigTool.exe {0} {1}", company.CompanyKey, job.ServerUrl), workingDirectory);
 
-			using (var exeProcess = Process.Start (configToolRun)) {
-				var output = ProcessEx.GetOutput (exeProcess);
-				if (exeProcess.ExitCode > 0) {
-					throw new Exception ("Error during customization, " + output);
-				}
-				UpdateJob ("Customize Successful");
-			}
+            using (var exeProcess = Process.Start(configToolRun))
+            {
+                var output = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess != null && exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during customization, " + output);
+                }
+                UpdateJob("Customize Successful");
+            }
 
 			UpdateJob("Customization Finished");
 			UpdateJob ("Run Localization tool for Android");
@@ -397,13 +423,15 @@ namespace MK.DeploymentService.Mobile
 				Arguments = "output/LocalizationTool.exe -t=android -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/Android/Resources/Values/String.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
 			};
 
-			using (var exeProcess = Process.Start (localizationToolRun)) {
-				var outputAndroid = ProcessEx.GetOutput (exeProcess);
-				if (exeProcess.ExitCode > 0) {
-					throw new Exception ("Error during localization tool for android");
-				}
-				UpdateJob (outputAndroid);
-			}
+            using (var exeProcess = Process.Start(localizationToolRun))
+            {
+                var outputAndroid = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess != null && exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during localization tool for android");
+                }
+                UpdateJob(outputAndroid);
+            }
 
 			UpdateJob ("Run Localization tool for Android Finished");
 
@@ -422,7 +450,7 @@ namespace MK.DeploymentService.Mobile
             using (var exeProcess = Process.Start(localizationToolRun))
             {
 				var outputiOS = ProcessEx.GetOutput (exeProcess);
-                if (exeProcess.ExitCode > 0)
+                if (exeProcess != null && exeProcess.ExitCode > 0)
                 {
                     throw new Exception("Error during localization tool for iOS");
                 }
@@ -431,7 +459,36 @@ namespace MK.DeploymentService.Mobile
 
 			UpdateJob("Run Localization tool for iOS Finished");
 
-		}
+
+		    if (!job.CallBox)
+		    {
+		        return;
+		    }
+
+            UpdateJob("Run Localization tool for Callbox");
+
+            localizationToolRun = new ProcessStartInfo
+            {
+                FileName = "mono",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                WorkingDirectory = Path.Combine(sourceDirectory, "Src", "LocalizationTool"),
+                Arguments = "output/LocalizationTool.exe -t=callbox -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/MK.Callbox.Mobile.Client.Android/Resources/Values/String.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
+            };
+
+            using (var exeProcess = Process.Start(localizationToolRun))
+            {
+                var outputCallbox = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess != null && exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during localization tool for callbox");
+                }
+                UpdateJob(outputCallbox);
+            }
+
+            UpdateJob("Run Localization tool for Callbox Finished");
+        }
 
 		private void BuildMobile (string sourceDirectory)
 		{			
@@ -439,21 +496,26 @@ namespace MK.DeploymentService.Mobile
 			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
 
 			_logger.DebugFormat ("Restore NuGet Packages");
-			var restoreProcess = ProcessEx.GetProcess ("nuget", string.Format ("restore \"{0}/TaxiHail.sln\"", 
-										sourceMobileFolder), sourceMobileFolder);
+			var restoreProcess = ProcessEx.GetProcess (
+                "nuget", 
+                string.Format ("restore \"{0}/TaxiHail.sln\"", sourceMobileFolder),
+                sourceMobileFolder);
 
-			using (var exeProcess = Process.Start (restoreProcess)) {
-				var output = ProcessEx.GetOutput (exeProcess);
-				if (exeProcess.ExitCode > 0) {
+            using (var exeProcess = Process.Start(restoreProcess))
+            {
+                var output = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess.ExitCode > 0)
+                {
                     UpdateJob("Error during restore NuGet Packages");
-					//throw new Exception ("Error during Restore NuGet Packages, " + output);
-				}
-				UpdateJob ("Restore NuGet Packages Successful");
-			}
+                    //throw new Exception ("Error during Restore NuGet Packages, " + output);
+                }
+                UpdateJob("Restore NuGet Packages Successful");
+            }
 
 			_logger.DebugFormat ("Build Solution");
 
-			if (_job.IosAdhoc) {			
+			if (_job.IosAdhoc)
+            {			
 
 				_logger.DebugFormat ("Build iOS AdHoc");
 				UpdateJob ("Build iOS AdHoc");
@@ -467,8 +529,8 @@ namespace MK.DeploymentService.Mobile
 				_logger.Debug ("Build iOS AdHoc done");
 			}
 
-			if (_job.IosAppStore) {	
-
+			if (_job.IosAppStore)
+            {	
 				_logger.DebugFormat ("Build iOS AppStore");
 				UpdateJob ("Build iOS AppStore");
 				var buildArgs = string.Format ("build \"--configuration:{0}\"  \"{1}/MK.Booking.Mobile.Solution.iOS.sln\"",				                             
@@ -501,6 +563,8 @@ namespace MK.DeploymentService.Mobile
             {
                 _builder.BuildAndroidProject(projectLists, configAndroid, string.Format("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
 
+			if (_job.Android)
+            {
                 UpdateJob ("Building project Android");
 
                 var buildClient = string.Format ("build \"--project:TaxiHail\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.Android.sln\"",
@@ -542,8 +606,10 @@ namespace MK.DeploymentService.Mobile
                 _builder.SignAndGenerateBlackBerryProject(bbToolsPath);
             }
 
-			if (!_job.CallBox)
-				return;
+		    if (!_job.CallBox)
+		    {
+                return;
+            }
 
 			UpdateJob ("Callbox project");
 			var args = string.Format ("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
@@ -565,7 +631,8 @@ namespace MK.DeploymentService.Mobile
 		{
 			var sb = new StringBuilder ();
 			var reader = new JsonTextReader (new StreamReader (jsonSettingsFile));
-			while (reader.Read ()) {
+			while (reader.Read ())
+            {
 				if (reader.Value == null)
 					continue;
 
@@ -575,9 +642,10 @@ namespace MK.DeploymentService.Mobile
 					sb.AppendLine (reader.Value.ToString ());
 				}
 			}
-			using (var outfile = new StreamWriter (targetFile, false)) {
-				outfile.Write (sb.ToString ());
-			}
+            using (var outfile = new StreamWriter(targetFile, false))
+            {
+                outfile.Write(sb.ToString());
+            }
 		}
 	}
 }

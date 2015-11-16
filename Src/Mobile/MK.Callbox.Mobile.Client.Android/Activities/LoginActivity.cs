@@ -1,10 +1,8 @@
 using System;
+using apcurium.MK.Booking.Mobile.Client;
 using Android.App;
-using Android.OS;
 using Android.Views;
 using Android.Widget;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
@@ -12,18 +10,11 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
     [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class LoginActivity : BaseBindingActivity<CallboxLoginViewModel>
     {
-        protected override void OnCreate(Bundle bundle)
-        {
-            base.OnCreate(bundle);
-
-            // Create your application here
-        }
-
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Login);
 
-            if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChangeServiceUrl)
+			if (ViewModel.Settings.CanChangeServiceUrl)
             {
                 FindViewById<Button>(Resource.Id.ServerButton).Click += delegate
                 {
@@ -40,30 +31,26 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 #endif 
         }
 
-        private void PromptServer()
+        private async void PromptServer()
         {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.SetTitle("Server Configuration");
-            alert.SetMessage("Enter Server Url");
-
-            var input = new EditText(this);
-
-            input.Text = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
-            alert.SetView(input);
-
-            alert.SetPositiveButton("Ok", (s, e) =>
+            try
             {
-                var serverUrl = input.Text;
-                TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
-	
-            });
+                var serviceUrl = await this.Services().Message.ShowPromptDialog("Server Configuration",
+                    "Enter Server Url",
+                    null,
+                    false,
+                    this.Services().Settings.ServiceUrl
+                );
 
-            alert.SetNegativeButton("Cancel", (s, e) =>
+                if (serviceUrl != null)
+                {
+                    ViewModel.SetServerUrl(serviceUrl);
+                }
+            }
+            catch (Exception ex)
             {
-
-            });
-
-            alert.Show();
+                Console.WriteLine(ex.Message);
+            }
         }
 
         protected override int ViewTitleResourceId

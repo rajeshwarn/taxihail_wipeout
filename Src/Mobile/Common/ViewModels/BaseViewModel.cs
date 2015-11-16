@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Collections.Concurrent;
+using System.Reactive;
 using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -170,7 +171,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var dictionary = parameter.ToSimplePropertyDictionary();
             dictionary = dictionary ?? new Dictionary<string,string>();
             dictionary.Add("removeFromHistory", "notUsed");
-            base.ShowViewModel<TViewModel>(dictionary);
+            ShowViewModel<TViewModel>(dictionary);
         }
 
         protected void ShowViewModelAndClearHistory<TViewModel>(object parameter = null) where TViewModel : IMvxViewModel
@@ -178,7 +179,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var dictionary = parameter.ToSimplePropertyDictionary();
             dictionary = dictionary ?? new Dictionary<string, string>();
             dictionary.Add("clearNavigationStack", "notUsed");
-            base.ShowViewModel<TViewModel>(dictionary);
+            ShowViewModel<TViewModel>(dictionary);
         }
 
 		protected void GoBackToHomeViewModel(object parameter)
@@ -187,18 +188,69 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			dictionary = dictionary ?? new Dictionary<string,string>();
 			dictionary.Add("clearHistoryExceptFirstElement", "notUsed"); // iOS only: this will not actually cause a navigation.
 			dictionary.Add("removeFromHistory", "notUsed"); //Android
-			base.ShowViewModel<HomeViewModel>(dictionary);
+			ShowViewModel<HomeViewModel>(dictionary);
 		}
 
-		protected TViewModel AddChild<TViewModel>(Func<TViewModel> builder) where TViewModel: BaseViewModel
+        protected Task InvokeOnMainThreadAsync(Action action)
+        {
+            var tcs = new TaskCompletionSource<object>();
+
+            InvokeOnMainThread(() =>
+            {
+                try
+                {
+                    action();
+                    tcs.SetResult(null);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            });
+
+            return tcs.Task;
+        }
+
+        protected Task<TResult> InvokeOnMainThreadAsync<TResult>(Func<Task<TResult>> action)
+        {
+            var tcs = new TaskCompletionSource<TResult>();
+
+            InvokeOnMainThread(async () =>
+            {
+                try
+                {
+                    var result = await action();
+                    tcs.SetResult(result);
+                }
+                catch (Exception ex)
+                {
+
+                    tcs.SetException(ex);
+                }
+            });
+
+            return tcs.Task;
+        }
+
+        protected Task InvokeOnMainThreadAsync(Func<Task> action)
+        {
+            return InvokeOnMainThreadAsync(async () =>
+            {
+                await action();
+
+                return Unit.Default;
+            });
+        }
+
+        protected TViewModel AddChild<TViewModel>(Func<TViewModel> builder) where TViewModel: BaseViewModel
 		{
 		    var viewModel = builder.Invoke();
 			viewModel.Parent = this;
 			viewModel.DisposeWith(Subscriptions);
 
-			// from amp, always set to true here
-			var forwardParentLifecycleEvents = true; 
-			_childViewModels.Add(Tuple.Create<BaseViewModel, bool>(viewModel, forwardParentLifecycleEvents));
+            // from amp, always set to true here
+            var forwardParentLifecycleEvents = true;
+            _childViewModels.Add(Tuple.Create<BaseViewModel, bool>(viewModel, forwardParentLifecycleEvents));
 
 			return viewModel;
 		}
@@ -229,7 +281,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.InitFromBundle(parameters);
 			if(parameters.Data.ContainsKey("messageId"))
 			{
-				this.MessageId = parameters.Data["messageId"];
+				MessageId = parameters.Data["messageId"];
 			}
 
 			foreach (var child in _childViewModels)
@@ -265,7 +317,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			lock (this)
 			{
 				T overflow;
-				while (_innerQueue.Count > Limit && _innerQueue.TryDequeue(out overflow)) ;
+				while (_innerQueue.Count > Limit && _innerQueue.TryDequeue(out overflow));
 			}
 		}
 

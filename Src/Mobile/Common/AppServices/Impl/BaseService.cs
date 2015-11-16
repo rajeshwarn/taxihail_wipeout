@@ -6,8 +6,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using TinyIoC;
-using System.Linq;
-using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -57,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             catch (Exception ex)
             {                    
                 Logger.LogError(ex);
-				var handled = false;
+				bool handled;
 				if (errorHandler == null)
 				{
 					handled = TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
@@ -90,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			catch (Exception ex)
 			{                    
 				Logger.LogError(ex);
-				var handled = false;
+				bool handled;
 				if (errorHandler == null)
 				{
 					handled = TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);

@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		Task<IList<Order>> GetHistoryOrders();
 
-		OrderStatusDetail[] GetActiveOrdersStatus();
+		Task<OrderStatusDetail[]> GetActiveOrdersStatus();
         
 		Task<Order> GetHistoryOrderAsync(Guid id);
 
