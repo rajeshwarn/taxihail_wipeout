@@ -7,12 +7,13 @@ using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class BaseService: IUseServiceClient
     {
-
+        
 		protected static async Task<TResult> RunWithRetryAsync<TResult>(
 			Func<Task<TResult>> action,
 			TimeSpan retryInterval,
@@ -70,7 +71,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 {
 					throw;
 				}
-
                 // this patch try to return empty typed list to avoid exceptions in program where result.FirstOrDefault calls happen
                 // bad practice to rely on reflection should be replaced in future
                 var result = CreateEmptyTypedArray<TResult>(null) as TResult;
@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        static object CreateEmptyTypedArray<T>(Type type, int counter = 0)
+	    private static object CreateEmptyTypedArray<T>(Type type, int counter = 0)
         {
             if (counter > 5)
             {
@@ -139,13 +139,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 {
                     return null;
                 }
-
+                    
                 var typeInterfaces = genericType.GetInterfaces();
 
                 if (typeInterfaces.None(t => t.Name == "IEnumerable"))
                 {
                     return null;
                 }
+
                 if (!genericType.GenericTypeArguments[0].IsInterface)
                 {
                     return Array.CreateInstance(genericType.GenericTypeArguments[0], 0);

@@ -27,10 +27,12 @@ namespace apcurium.MK.Booking.ConfigTool
 
         private void Init()
         {
-
             var androidPackage = string.IsNullOrWhiteSpace(Config.PackageAndroid) ? Config.Package : Config.PackageAndroid;
+            var blackBerryPackage = string.Format(@"BBTools\Outputs\{0}-Signed.cfg", androidPackage);
+            var bbAppId = Company.CompanySettings.FirstOrDefault(k => k.Key.Equals("BBNotificationSettings.AppId"));
+            var bbUrl = Company.CompanySettings.FirstOrDefault(k => k.Key.Equals("BBNotificationSettings.Url"));
 
-			var c = new Config[]
+            var c = new Config[]
            {
 					/**CallBox **/
                     new ConfigFile(this){ Source=@"CallBox\background_empty.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable\background_empty.png" },
@@ -72,7 +74,47 @@ namespace apcurium.MK.Booking.ConfigTool
 					
 					new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\public.keystore" },
 
+                    /* BlackBerry */
+                    new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\TaxiHail.BlackBerry\public.keystore" },
+                    new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = androidPackage  },
+                    new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = Config.ApplicationName  },
+                        
+                    /* BlackBerry notification */
+                    new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/permission[contains(@android:name,""permission.C2D_MESSAGE"")]", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = androidPackage + ".permission.C2D_MESSAGE" },
+                    new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/uses-permission[contains(@android:name,""permission.C2D_MESSAGE"")]", Attribute="android:name", SetterAtt = ( app, att )=> 
+                            {
+                                att.Value = androidPackage + ".permission.C2D_MESSAGE";
+                            }},
+                    new ConfigMultiXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application/receiver/intent-filter/category", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = androidPackage  },
 
+                    /* BlackBerry Apk Signing */
+                    new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\TaxiHail.BlackBerry.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
+                    new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\TaxiHail.BlackBerry.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
+
+                    new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\TaxiHail.BlackBerry.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyPass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass},               
+                    new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\TaxiHail.BlackBerry.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyPass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass },               
+
+
+                    new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\TaxiHail.BlackBerry.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass},               
+                    new ConfigXML(this){  Destination=@"Mobile\TaxiHail.BlackBerry\TaxiHail.BlackBerry.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass },               
+
+                    new ConfigXML(this)
+                        {  
+                            Destination = @"BBTools\Outputs\com.apcurium.MK.TaxiHailDemo-Signed.cfg", 
+                            NodeSelector = @"//android/push/appid", 
+                            SetterEle = (app, ele) => ele.InnerText = bbAppId != null ? bbAppId.Value : ""
+                        },
+
+                    new ConfigXML(this)
+                        {  
+                            Destination = @"BBTools\Outputs\com.apcurium.MK.TaxiHailDemo-Signed.cfg", 
+                            NodeSelector = @"//android/push/ppgurl", 
+                            SetterEle = (app, ele) => ele.InnerText = bbUrl != null ? bbUrl.Value : ""
+                        },
+
+                    new ConfigFile(this){ Source=@"..\..\Src\BBTools\Outputs\com.apcurium.MK.TaxiHailDemo-Signed.cfg", Destination=blackBerryPackage },
+                    new ConfigFile(this){ Source=@"bbidtoken.csk", Destination=@"BBTools\Outputs\bbidtoken.csk" },
+                   
                     /**TaxiHail **/
                     new ConfigFile(this){ Source="Settings.json", Destination=@"Mobile\Common\Settings\Settings.json" },
 
@@ -96,8 +138,8 @@ namespace apcurium.MK.Booking.ConfigTool
 	                
 
                     /** Google Maps */
-			new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.resx", NodeSelector=@"//root/data[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.GoogleMapKey  },   
-			new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/permission[contains(@android:name,""permission.MAPS_RECEIVE"")]", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = androidPackage + ".permission.MAPS_RECEIVE" },
+        			new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.resx", NodeSelector=@"//root/data[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.GoogleMapKey  },   
+        			new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/permission[contains(@android:name,""permission.MAPS_RECEIVE"")]", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = androidPackage + ".permission.MAPS_RECEIVE" },
 	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/uses-permission[contains(@android:name,""permission.MAPS_RECEIVE"")]", Attribute="android:name", SetterAtt = ( app, att )=> 
 					{
                         att.Value = androidPackage + ".permission.MAPS_RECEIVE";
@@ -156,8 +198,6 @@ namespace apcurium.MK.Booking.ConfigTool
 	                        }
 						}
 					},
-
-
 
 					/** Version 1.5 */
 				new ConfigXML(this)
@@ -272,8 +312,16 @@ namespace apcurium.MK.Booking.ConfigTool
 
 			_configs = new List<apcurium.MK.Booking.ConfigTool.Config> ();
 			_configs.AddRange (c);
-
+           
 			/***Optional files ****/
+
+            _configs.Add(new ConfigXML(this)
+                {  
+                    Destination=@"Mobile\iOS\Style\Theme.xml", 
+                    NodeSelector=@"//ThemeValues/LoginColor", 
+                    SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.LoginColor) 
+                });
+            
 
             var allResources = GetFilesFromAssetsDirectory("png");
 			foreach (var g in allResources)
@@ -339,7 +387,6 @@ namespace apcurium.MK.Booking.ConfigTool
            return listofFiles.Select(x => x.Name.Replace(x.Extension, string.Empty)).ToArray();
         }
         private AppConfigFile _config;
-
         public AppConfigFile Config
         {
             get
@@ -401,12 +448,13 @@ namespace apcurium.MK.Booking.ConfigTool
 
         public void Apply (string serviceUrl)
         {
-			_serviceUrl = serviceUrl;
+            _serviceUrl = serviceUrl;
             GetFiles();
 
             Init();
 
-			var errorsList = new List<string> ();
+
+            var errorsList = new List<string> ();
 			foreach (var config in _configs) {
 				try {
 					Console.WriteLine("Applying : " + config.ToString ());

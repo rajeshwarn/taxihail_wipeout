@@ -19,6 +19,7 @@ using CustomerPortal.Web.Services.Impl;
 using MongoRepository;
 using Newtonsoft.Json;
 using Version = CustomerPortal.Web.Entities.Version;
+using System.Globalization;
 
 #endregion
 
@@ -111,6 +112,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
                     {
                         version.ApkCallboxFileName = file.Headers.ContentDisposition.FileName;
                     }
+                    else if ((IsApkBlackBerry(file.Headers.ContentDisposition.FileName)))
+                    {
+                        version.ApkBlackBerryFilename = file.Headers.ContentDisposition.FileName;
+                    }
+                    else if ((IsBar(file.Headers.ContentDisposition.FileName)))
+                    {
+                        version.BarFilename = file.Headers.ContentDisposition.FileName;
+                    }
 
                     var path =
                         ((PackageManager) _packageManagerFactory.Invoke(company.Id, data.VersionNumber)).GetFolderPath();
@@ -146,6 +155,21 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
         private bool IsAPK(string fileName)
         {
             return fileName.EndsWith(".apk", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private bool IsApkBlackBerry(string fileName)
+        {
+            if (fileName.EndsWith("blackberry.apk", true, CultureInfo.InvariantCulture))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsBar(string fileName)
+        {
+            return fileName.EndsWith(".bar", true, CultureInfo.InvariantCulture);
         }
 
         private bool IsAppStoreIpa(string fileName)

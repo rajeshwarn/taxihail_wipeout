@@ -19,10 +19,15 @@ namespace CustomerPortal.Web.Entities
 
         [Display(Name = "iOS App Store Package File (.ipa)")]
         public string IpaAppStoreFilename { get; set; }
-
-
+        
         [Display(Name = "Android Application Package File (.apk)")]
         public string ApkFilename { get; set; }
+
+        [Display(Name = "BlackBerry Application Package File (.apk)")]
+        public string ApkBlackBerryFilename { get; set; }
+
+        [Display(Name = "BlackBerry Archive File (.bar)")]
+        public string BarFilename { get; set; }
 
         [Display(Name = "Callbox application package file (.apk)")]
         public string ApkCallboxFileName { get; set; }
