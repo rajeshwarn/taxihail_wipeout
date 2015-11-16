@@ -18,8 +18,6 @@ using apcurium.MK.Callbox.Mobile.Client;
 #else
 using apcurium.MK.Booking.Mobile.Client.Controls.Message;
 #endif
-using apcurium.MK.Common.Extensions;
-using Android.App;
 using Cirrious.CrossCore;
 using Cirrious.CrossCore.Droid.Platform;
 using Cirrious.MvvmCross.Droid.Views;
@@ -177,7 +175,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                         }
                         catch
                         {
-                            // on peut avoir une exception ici si activity est plus présente, pas grave
+                            // We might have an exception if the activity is no longer existing.
+                            // We are suppressing it since the exception is not really important.
                         }
                     }
                 }
@@ -275,7 +274,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 onResult = result => { };
             }
 
-            string[] displayList = list.Select(displayNameSelector).ToArray();
+            var displayList = list.Select(displayNameSelector).ToArray();
 
             var ownerId = Guid.NewGuid().ToString();
             var i = new Intent(Context.Activity, typeof (SelectItemDialogActivity));
