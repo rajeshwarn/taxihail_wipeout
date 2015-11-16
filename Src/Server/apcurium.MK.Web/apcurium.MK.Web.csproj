@@ -460,6 +460,7 @@
     <Content Include="localization\Payment.json" />
     <Content Include="localization\Payment-fr.json" />
     <Content Include="localization\Payment-es.json" />
+    <Content Include="localization\Aeroport Taxi.json" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
