@@ -160,6 +160,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _label.Focusable = false;
             _imageLeftView = layout.FindViewById<ImageView>(Resource.Id.leftImage);
             _imageRightArrow = layout.FindViewById<ImageView>(Resource.Id.rightArrow);
+            _imageRightArrow.Visibility = Enabled 
+                    ? ViewStates.Visible 
+                    : ViewStates.Invisible;
             if (_text != null) _label.Text = _text;
             if (_leftImage != null)
             {
