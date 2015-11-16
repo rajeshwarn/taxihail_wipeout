@@ -35,16 +35,20 @@ namespace apcurium.MK.Booking.EventHandlers
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IProjectionSet<OrderDetail> _orderDetailProjectionSet;
+        private readonly IProjectionSet<OrderStatusDetail> _orderStatusProjectionSet;
         private readonly ILogger _logger;
         private readonly IServerSettings _serverSettings;
         private readonly Resources.Resources _resources;
 
         public OrderGenerator(Func<BookingDbContext> contextFactory,
             IProjectionSet<OrderDetail> orderDetailProjectionSet,
+            IProjectionSet<OrderStatusDetail> orderStatusProjectionSet,
             ILogger logger,
             IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
+            _orderDetailProjectionSet = orderDetailProjectionSet;
+            _orderStatusProjectionSet = orderStatusProjectionSet;
             _logger = logger;
             _serverSettings = serverSettings;
             _resources = new Resources.Resources(serverSettings);
@@ -63,17 +67,18 @@ namespace apcurium.MK.Booking.EventHandlers
                 });
             }
 
-            using (var context = _contextFactory.Invoke())
+            if (_orderStatusProjectionSet.Exists(@event.SourceId))
             {
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
-                if (details != null)
+                _orderStatusProjectionSet.Update(@event.SourceId, details =>
                 {
                     details.Status = OrderStatus.Canceled;
                     details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
                     details.IBSStatusDescription = _resources.Get("OrderStatus_wosCANCELLED", clientLanguageCode);
-                    context.Save(details);
-                }
+                });
+            }
 
+            using (var context = _contextFactory.Invoke())
+            {
                 RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
@@ -89,17 +94,19 @@ namespace apcurium.MK.Booking.EventHandlers
                 });
             }
 
-            using (var context = _contextFactory.Invoke())
+            
+            if (_orderStatusProjectionSet.Exists(@event.SourceId))
             {
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
-                if (details != null)
+                _orderStatusProjectionSet.Update(@event.SourceId, details =>
                 {
                     details.Status = OrderStatus.Canceled;
                     details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
                     details.IBSStatusDescription = @event.ErrorDescription;
-                    context.Save(details);
-                }
+                });
+            }
 
+            using (var context = _contextFactory.Invoke())
+            {
                 RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
@@ -174,32 +181,29 @@ namespace apcurium.MK.Booking.EventHandlers
                 _orderDetailProjectionSet.Add(orderDetail);
             }
 
-            using (var context = _contextFactory.Invoke())
-            {
                 // Create an empty OrderStatusDetail row
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
-                if (details != null)
+            var detailsExists = _orderStatusProjectionSet.Exists(@event.SourceId);
+            if (detailsExists)
+            {
+                _logger.LogMessage("Order Status already existing for Order : " + @event.SourceId);
+            }
+            else
+            {
+                _orderStatusProjectionSet.Add(new OrderStatusDetail
                 {
-                    _logger.LogMessage("Order Status already existing for Order : " + @event.SourceId);
-                }
-                else
-                {
-                    context.Save(new OrderStatusDetail
-                    {
-                        OrderId = @event.SourceId,
-                        AccountId = @event.AccountId,
-                        IBSOrderId  = @event.IBSOrderId,
-                        Status = OrderStatus.Created,
-                        IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
-                        PickupDate = @event.PickupDate,
-                        Name = @event.Settings != null ? @event.Settings.Name : null,
-                        IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
-                        IsPrepaid = @event.IsPrepaid,
-                        CompanyKey = @event.CompanyKey,
-                        CompanyName = @event.CompanyName,
-                        Market = @event.Market
-                    });
-                }
+                    OrderId = @event.SourceId,
+                    AccountId = @event.AccountId,
+                    IBSOrderId = @event.IBSOrderId,
+                    Status = OrderStatus.Created,
+                    IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
+                    PickupDate = @event.PickupDate,
+                    Name = @event.Settings != null ? @event.Settings.Name : null,
+                    IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
+                    IsPrepaid = @event.IsPrepaid,
+                    CompanyKey = @event.CompanyKey,
+                    CompanyName = @event.CompanyName,
+                    Market = @event.Market
+                });
             }
         }
 
@@ -226,18 +230,17 @@ namespace apcurium.MK.Booking.EventHandlers
                         AutoTipPercentage = @event.AutoTipPercentage
                     });
 
-                    var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
-
-                    var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
-                    if (!paymentSettings.IsUnpairingDisabled)
+                    // Unpair only available if automatic pairing is disabled
+                    _orderStatusProjectionSet.Update(@event.SourceId, orderStatus =>
                     {
-                        // Unpair only available if automatic pairing is disabled
-                        orderStatus.UnpairingTimeOut = paymentSettings.UnpairingTimeOut == 0
-                            ? DateTime.MaxValue                                                 // Unpair will be available for the duration of the ride
-                            : @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);    // Unpair will be available until timeout reached
-                        
-                        context.Save(orderStatus);
-                    }
+                        var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
+                        if (!paymentSettings.IsUnpairingDisabled)
+                        {
+                            orderStatus.UnpairingTimeOut = paymentSettings.UnpairingTimeOut == 0
+                                    ? DateTime.MaxValue                                                 // Unpair will be available for the duration of the ride
+                                    : @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);    // Unpair will be available until timeout reached
+                        }
+                    });
                 }
             }
         }
@@ -283,17 +286,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.Status = (int)OrderStatus.Removed;
             });
 
-            using (var context = _contextFactory.Invoke())
+            if (_orderStatusProjectionSet.Exists(@event.SourceId))
             {
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
-                if (details != null)
+                _orderStatusProjectionSet.Update(@event.SourceId, details =>
                 {
                     details.Status = OrderStatus.Removed;
-                    context.Save(details);
-                }
-
-                context.SaveChanges();
+                });
             }
+
         }
 
         private bool GetFareAvailable(double? fare)
@@ -303,21 +303,22 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderStatusChanged @event)
         {
-            using (var context = _contextFactory.Invoke())
+            
+            var fareAvailable = GetFareAvailable(@event.Fare);
+
+            var detailsExists = _orderStatusProjectionSet.Exists(@event.SourceId);
+            if (!detailsExists)
             {
-                var fareAvailable = GetFareAvailable(@event.Fare);
+                @event.Status.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
 
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
-                if (details == null)
+                @event.Status.FareAvailable = fareAvailable;
+                _orderStatusProjectionSet.Add(@event.Status);
+            }
+            else
+            {
+                _orderStatusProjectionSet.Update(@event.SourceId, details =>
                 {
-                    @event.Status.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
-
-                    @event.Status.FareAvailable = fareAvailable;
-                    context.Set<OrderStatusDetail>().Add(@event.Status);
-                }
-                else
-                {
-                    if (@event.Status != null) 
+                    if (@event.Status != null)
                     {
                         details.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
 
@@ -344,50 +345,50 @@ namespace apcurium.MK.Booking.EventHandlers
                     }
 
                     details.FareAvailable = fareAvailable;
-                    context.Save(details);
-                }
-
-                if (_orderDetailProjectionSet.Exists(@event.SourceId))
+                });
+            }
+            
+            if (_orderDetailProjectionSet.Exists(@event.SourceId))
+            {
+                _orderDetailProjectionSet.Update(@event.SourceId, order =>
                 {
-                    _orderDetailProjectionSet.Update(@event.SourceId, order =>
+                    // possible only with migration from OrderCompleted or OrderFareUpdated
+                    if (@event.Status == null)
                     {
-                        // possible only with migration from OrderCompleted or OrderFareUpdated
-                        if (@event.Status == null)
-                        {
-                            if (@event.IsCompleted)
-                            {
-                                order.Status = (int)OrderStatus.Completed;
-                            }
-                        }
-                        else
-                        {
-                            order.Status = (int)@event.Status.Status;
-                        }
-
                         if (@event.IsCompleted)
                         {
-                            order.DropOffDate = @event.EventDate;
+                            order.Status = (int)OrderStatus.Completed;
                         }
-
-                        order.Fare = @event.Fare;
-                        order.Tip = @event.Tip;
-                        order.Toll = @event.Toll;
-                        order.Tax = @event.Tax;
-                        order.Surcharge = @event.Surcharge;
-
-                    });
+                    }
+                    else
+                    {
+                        order.Status = (int)@event.Status.Status;
+                    }
 
                     if (@event.IsCompleted)
+                    {
+                        order.DropOffDate = @event.EventDate;
+                    }
+
+                    order.Fare = @event.Fare;
+                    order.Tip = @event.Tip;
+                    order.Toll = @event.Toll;
+                    order.Tax = @event.Tax;
+                    order.Surcharge = @event.Surcharge;
+
+                });
+
+                if (@event.IsCompleted)
+                {
+                    using (var context = _contextFactory.Invoke())
                     {
                         RemoveTemporaryPaymentInfo(context, @event.SourceId);
                     }
                 }
-                else
-                {
-                    _logger.LogMessage("Order Status without existing Order : " + @event.SourceId);
-                }
-
-                context.SaveChanges();
+            }
+            else
+            {
+                _logger.LogMessage("Order Status without existing Order : " + @event.SourceId);
             }
         }
 
@@ -427,15 +428,13 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderPreparedForNextDispatch @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _orderStatusProjectionSet.Update(@event.SourceId, details =>
             {
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 details.Status = OrderStatus.TimedOut;
                 details.NextDispatchCompanyName = @event.DispatchCompanyName;
                 details.NextDispatchCompanyKey = @event.DispatchCompanyKey;
+            });
 
-                context.Save(details);
-            }
         }
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
@@ -451,10 +450,9 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.CompanyName = @event.CompanyName;
                 order.Market = @event.Market;
             });
-
-            using (var context = _contextFactory.Invoke())
+            
+            _orderStatusProjectionSet.Update(@event.SourceId, details => 
             {
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 details.Status = OrderStatus.Created;
                 details.IBSStatusId = null;             //set it to null to trigger an update in OrderStatusUpdater
                 details.IBSStatusDescription = string.Format(_resources.Get("OrderStatus_wosWAITINGRoaming", clientLanguageCode), @event.CompanyName);
@@ -465,25 +463,23 @@ namespace apcurium.MK.Booking.EventHandlers
                 details.NextDispatchCompanyKey = null;
                 details.NextDispatchCompanyName = null;
                 details.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(details, @event.EventDate);
+            });
 
-                context.SaveChanges();
-
+            using (var context = _contextFactory.Invoke())
+            {
                 RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
 
         public void Handle(DispatchCompanySwitchIgnored @event)
         {
-            using (var context = _contextFactory.Invoke())
+            _orderStatusProjectionSet.Update(@event.SourceId, details =>
             {
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 details.IgnoreDispatchCompanySwitch = true;
                 details.Status = OrderStatus.Created;
                 details.NextDispatchCompanyKey = null;
                 details.NextDispatchCompanyName = null;
-
-                context.Save(details);
-            }
+            });
         }
 
         private DateTime? GetNetworkPairingTimeoutIfNecessary(OrderStatusDetail details, DateTime eventDate)
@@ -511,13 +507,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.IBSOrderId = @event.IBSOrderId;
             });
 
-            using (var context = _contextFactory.Invoke())
+            _orderStatusProjectionSet.Update(@event.SourceId, orderStatus =>
             {
-                var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
                 orderStatus.IBSOrderId = @event.IBSOrderId;
-                
-                context.SaveChanges();
-            }
+            });
         }
 
         public void Handle(OrderManuallyPairedForRideLinq @event)
@@ -537,33 +530,33 @@ namespace apcurium.MK.Booking.EventHandlers
                 ClientVersion = @event.ClientVersion,
                 IsManualRideLinq = true
             });
+            
+            // Create an empty OrderStatusDetail row
+            var detailsExists = _orderStatusProjectionSet.Exists(@event.SourceId);
+            if (detailsExists)
+            {
+                _logger.LogMessage("Order Status already existing for Order : " + @event.SourceId);
+            }
+            else
+            {
+                _orderStatusProjectionSet.Add(new OrderStatusDetail
+                {
+                    OrderId = @event.SourceId,
+                    AccountId = @event.AccountId,
+                    Status = OrderStatus.Created,
+                    IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
+                    PickupDate = @event.PairingDate,
+                    IsManualRideLinq = true,
+                    VehicleNumber = @event.Medallion,
+                    DriverInfos = new DriverInfos
+                    {
+                        DriverId = @event.DriverId.ToString()
+                    }
+                });
+            }
 
             using (var context = _contextFactory.Invoke())
             {
-                // Create an empty OrderStatusDetail row
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
-                if (details != null)
-                {
-                    _logger.LogMessage("Order Status already existing for Order : " + @event.SourceId);
-                }
-                else
-                {
-                    context.Save(new OrderStatusDetail
-                    {
-                        OrderId = @event.SourceId,
-                        AccountId = @event.AccountId,
-                        Status = OrderStatus.Created,
-                        IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
-                        PickupDate = @event.PairingDate,
-                        IsManualRideLinq = true,
-                        VehicleNumber = @event.Medallion,
-                        DriverInfos = new DriverInfos
-                        {
-                            DriverId = @event.DriverId.ToString()
-                        }
-                    });
-                }
-
                 var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
                 if (rideLinqDetails != null)
                 {
@@ -611,15 +604,16 @@ namespace apcurium.MK.Booking.EventHandlers
                 });
             }
 
-            using (var context = _contextFactory.Invoke())
+            if(_orderStatusProjectionSet.Exists(@event.SourceId))
             {
-                var orderStatusDetails = context.Find<OrderStatusDetail>(@event.SourceId);
-                if (orderStatusDetails != null)
+                _orderStatusProjectionSet.Update(@event.SourceId, orderStatusDetails =>
                 {
                     orderStatusDetails.Status = OrderStatus.Canceled;
-                    context.Save(orderStatusDetails);
-                }
+                });
+            }
 
+            using (var context = _contextFactory.Invoke())
+            {
                 var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
                 if (rideLinqDetails != null)
                 {
@@ -636,7 +630,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             _logger.LogMessage("Trip info updated event received for order {0} (TripId {1}; Pairing token {2}", @event.SourceId, @event.TripId, @event.PairingToken);
  
-            if(_orderDetailProjectionSet.Exists(@event.SourceId))
+            if (_orderDetailProjectionSet.Exists(@event.SourceId))
             {
                 _orderDetailProjectionSet.Update(@event.SourceId, order =>
                 {
@@ -657,10 +651,9 @@ namespace apcurium.MK.Booking.EventHandlers
                 });
             }
 
-            using (var context = _contextFactory.Invoke())
+            if (_orderStatusProjectionSet.Exists(@event.SourceId))
             {
-                var orderStatusDetails = context.Find<OrderStatusDetail>(@event.SourceId);
-                if (orderStatusDetails != null)
+                _orderStatusProjectionSet.Update(@event.SourceId, orderStatusDetails =>
                 {
                     if (@event.EndTime.HasValue)
                     {
@@ -670,10 +663,11 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         orderStatusDetails.Status = OrderStatus.TimedOut;
                     }
+                });
+            }
 
-                    context.Save(orderStatusDetails);
-                }
-
+            using (var context = _contextFactory.Invoke())
+            {
                 var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
                 if (rideLinqDetails == null)
                 {
@@ -724,20 +718,18 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OriginalEtaLogged @event)
         {
-            using (var context = _contextFactory.Invoke())
+            if(!_orderStatusProjectionSet.Exists(@event.SourceId))
             {
-                var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
-                if (orderStatus == null)
-                {
-                    return;
-                }
+                return;
+            }
 
+            _orderStatusProjectionSet.Update(@event.SourceId, orderStatus =>
+            {
                 if (!orderStatus.OriginalEta.HasValue)
                 {
                     orderStatus.OriginalEta = @event.OriginalEta;
-                    context.Save(orderStatus);
                 }
-            }
+            });
         }
 
         public void Handle(OrderNotificationDetailUpdated @event)

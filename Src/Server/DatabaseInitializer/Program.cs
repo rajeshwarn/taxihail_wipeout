@@ -115,8 +115,13 @@ namespace DatabaseInitializer
                 module = new Module();
 
                 var accountDetailProjectionSet = new MemoryProjectionSet<AccountDetail>(a => a.Id);
+                var orderDetailProjectionSet = new MemoryProjectionSet<OrderDetail>(a => a.Id);
+                var orderStatusProjectionSet = new MemoryProjectionSet<OrderStatusDetail>(a => a.OrderId);
+
                 var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
                 container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
+                container.RegisterInstance<IProjectionSet<OrderDetail>>(orderDetailProjectionSet);
+                container.RegisterInstance<IProjectionSet<OrderStatusDetail>>(orderStatusProjectionSet);
                 container.RegisterInstance<AppSettingsProjection>(appSettingsProjection);
                 container.RegisterType<IProjection<ServerPaymentSettings>, EntityProjection<ServerPaymentSettings>>(new ContainerControlledLifetimeManager(),
                     new InjectionConstructor(typeof(Func<ConfigurationDbContext>), new object[] { AppConstants.CompanyId }));
@@ -125,7 +130,7 @@ namespace DatabaseInitializer
 
                 if (IsUpdate)
                 {
-                    //UpdateSchema(param);
+                    UpdateSchema(param);
 
                     //if (param.ReuseTemporaryDb)
                     //{
@@ -137,16 +142,20 @@ namespace DatabaseInitializer
 
                     var replayService = container.Resolve<EventsPlayBackService>();
                     replayService.Register(container.Resolve<AccountDetailsGenerator>());
+                    replayService.Register(container.Resolve<OrderGenerator>());
+                    replayService.Register(container.Resolve<CreditCardPaymentDetailsGenerator>());
                     replayService.Register(container.Resolve<AppSettingsGenerator>());
                     replayService.Register(container.Resolve<PaymentSettingGenerator>());
+                    
                     replayService.ReplayAllEvents();
 
-                    var accountDetailEntityProjectionSet = new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>());
                     var stopwatch = new Stopwatch();
                     stopwatch.Start();
                     Console.WriteLine("Dump projection to SQL database");
 
-                    accountDetailEntityProjectionSet.AddRange(accountDetailProjectionSet);
+                    new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(accountDetailProjectionSet);
+                    new EntityProjectionSet<OrderDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderDetailProjectionSet);
+                    new EntityProjectionSet<OrderStatusDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderStatusProjectionSet);
                     //container.Resolve<AppSettingsEntityProjection>().Save(appSettingsProjection.Load());
                     Console.WriteLine("End : " + stopwatch.Elapsed);
 
