@@ -125,14 +125,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					Id = status.OrderId
 				}));
 
-				if (!Orders.Any() && hasAnOrderToCreate)
+				if (Orders.None() && !hasAnOrderToCreate)
 				{
 					Close();
 
                     return;
 				}
 
-				if (Orders.None(x => _bookingService.IsCallboxStatusCompleted(x.OrderStatus.IBSStatusId)) && NoMoreTaxiWaiting != null)
+				if (Orders.Any(x => _bookingService.IsCallboxStatusCompleted(x.OrderStatus.IBSStatusId)) && NoMoreTaxiWaiting != null)
 				{
 					NoMoreTaxiWaiting(this, new EventArgs());
 
