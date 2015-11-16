@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		            result.Append(version.Length > 0 ? version : "1.0");
 
 		            // add the model for the release build
-		            if ("REL".Equals(Build.VERSION.Codename))
+		            if (Build.VERSION.Codename == "REL")
 		            {
 			            var model = Build.Model;
 			            if (model.Length > 0)
