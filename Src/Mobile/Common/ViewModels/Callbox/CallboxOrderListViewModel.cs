@@ -148,7 +148,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					_orderNotified.Add(order.Id);
 					if (OrderCompleted != null)
 					{
-						// TODO: validate this
 						OrderCompleted(this, new EventArgs());
 					}
 				}

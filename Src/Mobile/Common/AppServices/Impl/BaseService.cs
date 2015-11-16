@@ -7,7 +7,6 @@ using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

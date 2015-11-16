@@ -12,7 +12,9 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Messages;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Common.Extensions;
 #if CALLBOX
+using Android.App;
 using apcurium.MK.Callbox.Mobile.Client.Helpers;
 using apcurium.MK.Callbox.Mobile.Client;
 #else
