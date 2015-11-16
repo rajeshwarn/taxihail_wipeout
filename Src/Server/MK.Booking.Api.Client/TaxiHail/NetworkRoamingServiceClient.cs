@@ -27,6 +27,19 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.GetAsync<string>("/roaming/market" + queryString);
         }
 
+        public Task<MarketSettings> GetCompanyMarketSettings(double latitude, double longitude)
+        {
+            var @params = new Dictionary<string, string>
+                {
+                    {"latitude", latitude.ToString(CultureInfo.InvariantCulture) },
+                    {"longitude", longitude.ToString(CultureInfo.InvariantCulture) }
+                };
+
+            var queryString = BuildQueryString(@params);
+
+            return Client.GetAsync<MarketSettings>("/roaming/marketsettings" + queryString);
+        }
+
         public Task<List<NetworkFleet>> GetNetworkFleets()
         {
             return Client.GetAsync<List<NetworkFleet>>("/network/networkfleets");

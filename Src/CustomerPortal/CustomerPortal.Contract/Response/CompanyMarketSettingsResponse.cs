@@ -11,6 +11,8 @@ namespace CustomerPortal.Contract.Response
 
         public string Market { get; set; }
 
+        public bool EnableDriverBonus { get; set; }
+
         public DispatcherSettings DispatcherSettings { get; set; }
     }
 }

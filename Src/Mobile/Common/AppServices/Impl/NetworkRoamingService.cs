@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			try
 			{
-				var result = UseServiceClientAsync<NetworkRoamingServiceClient, string>(service => service.GetHashedCompanyMarket(latitude, longitude)).Result;
+				var result = UseServiceClientAsync<NetworkRoamingServiceClient, string>(service => service.GetCompanyMarketSettings(latitude, longitude)).Result;
 				tcs.TrySetResult(result);
 			}
 			catch
