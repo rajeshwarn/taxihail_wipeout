@@ -9,6 +9,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
+using apcurium.MK.Booking.Projections;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -20,9 +21,12 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<RefundedOrderUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IProjectionSet<OrderDetail> _orderDetailProjectionSet;
         private readonly Resources.Resources _resources;
 
-        public CreditCardPaymentDetailsGenerator(Func<BookingDbContext> contextFactory, IServerSettings serverSettings)
+        public CreditCardPaymentDetailsGenerator(Func<BookingDbContext> contextFactory,
+            IProjectionSet<OrderDetail> orderDetailProjectionSet,
+            IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
             _resources = new Resources.Resources(serverSettings);
@@ -60,49 +64,53 @@ namespace apcurium.MK.Booking.EventHandlers
                     payment.CardToken = @event.NewCardToken;
                 }
 
-                var order = context.Find<OrderDetail>(payment.OrderId);
+                var orderExists = _orderDetailProjectionSet.Exists(payment.OrderId);
 
                 // Prevents NullReferenceException caused with web prepayed while running database initializer.
-                if (order == null && @event.IsForPrepaidOrder)
+                if (!orderExists && @event.IsForPrepaidOrder)
                 {
-                    order = new OrderDetail
+                    _orderDetailProjectionSet.Add(new OrderDetail
                     {
                         Id = payment.OrderId,
                         //Following values will be set to the correct date and time when that event is played.
                         PickupDate = @event.EventDate,
                         CreatedDate = @event.EventDate
-                    };
-
-                    context.Set<OrderDetail>().Add(order);
+                    });
                 }
 
+                string clientLanguageCode = "en";
+                _orderDetailProjectionSet.Update(payment.OrderId, order =>
+                {
+                    clientLanguageCode = order.ClientLanguageCode;
 
-                if (!order.Fare.HasValue || order.Fare == 0)
-                {
-                    order.Fare = Convert.ToDouble(@event.Meter);
-                }
-                if (!order.Tip.HasValue || order.Tip == 0)
-                {
-                    order.Tip = Convert.ToDouble(@event.Tip);
-                }
-                if (!order.Tax.HasValue || order.Tax == 0)
-                {
-                    order.Tax = Convert.ToDouble(@event.Tax);
-                }
-                if (!order.Toll.HasValue || order.Toll == 0)
-                {
-                    order.Toll = Convert.ToDouble(@event.Toll);
-                }
-                if (!order.Surcharge.HasValue || order.Surcharge == 0)
-                {
-                    order.Surcharge = Convert.ToDouble(@event.Surcharge);
-                }
+                    if (!order.Fare.HasValue || order.Fare == 0)
+                    {
+                        order.Fare = Convert.ToDouble(@event.Meter);
+                    }
+                    if (!order.Tip.HasValue || order.Tip == 0)
+                    {
+                        order.Tip = Convert.ToDouble(@event.Tip);
+                    }
+                    if (!order.Tax.HasValue || order.Tax == 0)
+                    {
+                        order.Tax = Convert.ToDouble(@event.Tax);
+                    }
+                    if (!order.Toll.HasValue || order.Toll == 0)
+                    {
+                        order.Toll = Convert.ToDouble(@event.Toll);
+                    }
+                    if (!order.Surcharge.HasValue || order.Surcharge == 0)
+                    {
+                        order.Surcharge = Convert.ToDouble(@event.Surcharge);
+                    }
+                }); 
+               
 
                 if (!@event.IsForPrepaidOrder)
                 {
                     var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);
                     orderStatus.IBSStatusId = VehicleStatuses.Common.Done;
-                    orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDONE", order.ClientLanguageCode);
+                    orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDONE", clientLanguageCode);
                 }
 
                 context.SaveChanges();

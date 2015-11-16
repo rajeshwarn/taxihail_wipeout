@@ -96,5 +96,10 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             throw new NotImplementedException();
         }
+
+        public bool Exists(string sourceId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

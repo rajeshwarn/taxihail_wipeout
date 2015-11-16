@@ -36,6 +36,11 @@ namespace apcurium.MK.Booking.Projections
             }
         }
 
+        public bool Exists(Guid sourceId)
+        {
+            return _cache.ContainsKey(sourceId);
+        }
+
         public void Update(Guid identifier, Action<TProjection> action)
         {
             TProjection item;

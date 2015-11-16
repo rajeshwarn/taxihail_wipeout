@@ -46,6 +46,14 @@ namespace apcurium.MK.Booking.Projections
             }
         }
 
+        public bool Exists(Guid sourceId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Set<TProjection>().Find(sourceId) != null;
+            }
+        }
+
         public void Update(Guid identifier, Action<TProjection> action)
         {
             using (var context = _contextFactory.Invoke())
