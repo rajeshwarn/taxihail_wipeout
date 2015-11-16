@@ -91,9 +91,13 @@ namespace MK.DeploymentService.Mobile
 					if (Directory.Exists (releaseAndroidDir))
 						Directory.Delete (releaseAndroidDir, true);
 
-                    var releaseBlackBerryDir = Path.Combine (sourceDirectory, "Src", "Mobile", "TaxiHail.BlackBerry", "bin", "Release");
-                    if (Directory.Exists (releaseBlackBerryDir))
-                        Directory.Delete (releaseBlackBerryDir, true);
+                    var releaseBlackBerryApkDir = Path.Combine (sourceDirectory, "Src", "Mobile", "TaxiHail.BlackBerry", "bin", "Release");
+                    if (Directory.Exists (releaseBlackBerryApkDir))
+                        Directory.Delete (releaseBlackBerryApkDir, true);
+
+                    var releaseBlackBerryBarDir = Path.Combine (sourceDirectory, "Src", "BBTools", "Outputs");
+                    if (Directory.Exists (releaseBlackBerryBarDir))
+                        Directory.Delete (releaseBlackBerryBarDir, true);
 
 					var releaseCallboxAndroidDir = Path.Combine (sourceDirectory, "Src", "Mobile", "MK.Callbox.Mobile.Client.Android", "bin", "Release");
 					if (Directory.Exists (releaseCallboxAndroidDir))
@@ -117,7 +121,7 @@ namespace MK.DeploymentService.Mobile
 					BuildMobile (sourceDirectory);
 
 					UpdateJob ("Deploy");
-                    var deploymentInfo = Deploy (sourceDirectory, _job.Company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir, releaseBlackBerryDir);
+                    var deploymentInfo = Deploy (sourceDirectory, _job.Company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir, releaseBlackBerryApkDir, releaseBlackBerryBarDir);
 
 					CreateNewVersionInCustomerPortal(deploymentInfo);
 					UpdateJob ("Done", JobStatus.Success);
@@ -212,10 +216,18 @@ namespace MK.DeploymentService.Mobile
 			return null;
 		}
 
-        private string GetBlackBerryFile(string apkPath)
+        private string GetBlackBerryApkFile(string apkPath)
         {
             if (Directory.Exists (apkPath)) {
                 return Directory.EnumerateFiles (apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault ();
+            }
+            return null;
+        }
+
+        private string GetBlackBerryBarFile(string barPath)
+        {
+            if (Directory.Exists (barPath)) {
+                return Directory.EnumerateFiles (barPath, "*.bar", SearchOption.TopDirectoryOnly).FirstOrDefault ();
             }
             return null;
         }
@@ -238,7 +250,7 @@ namespace MK.DeploymentService.Mobile
 
 		
 
-        DeployInfo Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox, string apkBlackBerryPath)
+        DeployInfo Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox, string apkBlackBerryPath, string barPath)
 		{
 
 			var result = new DeployInfo ();
@@ -272,7 +284,8 @@ namespace MK.DeploymentService.Mobile
 
                 if (_job.BlackBerry) {
                     _logger.DebugFormat ("Copying BlackBerry Apk");
-                    var apkBlackBerryFile = GetBlackBerryFile(apkBlackBerryPath);
+                    var apkBlackBerryFile = GetBlackBerryApkFile(apkBlackBerryPath);
+                    var barFile = GetBlackBerryBarFile(barPath);
 
                     if (apkBlackBerryFile != null) {
                         var fileInfo = new FileInfo (apkBlackBerryFile); 
@@ -282,10 +295,23 @@ namespace MK.DeploymentService.Mobile
                             File.Delete (targetDir);
                         File.Copy (apkBlackBerryFile, targetDir);
 
-                        result.AndroidApkFileName = fileInfo.Name;
+                        result.BlackBerryApkFileName = fileInfo.Name;
 
                     } else {
                         throw new Exception ("Can't find the APK BlackBerry file in the release dir");
+                    }
+
+                    if (barPath != null) {
+                        var fileInfo = new FileInfo (barFile); 
+                        var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
+                        if (File.Exists (targetDir))
+                            File.Delete (targetDir);
+                        File.Copy (barFile, targetDir);
+
+                        result.BlackBerryBarFileName= fileInfo.Name;
+
+                    } else {
+                        throw new Exception ("Can't find the BAR BlackBerry file in the release dir");
                     }
                 }
 
@@ -527,7 +553,7 @@ namespace MK.DeploymentService.Mobile
                 _logger.DebugFormat ("Copying BlackBerry Apk For Packaging .Bar");
                 var releaseBlackBerryDir = Path.Combine (sourceDirectory, "Src", "Mobile", "TaxiHail.BlackBerry", "bin", "Release");
                 var bbToolsPath = Path.Combine (sourceDirectory, "Src", "BBTools");
-                var apkBlackBerryFile = GetBlackBerryFile(releaseBlackBerryDir);
+                var apkBlackBerryFile = GetBlackBerryApkFile(releaseBlackBerryDir);
 
                 if (apkBlackBerryFile != null) {
                     var fileInfo = new FileInfo (apkBlackBerryFile); 

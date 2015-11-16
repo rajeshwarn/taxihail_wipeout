@@ -58,6 +58,20 @@ namespace DeploymentServiceTools
 					multipartFormDataContent.Add(apkContent);
 				}
 
+                if (deployment.BlackBerryApkFileExist) {
+                    var apkBlackBerryContent = new StreamContent(deployment.GetBlackBerryApkStream());
+                    apkBlackBerryContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    apkBlackBerryContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.BlackBerryApkFileName };
+                    multipartFormDataContent.Add(apkBlackBerryContent);
+                }
+
+                if (deployment.BlackBerryBarFileExist) {
+                    var barContent = new StreamContent(deployment.GetBlackBerryBarStream());
+                    barContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    barContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.BlackBerryBarFileName };
+                    multipartFormDataContent.Add(barContent);
+                }
+
                 using (var client = CustomerPortalHttpClientProvider.Get())
                 {
                     var result = client.PostAsync("admin/version", multipartFormDataContent).Result;
