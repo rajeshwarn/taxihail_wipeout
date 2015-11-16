@@ -152,7 +152,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					}
 				}
 			}
-			catch (WebServiceException e)
+			catch (Exception e)
 			{
 				Logger.LogError(e);
 			}
