@@ -20,7 +20,9 @@ namespace CustomerPortal.Web.Entities.Network
 
         public DispatcherSettings DispatcherSettings { get; set; }
 
-        public List<Vehicle> Vehicles { get; set; } 
+        public List<Vehicle> Vehicles { get; set; }
+
+        public bool EnableDriverBonus { get; set; }
     }
 
     public class Vehicle

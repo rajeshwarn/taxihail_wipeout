@@ -43,7 +43,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             {
                 Market = marketModel.Market,
                 DispatcherSettings = market.DispatcherSettings,
-                Vehicles = market.Vehicles
+                Vehicles = market.Vehicles,
+                EnableDriverBonus = market.EnableDriverBonus
             });
         }
 
@@ -217,6 +218,22 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
 
             return RedirectToAction("MarketIndex", new MarketModel { Market = market });
+        }
+
+        public ActionResult SaveSettings(string market, bool enableDriverBonus)
+        {
+            try
+            {
+                var marketToEdit = Repository.GetMarket(market);
+                marketToEdit.EnableDriverBonus = enableDriverBonus;
+                Repository.Update(marketToEdit);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "An error occured. Unable to delete the vehicle.";
+            }
+
+            return RedirectToAction("Index");
         }
 
         private int GenerateNextSequentialNetworkVehicleId()

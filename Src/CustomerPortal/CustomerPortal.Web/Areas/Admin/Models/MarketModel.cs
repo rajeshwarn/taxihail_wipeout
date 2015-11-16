@@ -14,6 +14,9 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         public DispatcherSettings DispatcherSettings { get; set; }
 
         public IEnumerable<Vehicle> Vehicles { get; set; }
+
+        [Display(Name = "Driver Bonus Enabled")]
+        public bool EnableDriverBonus { get; set; }
     }
 
     public class VehicleModel : Vehicle
