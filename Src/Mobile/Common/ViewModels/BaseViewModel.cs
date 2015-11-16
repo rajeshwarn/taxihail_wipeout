@@ -248,8 +248,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			viewModel.Parent = this;
 			viewModel.DisposeWith(Subscriptions);
 
-			// from amp, always set to true here
-			_childViewModels.Add(Tuple.Create<BaseViewModel, bool>(viewModel, true));
+            // from amp, always set to true here
+            var forwardParentLifecycleEvents = true;
+            _childViewModels.Add(Tuple.Create<BaseViewModel, bool>(viewModel, forwardParentLifecycleEvents));
 
 			return viewModel;
 		}
