@@ -4,9 +4,19 @@ namespace apcurium.Tools.Localization.Android
 {
     public static class AndroidLanguageFileManager
     {
-        public static void CreateResourceFileIfNecessary(string language)
+		public static void CreateAndroidClientResourceFileIfNecessary(string language)
+		{
+			CreateResourceFileIfNecessary(language);
+		}
+
+		public static void CreateCallboxClientResourceFileIfNecessary(string language)
+		{
+			CreateResourceFileIfNecessary (language, "MK.Callbox.Mobile.Client.Android");
+		}
+
+		private static void CreateResourceFileIfNecessary(string language, string projectFolder = "Android")
         {
-            var resourcesBasePath = Path.GetFullPath(Path.Combine("..", "Mobile", "Android", "Resources"));
+			var resourcesBasePath = Path.GetFullPath(Path.Combine("..", "Mobile", projectFolder, "Resources"));
             var taxiHailProjectPath = Path.GetFullPath(Path.Combine("..", "Mobile", "Android", "TaxiHail.csproj"));
             var englishFolderAndFileName = Path.Combine("values", "String.xml");
 

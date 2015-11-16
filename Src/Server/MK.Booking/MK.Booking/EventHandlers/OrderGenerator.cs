@@ -621,6 +621,11 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.Status = (int) OrderStatus.Completed;
                         order.DropOffDate = @event.EndTime;
                     }
+                    else if (@event.PairingError.HasValueTrimmed())
+                    {
+                        order.Status = (int) OrderStatus.TimedOut;
+                    }
+
                     order.Fare = @event.Fare;
                     order.Tax = @event.Tax;
                     order.Toll = @event.Toll;
@@ -634,6 +639,10 @@ namespace apcurium.MK.Booking.EventHandlers
                     if (@event.EndTime.HasValue)
                     {
                         orderStatusDetails.Status = OrderStatus.Completed;
+                    }
+                    else if (@event.PairingError.HasValueTrimmed())
+                    {
+                        orderStatusDetails.Status = OrderStatus.TimedOut;
                     }
 
                     context.Save(orderStatusDetails);

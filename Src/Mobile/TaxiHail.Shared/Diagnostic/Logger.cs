@@ -9,6 +9,7 @@ using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using Environment = Android.OS.Environment;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
@@ -58,12 +59,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 
 		protected override string GetMessageBase()
 		{
-			var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
-			var account = TinyIoCContainer.Current.CanResolve<IAccountService>()
-				? TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount : null;
+            var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
 
-			return " by : " + (account == null ? @" N\A " : account.Email)
+		    var account = GetAccount();
+
+            return " by : " + (account == null ? @" N\A " : account.Email)
 				+ string.Format("with version {0} - company {1} - platform {2}", packageInfo.Version, GetCompanyName(), packageInfo.PlatformDetails);
 		}
+
+        private static Account GetAccount()
+        {
+            IAccountService accountService;
+
+            return TinyIoCContainer.Current.TryResolve(out accountService) 
+                ? accountService.CurrentAccount 
+                : null;
+        }
+
    }
 }

@@ -1,0 +1,1 @@
+java -Djava.awt.headless=true -Xmx512M -cp "lib/AndroidTools.jar" net.rim.tools.adbproxy.ADBProxy 169.254.0.1 -password 0000

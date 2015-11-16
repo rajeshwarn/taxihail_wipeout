@@ -7,11 +7,20 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Activities;
-using apcurium.MK.Booking.Mobile.Client.Controls.Message;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Messages;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Common.Extensions;
+#if CALLBOX
+using Android.App;
+using apcurium.MK.Callbox.Mobile.Client.Helpers;
+using apcurium.MK.Callbox.Mobile.Client;
+#else
+using apcurium.MK.Booking.Mobile.Client.Controls.Message;
+#endif
+using Cirrious.CrossCore;
 using Cirrious.CrossCore.Droid.Platform;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
@@ -133,10 +142,53 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             return tcs.Task;
         }
 
-        private object ProgressLock = new object();
+
+#if CALLBOX
+        private readonly Stack<ProgressDialog> _progressDialogs = new Stack<ProgressDialog>();
         public void ShowProgress(bool show)
         {
-            lock (ProgressLock)
+            var dispatcher = Mvx.Resolve<IMvxViewDispatcher>();
+
+            dispatcher.RequestMainThreadAction(() => {
+                var topActivity = Mvx.Resolve<IMvxAndroidCurrentTopActivity>();
+
+                if (show)
+                {
+                    var progress = new ProgressDialog(topActivity.Activity);
+                    _progressDialogs.Push(progress);
+                    progress.SetTitle(string.Empty);
+                    progress.SetMessage(topActivity.Activity.GetString(Resource.String.LoadingMessage));
+                    progress.SetCanceledOnTouchOutside(false);
+                    progress.Show();
+
+                }
+                else
+                {
+                    if (_progressDialogs.None())
+                    {
+                        return;
+                    }
+                    var progressPrevious = _progressDialogs.Pop();
+                    if (progressPrevious != null && progressPrevious.IsShowing)
+                    {
+                        try
+                        {
+                            progressPrevious.Dismiss();
+                        }
+                        catch
+                        {
+                            // We might have an exception if the activity is no longer existing.
+                            // We are suppressing it since the exception is not really important.
+                        }
+                    }
+                }
+            });
+        }
+#else
+        private readonly object _progressLock = new object();
+        public void ShowProgress(bool show)
+        {
+            lock (_progressLock)
             {
                 if (show)
                 {            
@@ -148,10 +200,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 }
             }
         }
+#endif
+
 
         public void ShowProgressNonModal(bool show)
         {
-            var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>();
+            var topActivity = Mvx.Resolve<IMvxAndroidCurrentTopActivity>();
             var rootView = topActivity.Activity.Window.DecorView.RootView as ViewGroup;
 
             if (rootView != null)
@@ -222,7 +276,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 onResult = result => { };
             }
 
-            string[] displayList = list.Select(displayNameSelector).ToArray();
+            var displayList = list.Select(displayNameSelector).ToArray();
 
             var ownerId = Guid.NewGuid().ToString();
             var i = new Intent(Context.Activity, typeof (SelectItemDialogActivity));
@@ -252,25 +306,33 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             dispatcher.RequestMainThreadAction(async () => 
                 {
-                    var result = await AlertDialogHelper.ShowPromptDialog(
-                        Context.Activity,
-                        title,
-                        message,
-                        () => 
-                        {
-                            tcs.TrySetResult (null);
-                            if(cancelAction != null)
-                            {
-                                cancelAction();
-                            }
-                        },
-                        isNumericOnly,
-                        inputText);
-                    
-                    if(!string.IsNullOrEmpty(result))
+                    try
                     {
-                        tcs.TrySetResult (result);
+                        var result = await AlertDialogHelper.ShowPromptDialog(
+                            Context.Activity,
+                            title,
+                            message,
+                            () =>
+                            {
+                                tcs.TrySetResult(null);
+                                if (cancelAction != null)
+                                {
+                                    cancelAction();
+                                }
+                            },
+                            isNumericOnly,
+                            inputText);
+
+                        if (result != null)
+                        {
+                            tcs.TrySetResult(result);
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(ex);
+                    }
+                    
                 });
 
 			return tcs.Task;
