@@ -1,11 +1,9 @@
 ﻿using System;
 using CustomerPortal.Web.Entities;
 using System.Net.Http;
-using System.Net;
 using System.Net.Http.Formatting;
 using log4net;
 using System.Configuration;
-using System.Net.Http.Headers;
 using MK.DeploymentService.Mobile.Helper;
 
 namespace MK.DeploymentService.Service
@@ -22,7 +20,7 @@ namespace MK.DeploymentService.Service
         public DeploymentJob GetNext()
         {
             using (var client = CustomerPortalHttpClientProvider.Get())
-            {      
+            {                             
 				var serverName = ConfigurationManager.AppSettings["ServerName"];      
 				var r = client.GetAsync(@"deployments/" + serverName+ @"/next").Result;
                 if (r.IsSuccessStatusCode)

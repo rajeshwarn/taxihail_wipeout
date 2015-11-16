@@ -1,4 +1,5 @@
 "ApplicationName"="TaxiHail";
+"Callbox.ApplicationName"="TaxiHail Callbox";
 "GoogleMapKey"="AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo";
 "Language"="English";
 "LanguageCode"="en";
@@ -747,7 +748,3 @@
 "LinkForApplicationStoreAbsentText"="URL to store page was not configured";
 "ServiceErrorUnauthorized"="Your session has expired, please login again.";
 "ServiceErrorCallTitle"="Server error";
-"PairingProcessingErrorTitle"="Pairing payment problem";
-"TripUnableToPairErrorText"="Sorry, there was a problem, please pay in the taxi";
-"CreditCardDeclinedOnPreauthorizationErrorText"="Sorry, your card could not be authorized. Please pay in the taxi";
-"CreditCardUnanbleToPreathorizeErrorText"="Sorry, there was an error processing your card. Please pay in the taxi";

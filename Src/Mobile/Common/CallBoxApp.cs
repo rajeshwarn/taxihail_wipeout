@@ -37,12 +37,12 @@ namespace apcurium.MK.Booking.Mobile
 
 			
             _container.Register<IAccountServiceClient>((c, p) => 
-                new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, null, null),
-			                                                         "NotAuthenticated");
+                new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, null, null), 
+                "NotAuthenticated");
 			
             _container.Register<IAccountServiceClient>((c, p) =>
                 new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), null),
-			                                                         "Authenticate");
+                "Authenticate");
 			
             _container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(),null));
 
@@ -54,10 +54,16 @@ namespace apcurium.MK.Booking.Mobile
             
             _container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
-            _container.Register<ConfigurationClientService>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
+            _container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
 
-            _container.Register<IAccountService, AccountService>();
-            _container.Register<IBookingService, BookingService>();
+			_container.Register<IAccountService>((c, p) => new AccountService(c.Resolve<IAppSettings>(), null, null, c.Resolve<ILocalization>()));
+
+			_container.Register<IBookingService>((c, p) => new BookingService(
+				c.Resolve<IAccountService>(),
+				c.Resolve<ILocalization>(), 
+				c.Resolve<IAppSettings>(), 
+				null,
+				c.Resolve<IMessageService>()));
 
             _container.Register<IApplicationInfoService, ApplicationInfoService>();
 
@@ -83,8 +89,7 @@ namespace apcurium.MK.Booking.Mobile
 			//test.taxihail.biz
 			"3082010a028201010098e11cdf768f2ba64857d9852a106d70e60a449fc2314305241a37198554017fc18e19e0c70bd5d61a2eb5cc0956cad4e4ff4cc403f7dea36797e6349e2b9fc9ab76914c2edad0042e2632013b466f095c1bc97309c63fac0a60068ca2e428ffcc7b8e76443f5bb18fd6c5b0b7b2641037e1a891b1e0e92d3b6bc9492684e61091becaa0e86b606fd9412ae0b5bd1fb6246c7a96182f97aa20df656224eaa7ca80d1faa22114ac8d265106b4340c0e809c0a081685cacf37c8bba57401405dc0cd65f1343dc83bd15aff28e26875fdc0d0f00d75e65e429906829398e69b9914e46969427ba1d767aaa46d5915d4bb0b20d76e61f247280cedf431198506c5890203010001"
 		};
-
-
+        
 		private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 		{
 			var request = sender as HttpWebRequest;
@@ -99,18 +104,30 @@ namespace apcurium.MK.Booking.Mobile
 
 			return PinnedKeys.Any(p => p.Equals(publicKeyString, StringComparison.InvariantCultureIgnoreCase));
 		}
-        
-        private string GetSessionId ()
+
+        private string GetSessionId()
         {
-            var authData = _container.Resolve<ICacheService> ().Get<AuthenticationData> ("AuthenticationData");
-            var sessionId = authData == null ? null : authData.SessionId;
-            if (sessionId == null) 
-			{
-                sessionId = _container.Resolve<ICacheService> ().Get<string>("SessionId");
+            var appCacheService = _container.Resolve<ICacheService>();
+            var authData = appCacheService.Get<AuthenticationData>("AuthenticationData");
+
+            var userCacheService = _container.Resolve<ICacheService>("UserAppCache");
+            if (authData != null)
+            {
+                // We have a legacy authData (Auth data stored in the application Cache. We need to move it to the UserCache.
+                userCacheService.Set("AuthenticationData", authData);
+                appCacheService.Clear("AuthenticationData");
             }
+            else
+            {
+                authData = userCacheService.Get<AuthenticationData>("AuthenticationData");
+            }
+
+
+            var sessionId = authData.SelectOrDefault(data => data.SessionId) ?? appCacheService.Get<string>("SessionId");
+
             return sessionId;
         }
-        
+
         private void InitialiseStartNavigation()
         {
 			Mvx.RegisterSingleton<IMvxAppStart>(new StartCallboxNavigation());

@@ -29,6 +29,9 @@ namespace CustomerPortal.Web.Entities
         [Display(Name = "BlackBerry Archive File (.bar)")]
         public string BarFilename { get; set; }
 
+        [Display(Name = "Callbox application package file (.apk)")]
+        public string ApkCallboxFileName { get; set; }
+
         [Display(Name = "Website Url")]
         [UIHint("Url")]
         public string WebsiteUrl { get; set; }
