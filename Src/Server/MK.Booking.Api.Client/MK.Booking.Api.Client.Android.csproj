@@ -44,15 +44,6 @@
     <Reference Include="BraintreeEncryption.Library.Android">
       <HintPath>..\..\Mobile\Libraries\Monodroid\BraintreeEncryption.Library.Android.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAccountServiceClient.cs" />
