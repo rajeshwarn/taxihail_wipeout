@@ -64,15 +64,6 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="ServiceStack.Text.MonoTouch">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces.MonoTouch">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Interfaces.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Common.MonoTouch">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>

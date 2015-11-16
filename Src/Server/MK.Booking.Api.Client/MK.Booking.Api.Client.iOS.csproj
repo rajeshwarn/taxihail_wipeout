@@ -56,15 +56,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Services" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="ServiceStack.Common.MonoTouch">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces.MonoTouch">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Interfaces.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text.MonoTouch">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
-    </Reference>
     <Reference Include="BrainTreeEncryption.Library">
       <HintPath>..\..\Mobile\Libraries\Monotouch\BrainTreeEncryption.Library.dll</HintPath>
     </Reference>

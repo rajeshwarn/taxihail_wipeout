@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -155,15 +155,6 @@
     <Reference Include="PaypalSdkDroid">
       <HintPath>..\Libraries\Monodroid\PaypalSdkDroid.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
-    </Reference>
     <Reference Include="AnalyticsV2">
       <HintPath>..\Libraries\Monodroid\AnalyticsV2.dll</HintPath>
     </Reference>
@@ -208,27 +199,7 @@
   </ItemGroup>
   <Import Project="..\TaxiHail.Shared\TaxiHail.Shared.projitems" Label="Shared" Condition="Exists('..\TaxiHail.Shared\TaxiHail.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Controls\" />
-    <Folder Include="PlatformIntegration\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Resources\Layout\" />
-    <Folder Include="Resources\Drawable\" />
-    <Folder Include="Resources\drawable-ar\" />
-    <Folder Include="Resources\drawable-ar-xhdpi\" />
-    <Folder Include="Resources\drawable-hdpi\" />
-    <Folder Include="Resources\drawable-ldpi\" />
-    <Folder Include="Resources\drawable-mdpi\" />
-    <Folder Include="Resources\drawable-xhdpi\" />
-    <Folder Include="Resources\drawable-xxhdpi\" />
-    <Folder Include="Resources\Values\" />
-    <Folder Include="Resources\values-ar\" />
-    <Folder Include="Resources\values-es\" />
-    <Folder Include="Resources\values-sw600dp\" />
-    <Folder Include="Resources\values-fr\" />
-    <Folder Include="Resources\values-v11\" />
-    <Folder Include="Activities\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <XamarinComponentReference Include="facebookandroid">
       <Version>4.4.0.0</Version>

@@ -208,9 +208,6 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\ios-unified\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Text.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
-    </Reference>
     <Reference Include="PaypalSdkTouch.Unified">
       <HintPath>..\Libraries\Monotouch\PaypalSdkTouch.Unified.dll</HintPath>
     </Reference>
@@ -1016,7 +1013,5 @@
   <Target Name="_CompileITunesMetadata" DependsOnTargets="_DetectSdkLocations;_DetectAppManifest;_GenerateBundleName;_CompileAppManifest">
     <Message Text="Skipping CompileITunesMetadata task to prevent inclusion of iTunesMetadata.plist in the IPA" />
   </Target>
-  <ItemGroup>
-    <Folder Include="Views\BookingBottomBar\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

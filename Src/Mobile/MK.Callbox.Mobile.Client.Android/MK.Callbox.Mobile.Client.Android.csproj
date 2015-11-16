@@ -136,15 +136,6 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\TaxiHail.Shared\Activities\EditTextDialogActivity.cs">

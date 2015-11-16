@@ -68,15 +68,6 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="ServiceStack.Text.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Interfaces.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Common.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
-    </Reference>
     <Reference Include="System.Json" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
