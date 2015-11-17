@@ -295,7 +295,7 @@ namespace MK.DeploymentService.Mobile
                             File.Delete (targetDir);
                         File.Copy (apkBlackBerryFile, targetDir);
 
-                        result.BlackBerryApkFileName = fileInfo.Name;
+                        result.BlackBerryApkFileName = newName;
 
                     } else {
                         throw new Exception ("Can't find the APK BlackBerry file in the release dir");
@@ -518,19 +518,15 @@ namespace MK.DeploymentService.Mobile
 				"MK.Booking.Maps.Android", 
 				"MK.Booking.Api.Contract.Android", 
 				"MK.Booking.Api.Client.Android",
-				"MK.Booking.Mobile.Android"
+				"MK.Booking.Mobile.Android",
+                "GoogleMaps.M4B",
+                "MapBox.Sdk"
 			};
-
-            projectLists.Add(_job.BlackBerry ? "MapBox.Sdk" : "GoogleMaps.M4B");
-
-            var solutionName = _job.BlackBerry 
-                ? "MK.Booking.Mobile.Solution.BlackBerry.sln" 
-                : "MK.Booking.Mobile.Solution.Android.sln";
-            
-            _builder.BuildAndroidProject (projectLists, configAndroid, string.Format ("{0}/{1}", sourceMobileFolder, solutionName));
 
 			if (_job.Android) {
 				UpdateJob ("Building project Android");
+
+                _builder.BuildAndroidProject (projectLists, configAndroid, string.Format ("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
 
                 var buildClient = string.Format ("build \"--project:TaxiHail\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.Android.sln\"",
 					configAndroid,
@@ -542,6 +538,8 @@ namespace MK.DeploymentService.Mobile
 
             if (_job.BlackBerry) {
                 UpdateJob ("Building project BlackBerry");
+
+                _builder.BuildAndroidProject (projectLists, configAndroid, string.Format ("{0}/MK.Booking.Mobile.Solution.BlackBerry.sln", sourceMobileFolder));
 
                 var buildClient = string.Format ("build \"--project:TaxiHail.BlackBerry\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.BlackBerry.sln\"",
                     configAndroid,
