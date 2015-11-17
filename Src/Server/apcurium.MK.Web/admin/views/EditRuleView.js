@@ -141,7 +141,7 @@
         {
         	if ($('#zoneRequired').is(':checked'))
         	{
-        		//$('#checkBoxExcludeCircularZone').prop('checked', false);
+        		$('#checkBoxExcludeCircularZone').prop('checked', false);
         	}
         },
 
@@ -149,7 +149,7 @@
         {
         	if ($('#checkBoxExcludeCircularZone').is(':checked'))
         	{
-        		//$('#zoneRequired').prop('checked', false);
+        		$('#zoneRequired').prop('checked', false);
         	}
         },
 
