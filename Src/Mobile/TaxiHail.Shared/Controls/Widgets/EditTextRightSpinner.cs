@@ -160,9 +160,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _label.Focusable = false;
             _imageLeftView = layout.FindViewById<ImageView>(Resource.Id.leftImage);
             _imageRightArrow = layout.FindViewById<ImageView>(Resource.Id.rightArrow);
-            _imageRightArrow.Visibility = Enabled 
-                    ? ViewStates.Visible 
-                    : ViewStates.Invisible;
             if (_text != null) _label.Text = _text;
             if (_leftImage != null)
             {
@@ -179,6 +176,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
 			_button = (Button)layout.FindViewById(Resource.Id.openSpinnerButton);
+            _button.SetBackgroundColor(Color.Transparent);
 
 			_button.ContentDescription = this.ContentDescription + " " + Text;
 
@@ -204,9 +202,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _spinner.ItemSelected += HandleItemSelected;
 
             _spinner.Prompt = Context.GetString(Resource.String.ListPromptSelectOne);
+
+            Enabled = Enabled;
         }
-
-
 
         private async void HandleItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {            
