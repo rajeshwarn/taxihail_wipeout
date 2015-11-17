@@ -291,12 +291,15 @@ namespace MK.DeploymentService.Mobile
                 var apkBlackBerryFile = GetBlackBerryApkFile(apkBlackBerryPath);
                 var barFile = GetBlackBerryBarFile(barPath);
 
-                if (apkBlackBerryFile != null) {
+                if (apkBlackBerryFile != null) 
+                {
                     var fileInfo = new FileInfo (apkBlackBerryFile); 
                     var newName = fileInfo.Name.Replace (".apk", "_blackberry.apk");
                     var targetDir = Path.Combine (targetDirWithoutFileName, newName);
-                    if (File.Exists (targetDir))
+                    if (File.Exists(targetDir))
+                    {
                         File.Delete (targetDir);
+                    }
                     File.Copy (apkBlackBerryFile, targetDir);
 
                     result.BlackBerryApkFileName = newName;
@@ -307,16 +310,20 @@ namespace MK.DeploymentService.Mobile
                     throw new Exception ("Can't find the APK BlackBerry file in the release dir");
                 }
 
-                if (barPath != null) {
+                if (barPath != null) 
+                {
                     var fileInfo = new FileInfo (barFile); 
                     var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
-                    if (File.Exists (targetDir))
+                    if (File.Exists(targetDir))
+                    {
                         File.Delete (targetDir);
+                    }
                     File.Copy (barFile, targetDir);
 
                     result.BlackBerryBarFileName= fileInfo.Name;
 
-                } else {
+                } else 
+                {
                     throw new Exception ("Can't find the BAR BlackBerry file in the release dir");
                 }
             }
