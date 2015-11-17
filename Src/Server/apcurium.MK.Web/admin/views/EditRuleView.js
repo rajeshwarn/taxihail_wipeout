@@ -9,7 +9,9 @@
             'click [data-action=saveEnable]': 'onSaveEnableClick',
             'click [data-action=saveDisable]': 'onSaveDisableClick',
             'click [data-action=eraseStartTime]': 'onEraseStartTimeClick',
-            'click [data-action=eraseEndTime]': 'onEraseEndTimeClick'
+            'click [data-action=eraseEndTime]': 'onEraseEndTimeClick',
+			'click [data-action=zoneRequiredClick]': 'zoneRequiredClick',
+			'click [data-action=checkBoxExcludeCircularZoneClick]': 'checkBoxExcludeCircularZoneClick'
         },
 
         render: function() {
@@ -27,6 +29,7 @@
             data.appliesToDropoffChecked = data.appliesToDropoff == true ? 'checked' : '';
 
             data.zoneRequiredChecked = data.zoneRequired == true ? 'checked' : '';
+            data.checkBoxExcludeCircularZoneChecked = data.excludeCircularZone == true ? 'checked' : '';
             
             data.recurring = +this.model.get('type') === TaxiHail.Rule.type.recurring;
             data.isDefault = +this.model.get('type') === TaxiHail.Rule.type['default'];
@@ -134,6 +137,22 @@
             $('input[name="appliesToFutureBooking"]').attr('checked', true);
         },
 
+        zoneRequiredClick: function(e)
+        {
+        	if ($('#zoneRequired').is(':checked'))
+        	{
+        		//$('#checkBoxExcludeCircularZone').prop('checked', false);
+        	}
+        },
+
+        checkBoxExcludeCircularZoneClick: function(e)
+        {
+        	if ($('#checkBoxExcludeCircularZone').is(':checked'))
+        	{
+        		//$('#zoneRequired').prop('checked', false);
+        	}
+        },
+
         save: function(form) {
                 var serialized = this.serializeForm(form),
                 startDate = new Date(),
@@ -149,6 +168,7 @@
                 serialized.appliesToDropoff = $("#appliesToDropoff").attr('checked') ? true : false;
 
                 serialized.zoneRequired = $("#zoneRequired").attr('checked') ? true : false;
+                serialized.excludeCircularZone = $("#checkBoxExcludeCircularZone").attr('checked') ? true : false;
 
                 if (+serialized.type) {
                     // Not a default rate

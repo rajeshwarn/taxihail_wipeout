@@ -30,7 +30,8 @@
         IBSAccountNotFound,
         ManualRideLinq_NoCardOnFile,
         ManualRideLinq_CardOnFileDeactivated,
-		EmailAlreadyUsed
+		EmailAlreadyUsed,
+		RuleTwoTypeZoneVerificationSelected
  // ReSharper restore InconsistentNaming
     }
 }
