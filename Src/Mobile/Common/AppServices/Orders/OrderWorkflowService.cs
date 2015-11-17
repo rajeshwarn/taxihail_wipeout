@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _dropOffSelectionModeSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
-		readonly ISubject<MarketSettings> _marketSettingsSubject = new BehaviorSubject<MarketSettings>(null);
+		readonly ISubject<MarketSettings> _marketSettingsSubject = new BehaviorSubject<MarketSettings>(new MarketSettings());
         readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);

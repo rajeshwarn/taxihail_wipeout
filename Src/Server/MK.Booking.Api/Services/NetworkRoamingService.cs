@@ -30,11 +30,13 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var marketSettings = _taxiHailNetworkServiceClient.GetCompanyMarketSettings(request.Latitude, request.Longitude);
 
-            return new MarketSettings
-            {
-                HashedMarket = CryptographyHelper.GetHashString(marketSettings.Market),
-                EnableDriverBonus = marketSettings.EnableDriverBonus
-            };
+            return marketSettings != null
+                ? new MarketSettings
+                    {
+                        HashedMarket = CryptographyHelper.GetHashString(marketSettings.Market),
+                        EnableDriverBonus = marketSettings.EnableDriverBonus
+                    }
+                : new MarketSettings();
         }
 
         public object Get(NetworkFleetsRequest request)

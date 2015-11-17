@@ -80,6 +80,7 @@
     <Compile Include="ContractDocument.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\AccountOrderListRequestWithUserIdRequest.cs" />
+    <Compile Include="Requests\FindMarketSettingsRequest.cs" />
     <Compile Include="Requests\OrderCountForAppRatingRequest.cs" />
     <Compile Include="Requests\AccountUpdateRequest.cs" />
     <Compile Include="Requests\ActivePromotions.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Resources\IbsChargeAccountValidation.cs" />
     <Compile Include="Resources\IbsChargeAccount.cs" />
     <Compile Include="Resources\IbsFare.cs" />
+    <Compile Include="Resources\MarketSettings.cs" />
     <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />

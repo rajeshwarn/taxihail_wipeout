@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 			catch
 			{
-				tcs.TrySetResult(null);
+				tcs.TrySetResult(new MarketSettings());
 			}
 
 			return tcs.Task;
