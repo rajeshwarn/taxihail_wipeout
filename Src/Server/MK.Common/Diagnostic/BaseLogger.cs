@@ -164,7 +164,6 @@ namespace apcurium.MK.Common.Diagnostic
 		{
             var messageWithUserName = message + GetMessageBase();
 
-
 			lock (_fileSwitchExclusiveAccess)
 			{
 				SetActiveLogFile(messageWithUserName.Length);
