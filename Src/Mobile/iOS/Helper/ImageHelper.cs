@@ -264,9 +264,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             // Step 3: Now, draw the rotated/scaled image into the context
             context.DrawImage(new CGRect(-image.Size.Width / 2, -image.Size.Height / 2, image.Size.Width, image.Size.Height), image.CGImage);
 
-            context.ScaleCTM(1, -1);
-            context.SetBlendMode (CGBlendMode.SourceIn);
-
             var resultImage = UIGraphics.GetImageFromCurrentImageContext();
             UIGraphics.EndImageContext();
 
