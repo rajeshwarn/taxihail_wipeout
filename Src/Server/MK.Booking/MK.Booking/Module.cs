@@ -184,6 +184,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, OrderDispatchCompanyManager>("OrderDispatchCompanyManager");
             container.RegisterType<IEventHandler, CacheServiceManager>("CacheServiceManager");
             container.RegisterType<IEventHandler, OrderCreationManager>("OrderCreationManager");
+            container.RegisterType<IEventHandler, TemporaryPaymentInfoManager>("TemporaryPaymentInfoManager");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

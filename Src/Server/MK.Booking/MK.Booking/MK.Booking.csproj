@@ -227,6 +227,7 @@
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
     <Compile Include="EventHandlers\Integration\PromotionTriggerGenerator.cs" />
+    <Compile Include="EventHandlers\Integration\TemporaryPaymentInfoManager.cs" />
     <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
     <Compile Include="EventHandlers\OverduePaymentDetailGenerator.cs" />
     <Compile Include="EventHandlers\PaypalAccountDetailsGenerator.cs" />

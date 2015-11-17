@@ -117,6 +117,7 @@ namespace DatabaseInitializer
                 var accountDetailProjectionSet = new MemoryProjectionSet<AccountDetail>(a => a.Id);
                 var orderDetailProjectionSet = new MemoryProjectionSet<OrderDetail>(a => a.Id);
                 var orderStatusProjectionSet = new MemoryProjectionSet<OrderStatusDetail>(a => a.OrderId);
+                var orderRatingProjectionSet = new OrderRatingMemoryProjectionSet();
 
                 var appSettingsProjection = container.Resolve<AppSettingsEntityProjection>();
                 container.RegisterInstance<IProjectionSet<AccountDetail>>(accountDetailProjectionSet);
@@ -138,7 +139,6 @@ namespace DatabaseInitializer
                     //    // so we instead we need to re-migrate from the temp db to the actual name
                     //    UpdateSchema(param);
                     //}
-                   
 
                     var replayService = container.Resolve<EventsPlayBackService>();
                     replayService.Register(container.Resolve<AccountDetailsGenerator>());
@@ -156,6 +156,7 @@ namespace DatabaseInitializer
                     new EntityProjectionSet<AccountDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(accountDetailProjectionSet);
                     new EntityProjectionSet<OrderDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderDetailProjectionSet);
                     new EntityProjectionSet<OrderStatusDetail>(container.Resolve<Func<BookingDbContext>>()).AddRange(orderStatusProjectionSet);
+                    new OrderRatingEntityProjectionSet(container.Resolve<Func<BookingDbContext>>()).AddRange(orderRatingProjectionSet);
                     //container.Resolve<AppSettingsEntityProjection>().Save(appSettingsProjection.Load());
                     Console.WriteLine("End : " + stopwatch.Elapsed);
 

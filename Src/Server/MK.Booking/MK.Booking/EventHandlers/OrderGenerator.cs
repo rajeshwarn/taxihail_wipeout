@@ -10,6 +10,10 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Projections;
+using System.Collections.Generic;
+using EntityFramework.BulkInsert.Extensions;
+using System.Linq;
+using System.Collections;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -36,6 +40,7 @@ namespace apcurium.MK.Booking.EventHandlers
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IProjectionSet<OrderDetail> _orderDetailProjectionSet;
         private readonly IProjectionSet<OrderStatusDetail> _orderStatusProjectionSet;
+        private readonly OrderRatingMemoryProjectionSet _orderRatingProjectionSet;
         private readonly ILogger _logger;
         private readonly IServerSettings _serverSettings;
         private readonly Resources.Resources _resources;
@@ -43,12 +48,14 @@ namespace apcurium.MK.Booking.EventHandlers
         public OrderGenerator(Func<BookingDbContext> contextFactory,
             IProjectionSet<OrderDetail> orderDetailProjectionSet,
             IProjectionSet<OrderStatusDetail> orderStatusProjectionSet,
+            OrderRatingMemoryProjectionSet orderRatingProjectionSet,
             ILogger logger,
             IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
             _orderDetailProjectionSet = orderDetailProjectionSet;
             _orderStatusProjectionSet = orderStatusProjectionSet;
+            _orderRatingProjectionSet = orderRatingProjectionSet;
             _logger = logger;
             _serverSettings = serverSettings;
             _resources = new Resources.Resources(serverSettings);
@@ -76,16 +83,10 @@ namespace apcurium.MK.Booking.EventHandlers
                     details.IBSStatusDescription = _resources.Get("OrderStatus_wosCANCELLED", clientLanguageCode);
                 });
             }
-
-            using (var context = _contextFactory.Invoke())
-            {
-                RemoveTemporaryPaymentInfo(context, @event.SourceId);
-            }
         }
 
         public void Handle(OrderCancelledBecauseOfError @event)
         {
-            
             if (_orderDetailProjectionSet.Exists(@event.SourceId))
             {
                 _orderDetailProjectionSet.Update(@event.SourceId, order =>
@@ -93,7 +94,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     order.Status = (int)OrderStatus.Canceled;
                 });
             }
-
             
             if (_orderStatusProjectionSet.Exists(@event.SourceId))
             {
@@ -103,11 +103,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
                     details.IBSStatusDescription = @event.ErrorDescription;
                 });
-            }
-
-            using (var context = _contextFactory.Invoke())
-            {
-                RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
 
@@ -247,30 +242,27 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderRated @event)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                context.Set<OrderRatingDetails>().Add(new OrderRatingDetails
+            var projection = Tuple.Create(
+                new OrderRatingDetails
                 {
                     Id = Guid.NewGuid(),
                     OrderId = @event.SourceId,
                     Note = @event.Note,
-                });
-
-                foreach (var ratingScore in @event.RatingScores)
+                },
+                @event
+                .RatingScores
+                .Select(ratingScore => new RatingScoreDetails
                 {
-                    context.Set<RatingScoreDetails>().Add(new RatingScoreDetails
-                    {
-                        Id = Guid.NewGuid(),
-						AccountId = @event.AccountId,
-                        OrderId = @event.SourceId,
-                        Score = ratingScore.Score,
-                        RatingTypeId = ratingScore.RatingTypeId,
-                        Name = ratingScore.Name
-                    });
-                }
+                    Id = Guid.NewGuid(),
+                    AccountId = @event.AccountId,
+                    OrderId = @event.SourceId,
+                    Score = ratingScore.Score,
+                    RatingTypeId = ratingScore.RatingTypeId,
+                    Name = ratingScore.Name
+                }).ToArray()
+            );
 
-                context.SaveChanges();
-            }
+            _orderRatingProjectionSet.Add(projection);
 
             _orderDetailProjectionSet.Update(@event.SourceId, order =>
             {
@@ -377,14 +369,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     order.Surcharge = @event.Surcharge;
 
                 });
-
-                if (@event.IsCompleted)
-                {
-                    using (var context = _contextFactory.Invoke())
-                    {
-                        RemoveTemporaryPaymentInfo(context, @event.SourceId);
-                    }
-                }
             }
             else
             {
@@ -403,8 +387,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderPairingDetail.WasUnpaired = true;
                     context.Save(orderPairingDetail);
                 }
-
-                RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
 
             _orderDetailProjectionSet.Update(@event.SourceId, order =>
@@ -464,11 +446,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 details.NextDispatchCompanyName = null;
                 details.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(details, @event.EventDate);
             });
-
-            using (var context = _contextFactory.Invoke())
-            {
-                RemoveTemporaryPaymentInfo(context, @event.SourceId);
-            }
         }
 
         public void Handle(DispatchCompanySwitchIgnored @event)
@@ -757,12 +734,84 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(orderNotificationDetail);
             }
         }
+    }
 
-        // TODO remove this once CMT has real preauth
-        private void RemoveTemporaryPaymentInfo(BookingDbContext context, Guid orderId)
+    public abstract class OrderRatingProjectionSet : IProjectionSet<Tuple<OrderRatingDetails, RatingScoreDetails[]>>
+    {
+        public abstract void Add(Tuple<OrderRatingDetails, RatingScoreDetails[]> projection);
+        public abstract void AddRange(IEnumerable<Tuple<OrderRatingDetails, RatingScoreDetails[]>> projections);
+        public void AddOrReplace(Tuple<OrderRatingDetails, RatingScoreDetails[]> projection)
         {
-            context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
-            context.SaveChanges();
+            throw new NotImplementedException();
+        }
+
+        public bool Exists(Guid sourceId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Func<Tuple<OrderRatingDetails, RatingScoreDetails[]>, bool> predicate, Action<Tuple<OrderRatingDetails, RatingScoreDetails[]>> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Guid identifier, Action<Tuple<OrderRatingDetails, RatingScoreDetails[]>> action)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class OrderRatingMemoryProjectionSet : OrderRatingProjectionSet, IEnumerable<Tuple<OrderRatingDetails, RatingScoreDetails[]>>
+    {
+        readonly IDictionary<Guid, Tuple<OrderRatingDetails, RatingScoreDetails[]>> _cache = new Dictionary<Guid, Tuple<OrderRatingDetails, RatingScoreDetails[]>>();
+        public override void Add(Tuple<OrderRatingDetails, RatingScoreDetails[]> projection)
+        {
+            _cache.Add(projection.Item1.OrderId, projection);
+        }
+
+        public override void AddRange(IEnumerable<Tuple<OrderRatingDetails, RatingScoreDetails[]>> projections)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<Tuple<OrderRatingDetails, RatingScoreDetails[]>> GetEnumerator()
+        {
+            return _cache.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _cache.Values.GetEnumerator();
+        }
+    }
+
+    public class OrderRatingEntityProjectionSet : OrderRatingProjectionSet
+    {
+        readonly Func<BookingDbContext> _contextFactory;
+
+        public OrderRatingEntityProjectionSet(Func<BookingDbContext> contextFactory)
+        {
+            _contextFactory = contextFactory;
+        }
+
+        public override void Add(Tuple<OrderRatingDetails, RatingScoreDetails[]> projection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void AddRange(IEnumerable<Tuple<OrderRatingDetails, RatingScoreDetails[]>> projections)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.BulkInsert(projections.Select(x => x.Item1), new BulkInsertOptions
+                {
+                    EnableStreaming = true,
+                });
+                context.BulkInsert(projections.SelectMany(x => x.Item2), new BulkInsertOptions
+                {
+                    EnableStreaming = true,
+                });
+            }
         }
     }
 }
