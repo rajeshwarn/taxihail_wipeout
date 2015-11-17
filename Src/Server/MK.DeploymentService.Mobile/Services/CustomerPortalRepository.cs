@@ -37,28 +37,47 @@ namespace DeploymentServiceTools
 			{
 				multipartFormDataContent.Add(new StringContent(JsonConvert.SerializeObject(data)), "data");
 
-				if (deployment.iOSAdhocFileExist) {
+				if (deployment.iOSAdhocFileExist) 
+                {
 					var ipaContent = new StreamContent(deployment.GetiOSAdhocStream());
 					ipaContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 					ipaContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.iOSAdhocFileName };
 					multipartFormDataContent.Add(ipaContent);
 				}
 
-				if (deployment.iOSAppStoreFileExist) {
+				if (deployment.iOSAppStoreFileExist) 
+                {
 					var ipaAppStoreContent = new StreamContent(deployment.GetiOSAppStoreStream());
 					ipaAppStoreContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 					ipaAppStoreContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.iOSAppStoreFileName };
 					multipartFormDataContent.Add(ipaAppStoreContent);
 				}
 
-				if (deployment.AndroidApkFileExist) {
+				if (deployment.AndroidApkFileExist) 
+                {
 					var apkContent = new StreamContent(deployment.GetAndroidApkStream());
 					apkContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 					apkContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.AndroidApkFileName };
 					multipartFormDataContent.Add(apkContent);
 				}
 
-			    if (deployment.CallboxApkFileExist)
+                if (deployment.BlackBerryApkFileExist) 
+                {
+                    var apkBlackBerryContent = new StreamContent(deployment.GetBlackBerryApkStream());
+                    apkBlackBerryContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    apkBlackBerryContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.BlackBerryApkFileName };
+                    multipartFormDataContent.Add(apkBlackBerryContent);
+                }
+
+                if (deployment.BlackBerryBarFileExist) 
+                {
+                    var barContent = new StreamContent(deployment.GetBlackBerryBarStream());
+                    barContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    barContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.BlackBerryBarFileName };
+                    multipartFormDataContent.Add(barContent);
+                }
+
+                if (deployment.CallboxApkFileExist)
 			    {
                     var apkContent = new StreamContent(deployment.GetCallboxApkStream());
                     apkContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");

@@ -96,7 +96,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
                 foreach (var file in provider.FileData)
                 {
-                    if (IsAPK(file.Headers.ContentDisposition.FileName) && !IsCallboxAPK(file.Headers.ContentDisposition.FileName))
+                    if (IsAPK(file.Headers.ContentDisposition.FileName) && !IsApkBlackBerry(file.Headers.ContentDisposition.FileName) && !IsCallboxAPK(file.Headers.ContentDisposition.FileName))
                     {
                         version.ApkFilename = file.Headers.ContentDisposition.FileName;
                     }
@@ -112,11 +112,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
                     {
                         version.ApkCallboxFileName = file.Headers.ContentDisposition.FileName;
                     }
-                    else if ((IsApkBlackBerry(file.Headers.ContentDisposition.FileName)))
+                    else if (IsApkBlackBerry(file.Headers.ContentDisposition.FileName))
                     {
                         version.ApkBlackBerryFilename = file.Headers.ContentDisposition.FileName;
                     }
-                    else if ((IsBar(file.Headers.ContentDisposition.FileName)))
+                    else if (IsBar(file.Headers.ContentDisposition.FileName))
                     {
                         version.BarFilename = file.Headers.ContentDisposition.FileName;
                     }
