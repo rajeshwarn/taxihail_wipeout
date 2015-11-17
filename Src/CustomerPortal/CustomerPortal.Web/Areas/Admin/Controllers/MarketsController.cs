@@ -34,21 +34,21 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return View(allMarkets.Select(market => new MarketModel { Market = market.Name }));
         }
 
-        public ActionResult MarketIndex(MarketModel marketModel)
+        public ActionResult MarketIndex(string market)
         {
             // Find all vehicle type for this market
-            var market = Repository.GetMarket(marketModel.Market);
-            if (market == null)
+            var marketModel = Repository.GetMarket(market);
+            if (marketModel == null)
             {
                 return View(new MarketModel());
             }
 
             return View(new MarketModel
             {
-                Market = marketModel.Market,
-                DispatcherSettings = market.DispatcherSettings,
-                Vehicles = market.Vehicles,
-                EnableDriverBonus = market.EnableDriverBonus
+                Market = market,
+                DispatcherSettings = marketModel.DispatcherSettings,
+                Vehicles = marketModel.Vehicles,
+                EnableDriverBonus = marketModel.EnableDriverBonus
             });
         }
 
