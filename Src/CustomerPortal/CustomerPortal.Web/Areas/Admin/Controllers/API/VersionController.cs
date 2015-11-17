@@ -96,7 +96,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
                 foreach (var file in provider.FileData)
                 {
-                    if (IsAPK(file.Headers.ContentDisposition.FileName) &&!IsApkBlackBerry(file.Headers.ContentDisposition.FileName) && !IsCallboxAPK(file.Headers.ContentDisposition.FileName))
+                    if (IsAPK(file.Headers.ContentDisposition.FileName) && !IsApkBlackBerry(file.Headers.ContentDisposition.FileName) && !IsCallboxAPK(file.Headers.ContentDisposition.FileName))
                     {
                         version.ApkFilename = file.Headers.ContentDisposition.FileName;
                     }
