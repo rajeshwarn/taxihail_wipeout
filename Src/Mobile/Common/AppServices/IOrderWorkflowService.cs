@@ -95,9 +95,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		IObservable<bool> GetAndObserveOrderCanBeConfirmed();
 
-		IObservable<string> GetAndObserveHashedMarket();
+	    IObservable<MarketSettings> GetAndObserveMarketSettings();
 
-		IObservable<bool> GetAndObserveIsUsingGeo();
+        IObservable<bool> GetAndObserveIsUsingGeo();
 
 		IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
 

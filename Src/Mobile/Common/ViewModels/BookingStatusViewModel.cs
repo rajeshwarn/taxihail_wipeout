@@ -21,12 +21,11 @@ using apcurium.MK.Booking.Mobile.ViewModels.Map;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Booking.Mobile.Infrastructure.DeviceOrientation;
 using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public sealed class BookingStatusViewModel : BaseViewModel
+    public sealed class BookingStatusViewModel : BaseViewModel
     {
 		private readonly IPhoneService _phoneService;
 		private readonly IBookingService _bookingService;
@@ -976,8 +975,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				var statusInfoText = status.IBSStatusDescription;
 
-				var isLocalMarket = await _orderWorkflowService.GetAndObserveHashedMarket()
-					.Select(hashedMarket => !hashedMarket.HasValue())
+				var isLocalMarket = await _orderWorkflowService.GetAndObserveMarketSettings()
+					.Select(marketSettings => !marketSettings.HashedMarket.HasValue())
 					.Take(1);
 				var hasVehicleInfo = status.VehicleNumber.HasValue()
 				                     && status.VehicleLatitude.HasValue

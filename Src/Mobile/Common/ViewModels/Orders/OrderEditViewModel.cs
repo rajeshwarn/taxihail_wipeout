@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -30,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketUpdated(hashedMarket));
+			Observe(_orderWorkflowService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings));
 
             PhoneNumber = new PhoneNumberModel();
 		}
@@ -46,11 +47,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             RaisePropertyChanged(() => SelectedCountryCode);
 		}
 
-	    private async Task MarketUpdated(string hashedMarket)
+	    private async Task MarketChanged(MarketSettings marketSettings)
 	    {
 			var paymentList = await _accountService.GetPaymentsList();
 
-			if (hashedMarket.HasValue())
+			if (marketSettings.HashedMarket.HasValue())
 			{
 				var paymentSettings = await _paymentService.GetPaymentSettings();
 				if (paymentSettings.PaymentMode == PaymentMethod.Cmt

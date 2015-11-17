@@ -7,18 +7,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class NetworkRoamingService : BaseService, INetworkRoamingService
     {
-        public Task<string> GetHashedCompanyMarket(double latitude, double longitude)
+        public Task<MarketSettings> GetHashedCompanyMarket(double latitude, double longitude)
         {
-			var tcs = new TaskCompletionSource<string>();
+			var tcs = new TaskCompletionSource<MarketSettings>();
 
 			try
 			{
-				var result = UseServiceClientAsync<NetworkRoamingServiceClient, string>(service => service.GetCompanyMarketSettings(latitude, longitude)).Result;
+				var result = UseServiceClientAsync<NetworkRoamingServiceClient, MarketSettings>(service => service.GetCompanyMarketSettings(latitude, longitude)).Result;
 				tcs.TrySetResult(result);
 			}
 			catch
 			{
-				tcs.TrySetResult(string.Empty);
+				tcs.TrySetResult(null);
 			}
 
 			return tcs.Task;
