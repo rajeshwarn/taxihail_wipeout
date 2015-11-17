@@ -27,7 +27,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="30dip"
-            local:MvxBind="{'Text':{'Path':'ApplicationName'}}"
+            local:MvxBind="Text ApplicationName"
             android:layout_gravity="left|center_vertical" />
     </FrameLayout>
     <RelativeLayout
@@ -100,7 +100,7 @@
             android:layout_gravity="center"
             android:layout_below="@id/stroke"
             local:MvxItemTemplate="@layout/control_ordercell"
-            local:MvxBind="{'ItemsSource':{'Path':'Orders'}}" />
+            local:MvxBind="ItemsSource Orders" />
     </RelativeLayout>
     <FrameLayout
         android:layout_width="fill_parent"
@@ -108,7 +108,7 @@
         <apcurium.mk.callbox.mobile.client.controls.StyledButton
             local:ButtonStyle="Black"
             style="@style/CallboxButtonText"
-            local:MvxBind="{'Click':{'Path':'CallTaxi'}}"
+            local:MvxBind="Click CallTaxi"
             android:background="@drawable/newBlackButton"
             android:text="@string/OrderAnotherTaxi"
             android:layout_width="wrap_content"

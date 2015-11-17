@@ -80,6 +80,31 @@ namespace MK.DeploymentService.Mobile
 			get{ return Path.Combine (RootPath, AndroidApkFileName); }
 		}
 
+        public bool AndroidApkFileExist
+        {
+            get{ return !string.IsNullOrEmpty (RootPath) && !string.IsNullOrEmpty (AndroidApkFileName) && File.Exists (AndroidApkFile); }
+        }
+
+        public FileStream GetAndroidApkStream()
+        {
+            return File.OpenRead (AndroidApkFile);
+        }
+		
+	    public string CallboxApkFile
+	    {
+	        get { return Path.Combine(RootPath, CallboxApkFileName); }
+	    }
+
+        public bool CallboxApkFileExist
+        {
+            get { return !string.IsNullOrEmpty(RootPath) && !string.IsNullOrEmpty(CallboxApkFileName) && File.Exists(CallboxApkFile); }
+        }
+
+        public FileStream GetCallboxApkStream()
+        {
+            return File.OpenRead(CallboxApkFile);
+        }
+
         public string BlackBerryApkFile {
             get{ return Path.Combine (RootPath, BlackBerryApkFileName); }
         }
@@ -88,34 +113,24 @@ namespace MK.DeploymentService.Mobile
             get{ return Path.Combine (RootPath, BlackBerryBarFileName); }
         }
 
-		public bool AndroidApkFileExist
-		{
-			get{ return !string.IsNullOrEmpty (RootPath) && !string.IsNullOrEmpty (AndroidApkFileName) && File.Exists (AndroidApkFile); }
-		}
-
         public bool BlackBerryApkFileExist
         {
-            get{ return !string.IsNullOrEmpty (RootPath) && !string.IsNullOrEmpty (BlackBerryApkFileName) && File.Exists (BlackBerryApkFile); }
+            get{ return !string.IsNullOrEmpty(RootPath) && !string.IsNullOrEmpty(BlackBerryApkFileName) && File.Exists(BlackBerryApkFile); }
         }
 
         public bool BlackBerryBarFileExist
         {
-            get{ return !string.IsNullOrEmpty (RootPath) && !string.IsNullOrEmpty (BlackBerryBarFileName) && File.Exists (BlackBerryBarFile); }
-        }
-
-		public FileStream GetAndroidApkStream()
-		{
-			return File.OpenRead (AndroidApkFile);
-		}
-
-        public FileStream GetBlackBerryApkStream()
-        {
-            return File.OpenRead (BlackBerryApkFile);
+            get{ return !string.IsNullOrEmpty(RootPath) && !string.IsNullOrEmpty(BlackBerryBarFileName) && File.Exists(BlackBerryBarFile); }
         }
 
         public FileStream GetBlackBerryBarStream()
         {
             return File.OpenRead (BlackBerryBarFile);
+        }
+
+        public FileStream GetBlackBerryApkStream()
+        {
+            return File.OpenRead (BlackBerryApkFile);
         }
 	}
 }

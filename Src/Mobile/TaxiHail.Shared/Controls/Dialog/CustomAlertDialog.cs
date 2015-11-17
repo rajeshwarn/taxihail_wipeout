@@ -10,6 +10,10 @@ using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using Android.Text;
 using System.Threading.Tasks;
+#if CALLBOX
+using apcurium.MK.Callbox.Mobile.Client.Helpers;
+using apcurium.MK.Callbox.Mobile.Client;
+#endif
 using Android.Views.InputMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
@@ -200,7 +204,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Dialog
                     }
                     ToogleKeyboard(true, owner);
                     HideAnimate();
-
                 };
             _twoButtonsPositive.Text = Mvx.Resolve<ILocalization>()["OkButtonText"];
             _twoButtonsPositive.Click += (sender, e) => 

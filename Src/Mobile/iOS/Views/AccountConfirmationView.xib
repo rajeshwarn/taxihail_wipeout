@@ -91,7 +91,6 @@
                                 </textField>
                             </subviews>
                             <animations/>
-                            <color key="backgroundColor" red="0.0" green="0.28235294119999998" blue="0.50588235290000005" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstItem="8DL-OJ-ArV" firstAttribute="top" secondItem="x2Y-aa-0RL" secondAttribute="top" id="7Gn-Ue-Xss"/>
                                 <constraint firstItem="uCi-tq-Bo3" firstAttribute="leading" secondItem="x2Y-aa-0RL" secondAttribute="leading" id="Phb-zh-awI"/>

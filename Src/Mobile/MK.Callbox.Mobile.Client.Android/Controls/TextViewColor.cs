@@ -13,6 +13,7 @@ using Android.Widget;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Controls
 {
+	[Register("apcurium.mk.callbox.mobile.client.controls.TextViewColor")]
     public class TextViewColor : TextView
     {
         public Android.Graphics.Color TextColor

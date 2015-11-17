@@ -72,21 +72,20 @@ namespace DeploymentServiceTools
                     multipartFormDataContent.Add(barContent);
                 }
 
+			    {
+                    var apkContent = new StreamContent(deployment.GetCallboxApkStream());
+                    apkContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    apkContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = deployment.CallboxApkFileName };
+                    multipartFormDataContent.Add(apkContent);
+                }
+
                 using (var client = CustomerPortalHttpClientProvider.Get())
                 {
                     var result = client.PostAsync("admin/version", multipartFormDataContent).Result;
 
-                    var message = string.Empty;
-                    if (result.IsSuccessStatusCode)
-                    {
-                        message = string.Format("Version {0} created for company {1}", versionNumber, companyKey);
-                    }
-                    else
-                    {
-                        message = string.Format("Version could not be created: HttpError: {0}", result.Content.ReadAsStringAsync().Result);
-                    }
-
-                    return message;
+                    return result.IsSuccessStatusCode
+                        ? string.Format("Version {0} created for company {1}", versionNumber, companyKey)
+                        : string.Format("Version could not be created: HttpError: {0}", result.Content.ReadAsStringAsync().Result);
                 }
 			}
 		}

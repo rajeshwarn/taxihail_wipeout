@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Android.App;
 using Android.Content;
-using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Models;
 using Cirrious.CrossCore.Droid;
