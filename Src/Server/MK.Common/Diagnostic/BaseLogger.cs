@@ -1,9 +1,9 @@
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reactive.Disposables;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Common.Diagnostic
 {
@@ -17,30 +17,34 @@ namespace apcurium.MK.Common.Diagnostic
 
 		private static int RetainMergedFileTime = 1; // hours
 
-		private string firstLogFileFullName;
-		private string secondLogFileFullName;
-		private string mergedLogFileFullName;
-		private string activeFileFullName;
-		private string inactiveFileFullName;
+		private string _firstLogFileFullName;
+		private string _secondLogFileFullName;
+		private string _mergedLogFileFullName;
+		private string _activeFileFullName;
+		private string _inactiveFileFullName;
 
-		private object _fileSwitchExclusiveAccess = new object();
-
-		private string messageBase;
+		private readonly object _fileSwitchExclusiveAccess = new object();
 		
-		public void LogError(Exception ex)
-        {
-            if (ex is AggregateException) 
+		public void LogError(Exception ex, string method, int lineNumber)
+		{
+		    var aggregateException = ex as AggregateException;
+            if (aggregateException != null) 
             {
-                ((AggregateException)ex).Handle (x => 
+                aggregateException.Handle (x => 
                 {
-                    LogError (x, 0);
+                    LogError (x, 0, method, lineNumber);
                     return true;
                 });
             } 
             else 
             {            
-                LogError (ex, 0);
+                LogError (ex, 0, method, lineNumber);
             }
+        }
+
+        public void LogError(Exception ex)
+        {
+            LogError(ex, string.Empty, -1);
         }
 
         public void LogMessage(string message, params object[] args)
@@ -83,16 +87,20 @@ namespace apcurium.MK.Common.Diagnostic
                 });
         }
 
-        private void LogError(Exception ex, int indent)
+        private void LogError(Exception ex, int indent, string method, int lineNumber)
         {
-            string indentStr = "";
-            for (int i = 0; i < indent; i++)
+            var indentStr = "";
+            for (var i = 0; i < indent; i++)
             {
                 indentStr += "   ";
             }
             if (indent == 0)
             {
-                Write(string.Format("{0}Error on {1}", indentStr, DateTime.Now));
+                var errorMessage = method.HasValueTrimmed() && lineNumber > -1
+                    ? string.Format("{0}Error on {1} at {2}:{3}", indentStr, DateTime.Now, method, lineNumber)
+                    : string.Format("{0}Error on {1}", indentStr, DateTime.Now);
+
+                Write(errorMessage);
             }
 
             Write(string.Format ("{0}Message : {1}", indentStr, ex.Message));
@@ -100,7 +108,7 @@ namespace apcurium.MK.Common.Diagnostic
 
             if (ex.InnerException != null)
             {
-                LogError(ex.InnerException, ++indent);
+                LogError(ex.InnerException, ++indent, method, lineNumber);
             }
         }
 
@@ -115,58 +123,53 @@ namespace apcurium.MK.Common.Diagnostic
 				Directory.CreateDirectory(GetBaseDirectory());
 			}
 
-			if (firstLogFileFullName == null || secondLogFileFullName == null || mergedLogFileFullName == null)
+			if (_firstLogFileFullName == null || _secondLogFileFullName == null || _mergedLogFileFullName == null)
 			{
-				firstLogFileFullName = Path.Combine(GetBaseDirectory(), FirstLogFileName);
-				secondLogFileFullName = Path.Combine(GetBaseDirectory(), SecondLogFileName);
+				_firstLogFileFullName = Path.Combine(GetBaseDirectory(), FirstLogFileName);
+				_secondLogFileFullName = Path.Combine(GetBaseDirectory(), SecondLogFileName);
 
-				activeFileFullName = firstLogFileFullName;
-				inactiveFileFullName = secondLogFileFullName;
+				_activeFileFullName = _firstLogFileFullName;
+				_inactiveFileFullName = _secondLogFileFullName;
 
-				mergedLogFileFullName = Path.Combine(GetBaseDirectory(), MergedLogFileName);
+				_mergedLogFileFullName = Path.Combine(GetBaseDirectory(), MergedLogFileName);
 			}
 
 			long activeFileLength = 0;
 
-			if (File.Exists(activeFileFullName))
+			if (File.Exists(_activeFileFullName))
 			{
-				var activeFileInfo = new FileInfo(activeFileFullName);
+				var activeFileInfo = new FileInfo(_activeFileFullName);
 				activeFileLength = activeFileInfo.Length;
 			}
 
 			if (activeFileLength + nextMessageLength >= LogFileMaximumSize)
 			{
-				if (File.Exists(inactiveFileFullName))
+				if (File.Exists(_inactiveFileFullName))
 				{
-					File.Delete(inactiveFileFullName);
+					File.Delete(_inactiveFileFullName);
 				}
 
-				var tempFN = activeFileFullName;
-				activeFileFullName = inactiveFileFullName;
-				inactiveFileFullName = tempFN;
+				var tempFullName = _activeFileFullName;
+				_activeFileFullName = _inactiveFileFullName;
+				_inactiveFileFullName = tempFullName;
 			}
 
-			if (File.Exists(mergedLogFileFullName) && (DateTime.Now - (new FileInfo(mergedLogFileFullName)).LastWriteTime).TotalHours >= RetainMergedFileTime)
+			if (File.Exists(_mergedLogFileFullName) && (DateTime.Now - (new FileInfo(_mergedLogFileFullName)).LastWriteTime).TotalHours >= RetainMergedFileTime)
 			{
-				File.Delete(inactiveFileFullName);
+				File.Delete(_inactiveFileFullName);
 			}
 		}
 
 		private void Write(string message)
 		{
-			if (messageBase == null)
-			{
-				messageBase = GetMessageBase();
-			}
-
-			var messageWithUserName = message + messageBase;
+            var messageWithUserName = message + GetMessageBase();
 
 
 			lock (_fileSwitchExclusiveAccess)
 			{
 				SetActiveLogFile(messageWithUserName.Length);
 
-				File.AppendAllLines(activeFileFullName, new[] { messageWithUserName });
+				File.AppendAllLines(_activeFileFullName, new[] { messageWithUserName });
 			}
 
 
@@ -179,14 +182,14 @@ namespace apcurium.MK.Common.Diagnostic
 
 			var nonEmptyLogs = new List<string>();
 
-			if (File.Exists(inactiveFileFullName) && (new FileInfo(inactiveFileFullName)).Length > 0)
+			if (File.Exists(_inactiveFileFullName) && (new FileInfo(_inactiveFileFullName)).Length > 0)
 			{
-				nonEmptyLogs.Add(inactiveFileFullName);
+				nonEmptyLogs.Add(_inactiveFileFullName);
 			}
 
-			if (File.Exists(activeFileFullName) && (new FileInfo(activeFileFullName)).Length > 0)
+			if (File.Exists(_activeFileFullName) && (new FileInfo(_activeFileFullName)).Length > 0)
 			{
-				nonEmptyLogs.Add(activeFileFullName);
+				nonEmptyLogs.Add(_activeFileFullName);
 			}
 
 			return nonEmptyLogs.ToArray();
@@ -198,38 +201,38 @@ namespace apcurium.MK.Common.Diagnostic
 			{
 				var logFiles = GetLogFilesFullName();
 
-				if (logFiles.Length > 0)
-				{
-					var mergedLogFile = Path.Combine(GetBaseDirectory(), MergedLogFileName);
+			    if (logFiles.Length <= 0)
+			    {
+			        return null;
+			    }
 
-					File.Copy(logFiles[0], mergedLogFile, true);
+			    var mergedLogFile = Path.Combine(GetBaseDirectory(), MergedLogFileName);
 
-					for (int i = 1; i < logFiles.Length; i++)
-					{
-						var currentLogStream = File.OpenRead(logFiles[i]);
-						var currentStreamReader = new StreamReader(currentLogStream);
+			    File.Copy(logFiles[0], mergedLogFile, true);
 
-						var h = currentStreamReader.ReadToEnd();
-						currentStreamReader.Close();
-						currentLogStream.Close();
+			    for (var i = 1; i < logFiles.Length; i++)
+			    {
+			        var currentLogStream = File.OpenRead(logFiles[i]);
+			        var currentStreamReader = new StreamReader(currentLogStream);
 
-						File.AppendAllText(mergedLogFile, h);
-					}
+			        var h = currentStreamReader.ReadToEnd();
+			        currentStreamReader.Close();
+			        currentLogStream.Close();
 
-					return mergedLogFile;
-				}
+			        File.AppendAllText(mergedLogFile, h);
+			    }
+
+			    return mergedLogFile;
 			}
-
-			return null;
 		}
 
 		public void RemoveMergedFile()
 		{
 			lock (_fileSwitchExclusiveAccess)
 			{
-				if (mergedLogFileFullName != null && File.Exists(mergedLogFileFullName))
+				if (_mergedLogFileFullName != null && File.Exists(_mergedLogFileFullName))
 				{
-					File.Delete(mergedLogFileFullName);
+					File.Delete(_mergedLogFileFullName);
 				}
 			}
 		}
