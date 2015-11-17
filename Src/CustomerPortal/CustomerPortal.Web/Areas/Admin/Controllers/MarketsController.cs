@@ -38,7 +38,11 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             // Find all vehicle type for this market
             var market = Repository.GetMarket(marketModel.Market);
-            
+            if (market == null)
+            {
+                return View(new MarketModel());
+            }
+
             return View(new MarketModel
             {
                 Market = marketModel.Market,
@@ -225,12 +229,19 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             try
             {
                 var marketToEdit = Repository.GetMarket(market);
+                if (marketToEdit == null)
+                {
+                    ViewBag.Error = "An error occured. Market is null.";
+
+                    return RedirectToAction("Index");
+                }
+
                 marketToEdit.EnableDriverBonus = enableDriverBonus;
                 Repository.Update(marketToEdit);
             }
             catch (Exception)
             {
-                ViewBag.Error = "An error occured. Unable to delete the vehicle.";
+                ViewBag.Error = "An error occured. Unable to save the settings.";
             }
 
             return RedirectToAction("Index");
