@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool ZoneRequired { get; set; }
 
-		public bool ExcludeCircularZone  { get; set; }
+		public bool ExcludeCircularZone { get; set; }
 
 		public double ExcludedCircularZoneLatitude { get; set; }
 
