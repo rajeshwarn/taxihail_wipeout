@@ -72,6 +72,7 @@ namespace DeploymentServiceTools
                     multipartFormDataContent.Add(barContent);
                 }
 
+                if (deployment.CallboxApkFileExist)
 			    {
                     var apkContent = new StreamContent(deployment.GetCallboxApkStream());
                     apkContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");

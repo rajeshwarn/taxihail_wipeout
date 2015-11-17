@@ -285,41 +285,41 @@ namespace MK.DeploymentService.Mobile
 		        }
 		    }
 
-                if (_job.BlackBerry) 
+            if (_job.BlackBerry) 
+            {
+                _logger.DebugFormat ("Copying BlackBerry Apk");
+                var apkBlackBerryFile = GetBlackBerryApkFile(apkBlackBerryPath);
+                var barFile = GetBlackBerryBarFile(barPath);
+
+                if (apkBlackBerryFile != null) {
+                    var fileInfo = new FileInfo (apkBlackBerryFile); 
+                    var newName = fileInfo.Name.Replace (".apk", "_blackberry.apk");
+                    var targetDir = Path.Combine (targetDirWithoutFileName, newName);
+                    if (File.Exists (targetDir))
+                        File.Delete (targetDir);
+                    File.Copy (apkBlackBerryFile, targetDir);
+
+                    result.BlackBerryApkFileName = newName;
+
+                } 
+                else 
                 {
-                    _logger.DebugFormat ("Copying BlackBerry Apk");
-                    var apkBlackBerryFile = GetBlackBerryApkFile(apkBlackBerryPath);
-                    var barFile = GetBlackBerryBarFile(barPath);
-
-                    if (apkBlackBerryFile != null) {
-                        var fileInfo = new FileInfo (apkBlackBerryFile); 
-                        var newName = fileInfo.Name.Replace (".apk", "_blackberry.apk");
-                        var targetDir = Path.Combine (targetDirWithoutFileName, newName);
-                        if (File.Exists (targetDir))
-                            File.Delete (targetDir);
-                        File.Copy (apkBlackBerryFile, targetDir);
-
-                        result.BlackBerryApkFileName = newName;
-
-                    } 
-                    else 
-                    {
-                        throw new Exception ("Can't find the APK BlackBerry file in the release dir");
-                    }
-
-                    if (barPath != null) {
-                        var fileInfo = new FileInfo (barFile); 
-                        var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
-                        if (File.Exists (targetDir))
-                            File.Delete (targetDir);
-                        File.Copy (barFile, targetDir);
-
-                        result.BlackBerryBarFileName= fileInfo.Name;
-
-                    } else {
-                        throw new Exception ("Can't find the BAR BlackBerry file in the release dir");
-                    }
+                    throw new Exception ("Can't find the APK BlackBerry file in the release dir");
                 }
+
+                if (barPath != null) {
+                    var fileInfo = new FileInfo (barFile); 
+                    var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
+                    if (File.Exists (targetDir))
+                        File.Delete (targetDir);
+                    File.Copy (barFile, targetDir);
+
+                    result.BlackBerryBarFileName= fileInfo.Name;
+
+                } else {
+                    throw new Exception ("Can't find the BAR BlackBerry file in the release dir");
+                }
+            }
 
 		    if (_job.CallBox)
 		    {
