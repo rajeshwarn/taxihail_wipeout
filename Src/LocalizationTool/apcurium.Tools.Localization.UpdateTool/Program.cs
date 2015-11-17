@@ -70,13 +70,17 @@ namespace apcurium.Tools.Localization.UpdateTool
                     switch (target)
                     {
                         case "android":
-                            AndroidLanguageFileManager.CreateResourceFileIfNecessary(lang);
+                            AndroidLanguageFileManager.CreateAndroidClientResourceFileIfNecessary(lang);
                             resourceManager.AddDestination(handler = new AndroidResourceFileHandler(destination, lang));
                             break;
                         case "ios":
                             iOSLanguageFileManager.CreateResourceFileIfNecessary(lang);
                             resourceManager.AddDestination(handler = new iOSResourceFileHandler(destination, lang ));
                             break;
+						case "callbox":
+							AndroidLanguageFileManager.CreateCallboxClientResourceFileIfNecessary(lang);
+							resourceManager.AddDestination(handler = new AndroidResourceFileHandler(destination, lang));
+							break;
                         default:
                             throw new InvalidOperationException("Invalid program arguments");
                     }

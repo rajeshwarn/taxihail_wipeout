@@ -12,7 +12,7 @@
         android:layout_gravity="top|left" />
     <apcurium.mk.callbox.mobile.client.controls.StyledButton
         local:ButtonStyle="Black"
-        local:MvxBind="{'Click':{'Path':'CallTaxi'}}"
+        local:MvxBind="Click CallTaxi"
         android:background="@drawable/newBlackButton"
         android:text="@string/PushTaxi"
         android:layout_alignParentRight="true"
