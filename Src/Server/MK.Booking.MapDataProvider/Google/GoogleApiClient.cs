@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Text;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using System.Threading.Tasks;

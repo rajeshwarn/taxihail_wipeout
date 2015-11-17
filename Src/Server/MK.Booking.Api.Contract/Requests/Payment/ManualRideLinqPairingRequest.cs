@@ -1,7 +1,5 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Common.Entity;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {

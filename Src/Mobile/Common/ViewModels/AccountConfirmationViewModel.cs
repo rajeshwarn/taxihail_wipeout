@@ -4,10 +4,8 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common;
 using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Diagnostic;
 using System.Globalization;
 

@@ -18,7 +18,6 @@ using Cirrious.CrossCore;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Resources;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

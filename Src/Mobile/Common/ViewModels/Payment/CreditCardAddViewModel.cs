@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -15,10 +14,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -86,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			if (paymentToSettle != null)
 			{
-				_paymentToSettle = JsonSerializer.DeserializeFromString<OverduePayment>(paymentToSettle);
+			    _paymentToSettle = paymentToSettle.FromJson<OverduePayment>();
 			}
 
 		}

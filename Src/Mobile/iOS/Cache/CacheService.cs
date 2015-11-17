@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Helper;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using Foundation;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client.Cache
 {
@@ -20,7 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
         #region ICacheService implementation
         public T Get<T>(string key) where T : class
         {
-            JsConfig.DateHandler = JsonDateHandler.ISO8601;
             var serialized = NSUserDefaults.StandardUserDefaults.StringForKey(_cacheKey + key);
            
             //Console.WriteLine( "-----------------------------ICacheService " + key + " : " + serialized );
@@ -29,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 
             if ((serialized.HasValue()) && (serialized.ToLowerInvariant().Contains("expiresat"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
             {
-                var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
+                var cacheItem = serialized.FromJson<CacheItem<T>>();
                 if ((cacheItem != null) && (cacheItem.ExpiresAt > DateTime.Now))
                 {
                     result = cacheItem.Value;
@@ -37,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
             }
             else if (serialized.HasValue()) //Support for older cached item
             {
-                var item = JsonSerializer.DeserializeFromString<T>(serialized);
+                var item = serialized.FromJson<T>();
                 if (item != null)
                 {
                     result = item;
@@ -56,10 +55,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 
         public void Set<T>(string key, T obj, DateTime expiresAt) where T : class
         {
-            JsConfig.DateHandler = JsonDateHandler.ISO8601;    
-
             var item = new CacheItem<T>(obj, expiresAt);
-            var serialized = JsonSerializer.SerializeToString(item);
+            var serialized = item.ToJson();
             NSUserDefaults.StandardUserDefaults.SetStringOrClear(serialized, _cacheKey + key);               
         }
         public void Clear(string key)

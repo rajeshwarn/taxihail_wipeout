@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {

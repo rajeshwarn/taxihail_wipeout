@@ -2,7 +2,6 @@
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceClient.Web;
 using System.Globalization;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
@@ -62,7 +61,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			var client = new JsonServiceClient(ApiUrl);
 			var searchAnswer = client.Get<FoursquareVenuesResponse<SearchResponse>>(searchQueryString);
 
-			List<Venue> venuesSearch = new List<Venue>();
+			var venuesSearch = new List<Venue>();
 			if (searchAnswer.Response.Venues != null && searchAnswer.Response.Venues.Length > 0)
 			{
 				venuesSearch.AddRange(searchAnswer.Response.Venues);
@@ -74,9 +73,9 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			var exploreQuery = GetBaseQueryString(latitude, longitude, radius, FoursquareQueryType.Explore);
 			FoursquareVenuesResponse<ExploreResponse> exploreAnswer;
 
-			List<Venue> venuesExplore = new List<Venue>();
+			var venuesExplore = new List<Venue>();
 
-			uint maximumPagesByDemand = (uint)(Math.Ceiling((double)maximumNumberOfPlaces / (double)MaximumPageLength));
+			var maximumPagesByDemand = (uint)(Math.Ceiling((double)maximumNumberOfPlaces / (double)MaximumPageLength));
 
 			do
 			{
@@ -91,7 +90,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 					throw ex;
 				}
 
-				uint maximumPagesByResponse = (uint)(Math.Ceiling((double)exploreAnswer.Response.TotalResults / (double)MaximumPageLength));
+				var maximumPagesByResponse = (uint)(Math.Ceiling((double)exploreAnswer.Response.TotalResults / (double)MaximumPageLength));
 				pages = Math.Min(Math.Min(maximumPagesByResponse, maximumPagesByDemand), MaximumPagesLimit);
 
 				venuesExplore.AddRange(from gr in exploreAnswer.Response.Groups
@@ -102,7 +101,7 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			while (page < pages && exploreAnswer.Response.Groups != null && exploreAnswer.Response.Groups.Length > 0);
 
 
-			List<Venue> allVenues = new List<Venue>();
+			var allVenues = new List<Venue>();
 
 			allVenues.AddRange(venuesExplore);
 			allVenues.AddRange(from vs in venuesSearch
@@ -187,7 +186,8 @@ namespace MK.Booking.MapDataProvider.Foursquare
 			var location = venue.Response.Venue.location;
 			string street = null;
 			string streetNumber = null;
-			if (!string.IsNullOrEmpty (location.address) && (char.IsNumber (location.address.FirstOrDefault ())) && location.address.Any( c=> c==' ' )) {
+			if (!string.IsNullOrEmpty (location.address) && (char.IsNumber (location.address.FirstOrDefault ())) && location.address.Any( c=> c==' ' ))
+            {
 				streetNumber = location.address.Split (' ') [0];
 				street = location.address.Substring (location.address.IndexOf (' '), location.address.Length - location.address.IndexOf (' ')).Trim(); 
 			}

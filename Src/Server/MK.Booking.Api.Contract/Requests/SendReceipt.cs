@@ -1,9 +1,6 @@
 ﻿#region
 
 using System;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.ServiceModel;
 
 #endregion
 

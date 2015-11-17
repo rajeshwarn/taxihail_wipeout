@@ -19,9 +19,6 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.ServiceInterface.ServiceModel;
-using ServiceStack.Text;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Provider;
 

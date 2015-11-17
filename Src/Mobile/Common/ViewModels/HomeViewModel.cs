@@ -17,7 +17,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
-using ServiceStack.Text;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -92,11 +91,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void Init(bool locateUser, string defaultHintZoomLevel, string order, string orderStatusDetail, string manualRidelinqDetail)
         {
 			_locateUser = locateUser;
-			_defaultHintZoomLevel = JsonSerializer.DeserializeFromString<ZoomToStreetLevelPresentationHint> (defaultHintZoomLevel);
+		    _defaultHintZoomLevel = defaultHintZoomLevel.FromJson<ZoomToStreetLevelPresentationHint>();
 
 			if (manualRidelinqDetail != null)
 			{
-				var deserializedRidelinqDetails = JsonSerializer.DeserializeFromString<OrderManualRideLinqDetail>(manualRidelinqDetail);
+			    var deserializedRidelinqDetails = manualRidelinqDetail.FromJson<OrderManualRideLinqDetail>();
 
 				CurrentViewState = HomeViewModelState.ManualRidelinq;
 
@@ -107,8 +106,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (order != null && orderStatusDetail != null)
 			{
-				var deserializedOrder = JsonSerializer.DeserializeFromString<Order>(order);
-				var deserializeOrderStatus = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatusDetail);
+			    var deserializedOrder = order.FromJson<Order>();
+			    var deserializeOrderStatus = orderStatusDetail.FromJson<OrderStatusDetail>();
 
 				CurrentViewState = HomeViewModelState.BookingStatus;
 

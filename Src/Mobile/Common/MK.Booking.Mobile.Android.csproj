@@ -117,6 +117,7 @@
     <Compile Include="AppServices\Impl\AirportInformationService.cs" />
     <Compile Include="AppServices\Impl\MetricsService.cs" />
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
+    <Compile Include="AppServices\Impl\NewtonsoftJsonSerializer.cs" />
     <Compile Include="AppServices\Impl\POIProvider.cs" />
     <Compile Include="AppServices\Impl\PromotionService.cs" />
     <Compile Include="AppServices\INetworkRoamingService.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Data\TutorialContent.cs" />
     <Compile Include="Data\TutorialItem.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
+    <Compile Include="Extensions\JsonSerializerExtensions.cs" />
     <Compile Include="Framework\DisposableAction.cs" />
     <Compile Include="Framework\Extensions\ActionExtensions.cs" />
     <Compile Include="Framework\Extensions\Calendar\ByteTimeSpanExtensions.cs" />

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration;
 
@@ -26,9 +25,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
 	    public void Init(string overduePayment)
-		{
-			OverduePayment = JsonSerializer.DeserializeFromString<OverduePayment>(overduePayment);
-		}
+	    {
+			OverduePayment = overduePayment.FromJson<OverduePayment>();
+        }
 
 		private OverduePayment _overduePayment;
 		public OverduePayment OverduePayment
@@ -81,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                             if (overduePaymentResult.IsSuccessful)
                             {
                                 // Fire and forget to update creditcard cache, we do not need to wait for this.
-                                Task.Run(() => _accountService.GetDefaultCreditCard());
+                                Task.Run(() => _accountService.GetDefaultCreditCard()).FireAndForget();
 
                                 var message = string.Format(localize["Overdue_Succeed_Message"],
                                     string.Format(new CultureInfo(Settings.PriceFormat), localize["CurrencyPriceFormat"], _overduePayment.OverdueAmount));

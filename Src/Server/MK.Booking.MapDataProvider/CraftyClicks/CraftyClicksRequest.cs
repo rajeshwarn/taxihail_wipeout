@@ -1,6 +1,4 @@
 using apcurium.MK.Booking.MapDataProvider.CraftyClicks.Resources;
-using ServiceStack.ServiceHost;
-
 namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 {
     [Route("/rapidaddress", "POST")]

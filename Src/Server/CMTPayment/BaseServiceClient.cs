@@ -1,8 +1,6 @@
 using System;
 using System.Net;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 
 namespace CMTPayment
 {

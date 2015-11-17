@@ -10,10 +10,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Helpers;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 using apcurium.MK.Common;
-using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

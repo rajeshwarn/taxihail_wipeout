@@ -12,10 +12,8 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.ServiceClient.Web;
 using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox

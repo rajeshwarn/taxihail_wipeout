@@ -7,7 +7,6 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Entity;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

@@ -2,11 +2,10 @@ using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.PresentationHints;
-using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -60,14 +59,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var ackKey = GetTermsAcknowledgmentKey (currentAccount.Email);
 			var termsAcknowledged = _cacheService.Get<string>(ackKey);
 
-			if (response.Updated || !(termsAcknowledged == "yes"))
+			if (response.Updated || termsAcknowledged != "yes")
 			{				
 				_cacheService.Clear(ackKey);
 				actionToDoIfTrue.Invoke(new 
 					{
 						content = response.Content
-					}.ToStringDictionary(),
-					async acknowledged =>
+					}.ToJson(),
+                    acknowledged =>
 					{
 						actionToDoOnReturn.Invoke(initialLocateUserValue, initialHintValue);
 						AcknowledgeTerms(acknowledged, _accountService.CurrentAccount.Email);

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.MapDataProvider.TomTom
 {
