@@ -1016,6 +1016,12 @@ namespace DatabaseInitializer
                 needsUpdate = true;
             }
 
+            if (serverSettings.ServerData.CreditCardIsMandatory)
+            {
+                paymentSettings.CreditCardIsMandatory = true;
+                needsUpdate = true;
+            }
+
             if (needsUpdate)
             {
                 commandBus.Send(new UpdatePaymentSettings

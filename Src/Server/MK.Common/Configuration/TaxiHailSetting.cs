@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Attributes;
@@ -368,6 +369,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide Call Dispatch Button", Description="Hide button to call dispatch in panel menu, status screens")]
         public bool HideCallDispatchButton { get; protected set; }
 
+        [Obsolete("Use PaymentSetting 'CreditCardIsMandatory' instead")]
         [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Payment - Payment Method Mandatory", Description="If true, the user needs to have a payment method associated to his account (ie: Card on File or Paypal)")]
         public bool CreditCardIsMandatory { get; protected set; }
