@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
 			if (request.ZoneRequired && request.ExcludeCircularZone)
 			{
-				throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.RuleTwoTypeZoneVerificationSelected.ToString());
+				throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.Rule_TwoTypeZoneVerificationSelected.ToString());
 			}
 
             //Check if rate with same name already exists
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
 			if (request.ZoneRequired && request.ExcludeCircularZone)
 			{
-				throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.RuleTwoTypeZoneVerificationSelected.ToString());
+				throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.Rule_TwoTypeZoneVerificationSelected.ToString());
 			}
 
             //Check if rate with same name already exists

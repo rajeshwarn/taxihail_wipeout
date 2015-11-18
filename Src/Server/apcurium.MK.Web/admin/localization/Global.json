@@ -51,7 +51,7 @@
     "error.invalidNetworkPassengerNumber": "The max # of passengers for this vehicle is too small for the selected network vehicle type",
 	"Rule_InvalidPriority" : "Invalid priority ( maybe already used ? )",
 	"Rule_DuplicateName": "Name already used",
-	"RuleTwoTypeZoneVerificationSelected": "IBS Zone Required and Exclude Circular Zone cannot be selected simultaneously",
+	"Rule_TwoTypeZoneVerificationSelected": "IBS Zone Required and Exclude Circular Zone cannot be selected simultaneously",
 	"Loading" : "Loading",
 	"Popular Locations" : "Popular Locations",
 	"Save" : "Save",

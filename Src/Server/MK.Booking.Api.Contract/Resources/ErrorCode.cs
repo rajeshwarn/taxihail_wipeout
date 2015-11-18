@@ -31,7 +31,7 @@
         ManualRideLinq_NoCardOnFile,
         ManualRideLinq_CardOnFileDeactivated,
 		EmailAlreadyUsed,
-		RuleTwoTypeZoneVerificationSelected
+		Rule_TwoTypeZoneVerificationSelected
  // ReSharper restore InconsistentNaming
     }
 }
