@@ -11,10 +11,10 @@
             'change [id=sandboxClientSecret]': 'onPayPalSettingsChanged',
             'change [id=prodClientId]': 'onPayPalSettingsChanged',
             'change [id=prodClientSecret]': 'onPayPalSettingsChanged',
-            'change [name=isChargeAccountPaymentEnabled]': 'checkForPaymentMethodMandatory',
-            'change [name=isOutOfAppPaymentDisabled]': 'checkForPaymentMethodMandatory',
-            'change [name=isPayInTaxiEnabled]': 'checkForPaymentMethodMandatory',
-            'change [name=paymentMode]': 'onPaymentModeChanged',
+            'change [name=isChargeAccountPaymentEnabled]': 'canPaymentMethodBeMandatory',
+            'change [name=isOutOfAppPaymentDisabled]': 'canPaymentMethodBeMandatory',
+            'change [name=isPayInTaxiEnabled]': 'canPaymentMethodBeMandatory',
+            'change [name=paymentMode]': 'canPaymentMethodBeMandatory',
             'change [name=acceptChange]': 'onAcceptSettingsChanged',
             'change [name=acceptPayPalChange]': 'onAcceptSettingsChanged',
             'change [name=acceptChangeChargeAccount]': 'onAcceptSettingsChanged',
@@ -52,7 +52,7 @@
             this.onPayPalSettingsChanged();
 
             this.onChargeAccountSettingsChanged();
-            this.checkForPaymentMethodMandatory();
+            this.canPaymentMethodBeMandatory();
 
             this.validate({
                 rules: {
@@ -207,25 +207,32 @@
             this.onAcceptSettingsChanged();
         },
 
-        checkForPaymentMethodMandatory: function (event) {
+        canPaymentMethodBeMandatory: function (event) {
 
-           
+            if (event) {
+
+                if (event.target.name == 'isChargeAccountPaymentEnabled') {
+                    this.onChargeAccountSettingsChanged();
+                }
+
+                if (event.target.name == 'paymentMode') {
+                    this.onPaymentModeChanged();
+                }
+            }
+
             var newIsChargeAccountPaymentEnabled = this.$("[name = isChargeAccountPaymentEnabled]").val() == 'true';
             var newIsOutOfAppPaymentDisabled = this.$("[name = isOutOfAppPaymentDisabled]").val() == 'true';
             var newIsPayInTaxiEnabled = this.$("[name = isPayInTaxiEnabled]").val() == 'true';
+            var newPaymentMode = this.$("[name = paymentMode]").val();
 
             var inputCreditCardMadatory = this.$("[name=creditCardIsMandatory]");
 
-            if (!newIsChargeAccountPaymentEnabled && !newIsPayInTaxiEnabled && newIsOutOfAppPaymentDisabled) {
+            if ((!newIsChargeAccountPaymentEnabled && !newIsPayInTaxiEnabled && newIsOutOfAppPaymentDisabled) || newPaymentMode == 'None') {
                 inputCreditCardMadatory.val('false');
                 inputCreditCardMadatory.attr('disabled', 'disabled');
             } else {
                 inputCreditCardMadatory.val(this.updatedModel.creditCardIsMandatory.toString());
                 inputCreditCardMadatory.removeAttr('disabled');
-            }
-
-            if (event && event.target.name == 'isChargeAccountPaymentEnabled') {
-                this.onChargeAccountSettingsChanged();
             }
         },
         
