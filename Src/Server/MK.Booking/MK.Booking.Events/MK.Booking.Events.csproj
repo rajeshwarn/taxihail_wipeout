@@ -95,7 +95,6 @@
     <Compile Include="OverduePaymentSettled.cs" />
     <Compile Include="PaymentModeChanged.cs" />
     <Compile Include="PaymentSettingUpdated.cs" />
-    <Compile Include="DeviceUnregisteredForPushNotifications.cs" />
     <Compile Include="PayPalAccountLinked.cs" />
     <Compile Include="PayPalAccountUnlinked.cs" />
     <Compile Include="PayPalExpressCheckoutPaymentCancelled.cs" />
@@ -124,7 +123,6 @@
     <Compile Include="DefaultFavoriteAddressAdded.cs" />
     <Compile Include="DefaultFavoriteAddressRemoved.cs" />
     <Compile Include="DefaultFavoriteAddressUpdated.cs" />
-    <Compile Include="DeviceRegisteredForPushNotifications.cs" />
     <Compile Include="FavoriteAddressRemoved.cs" />
     <Compile Include="FavoriteAddressAdded.cs" />
     <Compile Include="FavoriteAddressUpdated.cs" />

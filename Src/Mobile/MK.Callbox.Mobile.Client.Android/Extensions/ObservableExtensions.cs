@@ -1,20 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using apcurium.MK.Common.Diagnostic;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Extensions
 {
-    public class ObservableExtensions
+    public static class ObservableExtensions
     {
-       
-
+	    public static IDisposable SubscribeAndLogErrors<T>(this IObservable<T> source, Action<T> onNext)
+	    {
+		    return source.Subscribe(onNext, Mvx.Resolve<ILogger>().LogError);
+	    }
     }
 }

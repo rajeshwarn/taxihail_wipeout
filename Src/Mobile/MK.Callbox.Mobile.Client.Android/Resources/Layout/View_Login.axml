@@ -26,7 +26,7 @@
             android:background="@android:color/transparent">
             <EditText
                 android:id="@+id/Username"
-                local:MvxBind="{'Text':{'Path':'Email'}}"
+                local:MvxBind="Text Email"
                 android:layout_width="250dip"
                 android:layout_height="40dip"
                 android:hint="@string/EmailLabel"
@@ -47,7 +47,7 @@
                 android:orientation="horizontal">
                 <EditText
                     android:id="@+id/Password"
-                    local:MvxBind="{'Text':{'Path':'Password'}}"
+                    local:MvxBind="Text Password"
                     android:layout_width="250dip"
                     android:layout_height="40dip"
                     android:hint="@string/PasswordLabel"
@@ -72,7 +72,7 @@
                     local:ButtonStyle="Black"
                     style="@style/ButtonText"
                     android:layout_weight="1"
-                    local:MvxBind="{'Click':{'Path':'SignInCommand'}}"
+                    local:MvxBind="Click SignInCommand"
                     android:background="@drawable/newBlackButton"
                     android:text="@string/SignInButton"
                     android:layout_alignParentRight="true"

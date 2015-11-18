@@ -120,6 +120,9 @@
   <data name="ApplicationName" xml:space="preserve">
     <value>TaxiHail</value>
   </data>
+  <data name="Callbox.ApplicationName" xml:space="preserve">
+    <value>TaxiHail Callbox</value>
+  </data>
   <data name="GoogleMapKey" xml:space="preserve">
     <value>AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo</value>
   </data>

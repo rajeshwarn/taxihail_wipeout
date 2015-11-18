@@ -106,7 +106,6 @@ namespace apcurium.MK.Web
             DisableImmediateBooking = config.ServerData.DisableImmediateBooking;
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
-            IsCreditCardMandatory = config.ServerData.CreditCardIsMandatory;
             ShowOrderNumber = config.ServerData.ShowOrderNumber;
 
             IsWebSocialMediaVisible = config.ServerData.IsWebSocialMediaVisible;
@@ -138,6 +137,8 @@ namespace apcurium.MK.Web
             WebSiteRootPath = HttpContext.Current.Request.ApplicationPath;
 
             var paymentSettings = config.GetPaymentSettings();
+
+            IsCreditCardMandatory = paymentSettings.CreditCardIsMandatory;
 
             AlwaysDisplayCoFOption = paymentSettings.AlwaysDisplayCoFOption;
             AskForCVVAtBooking = paymentSettings.AskForCVVAtBooking;

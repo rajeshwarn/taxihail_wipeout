@@ -30,6 +30,7 @@ using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
 using apcurium.MK.Common.Helpers;
 using System.Text.RegularExpressions;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
@@ -163,9 +164,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return Mvx.Resolve<OrderServiceClient>().GetOrderCountForAppRating();
 		}
 
-        public OrderStatusDetail[] GetActiveOrdersStatus()
+        public Task<OrderStatusDetail[]> GetActiveOrdersStatus()
         {
-			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus()).Result;
+			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus());
         }
 
 		public async Task<Address[]> GetFavoriteAddresses ()
@@ -313,7 +314,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			settings.CustomerNumber = customerNumber;
 
 			// no need to await since we're change it locally
-			UpdateSettings (settings, CurrentAccount.Email, CurrentAccount.DefaultTipPercent);
+			UpdateSettings(settings, CurrentAccount.Email, CurrentAccount.DefaultTipPercent).FireAndForget();
 		}
 
         public Task<string> UpdatePassword (Guid accountId, string currentPassword, string newPassword)
@@ -342,26 +343,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 switch (e.StatusCode)
                 {
 					case (int)HttpStatusCode.Unauthorized:
-					{
-						if (e.Message == AuthFailure.AccountNotActivated.ToString ())
+                    {
+                        if (e.Message == AuthFailure.AccountNotActivated.ToString ())
 						{
 							throw new AuthException ("Account not validated", AuthFailure.AccountNotActivated, e);
 						}
-						else if(e.Message == AuthFailure.FacebookEmailAlreadyUsed.ToString())
-						{
-							throw new AuthException("Facebook Email Already Used", AuthFailure.FacebookEmailAlreadyUsed, e);
-						}
-						else
-						{
-							throw new AuthException ("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
-						}
-					}
-					case (int)HttpStatusCode.NotFound:
+
+                        if(e.Message == AuthFailure.FacebookEmailAlreadyUsed.ToString())
+                        {
+                            throw new AuthException("Facebook Email Already Used", AuthFailure.FacebookEmailAlreadyUsed, e);
+                        }
+
+                        throw new AuthException ("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
+                    }
+                    case (int)HttpStatusCode.NotFound:
 					{
 						throw new AuthException ("Invalid service url", AuthFailure.InvalidServiceUrl, e);
 					}
                 }
-                throw;
+
+                if(!Mvx.Resolve<IErrorHandler>().HandleError(e))
+                {
+                    throw;
+                }
             }
             catch (Exception e)
             {
@@ -369,8 +373,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 {
                     throw new AuthException("Account disabled", AuthFailure.AccountDisabled, e);
                 }
-                throw;
+
+                if (Mvx.Resolve<IErrorHandler>().HandleError(e))
+                {
+                    throw;
+                }
             }
+
+		    return null;
         }
 
         private void SaveCredentials (AuthenticationData authResponse)

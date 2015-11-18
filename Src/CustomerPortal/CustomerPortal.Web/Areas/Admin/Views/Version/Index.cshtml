@@ -24,6 +24,7 @@
                     <th>IPA</th>
                     <th>IPA AppStore</th>
                     <th>APK</th>
+                    <th>APK Callbox</th>
                     <th>APK BlackBerry</th>
                     <th>BAR</th>
                     <th>Website</th>
@@ -61,6 +62,16 @@
                     <td>@if (version.HasApk)
                         {
                             <a href="@Url.Action("Package", "Distribution", new {area = "", id, version.Number, package = version.ApkFilename})">Download</a>
+                        }
+                        else
+                        {
+                            <text>-</text>
+                        }
+                    </td>
+                    <td>
+                        @if (version.HasApkCallbox)
+                        {
+                            <a href="@Url.Action("Package", "Distribution", new {area = "", id, version.Number, package = version.ApkCallboxFilename})">Download</a>
                         }
                         else
                         {

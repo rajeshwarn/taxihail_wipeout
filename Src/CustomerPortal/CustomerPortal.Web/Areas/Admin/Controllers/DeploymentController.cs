@@ -523,7 +523,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
             if (model.ServerUrlOptions == ServerUrlOptions.Arro)
             {
-                return string.Format("http://api.goarro.com/{0}/api/", company.CompanyKey);
+                return string.Format("https://api.goarro.com/{0}/api/", company.CompanyKey);
             }
             return null;
         }

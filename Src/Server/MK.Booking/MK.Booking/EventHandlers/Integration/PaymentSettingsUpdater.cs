@@ -30,8 +30,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(PaymentModeChanged @event)
         {
-            var forceUserDisconnect = _serverSettings.ServerData.CreditCardIsMandatory
-                    && _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+
+            var forceUserDisconnect = paymentSettings.CreditCardIsMandatory
+                    && paymentSettings.IsOutOfAppPaymentDisabled;
 
             _commandBus.Send(new DeleteCreditCardsFromAccounts
             {

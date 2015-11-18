@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
     {
         private readonly Context _context;
 
-		ILogger _logger;
+        private readonly ILogger _logger;
 
 		public Localize(Context context, ILogger logger)
         {

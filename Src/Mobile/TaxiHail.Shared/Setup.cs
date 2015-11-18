@@ -28,10 +28,8 @@ using apcurium.MK.Booking.MapDataProvider.Google;
 using Cirrious.CrossCore.Droid;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
 using MK.Booking.MapDataProvider.Foursquare;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Client.Services;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -62,8 +60,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		    var container = TinyIoCContainer.Current;
 
-            container.Register<IPackageInfo>(new PackageInfo(ApplicationContext));
-            container.Register<ILogger>(new LoggerImpl());
+			container.Register<ILogger>(new LoggerImpl());
+            container.Register<IPackageInfo>(new PackageInfo(ApplicationContext, container.Resolve<ILogger>()));
             container.Register<IMessageService, MessageService>();
             container.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
 
