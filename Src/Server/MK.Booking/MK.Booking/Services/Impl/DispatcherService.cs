@@ -183,18 +183,23 @@ namespace apcurium.MK.Booking.Services.Impl
                     availableFleetsInMarket);
             }
 
-            if (orderResult == null
+            if (orderResult != null
                 || orderResult.VehicleCandidates == null
                 || !orderResult.VehicleCandidates.Any())
             {
                 // Order couldn't be assigned to any vehicles
                 return new IBSOrderResult
                 {
-                    OrderKey = new OrderKey {IbsOrderId = -1, TaxiHailOrderId = orderId}
+                    OrderKey = new OrderKey { IbsOrderId = -1, TaxiHailOrderId = orderId },
+                    DispatcherTimedOut = true
                 };
             }
 
-            return Mapper.Map<IBSOrderResult>(orderResult);
+            return Mapper.Map<IBSOrderResult>(orderResult
+                ?? new IbsResponse
+                {
+                    OrderKey = new IbsOrderKey { IbsOrderId = -1, TaxiHailOrderId = orderId }
+                });
         }
 
         public void CancelIbsOrder(int? ibsOrderId, string companyKey, string phone, int ibsAccountId)

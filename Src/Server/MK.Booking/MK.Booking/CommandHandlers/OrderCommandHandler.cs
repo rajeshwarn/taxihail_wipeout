@@ -178,7 +178,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(CancelOrderBecauseOfError command)
         {
             var order = _repository.Find(command.OrderId);
-            order.CancelBecauseOfError(command.ErrorCode, command.ErrorDescription, command.WasPrepaid);
+            order.CancelBecauseOfError(command.ErrorCode, command.ErrorDescription, command.DispatcherTimedOut);
             _repository.Save(order, command.Id.ToString());
         }
         

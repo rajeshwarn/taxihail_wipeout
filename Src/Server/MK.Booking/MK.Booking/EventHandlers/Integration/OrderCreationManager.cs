@@ -64,6 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
 
             var ibsOrderId = @event.IBSOrderId;
+            bool dispatcherTimedOut = false;
 
             if (!ibsOrderId.HasValue)
             {
@@ -76,9 +77,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     @event.TipIncentive, companyFleedId: @event.CompanyFleetId);
 
                 ibsOrderId = result.OrderKey.IbsOrderId;
+                dispatcherTimedOut = result.DispatcherTimedOut;
             }
 
-            var success = SendOrderCreationCommands(@event.SourceId, ibsOrderId, @event.IsPrepaid, @event.ClientLanguageCode);
+            var success = SendOrderCreationCommands(@event.SourceId, ibsOrderId, dispatcherTimedOut, @event.ClientLanguageCode);
             if (success)
             {
                 SendConfirmationEmail(ibsOrderId.Value, @event.AccountId, @event.Settings, @event.ChargeTypeEmail,
@@ -101,7 +103,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 @event.ReferenceDataCompanyList.ToList(), @event.Market, @event.Settings.ChargeTypeId, @event.Settings.ProviderId, @event.Fare,
                 @event.TipIncentive);
 
-            SendOrderCreationCommands(@event.SourceId, result.OrderKey.IbsOrderId, @event.IsPrepaid, @event.ClientLanguageCode, true, @event.CompanyKey, @event.CompanyName, @event.Market);
+            SendOrderCreationCommands(@event.SourceId, result.OrderKey.IbsOrderId, false, @event.ClientLanguageCode, true, @event.CompanyKey, @event.CompanyName, @event.Market);
         }
 
         public void Handle(PrepaidOrderPaymentInfoUpdated @event)
@@ -120,7 +122,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 orderInfo.Request.ReferenceDataCompanyList.ToList(), orderInfo.Request.Market, orderInfo.Request.Settings.ChargeTypeId,
                 orderInfo.Request.Settings.ProviderId, orderInfo.Request.Fare, orderInfo.Request.TipIncentive);
 
-            var success = SendOrderCreationCommands(@event.SourceId, result.OrderKey.IbsOrderId, true, orderInfo.Request.ClientLanguageCode);
+            var success = SendOrderCreationCommands(@event.SourceId, result.OrderKey.IbsOrderId, false, orderInfo.Request.ClientLanguageCode);
             if (success)
             {
                 SendConfirmationEmail(result.OrderKey.IbsOrderId, orderInfo.AccountId, orderInfo.Request.Settings, orderInfo.ChargeTypeEmail,
@@ -130,21 +132,29 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _ibsCreateOrderService.UpdateOrderStatusAsync(@event.SourceId);
         }
 
-        public bool SendOrderCreationCommands(Guid orderId, int? ibsOrderId, bool isPrepaid, string clientLanguageCode, bool switchedCompany = false, string newCompanyKey = null, string newCompanyName = null, string market = null)
+        public bool SendOrderCreationCommands(Guid orderId, int? ibsOrderId, bool dispatcherTimedOut, string clientLanguageCode, bool switchedCompany = false, string newCompanyKey = null, string newCompanyName = null, string market = null)
         {
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
             {
-                var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(ibsOrderId.Value);
-                var errorCode = "CreateOrder_CannotCreateInIbs" + code;
+                var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? (int?)null : Math.Abs(ibsOrderId.Value);
+                var errorCode = "CreateOrder_CannotCreateInIbs_" + code;
 
                 var errorCommand = new CancelOrderBecauseOfError
                 {
                     OrderId = orderId,
-                    WasPrepaid = isPrepaid,
-                    ErrorCode = errorCode,
-                    ErrorDescription = _resources.Get(errorCode, clientLanguageCode)
+                    ErrorCode = errorCode
                 };
+
+                if (dispatcherTimedOut)
+                {
+                    errorCommand.DispatcherTimedOut = true;
+                    errorCommand.ErrorDescription = _resources.Get("OrderStatus_wosTIMEOUT", clientLanguageCode);
+                }
+                else
+                {
+                    errorCommand.ErrorDescription = _resources.Get(errorCode, clientLanguageCode);
+                }
 
                 _commandBus.Send(errorCommand);
 

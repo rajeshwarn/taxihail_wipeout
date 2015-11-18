@@ -77,16 +77,25 @@ namespace apcurium.MK.Booking.EventHandlers
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 if (order != null)
                 {
-                    order.Status = (int)OrderStatus.Canceled;
+                    order.Status = @event.IsDispatcherTimedOut
+                        ? (int)OrderStatus.DispatcherTimedOut
+                        : (int)OrderStatus.Canceled;
+
                     context.Save(order);
                 }
 
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details != null)
                 {
-                    details.Status = OrderStatus.Canceled;
-                    details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
+                    details.Status = @event.IsDispatcherTimedOut
+                        ? OrderStatus.DispatcherTimedOut
+                        : OrderStatus.Canceled;
+                    details.IBSStatusId = @event.IsDispatcherTimedOut
+                        ? VehicleStatuses.Common.Timeout
+                        : VehicleStatuses.Common.CancelledDone;
+
                     details.IBSStatusDescription = @event.ErrorDescription;
+
                     context.Save(details);
                 }
 

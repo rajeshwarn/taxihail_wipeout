@@ -269,12 +269,13 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderCancelled());
         }
 
-        public void CancelBecauseOfError(string errorCode, string errorDescription, bool wasPrepaid)
+        public void CancelBecauseOfError(string errorCode, string errorDescription, bool dispatcherTimedout)
         {
             Update(new OrderCancelledBecauseOfError
             {
                 ErrorCode = errorCode,
-                ErrorDescription = errorDescription
+                ErrorDescription = errorDescription,
+                IsDispatcherTimedOut = dispatcherTimedout
             });
         }
 
