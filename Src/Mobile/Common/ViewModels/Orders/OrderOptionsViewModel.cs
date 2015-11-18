@@ -138,7 +138,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	    private async Task SetLocalMarketVehicleTypes()
 	    {
-            var list = await _accountService.GetVehiclesList();
+			var list = await _vehicleService.GetVehiclesList();
 
             if (list.None())
             {

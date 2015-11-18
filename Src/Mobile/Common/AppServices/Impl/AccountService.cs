@@ -44,7 +44,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string UserNotificationSettingsCacheKey = "Account.UserNotificationSettings";
         private const string UserTaxiHailNetworkSettingsCacheKey = "Account.UserTaxiHailNetworkSetting";
         private const string AuthenticationDataCacheKey = "AuthenticationData";
-        private const string VehicleTypesDataCacheKey = "VehicleTypesData";
 
 		private readonly IAppSettings _appSettings;
 		private readonly IFacebookService _facebookService;
@@ -80,15 +79,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UserCache.Clear(RefDataCacheKey);
         }
 
-        public void ClearVehicleTypesCache()
-        {
-            Mvx.Resolve<ICacheService>().Clear(VehicleTypesDataCacheKey);
-        }
-
         public void ClearCache()
         {
             UserCache.ClearAll ();
-            ClearVehicleTypesCache();
         }
 
         public void SignOut ()
@@ -532,38 +525,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			      return service.UpdateFavoriteAddress (toSave);
                 }
             });
-        }
-
-		public async Task<IList<VehicleType>> GetVehiclesList()
-		{
-		    var cacheService = Mvx.Resolve<ICacheService>();
-
-            var cached = cacheService.Get<VehicleType[]>(VehicleTypesDataCacheKey);
-            if (cached != null)
-            {
-                return cached;
-            }
-
-            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
-
-            return vehiclesList;
-        }
-
-        public async Task ResetLocalVehiclesList()
-        {
-            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-            var cacheService = Mvx.Resolve<ICacheService>();
-            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
-        }
-
-        public void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes)
-        {
-            if (marketVehicleTypes.Any())
-            {
-                var cacheService = Mvx.Resolve<ICacheService>();
-                cacheService.Set(VehicleTypesDataCacheKey, marketVehicleTypes);
-            }
         }
 
 		public async Task<IList<ListItem>> GetPaymentsList()
