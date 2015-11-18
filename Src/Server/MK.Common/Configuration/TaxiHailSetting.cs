@@ -68,6 +68,7 @@ namespace MK.Common.Configuration
             ShowOrientedPins = false;
             IsDriverBonusEnabled = false;
             ChangeDropOffAddressMidTrip = false;
+            ChangeCreditCardMidtrip = false;
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
@@ -368,6 +369,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Hide Call Dispatch Button", Description="Hide button to call dispatch in panel menu, status screens")]
         public bool HideCallDispatchButton { get; protected set; }
 
+        [Obsolete("Use PaymentSetting 'CreditCardIsMandatory' instead")]
         [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Payment - Payment Method Mandatory", Description="If true, the user needs to have a payment method associated to his account (ie: Card on File or Paypal)")]
         public bool CreditCardIsMandatory { get; protected set; }
@@ -538,7 +540,6 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Show Order Number", Description = "Show order number")]
         public bool ShowOrderNumber { get; protected set; }
 
-
 		[CustomizableByCompany]
 		[Display(Name = "Configuration - Display Extra Info in Receipt", Description = "Display extra info in receipt: vehicle info, vehicle registration, driver photo")]
 		public bool ShowExtraInfoInReceipt { get; protected set; }
@@ -546,5 +547,9 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Map - MapBox Key", Description = "BlackBerry MapBox Key")]
         public string MapBoxKey { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Configuration - Change credit card while in trip", Description = "Allow the user to change his credit card while in trip")]
+        public bool ChangeCreditCardMidtrip { get; protected set; }
     }
 }

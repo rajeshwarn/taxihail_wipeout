@@ -35,21 +35,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/paymentMethodsLabel"
-                android:text="@string/PaymentDetails.PaymentMethodsLabel"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dip"
-                android:paddingBottom="5dip"
-                style="@style/BlackTextLabel"
-                local:MvxBind="Visibility CanShowCreditCard, Converter=Visibility" />
-            <apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner
-                android:id="@+id/tipPicker"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightEditTextFlat"
-                android:layout_marginBottom="10dip"
-                local:MvxBind="Text CreditCardSelectedDisplay; Data CreditCards; SelectedItem CreditCardSelected; LeftImage CreditCardSelectedImage; Visibility CanShowCreditCard, Converter=Visibility" />
-            <TextView
                 android:id="@+id/tipAmountLabel"
                 android:text="@string/PaymentDetails.TipAmountLabel"
                 android:layout_width="fill_parent"
@@ -64,6 +49,21 @@
                 android:layout_marginBottom="10dip"
                 local:allowOtherSelection="true"
                 local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip" />
+            <TextView
+                android:id="@+id/paymentMethodsLabel"
+                android:text="@string/PaymentDetails.PaymentMethodsLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                style="@style/BlackTextLabel"
+                local:MvxBind="Visibility CanShowCreditCard, Converter=Visibility" />
+            <apcurium.mk.booking.mobile.client.controls.EditTextRightSpinner
+                android:id="@+id/tipPicker"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightEditTextFlat"
+                android:layout_marginBottom="10dip"
+                local:MvxBind="Text CreditCardSelectedDisplay; Data CreditCards; SelectedItem CreditCardSelected; LeftImage CreditCardSelectedImage; Visibility CanShowCreditCard, Converter=Visibility; Enabled CanChangeCreditCard" />
             <Button
                 style="@style/ButtonActionGreenStyle"
                 android:layout_marginTop="8dip"
