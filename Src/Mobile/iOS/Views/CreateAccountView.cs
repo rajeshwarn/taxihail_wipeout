@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			FlatButtonStyle.Main.ApplyTo (btnCreate);
             btnCreate.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
-            btnCreate.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
+            btnCancel.SetTitleColor(Theme.GetContrastBasedColor(Theme.LoginColor), UIControlState.Normal);
             btnCreate.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
             btnCancel.SetStrokeColor(Theme.GetContrastBasedColor(Theme.LoginColor));
 
