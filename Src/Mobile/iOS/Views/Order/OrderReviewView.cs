@@ -13,6 +13,7 @@ using apcurium.MK.Common.Extensions;
 using Foundation;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
@@ -176,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .WithConversion("CurrencyFormat");
 
             set.Bind(this)
-                .For(v => v.RemoveBonusFromView)
+                .For(v => v.DriverBonusViewHiddenWithConstraints)
                 .To(vm => vm.CanShowDriverBonus)
                 .WithConversion("BoolInverter");
 
@@ -242,20 +243,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             this.DelayBind(InitializeBinding);
         }
 
-        private bool _removeBonusFromView;
-        public bool RemoveBonusFromView
-        {
-            get { return _removeBonusFromView; }
-            set
-            {
-                _removeBonusFromView = value;
-                if (RemoveBonusFromView)
-                {
-                    driverBonusView.RemoveFromSuperview();
-                }
-            }
-        }
-
         private bool _driverBonusEnabled;
         public bool DriverBonusEnabled
         {
@@ -274,6 +261,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                     sliderBonus.Enabled = false;
                     lblBonusAmount.Enabled = false;
                     lblBonusAmount.TextColor = UIColor.FromRGB(208, 208, 208);
+                }
+            }
+        }
+
+
+        private NSLayoutConstraint[] _hiddenDriverBonusViewContraints { get; set; }
+        
+        public bool DriverBonusViewHiddenWithConstraints
+        {
+            get
+            {
+                return driverBonusView.Hidden;
+            }
+            set
+            {
+                if (driverBonusView.Hidden == value)
+                {
+                    return;
+                }
+
+                driverBonusView.Hidden = value;
+
+                if (value)
+                {
+                    _hiddenDriverBonusViewContraints = driverBonusView.Constraints != null 
+                        ? driverBonusView.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
+                        : null;
+
+                    driverBonusView.RemoveConstraints(_hiddenDriverBonusViewContraints);
+                }
+
+                if (!value && _hiddenDriverBonusViewContraints != null)
+                {
+                    driverBonusView.AddConstraints(_hiddenDriverBonusViewContraints);
+                    _hiddenDriverBonusViewContraints = null;
                 }
             }
         }
