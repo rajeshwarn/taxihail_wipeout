@@ -68,6 +68,7 @@ namespace MK.Common.Configuration
             ShowOrientedPins = false;
             IsDriverBonusEnabled = false;
             ChangeDropOffAddressMidTrip = false;
+            ChangeCreditCardMidtrip = false;
 
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
@@ -538,7 +539,6 @@ namespace MK.Common.Configuration
         [Display(Name = "Display - Show Order Number", Description = "Show order number")]
         public bool ShowOrderNumber { get; protected set; }
 
-
 		[CustomizableByCompany]
 		[Display(Name = "Configuration - Display Extra Info in Receipt", Description = "Display extra info in receipt: vehicle info, vehicle registration, driver photo")]
 		public bool ShowExtraInfoInReceipt { get; protected set; }
@@ -546,5 +546,9 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Map - MapBox Key", Description = "BlackBerry MapBox Key")]
         public string MapBoxKey { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Configuration - Change credit card while in trip", Description = "Allow the user to change his credit card while in trip")]
+        public bool ChangeCreditCardMidtrip { get; protected set; }
     }
 }
