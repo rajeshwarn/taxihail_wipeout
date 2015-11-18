@@ -92,6 +92,10 @@ namespace apcurium.MK.Booking.Database
         }
 
         public virtual DbSet<AccountDetail> AccountDetail { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetail { get; set; }
+        public virtual DbSet<OrderStatusDetail> OrderStatusDetail { get; set; }
+        public virtual DbSet<RatingScoreDetails> RatingScoreDetails { get; set; }
+        public virtual DbSet<OrderRatingDetails> OrderRatingDetails { get; set; }
 
         public T Find<T>(Guid id) where T : class
         {

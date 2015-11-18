@@ -41,6 +41,15 @@ namespace apcurium.MK.Booking.Projections
             return _cache.ContainsKey(sourceId);
         }
 
+        public IProjection<TProjection> GetProjection(Guid identifier)
+        {
+            return new ProjectionWrapper(() =>
+            {
+                TProjection p;
+                return _cache.TryGetValue(identifier, out p) ? p : default(TProjection);
+            }, projection => _cache[identifier] = projection);
+        }
+
         public void Update(Guid identifier, Action<TProjection> action)
         {
             TProjection item;
@@ -69,6 +78,27 @@ namespace apcurium.MK.Booking.Projections
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _cache.Values.GetEnumerator();
+        }
+
+        private class ProjectionWrapper : IProjection<TProjection>
+        {
+            private Func<TProjection> _load;
+            private Action<TProjection> _save;
+            public ProjectionWrapper(Func<TProjection> load, Action<TProjection> save)
+            {
+                _load = load;
+                _save = save;
+            }
+
+            public TProjection Load()
+            {
+                return _load();
+            }
+
+            public void Save(TProjection projection)
+            {
+                _save(projection);
+            }
         }
 
 

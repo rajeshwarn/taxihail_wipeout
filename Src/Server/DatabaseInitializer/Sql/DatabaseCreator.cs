@@ -78,6 +78,77 @@ namespace DatabaseInitializer.Sql
             DatabaseHelper.ExecuteNonQuery(connString, "DROP PROCEDURE " + procedureName);
         }
 
+        public void DropReadModelTables(string connectionString)
+        {
+            var proc = @"
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+DECLARE @i int, @numrows int, @s nvarchar(max)
+-- Declare @statements in-memory table to hold sql statements to execute
+DECLARE @statements TABLE(
+    idx smallint Primary Key IDENTITY(1, 1)
+    , [statement] nvarchar(max)
+)
+
+-- Insert statements to drop foreign keys
+INSERT @statements
+SELECT 'ALTER TABLE ' + QUOTENAME(OBJECT_SCHEMA_NAME(object_id)) + '.' +
+       QUOTENAME(OBJECT_NAME(parent_object_id)) +
+       ' DROP ' + name + ';' as [statement]
+FROM sys.foreign_keys
+WHERE OBJECT_SCHEMA_NAME(object_id) IN('Booking', 'Config')
+
+-- Insert statements to drop tables
+INSERT @statements
+SELECT 'DROP TABLE ' +
+       QUOTENAME(OBJECT_SCHEMA_NAME(object_id)) + '.' +
+       QUOTENAME(name) + ';' as [statement]
+FROM sys.tables
+WHERE OBJECT_SCHEMA_NAME(object_id) IN('Booking', 'Config')
+
+-- Execute statements in a loop
+SET @i = 1
+SET @numrows = (SELECT COUNT(*) FROM @statements)
+IF @numrows > 0
+    WHILE(@i <= (SELECT MAX(idx) FROM @statements))
+    BEGIN
+        -- get the next statement
+        SET @s = (SELECT[statement] FROM @statements WHERE idx = @i)
+		EXECUTE sp_executesql @s
+
+        -- increment counter for next statement
+        SET @i = @i + 1
+    END";
+
+            DatabaseHelper.ExecuteNonQuery(connectionString, proc);
+
+        }
+
+        public void CreateReadModelTables(string connectionString)
+        {
+            var contexts = new DbContext[]
+            {
+                new ConfigurationDbContext(connectionString),
+                new BookingDbContext(connectionString)
+            };
+
+            try
+            {
+                foreach (var context in contexts)
+                {
+                    var adapter = (IObjectContextAdapter)context;
+                    var script = adapter.ObjectContext.CreateDatabaseScript();
+                    context.Database.ExecuteSqlCommand(script);
+
+                    context.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Error("Error during CreateReadModelTables", e);
+            }
+        }
+
 
 
 

@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using Infrastructure.Messaging.Handling;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Projections;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -20,10 +21,12 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionDeleted>
     {
         private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IProjectionSet<AccountDetail> _accountDetailProjectionSet;
 
-        public PromotionDetailGenerator(Func<BookingDbContext> contextFactory)
+        public PromotionDetailGenerator(Func<BookingDbContext> contextFactory, IProjectionSet<AccountDetail> accountDetailProjectionSet )
         {
             _contextFactory = contextFactory;
+            _accountDetailProjectionSet = accountDetailProjectionSet;
         }
 
         public void Handle(PromotionCreated @event)
@@ -126,7 +129,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var account = context.Find<AccountDetail>(@event.AccountId);
+                var account = _accountDetailProjectionSet.GetProjection(@event.AccountId).Load();
 
                 context.Save(new PromotionUsageDetail
                 {

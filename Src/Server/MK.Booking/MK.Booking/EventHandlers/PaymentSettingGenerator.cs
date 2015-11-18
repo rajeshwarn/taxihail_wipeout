@@ -101,5 +101,10 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             throw new NotImplementedException();
         }
+
+        public IProjection<ServerPaymentSettings> GetProjection(string identifier)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

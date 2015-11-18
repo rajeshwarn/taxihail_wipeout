@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Projections
 {
-    public interface IProjectionSet : IProjectionSet<object>
-    {
-
-
-    }
-
     public interface IProjectionSet<TProjection> : IProjectionSet<TProjection, Guid> where TProjection : class
     {
     }
@@ -25,5 +19,13 @@ namespace apcurium.MK.Booking.Projections
         void AddRange(IEnumerable<TProjection> projections);
         bool Exists(TIdentifier sourceId);
 
+        IProjection<TProjection> GetProjection(TIdentifier identifier);
+
+    }
+
+    public interface IAppendOnlyProjectionSet<TProjection> where TProjection : class
+    {
+        void Add(TProjection projection);
+        void AddRange(IEnumerable<TProjection> projections);
     }
 }

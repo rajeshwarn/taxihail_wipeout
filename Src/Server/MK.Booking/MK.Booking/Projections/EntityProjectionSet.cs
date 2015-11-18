@@ -46,11 +46,11 @@ namespace apcurium.MK.Booking.Projections
             }
         }
 
-        public bool Exists(Guid sourceId)
+        public bool Exists(Guid identifier)
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Set<TProjection>().Find(sourceId) != null;
+                return context.Set<TProjection>().Find(identifier) != null;
             }
         }
 
@@ -79,6 +79,11 @@ namespace apcurium.MK.Booking.Projections
                 }
                 context.SaveChanges();
             }
+        }
+
+        public IProjection<TProjection> GetProjection(Guid identifier)
+        {
+            return new EntityProjection<TProjection>(_contextFactory, identifier);
         }
 
     }

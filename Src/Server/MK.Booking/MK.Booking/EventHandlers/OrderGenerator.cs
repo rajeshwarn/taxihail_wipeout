@@ -736,29 +736,10 @@ namespace apcurium.MK.Booking.EventHandlers
         }
     }
 
-    public abstract class OrderRatingProjectionSet : IProjectionSet<Tuple<OrderRatingDetails, RatingScoreDetails[]>>
+    public abstract class OrderRatingProjectionSet : IAppendOnlyProjectionSet<Tuple<OrderRatingDetails, RatingScoreDetails[]>>
     {
         public abstract void Add(Tuple<OrderRatingDetails, RatingScoreDetails[]> projection);
         public abstract void AddRange(IEnumerable<Tuple<OrderRatingDetails, RatingScoreDetails[]>> projections);
-        public void AddOrReplace(Tuple<OrderRatingDetails, RatingScoreDetails[]> projection)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Exists(Guid sourceId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Func<Tuple<OrderRatingDetails, RatingScoreDetails[]>, bool> predicate, Action<Tuple<OrderRatingDetails, RatingScoreDetails[]>> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Guid identifier, Action<Tuple<OrderRatingDetails, RatingScoreDetails[]>> action)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class OrderRatingMemoryProjectionSet : OrderRatingProjectionSet, IEnumerable<Tuple<OrderRatingDetails, RatingScoreDetails[]>>
@@ -796,7 +777,12 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public override void Add(Tuple<OrderRatingDetails, RatingScoreDetails[]> projection)
         {
-            throw new NotImplementedException();
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Set<OrderRatingDetails>().Add(projection.Item1);
+                context.Set<RatingScoreDetails>().AddRange(projection.Item2);
+                context.SaveChanges();
+            }
         }
 
         public override void AddRange(IEnumerable<Tuple<OrderRatingDetails, RatingScoreDetails[]>> projections)

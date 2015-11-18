@@ -11,6 +11,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Projections;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -43,12 +44,18 @@ namespace apcurium.MK.Booking.EventHandlers
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
+        private readonly IProjectionSet<AccountDetail> _accountDetailProjectionSet;
+        private readonly IProjectionSet<AccountDetail> _orderReportProjectionSet;
         private const int SQLPrimaryKeyViolationErrorNumber = 2627;
 
-        public ReportDetailGenerator(Func<BookingDbContext> contextFactory, ILogger logger)
+        public ReportDetailGenerator(Func<BookingDbContext> contextFactory,
+            IProjectionSet<AccountDetail> accountDetailProjectionSet,
+            IProjectionSet<OrderReportDetail> orderReportProjectionSet,
+            ILogger logger)
         {
             _contextFactory = contextFactory;
             _logger = logger;
+            _accountDetailProjectionSet = accountDetailProjectionSet;
         }
 
         public void Handle(OrderCreated @event)
@@ -60,7 +67,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
                     var orderReport = existingReport ?? new OrderReportDetail {Id = @event.SourceId};
 
-                    var account = context.Find<AccountDetail>(@event.AccountId);
+                    var account = _accountDetailProjectionSet
+                                    .GetProjection(@event.AccountId)
+                                    .Load();
 
                     orderReport.Account = new OrderReportAccount
                     {
@@ -109,7 +118,7 @@ namespace apcurium.MK.Booking.EventHandlers
 		            var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
 		            var orderReport = existingReport ?? new OrderReportDetail {Id = @event.SourceId};
 
-		            var account = context.Find<AccountDetail>(@event.AccountId);
+                    var account = _accountDetailProjectionSet.GetProjection(@event.AccountId).Load();
 
 		            orderReport.Account = new OrderReportAccount
 		            {
@@ -494,7 +503,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var orderReport = new OrderReportDetail { Id = @event.SourceId };
 
-                var account = context.Find<AccountDetail>(@event.AccountId);
+                var account = _accountDetailProjectionSet.GetProjection(@event.AccountId).Load();
 
                 orderReport.Account = new OrderReportAccount
                 {

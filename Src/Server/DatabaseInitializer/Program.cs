@@ -41,6 +41,7 @@ using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
 using apcurium.MK.Booking.EventHandlers;
 using System.Diagnostics;
 using apcurium.MK.Booking.Projections;
+using Infrastructure.Messaging.Handling;
 
 #endregion
 
@@ -111,6 +112,10 @@ namespace DatabaseInitializer
                 }
 
                 var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
+
+                creatorDb.DropReadModelTables(param.MkWebConnectionString);
+                creatorDb.CreateReadModelTables(param.MkWebConnectionString);
+
                 container = new UnityContainer();
                 module = new Module();
 
@@ -131,7 +136,7 @@ namespace DatabaseInitializer
 
                 if (IsUpdate)
                 {
-                    UpdateSchema(param);
+                    //UpdateSchema(param);
 
                     //if (param.ReuseTemporaryDb)
                     //{
@@ -141,11 +146,11 @@ namespace DatabaseInitializer
                     //}
 
                     var replayService = container.Resolve<EventsPlayBackService>();
-                    replayService.Register(container.Resolve<AccountDetailsGenerator>());
-                    replayService.Register(container.Resolve<OrderGenerator>());
-                    replayService.Register(container.Resolve<CreditCardPaymentDetailsGenerator>());
-                    replayService.Register(container.Resolve<AppSettingsGenerator>());
-                    replayService.Register(container.Resolve<PaymentSettingGenerator>());
+
+                    foreach(var eh in container.ResolveAll<IEventHandler>().Where(x => !(x is IIntegrationEventHandler)))
+                    {
+                        replayService.Register(eh);
+                    }
                     
                     replayService.ReplayAllEvents();
 

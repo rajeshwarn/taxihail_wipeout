@@ -69,6 +69,10 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework.Utilities, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EFUtilities.1.0.2\lib\EntityFramework.Utilities.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="eSELECTplus_dotNet_API">
       <HintPath>..\..\Libraries\eSELECTplus_dotNet_API.dll</HintPath>
     </Reference>
