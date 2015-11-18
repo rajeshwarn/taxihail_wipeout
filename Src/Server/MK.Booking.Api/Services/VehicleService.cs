@@ -172,15 +172,30 @@ namespace apcurium.MK.Booking.Api.Services
                 }).ToArray();
             }
 
-            var availableVehicles = vehicles
-                .Select(v =>
-                {
-                    var availableVehicle = Mapper.Map<AvailableVehicle>(v);
+			bool isAuthenticated = this.GetSession().IsAuthenticated;
 
-                    availableVehicle.LogoName = logoName;
+			var availableVehicles = new List<AvailableVehicle>();
 
-                    return availableVehicle;
-                });
+			for (int i = 0; i < vehicles.Length; i++)
+			{
+				var vehicle = new AvailableVehicle()
+				{
+					Latitude = vehicles[i].Latitude,
+					Longitude = vehicles[i].Longitude,
+					LogoName = logoName,
+					Eta = vehicles[i].Eta,
+					VehicleType = vehicles[i].VehicleType
+				};
+
+				if (isAuthenticated)
+				{
+					vehicle.CompassCourse = (vehicles[i].CompassCourse != null ? vehicles[i].CompassCourse.Value : 0);
+					vehicle.VehicleName = vehicles[i].VehicleNumber;
+					vehicle.FleetId = vehicles[i].FleetId;
+				}
+
+				availableVehicles.Add(vehicle);
+			}
 
             return new AvailableVehiclesResponse(availableVehicles);   
         }
