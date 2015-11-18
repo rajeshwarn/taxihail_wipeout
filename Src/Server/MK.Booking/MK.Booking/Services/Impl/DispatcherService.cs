@@ -184,8 +184,8 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             if (orderResult != null
-                || orderResult.VehicleCandidates == null
-                || !orderResult.VehicleCandidates.Any())
+                && (orderResult.VehicleCandidates == null
+                    || !orderResult.VehicleCandidates.Any()))
             {
                 // Order couldn't be assigned to any vehicles
                 return new IBSOrderResult
