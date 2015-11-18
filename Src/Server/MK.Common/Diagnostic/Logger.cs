@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using apcurium.MK.Common.Extensions;
 using log4net;
 
 #endregion
@@ -14,7 +15,16 @@ namespace apcurium.MK.Common.Diagnostic
         
         public void LogError(Exception ex)
         {
-            Log.Error(ex.Message + " " + ex.StackTrace);
+            LogError(ex, null, -1);
+        }
+
+        public void LogError(Exception ex, string method, int lineNumber)
+        {
+            var errorLocation = method.HasValueTrimmed() && lineNumber > -1
+                ? " at {0}:{1}".InvariantCultureFormat(method, lineNumber)
+                : string.Empty;
+
+            Log.Error(ex.Message + errorLocation + " " + ex.StackTrace);
             if (ex.InnerException != null)
             {
                 LogError(ex.InnerException);

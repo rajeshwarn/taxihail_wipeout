@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			connection
 				.ObserveOn(SynchronizationContext.Current)
-				.Subscribe(onNext,Logger.LogError);
+				.Subscribe(onNext, Logger.LogError);
 
 			_disposableFactories.Add(() => connection.Connect());
         }

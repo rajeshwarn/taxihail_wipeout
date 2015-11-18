@@ -133,3 +133,4 @@ MK-Taxi.prj
 syntax: regexp
 Deployment/Database/*
 Src/CustomerPortal/.vs/*
+Src/Mobile/.vs/
