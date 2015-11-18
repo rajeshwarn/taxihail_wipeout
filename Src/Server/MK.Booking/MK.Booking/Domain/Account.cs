@@ -43,8 +43,6 @@ namespace apcurium.MK.Booking.Domain
             Handles<DefaultCreditCardUpdated>(NoAction);
             Handles<CreditCardLabelUpdated>(NoAction);
             Handles<PaymentProfileUpdated>(NoAction);
-            Handles<DeviceRegisteredForPushNotifications>(NoAction);
-            Handles<DeviceUnregisteredForPushNotifications>(NoAction);
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
             Handles<UserTaxiHailNetworkSettingsAddedOrUpdated>(NoAction);
             Handles<AccountLinkedToIbs>(NoAction);
@@ -287,33 +285,6 @@ namespace apcurium.MK.Booking.Domain
             Update(new RoleUpdatedToUserAccount
             {
                 RoleName = rolename,
-            });
-        }
-
-        public void RegisterDeviceForPushNotifications(string deviceToken, PushNotificationServicePlatform platform)
-        {
-            if (Params.Get(deviceToken).Any(p => p.IsNullOrEmpty()))
-            {
-                throw new InvalidOperationException("Missing device token");
-            }
-
-            Update(new DeviceRegisteredForPushNotifications
-            {
-                DeviceToken = deviceToken,
-                Platform = platform,
-            });
-        }
-
-        public void UnregisterDeviceForPushNotifications(string deviceToken)
-        {
-            if (Params.Get(deviceToken).Any(p => p.IsNullOrEmpty()))
-            {
-                throw new InvalidOperationException("Missing device token");
-            }
-
-            Update(new DeviceUnregisteredForPushNotifications
-            {
-                DeviceToken = deviceToken,
             });
         }
 

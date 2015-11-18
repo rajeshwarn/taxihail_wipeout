@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Common.Web;
 using System.Net;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -28,6 +29,13 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(CurrentAccount request)
         {
             var session = this.GetSession();
+            
+            // Just in case someone was able to authenticate with a null session. 
+            if (!session.Id.HasValueTrimmed())
+            {
+                throw new HttpError(HttpStatusCode.Forbidden, "NoSession");
+            }
+
             var account = _accountDao.FindById(new Guid(session.UserAuthId));
 
             var creditCard = account.DefaultCreditCard.HasValue

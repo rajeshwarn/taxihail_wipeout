@@ -120,7 +120,6 @@
     <Compile Include="ExportFixture\ReportDetailGenerator.cs" />
     <Compile Include="Infrastructure\AsynchronousMemoryCommandBusFixture.cs" />
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
-    <Compile Include="Integration\AccountFixture\DeviceDetailsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\NotificationSettingsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\UserTaxiHailNetworkSettingsGenerator.cs" />
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />
@@ -223,6 +222,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ChargeAccountFixture\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

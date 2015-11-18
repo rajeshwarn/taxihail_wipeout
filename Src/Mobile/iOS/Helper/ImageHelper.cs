@@ -249,31 +249,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
         public static UIImage ImageToOrientedMapIcon(string imagePath, double degrees, bool bigIcon = true)
         {
-            var image = GetImage(imagePath);
+            var image = UIImage.FromFile (imagePath);
 
-            // Step 1: Calculate the size of the rotated view's containing box for our drawing space
-            UIView rotatedViewBox = new UIView(new CGRect(0,0,image.Size.Width, image.Size.Height));
+            var rect = new CGRect(0f, 0f, image.Size.Width, image.Size.Height);
+            UIGraphics.BeginImageContextWithOptions(rect.Size, false, 0f);
+            var context = UIGraphics.GetCurrentContext();
 
-            rotatedViewBox.Transform = CGAffineTransform.MakeRotation((nfloat)(degrees * Math.PI / 180));
-            CGSize rotatedSize = rotatedViewBox.Bounds.Size;
-            rotatedViewBox = null;
+            // Step 1: translate/flip the graphics context (for transforming from CG* coords to UI* coords)
+            context.TranslateCTM(image.Size.Width / 2, image.Size.Height / 2);
 
-            // Step 2: Create the bitmap context
-            UIGraphics.BeginImageContext(rotatedSize);
-            CGContext bitmap = UIGraphics.GetCurrentContext();
+            // Step 2: Rotate the image context
+            context.RotateCTM((nfloat)(((degrees > 180 ? (degrees-180) : (degrees+180)) * Math.PI / 180)));
 
-            // Step 3: Move the origin to the middle of the image so we will rotate and scale around the center.
-            bitmap.TranslateCTM(rotatedSize.Width/2, rotatedSize.Height/2);
+            // Step 3: Now, draw the rotated/scaled image into the context
+            context.DrawImage(new CGRect(-image.Size.Width / 2, -image.Size.Height / 2, image.Size.Width, image.Size.Height), image.CGImage);
 
-            // Step 4: Rotate the image context
-            bitmap.RotateCTM((nfloat)(degrees * Math.PI / 180));
-
-            // Step 5: Now, draw the rotated/scaled image into the context
-            bitmap.ScaleCTM((nfloat)1.0, (nfloat)(-1.0));
-            bitmap.DrawImage(new CGRect(-image.Size.Width / 2, -image.Size.Height / 2, image.Size.Width, image.Size.Height), image.CGImage);
-
-            UIImage resultImage = UIGraphics.GetImageFromCurrentImageContext();
+            var resultImage = UIGraphics.GetImageFromCurrentImageContext();
             UIGraphics.EndImageContext();
+
+            image = null;
+
             return resultImage;
         }
 	}

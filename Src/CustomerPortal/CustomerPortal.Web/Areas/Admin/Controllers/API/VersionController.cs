@@ -61,8 +61,9 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
                 var data = JsonConvert.DeserializeObject<CreateNewVersionRequest>(provider.FormData["data"]);
 
-                if (String.IsNullOrEmpty(data.CompanyKey) || String.IsNullOrEmpty(data.VersionNumber) ||
-                    String.IsNullOrEmpty(data.WebsiteUrl))
+                if (string.IsNullOrEmpty(data.CompanyKey) || 
+                    string.IsNullOrEmpty(data.VersionNumber) ||
+                    string.IsNullOrEmpty(data.WebsiteUrl))
                 {
                     DeleteTemporaryFiles(provider.FileData);
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Missing parameters");
@@ -95,7 +96,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
                 foreach (var file in provider.FileData)
                 {
-                    if (IsAPK(file.Headers.ContentDisposition.FileName))
+                    if (IsAPK(file.Headers.ContentDisposition.FileName) && !IsApkBlackBerry(file.Headers.ContentDisposition.FileName) && !IsCallboxAPK(file.Headers.ContentDisposition.FileName))
                     {
                         version.ApkFilename = file.Headers.ContentDisposition.FileName;
                     }
@@ -107,11 +108,15 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
                     {
                         version.IpaFilename = file.Headers.ContentDisposition.FileName;
                     }
-                    else if ((IsApkBlackBerry(file.Headers.ContentDisposition.FileName)))
+                    else if (IsCallboxAPK(file.Headers.ContentDisposition.FileName))
+                    {
+                        version.ApkCallboxFileName = file.Headers.ContentDisposition.FileName;
+                    }
+                    else if (IsApkBlackBerry(file.Headers.ContentDisposition.FileName))
                     {
                         version.ApkBlackBerryFilename = file.Headers.ContentDisposition.FileName;
                     }
-                    else if ((IsBar(file.Headers.ContentDisposition.FileName)))
+                    else if (IsBar(file.Headers.ContentDisposition.FileName))
                     {
                         version.BarFilename = file.Headers.ContentDisposition.FileName;
                     }
@@ -149,12 +154,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
         private bool IsAPK(string fileName)
         {
-            if (fileName.EndsWith(".apk", true, CultureInfo.InvariantCulture))
-            {
-                return true;
-            }
-
-            return false;
+            return fileName.EndsWith(".apk", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private bool IsApkBlackBerry(string fileName)
@@ -169,33 +169,22 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers.API
 
         private bool IsBar(string fileName)
         {
-            if (fileName.EndsWith(".bar", true, CultureInfo.InvariantCulture))
-            {
-                return true;
-            }
-
-            return false;
+            return fileName.EndsWith(".bar", true, CultureInfo.InvariantCulture);
         }
 
         private bool IsAppStoreIpa(string fileName)
         {
-            if (fileName.EndsWith("appstore.ipa", true, CultureInfo.InvariantCulture))
-            {
-                return true;
-            }
+            return fileName.EndsWith(".appstore.ipa", StringComparison.InvariantCultureIgnoreCase);
+        }
 
-            return false;
+        private bool IsCallboxAPK(string filenName)
+        {
+            return filenName.EndsWith("callbox-signed.apk", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private bool IsIpa(string fileName)
         {
-            if (fileName.EndsWith(".ipa", true, CultureInfo.InvariantCulture))
-            {
-                return true;
-            }
-
-            return false;
+            return fileName.EndsWith(".ipa", StringComparison.InvariantCultureIgnoreCase);
         }
-
     }
 }

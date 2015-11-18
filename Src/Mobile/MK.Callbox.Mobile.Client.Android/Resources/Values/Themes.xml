@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+	<color name="login_color">#004785</color>
+	<color name="button_border_color">#031b31</color>
+	<color name="button_text_color">#ffffff</color>
+	<color name="label_text_color">#ffffff</color>
+
+	<color name="button_pressed_background_color">#70004785</color>
+	<color name="button_pressed_text_color">#70ffffff</color>
+
+	<style name="customDialog_PositiveButtonStyle" parent="@android:style/Widget.Button">
+		<item name="android:singleLine">true</item>
+		<item name="android:paddingLeft">5dp</item>
+		<item name="android:paddingRight">5dp</item>
+		<item name="android:textColor">@drawable/button_text_selector</item>
+		<item name="android:gravity">center_vertical|center_horizontal</item>
+		<item name="android:textSize">15dip</item>
+		<item name="android:background">@drawable/button_selector_positive</item>
+		<item name="android:focusable">true</item>
+		<item name="android:clickable">true</item>
+		<item name="android:layout_gravity">clip_vertical</item>
+	</style>
+	
+	<style name="customDialog_ButtonStyle" parent="@style/customDialog_PositiveButtonStyle">
+		<item name="android:background">@drawable/button_selector</item>
+	</style>
+</resources>

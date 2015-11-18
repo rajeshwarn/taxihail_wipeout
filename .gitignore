@@ -132,4 +132,5 @@ MK-Taxi.C02P407VG3QRW.Alexandre_Marcoux.pui
 MK-Taxi.prj
 syntax: regexp
 Deployment/Database/*
-Src/CustomerPortal/.vs/config/applicationhost.config
+Src/CustomerPortal/.vs/*
+Src/Mobile/.vs/
