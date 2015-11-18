@@ -172,7 +172,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }).ToArray();
             }
 
-			bool isAut = this.GetSession().IsAuthenticated;
+			bool isAuthenticated = this.GetSession().IsAuthenticated;
 
 			var availableVehicles = new List<AvailableVehicle>();
 
@@ -187,7 +187,7 @@ namespace apcurium.MK.Booking.Api.Services
 					VehicleType = vehicles[i].VehicleType
 				};
 
-				if (isAut)
+				if (isAuthenticated)
 				{
 					vehicle.CompassCourse = (vehicles[i].CompassCourse != null ? vehicles[i].CompassCourse.Value : 0);
 					vehicle.VehicleName = vehicles[i].VehicleNumber;
