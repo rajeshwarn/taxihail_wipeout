@@ -1,100 +1,74 @@
-﻿using System;
+﻿using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.MapDataProvider.Extensions
 {
     public static class ServiceClientBaseExtensions
     {
-        public static Task<TResponse> GetAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl)
+        public static Task<TResponse> GetAsync<TResponse>(this HttpClient client, string relativeOrAbsoluteUrl)
         {
-            var tcs = new TaskCompletionSource<TResponse>();
-
-            client.GetAsync<TResponse>(relativeOrAbsoluteUrl,
-                tcs.SetResult,
-                (result, error) => tcs.SetException(FixWebServiceException(error)));
-
-            return tcs.Task;
-        }
-
-        public static Task<TResponse> GetAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
-        {
-            var tcs = new TaskCompletionSource<TResponse>();
-
-            client.GetAsync(request,
-                tcs.SetResult,
-                (result, error) => tcs.SetException(FixWebServiceException(error)));
-
-            return tcs.Task;
-        }
-
-        public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
-        {
-            var tcs = new TaskCompletionSource<TResponse>();
-
-            client.PostAsync(request,
-                tcs.SetResult,
-                (result, error) => tcs.SetException(FixWebServiceException(error)));
-
-            return tcs.Task;
-        }
-
-
-        public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, object request)
-        {
-            var tcs = new TaskCompletionSource<TResponse>();
-
-            client.PostAsync<TResponse>(relativeOrAbsoluteUrl,
-                request,
-                tcs.SetResult,
-                (result, error) => tcs.SetException(FixWebServiceException(error)));
-
-            return tcs.Task;
-        }
-
-        public static Task<TResponse> PutAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, object request)
-        {
-            var tcs = new TaskCompletionSource<TResponse>();
-
-            client.PutAsync<TResponse>(relativeOrAbsoluteUrl,
-                request,
-                tcs.SetResult,
-                (result, error) => tcs.SetException(FixWebServiceException(error)));
-
-            return tcs.Task;
-        }
-
-        public static Task<TResponse> DeleteAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl)
-        {
-            var tcs = new TaskCompletionSource<TResponse>();
-
-            client.DeleteAsync<TResponse>(relativeOrAbsoluteUrl,
-                tcs.SetResult,
-                (result, error) => tcs.SetException(FixWebServiceException(error)));
-
-            return tcs.Task;
-        }
-
-        public static Task<TResponse> DeleteAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
-        {
-            var tcs = new TaskCompletionSource<TResponse>();
-
-            client.DeleteAsync(request,
-                tcs.SetResult,
-                (result, error) => tcs.SetException(FixWebServiceException(error)));
-
-            return tcs.Task;
-        }
-
-        public static Exception FixWebServiceException(Exception e)
-        {
-            var wse = e as WebServiceException;
-            if (wse != null && wse.StatusDescription == null)
+            return Task.Run(async () =>
             {
-                // Fix ServiceStack bug.
-                // WebServiceException.StatusDescription is null when using AsyncServiceClient
-                wse.StatusDescription = e.Message;
-            }
-            return e;
+                var httpMessageResponse = await client.GetAsync(relativeOrAbsoluteUrl)
+                    .ConfigureAwait(false);
+
+                var result = await httpMessageResponse.EnsureSuccessStatusCode().Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
+
+                return result.FromJson<TResponse>();
+            });
+        }
+
+        public static Task<TResponse> PostAsync<TResponse>(this HttpClient client, string relativeOrAbsoluteUrl, object request)
+        {
+            return Task.Run(async () =>
+            {
+                var httpContent = new StringContent(request.ToJson(), Encoding.UTF8, "application/json");
+
+                var httpMessageResponse = await client.PostAsync(relativeOrAbsoluteUrl, httpContent)
+                    .ConfigureAwait(false);
+
+                var result = await httpMessageResponse.EnsureSuccessStatusCode().Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
+
+                return result.FromJson<TResponse>();
+            });
+        }
+
+        public static Task<TResponse> PutAsync<TResponse>(this HttpClient client, string relativeOrAbsoluteUrl, object request)
+        {
+            return Task.Run(async () =>
+            {
+                var httpContent = new StringContent(request.ToJson(), Encoding.UTF8, "application/json");
+
+                var httpMessageResponse = await client.PutAsync(relativeOrAbsoluteUrl, httpContent)
+                    .ConfigureAwait(false);
+
+                var result = await httpMessageResponse.EnsureSuccessStatusCode().Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
+
+                return result.FromJson<TResponse>();
+            });
+        }
+
+        public static Task<TResponse> DeleteAsync<TResponse>(this HttpClient client, string relativeOrAbsoluteUrl)
+        {
+            return Task.Run(async () =>
+            {
+                var httpMessageResponse = await client.DeleteAsync(relativeOrAbsoluteUrl)
+                    .ConfigureAwait(false);
+
+                var result = await httpMessageResponse.EnsureSuccessStatusCode().Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
+
+                return result.FromJson<TResponse>();
+            });
         }
     }
 }

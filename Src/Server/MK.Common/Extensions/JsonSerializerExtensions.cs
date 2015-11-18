@@ -1,33 +1,32 @@
-using apcurium.MK.Common.Extensions;
-using Cirrious.CrossCore.Platform;
-using TinyIoC;
+using apcurium.MK.Common.Serializer;
+using Newtonsoft.Json;
 
 namespace apcurium.MK.Common.Extensions
 {
     public static class JsonSerializerExtensions
     {
-        private static JsonSerializer GetJsonConverter()
+        private static NewtonsoftJsonSerializer GetJsonConverter()
         {
             var serializer = new JsonSerializer
             {
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                NullValueHandling = NullValueHandling.Include
+                NullValueHandling = NullValueHandling.Include,
+                MissingMemberHandling = MissingMemberHandling.Ignore
             };
-
-            return serializer;
+            return new NewtonsoftJsonSerializer(serializer);
         }
 
         public static string ToJson(this object source)
         {
             return source == null 
                 ? string.Empty 
-                : GetConverter().SerializeObject(source);
+                : GetJsonConverter().SerializeObject(source);
         }
 
         public static TResult FromJson<TResult>(this string source)
         {
             return source.HasValueTrimmed() 
-                ? GetConverter().DeserializeObject<TResult>(source) 
+                ? GetJsonConverter().DeserializeObject<TResult>(source) 
                 : default(TResult);
         }
     }

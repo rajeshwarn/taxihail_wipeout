@@ -14,9 +14,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using Cirrious.CrossCore;
-using Cirrious.CrossCore.Platform;
 using Cirrious.MvvmCross.ViewModels;
-using Newtonsoft.Json;
 using TinyIoC;
 using TinyMessenger;
 
@@ -35,18 +33,6 @@ namespace apcurium.MK.Booking.Mobile
 
         private void InitaliseServices()
         {
-
-            _container.Register<IMvxJsonConverter>((c, p) =>
-            {
-                var serializer = new JsonSerializer
-                {
-                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                    NullValueHandling = NullValueHandling.Include
-                };
-
-                return new NewtonsoftJsonSerializer(serializer);
-            }, "Newtonsoft");
-
             _container.Register<ITinyMessengerHub, TinyMessengerHub>();
 
 			

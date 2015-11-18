@@ -1,8 +1,7 @@
 using apcurium.MK.Booking.MapDataProvider.CraftyClicks.Resources;
 namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 {
-    [Route("/rapidaddress", "POST")]
-    public class CraftyClicksRequest : IReturn<CraftyClicksAddress>
+    public class CraftyClicksRequest
     {
         public CraftyClicksRequest()
         {

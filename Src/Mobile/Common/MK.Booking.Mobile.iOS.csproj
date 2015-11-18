@@ -130,7 +130,6 @@
     <Compile Include="AppServices\Impl\AirportInformationService.cs" />
     <Compile Include="AppServices\Impl\MetricsService.cs" />
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
-    <Compile Include="AppServices\Impl\NewtonsoftJsonSerializer.cs" />
     <Compile Include="AppServices\Impl\POIProvider.cs" />
     <Compile Include="AppServices\Impl\PromotionService.cs" />
     <Compile Include="AppServices\INetworkRoamingService.cs" />

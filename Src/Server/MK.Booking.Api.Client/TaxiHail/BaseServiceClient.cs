@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using ModernHttpClient;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -13,7 +16,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         private string _sessionId;
         private string _url;
         private readonly IPackageInfo _packageInfo;
-        private ServiceClientBase _client;
+        private HttpClient _client;
 
         public BaseServiceClient(string url, string sessionId, IPackageInfo packageInfo)
         {
@@ -32,36 +35,41 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             _sessionId = sessionId;
         }
 
-        protected ServiceClientBase Client
+        protected HttpClient Client
         {
             get { return _client ?? (_client = CreateClient()); }
         }
 
-        private ServiceClientBase CreateClient()
+        private HttpClient CreateClient()
         {
-            JsConfig.DateHandler = JsonDateHandler.ISO8601;
-            JsConfig.EmitCamelCaseNames = true;
-
-            var client = new JsonServiceClient(_url) {Timeout = new TimeSpan(0, 0, 2, 0, 0)};
-
             var uri = new Uri(_url);
+            
+            var cookieHandler = new NativeCookieHandler();
+
             if (!string.IsNullOrEmpty(_sessionId))
             {
-                client.CookieContainer = new CookieContainer();
-                client.CookieContainer.Add(uri, new Cookie("ss-opt", "perm"));
-                client.CookieContainer.Add(uri, new Cookie("ss-pid", _sessionId));
+                cookieHandler.SetCookies(new[]
+                {
+                    new Cookie("ss-opt", "perm"),
+                    new Cookie("ss-pid", _sessionId)
+                });
             }
 
-            // When packageInfo is not specified, we use a default value as the useragent
-            client.LocalHttpWebRequestFilter = request =>
-            {
-                request.UserAgent = _packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent;
+            // CustomSSLVerification must be set to true to enable certificate pinning.
+            var nativeHandler = new NativeMessageHandler(throwOnCaptiveNetwork: false, customSSLVerification: true, cookieHandler: cookieHandler);
 
-                if (_packageInfo != null)
-                {
-                    request.Headers.Add("ClientVersion", _packageInfo.Version);
-                }  
+            var client = new HttpClient(nativeHandler)
+            {
+                BaseAddress = uri,
+                Timeout = new TimeSpan(0, 0, 2, 0, 0)
             };
+
+            // When packageInfo is not specified, we use a default value as the useragent
+            client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(_packageInfo == null ? DefaultUserAgent : _packageInfo.UserAgent));
+            if (_packageInfo != null)
+            {
+                client.DefaultRequestHeaders.Add("ClientVersion", _packageInfo.Version);
+            }
 
             return client;
         }

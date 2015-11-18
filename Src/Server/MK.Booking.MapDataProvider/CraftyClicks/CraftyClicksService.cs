@@ -1,10 +1,14 @@
+using System;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.MapDataProvider.CraftyClicks.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using MK.Booking.Google.Android.Extensions;
+using ModernHttpClient;
 
 namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
 {
@@ -23,13 +27,13 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
         {
             var client = GetClient();
 
-            var addressInformation = await client.PostAsync(new CraftyClicksRequest
+            var addressInformation = await client.PostAsync<CraftyClicksAddress>("/rapidaddress", new CraftyClicksRequest
             {
                 Postcode = postalCode,
                 Key = _settingsService.Data.CraftyClicksApiKey
             });
 
-			return ProcessAddressInformation(postalCode, addressInformation);
+            return ProcessAddressInformation(postalCode, addressInformation);
         }
 
         private Address[] ProcessAddressInformation(string postalCode, CraftyClicksAddress addressInformation)
@@ -55,17 +59,10 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
                 .ToArray();
         }
 
+        //This should only be used on the server.
         public Address[] GetAddressFromPostalCode(string postalCode)
         {
-            var client = GetClient();
-
-            var addressInformation = client.Post(new CraftyClicksRequest
-            {
-                Postcode = postalCode,
-                Key = _settingsService.Data.CraftyClicksApiKey
-            });
-
-            return ProcessAddressInformation(postalCode, addressInformation);
+            return GetAddressFromPostalCodeAsync(postalCode).Result;
         }
 
         public bool IsValidPostCode(string postalCode)
@@ -74,13 +71,18 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
         }
 
 
-        private JsonServiceClient GetClient()
+        private HttpClient GetClient()
         {
+            var client = new HttpClient(new NativeMessageHandler())
+            {
 #if DEBUG
-            return new JsonServiceClient("http://pcls1.craftyclicks.co.uk/json/");
+                BaseAddress = new Uri("http://pcls1.craftyclicks.co.uk/json/")
 #else
-            return new JsonServiceClient("https://pcls1.craftyclicks.co.uk/json/");
+                BaseAddress = new Uri("https://pcls1.craftyclicks.co.uk/json/");
 #endif
+            };
+            
+            return client;
         }
 
         private string GenerateFullAddress(string line1, string line2, string town, string postcode)

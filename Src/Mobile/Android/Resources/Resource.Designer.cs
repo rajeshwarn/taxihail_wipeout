@@ -1530,6 +1530,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			global::GooglePlayServices.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoImageType = global::apcurium.MK.Booking.Mobile.Client.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoImageType;
 			global::GooglePlayServices.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoTextColor = global::apcurium.MK.Booking.Mobile.Client.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsLogoTextColor;
 			global::GooglePlayServices.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsTextAppearance = global::apcurium.MK.Booking.Mobile.Client.Resource.Styleable.WalletFragmentStyle_maskedWalletDetailsTextAppearance;
+			global::ModernHttpClient.Resource.String.library_name = global::apcurium.MK.Booking.Mobile.Client.Resource.String.library_name;
 		}
 		
 		public partial class Animation
@@ -6234,8 +6235,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f090169
 			public const int passengerPhoneLayout = 2131296617;
 			
-			// aapt resource value: 0x7f090197
-			public const int paymentMethodsLabel = 2131296663;
+			// aapt resource value: 0x7f090199
+			public const int paymentMethodsLabel = 2131296665;
 			
 			// aapt resource value: 0x7f0901ef
 			public const int paypalImage = 2131296751;
@@ -6522,8 +6523,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f090195
 			public const int timePickerCtl = 2131296661;
 			
-			// aapt resource value: 0x7f090199
-			public const int tipAmountLabel = 2131296665;
+			// aapt resource value: 0x7f090197
+			public const int tipAmountLabel = 2131296663;
 			
 			// aapt resource value: 0x7f090198
 			public const int tipPicker = 2131296664;

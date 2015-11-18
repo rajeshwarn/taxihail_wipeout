@@ -117,6 +117,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\EventExtension.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
+    <Compile Include="Extensions\JsonSerializerExtensions.cs" />
     <Compile Include="Extensions\NullableExtension.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IPackageInfo.cs" />
+    <Compile Include="Serializer\NewtonsoftJsonSerializer.cs" />
     <Compile Include="Params.cs">
       <SubType>Code</SubType>
     </Compile>
