@@ -157,6 +157,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		public bool CanChangeCreditCard
+		{
+			get
+			{
+				return this.Settings.ChangeCreditCardMidtrip;
+			}
+		}
+
         private int _creditCardSelected;
         public int CreditCardSelected
         {
