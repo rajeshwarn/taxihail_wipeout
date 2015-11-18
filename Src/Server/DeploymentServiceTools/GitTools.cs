@@ -41,7 +41,7 @@ namespace DeploymentServiceTools
             var revision = GetRevisionString(revisionNumber);
             var gitClone = ProcessEx.GetProcess(GitPath,
                 string.Format(
-                    "clone https://pierregarcia:pilou659100@github.com/apcurium/taxihail.git  {0}",
+                    "clone https://devapcurium:Apcurium7250!@github.com/apcurium/taxihail.git  {0}",
                     _sourceDirectory));
             
             using (var exeProcess = Process.Start(gitClone))

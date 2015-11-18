@@ -9,6 +9,8 @@ using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using Foundation;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 {
@@ -48,35 +50,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
             return BaseDir;
         }
 
-        private TaxiHailSetting GetSettings()
-        {
-            try
-            {
-                var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-                return settings.Data;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
         private string GetCompanyName()
         {
-            var settings = GetSettings();
-            return settings != null 
-                ? settings.TaxiHail.ApplicationName
-                : "Unknown";
+            IAppSettings settings;
+
+            if (!TinyIoCContainer.Current.TryResolve(out settings))
+            {
+                return "Unknown";
+            }
+
+            return settings.Data.TaxiHail.ApplicationName.HasValueTrimmed()
+                ? settings.Data.TaxiHail.ApplicationName
+                    : "Unknown";
         }
 
-		protected override string GetMessageBase()
-		{
-			var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
-			var account = TinyIoCContainer.Current.CanResolve<IAccountService>()
-				? TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount : null;
+        protected override string GetMessageBase()
+        {
+            var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
 
-			return " by : " + (account == null ? @" N\A " : account.Email)
-				+ string.Format("with version {0} - company {1} - platform {2}", packageInfo.Version, GetCompanyName(), packageInfo.PlatformDetails);
-		}
+            return " by : {0} with version {1} - company {2} - platform {3}".InvariantCultureFormat(
+                GetAccount().SelectOrDefault(account => account.Email, @"N\A"),
+                packageInfo.Version,
+                GetCompanyName(),
+                packageInfo.PlatformDetails);
+        }
+
+        private static Account GetAccount()
+        {
+            IAccountService accountService;
+
+            return TinyIoCContainer.Current.TryResolve(out accountService) 
+                ? accountService.CurrentAccount 
+                    : null;
+        }
     }
 }

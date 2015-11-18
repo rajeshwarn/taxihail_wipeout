@@ -149,11 +149,10 @@ namespace apcurium.MK.Booking
 
         private static void RegisterEventHandlers(IUnityContainer container)
         {
-            container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");
+            container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");   
             container.RegisterType<IEventHandler, AccountChargeQuestionAnswerGenerator>("AccountChargeQuestionAnswerGenerator");
             container.RegisterType<IEventHandler, AccountIbsDetailGenerator>("AccountIbsDetailGenerator");
             container.RegisterType<IEventHandler, PaypalAccountDetailsGenerator>("PaypalAccountDetailsGenerator");
-            container.RegisterType<IEventHandler, DeviceDetailsGenerator>("DeviceDetailsGenerator");
             container.RegisterType<IEventHandler, AddressListGenerator>("AddressListGenerator");
             container.RegisterType<IEventHandler, OrderGenerator>("OrderGenerator");
             container.RegisterType<IEventHandler, ReportDetailGenerator>("ReportDetailGenerator");

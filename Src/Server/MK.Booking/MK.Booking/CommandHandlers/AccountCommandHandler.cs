@@ -37,8 +37,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateCreditCardLabel>,
         ICommandHandler<DeleteCreditCardsFromAccounts>,
         ICommandHandler<DeleteAccountCreditCard>,
-        ICommandHandler<RegisterDeviceForPushNotifications>,
-        ICommandHandler<UnregisterDeviceForPushNotifications>,
         ICommandHandler<AddFavoriteAddress>,
         ICommandHandler<RemoveFavoriteAddress>,
         ICommandHandler<UpdateFavoriteAddress>,
@@ -140,19 +138,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(RegisterDeviceForPushNotifications command)
-        {
-            var account = _repository.Find(command.AccountId);
-
-            if (!string.IsNullOrEmpty(command.OldDeviceToken))
-            {
-                account.UnregisterDeviceForPushNotifications(command.OldDeviceToken);
-            }
-
-            account.RegisterDeviceForPushNotifications(command.DeviceToken, command.Platform);
-            _repository.Save(account, command.Id.ToString());
-        }
-
         public void Handle(RegisterFacebookAccount command)
         {
             var account = new Account(command.AccountId, command.Name, command.Country, command.Phone, command.Email,
@@ -188,13 +173,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
             var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
             account.ResetPassword(newPassword);
-            _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(UnregisterDeviceForPushNotifications command)
-        {
-            var account = _repository.Find(command.AccountId);
-            account.UnregisterDeviceForPushNotifications(command.DeviceToken);
             _repository.Save(account, command.Id.ToString());
         }
 

@@ -17,7 +17,8 @@ namespace apcurium.MK.Common.Configuration.Impl
             IsOutOfAppPaymentDisabled = false;
             AskForCVVAtBooking = false;
             CancelOrderOnUnpair = false;
-        }
+            CreditCardIsMandatory = false;
+    }
 
         public PaymentMethod PaymentMode { get; set; }
         
@@ -39,6 +40,8 @@ namespace apcurium.MK.Common.Configuration.Impl
         public bool AskForCVVAtBooking { get; set; }
 
         public bool CancelOrderOnUnpair { get; set; }
+
+        public bool CreditCardIsMandatory { get; set; }
 
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
