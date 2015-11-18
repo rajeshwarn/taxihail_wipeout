@@ -225,14 +225,14 @@
             var newIsPayInTaxiEnabled = this.$("[name = isPayInTaxiEnabled]").val() == 'true';
             var newPaymentMode = this.$("[name = paymentMode]").val();
 
-            var inputCreditCardMadatory = this.$("[name=creditCardIsMandatory]");
+            var inputCreditCardMandatory = this.$("[name=creditCardIsMandatory]");
 
             if ((!newIsChargeAccountPaymentEnabled && !newIsPayInTaxiEnabled && newIsOutOfAppPaymentDisabled) || newPaymentMode == 'None') {
-                inputCreditCardMadatory.val('false');
-                inputCreditCardMadatory.attr('disabled', 'disabled');
+                inputCreditCardMandatory.val('false');
+                inputCreditCardMandatory.attr('disabled', 'disabled');
             } else {
-                inputCreditCardMadatory.val(this.updatedModel.creditCardIsMandatory.toString());
-                inputCreditCardMadatory.removeAttr('disabled');
+                inputCreditCardMandatory.val(this.updatedModel.creditCardIsMandatory.toString());
+                inputCreditCardMandatory.removeAttr('disabled');
             }
         },
         
