@@ -3,9 +3,9 @@
 
     var View = TaxiHail.EditRuleView = TaxiHail.TemplatedView.extend({
         events: {
-            'change [data-role=timepicker]': 'ontimepickerchange',
-            'click #appliesToFutureBooking': 'onAppliesToFutureBookingClick',
-            'click #disableFutureBookingOnError': 'onDisableFutureBookingOnErrorClick',
+        	'change [data-role=timepicker]': 'ontimepickerchange',
+        	'click [data-action=appliesToFutureBooking]': 'onAppliesToFutureBookingClick',
+        	'click [data-action=disableFutureBookingOnError]': 'onDisableFutureBookingOnErrorClick',
             'click [data-action=saveEnable]': 'onSaveEnableClick',
             'click [data-action=saveDisable]': 'onSaveDisableClick',
             'click [data-action=eraseStartTime]': 'onEraseStartTimeClick',

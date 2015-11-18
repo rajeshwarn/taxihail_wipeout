@@ -153,14 +153,14 @@
                     </input>
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" id="appliesToFutureBooking" name='appliesToFutureBooking' value="{{appliesToFutureBooking}}" {{futureBookingChecked}}> {{localize "Future booking"}}</input>
+                    <input type="checkbox" id="appliesToFutureBooking" name='appliesToFutureBooking' value="{{appliesToFutureBooking}}" {{futureBookingChecked}} data-action='appliesToFutureBooking'> {{localize "Future booking"}}</input>
                 </label>
                 {{#if isNetworkEnabled}}
                 {{#if isDefault}}
                 {{#if isDisable}}
                 <div style="padding-left: 20px">
                     <label class="checkbox">
-                        <input type="checkbox" id="disableFutureBookingOnError" name='disableFutureBookingOnError' value="{{disableFutureBookingOnError}}" {{disableFutureBookingOnErrorChecked}}> {{localize "Hide Future Booking Button"}}</input>
+                        <input type="checkbox" id="disableFutureBookingOnError" name='disableFutureBookingOnError' value="{{disableFutureBookingOnError}}" {{disableFutureBookingOnErrorChecked}} data-action='disableFutureBookingOnError'> {{localize "Hide Future Booking Button"}}</input>
                     </label>
                 </div>
                 {{/if}}
