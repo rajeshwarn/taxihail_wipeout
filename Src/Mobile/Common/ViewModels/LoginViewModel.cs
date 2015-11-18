@@ -506,7 +506,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             var isPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
 
-            if (isPayInTaxiEnabled && Settings.CreditCardIsMandatory)
+			if (isPayInTaxiEnabled && paymentSettings.CreditCardIsMandatory)
 			{
 				if (!_accountService.CurrentAccount.HasValidPaymentInformation)
 				{

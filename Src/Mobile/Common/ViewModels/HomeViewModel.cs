@@ -316,7 +316,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							() =>
 						{
 							_isShowingCreditCardExpiredPrompt = false;
-							ShowViewModelAndClearHistory<CreditCardAddViewModel>(new { isMandatory = this.Services().Settings.CreditCardIsMandatory });
+								ShowViewModelAndClearHistory<CreditCardAddViewModel>(new { isMandatory = paymentSettings.CreditCardIsMandatory });
 						});
 					}
 					else

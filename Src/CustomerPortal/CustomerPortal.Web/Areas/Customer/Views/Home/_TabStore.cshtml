@@ -50,10 +50,11 @@
             }
             @if (!packageName.HasValue())
             {
-                <dd>Warning: Package name setting does not exist. It is required for fingerprint generation.</dd>
+                <dd style="color:red">Warning: Package name setting does not exist. It is required for fingerprint generation.</dd>
             }
             
-            <dd>@Model.GooglePlayCredentials.KeystoreSHA1Signature;@packageName</dd>
+            <dd><span style="font-weight: bold">Package:</span> @packageName</dd>
+            <dd><span style="font-weight: bold">SHA:</span> @Model.GooglePlayCredentials.KeystoreSHA1Signature</dd>
             <br />
             @using (Html.BeginForm("GenerateApiKey", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {

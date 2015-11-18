@@ -123,8 +123,10 @@ namespace apcurium.MK.Booking.Api.Services
 		{
 			if (_dao.FindByAccountId(request.AccountID).Count > 0)
 			{
-                var forceUserDisconnect = _serverSettings.ServerData.CreditCardIsMandatory
-                    && _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
+			    var paymentSettings = _serverSettings.GetPaymentSettings();
+
+                var forceUserDisconnect = paymentSettings.CreditCardIsMandatory
+                    && paymentSettings.IsOutOfAppPaymentDisabled;
 
                 _commandBus.Send(new DeleteCreditCardsFromAccounts
 				{

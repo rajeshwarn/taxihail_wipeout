@@ -23,10 +23,11 @@ namespace apcurium.MK.Booking.Mobile
 		    var accountService = Mvx.Resolve<IAccountService>();
 		    var facebookService = Mvx.Resolve<IFacebookService>();
 		    var metricsService = Mvx.Resolve<IMetricsService>();
+			var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
 
             await appSettings.Load();
 
-            if (appSettings.Data.FacebookEnabled)
+			if (appSettings.Data.FacebookEnabled)
             {
                 facebookService.Init();
             }
@@ -39,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile
 			Mvx.Resolve<IAnalyticsService>().ReportConversion();
 
             if (accountService.CurrentAccount == null
-                || (appSettings.Data.CreditCardIsMandatory
+				|| (paymentSettings.CreditCardIsMandatory
                     && accountService.CurrentAccount.DefaultCreditCard == null))
 			{
                 if (accountService.CurrentAccount != null)
