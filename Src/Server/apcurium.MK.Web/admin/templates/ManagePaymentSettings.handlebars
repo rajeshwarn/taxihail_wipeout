@@ -19,6 +19,12 @@
     <option value="{{invertedBool askForCVVAtBooking}}">{{localizeBool askForCVVAtBooking true="No" false="Yes"}}</option>
   </select>
 
+<label class="control-label settingsLabel">{{{localize "Payment Method Mandatory"}}}</label>
+<select name="creditCardIsMandatory" class="settingsBox">
+    <option value="{{creditCardIsMandatory}}" selected="">{{localizeBool creditCardIsMandatory true="Yes" false="No"}}</option>
+    <option value="{{invertedBool creditCardIsMandatory}}">{{localizeBool creditCardIsMandatory true="No" false="Yes"}}</option>
+</select>
+
   <label class="control-label settingsLabel">{{{localize "Disable In Car Payment"}}}</label>
   <select name="isOutOfAppPaymentDisabled" class="settingsBox">
     <option value="{{isOutOfAppPaymentDisabled}}" selected="">{{localizeBool isOutOfAppPaymentDisabled true="Yes" false="No"}}</option>

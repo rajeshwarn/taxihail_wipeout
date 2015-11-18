@@ -53,6 +53,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.CreditCardSelectedDisplay);
 
             set.Bind(txtCreditCard)
+                .For(v => v.Enabled)
+                .To(vm => vm.CanChangeCreditCard);
+
+            set.Bind(txtCreditCard)
                 .For(v => v.ImageLeftSource)
                 .To(vm => vm.CreditCardSelectedImage);
 
