@@ -49,14 +49,11 @@ namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
             CreateReportOrder createReportOrder,
             string cvv = null)
         {
-            if (!_serverSettings.GetPaymentSettings(companyKey).IsPreAuthEnabled || isFutureBooking)
+			if (((!_serverSettings.GetPaymentSettings(companyKey).IsPreAuthEnabled || isFutureBooking) && _serverSettings.GetPaymentSettings().AskForCVVAtBooking)
+				|| _serverSettings.GetPaymentSettings(companyKey).PaymentMode == Common.Configuration.Impl.PaymentMethod.Moneris)
             {
                 // preauth will be done later, save the info temporarily
-                if (_serverSettings.GetPaymentSettings().AskForCVVAtBooking)
-                {
-                    _commandBus.Send(new SaveTemporaryOrderPaymentInfo { OrderId = orderId, Cvv = cvv });
-                }
-
+				_commandBus.Send(new SaveTemporaryOrderPaymentInfo { OrderId = orderId, Cvv = cvv });
                 return true;
             }
 

@@ -211,6 +211,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 bool isCardDeclined = false;
                 var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
 
+				var order = _orderDao.FindOrderStatusById(orderId);
+				string driverId = order != null ? order.DriverInfos != null ? order.DriverInfos.DriverId : null : null;
+
                 // We cannot re-use the same id has a previously failed payment
                 var shouldGenerateNewOrderId = isReAuth || isSettlingOverduePayment;
 
@@ -223,7 +226,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     // PreAuthorize transaction
                     var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
 
-                    var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
+                    var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, driverId, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
                     AddCvvInfo(preAuthorizeCommand, cvv);
 
                     var preAuthRequest = MonerisHttpRequestWrapper.NewHttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
