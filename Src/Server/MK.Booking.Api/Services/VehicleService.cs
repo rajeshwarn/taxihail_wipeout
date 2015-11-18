@@ -172,7 +172,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }).ToArray();
             }
 
-			bool isAuthenticated = this.GetSession().IsAuthenticated;
+			var isAuthenticated = this.GetSession().IsAuthenticated;
 
 			var availableVehicles = new List<AvailableVehicle>();
 
