@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		}
 
 
-		protected async Task<TResult> UseServiceClientAsync<TService, TResult>(Func<TService, Task<TResult>> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where TResult : class  where TService : class
+		protected async Task<TResult> UseServiceClientAsync<TService, TResult>(Func<TService, Task<TResult>> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "", [CallerLineNumber] int lineNumber = -1) where TResult : class  where TService : class
         {
             var service = TinyIoCContainer.Current.Resolve<TService>();
 
@@ -54,8 +54,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                         .ConfigureAwait(false);
             }
             catch (Exception ex)
-            {                    
-                Logger.LogError(ex);
+            {   
+                Logger.LogError(ex, method, lineNumber);
 				bool handled;
 				if (errorHandler == null)
 				{
@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-		protected async Task UseServiceClientAsync<TService>(Func<TService, Task> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where TService : class
+		protected async Task UseServiceClientAsync<TService>(Func<TService, Task> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "", [CallerLineNumber] int lineNumber = -1) where TService : class
 		{
 			var service = TinyIoCContainer.Current.Resolve<TService>();
 
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 			catch (Exception ex)
 			{                    
-				Logger.LogError(ex);
+				Logger.LogError(ex, method, lineNumber);
 				bool handled;
 				if (errorHandler == null)
 				{

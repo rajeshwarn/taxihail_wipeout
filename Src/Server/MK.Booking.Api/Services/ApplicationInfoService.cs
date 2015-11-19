@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (_serverSettings.ServerData.DisableNewerVersionPopup)
             {
-                throw new Exception();
+                throw new Exception("Newer version popup is disabled.");
             }
 
             var info = new ApplicationInfo

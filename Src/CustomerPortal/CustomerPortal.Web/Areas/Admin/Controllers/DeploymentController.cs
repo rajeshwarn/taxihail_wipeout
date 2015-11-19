@@ -175,7 +175,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             if (model.DeployOptions == DeployOptions.Both || model.DeployOptions == DeployOptions.MobileApp)
             {
-                var job = new AddDeploymentJobModel { Android = true, CallBox = false, CompanyId = model.CompanyKey, CreateType = (int) DeploymentJobType.DeployClient , Database = false, IosAdhoc = true, IosAppStore = true, BlackBerry = true, RevisionId = model.RevisionId , ServerUrlOptions = model.ServerUrlOptions  };                
+                var job = new AddDeploymentJobModel { Android = true, CallBox = false, CompanyId = model.CompanyKey, CreateType = (int) DeploymentJobType.DeployClient , Database = false, IosAdhoc = true, IosAppStore = true, BlackBerry = false, RevisionId = model.RevisionId , ServerUrlOptions = model.ServerUrlOptions  };                
                 
                 var environments = new MongoRepository<Environment>();
                 job.ServerId = environments.Single(e => e.Name == "MobileBuildServer").Id;                  
