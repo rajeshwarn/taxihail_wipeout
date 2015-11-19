@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<LogApplicationStartUp>,
         ICommandHandler<SaveTemporaryOrderCreationInfo>,
         ICommandHandler<SaveTemporaryOrderPaymentInfo>,
-        ICommandHandler<AddVehicleIdMapping>
+        ICommandHandler<AddOrUpdateVehicleIdMapping>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -67,17 +67,28 @@ namespace apcurium.MK.Booking.CommandHandlers
             }
         }
 
-        public void Handle(AddVehicleIdMapping command)
+        public void Handle(AddOrUpdateVehicleIdMapping command)
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new VehicleIdMappingDetail
+                var existingMappingForOrder = context.Find<VehicleIdMappingDetail>(command.OrderId);
+                if (existingMappingForOrder != null)
                 {
-                    OrderId = command.OrderId,
-                    DeviceName = command.DeviceName,
-                    LegacyDispatchId = command.LegacyDispatchId,
-                    CreationDate = DateTime.UtcNow
-                });
+                    existingMappingForOrder.DeviceName = command.DeviceName;
+                    existingMappingForOrder.LegacyDispatchId = command.LegacyDispatchId;
+
+                    context.Save(existingMappingForOrder);
+                }
+                else
+                {
+                    context.Save(new VehicleIdMappingDetail
+                    {
+                        OrderId = command.OrderId,
+                        DeviceName = command.DeviceName,
+                        LegacyDispatchId = command.LegacyDispatchId,
+                        CreationDate = DateTime.UtcNow
+                    });
+                }
             }
         }
     }

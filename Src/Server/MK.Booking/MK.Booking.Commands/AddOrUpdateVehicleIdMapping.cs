@@ -3,9 +3,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class AddVehicleIdMapping : ICommand
+    public class AddOrUpdateVehicleIdMapping : ICommand
     {
-        public AddVehicleIdMapping()
+        public AddOrUpdateVehicleIdMapping()
         {
             Id = Guid.NewGuid();
         }

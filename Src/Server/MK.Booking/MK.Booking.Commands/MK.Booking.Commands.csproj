@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivatePromotion.cs" />
-    <Compile Include="AddVehicleIdMapping.cs" />
+    <Compile Include="AddOrUpdateVehicleIdMapping.cs" />
     <Compile Include="AddOrUpdateCreditCard.cs" />
     <Compile Include="AddDefaultFavoriteAddress.cs" />
     <Compile Include="AddFavoriteAddress.cs" />

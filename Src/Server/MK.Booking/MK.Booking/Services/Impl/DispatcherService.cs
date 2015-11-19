@@ -62,6 +62,7 @@ namespace apcurium.MK.Booking.Services.Impl
             double? tipIncentive, bool isHailRequest = false)
         {
             IbsResponse orderResult = null;
+            var vehicleAssigned = false;
 
             var vehicleCandidatesOfferedTheJob = new List<VehicleCandidate>();
 
@@ -140,6 +141,8 @@ namespace apcurium.MK.Booking.Services.Impl
                         // Update job to Vehicle
                         AssignJobToVehicle(_bestAvailableCompany.CompanyKey, orderResult.OrderKey, bestVehicle);
 
+                        vehicleAssigned = true;
+
                         Tuple<string, string> vehicleMapping = null;
 
                         // Get proper vehicle id mapping (using device name or ldi) depending on candidate type
@@ -153,7 +156,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         }
 
                         // Send vehicle mapping command
-                        _commandBus.Send(new AddVehicleIdMapping
+                        _commandBus.Send(new AddOrUpdateVehicleIdMapping
                         {
                             OrderId = orderResult.OrderKey.TaxiHailOrderId,
                             DeviceName = vehicleMapping.Item1,
@@ -183,9 +186,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     availableFleetsInMarket);
             }
 
-            if (orderResult != null
-                && (orderResult.VehicleCandidates == null
-                    || !orderResult.VehicleCandidates.Any()))
+            if (!vehicleAssigned)
             {
                 // Order couldn't be assigned to any vehicles
                 return new IBSOrderResult
