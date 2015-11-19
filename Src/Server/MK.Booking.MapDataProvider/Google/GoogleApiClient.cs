@@ -57,7 +57,10 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
         private HttpClient GetClient(string url)
         {
-            var client = new HttpClient(new NativeMessageHandler());
+            var client = new HttpClient(new NativeMessageHandler())
+            {
+                Timeout = new TimeSpan(0, 0, 2, 0, 0)
+            };
 
             if (url.HasValueTrimmed())
             {

@@ -1,11 +1,14 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
+using CMTPayment.Extensions;
 
 namespace CMTPayment
 {
@@ -40,25 +43,22 @@ namespace CMTPayment
                 requestUri = new Uri(url);
             }
 
-            var oauthHeader = OAuthAuthorizer.AuthorizeRequest(ConsumerKey,
-                ConsumerSecretKey,
-                "",
-                "",
-                request.Method,
-                requestUri,
-                null);
+            
             request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
             request.ContentType = ContentType.Json;
 
-
+            
             _logger.Maybe(() => _logger.LogMessage("CMT request header info : " + request.Headers.ToString()));
             _logger.Maybe(() => _logger.LogMessage("CMT request info : " + request.ToJson()));
         }
 
-        public Task<T> GetAsync<T>(IReturn<T> request)
+        public Task<T> GetAsync<T>(string requestUrl)
         {
-            _logger.Maybe(() => _logger.LogMessage("CMT Get : " + request.ToJson()));
-            var result = Client.GetAsync(request);
+            _logger.Maybe(() => _logger.LogMessage("CMT Get : " + requestUrl));
+            
+            Client.SetOAuthHeader(Client.BaseAddress + requestUrl, "GET", ConsumerKey, ConsumerSecretKey);
+
+            var result = Client.GetAsync(requestUrl);
             result.ContinueWith(r => LogResult(r, "CMT Get Result: "));
             return result;
         }

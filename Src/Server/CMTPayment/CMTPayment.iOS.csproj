@@ -51,7 +51,12 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\..\Mobile\Components\modernhttpclient-2.4.2\lib\ios-unified\ModernHttpClient.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Services" />
@@ -67,7 +72,7 @@
     <Compile Include="BaseServiceClient.cs" />
     <Compile Include="CmtErrorCodes.cs" />
     <Compile Include="CmtPaymentServiceClient.cs" />
-    <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
+    <Compile Include="Extensions\HttpClientExtensions.cs" />
     <Compile Include="OAuthAuthorizer.cs" />
     <Compile Include="PaymentResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,7 +81,12 @@
     <Compile Include="Tokenize\TokenizeRequest.cs" />
     <Compile Include="Tokenize\TokenizeResponse.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <XamarinComponentReference Include="modernhttpclient">
+      <Visible>False</Visible>
+      <Version>2.4.2</Version>
+    </XamarinComponentReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

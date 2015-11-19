@@ -52,7 +52,8 @@ namespace MK.Booking.MapDataProvider.Foursquare
         {
             var client = new HttpClient(new NativeMessageHandler())
             {
-                BaseAddress = new Uri(ApiUrl)
+                BaseAddress = new Uri(ApiUrl),
+                Timeout = new TimeSpan(0, 0, 2, 0, 0)
             };
 
             return client;

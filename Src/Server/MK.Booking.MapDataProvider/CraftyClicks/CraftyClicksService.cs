@@ -75,6 +75,7 @@ namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
         {
             var client = new HttpClient(new NativeMessageHandler())
             {
+                Timeout = new TimeSpan(0, 0, 2, 0, 0),
 #if DEBUG
                 BaseAddress = new Uri("http://pcls1.craftyclicks.co.uk/json/")
 #else
