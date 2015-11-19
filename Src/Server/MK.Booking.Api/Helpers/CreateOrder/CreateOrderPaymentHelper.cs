@@ -15,165 +15,168 @@ using ServiceStack.Common.Web;
 
 namespace apcurium.MK.Booking.Api.Helpers.CreateOrder
 {
-    public class CreateOrderPaymentHelper
-    {
-        private readonly IServerSettings _serverSettings;
-        private readonly ICommandBus _commandBus;
-        private readonly IPaymentService _paymentService;
-        private readonly IOrderPaymentDao _orderPaymentDao;
-        private readonly IPayPalServiceFactory _payPalServiceFactory;
+	public class CreateOrderPaymentHelper
+	{
+		private readonly IServerSettings _serverSettings;
+		private readonly ICommandBus _commandBus;
+		private readonly IPaymentService _paymentService;
+		private readonly IOrderPaymentDao _orderPaymentDao;
+		private readonly IPayPalServiceFactory _payPalServiceFactory;
 
-        public CreateOrderPaymentHelper(
-            IServerSettings serverSettings,
-            ICommandBus commandBus,
-            IPaymentService paymentService,
-            IOrderPaymentDao orderPaymentDao,
-            IPayPalServiceFactory payPalServiceFactory)
-        {
-            _serverSettings = serverSettings;
-            _commandBus = commandBus;
-            _paymentService = paymentService;
-            _orderPaymentDao = orderPaymentDao;
-            _payPalServiceFactory = payPalServiceFactory;
-        }
+		public CreateOrderPaymentHelper(
+			IServerSettings serverSettings,
+			ICommandBus commandBus,
+			IPaymentService paymentService,
+			IOrderPaymentDao orderPaymentDao,
+			IPayPalServiceFactory payPalServiceFactory)
+		{
+			_serverSettings = serverSettings;
+			_commandBus = commandBus;
+			_paymentService = paymentService;
+			_orderPaymentDao = orderPaymentDao;
+			_payPalServiceFactory = payPalServiceFactory;
+		}
 
-        internal bool PreAuthorizePaymentMethod(
-            string companyKey,
-            Guid orderId,
-            AccountDetail account,
-            string clientLanguageCode,
-            bool isFutureBooking,
-            decimal? appEstimateWithTip,
-            decimal bookingFees,
-            bool isPayPal,
-            CreateReportOrder createReportOrder,
-            string cvv = null)
-        {
-			if (((!_serverSettings.GetPaymentSettings(companyKey).IsPreAuthEnabled || isFutureBooking) && _serverSettings.GetPaymentSettings().AskForCVVAtBooking)
-				|| _serverSettings.GetPaymentSettings(companyKey).PaymentMode == Common.Configuration.Impl.PaymentMethod.Moneris)
-            {
-                // preauth will be done later, save the info temporarily
-				_commandBus.Send(new SaveTemporaryOrderPaymentInfo { OrderId = orderId, Cvv = cvv });
-                return true;
-            }
+		internal bool PreAuthorizePaymentMethod(
+			string companyKey,
+			Guid orderId,
+			AccountDetail account,
+			string clientLanguageCode,
+			bool isFutureBooking,
+			decimal? appEstimateWithTip,
+			decimal bookingFees,
+			bool isPayPal,
+			CreateReportOrder createReportOrder,
+			string cvv = null)
+		{
+			if (!_serverSettings.GetPaymentSettings(companyKey).IsPreAuthEnabled || isFutureBooking)
+			{
+				// preauth will be done later, save the info temporarily
+				if (_serverSettings.GetPaymentSettings().AskForCVVAtBooking)
+				{
+					_commandBus.Send(new SaveTemporaryOrderPaymentInfo { OrderId = orderId, Cvv = cvv });
+				}
 
-            // there's a minimum amount of $50 (warning indicating that on the admin ui)
-            // if app returned an estimate, use it, otherwise use the setting (or 0), then use max between the value and 50
-            if (appEstimateWithTip.HasValue)
-            {
-                appEstimateWithTip = appEstimateWithTip.Value + bookingFees;
-            }
+				return true;
+			}
 
-            var preAuthAmount = Math.Max(appEstimateWithTip ?? (_serverSettings.GetPaymentSettings(companyKey).PreAuthAmount ?? 0), 50);
+			// there's a minimum amount of $50 (warning indicating that on the admin ui)
+			// if app returned an estimate, use it, otherwise use the setting (or 0), then use max between the value and 50
+			if (appEstimateWithTip.HasValue)
+			{
+				appEstimateWithTip = appEstimateWithTip.Value + bookingFees;
+			}
 
-            var preAuthResponse = _paymentService.PreAuthorize(companyKey, orderId, account, preAuthAmount, cvv: cvv);
+			var preAuthAmount = Math.Max(appEstimateWithTip ?? (_serverSettings.GetPaymentSettings(companyKey).PreAuthAmount ?? 0), 50);
 
-            return preAuthResponse.IsSuccessful;
-        }
+			var preAuthResponse = _paymentService.PreAuthorize(companyKey, orderId, account, preAuthAmount, cvv: cvv);
 
-        internal BasePaymentResponse CapturePaymentForPrepaidOrder(
-            string companyKey,
-            Guid orderId,
-            AccountDetail account,
-            decimal appEstimateWithTip,
-            int tipPercentage,
-            decimal bookingFees,
-            string cvv,
-            CreateReportOrder createReportOrder)
-        {
-            // Note: No promotion on web
-            var tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(appEstimateWithTip, tipPercentage);
-            var totalAmount = appEstimateWithTip + bookingFees;
-            var meterAmount = appEstimateWithTip - tipAmount;
+			return preAuthResponse.IsSuccessful;
+		}
 
-            var preAuthResponse = _paymentService.PreAuthorize(companyKey, orderId, account, totalAmount, isForPrepaid: true, cvv: cvv);
-            if (preAuthResponse.IsSuccessful)
-            {
-                // Wait for payment to be created
-                Thread.Sleep(500);
+		internal BasePaymentResponse CapturePaymentForPrepaidOrder(
+			string companyKey,
+			Guid orderId,
+			AccountDetail account,
+			decimal appEstimateWithTip,
+			int tipPercentage,
+			decimal bookingFees,
+			string cvv,
+			CreateReportOrder createReportOrder)
+		{
+			// Note: No promotion on web
+			var tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(appEstimateWithTip, tipPercentage);
+			var totalAmount = appEstimateWithTip + bookingFees;
+			var meterAmount = appEstimateWithTip - tipAmount;
 
-                var commitResponse = _paymentService.CommitPayment(
-                    companyKey,
-                    orderId,
-                    account,
-                    totalAmount,
-                    totalAmount,
-                    meterAmount,
-                    tipAmount,
-                    preAuthResponse.TransactionId,
-                    preAuthResponse.ReAuthOrderId,
-                    isForPrepaid: true);
+			var preAuthResponse = _paymentService.PreAuthorize(companyKey, orderId, account, totalAmount, isForPrepaid: true, cvv: cvv);
+			if (preAuthResponse.IsSuccessful)
+			{
+				// Wait for payment to be created
+				Thread.Sleep(500);
 
-                if (commitResponse.IsSuccessful)
-                {
-                    var paymentDetail = _orderPaymentDao.FindByOrderId(orderId, companyKey);
+				var commitResponse = _paymentService.CommitPayment(
+					companyKey,
+					orderId,
+					account,
+					totalAmount,
+					totalAmount,
+					meterAmount,
+					tipAmount,
+					preAuthResponse.TransactionId,
+					preAuthResponse.ReAuthOrderId,
+					isForPrepaid: true);
 
-                    var fareObject = FareHelper.GetFareFromAmountInclTax(meterAmount,
-                        _serverSettings.ServerData.VATIsEnabled
-                            ? _serverSettings.ServerData.VATPercentage
-                            : 0);
+				if (commitResponse.IsSuccessful)
+				{
+					var paymentDetail = _orderPaymentDao.FindByOrderId(orderId, companyKey);
 
-                    _commandBus.Send(new CaptureCreditCardPayment
-                    {
-                        AccountId = account.Id,
-                        PaymentId = paymentDetail.PaymentId,
-                        Provider = _paymentService.ProviderType(companyKey, orderId),
-                        TotalAmount = totalAmount,
-                        MeterAmount = fareObject.AmountExclTax,
-                        TipAmount = tipAmount,
-                        TaxAmount = fareObject.TaxAmount,
-                        AuthorizationCode = commitResponse.AuthorizationCode,
-                        TransactionId = commitResponse.TransactionId,
-                        IsForPrepaidOrder = true,
-                        BookingFees = bookingFees
-                    });
-                }
-                else
-                {
-                    // Payment failed, void preauth
-                    _paymentService.VoidPreAuthorization(companyKey, orderId, true);
+					var fareObject = FareHelper.GetFareFromAmountInclTax(meterAmount,
+						_serverSettings.ServerData.VATIsEnabled
+							? _serverSettings.ServerData.VATPercentage
+							: 0);
 
-                    return new BasePaymentResponse
-                    {
-                        IsSuccessful = false,
-                        Message = commitResponse.Message
-                    };
-                }
-            }
-            else
-            {
-                return new BasePaymentResponse
-                {
-                    IsSuccessful = false,
-                    Message = preAuthResponse.Message
-                };
-            }
+					_commandBus.Send(new CaptureCreditCardPayment
+					{
+						AccountId = account.Id,
+						PaymentId = paymentDetail.PaymentId,
+						Provider = _paymentService.ProviderType(companyKey, orderId),
+						TotalAmount = totalAmount,
+						MeterAmount = fareObject.AmountExclTax,
+						TipAmount = tipAmount,
+						TaxAmount = fareObject.TaxAmount,
+						AuthorizationCode = commitResponse.AuthorizationCode,
+						TransactionId = commitResponse.TransactionId,
+						IsForPrepaidOrder = true,
+						BookingFees = bookingFees
+					});
+				}
+				else
+				{
+					// Payment failed, void preauth
+					_paymentService.VoidPreAuthorization(companyKey, orderId, true);
 
-            return new BasePaymentResponse { IsSuccessful = true };
-        }
+					return new BasePaymentResponse
+					{
+						IsSuccessful = false,
+						Message = commitResponse.Message
+					};
+				}
+			}
+			else
+			{
+				return new BasePaymentResponse
+				{
+					IsSuccessful = false,
+					Message = preAuthResponse.Message
+				};
+			}
 
-        internal InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(
-            Guid accountId, bool isPrepaid, Guid orderId, Contract.Requests.CreateOrderRequest request,
-            decimal bookingFees, string companyKey, CreateReportOrder createReportOrder, string absoluteRequestUri)
-        {
-            if (isPrepaid
-                && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
-            {
-                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance(companyKey).InitializeWebPayment(accountId, orderId, absoluteRequestUri, request.Estimate.Price, bookingFees, request.ClientLanguageCode);
+			return new BasePaymentResponse { IsSuccessful = true };
+		}
 
-                if (paypalWebPaymentResponse.IsSuccessful)
-                {
-                    return paypalWebPaymentResponse;
-                }
+		internal InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(
+			Guid accountId, bool isPrepaid, Guid orderId, Contract.Requests.CreateOrderRequest request,
+			decimal bookingFees, string companyKey, CreateReportOrder createReportOrder, string absoluteRequestUri)
+		{
+			if (isPrepaid
+				&& request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+			{
+				var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance(companyKey).InitializeWebPayment(accountId, orderId, absoluteRequestUri, request.Estimate.Price, bookingFees, request.ClientLanguageCode);
 
-                var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
+				if (paypalWebPaymentResponse.IsSuccessful)
+				{
+					return paypalWebPaymentResponse;
+				}
 
-                createReportOrder.Error = createOrderException.ToString();
-                _commandBus.Send(createReportOrder);
-                throw createOrderException;
-            }
+				var createOrderException = new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
 
-            return null;
-        }
-    }
+				createReportOrder.Error = createOrderException.ToString();
+				_commandBus.Send(createReportOrder);
+				throw createOrderException;
+			}
+
+			return null;
+		}
+	}
 }
