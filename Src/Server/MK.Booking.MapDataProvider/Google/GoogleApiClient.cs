@@ -53,7 +53,22 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             get { return "gme-taxihailinc"; }
 	    }
 
-		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
+	    public Task<GeoPlace[]> GetNearbyPlacesAsync(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = 0, string pipedTypeList = null)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public Task<GeoPlace[]> SearchPlacesAsync(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public Task<GeoPlace> GetPlaceDetailAsync(string id)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, uint maximumNumberOfPlaces = MaximumPageLength, string pipedTypeList = null)
         {
             if (maximumNumberOfPlaces == 0)
             {

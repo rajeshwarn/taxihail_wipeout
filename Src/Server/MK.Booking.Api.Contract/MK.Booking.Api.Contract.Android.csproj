@@ -33,14 +33,6 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ModernHttpClient, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\Mobile\packages\modernhttpclient.2.4.2\lib\MonoAndroid\ModernHttpClient.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="OkHttp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\Mobile\packages\modernhttpclient.2.4.2\lib\MonoAndroid\OkHttp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -150,8 +142,5 @@
       <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
       <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>
