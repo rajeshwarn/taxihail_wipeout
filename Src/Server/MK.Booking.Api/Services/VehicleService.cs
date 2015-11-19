@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Api.Services
             var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
             var logoName = vehicleType != null ? vehicleType.LogoName : null;
 
-            IbsVehiclePosition[] vehicles;
+            IbsVehiclePosition[] ibsVehicles;
             string market = null;
 
             try
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Api.Services
                 && _serverSettings.ServerData.LocalAvailableVehiclesMode == LocalAvailableVehiclesModes.IBS)
             {
                 // LOCAL market IBS
-                vehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
+                ibsVehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             }
             else
             {
@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Api.Services
                     fleetIds: availableVehiclesFleetIds,
                     wheelchairAccessibleOnly: (vehicleType != null && vehicleType.IsWheelchairAccessible));
 
-                vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
+                ibsVehicles = vehicleResponse.Select(v => new IbsVehiclePosition
                 {
                     Latitude = v.Latitude,
                     Longitude = v.Longitude,
@@ -174,30 +174,30 @@ namespace apcurium.MK.Booking.Api.Services
 
 			var isAuthenticated = this.GetSession().IsAuthenticated;
 
-			var availableVehicles = new List<AvailableVehicle>();
+            var availableVehicles = new List<AvailableVehicle>();
 
-			for (int i = 0; i < vehicles.Length; i++)
-			{
-				var vehicle = new AvailableVehicle()
-				{
-					Latitude = vehicles[i].Latitude,
-					Longitude = vehicles[i].Longitude,
-					LogoName = logoName,
-					Eta = vehicles[i].Eta,
-					VehicleType = vehicles[i].VehicleType
-				};
+            foreach (var ibsVehicle in ibsVehicles)
+            {
+                var vehicle = new AvailableVehicle
+                {
+                    Latitude = ibsVehicle.Latitude,
+                    Longitude = ibsVehicle.Longitude,
+                    LogoName = logoName,
+                    Eta = ibsVehicle.Eta,
+                    VehicleType = ibsVehicle.VehicleType
+                };
 
-				if (isAuthenticated)
-				{
-					vehicle.CompassCourse = (vehicles[i].CompassCourse != null ? vehicles[i].CompassCourse.Value : 0);
-					vehicle.VehicleName = vehicles[i].VehicleNumber;
-					vehicle.FleetId = vehicles[i].FleetId;
-				}
+                if (isAuthenticated)
+                {
+                    vehicle.CompassCourse = ibsVehicle.CompassCourse ?? 0;
+                    vehicle.VehicleName = ibsVehicle.VehicleNumber;
+                    vehicle.FleetId = ibsVehicle.FleetId;
+                }
 
-				availableVehicles.Add(vehicle);
-			}
+                availableVehicles.Add(vehicle);
+            }
 
-            return new AvailableVehiclesResponse(availableVehicles);   
+            return new AvailableVehiclesResponse(availableVehicles);
         }
 
         public object Get(VehicleTypeRequest request)
