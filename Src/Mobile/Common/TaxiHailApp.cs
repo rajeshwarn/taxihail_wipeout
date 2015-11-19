@@ -206,9 +206,10 @@ namespace apcurium.MK.Booking.Mobile
         private void ClearAppCache()
         {
             _container.Resolve<IApplicationInfoService>().ClearAppInfo();
-            var accountService = _container.Resolve<IAccountService>();
+			var accountService = _container.Resolve<IAccountService>();
             accountService.ClearReferenceData();
-            accountService.ClearVehicleTypesCache();
+			var vehicleService = _container.Resolve<IVehicleService>();
+			vehicleService.ClearVehicleTypesCache();
         }
 
         private void RefreshAppData()
