@@ -3,11 +3,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.MapDataProvider.CraftyClicks.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using MK.Booking.Google.Android.Extensions;
 using ModernHttpClient;
 
 namespace apcurium.MK.Booking.MapDataProvider.CraftyClicks
