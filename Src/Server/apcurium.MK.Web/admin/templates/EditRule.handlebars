@@ -153,14 +153,14 @@
                     </input>
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" id="appliesToFutureBooking" name='appliesToFutureBooking' value="{{appliesToFutureBooking}}" {{futureBookingChecked}}> {{localize "Future booking"}}</input>
+                    <input type="checkbox" id="appliesToFutureBooking" name='appliesToFutureBooking' value="{{appliesToFutureBooking}}" {{futureBookingChecked}} data-action='appliesToFutureBooking'> {{localize "Future booking"}}</input>
                 </label>
                 {{#if isNetworkEnabled}}
                 {{#if isDefault}}
                 {{#if isDisable}}
                 <div style="padding-left: 20px">
                     <label class="checkbox">
-                        <input type="checkbox" id="disableFutureBookingOnError" name='disableFutureBookingOnError' value="{{disableFutureBookingOnError}}" {{disableFutureBookingOnErrorChecked}}> {{localize "Hide Future Booking Button"}}</input>
+                        <input type="checkbox" id="disableFutureBookingOnError" name='disableFutureBookingOnError' value="{{disableFutureBookingOnError}}" {{disableFutureBookingOnErrorChecked}} data-action='disableFutureBookingOnError'> {{localize "Hide Future Booking Button"}}</input>
                     </label>
                 </div>
                 {{/if}}
@@ -186,16 +186,46 @@
         </div>
         
         <div class="control-group">
-            <label class="control-label">{{localize 'Zone Validation'}}</label>
+            <label class="control-label">{{localize 'IBS Zone Validation'}}</label>
             <div class="controls">
                 <label class="checkbox">
-                <input type="checkbox" id="zoneRequired" name='zoneRequired' value="{{zoneRequired}}" {{zoneRequiredChecked}}>
-                       {{localize "Zone Required"}}
-                 </input>
+                <input type="checkbox" id="zoneRequired" name='zoneRequired' value="{{zoneRequired}}" {{zoneRequiredChecked}} data-action='zoneRequiredClick' />
+                       {{localize "IBS Zone Required"}}
                 </label>
             </div>
         </div>
-      
+
+		<div class="control-group">
+			<label class="control-label">{{localize 'Exclude Circular Zone'}}</label>
+			<div class="controls">
+				<label class="checkbox">
+					<input type="checkbox" id="checkBoxExcludeCircularZone" name='checkBoxExcludeCircularZone' value="{{excludeCircularZone}}" {{checkBoxExcludeCircularZoneChecked}} data-action='checkBoxExcludeCircularZoneClick' />
+					{{localize "Exclude Circular Zone"}}
+				</label>
+			</div>
+		</div>
+
+      <div class="control-group">
+        <label class="control-label">{{localize 'Exclude Circular Zone Latitude'}}</label>
+          <div class="controls">
+				<input type="text" id="excludedCircularZoneLatitude" name="excludedCircularZoneLatitude" value="{{excludedCircularZoneLatitude}}" />
+          </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">{{localize 'Exclude Circular Zone Longitude'}}</label>
+          <div class="controls">
+				<input type="text" id="excludedCircularZoneLongitude" name="excludedCircularZoneLongitude" value="{{excludedCircularZoneLongitude}}" />
+          </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">{{localize 'Exclude Circular Zone Radius'}}</label>
+          <div class="controls">
+				<input type="text" id="excludedCircularZoneRadius" name="excludedCircularZoneRadius" value="{{excludedCircularZoneRadius}}" />
+          </div>
+      </div>
+
         <div class="control-group">
             <label class="control-label">{{localize 'Message'}}</label>
             <div class="controls">
